@@ -40,6 +40,7 @@ local_users:
 vrfs:
 - name: MGMT
   ip_routing: false
+  ipv6_routing: false
 management_interfaces:
 - name: MY_INTERFACE_FABRIC
   description: oob_management

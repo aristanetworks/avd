@@ -222,6 +222,7 @@ vlan_internal_order:
 vrfs:
 - name: MGMT
   ip_routing: false
+  ipv6_routing: false
 - name: IGMP_QUERIER_TEST_1
   tenant: Tenant_A
   ip_routing: true

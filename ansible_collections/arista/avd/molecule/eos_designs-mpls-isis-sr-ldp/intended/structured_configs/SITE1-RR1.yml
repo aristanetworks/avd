@@ -83,6 +83,7 @@ spanning_tree:
 vrfs:
 - name: MGMT
   ip_routing: false
+  ipv6_routing: false
 management_interfaces:
 - name: Management1
   description: oob_management
