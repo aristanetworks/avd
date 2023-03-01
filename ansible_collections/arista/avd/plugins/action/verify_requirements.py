@@ -112,7 +112,7 @@ def _validate_ansible_version(collection_name, running_version, result) -> bool:
     if len(specifiers_set) > 0:
         result["requires_ansible"] = str(specifiers_set)
     if not specifiers_set.contains(running_version):
-        ActionModule.display.error(
+        display.error(
             f"Ansible Version running {running_version} - Requirement is {str(specifiers_set)}",
             False,
         )
@@ -161,9 +161,9 @@ def _validate_ansible_collections(running_collection_name, result) -> bool:
                 "desired": str(specifiers_set) if len(specifiers_set) > 0 else None,
             }
             if specifiers_set:
-                ActionModule.display.error(f"{collection_name} required but not found - required version is {str(specifiers_set)}", False)
+                display.error(f"{collection_name} required but not found - required version is {str(specifiers_set)}", False)
             else:
-                ActionModule.display.error(f"{collection_name} required but not found", False)
+                display.error(f"{collection_name} required but not found", False)
             failed = True
             continue
 
@@ -175,7 +175,7 @@ def _validate_ansible_collections(running_collection_name, result) -> bool:
                 "desired": str(specifiers_set) if len(specifiers_set) > 0 else None,
             }
         else:
-            ActionModule.display.error(f"{collection_name} version running {installed_version} - required version is {str(specifiers_set)}", False)
+            display.error(f"{collection_name} version running {installed_version} - required version is {str(specifiers_set)}", False)
             dependencies_dict["mismatched"][collection_name] = {
                 "installed": installed_version,
                 "desired": str(specifiers_set) if len(specifiers_set) > 0 else None,
@@ -194,7 +194,7 @@ def _get_collection_path(collection_name) -> str:
     return os.path.dirname(collection.__file__)
 
 
-def _get_collection_version(self, collection_path) -> str:
+def _get_collection_version(collection_path) -> str:
     """
     TODO
     """
@@ -208,7 +208,7 @@ def _get_collection_version(self, collection_path) -> str:
         with open(manifest_file, "rb") as fd:
             metadata = json.load(fd)["collection_info"]
 
-    ActionModule.display.vvv(str(metadata))
+    display.vvv(str(metadata))
 
     return metadata["version"]
 
@@ -219,12 +219,12 @@ def _get_running_collection_version(running_collection_name, result) -> None:
 
     # Try to detect a git tag
     # Using subprocess for now
-    with Popen(["git", "describe", "--tags"], stdout=PIPE, stderr=PIPE) as process:
+    with Popen(["git", "describe", "--tags"], stdout=PIPE, stderr=PIPE, cwd=collection_path) as process:
         output, err = process.communicate()
         if err:
-            ActionModule.display.vvv("Not a git repository")
+            display.vvv("Not a git repository")
         else:
-            ActionModule.display.vvv("This is a git repository, overwriting version with 'git describe --tags output'")
+            display.vvv("This is a git repository, overwriting version with 'git describe --tags output'")
             version = output.decode("UTF-8").strip()
 
     result["collection"] = {
@@ -271,4 +271,5 @@ class ActionModule(ActionBase):
         if _validate_ansible_collections(running_collection_name, result["ansible"]) is True:
             result["failed"] = True
 
+        del result["failed"]
         return result

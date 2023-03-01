@@ -1,42 +1,15 @@
 ---
-- name: "Collection {{ ansible_collection_name }} version {{ version }}{{ ('(git ' ~ git_tag ~ ')') if git_tag }} loaded from {{ collection_path }}"
-  tags: [always, avd_version]
-  ansible.builtin.set_fact:
-    avd_collection_version: version
-  vars:
-    versions: "{{ lookup('pipe', 'ansible-galaxy collection list -p ' ~ collection_path ~ ' --format yaml ' ~ ansible_collection_name) | from_yaml }}"
-    collection_path: "{{ (role_path | split('/'))[0:-4] | join('/') }}"
-    version: "{{ versions[collection_path][ansible_collection_name].version | default('Unknown') }}"
-    git_tag: "{{ lookup('pipe', 'git -C ' ~ collection_path ~ ' describe --tags --always 2>/dev/null', errors='ignore') }}"
+- name: Verify Requirements
+  tags: [always, avd_req]
   run_once: true
+  delegate_to: localhost
+  when: avd_requirements is not defined
   failed_when: false
-
-- name: "Verify Requirements"
-  tags: [debug, avd_req, never]
   arista.avd.verify_requirements:
     dependencies: "{{ lookup('file', requirements_path ~ '/requirements.txt').splitlines() }}"
+    avd_debug: false  #TODO make it a variable
   vars:
     requirements_path: "{{ (role_path | split('/'))[0:-2] | join('/') }}"
-  run_once: true
-  register: requirements
-
-- name: "Print requirements"
-  tags: [debug, avd_req, never]
-  ansible.builtin.debug:
-    msg: "{{ requirements }}"
-  run_once: true
-
-- name: Create required output directories if not present
-  tags: [build, provision]
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: directory
-    mode: 0775
-  loop:
-    - "{{ structured_dir }}"
-    - "{{ fabric_dir }}"
-  delegate_to: localhost
-  run_once: true
 
 - name: Set eos_designs facts
   tags: [build, provision, facts]
