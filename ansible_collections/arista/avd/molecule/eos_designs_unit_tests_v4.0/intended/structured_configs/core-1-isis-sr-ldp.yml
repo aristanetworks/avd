@@ -15,7 +15,6 @@ spanning_tree:
 vrfs:
 - name: MGMT
   ip_routing: false
-  ipv6_routing: false
 management_api_http:
   enable_vrfs:
     MGMT: {}

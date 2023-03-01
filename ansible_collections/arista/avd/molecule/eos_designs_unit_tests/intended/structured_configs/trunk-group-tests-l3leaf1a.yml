@@ -189,7 +189,6 @@ vlan_internal_order:
 vrfs:
 - name: MGMT
   ip_routing: false
-  ipv6_routing: false
 - name: TG_100
   tenant: TRUNK_GROUP_TESTS
   ip_routing: true
