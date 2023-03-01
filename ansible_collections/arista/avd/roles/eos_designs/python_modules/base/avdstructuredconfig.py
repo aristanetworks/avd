@@ -519,7 +519,13 @@ class AvdStructuredConfig(AvdFacts):
         """
         vrfs set based on mgmt_interface_vrf variable
         """
-        return [{"name": self._mgmt_interface_vrf, "ip_routing": get(self._hostvars, "mgmt_vrf_routing")}]
+        return [
+            {
+                "name": self._mgmt_interface_vrf,
+                "ip_routing": get(self._hostvars, "mgmt_vrf_routing"),
+                "ipv6_routing": (self._ipv6_mgmt_ip is not None and get(self._hostvars, "mgmt_vrf_routing")),
+            }
+        ]
 
     @cached_property
     def management_interfaces(self) -> list | None:
