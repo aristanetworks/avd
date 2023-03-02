@@ -417,12 +417,12 @@ loopback_interfaces:
   ip_address: 10.255.11.4/32
   name: Loopback11
 prefix_lists:
-- sequence_numbers:
-  - action: permit 10.255.0.0/27 eq 32
-    sequence: 10
-  - action: permit 10.255.1.0/27 eq 32
-    sequence: 20
-  name: PL-LOOPBACKS-EVPN-OVERLAY
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.255.0.0/27 eq 32
+  - sequence: 20
+    action: permit 10.255.1.0/27 eq 32
 router_bfd:
   multihop:
     interval: 300
