@@ -77,7 +77,8 @@ vlans:
 ip_igmp_snooping:
   globally_enabled: true
 vlan_interfaces:
-- tenant: TEST
+- name: Vlan3900
+  tenant: TEST
   tags:
   - leaf1
   - leaf2
@@ -85,22 +86,21 @@ vlan_interfaces:
   description: SVI_ON_ALL_LEAFS
   shutdown: true
   vrf: TEST
-  name: Vlan3900
-- tenant: TEST
+- name: Vlan3901
+  tenant: TEST
   tags:
   - leaf1
   description: SVI_ON_LEAF1
   shutdown: true
   vrf: TEST
-  name: Vlan3901
-- tenant: TEST
+- name: Vlan3902
+  tenant: TEST
   tags:
   - leaf1
   - leaf2
   description: SVI_ON_LEAF1-2
   shutdown: true
   vrf: TEST
-  name: Vlan3902
 vxlan_interface:
   Vxlan1:
     description: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF1_VTEP

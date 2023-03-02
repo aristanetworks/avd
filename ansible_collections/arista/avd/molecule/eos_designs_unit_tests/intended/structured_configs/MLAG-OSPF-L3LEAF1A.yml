@@ -94,14 +94,14 @@ vlans:
   - MLAG
   id: 4094
 vlan_interfaces:
-- description: MLAG_PEER
+- name: Vlan4094
+  description: MLAG_PEER
   shutdown: false
   ip_address: 10.10.255.6/31
   no_autostate: true
   mtu: 1500
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  name: Vlan4094
 port_channel_interfaces:
 - description: MLAG_PEER_MLAG-OSPF-L3LEAF1B_Po5
   type: switched

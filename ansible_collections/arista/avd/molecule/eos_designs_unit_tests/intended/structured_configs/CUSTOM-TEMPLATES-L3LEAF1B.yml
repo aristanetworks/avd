@@ -128,33 +128,33 @@ vlans:
   - LEAF_PEER_L3
   id: 3000
 vlan_interfaces:
-- description: MLAG_PEER_L3_PEERING
+- name: Vlan4093
+  description: MLAG_PEER_L3_PEERING
   shutdown: false
   mtu: 9000
   ip_address: 10.255.251.11/31
-  name: Vlan4093
-- description: MLAG_PEER
+- name: Vlan4094
+  description: MLAG_PEER
   shutdown: false
   ip_address: 10.255.252.11/31
   no_autostate: true
   mtu: 9000
-  name: Vlan4094
-- tenant: CUSTOM_TEMPLATES_TENANT
+- name: Vlan110
+  tenant: CUSTOM_TEMPLATES_TENANT
   tags:
   - opzone
   description: Tenant_A_OP_Zone_1
   shutdown: false
   ip_address_virtual: 10.1.10.1/24
   vrf: TEST_VRF
-  name: Vlan110
-- tenant: CUSTOM_TEMPLATES_TENANT
+- name: Vlan3000
+  tenant: CUSTOM_TEMPLATES_TENANT
   type: underlay_peering
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf TEST_VRF'
   vrf: TEST_VRF
   mtu: 9000
   ip_address: 10.255.240.11/31
-  name: Vlan3000
 port_channel_interfaces:
 - description: TEST_CUSTOM_PREFIX_MLAG_PEER_CUSTOM-TEMPLATES-L3LEAF1A_Po3
   type: switched

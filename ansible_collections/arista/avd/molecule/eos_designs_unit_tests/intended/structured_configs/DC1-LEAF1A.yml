@@ -342,7 +342,8 @@ ip_igmp_snooping:
     id: 120
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vlan_interfaces:
-- tenant: Tenant_A
+- name: Vlan130
+  tenant: Tenant_A
   tags:
   - app
   - erp1
@@ -350,16 +351,16 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.1.30.1/24
   vrf: Tenant_A_APP_Zone
-  name: Vlan130
-- tenant: Tenant_A
+- name: Vlan131
+  tenant: Tenant_A
   tags:
   - app
   description: Tenant_A_APP_Zone_2
   shutdown: false
   ip_address_virtual: 10.1.31.1/24
   vrf: Tenant_A_APP_Zone
-  name: Vlan131
-- tenant: Tenant_A
+- name: Vlan132
+  tenant: Tenant_A
   tags:
   - erp2
   description: Tenant_A_APP_Zone_3
@@ -370,8 +371,8 @@ vlan_interfaces:
   - 10.2.32.254/24
   - 10.3.32.254/24
   vrf: Tenant_A_APP_Zone
-  name: Vlan132
-- tenant: Tenant_A
+- name: Vlan120
+  tenant: Tenant_A
   tags:
   - web
   - erp1
@@ -383,11 +384,11 @@ vlan_interfaces:
   - 10.2.21.1/24
   vrf: Tenant_A_WEB_Zone
   ip_helpers:
-  - source_interface: lo100
+  - ip_helper: 1.1.1.1
+    source_interface: lo100
     vrf: TEST
-    ip_helper: 1.1.1.1
-  name: Vlan120
-- tenant: Tenant_A
+- name: Vlan121
+  tenant: Tenant_A
   tags:
   - web
   description: Tenant_A_WEBZone_2
@@ -395,16 +396,16 @@ vlan_interfaces:
   mtu: 1560
   ip_address_virtual: 10.1.10.254/24
   vrf: Tenant_A_WEB_Zone
-  name: Vlan121
-- tenant: Tenant_D
+- name: Vlan450
+  tenant: Tenant_D
   tags:
   - v6wan
   description: Tenant_D_v6_WAN_Zone_1
   shutdown: false
   ipv6_address_virtual: 2001:db8:355::1/64
   vrf: Tenant_D_WAN_Zone
-  name: Vlan450
-- tenant: Tenant_D
+- name: Vlan451
+  tenant: Tenant_D
   tags:
   - v6wan
   description: Tenant_D_v6_WAN_Zone_2
@@ -412,8 +413,8 @@ vlan_interfaces:
   mtu: 1560
   ipv6_address_virtual: 2001:db8:451::1/64
   vrf: Tenant_D_WAN_Zone
-  name: Vlan451
-- tenant: Tenant_D
+- name: Vlan452
+  tenant: Tenant_D
   tags:
   - v6wan
   description: Tenant_D_v6_WAN_Zone_3
@@ -422,7 +423,6 @@ vlan_interfaces:
   ip_address_virtual: 10.4.12.254/24
   ipv6_address_virtual: 2001:db8:412::1/64
   vrf: Tenant_D_WAN_Zone
-  name: Vlan452
 vxlan_interface:
   Vxlan1:
     description: DC1-LEAF1A_VTEP

@@ -77,18 +77,19 @@ vlans:
   name: L2VLAN_ON_LEAF2-3
   id: 2903
 vlan_interfaces:
-- description: MLAG_PEER_L3_PEERING
+- name: Vlan4093
+  description: MLAG_PEER_L3_PEERING
   shutdown: false
   mtu: 9000
   ip_address: 192.168.253.5/31
-  name: Vlan4093
-- description: MLAG_PEER
+- name: Vlan4094
+  description: MLAG_PEER
   shutdown: false
   ip_address: 192.168.254.5/31
   no_autostate: true
   mtu: 9000
-  name: Vlan4094
-- tenant: TEST
+- name: Vlan3900
+  tenant: TEST
   tags:
   - leaf1
   - leaf2
@@ -96,23 +97,22 @@ vlan_interfaces:
   description: SVI_ON_ALL_LEAFS
   shutdown: true
   vrf: TEST
-  name: Vlan3900
-- tenant: TEST
+- name: Vlan3903
+  tenant: TEST
   tags:
   - leaf2
   - leaf3
   description: SVI_ON_LEAF2-3
   shutdown: true
   vrf: TEST
-  name: Vlan3903
-- tenant: TEST
+- name: Vlan3000
+  tenant: TEST
   type: underlay_peering
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf TEST'
   vrf: TEST
   mtu: 9000
   ip_address: 192.168.253.5/31
-  name: Vlan3000
 port_channel_interfaces:
 - description: MLAG_PEER_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A_Po1
   type: switched

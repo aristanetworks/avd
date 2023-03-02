@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
@@ -114,7 +116,7 @@ class AvdStructuredConfig(AvdFacts):
         return vlans
 
     @cached_property
-    def vlan_interfaces(self):
+    def vlan_interfaces(self) -> list | None:
         """
         Return dict with VLAN Interfaces used for MLAG
 
@@ -133,11 +135,8 @@ class AvdStructuredConfig(AvdFacts):
             "mtu": self._p2p_uplinks_mtu,
         }
         if not self._mlag_l3:
-            return strip_empties_from_dict(
-                {
-                    main_vlan_interface_name: main_vlan_interface,
-                }
-            )
+            main_vlan_interface = strip_empties_from_dict({"name": main_vlan_interface_name, **main_vlan_interface})
+            return [main_vlan_interface]
 
         # Create L3 data which will go on either a dedicated l3 vlan or the main mlag vlan
         l3_cfg = {
@@ -173,11 +172,8 @@ class AvdStructuredConfig(AvdFacts):
             if self._mlag_peer_vlan_structured_config is not None:
                 main_vlan_interface["struct_cfg"] = self._mlag_peer_vlan_structured_config
 
-            return strip_empties_from_dict(
-                {
-                    main_vlan_interface_name: main_vlan_interface,
-                }
-            )
+            main_vlan_interface = strip_empties_from_dict({"name": main_vlan_interface_name, **main_vlan_interface})
+            return [main_vlan_interface]
 
         # Next create l3 interface if not using the main vlan
         l3_vlan_interface_name = f"Vlan{self._mlag_peer_l3_vlan}"
@@ -192,12 +188,9 @@ class AvdStructuredConfig(AvdFacts):
         l3_vlan_interface.update(l3_cfg)
 
         # Assembling the interface dict to retain legacy order from Jinja templates.
-        return strip_empties_from_dict(
-            {
-                l3_vlan_interface_name: l3_vlan_interface,
-                main_vlan_interface_name: main_vlan_interface,
-            }
-        )
+        main_vlan_interface = strip_empties_from_dict({"name": main_vlan_interface_name, **main_vlan_interface})
+        l3_vlan_interface = strip_empties_from_dict({"name": l3_vlan_interface_name, **l3_vlan_interface})
+        return [l3_vlan_interface, main_vlan_interface]
 
     @cached_property
     def port_channel_interfaces(self):

@@ -95,12 +95,12 @@ vlans:
     tenant: Tenant_A
     name: Tenant_A_NFS
 vlan_interfaces:
-  Vlan4091:
-    description: MLAG_PEER
-    shutdown: false
-    ip_address: 10.255.252.27/31
-    no_autostate: true
-    mtu: 1500
+- name: Vlan4091
+  description: MLAG_PEER
+  shutdown: false
+  ip_address: 10.255.252.27/31
+  no_autostate: true
+  mtu: 1500
 port_channel_interfaces:
   Port-Channel3:
     description: MLAG_PEER_DC1-L2LEAF5A_Po3

@@ -156,30 +156,30 @@ vlans:
   - LEAF_PEER_L3
   id: 3019
 vlan_interfaces:
-- description: MLAG_PEER
+- name: Vlan4094
+  description: MLAG_PEER
   shutdown: false
   ip_address: 10.255.252.7/31
   no_autostate: true
   mtu: 1500
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  name: Vlan4094
-- tenant: Tenant_A
+- name: Vlan210
+  tenant: Tenant_A
   tags:
   - opzone
   description: Tenant_B_OP_Zone_1
   shutdown: false
   ip_address_virtual: 10.2.10.1/24
   vrf: Tenant_B_OP_Zone
-  name: Vlan210
-- tenant: Tenant_A
+- name: Vlan3019
+  tenant: Tenant_A
   type: underlay_peering
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone'
   vrf: Tenant_B_OP_Zone
   mtu: 1500
   ip_address: 10.255.252.7/31
-  name: Vlan3019
 port_channel_interfaces:
 - description: MLAG_PEER_DC1-SVC3A_Po5
   type: switched

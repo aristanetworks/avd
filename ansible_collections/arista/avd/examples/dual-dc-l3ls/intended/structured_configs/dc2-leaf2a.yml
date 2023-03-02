@@ -296,57 +296,57 @@ vlans:
   name: L2_VLAN3402
   id: 3402
 vlan_interfaces:
-- description: MLAG_PEER_L3_PEERING
+- name: Vlan4093
+  description: MLAG_PEER_L3_PEERING
   shutdown: false
   mtu: 1500
   ip_address: 10.255.129.120/31
-  name: Vlan4093
-- description: MLAG_PEER
+- name: Vlan4094
+  description: MLAG_PEER
   shutdown: false
   ip_address: 10.255.129.88/31
   no_autostate: true
   mtu: 1500
-  name: Vlan4094
-- tenant: TENANT1
+- name: Vlan11
+  tenant: TENANT1
   description: VRF10_VLAN11
   shutdown: false
   ip_address_virtual: 10.10.11.1/24
   vrf: VRF10
-  name: Vlan11
-- tenant: TENANT1
+- name: Vlan12
+  tenant: TENANT1
   description: VRF10_VLAN12
   shutdown: false
   ip_address_virtual: 10.10.12.1/24
   vrf: VRF10
-  name: Vlan12
-- tenant: TENANT1
+- name: Vlan3009
+  tenant: TENANT1
   type: underlay_peering
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf VRF10'
   vrf: VRF10
   mtu: 1500
   ip_address: 10.255.129.120/31
-  name: Vlan3009
-- tenant: TENANT1
+- name: Vlan21
+  tenant: TENANT1
   description: VRF11_VLAN21
   shutdown: false
   ip_address_virtual: 10.10.21.1/24
   vrf: VRF11
-  name: Vlan21
-- tenant: TENANT1
+- name: Vlan22
+  tenant: TENANT1
   description: VRF11_VLAN22
   shutdown: false
   ip_address_virtual: 10.10.22.1/24
   vrf: VRF11
-  name: Vlan22
-- tenant: TENANT1
+- name: Vlan3010
+  tenant: TENANT1
   type: underlay_peering
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf VRF11'
   vrf: VRF11
   mtu: 1500
   ip_address: 10.255.129.120/31
-  name: Vlan3010
 port_channel_interfaces:
 - description: MLAG_PEER_dc2-leaf2b_Po3
   type: switched

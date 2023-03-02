@@ -131,12 +131,12 @@ vlans:
   name: Tenant_C_WAN_Zone_1
   id: 350
 vlan_interfaces:
-- description: MLAG_PEER
+- name: Vlan4091
+  description: MLAG_PEER
   shutdown: false
   ip_address: 10.255.249.16/31
   no_autostate: true
   mtu: 1500
-  name: Vlan4091
 port_channel_interfaces:
 - description: MLAG_PEER_DC1-L2LEAF2B_Po3
   type: switched

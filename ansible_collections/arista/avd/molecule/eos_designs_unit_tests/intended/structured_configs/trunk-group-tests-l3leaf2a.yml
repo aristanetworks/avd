@@ -133,18 +133,19 @@ vlans:
   - LEAF_PEER_L3
   id: 3199
 vlan_interfaces:
-- description: MLAG_PEER_L3_PEERING
+- name: Vlan4093
+  description: MLAG_PEER_L3_PEERING
   shutdown: false
   mtu: 9000
   ip_address: 10.255.247.4/31
-  name: Vlan4093
-- description: MLAG_PEER
+- name: Vlan4094
+  description: MLAG_PEER
   shutdown: false
   ip_address: 10.255.248.4/31
   no_autostate: true
   mtu: 9000
-  name: Vlan4094
-- tenant: TRUNK_GROUP_TESTS
+- name: Vlan200
+  tenant: TRUNK_GROUP_TESTS
   tags:
   - TRUNK_GROUP_TESTS_L3LEAF1
   - TRUNK_GROUP_TESTS_L2LEAF1
@@ -152,15 +153,14 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.2.0.1/24
   vrf: TG_200
-  name: Vlan200
-- tenant: TRUNK_GROUP_TESTS
+- name: Vlan3199
+  tenant: TRUNK_GROUP_TESTS
   type: underlay_peering
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf TG_200'
   vrf: TG_200
   mtu: 9000
   ip_address: 10.255.247.4/31
-  name: Vlan3199
 port_channel_interfaces:
 - description: MLAG_PEER_trunk-group-tests-l3leaf2b_Po3
   type: switched

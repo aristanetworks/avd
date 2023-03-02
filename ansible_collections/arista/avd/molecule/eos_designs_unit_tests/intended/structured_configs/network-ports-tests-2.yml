@@ -28,12 +28,12 @@ vlans:
   name: VLAN100_ON_L2LEAF_1_AND_2
   id: 100
 vlan_interfaces:
-- description: MLAG_PEER
+- name: Vlan4094
+  description: MLAG_PEER
   shutdown: false
   ip_address: 10.255.252.1/31
   no_autostate: true
   mtu: 9000
-  name: Vlan4094
 port_channel_interfaces:
 - description: MLAG_PEER_network-ports-tests.1_Po101
   type: switched

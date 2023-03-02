@@ -295,18 +295,19 @@ vlans:
   - CUSTOM_MLAG_TG_NAME
   id: 311
 vlan_interfaces:
-- description: MLAG_PEER_L3_PEERING
+- name: Vlan4093
+  description: MLAG_PEER_L3_PEERING
   shutdown: false
   mtu: 9000
   ip_address: 10.255.247.1/31
-  name: Vlan4093
-- description: MLAG_PEER
+- name: Vlan4094
+  description: MLAG_PEER
   shutdown: false
   ip_address: 10.255.248.1/31
   no_autostate: true
   mtu: 9000
-  name: Vlan4094
-- tenant: TRUNK_GROUP_TESTS
+- name: Vlan100
+  tenant: TRUNK_GROUP_TESTS
   tags:
   - TRUNK_GROUP_TESTS_L3LEAF1
   - TRUNK_GROUP_TESTS_L2LEAF1
@@ -314,16 +315,16 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.1.0.1/24
   vrf: TG_100
-  name: Vlan100
-- tenant: TRUNK_GROUP_TESTS
+- name: Vlan3099
+  tenant: TRUNK_GROUP_TESTS
   type: underlay_peering
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf TG_100'
   vrf: TG_100
   mtu: 9000
   ip_address: 10.255.247.1/31
-  name: Vlan3099
-- tenant: TRUNK_GROUP_TESTS
+- name: Vlan200
+  tenant: TRUNK_GROUP_TESTS
   tags:
   - TRUNK_GROUP_TESTS_L3LEAF1
   - TRUNK_GROUP_TESTS_L2LEAF1
@@ -331,16 +332,16 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.2.0.1/24
   vrf: TG_200
-  name: Vlan200
-- tenant: TRUNK_GROUP_TESTS
+- name: Vlan3199
+  tenant: TRUNK_GROUP_TESTS
   type: underlay_peering
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf TG_200'
   vrf: TG_200
   mtu: 9000
   ip_address: 10.255.247.1/31
-  name: Vlan3199
-- tenant: TRUNK_GROUP_TESTS
+- name: Vlan300
+  tenant: TRUNK_GROUP_TESTS
   tags:
   - TRUNK_GROUP_TESTS_L3LEAF1
   - TRUNK_GROUP_TESTS_L2LEAF1
@@ -348,16 +349,16 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.3.0.1/24
   vrf: TG_300
-  name: Vlan300
-- tenant: TRUNK_GROUP_TESTS
+- name: Vlan301
+  tenant: TRUNK_GROUP_TESTS
   tags:
   - TRUNK_GROUP_TESTS_L3LEAF1
   description: svi301_with_trunk_groups_only_l3leaf
   shutdown: false
   ip_address_virtual: 10.3.1.1/24
   vrf: TG_300
-  name: Vlan301
-- tenant: TRUNK_GROUP_TESTS
+- name: Vlan398
+  tenant: TRUNK_GROUP_TESTS
   tags:
   - TRUNK_GROUP_TESTS_L3LEAF1
   - TRUNK_GROUP_TESTS_L2LEAF1
@@ -365,15 +366,14 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.3.1.1/24
   vrf: TG_300
-  name: Vlan398
-- tenant: TRUNK_GROUP_TESTS
+- name: Vlan3299
+  tenant: TRUNK_GROUP_TESTS
   type: underlay_peering
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf TG_300'
   vrf: TG_300
   mtu: 9000
   ip_address: 10.255.247.1/31
-  name: Vlan3299
 port_channel_interfaces:
 - description: MLAG_PEER_trunk-group-tests-l3leaf1a_Po3
   type: switched

@@ -386,14 +386,14 @@ ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 vlan_interfaces:
-- tenant: Tenant_X
+- name: Vlan310
+  tenant: Tenant_X
   tags:
   - opzone
   description: Tenant_X_OP_Zone_1
   shutdown: false
   ip_address_virtual: 10.1.10.1/24
   vrf: Tenant_X_OP_Zone
-  name: Vlan310
 vxlan_interface:
   Vxlan1:
     description: MH-LEAF1A_VTEP

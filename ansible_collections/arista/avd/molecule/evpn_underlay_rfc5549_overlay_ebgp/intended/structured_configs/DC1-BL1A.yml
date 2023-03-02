@@ -373,30 +373,30 @@ ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vlan_interfaces:
-- tenant: Tenant_A
+- name: Vlan150
+  tenant: Tenant_A
   tags:
   - wan
   description: Tenant_A_WAN_Zone_1
   shutdown: false
   ip_address_virtual: 10.1.40.1/24
   vrf: Tenant_A_WAN_Zone
-  name: Vlan150
-- tenant: Tenant_B
+- name: Vlan250
+  tenant: Tenant_B
   tags:
   - wan
   description: Tenant_B_WAN_Zone_1
   shutdown: false
   ip_address_virtual: 10.2.50.1/24
   vrf: Tenant_B_WAN_Zone
-  name: Vlan250
-- tenant: Tenant_C
+- name: Vlan350
+  tenant: Tenant_C
   tags:
   - wan
   description: Tenant_C_WAN_Zone_1
   shutdown: false
   ip_address_virtual: 10.3.50.1/24
   vrf: Tenant_C_WAN_Zone
-  name: Vlan350
 vxlan_interface:
   Vxlan1:
     description: DC1-BL1A_VTEP

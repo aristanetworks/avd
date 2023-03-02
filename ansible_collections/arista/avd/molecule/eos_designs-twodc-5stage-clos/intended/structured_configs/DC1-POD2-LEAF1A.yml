@@ -366,23 +366,24 @@ ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 vlan_interfaces:
-- tenant: Tenant_A
+- name: Vlan110
+  tenant: Tenant_A
   tags:
   - opzone
   description: set from structured_config on svi (was Tenant_A_OP_Zone_1)
   shutdown: false
   ip_address_virtual: 10.1.10.1/24
   vrf: Common_VRF
-  name: Vlan110
-- tenant: Tenant_A
+- name: Vlan111
+  tenant: Tenant_A
   tags:
   - opzone
   description: Tenant_A_OP_Zone_2
   shutdown: true
   ip_address_virtual: 10.1.11.1/24
   vrf: Common_VRF
-  name: Vlan111
-- tenant: Tenant_A
+- name: Vlan112
+  tenant: Tenant_A
   tags:
   - opzone
   description: Tenant_A_OP_Zone_3
@@ -396,16 +397,16 @@ vlan_interfaces:
     '
   ip_address_virtual: 10.1.12.1/24
   vrf: Common_VRF
-  name: Vlan112
-- tenant: Tenant_A
+- name: Vlan113
+  tenant: Tenant_A
   tags:
   - opzone
   description: SVI_with_no_vxlan
   shutdown: false
   ip_address_virtual: 10.10.13.1/24
   vrf: Common_VRF
-  name: Vlan113
-- tenant: Tenant_A
+- name: Vlan1102
+  tenant: Tenant_A
   tags:
   - opzone
   - web
@@ -413,8 +414,8 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.102.100.1/24
   vrf: vrf_with_loopbacks_dc1_pod1_only
-  name: Vlan1102
-- tenant: Tenant_A
+- name: Vlan1100
+  tenant: Tenant_A
   tags:
   - opzone
   - web
@@ -422,8 +423,8 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.100.100.1/24
   vrf: vrf_with_loopbacks_from_overlapping_pool
-  name: Vlan1100
-- tenant: Tenant_A
+- name: Vlan1101
+  tenant: Tenant_A
   tags:
   - opzone
   - web
@@ -431,7 +432,6 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.101.100.1/24
   vrf: vrf_with_loopbacks_from_pod_pools
-  name: Vlan1101
 vxlan_interface:
   Vxlan1:
     description: DC1-POD2-LEAF1A_VTEP

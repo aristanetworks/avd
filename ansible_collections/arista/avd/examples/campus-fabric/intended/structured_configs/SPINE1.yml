@@ -83,20 +83,21 @@ vlans:
   name: L2LEAF_INBAND_MGMT
   id: 10
 vlan_interfaces:
-- description: MLAG_PEER_L3_PEERING
+- name: Vlan4093
+  description: MLAG_PEER_L3_PEERING
   shutdown: false
   mtu: 1500
   ip_address: 10.1.1.0/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  name: Vlan4093
-- description: MLAG_PEER
+- name: Vlan4094
+  description: MLAG_PEER
   shutdown: false
   ip_address: 192.168.0.0/31
   no_autostate: true
   mtu: 1500
-  name: Vlan4094
-- tenant: MY_FABRIC
+- name: Vlan110
+  tenant: MY_FABRIC
   tags:
   - '110'
   description: IDF1-Data
@@ -104,8 +105,8 @@ vlan_interfaces:
   ip_address: 10.1.10.2/23
   ip_virtual_router_addresses:
   - 10.1.10.1
-  name: Vlan110
-- tenant: MY_FABRIC
+- name: Vlan120
+  tenant: MY_FABRIC
   tags:
   - '120'
   description: IDF1-Voice
@@ -113,8 +114,8 @@ vlan_interfaces:
   ip_address: 10.1.20.2/23
   ip_virtual_router_addresses:
   - 10.1.20.1
-  name: Vlan120
-- tenant: MY_FABRIC
+- name: Vlan130
+  tenant: MY_FABRIC
   tags:
   - '130'
   description: IDF1-Guest
@@ -122,8 +123,8 @@ vlan_interfaces:
   ip_address: 10.1.30.2/23
   ip_virtual_router_addresses:
   - 10.1.30.1
-  name: Vlan130
-- tenant: MY_FABRIC
+- name: Vlan210
+  tenant: MY_FABRIC
   tags:
   - '210'
   description: IDF2-Data
@@ -131,8 +132,8 @@ vlan_interfaces:
   ip_address: 10.2.10.2/23
   ip_virtual_router_addresses:
   - 10.2.10.1
-  name: Vlan210
-- tenant: MY_FABRIC
+- name: Vlan220
+  tenant: MY_FABRIC
   tags:
   - '220'
   description: IDF2-Voice
@@ -140,8 +141,8 @@ vlan_interfaces:
   ip_address: 10.2.20.2/23
   ip_virtual_router_addresses:
   - 10.2.20.1
-  name: Vlan220
-- tenant: MY_FABRIC
+- name: Vlan230
+  tenant: MY_FABRIC
   tags:
   - '230'
   description: IDF2-Guest
@@ -149,8 +150,8 @@ vlan_interfaces:
   ip_address: 10.2.30.2/23
   ip_virtual_router_addresses:
   - 10.2.30.1
-  name: Vlan230
-- tenant: MY_FABRIC
+- name: Vlan310
+  tenant: MY_FABRIC
   tags:
   - '310'
   description: IDF3-Data
@@ -158,8 +159,8 @@ vlan_interfaces:
   ip_address: 10.3.10.2/23
   ip_virtual_router_addresses:
   - 10.3.10.1
-  name: Vlan310
-- tenant: MY_FABRIC
+- name: Vlan320
+  tenant: MY_FABRIC
   tags:
   - '320'
   description: IDF3-Voice
@@ -167,8 +168,8 @@ vlan_interfaces:
   ip_address: 10.3.20.2/23
   ip_virtual_router_addresses:
   - 10.3.20.1
-  name: Vlan320
-- tenant: MY_FABRIC
+- name: Vlan330
+  tenant: MY_FABRIC
   tags:
   - '330'
   description: IDF3-Guest
@@ -176,8 +177,8 @@ vlan_interfaces:
   ip_address: 10.3.30.2/23
   ip_virtual_router_addresses:
   - 10.3.30.1
-  name: Vlan330
-- description: L2LEAF_INBAND_MGMT
+- name: Vlan10
+  description: L2LEAF_INBAND_MGMT
   shutdown: false
   mtu: 1500
   ip_address: 10.10.10.2/24
@@ -185,7 +186,6 @@ vlan_interfaces:
   - 10.10.10.1
   ip_attached_host_route_export:
     distance: 19
-  name: Vlan10
 port_channel_interfaces:
 - description: MLAG_PEER_SPINE2_Po551
   type: switched

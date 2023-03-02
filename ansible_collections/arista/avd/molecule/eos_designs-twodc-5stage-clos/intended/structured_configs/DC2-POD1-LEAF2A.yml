@@ -180,7 +180,8 @@ vlans:
   name: L2LEAF_INBAND_MGMT
   id: 4092
 vlan_interfaces:
-- description: L2LEAF_INBAND_MGMT
+- name: Vlan4092
+  description: L2LEAF_INBAND_MGMT
   shutdown: false
   mtu: 1500
   ip_address: 172.21.210.2/24
@@ -188,5 +189,4 @@ vlan_interfaces:
   - 172.21.210.1
   ip_attached_host_route_export:
     distance: 19
-  name: Vlan4092
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01

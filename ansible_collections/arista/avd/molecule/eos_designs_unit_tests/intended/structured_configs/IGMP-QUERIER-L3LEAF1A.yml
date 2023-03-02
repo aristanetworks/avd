@@ -427,70 +427,70 @@ ip_igmp_snooping:
     id: 123
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vlan_interfaces:
-- tenant: Tenant_A
+- name: Vlan1
+  tenant: Tenant_A
   tags:
   - test_l3
   description: VLAN_1
   shutdown: false
   ip_address_virtual: 10.0.1.1/24
   vrf: IGMP_QUERIER_TEST_1
-  name: Vlan1
-- tenant: Tenant_A
+- name: Vlan2
+  tenant: Tenant_A
   tags:
   - test_l3
   description: VLAN_2
   shutdown: false
   ip_address_virtual: 10.0.2.1/24
   vrf: IGMP_QUERIER_TEST_1
-  name: Vlan2
-- tenant: Tenant_A
+- name: Vlan3
+  tenant: Tenant_A
   tags:
   - test_l3
   description: VLAN_3
   shutdown: false
   ip_address_virtual: 10.0.3.1/24
   vrf: IGMP_QUERIER_TEST_1
-  name: Vlan3
-- tenant: Tenant_B
+- name: Vlan11
+  tenant: Tenant_B
   tags:
   - test_l3
   description: VLAN_11
   shutdown: false
   ip_address_virtual: 10.0.11.1/24
   vrf: IGMP_QUERIER_TEST_2
-  name: Vlan11
-- tenant: Tenant_B
+- name: Vlan12
+  tenant: Tenant_B
   tags:
   - test_l3
   description: VLAN_12
   shutdown: false
   ip_address_virtual: 10.0.12.1/24
   vrf: IGMP_QUERIER_TEST_2
-  name: Vlan12
-- tenant: Tenant_D
+- name: Vlan21
+  tenant: Tenant_D
   tags:
   - test_l3
   description: VLAN_21
   shutdown: false
   ip_address_virtual: 10.0.21.1/24
   vrf: IGMP_QUERIER_TEST_3
-  name: Vlan21
-- tenant: Tenant_D
+- name: Vlan22
+  tenant: Tenant_D
   tags:
   - test_l3
   description: VLAN_22
   shutdown: false
   ip_address_virtual: 10.0.22.1/24
   vrf: IGMP_QUERIER_TEST_3
-  name: Vlan22
-- tenant: Tenant_D
+- name: Vlan23
+  tenant: Tenant_D
   tags:
   - test_l3
   description: VLAN_23
   shutdown: false
   ip_address_virtual: 10.0.23.1/24
   vrf: IGMP_QUERIER_TEST_3
-  name: Vlan23
 vxlan_interface:
   Vxlan1:
     description: IGMP-QUERIER-L3LEAF1A_VTEP
