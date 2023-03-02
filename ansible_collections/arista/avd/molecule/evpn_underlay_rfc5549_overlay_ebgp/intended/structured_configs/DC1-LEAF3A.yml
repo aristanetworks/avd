@@ -668,17 +668,17 @@ loopback_interfaces:
   ip_address: 10.255.1.12/32
   name: Loopback100
 prefix_lists:
-- sequence_numbers:
-  - action: permit 192.168.255.0/24 eq 32
-    sequence: 10
-  - action: permit 192.168.254.0/24 eq 32
-    sequence: 20
-  name: PL-LOOPBACKS-EVPN-OVERLAY
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
 ipv6_prefix_lists:
-- sequence_numbers:
-  - action: permit 2001:1::/64 eq 128
-    sequence: 10
-  name: PL-LOOPBACKS-EVPN-OVERLAY-V6
+- name: PL-LOOPBACKS-EVPN-OVERLAY-V6
+  sequence_numbers:
+  - sequence: 10
+    action: permit 2001:1::/64 eq 128
 router_bfd:
   multihop:
     interval: 1200

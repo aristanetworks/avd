@@ -479,14 +479,14 @@ loopback_interfaces:
   - 192.168.255.255/32
   name: Loopback1
 prefix_lists:
-- sequence_numbers:
-  - action: permit 192.168.255.0/24 eq 32
-    sequence: 10
-  - action: permit 192.168.254.0/24 eq 32
-    sequence: 20
-  - action: permit 192.168.255.255/32
-    sequence: 30
-  name: PL-LOOPBACKS-EVPN-OVERLAY
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
+  - sequence: 30
+    action: permit 192.168.255.255/32
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
