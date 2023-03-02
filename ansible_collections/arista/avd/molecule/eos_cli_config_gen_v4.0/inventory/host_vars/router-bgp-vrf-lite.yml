@@ -86,6 +86,7 @@ router_bgp:
           peer_group: SEDI
           shutdown: true
         - ip_address: 101.0.3.3
+          route_reflector_client: true
           peer_group: SEDI-shut
       redistribute_routes:
         - source_protocol: static

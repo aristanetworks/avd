@@ -946,6 +946,11 @@ router bgp {{ router_bgp.as }}
 {%             elif neighbor.send_community is arista.avd.defined %}
       neighbor {{ neighbor.ip_address }} send-community {{ neighbor.send_community }}
 {%             endif %}
+{%             if neighbor.route_reflector_client is arista.avd.defined(true) %}
+      neighbor {{ neighbor.ip_address }} route-reflector-client
+{%             elif neighbor.route_reflector_client is arista.avd.defined(false) %}
+      no neighbor {{ neighbor.ip_address }} route-reflector-client
+{%             endif %}
 {%             if neighbor.maximum_routes is arista.avd.defined %}
 {%                 set maximum_routes_cli = "neighbor " ~ neighbor.ip_address ~ " maximum-routes " ~ neighbor.maximum_routes %}
 {%                 if neighbor.maximum_routes_warning_limit is arista.avd.defined %}

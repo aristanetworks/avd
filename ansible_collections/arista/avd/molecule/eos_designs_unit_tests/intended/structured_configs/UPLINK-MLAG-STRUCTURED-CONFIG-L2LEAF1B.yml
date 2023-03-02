@@ -16,8 +16,8 @@ spanning_tree:
     id: '0'
   no_spanning_tree_vlan: '4094'
 vrfs:
-- ip_routing: false
-  name: MGMT
+- name: MGMT
+  ip_routing: false
 management_interfaces:
 - description: oob_management
   shutdown: false
@@ -54,9 +54,9 @@ port_channel_interfaces:
   name: Port-Channel3
   storm_control:
     broadcast:
-      level: 25
+      level: '25'
     unknown_unicast:
-      level: 25
+      level: '25'
   native_vlan_tag: true
 - description: DC1_LEAF1_Po5
   type: switched
@@ -67,9 +67,9 @@ port_channel_interfaces:
   name: Port-Channel1
   storm_control:
     broadcast:
-      level: 25
+      level: '25'
     unknown_unicast:
-      level: 25
+      level: '25'
   native_vlan_tag: true
 ethernet_interfaces:
 - peer: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1A

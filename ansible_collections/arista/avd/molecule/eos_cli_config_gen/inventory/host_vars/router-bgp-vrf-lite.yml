@@ -83,6 +83,7 @@ router_bgp:
           peer_group: OBS_WAN
         10.255.1.1:
           peer_group: WELCOME_ROUTERS
+          route_reflector_client: true
           weight: 65535
         101.0.3.1:
           peer_group: SEDI

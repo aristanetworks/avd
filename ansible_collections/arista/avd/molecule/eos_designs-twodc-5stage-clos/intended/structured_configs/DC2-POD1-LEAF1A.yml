@@ -164,20 +164,20 @@ local_users:
   sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
   name: admin
 vrfs:
-- ip_routing: false
-  name: MGMT
-- tenant: Tenant_A
+- name: MGMT
+  ip_routing: false
+- name: Common_VRF
+  tenant: Tenant_A
   ip_routing: true
-  name: Common_VRF
-- tenant: Tenant_A
+- name: vrf_with_loopbacks_dc1_pod1_only
+  tenant: Tenant_A
   ip_routing: true
-  name: vrf_with_loopbacks_dc1_pod1_only
-- tenant: Tenant_A
+- name: vrf_with_loopbacks_from_overlapping_pool
+  tenant: Tenant_A
   ip_routing: true
-  name: vrf_with_loopbacks_from_overlapping_pool
-- tenant: Tenant_A
+- name: vrf_with_loopbacks_from_pod_pools
+  tenant: Tenant_A
   ip_routing: true
-  name: vrf_with_loopbacks_from_pod_pools
 management_interfaces:
 - description: oob_management
   shutdown: false
@@ -287,16 +287,16 @@ prefix_lists:
     sequence: 10
   name: PL-L2LEAF-INBAND-MGMT
 route_maps:
-- sequence_numbers:
-  - type: permit
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-    sequence: 10
   - type: permit
     match:
     - ip address prefix-list PL-L2LEAF-INBAND-MGMT
     sequence: 20
-  name: RM-CONN-2-BGP
 router_bfd:
   multihop:
     interval: 300

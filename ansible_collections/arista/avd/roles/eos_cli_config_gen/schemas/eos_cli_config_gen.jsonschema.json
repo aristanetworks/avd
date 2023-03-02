@@ -2089,7 +2089,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -2111,7 +2111,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -2133,7 +2133,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -2155,7 +2155,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -4173,6 +4173,16 @@
           "ssh_key": {
             "type": "string",
             "title": "SSH Key"
+          },
+          "shell": {
+            "type": "string",
+            "description": "Specify shell for the user\n",
+            "enum": [
+              "/bin/bash",
+              "/bin/sh",
+              "/sbin/nologin"
+            ],
+            "title": "Shell"
           }
         },
         "required": [
@@ -4229,14 +4239,14 @@
             "level": {
               "type": "string",
               "enum": [
+                "alerts",
+                "critical",
                 "debugging",
+                "emergencies",
+                "errors",
                 "informational",
                 "notifications",
                 "warnings",
-                "errors",
-                "critical",
-                "alerts",
-                "emergencies",
                 "disabled"
               ],
               "description": "Buffer logging severity level\n",
@@ -4249,14 +4259,15 @@
         "trap": {
           "type": "string",
           "enum": [
+            "alerts",
+            "critical",
             "debugging",
+            "emergencies",
+            "errors",
             "informational",
             "notifications",
+            "system",
             "warnings",
-            "errors",
-            "critical",
-            "alerts",
-            "emergencies",
             "disabled"
           ],
           "description": "Trap logging severity level\n",
@@ -4268,14 +4279,15 @@
             "level": {
               "type": "string",
               "enum": [
+                "alerts",
+                "all",
+                "critical",
                 "debugging",
+                "emergencies",
+                "errors",
                 "informational",
                 "notifications",
                 "warnings",
-                "errors",
-                "critical",
-                "alerts",
-                "emergencies",
                 "disabled"
               ],
               "description": "Synchronous logging severity level\n",
@@ -5227,6 +5239,11 @@
           "type": "string",
           "description": "Interface name",
           "title": "Source Interface"
+        },
+        "vrf": {
+          "type": "string",
+          "description": "VRF Name",
+          "title": "VRF"
         }
       },
       "additionalProperties": false,
@@ -6992,7 +7009,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -7014,7 +7031,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -7036,7 +7053,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -7058,7 +7075,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -10582,6 +10599,10 @@
                     "description": {
                       "type": "string",
                       "title": "Description"
+                    },
+                    "route_reflector_client": {
+                      "type": "boolean",
+                      "title": "Route Reflector Client"
                     },
                     "ebgp_multihop": {
                       "type": "integer",

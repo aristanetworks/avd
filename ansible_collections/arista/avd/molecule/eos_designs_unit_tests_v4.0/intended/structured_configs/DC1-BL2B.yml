@@ -194,20 +194,20 @@ local_users:
     ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
       cvpadmin@hostmachine.local
 vrfs:
-  MGMT:
-    ip_routing: false
-  Tenant_A_WAN_Zone:
-    tenant: Tenant_A
-    ip_routing: true
-  Tenant_B_OP_Zone:
-    tenant: Tenant_B
-    ip_routing: true
-  Tenant_B_WAN_Zone:
-    tenant: Tenant_B
-    ip_routing: true
-  Tenant_C_WAN_Zone:
-    tenant: Tenant_C
-    ip_routing: true
+- name: MGMT
+  ip_routing: false
+- name: Tenant_A_WAN_Zone
+  tenant: Tenant_A
+  ip_routing: true
+- name: Tenant_B_OP_Zone
+  tenant: Tenant_B
+  ip_routing: true
+- name: Tenant_B_WAN_Zone
+  tenant: Tenant_B
+  ip_routing: true
+- name: Tenant_C_WAN_Zone
+  tenant: Tenant_C
+  ip_routing: true
 management_interfaces:
   Management1:
     description: oob_management
@@ -279,12 +279,12 @@ prefix_lists:
       20:
         action: permit 192.168.254.0/24 eq 32
 route_maps:
-  RM-CONN-2-BGP:
-    sequence_numbers:
-      10:
-        type: permit
-        match:
-        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 router_bfd:
   multihop:
     interval: 1200

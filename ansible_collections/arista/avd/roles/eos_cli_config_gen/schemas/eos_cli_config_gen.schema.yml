@@ -1597,9 +1597,10 @@ keys:
               type: dict
               keys:
                 level:
-                  type: int
+                  type: str
                   convert_types:
-                  - str
+                  - int
+                  - float
                   description: Configure maximum storm-control level
                 unit:
                   type: str
@@ -1612,9 +1613,10 @@ keys:
               type: dict
               keys:
                 level:
-                  type: int
+                  type: str
                   convert_types:
-                  - str
+                  - int
+                  - float
                   description: Configure maximum storm-control level
                 unit:
                   type: str
@@ -1627,9 +1629,10 @@ keys:
               type: dict
               keys:
                 level:
-                  type: int
+                  type: str
                   convert_types:
-                  - str
+                  - int
+                  - float
                   description: Configure maximum storm-control level
                 unit:
                   type: str
@@ -1642,9 +1645,10 @@ keys:
               type: dict
               keys:
                 level:
-                  type: int
+                  type: str
                   convert_types:
-                  - str
+                  - int
+                  - float
                   description: Configure maximum storm-control level
                 unit:
                   type: str
@@ -3187,6 +3191,15 @@ keys:
             '
         ssh_key:
           type: str
+        shell:
+          type: str
+          description: 'Specify shell for the user
+
+            '
+          valid_values:
+          - /bin/bash
+          - /bin/sh
+          - /sbin/nologin
   logging:
     documentation_options:
       filename: data_model/Monitoring
@@ -3234,14 +3247,14 @@ keys:
           level:
             type: str
             valid_values:
+            - alerts
+            - critical
             - debugging
+            - emergencies
+            - errors
             - informational
             - notifications
             - warnings
-            - errors
-            - critical
-            - alerts
-            - emergencies
             - disabled
             description: 'Buffer logging severity level
 
@@ -3249,14 +3262,15 @@ keys:
       trap:
         type: str
         valid_values:
+        - alerts
+        - critical
         - debugging
+        - emergencies
+        - errors
         - informational
         - notifications
+        - system
         - warnings
-        - errors
-        - critical
-        - alerts
-        - emergencies
         - disabled
         description: 'Trap logging severity level
 
@@ -3267,14 +3281,15 @@ keys:
           level:
             type: str
             valid_values:
+            - alerts
+            - all
+            - critical
             - debugging
+            - emergencies
+            - errors
             - informational
             - notifications
             - warnings
-            - errors
-            - critical
-            - alerts
-            - emergencies
             - disabled
             description: 'Synchronous logging severity level
 
@@ -3921,6 +3936,9 @@ keys:
       source_interface:
         type: str
         description: Interface name
+      vrf:
+        type: str
+        description: VRF Name
   management_defaults:
     documentation_options:
       filename: data_model/Management
@@ -5136,9 +5154,10 @@ keys:
               type: dict
               keys:
                 level:
-                  type: int
+                  type: str
                   convert_types:
-                  - str
+                  - int
+                  - float
                   description: Configure maximum storm-control level
                 unit:
                   type: str
@@ -5151,9 +5170,10 @@ keys:
               type: dict
               keys:
                 level:
-                  type: int
+                  type: str
                   convert_types:
-                  - str
+                  - int
+                  - float
                   description: Configure maximum storm-control level
                 unit:
                   type: str
@@ -5166,9 +5186,10 @@ keys:
               type: dict
               keys:
                 level:
-                  type: int
+                  type: str
                   convert_types:
-                  - str
+                  - int
+                  - float
                   description: Configure maximum storm-control level
                 unit:
                   type: str
@@ -5181,9 +5202,10 @@ keys:
               type: dict
               keys:
                 level:
-                  type: int
+                  type: str
                   convert_types:
-                  - str
+                  - int
+                  - float
                   description: Configure maximum storm-control level
                 unit:
                   type: str
@@ -7510,6 +7532,8 @@ keys:
                     - int
                   description:
                     type: str
+                  route_reflector_client:
+                    type: bool
                   ebgp_multihop:
                     type: int
                     min: 1

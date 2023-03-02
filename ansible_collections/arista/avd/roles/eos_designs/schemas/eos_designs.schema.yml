@@ -4,7 +4,7 @@ keys:
   default_interfaces:
     type: list
     documentation_options:
-      filename: Default Interfaces
+      filename: Fabric Topology
     description: "- Set default uplink, downlink, and MLAG interfaces, which will
       be used if these interfaces are not defined on a device (either directly or
       through inheritance).\n- These are defined based on the combination of node_type
@@ -26,10 +26,10 @@ keys:
       2`, downlink interfaces will be mapped as `[ <downlink1 to leaf-id1>, <downlink2
       to leaf-id1>, <downlink1 to leaf-id2>, <downlink2 to leaf-id2> ...]`\n- Please
       note that no default interfaces are defined in AVD itself. You will need to
-      create your own based on the example below.\n\nExample:\n\n```yaml\n- types:
-      [ spine, l3leaf ]\n  platforms: [ \"7050[SC]X3\", vEOS.*, default ]\n  uplink_interfaces:
-      [ Ethernet49-54/1 ]\n  mlag_interfaces: [ Ethernet55-56/1 ]\n  downlink_interfaces:
-      [ Ethernet1-32/1 ]\n```\n"
+      create your own based on the example below.\n\nExample:\n\n```yaml\ndefault_interfaces:\n
+      \ - types: [ spine, l3leaf ]\n    platforms: [ \"7050[SC]X3\", vEOS.*, default
+      ]\n    uplink_interfaces: [ Ethernet49-54/1 ]\n    mlag_interfaces: [ Ethernet55-56/1
+      ]\n    downlink_interfaces: [ Ethernet1-32/1 ]\n```\n"
     items:
       type: dict
       keys:
@@ -71,6 +71,8 @@ keys:
             description: Interface range or interface
   default_node_types:
     type: list
+    documentation_options:
+      filename: Node Types
     primary_key: node_type
     description: Uses hostname matches against a regular expression to determine the
       node type.

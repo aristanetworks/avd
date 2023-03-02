@@ -164,14 +164,14 @@ local_users:
   sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
   name: cvpadmin
 vrfs:
-- ip_routing: false
-  name: MGMT
-- tenant: Tenant_A
+- name: MGMT
+  ip_routing: false
+- name: Tenant_A_APP_Zone
+  tenant: Tenant_A
   ip_routing: true
-  name: Tenant_A_APP_Zone
-- tenant: Tenant_A
+- name: Tenant_A_WEB_Zone
+  tenant: Tenant_A
   ip_routing: true
-  name: Tenant_A_WEB_Zone
 management_interfaces:
 - description: oob_management
   shutdown: false
@@ -239,16 +239,16 @@ ethernet_interfaces:
   spanning_tree_bpduguard: 'False'
   storm_control:
     all:
-      level: 10
+      level: '10'
       unit: percent
     broadcast:
-      level: 100
+      level: '100'
       unit: pps
     multicast:
-      level: 1
+      level: '1'
       unit: percent
     unknown_unicast:
-      level: 2
+      level: '2'
       unit: percent
   name: Ethernet6
 - peer: server02_SINGLE_NODE
@@ -271,12 +271,12 @@ prefix_lists:
     sequence: 10
   name: PL-LOOPBACKS-EVPN-OVERLAY
 route_maps:
-- sequence_numbers:
-  - type: permit
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-    sequence: 10
-  name: RM-CONN-2-BGP
 router_bfd:
   multihop:
     interval: 1200
