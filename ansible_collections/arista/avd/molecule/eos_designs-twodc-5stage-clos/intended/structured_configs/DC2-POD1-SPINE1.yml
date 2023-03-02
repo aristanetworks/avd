@@ -177,10 +177,10 @@ loopback_interfaces:
   ip_address: 172.16.210.1/32
   name: Loopback0
 prefix_lists:
-- sequence_numbers:
-  - action: permit 172.16.210.0/24 eq 32
-    sequence: 10
-  name: PL-LOOPBACKS-EVPN-OVERLAY
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 172.16.210.0/24 eq 32
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:

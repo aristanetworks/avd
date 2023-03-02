@@ -65,10 +65,10 @@ loopback_interfaces:
     shutdown: false
     ip_address: 1.2.3.1/32
 prefix_lists:
-  PL-LOOPBACKS-EVPN-OVERLAY:
-    sequence_numbers:
-      10:
-        action: permit 1.2.3.4/24 eq 32
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 1.2.3.4/24 eq 32
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
