@@ -1,26 +1,15 @@
 ---
 - name: Verify Requirements
   tags: [always, avd_req]
+  delegate_to: localhost
   when: avd_requirements is not defined
-  block:
-    - name: Run requirements check module
-      arista.avd.verify_requirements:
-        dependencies: "{{ lookup('file', requirements_path ~ '/requirements.txt').splitlines() }}"
-      vars:
-        requirements_path: "{{ (role_path | split('/'))[0:-2] | join('/') }}"
-      run_once: true
-      register: avd_requirements
-
-    - name: Print requirements
-      tags: [debug, avd_req, never]
-      ansible.builtin.debug:
-        msg: "{{ avd_requirements }}"
-      run_once: true
-  rescue:
-    - name: Print requirements when error
-      ansible.builtin.debug:
-        msg: "{{ avd_requirements }}"
-      run_once: true
+  arista.avd.verify_requirements:
+    dependencies: "{{ lookup('file', requirements_path ~ '/requirements.txt').splitlines() }}"
+    avd_debug: "{{ avd_debug | default(false) }}"
+  vars:
+    requirements_path: "{{ (role_path | split('/'))[0:-2] | join('/') }}"
+  run_once: true
+  register: avd_requirements
 
 - name: Create required output directories if not present
   ansible.builtin.file:

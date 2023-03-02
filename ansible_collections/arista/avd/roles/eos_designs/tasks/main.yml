@@ -1,15 +1,15 @@
 ---
 - name: Verify Requirements
   tags: [always, avd_req]
-  run_once: true
   delegate_to: localhost
   when: avd_requirements is not defined
-  failed_when: false
   arista.avd.verify_requirements:
     dependencies: "{{ lookup('file', requirements_path ~ '/requirements.txt').splitlines() }}"
-    avd_debug: false  #TODO make it a variable
+    avd_debug: "{{ avd_debug | default(false) }}"
   vars:
     requirements_path: "{{ (role_path | split('/'))[0:-2] | join('/') }}"
+  run_once: true
+  register: avd_requirements
 
 - name: Set eos_designs facts
   tags: [build, provision, facts]

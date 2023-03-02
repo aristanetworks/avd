@@ -9,4 +9,4 @@ PyYAML>=5.4.1
 md-toc>=7.1.0
 deepmerge>=1.1.0
 cryptography>=38.0.4
-packaging==21.3
+packaging>=21.3

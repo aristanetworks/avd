@@ -1,4 +1,4 @@
-from __future__ import absolute_import, annotations, division, print_function
+from __future__ import annotations
 
 __metaclass__ = type
 
@@ -27,7 +27,7 @@ except ImportError:
 MIN_PYTHON_SUPPORTED_VERSION = (3, 8)
 
 
-def _validate_python_version(result) -> bool:
+def _validate_python_version(result: dict) -> bool:
     """
     TODO - avoid hardcoding the min supported version
 
@@ -51,7 +51,7 @@ def _validate_python_version(result) -> bool:
     return True
 
 
-def _validate_python_dependencies(dependencies, result) -> bool:
+def _validate_python_dependencies(dependencies: list[str], result: dict) -> bool:
     """
     Validate python lib versions
 
@@ -103,12 +103,16 @@ def _validate_python_dependencies(dependencies, result) -> bool:
     return valid
 
 
-def _validate_ansible_version(collection_name, running_version, result) -> bool:
+def _validate_ansible_version(collection_name: str, running_version: str, result: dict) -> bool:
     """
-    Validate ansible version
+    Validate ansible version in use, running_version, based on the collection requirements
+
+    Return False if Ansible version is not valid
     """
     collection_meta = _get_collection_metadata(collection_name)
     specifiers_set = SpecifierSet(collection_meta.get("requires_ansible", ""))
+    result["ansible_version"] = running_version
+
     if len(specifiers_set) > 0:
         result["requires_ansible"] = str(specifiers_set)
     if not specifiers_set.contains(running_version):
@@ -116,17 +120,18 @@ def _validate_ansible_version(collection_name, running_version, result) -> bool:
             f"Ansible Version running {running_version} - Requirement is {str(specifiers_set)}",
             False,
         )
-        return True
+        return False
 
-    result["ansible_version"] = running_version
-    return False
+    return True
 
 
-def _validate_ansible_collections(running_collection_name, result) -> bool:
+def _validate_ansible_collections(running_collection_name: str, result: dict) -> bool:
     """
-    Verify the version of the collections for ansible collections requirements
+    Verify the version of required ansible collections running based on the collection requirements
+
+    Return True if all collection requirements are valid, False otherwise
     """
-    failed = False
+    valid = True
 
     collection = import_module(f"ansible_collections.{running_collection_name}")
     collection_path = os.path.dirname(collection.__file__)
@@ -135,7 +140,7 @@ def _validate_ansible_collections(running_collection_name, result) -> bool:
         metadata = yaml.safe_load(fd)
     if "collections" not in metadata:
         # no requirements
-        return
+        return True
 
     dependencies_dict = {
         "not_found": {},
@@ -146,7 +151,7 @@ def _validate_ansible_collections(running_collection_name, result) -> bool:
 
     for collection_dict in metadata["collections"]:
         if "name" not in collection_dict:
-            # This should not happen
+            display.error("key `name` required but not found in collections requirement - please raise an issue on Github", False)
             continue
 
         collection_name = collection_dict["name"]
@@ -164,7 +169,7 @@ def _validate_ansible_collections(running_collection_name, result) -> bool:
                 display.error(f"{collection_name} required but not found - required version is {str(specifiers_set)}", False)
             else:
                 display.error(f"{collection_name} required but not found", False)
-            failed = True
+            valid = False
             continue
 
         installed_version = _get_collection_version(collection_path)
@@ -180,15 +185,15 @@ def _validate_ansible_collections(running_collection_name, result) -> bool:
                 "installed": installed_version,
                 "desired": str(specifiers_set) if len(specifiers_set) > 0 else None,
             }
-            failed = True
+            valid = False
 
     result["collection_dependencies"] = dependencies_dict
-    return failed
+    return valid
 
 
-def _get_collection_path(collection_name) -> str:
+def _get_collection_path(collection_name: str) -> str:
     """
-    TODO
+    Retrieve the collection path based on the collection_name
     """
     collection = import_module(f"ansible_collections.{collection_name}")
     return os.path.dirname(collection.__file__)
@@ -196,7 +201,7 @@ def _get_collection_path(collection_name) -> str:
 
 def _get_collection_version(collection_path) -> str:
     """
-    TODO
+    Returns the collection version based on the collection path
     """
     # Trying to find the version based on either galaxy.yml or MANIFEST.json
     try:
@@ -208,12 +213,13 @@ def _get_collection_version(collection_path) -> str:
         with open(manifest_file, "rb") as fd:
             metadata = json.load(fd)["collection_info"]
 
-    display.vvv(str(metadata))
-
     return metadata["version"]
 
 
-def _get_running_collection_version(running_collection_name, result) -> None:
+def _get_running_collection_version(running_collection_name: str, result: dict) -> None:
+    """
+    Stores the version collection in result
+    """
     collection_path = _get_collection_path(running_collection_name)
     version = _get_collection_version(collection_path)
 
@@ -249,6 +255,10 @@ class ActionModule(ActionBase):
             raise AnsibleActionFail("The argument 'dependencies' must be set")
 
         py_dependencies = self._task.args.get("dependencies")
+        avd_debug = self._task.args.get("avd_debug", False)
+        # TODO - check the `-e` syntax
+        if avd_debug in ["true", "True"]:
+            avd_debug = True
 
         if not isinstance(py_dependencies, list):
             raise AnsibleActionFail("The argument 'dependencies' is not a list")
@@ -261,15 +271,14 @@ class ActionModule(ActionBase):
         result["python"] = {}
 
         _get_running_collection_version(running_collection_name, result["ansible"])
+        display.display(f"AVD version {result['ansible']['collection']['version']}", color="blue")
 
-        if _validate_python_version(result["python"]) is False:
-            result["failed"] = True
-        if _validate_python_dependencies(py_dependencies, result["python"]) is False:
-            result["failed"] = True
-        if _validate_ansible_version(running_collection_name, running_ansible_version, result["ansible"]) is True:
-            result["failed"] = True
-        if _validate_ansible_collections(running_collection_name, result["ansible"]) is True:
-            result["failed"] = True
+        _validate_python_version(result["python"])
+        _validate_python_dependencies(py_dependencies, result["python"])
+        _validate_ansible_version(running_collection_name, running_ansible_version, result["ansible"])
+        _validate_ansible_collections(running_collection_name, result["ansible"])
 
-        del result["failed"]
+        if avd_debug is True:
+            display.display(json.dumps(result, indent=4), color="blue")
+
         return result
