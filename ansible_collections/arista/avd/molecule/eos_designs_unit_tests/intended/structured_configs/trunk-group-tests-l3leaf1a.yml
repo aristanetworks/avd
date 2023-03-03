@@ -187,17 +187,17 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vrfs:
-- ip_routing: false
-  name: MGMT
-- tenant: TRUNK_GROUP_TESTS
+- name: MGMT
+  ip_routing: false
+- name: TG_100
+  tenant: TRUNK_GROUP_TESTS
   ip_routing: true
-  name: TG_100
-- tenant: TRUNK_GROUP_TESTS
+- name: TG_200
+  tenant: TRUNK_GROUP_TESTS
   ip_routing: true
-  name: TG_200
-- tenant: TRUNK_GROUP_TESTS
+- name: TG_300
+  tenant: TRUNK_GROUP_TESTS
   ip_routing: true
-  name: TG_300
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -505,19 +505,19 @@ mlag_configuration:
   reload_delay_mlag: '300'
   reload_delay_non_mlag: '330'
 route_maps:
-- sequence_numbers:
-  - type: permit
+- name: RM-MLAG-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     set:
     - origin incomplete
     description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
-    sequence: 10
-  name: RM-MLAG-PEER-IN
-- sequence_numbers:
-  - type: permit
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-    sequence: 10
-  name: RM-CONN-2-BGP
 loopback_interfaces:
 - description: EVPN_Overlay_Peering
   shutdown: false
@@ -528,12 +528,12 @@ loopback_interfaces:
   ip_address: 192.168.249.9/32
   name: Loopback1
 prefix_lists:
-- sequence_numbers:
-  - action: permit 192.168.250.0/24 eq 32
-    sequence: 10
-  - action: permit 192.168.249.0/24 eq 32
-    sequence: 20
-  name: PL-LOOPBACKS-EVPN-OVERLAY
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.250.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.249.0/24 eq 32
 router_bfd:
   multihop:
     interval: 300

@@ -302,17 +302,19 @@ class AvdStructuredConfig(AvdFacts):
         if not (self._mlag_l3 is True and self._mlag_ibgp_origin_incomplete is True and self._underlay_bgp):
             return None
 
-        return {
-            "RM-MLAG-PEER-IN": {
-                "sequence_numbers": {
-                    10: {
+        return [
+            {
+                "name": "RM-MLAG-PEER-IN",
+                "sequence_numbers": [
+                    {
+                        "sequence": 10,
                         "type": "permit",
                         "set": ["origin incomplete"],
                         "description": "Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing",
                     }
-                }
+                ],
             }
-        }
+        ]
 
     @cached_property
     def _underlay_bgp(self):

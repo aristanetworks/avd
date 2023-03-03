@@ -15,7 +15,7 @@ class StructCfgsMixin(UtilsMixin):
     _hostvars: dict
 
     @cached_property
-    def struct_cfgs(self) -> dict | None:
+    def struct_cfgs(self) -> list | None:
         """
         Return the combined structured config from VRFs
         """

@@ -74,8 +74,8 @@ local_users:
   sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
   name: cvpadmin
 vrfs:
-- ip_routing: false
-  name: MGMT
+- name: MGMT
+  ip_routing: false
 management_interfaces:
 - description: oob_management
   shutdown: false
@@ -241,20 +241,20 @@ router_bfd:
     min_rx: 1200
     multiplier: 3
 route_maps:
-- sequence_numbers:
-  - type: deny
+- name: RM-EVPN-SOO-IN
+  sequence_numbers:
+  - sequence: 10
+    type: deny
     match:
     - extcommunity ECL-EVPN-SOO
-    sequence: 10
-  - type: permit
-    sequence: 20
-  name: RM-EVPN-SOO-IN
-- sequence_numbers:
-  - type: permit
+  - sequence: 20
+    type: permit
+- name: RM-EVPN-SOO-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     set:
     - extcommunity soo 192.168.254.10:1 additive
-    sequence: 10
-  name: RM-EVPN-SOO-OUT
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a

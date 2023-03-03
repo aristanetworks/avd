@@ -133,11 +133,11 @@ local_users:
     cvpadmin@hostmachine.local
   name: cvpadmin
 vrfs:
-- ip_routing: false
-  name: MGMT
-- tenant: Tenant_X
+- name: MGMT
+  ip_routing: false
+- name: Tenant_X_OP_Zone
+  tenant: Tenant_X
   ip_routing: true
-  name: Tenant_X_OP_Zone
 management_interfaces:
 - description: oob_management
   shutdown: false
@@ -216,53 +216,53 @@ loopback_interfaces:
   ip_address: 10.255.1.35/32
   name: Loopback100
 prefix_lists:
-- sequence_numbers:
-  - action: permit 192.168.255.0/24 eq 32
-    sequence: 10
-  - action: permit 192.168.254.0/24 eq 32
-    sequence: 20
-  name: PL-LOOPBACKS-EVPN-OVERLAY
-- sequence_numbers:
-  - action: permit 10.2.10.0/24
-    sequence: 10
-  name: PL-SVI-VRF-DEFAULT
-- sequence_numbers:
-  - action: permit 10.0.0.0/8
-    sequence: 10
-  name: PL-STATIC-VRF-DEFAULT
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
+- name: PL-SVI-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.2.10.0/24
+- name: PL-STATIC-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.0.0.0/8
 route_maps:
-- sequence_numbers:
-  - type: permit
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-    sequence: 10
-  - type: permit
+  - sequence: 30
+    type: permit
     match:
     - ip address prefix-list PL-SVI-VRF-DEFAULT
-    sequence: 30
-  name: RM-CONN-2-BGP
-- sequence_numbers:
-  - type: permit
+- name: RM-EVPN-EXPORT-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     match:
     - ip address prefix-list PL-SVI-VRF-DEFAULT
-    sequence: 10
-  - type: permit
+  - sequence: 20
+    type: permit
     match:
     - ip address prefix-list PL-STATIC-VRF-DEFAULT
-    sequence: 20
-  name: RM-EVPN-EXPORT-VRF-DEFAULT
-- sequence_numbers:
-  - type: permit
-    sequence: 20
-  - type: deny
+- name: RM-BGP-UNDERLAY-PEERS-OUT
+  sequence_numbers:
+  - sequence: 20
+    type: permit
+  - sequence: 10
+    type: deny
     match:
     - ip address prefix-list PL-SVI-VRF-DEFAULT
-    sequence: 10
-  - type: deny
+  - sequence: 15
+    type: deny
     match:
     - ip address prefix-list PL-STATIC-VRF-DEFAULT
-    sequence: 15
-  name: RM-BGP-UNDERLAY-PEERS-OUT
 router_bfd:
   multihop:
     interval: 1200
