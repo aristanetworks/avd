@@ -910,6 +910,7 @@ ethernet_interfaces:
 - peer: server04_inherit_all_from_profile
   peer_interface: Eth2
   peer_type: server
+  port_profile: ALL_WITH_SECURITY
   description: server04_inherit_all_from_profile_Eth2
   type: switched
   shutdown: false
@@ -960,6 +961,7 @@ ethernet_interfaces:
 - peer: server06_override_profile
   peer_interface: Eth2
   peer_type: server
+  port_profile: ALL_WITH_SECURITY
   description: server06_override_profile_Eth2
   type: switched
   shutdown: false
@@ -985,6 +987,7 @@ ethernet_interfaces:
 - peer: server07_inherit_all_from_profile_port_channel
   peer_interface: Eth2
   peer_type: server
+  port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
   description: server07_inherit_all_from_profile_port_channel_Eth2
   type: switched
   shutdown: false
@@ -1041,6 +1044,7 @@ ethernet_interfaces:
 - peer: server09_override_profile_no_port_channel
   peer_interface: Eth2
   peer_type: server
+  port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
   description: server09_override_profile_no_port_channel_Eth2
   type: switched
   shutdown: false

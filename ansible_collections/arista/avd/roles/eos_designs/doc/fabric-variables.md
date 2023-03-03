@@ -311,3 +311,14 @@ Using the figure under [Details on `enable_trunk_groups`](#details-on-enable_tru
 enabling with feature would remove the unmatched trunk groups like this:
 
 ![Figure: Enable only_local_vlan_trunk_groups](../../../media/only_local_vlan_trunk_groups.png)
+
+## Documentation variables
+
+Some variables are available to control documentation generation. This can be useful
+is for instance the project has thousands of endpoints, to be able to disable
+fabric-wide connected endpoints documentation.
+
+```yaml
+eos_designs_documentation:
+  connected_endpoints: < true | false | default -> false >
+```

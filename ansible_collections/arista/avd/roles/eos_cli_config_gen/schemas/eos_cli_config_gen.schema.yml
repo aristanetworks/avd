@@ -2009,6 +2009,9 @@ keys:
                   type: bool
                 unmodified_enable:
                   type: bool
+        port_profile:
+          type: str
+          description: Key only used for documentation or validation purposes
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface
@@ -6375,6 +6378,16 @@ keys:
               type: str
             shutdown:
               type: bool
+            as_path:
+              type: dict
+              description: BGP AS-PATH options
+              keys:
+                remote_as_replace_out:
+                  type: bool
+                  description: Replace AS number with local AS number
+                prepend_own_disabled:
+                  type: bool
+                  description: Disable prepending own AS number to AS path
             remove_private_as:
               type: dict
               description: Remove private AS numbers in outbound AS path
@@ -6533,6 +6546,16 @@ keys:
               description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
               convert_types:
               - int
+            as_path:
+              type: dict
+              description: BGP AS-PATH options
+              keys:
+                remote_as_replace_out:
+                  type: bool
+                  description: Replace AS number with local AS number
+                prepend_own_disabled:
+                  type: bool
+                  description: Disable prepending own AS number to AS path
             description:
               type: str
             route_reflector_client:
@@ -7540,6 +7563,16 @@ keys:
                       <1-65535>.<0-65535>
                     convert_types:
                     - int
+                  as_path:
+                    type: dict
+                    description: BGP AS-PATH options
+                    keys:
+                      remote_as_replace_out:
+                        type: bool
+                        description: Replace AS number with local AS number
+                      prepend_own_disabled:
+                        type: bool
+                        description: Disable prepending own AS number to AS path
                   description:
                     type: str
                   route_reflector_client:

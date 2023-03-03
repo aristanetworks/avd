@@ -183,7 +183,6 @@ prefix_lists:
     action: permit 192.168.253.0/24 eq 32
 ip_igmp_snooping:
   globally_enabled: true
-ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 vxlan_interface:
   Vxlan1:
     description: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A_VTEP
