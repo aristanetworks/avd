@@ -8698,6 +8698,24 @@
                 "type": "boolean",
                 "title": "Shutdown"
               },
+              "as_path": {
+                "type": "object",
+                "description": "BGP AS-PATH options",
+                "properties": {
+                  "remote_as_replace_out": {
+                    "type": "boolean",
+                    "description": "Replace AS number with local AS number",
+                    "title": "Remote As Replace Out"
+                  },
+                  "prepend_own_disabled": {
+                    "type": "boolean",
+                    "description": "Disable prepending own AS number to AS path",
+                    "title": "Prepend Own Disabled"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "As Path"
+              },
               "remove_private_as": {
                 "type": "object",
                 "description": "Remove private AS numbers in outbound AS path",
@@ -8916,6 +8934,24 @@
                 "type": "string",
                 "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
                 "title": "Local As"
+              },
+              "as_path": {
+                "type": "object",
+                "description": "BGP AS-PATH options",
+                "properties": {
+                  "remote_as_replace_out": {
+                    "type": "boolean",
+                    "description": "Replace AS number with local AS number",
+                    "title": "Remote As Replace Out"
+                  },
+                  "prepend_own_disabled": {
+                    "type": "boolean",
+                    "description": "Disable prepending own AS number to AS path",
+                    "title": "Prepend Own Disabled"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "As Path"
               },
               "description": {
                 "type": "string",
@@ -10588,6 +10624,24 @@
                       "type": "string",
                       "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
                       "title": "Local As"
+                    },
+                    "as_path": {
+                      "type": "object",
+                      "description": "BGP AS-PATH options",
+                      "properties": {
+                        "remote_as_replace_out": {
+                          "type": "boolean",
+                          "description": "Replace AS number with local AS number",
+                          "title": "Remote As Replace Out"
+                        },
+                        "prepend_own_disabled": {
+                          "type": "boolean",
+                          "description": "Disable prepending own AS number to AS path",
+                          "title": "Prepend Own Disabled"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "title": "As Path"
                     },
                     "description": {
                       "type": "string",
