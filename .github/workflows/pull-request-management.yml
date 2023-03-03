@@ -72,7 +72,6 @@ jobs:
   pre_commit:
     name: Run pre-commit validation hooks
     runs-on: ubuntu-latest
-    container: avdteam/base:3.8-v2.0
     needs: file-changes
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true'
     steps:
@@ -403,7 +402,6 @@ jobs:
   galaxy_importer:
     name: Test galaxy-importer
     runs-on: ubuntu-latest
-    container: avdteam/base:3.8-v2.0
     env:
       PY_COLORS: 1 # allows molecule colors to be passed to GitHub Actions
       ANSIBLE_FORCE_COLOR: 1 # allows ansible colors to be passed to GitHub Actions
