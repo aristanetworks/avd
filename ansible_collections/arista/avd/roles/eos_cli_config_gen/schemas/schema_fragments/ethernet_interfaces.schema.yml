@@ -663,6 +663,22 @@ keys:
               max: 10
               convert_types:
               - str
+            eapol:
+              type: dict
+              keys:
+                disabled:
+                  type: bool
+                authentication_failure_fallback_mba:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                    timeout:
+                      type: int
+                      min: 0
+                      max: 65535
+                      convert_types:
+                      - str
         service_profile:
           type: str
           description: QOS profile
