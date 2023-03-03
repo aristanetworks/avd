@@ -12,6 +12,10 @@
   - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
+- [Connected Endpoints](#connected-endpoints)
+  - [Connected Endpoint Keys](#connected-endpoint-keys)
+  - [Servers](#servers)
+  - [Port Profiles](#port-profiles)
 
 # Fabric Switches and Management IP
 
@@ -233,3 +237,35 @@
 | DC1_POD1 | DC1.POD1.LEAF2A | 172.18.110.4/32 |
 | DC2_POD1 | DC2-POD1-LEAF1A | 172.18.210.3/32 |
 | DC2_POD1 | DC2-POD1-LEAF2A | 172.18.210.4/32 |
+
+# Connected Endpoints
+
+## Connected Endpoint Keys
+
+| Key | Type | Description |
+| --- | ---- | ----------- |
+| firewalls | firewall | Firewall |
+| load_balancers | load_balancer | Load Balancer |
+| routers | router | Router |
+| servers | server | Server |
+| storage_arrays | storage_array | Storage Array |
+
+## Servers
+
+| Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Type | Mode | VLANs | Profile |
+| ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ---- | ----- | ------- |
+| server-1 | Eth2 | DC1-POD1-LEAF2B | Ethernet16 | server-1_Eth2 | False | switched | access | 110 | TENANT_A |
+| server-1 | Eth4 | DC1-POD1-LEAF2B | Ethernet17 | Set using structured_config on server adapter | False | switched | access | 110 | TENANT_A |
+| server-1 | Eth6 | DC1-POD1-LEAF2B | Ethernet18 | server-1_Eth6 | False | switched | access | 110 | NESTED_TENANT_A |
+| server-1 | Eth8 | DC1-POD1-LEAF2B | Ethernet19 | server-1_Eth8 | False | switched | access | 110 | NESTED_TENANT_A |
+| server-1 | Eth1 | DC1.POD1.LEAF2A | Ethernet16 | server-1_Eth1 | False | switched | access | 110 | TENANT_A |
+| server-1 | Eth3 | DC1.POD1.LEAF2A | Ethernet17 | Set using structured_config on server adapter | False | switched | access | 110 | TENANT_A |
+| server-1 | Eth5 | DC1.POD1.LEAF2A | Ethernet18 | server-1_Eth5 | False | switched | access | 110 | NESTED_TENANT_A |
+| server-1 | Eth7 | DC1.POD1.LEAF2A | Ethernet19 | server-1_Eth7 | False | switched | access | 110 | NESTED_TENANT_A |
+
+## Port Profiles
+
+| Profile Name | Parent Profile |
+| ------------ | -------------- |
+| NESTED_TENANT_A | - |
+| TENANT_A | - |

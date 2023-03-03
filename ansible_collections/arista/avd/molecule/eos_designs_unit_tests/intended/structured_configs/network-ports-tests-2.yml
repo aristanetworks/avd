@@ -74,6 +74,7 @@ ethernet_interfaces:
   name: Ethernet10/1
 - peer: AP1 with port_channel
   peer_type: network_port
+  port_profile: ap_with_port_channel
   description: AP1 with port_channel
   type: switched
   shutdown: false
@@ -87,6 +88,7 @@ ethernet_interfaces:
   name: Ethernet1
 - peer: AP1 with port_channel
   peer_type: network_port
+  port_profile: ap_with_port_channel
   description: AP1 with port_channel
   type: switched
   shutdown: false
@@ -100,6 +102,7 @@ ethernet_interfaces:
   name: Ethernet2
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -110,6 +113,7 @@ ethernet_interfaces:
   name: Ethernet3
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -120,6 +124,7 @@ ethernet_interfaces:
   name: Ethernet4
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -130,6 +135,7 @@ ethernet_interfaces:
   name: Ethernet2/1
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -140,6 +146,7 @@ ethernet_interfaces:
   name: Ethernet2/2
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -150,6 +157,7 @@ ethernet_interfaces:
   name: Ethernet2/3
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -160,6 +168,7 @@ ethernet_interfaces:
   name: Ethernet2/4
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -170,6 +179,7 @@ ethernet_interfaces:
   name: Ethernet2/5
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -180,6 +190,7 @@ ethernet_interfaces:
   name: Ethernet2/6
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -190,6 +201,7 @@ ethernet_interfaces:
   name: Ethernet2/7
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -200,6 +212,7 @@ ethernet_interfaces:
   name: Ethernet2/8
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -210,6 +223,7 @@ ethernet_interfaces:
   name: Ethernet2/9
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -220,6 +234,7 @@ ethernet_interfaces:
   name: Ethernet2/10
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -230,6 +245,7 @@ ethernet_interfaces:
   name: Ethernet2/11
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -240,6 +256,7 @@ ethernet_interfaces:
   name: Ethernet2/12
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -250,6 +267,7 @@ ethernet_interfaces:
   name: Ethernet2/13
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -260,6 +278,7 @@ ethernet_interfaces:
   name: Ethernet2/14
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -270,6 +289,7 @@ ethernet_interfaces:
   name: Ethernet2/15
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -280,6 +300,7 @@ ethernet_interfaces:
   name: Ethernet2/16
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -290,6 +311,7 @@ ethernet_interfaces:
   name: Ethernet2/17
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -300,6 +322,7 @@ ethernet_interfaces:
   name: Ethernet2/18
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -310,6 +333,7 @@ ethernet_interfaces:
   name: Ethernet2/19
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -320,6 +344,7 @@ ethernet_interfaces:
   name: Ethernet2/20
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -330,6 +355,7 @@ ethernet_interfaces:
   name: Ethernet2/21
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -340,6 +366,7 @@ ethernet_interfaces:
   name: Ethernet2/22
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -350,6 +377,7 @@ ethernet_interfaces:
   name: Ethernet2/23
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -360,6 +388,7 @@ ethernet_interfaces:
   name: Ethernet2/24
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -370,6 +399,7 @@ ethernet_interfaces:
   name: Ethernet2/25
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -380,6 +410,7 @@ ethernet_interfaces:
   name: Ethernet2/26
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -390,6 +421,7 @@ ethernet_interfaces:
   name: Ethernet2/27
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -400,6 +432,7 @@ ethernet_interfaces:
   name: Ethernet2/28
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -410,6 +443,7 @@ ethernet_interfaces:
   name: Ethernet2/29
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -420,6 +454,7 @@ ethernet_interfaces:
   name: Ethernet2/30
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -430,6 +465,7 @@ ethernet_interfaces:
   name: Ethernet2/31
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -440,6 +476,7 @@ ethernet_interfaces:
   name: Ethernet2/32
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -450,6 +487,7 @@ ethernet_interfaces:
   name: Ethernet2/33
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -460,6 +498,7 @@ ethernet_interfaces:
   name: Ethernet2/34
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -470,6 +509,7 @@ ethernet_interfaces:
   name: Ethernet2/35
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -480,6 +520,7 @@ ethernet_interfaces:
   name: Ethernet2/36
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -490,6 +531,7 @@ ethernet_interfaces:
   name: Ethernet2/37
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -500,6 +542,7 @@ ethernet_interfaces:
   name: Ethernet2/38
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -510,6 +553,7 @@ ethernet_interfaces:
   name: Ethernet2/39
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -520,6 +564,7 @@ ethernet_interfaces:
   name: Ethernet2/40
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -530,6 +575,7 @@ ethernet_interfaces:
   name: Ethernet2/41
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -540,6 +586,7 @@ ethernet_interfaces:
   name: Ethernet2/42
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -550,6 +597,7 @@ ethernet_interfaces:
   name: Ethernet2/43
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -560,6 +608,7 @@ ethernet_interfaces:
   name: Ethernet2/44
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -570,6 +619,7 @@ ethernet_interfaces:
   name: Ethernet2/45
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -580,6 +630,7 @@ ethernet_interfaces:
   name: Ethernet2/46
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false
@@ -590,6 +641,7 @@ ethernet_interfaces:
   name: Ethernet2/47
 - peer: PCs
   peer_type: network_port
+  port_profile: pc
   description: PCs
   type: switched
   shutdown: false

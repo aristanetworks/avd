@@ -72,6 +72,7 @@ ethernet_interfaces:
   name: Ethernet1/3
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -102,6 +103,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -132,6 +134,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -162,6 +165,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -192,6 +196,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -222,6 +227,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -252,6 +258,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -282,6 +289,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -312,6 +320,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -342,6 +351,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -372,6 +382,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -402,6 +413,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -432,6 +444,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -462,6 +475,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -492,6 +506,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -522,6 +537,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -552,6 +568,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -582,6 +599,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -612,6 +630,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -642,6 +661,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -672,6 +692,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -702,6 +723,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -732,6 +754,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -762,6 +785,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -792,6 +816,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -822,6 +847,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -852,6 +878,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -882,6 +909,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -912,6 +940,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -942,6 +971,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -972,6 +1002,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1002,6 +1033,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1032,6 +1064,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1062,6 +1095,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1092,6 +1126,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1122,6 +1157,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1152,6 +1188,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1182,6 +1219,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1212,6 +1250,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1242,6 +1281,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1272,6 +1312,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1302,6 +1343,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1332,6 +1374,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1362,6 +1405,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1392,6 +1436,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1422,6 +1467,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1452,6 +1498,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1482,6 +1529,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1512,6 +1560,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1542,6 +1591,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1572,6 +1622,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1602,6 +1653,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1632,6 +1684,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1662,6 +1715,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1692,6 +1746,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1722,6 +1777,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1752,6 +1808,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1782,6 +1839,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1812,6 +1870,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1842,6 +1901,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1872,6 +1932,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1902,6 +1963,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1932,6 +1994,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1962,6 +2025,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -1992,6 +2056,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2022,6 +2087,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2052,6 +2118,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2082,6 +2149,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2112,6 +2180,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2142,6 +2211,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2172,6 +2242,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2202,6 +2273,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2232,6 +2304,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2262,6 +2335,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2292,6 +2366,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2322,6 +2397,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2352,6 +2428,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2382,6 +2459,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2412,6 +2490,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2442,6 +2521,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2472,6 +2552,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2502,6 +2583,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2532,6 +2614,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2562,6 +2645,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2592,6 +2676,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2622,6 +2707,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2652,6 +2738,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2682,6 +2769,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2712,6 +2800,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2742,6 +2831,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2772,6 +2862,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2802,6 +2893,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2832,6 +2924,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2862,6 +2955,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2892,6 +2986,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2922,6 +3017,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2952,6 +3048,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -2982,6 +3079,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3012,6 +3110,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3042,6 +3141,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3072,6 +3172,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3102,6 +3203,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3132,6 +3234,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3162,6 +3265,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3192,6 +3296,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3222,6 +3327,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3252,6 +3358,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3282,6 +3389,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3312,6 +3420,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3342,6 +3451,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3372,6 +3482,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3402,6 +3513,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3432,6 +3544,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3462,6 +3575,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3492,6 +3606,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3522,6 +3637,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3552,6 +3668,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3582,6 +3699,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3612,6 +3730,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3642,6 +3761,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3672,6 +3792,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3702,6 +3823,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3732,6 +3854,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3762,6 +3885,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3792,6 +3916,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3822,6 +3947,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3852,6 +3978,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3882,6 +4009,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3912,6 +4040,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3942,6 +4071,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -3972,6 +4102,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4002,6 +4133,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4032,6 +4164,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4062,6 +4195,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4092,6 +4226,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4122,6 +4257,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4152,6 +4288,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4182,6 +4319,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4212,6 +4350,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4242,6 +4381,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4272,6 +4412,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4302,6 +4443,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4332,6 +4474,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4362,6 +4505,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4392,6 +4536,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4422,6 +4567,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4452,6 +4598,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4482,6 +4629,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4512,6 +4660,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4542,6 +4691,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4572,6 +4722,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4602,6 +4753,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4632,6 +4784,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4662,6 +4815,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4692,6 +4846,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4722,6 +4877,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4752,6 +4908,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4782,6 +4939,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4812,6 +4970,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4842,6 +5001,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4872,6 +5032,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4902,6 +5063,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4932,6 +5094,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4962,6 +5125,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -4992,6 +5156,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5022,6 +5187,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5052,6 +5218,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5082,6 +5249,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5112,6 +5280,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5142,6 +5311,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5172,6 +5342,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5202,6 +5373,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5232,6 +5404,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5262,6 +5435,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5292,6 +5466,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5322,6 +5497,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5352,6 +5528,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5382,6 +5559,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5412,6 +5590,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5442,6 +5621,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5472,6 +5652,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5502,6 +5683,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5532,6 +5714,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5562,6 +5745,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5592,6 +5776,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5622,6 +5807,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5652,6 +5838,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5682,6 +5869,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5712,6 +5900,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5742,6 +5931,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5772,6 +5962,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5802,6 +5993,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5832,6 +6024,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5862,6 +6055,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5892,6 +6086,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5922,6 +6117,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5952,6 +6148,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -5982,6 +6179,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6012,6 +6210,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6042,6 +6241,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6072,6 +6272,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6102,6 +6303,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6132,6 +6334,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6162,6 +6365,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6192,6 +6396,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6222,6 +6427,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6252,6 +6458,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6282,6 +6489,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6312,6 +6520,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6342,6 +6551,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6372,6 +6582,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6402,6 +6613,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6432,6 +6644,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6462,6 +6675,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6492,6 +6706,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6522,6 +6737,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6552,6 +6768,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6582,6 +6799,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6612,6 +6830,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6642,6 +6861,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6672,6 +6892,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6702,6 +6923,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6732,6 +6954,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6762,6 +6985,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6792,6 +7016,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6822,6 +7047,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6852,6 +7078,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6882,6 +7109,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6912,6 +7140,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6942,6 +7171,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -6972,6 +7202,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -7002,6 +7233,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -7032,6 +7264,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -7062,6 +7295,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -7092,6 +7326,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -7122,6 +7357,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -7152,6 +7388,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -7182,6 +7419,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -7212,6 +7450,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false
@@ -7242,6 +7481,7 @@ ethernet_interfaces:
     vlan: 220
 - peer: IDF2 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF2 Standard Port
   type: switched
   shutdown: false

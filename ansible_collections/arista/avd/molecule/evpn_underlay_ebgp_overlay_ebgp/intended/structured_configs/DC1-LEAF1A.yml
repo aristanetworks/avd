@@ -228,6 +228,7 @@ ethernet_interfaces:
 - peer: server02_SINGLE_NODE_TRUNK
   peer_interface: Eth1
   peer_type: server
+  port_profile: ALL_WITH_SECURITY
   description: CUSTOM_server02_SINGLE_NODE_TRUNK_Eth1
   l2_mtu: 8000
   type: switched
@@ -254,6 +255,7 @@ ethernet_interfaces:
 - peer: server02_SINGLE_NODE
   peer_interface: Eth1
   peer_type: server
+  port_profile: TENANT_A
   description: CUSTOM_server02_SINGLE_NODE_Eth1
   type: switched
   shutdown: false

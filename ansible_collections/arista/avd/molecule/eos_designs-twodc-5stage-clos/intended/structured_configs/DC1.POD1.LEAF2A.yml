@@ -583,6 +583,7 @@ ethernet_interfaces:
 - peer: server-1
   peer_interface: Eth1
   peer_type: server
+  port_profile: TENANT_A
   description: server-1_Eth1
   type: switched
   shutdown: false
@@ -603,6 +604,7 @@ ethernet_interfaces:
 - peer: server-1
   peer_interface: Eth3
   peer_type: server
+  port_profile: TENANT_A
   description: Set using structured_config on server adapter
   type: switched
   shutdown: false
@@ -623,6 +625,7 @@ ethernet_interfaces:
 - peer: server-1
   peer_interface: Eth5
   peer_type: server
+  port_profile: NESTED_TENANT_A
   description: server-1_Eth5
   type: switched
   shutdown: false
@@ -643,6 +646,7 @@ ethernet_interfaces:
 - peer: server-1
   peer_interface: Eth7
   peer_type: server
+  port_profile: NESTED_TENANT_A
   description: server-1_Eth7
   type: switched
   shutdown: false
