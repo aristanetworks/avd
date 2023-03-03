@@ -68,7 +68,7 @@ class AvdToDocumentationSchemaConverter:
     in the schema. See the schema documentation for details.
 
     Example:
-    - filename: myfile
+    "myfile":
       tables:
         - display_name: Foo
           description: "foo is an example of a schema key"
@@ -92,7 +92,7 @@ class AvdToDocumentationSchemaConverter:
 
     def convert_schema(self):
         schema = {}
-        output = []
+        output = {}
 
         # Get fully resolved schema (where all $ref has been expanded recursively)
         # Performs inplace update of the argument so we give an empty dict.
@@ -105,7 +105,7 @@ class AvdToDocumentationSchemaConverter:
         filenames = self._get_filenames(schema)
 
         for filename in filenames:
-            output.append({"filename": filename, "tables": self.build_tables(filename, schema)})
+            output[filename] = {"filename": filename, "tables": self.build_tables(filename, schema)}
 
         return output
 
