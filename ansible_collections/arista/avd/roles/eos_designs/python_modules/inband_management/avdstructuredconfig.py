@@ -130,7 +130,7 @@ class AvdStructuredConfig(AvdFacts):
         for index, subnet in enumerate(self._inband_management_data["subnets"]):
             vlan = self._inband_management_data["vlans"][index]
             vlan_interface_name = f"Vlan{vlan}"
-            vlan_interfaces.append(dict({"name": vlan_interface_name, **self._get_svi_cfg(subnet)}))
+            vlan_interfaces.append({"name": vlan_interface_name, **self._get_svi_cfg(subnet)})
 
         return vlan_interfaces
 

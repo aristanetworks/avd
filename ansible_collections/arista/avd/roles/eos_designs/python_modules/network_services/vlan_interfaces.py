@@ -31,14 +31,14 @@ class VlanInterfacesMixin(UtilsMixin):
             for vrf in tenant["vrfs"]:
                 for svi in vrf["svis"]:
                     vlan_id = int(svi["id"])
-                    vlan_interfaces.append(dict({"name": f"Vlan{vlan_id}", **self._get_vlan_interface_config_for_svi(svi, vrf, tenant)}))
+                    vlan_interfaces.append({"name": f"Vlan{vlan_id}", **self._get_vlan_interface_config_for_svi(svi, vrf, tenant)})
 
                 # MLAG IBGP Peering VLANs per VRF
                 # Continue to next VRF if mlag vlan_id is not set
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is None:
                     continue
 
-                vlan_interfaces.append(dict({"name": f"Vlan{vlan_id}", **self._get_vlan_interface_config_for_mlag_peering(vrf, tenant)}))
+                vlan_interfaces.append({"name": f"Vlan{vlan_id}", **self._get_vlan_interface_config_for_mlag_peering(vrf, tenant)})
 
         if vlan_interfaces:
             return vlan_interfaces
@@ -114,9 +114,8 @@ class VlanInterfacesMixin(UtilsMixin):
         svi_ip_helpers: list[dict] = convert_dicts(default(svi.get("ip_helpers"), vrf.get("ip_helpers"), []), "ip_helper")
         if svi_ip_helpers:
             ip_helpers = []
-            ip_helper = {}
             for svi_ip_helper in svi_ip_helpers:
-                ip_helper["ip_helper"] = svi_ip_helper["ip_helper"]
+                ip_helper = {"ip_helper": svi_ip_helper["ip_helper"]}
                 if "source_interface" in svi_ip_helper:
                     ip_helper["source_interface"] = svi_ip_helper["source_interface"]
                 if "source_vrf" in svi_ip_helper:
