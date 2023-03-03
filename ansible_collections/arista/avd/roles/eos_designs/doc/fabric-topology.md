@@ -572,7 +572,7 @@ default_interfaces:
     # Spanning tree priority.
     spanning_tree_root_super: < true | false  >
 
-    # Virtual router mac address for anycast gateway | Required.
+    # Virtual router mac address for anycast gateway | Required when using VARP or Anycast IP on SVIs.
     virtual_router_mac_address: < mac address >
 ```
 
