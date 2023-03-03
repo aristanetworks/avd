@@ -155,14 +155,14 @@ spanning_tree:
   - priority: 4096
     id: '0'
 vrfs:
-- ip_routing: false
-  name: MGMT
-- tenant: TENANT_B
+- name: MGMT
+  ip_routing: false
+- name: TENANT_B_INTRA
+  tenant: TENANT_B
   ip_routing: true
-  name: TENANT_B_INTRA
-- tenant: TENANT_B
+- name: TENANT_B_WAN
+  tenant: TENANT_B
   ip_routing: true
-  name: TENANT_B_WAN
 management_interfaces:
 - description: oob_management
   shutdown: false
@@ -275,6 +275,7 @@ ethernet_interfaces:
 - peer: CPE_TENANT_A_SITE1
   peer_interface: Ethernet2
   peer_type: cpe
+  port_profile: TENANT_A_WAN_SERVICE_10
   description: CPE_TENANT_A_SITE1_Ethernet2
   type: switched
   shutdown: false

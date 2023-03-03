@@ -474,7 +474,7 @@ class AvdStructuredConfig(AvdFacts):
         """
         vrfs set based on mgmt_interface_vrf variable
         """
-        return {self._mgmt_interface_vrf: {"ip_routing": get(self._hostvars, "mgmt_vrf_routing")}}
+        return [{"name": self._mgmt_interface_vrf, "ip_routing": get(self._hostvars, "mgmt_vrf_routing")}]
 
     @cached_property
     def management_interfaces(self):

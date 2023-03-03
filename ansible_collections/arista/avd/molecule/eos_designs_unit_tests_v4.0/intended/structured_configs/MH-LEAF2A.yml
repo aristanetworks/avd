@@ -127,11 +127,11 @@ local_users:
     ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
       cvpadmin@hostmachine.local
 vrfs:
-  MGMT:
-    ip_routing: false
-  Tenant_X_OP_Zone:
-    tenant: Tenant_X
-    ip_routing: true
+- name: MGMT
+  ip_routing: false
+- name: Tenant_X_OP_Zone
+  tenant: Tenant_X
+  ip_routing: true
 management_interfaces:
   Management1:
     description: oob_management
@@ -180,6 +180,7 @@ ethernet_interfaces:
     peer: ROUTER01
     peer_interface: Eth1
     peer_type: router
+    port_profile: Tenant_X_LT
     description: ROUTER01_Eth1
     type: switched
     shutdown: false
@@ -210,41 +211,41 @@ loopback_interfaces:
     vrf: Tenant_X_OP_Zone
     ip_address: 10.255.1.35/32
 prefix_lists:
-  PL-LOOPBACKS-EVPN-OVERLAY:
-    sequence_numbers:
-      10:
-        action: permit 192.168.255.0/24 eq 32
-      20:
-        action: permit 192.168.254.0/24 eq 32
-  PL-SVI-VRF-DEFAULT:
-    sequence_numbers:
-      10:
-        action: permit 10.2.10.0/24
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
+- name: PL-SVI-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.2.10.0/24
 route_maps:
-  RM-CONN-2-BGP:
-    sequence_numbers:
-      10:
-        type: permit
-        match:
-        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-      30:
-        type: permit
-        match:
-        - ip address prefix-list PL-SVI-VRF-DEFAULT
-  RM-EVPN-EXPORT-VRF-DEFAULT:
-    sequence_numbers:
-      10:
-        type: permit
-        match:
-        - ip address prefix-list PL-SVI-VRF-DEFAULT
-  RM-BGP-UNDERLAY-PEERS-OUT:
-    sequence_numbers:
-      20:
-        type: permit
-      10:
-        type: deny
-        match:
-        - ip address prefix-list PL-SVI-VRF-DEFAULT
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+  - sequence: 30
+    type: permit
+    match:
+    - ip address prefix-list PL-SVI-VRF-DEFAULT
+- name: RM-EVPN-EXPORT-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-SVI-VRF-DEFAULT
+- name: RM-BGP-UNDERLAY-PEERS-OUT
+  sequence_numbers:
+  - sequence: 20
+    type: permit
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-SVI-VRF-DEFAULT
 router_bfd:
   multihop:
     interval: 1200

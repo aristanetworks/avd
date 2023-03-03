@@ -31,8 +31,8 @@ local_users:
   no_password: true
   name: arista
 vrfs:
-- ip_routing: false
-  name: MGMT
+- name: MGMT
+  ip_routing: false
 management_interfaces:
 - description: oob_management
   shutdown: false
@@ -161,6 +161,7 @@ ethernet_interfaces:
 - peer: FIREWALL
   peer_interface: Eth2
   peer_type: firewall
+  port_profile: PP-FIREWALL
   description: FIREWALL_Eth2
   type: switched
   shutdown: false

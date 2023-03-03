@@ -234,8 +234,8 @@ local_users:
     ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
       cvpadmin@hostmachine.local
 vrfs:
-  MGMT:
-    ip_routing: false
+- name: MGMT
+  ip_routing: false
 management_interfaces:
   Management1:
     description: oob_management
@@ -413,19 +413,19 @@ mlag_configuration:
   reload_delay_mlag: '900'
   reload_delay_non_mlag: '1020'
 route_maps:
-  RM-MLAG-PEER-IN:
-    sequence_numbers:
-      10:
-        type: permit
-        set:
-        - origin incomplete
-        description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
-  RM-CONN-2-BGP:
-    sequence_numbers:
-      10:
-        type: permit
-        match:
-        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-MLAG-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    set:
+    - origin incomplete
+    description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
@@ -436,12 +436,12 @@ loopback_interfaces:
     shutdown: false
     ip_address: 192.168.254.18/32
 prefix_lists:
-  PL-LOOPBACKS-EVPN-OVERLAY:
-    sequence_numbers:
-      10:
-        action: permit 192.168.255.0/24 eq 32
-      20:
-        action: permit 192.168.254.0/24 eq 32
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
 router_bfd:
   multihop:
     interval: 1200

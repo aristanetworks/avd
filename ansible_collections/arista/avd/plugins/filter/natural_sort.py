@@ -8,6 +8,7 @@ __metaclass__ = type
 import re
 
 from jinja2.runtime import Undefined
+from jinja2.utils import Namespace
 
 
 def convert(text):
@@ -21,6 +22,8 @@ def natural_sort(iterable, sort_key=None):
     def alphanum_key(key):
         if sort_key is not None and isinstance(key, dict):
             return [convert(c) for c in re.split("([0-9]+)", str(key.get(sort_key, key)))]
+        elif sort_key is not None and isinstance(key, Namespace):
+            return [convert(c) for c in re.split("([0-9]+)", getattr(key, sort_key))]
         else:
             return [convert(c) for c in re.split("([0-9]+)", str(key))]
 

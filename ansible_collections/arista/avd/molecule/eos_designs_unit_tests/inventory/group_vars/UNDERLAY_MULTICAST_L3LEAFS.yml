@@ -15,7 +15,6 @@ l3leaf:
     uplink_switches: ['UNDERLAY-MULTICAST-SPINE1', 'UNDERLAY-MULTICAST-SPINE2']
     uplink_ipv4_pool: 172.31.255.0/24
     mlag_interfaces: [ Ethernet3, Ethernet4 ]
-    virtual_router_mac_address: 00:dc:00:00:00:0a
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24
     mlag_peer_ipv4_pool: 10.255.252.0/24
   node_groups:

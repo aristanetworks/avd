@@ -542,68 +542,68 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vrfs:
-- ip_routing: false
-  name: MGMT
-- tenant: Tenant_A
+- name: MGMT
+  ip_routing: false
+- name: MULTICAST_DISABLED_310_311
+  tenant: Tenant_A
   ip_routing: true
   description: MULTICAST_DISABLED_310_311
-  name: MULTICAST_DISABLED_310_311
-- tenant: Tenant_A
+- name: MULTICAST_ENABLED_110_111
+  tenant: Tenant_A
   ip_routing: true
   description: MULTICAST_ENABLED_110_111
-  name: MULTICAST_ENABLED_110_111
-- tenant: Tenant_A
+- name: MULTICAST_ENABLED_210_DISABLED_211
+  tenant: Tenant_A
   ip_routing: true
   description: MULTICAST_ENABLED_210_DISABLED_211
-  name: MULTICAST_ENABLED_210_DISABLED_211
-- tenant: Tenant_B
+- name: MULTICAST_DISABLED_5_6
+  tenant: Tenant_B
   ip_routing: true
   description: MULTICAST_DISABLED_5_6
-  name: MULTICAST_DISABLED_5_6
-- tenant: Tenant_B
+- name: MULTICAST_ENABLED_1_2
+  tenant: Tenant_B
   ip_routing: true
   description: MULTICAST_ENABLED_1_2
-  name: MULTICAST_ENABLED_1_2
-- tenant: Tenant_B
+- name: MULTICAST_ENABLED_3_DISABLED_4
+  tenant: Tenant_B
   ip_routing: true
   description: MULTICAST_ENABLED_3_DISABLED_4
-  name: MULTICAST_ENABLED_3_DISABLED_4
-- tenant: Tenant_C
+- name: TEN_C_L3_MULTICAST_DISABLED_330_331
+  tenant: Tenant_C
   ip_routing: true
   description: L3_MULTICAST_DISABLED_330_331
-  name: TEN_C_L3_MULTICAST_DISABLED_330_331
-- tenant: Tenant_C
+- name: TEN_C_L3_MULTICAST_ENABLED_130_131
+  tenant: Tenant_C
   ip_routing: true
   description: L3_MULTICAST_ENABLED_130_131
-  name: TEN_C_L3_MULTICAST_ENABLED_130_131
-- tenant: Tenant_C
+- name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
+  tenant: Tenant_C
   ip_routing: true
   description: L3_MULTICAST_ENABLED_230_DISABLED_231
-  name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
-- tenant: Tenant_D
+- name: TEN_D_L3_MULTICAST_DISABLED_240_241
+  tenant: Tenant_D
   ip_routing: true
   description: L3_MULTICAST_DISABLED_240_241
-  name: TEN_D_L3_MULTICAST_DISABLED_240_241
-- tenant: Tenant_D
+- name: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
+  tenant: Tenant_D
   ip_routing: true
   description: L3_MULTICAST_ENABLED_140_DISABLED_141
-  name: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
-- tenant: Tenant_E
+- name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
+  tenant: Tenant_E
   ip_routing: true
   description: L3_MULTICAST_ENABLED_PEG_OVERRIDE
-  name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
-- tenant: Tenant_E
+- name: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
+  tenant: Tenant_E
   ip_routing: true
   description: L3_MULTICAST_TRANSIT
-  name: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
-- tenant: Tenant_E
+- name: TEN_E_L3_MULTICAST_TRANSIT
+  tenant: Tenant_E
   ip_routing: true
   description: L3_MULTICAST_TRANSIT
-  name: TEN_E_L3_MULTICAST_TRANSIT
-- tenant: Tenant_E
+- name: TEN_E_PEG_L3_MULTICAST_ENABLED
+  tenant: Tenant_E
   ip_routing: true
   description: PEG_L3_MULTICAST_ENABLED in Tenant E
-  name: TEN_E_PEG_L3_MULTICAST_ENABLED
 management_interfaces:
 - description: oob_management
   shutdown: false
@@ -1280,19 +1280,19 @@ mlag_configuration:
   reload_delay_mlag: '300'
   reload_delay_non_mlag: '330'
 route_maps:
-- sequence_numbers:
-  - type: permit
+- name: RM-MLAG-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     set:
     - origin incomplete
     description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
-    sequence: 10
-  name: RM-MLAG-PEER-IN
-- sequence_numbers:
-  - type: permit
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-    sequence: 10
-  name: RM-CONN-2-BGP
 loopback_interfaces:
 - description: EVPN_Overlay_Peering
   shutdown: false
@@ -1348,12 +1348,12 @@ loopback_interfaces:
   ip_address: 10.255.51.3/32
   name: Loopback51
 prefix_lists:
-- sequence_numbers:
-  - action: permit 192.168.255.0/24 eq 32
-    sequence: 10
-  - action: permit 192.168.254.0/24 eq 32
-    sequence: 20
-  name: PL-LOOPBACKS-EVPN-OVERLAY
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
 router_bfd:
   multihop:
     interval: 300

@@ -138,9 +138,9 @@ management api http-commands
 
 ### Local Users Summary
 
-| User | Privilege | Role | Disabled |
-| ---- | --------- | ---- | -------- |
-| admin | 15 | network-admin | False |
+| User | Privilege | Role | Disabled | Shell |
+| ---- | --------- | ---- | -------- | ----- |
+| admin | 15 | network-admin | False | - |
 
 ### Local Users Device Configuration
 
@@ -5394,248 +5394,248 @@ ip route 0.0.0.0/0 10.10.10.1
 
 ### 802.1X Interfaces
 
-| Interface | PAE Mode | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth |
-| --------- | -------- | ------| ---------------------- | ---------------- | ------------------- | --------- | -------------- |
-| Ethernet3/1 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/2 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/3 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/4 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/5 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/6 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/7 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/8 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/9 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/10 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/11 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/12 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/13 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/14 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/15 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/16 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/17 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/18 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/19 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/20 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/21 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/22 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/23 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/24 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/25 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/26 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/27 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/28 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/29 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/30 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/31 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/32 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/33 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/34 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/35 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/36 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/37 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/38 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/39 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/40 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/41 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/42 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/43 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/44 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/45 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/46 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/47 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet3/48 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/1 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/2 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/3 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/4 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/5 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/6 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/7 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/8 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/9 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/10 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/11 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/12 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/13 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/14 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/15 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/16 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/17 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/18 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/19 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/20 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/21 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/22 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/23 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/24 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/25 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/26 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/27 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/28 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/29 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/30 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/31 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/32 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/33 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/34 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/35 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/36 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/37 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/38 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/39 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/40 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/41 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/42 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/43 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/44 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/45 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/46 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/47 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet4/48 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/1 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/2 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/3 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/4 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/5 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/6 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/7 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/8 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/9 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/10 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/11 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/12 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/13 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/14 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/15 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/16 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/17 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/18 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/19 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/20 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/21 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/22 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/23 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/24 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/25 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/26 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/27 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/28 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/29 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/30 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/31 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/32 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/33 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/34 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/35 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/36 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/37 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/38 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/39 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/40 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/41 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/42 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/43 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/44 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/45 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/46 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/47 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet5/48 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/1 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/2 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/3 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/4 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/5 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/6 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/7 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/8 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/9 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/10 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/11 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/12 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/13 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/14 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/15 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/16 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/17 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/18 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/19 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/20 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/21 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/22 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/23 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/24 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/25 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/26 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/27 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/28 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/29 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/30 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/31 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/32 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/33 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/34 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/35 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/36 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/37 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/38 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/39 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/40 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/41 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/42 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/43 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/44 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/45 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/46 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/47 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet6/48 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/1 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/2 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/3 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/4 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/5 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/6 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/7 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/8 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/9 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/10 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/11 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/12 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/13 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/14 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/15 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/16 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/17 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/18 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/19 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/20 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/21 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/22 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/23 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/24 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/25 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/26 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/27 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/28 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/29 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/30 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/31 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/32 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/33 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/34 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/35 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/36 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/37 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/38 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/39 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/40 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/41 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/42 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/43 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/44 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/45 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/46 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/47 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
-| Ethernet7/48 | authenticator | auto | - | True | allow vlan 230 | multi-host | True |
+| Interface | PAE Mode | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth | Eapol |
+| --------- | -------- | ------| ---------------------- | ---------------- | ------------------- | --------- | -------------- | ------ |
+| Ethernet3/1 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/2 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/3 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/4 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/5 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/6 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/7 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/8 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/9 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/10 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/11 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/12 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/13 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/14 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/15 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/16 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/17 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/18 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/19 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/20 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/21 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/22 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/23 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/24 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/25 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/26 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/27 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/28 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/29 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/30 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/31 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/32 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/33 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/34 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/35 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/36 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/37 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/38 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/39 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/40 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/41 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/42 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/43 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/44 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/45 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/46 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/47 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet3/48 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/1 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/2 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/3 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/4 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/5 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/6 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/7 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/8 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/9 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/10 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/11 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/12 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/13 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/14 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/15 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/16 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/17 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/18 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/19 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/20 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/21 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/22 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/23 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/24 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/25 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/26 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/27 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/28 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/29 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/30 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/31 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/32 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/33 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/34 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/35 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/36 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/37 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/38 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/39 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/40 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/41 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/42 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/43 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/44 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/45 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/46 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/47 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet4/48 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/1 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/2 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/3 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/4 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/5 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/6 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/7 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/8 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/9 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/10 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/11 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/12 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/13 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/14 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/15 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/16 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/17 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/18 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/19 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/20 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/21 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/22 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/23 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/24 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/25 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/26 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/27 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/28 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/29 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/30 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/31 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/32 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/33 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/34 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/35 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/36 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/37 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/38 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/39 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/40 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/41 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/42 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/43 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/44 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/45 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/46 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/47 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet5/48 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/1 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/2 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/3 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/4 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/5 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/6 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/7 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/8 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/9 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/10 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/11 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/12 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/13 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/14 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/15 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/16 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/17 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/18 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/19 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/20 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/21 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/22 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/23 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/24 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/25 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/26 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/27 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/28 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/29 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/30 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/31 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/32 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/33 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/34 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/35 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/36 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/37 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/38 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/39 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/40 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/41 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/42 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/43 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/44 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/45 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/46 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/47 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet6/48 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/1 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/2 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/3 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/4 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/5 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/6 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/7 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/8 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/9 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/10 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/11 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/12 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/13 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/14 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/15 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/16 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/17 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/18 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/19 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/20 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/21 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/22 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/23 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/24 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/25 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/26 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/27 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/28 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/29 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/30 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/31 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/32 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/33 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/34 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/35 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/36 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/37 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/38 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/39 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/40 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/41 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/42 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/43 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/44 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/45 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/46 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/47 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
+| Ethernet7/48 | authenticator | auto | - | True | allow vlan 230 | multi-host | True | - |
 
 # VRF Instances
 

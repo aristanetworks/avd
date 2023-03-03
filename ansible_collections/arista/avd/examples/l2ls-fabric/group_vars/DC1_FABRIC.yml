@@ -83,3 +83,7 @@ leaf:
 
 #### Override for vEOS/cEOS Lab Caveats ####
 p2p_uplinks_mtu: 1500
+
+# Documentation
+eos_designs_documentation:
+  connected_endpoints: true

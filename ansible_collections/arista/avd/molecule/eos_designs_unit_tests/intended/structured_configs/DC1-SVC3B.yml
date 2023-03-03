@@ -378,36 +378,36 @@ local_users:
     cvpadmin@hostmachine.local
   name: cvpadmin
 vrfs:
-- ip_routing: false
-  name: MGMT
-- tenant: Tenant_A
+- name: MGMT
+  ip_routing: false
+- name: Tenant_A_APP_Zone
+  tenant: Tenant_A
   ip_routing: true
-  name: Tenant_A_APP_Zone
-- tenant: Tenant_A
+- name: Tenant_A_DB_Zone
+  tenant: Tenant_A
   ip_routing: true
-  name: Tenant_A_DB_Zone
-- tenant: Tenant_A
+- name: Tenant_A_OP_Zone
+  tenant: Tenant_A
   ip_routing: true
   description: Tenant_A_OP_Zone
-  name: Tenant_A_OP_Zone
-- tenant: Tenant_A
+- name: Tenant_A_WAN_Zone
+  tenant: Tenant_A
   ip_routing: true
-  name: Tenant_A_WAN_Zone
-- tenant: Tenant_A
+- name: Tenant_A_WEB_Zone
+  tenant: Tenant_A
   ip_routing: true
-  name: Tenant_A_WEB_Zone
-- tenant: Tenant_B
+- name: Tenant_B_OP_Zone
+  tenant: Tenant_B
   ip_routing: true
-  name: Tenant_B_OP_Zone
-- tenant: Tenant_B
+- name: Tenant_B_WAN_Zone
+  tenant: Tenant_B
   ip_routing: true
-  name: Tenant_B_WAN_Zone
-- tenant: Tenant_C
+- name: Tenant_C_OP_Zone
+  tenant: Tenant_C
   ip_routing: true
-  name: Tenant_C_OP_Zone
-- tenant: Tenant_C
+- name: Tenant_C_WAN_Zone
+  tenant: Tenant_C
   ip_routing: true
-  name: Tenant_C_WAN_Zone
 management_interfaces:
 - description: oob_management
   shutdown: false
@@ -1036,6 +1036,7 @@ ethernet_interfaces:
 - peer: server04_inherit_all_from_profile
   peer_interface: Eth2
   peer_type: server
+  port_profile: ALL_WITH_SECURITY
   description: server04_inherit_all_from_profile_Eth2
   l2_mtu: 8000
   type: switched
@@ -1087,6 +1088,7 @@ ethernet_interfaces:
 - peer: server06_override_profile
   peer_interface: Eth2
   peer_type: server
+  port_profile: ALL_WITH_SECURITY
   description: server06_override_profile_Eth2
   l2_mtu: 8000
   type: switched
@@ -1113,6 +1115,7 @@ ethernet_interfaces:
 - peer: server07_inherit_all_from_profile_port_channel
   peer_interface: Eth2
   peer_type: server
+  port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
   description: server07_inherit_all_from_profile_port_channel_Eth2
   l2_mtu: 8000
   type: switched
@@ -1170,6 +1173,7 @@ ethernet_interfaces:
 - peer: server09_override_profile_no_port_channel
   peer_interface: Eth2
   peer_type: server
+  port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
   description: server09_override_profile_no_port_channel_Eth2
   l2_mtu: 8000
   type: switched
@@ -1225,6 +1229,7 @@ ethernet_interfaces:
 - peer: server11_inherit_profile_port_channel_lacp_fallback
   peer_interface: Eth2
   peer_type: server
+  port_profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
   description: server11_inherit_profile_port_channel_lacp_fallback_Eth2
   l2_mtu: 8000
   type: switched
@@ -1255,6 +1260,7 @@ ethernet_interfaces:
 - peer: server12_inherit_nested_profile_port_channel_lacp_fallback
   peer_interface: Eth2
   peer_type: server
+  port_profile: NESTED_PORT_PROFILE
   description: server12_inherit_nested_profile_port_channel_lacp_fallback_Eth2
   l2_mtu: 8000
   type: switched
@@ -1285,6 +1291,7 @@ ethernet_interfaces:
 - peer: server13_disabled_interfaces
   peer_interface: Eth2
   peer_type: server
+  port_profile: TENANT_A
   description: server13_disabled_interfaces_Eth2
   type: switched
   shutdown: true
@@ -1294,6 +1301,7 @@ ethernet_interfaces:
 - peer: server14_explicitly_enabled_interfaces
   peer_interface: Eth2
   peer_type: server
+  port_profile: TENANT_A
   description: server14_explicitly_enabled_interfaces_Eth2
   type: switched
   shutdown: false
@@ -1303,6 +1311,7 @@ ethernet_interfaces:
 - peer: server15_port_channel_with_disabled_phy_interfaces
   peer_interface: Eth2
   peer_type: server
+  port_profile: TENANT_A
   description: server15_port_channel_with_disabled_phy_interfaces_Eth2
   type: switched
   shutdown: true
@@ -1315,6 +1324,7 @@ ethernet_interfaces:
 - peer: server16_port_channel_with_disabled_port_channel
   peer_interface: Eth2
   peer_type: server
+  port_profile: TENANT_A
   description: server16_port_channel_with_disabled_port_channel_Eth2
   type: switched
   shutdown: false
@@ -1327,6 +1337,7 @@ ethernet_interfaces:
 - peer: server17_port_channel_with_disabled_phy_and_po_interfaces
   peer_interface: Eth2
   peer_type: server
+  port_profile: TENANT_A
   description: server17_port_channel_with_disabled_phy_and_po_interfaces_Eth2
   type: switched
   shutdown: true
@@ -1339,6 +1350,7 @@ ethernet_interfaces:
 - peer: server18_monitoring_session_source_phys_interfaces
   peer_interface: Eth2
   peer_type: server
+  port_profile: TENANT_A
   description: server18_monitoring_session_source_phys_interfaces_Eth2
   type: switched
   shutdown: false
@@ -1348,6 +1360,7 @@ ethernet_interfaces:
 - peer: server18_monitoring_session_source_po
   peer_interface: Eth4
   peer_type: server
+  port_profile: TENANT_A
   description: server18_monitoring_session_source_po_Eth4
   type: switched
   shutdown: false
@@ -1367,6 +1380,7 @@ ethernet_interfaces:
 - peer: server21_monitoring_session_destination_po
   peer_interface: Eth2
   peer_type: server
+  port_profile: TENANT_A
   description: server21_monitoring_session_destination_po_Eth2
   type: switched
   shutdown: false
@@ -1379,6 +1393,7 @@ ethernet_interfaces:
 - peer: server22_port_channel_with_custom_id
   peer_interface: Eth2
   peer_type: server
+  port_profile: TENANT_A
   description: server22_port_channel_with_custom_id_Eth2
   type: switched
   shutdown: false
@@ -1396,19 +1411,19 @@ mlag_configuration:
   reload_delay_mlag: '300'
   reload_delay_non_mlag: '330'
 route_maps:
-- sequence_numbers:
-  - type: permit
+- name: RM-MLAG-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     set:
     - origin incomplete
     description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
-    sequence: 10
-  name: RM-MLAG-PEER-IN
-- sequence_numbers:
-  - type: permit
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-    sequence: 10
-  name: RM-CONN-2-BGP
 loopback_interfaces:
 - description: EVPN_Overlay_Peering
   shutdown: false
@@ -1424,12 +1439,12 @@ loopback_interfaces:
   ip_address: 10.255.1.13/32
   name: Loopback100
 prefix_lists:
-- sequence_numbers:
-  - action: permit 192.168.255.0/24 eq 32
-    sequence: 10
-  - action: permit 192.168.254.0/24 eq 32
-    sequence: 20
-  name: PL-LOOPBACKS-EVPN-OVERLAY
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
 router_bfd:
   multihop:
     interval: 1200

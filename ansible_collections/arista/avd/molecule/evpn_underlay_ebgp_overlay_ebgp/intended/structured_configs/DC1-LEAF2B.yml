@@ -290,26 +290,26 @@ local_users:
   sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
   name: cvpadmin
 vrfs:
-- ip_routing: false
-  name: MGMT
-- tenant: Tenant_A
+- name: MGMT
+  ip_routing: false
+- name: Tenant_A_APP_Zone
+  tenant: Tenant_A
   ip_routing: true
-  name: Tenant_A_APP_Zone
-- tenant: Tenant_A
+- name: Tenant_A_DB_Zone
+  tenant: Tenant_A
   ip_routing: true
-  name: Tenant_A_DB_Zone
-- tenant: Tenant_A
+- name: Tenant_A_OP_Zone
+  tenant: Tenant_A
   ip_routing: true
-  name: Tenant_A_OP_Zone
-- tenant: Tenant_A
+- name: Tenant_A_WEB_Zone
+  tenant: Tenant_A
   ip_routing: true
-  name: Tenant_A_WEB_Zone
-- tenant: Tenant_B
+- name: Tenant_B_OP_Zone
+  tenant: Tenant_B
   ip_routing: true
-  name: Tenant_B_OP_Zone
-- tenant: Tenant_C
+- name: Tenant_C_OP_Zone
+  tenant: Tenant_C
   ip_routing: true
-  name: Tenant_C_OP_Zone
 management_interfaces:
 - description: oob_management
   shutdown: false
@@ -402,6 +402,7 @@ ethernet_interfaces:
 - peer: server01_MLAG
   peer_interface: Eth3
   peer_type: server
+  port_profile: TENANT_B
   description: CUSTOM_server01_MLAG_Eth3
   type: switched
   shutdown: false
@@ -414,6 +415,7 @@ ethernet_interfaces:
 - peer: server01_MTU_PROFILE_MLAG
   peer_interface: Eth5
   peer_type: server
+  port_profile: TENANT_A_MTU
   description: CUSTOM_server01_MTU_PROFILE_MLAG_Eth5
   mtu: 1600
   type: switched
@@ -449,6 +451,7 @@ ethernet_interfaces:
 - peer: FIREWALL01
   peer_interface: E1
   peer_type: firewall
+  port_profile: TENANT_A_B
   description: CUSTOM_FIREWALL01_E1
   type: switched
   shutdown: false
@@ -461,6 +464,7 @@ ethernet_interfaces:
 - peer: ROUTER01
   peer_interface: Eth1
   peer_type: router
+  port_profile: TENANT_A
   description: CUSTOM_ROUTER01_Eth1
   type: switched
   shutdown: false
@@ -527,19 +531,19 @@ loopback_interfaces:
   ip_address: 10.255.1.11/32
   name: Loopback100
 prefix_lists:
-- sequence_numbers:
-  - action: permit 192.168.255.0/24 eq 32
-    sequence: 10
-  - action: permit 192.168.254.0/24 eq 32
-    sequence: 20
-  name: PL-LOOPBACKS-EVPN-OVERLAY
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
 route_maps:
-- sequence_numbers:
-  - type: permit
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-    sequence: 10
-  name: RM-CONN-2-BGP
 router_bfd:
   multihop:
     interval: 1200
