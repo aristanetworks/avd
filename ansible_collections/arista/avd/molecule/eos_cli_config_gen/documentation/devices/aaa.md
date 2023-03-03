@@ -6,7 +6,7 @@
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [TACACS Servers](#tacacs-servers)
-  - [RADIUS Servers](#radius-servers)
+  - [RADIUS Server](#radius-server)
   - [AAA Server Groups](#aaa-server-groups)
   - [AAA Authentication](#aaa-authentication)
   - [AAA Authorization](#aaa-authorization)
@@ -83,41 +83,24 @@ tacacs-server host 10.10.10.159 key 8a $kUVyoj7FVQ//yw9D2lbqjA==$kxxohBiofI46IX3
 tacacs-server host 10.10.10.249 timeout 23 key 7 071B245F5A
 ```
 
-## RADIUS Servers
+## RADIUS Server
 
-### RADIUS Servers
+### RADIUS Server Hosts
 
 | VRF | RADIUS Servers | Timeout | Retransmit |
 | --- | -------------- | ------- | ---------- |
 | mgt | 10.10.10.157 | - | - |
-| default | 10.10.10.249 | - | - |
 | default | 10.10.10.158 | - | - |
-| mgt | 10.10.11.157 | 1 | 1 |
-| mgt | 10.10.11.159 | - | 1 |
-| mgt | 10.10.11.160 | 1 | - |
-| mgt | 10.10.11.248 | - | - |
-| default | 10.10.11.249 | 1 | 1 |
-| default | 10.10.11.158 | 1 | 1 |
+| default | 10.10.10.249 | - | - |
 
-
-### RADIUS Servers Device Configuration
+### RADIUS Server Device Configuration
 
 ```eos
 !
 radius-server host 10.10.10.157 vrf mgt key 7 071B245F5A
 radius-server host 10.10.10.249 key 7 071B245F5A
 radius-server host 10.10.10.158 vrf default key 7 071B245F5A
-!
-radius-server attribute 32 include-in-access-req hostname
-radius-server dynamic-authorization port 1700 tls ssl-profile SSL_PROFILE
-radius-server host 10.10.11.157 vrf mgt timeout 1 retransmit 1 key 7 071B245F5A
-radius-server host 10.10.11.158 vrf default timeout 1 retransmit 1 key 7 071B245F5A
-radius-server host 10.10.11.159 vrf mgt retransmit 1 key 7 071B245F5A
-radius-server host 10.10.11.160 vrf mgt timeout 1 key 7 071B245F5A
-radius-server host 10.10.11.248 vrf mgt key 7 071B245F5A
-radius-server host 10.10.11.249 timeout 1 retransmit 1 key 7 071B245F5A
 ```
-
 
 ## AAA Server Groups
 
