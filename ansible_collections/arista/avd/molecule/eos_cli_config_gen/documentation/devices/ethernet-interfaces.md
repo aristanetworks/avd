@@ -3,6 +3,8 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+- [Monitoring](#monitoring)
+  - [SFlow](#sflow)
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
 - [BFD](#bfd)
@@ -42,6 +44,24 @@ interface Management1
    vrf MGMT
    ip address 10.73.255.122/24
 ```
+
+# Monitoring
+
+## SFlow
+
+### SFlow Summary
+
+sFlow is disabled.
+
+### SFlow Interfaces
+
+| Interface | Ingress Enabled | Egress Enabled |
+| --------- | --------------- | -------------- |
+| Ethernet50 | True | - |
+| Ethernet51 | - | True |
+| Ethernet52 | True | True (unmodified) |
+| Ethernet53 | False | False |
+| Ethernet54 | False | False (unmodified) |
 
 # Interfaces
 
@@ -91,6 +111,11 @@ interface Management1
 | Ethernet45 |  DOT1X Testing - all features | access | - | - | - | - |
 | Ethernet46 |  native-vlan-tag-precedence | trunk | - | tag | - | - |
 | Ethernet48 |  Load Interval | access | - | - | - | - |
+| Ethernet50 |  SFlow Interface Testing - SFlow ingress enabled | access | - | - | - | - |
+| Ethernet51 |  SFlow Interface Testing - SFlow egress enabled | access | - | - | - | - |
+| Ethernet52 |  SFlow Interface Testing - SFlow ingress and egress unmodified enabled | access | - | - | - | - |
+| Ethernet53 |  SFlow Interface Testing - SFlow ingress and egress disabled | access | - | - | - | - |
+| Ethernet54 |  SFlow Interface Testing - SFlow ingress and egress unmodified disabled | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -639,6 +664,34 @@ interface Ethernet48
    description Load Interval
    load-interval 5
    switchport
+!
+interface Ethernet50
+   description SFlow Interface Testing - SFlow ingress enabled
+   switchport
+   sflow enable
+!
+interface Ethernet51
+   description SFlow Interface Testing - SFlow egress enabled
+   switchport
+   sflow egress enable
+!
+interface Ethernet52
+   description SFlow Interface Testing - SFlow ingress and egress unmodified enabled
+   switchport
+   sflow enable
+   sflow egress unmodified enable
+!
+interface Ethernet53
+   description SFlow Interface Testing - SFlow ingress and egress disabled
+   switchport
+   no sflow enable
+   no sflow egress enable
+!
+interface Ethernet54
+   description SFlow Interface Testing - SFlow ingress and egress unmodified disabled
+   switchport
+   no sflow enable
+   no sflow egress unmodified enable
 ```
 
 # BFD
