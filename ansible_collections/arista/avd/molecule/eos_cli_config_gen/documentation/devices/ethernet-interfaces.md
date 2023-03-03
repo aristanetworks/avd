@@ -628,6 +628,7 @@ interface Ethernet44
    description DOT1X Testing - reauthorization_request_limit
    switchport
    dot1x reauthorization request limit 3
+   dot1x eapol disabled
 !
 interface Ethernet45
    description DOT1X Testing - all features

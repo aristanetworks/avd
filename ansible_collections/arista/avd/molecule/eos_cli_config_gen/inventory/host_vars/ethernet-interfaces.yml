@@ -536,6 +536,8 @@ ethernet_interfaces:
     description: DOT1X Testing - reauthorization_request_limit
     dot1x:
       reauthorization_request_limit: 3
+      eapol:
+        disabled: true
 
   Ethernet45:
     description: DOT1X Testing - all features
