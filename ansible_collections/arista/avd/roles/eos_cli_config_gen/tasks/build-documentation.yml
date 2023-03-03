@@ -28,8 +28,10 @@
   tags: [eos_cli_config_gen]
   ansible.builtin.template:
     src: avd_schema_documentation.j2
-    dest: "{{ role_documentation_dir ~ '/' ~ item ~ '.md'  }}"
+    dest: "{{ role_documentation_dir ~ '/' ~ filename ~ '.md'  }}"
     mode: 0664
   loop: "{{ documentation_schema | list }}"
+  loop_control:
+    loop_var: filename
   vars:
     documentation_schema: "{{ role_name | arista.avd.convert_schema(type='documentation') }}"

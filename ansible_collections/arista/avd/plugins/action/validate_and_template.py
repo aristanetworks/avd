@@ -19,7 +19,7 @@ class ActionModule(ActionBase):
         del tmp  # tmp no longer has any effect
 
         # Validate Arguments
-        self.templatefile = self._task.args["template"]
+        self.templatefile = self._task.args.get("template")
         if not isinstance(self.templatefile, str):
             raise AnsibleActionFail("The argument 'template' must be a string")
 

@@ -1,12 +1,11 @@
 from __future__ import absolute_import, annotations, division, print_function
 
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.refresolver import create_refresolver
-
 __metaclass__ = type
 
 import copy
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.refresolver import create_refresolver
 
 try:
     import jsonschema

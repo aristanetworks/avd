@@ -105,7 +105,7 @@ class AvdToDocumentationSchemaConverter:
         filenames = self._get_filenames(schema)
 
         for filename in filenames:
-            output[filename] = {"filename": filename, "tables": self.build_tables(filename, schema)}
+            output[filename] = {"tables": self.build_tables(filename, schema)}
 
         return output
 

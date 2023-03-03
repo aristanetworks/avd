@@ -33,9 +33,14 @@ description:
     and python module in `arista.avd.eos_designs` to generate the `structured_configuration`.
 options:
   schema:
-    description: Schema conforming to "AVD Meta Schema"
-    required: true
+    description: Schema conforming to "AVD Meta Schema". Either schema or schema_id must be set.
+    required: false
     type: dict
+  schema_id:
+    description: ID of Schema conforming to "AVD Meta Schema".  Either schema or schema_id must be set.
+    required: false
+    type: dict
+    choices: [ "eos_cli_config_gen", "eos_designs" ]
   template_output:
     description: |
       If true the output data will be run through another jinja2 rendering before returning.

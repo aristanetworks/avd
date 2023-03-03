@@ -1,10 +1,10 @@
-{% set documentation_file = documentation_schema[item] %}
+{% set documentation_file = documentation_schema[filename] %}
 ---
 search:
   boost: 2
 ---
 
-# {{ documentation_file.filename.split("/")[-1] }}
+# {{ filename.split("/")[-1] }}
 {% for table in documentation_file.tables %}
 
 ## {{ table.display_name }}

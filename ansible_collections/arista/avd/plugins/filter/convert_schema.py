@@ -21,7 +21,7 @@ def convert_schema(schema_id: str, type: str):
 
     Returns
     -------
-    dict
+    dict | list
         Schema of the requested type
 
     Raises

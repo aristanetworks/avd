@@ -27,6 +27,19 @@ DEFAULT_SCHEMA = {
 
 
 class AvdSchema:
+    """
+    AvdSchema takes either a schema as dict or the ID of a builtin schema.
+    If none of them are set, a default "dummy" schema will be loaded.
+    schema -> schema_id -> DEFAULT_SCHEMA
+
+    Parameters
+    ----------
+    schema : dict
+        AVD Schema as dictionary. Will be verified towards avd_meta_schema.
+    schema_id : str
+        ID of AVD Schema. Either 'eos_cli_config_gen' or 'eos_designs'
+    """
+
     def __init__(self, schema: dict = None, schema_id: str = None):
         if JSONSCHEMA_IMPORT_ERROR:
             raise AristaAvdError('Python library "jsonschema" must be installed to use this plugin') from JSONSCHEMA_IMPORT_ERROR
