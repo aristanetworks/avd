@@ -150,6 +150,7 @@ ethernet_interfaces:
 - peer: server01_ES1
   peer_interface: Eth2
   peer_type: server
+  port_profile: Tenant_X
   description: server01_ES1_Eth2
   type: switched
   shutdown: false
@@ -162,6 +163,7 @@ ethernet_interfaces:
 - peer: server03_AUTO_ESI
   peer_interface: Eth2
   peer_type: server
+  port_profile: Tenant_X
   description: server03_AUTO_ESI_Eth2
   type: switched
   shutdown: false
@@ -174,6 +176,7 @@ ethernet_interfaces:
 - peer: server04_AUTO_ESI_Profile
   peer_interface: Eth2
   peer_type: server
+  port_profile: Tenant_ESI_Auto
   description: server04_AUTO_ESI_Profile_Eth2
   type: switched
   shutdown: false
@@ -186,6 +189,7 @@ ethernet_interfaces:
 - peer: server05_AUTO_ESI_Profile_Override
   peer_interface: Eth2
   peer_type: server
+  port_profile: Tenant_ESI_Auto
   description: server05_AUTO_ESI_Profile_Override_Eth2
   type: switched
   shutdown: false
@@ -198,6 +202,7 @@ ethernet_interfaces:
 - peer: server06_Single_Active_Port_Channel
   peer_interface: Eth2
   peer_type: server
+  port_profile: Tenant_X_Trunk_Auto
   description: server06_Single_Active_Port_Channel_Eth2
   type: switched
   shutdown: false
@@ -210,6 +215,7 @@ ethernet_interfaces:
 - peer: server07_Single_Active_Port_Channel_Manual_DF
   peer_interface: Eth2
   peer_type: server
+  port_profile: Tenant_X_Trunk
   description: server07_Single_Active_Port_Channel_Manual_DF_Eth2
   type: switched
   shutdown: false
@@ -222,6 +228,7 @@ ethernet_interfaces:
 - peer: server08_Single_Active_Ethernet
   peer_interface: Eth2
   peer_type: server
+  port_profile: Tenant_X_Trunk_Auto_Eth
   description: server08_Single_Active_Ethernet_Eth2
   type: switched
   shutdown: false
@@ -238,6 +245,7 @@ ethernet_interfaces:
 - peer: server09_All_Active_Ethernet
   peer_interface: Eth2
   peer_type: server
+  port_profile: Tenant_X_Trunk
   description: server09_All_Active_Ethernet_Eth2
   type: switched
   shutdown: false
@@ -253,6 +261,7 @@ ethernet_interfaces:
 - peer: server10_Single_Active_Ethernet_Manual_DF
   peer_interface: Eth2
   peer_type: server
+  port_profile: Tenant_X_Trunk
   description: server10_Single_Active_Ethernet_Manual_DF_Eth2
   type: switched
   shutdown: false
@@ -269,6 +278,7 @@ ethernet_interfaces:
 - peer: server11_Single_Active_Port_Channel_Manual_DF_Dont_Preempt
   peer_interface: Eth2
   peer_type: server
+  port_profile: Tenant_X_Trunk
   description: server11_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_Eth2
   type: switched
   shutdown: false
@@ -281,6 +291,7 @@ ethernet_interfaces:
 - peer: server12_Single_Active_Ethernet_Manual_DF_Dont_Preempt
   peer_interface: Eth2
   peer_type: server
+  port_profile: Tenant_X_Trunk
   description: server12_Single_Active_Ethernet_Manual_DF_Dont_Preempt_Eth2
   type: switched
   shutdown: false
@@ -298,6 +309,7 @@ ethernet_interfaces:
 - peer: server13_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_modulus
   peer_interface: Eth2
   peer_type: server
+  port_profile: Tenant_X_Trunk
   description: server13_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_modulus_Eth2
   type: switched
   shutdown: false
@@ -310,6 +322,7 @@ ethernet_interfaces:
 - peer: server14_Single_Active_Ethernet_Manual_DF_Dont_Preempt_modulus
   peer_interface: Eth2
   peer_type: server
+  port_profile: Tenant_X_Trunk
   description: server14_Single_Active_Ethernet_Manual_DF_Dont_Preempt_modulus_Eth2
   type: switched
   shutdown: false

@@ -180,6 +180,7 @@ ethernet_interfaces:
     peer: ROUTER01
     peer_interface: Eth1
     peer_type: router
+    port_profile: Tenant_X_LT
     description: ROUTER01_Eth1
     type: switched
     shutdown: false

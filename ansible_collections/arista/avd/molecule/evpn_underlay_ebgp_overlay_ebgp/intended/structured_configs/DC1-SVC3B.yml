@@ -1027,6 +1027,7 @@ ethernet_interfaces:
 - peer: server03_ESI
   peer_interface: Eth2
   peer_type: server
+  port_profile: TENANT_A_B
   description: CUSTOM_server03_ESI_Eth2
   type: switched
   shutdown: false
@@ -1039,6 +1040,7 @@ ethernet_interfaces:
 - peer: server04_inherit_all_from_profile
   peer_interface: Eth2
   peer_type: server
+  port_profile: ALL_WITH_SECURITY
   description: CUSTOM_server04_inherit_all_from_profile_Eth2
   l2_mtu: 8000
   type: switched
@@ -1090,6 +1092,7 @@ ethernet_interfaces:
 - peer: server06_override_profile
   peer_interface: Eth2
   peer_type: server
+  port_profile: ALL_WITH_SECURITY
   description: CUSTOM_server06_override_profile_Eth2
   l2_mtu: 8000
   type: switched
@@ -1116,6 +1119,7 @@ ethernet_interfaces:
 - peer: server07_inherit_all_from_profile_port_channel
   peer_interface: Eth2
   peer_type: server
+  port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
   description: CUSTOM_server07_inherit_all_from_profile_port_channel_Eth2
   l2_mtu: 8000
   type: switched
@@ -1173,6 +1177,7 @@ ethernet_interfaces:
 - peer: server09_override_profile_no_port_channel
   peer_interface: Eth2
   peer_type: server
+  port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
   description: CUSTOM_server09_override_profile_no_port_channel_Eth2
   l2_mtu: 8000
   type: switched
@@ -1228,6 +1233,7 @@ ethernet_interfaces:
 - peer: server11_inherit_profile_port_channel_lacp_fallback
   peer_interface: Eth2
   peer_type: server
+  port_profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
   description: CUSTOM_server11_inherit_profile_port_channel_lacp_fallback_Eth2
   l2_mtu: 8000
   type: switched
@@ -1258,6 +1264,7 @@ ethernet_interfaces:
 - peer: server12_inherit_nested_profile_port_channel_lacp_fallback
   peer_interface: Eth2
   peer_type: server
+  port_profile: NESTED_PORT_PROFILE
   description: CUSTOM_server12_inherit_nested_profile_port_channel_lacp_fallback_Eth2
   l2_mtu: 8000
   type: switched
@@ -1288,6 +1295,7 @@ ethernet_interfaces:
 - peer: server13_disabled_interfaces
   peer_interface: Eth2
   peer_type: server
+  port_profile: TENANT_A
   description: CUSTOM_server13_disabled_interfaces_Eth2
   type: switched
   shutdown: true
@@ -1297,6 +1305,7 @@ ethernet_interfaces:
 - peer: server14_explicitly_enabled_interfaces
   peer_interface: Eth2
   peer_type: server
+  port_profile: TENANT_A
   description: CUSTOM_server14_explicitly_enabled_interfaces_Eth2
   type: switched
   shutdown: false
@@ -1306,6 +1315,7 @@ ethernet_interfaces:
 - peer: server15_port_channel_disabled_interfaces
   peer_interface: Eth2
   peer_type: server
+  port_profile: TENANT_A
   description: CUSTOM_server15_port_channel_disabled_interfaces_Eth2
   type: switched
   shutdown: true

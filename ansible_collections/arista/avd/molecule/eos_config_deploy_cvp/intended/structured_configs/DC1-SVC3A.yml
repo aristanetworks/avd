@@ -811,6 +811,7 @@ ethernet_interfaces:
 - peer: server03_ESI
   peer_interface: Eth1
   peer_type: server
+  port_profile: TENANT_A_B
   description: server03_ESI_Eth1
   type: switched
   shutdown: false

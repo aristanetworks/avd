@@ -1043,6 +1043,7 @@ ethernet_interfaces:
 - peer: server03_ESI
   peer_interface: Eth1
   peer_type: server
+  port_profile: TENANT_A_B
   description: server03_ESI_Eth1
   type: switched
   shutdown: false
@@ -1055,6 +1056,7 @@ ethernet_interfaces:
 - peer: server04_inherit_all_from_profile
   peer_interface: Eth1
   peer_type: server
+  port_profile: ALL_WITH_SECURITY
   description: server04_inherit_all_from_profile_Eth1
   l2_mtu: 8000
   type: switched
@@ -1106,6 +1108,7 @@ ethernet_interfaces:
 - peer: server06_override_profile
   peer_interface: Eth1
   peer_type: server
+  port_profile: ALL_WITH_SECURITY
   description: server06_override_profile_Eth1
   l2_mtu: 8000
   type: switched
@@ -1132,6 +1135,7 @@ ethernet_interfaces:
 - peer: server07_inherit_all_from_profile_port_channel
   peer_interface: Eth1
   peer_type: server
+  port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
   description: server07_inherit_all_from_profile_port_channel_Eth1
   l2_mtu: 8000
   type: switched
@@ -1189,6 +1193,7 @@ ethernet_interfaces:
 - peer: server09_override_profile_no_port_channel
   peer_interface: Eth1
   peer_type: server
+  port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
   description: server09_override_profile_no_port_channel_Eth1
   l2_mtu: 8000
   type: switched
@@ -1244,6 +1249,7 @@ ethernet_interfaces:
 - peer: server11_inherit_profile_port_channel_lacp_fallback
   peer_interface: Eth1
   peer_type: server
+  port_profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
   description: server11_inherit_profile_port_channel_lacp_fallback_Eth1
   l2_mtu: 8000
   type: switched
@@ -1274,6 +1280,7 @@ ethernet_interfaces:
 - peer: server12_inherit_nested_profile_port_channel_lacp_fallback
   peer_interface: Eth1
   peer_type: server
+  port_profile: NESTED_PORT_PROFILE
   description: server12_inherit_nested_profile_port_channel_lacp_fallback_Eth1
   l2_mtu: 8000
   type: switched
@@ -1304,6 +1311,7 @@ ethernet_interfaces:
 - peer: server13_disabled_interfaces
   peer_interface: Eth1
   peer_type: server
+  port_profile: TENANT_A
   description: server13_disabled_interfaces_Eth1
   type: switched
   shutdown: true
@@ -1313,6 +1321,7 @@ ethernet_interfaces:
 - peer: server14_explicitly_enabled_interfaces
   peer_interface: Eth1
   peer_type: server
+  port_profile: TENANT_A
   description: server14_explicitly_enabled_interfaces_Eth1
   type: switched
   shutdown: false
@@ -1322,6 +1331,7 @@ ethernet_interfaces:
 - peer: server15_port_channel_with_disabled_phy_interfaces
   peer_interface: Eth1
   peer_type: server
+  port_profile: TENANT_A
   description: server15_port_channel_with_disabled_phy_interfaces_Eth1
   type: switched
   shutdown: true
@@ -1334,6 +1344,7 @@ ethernet_interfaces:
 - peer: server16_port_channel_with_disabled_port_channel
   peer_interface: Eth1
   peer_type: server
+  port_profile: TENANT_A
   description: server16_port_channel_with_disabled_port_channel_Eth1
   type: switched
   shutdown: false
@@ -1346,6 +1357,7 @@ ethernet_interfaces:
 - peer: server17_port_channel_with_disabled_phy_and_po_interfaces
   peer_interface: Eth1
   peer_type: server
+  port_profile: TENANT_A
   description: server17_port_channel_with_disabled_phy_and_po_interfaces_Eth1
   type: switched
   shutdown: true
@@ -1358,6 +1370,7 @@ ethernet_interfaces:
 - peer: server18_monitoring_session_source_phys_interfaces
   peer_interface: Eth1
   peer_type: server
+  port_profile: TENANT_A
   description: server18_monitoring_session_source_phys_interfaces_Eth1
   type: switched
   shutdown: false
@@ -1367,6 +1380,7 @@ ethernet_interfaces:
 - peer: server18_monitoring_session_source_po
   peer_interface: Eth3
   peer_type: server
+  port_profile: TENANT_A
   description: server18_monitoring_session_source_po_Eth3
   type: switched
   shutdown: false
@@ -1379,6 +1393,7 @@ ethernet_interfaces:
 - peer: server18_monitoring_session_source_phys_interface
   peer_interface: Eth5
   peer_type: server
+  port_profile: TENANT_A
   description: server18_monitoring_session_source_phys_interface_Eth5
   type: switched
   shutdown: false
@@ -1402,6 +1417,7 @@ ethernet_interfaces:
 - peer: server21_monitoring_session_destination_po
   peer_interface: Eth1
   peer_type: server
+  port_profile: TENANT_A
   description: server21_monitoring_session_destination_po_Eth1
   type: switched
   shutdown: false
@@ -1414,6 +1430,7 @@ ethernet_interfaces:
 - peer: server22_port_channel_with_custom_id
   peer_interface: Eth1
   peer_type: server
+  port_profile: TENANT_A
   description: server22_port_channel_with_custom_id_Eth1
   type: switched
   shutdown: false
