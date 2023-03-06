@@ -2,10 +2,10 @@ from __future__ import annotations
 
 __metaclass__ = type
 
-import importlib.metadata
 import json
 import os
 import sys
+from importlib.metadata import PackageNotFoundError, version
 from subprocess import PIPE, Popen
 
 import yaml
@@ -17,10 +17,11 @@ from ansible.utils.collection_loader._collection_finder import _get_collection_m
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 
-HAS_PACKAGING = True
 try:
     from packaging.requirements import InvalidRequirement, Requirement
     from packaging.specifiers import SpecifierSet
+
+    HAS_PACKAGING = True
 except ImportError:
     HAS_PACKAGING = False
 
@@ -76,9 +77,9 @@ def _validate_python_requirements(requirements: list[str], result: dict) -> bool
             raise AristaAvdError(f"Wrong format for requirement {raw_req}") from exc
 
         try:
-            installed_version = importlib.metadata.version(req.name)
+            installed_version = version(req.name)
             display.vvv(f"Found {req.name} {installed_version} installed!", "Verify Requirements")
-        except importlib.metadata.PackageNotFoundError:
+        except PackageNotFoundError:
             requirements_dict["not_found"][req.name] = {
                 "installed": None,
                 "required_version": str(req.specifier) if len(req.specifier) > 0 else None,
@@ -134,8 +135,7 @@ def _validate_ansible_collections(running_collection_name: str, result: dict) ->
     """
     valid = True
 
-    collection = import_module(f"ansible_collections.{running_collection_name}")
-    collection_path = os.path.dirname(collection.__file__)
+    collection_path = _get_collection_path(running_collection_name)
     collections_file = os.path.join(collection_path, "collections.yml")
     with open(collections_file, "rb") as fd:
         metadata = yaml.safe_load(fd)
@@ -267,6 +267,8 @@ class ActionModule(ActionBase):
         running_collection_name = task_vars["ansible_collection_name"]
 
         result["failed"] = False
+
+        error_message = "Set 'avd_ignore_requirements=True' to ignore validation error(s)."
         info = {
             "ansible": {},
             "python": {},
@@ -275,6 +277,8 @@ class ActionModule(ActionBase):
         _get_running_collection_version(running_collection_name, info["ansible"])
 
         display.display(f"AVD version {info['ansible']['collection']['version']}", color=C.COLOR_HIGHLIGHT)
+        if display.verbosity < 1:
+            display.display("Use -v for details.")
 
         if not _validate_python_version(info["python"]):
             result["failed"] = True
@@ -285,11 +289,11 @@ class ActionModule(ActionBase):
         if not _validate_ansible_collections(running_collection_name, info["ansible"]):
             result["failed"] = True
 
-        # if avd_debug is True:
-        # display.display(json.dumps(info, indent=4), color="blue")
         display.v(json.dumps(info, indent=4))
 
         if avd_ignore_requirements is True:
             result["failed"] = False
+        elif result["failed"] is True:
+            result["msg"] = error_message
 
         return result

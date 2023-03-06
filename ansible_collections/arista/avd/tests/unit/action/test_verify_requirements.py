@@ -1,7 +1,7 @@
 __metaclass__ = type
 
-import importlib
 from collections import namedtuple
+from importlib.metadata import PackageNotFoundError
 from unittest.mock import patch
 
 import pytest
@@ -90,10 +90,10 @@ def test__validate_python_requirements(n_reqs, mocked_version, requirement_versi
     """
     result = {}
     requirements = [f"test-dep>={requirement_version}" for _ in range(n_reqs)]  # pylint: disable=disallowed-name
-    with patch("ansible_collections.arista.avd.plugins.action.verify_requirements.importlib.metadata.version") as patched_version:
+    with patch("ansible_collections.arista.avd.plugins.action.verify_requirements.version") as patched_version:
         patched_version.return_value = mocked_version
         if mocked_version is None:
-            patched_version.side_effect = importlib.metadata.PackageNotFoundError()
+            patched_version.side_effect = PackageNotFoundError()
         ret = _validate_python_requirements(requirements, result)
         assert ret == expected_return
 
