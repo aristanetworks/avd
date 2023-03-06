@@ -414,7 +414,8 @@ vlan_interfaces:
   name: Vlan512
 router_ospf:
   process_ids:
-  - vrf: svi_profile_tests_vrf
+  - id: 1
+    vrf: svi_profile_tests_vrf
     passive_interface_default: true
     router_id: 192.168.255.1
     no_passive_interfaces:
@@ -424,7 +425,6 @@ router_ospf:
     max_lsa: 15000
     redistribute:
       bgp: {}
-    id: 1
 vxlan_interface:
   Vxlan1:
     description: SVI_PROFILE_NODE_1_VTEP

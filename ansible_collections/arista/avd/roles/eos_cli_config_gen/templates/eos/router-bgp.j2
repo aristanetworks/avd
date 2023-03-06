@@ -84,6 +84,12 @@ router bgp {{ router_bgp.as }}
 {%         if peer_group.local_as is arista.avd.defined %}
    neighbor {{ peer_group.name }} local-as {{ peer_group.local_as }} no-prepend replace-as
 {%         endif %}
+{%         if peer_group.as_path.remote_as_replace_out is arista.avd.defined(true) %}
+   neighbor {{ peer_group.name }} as-path remote-as replace out
+{%         endif %}
+{%         if peer_group.as_path.prepend_own_disabled is arista.avd.defined(true) %}
+   neighbor {{ peer_group.name }} as-path prepend-own disabled
+{%         endif %}
 {%         if peer_group.next_hop_self is arista.avd.defined(true) %}
    neighbor {{ peer_group.name }} next-hop-self
 {%         endif %}
@@ -234,6 +240,12 @@ router bgp {{ router_bgp.as }}
    {{ remove_private_as_ingress_cli }}
 {%         elif neighbor.remove_private_as_ingress.enabled is arista.avd.defined(false) %}
    no neighbor {{ neighbor.ip_address }} remove-private-as ingress
+{%         endif %}
+{%         if neighbor.as_path.remote_as_replace_out is arista.avd.defined(true) %}
+   neighbor {{ neighbor.ip_address }} as-path remote-as replace out
+{%         endif %}
+{%         if neighbor.as_path.prepend_own_disabled is arista.avd.defined(true) %}
+   neighbor {{ neighbor.ip_address }} as-path prepend-own disabled
 {%         endif %}
 {%         if neighbor.local_as is arista.avd.defined %}
    neighbor {{ neighbor.ip_address }} local-as {{ neighbor.local_as }} no-prepend replace-as
@@ -896,6 +908,12 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if neighbor.weight is arista.avd.defined %}
       neighbor {{ neighbor.ip_address }} weight {{ neighbor.weight }}
+{%             endif %}
+{%             if neighbor.as_path.remote_as_replace_out is arista.avd.defined(true) %}
+      neighbor {{ neighbor.ip_address }} as-path remote-as replace out
+{%             endif %}
+{%             if neighbor.as_path.prepend_own_disabled is arista.avd.defined(true) %}
+      neighbor {{ neighbor.ip_address }} as-path prepend-own disabled
 {%             endif %}
 {%             if neighbor.local_as is arista.avd.defined %}
       neighbor {{ neighbor.ip_address }} local-as {{ neighbor.local_as }} no-prepend replace-as

@@ -108,6 +108,9 @@ router_bgp:
         always: true
       rib_in_pre_policy_retain:
         enabled: true
+      as_path:
+        remote_as_replace_out: true
+        prepend_own_disabled: true
     192.0.3.2:
       remote_as: 65433
       send_community: extended

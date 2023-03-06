@@ -191,7 +191,8 @@ loopback_interfaces:
   name: Loopback0
 router_ospf:
   process_ids:
-  - passive_interface_default: true
+  - id: 101
+    passive_interface_default: true
     router_id: 192.168.255.1
     max_lsa: 12000
     no_passive_interfaces:
@@ -203,7 +204,6 @@ router_ospf:
     - Ethernet6
     - Ethernet7
     bfd_enable: true
-    id: 101
 router_bfd:
   multihop:
     interval: 1200

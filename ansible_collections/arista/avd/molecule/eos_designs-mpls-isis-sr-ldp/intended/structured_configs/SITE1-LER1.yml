@@ -239,6 +239,7 @@ ethernet_interfaces:
 - peer: CPE_TENANT_A_SITE1
   peer_interface: Ethernet1
   peer_type: cpe
+  port_profile: TENANT_A_WAN_SERVICE_10
   description: CPE_TENANT_A_SITE1_Ethernet1
   type: switched
   shutdown: false
@@ -463,7 +464,8 @@ vlan_interfaces:
   name: Vlan2020
 router_ospf:
   process_ids:
-  - vrf: TENANT_B_INTRA
+  - id: 19
+    vrf: TENANT_B_INTRA
     passive_interface_default: true
     router_id: 123.1.1.0
     no_passive_interfaces:
@@ -471,4 +473,3 @@ router_ospf:
     max_lsa: 10000
     redistribute:
       bgp: {}
-    id: 19

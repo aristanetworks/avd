@@ -571,6 +571,7 @@ ethernet_interfaces:
 - peer: server01_MLAG
   peer_interface: Eth3
   peer_type: server
+  port_profile: TENANT_B
   description: server01_MLAG_Eth3
   type: switched
   shutdown: false
@@ -585,6 +586,7 @@ ethernet_interfaces:
 - peer: server01_MTU_PROFILE_MLAG
   peer_interface: Eth5
   peer_type: server
+  port_profile: TENANT_A_MTU
   description: server01_MTU_PROFILE_MLAG_Eth5
   mtu: 1600
   type: switched
@@ -613,6 +615,7 @@ ethernet_interfaces:
 - peer: FIREWALL01
   peer_interface: E1
   peer_type: firewall
+  port_profile: TENANT_A_B
   description: FIREWALL01_E1
   type: switched
   shutdown: false
@@ -625,6 +628,7 @@ ethernet_interfaces:
 - peer: ROUTER01
   peer_interface: Eth1
   peer_type: router
+  port_profile: TENANT_A
   description: ROUTER01_Eth1
   type: switched
   shutdown: false
@@ -1019,14 +1023,14 @@ ipv6_static_routes:
   vrf: Tenant_D_OP_Zone
 router_ospf:
   process_ids:
-  - vrf: Tenant_A_OSPF
+  - id: 16
+    vrf: Tenant_A_OSPF
     passive_interface_default: true
     router_id: 192.168.255.11
     no_passive_interfaces:
     - Ethernet24
     redistribute:
       bgp: {}
-    id: 16
 vxlan_interface:
   Vxlan1:
     description: DC1-LEAF2B_VTEP

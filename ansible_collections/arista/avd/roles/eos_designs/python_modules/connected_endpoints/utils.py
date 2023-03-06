@@ -45,7 +45,6 @@ class UtilsMixin:
                         port_profile = get_item(self._merged_port_profiles, "profile", adapter["profile"], default={})
                         # Notice reusing the same variable, but assigning a new instance with the merged adapter
                         adapter = merge(port_profile, adapter, list_merge="replace", destructive_merge=False)
-                        adapter.pop("profile")
 
                     if self._hostname not in adapter.get("switches", []):
                         continue
@@ -80,7 +79,6 @@ class UtilsMixin:
                 port_profile = get_item(self._merged_port_profiles, "profile", network_port["profile"], default={})
                 # Notice reusing the same variable, but assigning a new instance with the merged network_port
                 network_port = merge(port_profile, network_port, list_merge="replace", destructive_merge=False)
-                network_port.pop("profile")
 
             if not self._match_regexes(network_port.get("switches"), self._hostname):
                 continue

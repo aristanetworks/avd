@@ -528,16 +528,16 @@ vlan_interfaces:
     vrf: Tenant_C_WAN_Zone
 router_ospf:
   process_ids:
-    14:
-      vrf: Tenant_A_WAN_Zone
-      passive_interface_default: true
-      router_id: 192.168.255.14
-      no_passive_interfaces:
-      - Ethernet7
-      - Vlan150
-      max_lsa: 15000
-      redistribute:
-        bgp: {}
+  - id: 14
+    vrf: Tenant_A_WAN_Zone
+    passive_interface_default: true
+    router_id: 192.168.255.14
+    no_passive_interfaces:
+    - Ethernet7
+    - Vlan150
+    max_lsa: 15000
+    redistribute:
+      bgp: {}
 vxlan_interface:
   Vxlan1:
     description: DC1-BL1A_VTEP

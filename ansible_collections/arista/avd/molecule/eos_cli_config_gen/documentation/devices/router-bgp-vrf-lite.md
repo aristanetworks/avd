@@ -156,6 +156,8 @@ router bgp 65001
    graceful-restart
    neighbor OBS_WAN peer group
    neighbor OBS_WAN remote-as 65000
+   neighbor OBS_WAN as-path remote-as replace out
+   neighbor OBS_WAN as-path prepend-own disabled
    neighbor OBS_WAN description BGP Connection to OBS WAN CPE
    neighbor SEDI peer group
    neighbor SEDI remote-as 65003
@@ -187,6 +189,7 @@ router bgp 65001
       neighbor 10.1.1.0 peer group OBS_WAN
       neighbor 10.255.1.1 peer group WELCOME_ROUTERS
       neighbor 10.255.1.1 weight 65535
+      neighbor 10.255.1.1 as-path remote-as replace out
       neighbor 10.255.1.1 route-reflector-client
       neighbor 101.0.3.1 peer group SEDI
       neighbor 101.0.3.1 weight 100
