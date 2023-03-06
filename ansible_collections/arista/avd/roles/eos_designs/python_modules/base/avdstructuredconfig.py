@@ -547,9 +547,13 @@ class AvdStructuredConfig(AvdFacts):
             inserting ipv6 variables if self._mgmt_ipv6_enable is turned on
             """
             if self._ipv6_mgmt_ip is not None:
-                interface_settings["ipv6_enable"] = True
-                interface_settings["ipv6_address"] = self._ipv6_mgmt_ip
-                interface_settings["ipv6_gateway"] = self._ipv6_mgmt_gateway
+                interface_settings.update(
+                  {
+                    "ipv6_enable": True,
+                    "ipv6_address": self._ipv6_mgmt_ip,
+                    "ipv6_gateway": self._ipv6_mgmt_gateway,
+                  }
+                )
 
             return {
                 mgmt_interface: interface_settings,
