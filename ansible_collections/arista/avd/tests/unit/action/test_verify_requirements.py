@@ -10,7 +10,7 @@ from ansible_collections.arista.avd.plugins.action.verify_requirements import (
     MIN_PYTHON_SUPPORTED_VERSION,
     _validate_ansible_collections,
     _validate_ansible_version,
-    _validate_python_dependencies,
+    _validate_python_requirements,
     _validate_python_version,
 )
 
@@ -49,7 +49,7 @@ def test__validate_python_version(mocked_version, expected_return):
 
 
 @pytest.mark.parametrize(
-    "n_deps, mocked_version, requirement_version, expected_return",
+    "n_reqs, mocked_version, requirement_version, expected_return",
     [
         pytest.param(
             1,
@@ -70,31 +70,31 @@ def test__validate_python_version(mocked_version, expected_return):
             None,
             "4.2",
             False,
-            id="missing dependency",
+            id="missing requirement",
         ),
         pytest.param(
             0,
             None,
             None,
             True,
-            id="no dependency",
+            id="no requirement",
         ),
     ],
 )
-def test__validate_python_dependencies(n_deps, mocked_version, requirement_version, expected_return):
+def test__validate_python_requirements(n_reqs, mocked_version, requirement_version, expected_return):
     """
-    Running with n_deps dependencies
+    Running with n_reqs requirements
 
     TODO - check the results
-         - not testing for wrongly formated dependencies
+         - not testing for wrongly formated requirements
     """
     result = {}
-    dependencies = [f"test-dep>={requirement_version}" for _ in range(n_deps)]  # pylint: disable=disallowed-name
+    requirements = [f"test-dep>={requirement_version}" for _ in range(n_reqs)]  # pylint: disable=disallowed-name
     with patch("ansible_collections.arista.avd.plugins.action.verify_requirements.importlib.metadata.version") as patched_version:
         patched_version.return_value = mocked_version
         if mocked_version is None:
             patched_version.side_effect = importlib.metadata.PackageNotFoundError()
-        ret = _validate_python_dependencies(dependencies, result)
+        ret = _validate_python_requirements(requirements, result)
         assert ret == expected_return
 
 
@@ -123,7 +123,7 @@ def test__validate_ansible_version(mocked_running_version, expected_return):
 
 
 @pytest.mark.parametrize(
-    "n_deps, mocked_version, requirement_version, expected_return",
+    "n_reqs, mocked_version, requirement_version, expected_return",
     [
         pytest.param(
             1,
@@ -151,20 +151,20 @@ def test__validate_ansible_version(mocked_running_version, expected_return):
             None,
             ">=4.2",
             False,
-            id="missing dependency",
+            id="missing requirement",
         ),
         pytest.param(
             0,
             None,
             None,
             True,
-            id="no dependency",
+            id="no requirement",
         ),
     ],
 )
-def test__validate_ansible_collections(n_deps, mocked_version, requirement_version, expected_return):
+def test__validate_ansible_collections(n_reqs, mocked_version, requirement_version, expected_return):
     """
-    Running with n_deps dependencies
+    Running with n_reqs requirements
 
     TODO - check the results
          - not testing for wrongly formated collection.yml file
@@ -173,8 +173,8 @@ def test__validate_ansible_collections(n_deps, mocked_version, requirement_versi
 
     # Create the metadata based on test input data
     metadata = {}
-    if n_deps > 0:
-        metadata["collections"] = [{"name": "test-collection"} for _ in range(n_deps)]  # pylint: disable=disallowed-name
+    if n_reqs > 0:
+        metadata["collections"] = [{"name": "test-collection"} for _ in range(n_reqs)]  # pylint: disable=disallowed-name
         if requirement_version is not None:
             for collection in metadata["collections"]:
                 collection["version"] = requirement_version

@@ -15,8 +15,8 @@
   delegate_to: localhost
   when: avd_requirements is not defined
   arista.avd.verify_requirements:
-    dependencies: "{{ lookup('file', requirements_path ~ '/requirements.txt').splitlines() }}"
-    avd_debug: "{{ avd_debug | default(false) }}"
+    requirements: "{{ lookup('file', requirements_path ~ '/requirements.txt').splitlines() }}"
+    avd_ignore_requirements: "{{ avd_ignore_requirements | default(false) }}"
   vars:
     requirements_path: "{{ (role_path | split('/'))[0:-2] | join('/') }}"
   run_once: true

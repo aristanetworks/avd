@@ -9,6 +9,7 @@ import sys
 from subprocess import PIPE, Popen
 
 import yaml
+from ansible import constants as C
 from ansible.errors import AnsibleActionFail
 from ansible.module_utils.compat.importlib import import_module
 from ansible.plugins.action import ActionBase, display
@@ -51,15 +52,15 @@ def _validate_python_version(result: dict) -> bool:
     return True
 
 
-def _validate_python_dependencies(dependencies: list[str], result: dict) -> bool:
+def _validate_python_requirements(requirements: list[str], result: dict) -> bool:
     """
     Validate python lib versions
 
-    return False if any python dependency is not valid
+    return False if any python requirement is not valid
     """
     valid = True
 
-    dependencies_dict = {
+    requirements_dict = {
         "not_found": {},
         "valid": {},
         "mismatched": {},
@@ -67,39 +68,39 @@ def _validate_python_dependencies(dependencies: list[str], result: dict) -> bool
     }
 
     # Remove the comments
-    dependencies = [dep for dep in dependencies if dep[0] != "#"]
-    for dep in dependencies:
+    requirements = [req for req in requirements if req[0] != "#"]
+    for raw_req in requirements:
         try:
-            req = Requirement(dep)
+            req = Requirement(raw_req)
         except InvalidRequirement as exc:
-            raise AristaAvdError(f"Wrong format for dependency {dep}") from exc
+            raise AristaAvdError(f"Wrong format for requirement {raw_req}") from exc
 
         try:
             installed_version = importlib.metadata.version(req.name)
-            display.vvvv(f"Found {req.name} {installed_version} installed!", "Verify Requirements")
+            display.vvv(f"Found {req.name} {installed_version} installed!", "Verify Requirements")
         except importlib.metadata.PackageNotFoundError:
-            dependencies_dict["not_found"][req.name] = {
+            requirements_dict["not_found"][req.name] = {
                 "installed": None,
-                "desired": str(req.specifier) if len(req.specifier) > 0 else None,
+                "required_version": str(req.specifier) if len(req.specifier) > 0 else None,
             }
-            display.error(f"{req.name} required but not found - required version is {str(req.specifier)}", False)
+            display.error(f"Python library '{req.name}' required but not found - requirement is {str(req)}", False)
             valid = False
             continue
 
         if req.specifier.contains(installed_version):
-            dependencies_dict["valid"][req.name] = {
+            requirements_dict["valid"][req.name] = {
                 "installed": installed_version,
-                "desired": str(req.specifier) if len(req.specifier) > 0 else None,
+                "required_version": str(req.specifier) if len(req.specifier) > 0 else None,
             }
         else:
-            display.error(f"{req.name} version running {installed_version} - required version is {str(req.specifier)}", False)
-            dependencies_dict["mismatched"][req.name] = {
+            display.error(f"Python library '{req.name}' version running {installed_version} - requirement is {str(req)}", False)
+            requirements_dict["mismatched"][req.name] = {
                 "installed": installed_version,
-                "desired": str(req.specifier) if len(req.specifier) > 0 else None,
+                "required_version": str(req.specifier) if len(req.specifier) > 0 else None,
             }
             valid = False
 
-    result["python_dependencies"] = dependencies_dict
+    result["python_requirements"] = requirements_dict
     return valid
 
 
@@ -142,7 +143,7 @@ def _validate_ansible_collections(running_collection_name: str, result: dict) ->
         # no requirements
         return True
 
-    dependencies_dict = {
+    requirements_dict = {
         "not_found": {},
         "valid": {},
         "mismatched": {},
@@ -161,9 +162,9 @@ def _validate_ansible_collections(running_collection_name: str, result: dict) ->
         try:
             collection_path = _get_collection_path(collection_name)
         except ModuleNotFoundError:
-            dependencies_dict["not_found"][collection_name] = {
+            requirements_dict["not_found"][collection_name] = {
                 "installed": None,
-                "desired": str(specifiers_set) if len(specifiers_set) > 0 else None,
+                "required_version": str(specifiers_set) if len(specifiers_set) > 0 else None,
             }
             if specifiers_set:
                 display.error(f"{collection_name} required but not found - required version is {str(specifiers_set)}", False)
@@ -175,19 +176,19 @@ def _validate_ansible_collections(running_collection_name: str, result: dict) ->
         installed_version = _get_collection_version(collection_path)
 
         if specifiers_set.contains(installed_version):
-            dependencies_dict["valid"][collection_name] = {
+            requirements_dict["valid"][collection_name] = {
                 "installed": installed_version,
-                "desired": str(specifiers_set) if len(specifiers_set) > 0 else None,
+                "required_version": str(specifiers_set) if len(specifiers_set) > 0 else None,
             }
         else:
             display.error(f"{collection_name} version running {installed_version} - required version is {str(specifiers_set)}", False)
-            dependencies_dict["mismatched"][collection_name] = {
+            requirements_dict["mismatched"][collection_name] = {
                 "installed": installed_version,
-                "desired": str(specifiers_set) if len(specifiers_set) > 0 else None,
+                "required_version": str(specifiers_set) if len(specifiers_set) > 0 else None,
             }
             valid = False
 
-    result["collection_dependencies"] = dependencies_dict
+    result["collection_requirements"] = requirements_dict
     return valid
 
 
@@ -251,34 +252,44 @@ class ActionModule(ActionBase):
         if not HAS_PACKAGING:
             raise AnsibleActionFail("packaging is required to run this plugin")
 
-        if not (self._task.args and "dependencies" in self._task.args):
-            raise AnsibleActionFail("The argument 'dependencies' must be set")
+        if not (self._task.args and "requirements" in self._task.args):
+            raise AnsibleActionFail("The argument 'requirements' must be set")
 
-        py_dependencies = self._task.args.get("dependencies")
-        avd_debug = self._task.args.get("avd_debug", False)
-        # TODO - check the `-e` syntax
-        if avd_debug in ["true", "True"]:
-            avd_debug = True
+        py_requirements = self._task.args.get("requirements")
+        avd_ignore_requirements = self._task.args.get("avd_ignore_requirements", False)
+        if avd_ignore_requirements in ["true", "True"]:
+            avd_ignore_requirements = True
 
-        if not isinstance(py_dependencies, list):
-            raise AnsibleActionFail("The argument 'dependencies' is not a list")
+        if not isinstance(py_requirements, list):
+            raise AnsibleActionFail("The argument 'requirements' is not a list")
 
         running_ansible_version = task_vars["ansible_version"]["string"]
         running_collection_name = task_vars["ansible_collection_name"]
 
         result["failed"] = False
-        result["ansible"] = {}
-        result["python"] = {}
+        info = {
+            "ansible": {},
+            "python": {},
+        }
 
-        _get_running_collection_version(running_collection_name, result["ansible"])
-        display.display(f"AVD version {result['ansible']['collection']['version']}", color="blue")
+        _get_running_collection_version(running_collection_name, info["ansible"])
 
-        _validate_python_version(result["python"])
-        _validate_python_dependencies(py_dependencies, result["python"])
-        _validate_ansible_version(running_collection_name, running_ansible_version, result["ansible"])
-        _validate_ansible_collections(running_collection_name, result["ansible"])
+        display.display(f"AVD version {info['ansible']['collection']['version']}", color=C.COLOR_HIGHLIGHT)
 
-        if avd_debug is True:
-            display.display(json.dumps(result, indent=4), color="blue")
+        if not _validate_python_version(info["python"]):
+            result["failed"] = True
+        if not _validate_python_requirements(py_requirements, info["python"]):
+            result["failed"] = True
+        if not _validate_ansible_version(running_collection_name, running_ansible_version, info["ansible"]):
+            result["failed"] = True
+        if not _validate_ansible_collections(running_collection_name, info["ansible"]):
+            result["failed"] = True
+
+        # if avd_debug is True:
+        # display.display(json.dumps(info, indent=4), color="blue")
+        display.v(json.dumps(info, indent=4))
+
+        if avd_ignore_requirements is True:
+            result["failed"] = False
 
         return result
