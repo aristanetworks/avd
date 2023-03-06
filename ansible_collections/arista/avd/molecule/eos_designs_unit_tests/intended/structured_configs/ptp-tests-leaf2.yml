@@ -216,9 +216,9 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 vlans:
-- tenant: PTP
+- id: 11
   name: VLAN11
-  id: 11
+  tenant: PTP
 ip_igmp_snooping:
   globally_enabled: true
 vlan_interfaces:

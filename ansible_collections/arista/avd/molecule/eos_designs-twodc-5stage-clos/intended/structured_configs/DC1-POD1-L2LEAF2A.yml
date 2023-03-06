@@ -39,36 +39,36 @@ vlans:
   trunk_groups:
   - MLAG
   id: 4094
-- tenant: Tenant_A
+- id: 110
   name: Tenant_A_OP_Zone_1
-  id: 110
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 111
   name: Tenant_A_OP_Zone_2
-  id: 111
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 112
   name: Tenant_A_OP_Zone_3
-  id: 112
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 113
   name: SVI_with_no_vxlan
-  id: 113
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 1102
   name: test_svi
-  id: 1102
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 1100
   name: test_svi
-  id: 1100
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 1101
   name: test_svi
-  id: 1101
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 2500
   name: web-l2-vlan
-  id: 2500
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 2600
   name: web-l2-vlan-2
-  id: 2600
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 2601
   name: l2vlan_with_no_vxlan
-  id: 2601
+  tenant: Tenant_A
 - tenant: system
   name: L2LEAF_INBAND_MGMT
   id: 4085

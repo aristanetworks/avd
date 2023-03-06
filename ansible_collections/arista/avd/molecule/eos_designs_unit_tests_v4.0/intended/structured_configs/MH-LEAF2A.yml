@@ -252,12 +252,12 @@ router_bfd:
     min_rx: 1200
     multiplier: 3
 vlans:
-  311:
-    tenant: Tenant_X
-    name: Tenant_default_vrf
-  310:
-    tenant: Tenant_X
-    name: Tenant_X_OP_Zone_1
+- id: 311
+  name: Tenant_default_vrf
+  tenant: Tenant_X
+- id: 310
+  name: Tenant_X_OP_Zone_1
+  tenant: Tenant_X
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
@@ -294,5 +294,5 @@ vxlan_interface:
         Tenant_X_OP_Zone:
           vni: 20
 virtual_source_nat_vrfs:
-  Tenant_X_OP_Zone:
-    ip_address: 10.255.1.35
+- name: Tenant_X_OP_Zone
+  ip_address: 10.255.1.35

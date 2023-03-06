@@ -115,19 +115,19 @@ vlans:
   - trunk-group-tests-l2leaf4
   - MLAG
   id: 200
-  tenant: TRUNK_GROUP_TESTS
   name: svi200_with_trunk_groups
+  tenant: TRUNK_GROUP_TESTS
 - trunk_groups:
   - trunk-group-tests-l2leaf4
   - MLAG
   id: 210
-  tenant: TRUNK_GROUP_TESTS
   name: l2vlan210_with_trunk_groups
-- tenant: TRUNK_GROUP_TESTS
+  tenant: TRUNK_GROUP_TESTS
+- id: 3199
   name: MLAG_iBGP_TG_200
   trunk_groups:
   - LEAF_PEER_L3
-  id: 3199
+  tenant: TRUNK_GROUP_TESTS
 vlan_interfaces:
 - description: MLAG_PEER_L3_PEERING
   shutdown: false

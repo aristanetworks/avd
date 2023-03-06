@@ -467,15 +467,15 @@ patch_panel:
       type: pseudowire
       endpoint: bgp vpws TENANT_B pseudowire TEN_B_site3_site5_eline_vlan_based_1004
 vlans:
-- tenant: TENANT_A
+- id: 10
   name: TENANT_A_L2_SERVICE
-  id: 10
-- tenant: TENANT_A
+  tenant: TENANT_A
+- id: 20
   name: TENANT_A_L2_SERVICE
-  id: 20
-- tenant: TENANT_B
+  tenant: TENANT_A
+- id: 2020
   name: TENANT_B_INSIDE_FW
-  id: 2020
+  tenant: TENANT_B
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:00

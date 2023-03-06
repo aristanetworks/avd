@@ -321,10 +321,10 @@ vxlan_interface:
       - vni: 1101
         name: vrf_with_loopbacks_from_pod_pools
 virtual_source_nat_vrfs:
-- ip_address: 10.100.0.3
-  name: vrf_with_loopbacks_from_overlapping_pool
-- ip_address: 10.101.201.3
-  name: vrf_with_loopbacks_from_pod_pools
+- name: vrf_with_loopbacks_from_overlapping_pool
+  ip_address: 10.100.0.3
+- name: vrf_with_loopbacks_from_pod_pools
+  ip_address: 10.101.201.3
 vlans:
 - tenant: system
   name: L2LEAF_INBAND_MGMT

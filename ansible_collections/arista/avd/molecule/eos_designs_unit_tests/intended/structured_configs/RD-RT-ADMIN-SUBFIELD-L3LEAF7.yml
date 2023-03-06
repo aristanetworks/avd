@@ -119,12 +119,12 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 vlans:
-- tenant: Tenant_A
+- id: 1
   name: VLAN_1
-  id: 1
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 2
   name: VLAN_2
-  id: 2
+  tenant: Tenant_A
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a

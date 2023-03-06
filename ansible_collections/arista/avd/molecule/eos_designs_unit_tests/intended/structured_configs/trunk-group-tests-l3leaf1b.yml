@@ -219,81 +219,81 @@ vlans:
   - TRUNK_GROUP_TESTS_L2LEAF1
   - CUSTOM_MLAG_TG_NAME
   id: 100
-  tenant: TRUNK_GROUP_TESTS
   name: svi100_with_trunk_groups
+  tenant: TRUNK_GROUP_TESTS
 - trunk_groups:
   - TRUNK_GROUP_TESTS_L2LEAF1
   - CUSTOM_MLAG_TG_NAME
   id: 110
-  tenant: TRUNK_GROUP_TESTS
   name: l2vlan110_with_trunk_groups
+  tenant: TRUNK_GROUP_TESTS
 - trunk_groups:
   - trunk-group-tests-l2leaf3
   - TRUNK_GROUP_TESTS_L2LEAF1
   - CUSTOM_MLAG_TG_NAME
   id: 200
-  tenant: TRUNK_GROUP_TESTS
   name: svi200_with_trunk_groups
+  tenant: TRUNK_GROUP_TESTS
 - trunk_groups:
   - trunk-group-tests-l2leaf3
   - TRUNK_GROUP_TESTS_L2LEAF1
   - CUSTOM_MLAG_TG_NAME
   id: 210
-  tenant: TRUNK_GROUP_TESTS
   name: l2vlan210_with_trunk_groups
+  tenant: TRUNK_GROUP_TESTS
 - trunk_groups:
   - TRUNK_GROUP_TESTS_L2LEAF1
   - TG_300
   - CUSTOM_MLAG_TG_NAME
   id: 300
-  tenant: TRUNK_GROUP_TESTS
   name: svi300_with_trunk_groups
+  tenant: TRUNK_GROUP_TESTS
 - trunk_groups:
   - TRUNK_GROUP_TESTS_L2LEAF1
   - TG_300
   - CUSTOM_MLAG_TG_NAME
   id: 310
-  tenant: TRUNK_GROUP_TESTS
   name: l2vlan310_with_trunk_groups
+  tenant: TRUNK_GROUP_TESTS
 - trunk_groups:
   - TRUNK_GROUP_TESTS_L2LEAF1
   - CUSTOM_MLAG_TG_NAME
   id: 398
-  tenant: TRUNK_GROUP_TESTS
   name: svi398_without_trunk_groups
+  tenant: TRUNK_GROUP_TESTS
 - trunk_groups:
   - TRUNK_GROUP_TESTS_L2LEAF1
   - CUSTOM_MLAG_TG_NAME
   id: 399
-  tenant: TRUNK_GROUP_TESTS
   name: l2vlan399_without_trunk_groups
-- tenant: TRUNK_GROUP_TESTS
+  tenant: TRUNK_GROUP_TESTS
+- id: 3099
   name: MLAG_iBGP_TG_100
   trunk_groups:
   - CUSTOM_LEAF_PEER_L3_TG_NAME
-  id: 3099
-- tenant: TRUNK_GROUP_TESTS
+  tenant: TRUNK_GROUP_TESTS
+- id: 3199
   name: MLAG_iBGP_TG_200
   trunk_groups:
   - CUSTOM_LEAF_PEER_L3_TG_NAME
-  id: 3199
-- tenant: TRUNK_GROUP_TESTS
+  tenant: TRUNK_GROUP_TESTS
+- id: 301
   name: svi301_with_trunk_groups_only_l3leaf
+  tenant: TRUNK_GROUP_TESTS
   trunk_groups:
   - TG_300
   - CUSTOM_MLAG_TG_NAME
-  id: 301
-- tenant: TRUNK_GROUP_TESTS
+- id: 3299
   name: MLAG_iBGP_TG_300
   trunk_groups:
   - CUSTOM_LEAF_PEER_L3_TG_NAME
-  id: 3299
-- tenant: TRUNK_GROUP_TESTS
+  tenant: TRUNK_GROUP_TESTS
+- id: 311
   name: l2vlan310_with_trunk_groups_only_l3leaf
+  tenant: TRUNK_GROUP_TESTS
   trunk_groups:
   - TG_300
   - CUSTOM_MLAG_TG_NAME
-  id: 311
 vlan_interfaces:
 - description: MLAG_PEER_L3_PEERING
   shutdown: false

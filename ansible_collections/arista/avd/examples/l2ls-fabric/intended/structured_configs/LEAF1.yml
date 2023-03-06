@@ -51,12 +51,12 @@ vlans:
   trunk_groups:
   - MLAG
   id: 4094
-- tenant: MY_FABRIC
+- id: 10
   name: BLUE-NET
-  id: 10
-- tenant: MY_FABRIC
+  tenant: MY_FABRIC
+- id: 20
   name: GREEN-NET
-  id: 20
+  tenant: MY_FABRIC
 vlan_interfaces:
 - description: MLAG_PEER
   shutdown: false

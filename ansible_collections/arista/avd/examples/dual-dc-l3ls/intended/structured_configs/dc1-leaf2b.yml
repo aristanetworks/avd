@@ -267,34 +267,34 @@ vlans:
   trunk_groups:
   - MLAG
   id: 4094
-- tenant: TENANT1
+- id: 11
   name: VRF10_VLAN11
-  id: 11
-- tenant: TENANT1
+  tenant: TENANT1
+- id: 12
   name: VRF10_VLAN12
-  id: 12
-- tenant: TENANT1
+  tenant: TENANT1
+- id: 3009
   name: MLAG_iBGP_VRF10
   trunk_groups:
   - LEAF_PEER_L3
-  id: 3009
-- tenant: TENANT1
+  tenant: TENANT1
+- id: 21
   name: VRF11_VLAN21
-  id: 21
-- tenant: TENANT1
+  tenant: TENANT1
+- id: 22
   name: VRF11_VLAN22
-  id: 22
-- tenant: TENANT1
+  tenant: TENANT1
+- id: 3010
   name: MLAG_iBGP_VRF11
   trunk_groups:
   - LEAF_PEER_L3
-  id: 3010
-- tenant: TENANT1
+  tenant: TENANT1
+- id: 3401
   name: L2_VLAN3401
-  id: 3401
-- tenant: TENANT1
+  tenant: TENANT1
+- id: 3402
   name: L2_VLAN3402
-  id: 3402
+  tenant: TENANT1
 vlan_interfaces:
 - description: MLAG_PEER_L3_PEERING
   shutdown: false
@@ -526,7 +526,7 @@ vxlan_interface:
       - vni: 11
         name: VRF11
 virtual_source_nat_vrfs:
-- ip_address: 10.255.10.6
-  name: VRF10
-- ip_address: 10.255.11.6
-  name: VRF11
+- name: VRF10
+  ip_address: 10.255.10.6
+- name: VRF11
+  ip_address: 10.255.11.6

@@ -24,9 +24,9 @@ vlans:
   trunk_groups:
   - MLAG
   id: 4094
-- tenant: L2LS_OSPF
+- id: 100
   name: SVI_100
-  id: 100
+  tenant: L2LS_OSPF
 vlan_interfaces:
 - description: MLAG_PEER
   shutdown: false

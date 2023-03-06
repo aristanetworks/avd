@@ -43,8 +43,8 @@ port_channel_interfaces:
   vlans: '110'
   name: Port-Channel1
 vlans:
-- tenant: L2LS_ISIS
+- id: 110
   name: SVI_110
-  id: 110
+  tenant: L2LS_ISIS
 ip_igmp_snooping:
   globally_enabled: true

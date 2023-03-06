@@ -332,36 +332,36 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 vlans:
-- tenant: Tenant_A
+- id: 110
   name: Tenant_A_OP_Zone_1
-  id: 110
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 111
   name: Tenant_A_OP_Zone_2
-  id: 111
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 112
   name: Tenant_A_OP_Zone_3
-  id: 112
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 113
   name: SVI_with_no_vxlan
-  id: 113
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 1102
   name: test_svi
-  id: 1102
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 1100
   name: test_svi
-  id: 1100
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 1101
   name: test_svi
-  id: 1101
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 2500
   name: web-l2-vlan
-  id: 2500
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 2600
   name: web-l2-vlan-2
-  id: 2600
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 2601
   name: l2vlan_with_no_vxlan
-  id: 2601
+  tenant: Tenant_A
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
@@ -459,9 +459,9 @@ vxlan_interface:
       - vni: 1101
         name: vrf_with_loopbacks_from_pod_pools
 virtual_source_nat_vrfs:
-- ip_address: 10.100.0.3
-  name: vrf_with_loopbacks_from_overlapping_pool
-- ip_address: 10.101.102.3
-  name: vrf_with_loopbacks_from_pod_pools
+- name: vrf_with_loopbacks_from_overlapping_pool
+  ip_address: 10.100.0.3
+- name: vrf_with_loopbacks_from_pod_pools
+  ip_address: 10.101.102.3
 domain_list:
 - structured-config.set.under.vrf.common-vrf

@@ -7518,15 +7518,15 @@ port_channel_interfaces:
   vlans: 10,210,220,230
   name: Port-Channel11
 vlans:
-- tenant: MY_FABRIC
+- id: 210
   name: IDF2-Data
-  id: 210
-- tenant: MY_FABRIC
+  tenant: MY_FABRIC
+- id: 220
   name: IDF2-Voice
-  id: 220
-- tenant: MY_FABRIC
+  tenant: MY_FABRIC
+- id: 230
   name: IDF2-Guest
-  id: 230
+  tenant: MY_FABRIC
 - tenant: system
   name: L2LEAF_INBAND_MGMT
   id: 10
