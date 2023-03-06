@@ -548,11 +548,11 @@ class AvdStructuredConfig(AvdFacts):
             """
             if self._ipv6_mgmt_ip is not None:
                 interface_settings.update(
-                  {
-                    "ipv6_enable": True,
-                    "ipv6_address": self._ipv6_mgmt_ip,
-                    "ipv6_gateway": self._ipv6_mgmt_gateway,
-                  }
+                    {
+                        "ipv6_enable": True,
+                        "ipv6_address": self._ipv6_mgmt_ip,
+                        "ipv6_gateway": self._ipv6_mgmt_gateway,
+                    }
                 )
 
             return {
