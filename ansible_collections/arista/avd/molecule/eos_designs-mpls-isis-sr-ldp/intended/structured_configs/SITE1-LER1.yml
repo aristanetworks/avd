@@ -464,7 +464,8 @@ vlan_interfaces:
   name: Vlan2020
 router_ospf:
   process_ids:
-  - vrf: TENANT_B_INTRA
+  - id: 19
+    vrf: TENANT_B_INTRA
     passive_interface_default: true
     router_id: 123.1.1.0
     no_passive_interfaces:
@@ -472,4 +473,3 @@ router_ospf:
     max_lsa: 10000
     redistribute:
       bgp: {}
-    id: 19

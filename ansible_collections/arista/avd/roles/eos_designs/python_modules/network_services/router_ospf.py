@@ -26,7 +26,7 @@ class RouterOspfMixin(UtilsMixin):
         if not self._network_services_l3:
             return None
 
-        ospf_processes = {}
+        ospf_processes = []
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
                 if get(vrf, "ospf.enabled") is not True:
@@ -54,6 +54,7 @@ class RouterOspfMixin(UtilsMixin):
                     raise AristaAvdMissingVariableError(f"'ospf.process_id' or 'vrf_id' under vrf '{vrf['name']}")
 
                 process = {
+                    "id": process_id,
                     "vrf": vrf["name"],
                     "passive_interface_default": True,
                     "router_id": default(get(vrf, "ospf.router_id"), self._router_id),
@@ -72,13 +73,12 @@ class RouterOspfMixin(UtilsMixin):
                 # Strip None values from process before adding to list
                 process = {key: value for key, value in process.items() if value is not None}
 
-                ospf_processes[process_id] = process
+                ospf_processes.append(process)
 
         # If we have static_routes in default VRF and not EPVN, and underlay is OSPF
         # Then add redistribute static to the underlay OSPF process.
         if self._vrf_default_ipv4_static_routes["redistribute_in_underlay"] and self._underlay_routing_protocol in ["ospf", "ospf-ldp"]:
-            ospf_processes[self._underlay_ospf_process_id] = {"redistribute": {"static": {}}}
-
+            ospf_processes.append({"id": int(self._underlay_ospf_process_id), "redistribute": {"static": {}}})
         if ospf_processes:
             return {"process_ids": ospf_processes}
 
