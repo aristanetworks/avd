@@ -179,11 +179,11 @@ def test__validate_ansible_collections(n_reqs, mocked_version, requirement_versi
             for collection in metadata["collections"]:
                 collection["version"] = requirement_version
 
-    with (
-        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.yaml.safe_load") as patched_safe_load,
-        patch("ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_path") as patched__get_collection_path,
-        patch("ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_version") as patched__get_collection_version,
-    ):
+    with patch("ansible_collections.arista.avd.plugins.action.verify_requirements.yaml.safe_load") as patched_safe_load, patch(
+        "ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_path"
+    ) as patched__get_collection_path, patch(
+        "ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_version"
+    ) as patched__get_collection_version:
         patched_safe_load.return_value = metadata
         patched__get_collection_path.return_value = "dummy"
         if mocked_version is None:
