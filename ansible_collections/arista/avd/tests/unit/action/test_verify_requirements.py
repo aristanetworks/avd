@@ -183,11 +183,14 @@ def test__validate_ansible_collections(n_reqs, mocked_version, requirement_versi
         "ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_path"
     ) as patched__get_collection_path, patch(
         "ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_version"
-    ) as patched__get_collection_version:
+    ) as patched__get_collection_version, patch(
+        "ansible_collections.arista.avd.plugins.action.verify_requirements.open"
+    ):
         patched_safe_load.return_value = metadata
         patched__get_collection_path.return_value = "dummy"
-        if mocked_version is None:
-            patched__get_collection_path.side_effect = ModuleNotFoundError()
+        if mocked_version is None and n_reqs > 0:
+            # First call is for arista.avd
+            patched__get_collection_path.side_effect = ["dummy", ModuleNotFoundError()]
         patched__get_collection_version.return_value = mocked_version
 
         ret = _validate_ansible_collections("arista.avd", result)
