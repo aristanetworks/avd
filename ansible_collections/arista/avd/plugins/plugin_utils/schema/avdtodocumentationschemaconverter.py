@@ -377,7 +377,8 @@ class AvdToDocumentationSchemaConverter:
         if schema.get("dynamic_valid_values") is not None:
             schema.setdefault("valid_values", [])
             valid_value = f"<value(s) of {schema['dynamic_valid_values']}>"
-            schema["valid_values"].append(valid_value)
+            if valid_value not in schema["valid_values"]:
+                schema["valid_values"].append(valid_value)
         if schema.get("valid_values") is not None:
             restrictions.append("Valid Values:")
             for valid_value in schema["valid_values"]:
