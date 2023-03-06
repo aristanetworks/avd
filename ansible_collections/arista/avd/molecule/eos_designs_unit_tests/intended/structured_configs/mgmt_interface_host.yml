@@ -41,13 +41,13 @@ vrfs:
 - name: MGMT
   ip_routing: false
 management_interfaces:
-- description: oob_management
+- name: MY_INTERFACE_HOST
+  description: oob_management
   shutdown: false
   vrf: MGMT
   ip_address: 1.1.1.2
   gateway: 1.1.1.1
   type: oob
-  name: MY_INTERFACE_HOST
 tcam_profile:
   system: vxlan-routing
 platform:

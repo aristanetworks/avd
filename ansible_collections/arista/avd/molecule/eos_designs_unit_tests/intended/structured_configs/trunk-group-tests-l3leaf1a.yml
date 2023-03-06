@@ -550,30 +550,30 @@ vxlan_interface:
       source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
       vlans:
-      - vni: 10100
-        id: 100
-      - vni: 10200
-        id: 200
-      - vni: 10300
-        id: 300
-      - vni: 10301
-        id: 301
-      - vni: 10398
-        id: 398
-      - vni: 10110
-        id: 110
-      - vni: 10210
-        id: 210
-      - vni: 10310
-        id: 310
-      - vni: 10311
-        id: 311
-      - vni: 10399
-        id: 399
+      - id: 100
+        vni: 10100
+      - id: 200
+        vni: 10200
+      - id: 300
+        vni: 10300
+      - id: 301
+        vni: 10301
+      - id: 398
+        vni: 10398
+      - id: 110
+        vni: 10110
+      - id: 210
+        vni: 10210
+      - id: 310
+        vni: 10310
+      - id: 311
+        vni: 10311
+      - id: 399
+        vni: 10399
       vrfs:
-      - vni: 100
-        name: TG_100
-      - vni: 200
-        name: TG_200
-      - vni: 300
-        name: TG_300
+      - name: TG_100
+        vni: 100
+      - name: TG_200
+        vni: 200
+      - name: TG_300
+        vni: 300

@@ -148,10 +148,10 @@ mlag_configuration:
 ip_igmp_snooping:
   globally_enabled: true
 management_interfaces:
-- description: L2LEAF_INBAND_MGMT
+- name: Vlan4085
+  description: L2LEAF_INBAND_MGMT
   shutdown: false
   mtu: 1500
   ip_address: 172.21.110.5/24
   gateway: 172.21.110.1
   type: inband
-  name: Vlan4085

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from functools import cached_property
 from hashlib import sha1
 
@@ -477,15 +479,16 @@ class AvdStructuredConfig(AvdFacts):
         return [{"name": self._mgmt_interface_vrf, "ip_routing": get(self._hostvars, "mgmt_vrf_routing")}]
 
     @cached_property
-    def management_interfaces(self):
+    def management_interfaces(self) -> list | None:
         """
         management_interfaces set based on switch.mgmt_interface, switch.mgmt_ip facts,
         mgmt_gateway and mgmt_interface_vrf variable
         """
         mgmt_interface = get(self._hostvars, "switch.mgmt_interface")
         if mgmt_interface is not None and self._mgmt_ip is not None and self._mgmt_interface_vrf is not None:
-            return {
-                mgmt_interface: {
+            return [
+                {
+                    "name": mgmt_interface,
                     "description": get(self._hostvars, "mgmt_interface_description", default="oob_management"),
                     "shutdown": False,
                     "vrf": self._mgmt_interface_vrf,
@@ -493,7 +496,7 @@ class AvdStructuredConfig(AvdFacts):
                     "gateway": self._mgmt_gateway,
                     "type": "oob",
                 }
-            }
+            ]
 
         return None
 
