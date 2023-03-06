@@ -96,7 +96,8 @@ vlans:
   - MLAG
   id: 4094
 vlan_interfaces:
-- description: MLAG_PEER
+- name: Vlan4094
+  description: MLAG_PEER
   shutdown: false
   ip_address: 10.255.252.4/31
   no_autostate: true
@@ -104,7 +105,6 @@ vlan_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  name: Vlan4094
 port_channel_interfaces:
 - description: MLAG_PEER_UNDERLAY-MULTICAST-L3LEAF2B_Po3
   type: switched

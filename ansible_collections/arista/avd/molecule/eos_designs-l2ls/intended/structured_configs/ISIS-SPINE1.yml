@@ -81,8 +81,8 @@ ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:00:9a
 vlan_interfaces:
-- tenant: L2LS_ISIS
+- name: Vlan110
+  tenant: L2LS_ISIS
   description: SVI_110
   shutdown: false
   ip_address_virtual: 10.0.110.1/24
-  name: Vlan110

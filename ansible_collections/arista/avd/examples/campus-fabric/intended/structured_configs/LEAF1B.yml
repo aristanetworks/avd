@@ -69,12 +69,12 @@ vlans:
   name: L2LEAF_INBAND_MGMT
   id: 10
 vlan_interfaces:
-- description: MLAG_PEER
+- name: Vlan4094
+  description: MLAG_PEER
   shutdown: false
   ip_address: 192.168.0.5/31
   no_autostate: true
   mtu: 1500
-  name: Vlan4094
 port_channel_interfaces:
 - description: MLAG_PEER_LEAF1A_Po53
   type: switched

@@ -455,13 +455,13 @@ ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:00
 vlan_interfaces:
-- tenant: TENANT_B
+- name: Vlan2020
+  tenant: TENANT_B
   tags:
   - tag1
   description: TENANT_B_INSIDE_FW
   shutdown: false
   vrf: TENANT_B_INTRA
-  name: Vlan2020
 router_ospf:
   process_ids:
   - id: 19

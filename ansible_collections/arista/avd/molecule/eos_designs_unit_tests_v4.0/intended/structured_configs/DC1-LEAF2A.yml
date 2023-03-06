@@ -633,129 +633,129 @@ ip_igmp_snooping:
     id: 120
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vlan_interfaces:
-  Vlan130:
-    tenant: Tenant_A
-    tags:
-    - app
-    - erp1
-    description: Tenant_A_APP_Zone_1
-    shutdown: false
-    ip_address_virtual: 10.1.30.1/24
-    vrf: Tenant_A_APP_Zone
-  Vlan131:
-    tenant: Tenant_A
-    tags:
-    - app
-    description: Tenant_A_APP_Zone_2
-    shutdown: false
-    ip_address_virtual: 10.1.31.1/24
-    vrf: Tenant_A_APP_Zone
-  Vlan140:
-    tenant: Tenant_A
-    tags:
-    - db
-    - erp1
-    description: Tenant_A_DB_BZone_1
-    shutdown: false
-    ip_address_virtual: 10.1.40.1/24
-    vrf: Tenant_A_DB_Zone
-  Vlan141:
-    tenant: Tenant_A
-    tags:
-    - db
-    description: Tenant_A_DB_Zone_2
-    shutdown: false
-    ip_address_virtual: 10.1.41.1/24
-    vrf: Tenant_A_DB_Zone
-  Vlan110:
-    tenant: Tenant_A
-    tags:
-    - opzone
-    description: Tenant_A_OP_Zone_1
-    shutdown: false
-    ip_address_virtual: 10.1.10.1/24
-    vrf: Tenant_A_OP_Zone
-  Vlan111:
-    tenant: Tenant_A
-    tags:
-    - opzone
-    description: Tenant_A_OP_Zone_2
-    shutdown: false
-    ip_address_virtual: 10.1.11.1/24
-    vrf: Tenant_A_OP_Zone
-    ip_helpers:
-      1.1.1.1:
-        source_interface: lo100
-        vrf: MGMT
-  Vlan112:
-    tenant: Tenant_A
-    tags:
-    - opzone
-    description: Tenant_A_OP_Zone_3
-    shutdown: false
-    mtu: 1560
-    vrf: Tenant_A_OP_Zone
-    ip_helpers:
-      2.2.2.2:
-        source_interface: lo101
-        vrf: MGMT
-  Vlan120:
-    tenant: Tenant_A
-    tags:
-    - web
-    - erp1
-    description: Tenant_A_WEB_Zone_1
-    shutdown: false
-    ip_address_virtual: 10.1.20.1/24
-    ip_address_virtual_secondaries:
-    - 10.2.20.1/24
-    - 10.2.21.1/24
-    vrf: Tenant_A_WEB_Zone
-    ip_helpers:
-      2.2.2.2:
-        source_interface: lo102
-        vrf: TEST
-  Vlan121:
-    tenant: Tenant_A
-    tags:
-    - web
-    description: Tenant_A_WEBZone_2
-    shutdown: true
-    mtu: 1560
-    ip_address_virtual: 10.1.10.254/24
-    vrf: Tenant_A_WEB_Zone
-  Vlan210:
-    tenant: Tenant_B
-    tags:
-    - opzone
-    description: Tenant_B_OP_Zone_1
-    shutdown: false
-    ip_address_virtual: 10.2.10.1/24
-    vrf: Tenant_B_OP_Zone
-  Vlan211:
-    tenant: Tenant_B
-    tags:
-    - opzone
-    description: Tenant_B_OP_Zone_2
-    shutdown: false
-    ip_address_virtual: 10.2.11.1/24
-    vrf: Tenant_B_OP_Zone
-  Vlan310:
-    tenant: Tenant_C
-    tags:
-    - opzone
-    description: Tenant_C_OP_Zone_1
-    shutdown: false
-    ip_address_virtual: 10.3.10.1/24
-    vrf: Tenant_C_OP_Zone
-  Vlan311:
-    tenant: Tenant_C
-    tags:
-    - opzone
-    description: Tenant_C_OP_Zone_2
-    shutdown: false
-    ip_address_virtual: 10.3.11.1/24
-    vrf: Tenant_C_OP_Zone
+- name: Vlan130
+  tenant: Tenant_A
+  tags:
+  - app
+  - erp1
+  description: Tenant_A_APP_Zone_1
+  shutdown: false
+  ip_address_virtual: 10.1.30.1/24
+  vrf: Tenant_A_APP_Zone
+- name: Vlan131
+  tenant: Tenant_A
+  tags:
+  - app
+  description: Tenant_A_APP_Zone_2
+  shutdown: false
+  ip_address_virtual: 10.1.31.1/24
+  vrf: Tenant_A_APP_Zone
+- name: Vlan140
+  tenant: Tenant_A
+  tags:
+  - db
+  - erp1
+  description: Tenant_A_DB_BZone_1
+  shutdown: false
+  ip_address_virtual: 10.1.40.1/24
+  vrf: Tenant_A_DB_Zone
+- name: Vlan141
+  tenant: Tenant_A
+  tags:
+  - db
+  description: Tenant_A_DB_Zone_2
+  shutdown: false
+  ip_address_virtual: 10.1.41.1/24
+  vrf: Tenant_A_DB_Zone
+- name: Vlan110
+  tenant: Tenant_A
+  tags:
+  - opzone
+  description: Tenant_A_OP_Zone_1
+  shutdown: false
+  ip_address_virtual: 10.1.10.1/24
+  vrf: Tenant_A_OP_Zone
+- name: Vlan111
+  tenant: Tenant_A
+  tags:
+  - opzone
+  description: Tenant_A_OP_Zone_2
+  shutdown: false
+  ip_address_virtual: 10.1.11.1/24
+  vrf: Tenant_A_OP_Zone
+  ip_helpers:
+  - ip_helper: 1.1.1.1
+    source_interface: lo100
+    vrf: MGMT
+- name: Vlan112
+  tenant: Tenant_A
+  tags:
+  - opzone
+  description: Tenant_A_OP_Zone_3
+  shutdown: false
+  mtu: 1560
+  vrf: Tenant_A_OP_Zone
+  ip_helpers:
+  - ip_helper: 2.2.2.2
+    source_interface: lo101
+    vrf: MGMT
+- name: Vlan120
+  tenant: Tenant_A
+  tags:
+  - web
+  - erp1
+  description: Tenant_A_WEB_Zone_1
+  shutdown: false
+  ip_address_virtual: 10.1.20.1/24
+  ip_address_virtual_secondaries:
+  - 10.2.20.1/24
+  - 10.2.21.1/24
+  vrf: Tenant_A_WEB_Zone
+  ip_helpers:
+  - ip_helper: 2.2.2.2
+    source_interface: lo102
+    vrf: TEST
+- name: Vlan121
+  tenant: Tenant_A
+  tags:
+  - web
+  description: Tenant_A_WEBZone_2
+  shutdown: true
+  mtu: 1560
+  ip_address_virtual: 10.1.10.254/24
+  vrf: Tenant_A_WEB_Zone
+- name: Vlan210
+  tenant: Tenant_B
+  tags:
+  - opzone
+  description: Tenant_B_OP_Zone_1
+  shutdown: false
+  ip_address_virtual: 10.2.10.1/24
+  vrf: Tenant_B_OP_Zone
+- name: Vlan211
+  tenant: Tenant_B
+  tags:
+  - opzone
+  description: Tenant_B_OP_Zone_2
+  shutdown: false
+  ip_address_virtual: 10.2.11.1/24
+  vrf: Tenant_B_OP_Zone
+- name: Vlan310
+  tenant: Tenant_C
+  tags:
+  - opzone
+  description: Tenant_C_OP_Zone_1
+  shutdown: false
+  ip_address_virtual: 10.3.10.1/24
+  vrf: Tenant_C_OP_Zone
+- name: Vlan311
+  tenant: Tenant_C
+  tags:
+  - opzone
+  description: Tenant_C_OP_Zone_2
+  shutdown: false
+  ip_address_virtual: 10.3.11.1/24
+  vrf: Tenant_C_OP_Zone
 vxlan_interface:
   Vxlan1:
     description: DC1-LEAF2A_VTEP

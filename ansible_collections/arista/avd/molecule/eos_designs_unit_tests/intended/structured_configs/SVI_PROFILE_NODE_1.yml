@@ -292,126 +292,126 @@ ip_igmp_snooping:
     id: 212
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 vlan_interfaces:
-- tenant: svi_profile_tests
+- name: Vlan110
+  tenant: svi_profile_tests
   description: set from structured_config on svi.nodes[inventory_hostname].structured_config
   shutdown: false
   ip_address_virtual: 10.1.10.1/24
   vrf: svi_profile_tests_vrf
-  name: Vlan110
-- tenant: svi_profile_tests
+- name: Vlan111
+  tenant: svi_profile_tests
   description: set from structured_config on svi_profile.nodes[inventory_hostname].structured_config
   shutdown: false
   ip_address_virtual: 10.1.11.1/24
   vrf: svi_profile_tests_vrf
-  name: Vlan111
-- tenant: svi_profile_tests
+- name: Vlan112
+  tenant: svi_profile_tests
   description: set from structured_config on svi_parent_profile.nodes[inventory_hostname].structured_config
   shutdown: false
   ip_address_virtual: 10.1.12.1/24
   vrf: svi_profile_tests_vrf
-  name: Vlan112
-- tenant: svi_profile_tests
+- name: Vlan113
+  tenant: svi_profile_tests
   description: set from svi.structured_config
   shutdown: false
   ip_address_virtual: 10.1.13.1/24
   vrf: svi_profile_tests_vrf
-  name: Vlan113
-- tenant: svi_profile_tests
+- name: Vlan114
+  tenant: svi_profile_tests
   description: set from structured_config on svi_profile.structured_config
   shutdown: false
   ip_address_virtual: 10.1.14.1/24
   vrf: svi_profile_tests_vrf
-  name: Vlan114
-- tenant: svi_profile_tests
+- name: Vlan115
+  tenant: svi_profile_tests
   description: set from structured_config on svi_parent_profile.structured_config
   shutdown: false
   ip_address_virtual: 10.1.15.1/24
   vrf: svi_profile_tests_vrf
-  name: Vlan115
-- tenant: svi_profile_tests
+- name: Vlan210
+  tenant: svi_profile_tests
   description: igmp_snooping_enabled_210
   shutdown: false
   ip_address_virtual: 10.2.10.1/24
   vrf: svi_profile_tests_vrf
-  name: Vlan210
-- tenant: svi_profile_tests
+- name: Vlan211
+  tenant: svi_profile_tests
   description: igmp_snooping_enabled_211
   shutdown: false
   ip_address_virtual: 10.2.11.1/24
   vrf: svi_profile_tests_vrf
-  name: Vlan211
-- tenant: svi_profile_tests
+- name: Vlan212
+  tenant: svi_profile_tests
   description: igmp_snooping_enabled_212
   shutdown: false
   ip_address_virtual: 10.2.12.1/24
   vrf: svi_profile_tests_vrf
-  name: Vlan212
-- tenant: svi_profile_tests
+- name: Vlan310
+  tenant: svi_profile_tests
   description: vxlan_disabled_310
   shutdown: false
   ip_address_virtual: 10.3.10.1/24
   vrf: svi_profile_tests_vrf
-  name: Vlan310
-- tenant: svi_profile_tests
+- name: Vlan311
+  tenant: svi_profile_tests
   description: vxlan_disabled_311
   shutdown: false
   ip_address_virtual: 10.3.11.1/24
   vrf: svi_profile_tests_vrf
-  name: Vlan311
-- tenant: svi_profile_tests
+- name: Vlan312
+  tenant: svi_profile_tests
   description: vxlan_disabled_312
   shutdown: false
   ip_address_virtual: 10.3.12.1/24
   vrf: svi_profile_tests_vrf
-  name: Vlan312
-- tenant: svi_profile_tests
+- name: Vlan410
+  tenant: svi_profile_tests
   description: static_routes_410
   shutdown: false
   ip_address: 11.4.10.1/24
   ip_virtual_router_addresses:
   - 10.4.10.1/24
   vrf: svi_profile_tests_vrf
-  name: Vlan410
-- tenant: svi_profile_tests
+- name: Vlan411
+  tenant: svi_profile_tests
   description: static_routes_411
   shutdown: false
   ip_address: 11.4.11.1/24
   ip_virtual_router_addresses:
   - 10.4.11.1/24
   vrf: svi_profile_tests_vrf
-  name: Vlan411
-- tenant: svi_profile_tests
+- name: Vlan412
+  tenant: svi_profile_tests
   description: static_routes_412
   shutdown: false
   ip_address: 11.4.12.1/24
   ip_virtual_router_addresses:
   - 10.4.12.1/24
   vrf: svi_profile_tests_vrf
-  name: Vlan412
-- tenant: svi_profile_tests
+- name: Vlan510
+  tenant: svi_profile_tests
   description: ospf_enabled_510
   shutdown: false
   ip_address_virtual: 10.5.10.1/24
   vrf: svi_profile_tests_vrf
   ospf_area: '0'
   ospf_network_point_to_point: false
-  name: Vlan510
-- tenant: svi_profile_tests
+- name: Vlan511
+  tenant: svi_profile_tests
   description: ospf_enabled_511
   shutdown: false
   ip_address_virtual: 10.5.11.1/24
   vrf: svi_profile_tests_vrf
   ospf_area: '0'
   ospf_network_point_to_point: false
-  name: Vlan511
-- tenant: svi_profile_tests
+- name: Vlan512
+  tenant: svi_profile_tests
   description: ospf_enabled_512
   shutdown: false
   ip_address_virtual: 10.5.12.1/24
   vrf: svi_profile_tests_vrf
   ospf_area: '0'
   ospf_network_point_to_point: false
-  name: Vlan512
 router_ospf:
   process_ids:
   - id: 1

@@ -250,7 +250,8 @@ vlans:
   name: L2LEAF_INBAND_MGMT
   id: 4085
 vlan_interfaces:
-- description: L2LEAF_INBAND_MGMT
+- name: Vlan4085
+  description: L2LEAF_INBAND_MGMT
   shutdown: false
   mtu: 1500
   ip_address: 172.21.110.2/24
@@ -258,4 +259,3 @@ vlan_interfaces:
   - 172.21.110.1
   ip_attached_host_route_export:
     distance: 19
-  name: Vlan4085

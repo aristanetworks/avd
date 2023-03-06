@@ -295,17 +295,17 @@ vlans:
   name: Tenant_C_WAN_Zone_1
   tenant: Tenant_C
 vlan_interfaces:
-  Vlan4090:
-    description: MLAG_PEER_L3_PEERING
-    shutdown: false
-    mtu: 1500
-    ip_address: 10.255.251.18/31
-  Vlan4092:
-    description: MLAG_PEER
-    shutdown: false
-    ip_address: 10.255.252.18/31
-    no_autostate: true
-    mtu: 1500
+- name: Vlan4090
+  description: MLAG_PEER_L3_PEERING
+  shutdown: false
+  mtu: 1500
+  ip_address: 10.255.251.18/31
+- name: Vlan4092
+  description: MLAG_PEER
+  shutdown: false
+  ip_address: 10.255.252.18/31
+  no_autostate: true
+  mtu: 1500
 port_channel_interfaces:
   Port-Channel5:
     description: MLAG_PEER_DC1-CL1B_Po5

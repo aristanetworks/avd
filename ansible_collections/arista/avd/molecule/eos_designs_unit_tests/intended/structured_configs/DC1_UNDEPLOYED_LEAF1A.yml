@@ -548,18 +548,19 @@ vlans:
   - LEAF_PEER_L3
   tenant: Tenant_C
 vlan_interfaces:
-- description: MLAG_PEER_L3_PEERING
+- name: Vlan4090
+  description: MLAG_PEER_L3_PEERING
   shutdown: false
   mtu: 1500
   ip_address: 10.255.251.24/31
-  name: Vlan4090
-- description: MLAG_PEER
+- name: Vlan4092
+  description: MLAG_PEER
   shutdown: false
   ip_address: 10.255.252.24/31
   no_autostate: true
   mtu: 1500
-  name: Vlan4092
-- tenant: Tenant_A
+- name: Vlan130
+  tenant: Tenant_A
   tags:
   - app
   - erp1
@@ -567,24 +568,24 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.1.30.1/24
   vrf: Tenant_A_APP_Zone
-  name: Vlan130
-- tenant: Tenant_A
+- name: Vlan131
+  tenant: Tenant_A
   tags:
   - app
   description: Tenant_A_APP_Zone_2
   shutdown: false
   ip_address_virtual: 10.1.31.1/24
   vrf: Tenant_A_APP_Zone
-  name: Vlan131
-- tenant: Tenant_A
+- name: Vlan3011
+  tenant: Tenant_A
   type: underlay_peering
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_APP_Zone'
   vrf: Tenant_A_APP_Zone
   mtu: 1500
   ip_address: 10.255.251.24/31
-  name: Vlan3011
-- tenant: Tenant_A
+- name: Vlan140
+  tenant: Tenant_A
   tags:
   - db
   - erp1
@@ -592,32 +593,32 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.1.40.1/24
   vrf: Tenant_A_DB_Zone
-  name: Vlan140
-- tenant: Tenant_A
+- name: Vlan141
+  tenant: Tenant_A
   tags:
   - db
   description: Tenant_A_DB_Zone_2
   shutdown: false
   ip_address_virtual: 10.1.41.1/24
   vrf: Tenant_A_DB_Zone
-  name: Vlan141
-- tenant: Tenant_A
+- name: Vlan3012
+  tenant: Tenant_A
   type: underlay_peering
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_DB_Zone'
   vrf: Tenant_A_DB_Zone
   mtu: 1500
   ip_address: 10.255.251.24/31
-  name: Vlan3012
-- tenant: Tenant_A
+- name: Vlan110
+  tenant: Tenant_A
   tags:
   - opzone
   description: Tenant_A_OP_Zone_1
   shutdown: false
   ip_address_virtual: 10.1.10.1/24
   vrf: Tenant_A_OP_Zone
-  name: Vlan110
-- tenant: Tenant_A
+- name: Vlan111
+  tenant: Tenant_A
   tags:
   - opzone
   description: Tenant_A_OP_Zone_2
@@ -625,11 +626,11 @@ vlan_interfaces:
   ip_address_virtual: 10.1.11.1/24
   vrf: Tenant_A_OP_Zone
   ip_helpers:
-  - source_interface: lo100
+  - ip_helper: 1.1.1.1
+    source_interface: lo100
     vrf: MGMT
-    ip_helper: 1.1.1.1
-  name: Vlan111
-- tenant: Tenant_A
+- name: Vlan112
+  tenant: Tenant_A
   tags:
   - opzone
   description: Tenant_A_OP_Zone_3
@@ -637,19 +638,19 @@ vlan_interfaces:
   mtu: 1560
   vrf: Tenant_A_OP_Zone
   ip_helpers:
-  - source_interface: lo101
+  - ip_helper: 2.2.2.2
+    source_interface: lo101
     vrf: MGMT
-    ip_helper: 2.2.2.2
-  name: Vlan112
-- tenant: Tenant_A
+- name: Vlan3008
+  tenant: Tenant_A
   type: underlay_peering
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone'
   vrf: Tenant_A_OP_Zone
   mtu: 1500
   ip_address: 10.255.251.24/31
-  name: Vlan3008
-- tenant: Tenant_A
+- name: Vlan150
+  tenant: Tenant_A
   tags:
   - wan
   description: Tenant_A_WAN_Zone_1
@@ -661,16 +662,16 @@ vlan_interfaces:
   ospf_cost: 100
   ospf_authentication: simple
   ospf_authentication_key: AQQvKeimxJu+uGQ/yYvv9w==
-  name: Vlan150
-- tenant: Tenant_A
+- name: Vlan3013
+  tenant: Tenant_A
   type: underlay_peering
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone'
   vrf: Tenant_A_WAN_Zone
   mtu: 1500
   ip_address: 10.255.251.24/31
-  name: Vlan3013
-- tenant: Tenant_A
+- name: Vlan120
+  tenant: Tenant_A
   tags:
   - web
   - erp1
@@ -682,11 +683,11 @@ vlan_interfaces:
   - 10.2.21.1/24
   vrf: Tenant_A_WEB_Zone
   ip_helpers:
-  - source_interface: lo100
+  - ip_helper: 1.1.1.1
+    source_interface: lo100
     vrf: TEST
-    ip_helper: 1.1.1.1
-  name: Vlan120
-- tenant: Tenant_A
+- name: Vlan121
+  tenant: Tenant_A
   tags:
   - web
   description: Tenant_A_WEBZone_2
@@ -694,95 +695,94 @@ vlan_interfaces:
   mtu: 1560
   ip_address_virtual: 10.1.10.254/24
   vrf: Tenant_A_WEB_Zone
-  name: Vlan121
-- tenant: Tenant_A
+- name: Vlan3010
+  tenant: Tenant_A
   type: underlay_peering
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_WEB_Zone'
   vrf: Tenant_A_WEB_Zone
   mtu: 1500
   ip_address: 172.31.11.24/31
-  name: Vlan3010
-- tenant: Tenant_B
+- name: Vlan210
+  tenant: Tenant_B
   tags:
   - opzone
   description: Tenant_B_OP_Zone_1
   shutdown: false
   ip_address_virtual: 10.2.10.1/24
   vrf: Tenant_B_OP_Zone
-  name: Vlan210
-- tenant: Tenant_B
+- name: Vlan211
+  tenant: Tenant_B
   tags:
   - opzone
   description: Tenant_B_OP_Zone_2
   shutdown: false
   ip_address_virtual: 10.2.11.1/24
   vrf: Tenant_B_OP_Zone
-  name: Vlan211
-- tenant: Tenant_B
+- name: Vlan3019
+  tenant: Tenant_B
   type: underlay_peering
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone'
   vrf: Tenant_B_OP_Zone
   mtu: 1500
   ip_address: 10.255.251.24/31
-  name: Vlan3019
-- tenant: Tenant_B
+- name: Vlan250
+  tenant: Tenant_B
   tags:
   - wan
   description: Tenant_B_WAN_Zone_1
   shutdown: false
   ip_address_virtual: 10.2.50.1/24
   vrf: Tenant_B_WAN_Zone
-  name: Vlan250
-- tenant: Tenant_B
+- name: Vlan3020
+  tenant: Tenant_B
   type: underlay_peering
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone'
   vrf: Tenant_B_WAN_Zone
   mtu: 1500
   ip_address: 10.255.251.24/31
-  name: Vlan3020
-- tenant: Tenant_C
+- name: Vlan310
+  tenant: Tenant_C
   tags:
   - opzone
   description: Tenant_C_OP_Zone_1
   shutdown: false
   ip_address_virtual: 10.3.10.1/24
   vrf: Tenant_C_OP_Zone
-  name: Vlan310
-- tenant: Tenant_C
+- name: Vlan311
+  tenant: Tenant_C
   tags:
   - opzone
   description: Tenant_C_OP_Zone_2
   shutdown: false
   ip_address_virtual: 10.3.11.1/24
   vrf: Tenant_C_OP_Zone
-  name: Vlan311
-- tenant: Tenant_C
+- name: Vlan2
+  tenant: Tenant_C
   type: underlay_peering
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf Tenant_C_OP_Zone'
   vrf: Tenant_C_OP_Zone
   mtu: 1500
   ip_address: 10.255.251.24/31
-  name: Vlan2
-- tenant: Tenant_C
+- name: Vlan350
+  tenant: Tenant_C
   tags:
   - wan
   description: Tenant_C_WAN_Zone_1
   shutdown: false
   ip_address_virtual: 10.3.50.1/24
   vrf: Tenant_C_WAN_Zone
-  name: Vlan350
-- tenant: Tenant_C
+- name: Vlan3030
+  tenant: Tenant_C
   type: underlay_peering
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone'
   vrf: Tenant_C_WAN_Zone
   mtu: 1500
   ip_address: 10.255.251.24/31
-  name: Vlan3030
 port_channel_interfaces:
 - description: MLAG_PEER_DC1_UNDEPLOYED_LEAF1B_Po571
   type: switched

@@ -16,7 +16,7 @@ class VlanInterfacesMixin(UtilsMixin):
     """
 
     @cached_property
-    def vlan_interfaces(self) -> dict | None:
+    def vlan_interfaces(self) -> list | None:
         """
         Return structured config for vlan_interfaces
 
@@ -26,19 +26,19 @@ class VlanInterfacesMixin(UtilsMixin):
         if not (self._network_services_l2 and self._network_services_l3):
             return None
 
-        vlan_interfaces = {}
+        vlan_interfaces = []
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
                 for svi in vrf["svis"]:
                     vlan_id = int(svi["id"])
-                    vlan_interfaces[f"Vlan{vlan_id}"] = self._get_vlan_interface_config_for_svi(svi, vrf, tenant)
+                    vlan_interfaces.append({"name": f"Vlan{vlan_id}", **self._get_vlan_interface_config_for_svi(svi, vrf, tenant)})
 
                 # MLAG IBGP Peering VLANs per VRF
                 # Continue to next VRF if mlag vlan_id is not set
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is None:
                     continue
 
-                vlan_interfaces[f"Vlan{vlan_id}"] = self._get_vlan_interface_config_for_mlag_peering(vrf, tenant)
+                vlan_interfaces.append({"name": f"Vlan{vlan_id}", **self._get_vlan_interface_config_for_mlag_peering(vrf, tenant)})
 
         if vlan_interfaces:
             return vlan_interfaces
@@ -113,14 +113,14 @@ class VlanInterfacesMixin(UtilsMixin):
 
         svi_ip_helpers: list[dict] = convert_dicts(default(svi.get("ip_helpers"), vrf.get("ip_helpers"), []), "ip_helper")
         if svi_ip_helpers:
-            ip_helpers = {}
+            ip_helpers = []
             for svi_ip_helper in svi_ip_helpers:
-                key = svi_ip_helper["ip_helper"]
-                ip_helpers[key] = {}
+                ip_helper = {"ip_helper": svi_ip_helper["ip_helper"]}
                 if "source_interface" in svi_ip_helper:
-                    ip_helpers.setdefault(key, {})["source_interface"] = svi_ip_helper["source_interface"]
+                    ip_helper["source_interface"] = svi_ip_helper["source_interface"]
                 if "source_vrf" in svi_ip_helper:
-                    ip_helpers.setdefault(key, {})["vrf"] = svi_ip_helper["source_vrf"]
+                    ip_helper["vrf"] = svi_ip_helper["source_vrf"]
+                ip_helpers.append(ip_helper)
             if ip_helpers:
                 vlan_interface_config["ip_helpers"] = ip_helpers
 
@@ -133,12 +133,12 @@ class VlanInterfacesMixin(UtilsMixin):
                 vlan_interface_config["ospf_authentication"] = ospf_authentication
                 vlan_interface_config["ospf_authentication_key"] = ospf_simple_auth_key
             elif ospf_authentication == "message-digest" and (ospf_message_digest_keys := svi["ospf"].get("message_digest_keys")) is not None:
-                ospf_keys = {}
+                ospf_keys = []
                 for ospf_key in ospf_message_digest_keys:
                     if not ("id" in ospf_key and "key" in ospf_key):
                         continue
 
-                    ospf_keys[ospf_key["id"]] = {"hash_algorithm": ospf_key.get("hash_algorithm", "sha512"), "key": ospf_key["key"]}
+                    ospf_keys.append({"id": ospf_key["id"], "hash_algorithm": ospf_key.get("hash_algorithm", "sha512"), "key": ospf_key["key"]})
                 if ospf_keys:
                     vlan_interface_config["ospf_message_digest_keys"] = ospf_keys
 

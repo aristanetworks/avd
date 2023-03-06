@@ -61,12 +61,12 @@ vlans:
   name: ORANGE-NET
   tenant: MY_FABRIC
 vlan_interfaces:
-- description: MLAG_PEER
+- name: Vlan4094
+  description: MLAG_PEER
   shutdown: false
   ip_address: 192.168.0.1/31
   no_autostate: true
   mtu: 1500
-  name: Vlan4094
 port_channel_interfaces:
 - description: MLAG_PEER_SPINE1_Po47
   type: switched

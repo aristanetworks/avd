@@ -120,18 +120,18 @@ class AvdStructuredConfig(AvdFacts):
         }
 
     @cached_property
-    def vlan_interfaces(self) -> dict | None:
+    def vlan_interfaces(self) -> list | None:
         if self._inband_management_role != "parent":
             return None
 
         if not self._inband_management_data["subnets"]:
             return None
 
-        vlan_interfaces = {}
+        vlan_interfaces = []
         for index, subnet in enumerate(self._inband_management_data["subnets"]):
             vlan = self._inband_management_data["vlans"][index]
             vlan_interface_name = f"Vlan{vlan}"
-            vlan_interfaces[vlan_interface_name] = self._get_svi_cfg(subnet)
+            vlan_interfaces.append({"name": vlan_interface_name, **self._get_svi_cfg(subnet)})
 
         return vlan_interfaces
 

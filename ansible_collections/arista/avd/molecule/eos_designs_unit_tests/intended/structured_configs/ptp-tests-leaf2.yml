@@ -222,12 +222,12 @@ vlans:
 ip_igmp_snooping:
   globally_enabled: true
 vlan_interfaces:
-- tenant: PTP
+- name: Vlan11
+  tenant: PTP
   description: VLAN11
   shutdown: false
   ip_address: 172.17.11.1/24
   vrf: VRF1
-  name: Vlan11
 vxlan_interface:
   Vxlan1:
     description: ptp-tests-leaf2_VTEP

@@ -28,12 +28,12 @@ vlans:
   name: L2VLAN_100
   tenant: L2LS_L2ONLY
 vlan_interfaces:
-- description: MLAG_PEER
+- name: Vlan4094
+  description: MLAG_PEER
   shutdown: false
   ip_address: 192.168.254.1/31
   no_autostate: true
   mtu: 9000
-  name: Vlan4094
 port_channel_interfaces:
 - description: MLAG_PEER_L2ONLY-SPINE1_Po3
   type: switched

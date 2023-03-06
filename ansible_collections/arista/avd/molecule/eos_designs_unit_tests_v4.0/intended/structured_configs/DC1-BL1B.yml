@@ -475,35 +475,35 @@ ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vlan_interfaces:
-  Vlan150:
-    tenant: Tenant_A
-    tags:
-    - wan
-    description: Tenant_A_WAN_Zone_1
-    shutdown: false
-    ip_address_virtual: 10.1.40.1/24
-    vrf: Tenant_A_WAN_Zone
-    ospf_area: 1
-    ospf_network_point_to_point: false
-    ospf_cost: 100
-    ospf_authentication: simple
-    ospf_authentication_key: AQQvKeimxJu+uGQ/yYvv9w==
-  Vlan250:
-    tenant: Tenant_B
-    tags:
-    - wan
-    description: Tenant_B_WAN_Zone_1
-    shutdown: false
-    ip_address_virtual: 10.2.50.1/24
-    vrf: Tenant_B_WAN_Zone
-  Vlan350:
-    tenant: Tenant_C
-    tags:
-    - wan
-    description: Tenant_C_WAN_Zone_1
-    shutdown: false
-    ip_address_virtual: 10.3.50.1/24
-    vrf: Tenant_C_WAN_Zone
+- name: Vlan150
+  tenant: Tenant_A
+  tags:
+  - wan
+  description: Tenant_A_WAN_Zone_1
+  shutdown: false
+  ip_address_virtual: 10.1.40.1/24
+  vrf: Tenant_A_WAN_Zone
+  ospf_area: '1'
+  ospf_network_point_to_point: false
+  ospf_cost: 100
+  ospf_authentication: simple
+  ospf_authentication_key: AQQvKeimxJu+uGQ/yYvv9w==
+- name: Vlan250
+  tenant: Tenant_B
+  tags:
+  - wan
+  description: Tenant_B_WAN_Zone_1
+  shutdown: false
+  ip_address_virtual: 10.2.50.1/24
+  vrf: Tenant_B_WAN_Zone
+- name: Vlan350
+  tenant: Tenant_C
+  tags:
+  - wan
+  description: Tenant_C_WAN_Zone_1
+  shutdown: false
+  ip_address_virtual: 10.3.50.1/24
+  vrf: Tenant_C_WAN_Zone
 router_ospf:
   process_ids:
   - id: 14
