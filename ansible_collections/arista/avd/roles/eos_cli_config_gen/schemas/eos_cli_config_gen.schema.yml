@@ -6069,6 +6069,10 @@ keys:
               type: str
               description: Encrypted key
   radius_servers:
+    deprecation:
+      warning: true
+      new_key: radius_server.hosts
+      remove_in_version: v5.0.0
     documentation_options:
       filename: data_model/Authentication
     type: list
