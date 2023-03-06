@@ -8226,6 +8226,87 @@
       "additionalProperties": false,
       "title": "Queue Monitor Streaming"
     },
+    "radius_server": {
+      "type": "object",
+      "properties": {
+        "attribute_32_include_in_access_req": {
+          "type": "object",
+          "properties": {
+            "hostname": {
+              "type": "boolean",
+              "title": "Hostname"
+            },
+            "format": {
+              "type": "string",
+              "description": "Specify the format of the NAS-Identifier. If 'hostname' is set, this is ignored.",
+              "title": "Format"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Attribute 32 Include In Access Req"
+        },
+        "dynamic_authorization": {
+          "type": "object",
+          "properties": {
+            "port": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 65535,
+              "description": "TCP Port",
+              "title": "Port"
+            },
+            "tls_ssl_profile": {
+              "type": "string",
+              "description": "Name of TLS profile",
+              "title": "TLS SSL Profile"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Dynamic Authorization"
+        },
+        "hosts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "host": {
+                "type": "string",
+                "description": "Host IP address or name",
+                "title": "Host"
+              },
+              "vrf": {
+                "type": "string",
+                "title": "VRF"
+              },
+              "timeout": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1000,
+                "title": "Timeout"
+              },
+              "retransmit": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100,
+                "title": "Retransmit"
+              },
+              "key": {
+                "type": "string",
+                "description": "Encrypted key",
+                "title": "Key"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "host"
+            ]
+          },
+          "title": "Hosts"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Radius Server"
+    },
     "radius_servers": {
       "type": "array",
       "items": {
