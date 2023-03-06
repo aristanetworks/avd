@@ -187,7 +187,6 @@ class AvdStructuredConfig(AvdFacts):
 
         l3_vlan_interface.update(l3_cfg)
 
-        # Assembling the interface dict to retain legacy order from Jinja templates.
         return [
             strip_empties_from_dict(l3_vlan_interface),
             strip_empties_from_dict(main_vlan_interface),
