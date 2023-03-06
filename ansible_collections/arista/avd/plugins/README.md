@@ -771,11 +771,11 @@ AVD version v4.0.0-dev5-25-g0233492b5
             "serial": 0
         },
         "python_path": [
-            "/Users/guillaumemulocher/.pyenv/versions/3.10.3/envs/ansible-avd/bin",
-            "/Users/guillaumemulocher/.pyenv/versions/3.10.3/lib/python310.zip",
-            "/Users/guillaumemulocher/.pyenv/versions/3.10.3/lib/python3.10",
-            "/Users/guillaumemulocher/.pyenv/versions/3.10.3/lib/python3.10/lib-dynload",
-            "/Users/guillaumemulocher/.pyenv/versions/3.10.3/envs/ansible-avd/lib/python3.10/site-packages"
+            "/tmp/.pyenv/versions/3.10.3/envs/ansible-avd/bin",
+            "/tmp/.pyenv/versions/3.10.3/lib/python310.zip",
+            "/tmp/.pyenv/versions/3.10.3/lib/python3.10",
+            "/tmp/.pyenv/versions/3.10.3/lib/python3.10/lib-dynload",
+            "/tmp/.pyenv/versions/3.10.3/envs/ansible-avd/lib/python3.10/site-packages"
         ],
         "python_requirements": {
             "not_found": {},
