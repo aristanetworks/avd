@@ -699,8 +699,13 @@ Example:
 
 ### Verify Requirements
 
-The `arista.avd.verify_requirements` module is an Ansible Action Plugin providing the following capabilities - Display the current running version of the collection - Given a list of python requirements, verify if the installed libraries match these requirements - Validate the
-ansible version against collection requirements - Validate the collection requirements against the collection requirements - Validate the running python version
+The `arista.avd.verify_requirements` module is an Ansible Action Plugin providing the following capabilities:
+
+- Display the current running version of the collection.
+- Given a list of python requirements, verify if the installed libraries match these requirements.
+- Validate the ansible version against collection requirements.
+- Validate the collection requirements against the collection requirements.
+- Validate the running python version.
 
 A task is added to every `eos_*` role in the collection but the Verify Requirement task will run only once per playbook when multiple roles are used.
 
