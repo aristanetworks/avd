@@ -182,11 +182,18 @@ class AvdStructuredConfig(AvdFacts):
         }
 
     @cached_property
+    def _underlay_filter_redistribute_connected(self) -> bool:
+        return get(self._hostvars, "underlay_filter_redistribute_connected", default=True) is True
+
+    @cached_property
     def prefix_lists(self) -> list | None:
         if self._inband_management_role != "parent":
             return None
 
         if not self._underlay_bgp:
+            return None
+
+        if not self._underlay_filter_redistribute_connected:
             return None
 
         sequence_numbers = [
@@ -209,6 +216,9 @@ class AvdStructuredConfig(AvdFacts):
             return None
 
         if not self._underlay_bgp:
+            return None
+
+        if not self._underlay_filter_redistribute_connected:
             return None
 
         return {

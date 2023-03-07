@@ -18,8 +18,7 @@ router_bgp:
     - activate: true
       name: IPv4-UNDERLAY-PEERS
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
   neighbors:
   - peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
@@ -179,15 +178,3 @@ loopback_interfaces:
   description: EVPN_Overlay_Peering
   shutdown: false
   ip_address: 172.16.110.2/32
-prefix_lists:
-- name: PL-LOOPBACKS-EVPN-OVERLAY
-  sequence_numbers:
-  - sequence: 10
-    action: permit 172.16.110.0/24 eq 32
-route_maps:
-- name: RM-CONN-2-BGP
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    match:
-    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY

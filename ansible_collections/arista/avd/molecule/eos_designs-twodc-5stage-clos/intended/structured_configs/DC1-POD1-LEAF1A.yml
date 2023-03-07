@@ -29,8 +29,7 @@ router_bgp:
     - activate: false
       name: EVPN-OVERLAY-PEERS
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
   - source_protocol: attached-host
   neighbors:
   - peer_group: IPv4-UNDERLAY-PEERS
@@ -177,28 +176,12 @@ loopback_interfaces:
   description: VTEP_VXLAN_Tunnel_Source
   shutdown: false
   ip_address: 172.18.110.3/32
-prefix_lists:
-- name: PL-LOOPBACKS-EVPN-OVERLAY
-  sequence_numbers:
-  - sequence: 10
-    action: permit 172.16.110.0/24 eq 32
-  - sequence: 20
-    action: permit 172.18.110.0/24 eq 32
-- name: PL-L2LEAF-INBAND-MGMT
-  sequence_numbers:
-  - sequence: 10
-    action: permit 172.21.110.0/24
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
 route_maps:
-- name: RM-CONN-2-BGP
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    match:
-    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-  - type: permit
-    match:
-    - ip address prefix-list PL-L2LEAF-INBAND-MGMT
-    sequence: 20
 - name: RM-EVPN-FILTER-AS65200
   sequence_numbers:
   - sequence: 10
@@ -231,11 +214,6 @@ route_maps:
     - as 65211
   - sequence: 20
     type: permit
-router_bfd:
-  multihop:
-    interval: 300
-    min_rx: 300
-    multiplier: 3
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
