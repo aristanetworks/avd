@@ -730,17 +730,6 @@ loopback_interfaces:
   shutdown: false
   vrf: vrf_with_loopbacks_from_pod_pools
   ip_address: 10.101.101.4/32
-prefix_lists:
-- name: PL-LOOPBACKS-EVPN-OVERLAY
-  sequence_numbers:
-  - sequence: 10
-    action: permit 172.16.110.0/24 eq 32
-  - sequence: 20
-    action: permit 172.18.110.0/24 eq 32
-- name: PL-L2LEAF-INBAND-MGMT
-  sequence_numbers:
-  - sequence: 10
-    action: permit 172.21.110.0/24
 router_bfd:
   multihop:
     interval: 300
