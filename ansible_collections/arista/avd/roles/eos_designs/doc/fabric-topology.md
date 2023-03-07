@@ -532,7 +532,7 @@ default_interfaces:
     mlag_peer_l3_vlan: < 0-4094 | false | default -> 4093 >
 
     # IP address pool used for MLAG underlay L3 peering | *Required when MLAG leafs present in topology.
-    # IP is derived from the node id. Assign a subnet that can accomodate at least the total number of l3leafs*2.
+    # IP is derived from the node id. Assign a subnet that can accomodate at least the total number of MLAG devices*2.
     mlag_peer_l3_ipv4_pool: < IPv4_network/Mask >
 
     # MLAG Peer Link (control link) SVI interface id.
@@ -542,7 +542,7 @@ default_interfaces:
     mlag_peer_link_allowed_vlans: < vlans as string | default -> "2-4094" >
 
     # IP address pool used for MLAG Peer Link (control link) | *Required when MLAG leafs present in topology.
-    # IP is derived from the node id. Assign a subnet that can accomodate at least the total number of l3leafs*2.
+    # IP is derived from the node id. Assign a subnet that can accomodate at least the total number of MLAG devices*2.
     mlag_peer_ipv4_pool: < IPv4_network/Mask >
 
     # Custom structured config applied to MLAG peer link port-channel id.
