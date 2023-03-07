@@ -756,29 +756,29 @@ route_maps:
   - sequence: 20
     type: permit
 loopback_interfaces:
-- description: EVPN_Overlay_Peering
+- name: Loopback0
+  description: EVPN_Overlay_Peering
   shutdown: false
   ip_address: 172.16.110.5/32
-  name: Loopback0
-- description: VTEP_VXLAN_Tunnel_Source
+- name: Loopback1
+  description: VTEP_VXLAN_Tunnel_Source
   shutdown: false
   ip_address: 172.18.110.4/32
-  name: Loopback1
-- description: vrf_with_loopbacks_dc1_pod1_only_VTEP_DIAGNOSTICS
+- name: Loopback102
+  description: vrf_with_loopbacks_dc1_pod1_only_VTEP_DIAGNOSTICS
   shutdown: false
   vrf: vrf_with_loopbacks_dc1_pod1_only
   ip_address: 10.102.101.5/32
-  name: Loopback102
-- description: vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS
+- name: Loopback100
+  description: vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS
   shutdown: false
   vrf: vrf_with_loopbacks_from_overlapping_pool
   ip_address: 10.100.0.5/32
-  name: Loopback100
-- description: vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS
+- name: Loopback101
+  description: vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS
   shutdown: false
   vrf: vrf_with_loopbacks_from_pod_pools
   ip_address: 10.101.101.5/32
-  name: Loopback101
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

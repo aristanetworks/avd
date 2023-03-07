@@ -1347,19 +1347,19 @@ route_maps:
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 loopback_interfaces:
-- description: CUSTOM_EVPN_Overlay_Peering_L3LEAF
+- name: Loopback0
+  description: CUSTOM_EVPN_Overlay_Peering_L3LEAF
   shutdown: false
   ip_address: 192.168.255.13/32
-  name: Loopback0
-- description: CUSTOM_VTEP_VXLAN_Tunnel_Source_L3LEAF
+- name: Loopback1
+  description: CUSTOM_VTEP_VXLAN_Tunnel_Source_L3LEAF
   shutdown: false
   ip_address: 192.168.254.12/32
-  name: Loopback1
-- description: CUSTOM_VTEP_DIAGNOSTICS_LOOPBACK_DESC
+- name: Loopback100
+  description: CUSTOM_VTEP_DIAGNOSTICS_LOOPBACK_DESC
   shutdown: false
   vrf: Tenant_A_OP_Zone
   ip_address: 10.255.1.13/32
-  name: Loopback100
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

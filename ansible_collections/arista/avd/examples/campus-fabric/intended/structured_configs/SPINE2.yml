@@ -297,11 +297,11 @@ mlag_configuration:
   reload_delay_mlag: '300'
   reload_delay_non_mlag: '330'
 loopback_interfaces:
-- description: Router_ID
+- name: Loopback0
+  description: Router_ID
   shutdown: false
   ip_address: 172.16.1.2/32
   ospf_area: 0.0.0.0
-  name: Loopback0
 router_ospf:
   process_ids:
   - id: 100

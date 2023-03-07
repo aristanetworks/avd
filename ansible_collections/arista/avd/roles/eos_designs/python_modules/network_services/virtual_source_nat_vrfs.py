@@ -29,7 +29,7 @@ class VirtualSourceNatVrfsMixin(UtilsMixin):
             return None
 
         virtual_source_nat_vrfs = []
-        for loopback_interface in loopback_interfaces.values():
+        for loopback_interface in loopback_interfaces:
             virtual_source_nat_vrfs.append(
                 {
                     "name": loopback_interface["vrf"],

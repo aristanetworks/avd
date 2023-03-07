@@ -548,19 +548,19 @@ port_channel_interfaces:
     mode: trunk
     vlans: 110-111,210-211
 loopback_interfaces:
-  Loopback0:
-    description: EVPN_Overlay_Peering
-    shutdown: false
-    ip_address: 192.168.255.10/32
-  Loopback1:
-    description: VTEP_VXLAN_Tunnel_Source
-    shutdown: false
-    ip_address: 192.168.254.10/32
-  Loopback100:
-    description: Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
-    shutdown: false
-    vrf: Tenant_A_OP_Zone
-    ip_address: 10.255.1.10/32
+- name: Loopback0
+  description: EVPN_Overlay_Peering
+  shutdown: false
+  ip_address: 192.168.255.10/32
+- name: Loopback1
+  description: VTEP_VXLAN_Tunnel_Source
+  shutdown: false
+  ip_address: 192.168.254.10/32
+- name: Loopback100
+  description: Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
+  shutdown: false
+  vrf: Tenant_A_OP_Zone
+  ip_address: 10.255.1.10/32
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

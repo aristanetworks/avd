@@ -122,10 +122,10 @@ ethernet_interfaces:
   ip_address: 172.17.20.3/31
   name: Ethernet2
 loopback_interfaces:
-- description: EVPN_Overlay_Peering
+- name: Loopback0
+  description: EVPN_Overlay_Peering
   shutdown: false
   ip_address: 172.16.20.1/32
-  name: Loopback0
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
