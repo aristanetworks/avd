@@ -35,6 +35,7 @@ options:
     description: List of strings. Each list item is passed to 'dest_format_string' as 'item' and passed to templater as 'item'
     required: true
     type: list
+    elements: str
 """
 
 EXAMPLES = r"""
