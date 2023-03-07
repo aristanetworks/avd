@@ -116,6 +116,7 @@ sFlow is disabled.
 | Ethernet52 |  SFlow Interface Testing - SFlow ingress and egress unmodified enabled | access | - | - | - | - |
 | Ethernet53 |  SFlow Interface Testing - SFlow ingress and egress disabled | access | - | - | - | - |
 | Ethernet54 |  SFlow Interface Testing - SFlow ingress and egress unmodified disabled | access | - | - | - | - |
+| Ethernet55 |  DHCPv6 Relay Testing | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -186,6 +187,7 @@ sFlow is disabled.
 | Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | routed | - | 2002:ABDC::1/64 | default | 1500 | - | - | - | - | - |
 | Ethernet4 | Molecule IPv6 | switchport | - | 2020::2020/64 | default | 9100 | True | True | True | IPv6_ACL_IN | IPv6_ACL_OUT |
 | Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 2002:ABDC::1/64 | default | - | - | - | - | - | - |
+| Ethernet55 | DHCPv6 Relay Testing | switchport | - | a0::1/64 | default | - | False | - | - | - | - |
 
 #### ISIS
 
@@ -694,6 +696,14 @@ interface Ethernet54
    switchport
    no sflow enable
    no sflow egress unmodified enable
+!
+interface Ethernet55
+   description DHCPv6 Relay Testing
+   no shutdown
+   switchport
+   ipv6 address a0::1/64
+   ipv6 dhcp relay destination a0::2 link-address a0::3
+   ipv6 dhcp relay destination a0::4 vrf TEST local-interface Loopback55 link-address a0::5
 ```
 
 # BFD

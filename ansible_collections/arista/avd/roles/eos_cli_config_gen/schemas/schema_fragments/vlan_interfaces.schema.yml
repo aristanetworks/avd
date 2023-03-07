@@ -156,6 +156,7 @@ keys:
               address:
                 type: str
                 description: DHCP server's IPv6 address
+                required: true
               vrf:
                 type: str
               local_interface:
