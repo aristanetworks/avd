@@ -91,8 +91,7 @@ router_bgp:
     peer_group: IPv4-UNDERLAY-PEERS
     ip_address: 100.100.100.201
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
   - source_protocol: attached-host
   address_family_evpn:
     neighbor_default:
@@ -683,16 +682,6 @@ route_maps:
     set:
     - origin incomplete
     description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
-- name: RM-CONN-2-BGP
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    match:
-    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-  - type: permit
-    match:
-    - ip address prefix-list PL-L2LEAF-INBAND-MGMT
-    sequence: 20
 - name: RM-EVPN-FILTER-AS65101
   sequence_numbers:
   - sequence: 10
@@ -718,40 +707,29 @@ route_maps:
   - sequence: 20
     type: permit
 loopback_interfaces:
-- description: EVPN_Overlay_Peering
+- name: Loopback0
+  description: EVPN_Overlay_Peering
   shutdown: false
   ip_address: 172.16.110.4/32
-  name: Loopback0
-- description: VTEP_VXLAN_Tunnel_Source
+- name: Loopback1
+  description: VTEP_VXLAN_Tunnel_Source
   shutdown: false
   ip_address: 172.18.110.4/32
-  name: Loopback1
-- description: vrf_with_loopbacks_dc1_pod1_only_VTEP_DIAGNOSTICS
+- name: Loopback102
+  description: vrf_with_loopbacks_dc1_pod1_only_VTEP_DIAGNOSTICS
   shutdown: false
   vrf: vrf_with_loopbacks_dc1_pod1_only
   ip_address: 10.102.101.4/32
-  name: Loopback102
-- description: vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS
+- name: Loopback100
+  description: vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS
   shutdown: false
   vrf: vrf_with_loopbacks_from_overlapping_pool
   ip_address: 10.100.0.4/32
-  name: Loopback100
-- description: vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS
+- name: Loopback101
+  description: vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS
   shutdown: false
   vrf: vrf_with_loopbacks_from_pod_pools
   ip_address: 10.101.101.4/32
-  name: Loopback101
-prefix_lists:
-- name: PL-LOOPBACKS-EVPN-OVERLAY
-  sequence_numbers:
-  - sequence: 10
-    action: permit 172.16.110.0/24 eq 32
-  - sequence: 20
-    action: permit 172.18.110.0/24 eq 32
-- name: PL-L2LEAF-INBAND-MGMT
-  sequence_numbers:
-  - sequence: 10
-    action: permit 172.21.110.0/24
 router_bfd:
   multihop:
     interval: 300

@@ -167,10 +167,10 @@ route_maps:
     - origin incomplete
     description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
 loopback_interfaces:
-- description: Router_ID
+- name: Loopback0
+  description: Router_ID
   shutdown: false
   ip_address: 192.168.255.2/32
-  name: Loopback0
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:00:99

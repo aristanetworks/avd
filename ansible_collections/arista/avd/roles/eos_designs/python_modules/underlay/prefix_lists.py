@@ -22,6 +22,9 @@ class PrefixListsMixin(UtilsMixin):
         if self._overlay_routing_protocol == "none":
             return None
 
+        if not self._underlay_filter_redistribute_connected:
+            return None
+
         # IPv4 - PL-LOOPBACKS-EVPN-OVERLAY
         sequence_numbers = [{"sequence": 10, "action": f"permit {self._loopback_ipv4_pool} eq 32"}]
 
@@ -47,6 +50,9 @@ class PrefixListsMixin(UtilsMixin):
             return None
 
         if self._overlay_routing_protocol == "none":
+            return None
+
+        if not self._underlay_filter_redistribute_connected:
             return None
 
         # IPv6 - PL-LOOPBACKS-EVPN-OVERLAY-V6

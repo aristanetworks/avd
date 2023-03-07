@@ -60,10 +60,10 @@ management_api_http:
   - name: MGMT
   enable_https: true
 loopback_interfaces:
-- description: EVPN_Overlay_Peering
+- name: Loopback0
+  description: EVPN_Overlay_Peering
   shutdown: false
   ip_address: 1.2.3.1/32
-  name: Loopback0
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

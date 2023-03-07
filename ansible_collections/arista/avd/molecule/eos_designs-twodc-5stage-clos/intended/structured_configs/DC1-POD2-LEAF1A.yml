@@ -286,24 +286,24 @@ ethernet_interfaces:
   ip_address: 172.17.10.12/31
   name: Ethernet3
 loopback_interfaces:
-- description: EVPN_Overlay_Peering
+- name: Loopback0
+  description: EVPN_Overlay_Peering
   shutdown: false
   ip_address: 172.16.120.3/32
-  name: Loopback0
-- description: VTEP_VXLAN_Tunnel_Source
+- name: Loopback1
+  description: VTEP_VXLAN_Tunnel_Source
   shutdown: false
   ip_address: 172.18.120.3/32
-  name: Loopback1
-- description: vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS
+- name: Loopback100
+  description: vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS
   shutdown: false
   vrf: vrf_with_loopbacks_from_overlapping_pool
   ip_address: 10.100.0.3/32
-  name: Loopback100
-- description: vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS
+- name: Loopback101
+  description: vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS
   shutdown: false
   vrf: vrf_with_loopbacks_from_pod_pools
   ip_address: 10.101.102.3/32
-  name: Loopback101
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
