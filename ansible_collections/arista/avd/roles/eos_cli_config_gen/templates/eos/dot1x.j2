@@ -24,8 +24,7 @@ dot1x
 {%         endif %}
 {%         if dot1x.radius_av_pair is arista.avd.defined %}
 {%             if dot1x.radius_av_pair.service_type is arista.avd.defined(true) %}
-{%                 set radius_av_pair_service_cli = "radius av-pair service-type" %}
-   {{ radius_av_pair_service_cli }}
+   radius av-pair service-type
 {%             endif %}
 {%             if dot1x.radius_av_pair.framed_mtu is arista.avd.defined %}
 {%                 set radius_av_pair_framed_mtu_cli = "radius av-pair framed-mtu " ~ dot1x.radius_av_pair.framed_mtu %}
