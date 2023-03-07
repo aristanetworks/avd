@@ -203,7 +203,7 @@ An example usage for `arista.avd.encrypt` filter for BGP is to use it in conjunc
 bgp_peer_groups:
   ipv4_underlay_peers:
       name: IPv4-UNDERLAY-PEERS
-          password: "{{ bgp_vault_password | encrypt(passwd_type='bgp', key='IPv4-UNDERLAY-PEERS') }}"
+
 ```
 
 ## Plugin Tests
@@ -701,7 +701,7 @@ Example:
 
 The `arista.avd.batch_template`  Action Plugin performs templating of one template for multiple "items".
 
-Results are written to individual files named using format string passed to the plugin. Destiation file mode is hardcoded to 0o664.
+Results are written to individual files named using format string passed to the plugin. Destination file mode is hardcoded to 0o664.
 
 ```yaml
 options:
