@@ -18,8 +18,7 @@ dot1x
    {{ mac_delay_cli }}
 {%             endif %}
 {%             if dot1x.mac_based_authentication.hold_period is arista.avd.defined %}
-{%                 set mac_hold_period_cli = "mac based authentication hold_period " ~ dot1x.mac_based_authentication.hold_period ~ " seconds" %}
-   {{ mac_hold_period_cli }}
+   mac based authentication hold period {{ dot1x.mac_based_authentication.hold_period }} seconds
 {%             endif %}
 {%         endif %}
 {%         if dot1x.radius_av_pair is arista.avd.defined %}
