@@ -94,12 +94,12 @@ vlans:
   - MLAG
   id: 4094
 vlan_interfaces:
-- description: MLAG_PEER
+- name: Vlan4094
+  description: MLAG_PEER
   shutdown: false
   ip_address: 192.168.253.205/31
   no_autostate: true
   mtu: 9000
-  name: Vlan4094
 port_channel_interfaces:
 - description: MLAG_PEER_bgp-peer-groups-structured-config-1_Po3
   type: switched

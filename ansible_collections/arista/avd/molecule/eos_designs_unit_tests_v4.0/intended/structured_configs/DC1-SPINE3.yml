@@ -169,13 +169,13 @@ vrfs:
 - name: MGMT
   ip_routing: false
 management_interfaces:
-  Management0:
-    description: oob_management
-    shutdown: false
-    vrf: MGMT
-    ip_address: 192.168.200.103/24
-    gateway: 192.168.200.5
-    type: oob
+- name: Management0
+  description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.200.103/24
+  gateway: 192.168.200.5
+  type: oob
 management_api_http:
   enable_vrfs:
     MGMT: {}

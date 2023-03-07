@@ -117,34 +117,35 @@ vlans:
   - TG_NOT_MATCHING_ANY_SERVERS
   - MLAG
   id: 200
-  tenant: TRUNK_GROUP_TESTS
   name: svi200_with_trunk_groups
+  tenant: TRUNK_GROUP_TESTS
 - trunk_groups:
   - trunk-group-tests-l2leaf4
   - TG_200
   - TG_NOT_MATCHING_ANY_SERVERS
   - MLAG
   id: 210
-  tenant: TRUNK_GROUP_TESTS
   name: l2vlan210_with_trunk_groups
-- tenant: TRUNK_GROUP_TESTS
+  tenant: TRUNK_GROUP_TESTS
+- id: 3199
   name: MLAG_iBGP_TG_200
   trunk_groups:
   - LEAF_PEER_L3
-  id: 3199
+  tenant: TRUNK_GROUP_TESTS
 vlan_interfaces:
-- description: MLAG_PEER_L3_PEERING
+- name: Vlan4093
+  description: MLAG_PEER_L3_PEERING
   shutdown: false
   mtu: 9000
   ip_address: 10.255.247.4/31
-  name: Vlan4093
-- description: MLAG_PEER
+- name: Vlan4094
+  description: MLAG_PEER
   shutdown: false
   ip_address: 10.255.248.4/31
   no_autostate: true
   mtu: 9000
-  name: Vlan4094
-- tenant: TRUNK_GROUP_TESTS
+- name: Vlan200
+  tenant: TRUNK_GROUP_TESTS
   tags:
   - TRUNK_GROUP_TESTS_L3LEAF1
   - TRUNK_GROUP_TESTS_L2LEAF1
@@ -152,15 +153,14 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.2.0.1/24
   vrf: TG_200
-  name: Vlan200
-- tenant: TRUNK_GROUP_TESTS
+- name: Vlan3199
+  tenant: TRUNK_GROUP_TESTS
   type: underlay_peering
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf TG_200'
   vrf: TG_200
   mtu: 9000
   ip_address: 10.255.247.4/31
-  name: Vlan3199
 port_channel_interfaces:
 - description: MLAG_PEER_trunk-group-tests-l3leaf2b_Po3
   type: switched
@@ -263,10 +263,10 @@ vxlan_interface:
       source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
       vlans:
-      - vni: 10200
-        id: 200
-      - vni: 10210
-        id: 210
+      - id: 200
+        vni: 10200
+      - id: 210
+        vni: 10210
       vrfs:
-      - vni: 200
-        name: TG_200
+      - name: TG_200
+        vni: 200

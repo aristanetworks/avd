@@ -65,13 +65,13 @@ vrfs:
 - name: MGMT
   ip_routing: false
 management_interfaces:
-- description: oob_management
+- name: Management1
+  description: oob_management
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.202.115/24
   gateway: 192.168.202.1
   type: oob
-  name: Management1
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -88,17 +88,17 @@ vlans:
   - MLAG
   id: 4094
 vlan_interfaces:
-- description: MLAG_PEER_L3_PEERING
+- name: Vlan4093
+  description: MLAG_PEER_L3_PEERING
   shutdown: false
   mtu: 9000
   ip_address: 10.255.251.20/31
-  name: Vlan4093
-- description: MLAG_PEER
+- name: Vlan4094
+  description: MLAG_PEER
   shutdown: false
   ip_address: 10.255.252.20/31
   no_autostate: true
   mtu: 9000
-  name: Vlan4094
 port_channel_interfaces:
 - description: MLAG_PEER_AUTO_BGP_ASN_LEAF7B_Po3
   type: switched

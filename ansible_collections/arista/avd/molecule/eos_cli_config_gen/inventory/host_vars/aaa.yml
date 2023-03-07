@@ -44,7 +44,6 @@ aaa_server_groups:
         vrf: mgt
       - server: 10.10.10.248
 
-
 ## AAA Authentication
 aaa_authentication:
   login:

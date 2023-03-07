@@ -13,13 +13,13 @@ vrfs:
 - name: MGMT
   ip_routing: false
 management_interfaces:
-- description: Custom Management Interface Description
+- name: Management1
+  description: Custom Management Interface Description
   shutdown: false
   vrf: MGMT
   ip_address: 1.1.1.2
   gateway: 1.1.1.1
   type: oob
-  name: Management1
 management_api_http:
   enable_vrfs:
   - name: MGMT

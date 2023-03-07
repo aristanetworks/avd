@@ -32,20 +32,20 @@ vrfs:
 - name: MGMT
   ip_routing: false
 management_interfaces:
-- description: oob_management
+- name: Management0
+  description: oob_management
   shutdown: false
   vrf: MGMT
   ip_address: 172.100.100.107/24
   gateway: 172.100.100.1
   type: oob
-  name: Management0
-- description: L2LEAF_INBAND_MGMT
+- name: Vlan10
+  description: L2LEAF_INBAND_MGMT
   shutdown: false
   mtu: 1500
   ip_address: 10.10.10.10/24
   gateway: 10.10.10.1
   type: inband
-  name: Vlan10
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -56,25 +56,25 @@ vlans:
   trunk_groups:
   - MLAG
   id: 4094
-- tenant: MY_FABRIC
+- id: 310
   name: IDF3-Data
-  id: 310
-- tenant: MY_FABRIC
+  tenant: MY_FABRIC
+- id: 320
   name: IDF3-Voice
-  id: 320
-- tenant: MY_FABRIC
+  tenant: MY_FABRIC
+- id: 330
   name: IDF3-Guest
-  id: 330
+  tenant: MY_FABRIC
 - tenant: system
   name: L2LEAF_INBAND_MGMT
   id: 10
 vlan_interfaces:
-- description: MLAG_PEER
+- name: Vlan4094
+  description: MLAG_PEER
   shutdown: false
   ip_address: 192.168.0.11/31
   no_autostate: true
   mtu: 1500
-  name: Vlan4094
 port_channel_interfaces:
 - description: MLAG_PEER_LEAF3A_Po983
   type: switched

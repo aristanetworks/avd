@@ -79,13 +79,13 @@ vrfs:
   ip_routing: true
   description: TEST1
 management_interfaces:
-- description: oob_management
+- name: Management1
+  description: oob_management
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.103/24
   gateway: 192.168.200.1
   type: oob
-  name: Management1
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -119,32 +119,32 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 vlans:
-- tenant: Tenant_A
+- id: 1
   name: VLAN_1
-  id: 1
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 2
   name: VLAN_2
-  id: 2
+  tenant: Tenant_A
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vlan_interfaces:
-- tenant: Tenant_A
+- name: Vlan1
+  tenant: Tenant_A
   tags:
   - test_l3
   description: VLAN_1
   shutdown: false
   ip_address_virtual: 10.0.1.1/24
   vrf: TEST1
-  name: Vlan1
-- tenant: Tenant_A
+- name: Vlan2
+  tenant: Tenant_A
   tags:
   - test_l3
   description: VLAN_2
   shutdown: false
   ip_address_virtual: 10.0.2.1/24
   vrf: TEST1
-  name: Vlan2
 vxlan_interface:
   Vxlan1:
     description: RD-RT-ADMIN-SUBFIELD-L3LEAF3_VTEP
@@ -152,10 +152,10 @@ vxlan_interface:
       udp_port: 4789
       source_interface: Loopback1
       vlans:
-      - vni: 10001
-        id: 1
-      - vni: 10002
-        id: 2
+      - id: 1
+        vni: 10001
+      - id: 2
+        vni: 10002
       vrfs:
-      - vni: 11
-        name: TEST1
+      - name: TEST1
+        vni: 11

@@ -6015,7 +6015,64 @@ keys:
         max: 100
       vrf:
         type: str
+  radius_server:
+    documentation_options:
+      filename: data_model/Authentication
+    type: dict
+    keys:
+      attribute_32_include_in_access_req:
+        type: dict
+        keys:
+          hostname:
+            type: bool
+          format:
+            type: str
+            description: Specify the format of the NAS-Identifier. If 'hostname' is
+              set, this is ignored.
+      dynamic_authorization:
+        type: dict
+        keys:
+          port:
+            type: int
+            min: 0
+            max: 65535
+            convert_types:
+            - str
+            description: TCP Port
+          tls_ssl_profile:
+            type: str
+            description: Name of TLS profile
+      hosts:
+        type: list
+        primary_key: host
+        items:
+          type: dict
+          keys:
+            host:
+              type: str
+              description: Host IP address or name
+            vrf:
+              type: str
+            timeout:
+              type: int
+              min: 1
+              max: 1000
+              convert_types:
+              - str
+            retransmit:
+              type: int
+              min: 0
+              max: 100
+              convert_types:
+              - str
+            key:
+              type: str
+              description: Encrypted key
   radius_servers:
+    deprecation:
+      warning: true
+      new_key: radius_server.hosts
+      remove_in_version: v5.0.0
     documentation_options:
       filename: data_model/Authentication
     type: list

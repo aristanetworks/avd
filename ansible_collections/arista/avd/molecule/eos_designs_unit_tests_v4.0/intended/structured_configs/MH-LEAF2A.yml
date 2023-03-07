@@ -133,13 +133,13 @@ vrfs:
   tenant: Tenant_X
   ip_routing: true
 management_interfaces:
-  Management1:
-    description: oob_management
-    shutdown: false
-    vrf: MGMT
-    ip_address: 192.168.201.106/24
-    gateway: 192.168.200.5
-    type: oob
+- name: Management1
+  description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.201.106/24
+  gateway: 192.168.200.5
+  type: oob
 management_api_http:
   enable_vrfs:
     MGMT: {}
@@ -252,31 +252,31 @@ router_bfd:
     min_rx: 1200
     multiplier: 3
 vlans:
-  311:
-    tenant: Tenant_X
-    name: Tenant_default_vrf
-  310:
-    tenant: Tenant_X
-    name: Tenant_X_OP_Zone_1
+- id: 311
+  name: Tenant_default_vrf
+  tenant: Tenant_X
+- id: 310
+  name: Tenant_X_OP_Zone_1
+  tenant: Tenant_X
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 vlan_interfaces:
-  Vlan311:
-    tenant: Tenant_X
-    tags:
-    - default_vrf
-    description: Tenant_default_vrf
-    shutdown: false
-    ip_address_virtual: 10.2.10.1/24
-  Vlan310:
-    tenant: Tenant_X
-    tags:
-    - opzone
-    description: Tenant_X_OP_Zone_1
-    shutdown: false
-    ip_address_virtual: 10.1.10.1/24
-    vrf: Tenant_X_OP_Zone
+- name: Vlan311
+  tenant: Tenant_X
+  tags:
+  - default_vrf
+  description: Tenant_default_vrf
+  shutdown: false
+  ip_address_virtual: 10.2.10.1/24
+- name: Vlan310
+  tenant: Tenant_X
+  tags:
+  - opzone
+  description: Tenant_X_OP_Zone_1
+  shutdown: false
+  ip_address_virtual: 10.1.10.1/24
+  vrf: Tenant_X_OP_Zone
 vxlan_interface:
   Vxlan1:
     description: MH-LEAF2A_VTEP
@@ -284,15 +284,15 @@ vxlan_interface:
       udp_port: 4789
       source_interface: Loopback1
       vlans:
-        311:
-          vni: 11311
-        310:
-          vni: 11310
+      - id: 311
+        vni: 11311
+      - id: 310
+        vni: 11310
       vrfs:
-        default:
-          vni: 21
-        Tenant_X_OP_Zone:
-          vni: 20
+      - name: default
+        vni: 21
+      - name: Tenant_X_OP_Zone
+        vni: 20
 virtual_source_nat_vrfs:
-  Tenant_X_OP_Zone:
-    ip_address: 10.255.1.35
+- name: Tenant_X_OP_Zone
+  ip_address: 10.255.1.35
