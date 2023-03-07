@@ -536,6 +536,8 @@ ethernet_interfaces:
     description: DOT1X Testing - reauthorization_request_limit
     dot1x:
       reauthorization_request_limit: 3
+      eapol:
+        disabled: true
 
   Ethernet45:
     description: DOT1X Testing - all features
@@ -558,6 +560,11 @@ ethernet_interfaces:
         reauth_period: server
         reauth_timeout_ignore: true
         tx_period: 10
+      eapol:
+        disabled: false
+        authentication_failure_fallback_mba:
+          enabled: true
+          timeout: 600
       reauthorization_request_limit: 2
 
   Ethernet46:

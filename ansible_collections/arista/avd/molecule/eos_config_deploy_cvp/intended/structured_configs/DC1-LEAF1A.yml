@@ -162,13 +162,13 @@ vrfs:
   tenant: Tenant_A
   ip_routing: true
 management_interfaces:
-- description: oob_management
+- name: Management1
+  description: oob_management
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.105/24
   gateway: 192.168.200.5
   type: oob
-  name: Management1
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -213,6 +213,7 @@ ethernet_interfaces:
 - peer: server02_SINGLE_NODE_TRUNK
   peer_interface: Eth1
   peer_type: server
+  port_profile: TENANT_A_B
   description: server02_SINGLE_NODE_TRUNK_Eth1
   type: switched
   shutdown: false
@@ -222,6 +223,7 @@ ethernet_interfaces:
 - peer: server02_SINGLE_NODE
   peer_interface: Eth1
   peer_type: server
+  port_profile: TENANT_A
   description: server02_SINGLE_NODE_Eth1
   type: switched
   shutdown: false
@@ -238,12 +240,12 @@ loopback_interfaces:
   ip_address: 192.168.254.5/32
   name: Loopback1
 prefix_lists:
-- sequence_numbers:
-  - action: permit 192.168.255.0/24 eq 32
-    sequence: 10
-  - action: permit 192.168.254.0/24 eq 32
-    sequence: 20
-  name: PL-LOOPBACKS-EVPN-OVERLAY
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -257,18 +259,18 @@ router_bfd:
     min_rx: 1200
     multiplier: 3
 vlans:
-- tenant: Tenant_A
+- id: 130
   name: Tenant_A_APP_Zone_1
-  id: 130
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 131
   name: Tenant_A_APP_Zone_2
-  id: 131
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 120
   name: Tenant_A_WEB_Zone_1
-  id: 120
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 121
   name: Tenant_A_WEBZone_2
-  id: 121
+  tenant: Tenant_A
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
@@ -276,7 +278,8 @@ ip_igmp_snooping:
     id: 120
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vlan_interfaces:
-- tenant: Tenant_A
+- name: Vlan130
+  tenant: Tenant_A
   tags:
   - app
   - erp1
@@ -284,16 +287,16 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.1.30.1/24
   vrf: Tenant_A_APP_Zone
-  name: Vlan130
-- tenant: Tenant_A
+- name: Vlan131
+  tenant: Tenant_A
   tags:
   - app
   description: Tenant_A_APP_Zone_2
   shutdown: false
   ip_address_virtual: 10.1.31.1/24
   vrf: Tenant_A_APP_Zone
-  name: Vlan131
-- tenant: Tenant_A
+- name: Vlan120
+  tenant: Tenant_A
   tags:
   - web
   - erp1
@@ -302,11 +305,11 @@ vlan_interfaces:
   ip_address_virtual: 10.1.20.1/24
   vrf: Tenant_A_WEB_Zone
   ip_helpers:
-  - source_interface: lo100
+  - ip_helper: 1.1.1.1
+    source_interface: lo100
     vrf: TEST
-    ip_helper: 1.1.1.1
-  name: Vlan120
-- tenant: Tenant_A
+- name: Vlan121
+  tenant: Tenant_A
   tags:
   - web
   description: Tenant_A_WEBZone_2
@@ -314,7 +317,6 @@ vlan_interfaces:
   mtu: 1560
   ip_address_virtual: 10.1.10.254/24
   vrf: Tenant_A_WEB_Zone
-  name: Vlan121
 vxlan_interface:
   Vxlan1:
     description: DC1-LEAF1A_VTEP
@@ -322,16 +324,16 @@ vxlan_interface:
       udp_port: 4789
       source_interface: Loopback1
       vlans:
-      - vni: 10130
-        id: 130
-      - vni: 10131
-        id: 131
-      - vni: 10120
-        id: 120
-      - vni: 10121
-        id: 121
+      - id: 130
+        vni: 10130
+      - id: 131
+        vni: 10131
+      - id: 120
+        vni: 10120
+      - id: 121
+        vni: 10121
       vrfs:
-      - vni: 12
-        name: Tenant_A_APP_Zone
-      - vni: 11
-        name: Tenant_A_WEB_Zone
+      - name: Tenant_A_APP_Zone
+        vni: 12
+      - name: Tenant_A_WEB_Zone
+        vni: 11

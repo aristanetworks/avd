@@ -42,12 +42,12 @@ loopback_interfaces:
   ip_address: 192.168.253.1/32
   name: Loopback1
 prefix_lists:
-- sequence_numbers:
-  - action: permit 192.168.254.0/24 eq 32
-    sequence: 10
-  - action: permit 192.168.253.0/24 eq 32
-    sequence: 20
-  name: PL-LOOPBACKS-EVPN-OVERLAY
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.254.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.253.0/24 eq 32
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -56,29 +56,29 @@ route_maps:
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 vlans:
-- tenant: TEST
+- id: 3900
   name: SVI_ON_ALL_LEAFS
-  id: 3900
-- tenant: TEST
+  tenant: TEST
+- id: 3901
   name: SVI_ON_LEAF1
-  id: 3901
-- tenant: TEST
+  tenant: TEST
+- id: 3902
   name: SVI_ON_LEAF1-2
-  id: 3902
-- tenant: TEST
+  tenant: TEST
+- id: 2900
   name: L2VLAN_ON_ALL_LEAFS
-  id: 2900
-- tenant: TEST
+  tenant: TEST
+- id: 2901
   name: L2VLAN_ON_LEAF1
-  id: 2901
-- tenant: TEST
+  tenant: TEST
+- id: 2902
   name: L2VLAN_ON_LEAF1-2
-  id: 2902
+  tenant: TEST
 ip_igmp_snooping:
   globally_enabled: true
-ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 vlan_interfaces:
-- tenant: TEST
+- name: Vlan3900
+  tenant: TEST
   tags:
   - leaf1
   - leaf2
@@ -86,22 +86,21 @@ vlan_interfaces:
   description: SVI_ON_ALL_LEAFS
   shutdown: true
   vrf: TEST
-  name: Vlan3900
-- tenant: TEST
+- name: Vlan3901
+  tenant: TEST
   tags:
   - leaf1
   description: SVI_ON_LEAF1
   shutdown: true
   vrf: TEST
-  name: Vlan3901
-- tenant: TEST
+- name: Vlan3902
+  tenant: TEST
   tags:
   - leaf1
   - leaf2
   description: SVI_ON_LEAF1-2
   shutdown: true
   vrf: TEST
-  name: Vlan3902
 vxlan_interface:
   Vxlan1:
     description: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF1_VTEP
@@ -109,27 +108,27 @@ vxlan_interface:
       udp_port: 4789
       source_interface: Loopback1
       vlans:
-      - vni: 13900
+      - id: 3900
+        vni: 13900
         flood_vteps:
         - 192.168.253.2
         - 192.168.253.3
-        id: 3900
-      - vni: 13901
+      - id: 3901
+        vni: 13901
         flood_vteps: []
-        id: 3901
-      - vni: 13902
+      - id: 3902
+        vni: 13902
         flood_vteps:
         - 192.168.253.2
-        id: 3902
-      - vni: 12900
+      - id: 2900
+        vni: 12900
         flood_vteps:
         - 192.168.253.2
         - 192.168.253.3
-        id: 2900
-      - vni: 12901
+      - id: 2901
+        vni: 12901
         flood_vteps: []
-        id: 2901
-      - vni: 12902
+      - id: 2902
+        vni: 12902
         flood_vteps:
         - 192.168.253.2
-        id: 2902

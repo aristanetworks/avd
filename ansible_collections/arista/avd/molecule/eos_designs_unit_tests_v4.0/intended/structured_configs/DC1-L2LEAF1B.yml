@@ -49,58 +49,53 @@ vrfs:
 - name: MGMT
   ip_routing: false
 management_interfaces:
-  Management1:
-    description: oob_management
-    shutdown: false
-    vrf: MGMT
-    ip_address: 192.168.200.115/24
-    gateway: 192.168.200.5
-    type: oob
+- name: Management1
+  description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.200.115/24
+  gateway: 192.168.200.5
+  type: oob
 management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
   default_services: false
 vlans:
-  4091:
-    tenant: system
-    name: MLAG_PEER
-    trunk_groups:
-    - MLAG
-  130:
-    tenant: Tenant_A
-    name: Tenant_A_APP_Zone_1
-  131:
-    tenant: Tenant_A
-    name: Tenant_A_APP_Zone_2
-  110:
-    tenant: Tenant_A
-    name: Tenant_A_OP_Zone_1
-  111:
-    tenant: Tenant_A
-    name: Tenant_A_OP_Zone_2
-  112:
-    tenant: Tenant_A
-    name: Tenant_A_OP_Zone_3
-  120:
-    tenant: Tenant_A
-    name: Tenant_A_WEB_Zone_1
-  121:
-    tenant: Tenant_A
-    name: Tenant_A_WEBZone_2
-  160:
-    tenant: Tenant_A
-    name: Tenant_A_VMOTION
-  161:
-    tenant: Tenant_A
-    name: Tenant_A_NFS
+- id: 130
+  name: Tenant_A_APP_Zone_1
+  tenant: Tenant_A
+- id: 131
+  name: Tenant_A_APP_Zone_2
+  tenant: Tenant_A
+- id: 110
+  name: Tenant_A_OP_Zone_1
+  tenant: Tenant_A
+- id: 111
+  name: Tenant_A_OP_Zone_2
+  tenant: Tenant_A
+- id: 112
+  name: Tenant_A_OP_Zone_3
+  tenant: Tenant_A
+- id: 120
+  name: Tenant_A_WEB_Zone_1
+  tenant: Tenant_A
+- id: 121
+  name: Tenant_A_WEBZone_2
+  tenant: Tenant_A
+- id: 160
+  name: Tenant_A_VMOTION
+  tenant: Tenant_A
+- id: 161
+  name: Tenant_A_NFS
+  tenant: Tenant_A
 vlan_interfaces:
-  Vlan4091:
-    description: MLAG_PEER
-    shutdown: false
-    ip_address: 10.255.252.15/31
-    no_autostate: true
-    mtu: 1500
+- name: Vlan4091
+  description: MLAG_PEER
+  shutdown: false
+  ip_address: 10.255.252.15/31
+  no_autostate: true
+  mtu: 1500
 port_channel_interfaces:
   Port-Channel3:
     description: MLAG_PEER_DC1-L2LEAF1A_Po3

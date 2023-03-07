@@ -130,13 +130,13 @@ vrfs:
   tenant: Tenant_A
   ip_routing: true
 management_interfaces:
-- description: oob_management
+- name: Management1
+  description: oob_management
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.107/24
   gateway: 192.168.200.5
   type: oob
-  name: Management1
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -152,44 +152,44 @@ vlans:
   trunk_groups:
   - MLAG
   id: 4094
-- tenant: Tenant_A
+- id: 210
   name: Tenant_B_OP_Zone_1
-  id: 210
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 3019
   name: MLAG_iBGP_Tenant_B_OP_Zone
   trunk_groups:
   - LEAF_PEER_L3
-  id: 3019
+  tenant: Tenant_A
 vlan_interfaces:
-- description: MLAG_PEER_L3_PEERING
+- name: Vlan4093
+  description: MLAG_PEER_L3_PEERING
   shutdown: false
   mtu: 1500
   ip_address: 10.255.251.3/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  name: Vlan4093
-- description: MLAG_PEER
+- name: Vlan4094
+  description: MLAG_PEER
   shutdown: false
   ip_address: 10.255.252.3/31
   no_autostate: true
   mtu: 1500
-  name: Vlan4094
-- tenant: Tenant_A
+- name: Vlan210
+  tenant: Tenant_A
   tags:
   - opzone
   description: Tenant_B_OP_Zone_1
   shutdown: false
   ip_address_virtual: 10.2.10.1/24
   vrf: Tenant_B_OP_Zone
-  name: Vlan210
-- tenant: Tenant_A
+- name: Vlan3019
+  tenant: Tenant_A
   type: underlay_peering
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone'
   vrf: Tenant_B_OP_Zone
   mtu: 1500
   ip_address: 10.255.251.3/31
-  name: Vlan3019
 port_channel_interfaces:
 - description: MLAG_PEER_DC1-LEAF2A_Po5
   type: switched
@@ -302,7 +302,8 @@ loopback_interfaces:
   name: Loopback1
 router_ospf:
   process_ids:
-  - passive_interface_default: true
+  - id: 101
+    passive_interface_default: true
     router_id: 192.168.255.7
     max_lsa: 12000
     no_passive_interfaces:
@@ -312,7 +313,6 @@ router_ospf:
     - Ethernet4
     - Vlan4093
     bfd_enable: true
-    id: 101
 router_bfd:
   multihop:
     interval: 1200
@@ -337,8 +337,8 @@ vxlan_interface:
       source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
       vlans:
-      - vni: 20210
-        id: 210
+      - id: 210
+        vni: 20210
       vrfs:
-      - vni: 20
-        name: Tenant_B_OP_Zone
+      - name: Tenant_B_OP_Zone
+        vni: 20

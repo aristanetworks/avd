@@ -101,13 +101,13 @@ vrfs:
 - name: MGMT
   ip_routing: false
 management_interfaces:
-- description: oob_management
+- name: Management1
+  description: oob_management
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.105/24
   gateway: 192.168.200.5
   type: oob
-  name: Management1
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -138,15 +138,15 @@ loopback_interfaces:
   ipv6_address: 2001:1::5/128
   name: Loopback0
 prefix_lists:
-- sequence_numbers:
-  - action: permit 192.168.255.0/24 eq 32
-    sequence: 10
-  name: PL-LOOPBACKS-EVPN-OVERLAY
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
 ipv6_prefix_lists:
-- sequence_numbers:
-  - action: permit 2001:1::/64 eq 128
-    sequence: 10
-  name: PL-LOOPBACKS-EVPN-OVERLAY-V6
+- name: PL-LOOPBACKS-EVPN-OVERLAY-V6
+  sequence_numbers:
+  - sequence: 10
+    action: permit 2001:1::/64 eq 128
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
