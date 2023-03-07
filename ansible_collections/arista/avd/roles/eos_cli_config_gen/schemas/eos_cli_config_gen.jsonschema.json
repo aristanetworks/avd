@@ -14608,12 +14608,12 @@
                 },
                 "local_interface": {
                   "type": "string",
-                  "description": "Local interface to communicate with DHCP server",
+                  "description": "Local interface to communicate with DHCP server - mutually exclusive to source_address",
                   "title": "Local Interface"
                 },
                 "source_address": {
                   "type": "string",
-                  "description": "Source IPv6 address to communicate with DHCP server",
+                  "description": "Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface",
                   "title": "Source Address"
                 },
                 "link_address": {

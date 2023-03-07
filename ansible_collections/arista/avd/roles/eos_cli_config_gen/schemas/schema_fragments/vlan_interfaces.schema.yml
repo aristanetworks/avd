@@ -160,10 +160,10 @@ keys:
                 type: str
               local_interface:
                 type: str
-                description: Local interface to communicate with DHCP server
+                description: Local interface to communicate with DHCP server - mutually exclusive to source_address
               source_address:
                 type: str
-                description: Source IPv6 address to communicate with DHCP server
+                description: Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface
               link_address:
                 type: str
                 description: Override the default link address specified in the relayed DHCP packet

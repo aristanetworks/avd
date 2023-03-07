@@ -147,6 +147,7 @@ vlan_interfaces:
         vrf: TEST
         source_address: a0::6
         link_address: a0::7
+      - address: a0::8
 
 # IPv6 SVI configuration
 
