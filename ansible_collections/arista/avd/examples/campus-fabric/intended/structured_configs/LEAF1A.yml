@@ -29,23 +29,23 @@ local_users:
   sha512_password: $6$eucN5ngreuExDgwS$xnD7T8jO..GBDX0DUlp.hn.W7yW94xTjSanqgaQGBzPIhDAsyAl9N4oScHvOMvf07uVBFI4mKMxwdVEUVKgY/.
   name: admin
 vrfs:
-- ip_routing: false
-  name: MGMT
+- name: MGMT
+  ip_routing: false
 management_interfaces:
-- description: oob_management
+- name: Management0
+  description: oob_management
   shutdown: false
   vrf: MGMT
   ip_address: 172.100.100.103/24
   gateway: 172.100.100.1
   type: oob
-  name: Management0
-- description: L2LEAF_INBAND_MGMT
+- name: Vlan10
+  description: L2LEAF_INBAND_MGMT
   shutdown: false
   mtu: 1500
   ip_address: 10.10.10.6/24
   gateway: 10.10.10.1
   type: inband
-  name: Vlan10
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -56,25 +56,25 @@ vlans:
   trunk_groups:
   - MLAG
   id: 4094
-- tenant: MY_FABRIC
+- id: 110
   name: IDF1-Data
-  id: 110
-- tenant: MY_FABRIC
+  tenant: MY_FABRIC
+- id: 120
   name: IDF1-Voice
-  id: 120
-- tenant: MY_FABRIC
+  tenant: MY_FABRIC
+- id: 130
   name: IDF1-Guest
-  id: 130
+  tenant: MY_FABRIC
 - tenant: system
   name: L2LEAF_INBAND_MGMT
   id: 10
 vlan_interfaces:
-- description: MLAG_PEER
+- name: Vlan4094
+  description: MLAG_PEER
   shutdown: false
   ip_address: 192.168.0.4/31
   no_autostate: true
   mtu: 1500
-  name: Vlan4094
 port_channel_interfaces:
 - description: MLAG_PEER_LEAF1B_Po53
   type: switched
@@ -124,6 +124,7 @@ ethernet_interfaces:
   name: Ethernet51
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -154,6 +155,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -184,6 +186,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -214,6 +217,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -244,6 +248,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -274,6 +279,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -304,6 +310,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -334,6 +341,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -364,6 +372,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -394,6 +403,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -424,6 +434,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -454,6 +465,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -484,6 +496,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -514,6 +527,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -544,6 +558,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -574,6 +589,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -604,6 +620,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -634,6 +651,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -664,6 +682,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -694,6 +713,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -724,6 +744,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -754,6 +775,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -784,6 +806,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -814,6 +837,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -844,6 +868,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -874,6 +899,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -904,6 +930,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -934,6 +961,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -964,6 +992,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -994,6 +1023,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -1024,6 +1054,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -1054,6 +1085,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -1084,6 +1116,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -1114,6 +1147,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -1144,6 +1178,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -1174,6 +1209,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -1204,6 +1240,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -1234,6 +1271,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -1264,6 +1302,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -1294,6 +1333,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -1324,6 +1364,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -1354,6 +1395,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -1384,6 +1426,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -1414,6 +1457,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -1444,6 +1488,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -1474,6 +1519,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -1504,6 +1550,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false
@@ -1534,6 +1581,7 @@ ethernet_interfaces:
     vlan: 120
 - peer: IDF1 Standard Port
   peer_type: network_port
+  port_profile: PP-DOT1X
   description: IDF1 Standard Port
   type: switched
   shutdown: false

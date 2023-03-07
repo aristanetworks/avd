@@ -1,6 +1,6 @@
 ---
 ### Roles ###
-roles:  # noqa: schema[vars]
+roles:
   - name: network-limited
     sequence_numbers:
       - sequence: 10

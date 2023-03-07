@@ -21,7 +21,7 @@ class RouterOspfMixin(UtilsMixin):
         if self._underlay_ospf is not True:
             return None
 
-        ospf_processes = {}
+        ospf_processes = []
 
         process_id = self._underlay_ospf_process_id
 
@@ -32,6 +32,7 @@ class RouterOspfMixin(UtilsMixin):
             no_passive_interfaces.append(f"Vlan{mlag_l3_vlan}")
 
         process = {
+            "id": process_id,
             "passive_interface_default": True,
             "router_id": self._router_id,
             "max_lsa": get(self._hostvars, "underlay_ospf_max_lsa"),
@@ -47,7 +48,7 @@ class RouterOspfMixin(UtilsMixin):
         # Strip None values from process before adding to list
         process = {key: value for key, value in process.items() if value is not None}
 
-        ospf_processes[process_id] = process
+        ospf_processes.append(process)
 
         if ospf_processes:
             return {"process_ids": ospf_processes}

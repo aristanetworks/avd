@@ -12,7 +12,7 @@ class RouteMapsMixin(UtilsMixin):
     """
 
     @cached_property
-    def route_maps(self) -> dict | None:
+    def route_maps(self) -> list | None:
         """
         Return structured config for route_maps
 
@@ -23,7 +23,7 @@ class RouteMapsMixin(UtilsMixin):
         if not self._network_services_l3:
             return None
 
-        route_maps = {}
+        route_maps = []
 
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
@@ -41,20 +41,24 @@ class RouteMapsMixin(UtilsMixin):
                     else:
                         set_action = f"ipv6 next-hop {ipv6_next_hop}"
 
-                    route_maps[route_map_name] = {
-                        "sequence_numbers": {
-                            10: {
-                                "type": "permit",
-                                "set": [set_action],
-                            },
-                        },
-                    }
+                    route_maps.append(
+                        {
+                            "name": route_map_name,
+                            "sequence_numbers": [
+                                {
+                                    "sequence": 10,
+                                    "type": "permit",
+                                    "set": [set_action],
+                                },
+                            ],
+                        }
+                    )
 
-        if (route_maps_vrf_default := self._route_maps_vrf_default) is not None:
-            route_maps.update(route_maps_vrf_default)
+            if (route_maps_vrf_default := self._route_maps_vrf_default) is not None:
+                route_maps.extend(route_maps_vrf_default)
 
         if self._configure_bgp_mlag_peer_group and self._mlag_ibgp_origin_incomplete:
-            route_maps.update(self._bgp_mlag_peer_group_route_map())
+            route_maps.append(self._bgp_mlag_peer_group_route_map())
 
         if route_maps:
             return route_maps
@@ -62,7 +66,7 @@ class RouteMapsMixin(UtilsMixin):
         return None
 
     @cached_property
-    def _route_maps_vrf_default(self) -> dict | None:
+    def _route_maps_vrf_default(self) -> list | None:
         """
         Route-maps for EVPN services in VRF "default"
 
@@ -76,50 +80,72 @@ class RouteMapsMixin(UtilsMixin):
         if not subnets and not static_routes:
             return None
 
-        route_maps = {
-            "RM-EVPN-EXPORT-VRF-DEFAULT": {
-                "sequence_numbers": {},
-            },
-            "RM-BGP-UNDERLAY-PEERS-OUT": {
-                "sequence_numbers": {
-                    20: {
-                        "type": "permit",
-                    }
-                }
-            },
-            "RM-CONN-2-BGP": {
-                "sequence_numbers": {
-                    # Add subnets to redistribution in default VRF
-                    # sequence 10 is set in underlay and sequence 20 in inband management, so avoid setting those here
-                    30: {
-                        "type": "permit",
-                        "match": ["ip address prefix-list PL-SVI-VRF-DEFAULT"],
-                    },
+        vrf_default = {
+            "name": "RM-EVPN-EXPORT-VRF-DEFAULT",
+            "sequence_numbers": [],
+        }
+
+        peers_out = {
+            "name": "RM-BGP-UNDERLAY-PEERS-OUT",
+            "sequence_numbers": [
+                {
+                    "sequence": 20,
+                    "type": "permit",
                 },
-            },
+            ],
         }
 
         if subnets:
-            route_maps["RM-EVPN-EXPORT-VRF-DEFAULT"]["sequence_numbers"][10] = {
-                "type": "permit",
-                "match": ["ip address prefix-list PL-SVI-VRF-DEFAULT"],
-            }
-            route_maps["RM-BGP-UNDERLAY-PEERS-OUT"]["sequence_numbers"][10] = {
-                "type": "deny",
-                "match": ["ip address prefix-list PL-SVI-VRF-DEFAULT"],
-            }
+            vrf_default["sequence_numbers"].append(
+                {
+                    "sequence": 10,
+                    "type": "permit",
+                    "match": ["ip address prefix-list PL-SVI-VRF-DEFAULT"],
+                }
+            )
+
+            peers_out["sequence_numbers"].append(
+                {
+                    "sequence": 10,
+                    "type": "deny",
+                    "match": ["ip address prefix-list PL-SVI-VRF-DEFAULT"],
+                }
+            )
 
         if static_routes:
-            route_maps["RM-EVPN-EXPORT-VRF-DEFAULT"]["sequence_numbers"][20] = {
-                "type": "permit",
-                "match": ["ip address prefix-list PL-STATIC-VRF-DEFAULT"],
-            }
-            route_maps["RM-BGP-UNDERLAY-PEERS-OUT"]["sequence_numbers"][15] = {
-                "type": "deny",
-                "match": ["ip address prefix-list PL-STATIC-VRF-DEFAULT"],
-            }
+            vrf_default["sequence_numbers"].append(
+                {
+                    "sequence": 20,
+                    "type": "permit",
+                    "match": ["ip address prefix-list PL-STATIC-VRF-DEFAULT"],
+                }
+            )
 
-        return route_maps
+            peers_out["sequence_numbers"].append(
+                {
+                    "sequence": 15,
+                    "type": "deny",
+                    "match": ["ip address prefix-list PL-STATIC-VRF-DEFAULT"],
+                }
+            )
+
+        if not self._underlay_filter_redistribute_connected:
+            return [vrf_default, peers_out]
+
+        bgp = {
+            "name": "RM-CONN-2-BGP",
+            "sequence_numbers": [
+                # Add subnets to redistribution in default VRF
+                # sequence 10 is set in underlay and sequence 20 in inband management, so avoid setting those here
+                {
+                    "sequence": 30,
+                    "type": "permit",
+                    "match": ["ip address prefix-list PL-SVI-VRF-DEFAULT"],
+                },
+            ],
+        }
+
+        return [vrf_default, peers_out, bgp]
 
     def _bgp_mlag_peer_group_route_map(self):
         """
@@ -129,13 +155,13 @@ class RouteMapsMixin(UtilsMixin):
         TODO: Partially duplicated from mlag. Should be moved to a common class
         """
         return {
-            "RM-MLAG-PEER-IN": {
-                "sequence_numbers": {
-                    10: {
-                        "type": "permit",
-                        "set": ["origin incomplete"],
-                        "description": "Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing",
-                    }
+            "name": "RM-MLAG-PEER-IN",
+            "sequence_numbers": [
+                {
+                    "sequence": 10,
+                    "type": "permit",
+                    "set": ["origin incomplete"],
+                    "description": "Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing",
                 }
-            }
+            ],
         }

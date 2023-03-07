@@ -82,19 +82,19 @@ spanning_tree:
   - priority: 4096
     id: '0'
 vrfs:
-- ip_routing: false
-  name: MGMT
-- tenant: PTP
+- name: MGMT
+  ip_routing: false
+- name: VRF1
+  tenant: PTP
   ip_routing: true
-  name: VRF1
 management_interfaces:
-- description: oob_management
+- name: Management1
+  description: oob_management
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.0.102/24
   gateway: 192.168.0.1
   type: oob
-  name: Management1
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -188,47 +188,46 @@ ethernet_interfaces:
     role: master
   name: Ethernet5
 loopback_interfaces:
-- description: EVPN_Overlay_Peering
+- name: Loopback0
+  description: EVPN_Overlay_Peering
   shutdown: false
   ip_address: 10.254.1.2/32
-  name: Loopback0
-- description: VTEP_VXLAN_Tunnel_Source
+- name: Loopback1
+  description: VTEP_VXLAN_Tunnel_Source
   shutdown: false
   ip_address: 10.254.11.2/32
-  name: Loopback1
 prefix_lists:
-- sequence_numbers:
-  - action: permit 10.254.1.0/27 eq 32
-    sequence: 10
-  - action: permit 10.254.11.0/27 eq 32
-    sequence: 20
-  name: PL-LOOPBACKS-EVPN-OVERLAY
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.254.1.0/27 eq 32
+  - sequence: 20
+    action: permit 10.254.11.0/27 eq 32
 route_maps:
-- sequence_numbers:
-  - type: permit
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-    sequence: 10
-  name: RM-CONN-2-BGP
 router_bfd:
   multihop:
     interval: 300
     min_rx: 300
     multiplier: 3
 vlans:
-- tenant: PTP
+- id: 11
   name: VLAN11
-  id: 11
+  tenant: PTP
 ip_igmp_snooping:
   globally_enabled: true
-ip_virtual_router_mac_address: 00:1c:73:00:00:99
 vlan_interfaces:
-- tenant: PTP
+- name: Vlan11
+  tenant: PTP
   description: VLAN11
   shutdown: false
   ip_address: 172.17.11.1/24
   vrf: VRF1
-  name: Vlan11
 vxlan_interface:
   Vxlan1:
     description: ptp-tests-leaf2_VTEP
@@ -236,8 +235,8 @@ vxlan_interface:
       udp_port: 4789
       source_interface: Loopback1
       vlans:
-      - vni: 10011
-        id: 11
+      - id: 11
+        vni: 10011
       vrfs:
-      - vni: 1
-        name: VRF1
+      - name: VRF1
+        vni: 1

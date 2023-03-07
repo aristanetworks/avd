@@ -1597,9 +1597,10 @@ keys:
               type: dict
               keys:
                 level:
-                  type: int
+                  type: str
                   convert_types:
-                  - str
+                  - int
+                  - float
                   description: Configure maximum storm-control level
                 unit:
                   type: str
@@ -1612,9 +1613,10 @@ keys:
               type: dict
               keys:
                 level:
-                  type: int
+                  type: str
                   convert_types:
-                  - str
+                  - int
+                  - float
                   description: Configure maximum storm-control level
                 unit:
                   type: str
@@ -1627,9 +1629,10 @@ keys:
               type: dict
               keys:
                 level:
-                  type: int
+                  type: str
                   convert_types:
-                  - str
+                  - int
+                  - float
                   description: Configure maximum storm-control level
                 unit:
                   type: str
@@ -1642,9 +1645,10 @@ keys:
               type: dict
               keys:
                 level:
-                  type: int
+                  type: str
                   convert_types:
-                  - str
+                  - int
+                  - float
                   description: Configure maximum storm-control level
                 unit:
                   type: str
@@ -1792,6 +1796,22 @@ keys:
               max: 10
               convert_types:
               - str
+            eapol:
+              type: dict
+              keys:
+                disabled:
+                  type: bool
+                authentication_failure_fallback_mba:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                    timeout:
+                      type: int
+                      min: 0
+                      max: 65535
+                      convert_types:
+                      - str
         service_profile:
           type: str
           description: QOS profile
@@ -1989,6 +2009,9 @@ keys:
                   type: bool
                 unmodified_enable:
                   type: bool
+        port_profile:
+          type: str
+          description: Key only used for documentation or validation purposes
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface
@@ -2029,6 +2052,7 @@ keys:
             '
           valid_values:
           - on-logging
+          - on-startup-config
         regex:
           type: str
           description: 'Regular expression to use for searching log messages. Required
@@ -3186,6 +3210,15 @@ keys:
             '
         ssh_key:
           type: str
+        shell:
+          type: str
+          description: 'Specify shell for the user
+
+            '
+          valid_values:
+          - /bin/bash
+          - /bin/sh
+          - /sbin/nologin
   logging:
     documentation_options:
       filename: data_model/Monitoring
@@ -3233,14 +3266,14 @@ keys:
           level:
             type: str
             valid_values:
+            - alerts
+            - critical
             - debugging
+            - emergencies
+            - errors
             - informational
             - notifications
             - warnings
-            - errors
-            - critical
-            - alerts
-            - emergencies
             - disabled
             description: 'Buffer logging severity level
 
@@ -3248,14 +3281,15 @@ keys:
       trap:
         type: str
         valid_values:
+        - alerts
+        - critical
         - debugging
+        - emergencies
+        - errors
         - informational
         - notifications
+        - system
         - warnings
-        - errors
-        - critical
-        - alerts
-        - emergencies
         - disabled
         description: 'Trap logging severity level
 
@@ -3266,14 +3300,15 @@ keys:
           level:
             type: str
             valid_values:
+            - alerts
+            - all
+            - critical
             - debugging
+            - emergencies
+            - errors
             - informational
             - notifications
             - warnings
-            - errors
-            - critical
-            - alerts
-            - emergencies
             - disabled
             description: 'Synchronous logging severity level
 
@@ -3920,6 +3955,9 @@ keys:
       source_interface:
         type: str
         description: Interface name
+      vrf:
+        type: str
+        description: VRF Name
   management_defaults:
     documentation_options:
       filename: data_model/Management
@@ -5135,9 +5173,10 @@ keys:
               type: dict
               keys:
                 level:
-                  type: int
+                  type: str
                   convert_types:
-                  - str
+                  - int
+                  - float
                   description: Configure maximum storm-control level
                 unit:
                   type: str
@@ -5150,9 +5189,10 @@ keys:
               type: dict
               keys:
                 level:
-                  type: int
+                  type: str
                   convert_types:
-                  - str
+                  - int
+                  - float
                   description: Configure maximum storm-control level
                 unit:
                   type: str
@@ -5165,9 +5205,10 @@ keys:
               type: dict
               keys:
                 level:
-                  type: int
+                  type: str
                   convert_types:
-                  - str
+                  - int
+                  - float
                   description: Configure maximum storm-control level
                 unit:
                   type: str
@@ -5180,9 +5221,10 @@ keys:
               type: dict
               keys:
                 level:
-                  type: int
+                  type: str
                   convert_types:
-                  - str
+                  - int
+                  - float
                   description: Configure maximum storm-control level
                 unit:
                   type: str
@@ -5973,7 +6015,64 @@ keys:
         max: 100
       vrf:
         type: str
+  radius_server:
+    documentation_options:
+      filename: data_model/Authentication
+    type: dict
+    keys:
+      attribute_32_include_in_access_req:
+        type: dict
+        keys:
+          hostname:
+            type: bool
+          format:
+            type: str
+            description: Specify the format of the NAS-Identifier. If 'hostname' is
+              set, this is ignored.
+      dynamic_authorization:
+        type: dict
+        keys:
+          port:
+            type: int
+            min: 0
+            max: 65535
+            convert_types:
+            - str
+            description: TCP Port
+          tls_ssl_profile:
+            type: str
+            description: Name of TLS profile
+      hosts:
+        type: list
+        primary_key: host
+        items:
+          type: dict
+          keys:
+            host:
+              type: str
+              description: Host IP address or name
+            vrf:
+              type: str
+            timeout:
+              type: int
+              min: 1
+              max: 1000
+              convert_types:
+              - str
+            retransmit:
+              type: int
+              min: 0
+              max: 100
+              convert_types:
+              - str
+            key:
+              type: str
+              description: Encrypted key
   radius_servers:
+    deprecation:
+      warning: true
+      new_key: radius_server.hosts
+      remove_in_version: v5.0.0
     documentation_options:
       filename: data_model/Authentication
     type: list
@@ -6336,6 +6435,16 @@ keys:
               type: str
             shutdown:
               type: bool
+            as_path:
+              type: dict
+              description: BGP AS-PATH options
+              keys:
+                remote_as_replace_out:
+                  type: bool
+                  description: Replace AS number with local AS number
+                prepend_own_disabled:
+                  type: bool
+                  description: Disable prepending own AS number to AS path
             remove_private_as:
               type: dict
               description: Remove private AS numbers in outbound AS path
@@ -6494,6 +6603,16 @@ keys:
               description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
               convert_types:
               - int
+            as_path:
+              type: dict
+              description: BGP AS-PATH options
+              keys:
+                remote_as_replace_out:
+                  type: bool
+                  description: Replace AS number with local AS number
+                prepend_own_disabled:
+                  type: bool
+                  description: Disable prepending own AS number to AS path
             description:
               type: str
             route_reflector_client:
@@ -7501,8 +7620,20 @@ keys:
                       <1-65535>.<0-65535>
                     convert_types:
                     - int
+                  as_path:
+                    type: dict
+                    description: BGP AS-PATH options
+                    keys:
+                      remote_as_replace_out:
+                        type: bool
+                        description: Replace AS number with local AS number
+                      prepend_own_disabled:
+                        type: bool
+                        description: Disable prepending own AS number to AS path
                   description:
                     type: str
+                  route_reflector_client:
+                    type: bool
                   ebgp_multihop:
                     type: int
                     min: 1

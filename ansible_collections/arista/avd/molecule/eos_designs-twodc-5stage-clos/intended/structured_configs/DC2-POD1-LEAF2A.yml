@@ -72,16 +72,16 @@ local_users:
   sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
   name: admin
 vrfs:
-- ip_routing: false
-  name: MGMT
+- name: MGMT
+  ip_routing: false
 management_interfaces:
-- description: oob_management
+- name: Management1
+  description: oob_management
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.1.24/24
   gateway: 192.168.1.254
   type: oob
-  name: Management1
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -132,36 +132,36 @@ port_channel_interfaces:
   vlans: '4092'
   name: Port-Channel3
 loopback_interfaces:
-- description: EVPN_Overlay_Peering
+- name: Loopback0
+  description: EVPN_Overlay_Peering
   shutdown: false
   ip_address: 172.16.210.4/32
-  name: Loopback0
-- description: VTEP_VXLAN_Tunnel_Source
+- name: Loopback1
+  description: VTEP_VXLAN_Tunnel_Source
   shutdown: false
   ip_address: 172.18.210.4/32
-  name: Loopback1
 prefix_lists:
-- sequence_numbers:
-  - action: permit 172.16.210.0/24 eq 32
-    sequence: 10
-  - action: permit 172.18.210.0/24 eq 32
-    sequence: 20
-  name: PL-LOOPBACKS-EVPN-OVERLAY
-- sequence_numbers:
-  - action: permit 172.21.210.0/24
-    sequence: 10
-  name: PL-L2LEAF-INBAND-MGMT
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 172.16.210.0/24 eq 32
+  - sequence: 20
+    action: permit 172.18.210.0/24 eq 32
+- name: PL-L2LEAF-INBAND-MGMT
+  sequence_numbers:
+  - sequence: 10
+    action: permit 172.21.210.0/24
 route_maps:
-- sequence_numbers:
-  - type: permit
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-    sequence: 10
   - type: permit
     match:
     - ip address prefix-list PL-L2LEAF-INBAND-MGMT
     sequence: 20
-  name: RM-CONN-2-BGP
 router_bfd:
   multihop:
     interval: 300
@@ -180,7 +180,8 @@ vlans:
   name: L2LEAF_INBAND_MGMT
   id: 4092
 vlan_interfaces:
-- description: L2LEAF_INBAND_MGMT
+- name: Vlan4092
+  description: L2LEAF_INBAND_MGMT
   shutdown: false
   mtu: 1500
   ip_address: 172.21.210.2/24
@@ -188,5 +189,4 @@ vlan_interfaces:
   - 172.21.210.1
   ip_attached_host_route_export:
     distance: 19
-  name: Vlan4092
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01

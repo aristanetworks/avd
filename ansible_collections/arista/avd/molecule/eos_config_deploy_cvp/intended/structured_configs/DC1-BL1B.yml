@@ -199,25 +199,25 @@ local_users:
   sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
   name: cvpadmin
 vrfs:
-- ip_routing: false
-  name: MGMT
-- tenant: Tenant_A
+- name: MGMT
+  ip_routing: false
+- name: Tenant_A_WAN_Zone
+  tenant: Tenant_A
   ip_routing: true
-  name: Tenant_A_WAN_Zone
-- tenant: Tenant_B
+- name: Tenant_B_WAN_Zone
+  tenant: Tenant_B
   ip_routing: true
-  name: Tenant_B_WAN_Zone
-- tenant: Tenant_C
+- name: Tenant_C_WAN_Zone
+  tenant: Tenant_C
   ip_routing: true
-  name: Tenant_C_WAN_Zone
 management_interfaces:
-- description: oob_management
+- name: Management1
+  description: oob_management
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.111/24
   gateway: 192.168.200.5
   type: oob
-  name: Management1
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -233,90 +233,90 @@ vlans:
   trunk_groups:
   - MLAG
   id: 4094
-- tenant: Tenant_A
+- id: 150
   name: Tenant_A_WAN_Zone_1
-  id: 150
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 3013
   name: MLAG_iBGP_Tenant_A_WAN_Zone
   trunk_groups:
   - LEAF_PEER_L3
-  id: 3013
-- tenant: Tenant_B
+  tenant: Tenant_A
+- id: 250
   name: Tenant_B_WAN_Zone_1
-  id: 250
-- tenant: Tenant_B
+  tenant: Tenant_B
+- id: 3020
   name: MLAG_iBGP_Tenant_B_WAN_Zone
   trunk_groups:
   - LEAF_PEER_L3
-  id: 3020
-- tenant: Tenant_C
+  tenant: Tenant_B
+- id: 350
   name: Tenant_C_WAN_Zone_1
-  id: 350
-- tenant: Tenant_C
+  tenant: Tenant_C
+- id: 3030
   name: MLAG_iBGP_Tenant_C_WAN_Zone
   trunk_groups:
   - LEAF_PEER_L3
-  id: 3030
+  tenant: Tenant_C
 vlan_interfaces:
-- description: MLAG_PEER_L3_PEERING
+- name: Vlan4093
+  description: MLAG_PEER_L3_PEERING
   shutdown: false
   mtu: 1500
   ip_address: 10.255.251.11/31
-  name: Vlan4093
-- description: MLAG_PEER
+- name: Vlan4094
+  description: MLAG_PEER
   shutdown: false
   ip_address: 10.255.252.11/31
   no_autostate: true
   mtu: 1500
-  name: Vlan4094
-- tenant: Tenant_A
+- name: Vlan150
+  tenant: Tenant_A
   tags:
   - wan
   description: Tenant_A_WAN_Zone_1
   shutdown: false
   ip_address_virtual: 10.1.40.1/24
   vrf: Tenant_A_WAN_Zone
-  name: Vlan150
-- tenant: Tenant_A
+- name: Vlan3013
+  tenant: Tenant_A
   type: underlay_peering
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone'
   vrf: Tenant_A_WAN_Zone
   mtu: 1500
   ip_address: 10.255.251.11/31
-  name: Vlan3013
-- tenant: Tenant_B
+- name: Vlan250
+  tenant: Tenant_B
   tags:
   - wan
   description: Tenant_B_WAN_Zone_1
   shutdown: false
   ip_address_virtual: 10.2.50.1/24
   vrf: Tenant_B_WAN_Zone
-  name: Vlan250
-- tenant: Tenant_B
+- name: Vlan3020
+  tenant: Tenant_B
   type: underlay_peering
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone'
   vrf: Tenant_B_WAN_Zone
   mtu: 1500
   ip_address: 10.255.251.11/31
-  name: Vlan3020
-- tenant: Tenant_C
+- name: Vlan350
+  tenant: Tenant_C
   tags:
   - wan
   description: Tenant_C_WAN_Zone_1
   shutdown: false
   ip_address_virtual: 10.3.50.1/24
   vrf: Tenant_C_WAN_Zone
-  name: Vlan350
-- tenant: Tenant_C
+- name: Vlan3030
+  tenant: Tenant_C
   type: underlay_peering
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone'
   vrf: Tenant_C_WAN_Zone
   mtu: 1500
   ip_address: 10.255.251.11/31
-  name: Vlan3030
 port_channel_interfaces:
 - description: MLAG_PEER_DC1-BL1A_Po5
   type: switched
@@ -392,35 +392,35 @@ mlag_configuration:
   reload_delay_mlag: '300'
   reload_delay_non_mlag: '330'
 route_maps:
-- sequence_numbers:
-  - type: permit
+- name: RM-MLAG-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     set:
     - origin incomplete
     description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
-    sequence: 10
-  name: RM-MLAG-PEER-IN
-- sequence_numbers:
-  - type: permit
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-    sequence: 10
-  name: RM-CONN-2-BGP
 loopback_interfaces:
-- description: EVPN_Overlay_Peering
+- name: Loopback0
+  description: EVPN_Overlay_Peering
   shutdown: false
   ip_address: 192.168.255.11/32
-  name: Loopback0
-- description: VTEP_VXLAN_Tunnel_Source
+- name: Loopback1
+  description: VTEP_VXLAN_Tunnel_Source
   shutdown: false
   ip_address: 192.168.254.10/32
-  name: Loopback1
 prefix_lists:
-- sequence_numbers:
-  - action: permit 192.168.255.0/24 eq 32
-    sequence: 10
-  - action: permit 192.168.254.0/24 eq 32
-    sequence: 20
-  name: PL-LOOPBACKS-EVPN-OVERLAY
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
 router_bfd:
   multihop:
     interval: 1200
@@ -437,16 +437,16 @@ vxlan_interface:
       source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
       vlans:
-      - vni: 10150
-        id: 150
-      - vni: 20250
-        id: 250
-      - vni: 30350
-        id: 350
+      - id: 150
+        vni: 10150
+      - id: 250
+        vni: 20250
+      - id: 350
+        vni: 30350
       vrfs:
-      - vni: 14
-        name: Tenant_A_WAN_Zone
-      - vni: 21
-        name: Tenant_B_WAN_Zone
-      - vni: 31
-        name: Tenant_C_WAN_Zone
+      - name: Tenant_A_WAN_Zone
+        vni: 14
+      - name: Tenant_B_WAN_Zone
+        vni: 21
+      - name: Tenant_C_WAN_Zone
+        vni: 31

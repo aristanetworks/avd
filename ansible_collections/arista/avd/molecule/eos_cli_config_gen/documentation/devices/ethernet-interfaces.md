@@ -628,6 +628,7 @@ interface Ethernet44
    description DOT1X Testing - reauthorization_request_limit
    switchport
    dot1x reauthorization request limit 3
+   dot1x eapol disabled
 !
 interface Ethernet45
    description DOT1X Testing - all features
@@ -644,6 +645,7 @@ interface Ethernet45
    dot1x timeout reauth-period server
    dot1x timeout idle-host 10 seconds
    dot1x reauthorization request limit 2
+   dot1x eapol authentication failure fallback mba timeout 600
 !
 interface Ethernet46
    description native-vlan-tag-precedence
@@ -727,25 +729,25 @@ interface Ethernet54
 
 ### 802.1X Interfaces
 
-| Interface | PAE Mode | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth |
-| --------- | -------- | ------| ---------------------- | ---------------- | ------------------- | --------- | -------------- |
-| Ethernet29 | - | auto | True | - | - | - | - |
-| Ethernet30 | - | force-authorized | False | - | - | - | - |
-| Ethernet31 | - | force-unauthorized | - | - | - | - | - |
-| Ethernet32 | - | auto | - | True | - | - | - |
-| Ethernet33 | authenticator | - | - | - | - | - | - |
-| Ethernet34 | - | - | - | - | allow vlan 800 | - | - |
-| Ethernet35 | - | - | - | - | drop | - | - |
-| Ethernet36 | - | - | - | - | - | single-host | - |
-| Ethernet37 | - | - | - | - | - | multi-host | - |
-| Ethernet38 | - | - | - | - | - | multi-host | - |
-| Ethernet39 | - | - | - | - | - | - | True |
-| Ethernet40 | - | - | - | - | - | - | True |
-| Ethernet41 | - | - | - | - | - | - | True |
-| Ethernet42 | - | - | - | - | - | - | True |
-| Ethernet43 | - | - | - | - | - | - | - |
-| Ethernet44 | - | - | - | - | - | - | - |
-| Ethernet45 | authenticator | auto | - | True | allow vlan 800 | multi-host | True |
+| Interface | PAE Mode | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth | Eapol |
+| --------- | -------- | ------| ---------------------- | ---------------- | ------------------- | --------- | -------------- | ------ |
+| Ethernet29 | - | auto | True | - | - | - | - | - |
+| Ethernet30 | - | force-authorized | False | - | - | - | - | - |
+| Ethernet31 | - | force-unauthorized | - | - | - | - | - | - |
+| Ethernet32 | - | auto | - | True | - | - | - | - |
+| Ethernet33 | authenticator | - | - | - | - | - | - | - |
+| Ethernet34 | - | - | - | - | allow vlan 800 | - | - | - |
+| Ethernet35 | - | - | - | - | drop | - | - | - |
+| Ethernet36 | - | - | - | - | - | single-host | - | - |
+| Ethernet37 | - | - | - | - | - | multi-host | - | - |
+| Ethernet38 | - | - | - | - | - | multi-host | - | - |
+| Ethernet39 | - | - | - | - | - | - | True | - |
+| Ethernet40 | - | - | - | - | - | - | True | - |
+| Ethernet41 | - | - | - | - | - | - | True | - |
+| Ethernet42 | - | - | - | - | - | - | True | - |
+| Ethernet43 | - | - | - | - | - | - | - | - |
+| Ethernet44 | - | - | - | - | - | - | - | - |
+| Ethernet45 | authenticator | auto | - | True | allow vlan 800 | multi-host | True | True |
 
 # Quality Of Service
 

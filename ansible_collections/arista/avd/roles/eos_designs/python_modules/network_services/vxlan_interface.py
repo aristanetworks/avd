@@ -52,8 +52,8 @@ class VxlanInterfaceMixin(UtilsMixin):
         if self._overlay_routing_protocol == "her" and self._overlay_her_flood_list_per_vni is False:
             vxlan["flood_vteps"] = natural_sort(unique(self._overlay_her_flood_lists.get("common", [])))
 
-        vlans = {}
-        vrfs = {}
+        vlans = []
+        vrfs = []
         # vnis is a dict of {<vni>: <tenant>}. Only used to detect duplicates.
         vnis = {}
         for tenant in self._filtered_tenants:
@@ -65,7 +65,7 @@ class VxlanInterfaceMixin(UtilsMixin):
                             self._raise_duplicate_vni_error(vni, f"SVI '{vlan_id} in vrf '{vrf['name']}'", tenant["name"], vnis[vni])
 
                         vnis[vni] = tenant["name"]
-                        vlans[vlan_id] = vlan
+                        vlans.append({"id": vlan_id, **vlan})
 
                 if self._network_services_l3 and self._overlay_evpn:
                     vrf_name = vrf["name"]
@@ -80,7 +80,7 @@ class VxlanInterfaceMixin(UtilsMixin):
                             self._raise_duplicate_vni_error(vni, f"VRF '{vrf_name}'", tenant["name"], vnis[vni])
 
                         vnis[vni] = tenant["name"]
-                        vrfs[vrf_name] = {"vni": vni}
+                        vrf_data = {"name": vrf_name, "vni": vni}
 
                         if get(vrf, "_evpn_l3_multicast_enabled"):
                             underlay_l3_multicast_group_ipv4_pool = get(
@@ -93,7 +93,9 @@ class VxlanInterfaceMixin(UtilsMixin):
                                 tenant, "evpn_l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset", default=0
                             )
                             offset = vni - 1 + underlay_l3_mcast_group_ipv4_pool_offset
-                            vrfs[vrf_name]["multicast_group"] = self._avd_ip_addressing._ip(underlay_l3_multicast_group_ipv4_pool, 32, offset, 0)
+                            vrf_data["multicast_group"] = self._avd_ip_addressing._ip(underlay_l3_multicast_group_ipv4_pool, 32, offset, 0)
+
+                        vrfs.append(vrf_data)
 
             for l2vlan in tenant["l2vlans"]:
                 if vlan := self._get_vxlan_interface_config_for_vlan(l2vlan, tenant):
@@ -102,7 +104,7 @@ class VxlanInterfaceMixin(UtilsMixin):
                         self._raise_duplicate_vni_error(vni, f"L2VLAN '{vlan_id}'", tenant["name"], vnis[vni])
 
                     vnis[vni] = tenant["name"]
-                    vlans[vlan_id] = vlan
+                    vlans.append({"id": vlan_id, **vlan})
 
         if vlans:
             vxlan["vlans"] = vlans

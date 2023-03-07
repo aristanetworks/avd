@@ -226,25 +226,25 @@ local_users:
   sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
   name: cvpadmin
 vrfs:
-- ip_routing: false
-  name: MGMT
-- tenant: Tenant_A
+- name: MGMT
+  ip_routing: false
+- name: Tenant_A_WAN_Zone
+  tenant: Tenant_A
   ip_routing: true
-  name: Tenant_A_WAN_Zone
-- tenant: Tenant_B
+- name: Tenant_B_WAN_Zone
+  tenant: Tenant_B
   ip_routing: true
-  name: Tenant_B_WAN_Zone
-- tenant: Tenant_C
+- name: Tenant_C_WAN_Zone
+  tenant: Tenant_C
   ip_routing: true
-  name: Tenant_C_WAN_Zone
 management_interfaces:
-- description: oob_management
+- name: Management1
+  description: oob_management
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.111/24
   gateway: 192.168.200.5
   type: oob
-  name: Management1
 tcam_profile:
   system: vxlan-routing
 platform:
@@ -320,83 +320,83 @@ ethernet_interfaces:
   peer_type: my_precious
   name: Ethernet4000
 loopback_interfaces:
-- description: EVPN_Overlay_Peering
+- name: Loopback0
+  description: EVPN_Overlay_Peering
   shutdown: false
   ip_address: 192.168.255.11/32
-  name: Loopback0
-- description: VTEP_VXLAN_Tunnel_Source
+- name: Loopback1
+  description: VTEP_VXLAN_Tunnel_Source
   shutdown: false
   ip_address: 192.168.254.11/32
-  name: Loopback1
 prefix_lists:
-- sequence_numbers:
-  - action: permit 192.168.255.0/24 eq 32
-    sequence: 10
-  - action: permit 192.168.254.0/24 eq 32
-    sequence: 20
-  name: PL-LOOPBACKS-EVPN-OVERLAY
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
 route_maps:
-- sequence_numbers:
-  - type: permit
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-    sequence: 10
-  name: RM-CONN-2-BGP
-- sequence_numbers:
-  - type: permit
+- name: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     set:
     - ip next-hop 123.1.1.1
-    sequence: 10
-  name: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
-- sequence_numbers:
-  - type: permit
+- name: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     set:
     - ipv6 next-hop fd5a:fe45:8831:06c5::1
-    sequence: 10
-  name: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
 router_bfd:
   multihop:
     interval: 1200
     min_rx: 1200
     multiplier: 3
 vlans:
-- tenant: Tenant_A
+- id: 150
   name: Tenant_A_WAN_Zone_1
-  id: 150
-- tenant: Tenant_B
+  tenant: Tenant_A
+- id: 250
   name: Tenant_B_WAN_Zone_1
-  id: 250
-- tenant: Tenant_C
+  tenant: Tenant_B
+- id: 350
   name: Tenant_C_WAN_Zone_1
-  id: 350
+  tenant: Tenant_C
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vlan_interfaces:
-- tenant: Tenant_A
+- name: Vlan150
+  tenant: Tenant_A
   tags:
   - wan
   description: Tenant_A_WAN_Zone_1
   shutdown: false
   ip_address_virtual: 10.1.40.1/24
   vrf: Tenant_A_WAN_Zone
-  name: Vlan150
-- tenant: Tenant_B
+- name: Vlan250
+  tenant: Tenant_B
   tags:
   - wan
   description: Tenant_B_WAN_Zone_1
   shutdown: false
   ip_address_virtual: 10.2.50.1/24
   vrf: Tenant_B_WAN_Zone
-  name: Vlan250
-- tenant: Tenant_C
+- name: Vlan350
+  tenant: Tenant_C
   tags:
   - wan
   description: Tenant_C_WAN_Zone_1
   shutdown: false
   ip_address_virtual: 10.3.50.1/24
   vrf: Tenant_C_WAN_Zone
-  name: Vlan350
 vxlan_interface:
   Vxlan1:
     description: DC1-BL1B_VTEP
@@ -404,16 +404,16 @@ vxlan_interface:
       udp_port: 4789
       source_interface: Loopback1
       vlans:
-      - vni: 10150
-        id: 150
-      - vni: 20250
-        id: 250
-      - vni: 30350
-        id: 350
+      - id: 150
+        vni: 10150
+      - id: 250
+        vni: 20250
+      - id: 350
+        vni: 30350
       vrfs:
-      - vni: 14
-        name: Tenant_A_WAN_Zone
-      - vni: 21
-        name: Tenant_B_WAN_Zone
-      - vni: 31
-        name: Tenant_C_WAN_Zone
+      - name: Tenant_A_WAN_Zone
+        vni: 14
+      - name: Tenant_B_WAN_Zone
+        vni: 21
+      - name: Tenant_C_WAN_Zone
+        vni: 31

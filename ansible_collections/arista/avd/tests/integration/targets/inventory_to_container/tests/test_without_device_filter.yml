@@ -1,6 +1,6 @@
 - name: Test without device filter
-  register: CVP_VARS
-  arista.avd.inventory_to_container:
+  register: cvp_vars
+  inventory_to_container:
     inventory: '{{ inventory_path }}/inventory.yml'
     container_root: 'DC1_FABRIC'
     configlet_dir: '{{ configlet_path }}'
@@ -14,19 +14,19 @@
   delegate_to: localhost
 
 - name: Validate output
-  ansible.builtin.assert:
+  assert:
     that:
-      - CVP_VARS is success
-      - CVP_VARS.CVP_TOPOLOGY != {}
-      - CVP_VARS.CVP_CONFIGLETS != {}
+      - cvp_vars is success
+      - cvp_vars.cvp_topology != {}
+      - cvp_vars.cvp_configlets != {}
       - item is defined
       - "'AVD' in item[0:3]"
       - diff_output.stdout == ""
-  with_items: "{{ CVP_VARS.CVP_CONFIGLETS }}"
+  with_items: "{{ cvp_vars.cvp_configlets }}"
 
-- name: Validate CVP_TOPOLOGY
-  ansible.builtin.assert:
+- name: Validate cvp_topology
+  assert:
     that:
       - item is defined
       - item == "Tenant"
-  with_items: "{{ CVP_VARS.CVP_TOPOLOGY.DC1_FABRIC.parent_container }}"
+  with_items: "{{ cvp_vars.cvp_topology.DC1_FABRIC.parent_container }}"

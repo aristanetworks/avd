@@ -16,16 +16,16 @@ spanning_tree:
     id: '0'
   no_spanning_tree_vlan: '4094'
 vrfs:
-- ip_routing: false
-  name: MGMT
+- name: MGMT
+  ip_routing: false
 management_interfaces:
-- description: oob_management
+- name: Management1
+  description: oob_management
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.201.201/24
   gateway: 192.168.200.5
   type: oob
-  name: Management1
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -37,12 +37,12 @@ vlans:
   - MLAG
   id: 4094
 vlan_interfaces:
-- description: MLAG_PEER
+- name: Vlan4094
+  description: MLAG_PEER
   shutdown: false
   ip_address: 10.255.252.1/31
   no_autostate: true
   mtu: 9000
-  name: Vlan4094
 port_channel_interfaces:
 - description: MLAG_PEER_UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1A_Po3
   type: switched
@@ -54,9 +54,9 @@ port_channel_interfaces:
   name: Port-Channel3
   storm_control:
     broadcast:
-      level: 25
+      level: '25'
     unknown_unicast:
-      level: 25
+      level: '25'
   native_vlan_tag: true
 - description: DC1_LEAF1_Po5
   type: switched
@@ -67,9 +67,9 @@ port_channel_interfaces:
   name: Port-Channel1
   storm_control:
     broadcast:
-      level: 25
+      level: '25'
     unknown_unicast:
-      level: 25
+      level: '25'
   native_vlan_tag: true
 ethernet_interfaces:
 - peer: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1A

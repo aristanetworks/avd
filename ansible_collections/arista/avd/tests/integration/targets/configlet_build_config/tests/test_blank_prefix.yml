@@ -17,8 +17,8 @@
     that:
       - result is success
       - result.changed == false
-      - result.CVP_CONFIGLETS != {}
+      - result.cvp_configlets != {}
       - item is defined
       - "'_' in item[0]"
       - diff_output.stdout == ""
-  with_items: "{{ result.CVP_CONFIGLETS }}"
+  with_items: "{{ result.cvp_configlets }}"

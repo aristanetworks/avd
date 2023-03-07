@@ -1,4 +1,5 @@
-CVP_CONFIGLETS:
+changed: false
+cvp_configlets:
   Prefix_default_extension: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n\
     \   exec /usr/bin/TerminAttr -cvaddr=10.255.0.1:9910 -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata\
     \ -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n\
@@ -26,4 +27,3 @@ CVP_CONFIGLETS:
     \ ip routing vrf MGMT\n!\nip route vrf MGMT 0.0.0.0/0 10.255.0.1\n!\nmanagement\
     \ api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n  \
     \    no shutdown\n!\nend\n"
-changed: false

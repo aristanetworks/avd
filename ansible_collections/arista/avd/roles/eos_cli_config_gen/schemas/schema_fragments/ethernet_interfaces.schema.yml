@@ -484,9 +484,10 @@ keys:
               type: dict
               keys:
                 level:
-                  type: int
+                  type: str
                   convert_types:
-                  - str
+                  - int
+                  - float
                   description: Configure maximum storm-control level
                 unit:
                   type: str
@@ -497,9 +498,10 @@ keys:
               type: dict
               keys:
                 level:
-                  type: int
+                  type: str
                   convert_types:
-                  - str
+                  - int
+                  - float
                   description: Configure maximum storm-control level
                 unit:
                   type: str
@@ -510,9 +512,10 @@ keys:
               type: dict
               keys:
                 level:
-                  type: int
+                  type: str
                   convert_types:
-                  - str
+                  - int
+                  - float
                   description: Configure maximum storm-control level
                 unit:
                   type: str
@@ -523,9 +526,10 @@ keys:
               type: dict
               keys:
                 level:
-                  type: int
+                  type: str
                   convert_types:
-                  - str
+                  - int
+                  - float
                   description: Configure maximum storm-control level
                 unit:
                   type: str
@@ -659,6 +663,22 @@ keys:
               max: 10
               convert_types:
               - str
+            eapol:
+              type: dict
+              keys:
+                disabled:
+                  type: bool
+                authentication_failure_fallback_mba:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                    timeout:
+                      type: int
+                      min: 0
+                      max: 65535
+                      convert_types:
+                      - str
         service_profile:
           type: str
           description: QOS profile
@@ -828,6 +848,9 @@ keys:
                   type: bool
                 unmodified_enable:
                   type: bool
+        port_profile:
+          type: str
+          description: Key only used for documentation or validation purposes
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration

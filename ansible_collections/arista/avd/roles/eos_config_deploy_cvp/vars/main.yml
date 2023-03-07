@@ -1,8 +1,8 @@
 ---
 # vars file for eos-config-deploy-cvp
-CVP_CONFIGLET:
+cvp_configlets:
   DC1_CONFIGLET: "alias a{{ 999 | random }} show version"
 
-CVP_TOPOLOGY:
+cvp_topology:
   # Testing specific environment
   staging:

@@ -91,8 +91,7 @@ router_bgp:
     peer_group: IPv4-UNDERLAY-PEERS
     ip_address: 100.100.100.201
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
   - source_protocol: attached-host
   address_family_evpn:
     neighbor_default:
@@ -275,20 +274,20 @@ local_users:
   sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
   name: admin
 vrfs:
-- ip_routing: false
-  name: MGMT
-- tenant: Tenant_A
+- name: MGMT
+  ip_routing: false
+- name: Common_VRF
+  tenant: Tenant_A
   ip_routing: true
-  name: Common_VRF
-- tenant: Tenant_A
+- name: vrf_with_loopbacks_dc1_pod1_only
+  tenant: Tenant_A
   ip_routing: true
-  name: vrf_with_loopbacks_dc1_pod1_only
-- tenant: Tenant_A
+- name: vrf_with_loopbacks_from_overlapping_pool
+  tenant: Tenant_A
   ip_routing: true
-  name: vrf_with_loopbacks_from_overlapping_pool
-- tenant: Tenant_A
+- name: vrf_with_loopbacks_from_pod_pools
+  tenant: Tenant_A
   ip_routing: true
-  name: vrf_with_loopbacks_from_pod_pools
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -302,63 +301,64 @@ vlans:
   trunk_groups:
   - MLAG
   id: 4094
-- tenant: Tenant_A
+- id: 110
   name: Tenant_A_OP_Zone_1
-  id: 110
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 111
   name: Tenant_A_OP_Zone_2
-  id: 111
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 112
   name: Tenant_A_OP_Zone_3
-  id: 112
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 113
   name: SVI_with_no_vxlan
-  id: 113
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 1102
   name: test_svi
-  id: 1102
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 1100
   name: test_svi
-  id: 1100
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 1101
   name: test_svi
-  id: 1101
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 2500
   name: web-l2-vlan
-  id: 2500
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 2600
   name: web-l2-vlan-2
-  id: 2600
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 2601
   name: l2vlan_with_no_vxlan
-  id: 2601
+  tenant: Tenant_A
 - tenant: system
   name: L2LEAF_INBAND_MGMT
   id: 4085
 vlan_interfaces:
-- description: MLAG_PEER
+- name: Vlan4094
+  description: MLAG_PEER
   shutdown: false
   ip_address: 172.20.110.2/31
   no_autostate: true
   mtu: 1500
-  name: Vlan4094
-- tenant: Tenant_A
+- name: Vlan110
+  tenant: Tenant_A
   tags:
   - opzone
   description: set from structured_config on svi for DC1.POD1.LEAF2A (was Tenant_A_OP_Zone_1)
   shutdown: false
   ip_address_virtual: 10.1.10.1/24
   vrf: Common_VRF
-  name: Vlan110
-- tenant: Tenant_A
+- name: Vlan111
+  tenant: Tenant_A
   tags:
   - opzone
   description: Tenant_A_OP_Zone_2
   shutdown: true
   ip_address_virtual: 10.1.11.1/24
   vrf: Common_VRF
-  name: Vlan111
-- tenant: Tenant_A
+- name: Vlan112
+  tenant: Tenant_A
   tags:
   - opzone
   description: Tenant_A_OP_Zone_3
@@ -372,16 +372,16 @@ vlan_interfaces:
     '
   ip_address_virtual: 10.1.12.1/24
   vrf: Common_VRF
-  name: Vlan112
-- tenant: Tenant_A
+- name: Vlan113
+  tenant: Tenant_A
   tags:
   - opzone
   description: SVI_with_no_vxlan
   shutdown: false
   ip_address_virtual: 10.10.13.1/24
   vrf: Common_VRF
-  name: Vlan113
-- tenant: Tenant_A
+- name: Vlan1102
+  tenant: Tenant_A
   tags:
   - opzone
   - web
@@ -389,8 +389,8 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.102.100.1/24
   vrf: vrf_with_loopbacks_dc1_pod1_only
-  name: Vlan1102
-- tenant: Tenant_A
+- name: Vlan1100
+  tenant: Tenant_A
   tags:
   - opzone
   - web
@@ -398,8 +398,8 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.100.100.1/24
   vrf: vrf_with_loopbacks_from_overlapping_pool
-  name: Vlan1100
-- tenant: Tenant_A
+- name: Vlan1101
+  tenant: Tenant_A
   tags:
   - opzone
   - web
@@ -407,8 +407,8 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.101.100.1/24
   vrf: vrf_with_loopbacks_from_pod_pools
-  name: Vlan1101
-- description: L2LEAF_INBAND_MGMT
+- name: Vlan4085
+  description: L2LEAF_INBAND_MGMT
   shutdown: false
   mtu: 1500
   ip_address: 172.21.110.2/24
@@ -416,7 +416,6 @@ vlan_interfaces:
   - 172.21.110.1
   ip_attached_host_route_export:
     distance: 19
-  name: Vlan4085
 port_channel_interfaces:
 - description: MLAG_PEER_DC1-POD1-LEAF2B_Po5
   type: switched
@@ -583,6 +582,7 @@ ethernet_interfaces:
 - peer: server-1
   peer_interface: Eth1
   peer_type: server
+  port_profile: TENANT_A
   description: server-1_Eth1
   type: switched
   shutdown: false
@@ -603,6 +603,7 @@ ethernet_interfaces:
 - peer: server-1
   peer_interface: Eth3
   peer_type: server
+  port_profile: TENANT_A
   description: Set using structured_config on server adapter
   type: switched
   shutdown: false
@@ -623,6 +624,7 @@ ethernet_interfaces:
 - peer: server-1
   peer_interface: Eth5
   peer_type: server
+  port_profile: NESTED_TENANT_A
   description: server-1_Eth5
   type: switched
   shutdown: false
@@ -643,6 +645,7 @@ ethernet_interfaces:
 - peer: server-1
   peer_interface: Eth7
   peer_type: server
+  port_profile: NESTED_TENANT_A
   description: server-1_Eth7
   type: switched
   shutdown: false
@@ -672,82 +675,61 @@ mlag_configuration:
     vrf: MGMT
   dual_primary_detection_delay: 5
 route_maps:
-- sequence_numbers:
-  - type: permit
+- name: RM-MLAG-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     set:
     - origin incomplete
     description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
-    sequence: 10
-  name: RM-MLAG-PEER-IN
-- sequence_numbers:
-  - type: permit
-    match:
-    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-    sequence: 10
-  - type: permit
-    match:
-    - ip address prefix-list PL-L2LEAF-INBAND-MGMT
-    sequence: 20
-  name: RM-CONN-2-BGP
-- sequence_numbers:
-  - type: deny
+- name: RM-EVPN-FILTER-AS65101
+  sequence_numbers:
+  - sequence: 10
+    type: deny
     match:
     - as 65101
-    sequence: 10
-  - type: permit
-    sequence: 20
-  name: RM-EVPN-FILTER-AS65101
-- sequence_numbers:
-  - type: deny
+  - sequence: 20
+    type: permit
+- name: RM-EVPN-FILTER-AS65110.100
+  sequence_numbers:
+  - sequence: 10
+    type: deny
     match:
     - as 65110.100
-    sequence: 10
-  - type: permit
-    sequence: 20
-  name: RM-EVPN-FILTER-AS65110.100
-- sequence_numbers:
-  - type: deny
+  - sequence: 20
+    type: permit
+- name: RM-EVPN-FILTER-AS65111.100
+  sequence_numbers:
+  - sequence: 10
+    type: deny
     match:
     - as 65111.100
-    sequence: 10
-  - type: permit
-    sequence: 20
-  name: RM-EVPN-FILTER-AS65111.100
+  - sequence: 20
+    type: permit
 loopback_interfaces:
-- description: EVPN_Overlay_Peering
+- name: Loopback0
+  description: EVPN_Overlay_Peering
   shutdown: false
   ip_address: 172.16.110.4/32
-  name: Loopback0
-- description: VTEP_VXLAN_Tunnel_Source
+- name: Loopback1
+  description: VTEP_VXLAN_Tunnel_Source
   shutdown: false
   ip_address: 172.18.110.4/32
-  name: Loopback1
-- description: vrf_with_loopbacks_dc1_pod1_only_VTEP_DIAGNOSTICS
+- name: Loopback102
+  description: vrf_with_loopbacks_dc1_pod1_only_VTEP_DIAGNOSTICS
   shutdown: false
   vrf: vrf_with_loopbacks_dc1_pod1_only
   ip_address: 10.102.101.4/32
-  name: Loopback102
-- description: vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS
+- name: Loopback100
+  description: vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS
   shutdown: false
   vrf: vrf_with_loopbacks_from_overlapping_pool
   ip_address: 10.100.0.4/32
-  name: Loopback100
-- description: vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS
+- name: Loopback101
+  description: vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS
   shutdown: false
   vrf: vrf_with_loopbacks_from_pod_pools
   ip_address: 10.101.101.4/32
-  name: Loopback101
-prefix_lists:
-- sequence_numbers:
-  - action: permit 172.16.110.0/24 eq 32
-    sequence: 10
-  - action: permit 172.18.110.0/24 eq 32
-    sequence: 20
-  name: PL-LOOPBACKS-EVPN-OVERLAY
-- sequence_numbers:
-  - action: permit 172.21.110.0/24
-    sequence: 10
-  name: PL-L2LEAF-INBAND-MGMT
 router_bfd:
   multihop:
     interval: 300
@@ -764,32 +746,32 @@ vxlan_interface:
       source_interface: Loopback1
       virtual_router_encapsulation_mac_address: mlag-system-id
       vlans:
-      - vni: 10110
-        id: 110
-      - vni: 50111
-        id: 111
-      - vni: 10112
-        id: 112
-      - vni: 2500
-        id: 2500
-      - vni: 12600
-        id: 2600
+      - id: 110
+        vni: 10110
+      - id: 111
+        vni: 50111
+      - id: 112
+        vni: 10112
+      - id: 2500
+        vni: 2500
+      - id: 2600
+        vni: 12600
       vrfs:
-      - vni: 1025
-        name: Common_VRF
-      - vni: 1102
-        name: vrf_with_loopbacks_dc1_pod1_only
-      - vni: 1100
-        name: vrf_with_loopbacks_from_overlapping_pool
-      - vni: 1101
-        name: vrf_with_loopbacks_from_pod_pools
+      - name: Common_VRF
+        vni: 1025
+      - name: vrf_with_loopbacks_dc1_pod1_only
+        vni: 1102
+      - name: vrf_with_loopbacks_from_overlapping_pool
+        vni: 1100
+      - name: vrf_with_loopbacks_from_pod_pools
+        vni: 1101
 virtual_source_nat_vrfs:
-- ip_address: 10.102.101.4
-  name: vrf_with_loopbacks_dc1_pod1_only
-- ip_address: 10.100.0.4
-  name: vrf_with_loopbacks_from_overlapping_pool
-- ip_address: 10.101.101.4
-  name: vrf_with_loopbacks_from_pod_pools
+- name: vrf_with_loopbacks_dc1_pod1_only
+  ip_address: 10.102.101.4
+- name: vrf_with_loopbacks_from_overlapping_pool
+  ip_address: 10.100.0.4
+- name: vrf_with_loopbacks_from_pod_pools
+  ip_address: 10.101.101.4
 domain_list:
 - structured-config.set.on.node
 - structured-config.set.under.vrf.common-vrf

@@ -2089,7 +2089,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -2111,7 +2111,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -2133,7 +2133,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -2155,7 +2155,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -2390,6 +2390,34 @@
                 "minimum": 1,
                 "maximum": 10,
                 "title": "Reauthorization Request Limit"
+              },
+              "eapol": {
+                "type": "object",
+                "properties": {
+                  "disabled": {
+                    "type": "boolean",
+                    "title": "Disabled"
+                  },
+                  "authentication_failure_fallback_mba": {
+                    "type": "object",
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "title": "Enabled"
+                      },
+                      "timeout": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 65535,
+                        "title": "Timeout"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "title": "Authentication Failure Fallback Mba"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Eapol"
               }
             },
             "additionalProperties": false,
@@ -2697,6 +2725,11 @@
             "additionalProperties": false,
             "title": "Sflow"
           },
+          "port_profile": {
+            "type": "string",
+            "description": "Key only used for documentation or validation purposes",
+            "title": "Port Profile"
+          },
           "eos_cli": {
             "type": "string",
             "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
@@ -2743,7 +2776,8 @@
             "type": "string",
             "description": "Configure event trigger condition.\n",
             "enum": [
-              "on-logging"
+              "on-logging",
+              "on-startup-config"
             ],
             "title": "Trigger"
           },
@@ -4172,6 +4206,16 @@
           "ssh_key": {
             "type": "string",
             "title": "SSH Key"
+          },
+          "shell": {
+            "type": "string",
+            "description": "Specify shell for the user\n",
+            "enum": [
+              "/bin/bash",
+              "/bin/sh",
+              "/sbin/nologin"
+            ],
+            "title": "Shell"
           }
         },
         "required": [
@@ -4228,14 +4272,14 @@
             "level": {
               "type": "string",
               "enum": [
+                "alerts",
+                "critical",
                 "debugging",
+                "emergencies",
+                "errors",
                 "informational",
                 "notifications",
                 "warnings",
-                "errors",
-                "critical",
-                "alerts",
-                "emergencies",
                 "disabled"
               ],
               "description": "Buffer logging severity level\n",
@@ -4248,14 +4292,15 @@
         "trap": {
           "type": "string",
           "enum": [
+            "alerts",
+            "critical",
             "debugging",
+            "emergencies",
+            "errors",
             "informational",
             "notifications",
+            "system",
             "warnings",
-            "errors",
-            "critical",
-            "alerts",
-            "emergencies",
             "disabled"
           ],
           "description": "Trap logging severity level\n",
@@ -4267,14 +4312,15 @@
             "level": {
               "type": "string",
               "enum": [
+                "alerts",
+                "all",
+                "critical",
                 "debugging",
+                "emergencies",
+                "errors",
                 "informational",
                 "notifications",
                 "warnings",
-                "errors",
-                "critical",
-                "alerts",
-                "emergencies",
                 "disabled"
               ],
               "description": "Synchronous logging severity level\n",
@@ -5226,6 +5272,11 @@
           "type": "string",
           "description": "Interface name",
           "title": "Source Interface"
+        },
+        "vrf": {
+          "type": "string",
+          "description": "VRF Name",
+          "title": "VRF"
         }
       },
       "additionalProperties": false,
@@ -6991,7 +7042,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -7013,7 +7064,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -7035,7 +7086,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -7057,7 +7108,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level",
                     "title": "Level"
                   },
@@ -8175,6 +8226,87 @@
       "additionalProperties": false,
       "title": "Queue Monitor Streaming"
     },
+    "radius_server": {
+      "type": "object",
+      "properties": {
+        "attribute_32_include_in_access_req": {
+          "type": "object",
+          "properties": {
+            "hostname": {
+              "type": "boolean",
+              "title": "Hostname"
+            },
+            "format": {
+              "type": "string",
+              "description": "Specify the format of the NAS-Identifier. If 'hostname' is set, this is ignored.",
+              "title": "Format"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Attribute 32 Include In Access Req"
+        },
+        "dynamic_authorization": {
+          "type": "object",
+          "properties": {
+            "port": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 65535,
+              "description": "TCP Port",
+              "title": "Port"
+            },
+            "tls_ssl_profile": {
+              "type": "string",
+              "description": "Name of TLS profile",
+              "title": "TLS SSL Profile"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Dynamic Authorization"
+        },
+        "hosts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "host": {
+                "type": "string",
+                "description": "Host IP address or name",
+                "title": "Host"
+              },
+              "vrf": {
+                "type": "string",
+                "title": "VRF"
+              },
+              "timeout": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1000,
+                "title": "Timeout"
+              },
+              "retransmit": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100,
+                "title": "Retransmit"
+              },
+              "key": {
+                "type": "string",
+                "description": "Encrypted key",
+                "title": "Key"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "host"
+            ]
+          },
+          "title": "Hosts"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Radius Server"
+    },
     "radius_servers": {
       "type": "array",
       "items": {
@@ -8675,6 +8807,24 @@
                 "type": "boolean",
                 "title": "Shutdown"
               },
+              "as_path": {
+                "type": "object",
+                "description": "BGP AS-PATH options",
+                "properties": {
+                  "remote_as_replace_out": {
+                    "type": "boolean",
+                    "description": "Replace AS number with local AS number",
+                    "title": "Remote As Replace Out"
+                  },
+                  "prepend_own_disabled": {
+                    "type": "boolean",
+                    "description": "Disable prepending own AS number to AS path",
+                    "title": "Prepend Own Disabled"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "As Path"
+              },
               "remove_private_as": {
                 "type": "object",
                 "description": "Remove private AS numbers in outbound AS path",
@@ -8893,6 +9043,24 @@
                 "type": "string",
                 "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
                 "title": "Local As"
+              },
+              "as_path": {
+                "type": "object",
+                "description": "BGP AS-PATH options",
+                "properties": {
+                  "remote_as_replace_out": {
+                    "type": "boolean",
+                    "description": "Replace AS number with local AS number",
+                    "title": "Remote As Replace Out"
+                  },
+                  "prepend_own_disabled": {
+                    "type": "boolean",
+                    "description": "Disable prepending own AS number to AS path",
+                    "title": "Prepend Own Disabled"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "As Path"
               },
               "description": {
                 "type": "string",
@@ -10566,9 +10734,31 @@
                       "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
                       "title": "Local As"
                     },
+                    "as_path": {
+                      "type": "object",
+                      "description": "BGP AS-PATH options",
+                      "properties": {
+                        "remote_as_replace_out": {
+                          "type": "boolean",
+                          "description": "Replace AS number with local AS number",
+                          "title": "Remote As Replace Out"
+                        },
+                        "prepend_own_disabled": {
+                          "type": "boolean",
+                          "description": "Disable prepending own AS number to AS path",
+                          "title": "Prepend Own Disabled"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "title": "As Path"
+                    },
                     "description": {
                       "type": "string",
                       "title": "Description"
+                    },
+                    "route_reflector_client": {
+                      "type": "boolean",
+                      "title": "Route Reflector Client"
                     },
                     "ebgp_multihop": {
                       "type": "integer",

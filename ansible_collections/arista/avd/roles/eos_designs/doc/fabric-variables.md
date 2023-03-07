@@ -15,6 +15,7 @@
   - IBGP (only with OSPF or ISIS variants in underlay)
   - none**
   - HER (Head-End Replication)***
+  - CVX (CloudVision eXchange)
 - Only summary network addresses need to be defined. IP addresses are then assigned to each node, based on its unique device id.
   - To view IP address allocation and consumption, a summary is provided in the auto-generated fabric documentation in Markdown and CSV format.
 
@@ -49,7 +50,7 @@ shutdown_interfaces_towards_undeployed_peers: < true | false | default -> false 
 
 # Underlay routing protocol | Required.
 underlay_routing_protocol: < EBGP | OSPF | ISIS | ISIS-SR | ISIS-LDP | ISIS-SR-LDP | OSPF-LDP | none | default for l3ls-evpn -> EBGP >
-overlay_routing_protocol: < EBGP | IBGP | none | HER | default for l3ls-evpn -> EBGP >
+overlay_routing_protocol: < EBGP | IBGP | HER | CVX | none | default for l3ls-evpn -> EBGP >
 
 # Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.
 # Requires "underlay_routing_protocol: EBGP"
@@ -184,6 +185,11 @@ evpn_import_pruning: < true | false | default -> false >
 # from Route-server-1 to Router-server-2 just for Route-server-2 to throw them away because of AS Path loop detection.
 evpn_prevent_readvertise_to_server: < true | false | default -> false >
 
+# Filter redistribution of connected into underlay routing protocol.
+# Only applicable when overlay_routing_protocol != 'none' and underlay_routing_protocol == BGP.
+# Creates a route-map and prefix-list assigned to redistribute connected permitting only loopbacks and inband management subnets.
+underlay_filter_redistribute_connected: < true | false | default -> true >
+
 # Configure route-map on eBGP sessions towards underlay peers, where prefixes with the peer's ASN in the AS Path are filtered away.
 # This is very useful in very large scale networks not using EVPN overlays, where convergence will be quicker by not having to return
 # all updates received from Spine-1 to Spine-2 just for Spine-2 to throw them away because of AS Path loop detection.
@@ -205,6 +211,9 @@ overlay_her_flood_list_per_vni: < true | false | default -> false >
 # by "dc_name")
 # This is useful if Border Leaf switches are dividing the VXLAN overlay into separate domains.
 overlay_her_flood_list_scope: < "fabric" | "dc" | default -> "fabric" >
+
+# Overlay settings when using CVX as overlay controller | Required if overlay_routing_protocol == CVX
+overlay_cvx_servers: [ < cvx1_ip_or_hostname >, < cvx2_ip_or_hostname >, < cvx3_ip_or_hostname > ]
 
 # Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.
 # Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP. This allows all l3leafs to reuse the same subnet
@@ -311,3 +320,14 @@ Using the figure under [Details on `enable_trunk_groups`](#details-on-enable_tru
 enabling with feature would remove the unmatched trunk groups like this:
 
 ![Figure: Enable only_local_vlan_trunk_groups](../../../media/only_local_vlan_trunk_groups.png)
+
+## Documentation variables
+
+Some variables are available to control documentation generation. This can be useful
+is for instance the project has thousands of endpoints, to be able to disable
+fabric-wide connected endpoints documentation.
+
+```yaml
+eos_designs_documentation:
+  connected_endpoints: < true | false | default -> false >
+```

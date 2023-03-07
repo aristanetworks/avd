@@ -13,38 +13,38 @@ vlan_internal_order:
 spanning_tree:
   mode: none
 vrfs:
-  MGMT:
-    ip_routing: false
+- name: MGMT
+  ip_routing: false
 management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
 loopback_interfaces:
-  Loopback0:
-    description: LSR_Router_ID
-    shutdown: false
-    ip_address: 10.0.0.2/32
-    ipv6_address: 2000:1234:ffff:ffff::2/128
-    ospf_area: 0.0.0.0
-    mpls:
-      ldp:
-        interface: true
+- name: Loopback0
+  description: LSR_Router_ID
+  shutdown: false
+  ip_address: 10.0.0.2/32
+  ipv6_address: 2000:1234:ffff:ffff::2/128
+  ospf_area: 0.0.0.0
+  mpls:
+    ldp:
+      interface: true
 router_ospf:
   process_ids:
-    101:
-      passive_interface_default: true
-      router_id: 10.0.0.2
-      max_lsa: 12000
-      no_passive_interfaces:
-      - Ethernet1
-      - Ethernet2
-      - Ethernet3
-      - Ethernet4
-      - Ethernet5
-      - Ethernet6
-      - Ethernet10
-      - Port-Channel12
-      bfd_enable: true
+  - id: 101
+    passive_interface_default: true
+    router_id: 10.0.0.2
+    max_lsa: 12000
+    no_passive_interfaces:
+    - Ethernet1
+    - Ethernet2
+    - Ethernet3
+    - Ethernet4
+    - Ethernet5
+    - Ethernet6
+    - Ethernet10
+    - Port-Channel12
+    bfd_enable: true
 mpls:
   ip: true
   ldp:

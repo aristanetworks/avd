@@ -220,28 +220,28 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vrfs:
-- ip_routing: false
-  name: MGMT
-- tenant: Tenant_A
+- name: MGMT
+  ip_routing: false
+- name: IGMP_QUERIER_TEST_1
+  tenant: Tenant_A
   ip_routing: true
   description: IGMP_QUERIER_TEST_1
-  name: IGMP_QUERIER_TEST_1
-- tenant: Tenant_B
+- name: IGMP_QUERIER_TEST_2
+  tenant: Tenant_B
   ip_routing: true
   description: IGMP_QUERIER_TEST_2
-  name: IGMP_QUERIER_TEST_2
-- tenant: Tenant_D
+- name: IGMP_QUERIER_TEST_3
+  tenant: Tenant_D
   ip_routing: true
   description: IGMP_QUERIER_TEST_3
-  name: IGMP_QUERIER_TEST_3
 management_interfaces:
-- description: oob_management
+- name: Management1
+  description: oob_management
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.101/24
   gateway: 192.168.200.5
   type: oob
-  name: Management1
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -265,85 +265,85 @@ port_channel_interfaces:
   vlans: 1-3,11-12,21-23,101-103,111-113,121-123
   name: Port-Channel1
 loopback_interfaces:
-- description: EVPN_Overlay_Peering
+- name: Loopback0
+  description: EVPN_Overlay_Peering
   shutdown: false
   ip_address: 192.168.255.1/32
-  name: Loopback0
-- description: VTEP_VXLAN_Tunnel_Source
+- name: Loopback1
+  description: VTEP_VXLAN_Tunnel_Source
   shutdown: false
   ip_address: 192.168.254.1/32
-  name: Loopback1
 prefix_lists:
-- sequence_numbers:
-  - action: permit 192.168.255.0/24 eq 32
-    sequence: 10
-  - action: permit 192.168.254.0/24 eq 32
-    sequence: 20
-  name: PL-LOOPBACKS-EVPN-OVERLAY
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
 route_maps:
-- sequence_numbers:
-  - type: permit
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-    sequence: 10
-  name: RM-CONN-2-BGP
 router_bfd:
   multihop:
     interval: 300
     min_rx: 300
     multiplier: 3
 vlans:
-- tenant: Tenant_A
+- id: 1
   name: VLAN_1
-  id: 1
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 2
   name: VLAN_2
-  id: 2
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 3
   name: VLAN_3
-  id: 3
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 101
   name: VLAN_101
-  id: 101
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 102
   name: VLAN_102
-  id: 102
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 103
   name: VLAN_103
-  id: 103
-- tenant: Tenant_B
+  tenant: Tenant_A
+- id: 11
   name: VLAN_11
-  id: 11
-- tenant: Tenant_B
+  tenant: Tenant_B
+- id: 12
   name: VLAN_12
-  id: 12
-- tenant: Tenant_B
+  tenant: Tenant_B
+- id: 111
   name: VLAN_111
-  id: 111
-- tenant: Tenant_B
+  tenant: Tenant_B
+- id: 112
   name: VLAN_112
-  id: 112
-- tenant: Tenant_B
+  tenant: Tenant_B
+- id: 113
   name: VLAN_113
-  id: 113
-- tenant: Tenant_D
+  tenant: Tenant_B
+- id: 21
   name: VLAN_21
-  id: 21
-- tenant: Tenant_D
+  tenant: Tenant_D
+- id: 22
   name: VLAN_22
-  id: 22
-- tenant: Tenant_D
+  tenant: Tenant_D
+- id: 23
   name: VLAN_23
-  id: 23
-- tenant: Tenant_D
+  tenant: Tenant_D
+- id: 121
   name: VLAN_121
-  id: 121
-- tenant: Tenant_D
+  tenant: Tenant_D
+- id: 122
   name: VLAN_122
-  id: 122
-- tenant: Tenant_D
+  tenant: Tenant_D
+- id: 123
   name: VLAN_123
-  id: 123
+  tenant: Tenant_D
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
@@ -427,70 +427,70 @@ ip_igmp_snooping:
     id: 123
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vlan_interfaces:
-- tenant: Tenant_A
+- name: Vlan1
+  tenant: Tenant_A
   tags:
   - test_l3
   description: VLAN_1
   shutdown: false
   ip_address_virtual: 10.0.1.1/24
   vrf: IGMP_QUERIER_TEST_1
-  name: Vlan1
-- tenant: Tenant_A
+- name: Vlan2
+  tenant: Tenant_A
   tags:
   - test_l3
   description: VLAN_2
   shutdown: false
   ip_address_virtual: 10.0.2.1/24
   vrf: IGMP_QUERIER_TEST_1
-  name: Vlan2
-- tenant: Tenant_A
+- name: Vlan3
+  tenant: Tenant_A
   tags:
   - test_l3
   description: VLAN_3
   shutdown: false
   ip_address_virtual: 10.0.3.1/24
   vrf: IGMP_QUERIER_TEST_1
-  name: Vlan3
-- tenant: Tenant_B
+- name: Vlan11
+  tenant: Tenant_B
   tags:
   - test_l3
   description: VLAN_11
   shutdown: false
   ip_address_virtual: 10.0.11.1/24
   vrf: IGMP_QUERIER_TEST_2
-  name: Vlan11
-- tenant: Tenant_B
+- name: Vlan12
+  tenant: Tenant_B
   tags:
   - test_l3
   description: VLAN_12
   shutdown: false
   ip_address_virtual: 10.0.12.1/24
   vrf: IGMP_QUERIER_TEST_2
-  name: Vlan12
-- tenant: Tenant_D
+- name: Vlan21
+  tenant: Tenant_D
   tags:
   - test_l3
   description: VLAN_21
   shutdown: false
   ip_address_virtual: 10.0.21.1/24
   vrf: IGMP_QUERIER_TEST_3
-  name: Vlan21
-- tenant: Tenant_D
+- name: Vlan22
+  tenant: Tenant_D
   tags:
   - test_l3
   description: VLAN_22
   shutdown: false
   ip_address_virtual: 10.0.22.1/24
   vrf: IGMP_QUERIER_TEST_3
-  name: Vlan22
-- tenant: Tenant_D
+- name: Vlan23
+  tenant: Tenant_D
   tags:
   - test_l3
   description: VLAN_23
   shutdown: false
   ip_address_virtual: 10.0.23.1/24
   vrf: IGMP_QUERIER_TEST_3
-  name: Vlan23
 vxlan_interface:
   Vxlan1:
     description: IGMP-QUERIER-L3LEAF1A_VTEP
@@ -498,44 +498,44 @@ vxlan_interface:
       udp_port: 4789
       source_interface: Loopback1
       vlans:
-      - vni: 10001
-        id: 1
-      - vni: 10002
-        id: 2
-      - vni: 10003
-        id: 3
-      - vni: 10101
-        id: 101
-      - vni: 10102
-        id: 102
-      - vni: 10103
-        id: 103
-      - vni: 20011
-        id: 11
-      - vni: 20012
-        id: 12
-      - vni: 20111
-        id: 111
-      - vni: 20112
-        id: 112
-      - vni: 20113
-        id: 113
-      - vni: 40021
-        id: 21
-      - vni: 40022
-        id: 22
-      - vni: 40023
-        id: 23
-      - vni: 40121
-        id: 121
-      - vni: 40122
-        id: 122
-      - vni: 40123
-        id: 123
+      - id: 1
+        vni: 10001
+      - id: 2
+        vni: 10002
+      - id: 3
+        vni: 10003
+      - id: 101
+        vni: 10101
+      - id: 102
+        vni: 10102
+      - id: 103
+        vni: 10103
+      - id: 11
+        vni: 20011
+      - id: 12
+        vni: 20012
+      - id: 111
+        vni: 20111
+      - id: 112
+        vni: 20112
+      - id: 113
+        vni: 20113
+      - id: 21
+        vni: 40021
+      - id: 22
+        vni: 40022
+      - id: 23
+        vni: 40023
+      - id: 121
+        vni: 40121
+      - id: 122
+        vni: 40122
+      - id: 123
+        vni: 40123
       vrfs:
-      - vni: 11
-        name: IGMP_QUERIER_TEST_1
-      - vni: 21
-        name: IGMP_QUERIER_TEST_2
-      - vni: 41
-        name: IGMP_QUERIER_TEST_3
+      - name: IGMP_QUERIER_TEST_1
+        vni: 11
+      - name: IGMP_QUERIER_TEST_2
+        vni: 21
+      - name: IGMP_QUERIER_TEST_3
+        vni: 41
