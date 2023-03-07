@@ -139,10 +139,10 @@ ethernet_interfaces:
     enable: true
   name: Ethernet5
 loopback_interfaces:
-- description: EVPN_Overlay_Peering
+- name: Loopback0
+  description: EVPN_Overlay_Peering
   shutdown: false
   ip_address: 172.16.210.2/32
-  name: Loopback0
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

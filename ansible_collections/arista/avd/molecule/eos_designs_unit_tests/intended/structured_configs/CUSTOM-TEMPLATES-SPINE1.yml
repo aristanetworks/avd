@@ -94,10 +94,10 @@ ethernet_interfaces:
   ip_address: 172.31.255.22/31
   name: Ethernet2
 loopback_interfaces:
-- description: TEST_CUSTOM_PREFIX_EVPN_Overlay_Peering_SPINE
+- name: Loopback0
+  description: TEST_CUSTOM_PREFIX_EVPN_Overlay_Peering_SPINE
   shutdown: false
   ip_address: 192.168.255.1/32
-  name: Loopback0
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

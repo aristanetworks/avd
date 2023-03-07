@@ -14,16 +14,17 @@ class LoopbackInterfacesMixin(UtilsMixin):
     """
 
     @cached_property
-    def loopback_interfaces(self) -> dict | None:
+    def loopback_interfaces(self) -> list | None:
         """
         Return structured config for loopback_interfaces
         """
         if self._underlay_router is not True:
             return None
 
-        loopback_interfaces = {}
+        loopback_interfaces = []
         # Loopback 0
         loopback0 = {
+            "name": "Loopback0",
             "description": self._avd_interface_descriptions.overlay_loopback_interface(get(self._hostvars, "overlay_loopback_description")),
             "shutdown": False,
             "ip_address": f"{self._router_id}/32",
@@ -49,11 +50,12 @@ class LoopbackInterfacesMixin(UtilsMixin):
 
         loopback0 = {key: value for key, value in loopback0.items() if value is not None}
 
-        loopback_interfaces["Loopback0"] = loopback0
+        loopback_interfaces.append(loopback0)
 
         # VTEP loopback
         if self._overlay_vtep is True and self._vtep_loopback.lower() != "loopback0":
             vtep_loopback = {
+                "name": self._vtep_loopback,
                 "description": self._avd_interface_descriptions.vtep_loopback_interface(),
                 "shutdown": False,
                 "ip_address": f"{self._vtep_ip}/32",
@@ -70,6 +72,6 @@ class LoopbackInterfacesMixin(UtilsMixin):
 
             vtep_loopback = {key: value for key, value in vtep_loopback.items() if value is not None}
 
-            loopback_interfaces[self._vtep_loopback] = vtep_loopback
+            loopback_interfaces.append(vtep_loopback)
 
         return loopback_interfaces

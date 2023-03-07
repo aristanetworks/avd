@@ -64,14 +64,14 @@ management_api_http:
   - name: MGMT
   enable_https: true
 loopback_interfaces:
-- description: MPLS_Overlay_peering
+- name: Loopback0
+  description: MPLS_Overlay_peering
   shutdown: false
   ip_address: 192.168.255.114/32
   isis_enable: CORE
   isis_passive: true
   node_segment:
     ipv4_index: 206
-  name: Loopback0
 router_isis:
   instance: CORE
   log_adjacency_changes: true
