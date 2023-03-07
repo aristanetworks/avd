@@ -25,6 +25,9 @@ vlan_internal_order:
 vrfs:
 - name: MGMT
   ip_routing: false
+- name: TEST
+  tenant: TEST
+  ip_routing: true
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -58,6 +61,9 @@ management_cvx:
   - 192.168.254.254
   - 192.168.254.255
 vlans:
+- id: 3910
+  name: SVI_3910
+  tenant: TEST
 - id: 2910
   name: L2VLAN_2910
   tenant: TEST
@@ -66,6 +72,12 @@ vlans:
   tenant: TEST
 ip_igmp_snooping:
   globally_enabled: true
+vlan_interfaces:
+- name: Vlan3910
+  tenant: TEST
+  description: SVI_3910
+  shutdown: true
+  vrf: TEST
 vxlan_interface:
   Vxlan1:
     description: OVERLAY_ROUTING_PROTOCOL_CVX_L3LEAF1_VTEP
@@ -73,6 +85,8 @@ vxlan_interface:
       udp_port: 4789
       source_interface: Loopback1
       vlans:
+      - id: 3910
+        vni: 14910
       - id: 2910
         vni: 13910
       - id: 2911

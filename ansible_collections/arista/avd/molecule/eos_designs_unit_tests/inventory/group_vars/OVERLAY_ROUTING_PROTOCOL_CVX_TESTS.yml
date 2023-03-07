@@ -21,6 +21,14 @@ l3leaf:
 tenants:
   TEST:
     mac_vrf_vni_base: 11000
+    # Notice VRFs are not configured under interface vxlan1 when running with CVX.
+    vrfs:
+      TEST:
+        # vrf_id: 1
+        svis:
+          3910:
+            name: SVI_3910
+
     l2vlans:
       2910:
         name: L2VLAN_2910
