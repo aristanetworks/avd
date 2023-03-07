@@ -18,7 +18,31 @@ def opener(path, flags):
     return os_open(path, flags, 0o664)
 
 
-def _template_process(item, task_vars, templatefile, dest_format_str, templar):
+def _template_process(item: str, task_vars: dict, templatefile: str, dest_format_str: str, templar) -> dict:
+    """
+    This function runs as a separate fork.
+
+    Perform Jinja templating and write output to a file.
+
+    Parameters
+    ----------
+    item : str
+        One string from the list of strings given to the module. Could be used as key in the template.
+        Also used to build destination filename
+    task_vars : dict
+        Ansible task vars
+    templatefile : str
+        Filename of template file
+    dest_format_str : str
+        Format string used to build destination filename inserting item value
+    templar : object
+        Instance of Ansible templar
+
+    Returns
+    -------
+    dict
+        Ansible result dictionary with any errors caught during writing of the output file.
+    """
     dest = str(dest_format_str).format(item=item)
 
     template_vars = ChainMap({"item": item}, task_vars)

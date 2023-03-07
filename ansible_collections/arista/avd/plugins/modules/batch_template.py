@@ -21,6 +21,7 @@ author: Arista Ansible Team (@aristanetworks)
 short_description: Render Jinja2 template on multiple items and write result to individual files.
 description:
   - Render Jinja2 template on multiple items and write result to individual files.
+  - Destiation file mode is hardcoded to 0o664.
 options:
   template:
     description: Path to Jinja2 Template file
