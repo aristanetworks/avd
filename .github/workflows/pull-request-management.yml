@@ -93,6 +93,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ file-changes ]
     if: needs.file-changes.outputs.docs == 'true'
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v3
       - name: 'Start docker-compose stack'
