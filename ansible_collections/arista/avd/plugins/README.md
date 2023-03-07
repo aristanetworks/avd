@@ -183,8 +183,8 @@ The `arista.avd.encrypt` and `arista.avd.decrypt` filters are used to encrypt or
 To use these filters:
 
 ```jinja
-{{ <var_with_clear_text_password> | encrypt(passwd_type=<type>, key=<encryption_key>) }}
-{{ <var_with_encrypted_password> | decrypt(passwd_type=<type>, key=<encryption_key>) }}
+{{ <var_with_clear_text_password> | arista.avd.encrypt(passwd_type=<type>, key=<encryption_key>) }}
+{{ <var_with_encrypted_password> | arista.avd.decrypt(passwd_type=<type>, key=<encryption_key>) }}
 ```
 
 Supported types:
@@ -203,7 +203,7 @@ An example usage for `arista.avd.encrypt` filter for BGP is to use it in conjunc
 bgp_peer_groups:
   ipv4_underlay_peers:
       name: IPv4-UNDERLAY-PEERS
-          password: "{{ bgp_vault_password | encrypt(passwd_type='bgp', key='IPv4-UNDERLAY-PEERS') }}"
+          password: "{{ bgp_vault_password | arista.avd.encrypt(passwd_type='bgp', key='IPv4-UNDERLAY-PEERS') }}"
 ```
 
 ## Plugin Tests
