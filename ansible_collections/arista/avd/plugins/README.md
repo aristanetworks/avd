@@ -176,7 +176,7 @@ To use this filter:
 !!! note
     This isn't using the same range syntax as EOS for modular or break-out ports. For example, on EOS `et1/1-2/4` gives you `et1/1, et1/2, et1/3, et1/4, et2/1, et2/2, et2/3, et2/4` on a fixed switch, but a different result on a modular switch depending on the module types. In AVD, the same range would be `et1-2/1-4`.
 
-#### Password filters
+### Password filters
 
 The `arista.avd.encrypt` and `arista.avd.decrypt` filters are used to encrypt or decrypt supported passwords.
 
@@ -191,7 +191,7 @@ Supported types:
 
 - bgp
 
-##### BGP passwords
+#### BGP passwords
 
 BGP password are encrypted/decrypted based on the Neighbor IP or the BGP Peer Group Name in EOS.
 
@@ -695,4 +695,148 @@ Example:
     md_toc_skip_lines: 3
   delegate_to: localhost
   when: generate_device_documentation | arista.avd.default(true)
+```
+
+### Verify Requirements
+
+The `arista.avd.verify_requirements` module is an Ansible Action Plugin providing the following capabilities:
+
+- Display the current running version of the collection.
+- Given a list of python requirements, verify if the installed libraries match these requirements.
+- Validate the ansible version against collection requirements.
+- Validate the collection requirements against the collection requirements.
+- Validate the running python version.
+
+A task is added to every `eos_*` role in the collection but the Verify Requirement task will run only once per playbook when multiple roles are used.
+
+Added in: version 4.0.0 of arista.avd
+
+Module options (= is mandatory):
+
+```yaml
+# Boolean, if set to True, the play does not stop if any requirement error is detected | Optional
+avd_ignore_requirements: <bool | default false>
+
+# List of strings of python requirements with pip file syntax | Required
+requirements: <list of str>
+```
+
+Example:
+
+```yaml
+- name: Verify collection requirements
+  arista.avd.verify_requirements:
+    requirements:
+      - Jinja2 >= 2.9
+      - paramiko == 2.7.1
+  check_mode: false
+  run_once: true
+```
+
+Example output (with debug):
+
+```text
+TASK [arista.avd.eos_designs : Verify Requirements] ********************************************************************************************************************************
+AVD version v4.0.0-dev5-25-g0233492b5
+{
+    "ansible": {
+        "collection": {
+            "name": "arista.avd",
+            "path": "/tmp/ansible-avd/ansible_collections",
+            "version": "v4.0.0-dev5-25-g0233492b5"
+        },
+        "ansible_version": "2.14.2",
+        "requires_ansible": "!=2.13.0,<2.15.0,>=2.12.6",
+        "collection_requirements": {
+            "not_found": {},
+            "valid": {
+                "arista.cvp": {
+                    "installed": "3.3.1",
+                    "required_version": null
+                },
+                "arista.eos": {
+                    "installed": "4.1.1",
+                    "required_version": null
+                },
+                "ansible.netcommon": {
+                    "installed": "3.0.1",
+                    "required_version": "!=2.6.0,>=2.4.0"
+                }
+            },
+            "mismatched": {},
+            "parsing_failed": []
+        }
+    },
+    "python": {
+        "python_version_info": {
+            "major": 3,
+            "minor": 10,
+            "micro": 3,
+            "releaselevel": "final",
+            "serial": 0
+        },
+        "python_path": [
+            "/tmp/.pyenv/versions/3.10.3/envs/ansible-avd/bin",
+            "/tmp/.pyenv/versions/3.10.3/lib/python310.zip",
+            "/tmp/.pyenv/versions/3.10.3/lib/python3.10",
+            "/tmp/.pyenv/versions/3.10.3/lib/python3.10/lib-dynload",
+            "/tmp/.pyenv/versions/3.10.3/envs/ansible-avd/lib/python3.10/site-packages"
+        ],
+        "python_requirements": {
+            "not_found": {},
+            "valid": {
+                "netaddr": {
+                    "installed": "0.8.0",
+                    "required_version": ">=0.7.19"
+                },
+                "Jinja2": {
+                    "installed": "3.1.2",
+                    "required_version": ">=2.11.3"
+                },
+                "treelib": {
+                    "installed": "1.6.1",
+                    "required_version": ">=1.5.5"
+                },
+                "cvprac": {
+                    "installed": "1.2.2",
+                    "required_version": ">=1.0.7"
+                },
+                "paramiko": {
+                    "installed": "3.0.0",
+                    "required_version": ">=2.7.1"
+                },
+                "jsonschema": {
+                    "installed": "4.17.3",
+                    "required_version": ">=4.5.1"
+                },
+                "requests": {
+                    "installed": "2.28.2",
+                    "required_version": ">=2.25.1"
+                },
+                "PyYAML": {
+                    "installed": "5.4.1",
+                    "required_version": ">=5.4.1"
+                },
+                "md-toc": {
+                    "installed": "8.1.8",
+                    "required_version": ">=7.1.0"
+                },
+                "deepmerge": {
+                    "installed": "1.1.0",
+                    "required_version": ">=1.1.0"
+                },
+                "cryptography": {
+                    "installed": "39.0.0",
+                    "required_version": ">=38.0.4"
+                },
+                "packaging": {
+                    "installed": "23.0",
+                    "required_version": ">=21.3"
+                }
+            },
+            "mismatched": {},
+            "parsing_failed": []
+        }
+    }
+}
 ```
