@@ -202,8 +202,8 @@ An example usage for `arista.avd.encrypt` filter for BGP is to use it in conjunc
 ```jinja
 bgp_peer_groups:
   ipv4_underlay_peers:
-      name: IPv4-UNDERLAY-PEERS
-
+    name: IPv4-UNDERLAY-PEERS
+      password: "{{ bgp_vault_password | encrypt(passwd_type='bgp', key='IPv4-UNDERLAY-PEERS') }}"
 ```
 
 ## Plugin Tests
