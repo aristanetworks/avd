@@ -20,10 +20,9 @@ l3leaf:
 
 tenants:
   TEST:
-    mac_vrf_vni_base: 10000
-
+    mac_vrf_vni_base: 11000
     l2vlans:
-      2900:
-        name: L2VLAN_2900
-      2901:
-        name: L2VLAN_2901
+      2910:
+        name: L2VLAN_2910
+      2911:
+        name: L2VLAN_2911

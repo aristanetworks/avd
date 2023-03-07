@@ -58,11 +58,11 @@ management_cvx:
   - 192.168.254.254
   - 192.168.254.255
 vlans:
-- id: 2900
-  name: L2VLAN_2900
+- id: 2910
+  name: L2VLAN_2910
   tenant: TEST
-- id: 2901
-  name: L2VLAN_2901
+- id: 2911
+  name: L2VLAN_2911
   tenant: TEST
 ip_igmp_snooping:
   globally_enabled: true
@@ -73,7 +73,7 @@ vxlan_interface:
       udp_port: 4789
       source_interface: Loopback1
       vlans:
-      - id: 2900
-        vni: 12900
-      - id: 2901
-        vni: 12901
+      - id: 2910
+        vni: 13910
+      - id: 2911
+        vni: 13911
