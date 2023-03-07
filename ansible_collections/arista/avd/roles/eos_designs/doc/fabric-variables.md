@@ -15,6 +15,7 @@
   - IBGP (only with OSPF or ISIS variants in underlay)
   - none**
   - HER (Head-End Replication)***
+  - CVX (CloudVision eXchange)
 - Only summary network addresses need to be defined. IP addresses are then assigned to each node, based on its unique device id.
   - To view IP address allocation and consumption, a summary is provided in the auto-generated fabric documentation in Markdown and CSV format.
 
@@ -49,7 +50,7 @@ shutdown_interfaces_towards_undeployed_peers: < true | false | default -> false 
 
 # Underlay routing protocol | Required.
 underlay_routing_protocol: < EBGP | OSPF | ISIS | ISIS-SR | ISIS-LDP | ISIS-SR-LDP | OSPF-LDP | none | default for l3ls-evpn -> EBGP >
-overlay_routing_protocol: < EBGP | IBGP | none | HER | default for l3ls-evpn -> EBGP >
+overlay_routing_protocol: < EBGP | IBGP | HER | CVX | none | default for l3ls-evpn -> EBGP >
 
 # Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.
 # Requires "underlay_routing_protocol: EBGP"
@@ -205,6 +206,9 @@ overlay_her_flood_list_per_vni: < true | false | default -> false >
 # by "dc_name")
 # This is useful if Border Leaf switches are dividing the VXLAN overlay into separate domains.
 overlay_her_flood_list_scope: < "fabric" | "dc" | default -> "fabric" >
+
+# Overlay settings when using CVX as overlay controller | Required if overlay_routing_protocol == CVX
+overlay_cvx_servers: [ < cvx1_ip_or_hostname >, < cvx2_ip_or_hostname >, < cvx3_ip_or_hostname > ]
 
 # Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.
 # Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP. This allows all l3leafs to reuse the same subnet
