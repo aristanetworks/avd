@@ -4,6 +4,7 @@
        or management_defaults is arista.avd.defined
        or tacacs_servers is arista.avd.defined
        or ip_tacacs_source_interfaces is arista.avd.defined
+       or radius_server is arista.avd.defined
        or radius_servers is arista.avd.defined
        or ip_radius_source_interfaces is arista.avd.defined
        or aaa_server_groups is arista.avd.defined
@@ -25,7 +26,7 @@
 {## IP TACACS Source Interfaces #}
 {%     include 'documentation/ip-tacacs-source-interfaces.j2' %}
 {## RADIUS Servers #}
-{%     include 'documentation/radius-servers.j2' %}
+{%     include 'documentation/radius-server.j2' %}
 {## IP RADIUS Source Interfaces #}
 {%     include 'documentation/ip-radius-source-interfaces.j2' %}
 {## AAA Server Groups #}

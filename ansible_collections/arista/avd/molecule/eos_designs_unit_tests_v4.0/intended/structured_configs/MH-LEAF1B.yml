@@ -108,19 +108,19 @@ local_users:
     ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
       cvpadmin@hostmachine.local
 vrfs:
-  MGMT:
-    ip_routing: false
-  Tenant_X_OP_Zone:
-    tenant: Tenant_X
-    ip_routing: true
+- name: MGMT
+  ip_routing: false
+- name: Tenant_X_OP_Zone
+  tenant: Tenant_X
+  ip_routing: true
 management_interfaces:
-  Management1:
-    description: oob_management
-    shutdown: false
-    vrf: MGMT
-    ip_address: 192.168.201.105/24
-    gateway: 192.168.200.5
-    type: oob
+- name: Management1
+  description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.201.105/24
+  gateway: 192.168.200.5
+  type: oob
 management_api_http:
   enable_vrfs:
     MGMT: {}
@@ -151,6 +151,7 @@ ethernet_interfaces:
     peer: server01_ES1
     peer_interface: Eth2
     peer_type: server
+    port_profile: Tenant_X
     description: server01_ES1_Eth2
     type: switched
     shutdown: false
@@ -163,6 +164,7 @@ ethernet_interfaces:
     peer: server03_AUTO_ESI
     peer_interface: Eth2
     peer_type: server
+    port_profile: Tenant_X
     description: server03_AUTO_ESI_Eth2
     type: switched
     shutdown: false
@@ -196,40 +198,40 @@ loopback_interfaces:
     vrf: Tenant_X_OP_Zone
     ip_address: 10.255.1.34/32
 prefix_lists:
-  PL-LOOPBACKS-EVPN-OVERLAY:
-    sequence_numbers:
-      10:
-        action: permit 192.168.255.0/24 eq 32
-      20:
-        action: permit 192.168.254.0/24 eq 32
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
 route_maps:
-  RM-CONN-2-BGP:
-    sequence_numbers:
-      10:
-        type: permit
-        match:
-        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 router_bfd:
   multihop:
     interval: 1200
     min_rx: 1200
     multiplier: 3
 vlans:
-  310:
-    tenant: Tenant_X
-    name: Tenant_X_OP_Zone_1
+- id: 310
+  name: Tenant_X_OP_Zone_1
+  tenant: Tenant_X
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 vlan_interfaces:
-  Vlan310:
-    tenant: Tenant_X
-    tags:
-    - opzone
-    description: Tenant_X_OP_Zone_1
-    shutdown: false
-    ip_address_virtual: 10.1.10.1/24
-    vrf: Tenant_X_OP_Zone
+- name: Vlan310
+  tenant: Tenant_X
+  tags:
+  - opzone
+  description: Tenant_X_OP_Zone_1
+  shutdown: false
+  ip_address_virtual: 10.1.10.1/24
+  vrf: Tenant_X_OP_Zone
 vxlan_interface:
   Vxlan1:
     description: MH-LEAF1B_VTEP
@@ -237,14 +239,14 @@ vxlan_interface:
       udp_port: 4789
       source_interface: Loopback1
       vlans:
-        310:
-          vni: 11310
+      - id: 310
+        vni: 11310
       vrfs:
-        Tenant_X_OP_Zone:
-          vni: 20
+      - name: Tenant_X_OP_Zone
+        vni: 20
 virtual_source_nat_vrfs:
-  Tenant_X_OP_Zone:
-    ip_address: 10.255.1.34
+- name: Tenant_X_OP_Zone
+  ip_address: 10.255.1.34
 port_channel_interfaces:
   Port-Channel10:
     description: server01_ES1_PortChanne1

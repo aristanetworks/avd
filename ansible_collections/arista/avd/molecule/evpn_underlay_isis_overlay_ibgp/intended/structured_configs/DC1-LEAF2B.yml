@@ -74,16 +74,16 @@ local_users:
   sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
   name: cvpadmin
 vrfs:
-- ip_routing: false
-  name: MGMT
+- name: MGMT
+  ip_routing: false
 management_interfaces:
-- description: oob_management
+- name: Management1
+  description: oob_management
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.107/24
   gateway: 192.168.200.5
   type: oob
-  name: Management1
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -100,20 +100,20 @@ vlans:
   - MLAG
   id: 4094
 vlan_interfaces:
-- description: MLAG_PEER_L3_PEERING
+- name: Vlan4093
+  description: MLAG_PEER_L3_PEERING
   shutdown: false
   mtu: 1500
   ip_address: 10.255.251.3/31
   isis_enable: EVPN_UNDERLAY
   isis_metric: 50
   isis_network_point_to_point: true
-  name: Vlan4093
-- description: MLAG_PEER
+- name: Vlan4094
+  description: MLAG_PEER
   shutdown: false
   ip_address: 10.255.252.3/31
   no_autostate: true
   mtu: 1500
-  name: Vlan4094
 port_channel_interfaces:
 - description: MLAG_PEER_DC1-LEAF2A_Po5
   type: switched
@@ -258,20 +258,20 @@ router_bfd:
     min_rx: 1200
     multiplier: 3
 route_maps:
-- sequence_numbers:
-  - type: deny
+- name: RM-EVPN-SOO-IN
+  sequence_numbers:
+  - sequence: 10
+    type: deny
     match:
     - extcommunity ECL-EVPN-SOO
-    sequence: 10
-  - type: permit
-    sequence: 20
-  name: RM-EVPN-SOO-IN
-- sequence_numbers:
-  - type: permit
+  - sequence: 20
+    type: permit
+- name: RM-EVPN-SOO-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     set:
     - extcommunity soo 192.168.254.6:1 additive
-    sequence: 10
-  name: RM-EVPN-SOO-OUT
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a

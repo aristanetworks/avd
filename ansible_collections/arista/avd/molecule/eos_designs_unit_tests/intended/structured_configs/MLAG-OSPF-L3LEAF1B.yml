@@ -70,16 +70,16 @@ local_users:
     cvpadmin@hostmachine.local
   name: cvpadmin
 vrfs:
-- ip_routing: false
-  name: MGMT
+- name: MGMT
+  ip_routing: false
 management_interfaces:
-- description: oob_management
+- name: Management1
+  description: oob_management
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.201.115/24
   gateway: 192.168.200.5
   type: oob
-  name: Management1
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -94,14 +94,14 @@ vlans:
   - MLAG
   id: 4094
 vlan_interfaces:
-- description: MLAG_PEER
+- name: Vlan4094
+  description: MLAG_PEER
   shutdown: false
   ip_address: 10.10.255.7/31
   no_autostate: true
   mtu: 1500
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  name: Vlan4094
 port_channel_interfaces:
 - description: MLAG_PEER_MLAG-OSPF-L3LEAF1A_Po5
   type: switched
@@ -164,14 +164,14 @@ loopback_interfaces:
   name: Loopback1
 router_ospf:
   process_ids:
-  - passive_interface_default: true
+  - id: 100
+    passive_interface_default: true
     router_id: 192.168.255.37
     max_lsa: 12000
     no_passive_interfaces:
     - Ethernet1
     - Vlan4094
     bfd_enable: false
-    id: 100
 router_bfd:
   multihop:
     interval: 1200
@@ -179,7 +179,6 @@ router_bfd:
     multiplier: 3
 ip_igmp_snooping:
   globally_enabled: true
-ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 vxlan_interface:
   Vxlan1:
     description: MLAG-OSPF-L3LEAF1B_VTEP

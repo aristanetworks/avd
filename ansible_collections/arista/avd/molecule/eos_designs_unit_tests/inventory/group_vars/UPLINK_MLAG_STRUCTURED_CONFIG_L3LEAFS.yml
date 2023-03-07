@@ -20,7 +20,6 @@ l3leaf:
         ipv4:
           sparse_mode: true
     mlag_interfaces: [ Ethernet3, Ethernet4 ]
-    virtual_router_mac_address: 00:dc:00:00:00:0a
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24
     mlag_peer_ipv4_pool: 10.255.252.0/24
     spanning_tree_mode: mstp

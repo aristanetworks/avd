@@ -108,19 +108,19 @@ local_users:
     cvpadmin@hostmachine.local
   name: cvpadmin
 vrfs:
-- ip_routing: false
-  name: MGMT
-- tenant: Tenant_X
+- name: MGMT
+  ip_routing: false
+- name: Tenant_X_OP_Zone
+  tenant: Tenant_X
   ip_routing: true
-  name: Tenant_X_OP_Zone
 management_interfaces:
-- description: oob_management
+- name: Management1
+  description: oob_management
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.201.105/24
   gateway: 192.168.200.5
   type: oob
-  name: Management1
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -150,6 +150,7 @@ ethernet_interfaces:
 - peer: server01_ES1
   peer_interface: Eth2
   peer_type: server
+  port_profile: Tenant_X
   description: server01_ES1_Eth2
   type: switched
   shutdown: false
@@ -162,6 +163,7 @@ ethernet_interfaces:
 - peer: server03_AUTO_ESI
   peer_interface: Eth2
   peer_type: server
+  port_profile: Tenant_X
   description: server03_AUTO_ESI_Eth2
   type: switched
   shutdown: false
@@ -174,6 +176,7 @@ ethernet_interfaces:
 - peer: server04_AUTO_ESI_Profile
   peer_interface: Eth2
   peer_type: server
+  port_profile: Tenant_ESI_Auto
   description: server04_AUTO_ESI_Profile_Eth2
   type: switched
   shutdown: false
@@ -186,6 +189,7 @@ ethernet_interfaces:
 - peer: server05_AUTO_ESI_Profile_Override
   peer_interface: Eth2
   peer_type: server
+  port_profile: Tenant_ESI_Auto
   description: server05_AUTO_ESI_Profile_Override_Eth2
   type: switched
   shutdown: false
@@ -198,6 +202,7 @@ ethernet_interfaces:
 - peer: server06_Single_Active_Port_Channel
   peer_interface: Eth2
   peer_type: server
+  port_profile: Tenant_X_Trunk_Auto
   description: server06_Single_Active_Port_Channel_Eth2
   type: switched
   shutdown: false
@@ -210,6 +215,7 @@ ethernet_interfaces:
 - peer: server07_Single_Active_Port_Channel_Manual_DF
   peer_interface: Eth2
   peer_type: server
+  port_profile: Tenant_X_Trunk
   description: server07_Single_Active_Port_Channel_Manual_DF_Eth2
   type: switched
   shutdown: false
@@ -222,6 +228,7 @@ ethernet_interfaces:
 - peer: server08_Single_Active_Ethernet
   peer_interface: Eth2
   peer_type: server
+  port_profile: Tenant_X_Trunk_Auto_Eth
   description: server08_Single_Active_Ethernet_Eth2
   type: switched
   shutdown: false
@@ -238,6 +245,7 @@ ethernet_interfaces:
 - peer: server09_All_Active_Ethernet
   peer_interface: Eth2
   peer_type: server
+  port_profile: Tenant_X_Trunk
   description: server09_All_Active_Ethernet_Eth2
   type: switched
   shutdown: false
@@ -253,6 +261,7 @@ ethernet_interfaces:
 - peer: server10_Single_Active_Ethernet_Manual_DF
   peer_interface: Eth2
   peer_type: server
+  port_profile: Tenant_X_Trunk
   description: server10_Single_Active_Ethernet_Manual_DF_Eth2
   type: switched
   shutdown: false
@@ -269,6 +278,7 @@ ethernet_interfaces:
 - peer: server11_Single_Active_Port_Channel_Manual_DF_Dont_Preempt
   peer_interface: Eth2
   peer_type: server
+  port_profile: Tenant_X_Trunk
   description: server11_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_Eth2
   type: switched
   shutdown: false
@@ -281,6 +291,7 @@ ethernet_interfaces:
 - peer: server12_Single_Active_Ethernet_Manual_DF_Dont_Preempt
   peer_interface: Eth2
   peer_type: server
+  port_profile: Tenant_X_Trunk
   description: server12_Single_Active_Ethernet_Manual_DF_Dont_Preempt_Eth2
   type: switched
   shutdown: false
@@ -298,6 +309,7 @@ ethernet_interfaces:
 - peer: server13_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_modulus
   peer_interface: Eth2
   peer_type: server
+  port_profile: Tenant_X_Trunk
   description: server13_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_modulus_Eth2
   type: switched
   shutdown: false
@@ -310,6 +322,7 @@ ethernet_interfaces:
 - peer: server14_Single_Active_Ethernet_Manual_DF_Dont_Preempt_modulus
   peer_interface: Eth2
   peer_type: server
+  port_profile: Tenant_X_Trunk
   description: server14_Single_Active_Ethernet_Manual_DF_Dont_Preempt_modulus_Eth2
   type: switched
   shutdown: false
@@ -347,40 +360,40 @@ loopback_interfaces:
   ip_address: 10.255.1.34/32
   name: Loopback100
 prefix_lists:
-- sequence_numbers:
-  - action: permit 192.168.255.0/24 eq 32
-    sequence: 10
-  - action: permit 192.168.254.0/24 eq 32
-    sequence: 20
-  name: PL-LOOPBACKS-EVPN-OVERLAY
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
 route_maps:
-- sequence_numbers:
-  - type: permit
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-    sequence: 10
-  name: RM-CONN-2-BGP
 router_bfd:
   multihop:
     interval: 1200
     min_rx: 1200
     multiplier: 3
 vlans:
-- tenant: Tenant_X
+- id: 310
   name: Tenant_X_OP_Zone_1
-  id: 310
+  tenant: Tenant_X
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 vlan_interfaces:
-- tenant: Tenant_X
+- name: Vlan310
+  tenant: Tenant_X
   tags:
   - opzone
   description: Tenant_X_OP_Zone_1
   shutdown: false
   ip_address_virtual: 10.1.10.1/24
   vrf: Tenant_X_OP_Zone
-  name: Vlan310
 vxlan_interface:
   Vxlan1:
     description: MH-LEAF1B_VTEP
@@ -388,14 +401,14 @@ vxlan_interface:
       udp_port: 4789
       source_interface: Loopback1
       vlans:
-      - vni: 11310
-        id: 310
+      - id: 310
+        vni: 11310
       vrfs:
-      - vni: 20
-        name: Tenant_X_OP_Zone
+      - name: Tenant_X_OP_Zone
+        vni: 20
 virtual_source_nat_vrfs:
-- ip_address: 10.255.1.34
-  name: Tenant_X_OP_Zone
+- name: Tenant_X_OP_Zone
+  ip_address: 10.255.1.34
 port_channel_interfaces:
 - description: server01_ES1_PortChanne1
   type: switched

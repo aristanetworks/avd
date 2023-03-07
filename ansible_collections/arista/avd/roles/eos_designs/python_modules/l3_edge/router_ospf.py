@@ -23,11 +23,12 @@ class RouterOspfMixin(UtilsMixin):
         no_passive_interfaces = [p2p_link["data"]["interface"] for p2p_link in self._filtered_p2p_links if p2p_link.get("include_in_underlay_protocol") is True]
         if no_passive_interfaces:
             return {
-                "process_ids": {
-                    self._underlay_ospf_process_id: {
+                "process_ids": [
+                    {
+                        "id": self._underlay_ospf_process_id,
                         "no_passive_interfaces": no_passive_interfaces,
                     }
-                }
+                ]
             }
 
         return None

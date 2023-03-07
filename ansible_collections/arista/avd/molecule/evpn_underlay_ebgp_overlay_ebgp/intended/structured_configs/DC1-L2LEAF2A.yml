@@ -47,16 +47,16 @@ local_users:
   sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
   name: cvpadmin
 vrfs:
-- ip_routing: false
-  name: MGMT
+- name: MGMT
+  ip_routing: false
 management_interfaces:
-- description: oob_management
+- name: Management1
+  description: oob_management
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.113/24
   gateway: 192.168.200.5
   type: oob
-  name: Management1
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -67,76 +67,76 @@ vlans:
   trunk_groups:
   - MLAG
   id: 4091
-- tenant: Tenant_A
+- id: 130
   name: Tenant_A_APP_Zone_1
-  id: 130
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 131
   name: Tenant_A_APP_Zone_2
-  id: 131
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 140
   name: Tenant_A_DB_BZone_1
-  id: 140
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 141
   name: Tenant_A_DB_Zone_2
-  id: 141
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 110
   name: Tenant_A_OP_Zone_1
-  id: 110
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 111
   name: Tenant_A_OP_Zone_2
-  id: 111
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 150
   name: Tenant_A_WAN_Zone_1
-  id: 150
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 120
   name: Tenant_A_WEB_Zone_1
-  id: 120
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 121
   name: Tenant_A_WEBZone_2
-  id: 121
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 122
   name: Tenant_a_WEB_DHCP_no_source_int_no_vrf
-  id: 122
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 123
   name: Tenant_a_WEB_DHCP_source_int_no_vrf
-  id: 123
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 124
   name: Tenant_a_WEB_DHCP_vrf_no_source_int
-  id: 124
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 160
   name: Tenant_A_VMOTION
-  id: 160
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 161
   name: Tenant_A_NFS
-  id: 161
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 162
   name: Tenant_A_FTP
-  id: 162
-- tenant: Tenant_B
+  tenant: Tenant_A
+- id: 210
   name: Tenant_B_OP_Zone_1
-  id: 210
-- tenant: Tenant_B
+  tenant: Tenant_B
+- id: 211
   name: Tenant_B_OP_Zone_2
-  id: 211
-- tenant: Tenant_B
+  tenant: Tenant_B
+- id: 250
   name: Tenant_B_WAN_Zone_1
-  id: 250
-- tenant: Tenant_C
+  tenant: Tenant_B
+- id: 310
   name: Tenant_C_OP_Zone_1
-  id: 310
-- tenant: Tenant_C
+  tenant: Tenant_C
+- id: 311
   name: Tenant_C_OP_Zone_2
-  id: 311
-- tenant: Tenant_C
+  tenant: Tenant_C
+- id: 350
   name: Tenant_C_WAN_Zone_1
-  id: 350
+  tenant: Tenant_C
 vlan_interfaces:
-- description: MLAG_PEER
+- name: Vlan4091
+  description: MLAG_PEER
   shutdown: false
   ip_address: 10.255.249.16/31
   no_autostate: true
   mtu: 1500
-  name: Vlan4091
 port_channel_interfaces:
 - description: MLAG_PEER_DC1-L2LEAF2B_Po3
   type: switched

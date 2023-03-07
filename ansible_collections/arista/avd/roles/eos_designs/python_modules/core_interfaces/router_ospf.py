@@ -25,11 +25,12 @@ class RouterOspfMixin(UtilsMixin):
         ]
         if no_passive_interfaces:
             return {
-                "process_ids": {
-                    self._underlay_ospf_process_id: {
+                "process_ids": [
+                    {
+                        "id": self._underlay_ospf_process_id,
                         "no_passive_interfaces": no_passive_interfaces,
                     }
-                }
+                ],
             }
 
         return None

@@ -200,8 +200,8 @@ local_users:
     cvpadmin@hostmachine.local
   name: cvpadmin
 vrfs:
-- ip_routing: false
-  name: MGMT
+- name: MGMT
+  ip_routing: false
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -217,118 +217,118 @@ loopback_interfaces:
   ip_address: 192.168.254.109/32
   name: Loopback1
 prefix_lists:
-- sequence_numbers:
-  - action: permit 192.168.255.0/24 eq 32
-    sequence: 10
-  - action: permit 192.168.254.0/24 eq 32
-    sequence: 20
-  name: PL-LOOPBACKS-EVPN-OVERLAY
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
 route_maps:
-- sequence_numbers:
-  - type: permit
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-    sequence: 10
-  name: RM-CONN-2-BGP
 router_bfd:
   multihop:
     interval: 1200
     min_rx: 1200
     multiplier: 3
 vlans:
-- tenant: Tenant_A
+- id: 130
   name: Tenant_A_APP_Zone_1
-  id: 130
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 131
   name: Tenant_A_APP_Zone_2
-  id: 131
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 132
   name: Tenant_A_APP_Zone_3
-  id: 132
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 140
   name: Tenant_A_DB_BZone_1
-  id: 140
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 141
   name: Tenant_A_DB_Zone_2
-  id: 141
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 110
   name: Tenant_A_OP_Zone_1
-  id: 110
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 111
   name: Tenant_A_OP_Zone_2
-  id: 111
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 112
   name: Tenant_A_OP_Zone_3
-  id: 112
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 150
   name: Tenant_A_WAN_Zone_1
-  id: 150
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 151
   name: svi_with_no_tags
-  id: 151
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 120
   name: Tenant_A_WEB_Zone_1
-  id: 120
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 121
   name: Tenant_A_WEBZone_2
-  id: 121
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 160
   name: Tenant_A_VMOTION
-  id: 160
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 161
   name: Tenant_A_NFS
-  id: 161
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 162
   name: l2vlan_with_no_tags
-  id: 162
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 163
   name: overlapping_name
-  id: 163
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 164
   name: overlapping_name
-  id: 164
-- tenant: Tenant_A
+  tenant: Tenant_A
+- id: 165
   name: overlapping_name
-  id: 165
-- tenant: Tenant_B
+  tenant: Tenant_A
+- id: 210
   name: Tenant_B_OP_Zone_1
-  id: 210
-- tenant: Tenant_B
+  tenant: Tenant_B
+- id: 211
   name: Tenant_B_OP_Zone_2
-  id: 211
-- tenant: Tenant_B
+  tenant: Tenant_B
+- id: 250
   name: Tenant_B_WAN_Zone_1
-  id: 250
-- tenant: Tenant_C
+  tenant: Tenant_B
+- id: 310
   name: Tenant_C_OP_Zone_1
-  id: 310
-- tenant: Tenant_C
+  tenant: Tenant_C
+- id: 311
   name: Tenant_C_OP_Zone_2
-  id: 311
-- tenant: Tenant_C
+  tenant: Tenant_C
+- id: 350
   name: Tenant_C_WAN_Zone_1
-  id: 350
-- tenant: Tenant_D
+  tenant: Tenant_C
+- id: 410
   name: Tenant_D_v6_OP_Zone_1
-  id: 410
-- tenant: Tenant_D
+  tenant: Tenant_D
+- id: 411
   name: Tenant_D_v6_OP_Zone_2
-  id: 411
-- tenant: Tenant_D
+  tenant: Tenant_D
+- id: 412
   name: Tenant_D_v6_OP_Zone_1
-  id: 412
-- tenant: Tenant_D
+  tenant: Tenant_D
+- id: 413
   name: Tenant_D_v6_OP_Zone_3
-  id: 413
-- tenant: Tenant_D
+  tenant: Tenant_D
+- id: 450
   name: Tenant_D_v6_WAN_Zone_1
-  id: 450
-- tenant: Tenant_D
+  tenant: Tenant_D
+- id: 451
   name: Tenant_D_v6_WAN_Zone_2
-  id: 451
-- tenant: Tenant_D
+  tenant: Tenant_D
+- id: 452
   name: Tenant_D_v6_WAN_Zone_3
-  id: 452
+  tenant: Tenant_D
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
@@ -341,65 +341,65 @@ vxlan_interface:
       udp_port: 4789
       source_interface: Loopback1
       vlans:
-      - vni: 10130
-        id: 130
-      - vni: 10131
-        id: 131
-      - vni: 10132
-        id: 132
-      - vni: 10140
-        id: 140
-      - vni: 10141
-        id: 141
-      - vni: 10110
-        id: 110
-      - vni: 50111
-        id: 111
-      - vni: 10112
-        id: 112
-      - vni: 10150
-        id: 150
-      - vni: 10151
-        id: 151
-      - vni: 10120
-        id: 120
-      - vni: 10121
-        id: 121
-      - vni: 10160
-        id: 160
-      - vni: 10161
-        id: 161
-      - vni: 10162
-        id: 162
-      - vni: 10163
-        id: 163
-      - vni: 10164
-        id: 164
-      - vni: 10165
-        id: 165
-      - vni: 20210
-        id: 210
-      - vni: 20211
-        id: 211
-      - vni: 20250
-        id: 250
-      - vni: 30310
-        id: 310
-      - vni: 30311
-        id: 311
-      - vni: 30350
-        id: 350
-      - vni: 40410
-        id: 410
-      - vni: 40411
-        id: 411
-      - vni: 40412
-        id: 412
-      - vni: 40413
-        id: 413
-      - vni: 40450
-        id: 450
-      - vni: 40451
-        id: 451
-      - vni: 40452
-        id: 452
+      - id: 130
+        vni: 10130
+      - id: 131
+        vni: 10131
+      - id: 132
+        vni: 10132
+      - id: 140
+        vni: 10140
+      - id: 141
+        vni: 10141
+      - id: 110
+        vni: 10110
+      - id: 111
+        vni: 50111
+      - id: 112
+        vni: 10112
+      - id: 150
+        vni: 10150
+      - id: 151
+        vni: 10151
+      - id: 120
+        vni: 10120
+      - id: 121
+        vni: 10121
+      - id: 160
+        vni: 10160
+      - id: 161
+        vni: 10161
+      - id: 162
+        vni: 10162
+      - id: 163
+        vni: 10163
+      - id: 164
+        vni: 10164
+      - id: 165
+        vni: 10165
+      - id: 210
+        vni: 20210
+      - id: 211
+        vni: 20211
+      - id: 250
+        vni: 20250
+      - id: 310
+        vni: 30310
+      - id: 311
+        vni: 30311
+      - id: 350
+        vni: 30350
+      - id: 410
+        vni: 40410
+      - id: 411
+        vni: 40411
+      - id: 412
+        vni: 40412
+      - id: 413
+        vni: 40413
+      - id: 450
+        vni: 40450
+      - id: 451
+        vni: 40451
+      - id: 452
+        vni: 40452

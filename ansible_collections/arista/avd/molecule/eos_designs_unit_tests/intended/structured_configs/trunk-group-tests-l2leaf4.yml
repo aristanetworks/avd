@@ -10,8 +10,8 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vrfs:
-- ip_routing: false
-  name: MGMT
+- name: MGMT
+  ip_routing: false
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -57,19 +57,19 @@ port_channel_interfaces:
   - UPLINK
   name: Port-Channel1
 vlans:
-- tenant: TRUNK_GROUP_TESTS
+- id: 200
   name: svi200_with_trunk_groups
+  tenant: TRUNK_GROUP_TESTS
   trunk_groups:
   - TG_200
   - TG_NOT_MATCHING_ANY_SERVERS
   - UPLINK
-  id: 200
-- tenant: TRUNK_GROUP_TESTS
+- id: 210
   name: l2vlan210_with_trunk_groups
+  tenant: TRUNK_GROUP_TESTS
   trunk_groups:
   - TG_200
   - TG_NOT_MATCHING_ANY_SERVERS
   - UPLINK
-  id: 210
 ip_igmp_snooping:
   globally_enabled: true

@@ -6,7 +6,7 @@
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [TACACS Servers](#tacacs-servers)
-  - [RADIUS Servers](#radius-servers)
+  - [RADIUS Server](#radius-server)
   - [AAA Server Groups](#aaa-server-groups)
   - [AAA Authentication](#aaa-authentication)
   - [AAA Authorization](#aaa-authorization)
@@ -46,11 +46,11 @@ interface Management1
 
 ### Local Users Summary
 
-| User | Privilege | Role | Disabled |
-| ---- | --------- | ---- | -------- |
-| admin | 15 | network-admin | False |
-| ansible | 15 | network-admin | False |
-| cvpadmin | 15 | network-admin | False |
+| User | Privilege | Role | Disabled | Shell |
+| ---- | --------- | ---- | -------- | ----- |
+| admin | 15 | network-admin | False | - |
+| ansible | 15 | network-admin | False | - |
+| cvpadmin | 15 | network-admin | False | - |
 
 ### Local Users Device Configuration
 
@@ -83,17 +83,17 @@ tacacs-server host 10.10.10.159 key 8a $kUVyoj7FVQ//yw9D2lbqjA==$kxxohBiofI46IX3
 tacacs-server host 10.10.10.249 timeout 23 key 7 071B245F5A
 ```
 
-## RADIUS Servers
+## RADIUS Server
 
-### RADIUS Servers
+### RADIUS Server Hosts
 
-| VRF | RADIUS Servers |
-| --- | ---------------|
-| mgt | 10.10.10.157 |
-| default | 10.10.10.249 |
-| default | 10.10.10.158 |
+| VRF | RADIUS Servers | Timeout | Retransmit |
+| --- | -------------- | ------- | ---------- |
+| mgt | 10.10.10.157 | - | - |
+| default | 10.10.10.158 | - | - |
+| default | 10.10.10.249 | - | - |
 
-### RADIUS Servers Device Configuration
+### RADIUS Server Device Configuration
 
 ```eos
 !

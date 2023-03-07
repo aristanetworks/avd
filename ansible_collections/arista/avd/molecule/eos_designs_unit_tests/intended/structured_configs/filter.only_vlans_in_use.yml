@@ -10,19 +10,19 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vrfs:
-- ip_routing: false
-  name: MGMT
+- name: MGMT
+  ip_routing: false
 management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
 vlans:
-- tenant: test
+- id: 2
   name: vlan2
-  id: 2
-- tenant: test
+  tenant: test
+- id: 1
   name: vlan1
-  id: 1
+  tenant: test
 ip_igmp_snooping:
   globally_enabled: true
 ethernet_interfaces:

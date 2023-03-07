@@ -91,16 +91,16 @@ local_users:
   sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
   name: cvpadmin
 vrfs:
-- ip_routing: false
-  name: MGMT
+- name: MGMT
+  ip_routing: false
 management_interfaces:
-- description: oob_management
+- name: Management1
+  description: oob_management
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.102/24
   gateway: 192.168.200.5
   type: oob
-  name: Management1
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -191,7 +191,8 @@ loopback_interfaces:
   name: Loopback0
 router_ospf:
   process_ids:
-  - passive_interface_default: true
+  - id: 101
+    passive_interface_default: true
     router_id: 192.168.255.2
     max_lsa: 12000
     no_passive_interfaces:
@@ -203,7 +204,6 @@ router_ospf:
     - Ethernet6
     - Ethernet7
     bfd_enable: true
-    id: 101
 router_bfd:
   multihop:
     interval: 1200

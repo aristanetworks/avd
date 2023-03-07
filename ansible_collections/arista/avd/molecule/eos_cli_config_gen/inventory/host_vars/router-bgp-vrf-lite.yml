@@ -42,6 +42,9 @@ router_bgp:
       type: ipv4
       description: 'BGP Connection to OBS WAN CPE'
       remote_as: 65000
+      as_path:
+        remote_as_replace_out: true
+        prepend_own_disabled: true
     WELCOME_ROUTERS:
       type: ipv4
       description: 'BGP Connection to WELCOME ROUTER 02'
@@ -78,7 +81,10 @@ router_bgp:
           peer_group: OBS_WAN
         10.255.1.1:
           peer_group: WELCOME_ROUTERS
+          route_reflector_client: true
           weight: 65535
+          as_path:
+            remote_as_replace_out: true
         101.0.3.1:
           peer_group: SEDI
           weight: 100

@@ -13,7 +13,6 @@ l3leaf:
   defaults:
     loopback_ipv4_pool: 192.168.254.0/24
     vtep_loopback_ipv4_pool: 192.168.253.0/24
-    virtual_router_mac_address: 00:1c:73:00:DC:01
   nodes:
     OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF1:
       bgp_as: 65001

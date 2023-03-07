@@ -69,7 +69,6 @@ l3leaf:
     loopback_ipv4_pool: 192.168.255.0/24
     loopback_ipv4_offset: 8
     vtep_loopback_ipv4_pool: 192.168.254.0/24
-    virtual_router_mac_address: 00:dc:00:00:00:0a
     mlag_peer_l3_vlan: 4094
     mlag_peer_ipv4_pool: 192.168.253.0/24
     mlag_interfaces: [ Ethernet3 ]
@@ -96,7 +95,6 @@ pe:
     loopback_ipv4_pool: 192.168.255.0/24
     loopback_ipv4_offset: 8
     vtep_loopback_ipv4_pool: 192.168.254.0/24
-    virtual_router_mac_address: 00:dc:00:00:00:0a
     is_type: level-1-2
     node_sid_base: 100
     isis_system_id_prefix: '0000.0002'

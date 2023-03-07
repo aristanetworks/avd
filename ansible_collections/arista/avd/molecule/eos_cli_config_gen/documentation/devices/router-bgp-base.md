@@ -128,6 +128,8 @@ router bgp 65101
    neighbor interface Ethernet2 peer-group PG-FOO-v4 remote-as 65102
    neighbor interface Ethernet3 peer-group PG-FOO-v4 peer-filter PF-BAR-v4
    neighbor 192.0.3.1 remote-as 65432
+   neighbor 192.0.3.1 as-path remote-as replace out
+   neighbor 192.0.3.1 as-path prepend-own disabled
    neighbor 192.0.3.1 rib-in pre-policy retain
    neighbor 192.0.3.1 default-originate always
    neighbor 192.0.3.1 send-community
