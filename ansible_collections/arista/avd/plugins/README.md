@@ -202,8 +202,8 @@ An example usage for `arista.avd.encrypt` filter for BGP is to use it in conjunc
 ```jinja
 bgp_peer_groups:
   ipv4_underlay_peers:
-      name: IPv4-UNDERLAY-PEERS
-          password: "{{ bgp_vault_password | arista.avd.encrypt(passwd_type='bgp', key='IPv4-UNDERLAY-PEERS') }}"
+    name: IPv4-UNDERLAY-PEERS
+      password: "{{ bgp_vault_password | arista.avd.encrypt(passwd_type='bgp', key='IPv4-UNDERLAY-PEERS') }}"
 ```
 
 ## Plugin Tests
@@ -695,6 +695,43 @@ Example:
     md_toc_skip_lines: 3
   delegate_to: localhost
   when: generate_device_documentation | arista.avd.default(true)
+```
+
+### Batch Template
+
+The `arista.avd.batch_template`  Action Plugin performs templating of one template for multiple "items".
+
+Results are written to individual files named using format string passed to the plugin. Destination file mode is hardcoded to 0o664.
+
+```yaml
+options:
+  template:
+    description: Path to Jinja2 Template file
+    required: true
+    type: str
+  dest_format_string:
+    description: Format string used to specify target file for each item. 'item' is the current item from 'items'. Like "mypath/{item}.md"
+    required: true
+    type: str
+  items:
+    description: List of strings. Each list item is passed to 'dest_format_string' as 'item' and passed to templater as 'item'
+    required: true
+    type: list
+    elements: str
+
+Example:
+
+```yaml
+- name: Output eos_cli_config_gen Documentation
+  tags: [eos_cli_config_gen]
+  delegate_to: localhost
+  run_once: true
+  arista.avd.batch_template:
+    template: avd_schema_documentation.j2
+    dest_format_str: "{{ role_documentation_dir }}/{item}.md"
+    items: "{{ documentation_schema | list }}"
+  vars:
+    documentation_schema: "{{ role_name | arista.avd.convert_schema(type='documentation') }}"
 ```
 
 ### Verify Requirements
