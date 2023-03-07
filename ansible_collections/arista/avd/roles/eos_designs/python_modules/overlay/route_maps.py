@@ -20,6 +20,10 @@ class RouteMapsMixin(UtilsMixin):
 
         TODO
         """
+
+        if self._overlay_cvx:
+            return None
+
         if self._overlay_mpls is True:
             # some logic
             pass
