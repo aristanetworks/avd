@@ -14,8 +14,7 @@ dot1x dynamic-authorization
 dot1x
 {%         if dot1x.mac_based_authentication is arista.avd.defined %}
 {%             if dot1x.mac_based_authentication.delay is arista.avd.defined %}
-{%                 set mac_delay_cli = "mac based authentication delay " ~ dot1x.mac_based_authentication.delay ~ " seconds" %}
-   {{ mac_delay_cli }}
+   mac based authentication delay {{ dot1x.mac_based_authentication.delay }} seconds
 {%             endif %}
 {%             if dot1x.mac_based_authentication.hold_period is arista.avd.defined %}
    mac based authentication hold period {{ dot1x.mac_based_authentication.hold_period }} seconds
