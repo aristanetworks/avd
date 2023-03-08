@@ -342,6 +342,7 @@ jobs:
       PY_COLORS: '1'
     needs: [ pre_commit ]
     steps:
+      - uses: actions/checkout@v3
       - name: Set up Python 3
         uses: actions/setup-python@v4
         with:
