@@ -133,16 +133,16 @@ jobs:
       fail-fast: true
       matrix:
         python_version: [ "3.8", "3.9", "3.10" ]
+    env:
+      PY_COLORS: 1
+      ANSIBLE_FORCE_COLORE: 1
     steps:
-      - name: 'Set environment variables'
-        run: |
-          echo "PY_COLORS=1" >> $GITHUB_ENV
-          echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
       - uses: actions/checkout@v3
-      - name: Set up Python 3
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python_version }}
+          cache: 'pip'
       - name: 'Install Python requirements'
         run: |
           pip install -r ansible_collections/arista/avd/requirements.txt --upgrade
