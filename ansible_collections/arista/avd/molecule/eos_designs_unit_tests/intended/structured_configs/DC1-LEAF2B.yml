@@ -636,7 +636,8 @@ ethernet_interfaces:
   vlans: '110'
   name: Ethernet21
 port_channel_interfaces:
-- description: DC1_L2LEAF1_Po1
+- name: Port-Channel7
+  description: DC1_L2LEAF1_Po1
   type: switched
   shutdown: false
   mode: trunk
@@ -645,8 +646,8 @@ port_channel_interfaces:
     identifier: 0000:0000:0808:0707:0606
     route_target: 08:08:07:07:06:06
   lacp_id: 0808.0707.0606
-  name: Port-Channel7
-- description: DC1-L2LEAF3A_Po1
+- name: Port-Channel9
+  description: DC1-L2LEAF3A_Po1
   type: switched
   shutdown: false
   mode: trunk
@@ -655,8 +656,8 @@ port_channel_interfaces:
     identifier: 0000:0000:0606:0707:0808
     route_target: 06:06:07:07:08:08
   lacp_id: 0606.0707.0808
-  name: Port-Channel9
-- description: DC1-L2LEAF4A_Po1
+- name: Port-Channel13
+  description: DC1-L2LEAF4A_Po1
   type: switched
   shutdown: false
   mode: trunk
@@ -665,8 +666,8 @@ port_channel_interfaces:
     identifier: 0000:0000:a36b:7013:457b
     route_target: a3:6b:70:13:45:7b
   lacp_id: a36b.7013.457b
-  name: Port-Channel13
-- description: DC1_L2LEAF5_Po1
+- name: Port-Channel141
+  description: DC1_L2LEAF5_Po1
   type: switched
   shutdown: false
   mode: trunk
@@ -675,16 +676,16 @@ port_channel_interfaces:
     identifier: 0000:0000:fa91:ce62:ce95
     route_target: fa:91:ce:62:ce:95
   lacp_id: fa91.ce62.ce95
-  name: Port-Channel141
-- description: server01_MLAG_PortChanne1
+- name: Port-Channel10
+  description: server01_MLAG_PortChanne1
   type: switched
   shutdown: false
   mode: trunk
   vlans: 210-211
   spanning_tree_bpdufilter: disabled
   spanning_tree_bpduguard: disabled
-  name: Port-Channel10
-- description: server01_MTU_PROFILE_MLAG_PortChanne1
+- name: Port-Channel11
+  description: server01_MTU_PROFILE_MLAG_PortChanne1
   type: switched
   shutdown: false
   mtu: 1600
@@ -692,20 +693,19 @@ port_channel_interfaces:
   vlans: '110'
   spanning_tree_bpdufilter: enabled
   spanning_tree_bpduguard: enabled
-  name: Port-Channel11
-- description: server01_MTU_ADAPTOR_MLAG_PortChanne1
+- name: Port-Channel12
+  description: server01_MTU_ADAPTOR_MLAG_PortChanne1
   type: switched
   shutdown: false
   mtu: 1601
   spanning_tree_bpdufilter: 'True'
   spanning_tree_bpduguard: 'True'
-  name: Port-Channel12
-- description: FIREWALL01_PortChanne1
+- name: Port-Channel20
+  description: FIREWALL01_PortChanne1
   type: switched
   shutdown: false
   mode: trunk
   vlans: 110-111,210-211
-  name: Port-Channel20
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

@@ -19,11 +19,11 @@ class PortChannelInterfacesMixin(UtilsMixin):
     """
 
     @cached_property
-    def port_channel_interfaces(self) -> dict | None:
+    def port_channel_interfaces(self) -> list | None:
         """
         Return structured config for ethernet_interfaces
         """
-        port_channel_interfaces = {}
+        port_channel_interfaces = []
         for connected_endpoint in self._filtered_connected_endpoints:
             for adapter in connected_endpoint["adapters"]:
                 if get(adapter, "port_channel.mode") is None:
@@ -33,7 +33,9 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 channel_group_id = get(adapter, "port_channel.channel_id", default=default_channel_group_id)
 
                 port_channel_interface_name = f"Port-Channel{channel_group_id}"
-                port_channel_interfaces[port_channel_interface_name] = self._get_port_channel_interface_cfg(adapter, channel_group_id, connected_endpoint)
+                port_channel_interfaces.append(
+                    {"name": port_channel_interface_name, **self._get_port_channel_interface_cfg(adapter, channel_group_id, connected_endpoint)}
+                )
                 if (subinterfaces := get(adapter, "port_channel.subinterfaces")) is None:
                     continue
 
@@ -42,7 +44,9 @@ class PortChannelInterfacesMixin(UtilsMixin):
                         continue
 
                     port_channel_subinterface_name = f"Port-Channel{channel_group_id}.{subinterface['number']}"
-                    port_channel_interfaces[port_channel_subinterface_name] = self._get_port_channel_subinterface_cfg(subinterface, adapter, channel_group_id)
+                    port_channel_interfaces.append(
+                        {"name": port_channel_subinterface_name, **self._get_port_channel_subinterface_cfg(subinterface, adapter, channel_group_id)}
+                    )
 
         for network_port in self._filtered_network_ports:
             if get(network_port, "port_channel.mode") is None:
@@ -69,8 +73,8 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 channel_group_id = get(tmp_network_port, "port_channel.channel_id", default=default_channel_group_id)
 
                 port_channel_interface_name = f"Port-Channel{channel_group_id}"
-                port_channel_interfaces[port_channel_interface_name] = self._get_port_channel_interface_cfg(
-                    tmp_network_port, channel_group_id, connected_endpoint
+                port_channel_interfaces.append(
+                    {"name": port_channel_interface_name, **self._get_port_channel_interface_cfg(tmp_network_port, channel_group_id, connected_endpoint)}
                 )
 
         if port_channel_interfaces:

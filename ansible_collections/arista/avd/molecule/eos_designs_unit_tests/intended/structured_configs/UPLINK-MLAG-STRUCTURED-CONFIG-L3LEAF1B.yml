@@ -109,7 +109,8 @@ vlan_interfaces:
   no_autostate: true
   mtu: 9000
 port_channel_interfaces:
-- description: MLAG_PEER_UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A_Po3
+- name: Port-Channel3
+  description: MLAG_PEER_UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A_Po3
   type: switched
   shutdown: false
   vlans: 2-4094
@@ -117,14 +118,13 @@ port_channel_interfaces:
   trunk_groups:
   - LEAF_PEER_L3
   - MLAG
-  name: Port-Channel3
-- description: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1_Po1
+- name: Port-Channel5
+  description: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1_Po1
   type: switched
   shutdown: false
   mode: trunk
   vlans: none
   mlag: 5
-  name: Port-Channel5
   storm_control:
     broadcast:
       level: '25'

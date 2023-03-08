@@ -290,7 +290,8 @@ ethernet_interfaces:
     ip: true
   name: ethernet25
 port_channel_interfaces:
-- peer: core-2-ospf-ldp
+- name: Port-Channel12
+  peer: core-2-ospf-ldp
   peer_interface: Port-Channel12
   peer_type: core_router
   description: P2P_LINK_TO_core-2-ospf-ldp_Port-Channel12
@@ -311,4 +312,3 @@ port_channel_interfaces:
     ldp:
       interface: true
       igp_sync: true
-  name: Port-Channel12

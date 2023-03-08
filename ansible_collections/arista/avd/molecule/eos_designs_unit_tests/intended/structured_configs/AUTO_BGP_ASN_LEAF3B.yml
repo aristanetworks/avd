@@ -100,7 +100,8 @@ vlan_interfaces:
   no_autostate: true
   mtu: 9000
 port_channel_interfaces:
-- description: MLAG_PEER_AUTO_BGP_ASN_LEAF3A_Po3
+- name: Port-Channel3
+  description: MLAG_PEER_AUTO_BGP_ASN_LEAF3A_Po3
   type: switched
   shutdown: false
   vlans: 2-4094
@@ -108,7 +109,6 @@ port_channel_interfaces:
   trunk_groups:
   - LEAF_PEER_L3
   - MLAG
-  name: Port-Channel3
 ethernet_interfaces:
 - peer: AUTO_BGP_ASN_LEAF3A
   peer_interface: Ethernet3

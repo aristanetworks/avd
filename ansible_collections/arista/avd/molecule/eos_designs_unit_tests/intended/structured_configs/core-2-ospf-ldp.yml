@@ -192,7 +192,8 @@ ethernet_interfaces:
   speed: forced 1000full
   name: Ethernet13
 port_channel_interfaces:
-- peer: core-1-isis-sr-ldp
+- name: Port-Channel12
+  peer: core-1-isis-sr-ldp
   peer_interface: Port-Channel12
   peer_type: core_router
   description: P2P_LINK_TO_core-1-isis-sr-ldp_Port-Channel12
@@ -208,4 +209,3 @@ port_channel_interfaces:
     ldp:
       interface: true
       igp_sync: true
-  name: Port-Channel12

@@ -17,7 +17,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
     """
 
     @cached_property
-    def port_channel_interfaces(self) -> dict | None:
+    def port_channel_interfaces(self) -> list | None:
         """
         Return structured config for port_channel_interfaces
 
@@ -28,7 +28,8 @@ class PortChannelInterfacesMixin(UtilsMixin):
             return None
 
         # Using temp variables to keep the order of interfaces from Jinja
-        port_channel_interfaces = {}
+        port_channel_interface = {}
+        port_channel_interfaces = []
         subif_parent_interfaces = {}
 
         for tenant in self._filtered_tenants:
@@ -52,6 +53,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                     if subifs:
                         # This is a subinterface so we need to ensure that the parent is created
                         parent_interface = {
+                            "name": interface_name,
                             "type": "routed",
                             "peer_type": "l3_interface",
                             "shutdown": False,
@@ -63,27 +65,31 @@ class PortChannelInterfacesMixin(UtilsMixin):
                                 if port_channel_mode == "active":
                                     parent_interface["lacp_id"] = generate_lacp_id(short_esi)
 
-                        subif_parent_interfaces[interface_name] = parent_interface
+                        subif_parent_interfaces.update(parent_interface)
 
                         for subif in subifs:
                             key = f"{interface_name}.{subif['number']}"
-                            port_channel_interfaces[key] = {
-                                "type": "l2dot1q",
-                                "encapsulation_vlan": {
-                                    "client": {
-                                        "dot1q": {
-                                            "vlan": subif["number"],
+                            port_channel_interface.update(
+                                {
+                                    "name": key,
+                                    "type": "l2dot1q",
+                                    "encapsulation_vlan": {
+                                        "client": {
+                                            "dot1q": {
+                                                "vlan": subif["number"],
+                                            },
+                                        },
+                                        "network": {
+                                            "client": True,
                                         },
                                     },
-                                    "network": {
-                                        "client": True,
-                                    },
-                                },
-                                "peer_type": "l3_interface",
-                                "shutdown": False,
-                            }
+                                    "peer_type": "l3_interface",
+                                    "shutdown": False,
+                                }
+                            )
                     else:
                         interface = {
+                            "name": interface_name,
                             "type": "routed",
                             "peer_type": "l3_interface",
                             "shutdown": False,
@@ -100,11 +106,12 @@ class PortChannelInterfacesMixin(UtilsMixin):
                                 interface["rt"] = generate_route_target(short_esi)
                                 if port_channel_mode == "active":
                                     interface["lacp_id"] = generate_lacp_id(short_esi)
-                        port_channel_interfaces[interface_name] = interface
+                        port_channel_interface.update(interface)
+                    port_channel_interfaces.append(port_channel_interface)
 
             subif_parent_interfaces = {key: value for key, value in subif_parent_interfaces.items() if key not in port_channel_interfaces}
             if subif_parent_interfaces:
-                port_channel_interfaces.update(subif_parent_interfaces)
+                port_channel_interfaces.append(subif_parent_interfaces)
 
         if port_channel_interfaces:
             return port_channel_interfaces

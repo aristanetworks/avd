@@ -83,7 +83,8 @@ ethernet_interfaces:
     direction: downstream
   name: Ethernet10
 port_channel_interfaces:
-- description: MH-LEAF2A_Po2
+- name: Port-Channel1
+  description: MH-LEAF2A_Po2
   type: switched
   shutdown: false
   mode: trunk
@@ -91,7 +92,6 @@ port_channel_interfaces:
   - name: l2leaf-server02
     direction: upstream
   vlans: '310'
-  name: Port-Channel1
 vlans:
 - id: 310
   name: Tenant_X_OP_Zone_1
