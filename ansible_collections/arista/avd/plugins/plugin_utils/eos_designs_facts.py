@@ -612,7 +612,7 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def overlay_routing_protocol(self):
         overlay_routing_protocol = str(get(self._hostvars, "overlay_routing_protocol", default=self.default_overlay_routing_protocol)).lower()
-        if overlay_routing_protocol not in ["ebgp", "ibgp", "her", "none"]:
+        if overlay_routing_protocol not in ["ebgp", "ibgp", "her", "cvx", "none"]:
             overlay_routing_protocol = self.default_overlay_routing_protocol
         return overlay_routing_protocol
 
@@ -1871,6 +1871,8 @@ class EosDesignsFacts(AvdFacts):
             peering_address = self.ipv6_router_id
         else:
             peering_address = self.router_id
+
+        cvx = self.overlay_routing_protocol == "cvx"
         # Set overlay.evpn_vxlan and overlay.evpn_mpls to differentiate between VXLAN and MPLS use cases.
         evpn_vxlan = self._overlay_evpn and self.evpn_encapsulation == "vxlan"
         evpn_mpls = self._overlay_evpn and self.evpn_encapsulation == "mpls"
@@ -1881,6 +1883,7 @@ class EosDesignsFacts(AvdFacts):
             "peering_address": peering_address,
             "ler": self._overlay_ler,
             "vtep": self._overlay_vtep,
+            "cvx": cvx,
             "evpn": self._overlay_evpn,
             "evpn_vxlan": evpn_vxlan,
             "evpn_mpls": evpn_mpls,

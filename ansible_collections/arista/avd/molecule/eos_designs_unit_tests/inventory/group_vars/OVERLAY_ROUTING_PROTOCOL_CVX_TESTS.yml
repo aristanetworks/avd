@@ -1,0 +1,36 @@
+---
+type: l3leaf
+
+dc_name: OVERLAY_ROUTING_PROTOCOL_CVX_TESTS
+
+overlay_routing_protocol: CVX
+overlay_cvx_servers: [192.168.254.254, 192.168.254.255]
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.254.0/24
+    vtep_loopback_ipv4_pool: 192.168.253.0/24
+  nodes:
+    OVERLAY_ROUTING_PROTOCOL_CVX_L3LEAF1:
+      bgp_as: 65001
+      id: 1
+    OVERLAY_ROUTING_PROTOCOL_CVX_L3LEAF2:
+      bgp_as: 65002
+      id: 2
+
+tenants:
+  TEST:
+    mac_vrf_vni_base: 11000
+    # Notice VRFs are not configured under interface vxlan1 when running with CVX.
+    vrfs:
+      TEST:
+        # vrf_id: 1
+        svis:
+          3910:
+            name: SVI_3910
+
+    l2vlans:
+      2910:
+        name: L2VLAN_2910
+      2911:
+        name: L2VLAN_2911

@@ -20,19 +20,19 @@ management_api_http:
     MGMT: {}
   enable_https: true
 loopback_interfaces:
-  Loopback0:
-    description: LSR_Router_ID
-    shutdown: false
-    ip_address: 10.0.0.1/32
-    ipv6_address: 2000:1234:ffff:ffff::1/128
-    mpls:
-      ldp:
-        interface: true
-    isis_enable: CORE
-    isis_passive: true
-    node_segment:
-      ipv4_index: 201
-      ipv6_index: 201
+- name: Loopback0
+  description: LSR_Router_ID
+  shutdown: false
+  ip_address: 10.0.0.1/32
+  ipv6_address: 2000:1234:ffff:ffff::1/128
+  mpls:
+    ldp:
+      interface: true
+  isis_enable: CORE
+  isis_passive: true
+  node_segment:
+    ipv4_index: 201
+    ipv6_index: 201
 router_isis:
   instance: CORE
   log_adjacency_changes: true

@@ -3,6 +3,7 @@ from ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_d
 from ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing import load_ip_addressing
 
 from .ip_extcommunity_lists import IpExtCommunityListsMixin
+from .management_cvx import ManagementCvxMixin
 from .route_maps import RouteMapsMixin
 from .router_bfd import RouterBfdMixin
 from .router_bgp import RouterBgpMixin
@@ -11,6 +12,7 @@ from .router_bgp import RouterBgpMixin
 class AvdStructuredConfig(
     AvdFacts,
     IpExtCommunityListsMixin,
+    ManagementCvxMixin,
     RouterBfdMixin,
     RouterBgpMixin,
     RouteMapsMixin,
@@ -36,10 +38,11 @@ class AvdStructuredConfig(
     def render(self) -> dict:
         """
         Wrap class render function with a check if one of the following vars are True:
+        - switch.overlay.cvx
         - switch.overlay.evpn
         - switch.overlay.vpn_ipv4
         - switch.overlay.vpn_ipv6
         """
-        if self._overlay_evpn is True or self._overlay_vpn_ipv4 is True or self._overlay_vpn_ipv6 is True:
+        if any([self._overlay_cvx, self._overlay_evpn, self._overlay_vpn_ipv4, self._overlay_vpn_ipv6]):
             return super().render()
         return {}

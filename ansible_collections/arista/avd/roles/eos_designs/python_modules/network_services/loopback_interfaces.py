@@ -14,7 +14,7 @@ class LoopbackInterfacesMixin(UtilsMixin):
     """
 
     @cached_property
-    def loopback_interfaces(self) -> dict | None:
+    def loopback_interfaces(self) -> list | None:
         """
         Return structured config for loopback_interfaces
 
@@ -25,7 +25,7 @@ class LoopbackInterfacesMixin(UtilsMixin):
         if not (self._network_services_l3):
             return None
 
-        loopback_interfaces = {}
+        loopback_interfaces = []
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
                 if (loopback := get(vrf, "vtep_diagnostic.loopback")) is None:
@@ -47,12 +47,15 @@ class LoopbackInterfacesMixin(UtilsMixin):
                 # If we ended up here, it means we have a loopback_ipv4_pool set
                 interface_name = f"Loopback{loopback}"
                 offset = self._id + self._loopback_ipv4_offset
-                loopback_interfaces[interface_name] = {
-                    "description": get(vrf, "vtep_diagnostic.loopback_description", default=f"{vrf['name']}_VTEP_DIAGNOSTICS"),
-                    "shutdown": False,
-                    "vrf": vrf["name"],
-                    "ip_address": f"{self._avd_ip_addressing._ip(loopback_ipv4_pool, 32, offset, 0)}/32",
-                }
+                loopback_interfaces.append(
+                    {
+                        "name": interface_name,
+                        "description": get(vrf, "vtep_diagnostic.loopback_description", default=f"{vrf['name']}_VTEP_DIAGNOSTICS"),
+                        "shutdown": False,
+                        "vrf": vrf["name"],
+                        "ip_address": f"{self._avd_ip_addressing._ip(loopback_ipv4_pool, 32, offset, 0)}/32",
+                    }
+                )
         if loopback_interfaces:
             return loopback_interfaces
 

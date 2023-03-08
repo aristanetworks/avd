@@ -18,14 +18,14 @@ class RouteMapsMixin(UtilsMixin):
 
         Contains two parts.
         - Route map for connected routes redistribution in BGP
-        - Route map to filter peer AS in uderlay
+        - Route map to filter peer AS in underlay
         """
         if self._underlay_bgp is not True:
             return None
 
         route_maps = []
 
-        if self._overlay_routing_protocol != "none":
+        if self._overlay_routing_protocol != "none" and self._underlay_filter_redistribute_connected:
             # RM-CONN-2-BGP
             sequence_numbers = []
             sequence_numbers.append(
