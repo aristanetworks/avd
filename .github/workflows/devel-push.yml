@@ -46,12 +46,12 @@ jobs:
               - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*'
               - 'ansible_collections/arista/avd/molecule/cvp_configlet_upload/*'
               - 'ansible_collections/arista/avd/molecule/cvp_configlet_upload/**/*'
+            plugins:
+              - 'ansible_collections/arista/avd/plugins/*'
+              - 'ansible_collections/arista/avd/plugins/**/*'
             dhcp:
               - 'ansible_collections/arista/avd/roles/dhcp_provisioner/*'
               - 'ansible_collections/arista/avd/roles/dhcp_provisioner/**/*'
-            plugins:
-              - 'ansible_collections/arista/avd/plugins/filter/**'
-              - 'ansible_collections/arista/avd/plugins/test/**'
             requirements:
               - 'ansible_collections/arista/avd/requirements.txt'
               - 'ansible_collections/arista/avd/requirements-dev.txt'
