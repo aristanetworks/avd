@@ -40,6 +40,9 @@ jobs:
               - '.github/workflows/pull-request-management.yml'
               - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen/*'
               - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen/**/*'
+            plugins:
+              - 'ansible_collections/arista/avd/plugins/*'
+              - 'ansible_collections/arista/avd/plugins/**/*'
             cloudvision:
               - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/*'
               - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*'
@@ -72,11 +75,18 @@ jobs:
   pre_commit:
     name: Run pre-commit validation hooks
     runs-on: ubuntu-latest
-    container: avdteam/base:3.8-v2.0
     needs: file-changes
-    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true'
+    if: |
+      needs.file-changes.outputs.eos_design == 'true' ||
+      needs.file-changes.outputs.config_gen == 'true' ||
+      needs.file-changes.outputs.plugins == 'true' ||
+      needs.file-changes.outputs.requirements == 'true'
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'pip'
       - name: Install requirements
         run: |
           pip install -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
