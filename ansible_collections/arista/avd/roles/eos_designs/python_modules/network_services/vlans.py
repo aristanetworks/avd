@@ -24,6 +24,9 @@ class VlansMixin(UtilsMixin):
 
         This function also detects duplicate vlans and raise an error in case of duplicates between
         SVIs in all VRFs and L2VLANs deployed on this device.
+
+        This function also detects invalid character usage in VLAN names and will raise an error in
+        case of an invalid character being present.
         """
 
         if not self._network_services_l2:
@@ -35,8 +38,13 @@ class VlansMixin(UtilsMixin):
             for vrf in tenant["vrfs"]:
                 for svi in vrf["svis"]:
                     vlan_id = int(svi["id"])
+                    vlan_name = svi["name"]
                     if vlan_id in vlan_ids:
                         self._raise_duplicate_vlan_error(vlan_id, f"SVI in VRF '{vrf['name']}'", tenant["name"], get_item(vlans, "id", vlan_id))
+
+                    for character in self._invalid_characters:
+                        if character in vlan_name:
+                            self._raise_invalid_characters_vlan_error(vlan_name, tenant["name"])
 
                     vlans.append({"id": vlan_id, **self._get_vlan_config(svi, tenant)})
 
@@ -66,8 +74,13 @@ class VlansMixin(UtilsMixin):
             # L2 Vlans per Tenant
             for l2vlan in tenant["l2vlans"]:
                 vlan_id = int(l2vlan["id"])
+                vlan_name = l2vlan["name"]
                 if vlan_id in vlan_ids:
                     self._raise_duplicate_vlan_error(vlan_id, "L2VLAN", tenant["name"], get_item(vlans, "id", vlan_id))
+
+                for character in self._invalid_characters:
+                    if character in vlan_name:
+                        self._raise_invalid_characters_vlan_error(vlan_name, tenant["name"])
 
                 vlans.append({"id": vlan_id, **self._get_vlan_config(l2vlan, tenant)})
 
@@ -104,5 +117,10 @@ class VlansMixin(UtilsMixin):
         msg = f"Duplicate VLAN ID '{vlan_id}' found in Tenant '{tenant_name}' during configuration of {context}."
         if (duplicate_vlan_tenant := duplicate_vlan_config["tenant"]) != tenant_name:
             msg = f"{msg} Other VLAN is in Tenant '{duplicate_vlan_tenant}'."
+
+        raise AristaAvdError(msg)
+
+    def _raise_invalid_characters_vlan_error(self, vlan_id: int, tenant_name: str) -> NoReturn:
+        msg = f"Invalid characters in VLAN '{vlan_id}' found in Tenant '{tenant_name}'."
 
         raise AristaAvdError(msg)

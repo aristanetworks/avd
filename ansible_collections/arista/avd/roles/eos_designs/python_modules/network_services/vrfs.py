@@ -24,6 +24,9 @@ class VrfsMixin(UtilsMixin):
 
         This function also detects duplicate vrfs and raise an error in case of duplicates between
         all Tenants deployed on this device.
+
+        This function also detects invalid character usage in VRF names and will raise an error in
+        case of an invalid character being present.
         """
 
         if not self._network_services_l3:
@@ -39,6 +42,10 @@ class VrfsMixin(UtilsMixin):
 
                 if vrf_name in vrf_names:
                     self._raise_duplicate_vrf_error(vrf_name, tenant["name"], get_item(vrfs, "name", vrf_name))
+
+                for character in self._invalid_characters:
+                    if character in vrf_name:
+                        self._raise_invalid_characters_vrf_error(vrf_name, tenant["name"])
 
                 vrf_names.append(vrf_name)
 
@@ -82,5 +89,10 @@ class VrfsMixin(UtilsMixin):
         msg = f"Duplicate VRF '{vrf_name}' found in Tenant '{tenant_name}'."
         if (duplicate_vlan_tenant := duplicate_vrf_config["tenant"]) != tenant_name:
             msg = f"{msg} Other VRF is in Tenant '{duplicate_vlan_tenant}'."
+
+        raise AristaAvdError(msg)
+
+    def _raise_invalid_characters_vrf_error(self, vrf_name: str, tenant_name: str) -> NoReturn:
+        msg = f"Invalid character in VRF '{vrf_name}' found in Tenant '{tenant_name}'."
 
         raise AristaAvdError(msg)

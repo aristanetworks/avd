@@ -243,6 +243,15 @@ tenant_a:
             enabled: true
             point_to_point: true
             area: 0
+    Tenant_A_(DB)_Zone: # Invalid charcater in VRF name.
+      description: "Tenant_A_OP_Zone"
+      vrf_vni: 17
+      svis:
+        152:
+          name: Tenant_A_(DB)_Zone_1 # Invalid character in SVI name.
+          tags: ['opzone']
+          enabled: True
+          ip_address_virtual: 10.1.50.1/24
   l2vlans:
     # L2 vlan as string
     '160':
@@ -261,3 +270,6 @@ tenant_a:
       name: overlapping_name
     165:
       name: overlapping_name
+    166:
+      name: invalid_(name)
+      # Should render an error for invalid characters that EOS does not accept.

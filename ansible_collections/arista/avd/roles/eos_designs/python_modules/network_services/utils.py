@@ -333,3 +333,8 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
     @cached_property
     def _underlay_filter_redistribute_connected(self) -> bool:
         return get(self._hostvars, "underlay_filter_redistribute_connected", default=True) is True
+
+    @cached_property
+    def _invalid_characters(self) -> list:
+        invalid_characters = ["(", ")"]
+        return invalid_characters
