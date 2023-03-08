@@ -85,7 +85,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
-          python-version: $DEFAULT_PYTHON_VERSION
+          python-version: ${{ env.DEFAULT_PYTHON_VERSION }}
           cache: 'pip'
       - name: Install requirements
         run: |
@@ -325,7 +325,7 @@ jobs:
       - name: Set up Python 3
         uses: actions/setup-python@v4
         with:
-          python-version: $DEFAULT_PYTHON_VERSION
+          python-version: ${{ env.DEFAULT_PYTHON_VERSION }}
           cache: 'pip'
       - name: 'Install Python requirements'
         run: |
@@ -345,7 +345,7 @@ jobs:
       - name: Set up Python 3
         uses: actions/setup-python@v4
         with:
-          python-version: $DEFAULT_PYTHON_VERSION
+          python-version: ${{ env.DEFAULT_PYTHON_VERSION }}
           cache: 'pip'
       - name: 'Install Python requirements'
         run: |
@@ -366,7 +366,7 @@ jobs:
       - name: Set up Python 3
         uses: actions/setup-python@v4
         with:
-          python-version: $DEFAULT_PYTHON_VERSION
+          python-version: ${{ env.DEFAULT_PYTHON_VERSION }}
           cache: 'pip'
       - name: 'Install Python requirements'
         run: |
@@ -412,7 +412,7 @@ jobs:
       - name: Set up Python 3
         uses: actions/setup-python@v4
         with:
-          python-version: $DEFAULT_PYTHON_VERSION
+          python-version: ${{ env.DEFAULT_PYTHON_VERSION }}
           cache: 'pip'
       - name: Install requirements
         run: |
