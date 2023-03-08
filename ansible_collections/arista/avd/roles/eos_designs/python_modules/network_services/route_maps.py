@@ -95,19 +95,6 @@ class RouteMapsMixin(UtilsMixin):
             ],
         }
 
-        bgp = {
-            "name": "RM-CONN-2-BGP",
-            "sequence_numbers": [
-                # Add subnets to redistribution in default VRF
-                # sequence 10 is set in underlay and sequence 20 in inband management, so avoid setting those here
-                {
-                    "sequence": 30,
-                    "type": "permit",
-                    "match": ["ip address prefix-list PL-SVI-VRF-DEFAULT"],
-                },
-            ],
-        }
-
         if subnets:
             vrf_default["sequence_numbers"].append(
                 {
@@ -141,6 +128,22 @@ class RouteMapsMixin(UtilsMixin):
                     "match": ["ip address prefix-list PL-STATIC-VRF-DEFAULT"],
                 }
             )
+
+        if not self._underlay_filter_redistribute_connected:
+            return [vrf_default, peers_out]
+
+        bgp = {
+            "name": "RM-CONN-2-BGP",
+            "sequence_numbers": [
+                # Add subnets to redistribution in default VRF
+                # sequence 10 is set in underlay and sequence 20 in inband management, so avoid setting those here
+                {
+                    "sequence": 30,
+                    "type": "permit",
+                    "match": ["ip address prefix-list PL-SVI-VRF-DEFAULT"],
+                },
+            ],
+        }
 
         return [vrf_default, peers_out, bgp]
 

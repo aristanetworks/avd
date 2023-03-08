@@ -274,6 +274,10 @@ class UtilsMixin:
         return get(self._hostvars, "switch.overlay.dpath") is True
 
     @cached_property
+    def _overlay_cvx(self) -> bool:
+        return get(self._hostvars, "switch.overlay.cvx") is True
+
+    @cached_property
     def _overlay_evpn(self) -> bool:
         return get(self._hostvars, "switch.overlay.evpn") is True
 

@@ -3,6 +3,9 @@ pod_name: DC1_POD1
 
 max_l3leaf_to_spine_links: 2
 
+# Test removing redistribute connected route-map and prefix-list (default true) in combination with inband_management
+underlay_filter_redistribute_connected: false
+
 spine:
   defaults:
     platform: vEOS-LAB

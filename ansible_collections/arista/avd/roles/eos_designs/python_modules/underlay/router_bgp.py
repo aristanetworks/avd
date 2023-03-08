@@ -107,7 +107,7 @@ class RouterBgpMixin(UtilsMixin):
         """
         Return structured config for router_bgp.redistribute_routes
         """
-        if self._overlay_routing_protocol == "none":
+        if self._overlay_routing_protocol == "none" or not self._underlay_filter_redistribute_connected:
             return {"connected": {}}
 
         return {"connected": {"route_map": "RM-CONN-2-BGP"}}

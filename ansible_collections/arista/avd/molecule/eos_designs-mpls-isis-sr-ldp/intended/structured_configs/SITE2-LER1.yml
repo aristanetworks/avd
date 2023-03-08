@@ -192,7 +192,8 @@ management_api_http:
   enable_https: true
 eos_cli: "management security\n   password encryption-key common\n"
 loopback_interfaces:
-- description: MPLS_Overlay_peering
+- name: Loopback0
+  description: MPLS_Overlay_peering
   shutdown: false
   ip_address: 100.70.0.7/32
   ipv6_address: 2000:1234:ffff:ffff::7/128
@@ -204,7 +205,6 @@ loopback_interfaces:
   node_segment:
     ipv4_index: 207
     ipv6_index: 207
-  name: Loopback0
 router_isis:
   instance: CORE
   log_adjacency_changes: true

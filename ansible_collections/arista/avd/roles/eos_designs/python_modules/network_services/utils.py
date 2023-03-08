@@ -329,3 +329,7 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
     @cached_property
     def _virtual_router_mac_address(self) -> str | None:
         return get(self._hostvars, "switch.virtual_router_mac_address")
+
+    @cached_property
+    def _underlay_filter_redistribute_connected(self) -> bool:
+        return get(self._hostvars, "underlay_filter_redistribute_connected", default=True) is True

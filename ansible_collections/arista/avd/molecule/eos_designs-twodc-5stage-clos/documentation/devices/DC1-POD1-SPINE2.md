@@ -23,9 +23,6 @@
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
   - [Router BGP](#router-bgp)
-- [Filters](#filters)
-  - [Prefix-lists](#prefix-lists)
-  - [Route-maps](#route-maps)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
@@ -394,48 +391,10 @@ router bgp 65110.100
    neighbor 172.17.110.23 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.23 remote-as 65112.100
    neighbor 172.17.110.23 description DC1-POD1-LEAF2B_Ethernet12
-   redistribute connected route-map RM-CONN-2-BGP
+   redistribute connected
    !
    address-family ipv4
       neighbor IPv4-UNDERLAY-PEERS activate
-```
-
-# Filters
-
-## Prefix-lists
-
-### Prefix-lists Summary
-
-#### PL-LOOPBACKS-EVPN-OVERLAY
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | permit 172.16.110.0/24 eq 32 |
-
-### Prefix-lists Device Configuration
-
-```eos
-!
-ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-   seq 10 permit 172.16.110.0/24 eq 32
-```
-
-## Route-maps
-
-### Route-maps Summary
-
-#### RM-CONN-2-BGP
-
-| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
-| -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | permit | ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | - | - | - |
-
-### Route-maps Device Configuration
-
-```eos
-!
-route-map RM-CONN-2-BGP permit 10
-   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 ```
 
 # VRF Instances

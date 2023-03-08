@@ -208,16 +208,16 @@ mlag_configuration:
   reload_delay_mlag: '300'
   reload_delay_non_mlag: '330'
 loopback_interfaces:
-- description: EVPN_Overlay_Peering
+- name: Loopback0
+  description: EVPN_Overlay_Peering
   shutdown: false
   ip_address: 192.168.255.11/32
   ospf_area: 0.0.0.0
-  name: Loopback0
-- description: VTEP_VXLAN_Tunnel_Source
+- name: Loopback1
+  description: VTEP_VXLAN_Tunnel_Source
   shutdown: false
   ip_address: 192.168.254.10/32
   ospf_area: 0.0.0.0
-  name: Loopback1
 router_ospf:
   process_ids:
   - id: 101
