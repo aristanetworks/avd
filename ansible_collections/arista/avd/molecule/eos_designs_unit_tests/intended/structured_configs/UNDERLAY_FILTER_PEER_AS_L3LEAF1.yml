@@ -76,14 +76,6 @@ route_maps:
     - as 65000
   - sequence: 20
     type: permit
-- name: RM-BGP-AS65000-OUT
-  sequence_numbers:
-  - sequence: 10
-    type: deny
-    match:
-    - as 65000
-  - sequence: 20
-    type: permit
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:11:22:33:44:55
