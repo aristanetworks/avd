@@ -184,11 +184,11 @@ ethernet_interfaces:
   ospf_area: 0.0.0.0
   name: Ethernet7
 loopback_interfaces:
-- description: EVPN_Overlay_Peering
+- name: Loopback0
+  description: EVPN_Overlay_Peering
   shutdown: false
   ip_address: 192.168.255.4/32
   ospf_area: 0.0.0.0
-  name: Loopback0
 router_ospf:
   process_ids:
   - id: 101

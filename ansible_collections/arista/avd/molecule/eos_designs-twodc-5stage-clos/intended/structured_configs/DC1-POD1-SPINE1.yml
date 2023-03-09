@@ -29,8 +29,7 @@ router_bgp:
     - activate: false
       name: EVPN-OVERLAY-PEERS
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
   neighbors:
   - peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
@@ -231,22 +230,16 @@ ethernet_interfaces:
   ip_address: 172.17.110.20/31
   name: Ethernet8
 loopback_interfaces:
-- description: EVPN_Overlay_Peering
+- name: Loopback0
+  description: EVPN_Overlay_Peering
   shutdown: false
   ip_address: 172.16.110.1/32
-  name: Loopback0
-prefix_lists:
-- name: PL-LOOPBACKS-EVPN-OVERLAY
-  sequence_numbers:
-  - sequence: 10
-    action: permit 172.16.110.0/24 eq 32
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
 route_maps:
-- name: RM-CONN-2-BGP
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    match:
-    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 - name: RM-EVPN-FILTER-AS65200
   sequence_numbers:
   - sequence: 10
@@ -279,8 +272,3 @@ route_maps:
     - as 65211
   - sequence: 20
     type: permit
-router_bfd:
-  multihop:
-    interval: 300
-    min_rx: 300
-    multiplier: 3

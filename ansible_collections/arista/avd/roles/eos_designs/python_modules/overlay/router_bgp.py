@@ -21,6 +21,9 @@ class RouterBgpMixin(UtilsMixin):
         """
         Return the structured config for router_bgp
         """
+        if self._overlay_cvx:
+            return None
+
         router_bgp = {
             "bgp_cluster_id": self._bgp_cluster_id(),
             "peer_groups": self._peer_groups(),

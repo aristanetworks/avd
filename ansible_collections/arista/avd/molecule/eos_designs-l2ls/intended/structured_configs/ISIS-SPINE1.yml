@@ -54,12 +54,12 @@ port_channel_interfaces:
   vlans: '110'
   name: Port-Channel1
 loopback_interfaces:
-- description: Router_ID
+- name: Loopback0
+  description: Router_ID
   shutdown: false
   ip_address: 192.168.255.1/32
   isis_enable: EVPN_UNDERLAY
   isis_passive: true
-  name: Loopback0
 router_isis:
   instance: EVPN_UNDERLAY
   log_adjacency_changes: true
