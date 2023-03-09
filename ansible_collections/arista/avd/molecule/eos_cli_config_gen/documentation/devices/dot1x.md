@@ -46,13 +46,13 @@ interface Management1
 
 ### 802.1X MAC based authentication
 
-| delay | Hold period |
+| Delay | Hold period |
 | ----- | ----------- |
 | 300 | 300 |
 
 ### 802.1X Radius AV pair
 
-| Service type | framed MTU |
+| Service type | Framed MTU |
 | ------------ | ---------- |
 | True | 1500 |
 
