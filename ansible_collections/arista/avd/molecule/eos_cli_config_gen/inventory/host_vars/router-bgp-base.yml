@@ -50,6 +50,8 @@ router_bgp:
     test-link-bandwidth2:
       link_bandwidth:
         enabled: true
+    test-passive:
+      passive: true
   aggregate_addresses:
     1.1.1.0/24:
       advertise_only: true
@@ -97,6 +99,7 @@ router_bgp:
     192.0.3.1:
       remote_as: 65432
       send_community: all
+      passive: true
       link_bandwidth:
         enabled: true
         default: 100G

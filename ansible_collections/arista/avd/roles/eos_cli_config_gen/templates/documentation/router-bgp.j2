@@ -193,6 +193,9 @@
 {%                 endif %}
 | Link-Bandwidth | {{ value }} |
 {%             endif %}
+{%             if peer_group.passive is arista.avd.defined(true) %}
+| Passive | True |
+{%             endif %}
 {%         endfor %}
 {%     endif %}
 {%     set temp = namespace() %}
@@ -209,8 +212,8 @@
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
 {%         for neighbor in router_bgp.neighbors | arista.avd.natural_sort('ip_address') %}
 {%             if neighbor.peer_group is arista.avd.defined %}
 {%                 set inherited = namespace() %}
@@ -245,6 +248,9 @@
 {%                 if peer_group.route_reflector_client is arista.avd.defined(true) %}
 {%                     set inherited.route_reflector_client = "Inherited from peer group " ~ neighbor.peer_group %}
 {%                 endif %}
+{%                 if peer_group.passive is arista.avd.defined(true) %}
+{%                     set inherited.passive = "Inherited from peer group " ~ neighbor.peer_group %}
+{%                 endif %}
 {%             endif %}
 {%             set active_parameter = namespace() %}
 {%             set active_parameter.remote_as = neighbor.remote_as | arista.avd.default(inherited.remote_as, '-') %}
@@ -260,6 +266,7 @@
 {%                 endif %}
 {%             endif %}
 {%             set active_parameter.rib_in_pre_policy_retain = neighbor_rib_in_pre_policy_retain | arista.avd.default(inherited.rib_in_pre_policy_retain, '-') %}
+{%             set active_parameter.passive = neighbor.passive | arista.avd.default(inherited.passive, '-') %}
 {%             if neighbor.maximum_routes is arista.avd.defined %}
 {%                 if neighbor.maximum_routes == 0 %}
 {%                     set value = "0 (no limit)" %}
@@ -290,7 +297,7 @@
 {%                 endif %}
 {%             endif %}
 {%             set active_parameter.allowas_in = value_allowas | arista.avd.default(inherited.allowas_in, '-') %}
-| {{ neighbor.ip_address }} | {{ active_parameter.remote_as }} | {{ active_parameter.vrf }} | {{ active_parameter.shutdown }} | {{ active_parameter.send_community }} | {{ active_parameter.maximum_routes }} | {{ active_parameter.allowas_in }} | {{ active_parameter.bfd }} | {{ active_parameter.rib_in_pre_policy_retain }} | {{ active_parameter.route_reflector_client }} |
+| {{ neighbor.ip_address }} | {{ active_parameter.remote_as }} | {{ active_parameter.vrf }} | {{ active_parameter.shutdown }} | {{ active_parameter.send_community }} | {{ active_parameter.maximum_routes }} | {{ active_parameter.allowas_in }} | {{ active_parameter.bfd }} | {{ active_parameter.rib_in_pre_policy_retain }} | {{ active_parameter.route_reflector_client }} | {{ active_parameter.passive }} |
 {%         endfor %}
 {%         for vrf in router_bgp.vrfs | arista.avd.natural_sort('name') %}
 {%             if vrf.neighbors is arista.avd.defined %}
@@ -325,6 +332,9 @@
 {%                         if peer_group.route_reflector_client is arista.avd.defined(true) %}
 {%                             set inherited_vrf.route_reflector_client = "Inherited from peer group " ~ neighbor.peer_group %}
 {%                         endif %}
+{%                         if peer_group.passive is arista.avd.defined(true) %}
+{%                             set inherited_vrf.passive = "Inherited from peer group " ~ neighbor.peer_group %}
+{%                         endif %}
 {%                     endif %}
 {%                     set active_parameter_vrf = namespace() %}
 {%                     set active_parameter_vrf.remote_as = neighbor.remote_as | arista.avd.default(inherited_vrf.remote_as, '-') %}
@@ -332,6 +342,7 @@
 {%                     set active_parameter_vrf.bfd = neighbor.bfd | arista.avd.default(inherited_vrf.bfd, '-') %}
 {%                     set active_parameter_vrf.shutdown = neighbor.shutdown | arista.avd.default(inherited_vrf.shutdown, '-') %}
 {%                     set active_parameter_vrf.route_reflector_client = neighbor.route_reflector_client | arista.avd.default(inherited_vrf.route_reflector_client, '-') %}
+{%                     set active_parameter_vrf.passive = neighbor.passive | arista.avd.default(inherited_vrf.passive, '-') %}
 {%                     if neighbor.maximum_routes is arista.avd.defined %}
 {%                         if neighbor.maximum_routes == 0 %}
 {%                             set value = "0 (no limit)" %}
@@ -369,7 +380,7 @@
 {%                         endif %}
 {%                     endif %}
 {%                     set active_parameter_vrf.rib_in_pre_policy_retain = neighbor_rib_in_pre_policy_retain | arista.avd.default(inherited_vrf.rib_in_pre_policy_retain, '-') %}
-| {{ neighbor.ip_address }} | {{ active_parameter_vrf.remote_as }} | {{ vrf.name }} | {{ active_parameter_vrf.shutdown }} | {{ active_parameter_vrf.send_community }} | {{ active_parameter_vrf.maximum_routes }} | {{ active_parameter_vrf.allowas_in }} | {{ active_parameter_vrf.bfd }} | {{ active_parameter_vrf.rib_in_pre_policy_retain }} | {{ active_parameter_vrf.route_reflector_client }} |
+| {{ neighbor.ip_address }} | {{ active_parameter_vrf.remote_as }} | {{ vrf.name }} | {{ active_parameter_vrf.shutdown }} | {{ active_parameter_vrf.send_community }} | {{ active_parameter_vrf.maximum_routes }} | {{ active_parameter_vrf.allowas_in }} | {{ active_parameter_vrf.bfd }} | {{ active_parameter_vrf.rib_in_pre_policy_retain }} | {{ active_parameter_vrf.route_reflector_client }} | {{ active_parameter_vrf.passive }} |
 {%                 endfor %}
 {%             endif %}
 {%         endfor %}
