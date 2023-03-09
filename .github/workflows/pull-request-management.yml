@@ -124,6 +124,7 @@ jobs:
           until docker exec webdoc_avd curl -s -I http://localhost:8000/ ; do sleep 2; done
       - name: Check links for 404
         run: |
+          docker logs webdoc_avd
           docker run --network container:webdoc_avd raviqqe/muffet:2.6.1 http://127.0.0.1:8000/ -e ".*fonts.googleapis.com.*" -e ".*fonts.gstatic.com.*" -e ".*tools.ietf.org.*" -e ".*edit.*" -e ".*docs.github.com.*" -e "twitter.com" -f --max-redirections=3 --timeout=30 --rate-limit=1
       - name: 'Stop docker-compose stack'
         run: |
@@ -195,10 +196,6 @@ jobs:
           ansible: ${{ matrix.ansible_version }}
           check_git: true
           check_git_enforced: true
-      # - uses: actions/upload-artifact@v3
-      #   with:
-      #     name: molecule-${{ matrix.avd_scenario }}-artifacts
-      #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
 
   # ----------------------------------- #
   # DHCP PROVISIONNER MOLECULE
