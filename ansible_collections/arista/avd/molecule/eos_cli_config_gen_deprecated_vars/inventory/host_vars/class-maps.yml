@@ -1,3 +1,7 @@
+### Class-Maps ###
+
+# Testing class_maps as dict of dict
+# Dict type is deprecated in 4.0.0. To be removed in 5.0.0
 class_maps:
   qos:
     CM_REPLICATION_LD:
