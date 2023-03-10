@@ -27,7 +27,7 @@
 | Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | --- | ------------ | -------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------- | ------------ |
 | Vlan1 | default | - | fc00:10:10:1::1/64 | - | - | - | - | - | - |
-| Vlan2 | default | - | fc00:10:10:2::1/64 | - | - | - | - | - | - |
+| Vlan2 | default | - | fc00:10:10:2::1/64, fc00:10:11:2::1/64, fc00:10:12:2::1/64 | - | - | - | - | - | - |
 
 ### VLAN Interfaces Device Configuration
 
