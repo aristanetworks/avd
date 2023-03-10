@@ -105,6 +105,7 @@ class VlanInterfacesMixin(UtilsMixin):
         # Only set Anycast v6 GW if VARPv6 is not set
         if vlan_interface_config.get("ip_virtual_router_addresses") is None:
             if (ipv6_address_virtual := svi.get("ipv6_address_virtual")) is not None:
+                # The singular ipv6_address_virtual is deprecated from eos_cli_config_gen. So set as list item into the new key.
                 vlan_interface_config["ipv6_address_virtuals"] = [ipv6_address_virtual]
 
             if (ipv6_address_virtuals := svi.get("ipv6_address_virtuals")) is not None:
