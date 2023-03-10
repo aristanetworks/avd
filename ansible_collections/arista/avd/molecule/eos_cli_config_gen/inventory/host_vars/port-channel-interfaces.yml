@@ -159,6 +159,8 @@ port_channel_interfaces:
 
   - name: Port-Channel14
     description: EVPN-MPLS multihoming
+    vlans: 2-3000
+    mode: trunk
     evpn_ethernet_segment:
       identifier: "0000:0000:0000:0102:0305"
       mpls:

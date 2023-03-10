@@ -205,7 +205,7 @@ interface Ethernet50
 | Port-Channel5 | DC1_L2LEAF1_Po1 | switched | trunk | 110,201 | - | - | - | - | 5 | - |
 | Port-Channel12 | interface_in_mode_access_with_voice | switched | trunk phone | - | 100 | - | - | - | - | - |
 | Port-Channel13 | EVPN-Vxlan single-active redundancy | switched | access | - | - | - | - | - | - | 0000:0000:0000:0102:0304 |
-| Port-Channel14 | EVPN-MPLS multihoming | switched | access | - | - | - | - | - | - | 0000:0000:0000:0102:0305 |
+| Port-Channel14 | EVPN-MPLS multihoming | switched | trunk | 2-3000 | - | - | - | - | - | 0000:0000:0000:0102:0305 |
 | Port-Channel15 | DC1_L2LEAF3_Po1 | switched | trunk | 110,201 | - | - | - | - | 15 | - |
 | Port-Channel16 | DC1_L2LEAF4_Po1 | switched | trunk | 110,201 | - | - | - | - | 16 | - |
 | Port-Channel20 | Po_in_mode_access_accepting_tagged_LACP_frames | switched | access | 200 | - | - | - | - | - | - |
@@ -370,6 +370,8 @@ interface Port-Channel13
 interface Port-Channel14
    description EVPN-MPLS multihoming
    switchport
+   switchport trunk allowed vlan 2-3000
+   switchport mode trunk
    evpn ethernet-segment
       identifier 0000:0000:0000:0102:0305
       mpls tunnel flood filter time 100
