@@ -144,6 +144,8 @@ port_channel_interfaces:
 
   - name: Port-Channel13
     description: EVPN-Vxlan single-active redundancy
+    shape:
+      rate: 50 percent
     evpn_ethernet_segment:
       redundancy: single-active
       identifier: "0000:0000:0000:0102:0304"

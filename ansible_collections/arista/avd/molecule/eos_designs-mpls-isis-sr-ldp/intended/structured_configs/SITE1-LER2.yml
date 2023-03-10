@@ -411,8 +411,9 @@ port_channel_interfaces:
   type: routed
   peer_type: l3_interface
   shutdown: false
-  esi: 0000:0000:0102:0000:0034
-  rt: 01:02:00:00:00:34
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0102:0000:0034
+    route_target: 01:02:00:00:00:34
   lacp_id: 0102.0000.0034
 router_bfd:
   multihop:

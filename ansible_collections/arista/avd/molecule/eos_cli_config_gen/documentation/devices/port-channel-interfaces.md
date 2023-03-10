@@ -203,14 +203,12 @@ interface Ethernet50
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | MLAG_PEER_DC1-LEAF1B_Po3 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 | Port-Channel5 | DC1_L2LEAF1_Po1 | switched | trunk | 110,201 | - | - | - | - | 5 | - |
-| Port-Channel10 | SRV01_bond0 | switched | trunk | 2-3000 | - | - | - | - | - | 0000:0000:0404:0404:0303 |
 | Port-Channel12 | interface_in_mode_access_with_voice | switched | trunk phone | - | 100 | - | - | - | - | - |
 | Port-Channel13 | EVPN-Vxlan single-active redundancy | switched | access | - | - | - | - | - | - | 0000:0000:0000:0102:0304 |
 | Port-Channel14 | EVPN-MPLS multihoming | switched | access | - | - | - | - | - | - | 0000:0000:0000:0102:0305 |
 | Port-Channel15 | DC1_L2LEAF3_Po1 | switched | trunk | 110,201 | - | - | - | - | 15 | - |
 | Port-Channel16 | DC1_L2LEAF4_Po1 | switched | trunk | 110,201 | - | - | - | - | 16 | - |
 | Port-Channel20 | Po_in_mode_access_accepting_tagged_LACP_frames | switched | access | 200 | - | - | - | - | - | - |
-| Port-Channel50 | SRV-POD03_PortChanne1 | switched | trunk | 1-4000 | - | - | - | - | - | 0000:0000:0303:0202:0101 |
 | Port-Channel51 | ipv6_prefix | switched | trunk | 1-500 | - | - | - | - | - | - |
 | Port-Channel100.101 | IFL for TENANT01 | switched | access | - | - | - | - | - | - | - |
 | Port-Channel100.102 | IFL for TENANT02 | switched | access | - | - | - | - | - | - | - |
@@ -266,6 +264,7 @@ interface Ethernet50
 | --------- | --------------------------- | --------------------------- | ------------ |
 | Port-Channel13 | 0000:0000:0000:0102:0304 | single-active | 00:00:01:02:03:04 |
 | Port-Channel14 | 0000:0000:0000:0102:0305 | all-active | 00:00:01:02:03:05 |
+| Port-Channel111.1000 | 0000:0000:0303:0202:0101 | all-active | 03:03:02:02:01:01 |
 
 ####### Designated Forwarder Election Summary
 
@@ -349,16 +348,6 @@ interface Port-Channel9
    bfd interval 500 min-rx 500 multiplier 5
    bfd echo
 !
-interface Port-Channel10
-   description SRV01_bond0
-   switchport
-   switchport trunk allowed vlan 2-3000
-   switchport mode trunk
-   evpn ethernet-segment
-      identifier 0000:0000:0404:0404:0303
-      route-target import 04:04:03:03:02:02
-   shape rate 50 percent
-!
 interface Port-Channel12
    description interface_in_mode_access_with_voice
    switchport
@@ -376,6 +365,7 @@ interface Port-Channel13
       designated-forwarder election hold-time 10
       designated-forwarder election candidate reachability required
       route-target import 00:00:01:02:03:04
+   shape rate 50 percent
 !
 interface Port-Channel14
    description EVPN-MPLS multihoming
@@ -385,6 +375,7 @@ interface Port-Channel14
       mpls tunnel flood filter time 100
       mpls shared index 100
       route-target import 00:00:01:02:03:05
+   lacp system-id 0303.0202.0101
 !
 interface Port-Channel15
    description DC1_L2LEAF3_Po1
@@ -415,16 +406,6 @@ interface Port-Channel20
    switchport
    switchport access vlan 200
    l2-protocol encapsulation dot1q vlan 200
-!
-interface Port-Channel50
-   description SRV-POD03_PortChanne1
-   switchport
-   switchport trunk allowed vlan 1-4000
-   switchport mode trunk
-   evpn ethernet-segment
-      identifier 0000:0000:0303:0202:0101
-      route-target import 03:03:02:02:01:01
-   lacp system-id 0303.0202.0101
 !
 interface Port-Channel51
    description ipv6_prefix
@@ -668,5 +649,5 @@ interface Port-Channel122
 | Interface | Trust | Default DSCP | Default COS | Shape rate |
 | --------- | ----- | ------------ | ----------- | ---------- |
 | Port-Channel3 | - | - | - | 200000 kbps |
-| Port-Channel10 | - | - | - | 50 percent |
+| Port-Channel13 | - | - | - | 50 percent |
 | Port-Channel101 | disabled | - | - | - |
