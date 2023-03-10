@@ -137,7 +137,8 @@ class UtilsMixin:
         if self._filter_peer_as is False:
             return []
 
-        return [link["peer_bgp_as"] for link in self._underlay_links if link["type"] == "underlay_p2p"]
+        # using set comprehension with `{}`
+        return list({link["peer_bgp_as"] for link in self._underlay_links if link["type"] == "underlay_p2p"})
 
     @cached_property
     def _underlay_ipv6(self) -> bool:

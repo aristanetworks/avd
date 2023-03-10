@@ -8,30 +8,23 @@ router_bgp:
     maximum_routes: 12000
     send_community: all
     name: IPv4-UNDERLAY-PEERS
-  - type: evpn
-    update_source: Loopback0
-    bfd: true
-    send_community: all
-    maximum_routes: 0
-    ebgp_multihop: 3
-    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
     - activate: true
       name: IPv4-UNDERLAY-PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
   redistribute_routes:
   - source_protocol: connected
   neighbors:
   - peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
     description: UNDERLAY_FILTER_PEER_AS_SPINE1_Ethernet1
+    route_map_out: RM-BGP-AS65000-OUT
     ip_address: 192.168.0.0
-  address_family_evpn:
-    peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+  - peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65000'
+    description: UNDERLAY_FILTER_PEER_AS_SPINE2_Ethernet1
+    route_map_out: RM-BGP-AS65000-OUT
+    ip_address: 192.168.0.2
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -56,6 +49,15 @@ ethernet_interfaces:
   type: routed
   ip_address: 192.168.0.1/31
   name: Ethernet1
+- peer: UNDERLAY_FILTER_PEER_AS_SPINE2
+  peer_interface: Ethernet1
+  peer_type: spine
+  description: P2P_LINK_TO_UNDERLAY_FILTER_PEER_AS_SPINE2_Ethernet1
+  shutdown: false
+  mtu: 9000
+  type: routed
+  ip_address: 192.168.0.3/31
+  name: Ethernet2
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
@@ -65,11 +67,15 @@ loopback_interfaces:
   description: VTEP_VXLAN_Tunnel_Source
   shutdown: false
   ip_address: 192.168.254.3/32
-router_bfd:
-  multihop:
-    interval: 300
-    min_rx: 300
-    multiplier: 3
+route_maps:
+- name: RM-BGP-AS65000-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - as 65000
+  - sequence: 20
+    type: permit
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:11:22:33:44:55
