@@ -125,15 +125,15 @@ aaa_root:
 
 ### Local Users ###
 local_users:
-  admin:
+  - name: admin
     privilege: 15
     role: network-admin
     no_password: true
-  ansible:
+  - name: ansible
     privilege: 15
     role: network-admin
     sha512_password: $6$.I7/ZR/zlLIUv8fr$vR/JvLTbq5amMt6Y1SE4CKlPDv/AzJYlFYHkUZ17BDovm0Oi4aLdBULe1EmZ0Y9xKjVLMKpxCSKmlrAioDxbQ0
-  cvpadmin:
+  - name: cvpadmin
     privilege: 15
     role: network-admin
     sha512_password: $6$.I7/ZR/zlLIUv8fr$vR/JvLTbq5amMt6Y1SE4CKlPDv/AzJYlFYHkUZ17BDovm0Oi4aLdBULe1EmZ0Y9xKjVLMKpxCSKmlrAioDxbQ0
