@@ -21,9 +21,9 @@
 {%         endif %}
 {{ dynamic_authorization_cli }}
 {%     endif %}
-{%     for radius_host in radius_server.hosts | arista.avd.natural_sort('host') %}
+{%     for radius_host in radius_server.hosts | arista.avd.default([]) %}
 {%         set radius_cli = "radius-server host " ~ radius_host.host %}
-{%         if radius_host.vrf is arista.avd.defined %}
+{%         if radius_host.vrf is arista.avd.defined and radius_host.vrf != "default" %}
 {%             set radius_cli = radius_cli ~ " vrf " ~ radius_host.vrf %}
 {%         endif %}
 {%         if radius_host.timeout is arista.avd.defined %}
