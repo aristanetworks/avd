@@ -224,7 +224,6 @@ interface Vlan81
    description IPv6 Virtual Address
    vrf Tenant_C
    ipv6 enable
-   ipv6 address virtual fc00:10:10:81::1/64
    ipv6 address virtual fc00:10:11:81::1/64
    ipv6 address virtual fc00:10:12:81::1/64
    ip address virtual 10.10.81.1/24
