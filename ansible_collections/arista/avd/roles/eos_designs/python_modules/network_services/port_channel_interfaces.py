@@ -28,7 +28,6 @@ class PortChannelInterfacesMixin(UtilsMixin):
             return None
 
         # Using temp variables to keep the order of interfaces from Jinja
-        port_channel_interface = {}
         port_channel_interfaces = []
         subif_parent_interfaces = []
 
