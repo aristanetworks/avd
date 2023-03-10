@@ -19,15 +19,16 @@ tacacs_servers:
       key_type: 8a
 
 ### Radius Servers
-radius_servers:
-  - host: 10.10.10.157
-    vrf: mgt
-    key: 071B245F5A
-  - host: 10.10.10.249
-    key: 071B245F5A
-  - host: 10.10.10.158
-    vrf: default
-    key: 071B245F5A
+radius_server:
+  hosts:
+    - host: 10.10.10.157
+      vrf: mgt
+      key: 071B245F5A
+    - host: 10.10.10.249
+      key: 071B245F5A
+    - host: 10.10.10.158
+      vrf: default
+      key: 071B245F5A
 
 ### AAA Server Groups
 aaa_server_groups:
