@@ -57,12 +57,12 @@ interface Management1
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- |
-| 192.0.3.1 | 65432 | default | - | all | - | - | - | - | - |
-| 192.0.3.2 | 65433 | default | - | extended | 10000 | - | - | - | - |
-| 192.0.3.3 | 65434 | default | - | standard | - | - | - | - | - |
-| 192.0.3.4 | 65435 | default | - | large | - | - | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
+| 192.0.3.1 | 65432 | default | - | all | - | - | - | - | - | - |
+| 192.0.3.2 | 65433 | default | - | extended | 10000 | - | - | - | - | - |
+| 192.0.3.3 | 65434 | default | - | standard | - | - | - | - | - | - |
+| 192.0.3.4 | 65435 | default | - | large | - | - | - | - | - | - |
 
 ### BGP Route Aggregation
 

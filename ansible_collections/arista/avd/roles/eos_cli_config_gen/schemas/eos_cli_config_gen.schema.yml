@@ -1386,6 +1386,30 @@ keys:
                 description: Infinite or lifetime in seconds
               no_autoconfig_flag:
                 type: bool
+        ipv6_dhcp_relay_destinations:
+          type: list
+          primary_key: address
+          items:
+            type: dict
+            keys:
+              address:
+                type: str
+                description: DHCP server's IPv6 address
+                required: true
+              vrf:
+                type: str
+              local_interface:
+                type: str
+                description: Local interface to communicate with DHCP server - mutually
+                  exclusive to source_address
+              source_address:
+                type: str
+                description: Source IPv6 address to communicate with DHCP server -
+                  mutually exclusive to local_interface
+              link_address:
+                type: str
+                description: Override the default link address specified in the relayed
+                  DHCP packet
         access_group_in:
           type: str
           description: Access list name
@@ -6493,6 +6517,8 @@ keys:
               type: bool
             password:
               type: str
+            passive:
+              type: bool
             default_originate:
               type: dict
               keys:
@@ -6616,6 +6642,8 @@ keys:
             description:
               type: str
             route_reflector_client:
+              type: bool
+            passive:
               type: bool
             shutdown:
               type: bool
@@ -7591,6 +7619,8 @@ keys:
                     - int
                   password:
                     type: str
+                  passive:
+                    type: bool
                   remove_private_as:
                     type: dict
                     description: Remove private AS numbers in outbound AS path
@@ -10260,6 +10290,30 @@ keys:
                 - int
               no_autoconfig_flag:
                 type: bool
+        ipv6_dhcp_relay_destinations:
+          type: list
+          primary_key: address
+          items:
+            type: dict
+            keys:
+              address:
+                type: str
+                description: DHCP server's IPv6 address
+                required: true
+              vrf:
+                type: str
+              local_interface:
+                type: str
+                description: Local interface to communicate with DHCP server - mutually
+                  exclusive to source_address
+              source_address:
+                type: str
+                description: Source IPv6 address to communicate with DHCP server -
+                  mutually exclusive to local_interface
+              link_address:
+                type: str
+                description: Override the default link address specified in the relayed
+                  DHCP packet
         access_group_in:
           type: str
           description: IPv4 access-list name

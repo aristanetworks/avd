@@ -107,6 +107,14 @@ ip route vrf BLUE-C1 193.1.2.0/24 Null0
 | Address Family | ipv4 |
 | Shutdown | True |
 
+#### TEST-PASSIVE
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | ipv4 |
+| Remote AS | 65003 |
+| Passive | True |
+
 #### WELCOME_ROUTERS
 
 | Settings | Value |
@@ -116,15 +124,17 @@ ip route vrf BLUE-C1 193.1.2.0/24 Null0
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- |
-| 10.1.1.0 | Inherited from peer group OBS_WAN | BLUE-C1 | - | - | - | - | - | - | - |
-| 10.255.1.1 | Inherited from peer group WELCOME_ROUTERS | BLUE-C1 | - | - | - | - | - | - | True |
-| 101.0.3.1 | Inherited from peer group SEDI | BLUE-C1 | - | - | - | - | - | - | - |
-| 101.0.3.2 | Inherited from peer group SEDI | BLUE-C1 | True | - | - | Allowed, allowed 3 (default) times | - | - | - |
-| 101.0.3.3 | - | BLUE-C1 | Inherited from peer group SEDI-shut | - | - | Allowed, allowed 5 times | - | - | - |
-| 10.1.1.0 | Inherited from peer group OBS_WAN | RED-C1 | - | - | - | - | - | - | - |
-| 10.1.1.0 | Inherited from peer group OBS_WAN | YELLOW-C1 | - | - | - | - | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
+| 10.1.1.0 | Inherited from peer group OBS_WAN | BLUE-C1 | - | - | - | - | - | - | - | - |
+| 10.255.1.1 | Inherited from peer group WELCOME_ROUTERS | BLUE-C1 | - | - | - | - | - | - | True | - |
+| 101.0.3.1 | Inherited from peer group SEDI | BLUE-C1 | - | - | - | - | - | - | - | - |
+| 101.0.3.2 | Inherited from peer group SEDI | BLUE-C1 | True | - | - | Allowed, allowed 3 (default) times | - | - | - | - |
+| 101.0.3.3 | - | BLUE-C1 | Inherited from peer group SEDI-shut | - | - | Allowed, allowed 5 times | - | - | - | - |
+| 101.0.3.4 | Inherited from peer group TEST-PASSIVE | BLUE-C1 | - | - | - | - | - | - | - | Inherited from peer group TEST-PASSIVE |
+| 101.0.3.5 | Inherited from peer group WELCOME_ROUTERS | BLUE-C1 | - | - | - | - | - | - | - | True |
+| 10.1.1.0 | Inherited from peer group OBS_WAN | RED-C1 | - | - | - | - | - | - | - | - |
+| 10.1.1.0 | Inherited from peer group OBS_WAN | YELLOW-C1 | - | - | - | - | - | - | - | - |
 
 ### Router BGP VRFs
 
@@ -157,6 +167,10 @@ router bgp 65001
    neighbor SEDI-shut shutdown
    neighbor SEDI-shut peer group
    neighbor SEDI-shut description BGP Peer Shutdown
+   neighbor TEST-PASSIVE peer group
+   neighbor TEST-PASSIVE remote-as 65003
+   neighbor TEST-PASSIVE description BGP Connection in passive mode
+   neighbor TEST-PASSIVE passive
    neighbor WELCOME_ROUTERS peer group
    neighbor WELCOME_ROUTERS remote-as 65001
    neighbor WELCOME_ROUTERS description BGP Connection to WELCOME ROUTER 02
@@ -184,6 +198,9 @@ router bgp 65001
       neighbor 101.0.3.2 shutdown
       neighbor 101.0.3.3 peer group SEDI-shut
       neighbor 101.0.3.3 allowas-in 5
+      neighbor 101.0.3.4 peer group TEST-PASSIVE
+      neighbor 101.0.3.5 peer group WELCOME_ROUTERS
+      neighbor 101.0.3.5 passive
       aggregate-address 0.0.0.0/0 as-set summary-only attribute-map RM-BGP-AGG-APPLY-SET
       aggregate-address 193.1.0.0/16 as-set summary-only attribute-map RM-BGP-AGG-APPLY-SET
       redistribute static

@@ -623,3 +623,15 @@ ethernet_interfaces:
       enable: false
       egress:
         unmodified_enable: false
+
+  Ethernet55:
+    description: DHCPv6 Relay Testing
+    shutdown: false
+    ipv6_address: a0::1/64
+    ipv6_dhcp_relay_destinations:
+      - address: a0::2
+        link_address: a0::3
+      - address: a0::4
+        link_address: a0::5
+        vrf: TEST
+        local_interface: Loopback55

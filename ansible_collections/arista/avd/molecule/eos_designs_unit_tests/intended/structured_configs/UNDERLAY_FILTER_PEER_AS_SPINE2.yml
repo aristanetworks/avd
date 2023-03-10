@@ -1,0 +1,74 @@
+router_bgp:
+  as: '65000'
+  router_id: 192.168.255.2
+  bgp_defaults:
+  - maximum-paths 4 ecmp 4
+  peer_groups:
+  - type: ipv4
+    maximum_routes: 12000
+    send_community: all
+    name: IPv4-UNDERLAY-PEERS
+  address_family_ipv4:
+    peer_groups:
+    - activate: true
+      name: IPv4-UNDERLAY-PEERS
+  redistribute_routes:
+  - route_map: RM-CONN-2-BGP
+    source_protocol: connected
+  neighbors:
+  - peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65001'
+    description: UNDERLAY_FILTER_PEER_AS_L3LEAF1_Ethernet2
+    route_map_out: RM-BGP-AS65001-OUT
+    ip_address: 192.168.0.3
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+spanning_tree:
+  mode: none
+vrfs:
+- name: MGMT
+  ip_routing: false
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+ethernet_interfaces:
+- peer: UNDERLAY_FILTER_PEER_AS_L3LEAF1
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  description: P2P_LINK_TO_UNDERLAY_FILTER_PEER_AS_L3LEAF1_Ethernet2
+  shutdown: false
+  mtu: 9000
+  type: routed
+  ip_address: 192.168.0.2/31
+  name: Ethernet1
+loopback_interfaces:
+- name: Loopback0
+  description: EVPN_Overlay_Peering
+  shutdown: false
+  ip_address: 192.168.255.2/32
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-BGP-AS65001-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - as 65001
+  - sequence: 20
+    type: permit

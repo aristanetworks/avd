@@ -356,6 +356,21 @@ interface {{ ethernet_interface.name }}
 {%             endfor %}
 {%         endif %}
 {%     endif %}
+{%     for destination in ethernet_interface.ipv6_dhcp_relay_destinations | arista.avd.natural_sort('address') %}
+{%         set destination_cli = "ipv6 dhcp relay destination " ~ destination.address %}
+{%         if destination.vrf is arista.avd.defined %}
+{%             set destination_cli = destination_cli ~ " vrf " ~ destination.vrf %}
+{%         endif %}
+{%         if destination.local_interface is arista.avd.defined %}
+{%             set destination_cli = destination_cli ~ " local-interface " ~ destination.local_interface %}
+{%         elif destination.source_address is arista.avd.defined %}
+{%             set destination_cli = destination_cli ~ " source-address " ~ destination.source_address %}
+{%         endif %}
+{%         if destination.link_address is arista.avd.defined %}
+{%             set destination_cli = destination_cli ~ " link-address " ~ destination.link_address %}
+{%         endif %}
+   {{ destination_cli }}
+{%     endfor %}
 {%     if ethernet_interface.channel_group.id is arista.avd.defined and ethernet_interface.channel_group.mode is arista.avd.defined %}
    channel-group {{ ethernet_interface.channel_group.id }} mode {{ ethernet_interface.channel_group.mode }}
 {%         if ethernet_interface.lacp_timer.mode is arista.avd.defined %}
