@@ -5,7 +5,13 @@
 
 name: "Collection code testing"
 
-on: pull_request
+on:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      # On manual run, run idempotency
+      molecule_command: "test"
+
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref }}
@@ -13,6 +19,8 @@ concurrency:
 
 env:
   DEFAULT_PYTHON_VERSION: "3.10"
+  # Run "converge" action by default
+  MOLECULE_COMMAND: ${{ github.event.inputs.molecule_command || "converge" }}
 
 jobs:
   file-changes:
@@ -189,7 +197,7 @@ jobs:
         uses: arista-netdevops-community/action-molecule-avd@v1.3
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
-          molecule_command: 'converge'
+          molecule_command: ${{ env.MOLECULE_COMMAND }}
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
           pip_file: ansible_collections/arista/avd/requirements.txt
           galaxy_file: "ansible_collections/arista/avd/collections.yml"
@@ -219,7 +227,7 @@ jobs:
         uses: arista-netdevops-community/action-molecule-avd@v1.3
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
-          molecule_command: 'test'
+          molecule_command: ${{ env.MOLECULE_COMMAND }}
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
           pip_file: ansible_collections/arista/avd/requirements.txt
           galaxy_file: "ansible_collections/arista/avd/collections.yml"
@@ -273,7 +281,7 @@ jobs:
         uses: arista-netdevops-community/action-molecule-avd@v1.3
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
-          molecule_command: 'converge'
+          molecule_command: ${{ env.MOLECULE_COMMAND }}
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
           pip_file: ansible_collections/arista/avd/requirements.txt
           galaxy_file: "ansible_collections/arista/avd/collections.yml"
@@ -306,7 +314,7 @@ jobs:
         uses: arista-netdevops-community/action-molecule-avd@v1.3
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
-          molecule_command: 'test'
+          molecule_command: ${{ env.MOLECULE_COMMAND }}
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
           pip_file: ansible_collections/arista/avd/requirements.txt
           galaxy_file: "ansible_collections/arista/avd/collections.yml"
