@@ -278,7 +278,8 @@ ethernet_interfaces:
     id: 501
     mode: active
   name: Ethernet51/1
-- peer: WAN
+- name: Ethernet52/1
+  peer: WAN
   peer_interface: Ethernet1/1
   peer_type: other
   description: P2P_LINK_TO_WAN_Ethernet1/1
@@ -288,7 +289,6 @@ ethernet_interfaces:
   ip_address: 10.0.0.3/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  name: Ethernet52/1
 mlag_configuration:
   domain_id: SPINES
   local_interface: Vlan4094

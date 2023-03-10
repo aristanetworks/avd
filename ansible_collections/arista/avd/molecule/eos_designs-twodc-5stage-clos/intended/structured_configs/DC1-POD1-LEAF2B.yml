@@ -610,7 +610,8 @@ ethernet_interfaces:
     enable: true
   ip_address: 172.17.110.23/31
   name: Ethernet12
-- peer: DC2-POD1-LEAF1A
+- name: Ethernet7
+  peer: DC2-POD1-LEAF1A
   peer_interface: Ethernet7
   peer_type: l3leaf
   description: P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet7
@@ -620,7 +621,6 @@ ethernet_interfaces:
   ip_address: 11.1.0.38/31
   ptp:
     enable: true
-  name: Ethernet7
 - peer: server-1
   peer_interface: Eth2
   peer_type: server

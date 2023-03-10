@@ -228,7 +228,8 @@ ethernet_interfaces:
     id: 3
     mode: active
   name: Ethernet3
-- peer: DC1.POD1.LEAF2A
+- name: Ethernet6
+  peer: DC1.POD1.LEAF2A
   peer_interface: Ethernet7
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet7
@@ -236,8 +237,8 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 100.100.100.201/24
-  name: Ethernet6
-- peer: DC1-POD1-LEAF2B
+- name: Ethernet7
+  peer: DC1-POD1-LEAF2B
   peer_interface: Ethernet7
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet7
@@ -247,7 +248,6 @@ ethernet_interfaces:
   ip_address: 11.1.0.39/31
   ptp:
     enable: true
-  name: Ethernet7
 port_channel_interfaces:
 - name: Port-Channel3
   description: DC2-POD1-L2LEAF1A_Po1

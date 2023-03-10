@@ -184,7 +184,8 @@ mpls:
     shutdown: false
     transport_address_interface: Loopback0
 ethernet_interfaces:
-- peer: SITE1-LSR1
+- name: Ethernet1
+  peer: SITE1-LSR1
   peer_interface: Ethernet1
   peer_type: p
   description: P2P_LINK_TO_SITE1-LSR1_Ethernet1
@@ -209,8 +210,8 @@ ethernet_interfaces:
       interface: true
       igp_sync: true
   speed: forced 40gfull
-  name: Ethernet1
-- peer: SITE1-LER2
+- name: Ethernet2
+  peer: SITE1-LER2
   peer_interface: Ethernet2
   peer_type: pe
   description: P2P_LINK_TO_SITE1-LER2_Ethernet2
@@ -235,7 +236,6 @@ ethernet_interfaces:
       interface: true
       igp_sync: true
   speed: forced 10000full
-  name: Ethernet2
 - peer: CPE_TENANT_A_SITE1
   peer_interface: Ethernet1
   peer_type: cpe

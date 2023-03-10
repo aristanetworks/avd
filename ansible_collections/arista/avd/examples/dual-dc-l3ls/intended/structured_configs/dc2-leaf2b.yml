@@ -422,7 +422,8 @@ ethernet_interfaces:
     id: 8
     mode: active
   name: Ethernet8
-- peer: dc1-leaf2b
+- name: Ethernet6
+  peer: dc1-leaf2b
   peer_interface: Ethernet6
   peer_type: l3leaf
   description: P2P_LINK_TO_dc1-leaf2b_Ethernet6
@@ -430,7 +431,6 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 172.100.100.3/31
-  name: Ethernet6
 - peer: dc2-leaf2-server1
   peer_interface: PCI2
   peer_type: server

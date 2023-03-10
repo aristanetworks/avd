@@ -138,7 +138,8 @@ ethernet_interfaces:
     id: 2
     mode: active
   name: Ethernet2
-- peer: DUMMY-CORE
+- name: Ethernet5
+  peer: DUMMY-CORE
   peer_interface: Ethernet1/3
   peer_type: other
   description: P2P_LINK_TO_DUMMY-CORE_Ethernet1/3
@@ -146,7 +147,6 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9000
   ip_address: 192.168.253.4/31
-  name: Ethernet5
 mlag_configuration:
   domain_id: BGP_SPINES
   local_interface: Vlan4094

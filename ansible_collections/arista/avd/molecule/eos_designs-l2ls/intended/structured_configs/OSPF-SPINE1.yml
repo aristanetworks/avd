@@ -106,7 +106,8 @@ ethernet_interfaces:
     id: 2
     mode: active
   name: Ethernet2
-- peer: DUMMY-CORE
+- name: Ethernet5
+  peer: DUMMY-CORE
   peer_interface: Ethernet1/1
   peer_type: other
   description: P2P_LINK_TO_DUMMY-CORE_Ethernet1/1
@@ -116,7 +117,6 @@ ethernet_interfaces:
   ip_address: 192.168.253.0/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  name: Ethernet5
 mlag_configuration:
   domain_id: OSPF_SPINES
   local_interface: Vlan4094

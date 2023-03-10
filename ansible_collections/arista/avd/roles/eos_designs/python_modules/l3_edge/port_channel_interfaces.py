@@ -27,8 +27,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
             # Remove None values
             port_channel_interface = {key: value for key, value in port_channel_interface.items() if value is not None}
 
-            interface_name = p2p_link["data"]["interface"]
-            port_channel_interfaces.append({"name": interface_name, **port_channel_interface})
+            port_channel_interfaces.append(port_channel_interface)
             continue
 
         if port_channel_interfaces:

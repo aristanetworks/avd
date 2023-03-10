@@ -235,7 +235,8 @@ mpls:
     shutdown: false
     transport_address_interface: Loopback0
 ethernet_interfaces:
-- peer: SITE2-LSR1
+- name: Ethernet1
+  peer: SITE2-LSR1
   peer_interface: Ethernet1
   peer_type: p
   description: P2P_LINK_TO_SITE2-LSR1_Ethernet1
@@ -260,7 +261,6 @@ ethernet_interfaces:
       interface: true
       igp_sync: true
   speed: forced 40gfull
-  name: Ethernet1
 - peer: SITE2-LSR2
   peer_interface: Port-Channel12
   peer_type: p

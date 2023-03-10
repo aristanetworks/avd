@@ -193,7 +193,8 @@ ethernet_interfaces:
   isis_metric: 50
   isis_network_point_to_point: true
   name: Ethernet4
-- peer: ROUTERX
+- name: Ethernet8
+  peer: ROUTERX
   peer_interface: Ethernet8
   peer_type: other
   description: P2P_LINK_TO_ROUTERX_Ethernet8
@@ -206,7 +207,6 @@ ethernet_interfaces:
   isis_network_point_to_point: true
   isis_hello_padding: true
   isis_circuit_type: level-2
-  name: Ethernet8
 mlag_configuration:
   domain_id: DC1_BL1
   local_interface: Vlan4094

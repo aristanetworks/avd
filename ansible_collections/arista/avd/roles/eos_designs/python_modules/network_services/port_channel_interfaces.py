@@ -67,10 +67,10 @@ class PortChannelInterfacesMixin(UtilsMixin):
                         subif_parent_interfaces.append(parent_interface)
 
                         for subif in subifs:
-                            key = f"{interface_name}.{subif['number']}"
+                            subif_name = f"{interface_name}.{subif['number']}"
                             port_channel_interfaces.append(
                                 {
-                                    "name": key,
+                                    "name": subif_name,
                                     "type": "l2dot1q",
                                     "encapsulation_vlan": {
                                         "client": {
@@ -109,7 +109,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                         port_channel_interfaces.append(interface)
 
             port_channel_interfaces.extend(
-                [subif_parent_interface for subif_parent_interface in subif_parent_interfaces if subif_parent_interface not in port_channel_interfaces]
+                subif_parent_interface for subif_parent_interface in subif_parent_interfaces if subif_parent_interface not in port_channel_interfaces
             )
 
         if port_channel_interfaces:
