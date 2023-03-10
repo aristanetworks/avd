@@ -114,14 +114,14 @@ interface Management1
 
 #### IPv6
 
-| Interface | VRF | IPv6 Address | IPv6 Virtual Address | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | --- | ------------ | -------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------- | ------------ |
 | Vlan24 | default | 1b11:3a00:22b0:6::15/64 | - | 1b11:3a00:22b0:6::1 | - | - | True | - | - |
 | Vlan25 | default | 1b11:3a00:22b0:16::16/64 | - | 1b11:3a00:22b0:16::15, 1b11:3a00:22b0:16::14 | - | - | - | - | - |
 | Vlan43 | default | a0::1/64 | - | - | - | - | - | - | - |
 | Vlan44 | default | a0::4/64 | - | - | - | - | - | - | - |
 | Vlan75 | default | 1b11:3a00:22b0:1000::15/64 | - | 1b11:3a00:22b0:1000::1 | - | - | True | - | - |
-| Vlan81 | Tenant_C | - | fc00:10:10:81::1/64 | - | - | - | - | - | - |
+| Vlan81 | Tenant_C | - | fc00:10:11:81::1/64, fc00:10:12:81::1/64 | - | - | - | - | - | - |
 | Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | - | True | - | - |
 | Vlan333 | default | 2001:db8::2/64 | - | - | - | - | - | - | - |
 | Vlan501 | default | 1b11:3a00:22b0:0088::207/127 | - | - | - | True | - | - | - |
@@ -223,7 +223,6 @@ interface Vlan81
    description IPv6 Virtual Address
    vrf Tenant_C
    ipv6 enable
-   ipv6 address virtual fc00:10:10:81::1/64
    ipv6 address virtual fc00:10:11:81::1/64
    ipv6 address virtual fc00:10:12:81::1/64
    ip address virtual 10.10.81.1/24

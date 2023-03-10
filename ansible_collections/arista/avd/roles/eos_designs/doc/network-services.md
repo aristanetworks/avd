@@ -442,7 +442,6 @@ mac_address_table:
             tags: [ < tag_1 >, < tag_2 > ]
             enabled: < true | false >
             ip_address_virtual: < IPv4_address/Mask >
-            ipv6_address_virtual: < IPv6_address/Mask >
 
         # List of L3 interfaces | Optional.
         # This will create IP routed interface inside VRF. Length of interfaces, nodes and ip_addresses and descriptions (if used) must match.
