@@ -417,7 +417,8 @@ vlan_interfaces:
   ip_attached_host_route_export:
     distance: 19
 port_channel_interfaces:
-- description: MLAG_PEER_DC1-POD1-LEAF2B_Po5
+- name: Port-Channel5
+  description: MLAG_PEER_DC1-POD1-LEAF2B_Po5
   type: switched
   shutdown: false
   vlans: 2-4094
@@ -426,32 +427,32 @@ port_channel_interfaces:
   trunk_groups:
   - LEAF_PEER_L3
   - MLAG
-  name: Port-Channel5
-- description: RACK2_MLAG_Po1
+- name: Port-Channel3
+  description: RACK2_MLAG_Po1
   type: switched
   shutdown: false
   mode: trunk
   service_profile: QOS-PROFILE
   vlans: 110-113,1100-1102,2500,2600-2601,4085
   mlag: 3
-  name: Port-Channel3
-- description: server-1_PortChannel
+- name: Port-Channel16
+  description: server-1_PortChannel
   type: switched
   shutdown: false
   service_profile: bar
   mode: access
   vlans: '110'
   mlag: 16
-  name: Port-Channel16
-- description: Set using structured_config on server adapter port-channel
+- name: Port-Channel17
+  description: Set using structured_config on server adapter port-channel
   type: switched
   shutdown: false
   service_profile: foo
   mode: access
   vlans: '110'
   mlag: 17
-  name: Port-Channel17
-- description: server-1_PortChannel
+- name: Port-Channel18
+  description: server-1_PortChannel
   type: switched
   shutdown: false
   service_profile: foo
@@ -465,8 +466,8 @@ port_channel_interfaces:
   mode: access
   vlans: '110'
   mlag: 18
-  name: Port-Channel18
-- description: server-1_PortChannel
+- name: Port-Channel19
+  description: server-1_PortChannel
   type: switched
   shutdown: false
   service_profile: foo
@@ -480,7 +481,6 @@ port_channel_interfaces:
   mode: access
   vlans: '110'
   mlag: 19
-  name: Port-Channel19
 ethernet_interfaces:
 - peer: DC1-POD1-LEAF2B
   peer_interface: Ethernet5

@@ -68,35 +68,35 @@ vlan_interfaces:
   no_autostate: true
   mtu: 1500
 port_channel_interfaces:
-- description: MLAG_PEER_SPINE2_Po47
+- name: Port-Channel47
+  description: MLAG_PEER_SPINE2_Po47
   type: switched
   shutdown: false
   vlans: 2-4094
   mode: trunk
   trunk_groups:
   - MLAG
-  name: Port-Channel47
-- description: RACK1_Po1
+- name: Port-Channel1
+  description: RACK1_Po1
   type: switched
   shutdown: false
   mode: trunk
   vlans: 10,20
   mlag: 1
-  name: Port-Channel1
-- description: RACK2_Po1
+- name: Port-Channel3
+  description: RACK2_Po1
   type: switched
   shutdown: false
   mode: trunk
   vlans: 10,30
   mlag: 3
-  name: Port-Channel3
-- description: FIREWALL
+- name: Port-Channel5
+  description: FIREWALL
   type: switched
   shutdown: false
   mode: trunk
   vlans: 10,20,30
   mlag: 5
-  name: Port-Channel5
 ethernet_interfaces:
 - peer: SPINE2
   peer_interface: Ethernet47

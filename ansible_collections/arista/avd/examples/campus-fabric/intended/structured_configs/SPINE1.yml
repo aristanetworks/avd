@@ -187,7 +187,8 @@ vlan_interfaces:
   ip_attached_host_route_export:
     distance: 19
 port_channel_interfaces:
-- description: MLAG_PEER_SPINE2_Po551
+- name: Port-Channel551
+  description: MLAG_PEER_SPINE2_Po551
   type: switched
   shutdown: false
   vlans: 2-4094
@@ -195,28 +196,27 @@ port_channel_interfaces:
   trunk_groups:
   - LEAF_PEER_L3
   - MLAG
-  name: Port-Channel551
-- description: IDF1_Po51
+- name: Port-Channel1
+  description: IDF1_Po51
   type: switched
   shutdown: false
   mode: trunk
   vlans: 10,110,120,130
   mlag: 1
-  name: Port-Channel1
-- description: LEAF2A_Po11
+- name: Port-Channel491
+  description: LEAF2A_Po11
   type: switched
   shutdown: false
   mode: trunk
   vlans: 10,210,220,230
   mlag: 491
-  name: Port-Channel491
-- description: IDF3_AGG_Po971
+- name: Port-Channel501
+  description: IDF3_AGG_Po971
   type: switched
   shutdown: false
   mode: trunk
   vlans: 10,310,320,330
   mlag: 501
-  name: Port-Channel501
 ethernet_interfaces:
 - peer: SPINE2
   peer_interface: Ethernet55/1

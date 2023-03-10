@@ -249,13 +249,13 @@ ethernet_interfaces:
     enable: true
   name: Ethernet7
 port_channel_interfaces:
-- description: DC2-POD1-L2LEAF1A_Po1
+- name: Port-Channel3
+  description: DC2-POD1-L2LEAF1A_Po1
   type: switched
   shutdown: false
   mode: trunk
   service_profile: QOS-PROFILE
   vlans: '4092'
-  name: Port-Channel3
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

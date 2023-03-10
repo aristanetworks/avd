@@ -124,21 +124,21 @@ vlan_interfaces:
   no_autostate: true
   mtu: 1500
 port_channel_interfaces:
-  Port-Channel3:
-    description: MLAG_PEER_DC1-L2LEAF2A_Po3
-    type: switched
-    shutdown: false
-    vlans: 2-4094
-    mode: trunk
-    trunk_groups:
-    - MLAG
-  Port-Channel1:
-    description: DC1_SVC3_Po7
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 110-112,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
-    mlag: 1
+- name: Port-Channel3
+  description: MLAG_PEER_DC1-L2LEAF2A_Po3
+  type: switched
+  shutdown: false
+  vlans: 2-4094
+  mode: trunk
+  trunk_groups:
+  - MLAG
+- name: Port-Channel1
+  description: DC1_SVC3_Po7
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 110-112,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
+  mlag: 1
 ethernet_interfaces:
   Ethernet3:
     peer: DC1-L2LEAF2A

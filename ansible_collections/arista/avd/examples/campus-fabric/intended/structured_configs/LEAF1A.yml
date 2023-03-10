@@ -76,21 +76,21 @@ vlan_interfaces:
   no_autostate: true
   mtu: 1500
 port_channel_interfaces:
-- description: MLAG_PEER_LEAF1B_Po53
+- name: Port-Channel53
+  description: MLAG_PEER_LEAF1B_Po53
   type: switched
   shutdown: false
   vlans: 2-4094
   mode: trunk
   trunk_groups:
   - MLAG
-  name: Port-Channel53
-- description: SPINES_Po1
+- name: Port-Channel51
+  description: SPINES_Po1
   type: switched
   shutdown: false
   mode: trunk
   vlans: 10,110,120,130
   mlag: 51
-  name: Port-Channel51
 ethernet_interfaces:
 - peer: LEAF1B
   peer_interface: Ethernet53

@@ -76,12 +76,12 @@ ethernet_interfaces:
     mode: active
   name: Ethernet2
 port_channel_interfaces:
-- description: DC1_LEAF2_Po7
+- name: Port-Channel1
+  description: DC1_LEAF2_Po7
   type: switched
   shutdown: false
   mode: trunk
   vlans: '210'
-  name: Port-Channel1
 vlans:
 - id: 210
   name: Tenant_B_OP_Zone_1

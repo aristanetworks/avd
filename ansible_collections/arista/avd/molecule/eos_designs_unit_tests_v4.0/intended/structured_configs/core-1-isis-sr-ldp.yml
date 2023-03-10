@@ -233,25 +233,25 @@ ethernet_interfaces:
       mode: active
     speed: forced 1000full
 port_channel_interfaces:
-  Port-Channel12:
-    peer: core-2-ospf-ldp
-    peer_interface: Port-Channel12
-    peer_type: core_router
-    description: P2P_LINK_TO_core-2-ospf-ldp_Port-Channel12
-    type: routed
-    shutdown: false
-    mtu: 1500
-    ip_address: 100.64.48.16/31
-    ipv6_enable: true
-    isis_enable: CORE
-    isis_metric: 60
-    isis_network_point_to_point: true
-    isis_hello_padding: false
-    isis_circuit_type: level-2
-    isis_authentication_mode: md5
-    isis_authentication_key: $1c$sTNAlR6rKSw=
-    mpls:
-      ip: true
-      ldp:
-        interface: true
-        igp_sync: true
+- name: Port-Channel12
+  peer: core-2-ospf-ldp
+  peer_interface: Port-Channel12
+  peer_type: core_router
+  description: P2P_LINK_TO_core-2-ospf-ldp_Port-Channel12
+  type: routed
+  shutdown: false
+  mtu: 1500
+  ip_address: 100.64.48.16/31
+  ipv6_enable: true
+  isis_enable: CORE
+  isis_metric: 60
+  isis_network_point_to_point: true
+  isis_hello_padding: false
+  isis_circuit_type: level-2
+  isis_authentication_mode: md5
+  isis_authentication_key: $1c$sTNAlR6rKSw=
+  mpls:
+    ip: true
+    ldp:
+      interface: true
+      igp_sync: true
