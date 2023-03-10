@@ -1164,6 +1164,42 @@
         "dynamic_authorization": {
           "type": "boolean",
           "title": "Dynamic Authorization"
+        },
+        "mac_based_authentication": {
+          "type": "object",
+          "properties": {
+            "delay": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 300,
+              "title": "Delay"
+            },
+            "hold_period": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 300,
+              "title": "Hold Period"
+            }
+          },
+          "additionalProperties": false,
+          "title": "MAC Based Authentication"
+        },
+        "radius_av_pair": {
+          "type": "object",
+          "properties": {
+            "service_type": {
+              "type": "boolean",
+              "title": "Service Type"
+            },
+            "framed_mtu": {
+              "type": "integer",
+              "minimum": 68,
+              "maximum": 9236,
+              "title": "Framed MTU"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Radius Av Pair"
         }
       },
       "additionalProperties": false
