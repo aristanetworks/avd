@@ -194,15 +194,15 @@ ipv6_access_lists:
 
 class_maps:
   qos:
-    cmap_tc5_v4:
+    - name: cmap_tc5_v4
       ip:
         access_group: acl_qos_tc5_v4
-    cmap_tc0_v6:
+    - name: cmap_tc0_v6
       ipv6:
         access_group: acl_qos_tc0_v6
-    cmap_tc0_v4:
+    - name: cmap_tc0_v4
       ip:
         access_group: acl_qos_tc0_v4
-    cmap_tc5_v6:
+    - name: cmap_tc5_v6
       ipv6:
         access_group: acl_qos_tc5_v6
