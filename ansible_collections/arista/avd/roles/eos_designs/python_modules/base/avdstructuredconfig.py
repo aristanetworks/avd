@@ -536,6 +536,7 @@ class AvdStructuredConfig(AvdFacts):
         mgmt_interface = get(self._hostvars, "switch.mgmt_interface")
         if mgmt_interface is not None and self._mgmt_interface_vrf is not None and (self._mgmt_ip is not None or self._ipv6_mgmt_ip is not None):
             interface_settings = {
+                "name": mgmt_interface,
                 "description": get(self._hostvars, "mgmt_interface_description", default="oob_management"),
                 "shutdown": False,
                 "vrf": self._mgmt_interface_vrf,
@@ -555,9 +556,7 @@ class AvdStructuredConfig(AvdFacts):
                     }
                 )
 
-            return {
-                mgmt_interface: interface_settings,
-            }
+            return [interface_settings]
 
         return None
 
