@@ -9,9 +9,15 @@ on:
   pull_request:
   workflow_dispatch:
     inputs:
-      # On manual run, run idempotency
-      molecule_command: "test"
-
+      # On manual run, run idempotency by default
+      molecule_command:
+        description: 'Molecule command to execute'
+        required: false
+        default: 'test'
+        type: choice
+        options:
+          - converge
+          - test
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref }}
