@@ -55,4 +55,3 @@ interface Management1
 | Service type | Framed MTU |
 | ------------ | ---------- |
 | True | 1500 |
-
