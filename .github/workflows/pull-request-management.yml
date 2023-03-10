@@ -38,8 +38,8 @@ jobs:
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/*'
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/**/*'
               - '.github/workflows/pull-request-management.yml'
-              - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen/*'
-              - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen/**/*'
+              - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen*/*'
+              - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen*/**/*'
             cloudvision:
               - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/*'
               - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*'
@@ -149,6 +149,7 @@ jobs:
       matrix:
         avd_scenario:
           - 'eos_cli_config_gen'
+          - 'eos_cli_config_gen_deprecated_vars'
           - 'eos_cli_config_gen_v4.0'
         ansible_version:
           - 'ansible-core>=2.12.6,<2.15.0,!=2.13.0'
