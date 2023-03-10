@@ -189,7 +189,7 @@ jobs:
         uses: arista-netdevops-community/action-molecule-avd@v1.3
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
-          molecule_command: 'test'
+          molecule_command: 'converge'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
           pip_file: ansible_collections/arista/avd/requirements.txt
           galaxy_file: "ansible_collections/arista/avd/collections.yml"
@@ -273,7 +273,7 @@ jobs:
         uses: arista-netdevops-community/action-molecule-avd@v1.3
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
-          molecule_command: 'test'
+          molecule_command: 'converge'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
           pip_file: ansible_collections/arista/avd/requirements.txt
           galaxy_file: "ansible_collections/arista/avd/collections.yml"
