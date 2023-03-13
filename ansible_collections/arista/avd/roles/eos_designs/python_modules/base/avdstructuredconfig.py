@@ -122,6 +122,35 @@ class AvdStructuredConfig(AvdFacts):
         return static_routes
 
     @cached_property
+    def ipv6_static_routes(self):
+        """
+        ipv6_static_routes set based on ipv6_mgmt_gateway, ipv6_mgmt_destination_networks and mgmt_interface_vrf
+        """
+        if self._ipv6_mgmt_gateway is None or self._ipv6_mgmt_ip is None:
+            return None
+
+        ipv6_static_routes = []
+        if (ipv6_mgmt_destination_networks := get(self._hostvars, "ipv6_mgmt_destination_networks")) is not None:
+            for mgmt_destination_network in ipv6_mgmt_destination_networks:
+                ipv6_static_routes.append(
+                    {
+                        "vrf": self._mgmt_interface_vrf,
+                        "destination_address_prefix": mgmt_destination_network,
+                        "gateway": self._ipv6_mgmt_gateway,
+                    }
+                )
+        else:
+            ipv6_static_routes.append(
+                {
+                    "vrf": self._mgmt_interface_vrf,
+                    "destination_address_prefix": "::/0",
+                    "gateway": self._ipv6_mgmt_gateway,
+                }
+            )
+
+        return ipv6_static_routes
+
+    @cached_property
     def service_routing_protocols_model(self) -> str:
         """
         service_routing_protocols_model set to 'multi-agent'
