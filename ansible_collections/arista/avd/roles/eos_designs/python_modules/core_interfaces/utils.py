@@ -163,12 +163,11 @@ class UtilsMixin:
             # Resolving subnet from pool
             ip_pool = get_item(self._p2p_links_ip_pools, "name", p2p_link["ip_pool"], default={})
             ip_pool_subnet = ip_pool.get("ipv4_pool")
-            if not ip_pool:
-                # Not possible to resolve from pool. Returning original
+            if not ip_pool_subnet:
                 return p2p_link
             prefix_size = int(ip_pool.get("prefix_size", 31))
-            id = int(p2p_link["id"])
-            subnet = list(islice(ip_network(ip_pool_subnet).subnets(new_prefix=prefix_size), id - 1, id))[0]
+            link_id = int(p2p_link["id"])
+            subnet = list(islice(ip_network(ip_pool_subnet).subnets(new_prefix=prefix_size), link_id - 1, link_id))[0]
 
         # hosts() return an iterator of all hosts in subnet.
         # islice() return a generator with only the first two iterations of hosts.
