@@ -545,7 +545,7 @@ class AvdStructuredConfig(AvdFacts):
                 "type": "oob",
             }
             """
-            inserting ipv6 variables if self._mgmt_ipv6_enable is turned on
+            inserting ipv6 variables if self._ipv6_mgmt_ip is set
             """
             if self._ipv6_mgmt_ip is not None:
                 interface_settings.update(
