@@ -75,6 +75,10 @@ keys:
               type: str
               description: |
                 Set source IP address in case of in-band managament
+            cvsourceintf:
+              type: str
+              description: |
+                Set source interface in case of in-band managament. Available as of TerminAttr v1.23.0
             cvvrf:
               type: str
               description: |
@@ -107,6 +111,10 @@ keys:
         type: str
         description: |
           Set source IP address in case of in-band managament
+      cvsourceintf:
+        type: str
+        description: |
+          Set source interface in case of in-band managament
       cvvrf:
         type: str
         description: |

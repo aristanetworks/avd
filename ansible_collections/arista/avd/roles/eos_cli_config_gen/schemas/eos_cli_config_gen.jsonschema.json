@@ -925,6 +925,11 @@
                 "description": "Set source IP address in case of in-band managament\n",
                 "title": "Cvsourceip"
               },
+              "cvsourceintf": {
+                "type": "string",
+                "description": "Set source interface in case of in-band managament. Available as of TerminAttr v1.23.0\n",
+                "title": "Cvsourceintf"
+              },
               "cvvrf": {
                 "type": "string",
                 "description": "The VRF to use to connect to CloudVision\n",
@@ -978,6 +983,11 @@
           "type": "string",
           "description": "Set source IP address in case of in-band managament\n",
           "title": "Cvsourceip"
+        },
+        "cvsourceintf": {
+          "type": "string",
+          "description": "Set source interface in case of in-band managament\n",
+          "title": "Cvsourceintf"
         },
         "cvvrf": {
           "type": "string",
