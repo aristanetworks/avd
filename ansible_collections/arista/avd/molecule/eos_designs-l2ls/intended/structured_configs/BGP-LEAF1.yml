@@ -54,12 +54,12 @@ ethernet_interfaces:
   vlans: '100'
   name: Ethernet11
 port_channel_interfaces:
-- description: BGP_SPINES_Po1
+- name: Port-Channel1
+  description: BGP_SPINES_Po1
   type: switched
   shutdown: false
   mode: trunk
   vlans: '100'
-  name: Port-Channel1
 vlans:
 - id: 100
   name: SVI_100

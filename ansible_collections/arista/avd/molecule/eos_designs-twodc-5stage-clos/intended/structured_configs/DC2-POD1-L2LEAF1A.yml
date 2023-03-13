@@ -59,13 +59,13 @@ ethernet_interfaces:
     mode: active
   name: Ethernet1
 port_channel_interfaces:
-- description: DC2-POD1-LEAF1A_Po3
+- name: Port-Channel1
+  description: DC2-POD1-LEAF1A_Po3
   type: switched
   shutdown: false
   mode: trunk
   service_profile: QOS-PROFILE
   vlans: '4092'
-  name: Port-Channel1
 ip_igmp_snooping:
   globally_enabled: true
 vlans:

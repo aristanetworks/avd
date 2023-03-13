@@ -53,7 +53,8 @@ mpls:
     shutdown: false
     transport_address_interface: Loopback0
 ethernet_interfaces:
-- peer: core-1-isis-sr-ldp
+- name: Ethernet1
+  peer: core-1-isis-sr-ldp
   peer_interface: Ethernet1
   peer_type: core_router
   description: P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet1
@@ -70,8 +71,8 @@ ethernet_interfaces:
       interface: true
       igp_sync: true
   speed: forced 1000full
-  name: Ethernet1
-- peer: core-1-isis-sr-ldp
+- name: Ethernet2
+  peer: core-1-isis-sr-ldp
   peer_interface: Ethernet2
   peer_type: core_router
   description: P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet2
@@ -88,8 +89,8 @@ ethernet_interfaces:
       interface: true
       igp_sync: true
   speed: 100full
-  name: Ethernet2
-- peer: core-1-isis-sr-ldp
+- name: Ethernet3
+  peer: core-1-isis-sr-ldp
   peer_interface: Ethernet3
   peer_type: core_router
   description: P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet3
@@ -106,8 +107,8 @@ ethernet_interfaces:
       interface: true
       igp_sync: true
   speed: forced 1000full
-  name: Ethernet3
-- peer: core-1-isis-sr-ldp
+- name: Ethernet4
+  peer: core-1-isis-sr-ldp
   peer_interface: Ethernet4
   peer_type: core_router
   description: P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet4
@@ -119,8 +120,8 @@ ethernet_interfaces:
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
   speed: forced 1000full
-  name: Ethernet4
-- peer: core-1-isis-sr-ldp
+- name: Ethernet5
+  peer: core-1-isis-sr-ldp
   peer_interface: Ethernet5
   peer_type: core_router
   description: P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet5
@@ -134,8 +135,8 @@ ethernet_interfaces:
   mpls:
     ip: true
   speed: forced 1000full
-  name: Ethernet5
-- peer: core-1-isis-sr-ldp
+- name: Ethernet6
+  peer: core-1-isis-sr-ldp
   peer_interface: Ethernet6
   peer_type: core_router
   description: Custom description on core-2-ospf-ldp eth6
@@ -153,8 +154,8 @@ ethernet_interfaces:
       interface: true
       igp_sync: true
   speed: 100full
-  name: Ethernet6
-- peer: core-1-isis-sr-ldp
+- name: Ethernet10
+  peer: core-1-isis-sr-ldp
   peer_interface: Ethernet10
   peer_type: core_router
   description: P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet10
@@ -170,7 +171,6 @@ ethernet_interfaces:
       interface: true
       igp_sync: true
   speed: forced 1000full
-  name: Ethernet10
 - peer: core-1-isis-sr-ldp
   peer_interface: Port-Channel12
   peer_type: core_router
@@ -192,7 +192,8 @@ ethernet_interfaces:
   speed: forced 1000full
   name: Ethernet13
 port_channel_interfaces:
-- peer: core-1-isis-sr-ldp
+- name: Port-Channel12
+  peer: core-1-isis-sr-ldp
   peer_interface: Port-Channel12
   peer_type: core_router
   description: P2P_LINK_TO_core-1-isis-sr-ldp_Port-Channel12
@@ -208,4 +209,3 @@ port_channel_interfaces:
     ldp:
       interface: true
       igp_sync: true
-  name: Port-Channel12

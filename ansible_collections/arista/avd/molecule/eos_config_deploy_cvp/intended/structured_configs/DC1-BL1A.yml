@@ -318,7 +318,8 @@ vlan_interfaces:
   mtu: 1500
   ip_address: 10.255.251.10/31
 port_channel_interfaces:
-- description: MLAG_PEER_DC1-BL1B_Po5
+- name: Port-Channel5
+  description: MLAG_PEER_DC1-BL1B_Po5
   type: switched
   shutdown: false
   vlans: 2-4094
@@ -326,7 +327,6 @@ port_channel_interfaces:
   trunk_groups:
   - LEAF_PEER_L3
   - MLAG
-  name: Port-Channel5
 ethernet_interfaces:
 - peer: DC1-BL1B
   peer_interface: Ethernet5

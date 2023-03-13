@@ -315,7 +315,8 @@ vlan_interfaces:
   no_autostate: true
   mtu: 1500
 port_channel_interfaces:
-- description: MLAG_PEER_DC1-CL1B_Po1151
+- name: Port-Channel1151
+  description: MLAG_PEER_DC1-CL1B_Po1151
   type: switched
   shutdown: false
   vlans: 1-4094
@@ -323,7 +324,6 @@ port_channel_interfaces:
   trunk_groups:
   - LEAF_PEER_L3
   - MLAG
-  name: Port-Channel1151
 ethernet_interfaces:
 - peer: DC1-CL1B
   peer_interface: Ethernet1/15/1

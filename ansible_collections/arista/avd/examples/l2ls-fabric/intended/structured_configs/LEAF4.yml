@@ -65,21 +65,21 @@ vlan_interfaces:
   no_autostate: true
   mtu: 1500
 port_channel_interfaces:
-- description: MLAG_PEER_LEAF3_Po47
+- name: Port-Channel47
+  description: MLAG_PEER_LEAF3_Po47
   type: switched
   shutdown: false
   vlans: 2-4094
   mode: trunk
   trunk_groups:
   - MLAG
-  name: Port-Channel47
-- description: SPINES_Po3
+- name: Port-Channel1
+  description: SPINES_Po3
   type: switched
   shutdown: false
   mode: trunk
   vlans: 10,30
   mlag: 1
-  name: Port-Channel1
 ethernet_interfaces:
 - peer: LEAF3
   peer_interface: Ethernet47

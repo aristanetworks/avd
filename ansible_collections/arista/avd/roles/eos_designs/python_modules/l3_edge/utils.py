@@ -278,6 +278,7 @@ class UtilsMixin:
         peer_interface = p2p_link["data"]["peer_interface"]
         default_description = f"P2P_LINK_TO_{peer}_{peer_interface}"
         interface_cfg = {
+            "name": p2p_link["data"]["interface"],
             "peer": peer,
             "peer_interface": peer_interface,
             "peer_type": p2p_link["data"]["peer_type"],

@@ -115,7 +115,8 @@ vlan_interfaces:
   no_autostate: true
   mtu: 1500
 port_channel_interfaces:
-- description: MLAG_PEER_DC1-LEAF2A_Po5
+- name: Port-Channel5
+  description: MLAG_PEER_DC1-LEAF2A_Po5
   type: switched
   shutdown: false
   vlans: 2-4094
@@ -123,14 +124,13 @@ port_channel_interfaces:
   trunk_groups:
   - LEAF_PEER_L3
   - MLAG
-  name: Port-Channel5
-- description: DC1-L2LEAF1A_Po1
+- name: Port-Channel7
+  description: DC1-L2LEAF1A_Po1
   type: switched
   shutdown: false
   mode: trunk
   vlans: none
   mlag: 7
-  name: Port-Channel7
 ethernet_interfaces:
 - peer: DC1-LEAF2A
   peer_interface: Ethernet5

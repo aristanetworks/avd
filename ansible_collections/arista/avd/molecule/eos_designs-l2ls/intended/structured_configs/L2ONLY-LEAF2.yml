@@ -54,12 +54,12 @@ ethernet_interfaces:
   vlans: '100'
   name: Ethernet11
 port_channel_interfaces:
-- description: L2ONLY_SPINES_Po2
+- name: Port-Channel1
+  description: L2ONLY_SPINES_Po2
   type: switched
   shutdown: false
   mode: trunk
   vlans: '100'
-  name: Port-Channel1
 vlans:
 - id: 100
   name: L2VLAN_100

@@ -76,42 +76,42 @@ vlan_interfaces:
   no_autostate: true
   mtu: 1500
 port_channel_interfaces:
-- description: MLAG_PEER_LEAF3A_Po983
+- name: Port-Channel983
+  description: MLAG_PEER_LEAF3A_Po983
   type: switched
   shutdown: false
   vlans: 2-4094
   mode: trunk
   trunk_groups:
   - MLAG
-  name: Port-Channel983
-- description: SPINES_Po501
+- name: Port-Channel971
+  description: SPINES_Po501
   type: switched
   shutdown: false
   mode: trunk
   vlans: 10,310,320,330
   mlag: 971
-  name: Port-Channel971
-- description: LEAF3C_Po971
+- name: Port-Channel973
+  description: LEAF3C_Po971
   type: switched
   shutdown: false
   mode: trunk
   vlans: 10,310,320,330
   mlag: 973
-  name: Port-Channel973
-- description: LEAF3D_Po971
+- name: Port-Channel974
+  description: LEAF3D_Po971
   type: switched
   shutdown: false
   mode: trunk
   vlans: 10,310,320,330
   mlag: 974
-  name: Port-Channel974
-- description: LEAF3E_Po971
+- name: Port-Channel981
+  description: LEAF3E_Po971
   type: switched
   shutdown: false
   mode: trunk
   vlans: 10,310,320,330
   mlag: 981
-  name: Port-Channel981
 ethernet_interfaces:
 - peer: LEAF3A
   peer_interface: Ethernet98/3

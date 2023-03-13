@@ -410,7 +410,8 @@ virtual_source_nat_vrfs:
 - name: Tenant_X_OP_Zone
   ip_address: 10.255.1.33
 port_channel_interfaces:
-- description: server01_ES1_PortChanne1
+- name: Port-Channel10
+  description: server01_ES1_PortChanne1
   type: switched
   shutdown: false
   link_tracking_groups:
@@ -422,8 +423,8 @@ port_channel_interfaces:
     identifier: 0000:0000:0001:1010:1010
     route_target: 00:01:10:10:10:10
   lacp_id: 0001.1010.1010
-  name: Port-Channel10
-- description: server03_AUTO_ESI_Auto-ESI PortChannel
+- name: Port-Channel12
+  description: server03_AUTO_ESI_Auto-ESI PortChannel
   type: switched
   shutdown: false
   link_tracking_groups:
@@ -435,8 +436,8 @@ port_channel_interfaces:
     identifier: 0000:0000:fc87:ae24:2cb3
     route_target: fc:87:ae:24:2c:b3
   lacp_id: fc87.ae24.2cb3
-  name: Port-Channel12
-- description: server04_AUTO_ESI_Profile_Auto-ESI PortChannel from profile
+- name: Port-Channel13
+  description: server04_AUTO_ESI_Profile_Auto-ESI PortChannel from profile
   type: switched
   shutdown: false
   link_tracking_groups:
@@ -448,8 +449,8 @@ port_channel_interfaces:
     identifier: 0000:0000:29cc:4043:0a29
     route_target: 29:cc:40:43:0a:29
   lacp_id: 29cc.4043.0a29
-  name: Port-Channel13
-- description: server05_AUTO_ESI_Profile_Override_Auto-ESI PortChannel overridden on server
+- name: Port-Channel14
+  description: server05_AUTO_ESI_Profile_Override_Auto-ESI PortChannel overridden on server
   type: switched
   shutdown: false
   link_tracking_groups:
@@ -461,8 +462,8 @@ port_channel_interfaces:
     identifier: 0000:0000:010a:010a:010a
     route_target: 01:0a:01:0a:01:0a
   lacp_id: 010a.010a.010a
-  name: Port-Channel14
-- description: server06_Single_Active_Port_Channel_Single-Active ESI
+- name: Port-Channel15
+  description: server06_Single_Active_Port_Channel_Single-Active ESI
   type: switched
   shutdown: false
   mode: trunk
@@ -475,8 +476,8 @@ port_channel_interfaces:
       algorithm: preference
       preference_value: 100
   lacp_id: 2873.c14b.64ec
-  name: Port-Channel15
-- description: server07_Single_Active_Port_Channel_Manual_DF_Single-Active ESI with Manual DF
+- name: Port-Channel16
+  description: server07_Single_Active_Port_Channel_Manual_DF_Single-Active ESI with Manual DF
   type: switched
   shutdown: false
   mode: trunk
@@ -489,8 +490,8 @@ port_channel_interfaces:
       algorithm: preference
       preference_value: 250
   lacp_id: ec11.73f8.7361
-  name: Port-Channel16
-- description: server11_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_Single-Active ESI with Manual DF
+- name: Port-Channel20
+  description: server11_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_Single-Active ESI with Manual DF
   type: switched
   shutdown: false
   mode: trunk
@@ -504,8 +505,8 @@ port_channel_interfaces:
       preference_value: 100
       dont_preempt: true
   lacp_id: 47cb.834e.c0c7
-  name: Port-Channel20
-- description: server13_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_modulus_Single-Active ESI with Manual DF
+- name: Port-Channel22
+  description: server13_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_modulus_Single-Active ESI with Manual DF
   type: switched
   shutdown: false
   mode: trunk
@@ -517,12 +518,12 @@ port_channel_interfaces:
     designated_forwarder_election:
       algorithm: modulus
   lacp_id: d716.1795.361e
-  name: Port-Channel22
-- description: ROUTER02_WITH_SUBIF_Testing L2 subinterfaces
+- name: Port-Channel11
+  description: ROUTER02_WITH_SUBIF_Testing L2 subinterfaces
   type: routed
   shutdown: false
-  name: Port-Channel11
-- type: l2dot1q
+- name: Port-Channel11.101
+  type: l2dot1q
   vlan_id: 101
   encapsulation_vlan:
     client:
@@ -533,8 +534,8 @@ port_channel_interfaces:
   evpn_ethernet_segment:
     identifier: 0000:0000:0000:0000:0101
     route_target: 00:00:00:00:01:01
-  name: Port-Channel11.101
-- type: l2dot1q
+- name: Port-Channel11.102
+  type: l2dot1q
   vlan_id: 1102
   encapsulation_vlan:
     client:
@@ -545,8 +546,8 @@ port_channel_interfaces:
   evpn_ethernet_segment:
     identifier: 0000:0000:0000:0000:0102
     route_target: 00:00:00:00:01:02
-  name: Port-Channel11.102
-- type: l2dot1q
+- name: Port-Channel11.103
+  type: l2dot1q
   vlan_id: 1103
   encapsulation_vlan:
     client:
@@ -557,8 +558,8 @@ port_channel_interfaces:
   evpn_ethernet_segment:
     identifier: 0000:0000:c2c9:c85a:ed92
     route_target: c2:c9:c8:5a:ed:92
-  name: Port-Channel11.103
-- type: l2dot1q
+- name: Port-Channel11.104
+  type: l2dot1q
   vlan_id: 1104
   encapsulation_vlan:
     client:
@@ -569,4 +570,3 @@ port_channel_interfaces:
   evpn_ethernet_segment:
     identifier: 0000:0000:5c8e:1f50:9fc4
     route_target: 5c:8e:1f:50:9f:c4
-  name: Port-Channel11.104

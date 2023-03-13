@@ -46,12 +46,12 @@ ethernet_interfaces:
     mode: active
   name: Ethernet2
 port_channel_interfaces:
-- description: EVPN_MULTICAST_L3LEAF1_Po6
+- name: Port-Channel1
+  description: EVPN_MULTICAST_L3LEAF1_Po6
   type: switched
   shutdown: false
   mode: trunk
   vlans: 1-9,110-111,130-131,140-141,150,210-211,230-231,240-241,250,256-257,260,310-311,330-331,550,4092
-  name: Port-Channel1
 vlans:
 - id: 310
   name: MULTICAST_DISABLED_310

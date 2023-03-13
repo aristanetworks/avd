@@ -200,6 +200,7 @@ class AvdStructuredConfig(AvdFacts):
 
         port_channel_interface_name = f"Port-Channel{self._mlag_port_channel_id}"
         port_channel_interface = {
+            "name": port_channel_interface_name,
             "description": self._avd_interface_descriptions.mlag_port_channel_interfaces(),
             "type": "switched",
             "shutdown": False,
@@ -217,11 +218,7 @@ class AvdStructuredConfig(AvdFacts):
             # Retain legacy order
             port_channel_interface["trunk_groups"].reverse()
 
-        return strip_empties_from_dict(
-            {
-                port_channel_interface_name: port_channel_interface,
-            }
-        )
+        return [strip_empties_from_dict(port_channel_interface)]
 
     @cached_property
     def ethernet_interfaces(self):

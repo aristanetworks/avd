@@ -156,7 +156,8 @@ vlan_interfaces:
   mtu: 9000
   ip_address: 10.255.240.11/31
 port_channel_interfaces:
-- description: TEST_CUSTOM_PREFIX_MLAG_PEER_CUSTOM-TEMPLATES-L3LEAF1A_Po3
+- name: Port-Channel3
+  description: TEST_CUSTOM_PREFIX_MLAG_PEER_CUSTOM-TEMPLATES-L3LEAF1A_Po3
   type: switched
   shutdown: false
   vlans: 2-4094
@@ -164,7 +165,6 @@ port_channel_interfaces:
   trunk_groups:
   - LEAF_PEER_L3
   - MLAG
-  name: Port-Channel3
 ethernet_interfaces:
 - peer: CUSTOM-TEMPLATES-L3LEAF1A
   peer_interface: Ethernet3
