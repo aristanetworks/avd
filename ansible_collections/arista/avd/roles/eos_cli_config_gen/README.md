@@ -367,14 +367,14 @@ ip_tacacs_source_interfaces:
 local_users:
   < user_1 >:
     disabled: < true | false | default -> false >
-    privilege: < 1-15 >
+    privilege: < 0-15 >
     role: < role >
     sha512_password: "< sha_512_password >"
     no_password: < true | do not configure a password for given username. sha512_password MUST not be defined for this user. >
     ssh_key: "< ssh_key_string >"
   < user_2 >:
     disabled: < true | false | default -> false >
-    privilege: < 1-15 >
+    privilege: < 0-15 >
     role: < role >
     sha512_password: "< sha_512_password >"
     no_password: < true | do not configure a password for given username. sha512_password MUST not be defined for this user. >
