@@ -965,6 +965,32 @@ keys:
         type: bool
       dynamic_authorization:
         type: bool
+      mac_based_authentication:
+        type: dict
+        keys:
+          delay:
+            type: int
+            min: 0
+            max: 300
+            convert_types:
+            - str
+          hold_period:
+            type: int
+            min: 1
+            max: 300
+            convert_types:
+            - str
+      radius_av_pair:
+        type: dict
+        keys:
+          service_type:
+            type: bool
+          framed_mtu:
+            type: int
+            min: 68
+            max: 9236
+            convert_types:
+            - str
   dynamic_prefix_lists:
     documentation_options:
       filename: data_model/Filters
@@ -3206,7 +3232,7 @@ keys:
           type: int
           convert_types:
           - str
-          min: 1
+          min: 0
           max: 15
           description: 'Initial privilege level with local EXEC authorization.
 

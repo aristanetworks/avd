@@ -43,3 +43,15 @@ interface Management1
 | System Auth Control | Protocol LLDP Bypass | Dynamic Authorization |
 | ------------------- | -------------------- | ----------------------|
 | True | True | True |
+
+### 802.1X MAC based authentication
+
+| Delay | Hold period |
+| ----- | ----------- |
+| 300 | 300 |
+
+### 802.1X Radius AV pair
+
+| Service type | Framed MTU |
+| ------------ | ---------- |
+| True | 1500 |
