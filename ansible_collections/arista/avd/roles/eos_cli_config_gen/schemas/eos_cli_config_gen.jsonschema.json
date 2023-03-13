@@ -4256,7 +4256,7 @@
           },
           "privilege": {
             "type": "integer",
-            "minimum": 1,
+            "minimum": 0,
             "maximum": 15,
             "description": "Initial privilege level with local EXEC authorization.\n",
             "title": "Privilege"
