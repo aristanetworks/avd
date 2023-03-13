@@ -161,6 +161,9 @@ defaults <- node_group <- node_group.node <- node
       # Node management IP address | Optional.
       mgmt_ip: < IPv4_address/Mask >
 
+      # Node management IPv6 address | Optional.
+      ipv6_mgmt_ip: < IPv6_address/Mask >
+
       # System Mac Address | Optional
       # Set to the same MAC address as available in "show version" on the device.
       # NOTE: the "mac_address" variable used in dhcp_provisioner role is

@@ -62,10 +62,15 @@ mgmt_interface: < mgmt_interface | default -> Management1 >
 mgmt_interface_vrf: < vrf_name | default -> MGMT >
 mgmt_interface_description: < description | default -> "oob_management" >
 mgmt_gateway: < IPv4 address >
+ipv6_mgmt_gateway: < IPv6 address >
 # OOB mgmt interface destination networks - override default route
 mgmt_destination_networks:
   - < IPv4_network/Mask >
   - < IPv4_network/Mask >
+# OOB mgmt interface destination ipv6 networks - override default route
+ipv6_mgmt_destination_networks:
+  - < IPv6_network/Mask >
+  - < IPv6_network/Mask >
 
 # list of DNS servers | Optional
 name_servers:
