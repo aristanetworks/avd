@@ -53,8 +53,7 @@
 {# IPv6 #}
 {%     set vlan_interfaces_ipv6 = [] %}
 {%     for vlan_interface in vlan_interfaces | arista.avd.default([]) %}
-{%         if vlan_interface.ipv6_address is arista.avd.defined or vlan_interface.ipv6_address_virtual is arista.avd.defined %}
-{# add also a test against ipv6_address_virtual when supported #}
+{%         if vlan_interface.ipv6_address is arista.avd.defined or vlan_interface.ipv6_address_virtual is arista.avd.defined or vlan_interface.ipv6_address_virtuals is arista.avd.defined %}
 {%             do vlan_interfaces_ipv6.append(vlan_interface) %}
 {%         endif %}
 {%     endfor %}
@@ -62,12 +61,16 @@
 
 #### IPv6
 
-| Interface | VRF | IPv6 Address | IPv6 Virtual Address | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | --- | ------------ | -------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------- | ------------ |
 {%         for vlan_interface in vlan_interfaces_ipv6 | arista.avd.natural_sort('name') %}
 {%             set row_vrf = vlan_interface.vrf | arista.avd.default('default') %}
 {%             set row_ip_addr = vlan_interface.ipv6_address | arista.avd.default('-') %}
-{%             set row_ip_vaddr = vlan_interface.ipv6_address_virtual | arista.avd.default('-') %}
+{%             if vlan_interface.ipv6_address_virtual is arista.avd.defined %}
+{%                 set row_ip_vaddr = ([vlan_interface.ipv6_address_virtual] + vlan_interface.ipv6_address_virtuals | arista.avd.default([])) | join(", ") %}
+{%             else %}
+{%                 set row_ip_vaddr = vlan_interface.ipv6_address_virtuals | arista.avd.default('-') | join(", ") %}
+{%             endif %}
 {%             if vlan_interface.ipv6_virtual_router_addresses is arista.avd.defined %}
 {%                 set row_varp = vlan_interface.ipv6_virtual_router_addresses | join(", ") %}
 {%             else %}
