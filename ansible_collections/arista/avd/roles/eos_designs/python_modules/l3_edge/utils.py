@@ -171,8 +171,8 @@ class UtilsMixin:
             if not ip_pool_subnet:
                 return p2p_link
             prefix_size = int(ip_pool.get("prefix_size", 31))
-            id = int(p2p_link["id"])
-            subnet = list(islice(ip_network(ip_pool_subnet).subnets(new_prefix=prefix_size), id - 1, id))[0]
+            link_id = int(p2p_link["id"])
+            subnet = list(islice(ip_network(ip_pool_subnet).subnets(new_prefix=prefix_size), link_id - 1, link_id))[0]
 
         # hosts() return an iterator of all hosts in subnet.
         # islice() return a generator with only the first two iterations of hosts.
