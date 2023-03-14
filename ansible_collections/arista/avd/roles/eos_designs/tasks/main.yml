@@ -11,6 +11,18 @@
   run_once: true
   register: avd_requirements
 
+- name: Create required output directories if not present
+  tags: [build, provision]
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+  loop:
+    - "{{ structured_dir }}"
+    - "{{ fabric_dir }}"
+  delegate_to: localhost
+  run_once: true
+
 - name: Set eos_designs facts
   tags: [build, provision, facts]
   arista.avd.eos_designs_facts:
