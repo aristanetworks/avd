@@ -173,7 +173,8 @@ ethernet_interfaces:
     enable: true
   ip_address: 10.254.2.6/31
   name: Ethernet4
-- peer: ptp-tests-spine2
+- name: Ethernet6
+  peer: ptp-tests-spine2
   peer_interface: Ethernet6
   peer_type: spine
   description: P2P_LINK_TO_ptp-tests-spine2_Ethernet6
@@ -189,8 +190,8 @@ ethernet_interfaces:
       interval: -3
     transport: ipv4
     enable: true
-  name: Ethernet6
-- peer: ptp-tests-spine2
+- name: Ethernet7
+  peer: ptp-tests-spine2
   peer_interface: Ethernet7
   peer_type: spine
   description: P2P_LINK_TO_ptp-tests-spine2_Ethernet7
@@ -206,8 +207,8 @@ ethernet_interfaces:
       interval: -3
     transport: ipv4
     enable: true
-  name: Ethernet7
-- peer: ptp-tests-spine2
+- name: Ethernet8
+  peer: ptp-tests-spine2
   peer_interface: Ethernet8
   peer_type: spine
   description: P2P_LINK_TO_ptp-tests-spine2_Ethernet8
@@ -223,8 +224,8 @@ ethernet_interfaces:
       interval: -3
     transport: ipv4
     enable: true
-  name: Ethernet8
-- peer: ptp-tests-spine2
+- name: Ethernet9
+  peer: ptp-tests-spine2
   peer_interface: Ethernet9
   peer_type: spine
   description: P2P_LINK_TO_ptp-tests-spine2_Ethernet9
@@ -240,7 +241,6 @@ ethernet_interfaces:
       interval: -3
     transport: ipv4
     enable: true
-  name: Ethernet9
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

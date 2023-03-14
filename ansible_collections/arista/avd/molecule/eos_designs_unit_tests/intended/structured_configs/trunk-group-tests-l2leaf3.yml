@@ -49,13 +49,13 @@ ethernet_interfaces:
   - TG_200
   name: Ethernet12
 port_channel_interfaces:
-- description: TRUNK_GROUP_TESTS_L3LEAF1_Po5
+- name: Port-Channel1
+  description: TRUNK_GROUP_TESTS_L3LEAF1_Po5
   type: switched
   shutdown: false
   mode: trunk
   trunk_groups:
   - UPLINK
-  name: Port-Channel1
 vlans:
 - id: 200
   name: svi200_with_trunk_groups

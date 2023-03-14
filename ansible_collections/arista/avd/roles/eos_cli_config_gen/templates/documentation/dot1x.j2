@@ -10,7 +10,7 @@
 # 802.1X Port Security
 
 ## 802.1X Summary
-{%     if dot1x is arista.avd.defined() %}
+{%     if dot1x is arista.avd.defined %}
 
 ### 802.1X Global
 
@@ -20,6 +20,26 @@
 {%         set protocol_lldp_bypass = dot1x.protocol_lldp_bypass | arista.avd.default('-') %}
 {%         set dynamic_authorization = dot1x.dynamic_authorization | arista.avd.default('-') %}
 | {{ system_auth_control }} | {{ protocol_lldp_bypass }} | {{ dynamic_authorization }} |
+{%         if dot1x.mac_based_authentication is arista.avd.defined %}
+
+### 802.1X MAC based authentication
+
+| Delay | Hold period |
+| ----- | ----------- |
+{%             set delay = dot1x.mac_based_authentication.delay | arista.avd.default('-') %}
+{%             set hold_period = dot1x.mac_based_authentication.hold_period | arista.avd.default('-') %}
+| {{ delay }} | {{ hold_period }} |
+{%         endif %}
+{%         if dot1x.radius_av_pair is arista.avd.defined %}
+
+### 802.1X Radius AV pair
+
+| Service type | Framed MTU |
+| ------------ | ---------- |
+{%             set radius_av_pair_service = dot1x.radius_av_pair.service_type | arista.avd.default('-') %}
+{%             set framed_mtu = dot1x.radius_av_pair.framed_mtu | arista.avd.default('-') %}
+| {{ radius_av_pair_service }} | {{ framed_mtu }} |
+{%         endif %}
 {%     endif %}
 {%     if ethernet_interfaces_dot1x | length > 0 %}
 

@@ -82,12 +82,12 @@ ethernet_interfaces:
     mode: active
   name: Ethernet2
 port_channel_interfaces:
-- description: CUSTOM_DC1_LEAF2_Po9
+- name: Port-Channel1
+  description: CUSTOM_DC1_LEAF2_Po9
   type: switched
   shutdown: false
   mode: trunk
   vlans: 110-111,120-124,130-131,160-162
-  name: Port-Channel1
 vlans:
 - id: 130
   name: Tenant_A_APP_Zone_1

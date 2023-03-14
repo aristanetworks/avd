@@ -111,7 +111,8 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 ethernet_interfaces:
-- peer: ptp-tests-spine1
+- name: Ethernet6
+  peer: ptp-tests-spine1
   peer_interface: Ethernet6
   peer_type: spine
   description: P2P_LINK_TO_ptp-tests-spine1_Ethernet6
@@ -127,8 +128,8 @@ ethernet_interfaces:
       interval: -3
     transport: ipv4
     enable: true
-  name: Ethernet6
-- peer: ptp-tests-spine1
+- name: Ethernet7
+  peer: ptp-tests-spine1
   peer_interface: Ethernet7
   peer_type: spine
   description: P2P_LINK_TO_ptp-tests-spine1_Ethernet7
@@ -144,8 +145,8 @@ ethernet_interfaces:
       interval: -3
     transport: ipv4
     enable: true
-  name: Ethernet7
-- peer: ptp-tests-spine1
+- name: Ethernet8
+  peer: ptp-tests-spine1
   peer_interface: Ethernet8
   peer_type: spine
   description: P2P_LINK_TO_ptp-tests-spine1_Ethernet8
@@ -161,8 +162,8 @@ ethernet_interfaces:
       interval: -3
     transport: ipv4
     enable: true
-  name: Ethernet8
-- peer: ptp-tests-spine1
+- name: Ethernet9
+  peer: ptp-tests-spine1
   peer_interface: Ethernet9
   peer_type: spine
   description: P2P_LINK_TO_ptp-tests-spine1_Ethernet9
@@ -178,4 +179,3 @@ ethernet_interfaces:
       interval: -3
     transport: ipv4
     enable: true
-  name: Ethernet9

@@ -54,6 +54,7 @@ mpls:
     transport_address_interface: Loopback0
 ethernet_interfaces:
   Ethernet1:
+    name: Ethernet1
     peer: core-1-isis-sr-ldp
     peer_interface: Ethernet1
     peer_type: core_router
@@ -72,6 +73,7 @@ ethernet_interfaces:
         igp_sync: true
     speed: forced 1000full
   Ethernet2:
+    name: Ethernet2
     peer: core-1-isis-sr-ldp
     peer_interface: Ethernet2
     peer_type: core_router
@@ -90,6 +92,7 @@ ethernet_interfaces:
         igp_sync: true
     speed: 100full
   Ethernet3:
+    name: Ethernet3
     peer: core-1-isis-sr-ldp
     peer_interface: Ethernet3
     peer_type: core_router
@@ -108,6 +111,7 @@ ethernet_interfaces:
         igp_sync: true
     speed: forced 1000full
   Ethernet4:
+    name: Ethernet4
     peer: core-1-isis-sr-ldp
     peer_interface: Ethernet4
     peer_type: core_router
@@ -121,6 +125,7 @@ ethernet_interfaces:
     ospf_area: 0.0.0.0
     speed: forced 1000full
   Ethernet5:
+    name: Ethernet5
     peer: core-1-isis-sr-ldp
     peer_interface: Ethernet5
     peer_type: core_router
@@ -136,6 +141,7 @@ ethernet_interfaces:
       ip: true
     speed: forced 1000full
   Ethernet6:
+    name: Ethernet6
     peer: core-1-isis-sr-ldp
     peer_interface: Ethernet6
     peer_type: core_router
@@ -155,6 +161,7 @@ ethernet_interfaces:
         igp_sync: true
     speed: 100full
   Ethernet10:
+    name: Ethernet10
     peer: core-1-isis-sr-ldp
     peer_interface: Ethernet10
     peer_type: core_router
@@ -192,20 +199,20 @@ ethernet_interfaces:
       mode: active
     speed: forced 1000full
 port_channel_interfaces:
-  Port-Channel12:
-    peer: core-1-isis-sr-ldp
-    peer_interface: Port-Channel12
-    peer_type: core_router
-    description: P2P_LINK_TO_core-1-isis-sr-ldp_Port-Channel12
-    type: routed
-    shutdown: false
-    mtu: 1500
-    ip_address: 100.64.48.17/31
-    ipv6_enable: true
-    ospf_network_point_to_point: true
-    ospf_area: 0.0.0.0
-    mpls:
-      ip: true
-      ldp:
-        interface: true
-        igp_sync: true
+- name: Port-Channel12
+  peer: core-1-isis-sr-ldp
+  peer_interface: Port-Channel12
+  peer_type: core_router
+  description: P2P_LINK_TO_core-1-isis-sr-ldp_Port-Channel12
+  type: routed
+  shutdown: false
+  mtu: 1500
+  ip_address: 100.64.48.17/31
+  ipv6_enable: true
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  mpls:
+    ip: true
+    ldp:
+      interface: true
+      igp_sync: true

@@ -186,7 +186,8 @@ ethernet_interfaces:
   type: routed
   ip_address: 172.17.20.10/31
   name: Ethernet7
-- peer: DC1-SUPER-SPINE1
+- name: Ethernet4
+  peer: DC1-SUPER-SPINE1
   peer_interface: Ethernet6
   peer_type: super-spine
   description: P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet6
@@ -198,7 +199,6 @@ ethernet_interfaces:
     profile: MACSEC_PROFILE
   ptp:
     enable: true
-  name: Ethernet4
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

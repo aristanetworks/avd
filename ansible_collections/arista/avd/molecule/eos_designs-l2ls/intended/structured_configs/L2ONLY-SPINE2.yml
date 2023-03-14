@@ -35,28 +35,28 @@ vlan_interfaces:
   no_autostate: true
   mtu: 9000
 port_channel_interfaces:
-- description: MLAG_PEER_L2ONLY-SPINE1_Po3
+- name: Port-Channel3
+  description: MLAG_PEER_L2ONLY-SPINE1_Po3
   type: switched
   shutdown: false
   vlans: 2-4094
   mode: trunk
   trunk_groups:
   - MLAG
-  name: Port-Channel3
-- description: L2ONLY-LEAF1_Po1
+- name: Port-Channel1
+  description: L2ONLY-LEAF1_Po1
   type: switched
   shutdown: false
   mode: trunk
   vlans: '100'
   mlag: 1
-  name: Port-Channel1
-- description: L2ONLY-LEAF2_Po1
+- name: Port-Channel2
+  description: L2ONLY-LEAF2_Po1
   type: switched
   shutdown: false
   mode: trunk
   vlans: '100'
   mlag: 2
-  name: Port-Channel2
 ethernet_interfaces:
 - peer: L2ONLY-SPINE1
   peer_interface: Ethernet3

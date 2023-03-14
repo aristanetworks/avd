@@ -140,7 +140,8 @@ mpls:
     shutdown: false
     transport_address_interface: Loopback0
 ethernet_interfaces:
-- peer: SITE2-LSR1
+- name: Ethernet4
+  peer: SITE2-LSR1
   peer_interface: Ethernet4
   peer_type: p
   description: P2P_LINK_TO_SITE2-LSR1_Ethernet4
@@ -165,7 +166,6 @@ ethernet_interfaces:
       interface: true
       igp_sync: true
   speed: forced 40gfull
-  name: Ethernet4
 router_bfd:
   multihop:
     interval: 300
