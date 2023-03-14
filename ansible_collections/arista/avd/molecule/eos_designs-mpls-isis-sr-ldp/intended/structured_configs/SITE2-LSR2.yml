@@ -130,7 +130,7 @@ port_channel_interfaces:
   eos_cli: 'link-debounce time 1600
 
     '
-  ip_address: 100.64.48.16/31
+  ip_address: 100.64.49.1/30
   ipv6_enable: true
   isis_enable: CUSTOM_NAME
   isis_metric: 60
