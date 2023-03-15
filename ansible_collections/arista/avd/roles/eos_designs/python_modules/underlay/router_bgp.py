@@ -24,6 +24,7 @@ class RouterBgpMixin(UtilsMixin):
         router_bgp = {}
 
         peer_group = {
+            "name": self._peer_group_ipv4_underlay_peers_name,
             "type": "ipv4",
             "password": get(self._hostvars, "switch.bgp_peer_groups.ipv4_underlay_peers.password"),
             "maximum_routes": 12000,
@@ -31,7 +32,7 @@ class RouterBgpMixin(UtilsMixin):
             "struct_cfg": get(self._hostvars, "switch.bgp_peer_groups.ipv4_underlay_peers.structured_config"),
         }
 
-        router_bgp["peer_groups"] = {self._peer_group_ipv4_underlay_peers_name: peer_group}
+        router_bgp["peer_groups"] = [peer_group]
 
         # Address Families
         # TODO - see if it makes sense to extract logic in method
@@ -41,16 +42,16 @@ class RouterBgpMixin(UtilsMixin):
             address_family_ipv4_peer_group["next_hop"] = {"address_family_ipv6_originate": True}
 
         router_bgp["address_family_ipv4"] = {
-            "peer_groups": {
-                self._peer_group_ipv4_underlay_peers_name: address_family_ipv4_peer_group,
-            }
+            "peer_groups": [{
+                "name": self._peer_group_ipv4_underlay_peers_name, **address_family_ipv4_peer_group
+            }]
         }
 
         if self._underlay_ipv6 is True:
             router_bgp["address_family_ipv6"] = {
-                "peer_groups": {
-                    self._peer_group_ipv4_underlay_peers_name: {"activate": True},
-                }
+                "peer_groups": [{
+                    "name": self._peer_group_ipv4_underlay_peers_name, "activate": True
+                }]
             }
 
         # Redistribute routes
@@ -58,12 +59,13 @@ class RouterBgpMixin(UtilsMixin):
 
         # Neighbor Interfaces
         if self._underlay_rfc5549 is True:
-            neighbor_interfaces = {}
+            neighbor_interfaces = []
             for link in self._underlay_links:
                 if link["type"] != "underlay_p2p":
                     continue
 
                 neighbor_interface = {
+                    "name": link["interface"],
                     "peer_group": self._peer_group_ipv4_underlay_peers_name,
                     "remote_as": link["peer_bgp_as"],
                     "description": "_".join([link["peer"], link["peer_interface"]]),
@@ -72,7 +74,7 @@ class RouterBgpMixin(UtilsMixin):
                 if self._filter_peer_as is True:
                     self._underlay_filter_peer_as_route_maps_asns.append(link["peer_bgp_as"])
 
-                neighbor_interfaces[link["interface"]] = neighbor_interface
+                neighbor_interfaces.append(neighbor_interface)
 
             if neighbor_interfaces:
                 router_bgp["neighbor_interfaces"] = neighbor_interfaces
@@ -80,21 +82,27 @@ class RouterBgpMixin(UtilsMixin):
         # Neighbors
         else:
             neighbors = {}
+            # ip_addresses = []
             for link in self._underlay_links:
                 if link["type"] != "underlay_p2p":
                     continue
 
+                # if link["peer_ip_address"] not in ip_addresses:
                 neighbor = {
+                    # "ip_address": link["peer_ip_address"],
                     "peer_group": self._peer_group_ipv4_underlay_peers_name,
                     "remote_as": get(link, "peer_bgp_as"),
                     "description": "_".join([link["peer"], link["peer_interface"]]),
                     "bfd": get(link, "bfd"),
                 }
+                # ip_addresses.append(link["peer_ip_address"])
 
                 if self._filter_peer_as is True:
                     neighbor["route_map_out"] = f"RM-BGP-AS{link['peer_bgp_as']}-OUT"
 
                 neighbors[link["peer_ip_address"]] = neighbor
+                # neighbors.append({"ip_address": link["peer_ip_address"], **neighbor})
+                # neighbors.append(neighbor)
 
             if neighbors:
                 router_bgp["neighbors"] = neighbors
@@ -103,11 +111,11 @@ class RouterBgpMixin(UtilsMixin):
         return strip_empties_from_dict(router_bgp, strip_values_tuple=(None, ""))
 
     @cached_property
-    def _router_bgp_redistribute_routes(self) -> dict | None:
+    def _router_bgp_redistribute_routes(self) -> list | None:
         """
         Return structured config for router_bgp.redistribute_routes
         """
         if self._overlay_routing_protocol == "none" or not self._underlay_filter_redistribute_connected:
-            return {"connected": {}}
+            return [{"source_protocol": "connected"}]
 
-        return {"connected": {"route_map": "RM-CONN-2-BGP"}}
+        return [{"source_protocol":"connected", "route_map": "RM-CONN-2-BGP"}]

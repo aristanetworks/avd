@@ -6,7 +6,8 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
+  - name: MLAG-PEERS
+    type: ipv4
     remote_as: '65103'
     next_hop_self: true
     description: DC1-SVC3B
@@ -14,12 +15,11 @@ router_bgp:
     maximum_routes: 12000
     send_community: all
     route_map_in: RM-MLAG-PEER-IN
-    name: MLAG-PEERS
-  - type: ipv4
+  - name: UNDERLAY-PEERS
+    type: ipv4
     password: 0nsCUm70mvSTxVO0ldytrg==
     maximum_routes: 12000
     send_community: all
-    name: UNDERLAY-PEERS
   - type: evpn
     update_source: Loopback0
     bfd: true
@@ -30,16 +30,16 @@ router_bgp:
     name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: MLAG-PEERS
-    - activate: true
-      name: UNDERLAY-PEERS
+    - name: MLAG-PEERS
+      activate: true
+    - name: UNDERLAY-PEERS
+      activate: true
     - activate: false
       name: EVPN-OVERLAY-PEERS
   neighbors:
-  - peer_group: MLAG-PEERS
+  - ip_address: 10.255.251.7
+    peer_group: MLAG-PEERS
     description: DC1-SVC3B
-    ip_address: 10.255.251.7
   - peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     description: DC1-SPINE1_Ethernet7/1
@@ -73,8 +73,8 @@ router_bgp:
     remote_as: '65001'
     ip_address: 192.168.255.4
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
     - activate: true
@@ -85,7 +85,8 @@ router_bgp:
       enabled: true
       expiry_timeout: 10
   vrfs:
-  - router_id: 192.168.255.12
+  - name: Tenant_A_APP_Zone
+    router_id: 192.168.255.12
     rd: '65103:12'
     route_targets:
       import:
@@ -99,10 +100,10 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: MLAG-PEERS
-      ip_address: 10.255.251.7
-    name: Tenant_A_APP_Zone
-  - router_id: 192.168.255.12
+    - ip_address: 10.255.251.7
+      peer_group: MLAG-PEERS
+  - name: Tenant_A_DB_Zone
+    router_id: 192.168.255.12
     rd: '65103:13'
     route_targets:
       import:
@@ -116,10 +117,10 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: MLAG-PEERS
-      ip_address: 10.255.251.7
-    name: Tenant_A_DB_Zone
-  - router_id: 192.168.255.12
+    - ip_address: 10.255.251.7
+      peer_group: MLAG-PEERS
+  - name: Tenant_A_OP_Zone
+    router_id: 192.168.255.12
     rd: '65103:9'
     route_targets:
       import:
@@ -133,10 +134,10 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: MLAG-PEERS
-      ip_address: 10.255.251.7
-    name: Tenant_A_OP_Zone
-  - router_id: 192.168.255.12
+    - ip_address: 10.255.251.7
+      peer_group: MLAG-PEERS
+  - name: Tenant_A_WAN_Zone
+    router_id: 192.168.255.12
     rd: '65103:14'
     route_targets:
       import:
@@ -152,10 +153,10 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: MLAG-PEERS
-      ip_address: 10.255.251.7
-    name: Tenant_A_WAN_Zone
-  - router_id: 192.168.255.12
+    - ip_address: 10.255.251.7
+      peer_group: MLAG-PEERS
+  - name: Tenant_A_WEB_Zone
+    router_id: 192.168.255.12
     rd: '65103:11'
     route_targets:
       import:
@@ -169,10 +170,10 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: MLAG-PEERS
-      ip_address: 172.31.11.7
-    name: Tenant_A_WEB_Zone
-  - router_id: 192.168.255.12
+    - ip_address: 172.31.11.7
+      peer_group: MLAG-PEERS
+  - name: Tenant_B_OP_Zone
+    router_id: 192.168.255.12
     rd: '65103:20'
     route_targets:
       import:
@@ -186,10 +187,10 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: MLAG-PEERS
-      ip_address: 10.255.251.7
-    name: Tenant_B_OP_Zone
-  - router_id: 192.168.255.12
+    - ip_address: 10.255.251.7
+      peer_group: MLAG-PEERS
+  - name: Tenant_B_WAN_Zone
+    router_id: 192.168.255.12
     rd: '65103:21'
     route_targets:
       import:
@@ -203,10 +204,10 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: MLAG-PEERS
-      ip_address: 10.255.251.7
-    name: Tenant_B_WAN_Zone
-  - router_id: 192.168.255.12
+    - ip_address: 10.255.251.7
+      peer_group: MLAG-PEERS
+  - name: Tenant_C_OP_Zone
+    router_id: 192.168.255.12
     rd: '65103:30'
     route_targets:
       import:
@@ -220,10 +221,10 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: MLAG-PEERS
-      ip_address: 10.255.251.7
-    name: Tenant_C_OP_Zone
-  - router_id: 192.168.255.12
+    - ip_address: 10.255.251.7
+      peer_group: MLAG-PEERS
+  - name: Tenant_C_WAN_Zone
+    router_id: 192.168.255.12
     rd: '65103:31'
     route_targets:
       import:
@@ -237,51 +238,51 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: MLAG-PEERS
-      ip_address: 10.255.251.7
-    name: Tenant_C_WAN_Zone
+    - ip_address: 10.255.251.7
+      peer_group: MLAG-PEERS
   vlan_aware_bundles:
-  - rd: '65103:12'
+  - name: Tenant_A_APP_Zone
+    rd: '65103:12'
     route_targets:
       both:
       - '12:12'
     redistribute_routes:
     - learned
     vlan: 130-131
-    name: Tenant_A_APP_Zone
-  - rd: '65103:13'
+  - name: Tenant_A_DB_Zone
+    rd: '65103:13'
     route_targets:
       both:
       - '13:13'
     redistribute_routes:
     - learned
     vlan: 140-141
-    name: Tenant_A_DB_Zone
-  - rd: '65103:9'
+  - name: Tenant_A_OP_Zone
+    rd: '65103:9'
     route_targets:
       both:
       - '9:9'
     redistribute_routes:
     - learned
     vlan: 110-112
-    name: Tenant_A_OP_Zone
-  - rd: '65103:14'
+  - name: Tenant_A_WAN_Zone
+    rd: '65103:14'
     route_targets:
       both:
       - '14:14'
     redistribute_routes:
     - learned
     vlan: '150'
-    name: Tenant_A_WAN_Zone
-  - rd: '65103:11'
+  - name: Tenant_A_WEB_Zone
+    rd: '65103:11'
     route_targets:
       both:
       - '11:11'
     redistribute_routes:
     - learned
     vlan: 120-121
-    name: Tenant_A_WEB_Zone
-  - tenant: Tenant_A
+  - name: Tenant_A_NFS
+    tenant: Tenant_A
     rd: 65103:20161
     route_targets:
       both:
@@ -289,8 +290,8 @@ router_bgp:
     redistribute_routes:
     - learned
     vlan: '161'
-    name: Tenant_A_NFS
-  - tenant: Tenant_A
+  - name: Tenant_A_VMOTION
+    tenant: Tenant_A
     rd: 65103:20160
     route_targets:
       both:
@@ -298,39 +299,38 @@ router_bgp:
     redistribute_routes:
     - learned
     vlan: '160'
-    name: Tenant_A_VMOTION
-  - rd: '65103:20'
+  - name: Tenant_B_OP_Zone
+    rd: '65103:20'
     route_targets:
       both:
       - '20:20'
     redistribute_routes:
     - learned
     vlan: 210-211
-    name: Tenant_B_OP_Zone
-  - rd: '65103:21'
+  - name: Tenant_B_WAN_Zone
+    rd: '65103:21'
     route_targets:
       both:
       - '21:21'
     redistribute_routes:
     - learned
     vlan: '250'
-    name: Tenant_B_WAN_Zone
-  - rd: '65103:30'
+  - name: Tenant_C_OP_Zone
+    rd: '65103:30'
     route_targets:
       both:
       - '30:30'
     redistribute_routes:
     - learned
     vlan: 310-311
-    name: Tenant_C_OP_Zone
-  - rd: '65103:31'
+  - name: Tenant_C_WAN_Zone
+    rd: '65103:31'
     route_targets:
       both:
       - '31:31'
     redistribute_routes:
     - learned
     vlan: '350'
-    name: Tenant_C_WAN_Zone
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

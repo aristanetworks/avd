@@ -4,18 +4,18 @@ router_bgp:
   bgp_defaults:
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
+  - name: MLAG-IPv4-UNDERLAY-PEER
+    type: ipv4
     remote_as: '65101'
     next_hop_self: true
     description: UNDERLAY-MULTICAST-L3LEAF1A
     maximum_routes: 12000
     send_community: all
     route_map_in: RM-MLAG-PEER-IN
-    name: MLAG-IPv4-UNDERLAY-PEER
-  - type: ipv4
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
     maximum_routes: 12000
     send_community: all
-    name: IPv4-UNDERLAY-PEERS
   - type: evpn
     update_source: Loopback0
     bfd: true
@@ -25,16 +25,16 @@ router_bgp:
     name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: MLAG-IPv4-UNDERLAY-PEER
-    - activate: true
-      name: IPv4-UNDERLAY-PEERS
+    - name: MLAG-IPv4-UNDERLAY-PEER
+      activate: true
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
     - activate: false
       name: EVPN-OVERLAY-PEERS
   neighbors:
-  - peer_group: MLAG-IPv4-UNDERLAY-PEER
+  - ip_address: 10.255.251.0
+    peer_group: MLAG-IPv4-UNDERLAY-PEER
     description: UNDERLAY-MULTICAST-L3LEAF1A
-    ip_address: 10.255.251.0
   - peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
     description: UNDERLAY-MULTICAST-SPINE1_Ethernet2
@@ -52,8 +52,8 @@ router_bgp:
     remote_as: '65001'
     ip_address: 192.168.255.2
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
     - activate: true

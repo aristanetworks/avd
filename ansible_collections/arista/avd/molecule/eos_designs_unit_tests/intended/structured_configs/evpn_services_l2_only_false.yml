@@ -4,11 +4,11 @@ router_bgp:
   bgp_defaults:
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
+  - name: UNDERLAY-PEERS
+    type: ipv4
     password: 0nsCUm70mvSTxVO0ldytrg==
     maximum_routes: 12000
     send_community: all
-    name: UNDERLAY-PEERS
   - type: evpn
     update_source: Loopback0
     bfd: true
@@ -19,13 +19,13 @@ router_bgp:
     name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: UNDERLAY-PEERS
+    - name: UNDERLAY-PEERS
+      activate: true
     - activate: false
       name: EVPN-OVERLAY-PEERS
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
     - activate: true
@@ -36,7 +36,8 @@ router_bgp:
       enabled: true
       expiry_timeout: 10
   vrfs:
-  - router_id: 192.168.255.109
+  - name: Tenant_A_APP_Zone
+    router_id: 192.168.255.109
     rd: 192.168.255.109:12
     route_targets:
       import:
@@ -49,8 +50,8 @@ router_bgp:
         - '12:12'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_A_APP_Zone
-  - router_id: 192.168.255.109
+  - name: Tenant_A_DB_Zone
+    router_id: 192.168.255.109
     rd: 192.168.255.109:13
     route_targets:
       import:
@@ -63,8 +64,8 @@ router_bgp:
         - '13:13'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_A_DB_Zone
-  - router_id: 192.168.255.109
+  - name: Tenant_A_OP_Zone
+    router_id: 192.168.255.109
     rd: 192.168.255.109:9
     route_targets:
       import:
@@ -77,8 +78,8 @@ router_bgp:
         - '9:9'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_A_OP_Zone
-  - router_id: 192.168.255.109
+  - name: Tenant_A_WAN_Zone
+    router_id: 192.168.255.109
     rd: 192.168.255.109:14
     route_targets:
       import:
@@ -93,8 +94,8 @@ router_bgp:
         - 65000:789
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_A_WAN_Zone
-  - router_id: 192.168.255.109
+  - name: Tenant_A_WEB_Zone
+    router_id: 192.168.255.109
     rd: 192.168.255.109:11
     route_targets:
       import:
@@ -107,8 +108,8 @@ router_bgp:
         - '11:11'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_A_WEB_Zone
-  - router_id: 192.168.255.109
+  - name: Tenant_B_OP_Zone
+    router_id: 192.168.255.109
     rd: 192.168.255.109:20
     route_targets:
       import:
@@ -121,8 +122,8 @@ router_bgp:
         - '20:20'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_B_OP_Zone
-  - router_id: 192.168.255.109
+  - name: Tenant_B_WAN_Zone
+    router_id: 192.168.255.109
     rd: 192.168.255.109:21
     route_targets:
       import:
@@ -135,8 +136,8 @@ router_bgp:
         - '21:21'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_B_WAN_Zone
-  - router_id: 192.168.255.109
+  - name: Tenant_C_OP_Zone
+    router_id: 192.168.255.109
     rd: 192.168.255.109:30
     route_targets:
       import:
@@ -149,8 +150,8 @@ router_bgp:
         - '30:30'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_C_OP_Zone
-  - router_id: 192.168.255.109
+  - name: Tenant_C_WAN_Zone
+    router_id: 192.168.255.109
     rd: 192.168.255.109:31
     route_targets:
       import:
@@ -163,8 +164,8 @@ router_bgp:
         - '31:31'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_C_WAN_Zone
-  - router_id: 192.168.255.109
+  - name: Tenant_D_OP_Zone
+    router_id: 192.168.255.109
     rd: 192.168.255.109:40
     route_targets:
       import:
@@ -177,8 +178,8 @@ router_bgp:
         - '40:40'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_D_OP_Zone
-  - router_id: 192.168.255.109
+  - name: Tenant_D_WAN_Zone
+    router_id: 192.168.255.109
     rd: 192.168.255.109:41
     route_targets:
       import:
@@ -191,49 +192,49 @@ router_bgp:
         - '41:41'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_D_WAN_Zone
   vlan_aware_bundles:
-  - rd: 192.168.255.109:12
+  - name: Tenant_A_APP_Zone
+    rd: 192.168.255.109:12
     route_targets:
       both:
       - '12:12'
     redistribute_routes:
     - learned
     vlan: 130-132
-    name: Tenant_A_APP_Zone
-  - rd: 192.168.255.109:13
+  - name: Tenant_A_DB_Zone
+    rd: 192.168.255.109:13
     route_targets:
       both:
       - '13:13'
     redistribute_routes:
     - learned
     vlan: 140-141
-    name: Tenant_A_DB_Zone
-  - rd: 192.168.255.109:9
+  - name: Tenant_A_OP_Zone
+    rd: 192.168.255.109:9
     route_targets:
       both:
       - '9:9'
     redistribute_routes:
     - learned
     vlan: 110-112
-    name: Tenant_A_OP_Zone
-  - rd: 192.168.255.109:14
+  - name: Tenant_A_WAN_Zone
+    rd: 192.168.255.109:14
     route_targets:
       both:
       - '14:14'
     redistribute_routes:
     - learned
     vlan: 150-151
-    name: Tenant_A_WAN_Zone
-  - rd: 192.168.255.109:11
+  - name: Tenant_A_WEB_Zone
+    rd: 192.168.255.109:11
     route_targets:
       both:
       - '11:11'
     redistribute_routes:
     - learned
     vlan: 120-121
-    name: Tenant_A_WEB_Zone
-  - tenant: Tenant_A
+  - name: Tenant_A_NFS
+    tenant: Tenant_A
     rd: 192.168.255.109:20161
     route_targets:
       both:
@@ -241,8 +242,8 @@ router_bgp:
     redistribute_routes:
     - learned
     vlan: '161'
-    name: Tenant_A_NFS
-  - tenant: Tenant_A
+  - name: Tenant_A_VMOTION
+    tenant: Tenant_A
     rd: 192.168.255.109:20160
     route_targets:
       both:
@@ -250,8 +251,8 @@ router_bgp:
     redistribute_routes:
     - learned
     vlan: '160'
-    name: Tenant_A_VMOTION
-  - tenant: Tenant_A
+  - name: l2vlan_with_no_tags
+    tenant: Tenant_A
     rd: 192.168.255.109:20162
     route_targets:
       both:
@@ -259,8 +260,8 @@ router_bgp:
     redistribute_routes:
     - learned
     vlan: '162'
-    name: l2vlan_with_no_tags
-  - tenant: Tenant_A
+  - name: overlapping_name
+    tenant: Tenant_A
     rd: 192.168.255.109:20163
     route_targets:
       both:
@@ -268,55 +269,54 @@ router_bgp:
     redistribute_routes:
     - learned
     vlan: 163-165
-    name: overlapping_name
-  - rd: 192.168.255.109:20
+  - name: Tenant_B_OP_Zone
+    rd: 192.168.255.109:20
     route_targets:
       both:
       - '20:20'
     redistribute_routes:
     - learned
     vlan: 210-211
-    name: Tenant_B_OP_Zone
-  - rd: 192.168.255.109:21
+  - name: Tenant_B_WAN_Zone
+    rd: 192.168.255.109:21
     route_targets:
       both:
       - '21:21'
     redistribute_routes:
     - learned
     vlan: '250'
-    name: Tenant_B_WAN_Zone
-  - rd: 192.168.255.109:30
+  - name: Tenant_C_OP_Zone
+    rd: 192.168.255.109:30
     route_targets:
       both:
       - '30:30'
     redistribute_routes:
     - learned
     vlan: 310-311
-    name: Tenant_C_OP_Zone
-  - rd: 192.168.255.109:31
+  - name: Tenant_C_WAN_Zone
+    rd: 192.168.255.109:31
     route_targets:
       both:
       - '31:31'
     redistribute_routes:
     - learned
     vlan: '350'
-    name: Tenant_C_WAN_Zone
-  - rd: 192.168.255.109:40
+  - name: Tenant_D_OP_Zone
+    rd: 192.168.255.109:40
     route_targets:
       both:
       - '40:40'
     redistribute_routes:
     - learned
     vlan: 410-413
-    name: Tenant_D_OP_Zone
-  - rd: 192.168.255.109:41
+  - name: Tenant_D_WAN_Zone
+    rd: 192.168.255.109:41
     route_targets:
       both:
       - '41:41'
     redistribute_routes:
     - learned
     vlan: 450-452
-    name: Tenant_D_WAN_Zone
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

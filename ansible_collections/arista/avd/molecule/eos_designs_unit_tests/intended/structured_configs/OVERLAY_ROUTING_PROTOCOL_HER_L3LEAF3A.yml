@@ -4,31 +4,31 @@ router_bgp:
   bgp_defaults:
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
+  - name: MLAG-IPv4-UNDERLAY-PEER
+    type: ipv4
     remote_as: '65003'
     next_hop_self: true
     description: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B
     maximum_routes: 12000
     send_community: all
     route_map_in: RM-MLAG-PEER-IN
-    name: MLAG-IPv4-UNDERLAY-PEER
-  - type: ipv4
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
     maximum_routes: 12000
     send_community: all
-    name: IPv4-UNDERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: MLAG-IPv4-UNDERLAY-PEER
-    - activate: true
-      name: IPv4-UNDERLAY-PEERS
+    - name: MLAG-IPv4-UNDERLAY-PEER
+      activate: true
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
   neighbors:
-  - peer_group: MLAG-IPv4-UNDERLAY-PEER
+  - ip_address: 192.168.253.5
+    peer_group: MLAG-IPv4-UNDERLAY-PEER
     description: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B
-    ip_address: 192.168.253.5
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:

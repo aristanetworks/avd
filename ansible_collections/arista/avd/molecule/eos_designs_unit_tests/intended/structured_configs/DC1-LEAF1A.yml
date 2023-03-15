@@ -6,11 +6,11 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
+  - name: UNDERLAY-PEERS
+    type: ipv4
     password: 0nsCUm70mvSTxVO0ldytrg==
     maximum_routes: 12000
     send_community: all
-    name: UNDERLAY-PEERS
   - type: evpn
     update_source: Loopback0
     bfd: true
@@ -21,13 +21,13 @@ router_bgp:
     name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: UNDERLAY-PEERS
+    - name: UNDERLAY-PEERS
+      activate: true
     - activate: false
       name: EVPN-OVERLAY-PEERS
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   neighbors:
   - peer_group: UNDERLAY-PEERS
     remote_as: '65001'
@@ -71,7 +71,8 @@ router_bgp:
       enabled: true
       expiry_timeout: 10
   vrfs:
-  - router_id: 192.168.255.9
+  - name: Tenant_A_APP_Zone
+    router_id: 192.168.255.9
     rd: 1.1.1.1:12
     route_targets:
       import:
@@ -84,8 +85,8 @@ router_bgp:
         - '1234:12'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_A_APP_Zone
-  - router_id: 192.168.255.9
+  - name: Tenant_A_WEB_Zone
+    router_id: 192.168.255.9
     rd: 1.1.1.1:11
     route_targets:
       import:
@@ -98,8 +99,8 @@ router_bgp:
         - '1234:11'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_A_WEB_Zone
-  - router_id: 192.168.255.9
+  - name: Tenant_D_WAN_Zone
+    router_id: 192.168.255.9
     rd: 1.1.1.1:41
     route_targets:
       import:
@@ -112,32 +113,31 @@ router_bgp:
         - '1234:41'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_D_WAN_Zone
   vlan_aware_bundles:
-  - rd: 1.1.1.1:12
+  - name: Tenant_A_APP_Zone
+    rd: 1.1.1.1:12
     route_targets:
       both:
       - '1234:12'
     redistribute_routes:
     - learned
     vlan: 130-132
-    name: Tenant_A_APP_Zone
-  - rd: 1.1.1.1:11
+  - name: Tenant_A_WEB_Zone
+    rd: 1.1.1.1:11
     route_targets:
       both:
       - '1234:11'
     redistribute_routes:
     - learned
     vlan: 120-121
-    name: Tenant_A_WEB_Zone
-  - rd: 1.1.1.1:41
+  - name: Tenant_D_WAN_Zone
+    rd: 1.1.1.1:41
     route_targets:
       both:
       - '1234:41'
     redistribute_routes:
     - learned
     vlan: 450-452
-    name: Tenant_D_WAN_Zone
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

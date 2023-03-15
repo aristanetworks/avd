@@ -4,18 +4,18 @@ router_bgp:
   bgp_defaults:
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
+  - name: MLAG-IPv4-UNDERLAY-PEER
+    type: ipv4
     remote_as: '65001'
     next_hop_self: true
     description: trunk-group-tests-l3leaf1a
     maximum_routes: 12000
     send_community: all
     route_map_in: RM-MLAG-PEER-IN
-    name: MLAG-IPv4-UNDERLAY-PEER
-  - type: ipv4
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
     maximum_routes: 12000
     send_community: all
-    name: IPv4-UNDERLAY-PEERS
   - type: evpn
     update_source: Loopback0
     bfd: true
@@ -25,25 +25,26 @@ router_bgp:
     name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: MLAG-IPv4-UNDERLAY-PEER
-    - activate: true
-      name: IPv4-UNDERLAY-PEERS
+    - name: MLAG-IPv4-UNDERLAY-PEER
+      activate: true
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
     - activate: false
       name: EVPN-OVERLAY-PEERS
   neighbors:
-  - peer_group: MLAG-IPv4-UNDERLAY-PEER
+  - ip_address: 10.255.247.0
+    peer_group: MLAG-IPv4-UNDERLAY-PEER
     description: trunk-group-tests-l3leaf1a
-    ip_address: 10.255.247.0
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
     - activate: true
       name: EVPN-OVERLAY-PEERS
   vrfs:
-  - router_id: 192.168.250.10
+  - name: TG_100
+    router_id: 192.168.250.10
     rd: 192.168.250.10:100
     route_targets:
       import:
@@ -57,10 +58,10 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: MLAG-IPv4-UNDERLAY-PEER
-      ip_address: 10.255.247.0
-    name: TG_100
-  - router_id: 192.168.250.10
+    - ip_address: 10.255.247.0
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+  - name: TG_200
+    router_id: 192.168.250.10
     rd: 192.168.250.10:200
     route_targets:
       import:
@@ -74,10 +75,10 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: MLAG-IPv4-UNDERLAY-PEER
-      ip_address: 10.255.247.0
-    name: TG_200
-  - router_id: 192.168.250.10
+    - ip_address: 10.255.247.0
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+  - name: TG_300
+    router_id: 192.168.250.10
     rd: 192.168.250.10:300
     route_targets:
       import:
@@ -91,90 +92,89 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: MLAG-IPv4-UNDERLAY-PEER
-      ip_address: 10.255.247.0
-    name: TG_300
+    - ip_address: 10.255.247.0
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
   vlans:
-  - tenant: TRUNK_GROUP_TESTS
+  - id: 100
+    tenant: TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10100
     route_targets:
       both:
       - 10100:10100
     redistribute_routes:
     - learned
-    id: 100
-  - tenant: TRUNK_GROUP_TESTS
+  - id: 200
+    tenant: TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10200
     route_targets:
       both:
       - 10200:10200
     redistribute_routes:
     - learned
-    id: 200
-  - tenant: TRUNK_GROUP_TESTS
+  - id: 300
+    tenant: TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10300
     route_targets:
       both:
       - 10300:10300
     redistribute_routes:
     - learned
-    id: 300
-  - tenant: TRUNK_GROUP_TESTS
+  - id: 301
+    tenant: TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10301
     route_targets:
       both:
       - 10301:10301
     redistribute_routes:
     - learned
-    id: 301
-  - tenant: TRUNK_GROUP_TESTS
+  - id: 398
+    tenant: TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10398
     route_targets:
       both:
       - 10398:10398
     redistribute_routes:
     - learned
-    id: 398
-  - tenant: TRUNK_GROUP_TESTS
+  - id: 110
+    tenant: TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10110
     route_targets:
       both:
       - 10110:10110
     redistribute_routes:
     - learned
-    id: 110
-  - tenant: TRUNK_GROUP_TESTS
+  - id: 210
+    tenant: TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10210
     route_targets:
       both:
       - 10210:10210
     redistribute_routes:
     - learned
-    id: 210
-  - tenant: TRUNK_GROUP_TESTS
+  - id: 310
+    tenant: TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10310
     route_targets:
       both:
       - 10310:10310
     redistribute_routes:
     - learned
-    id: 310
-  - tenant: TRUNK_GROUP_TESTS
+  - id: 311
+    tenant: TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10311
     route_targets:
       both:
       - 10311:10311
     redistribute_routes:
     - learned
-    id: 311
-  - tenant: TRUNK_GROUP_TESTS
+  - id: 399
+    tenant: TRUNK_GROUP_TESTS
     rd: 192.168.250.10:10399
     route_targets:
       both:
       - 10399:10399
     redistribute_routes:
     - learned
-    id: 399
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

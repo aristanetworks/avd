@@ -6,11 +6,11 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
+  - name: UNDERLAY-PEERS
+    type: ipv4
     password: 0nsCUm70mvSTxVO0ldytrg==
     maximum_routes: 12000
     send_community: all
-    name: UNDERLAY-PEERS
   - type: evpn
     update_source: Loopback0
     bfd: true
@@ -22,13 +22,13 @@ router_bgp:
     name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: UNDERLAY-PEERS
+    - name: UNDERLAY-PEERS
+      activate: true
     - activate: false
       name: EVPN-OVERLAY-PEERS
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   neighbors:
   - peer_group: UNDERLAY-PEERS
     remote_as: '65101'

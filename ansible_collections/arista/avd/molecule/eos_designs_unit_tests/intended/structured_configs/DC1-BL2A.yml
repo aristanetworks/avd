@@ -6,11 +6,11 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
+  - name: UNDERLAY-PEERS
+    type: ipv4
     password: 0nsCUm70mvSTxVO0ldytrg==
     maximum_routes: 12000
     send_community: all
-    name: UNDERLAY-PEERS
   - type: evpn
     update_source: Loopback0
     bfd: true
@@ -27,7 +27,8 @@ router_bgp:
     maximum_routes: 50000
     local_as: '65001'
     name: IPVPN-INTERWORKING-PEERS
-  - remote_as: '666'
+  - name: Tenant_C_BGP_PEER_GROUP
+    remote_as: '666'
     description: Tenant C peer group
     send_community: all
     next_hop_self: true
@@ -41,22 +42,21 @@ router_bgp:
     route_map_out: TEST_OUT
     route_map_in: TEST_IN
     local_as: '777'
-    name: Tenant_C_BGP_PEER_GROUP
-  - remote_as: '667'
+  - name: Tenant_C_BGP_PEER_GROUP2
+    remote_as: '667'
     description: Tenant C peer group2
     update_source: lo0
-    name: Tenant_C_BGP_PEER_GROUP2
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: UNDERLAY-PEERS
+    - name: UNDERLAY-PEERS
+      activate: true
     - activate: false
       name: EVPN-OVERLAY-PEERS
     - activate: false
       name: IPVPN-INTERWORKING-PEERS
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   neighbors:
   - peer_group: UNDERLAY-PEERS
     remote_as: '65001'
@@ -126,7 +126,8 @@ router_bgp:
       name: IPVPN-INTERWORKING-PEERS
     domain_identifier: '65000:4'
   vrfs:
-  - router_id: 192.168.255.16
+  - name: Tenant_A_WAN_Zone
+    router_id: 192.168.255.16
     rd: 192.168.255.16:14
     route_targets:
       import:
@@ -147,8 +148,8 @@ router_bgp:
         - 65000:123
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_A_WAN_Zone
-  - router_id: 192.168.255.16
+  - name: Tenant_B_OP_Zone
+    router_id: 192.168.255.16
     rd: 192.168.255.16:20
     route_targets:
       import:
@@ -161,8 +162,8 @@ router_bgp:
         - '20:20'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_B_OP_Zone
-  - router_id: 192.168.255.16
+  - name: Tenant_B_WAN_Zone
+    router_id: 192.168.255.16
     rd: 192.168.255.16:21
     route_targets:
       import:
@@ -175,8 +176,8 @@ router_bgp:
         - '21:21'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_B_WAN_Zone
-  - router_id: 192.168.255.16
+  - name: Tenant_C_WAN_Zone
+    router_id: 192.168.255.16
     rd: 192.168.255.16:31
     route_targets:
       import:
@@ -190,45 +191,44 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: Tenant_C_BGP_PEER_GROUP
+    - ip_address: 2.2.2.2
+      peer_group: Tenant_C_BGP_PEER_GROUP
       description: test_bgp_peer_group_without_nodes
-      ip_address: 2.2.2.2
-    - peer_group: Tenant_C_BGP_PEER_GROUP2
+    - ip_address: 2.2.2.3
+      peer_group: Tenant_C_BGP_PEER_GROUP2
       description: test_bgp_peer_group_without_nodes_2nd_time
-      ip_address: 2.2.2.3
     address_families:
-    - neighbors:
-      - activate: true
-        ip_address: 2.2.2.2
-      - activate: true
-        ip_address: 2.2.2.3
-      address_family: ipv4
-    name: Tenant_C_WAN_Zone
+    - address_family: ipv4
+      neighbors:
+      - ip_address: 2.2.2.2
+        activate: true
+      - ip_address: 2.2.2.3
+        activate: true
   vlan_aware_bundles:
-  - rd: 192.168.255.16:14
+  - name: Tenant_A_WAN_Zone
+    rd: 192.168.255.16:14
     route_targets:
       both:
       - '14:14'
     redistribute_routes:
     - learned
     vlan: '150'
-    name: Tenant_A_WAN_Zone
-  - rd: 192.168.255.16:21
+  - name: Tenant_B_WAN_Zone
+    rd: 192.168.255.16:21
     route_targets:
       both:
       - '21:21'
     redistribute_routes:
     - learned
     vlan: '250'
-    name: Tenant_B_WAN_Zone
-  - rd: 192.168.255.16:31
+  - name: Tenant_C_WAN_Zone
+    rd: 192.168.255.16:31
     route_targets:
       both:
       - '31:31'
     redistribute_routes:
     - learned
     vlan: '350'
-    name: Tenant_C_WAN_Zone
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

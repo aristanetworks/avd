@@ -4,17 +4,17 @@ router_bgp:
   bgp_defaults:
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
     maximum_routes: 12000
     send_community: all
-    name: IPv4-UNDERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: IPv4-UNDERLAY-PEERS
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   neighbors:
   - peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
