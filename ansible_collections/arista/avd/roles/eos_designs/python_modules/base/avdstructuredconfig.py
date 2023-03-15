@@ -457,9 +457,9 @@ class AvdStructuredConfig(AvdFacts):
             spanning_tree["mode"] = spanning_tree_mode
             priority = get(self._hostvars, "switch.spanning_tree_priority", "32768")
             if spanning_tree_mode == "mstp":
-                spanning_tree["mst_instances"] = [{"id" : "0" , "priority": priority}]
+                spanning_tree["mst_instances"] = [{"id": "0", "priority": priority}]
             elif spanning_tree_mode == "rapid-pvst":
-                spanning_tree["rapid_pvst_instances"] = [{"id" : "1-4094" , "priority": priority}]
+                spanning_tree["rapid_pvst_instances"] = [{"id": "1-4094", "priority": priority}]
             elif spanning_tree_mode == "rstp":
                 spanning_tree["rstp_priority"] = priority
 
@@ -488,10 +488,10 @@ class AvdStructuredConfig(AvdFacts):
         for local_user in natural_sort(local_users, "name"):
             name = local_user.get("name")
             if local_user.get("disabled") is True:
-                local_users_list.append({"name": name , "disabled": True})
+                local_users_list.append({"name": name, "disabled": True})
                 continue
 
-            local_users_dict = {"name": name , "privilege": get(local_user, "privilege")}
+            local_users_dict = {"name": name, "privilege": get(local_user, "privilege")}
             if (role := local_user.get("role")) is not None:
                 local_users_dict["role"] = role
 
