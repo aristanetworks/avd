@@ -297,14 +297,14 @@ snmp_server:
 spanning_tree:
   mode: mstp
   mst_instances:
-  - priority: 4096
-    id: '0'
+  - id: '0'
+    priority: 4096
   no_spanning_tree_vlan: '4094'
 local_users:
-- privilege: 15
+- name: admin
+  privilege: 15
   role: network-admin
   sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
-  name: admin
 vrfs:
 - name: MGMT
   ip_routing: false

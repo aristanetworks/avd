@@ -93,7 +93,7 @@ class AvdStructuredConfig(AvdFacts):
         }
 
     @cached_property
-    def static_routes(self):
+    def static_routes(self) -> list | None:
         """
         static_routes set based on mgmt_gateway, mgmt_destination_networks and mgmt_interface_vrf
         """
@@ -666,7 +666,7 @@ class AvdStructuredConfig(AvdFacts):
         return None
 
     @cached_property
-    def ptp(self):
+    def ptp(self) -> dict | None:
         """
         ptp set to contents of switch.ptp.device_config if switch.ptp.enabled is True
         """
@@ -675,7 +675,7 @@ class AvdStructuredConfig(AvdFacts):
         return None
 
     @cached_property
-    def eos_cli(self):
+    def eos_cli(self) -> str | None:
         """
         Aggregate the values of switch.raw_eos_cli and switch.platform_settings.platform_raw_eos_cli facts
         """
