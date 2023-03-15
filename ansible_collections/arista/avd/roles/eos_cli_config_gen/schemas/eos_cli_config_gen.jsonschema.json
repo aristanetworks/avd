@@ -1945,7 +1945,7 @@
           },
           "ospf_authentication_key": {
             "type": "string",
-            "description": "Encrypted password",
+            "description": "Encrypted password - only type 7 supported",
             "title": "OSPF Authentication Key"
           },
           "ospf_message_digest_keys": {
@@ -1970,7 +1970,7 @@
                 },
                 "key": {
                   "type": "string",
-                  "description": "Encrypted password",
+                  "description": "Encrypted password - only type 7 supported",
                   "title": "Key"
                 }
               },

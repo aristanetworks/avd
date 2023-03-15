@@ -2,8 +2,88 @@
 Encrypt / Decrypt filters
 """
 
-from ansible_collections.arista.avd.plugins.plugin_utils.bgp_utils import cbc_decrypt, cbc_encrypt
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.password_utils import cbc_decrypt, cbc_encrypt
+
+
+##############
+# OSPF
+##############
+def ospf_encrypt(password: str, key: str, auth_algo: str | None = None, key_id: str | None = None) -> str:
+    """
+    Encrypt a password.
+
+    <key> should be the interface name e.g. "Ethernet1"
+
+    The key is transformed to either::
+        <key>_passwd for simple authentication
+    or
+        <key>_<auth_algo>Key_<key_id> for message digest keys
+
+    Returns the encrypted password as a string
+    """
+    if not key:
+        raise AristaAvdMissingVariableError("Key is required for OSPF encryption")
+
+    if not password:
+        raise AristaAvdMissingVariableError("Password is required for OSPF encryption")
+
+    if not isinstance(password, str):
+        raise AristaAvdError(f"Password MUST be of type 'str' but is of type {type(password)}")
+
+    data = bytes(password, encoding="UTF-8")
+
+    if auth_algo is not None and key_id is not None:
+        # message digest authentication
+        key_b = bytes(f"{key}_{auth_algo}Key_{key_id}", encoding="UTF-8")
+    elif auth_algo is not None or key_id is not None:
+        raise AristaAvdError("For OSPF message digest keys, both auth_algo and key_id are required")
+    else:
+        # None set - assumes simple authentication
+        key_b = bytes(f"{key}_passwd", encoding="UTF-8")
+
+    return cbc_encrypt(key_b, data).decode()
+
+
+def ospf_decrypt(password: str, key: str, auth_algo: str | None = None, key_id: str | None = None) -> str:
+    """
+    Decrypt a password.
+
+    <key> should be the interface name e.g. "Ethernet1"
+
+    The key is transformed to either::
+        <key>_passwd for simple authentication
+    or
+        <key>_<auth_algo>Key_<key_id> for message digest keys
+
+    Returns the decrypted password as a string
+
+    Raises AristaAvdError is decryption fails
+    """
+    if not key:
+        raise AristaAvdMissingVariableError("Key is required for OSPF decryption")
+
+    if not password:
+        raise AristaAvdMissingVariableError("Password is required for OSPF decryption")
+
+    if not isinstance(password, str):
+        raise AristaAvdError(f"Password MUST be of type 'str' but is of type {type(password)}")
+
+    data = bytes(password, encoding="UTF-8")
+
+    if auth_algo is not None and key_id is not None:
+        # message digest authentication
+        key_b = bytes(f"{key}_{auth_algo}Key_{key_id}", encoding="UTF-8")
+    elif auth_algo is not None or key_id is not None:
+        raise AristaAvdError("For OSPF message digest keys, both auth_algo and key_id are required")
+    else:
+        # None set - assumes simple authentication
+        key_b = bytes(f"{key}_passwd", encoding="UTF-8")
+
+    try:
+        return cbc_decrypt(key_b, data).decode()
+    except Exception as exc:
+        raise AristaAvdError("OSPF password decryption failed - check the input parameters") from exc
 
 
 ##############
@@ -53,13 +133,16 @@ def bgp_decrypt(password: str, key) -> str:
     try:
         return cbc_decrypt(key, data).decode()
     except Exception as exc:
-        raise AristaAvdError from exc
+        raise AristaAvdError("BGP password decryption failed - check the input parameters") from exc
 
 
 ##############
 # GENERIC
 ##############
-METHODS_DIR = {"bgp": (bgp_encrypt, bgp_decrypt)}
+METHODS_DIR = {
+    "bgp": (bgp_encrypt, bgp_decrypt),
+    "ospf": (ospf_encrypt, ospf_decrypt),
+}
 
 
 def encrypt(value, passwd_type=None, key=None, **kwargs) -> str:
