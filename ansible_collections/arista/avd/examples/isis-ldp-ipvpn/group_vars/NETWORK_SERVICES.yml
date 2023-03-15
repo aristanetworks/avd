@@ -18,10 +18,9 @@ tenants:
         l3_interfaces:
           # L3 interfaces
           - interfaces: [ Ethernet3.10, Ethernet4.10, Ethernet2 ]
-            nodes: [ pe1, pe2. pe3 ]
+            nodes: [ pe1, pe2, pe3 ]
             description: C1_VLAN10
             enabled: true
-            # EOS CLI rendered directly on the Ethernet interface in the final EOS configuration
             ip_addresses: [ 10.0.1.0/31, 10.0.1.2/31, 10.0.1.4/31 ]
             ospf:
               enabled: true
