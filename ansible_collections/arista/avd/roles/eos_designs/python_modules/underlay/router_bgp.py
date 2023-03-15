@@ -41,18 +41,10 @@ class RouterBgpMixin(UtilsMixin):
         if self._underlay_rfc5549 is True:
             address_family_ipv4_peer_group["next_hop"] = {"address_family_ipv6_originate": True}
 
-        router_bgp["address_family_ipv4"] = {
-            "peer_groups": [{
-                "name": self._peer_group_ipv4_underlay_peers_name, **address_family_ipv4_peer_group
-            }]
-        }
+        router_bgp["address_family_ipv4"] = {"peer_groups": [{"name": self._peer_group_ipv4_underlay_peers_name, **address_family_ipv4_peer_group}]}
 
         if self._underlay_ipv6 is True:
-            router_bgp["address_family_ipv6"] = {
-                "peer_groups": [{
-                    "name": self._peer_group_ipv4_underlay_peers_name, "activate": True
-                }]
-            }
+            router_bgp["address_family_ipv6"] = {"peer_groups": [{"name": self._peer_group_ipv4_underlay_peers_name, "activate": True}]}
 
         # Redistribute routes
         router_bgp["redistribute_routes"] = self._router_bgp_redistribute_routes
@@ -118,4 +110,4 @@ class RouterBgpMixin(UtilsMixin):
         if self._overlay_routing_protocol == "none" or not self._underlay_filter_redistribute_connected:
             return [{"source_protocol": "connected"}]
 
-        return [{"source_protocol":"connected", "route_map": "RM-CONN-2-BGP"}]
+        return [{"source_protocol": "connected", "route_map": "RM-CONN-2-BGP"}]

@@ -337,7 +337,8 @@ class AvdStructuredConfig(AvdFacts):
         if self._underlay_rfc5549 is True:
             vlan = default(self._mlag_peer_l3_vlan, self._mlag_peer_vlan)
             neighbor_interface_name = f"Vlan{vlan}"
-            router_bgp["neighbor_interfaces"] = [{
+            router_bgp["neighbor_interfaces"] = [
+                {
                     "name": neighbor_interface_name,
                     "peer_group": peer_group_name,
                     "remote_as": self._bgp_as,
@@ -347,7 +348,8 @@ class AvdStructuredConfig(AvdFacts):
 
         else:
             neighbor_ip = get(self._hostvars, "switch.mlag_peer_l3_ip", default=self._mlag_peer_ip)
-            router_bgp["neighbors"] = [{
+            router_bgp["neighbors"] = [
+                {
                     "ip_address": neighbor_ip,
                     "peer_group": peer_group_name,
                     "description": self._mlag_peer,
@@ -383,7 +385,8 @@ class AvdStructuredConfig(AvdFacts):
 
         if get(self._hostvars, "switch.underlay_ipv6") is True:
             router_bgp["address_family_ipv6"] = {
-                "peer_groups": [{
+                "peer_groups": [
+                    {
                         "name": peer_group_name,
                         "activate": True,
                     }
@@ -395,9 +398,12 @@ class AvdStructuredConfig(AvdFacts):
             address_family_ipv4_peer_group["next_hop"] = {"address_family_ipv6_originate": True}
 
         router_bgp["address_family_ipv4"] = {
-            "peer_groups": [{
-                "name": peer_group_name, **address_family_ipv4_peer_group,
-            }]
+            "peer_groups": [
+                {
+                    "name": peer_group_name,
+                    **address_family_ipv4_peer_group,
+                }
+            ]
         }
 
         return router_bgp
