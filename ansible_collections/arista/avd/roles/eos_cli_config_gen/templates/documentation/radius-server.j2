@@ -1,7 +1,7 @@
 {# doc - radius servers #}
 {% if radius_servers is arista.avd.defined or radius_server is arista.avd.defined %}
 
-## RADIUS Server
+### RADIUS Server
 {%     if radius_server.attribute_32_include_in_access_req is arista.avd.defined %}
 {%         set doc_line = "- Attribute 32 is included in access requests" %}
 {%         if radius_server.attribute_32_include_in_access_req.hostname is arista.avd.defined(true) %}
@@ -24,7 +24,7 @@
 {{ doc_line }}
 {%     endif %}
 
-### RADIUS Server Hosts
+#### RADIUS Server Hosts
 
 | VRF | RADIUS Servers | Timeout | Retransmit |
 | --- | -------------- | ------- | ---------- |
@@ -43,7 +43,7 @@
 | {{ vrf }} | {{ host.host }} | {{ timeout }} | {{ retransmit }} |
 {%     endfor %}
 
-### RADIUS Server Device Configuration
+#### RADIUS Server Device Configuration
 
 ```eos
 {%     include 'eos/radius-servers.j2' %}

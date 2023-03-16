@@ -1,9 +1,9 @@
 {# doc - local users #}
 {% if local_users is arista.avd.defined %}
 
-## Local Users
+### Local Users
 
-### Local Users Summary
+#### Local Users Summary
 
 | User | Privilege | Role | Disabled | Shell |
 | ---- | --------- | ---- | -------- | ----- |
@@ -15,7 +15,7 @@
 | {{ local_user.name }} | {{ privilege }} | {{ role }} | {{ disabled }} | {{ shell }} |
 {%     endfor %}
 
-### Local Users Device Configuration
+#### Local Users Device Configuration
 
 ```eos
 {%     include 'eos/local-users.j2' %}

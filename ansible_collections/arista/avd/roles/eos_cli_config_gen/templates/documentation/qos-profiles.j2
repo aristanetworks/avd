@@ -1,9 +1,9 @@
 {# doc - qos profiles #}
 {% if qos_profiles is arista.avd.defined %}
 
-## QOS Profiles
+### QOS Profiles
 
-### QOS Profiles Summary
+#### QOS Profiles Summary
 
 {%     for profile in qos_profiles | arista.avd.natural_sort('name') %}
 
@@ -63,7 +63,7 @@ QOS Profile: **{{ profile.name }}**
 {%         endif %}
 {%     endfor %}
 
-### QOS Profile Device Configuration
+#### QOS Profile Device Configuration
 
 ```eos
 {%     include 'eos/qos-profiles.j2' %}

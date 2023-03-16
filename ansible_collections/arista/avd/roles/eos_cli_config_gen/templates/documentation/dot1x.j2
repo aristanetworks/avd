@@ -7,12 +7,12 @@
 {% endfor %}
 {% if (dot1x is arista.avd.defined) or (ethernet_interfaces_dot1x | length > 0) %}
 
-# 802.1X Port Security
+## 802.1X Port Security
 
-## 802.1X Summary
+### 802.1X Summary
 {%     if dot1x is arista.avd.defined %}
 
-### 802.1X Global
+#### 802.1X Global
 
 | System Auth Control | Protocol LLDP Bypass | Dynamic Authorization |
 | ------------------- | -------------------- | ----------------------|
@@ -22,7 +22,7 @@
 | {{ system_auth_control }} | {{ protocol_lldp_bypass }} | {{ dynamic_authorization }} |
 {%         if dot1x.mac_based_authentication is arista.avd.defined %}
 
-### 802.1X MAC based authentication
+#### 802.1X MAC based authentication
 
 | Delay | Hold period |
 | ----- | ----------- |
@@ -32,7 +32,7 @@
 {%         endif %}
 {%         if dot1x.radius_av_pair is arista.avd.defined %}
 
-### 802.1X Radius AV pair
+#### 802.1X Radius AV pair
 
 | Service type | Framed MTU |
 | ------------ | ---------- |
@@ -43,7 +43,7 @@
 {%     endif %}
 {%     if ethernet_interfaces_dot1x | length > 0 %}
 
-### 802.1X Interfaces
+#### 802.1X Interfaces
 
 | Interface | PAE Mode | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth | Eapol |
 | --------- | -------- | ------| ---------------------- | ---------------- | ------------------- | --------- | -------------- | ------ |

@@ -1,12 +1,12 @@
 {# doc - access lists #}
 {% if access_lists is arista.avd.defined %}
 
-## Extended Access-lists
+### Extended Access-lists
 
-### Extended Access-lists Summary
+#### Extended Access-lists Summary
 
 {%     for access_list in access_lists | arista.avd.natural_sort('name') %}
-#### {{ access_list.name }}
+##### {{ access_list.name }}
 {%         if access_list.counters_per_entry is arista.avd.defined(true) %}
 
 ACL has counting mode `counters per-entry` enabled!
@@ -19,7 +19,7 @@ ACL has counting mode `counters per-entry` enabled!
 {%         endfor %}
 
 {%     endfor %}
-### Extended Access-lists Device Configuration
+#### Extended Access-lists Device Configuration
 
 ```eos
 {%     include 'eos/access-lists.j2' %}

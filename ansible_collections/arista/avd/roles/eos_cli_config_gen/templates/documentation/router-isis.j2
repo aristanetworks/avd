@@ -1,9 +1,9 @@
 {# doc - router isis #}
 {% if router_isis is arista.avd.defined %}
 
-## Router ISIS
+### Router ISIS
 
-### Router ISIS Summary
+#### Router ISIS Summary
 
 | Settings | Value |
 | -------- | ----- |
@@ -39,7 +39,7 @@
 {%     endif %}
 {%     if router_isis.redistribute_routes is arista.avd.defined %}
 
-### ISIS Route Redistribution
+#### ISIS Route Redistribution
 
 | Route Type | Route-Map | Include Leaked |
 | ---------- | --------- | -------------- |
@@ -61,7 +61,7 @@
 {%         endfor %}
 {%     endif %}
 
-### ISIS Interfaces Summary
+#### ISIS Interfaces Summary
 
 | Interface | ISIS Instance | ISIS Metric | Interface Mode |
 | --------- | ------------- | ----------- | -------------- |
@@ -124,7 +124,7 @@
 {%     endfor %}
 {%     if node_sid_loopbacks | length > 0 %}
 
-### ISIS Segment-routing Node-SID
+#### ISIS Segment-routing Node-SID
 
 | Loopback | IPv4 Index | IPv6 Index |
 | -------- | ---------- | ---------- |
@@ -136,7 +136,7 @@
 {%     endif %}
 {%     if router_isis.segment_routing_mpls.prefix_segments is arista.avd.defined %}
 
-### Prefix Segments
+#### Prefix Segments
 
 | Prefix Segment | Index |
 | -------------- | ----- |
@@ -148,7 +148,7 @@
 {%     endif %}
 {%     if router_isis.address_family_ipv4 is arista.avd.defined %}
 
-### ISIS IPv4 Address Family Summary
+#### ISIS IPv4 Address Family Summary
 
 | Settings | Value |
 | -------- | ----- |
@@ -171,7 +171,7 @@
 {%     endif %}
 {%     if router_isis.address_family_ipv4.tunnel_source_labeled_unicast.enabled is arista.avd.defined(true) %}
 
-### Tunnel Source
+#### Tunnel Source
 
 | Source Protocol | RCF |
 | --------------- | --- |
@@ -180,7 +180,7 @@
 {%     endif %}
 {%     if router_isis.address_family_ipv6 is arista.avd.defined %}
 
-### ISIS IPv6 Address Family Summary
+#### ISIS IPv6 Address Family Summary
 
 | Settings | Value |
 | -------- | ----- |
@@ -202,7 +202,7 @@
 {%         endif %}
 {%     endif %}
 
-### Router ISIS Device Configuration
+#### Router ISIS Device Configuration
 
 ```eos
 {%     include 'eos/router-isis.j2' %}

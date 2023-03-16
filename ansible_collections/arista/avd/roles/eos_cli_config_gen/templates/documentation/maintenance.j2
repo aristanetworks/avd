@@ -1,9 +1,9 @@
 {# doc - maintenance #}
 {% if maintenance is arista.avd.defined %}
 
-## Maintenance
+### Maintenance
 
-### Maintenance defaults
+#### Maintenance defaults
 
 Default maintenance bgp profile: **{{ maintenance.default_bgp_profile | arista.avd.default('Default') }}**
 
@@ -11,7 +11,7 @@ Default maintenance interface profile: **{{ maintenance.default_interface_profil
 
 Default maintenance unit profile: **{{ maintenance.default_unit_profile | arista.avd.default('Default') }}**
 
-### Maintenance profiles
+#### Maintenance profiles
 
 | BGP profile | Initiator route-map |
 | ----------- | ------------------- |
@@ -34,7 +34,7 @@ Default maintenance unit profile: **{{ maintenance.default_unit_profile | arista
 | {{ unit_profile.name }} | {{ unit_profile.on_boot.duration | arista.avd.default('disabled') }} |
 {%     endfor %}
 
-### Maintenance units
+#### Maintenance units
 
 | Unit | Interface groups | BGP groups | Unit profile | Quiesce |
 | ---- | ---------------- | ---------- | ------------ | ------- |
@@ -46,7 +46,7 @@ Default maintenance unit profile: **{{ maintenance.default_unit_profile | arista
 | {{ unit.name }} | {{ row_interface_groups }} | {{ row_bgp_groups }} | {{ row_unit_profile }} | {{ row_quiesce }} |
 {%     endfor %}
 
-### Maintenance configuration
+#### Maintenance configuration
 
 ```eos
 {%     include 'eos/maintenance.j2' %}

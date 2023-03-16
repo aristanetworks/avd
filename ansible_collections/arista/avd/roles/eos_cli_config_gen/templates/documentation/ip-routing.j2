@@ -1,8 +1,8 @@
 {# doc - ip routing #}
 {% if ip_routing is arista.avd.defined or vrfs is arista.avd.defined %}
-## IP Routing
+### IP Routing
 
-### IP Routing Summary
+#### IP Routing Summary
 
 | VRF | Routing Enabled |
 | --- | --------------- |
@@ -15,7 +15,7 @@
 {%         endif %}
 {%     endfor %}
 
-### IP Routing Device Configuration
+#### IP Routing Device Configuration
 
 ```eos
 {%     include 'eos/ip-routing.j2' %}

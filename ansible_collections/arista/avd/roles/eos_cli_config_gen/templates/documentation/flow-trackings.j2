@@ -1,16 +1,16 @@
 {# doc - flow trackings #}
 {% if flow_trackings is arista.avd.defined %}
 
-## Flow Tracking
+### Flow Tracking
 {%     for flow_tracking in flow_trackings %}
 {%         if flow_tracking.type == "sampled" %}
 
-### Flow Tracking Sampled
+#### Flow Tracking Sampled
 
 Sample: {{ flow_tracking.sample | arista.avd.default("default") }}
 {%             if flow_tracking.trackers is arista.avd.defined %}
 
-#### Trackers Summary
+##### Trackers Summary
 
 | Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | MPLS | Number of Exporters | Applied On |
 | ------------ | --------------------------------- | ------------------------- | ---- | ------------------- | ---------- |
@@ -33,7 +33,7 @@ Sample: {{ flow_tracking.sample | arista.avd.default("default") }}
 | {{ tracker.name }} | {{ on_inactive_timeout }} | {{ on_interval }} | {{ mpls }} | {{ count_exporter }} | {{ applied_on | join("<br>") }} |
 {%                 endfor %}
 
-#### Exporters Summary
+##### Exporters Summary
 
 | Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
 | ------------ | ------------- | ----------------- | -------------- | --------------- |
@@ -49,7 +49,7 @@ Sample: {{ flow_tracking.sample | arista.avd.default("default") }}
 {%         endif %}
 {%     endfor %}
 
-### Flow Tracking Configuration
+#### Flow Tracking Configuration
 
 ```eos
 {%     include 'eos/flow-trackings.j2' %}
