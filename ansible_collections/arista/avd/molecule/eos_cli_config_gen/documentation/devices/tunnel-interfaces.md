@@ -1,30 +1,31 @@
 # tunnel-interfaces
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Interfaces](#interfaces)
   - [Tunnel Interfaces](#tunnel-interfaces)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -34,11 +35,11 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Interfaces
+## Interfaces
 
-## Tunnel Interfaces
+### Tunnel Interfaces
 
-### Tunnel Interfaces Summary
+#### Tunnel Interfaces Summary
 
 | Interface | Description | VRF | MTU | Shutdown | Source Interface | Destination | PMTU-Discovery |
 | --------- | ----------- | --- | --- | -------- | ---------------- | ----------- | -------------- |
@@ -47,7 +48,7 @@ interface Management1
 | Tunnel3 | test dual stack | default | 1500 | - | Ethernet42 | 1.1.1.1 | - |
 | Tunnel4 | test no tcp_mss | default | 1500 | - | Ethernet42 | 1.1.1.1 | - |
 
-#### IPv4
+##### IPv4
 
 | Interface | VRF | IP Address | TCP MSS | TCP MSS Direction | ACL In | ACL Out |
 | --------- | --- | ---------- | ------- | ----------------- | ------ | ------- |
@@ -55,7 +56,7 @@ interface Management1
 | Tunnel3 | default | 64.64.64.64/24 | 666 | - | - | - |
 | Tunnel4 | default | 64.64.64.64/24 | - | - | - | - |
 
-#### IPv6
+##### IPv6
 
 | Interface | VRF | IPv6 Address | TCP MSS | TCP MSS Direction | IPv6 ACL In | IPv6 ACL Out |
 | --------- | --- | ------------ | ------- | ----------------- | ----------- | ------------ |
@@ -63,7 +64,7 @@ interface Management1
 | Tunnel3 | default | beef::64/64 | 666 | - | - | - |
 | Tunnel4 | default | beef::64/64 | - | - | - | - |
 
-### Tunnel Interfaces Device Configuration
+#### Tunnel Interfaces Device Configuration
 
 ```eos
 !

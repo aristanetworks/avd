@@ -1,5 +1,6 @@
 # SITE3-LER1
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -29,25 +30,25 @@
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [EOS CLI](#eos-cli)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 192.168.200.110/24 | 192.168.200.5 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -58,21 +59,21 @@ interface Management1
    ip address 192.168.200.110/24
 ```
 
-## Management API HTTP
+### Management API HTTP
 
-### Management API HTTP Summary
+#### Management API HTTP Summary
 
 | HTTP | HTTPS | Default Services |
 | ---- | ----- | ---------------- |
 | False | True | - |
 
-### Management API VRF Access
+#### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
 | MGMT | - | - |
 
-### Management API HTTP Configuration
+#### Management API HTTP Configuration
 
 ```eos
 !
@@ -84,19 +85,19 @@ management api http-commands
       no shutdown
 ```
 
-# Spanning Tree
+## Spanning Tree
 
-## Spanning Tree Summary
+### Spanning Tree Summary
 
 STP mode: **mstp**
 
-### MSTP Instance and Priority
+#### MSTP Instance and Priority
 
 | Instance(s) | Priority |
 | -------- | -------- |
 | 0 | 4096 |
 
-## Spanning Tree Device Configuration
+### Spanning Tree Device Configuration
 
 ```eos
 !
@@ -104,46 +105,46 @@ spanning-tree mode mstp
 spanning-tree mst 0 priority 4096
 ```
 
-# Internal VLAN Allocation Policy
+## Internal VLAN Allocation Policy
 
-## Internal VLAN Allocation Policy Summary
+### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
-## Internal VLAN Allocation Policy Configuration
+### Internal VLAN Allocation Policy Configuration
 
 ```eos
 !
 vlan internal order ascending range 1006 1199
 ```
 
-# Interfaces
+## Interfaces
 
-## Loopback Interfaces
+### Loopback Interfaces
 
-### Loopback Interfaces Summary
+#### Loopback Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | MPLS_Overlay_peering | default | 100.70.0.10/32 |
 
-#### IPv6
+##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | MPLS_Overlay_peering | default | 2000:1234:ffff:ffff::a/128 |
 
-#### ISIS
+##### ISIS
 
 | Interface | ISIS instance | ISIS metric | Interface mode |
 | --------- | ------------- | ----------- | -------------- |
 | Loopback0 | CORE | - | passive |
 
-### Loopback Interfaces Device Configuration
+#### Loopback Interfaces Device Configuration
 
 ```eos
 !
@@ -159,8 +160,8 @@ interface Loopback0
    node-segment ipv6 index 210
 ```
 
-# Routing
-## Service Routing Protocols Model
+## Routing
+### Service Routing Protocols Model
 
 Multi agent routing protocol model enabled
 
@@ -169,28 +170,28 @@ Multi agent routing protocol model enabled
 service routing protocols model multi-agent
 ```
 
-## Virtual Router MAC Address
+### Virtual Router MAC Address
 
-### Virtual Router MAC Address Summary
+#### Virtual Router MAC Address Summary
 
-#### Virtual Router MAC Address: 00:1c:73:00:dc:00
+##### Virtual Router MAC Address: 00:1c:73:00:dc:00
 
-### Virtual Router MAC Address Configuration
+#### Virtual Router MAC Address Configuration
 
 ```eos
 !
 ip virtual-router mac-address 00:1c:73:00:dc:00
 ```
-## IP Routing
+### IP Routing
 
-### IP Routing Summary
+#### IP Routing Summary
 
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
 | MGMT | false |
 
-### IP Routing Device Configuration
+#### IP Routing Device Configuration
 
 ```eos
 !
@@ -198,40 +199,40 @@ ip routing
 no ip routing vrf MGMT
 ```
 
-## IPv6 Routing
+### IPv6 Routing
 
-### IPv6 Routing Summary
+#### IPv6 Routing Summary
 
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
 | MGMT | false |
 
-### IPv6 Routing Device Configuration
+#### IPv6 Routing Device Configuration
 
 ```eos
 !
 ipv6 unicast-routing
 ```
 
-## Static Routes
+### Static Routes
 
-### Static Routes Summary
+#### Static Routes Summary
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
 | MGMT | 0.0.0.0/0 | 192.168.200.5 | - | 1 | - | - | - |
 
-### Static Routes Device Configuration
+#### Static Routes Device Configuration
 
 ```eos
 !
 ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ```
 
-## Router ISIS
+### Router ISIS
 
-### Router ISIS Summary
+#### Router ISIS Summary
 
 | Settings | Value |
 | -------- | ----- |
@@ -246,19 +247,19 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Advertise Passive-only | True |
 | SR MPLS Enabled | True |
 
-### ISIS Interfaces Summary
+#### ISIS Interfaces Summary
 
 | Interface | ISIS Instance | ISIS Metric | Interface Mode |
 | --------- | ------------- | ----------- | -------------- |
 | Loopback0 | CORE | - | passive |
 
-### ISIS Segment-routing Node-SID
+#### ISIS Segment-routing Node-SID
 
 | Loopback | IPv4 Index | IPv6 Index |
 | -------- | ---------- | ---------- |
 | Loopback0 | 210 | 210 |
 
-### Router ISIS Device Configuration
+#### Router ISIS Device Configuration
 
 ```eos
 !
@@ -282,11 +283,11 @@ router isis CORE
       no shutdown
 ```
 
-# MPLS
+## MPLS
 
-## MPLS and LDP
+### MPLS and LDP
 
-### MPLS and LDP Summary
+#### MPLS and LDP Summary
 
 | Setting | Value |
 | -------- | ---- |
@@ -296,7 +297,7 @@ router isis CORE
 | LDP Interface Disabled Default | True |
 | LDP Transport-Address Interface | Loopback0 |
 
-### MPLS and LDP Configuration
+#### MPLS and LDP Configuration
 
 ```eos
 !
@@ -309,43 +310,43 @@ mpls ldp
    transport-address interface Loopback0
 ```
 
-## MPLS Interfaces
+### MPLS Interfaces
 
 | Interface | MPLS IP Enabled | LDP Enabled | IGP Sync |
 | --------- | --------------- | ----------- | -------- |
 | Loopback0 | - | True | - |
 
-# Multicast
+## Multicast
 
-## IP IGMP Snooping
+### IP IGMP Snooping
 
-### IP IGMP Snooping Summary
+#### IP IGMP Snooping Summary
 
 | IGMP Snooping | Fast Leave | Interface Restart Query | Proxy | Restart Query Interval | Robustness Variable |
 | ------------- | ---------- | ----------------------- | ----- | ---------------------- | ------------------- |
 | Enabled | - | - | - | - | - |
 
-### IP IGMP Snooping Device Configuration
+#### IP IGMP Snooping Device Configuration
 
 ```eos
 ```
 
-# VRF Instances
+## VRF Instances
 
-## VRF Instances Summary
+### VRF Instances Summary
 
 | VRF Name | IP Routing |
 | -------- | ---------- |
 | MGMT | disabled |
 
-## VRF Instances Device Configuration
+### VRF Instances Device Configuration
 
 ```eos
 !
 vrf instance MGMT
 ```
 
-# EOS CLI
+## EOS CLI
 
 ```eos
 !

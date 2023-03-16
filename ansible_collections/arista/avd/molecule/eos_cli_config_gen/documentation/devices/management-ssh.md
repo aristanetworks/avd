@@ -1,29 +1,30 @@
 # management-ssh
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [Management SSH](#management-ssh)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -33,40 +34,40 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-## Management SSH
+### Management SSH
 
-### IPv4 ACL
+#### IPv4 ACL
 
 | IPv4 ACL | VRF |
 | -------- | --- |
 | ACL-SSH | - |
 | ACL-SSH-VRF | mgt |
 
- ### SSH timeout and management
+ #### SSH timeout and management
 
 | Idle Timeout | SSH Management |
 | ------------ | -------------- |
 | 15 | Enabled |
 
-### Max number of SSH sessions limit and per-host limit
+#### Max number of SSH sessions limit and per-host limit
 
 | Connection Limit | Max from a single Host |
 | ---------------- | ---------------------- |
 | 50 | 10 |
 
-### Ciphers and algorithms
+#### Ciphers and algorithms
 
 | Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
 |---------|----------------------|----------------|---------------------------|
 | default | default | default | default |
 
-### VRFs
+#### VRFs
 
 | VRF | Status |
 | --- | ------ |
 | mgt | Enabled |
 
-### Management SSH Configuration
+#### Management SSH Configuration
 
 ```eos
 !

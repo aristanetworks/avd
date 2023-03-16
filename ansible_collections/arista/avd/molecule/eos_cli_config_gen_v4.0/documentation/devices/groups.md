@@ -1,5 +1,6 @@
 # groups
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -7,25 +8,25 @@
   - [BGP Groups](#bgp-groups)
   - [Interface Groups](#interface-groups)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -35,18 +36,18 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Maintenance Mode
+## Maintenance Mode
 
-## BGP Groups
+### BGP Groups
 
-### BGP Groups Summary
+#### BGP Groups Summary
 
 | BGP group | VRF Name | Neighbors | BGP maintenance profiles |
 | --------- | -------- | --------- | ------------------------ |
 | bar | red | peer-group-baz | downlink-neighbors |
 | foo | - | 169.254.1.1<br>fe80::1 | ixp<br>uplink-neighbors |
 
-### BGP Groups Configuration
+#### BGP Groups Configuration
 
 ```eos
 !
@@ -62,16 +63,16 @@ group bgp foo
    maintenance profile bgp uplink-neighbors
 ```
 
-## Interface Groups
+### Interface Groups
 
-### Interface Groups Summary
+#### Interface Groups Summary
 
 | Interface Group | Interfaces | Interface maintenance profile | BGP maintenance profiles |
 | --------------- | ---------- | ----------------------------- | ------------------------ |
 | QSFP_Interface_Group | Ethernet1,5 | uplink-interfaces | Default |
 | SFP_Interface_Group | Ethernet10-20<br>Ethernet30-48 | downlink-interfaces<br>ix-interfaces | downlink-neighbors<br>local-ix |
 
-### Interface Groups Configuration
+#### Interface Groups Configuration
 
 ```eos
 !

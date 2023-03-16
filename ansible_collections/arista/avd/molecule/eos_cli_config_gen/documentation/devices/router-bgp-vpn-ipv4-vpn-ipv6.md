@@ -1,30 +1,31 @@
 # router-bgp-vpn-ipv4-vpn-ipv6
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Routing](#routing)
   - [Router BGP](#router-bgp)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -34,11 +35,11 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Routing
+## Routing
 
-## Router BGP
+### Router BGP
 
-### Router BGP Summary
+#### Router BGP Summary
 
 | BGP AS | Router ID |
 | ------ | --------- |
@@ -52,9 +53,9 @@ interface Management1
 | graceful-restart |
 | maximum-paths 2 ecmp 2 |
 
-### Router BGP Peer Groups
+#### Router BGP Peer Groups
 
-#### MPLS-IBGP-PEERS
+##### MPLS-IBGP-PEERS
 
 | Settings | Value |
 | -------- | ----- |
@@ -64,7 +65,7 @@ interface Management1
 | Send community | all |
 | Maximum routes | 0 (no limit) |
 
-### BGP Neighbors
+#### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
@@ -73,39 +74,39 @@ interface Management1
 | 192.168.255.4 | 65004 | default | - | all | - | - | - | - | - | - |
 | 2001:cafe:192:168::4 | 65004 | default | - | all | - | - | - | - | - | - |
 
-### Router BGP VPN-IPv4 Address Family
+#### Router BGP VPN-IPv4 Address Family
 
 - VPN import pruning is __enabled__
 
-#### VPN-IPv4 Neighbors
+##### VPN-IPv4 Neighbors
 
 | Neighbor | Activate | Route-map In | Route-map Out |
 | -------- | -------- | ------------ | ------------- |
 | 192.168.255.4 | True | RM-NEIGHBOR-PEER-IN4 | RM-NEIGHBOR-PEER-OUT4 |
 
-#### VPN-IPv4 Peer Groups
+##### VPN-IPv4 Peer Groups
 
 | Peer Group | Activate | Route-map In | Route-map Out |
 | ---------- | -------- | ------------ | ------------- |
 | MPLS-IBGP-PEERS | True | RM-IBGP-PEER-IN4 | RM-IBGP-PEER-OUT4 |
 
-### Router BGP VPN-IPv6 Address Family
+#### Router BGP VPN-IPv6 Address Family
 
 - VPN import pruning is __enabled__
 
-#### VPN-IPv6 Neighbors
+##### VPN-IPv6 Neighbors
 
 | Neighbor | Activate | Route-map In | Route-map Out |
 | -------- | -------- | ------------ | ------------- |
 | 2001:cafe:192:168::4 | True | RM-NEIGHBOR-PEER-IN6 | RM-NEIGHBOR-PEER-OUT6 |
 
-#### VPN-IPv6 Peer Groups
+##### VPN-IPv6 Peer Groups
 
 | Peer Group | Activate | Route-map In | Route-map Out |
 | ---------- | -------- | ------------ | ------------- |
 | MPLS-IBGP-PEERS | True | RM-IBGP-PEER-IN6 | RM-IBGP-PEER-OUT6 |
 
-### Router BGP Device Configuration
+#### Router BGP Device Configuration
 
 ```eos
 !
