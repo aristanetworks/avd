@@ -13417,7 +13417,8 @@
               "ipv4 unicast",
               "ipv6 unicast"
             ],
-            "description": "Address Family"
+            "description": "Address Family\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>address_family_ipv4/address_family_ipv6</samp> instead.",
+            "deprecated": true
           },
           "title": "Address Family"
         },
@@ -13425,7 +13426,8 @@
           "type": "array",
           "items": {
             "type": "string",
-            "description": "EOS CLI rendered under the address families\nExample \"maximum-paths 64\"\n"
+            "description": "EOS CLI rendered under the address families\nExample \"maximum-paths 64\"\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>address_family_ipv4/address_family_ipv6</samp> instead.",
+            "deprecated": true
           },
           "title": "ISIS AF Defaults"
         },
