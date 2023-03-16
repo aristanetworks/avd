@@ -15,6 +15,9 @@ ansible_httpapi_use_ssl: true
 # Do not try to validate certs
 ansible_httpapi_validate_certs: false
 
+design:
+  type: mpls
+
 # Common AVD group variables
 fabric_name: FABRIC
 
@@ -29,7 +32,7 @@ local_users:
     privilege: 15
     role: network-admin
     # Password set to "ansible". Same string as the device generates when configuring a username.
-    sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
+    sha512_password: $6$QJUtFkyu9yoecsq.$ysGzlb2YXaIMvezqGEna7RE8CMALJHnv7Q1i.27VygyKUtSeX.n2xRTyOtCR8eOAl.4imBLyhXFc4o97P5n071
   admin:
     privilege: 15
     role: network-admin
@@ -39,4 +42,10 @@ local_users:
 bgp_peer_groups:
   # all passwords set to "arista"
   mpls_overlay_peers:
-    password: Q4fqtbqcZ7oQuKfuWtNGRQ==
+    password: $1c$G8BQN0ezkiJOX2cuAYpsEA==
+  rr_overlay_peers:
+    password: $1c$G8BQN0ezkiJOX2cuAYpsEA==
+
+management_security:
+  password:
+    encryption_key_common: true
