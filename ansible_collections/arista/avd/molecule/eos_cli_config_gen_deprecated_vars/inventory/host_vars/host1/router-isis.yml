@@ -6,4 +6,3 @@ router_isis:
   address_family: ['ipv4 unicast']
   isis_af_defaults:
     - maximum-paths 2
-
