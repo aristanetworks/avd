@@ -122,7 +122,7 @@ class AvdStructuredConfig(AvdFacts):
         return static_routes
 
     @cached_property
-    def ipv6_static_routes(self):
+    def ipv6_static_routes(self) -> list | None:
         """
         ipv6_static_routes set based on ipv6_mgmt_gateway, ipv6_mgmt_destination_networks and mgmt_interface_vrf
         """
