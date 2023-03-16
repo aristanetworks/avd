@@ -29,14 +29,14 @@
 | VRF | RADIUS Servers | Timeout | Retransmit |
 | --- | -------------- | ------- | ---------- |
 {#     Old data model #}
-{%     for radius_server in radius_servers | arista.avd.natural_sort('host') %}
+{%     for radius_server in radius_servers | arista.avd.default([]) %}
 {%         set vrf = radius_server.vrf | arista.avd.default('default') %}
 {%         set timeout = radius_server.timeout | arista.avd.default('-') %}
 {%         set retransmit = radius_server.retransmit | arista.avd.default('-') %}
 | {{ vrf }} | {{ radius_server.host }} | {{ timeout }} | {{ retransmit }} |
 {%     endfor %}
 {#     New data model #}
-{%     for host in radius_server.hosts | arista.avd.natural_sort('host') %}
+{%     for host in radius_server.hosts | arista.avd.default([]) %}
 {%         set vrf = host.vrf | arista.avd.default('default') %}
 {%         set timeout = host.timeout | arista.avd.default('-') %}
 {%         set retransmit = host.retransmit | arista.avd.default('-') %}
@@ -46,7 +46,7 @@
 ### RADIUS Server Device Configuration
 
 ```eos
-{%     include 'eos/radius-server.j2' %}
 {%     include 'eos/radius-servers.j2' %}
+{%     include 'eos/radius-server.j2' %}
 ```
 {% endif %}
