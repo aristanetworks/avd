@@ -322,7 +322,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Instance | CORE |
 | Net-ID | 49.0001.0000.0000.0001.00 |
 | Type | level-2 |
-| Address Family | ipv4 unicast, ipv6 unicast |
 | Router-ID | 100.70.0.1 |
 | Log Adjacency Changes | True |
 | MPLS LDP Sync Default | True |
@@ -361,6 +360,7 @@ router isis CORE
    address-family ipv4 unicast
       maximum-paths 4
       fast-reroute ti-lfa mode link-protection
+   !
    address-family ipv6 unicast
       maximum-paths 4
       fast-reroute ti-lfa mode link-protection

@@ -551,7 +551,6 @@ router ospf 99 vrf TENANT_B_WAN
 | Instance | CORE |
 | Net-ID | 49.0001.0000.0001.0007.00 |
 | Type | level-1-2 |
-| Address Family | ipv4 unicast, ipv6 unicast |
 | Router-ID | 100.70.0.7 |
 | Log Adjacency Changes | True |
 | MPLS LDP Sync Default | True |
@@ -588,6 +587,7 @@ router isis CORE
    address-family ipv4 unicast
       maximum-paths 4
       fast-reroute ti-lfa mode link-protection
+   !
    address-family ipv6 unicast
       maximum-paths 4
       fast-reroute ti-lfa mode link-protection
