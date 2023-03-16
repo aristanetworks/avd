@@ -568,7 +568,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Instance | EVPN_UNDERLAY |
 | Net-ID | 49.0001.0001.0001.0005.00 |
 | Type | level-2 |
-| Address Family | ipv4 unicast |
 | Router-ID | 192.168.255.9 |
 | Log Adjacency Changes | True |
 

@@ -66,10 +66,8 @@ router_isis:
   net: 49.0001.0001.0000.0001.00
   router_id: 192.168.255.1
   is_type: level-2
-  address_family:
-  - ipv4 unicast
-  isis_af_defaults:
-  - maximum-paths 4
+  address_family_ipv4:
+    maximum_paths: 4
   redistribute_routes:
   - source_protocol: connected
   - source_protocol: static

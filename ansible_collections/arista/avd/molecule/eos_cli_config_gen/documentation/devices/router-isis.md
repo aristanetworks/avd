@@ -278,7 +278,6 @@ interface Vlan4094
 | Instance | EVPN_UNDERLAY |
 | Net-ID | 49.0001.0001.0001.0001.00 |
 | Type | level-2 |
-| Address Family | ipv4 unicast |
 | Router-ID | 192.168.255.3 |
 | Log Adjacency Changes | True |
 | MPLS LDP Sync Default | True |
@@ -303,7 +302,18 @@ interface Vlan4094
 | -------- | ---------- | ---------- |
 | Loopback2 | 10 | 1000 |
 
+<<<<<<< HEAD
 #### Router ISIS Device Configuration
+=======
+### ISIS IPv4 Address Family Summary
+
+| Settings | Value |
+| -------- | ----- |
+| IPv4 Address-family Enabled | True |
+| Maximum-paths | 2 |
+
+### Router ISIS Device Configuration
+>>>>>>> 90aa0f55b (refresh facts)
 
 ```eos
 !

@@ -57,10 +57,8 @@ class RouterIsisMixin(UtilsMixin):
             }
         ti_lfa_protection = get(self._hostvars, "isis_ti_lfa.protection")
         if ti_lfa_protection == "link":
-            # router_isis["isis_af_defaults"].append("fast-reroute ti-lfa mode link-protection")
             router_isis["address_family_ipv4"].update({"fast_reroute_ti_lfa": {"mode": "link-protection"}})
         elif ti_lfa_protection == "node":
-            # router_isis["isis_af_defaults"].append("fast-reroute ti-lfa mode node-protection")
             router_isis["address_family_ipv4"].update({"fast_reroute_ti_lfa": {"mode": "node-protection"}})
 
         # Overlay protocol
