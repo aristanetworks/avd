@@ -13,7 +13,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 class AvdStructuredConfig(AvdFacts):
     @cached_property
-    def _mgmt_interface_vrf(self):
+    def _mgmt_interface_vrf(self) -> str:
         """
         Returns the value for mgmt_interface_vrf variable used in static_routes, name_Server,
         vrfs and management_interfaces data-models
@@ -21,21 +21,21 @@ class AvdStructuredConfig(AvdFacts):
         return get(self._hostvars, "mgmt_interface_vrf")
 
     @cached_property
-    def _mgmt_gateway(self):
+    def _mgmt_gateway(self) -> str:
         """
         Returns the value for mgmt_gateway variable used in static_routes and management_interfaces data-models
         """
         return get(self._hostvars, "mgmt_gateway")
 
     @cached_property
-    def _ipv6_mgmt_gateway(self):
+    def _ipv6_mgmt_gateway(self) -> str:
         """
         Returns the value for ipv6_mgmt_gateway variable used in ipv6_static_routes and management_interfaces data-models
         """
         return get(self._hostvars, "ipv6_mgmt_gateway")
 
     @cached_property
-    def _platform_settings(self):
+    def _platform_settings(self) -> list | None:
         """
         Returns the value for switch.platform_settings fact used in queue_monitor_length, tcam_profile, platform
         and eos_cli data-models
@@ -43,35 +43,35 @@ class AvdStructuredConfig(AvdFacts):
         return get(self._hostvars, "switch.platform_settings")
 
     @cached_property
-    def _mgmt_ip(self):
+    def _mgmt_ip(self) -> str:
         """
         Returns the value for switch.mgmt_ip fact used in snmp_server and management_interfaces data-models
         """
         return get(self._hostvars, "switch.mgmt_ip")
 
     @cached_property
-    def _ipv6_mgmt_ip(self):
+    def _ipv6_mgmt_ip(self) -> str:
         """
         Returns the value for switch.ipv6_mgmt_ip fact used in management_interfaces data-models
         """
         return get(self._hostvars, "switch.ipv6_mgmt_ip")
 
     @cached_property
-    def _hostname(self):
+    def _hostname(self) -> str:
         """
         hostname variable set based on switch.hostname fact
         """
         return get(self._hostvars, "switch.hostname", required=True)
 
     @cached_property
-    def _system_mac_address(self):
+    def _system_mac_address(self) -> str:
         """
         system_mac_address variable set based on switch.system_mac_address fact
         """
         return get(self._hostvars, "switch.system_mac_address")
 
     @cached_property
-    def router_bgp(self):
+    def router_bgp(self) -> dict | None:
         """
         router_bgp set based on switch.bgp_as, switch.bgp_defaults, switch.router_id facts
         and aggregating the values of bgp_maximum_paths and bgp_ecmp variables
@@ -183,7 +183,7 @@ class AvdStructuredConfig(AvdFacts):
         return None
 
     @cached_property
-    def router_multicast(self):
+    def router_multicast(self) -> dict | None:
         """
         router_multicast set based on switch.underlay_multicast, switch.underlay_router
         and switch.evpn_multicast facts
@@ -198,7 +198,7 @@ class AvdStructuredConfig(AvdFacts):
         return router_multicast
 
     @cached_property
-    def hardware_counters(self):
+    def hardware_counters(self) -> dict | None:
         """
         hardware_counters set based on hardware_counters.features variable
         """
@@ -517,7 +517,7 @@ class AvdStructuredConfig(AvdFacts):
         return None
 
     @cached_property
-    def vrfs(self):
+    def vrfs(self) -> list:
         """
         vrfs set based on mgmt_interface_vrf variable
         """
