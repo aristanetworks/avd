@@ -190,7 +190,8 @@ To use these filters:
 Supported types:
 
 - bgp
-- ospf
+- ospf_simple
+- ospf_messaged_digest
 
 !!! Note
 For now this filter only supports encryption and decryption to type `7` and not type `8a` for OSPF and BGP passwords
@@ -212,9 +213,14 @@ bgp_peer_groups:
 
 #### OSPF passwords
 
-OSPF passwords are encrypted/decrypted based on the interface name (e.g., Ethernet1) and for message-digest-key the authentication algotithm (in the list [md5, sha1, sha256, sha384, sha512]) and the key ID (between 1 and 255).
+OSPF passwords are encrypted/decrypted based on the interface name (e.g., Ethernet1) and for message-digest-key the hash algorithm (in the list [md5, sha1, sha256, sha384, sha512]) and the key ID (between 1 and 255).
 
-An example usage for `arista.avd.encrypt` filter for PS{F is to use it in conjunction with Ansible Vault to be able to load a password and have it encrypted on the fly by AVD in `eos_designs`.
+The filters provide two types for OSPF:
+
+- `ospf_simple` for simple authentication which requires only the password and the interface name as key as inputs.
+- `ospf_messaged_digest` for message digest keys which requires the password, the interface name as key, the hash algorithm and the key id as input.
+
+An example usage for `arista.avd.encrypt` filter for OSPF is to use it in conjunction with Ansible Vault to be able to load a password and have it encrypted on the fly by AVD in `eos_designs`.
 
 **examples:**
 
@@ -236,7 +242,7 @@ An example usage for `arista.avd.encrypt` filter for PS{F is to use it in conjun
         ospf_message_digest_keys:
           1:
             hash_algorithm: md5
-            key: "{{ ospf_vault_password | arista.avd.encrypt(passwd_type='ospf', key='Ethernet1', auth_algo='md5', key_id='1') }}"
+            key: "{{ ospf_vault_password | arista.avd.encrypt(passwd_type='ospf', key='Ethernet1', hash_algorithm='md5', key_id='1') }}"
     ```
 
 ## Plugin Tests

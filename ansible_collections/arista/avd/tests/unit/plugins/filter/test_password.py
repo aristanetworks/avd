@@ -6,7 +6,17 @@ from contextlib import nullcontext as does_not_raise
 
 import pytest
 
-from ansible_collections.arista.avd.plugins.filter.password import FilterModule, bgp_decrypt, bgp_encrypt, decrypt, encrypt, ospf_decrypt, ospf_encrypt
+from ansible_collections.arista.avd.plugins.filter.password import (
+    FilterModule,
+    bgp_decrypt,
+    bgp_encrypt,
+    decrypt,
+    encrypt,
+    ospf_message_digest_decrypt,
+    ospf_message_digest_encrypt,
+    ospf_simple_decrypt,
+    ospf_simple_encrypt,
+)
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 
 ##########
@@ -90,61 +100,86 @@ def test_molecule_bgp_encrypt(key, password, expected):
 ##########
 # OSPF
 ##########
-OSPF_INPUT_DICT_ENCRYPT_EXPECTED = [
-    ("Ethernet1", "arista", None, None, "qCTcuwOSntAmLZaW2QjKcA=="),
+OSPF_INPUT_SIMPLE_DICT_ENCRYPT_EXPECTED = [
+    ("Ethernet1", "arista", "qCTcuwOSntAmLZaW2QjKcA=="),
+]
+# password used is "arista"
+OSPF_VALID_INPUT_SIMPLE_DICT_DECRYPT_EXPECTED = [
+    ("Ethernet1", "qCTcuwOSntAmLZaW2QjKcA==", "arista"),
+]
+OSPF_INVALID_INPUT_SIMPLE_DICT_DECRYPT = [
+    pytest.param("Ethernet1", "3QGcqpU2YTwKh2jVQ4Vj/A==", id="Wrong password simple auth"),
+]
+OSPF_INPUT_MD_DICT_ENCRYPT_EXPECTED = [
     ("Ethernet1", "arista", "md5", 42, "aPW9RqfXquTBASVDMYxSJw=="),
     ("Ethernet1", "arista", "sha512", 66, "tDvJjUyf8///ktvy/xpfeQ=="),
 ]
 # password used is "arista"
-OSPF_VALID_INPUT_DICT_DECRYPT_EXPECTED = [
-    ("Ethernet1", "qCTcuwOSntAmLZaW2QjKcA==", None, None, "arista"),
+OSPF_VALID_INPUT_MD_DICT_DECRYPT_EXPECTED = [
     ("Ethernet1", "aPW9RqfXquTBASVDMYxSJw==", "md5", 42, "arista"),
     ("Ethernet1", "tDvJjUyf8///ktvy/xpfeQ==", "sha512", 66, "arista"),
 ]
-OSPF_INVALID_INPUT_DICT_DECRYPT = [
-    pytest.param("Ethernet1", "3QGcqpU2YTwKh2jVQ4Vj/A==", None, None, id="Wrong password simple auth"),
+OSPF_INVALID_INPUT_MD_DICT_DECRYPT = [
     pytest.param("Ethernet1", "bM7t58t04qSqLHAfZR/Szg==", "sha512", 42, id="Wrong password message digest key"),
     pytest.param("Ethernet1", "bM7t58t04qSqLHAfZR/Szg==", "sha512", None, id="Missing key id"),
-    pytest.param("Ethernet1", "bM7t58t04qSqLHAfZR/Szg==", None, 42, id="Missing auth_algo"),
+    pytest.param("Ethernet1", "bM7t58t04qSqLHAfZR/Szg==", None, 42, id="Missing hash_algorithm"),
+    pytest.param("Ethernet1", "bM7t58t04qSqLHAfZR/Szg==", "sha666", 42, id="Wrong hash_algorithm"),
 ]
 # The following list uses all the molecule OSPF passwords available
 # and the expected encryption
 # The password is always arista123
 # TODO
-OSPF_MOLECULE_PASSWORDS_TEST = []
+# OSPF_MOLECULE_PASSWORDS_TEST = []
 
 
-@pytest.mark.parametrize("key, password, auth_algo, key_id, expected", OSPF_INPUT_DICT_ENCRYPT_EXPECTED)
-def test_ospf_encrypt(key, password, expected, auth_algo, key_id):
+@pytest.mark.parametrize("key, password, expected", OSPF_INPUT_SIMPLE_DICT_ENCRYPT_EXPECTED)
+def test_ospf_simple_encrypt(key, password, expected):
     """
-    Test ospf_encrypt
+    Test ospf_simple_encrypt
     """
-    assert ospf_encrypt(password, key=key, auth_algo=auth_algo, key_id=key_id) == expected
+    assert ospf_simple_encrypt(password, key=key) == expected
 
 
-@pytest.mark.parametrize("key, password, auth_algo, key_id, expected", OSPF_VALID_INPUT_DICT_DECRYPT_EXPECTED)
-def test_ospf_decrypt_success(key, password, auth_algo, key_id, expected):
+@pytest.mark.parametrize("key, password, expected", OSPF_VALID_INPUT_SIMPLE_DICT_DECRYPT_EXPECTED)
+def test_ospf_simple_decrypt_success(key, password, expected):
     """
-    Test ospf_decrypt successful cases
+    Test ospf_simple_decrypt successful cases
     """
-    assert ospf_decrypt(password, key=key, auth_algo=auth_algo, key_id=key_id) == expected
+    assert ospf_simple_decrypt(password, key=key) == expected
 
 
-@pytest.mark.parametrize("key, password, auth_algo, key_id", OSPF_INVALID_INPUT_DICT_DECRYPT)
-def test_ospf_decrypt_failure(key, password, auth_algo, key_id):
+@pytest.mark.parametrize("key, password", OSPF_INVALID_INPUT_SIMPLE_DICT_DECRYPT)
+def test_ospf_simple_decrypt_failure(key, password):
     """
-    Test ospf_decrypt failure cases
+    Test ospf_simple_decrypt failure cases
     """
     with pytest.raises(AristaAvdError):
-        ospf_decrypt(password, key=key, auth_algo=auth_algo, key_id=key_id)
+        ospf_simple_decrypt(password, key=key)
 
 
-@pytest.mark.parametrize("key, password, auth_algo, key_id, expected", OSPF_MOLECULE_PASSWORDS_TEST)
-def test_molecule_ospf_encrypt(key, password, auth_algo, key_id, expected):
+@pytest.mark.parametrize("key, password, hash_algorithm, key_id, expected", OSPF_INPUT_MD_DICT_ENCRYPT_EXPECTED)
+def test_ospf_message_digest_encrypt(key, password, expected, hash_algorithm, key_id):
     """
-    Test ospf_encrypt
+    Test ospf_message_digest_encrypt
     """
-    assert ospf_encrypt(password, key=key, auth_algo=auth_algo, key_id=key_id) == expected
+    assert ospf_message_digest_encrypt(password, key=key, hash_algorithm=hash_algorithm, key_id=key_id) == expected
+
+
+@pytest.mark.parametrize("key, password, hash_algorithm, key_id, expected", OSPF_VALID_INPUT_MD_DICT_DECRYPT_EXPECTED)
+def test_ospf_message_digest_decrypt_success(key, password, hash_algorithm, key_id, expected):
+    """
+    Test ospf_message_digest_decrypt successful cases
+    """
+    assert ospf_message_digest_decrypt(password, key=key, hash_algorithm=hash_algorithm, key_id=key_id) == expected
+
+
+@pytest.mark.parametrize("key, password, hash_algorithm, key_id", OSPF_INVALID_INPUT_MD_DICT_DECRYPT)
+def test_ospf_message_digest_decrypt_failure(key, password, hash_algorithm, key_id):
+    """
+    Test ospf_message_digest_decrypt failure cases
+    """
+    with pytest.raises(AristaAvdError):
+        ospf_message_digest_decrypt(password, key=key, hash_algorithm=hash_algorithm, key_id=key_id)
 
 
 ##########
@@ -157,7 +192,8 @@ def test_molecule_ospf_encrypt(key, password, auth_algo, key_id, expected):
         pytest.param("dummy", "eigrp", "dummy", {}, pytest.raises(AristaAvdError), id="Wrong Type"),
         pytest.param(42, "bgp", "42.42.42.42", {}, does_not_raise(), id="Password is not a string"),
         pytest.param("arista", "bgp", "42.42.42.42", {}, does_not_raise(), id="Implemented Type BPG"),
-        pytest.param("arista", "ospf", "Ethernet1", {"auth_algo": "sha512", "key_id": 66}, does_not_raise(), id="Implemented Type OSPF"),
+        pytest.param("arista", "ospf_simple", "Ethernet1", {}, does_not_raise(), id="Implemented Type OSPF simple"),
+        pytest.param("arista", "ospf_message_digest", "Ethernet1", {"hash_algorithm": "sha512", "key_id": 66}, does_not_raise(), id="Implemented Type OSPF MD"),
     ],
 )
 def test_encrypt(password, passwd_type, key, kwargs, expected_raise):
@@ -174,7 +210,15 @@ def test_encrypt(password, passwd_type, key, kwargs, expected_raise):
         pytest.param("dummy", None, "dummy", {}, pytest.raises(AristaAvdMissingVariableError), id="Missing Type"),
         pytest.param("dummy", "eigrp", "dummy", {}, pytest.raises(AristaAvdError), id="Wrong Type"),
         pytest.param("3QGcqpU2YTwKh2jVQ4Vj/A==", "bgp", "42.42.42.42", {}, does_not_raise(), id="Implemented Type BGP"),
-        pytest.param("tDvJjUyf8///ktvy/xpfeQ==", "ospf", "Ethernet1", {"auth_algo": "sha512", "key_id": 66}, does_not_raise(), id="Implemented Type OSPF"),
+        pytest.param("qCTcuwOSntAmLZaW2QjKcA==", "ospf_simple", "Ethernet1", {}, does_not_raise(), id="Implemented Type OSPF simple"),
+        pytest.param(
+            "tDvJjUyf8///ktvy/xpfeQ==",
+            "ospf_message_digest",
+            "Ethernet1",
+            {"hash_algorithm": "sha512", "key_id": 66},
+            does_not_raise(),
+            id="Implemented Type OSPF MD",
+        ),
     ],
 )
 def test_decrypt(password, passwd_type, key, kwargs, expected_raise):
