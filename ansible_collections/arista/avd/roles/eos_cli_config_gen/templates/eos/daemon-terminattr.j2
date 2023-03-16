@@ -25,6 +25,9 @@ daemon TerminAttr
 {%         if cluster.cvobscurekeyfile is arista.avd.defined %}
 {%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster.name ~ ".obscurekeyfile=" ~ cluster.cvobscurekeyfile %}
 {%         endif %}
+{%         if cluster.cvsourceintf is arista.avd.defined %}
+{%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster.name ~ ".sourceintf=" ~ cluster.cvsourceintf %}
+{%         endif %}
 {%     endfor %}
 {%     if daemon_terminattr.cvaddrs is arista.avd.defined %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -cvaddr=" ~ daemon_terminattr.cvaddrs | join(',') %}
@@ -92,6 +95,9 @@ daemon TerminAttr
 {%     endif %}
 {%     if daemon_terminattr.cvconfig is arista.avd.defined(true) %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -cvconfig" %}
+{%     endif %}
+{%     if daemon_terminattr.cvsourceintf is arista.avd.defined %}
+{%         set cvp_config.cli = cvp_config.cli ~ " -cvsourceintf=" ~ daemon_terminattr.cvsourceintf %}
 {%     endif %}
    {{ cvp_config.cli }}
    no shutdown

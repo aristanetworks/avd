@@ -18,3 +18,4 @@ daemon_terminattr:
   cvcompression: gzip
   grpcreadonly: true
   cvconfig: true
+  cvsourceintf: Vlan100
