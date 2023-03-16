@@ -7511,12 +7511,12 @@ ethernet_interfaces:
     trunk: untagged
     vlan: 220
 port_channel_interfaces:
-- description: SPINES_Po491
+- name: Port-Channel11
+  description: SPINES_Po491
   type: switched
   shutdown: false
   mode: trunk
   vlans: 10,210,220,230
-  name: Port-Channel11
 vlans:
 - id: 210
   name: IDF2-Data

@@ -47,12 +47,12 @@ ethernet_interfaces:
   vlans: '110'
   name: Ethernet10
 port_channel_interfaces:
-- description: ISIS-LEAF1_Po1
+- name: Port-Channel1
+  description: ISIS-LEAF1_Po1
   type: switched
   shutdown: false
   mode: trunk
   vlans: '110'
-  name: Port-Channel1
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID

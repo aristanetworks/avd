@@ -36,12 +36,12 @@ ethernet_interfaces:
     mode: active
   name: Ethernet1
 port_channel_interfaces:
-- description: ISIS-SPINE1_Po1
+- name: Port-Channel1
+  description: ISIS-SPINE1_Po1
   type: switched
   shutdown: false
   mode: trunk
   vlans: '110'
-  name: Port-Channel1
 vlans:
 - id: 110
   name: SVI_110

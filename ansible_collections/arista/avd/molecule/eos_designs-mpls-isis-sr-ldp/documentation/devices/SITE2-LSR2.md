@@ -129,8 +129,8 @@ vlan internal order ascending range 1006 1199
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet3 | P2P_LINK_TO_SITE1-LSR2_Ethernet3 | routed | - | 100.64.48.11/31 | default | 9178 | False | - | - |
-| Ethernet12 | P2P_LINK_TO_SITE2-LER1_Port-Channel11 | *routed | 12 | *100.64.48.16/31 | **default | *9178 | *False | **- | **- |
-| Ethernet13 | P2P_LINK_TO_SITE2-LER1_Port-Channel11 | *routed | 12 | *100.64.48.16/31 | **default | *9178 | *False | **- | **- |
+| Ethernet12 | P2P_LINK_TO_SITE2-LER1_Port-Channel11 | *routed | 12 | *100.64.49.1/30 | **default | *9178 | *False | **- | **- |
+| Ethernet13 | P2P_LINK_TO_SITE2-LER1_Port-Channel11 | *routed | 12 | *100.64.49.1/30 | **default | *9178 | *False | **- | **- |
 *Inherited from Port-Channel Interface
 
 #### IPv6
@@ -202,7 +202,7 @@ interface Ethernet13
 
 | Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
-| Port-Channel12 | P2P_LINK_TO_SITE2-LER1_Port-Channel11 | routed | - | 100.64.48.16/31 | default | 9178 | False | - | - |
+| Port-Channel12 | P2P_LINK_TO_SITE2-LER1_Port-Channel11 | routed | - | 100.64.49.1/30 | default | 9178 | False | - | - |
 
 #### ISIS
 
@@ -219,7 +219,7 @@ interface Port-Channel12
    no shutdown
    mtu 9178
    no switchport
-   ip address 100.64.48.16/31
+   ip address 100.64.49.1/30
    ipv6 enable
    mpls ip
    mpls ldp interface

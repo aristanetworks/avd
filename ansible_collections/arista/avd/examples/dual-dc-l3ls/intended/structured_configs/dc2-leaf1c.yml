@@ -70,12 +70,12 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   name: Ethernet5
 port_channel_interfaces:
-- description: DC2_L3_LEAF1_Po8
+- name: Port-Channel1
+  description: DC2_L3_LEAF1_Po8
   type: switched
   shutdown: false
   mode: trunk
   vlans: 11-12,21-22,3401-3402
-  name: Port-Channel1
 vlans:
 - id: 11
   name: VRF10_VLAN11

@@ -22,8 +22,8 @@ vlan_interfaces:
     vrf: Tenant_C
     ip_address_virtual: 10.10.81.1/24
     ipv6_enable: true
-    ipv6_address_virtual: fc00:10:10:81::1/64
     ipv6_address_virtuals:
+      - fc00:10:10:81::1/64
       - fc00:10:11:81::1/64
       - fc00:10:12:81::1/64
 

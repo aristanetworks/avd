@@ -161,12 +161,13 @@ class UtilsMixin:
             return p2p_link
         else:
             # Resolving subnet from pool
-            ip_pool = get_item(self._p2p_links_ip_pools, "name", p2p_link["ip_pool"], default={}).get("ipv4_pool")
-            if not ip_pool:
-                # Not possible to resolve from pool. Returning original
+            ip_pool = get_item(self._p2p_links_ip_pools, "name", p2p_link["ip_pool"], default={})
+            ip_pool_subnet = ip_pool.get("ipv4_pool")
+            if not ip_pool_subnet:
                 return p2p_link
-            id = int(p2p_link["id"])
-            subnet = list(islice(ip_network(ip_pool).subnets(new_prefix=31), id - 1, id))[0]
+            prefix_size = int(ip_pool.get("prefix_size", 31))
+            link_id = int(p2p_link["id"])
+            subnet = list(islice(ip_network(ip_pool_subnet).subnets(new_prefix=prefix_size), link_id - 1, link_id))[0]
 
         # hosts() return an iterator of all hosts in subnet.
         # islice() return a generator with only the first two iterations of hosts.
@@ -271,6 +272,7 @@ class UtilsMixin:
         peer_interface = p2p_link["data"]["peer_interface"]
         default_description = f"P2P_LINK_TO_{peer}_{peer_interface}"
         interface_cfg = {
+            "name": p2p_link["data"]["interface"],
             "peer": peer,
             "peer_interface": peer_interface,
             "peer_type": p2p_link["data"]["peer_type"],

@@ -158,7 +158,8 @@ vlan_interfaces:
   mtu: 9000
   ip_address: 10.255.247.5/31
 port_channel_interfaces:
-- description: MLAG_PEER_trunk-group-tests-l3leaf2a_Po3
+- name: Port-Channel3
+  description: MLAG_PEER_trunk-group-tests-l3leaf2a_Po3
   type: switched
   shutdown: false
   vlans: 2-4094
@@ -166,15 +167,14 @@ port_channel_interfaces:
   trunk_groups:
   - LEAF_PEER_L3
   - MLAG
-  name: Port-Channel3
-- description: TRUNK-GROUP-TESTS-L2LEAF4_Po1
+- name: Port-Channel1
+  description: TRUNK-GROUP-TESTS-L2LEAF4_Po1
   type: switched
   shutdown: false
   mode: trunk
   trunk_groups:
   - trunk-group-tests-l2leaf4
   mlag: 1
-  name: Port-Channel1
 ethernet_interfaces:
 - peer: trunk-group-tests-l3leaf2a
   peer_interface: Ethernet3

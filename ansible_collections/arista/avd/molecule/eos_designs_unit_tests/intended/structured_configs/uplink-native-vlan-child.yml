@@ -31,12 +31,12 @@ ethernet_interfaces:
     mode: active
   name: Ethernet2
 port_channel_interfaces:
-- description: UPLINK-NATIVE-VLAN-PARENT_Po2
+- name: Port-Channel2
+  description: UPLINK-NATIVE-VLAN-PARENT_Po2
   type: switched
   shutdown: false
   mode: trunk
   native_vlan: 200
   vlans: '100'
-  name: Port-Channel2
 ip_igmp_snooping:
   globally_enabled: true

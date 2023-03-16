@@ -41,19 +41,19 @@ ethernet_interfaces:
     mode: active
   name: Ethernet2
 port_channel_interfaces:
-- description: UPLINK-NATIVE-VLAN-GRANDPARENT_Po1
+- name: Port-Channel1
+  description: UPLINK-NATIVE-VLAN-GRANDPARENT_Po1
   type: switched
   shutdown: false
   mode: trunk
   native_vlan: 100
   vlans: '100'
-  name: Port-Channel1
-- description: UPLINK-NATIVE-VLAN-CHILD_Po2
+- name: Port-Channel2
+  description: UPLINK-NATIVE-VLAN-CHILD_Po2
   type: switched
   shutdown: false
   mode: trunk
   native_vlan: 200
   vlans: '100'
-  name: Port-Channel2
 ip_igmp_snooping:
   globally_enabled: true

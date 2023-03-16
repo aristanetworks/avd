@@ -162,7 +162,8 @@ ethernet_interfaces:
     enable: true
   ip_address: 172.17.210.4/31
   name: Ethernet4
-- peer: DC1-POD2-SPINE1
+- name: Ethernet5
+  peer: DC1-POD2-SPINE1
   peer_interface: Ethernet5
   peer_type: spine
   description: P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet5
@@ -170,7 +171,6 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 11.1.1.19/31
-  name: Ethernet5
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

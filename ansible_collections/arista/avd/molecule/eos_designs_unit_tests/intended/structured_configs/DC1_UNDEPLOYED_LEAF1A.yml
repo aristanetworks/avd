@@ -784,7 +784,8 @@ vlan_interfaces:
   mtu: 1500
   ip_address: 10.255.251.24/31
 port_channel_interfaces:
-- description: MLAG_PEER_DC1_UNDEPLOYED_LEAF1B_Po571
+- name: Port-Channel571
+  description: MLAG_PEER_DC1_UNDEPLOYED_LEAF1B_Po571
   type: switched
   shutdown: false
   vlans: 1-4094
@@ -792,7 +793,6 @@ port_channel_interfaces:
   trunk_groups:
   - LEAF_PEER_L3
   - MLAG
-  name: Port-Channel571
 ethernet_interfaces:
 - peer: DC1_UNDEPLOYED_LEAF1B
   peer_interface: Ethernet57/1

@@ -85,15 +85,15 @@ ethernet_interfaces:
     - name: l2leaf-server02
       direction: downstream
 port_channel_interfaces:
-  Port-Channel1:
-    description: MH-LEAF2A_Po2
-    type: switched
-    shutdown: false
-    mode: trunk
-    link_tracking_groups:
-    - name: l2leaf-server02
-      direction: upstream
-    vlans: '310'
+- name: Port-Channel1
+  description: MH-LEAF2A_Po2
+  type: switched
+  shutdown: false
+  mode: trunk
+  link_tracking_groups:
+  - name: l2leaf-server02
+    direction: upstream
+  vlans: '310'
 vlans:
 - id: 310
   name: Tenant_X_OP_Zone_1
