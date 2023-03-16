@@ -1,23 +1,47 @@
 # aaa
 # Table of Contents
 
+- [aaa](#aaa)
+- [Table of Contents](#table-of-contents)
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+    - [Management Interfaces Summary](#management-interfaces-summary)
+      - [IPv4](#ipv4)
+      - [IPv6](#ipv6)
+    - [Management Interfaces Device Configuration](#management-interfaces-device-configuration)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+    - [Local Users Summary](#local-users-summary)
+    - [Local Users Device Configuration](#local-users-device-configuration)
   - [TACACS Servers](#tacacs-servers)
+    - [TACACS Servers](#tacacs-servers-1)
+    - [TACACS Servers Device Configuration](#tacacs-servers-device-configuration)
   - [RADIUS Servers](#radius-servers)
+    - [RADIUS Servers](#radius-servers-1)
+    - [RADIUS Servers Device Configuration](#radius-servers-device-configuration)
   - [AAA Server Groups](#aaa-server-groups)
+    - [AAA Server Groups Summary](#aaa-server-groups-summary)
+    - [AAA Server Groups Device Configuration](#aaa-server-groups-device-configuration)
   - [AAA Authentication](#aaa-authentication)
+    - [AAA Authentication Summary](#aaa-authentication-summary)
+    - [AAA Authentication Device Configuration](#aaa-authentication-device-configuration)
   - [AAA Authorization](#aaa-authorization)
+    - [AAA Authorization Summary](#aaa-authorization-summary)
+    - [AAA Authorization Privilege Levels Summary](#aaa-authorization-privilege-levels-summary)
+    - [AAA Authorization Device Configuration](#aaa-authorization-device-configuration)
   - [AAA Accounting](#aaa-accounting)
+    - [AAA Accounting Summary](#aaa-accounting-summary)
+    - [AAA Accounting Device Configuration](#aaa-accounting-device-configuration)
 - [Monitoring](#monitoring)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [Interfaces](#interfaces)
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
+    - [IP Routing Summary](#ip-routing-summary)
+    - [IP Routing Device Configuration](#ip-routing-device-configuration)
   - [IPv6 Routing](#ipv6-routing)
+    - [IPv6 Routing Summary](#ipv6-routing-summary)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
@@ -110,7 +134,7 @@ tacacs-server host 10.10.10.249 timeout 23 key 7 071B245F5A
 !
 radius-server host 10.10.10.157 vrf mgt key 7 071B245F5A
 radius-server host 10.10.10.249 key 7 071B245F5A
-radius-server host 10.10.10.158 vrf default key 7 071B245F5A
+radius-server host 10.10.10.158 key 7 071B245F5A
 ```
 
 ## AAA Server Groups
