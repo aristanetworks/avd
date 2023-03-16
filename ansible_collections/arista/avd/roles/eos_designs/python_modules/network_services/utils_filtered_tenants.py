@@ -52,9 +52,31 @@ class UtilsFilteredTenantsMixin(object):
         l2vlans = [
             l2vlan
             for l2vlan in l2vlans
-            if (int(l2vlan["id"]) in self._accepted_vlans and ("all" in self._filter_tags or set(l2vlan.get("tags", ["all"])).intersection(self._filter_tags)))
+            if self._is_accepted_vlan(l2vlan) and ("all" in self._filter_tags or set(l2vlan.get("tags", ["all"])).intersection(self._filter_tags))
         ]
         return l2vlans
+
+    def _is_accepted_vlan(self, vlan: dict) -> bool:
+        """
+        Check if vlan is in accepted_vlans list
+        If filter.only_vlans_in_use also check if vlan id or trunk group is assigned to connected endpoint
+        """
+        vlan_id = int(vlan["id"])
+
+        if vlan_id not in self._accepted_vlans:
+            return False
+
+        if not self._filter_only_vlans_in_use:
+            # No further filtering
+            return True
+
+        if vlan_id in self._endpoint_vlans:
+            return True
+
+        if self._enable_trunk_groups and vlan.get("trunk_groups") and self._endpoint_trunk_groups.intersection(vlan["trunk_groups"]):
+            return True
+
+        return False
 
     @cached_property
     def _accepted_vlans(self) -> list[int]:
@@ -71,7 +93,6 @@ class UtilsFilteredTenantsMixin(object):
         if self._uplink_type != "port-channel":
             return accepted_vlans
 
-        uplink_switches = unique(get(self._hostvars, "switch.uplink_switches", default=[]))
         fabric_name = get(self._hostvars, "fabric_name", required=True)
         fabric_group = get(self._hostvars, f"groups.{fabric_name}", required=True)
         uplink_switches = unique(get(self._hostvars, "switch.uplink_switches", default=[]))
@@ -249,7 +270,7 @@ class UtilsFilteredTenantsMixin(object):
         filtered that on tags and trunk_groups.
         """
         svis: list[dict] = natural_sort(convert_dicts(vrf.get("svis", []), "id"), "id")
-        svis = [svi for svi in svis if int(svi["id"]) in self._accepted_vlans]
+        svis = [svi for svi in svis if self._is_accepted_vlan(svi)]
 
         # Handle svi_profile inheritance
         svis = [self._get_merged_svi_config(svi) for svi in svis]

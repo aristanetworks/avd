@@ -4,6 +4,7 @@ import ipaddress
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
+from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 from ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions import AvdInterfaceDescriptions
@@ -81,12 +82,27 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         return set(get(self._hostvars, "switch.endpoint_trunk_groups", default=[]))
 
     @cached_property
+    def _local_endpoint_trunk_groups(self) -> set:
+        return set(get(self._hostvars, "switch.local_endpoint_trunk_groups", default=[]))
+
+    @cached_property
+    def _filter_only_vlans_in_use(self) -> bool:
+        return get(self._hostvars, "switch.filter_only_vlans_in_use") is True
+
+    @cached_property
     def _only_local_vlan_trunk_groups(self) -> bool:
         return get(self._hostvars, "switch.only_local_vlan_trunk_groups") is True
 
     @cached_property
     def _enable_trunk_groups(self) -> bool:
         return get(self._hostvars, "switch.enable_trunk_groups") is True
+
+    @cached_property
+    def _endpoint_vlans(self) -> list:
+        endpoint_vlans = get(self._hostvars, "switch.endpoint_vlans", default="")
+        if not endpoint_vlans:
+            return []
+        return [int(id) for id in range_expand(endpoint_vlans)]
 
     @cached_property
     def _underlay_rfc5549(self) -> bool:
