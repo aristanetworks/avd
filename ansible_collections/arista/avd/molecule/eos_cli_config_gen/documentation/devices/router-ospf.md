@@ -269,8 +269,8 @@ router ospf 200 vrf ospf_zone
    max-lsa 5
    timers lsa rx min interval 100
    default-information originate always
-   redistribute static route-map rm-ospf-static
-   redistribute connected route-map rm-ospf-connected
+   redistribute static include leaked route-map rm-ospf-static
+   redistribute connected include leaked route-map rm-ospf-connected
    redistribute bgp route-map rm-ospf-bgp
 !
 router ospf 300

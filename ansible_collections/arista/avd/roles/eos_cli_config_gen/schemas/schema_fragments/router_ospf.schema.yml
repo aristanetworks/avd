@@ -173,12 +173,16 @@ keys:
                     route_map:
                       type: str
                       description: Route Map Name
+                    include_leaked:
+                      type: bool
                 connected:
                   type: dict
                   keys:
                     route_map:
                       type: str
                       description: Route Map Name
+                    include_leaked:
+                      type: bool
                 bgp:
                   type: dict
                   keys:

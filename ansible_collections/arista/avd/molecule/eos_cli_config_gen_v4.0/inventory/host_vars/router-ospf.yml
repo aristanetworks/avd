@@ -69,8 +69,10 @@ router_ospf:
       redistribute:
         static:
           route_map: rm-ospf-static
+          include_leaked: true
         connected:
           route_map: rm-ospf-connected
+          include_leaked: true
         bgp:
           route_map: rm-ospf-bgp
       areas:

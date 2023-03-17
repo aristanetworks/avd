@@ -120,15 +120,21 @@ router ospf {{ process_id.id }}
 {%     endif %}
 {%     if process_id.redistribute.static is defined %}
 {%         set redistribute_static_cli = "redistribute static" %}
-{%         if process_id.redistribute.static.route_map is arista.avd.defined %}
-{%             set redistribute_static_cli = redistribute_static_cli ~ " route-map " ~  process_id.redistribute.static.route_map %}
+{%         if process_id.redistribute.static.include_leaked is arista.avd.defined(true) %}
+{%             set redistribute_static_cli = redistribute_static_cli ~ " include leaked" %}
+{%             if process_id.redistribute.static.route_map is arista.avd.defined %}
+{%                 set redistribute_static_cli = redistribute_static_cli ~ " route-map " ~  process_id.redistribute.static.route_map %}
+{%             endif %}
 {%         endif %}
    {{ redistribute_static_cli }}
 {%     endif %}
 {%     if process_id.redistribute.connected is defined %}
 {%         set redistribute_connected_cli = "redistribute connected" %}
-{%         if process_id.redistribute.connected.route_map is arista.avd.defined %}
-{%             set redistribute_connected_cli = redistribute_connected_cli ~ " route-map " ~ process_id.redistribute.connected.route_map %}
+{%         if process_id.redistribute.connected.include_leaked is arista.avd.defined(true) %}
+{%             set redistribute_connected_cli = redistribute_connected_cli ~ " include leaked" %}
+{%             if process_id.redistribute.connected.route_map is arista.avd.defined %}
+{%                 set redistribute_connected_cli = redistribute_connected_cli ~ " route-map " ~ process_id.redistribute.connected.route_map %}
+{%             endif %}
 {%         endif %}
    {{ redistribute_connected_cli }}
 {%     endif %}
