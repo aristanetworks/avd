@@ -25,7 +25,7 @@
 
 {%     set ssh = namespace(enable=true) %}
 {%     if management_ssh.enable is arista.avd.defined %}
-{%         set ssh.enable=management_ssh.enable %} {#enable takes de value of the variable if defined. By default is set to true#}
+{%         set ssh.enable=management_ssh.enable %}{#enable takes de value of the variable if defined. By default is set to true#}
 {%     endif %}
 #### SSH timeout and management
 
