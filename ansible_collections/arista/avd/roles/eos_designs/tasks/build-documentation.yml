@@ -16,12 +16,9 @@
 
 - name: Output eos_designs Documentation
   tags: [eos_designs]
-  ansible.builtin.template:
-    src: avd_schema_documentation.j2
-    dest: "{{ role_documentation_dir ~ '/' ~ filename ~ '.md'  }}"
-    mode: 0664
-  loop: "{{ documentation_schema | list }}"
-  loop_control:
-    loop_var: filename
+  arista.avd.batch_template:
+    template: avd_schema_documentation.j2
+    dest_format_str: "{{ role_documentation_dir ~ '/{item}' ~ '.md'  }}"
+    items: "{{ documentation_schema | list }}"
   vars:
     documentation_schema: "{{ role_name | arista.avd.convert_schema(type='documentation') }}"
