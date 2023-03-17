@@ -13,7 +13,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 class AvdStructuredConfig(AvdFacts):
     @cached_property
-    def _mgmt_interface_vrf(self) -> str:
+    def _mgmt_interface_vrf(self) -> str | None:
         """
         Returns the value for mgmt_interface_vrf variable used in static_routes, name_Server,
         vrfs and management_interfaces data-models
@@ -21,21 +21,21 @@ class AvdStructuredConfig(AvdFacts):
         return get(self._hostvars, "mgmt_interface_vrf")
 
     @cached_property
-    def _mgmt_gateway(self) -> str:
+    def _mgmt_gateway(self) -> str | None:
         """
         Returns the value for mgmt_gateway variable used in static_routes and management_interfaces data-models
         """
         return get(self._hostvars, "mgmt_gateway")
 
     @cached_property
-    def _ipv6_mgmt_gateway(self) -> str:
+    def _ipv6_mgmt_gateway(self) -> str | None:
         """
         Returns the value for ipv6_mgmt_gateway variable used in ipv6_static_routes and management_interfaces data-models
         """
         return get(self._hostvars, "ipv6_mgmt_gateway")
 
     @cached_property
-    def _platform_settings(self) -> list | None:
+    def _platform_settings(self) -> list:
         """
         Returns the value for switch.platform_settings fact used in queue_monitor_length, tcam_profile, platform
         and eos_cli data-models
@@ -43,28 +43,28 @@ class AvdStructuredConfig(AvdFacts):
         return get(self._hostvars, "switch.platform_settings")
 
     @cached_property
-    def _mgmt_ip(self) -> str:
+    def _mgmt_ip(self) -> str | None:
         """
         Returns the value for switch.mgmt_ip fact used in snmp_server and management_interfaces data-models
         """
         return get(self._hostvars, "switch.mgmt_ip")
 
     @cached_property
-    def _ipv6_mgmt_ip(self) -> str:
+    def _ipv6_mgmt_ip(self) -> str | None:
         """
         Returns the value for switch.ipv6_mgmt_ip fact used in management_interfaces data-models
         """
         return get(self._hostvars, "switch.ipv6_mgmt_ip")
 
     @cached_property
-    def _hostname(self) -> str:
+    def _hostname(self) -> str | None:
         """
         hostname variable set based on switch.hostname fact
         """
         return get(self._hostvars, "switch.hostname", required=True)
 
     @cached_property
-    def _system_mac_address(self) -> str:
+    def _system_mac_address(self) -> str | None:
         """
         system_mac_address variable set based on switch.system_mac_address fact
         """
