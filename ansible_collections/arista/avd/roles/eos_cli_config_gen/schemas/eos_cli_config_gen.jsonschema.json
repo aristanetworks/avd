@@ -925,6 +925,11 @@
                 "description": "Set source IP address in case of in-band managament\n",
                 "title": "Cvsourceip"
               },
+              "cvsourceintf": {
+                "type": "string",
+                "description": "Set source interface in case of in-band managament. Available as of TerminAttr v1.23.0\n",
+                "title": "Cvsourceintf"
+              },
               "cvvrf": {
                 "type": "string",
                 "description": "The VRF to use to connect to CloudVision\n",
@@ -978,6 +983,11 @@
           "type": "string",
           "description": "Set source IP address in case of in-band managament\n",
           "title": "Cvsourceip"
+        },
+        "cvsourceintf": {
+          "type": "string",
+          "description": "Set source interface in case of in-band managament\n",
+          "title": "Cvsourceintf"
         },
         "cvvrf": {
           "type": "string",
@@ -1164,6 +1174,42 @@
         "dynamic_authorization": {
           "type": "boolean",
           "title": "Dynamic Authorization"
+        },
+        "mac_based_authentication": {
+          "type": "object",
+          "properties": {
+            "delay": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 300,
+              "title": "Delay"
+            },
+            "hold_period": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 300,
+              "title": "Hold Period"
+            }
+          },
+          "additionalProperties": false,
+          "title": "MAC Based Authentication"
+        },
+        "radius_av_pair": {
+          "type": "object",
+          "properties": {
+            "service_type": {
+              "type": "boolean",
+              "title": "Service Type"
+            },
+            "framed_mtu": {
+              "type": "integer",
+              "minimum": 68,
+              "maximum": 9236,
+              "title": "Framed MTU"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Radius Av Pair"
         }
       },
       "additionalProperties": false
@@ -1755,6 +1801,43 @@
             },
             "title": "IPv6 ND Prefixes"
           },
+          "ipv6_dhcp_relay_destinations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "address": {
+                  "type": "string",
+                  "description": "DHCP server's IPv6 address",
+                  "title": "Address"
+                },
+                "vrf": {
+                  "type": "string",
+                  "title": "VRF"
+                },
+                "local_interface": {
+                  "type": "string",
+                  "description": "Local interface to communicate with DHCP server - mutually exclusive to source_address",
+                  "title": "Local Interface"
+                },
+                "source_address": {
+                  "type": "string",
+                  "description": "Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface",
+                  "title": "Source Address"
+                },
+                "link_address": {
+                  "type": "string",
+                  "description": "Override the default link address specified in the relayed DHCP packet",
+                  "title": "Link Address"
+                }
+              },
+              "required": [
+                "address"
+              ],
+              "additionalProperties": false
+            },
+            "title": "IPv6 DHCP Relay Destinations"
+          },
           "access_group_in": {
             "type": "string",
             "description": "Access list name",
@@ -1872,7 +1955,7 @@
           },
           "ospf_authentication_key": {
             "type": "string",
-            "description": "Encrypted password",
+            "description": "Encrypted password - only type 7 supported",
             "title": "OSPF Authentication Key"
           },
           "ospf_message_digest_keys": {
@@ -1897,7 +1980,7 @@
                 },
                 "key": {
                   "type": "string",
-                  "description": "Encrypted password",
+                  "description": "Encrypted password - only type 7 supported",
                   "title": "Key"
                 }
               },
@@ -4183,7 +4266,7 @@
           },
           "privilege": {
             "type": "integer",
-            "minimum": 1,
+            "minimum": 0,
             "maximum": 15,
             "description": "Initial privilege level with local EXEC authorization.\n",
             "title": "Privilege"
@@ -8897,6 +8980,10 @@
                 "type": "string",
                 "title": "Password"
               },
+              "passive": {
+                "type": "boolean",
+                "title": "Passive"
+              },
               "default_originate": {
                 "type": "object",
                 "properties": {
@@ -9069,6 +9156,10 @@
               "route_reflector_client": {
                 "type": "boolean",
                 "title": "Route Reflector Client"
+              },
+              "passive": {
+                "type": "boolean",
+                "title": "Passive"
               },
               "shutdown": {
                 "type": "boolean",
@@ -10687,6 +10778,10 @@
                     "password": {
                       "type": "string",
                       "title": "Password"
+                    },
+                    "passive": {
+                      "type": "boolean",
+                      "title": "Passive"
                     },
                     "remove_private_as": {
                       "type": "object",
@@ -14759,6 +14854,43 @@
               ]
             },
             "title": "IPv6 ND Prefixes"
+          },
+          "ipv6_dhcp_relay_destinations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "address": {
+                  "type": "string",
+                  "description": "DHCP server's IPv6 address",
+                  "title": "Address"
+                },
+                "vrf": {
+                  "type": "string",
+                  "title": "VRF"
+                },
+                "local_interface": {
+                  "type": "string",
+                  "description": "Local interface to communicate with DHCP server - mutually exclusive to source_address",
+                  "title": "Local Interface"
+                },
+                "source_address": {
+                  "type": "string",
+                  "description": "Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface",
+                  "title": "Source Address"
+                },
+                "link_address": {
+                  "type": "string",
+                  "description": "Override the default link address specified in the relayed DHCP packet",
+                  "title": "Link Address"
+                }
+              },
+              "required": [
+                "address"
+              ],
+              "additionalProperties": false
+            },
+            "title": "IPv6 DHCP Relay Destinations"
           },
           "access_group_in": {
             "type": "string",

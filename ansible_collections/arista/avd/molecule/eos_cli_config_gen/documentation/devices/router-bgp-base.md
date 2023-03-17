@@ -1,30 +1,31 @@
 # router-bgp-base
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Routing](#routing)
   - [Router BGP](#router-bgp)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -34,11 +35,11 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Routing
+## Routing
 
-## Router BGP
+### Router BGP
 
-### Router BGP Summary
+#### Router BGP Summary
 
 | BGP AS | Router ID |
 | ------ | --------- |
@@ -53,7 +54,7 @@ interface Management1
 | distance bgp 20 200 200 |
 | maximum-paths 32 ecmp 32 |
 
-### Router BGP Listen Ranges
+#### Router BGP Listen Ranges
 
 | Prefix | Peer-ID Include Router ID | Peer Group | Peer-Filter | Remote-AS | VRF |
 | ------ | ------------------------- | ---------- | ----------- | --------- | --- |
@@ -61,40 +62,46 @@ interface Management1
 | 12.10.10.0/24 | True | my-peer-group3 | - | 65444 | default |
 | 13.10.10.0/24 | - | my-peer-group4 | my-peer-filter | - | default |
 
-### Router BGP Peer Groups
+#### Router BGP Peer Groups
 
-#### test-link-bandwidth1
+##### test-link-bandwidth1
 
 | Settings | Value |
 | -------- | ----- |
 | Link-Bandwidth | default 100G |
 
-#### test-link-bandwidth2
+##### test-link-bandwidth2
 
 | Settings | Value |
 | -------- | ----- |
 | Link-Bandwidth | enabled |
 
-### BGP Neighbors
+##### test-passive
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- |
-| 192.0.3.1 | 65432 | default | - | all | - | - | - | True | - |
-| 192.0.3.2 | 65433 | default | - | extended | 10000 | - | - | True (All) | - |
-| 192.0.3.3 | 65434 | default | - | standard | - | - | - | True | - |
-| 192.0.3.4 | 65435 | default | - | large | - | - | - | False | - |
-| 192.0.3.5 | 65436 | default | - | standard | 12000 | - | - | - | - |
-| 192.0.3.6 | 65437 | default | - | - | - | - | - | - | False |
-| 192.0.3.7 | 65438 | default | - | - | - | - | - | - | True |
+| Settings | Value |
+| -------- | ----- |
+| Passive | True |
 
-### BGP Neighbor Interfaces
+#### BGP Neighbors
+
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
+| 192.0.3.1 | 65432 | default | - | all | - | - | - | True | - | True |
+| 192.0.3.2 | 65433 | default | - | extended | 10000 | - | - | True (All) | - | - |
+| 192.0.3.3 | 65434 | default | - | standard | - | - | - | True | - | - |
+| 192.0.3.4 | 65435 | default | - | large | - | - | - | False | - | - |
+| 192.0.3.5 | 65436 | default | - | standard | 12000 | - | - | - | - | - |
+| 192.0.3.6 | 65437 | default | - | - | - | - | - | - | False | - |
+| 192.0.3.7 | 65438 | default | - | - | - | - | - | - | True | - |
+
+#### BGP Neighbor Interfaces
 
 | Neighbor Interface | VRF | Peer Group | Remote AS | Peer Filter |
 | ------------------ | --- | ---------- | --------- | ----------- |
 | Ethernet2 | default | PG-FOO-v4 | 65102 | - |
 | Ethernet3 | default | PG-FOO-v4 | - | PF-BAR-v4 |
 
-### BGP Route Aggregation
+#### BGP Route Aggregation
 
 | Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
 | ------ | ------ | ------------ | ------------- | --------- | -------------- |
@@ -102,7 +109,7 @@ interface Management1
 | 1.12.1.0/24 | True | True | RM-ATTRIBUTE | RM-MATCH | True |
 | 2.2.1.0/24 | False | False | - | - | False |
 
-### Router BGP Device Configuration
+#### Router BGP Device Configuration
 
 ```eos
 !
@@ -125,12 +132,15 @@ router bgp 65101
    neighbor test-link-bandwidth1 link-bandwidth default 100G
    neighbor test-link-bandwidth2 peer group
    neighbor test-link-bandwidth2 link-bandwidth
+   neighbor test-passive peer group
+   neighbor test-passive passive
    neighbor interface Ethernet2 peer-group PG-FOO-v4 remote-as 65102
    neighbor interface Ethernet3 peer-group PG-FOO-v4 peer-filter PF-BAR-v4
    neighbor 192.0.3.1 remote-as 65432
    neighbor 192.0.3.1 as-path remote-as replace out
    neighbor 192.0.3.1 as-path prepend-own disabled
    neighbor 192.0.3.1 rib-in pre-policy retain
+   neighbor 192.0.3.1 passive
    neighbor 192.0.3.1 default-originate always
    neighbor 192.0.3.1 send-community
    neighbor 192.0.3.1 link-bandwidth default 100G

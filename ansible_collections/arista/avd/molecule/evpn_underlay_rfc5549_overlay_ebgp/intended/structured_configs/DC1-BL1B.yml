@@ -214,17 +214,17 @@ name_server:
 spanning_tree:
   mode: mstp
   mst_instances:
-  - priority: 4096
-    id: '0'
+  - id: '0'
+    priority: 4096
 local_users:
-- privilege: 15
+- name: admin
+  privilege: 15
   role: network-admin
   no_password: true
-  name: admin
-- privilege: 15
+- name: cvpadmin
+  privilege: 15
   role: network-admin
   sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
-  name: cvpadmin
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -292,7 +292,8 @@ ethernet_interfaces:
   type: routed
   ipv6_enable: true
   name: Ethernet4
-- peer: DC1-BL1A
+- name: Ethernet9
+  peer: DC1-BL1A
   peer_interface: Ethernet9
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-BL1A_Ethernet9
@@ -300,8 +301,8 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_enable: true
-  name: Ethernet9
-- peer: DC1-BL1A
+- name: Ethernet10
+  peer: DC1-BL1A
   peer_interface: Ethernet10
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-BL1A_Ethernet10
@@ -309,7 +310,6 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_enable: true
-  name: Ethernet10
 - description: My test
   ip_address: 10.1.2.3/12
   shutdown: false

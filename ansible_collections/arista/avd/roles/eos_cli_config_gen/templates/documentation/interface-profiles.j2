@@ -1,15 +1,15 @@
 {# doc - interface profiles #}
 {% if interface_profiles is arista.avd.defined %}
 
-## Interface Profiles
+### Interface Profiles
 
-### Interface Profiles Summary
+#### Interface Profiles Summary
 
 {%     for interface_profile in interface_profiles | arista.avd.natural_sort('name') %}
 - {{ interface_profile.name }}
 {%     endfor %}
 
-### Interface Profiles Configuration
+#### Interface Profiles Configuration
 
 ```eos
 {%     include 'eos/interface-profiles.j2' %}

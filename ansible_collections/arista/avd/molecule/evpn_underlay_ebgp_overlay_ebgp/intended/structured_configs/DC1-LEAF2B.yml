@@ -238,14 +238,14 @@ service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware:
   speed_groups:
-  - serdes: 10G
-    speed_group: 1
-  - serdes: 25G
-    speed_group: 2
-  - serdes: 25G
-    speed_group: 3
-  - serdes: 10G
-    speed_group: 4
+  - speed_group: 1
+    serdes: 10G
+  - speed_group: 2
+    serdes: 25G
+  - speed_group: 3
+    serdes: 25G
+  - speed_group: 4
+    serdes: 10G
 daemon_terminattr:
   cvaddrs:
   - 192.168.200.11:9910
@@ -278,17 +278,17 @@ spanning_tree:
   root_super: true
   mode: mstp
   mst_instances:
-  - priority: 4096
-    id: '0'
+  - id: '0'
+    priority: 4096
 local_users:
-- privilege: 15
+- name: admin
+  privilege: 15
   role: network-admin
   no_password: true
-  name: admin
-- privilege: 15
+- name: cvpadmin
+  privilege: 15
   role: network-admin
   sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
-  name: cvpadmin
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -472,7 +472,8 @@ ethernet_interfaces:
   vlans: '110'
   name: Ethernet21
 port_channel_interfaces:
-- description: CUSTOM_DC1_L2LEAF1_Po1
+- name: Port-Channel7
+  description: CUSTOM_DC1_L2LEAF1_Po1
   type: switched
   shutdown: false
   mode: trunk
@@ -481,8 +482,8 @@ port_channel_interfaces:
     identifier: 0000:1234:0808:0707:0606
     route_target: 08:08:07:07:06:06
   lacp_id: 0808.0707.0606
-  name: Port-Channel7
-- description: CUSTOM_DC1-L2LEAF3A_Po1
+- name: Port-Channel9
+  description: CUSTOM_DC1-L2LEAF3A_Po1
   type: switched
   shutdown: false
   mode: trunk
@@ -491,31 +492,30 @@ port_channel_interfaces:
     identifier: 0000:1234:0606:0707:0808
     route_target: 06:06:07:07:08:08
   lacp_id: 0606.0707.0808
-  name: Port-Channel9
-- description: CUSTOM_server01_MLAG_PortChanne1
+- name: Port-Channel10
+  description: CUSTOM_server01_MLAG_PortChanne1
   type: switched
   shutdown: false
   mode: trunk
   vlans: 210-211
-  name: Port-Channel10
-- description: CUSTOM_server01_MTU_PROFILE_MLAG_PortChanne1
+- name: Port-Channel11
+  description: CUSTOM_server01_MTU_PROFILE_MLAG_PortChanne1
   type: switched
   shutdown: false
   mtu: 1600
   mode: access
   vlans: '110'
-  name: Port-Channel11
-- description: CUSTOM_server01_MTU_ADAPTOR_MLAG_PortChanne1
+- name: Port-Channel12
+  description: CUSTOM_server01_MTU_ADAPTOR_MLAG_PortChanne1
   type: switched
   shutdown: false
   mtu: 1601
-  name: Port-Channel12
-- description: CUSTOM_FIREWALL01_PortChanne1
+- name: Port-Channel20
+  description: CUSTOM_FIREWALL01_PortChanne1
   type: switched
   shutdown: false
   mode: trunk
   vlans: 110-111,210-211
-  name: Port-Channel20
 loopback_interfaces:
 - name: Loopback0
   description: CUSTOM_EVPN_Overlay_Peering_L3LEAF

@@ -31,17 +31,17 @@ snmp_server:
 spanning_tree:
   mode: mstp
   mst_instances:
-  - priority: 16384
-    id: '0'
+  - id: '0'
+    priority: 16384
 local_users:
-- disabled: true
-  name: admin
-- privilege: 15
+- name: admin
+  disabled: true
+- name: cvpadmin
+  privilege: 15
   role: network-admin
   sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
   ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
     cvpadmin@hostmachine.local
-  name: cvpadmin
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -83,7 +83,8 @@ ethernet_interfaces:
     direction: downstream
   name: Ethernet10
 port_channel_interfaces:
-- description: MH-LEAF2A_Po2
+- name: Port-Channel1
+  description: MH-LEAF2A_Po2
   type: switched
   shutdown: false
   mode: trunk
@@ -91,7 +92,6 @@ port_channel_interfaces:
   - name: l2leaf-server02
     direction: upstream
   vlans: '310'
-  name: Port-Channel1
 vlans:
 - id: 310
   name: Tenant_X_OP_Zone_1

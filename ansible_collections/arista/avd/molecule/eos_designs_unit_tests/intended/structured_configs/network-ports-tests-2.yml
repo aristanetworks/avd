@@ -35,15 +35,16 @@ vlan_interfaces:
   no_autostate: true
   mtu: 9000
 port_channel_interfaces:
-- description: MLAG_PEER_network-ports-tests.1_Po101
+- name: Port-Channel101
+  description: MLAG_PEER_network-ports-tests.1_Po101
   type: switched
   shutdown: false
   vlans: 2-4094
   mode: trunk
   trunk_groups:
   - MLAG
-  name: Port-Channel101
-- description: AP1 with port_channel
+- name: Port-Channel1
+  description: AP1 with port_channel
   type: switched
   shutdown: false
   mode: access
@@ -51,8 +52,8 @@ port_channel_interfaces:
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
   mlag: 1
-  name: Port-Channel1
-- description: AP1 with port_channel
+- name: Port-Channel2
+  description: AP1 with port_channel
   type: switched
   shutdown: false
   mode: access
@@ -60,7 +61,6 @@ port_channel_interfaces:
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
   mlag: 2
-  name: Port-Channel2
 ethernet_interfaces:
 - peer: network-ports-tests.1
   peer_interface: Ethernet10/1

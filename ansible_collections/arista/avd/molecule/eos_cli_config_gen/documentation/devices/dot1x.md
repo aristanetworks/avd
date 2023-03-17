@@ -1,30 +1,31 @@
 # dot1x
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [802.1X Port Security](#8021x-port-security)
   - [802.1X Summary](#8021x-summary)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -34,12 +35,24 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# 802.1X Port Security
+## 802.1X Port Security
 
-## 802.1X Summary
+### 802.1X Summary
 
-### 802.1X Global
+#### 802.1X Global
 
 | System Auth Control | Protocol LLDP Bypass | Dynamic Authorization |
 | ------------------- | -------------------- | ----------------------|
 | True | True | True |
+
+#### 802.1X MAC based authentication
+
+| Delay | Hold period |
+| ----- | ----------- |
+| 300 | 300 |
+
+#### 802.1X Radius AV pair
+
+| Service type | Framed MTU |
+| ------------ | ---------- |
+| True | 1500 |

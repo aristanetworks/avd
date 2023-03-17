@@ -1,12 +1,12 @@
 {# doc - ntp #}
 {% if ntp is arista.avd.defined %}
 
-## NTP
+### NTP
 
-### NTP Summary
+#### NTP Summary
 {%     if ntp.local_interface.name is arista.avd.defined %}
 
-#### NTP Local Interface
+##### NTP Local Interface
 
 | Interface | VRF |
 | --------- | --- |
@@ -14,7 +14,7 @@
 {%     endif %}
 {%     if ntp.servers is arista.avd.defined %}
 
-#### NTP Servers
+##### NTP Servers
 
 | Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
 | ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
@@ -39,7 +39,7 @@
           or ntp.trusted_keys is arista.avd.defined
           or ntp.authentication_keys is arista.avd.defined %}
 
-#### NTP Authentication
+##### NTP Authentication
 {%         if ntp.authenticate_servers_only is arista.avd.defined(true) %}
 
 - Authentication enabled (Servers only)
@@ -54,7 +54,7 @@
 {%     endif %}
 {%     if ntp.authentication_keys is arista.avd.defined %}
 
-#### NTP Authentication Keys
+##### NTP Authentication Keys
 
 | ID | Algorithm |
 | -- | -------- |
@@ -67,7 +67,7 @@
 {%         endfor %}
 {%     endif %}
 
-### NTP Device Configuration
+#### NTP Device Configuration
 
 ```eos
 {%     include 'eos/ntp.j2' %}

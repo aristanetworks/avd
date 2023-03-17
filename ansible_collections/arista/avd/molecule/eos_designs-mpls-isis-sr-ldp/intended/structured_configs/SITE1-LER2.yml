@@ -152,8 +152,8 @@ vlan_internal_order:
 spanning_tree:
   mode: mstp
   mst_instances:
-  - priority: 4096
-    id: '0'
+  - id: '0'
+    priority: 4096
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -220,7 +220,8 @@ mpls:
     shutdown: false
     transport_address_interface: Loopback0
 ethernet_interfaces:
-- peer: SITE1-LSR2
+- name: Ethernet1
+  peer: SITE1-LSR2
   peer_interface: Ethernet1
   peer_type: p
   description: P2P_LINK_TO_SITE1-LSR2_Ethernet1
@@ -245,8 +246,8 @@ ethernet_interfaces:
       interface: true
       igp_sync: true
   speed: forced 100gfull
-  name: Ethernet1
-- peer: SITE1-LER1
+- name: Ethernet2
+  peer: SITE1-LER1
   peer_interface: Ethernet2
   peer_type: pe
   description: P2P_LINK_TO_SITE1-LER1_Ethernet2
@@ -271,7 +272,6 @@ ethernet_interfaces:
       interface: true
       igp_sync: true
   speed: forced 10000full
-  name: Ethernet2
 - peer: CPE_TENANT_A_SITE1
   peer_interface: Ethernet2
   peer_type: cpe
@@ -309,15 +309,16 @@ ethernet_interfaces:
   shutdown: false
   name: Ethernet5
 port_channel_interfaces:
-- description: CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel
+- name: Port-Channel8
+  description: CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel
   type: routed
   shutdown: false
   evpn_ethernet_segment:
     identifier: 0000:0000:0303:0202:0101
     route_target: 03:03:02:02:01:01
   lacp_id: 0303.0202.0101
-  name: Port-Channel8
-- type: l2dot1q
+- name: Port-Channel8.111
+  type: l2dot1q
   vlan_id: 111
   encapsulation_vlan:
     client:
@@ -328,8 +329,8 @@ port_channel_interfaces:
   evpn_ethernet_segment:
     identifier: 0000:0000:0303:0202:0111
     route_target: 03:03:02:02:01:11
-  name: Port-Channel8.111
-- type: l2dot1q
+- name: Port-Channel8.222
+  type: l2dot1q
   vlan_id: 222
   encapsulation_vlan:
     client:
@@ -340,8 +341,8 @@ port_channel_interfaces:
   evpn_ethernet_segment:
     identifier: 0000:0000:0303:0202:0222
     route_target: 03:03:02:02:02:22
-  name: Port-Channel8.222
-- type: l2dot1q
+- name: Port-Channel8.333
+  type: l2dot1q
   vlan_id: 434
   encapsulation_vlan:
     client:
@@ -352,8 +353,8 @@ port_channel_interfaces:
   evpn_ethernet_segment:
     identifier: 0000:0000:0303:0202:0333
     route_target: 03:03:02:02:03:33
-  name: Port-Channel8.333
-- type: l2dot1q
+- name: Port-Channel3.1000
+  type: l2dot1q
   encapsulation_vlan:
     client:
       dot1q:
@@ -362,8 +363,8 @@ port_channel_interfaces:
       client: true
   peer_type: l3_interface
   shutdown: false
-  name: Port-Channel3.1000
-- type: l2dot1q
+- name: Port-Channel3.1001
+  type: l2dot1q
   encapsulation_vlan:
     client:
       dot1q:
@@ -372,8 +373,8 @@ port_channel_interfaces:
       client: true
   peer_type: l3_interface
   shutdown: false
-  name: Port-Channel3.1001
-- type: l2dot1q
+- name: Port-Channel3.1002
+  type: l2dot1q
   encapsulation_vlan:
     client:
       dot1q:
@@ -382,8 +383,8 @@ port_channel_interfaces:
       client: true
   peer_type: l3_interface
   shutdown: false
-  name: Port-Channel3.1002
-- type: l2dot1q
+- name: Port-Channel3.1003
+  type: l2dot1q
   encapsulation_vlan:
     client:
       dot1q:
@@ -392,8 +393,8 @@ port_channel_interfaces:
       client: true
   peer_type: l3_interface
   shutdown: false
-  name: Port-Channel3.1003
-- type: l2dot1q
+- name: Port-Channel3.1004
+  type: l2dot1q
   encapsulation_vlan:
     client:
       dot1q:
@@ -402,14 +403,13 @@ port_channel_interfaces:
       client: true
   peer_type: l3_interface
   shutdown: false
-  name: Port-Channel3.1004
-- type: routed
+- name: Port-Channel3
+  type: routed
   peer_type: l3_interface
   shutdown: false
   esi: 0000:0000:0102:0000:0034
   rt: 01:02:00:00:00:34
   lacp_id: 0102.0000.0034
-  name: Port-Channel3
 router_bfd:
   multihop:
     interval: 300

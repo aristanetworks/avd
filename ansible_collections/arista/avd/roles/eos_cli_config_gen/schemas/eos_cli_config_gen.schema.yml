@@ -737,6 +737,12 @@ keys:
               description: 'Set source IP address in case of in-band managament
 
                 '
+            cvsourceintf:
+              type: str
+              description: 'Set source interface in case of in-band managament. Available
+                as of TerminAttr v1.23.0
+
+                '
             cvvrf:
               type: str
               description: 'The VRF to use to connect to CloudVision
@@ -780,6 +786,11 @@ keys:
       cvsourceip:
         type: str
         description: 'Set source IP address in case of in-band managament
+
+          '
+      cvsourceintf:
+        type: str
+        description: 'Set source interface in case of in-band managament
 
           '
       cvvrf:
@@ -965,6 +976,32 @@ keys:
         type: bool
       dynamic_authorization:
         type: bool
+      mac_based_authentication:
+        type: dict
+        keys:
+          delay:
+            type: int
+            min: 0
+            max: 300
+            convert_types:
+            - str
+          hold_period:
+            type: int
+            min: 1
+            max: 300
+            convert_types:
+            - str
+      radius_av_pair:
+        type: dict
+        keys:
+          service_type:
+            type: bool
+          framed_mtu:
+            type: int
+            min: 68
+            max: 9236
+            convert_types:
+            - str
   dynamic_prefix_lists:
     documentation_options:
       filename: data_model/Filters
@@ -1386,6 +1423,30 @@ keys:
                 description: Infinite or lifetime in seconds
               no_autoconfig_flag:
                 type: bool
+        ipv6_dhcp_relay_destinations:
+          type: list
+          primary_key: address
+          items:
+            type: dict
+            keys:
+              address:
+                type: str
+                description: DHCP server's IPv6 address
+                required: true
+              vrf:
+                type: str
+              local_interface:
+                type: str
+                description: Local interface to communicate with DHCP server - mutually
+                  exclusive to source_address
+              source_address:
+                type: str
+                description: Source IPv6 address to communicate with DHCP server -
+                  mutually exclusive to local_interface
+              link_address:
+                type: str
+                description: Override the default link address specified in the relayed
+                  DHCP packet
         access_group_in:
           type: str
           description: Access list name
@@ -1455,7 +1516,7 @@ keys:
           - message-digest
         ospf_authentication_key:
           type: str
-          description: Encrypted password
+          description: Encrypted password - only type 7 supported
         ospf_message_digest_keys:
           type: list
           primary_key: id
@@ -1479,7 +1540,7 @@ keys:
                 - sha512
               key:
                 type: str
-                description: Encrypted password
+                description: Encrypted password - only type 7 supported
         pim:
           type: dict
           keys:
@@ -3182,7 +3243,7 @@ keys:
           type: int
           convert_types:
           - str
-          min: 1
+          min: 0
           max: 15
           description: 'Initial privilege level with local EXEC authorization.
 
@@ -6493,6 +6554,8 @@ keys:
               type: bool
             password:
               type: str
+            passive:
+              type: bool
             default_originate:
               type: dict
               keys:
@@ -6616,6 +6679,8 @@ keys:
             description:
               type: str
             route_reflector_client:
+              type: bool
+            passive:
               type: bool
             shutdown:
               type: bool
@@ -7591,6 +7656,8 @@ keys:
                     - int
                   password:
                     type: str
+                  passive:
+                    type: bool
                   remove_private_as:
                     type: dict
                     description: Remove private AS numbers in outbound AS path
@@ -10260,6 +10327,30 @@ keys:
                 - int
               no_autoconfig_flag:
                 type: bool
+        ipv6_dhcp_relay_destinations:
+          type: list
+          primary_key: address
+          items:
+            type: dict
+            keys:
+              address:
+                type: str
+                description: DHCP server's IPv6 address
+                required: true
+              vrf:
+                type: str
+              local_interface:
+                type: str
+                description: Local interface to communicate with DHCP server - mutually
+                  exclusive to source_address
+              source_address:
+                type: str
+                description: Source IPv6 address to communicate with DHCP server -
+                  mutually exclusive to local_interface
+              link_address:
+                type: str
+                description: Override the default link address specified in the relayed
+                  DHCP packet
         access_group_in:
           type: str
           description: IPv4 access-list name

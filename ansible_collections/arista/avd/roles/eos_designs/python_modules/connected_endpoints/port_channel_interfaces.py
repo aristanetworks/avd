@@ -19,11 +19,11 @@ class PortChannelInterfacesMixin(UtilsMixin):
     """
 
     @cached_property
-    def port_channel_interfaces(self) -> dict | None:
+    def port_channel_interfaces(self) -> list | None:
         """
         Return structured config for ethernet_interfaces
         """
-        port_channel_interfaces = {}
+        port_channel_interfaces = []
         for connected_endpoint in self._filtered_connected_endpoints:
             for adapter in connected_endpoint["adapters"]:
                 if get(adapter, "port_channel.mode") is None:
@@ -33,7 +33,8 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 channel_group_id = get(adapter, "port_channel.channel_id", default=default_channel_group_id)
 
                 port_channel_interface_name = f"Port-Channel{channel_group_id}"
-                port_channel_interfaces[port_channel_interface_name] = self._get_port_channel_interface_cfg(adapter, channel_group_id, connected_endpoint)
+                port_channel_interfaces.append(self._get_port_channel_interface_cfg(adapter, port_channel_interface_name, channel_group_id, connected_endpoint))
+
                 if (subinterfaces := get(adapter, "port_channel.subinterfaces")) is None:
                     continue
 
@@ -42,7 +43,9 @@ class PortChannelInterfacesMixin(UtilsMixin):
                         continue
 
                     port_channel_subinterface_name = f"Port-Channel{channel_group_id}.{subinterface['number']}"
-                    port_channel_interfaces[port_channel_subinterface_name] = self._get_port_channel_subinterface_cfg(subinterface, adapter, channel_group_id)
+                    port_channel_interfaces.append(
+                        self._get_port_channel_subinterface_cfg(subinterface, adapter, port_channel_subinterface_name, channel_group_id)
+                    )
 
         for network_port in self._filtered_network_ports:
             if get(network_port, "port_channel.mode") is None:
@@ -69,8 +72,8 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 channel_group_id = get(tmp_network_port, "port_channel.channel_id", default=default_channel_group_id)
 
                 port_channel_interface_name = f"Port-Channel{channel_group_id}"
-                port_channel_interfaces[port_channel_interface_name] = self._get_port_channel_interface_cfg(
-                    tmp_network_port, channel_group_id, connected_endpoint
+                port_channel_interfaces.append(
+                    self._get_port_channel_interface_cfg(tmp_network_port, port_channel_interface_name, channel_group_id, connected_endpoint)
                 )
 
         if port_channel_interfaces:
@@ -78,10 +81,11 @@ class PortChannelInterfacesMixin(UtilsMixin):
 
         return None
 
-    def _get_port_channel_interface_cfg(self, adapter: dict, channel_group_id: int, connected_endpoint: dict) -> dict:
+    def _get_port_channel_interface_cfg(self, adapter: dict, port_channel_interface_name: str, channel_group_id: int, connected_endpoint: dict) -> dict:
         """
         Return structured_config for one port_channel_interface
         """
+
         peer = connected_endpoint["name"]
         adapter_port_channel_description = get(adapter, "port_channel.description")
         port_channel_type = "routed" if get(adapter, "port_channel.subinterfaces") else "switched"
@@ -90,6 +94,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
 
         # Common port_channel_interface settings
         port_channel_interface = {
+            "name": port_channel_interface_name,
             "description": self._avd_interface_descriptions.connected_endpoints_port_channel_interfaces(peer, adapter_port_channel_description),
             "type": port_channel_type,
             "shutdown": not get(adapter, "port_channel.enabled", default=True),
@@ -138,12 +143,13 @@ class PortChannelInterfacesMixin(UtilsMixin):
 
         return strip_null_from_data(port_channel_interface)
 
-    def _get_port_channel_subinterface_cfg(self, subinterface: dict, adapter: dict, channel_group_id: int) -> dict:
+    def _get_port_channel_subinterface_cfg(self, subinterface: dict, adapter: dict, port_channel_subinterface_name: str, channel_group_id: int) -> dict:
         """
         Return structured_config for one port_channel_interface (subinterface)
         """
         # Common port_channel_interface settings
         port_channel_interface = {
+            "name": port_channel_subinterface_name,
             "type": "l2dot1q",
             "vlan_id": subinterface.get("vlan_id", subinterface["number"]),
             "encapsulation_vlan": {

@@ -66,6 +66,27 @@ tenants:
         name: l2vlan399_without_trunk_groups
         tags: [ TRUNK_GROUP_TESTS_L3LEAF1, TRUNK_GROUP_TESTS_L2LEAF1 ]
 
+  - name: TENANT_WITH_DUPLICATE_VLANS
+    # Extra tenant with duplicate vlan numbers.
+    # This is to verify that "filter.only_vlans_in_use" properly filter on trunk_groups when there might be overlapping vlan numbers.
+    # Since "filter.only_vlans_in_use" are only configured on some devices, we have to filter this tenant away on the remaning switches.
+    # If not, there will be a duplicate vlan error (tested and verified offline).
+    # So in the end the vlans here are not configured anywhere, but will trigger duplicate checks if filtering is not implemented properly on trunk groups
+    mac_vrf_vni_base: 20000
+    vrfs:
+      - name: DUPLICATE_TG_200
+        vrf_vni: 200
+        svis:
+          - id: 200
+            name: duplicate svi200_with_trunk_groups not in use. Should not get configured anywhere
+            enabled: True
+            ip_address_virtual: 10.22.0.1/24
+            trunk_groups: [ TG_NOT_MATCHING_ANY_SERVERS ]
+    l2vlans:
+      - id: 210
+        name: duplicate l2vlan210_with_trunk_groups not in use. Should not get configured anywhere
+        trunk_groups: [ TG_NOT_MATCHING_ANY_SERVERS ]
+
 servers:
   server_with_tg_100:
     adapters:

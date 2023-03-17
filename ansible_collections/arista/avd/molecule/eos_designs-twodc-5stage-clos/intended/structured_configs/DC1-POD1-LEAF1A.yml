@@ -101,10 +101,10 @@ snmp_server:
 spanning_tree:
   mode: none
 local_users:
-- privilege: 15
+- name: admin
+  privilege: 15
   role: network-admin
   sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
-  name: admin
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -160,13 +160,13 @@ ethernet_interfaces:
   ip_address: 172.17.10.4/31
   name: Ethernet4
 port_channel_interfaces:
-- description: DC1-POD1-L2LEAF1A_Po1
+- name: Port-Channel3
+  description: DC1-POD1-L2LEAF1A_Po1
   type: switched
   shutdown: false
   mode: trunk
   service_profile: QOS-PROFILE
   vlans: '4085'
-  name: Port-Channel3
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

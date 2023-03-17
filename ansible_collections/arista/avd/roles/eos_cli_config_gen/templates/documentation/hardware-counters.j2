@@ -1,11 +1,11 @@
 {# doc - hardware counters #}
 {% if hardware_counters is arista.avd.defined %}
 
-## Hardware Counters
+### Hardware Counters
 
-### Hardware Counters Summary
+#### Hardware Counters Summary
 
-#### Hardware Counter Features
+##### Hardware Counter Features
 
 | Feature | Flow Direction |
 | ------- | -------------- |
@@ -27,7 +27,7 @@
 {%         endif %}
 {%     endif %}
 
-### Hardware Counters Configuration
+#### Hardware Counters Configuration
 
 ```eos
 {%     include 'eos/hardware-counters.j2' %}

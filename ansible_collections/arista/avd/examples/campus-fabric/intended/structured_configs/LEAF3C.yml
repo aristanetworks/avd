@@ -20,13 +20,13 @@ name_server:
 spanning_tree:
   mode: mstp
   mst_instances:
-  - priority: 16384
-    id: '0'
+  - id: '0'
+    priority: 16384
 local_users:
-- privilege: 15
+- name: admin
+  privilege: 15
   role: network-admin
   sha512_password: $6$eucN5ngreuExDgwS$xnD7T8jO..GBDX0DUlp.hn.W7yW94xTjSanqgaQGBzPIhDAsyAl9N4oScHvOMvf07uVBFI4mKMxwdVEUVKgY/.
-  name: admin
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -3047,12 +3047,12 @@ ethernet_interfaces:
     trunk: untagged
     vlan: 320
 port_channel_interfaces:
-- description: IDF3_AGG_Po973
+- name: Port-Channel971
+  description: IDF3_AGG_Po973
   type: switched
   shutdown: false
   mode: trunk
   vlans: 10,310,320,330
-  name: Port-Channel971
 vlans:
 - id: 310
   name: IDF3-Data

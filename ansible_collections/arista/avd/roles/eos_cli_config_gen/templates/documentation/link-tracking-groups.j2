@@ -1,9 +1,9 @@
 {# doc - link tracking groups #}
 {% if link_tracking_groups is arista.avd.defined %}
 
-## Link Tracking
+### Link Tracking
 
-### Link Tracking Groups Summary
+#### Link Tracking Groups Summary
 
 | Group Name | Minimum Links | Recovery Delay |
 | ---------- | ------------- | -------------- |
@@ -13,7 +13,7 @@
 {%         endif %}
 {%     endfor %}
 
-### Link Tracking Groups Configuration
+#### Link Tracking Groups Configuration
 
 ```eos
 {%     include 'eos/link-tracking-groups.j2' %}

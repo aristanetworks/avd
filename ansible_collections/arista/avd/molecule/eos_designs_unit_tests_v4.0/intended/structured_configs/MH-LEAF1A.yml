@@ -97,16 +97,16 @@ snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS MH-LEAF1A
 local_users:
-  admin:
-    privilege: 15
-    role: network-admin
-    no_password: true
-  cvpadmin:
-    privilege: 15
-    role: network-admin
-    sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
-    ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
-      cvpadmin@hostmachine.local
+- name: admin
+  privilege: 15
+  role: network-admin
+  no_password: true
+- name: cvpadmin
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+  ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
+    cvpadmin@hostmachine.local
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -123,7 +123,7 @@ management_interfaces:
   type: oob
 management_api_http:
   enable_vrfs:
-    MGMT: {}
+  - name: MGMT
   enable_https: true
   default_services: false
 link_tracking_groups:
@@ -248,81 +248,81 @@ virtual_source_nat_vrfs:
 - name: Tenant_X_OP_Zone
   ip_address: 10.255.1.33
 port_channel_interfaces:
-  Port-Channel10:
-    description: server01_ES1_PortChanne1
-    type: switched
-    shutdown: false
-    link_tracking_groups:
-    - name: LT_GROUP1
-      direction: downstream
-    mode: access
-    vlans: '310'
-    evpn_ethernet_segment:
-      identifier: 0000:0000:0001:1010:1010
-      route_target: 00:01:10:10:10:10
-    lacp_id: 0001.1010.1010
-  Port-Channel12:
-    description: server03_AUTO_ESI_Auto-ESI PortChannel
-    type: switched
-    shutdown: false
-    link_tracking_groups:
-    - name: LT_GROUP1
-      direction: downstream
-    mode: access
-    vlans: '310'
-    evpn_ethernet_segment:
-      identifier: 0000:0000:fc87:ae24:2cb3
-      route_target: fc:87:ae:24:2c:b3
-    lacp_id: fc87.ae24.2cb3
-  Port-Channel11:
-    description: ROUTER02_WITH_SUBIF_Testing L2 subinterfaces
-    type: routed
-    shutdown: false
-  Port-Channel11.101:
-    type: l2dot1q
-    vlan_id: 101
-    encapsulation_vlan:
-      client:
-        dot1q:
-          vlan: 101
-      network:
-        client: true
-    evpn_ethernet_segment:
-      identifier: 0000:0000:0000:0000:0101
-      route_target: 00:00:00:00:01:01
-  Port-Channel11.102:
-    type: l2dot1q
-    vlan_id: 1102
-    encapsulation_vlan:
-      client:
-        dot1q:
-          vlan: 2102
-      network:
-        client: true
-    evpn_ethernet_segment:
-      identifier: 0000:0000:0000:0000:0102
-      route_target: 00:00:00:00:01:02
-  Port-Channel11.103:
-    type: l2dot1q
-    vlan_id: 1103
-    encapsulation_vlan:
-      client:
-        dot1q:
-          vlan: 2103
-      network:
-        client: true
-    evpn_ethernet_segment:
-      identifier: 0000:0000:c2c9:c85a:ed92
-      route_target: c2:c9:c8:5a:ed:92
-  Port-Channel11.104:
-    type: l2dot1q
-    vlan_id: 1104
-    encapsulation_vlan:
-      client:
-        dot1q:
-          vlan: 2104
-      network:
-        client: true
-    evpn_ethernet_segment:
-      identifier: 0000:0000:5c8e:1f50:9fc4
-      route_target: 5c:8e:1f:50:9f:c4
+- name: Port-Channel10
+  description: server01_ES1_PortChanne1
+  type: switched
+  shutdown: false
+  link_tracking_groups:
+  - name: LT_GROUP1
+    direction: downstream
+  mode: access
+  vlans: '310'
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0001:1010:1010
+    route_target: 00:01:10:10:10:10
+  lacp_id: 0001.1010.1010
+- name: Port-Channel12
+  description: server03_AUTO_ESI_Auto-ESI PortChannel
+  type: switched
+  shutdown: false
+  link_tracking_groups:
+  - name: LT_GROUP1
+    direction: downstream
+  mode: access
+  vlans: '310'
+  evpn_ethernet_segment:
+    identifier: 0000:0000:fc87:ae24:2cb3
+    route_target: fc:87:ae:24:2c:b3
+  lacp_id: fc87.ae24.2cb3
+- name: Port-Channel11
+  description: ROUTER02_WITH_SUBIF_Testing L2 subinterfaces
+  type: routed
+  shutdown: false
+- name: Port-Channel11.101
+  type: l2dot1q
+  vlan_id: 101
+  encapsulation_vlan:
+    client:
+      dot1q:
+        vlan: 101
+    network:
+      client: true
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0000:0000:0101
+    route_target: 00:00:00:00:01:01
+- name: Port-Channel11.102
+  type: l2dot1q
+  vlan_id: 1102
+  encapsulation_vlan:
+    client:
+      dot1q:
+        vlan: 2102
+    network:
+      client: true
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0000:0000:0102
+    route_target: 00:00:00:00:01:02
+- name: Port-Channel11.103
+  type: l2dot1q
+  vlan_id: 1103
+  encapsulation_vlan:
+    client:
+      dot1q:
+        vlan: 2103
+    network:
+      client: true
+  evpn_ethernet_segment:
+    identifier: 0000:0000:c2c9:c85a:ed92
+    route_target: c2:c9:c8:5a:ed:92
+- name: Port-Channel11.104
+  type: l2dot1q
+  vlan_id: 1104
+  encapsulation_vlan:
+    client:
+      dot1q:
+        vlan: 2104
+    network:
+      client: true
+  evpn_ethernet_segment:
+    identifier: 0000:0000:5c8e:1f50:9fc4
+    route_target: 5c:8e:1f:50:9f:c4

@@ -1,12 +1,12 @@
 {# doc - monitor connectivity #}
 {% if monitor_connectivity is arista.avd.defined %}
 
-# Monitor Connectivity
+## Monitor Connectivity
 
-## Global Configuration
+### Global Configuration
 {%     if monitor_connectivity.interface_sets is arista.avd.defined %}
 
-### Interface Sets
+#### Interface Sets
 
 | Name | Interfaces |
 | ---- | ---------- |
@@ -17,14 +17,14 @@
 {%         endfor %}
 {%     endif %}
 
-### Probing Configuration
+#### Probing Configuration
 
 | Enabled | Interval | Default Interface Set |
 | ------- | -------- | --------------------- |
 | {{ not monitor_connectivity.shutdown | arista.avd.default(true) }} | {{ monitor_connectivity.interval | arista.avd.default('-') }} | {{ monitor_connectivity.local_interfaces | arista.avd.default('-') }} |
 {%     if monitor_connectivity.hosts is arista.avd.defined %}
 
-### Host Parameters
+#### Host Parameters
 
 | Host Name | Description | IPv4 Address | Probing Interface Set | URL |
 | --------- | ----------- | ------------ | --------------------- | --- |
@@ -36,7 +36,7 @@
 {%     endif %}
 {%     if monitor_connectivity.vrfs is arista.avd.defined %}
 
-## Vrf Configuration
+### Vrf Configuration
 
 | Name | Description | Default Interface Set |
 | ---- | ----------- | --------------------- |
@@ -48,10 +48,10 @@
 {%         for vrf in monitor_connectivity.vrfs | arista.avd.natural_sort('name') %}
 {%             if vrf.name is arista.avd.defined %}
 
-### Vrf {{ vrf.name }} Configuration
+#### Vrf {{ vrf.name }} Configuration
 {%                 if vrf.interface_sets is arista.avd.defined %}
 
-#### Interface Sets
+##### Interface Sets
 
 | Name | Interfaces |
 | ---- | ---------- |
@@ -63,7 +63,7 @@
 {%                 endif %}
 {%                 if vrf.hosts is arista.avd.defined %}
 
-#### Host Parameters
+##### Host Parameters
 
 | Host Name | Description | IPv4 Address | Probing Interface Set | URL |
 | --------- | ----------- | ------------ | --------------------- | --- |
@@ -77,7 +77,7 @@
 {%         endfor %}
 {%     endif %}
 
-## Monitor Connectivity Device Configuration
+### Monitor Connectivity Device Configuration
 
 ```eos
 {%     include 'eos/monitor-connectivity.j2' %}

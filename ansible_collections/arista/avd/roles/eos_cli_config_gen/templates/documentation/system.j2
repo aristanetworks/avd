@@ -1,10 +1,10 @@
 {# doc - system #}
 {% if system.control_plane is arista.avd.defined %}
 
-## System Control-Plane
+### System Control-Plane
 {%     if system.control_plane.tcp_mss.ipv4 is arista.avd.defined or system.control_plane.tcp_mss.ipv6 is arista.avd.defined %}
 
-#### TCP MSS Ceiling
+##### TCP MSS Ceiling
 
 | Protocol | Segment Size |
 | -------- | -------------|
@@ -17,7 +17,7 @@
 {%     endif %}
 {%     if system.control_plane.ipv4_access_groups is arista.avd.defined or system.control_plane.ipv6_access_groups is arista.avd.defined %}
 
-#### Control-Plane Access-Groups
+##### Control-Plane Access-Groups
 
 | Protocol | VRF | Access-list |
 | -------- | --- | ------------|
@@ -31,7 +31,7 @@
 {%         endfor %}
 {%     endif %}
 
-### System Control-Plane Configuration
+#### System Control-Plane Configuration
 
 ```eos
 {%     include 'eos/system.j2' %}

@@ -83,10 +83,10 @@ snmp_server:
 spanning_tree:
   mode: none
 local_users:
-- privilege: 15
+- name: admin
+  privilege: 15
   role: network-admin
   sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
-  name: admin
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -154,7 +154,8 @@ ethernet_interfaces:
   type: routed
   ip_address: 172.17.10.10/31
   name: Ethernet4
-- peer: DC2-POD1-SPINE1
+- name: Ethernet5
+  peer: DC2-POD1-SPINE1
   peer_interface: Ethernet5
   peer_type: spine
   description: P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet5
@@ -162,7 +163,6 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 11.1.1.18/31
-  name: Ethernet5
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

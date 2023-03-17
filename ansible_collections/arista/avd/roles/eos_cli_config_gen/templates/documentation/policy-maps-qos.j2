@@ -1,9 +1,9 @@
 {# doc - policy map qos #}
 {% if policy_maps.qos is arista.avd.defined %}
 
-## QOS Policy Maps
+### QOS Policy Maps
 
-### QOS Policy Maps Summary
+#### QOS Policy Maps Summary
 {%     for policy_map in policy_maps.qos | arista.avd.natural_sort('name') %}
 
 **{{ policy_map.name }}**
@@ -17,7 +17,7 @@
 {%         endfor %}
 {%     endfor %}
 
-### QOS Policy Maps configuration
+#### QOS Policy Maps configuration
 
 ```eos
 {%     include 'eos/policy-maps-qos.j2' %}

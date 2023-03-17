@@ -13,7 +13,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 class AvdStructuredConfig(AvdFacts):
     @cached_property
-    def _mgmt_interface_vrf(self):
+    def _mgmt_interface_vrf(self) -> str | None:
         """
         Returns the value for mgmt_interface_vrf variable used in static_routes, name_Server,
         vrfs and management_interfaces data-models
@@ -21,14 +21,21 @@ class AvdStructuredConfig(AvdFacts):
         return get(self._hostvars, "mgmt_interface_vrf")
 
     @cached_property
-    def _mgmt_gateway(self):
+    def _mgmt_gateway(self) -> str | None:
         """
         Returns the value for mgmt_gateway variable used in static_routes and management_interfaces data-models
         """
         return get(self._hostvars, "mgmt_gateway")
 
     @cached_property
-    def _platform_settings(self):
+    def _ipv6_mgmt_gateway(self) -> str | None:
+        """
+        Returns the value for ipv6_mgmt_gateway variable used in ipv6_static_routes and management_interfaces data-models
+        """
+        return get(self._hostvars, "ipv6_mgmt_gateway")
+
+    @cached_property
+    def _platform_settings(self) -> list:
         """
         Returns the value for switch.platform_settings fact used in queue_monitor_length, tcam_profile, platform
         and eos_cli data-models
@@ -36,28 +43,35 @@ class AvdStructuredConfig(AvdFacts):
         return get(self._hostvars, "switch.platform_settings")
 
     @cached_property
-    def _mgmt_ip(self):
+    def _mgmt_ip(self) -> str | None:
         """
         Returns the value for switch.mgmt_ip fact used in snmp_server and management_interfaces data-models
         """
         return get(self._hostvars, "switch.mgmt_ip")
 
     @cached_property
-    def _hostname(self):
+    def _ipv6_mgmt_ip(self) -> str | None:
+        """
+        Returns the value for switch.ipv6_mgmt_ip fact used in management_interfaces data-models
+        """
+        return get(self._hostvars, "switch.ipv6_mgmt_ip")
+
+    @cached_property
+    def _hostname(self) -> str | None:
         """
         hostname variable set based on switch.hostname fact
         """
         return get(self._hostvars, "switch.hostname", required=True)
 
     @cached_property
-    def _system_mac_address(self):
+    def _system_mac_address(self) -> str | None:
         """
         system_mac_address variable set based on switch.system_mac_address fact
         """
         return get(self._hostvars, "switch.system_mac_address")
 
     @cached_property
-    def router_bgp(self):
+    def router_bgp(self) -> dict | None:
         """
         router_bgp set based on switch.bgp_as, switch.bgp_defaults, switch.router_id facts
         and aggregating the values of bgp_maximum_paths and bgp_ecmp variables
@@ -79,7 +93,7 @@ class AvdStructuredConfig(AvdFacts):
         }
 
     @cached_property
-    def static_routes(self):
+    def static_routes(self) -> list | None:
         """
         static_routes set based on mgmt_gateway, mgmt_destination_networks and mgmt_interface_vrf
         """
@@ -108,21 +122,50 @@ class AvdStructuredConfig(AvdFacts):
         return static_routes
 
     @cached_property
-    def service_routing_protocols_model(self):
+    def ipv6_static_routes(self) -> list | None:
+        """
+        ipv6_static_routes set based on ipv6_mgmt_gateway, ipv6_mgmt_destination_networks and mgmt_interface_vrf
+        """
+        if self._ipv6_mgmt_gateway is None or self._ipv6_mgmt_ip is None:
+            return None
+
+        ipv6_static_routes = []
+        if (ipv6_mgmt_destination_networks := get(self._hostvars, "ipv6_mgmt_destination_networks")) is not None:
+            for mgmt_destination_network in ipv6_mgmt_destination_networks:
+                ipv6_static_routes.append(
+                    {
+                        "vrf": self._mgmt_interface_vrf,
+                        "destination_address_prefix": mgmt_destination_network,
+                        "gateway": self._ipv6_mgmt_gateway,
+                    }
+                )
+        else:
+            ipv6_static_routes.append(
+                {
+                    "vrf": self._mgmt_interface_vrf,
+                    "destination_address_prefix": "::/0",
+                    "gateway": self._ipv6_mgmt_gateway,
+                }
+            )
+
+        return ipv6_static_routes
+
+    @cached_property
+    def service_routing_protocols_model(self) -> str:
         """
         service_routing_protocols_model set to 'multi-agent'
         """
         return "multi-agent"
 
     @cached_property
-    def ip_routing(self):
+    def ip_routing(self) -> bool:
         """
         ip_routing set to True
         """
         return True
 
     @cached_property
-    def ipv6_unicast_routing(self):
+    def ipv6_unicast_routing(self) -> bool | None:
         """
         ipv6_unicast_routing set based on underlay_rfc5549 and switch.underlay_ipv6
         """
@@ -131,7 +174,7 @@ class AvdStructuredConfig(AvdFacts):
         return None
 
     @cached_property
-    def ip_routing_ipv6_interfaces(self):
+    def ip_routing_ipv6_interfaces(self) -> bool | None:
         """
         ip_routing_ipv6_interfaces set based on underlay_rfc5549 variable
         """
@@ -140,7 +183,7 @@ class AvdStructuredConfig(AvdFacts):
         return None
 
     @cached_property
-    def router_multicast(self):
+    def router_multicast(self) -> dict | None:
         """
         router_multicast set based on switch.underlay_multicast, switch.underlay_router
         and switch.evpn_multicast facts
@@ -155,14 +198,14 @@ class AvdStructuredConfig(AvdFacts):
         return router_multicast
 
     @cached_property
-    def hardware_counters(self):
+    def hardware_counters(self) -> dict | None:
         """
         hardware_counters set based on hardware_counters.features variable
         """
         return get(self._hostvars, "hardware_counters")
 
     @cached_property
-    def hardware(self):
+    def hardware(self) -> dict | None:
         """
         hardware set based on platform_speed_groups variable and switch.platform fact.
         Converting nested dict to list of dict to support avd_v4.0
@@ -184,13 +227,13 @@ class AvdStructuredConfig(AvdFacts):
                         tmp_speed_groups[speed_group] = speed["speed"]
 
         if tmp_speed_groups:
-            hardware = {"speed_groups": {}}
+            hardware = {"speed_groups": []}
             for speed_group in natural_sort(tmp_speed_groups):
-                hardware["speed_groups"][speed_group] = {"serdes": tmp_speed_groups[speed_group]}
+                hardware["speed_groups"].append({"speed_group": speed_group, "serdes": tmp_speed_groups[speed_group]})
             return hardware
 
     @cached_property
-    def daemon_terminattr(self):
+    def daemon_terminattr(self) -> dict | None:
         """
         daemon_terminattr set based on cvp_instance_ip and cvp_instance_ips variables
 
@@ -234,7 +277,7 @@ class AvdStructuredConfig(AvdFacts):
         return daemon_terminattr
 
     @cached_property
-    def vlan_internal_order(self):
+    def vlan_internal_order(self) -> dict:
         """
         vlan_internal_order set based on internal_vlan_order data-model
         """
@@ -247,7 +290,7 @@ class AvdStructuredConfig(AvdFacts):
         }
 
     @cached_property
-    def event_monitor(self):
+    def event_monitor(self) -> dict | None:
         """
         event_monitor set based on event_monitor data-model
         """
@@ -256,14 +299,14 @@ class AvdStructuredConfig(AvdFacts):
         return None
 
     @cached_property
-    def event_handlers(self):
+    def event_handlers(self) -> list | None:
         """
         event_handlers set based on event_handlers data-model
         """
         return get(self._hostvars, "event_handlers")
 
     @cached_property
-    def load_interval(self):
+    def load_interval(self) -> dict | None:
         """
         load_interval set based on load_interval_default variable
         """
@@ -272,7 +315,7 @@ class AvdStructuredConfig(AvdFacts):
         return None
 
     @cached_property
-    def queue_monitor_length(self):
+    def queue_monitor_length(self) -> dict | None:
         """
         queue_monitor_length set based on queue_monitor_length data-model and
         switch.feature_support.queue_monitor_length_notify fact
@@ -292,7 +335,7 @@ class AvdStructuredConfig(AvdFacts):
         return queue_monitor_length_dict
 
     @cached_property
-    def name_server(self):
+    def name_server(self) -> dict | None:
         """
         name_server set based on name_servers data-model and mgmt_interface_vrf
         """
@@ -302,7 +345,7 @@ class AvdStructuredConfig(AvdFacts):
         return None
 
     @cached_property
-    def redundancy(self):
+    def redundancy(self) -> dict | None:
         """
         redundancy set based on redundancy data-model
         """
@@ -311,7 +354,7 @@ class AvdStructuredConfig(AvdFacts):
         return None
 
     @cached_property
-    def snmp_server(self):
+    def snmp_server(self) -> dict | None:
         """
         snmp_server set based on snmp_settings data-model, using various snmp_settings information.
 
@@ -396,7 +439,7 @@ class AvdStructuredConfig(AvdFacts):
         return snmp_server
 
     @cached_property
-    def spanning_tree(self):
+    def spanning_tree(self) -> dict | None:
         """
         spanning_tree set based on switch.spanning_tree_root_super, switch.spanning_tree_mode
         and switch.spanning_tree_priority facts
@@ -414,16 +457,16 @@ class AvdStructuredConfig(AvdFacts):
             spanning_tree["mode"] = spanning_tree_mode
             priority = get(self._hostvars, "switch.spanning_tree_priority", "32768")
             if spanning_tree_mode == "mstp":
-                spanning_tree["mst_instances"] = {"0": {"priority": priority}}
+                spanning_tree["mst_instances"] = [{"id": "0", "priority": priority}]
             elif spanning_tree_mode == "rapid-pvst":
-                spanning_tree["rapid_pvst_instances"] = {"1-4094": {"priority": priority}}
+                spanning_tree["rapid_pvst_instances"] = [{"id": "1-4094", "priority": priority}]
             elif spanning_tree_mode == "rstp":
                 spanning_tree["rstp_priority"] = priority
 
         return spanning_tree
 
     @cached_property
-    def service_unsupported_transceiver(self):
+    def service_unsupported_transceiver(self) -> dict | None:
         """
         service_unsupported_transceiver based on unsupported_transceiver data-model
         """
@@ -433,7 +476,7 @@ class AvdStructuredConfig(AvdFacts):
         return None
 
     @cached_property
-    def local_users(self):
+    def local_users(self) -> list | None:
         """
         local_users set based on various information from local_users data-model
         """
@@ -441,29 +484,31 @@ class AvdStructuredConfig(AvdFacts):
             return None
 
         local_users = convert_dicts(local_users, "name")
-        local_users_dict = {}
+        local_users_list = []
         for local_user in natural_sort(local_users, "name"):
             name = local_user.get("name")
             if local_user.get("disabled") is True:
-                local_users_dict[name] = {"disabled": True}
+                local_users_list.append({"name": name, "disabled": True})
                 continue
 
-            local_users_dict[name] = {"privilege": get(local_user, "privilege")}
+            local_users_dict = {"name": name, "privilege": get(local_user, "privilege")}
             if (role := local_user.get("role")) is not None:
-                local_users_dict[name]["role"] = role
+                local_users_dict["role"] = role
 
             if (sha512_password := local_user.get("sha512_password")) is not None:
-                local_users_dict[name]["sha512_password"] = sha512_password
+                local_users_dict["sha512_password"] = sha512_password
             elif (no_password := local_user.get("no_password")) is not None:
-                local_users_dict[name]["no_password"] = no_password
+                local_users_dict["no_password"] = no_password
 
             if (ssh_key := local_user.get("ssh_key")) is not None:
-                local_users_dict[name]["ssh_key"] = ssh_key
+                local_users_dict["ssh_key"] = ssh_key
 
-        return local_users_dict
+            local_users_list.append(local_users_dict)
+
+        return local_users_list
 
     @cached_property
-    def clock(self):
+    def clock(self) -> dict | None:
         """
         clock set based on timezone variable
         """
@@ -472,36 +517,53 @@ class AvdStructuredConfig(AvdFacts):
         return None
 
     @cached_property
-    def vrfs(self):
+    def vrfs(self) -> list:
         """
         vrfs set based on mgmt_interface_vrf variable
         """
-        return [{"name": self._mgmt_interface_vrf, "ip_routing": get(self._hostvars, "mgmt_vrf_routing")}]
+        vrf_settings = {
+            "name": self._mgmt_interface_vrf,
+            "ip_routing": get(self._hostvars, "mgmt_vrf_routing"),
+        }
+        if self._ipv6_mgmt_ip is not None:
+            vrf_settings["ipv6_routing"] = get(self._hostvars, "mgmt_vrf_routing")
+        return [vrf_settings]
 
     @cached_property
     def management_interfaces(self) -> list | None:
         """
-        management_interfaces set based on switch.mgmt_interface, switch.mgmt_ip facts,
-        mgmt_gateway and mgmt_interface_vrf variable
+        management_interfaces set based on switch.mgmt_interface, switch.mgmt_ip, switch.ipv6_mgmt_ip facts,
+        mgmt_gateway, ipv6_mgmt_gateway and mgmt_interface_vrf variables
         """
         mgmt_interface = get(self._hostvars, "switch.mgmt_interface")
-        if mgmt_interface is not None and self._mgmt_ip is not None and self._mgmt_interface_vrf is not None:
-            return [
-                {
-                    "name": mgmt_interface,
-                    "description": get(self._hostvars, "mgmt_interface_description", default="oob_management"),
-                    "shutdown": False,
-                    "vrf": self._mgmt_interface_vrf,
-                    "ip_address": self._mgmt_ip,
-                    "gateway": self._mgmt_gateway,
-                    "type": "oob",
-                }
-            ]
+        if mgmt_interface is not None and self._mgmt_interface_vrf is not None and (self._mgmt_ip is not None or self._ipv6_mgmt_ip is not None):
+            interface_settings = {
+                "name": mgmt_interface,
+                "description": get(self._hostvars, "mgmt_interface_description", default="oob_management"),
+                "shutdown": False,
+                "vrf": self._mgmt_interface_vrf,
+                "ip_address": self._mgmt_ip,
+                "gateway": self._mgmt_gateway,
+                "type": "oob",
+            }
+            """
+            inserting ipv6 variables if self._ipv6_mgmt_ip is set
+            """
+            if self._ipv6_mgmt_ip is not None:
+                interface_settings.update(
+                    {
+                        "ipv6_enable": True,
+                        "ipv6_address": self._ipv6_mgmt_ip,
+                        "ipv6_gateway": self._ipv6_mgmt_gateway,
+                    }
+                )
+
+            return [interface_settings]
 
         return None
 
     @cached_property
-    def tcam_profile(self):
+    def tcam_profile(self) -> dict | None:
         """
         tcam_profile set based on switch.platform_settings.tcam_profile fact
         """
@@ -510,7 +572,7 @@ class AvdStructuredConfig(AvdFacts):
         return None
 
     @cached_property
-    def platform(self):
+    def platform(self) -> dict | None:
         """
         platform set based on switch.platform_settings.lag_hardware_only,
         switch.platform_settings.trident_forwarding_table_partition and switch.evpn_multicast facts
@@ -528,7 +590,7 @@ class AvdStructuredConfig(AvdFacts):
         return None
 
     @cached_property
-    def mac_address_table(self):
+    def mac_address_table(self) -> dict | None:
         """
         mac_address_table set based on mac_address_table data-model
         """
@@ -537,7 +599,7 @@ class AvdStructuredConfig(AvdFacts):
         return None
 
     @cached_property
-    def queue_monitor_streaming(self):
+    def queue_monitor_streaming(self) -> dict | None:
         """
         queue_monitor_streaming set based on queue_monitor_streaming data-model
         """
@@ -556,14 +618,14 @@ class AvdStructuredConfig(AvdFacts):
         return queue_monitor
 
     @cached_property
-    def management_api_http(self):
+    def management_api_http(self) -> dict | None:
         """
         management_api_http set based on management_eapi data-model
         """
         if (management_eapi := get(self._hostvars, "management_eapi")) is None:
             return None
 
-        management_api_http = {"enable_vrfs": {self._mgmt_interface_vrf: {}}}
+        management_api_http = {"enable_vrfs": [{"name": self._mgmt_interface_vrf}]}
         management_api = management_eapi.fromkeys(["enable_http", "enable_https", "default_services"])
         for key in dict(management_api).keys():
             if (value := management_eapi.get(key)) is not None:
@@ -575,7 +637,7 @@ class AvdStructuredConfig(AvdFacts):
         return management_api_http
 
     @cached_property
-    def link_tracking_groups(self):
+    def link_tracking_groups(self) -> list | None:
         """
         link_tracking_groups set based on switch.link_tracking_groups fact
         """
@@ -584,7 +646,7 @@ class AvdStructuredConfig(AvdFacts):
         return None
 
     @cached_property
-    def lacp(self):
+    def lacp(self) -> dict | None:
         """
         lacp set based on switch.lacp_port_id fact
         """
@@ -604,7 +666,7 @@ class AvdStructuredConfig(AvdFacts):
         return None
 
     @cached_property
-    def ptp(self):
+    def ptp(self) -> dict | None:
         """
         ptp set to contents of switch.ptp.device_config if switch.ptp.enabled is True
         """
@@ -613,7 +675,7 @@ class AvdStructuredConfig(AvdFacts):
         return None
 
     @cached_property
-    def eos_cli(self):
+    def eos_cli(self) -> str | None:
         """
         Aggregate the values of switch.raw_eos_cli and switch.platform_settings.platform_raw_eos_cli facts
         """

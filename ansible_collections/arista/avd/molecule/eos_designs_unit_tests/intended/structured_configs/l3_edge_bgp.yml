@@ -70,7 +70,8 @@ route_maps:
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 ethernet_interfaces:
-- peer: peer1
+- name: ethernet1
+  peer: peer1
   peer_interface: ethernet1
   peer_type: other
   description: P2P_LINK_TO_peer1_ethernet1
@@ -87,8 +88,8 @@ ethernet_interfaces:
   speed: forced 10000full
   ptp:
     enable: true
-  name: ethernet1
-- peer: peer2
+- name: ethernet2
+  peer: peer2
   peer_interface: ethernet2
   peer_type: other
   description: P2P_LINK_TO_peer2_ethernet2
@@ -97,8 +98,8 @@ ethernet_interfaces:
   mtu: 9000
   ip_address: 192.168.0.2/31
   ipv6_enable: true
-  name: ethernet2
-- peer: peer3
+- name: ethernet3
+  peer: peer3
   peer_interface: ethernet3
   peer_type: other
   description: P2P_LINK_TO_peer3_ethernet3
@@ -106,8 +107,8 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9000
   ip_address: 192.168.0.4/31
-  name: ethernet3
-- peer: peer4
+- name: ethernet4
+  peer: peer4
   peer_interface: ethernet4
   peer_type: other
   description: Custom description on l3_edge_bgp eth4
@@ -115,7 +116,6 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9000
   ip_address: 192.168.0.6/31
-  name: ethernet4
 - peer: peer5
   peer_interface: Port-Channel5
   peer_type: other
@@ -153,7 +153,8 @@ ethernet_interfaces:
     mode: active
   name: Ethernet8
 port_channel_interfaces:
-- peer: peer5
+- name: Port-Channel5
+  peer: peer5
   peer_interface: Port-Channel5
   peer_type: other
   description: P2P_LINK_TO_peer5_Port-Channel5
@@ -161,8 +162,8 @@ port_channel_interfaces:
   shutdown: false
   mtu: 9000
   ip_address: 192.168.0.8/31
-  name: Port-Channel5
-- peer: peer6
+- name: Port-Channel7
+  peer: peer6
   peer_interface: Port-Channel7
   peer_type: other
   description: P2P_LINK_TO_peer6_Port-Channel7
@@ -170,4 +171,3 @@ port_channel_interfaces:
   shutdown: false
   mtu: 9000
   ip_address: 192.168.0.10/31
-  name: Port-Channel7

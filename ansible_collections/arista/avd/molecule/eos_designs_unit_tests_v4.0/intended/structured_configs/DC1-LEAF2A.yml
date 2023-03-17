@@ -218,14 +218,14 @@ service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware:
   speed_groups:
-    1:
-      serdes: 10G
-    2:
-      serdes: 25G
-    3:
-      serdes: 25G
-    4:
-      serdes: 10G
+  - speed_group: 1
+    serdes: 10G
+  - speed_group: 2
+    serdes: 25G
+  - speed_group: 3
+    serdes: 25G
+  - speed_group: 4
+    serdes: 10G
 daemon_terminattr:
   cvaddrs:
   - 192.168.200.11:9910
@@ -254,19 +254,19 @@ spanning_tree:
   root_super: true
   mode: mstp
   mst_instances:
-    '0':
-      priority: 4096
+  - id: '0'
+    priority: 4096
 local_users:
-  admin:
-    privilege: 15
-    role: network-admin
-    no_password: true
-  cvpadmin:
-    privilege: 15
-    role: network-admin
-    sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
-    ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
-      cvpadmin@hostmachine.local
+- name: admin
+  privilege: 15
+  role: network-admin
+  no_password: true
+- name: cvpadmin
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+  ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
+    cvpadmin@hostmachine.local
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -305,7 +305,7 @@ platform:
       hardware_only: true
 management_api_http:
   enable_vrfs:
-    MGMT: {}
+  - name: MGMT
   enable_https: true
   default_services: false
 ethernet_interfaces:
@@ -477,76 +477,76 @@ ethernet_interfaces:
     mode: access
     vlans: '110'
 port_channel_interfaces:
-  Port-Channel7:
-    description: DC1_L2LEAF1_Po1
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 110-112,120-121,130-131,160-161
-    evpn_ethernet_segment:
-      identifier: 0000:0000:0808:0707:0606
-      route_target: 08:08:07:07:06:06
-    lacp_id: 0808.0707.0606
-  Port-Channel9:
-    description: DC1-L2LEAF3A_Po1
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 110-112,120-121,130-131,160-161
-    evpn_ethernet_segment:
-      identifier: 0000:0000:0606:0707:0808
-      route_target: 06:06:07:07:08:08
-    lacp_id: 0606.0707.0808
-  Port-Channel13:
-    description: DC1-L2LEAF4A_Po1
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 110-112,120-121,130-131,160-161
-    evpn_ethernet_segment:
-      identifier: 0000:0000:a36b:7013:457b
-      route_target: a3:6b:70:13:45:7b
-    lacp_id: a36b.7013.457b
-  Port-Channel14:
-    description: DC1_L2LEAF5_Po1
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 110-112,120-121,130-131,160-161
-    evpn_ethernet_segment:
-      identifier: 0000:0000:71da:d362:2084
-      route_target: 71:da:d3:62:20:84
-    lacp_id: 71da.d362.2084
-  Port-Channel10:
-    description: server01_MLAG_PortChanne1
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 210-211
-    spanning_tree_bpdufilter: disabled
-    spanning_tree_bpduguard: disabled
-  Port-Channel11:
-    description: server01_MTU_PROFILE_MLAG_PortChanne1
-    type: switched
-    shutdown: false
-    mtu: 1600
-    mode: access
-    vlans: '110'
-    spanning_tree_bpdufilter: enabled
-    spanning_tree_bpduguard: enabled
-  Port-Channel12:
-    description: server01_MTU_ADAPTOR_MLAG_PortChanne1
-    type: switched
-    shutdown: false
-    mtu: 1601
-    spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: true
-  Port-Channel20:
-    description: FIREWALL01_PortChanne1
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 110-111,210-211
+- name: Port-Channel7
+  description: DC1_L2LEAF1_Po1
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 110-112,120-121,130-131,160-161
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0808:0707:0606
+    route_target: 08:08:07:07:06:06
+  lacp_id: 0808.0707.0606
+- name: Port-Channel9
+  description: DC1-L2LEAF3A_Po1
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 110-112,120-121,130-131,160-161
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0606:0707:0808
+    route_target: 06:06:07:07:08:08
+  lacp_id: 0606.0707.0808
+- name: Port-Channel13
+  description: DC1-L2LEAF4A_Po1
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 110-112,120-121,130-131,160-161
+  evpn_ethernet_segment:
+    identifier: 0000:0000:a36b:7013:457b
+    route_target: a3:6b:70:13:45:7b
+  lacp_id: a36b.7013.457b
+- name: Port-Channel14
+  description: DC1_L2LEAF5_Po1
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 110-112,120-121,130-131,160-161
+  evpn_ethernet_segment:
+    identifier: 0000:0000:71da:d362:2084
+    route_target: 71:da:d3:62:20:84
+  lacp_id: 71da.d362.2084
+- name: Port-Channel10
+  description: server01_MLAG_PortChanne1
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 210-211
+  spanning_tree_bpdufilter: disabled
+  spanning_tree_bpduguard: disabled
+- name: Port-Channel11
+  description: server01_MTU_PROFILE_MLAG_PortChanne1
+  type: switched
+  shutdown: false
+  mtu: 1600
+  mode: access
+  vlans: '110'
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_bpduguard: enabled
+- name: Port-Channel12
+  description: server01_MTU_ADAPTOR_MLAG_PortChanne1
+  type: switched
+  shutdown: false
+  mtu: 1601
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_bpduguard: 'True'
+- name: Port-Channel20
+  description: FIREWALL01_PortChanne1
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 110-111,210-211
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

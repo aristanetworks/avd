@@ -59,6 +59,11 @@ router_bgp:
       type: ipv4
       description: 'BGP Peer Shutdown'
       shutdown: true
+    TEST-PASSIVE:
+      type: ipv4
+      description: 'BGP Connection in passive mode'
+      remote_as: 65003
+      passive: true
   redistribute_routes:
     - static
   address_family_ipv4:
@@ -98,6 +103,11 @@ router_bgp:
           allowas_in:
             enabled: true
             times: 5
+        101.0.3.4:
+          peer_group: TEST-PASSIVE
+        101.0.3.5:
+          peer_group: WELCOME_ROUTERS
+          passive: true
       redistribute_routes:
         - static
       aggregate_addresses:

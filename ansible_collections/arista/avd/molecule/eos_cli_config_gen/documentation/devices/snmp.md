@@ -1,30 +1,31 @@
 # snmp
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Monitoring](#monitoring)
   - [SNMP](#snmp)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -34,17 +35,17 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Monitoring
+## Monitoring
 
-## SNMP
+### SNMP
 
-### SNMP Configuration Summary
+#### SNMP Configuration Summary
 
 | Contact | Location | SNMP Traps | State |
 | ------- | -------- | ---------- | ----- |
 | DC1_OPS | DC1 | All | Enabled |
 
-### SNMP EngineID Configuration
+#### SNMP EngineID Configuration
 
 | Type | EngineID (Hex) | IP | Port |
 | ---- | -------------- | -- | ---- |
@@ -52,7 +53,7 @@ interface Management1
 | remote | 6172697374615F6970 | 1.1.1.1 | - |
 | remote | DEADBEEFCAFE123456 | 2.2.2.2 | 1337 |
 
-### SNMP ACLs
+#### SNMP ACLs
 | IP | ACL | VRF |
 | -- | --- | --- |
 | IPv4 | SNMP-MGMT | MGMT |
@@ -60,7 +61,7 @@ interface Management1
 | IPv6 | SNMP-MGMT | MGMT |
 | IPv6 | onur_v6 | default |
 
-### SNMP Local Interfaces
+#### SNMP Local Interfaces
 
 | Local Interface | VRF |
 | --------------- | --- |
@@ -68,14 +69,14 @@ interface Management1
 | Loopback0 | default |
 | Loopback12 | Tenant_A_APP_Zone |
 
-### SNMP VRF Status
+#### SNMP VRF Status
 
 | VRF | Status |
 | --- | ------ |
 | default | Disabled |
 | MGMT | Enabled |
 
-### SNMP Hosts Configuration
+#### SNMP Hosts Configuration
 
 | Host | VRF | Community | Username | Authentication level | SNMP Version |
 | ---- |---- | --------- | -------- | -------------------- | ------------ |
@@ -86,14 +87,14 @@ interface Management1
 | 10.6.75.99 | MGMT | - | USER-WRITE | auth | 3 |
 | 10.6.75.100 | MGMT | - | USER-READ-AUTH-PRIV | priv | 3 |
 
-### SNMP Views Configuration
+#### SNMP Views Configuration
 
 | View | MIB Family Name | Status |
 | ---- | --------------- | ------ |
 | VW-WRITE | iso | Included |
 | VW-READ | iso | Included |
 
-### SNMP Communities
+#### SNMP Communities
 
 | Community | Access | Access List IPv4 | Access List IPv6 | View |
 | --------- | ------ | ---------------- | ---------------- | ---- |
@@ -101,14 +102,14 @@ interface Management1
 | SNMP-COMMUNITY-2 | rw | SNMP-MGMT | SNMP-MGMT | VW-READ |
 | SNMP-COMMUNITY-3 | ro | - | - | - |
 
-### SNMP Groups Configuration
+#### SNMP Groups Configuration
 
 | Group | SNMP Version | Authentication | Read | Write | Notify |
 | ----- | ------------ | -------------- | ---- | ----- | ------ |
 | GRP-READ-ONLY | v3 | priv | v3read | - | - |
 | GRP-READ-WRITE | v3 | auth | v3read | v3write | - |
 
-### SNMP Users Configuration
+#### SNMP Users Configuration
 
 | User | Group | Version | Authentication | Privacy | Remote Address | Remote Port | Engine ID |
 | ---- | ----- | ------- | -------------- | ------- | -------------- | ----------- | --------- |
@@ -123,7 +124,7 @@ interface Management1
 | REMOTE-USER-IP-PORT | GRP-REMOTE | v3 | - | - | 42.42.42.42 | 666 | - |
 | REMOTE-USER-IP-LOCALIZED | GRP-REMOTE | v3 | sha | - | 42.42.42.42 | - | DEADBEEFCAFE123456 |
 
-### SNMP Device Configuration
+#### SNMP Device Configuration
 
 ```eos
 !

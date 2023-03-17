@@ -163,6 +163,9 @@ core_interfaces:
   p2p_links_ip_pools:
     - name: underlay_pool
       ipv4_pool: 100.64.48.0/24
+    - name: underlay_pool_custom_mask
+      ipv4_pool: 100.64.49.0/24
+      prefix_size: 30
   p2p_links_profiles:
     - name: default_bb_profile
       speed: "forced 40gfull"
@@ -228,7 +231,7 @@ core_interfaces:
       profile: default_bb_profile
 
     - nodes: [ SITE2-LSR2, SITE2-LER1 ]
-      id: 9
+      id: 1
       port_channel:
         mode: active
         nodes_child_interfaces:
@@ -237,3 +240,4 @@ core_interfaces:
       profile: default_bb_profile
       raw_eos_cli: |
         link-debounce time 1600
+      ip_pool: underlay_pool_custom_mask

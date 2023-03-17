@@ -372,18 +372,18 @@ spanning_tree:
   root_super: true
   mode: mstp
   mst_instances:
-  - priority: 4096
-    id: '0'
+  - id: '0'
+    priority: 4096
   no_spanning_tree_vlan: '4092'
 local_users:
-- privilege: 15
+- name: admin
+  privilege: 15
   role: network-admin
   no_password: true
-  name: admin
-- privilege: 15
+- name: cvpadmin
+  privilege: 15
   role: network-admin
   sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
-  name: cvpadmin
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -786,7 +786,8 @@ vlan_interfaces:
   mtu: 1500
   ip_address: 10.255.252.6/31
 port_channel_interfaces:
-- description: CUSTOM_MLAG_PEER_DC1-SVC3B_Po5
+- name: Port-Channel5
+  description: CUSTOM_MLAG_PEER_DC1-SVC3B_Po5
   type: switched
   shutdown: false
   vlans: 2-4094
@@ -794,15 +795,15 @@ port_channel_interfaces:
   trunk_groups:
   - LEAF_PEER_L3
   - MLAG
-  name: Port-Channel5
-- description: CUSTOM_DC1_L2LEAF2_Po1
+- name: Port-Channel7
+  description: CUSTOM_DC1_L2LEAF2_Po1
   type: switched
   shutdown: false
   mode: trunk
   vlans: 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350
   mlag: 7
-  name: Port-Channel7
-- description: CUSTOM_server03_ESI_PortChanne1
+- name: Port-Channel10
+  description: CUSTOM_server03_ESI_PortChanne1
   type: switched
   shutdown: false
   mode: trunk
@@ -811,8 +812,8 @@ port_channel_interfaces:
     identifier: 0000:1234:0303:0202:0101
     route_target: 03:03:02:02:01:01
   lacp_id: 0303.0202.0101
-  name: Port-Channel10
-- description: CUSTOM_server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
+- name: Port-Channel14
+  description: CUSTOM_server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
   type: switched
   shutdown: false
   mode: trunk
@@ -835,8 +836,8 @@ port_channel_interfaces:
       level: '2'
       unit: percent
   mlag: 14
-  name: Port-Channel14
-- description: CUSTOM_server08_no_profile_port_channel_server08_no_profile_port_channel
+- name: Port-Channel15
+  description: CUSTOM_server08_no_profile_port_channel_server08_no_profile_port_channel
   type: switched
   shutdown: false
   mode: trunk
@@ -858,8 +859,8 @@ port_channel_interfaces:
       level: '2'
       unit: percent
   mlag: 15
-  name: Port-Channel15
-- description: CUSTOM_server10_no_profile_port_channel_lacp_fallback_server10_no_profile_port_channel_lacp_fallback
+- name: Port-Channel17
+  description: CUSTOM_server10_no_profile_port_channel_lacp_fallback_server10_no_profile_port_channel_lacp_fallback
   type: switched
   shutdown: false
   mode: trunk
@@ -883,8 +884,8 @@ port_channel_interfaces:
   mlag: 17
   lacp_fallback_mode: static
   lacp_fallback_timeout: 90
-  name: Port-Channel17
-- description: CUSTOM_server11_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL
+- name: Port-Channel18
+  description: CUSTOM_server11_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL
   type: switched
   shutdown: false
   mode: trunk
@@ -909,8 +910,8 @@ port_channel_interfaces:
   mlag: 18
   lacp_fallback_mode: static
   lacp_fallback_timeout: 10
-  name: Port-Channel18
-- description: CUSTOM_server12_inherit_nested_profile_port_channel_lacp_fallback_NESTED_ALL_WITH_SECURITY_PORT_CHANNEL
+- name: Port-Channel19
+  description: CUSTOM_server12_inherit_nested_profile_port_channel_lacp_fallback_NESTED_ALL_WITH_SECURITY_PORT_CHANNEL
   type: switched
   shutdown: false
   mode: trunk
@@ -935,14 +936,13 @@ port_channel_interfaces:
   mlag: 19
   lacp_fallback_mode: static
   lacp_fallback_timeout: 10
-  name: Port-Channel19
-- description: CUSTOM_server15_port_channel_disabled_interfaces_
+- name: Port-Channel22
+  description: CUSTOM_server15_port_channel_disabled_interfaces_
   type: switched
   shutdown: false
   mode: access
   vlans: '110'
   mlag: 22
-  name: Port-Channel22
 ethernet_interfaces:
 - peer: DC1-SVC3B
   peer_interface: Ethernet5

@@ -24,13 +24,13 @@ ethernet_interfaces:
     mode: active
   name: Ethernet1
 port_channel_interfaces:
-- description: UPLINK-NATIVE-VLAN-PARENT_Po1
+- name: Port-Channel1
+  description: UPLINK-NATIVE-VLAN-PARENT_Po1
   type: switched
   shutdown: false
   mode: trunk
   native_vlan: 100
   vlans: '100'
-  name: Port-Channel1
 vlans:
 - id: 100
   name: NETWORK_SERVICES_VLAN

@@ -180,17 +180,17 @@ spanning_tree:
   root_super: true
   mode: mstp
   mst_instances:
-  - priority: 4096
-    id: '0'
+  - id: '0'
+    priority: 4096
 local_users:
-- disabled: true
-  name: admin
-- privilege: 15
+- name: admin
+  disabled: true
+- name: cvpadmin
+  privilege: 15
   role: network-admin
   sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
   ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
     cvpadmin@hostmachine.local
-  name: cvpadmin
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -402,7 +402,8 @@ vlan_interfaces:
   - v6wan
   description: Tenant_D_v6_WAN_Zone_1
   shutdown: false
-  ipv6_address_virtual: 2001:db8:355::1/64
+  ipv6_address_virtuals:
+  - 2001:db8:355::1/64
   vrf: Tenant_D_WAN_Zone
 - name: Vlan451
   tenant: Tenant_D
@@ -411,7 +412,8 @@ vlan_interfaces:
   description: Tenant_D_v6_WAN_Zone_2
   shutdown: false
   mtu: 1560
-  ipv6_address_virtual: 2001:db8:451::1/64
+  ipv6_address_virtuals:
+  - 2001:db8:451::1/64
   vrf: Tenant_D_WAN_Zone
 - name: Vlan452
   tenant: Tenant_D
@@ -421,7 +423,8 @@ vlan_interfaces:
   shutdown: false
   mtu: 1560
   ip_address_virtual: 10.4.12.254/24
-  ipv6_address_virtual: 2001:db8:412::1/64
+  ipv6_address_virtuals:
+  - 2001:db8:412::1/64
   vrf: Tenant_D_WAN_Zone
 vxlan_interface:
   Vxlan1:

@@ -1,13 +1,13 @@
 {# doc - platform #}
 {% if platform is arista.avd.defined %}
 
-# Platform
+## Platform
 {%     if platform.trident is arista.avd.defined or platform.sand is arista.avd.defined %}
 
-## Platform Summary
+### Platform Summary
 {%         if platform.trident is arista.avd.defined %}
 
-### Platform Trident Summary
+#### Platform Trident Summary
 
 | Settings | Value |
 | -------- | ----- |
@@ -17,7 +17,7 @@
 {%         endif %}
 {%         if platform.sand is arista.avd.defined %}
 
-### Platform Sand Summary
+#### Platform Sand Summary
 
 | Settings | Value |
 | -------- | ----- |
@@ -35,7 +35,7 @@
 {%             endif %}
 {%             if platform.sand.qos_maps is arista.avd.defined %}
 
-#### Internal Network QOS Mapping
+##### Internal Network QOS Mapping
 
 | Traffic Class | To Network QOS |
 | ------------- | -------------- |
@@ -48,7 +48,7 @@
 {%         endif %}
 {%     endif %}
 
-## Platform Configuration
+### Platform Configuration
 
 ```eos
 {%     include 'eos/platform.j2' %}

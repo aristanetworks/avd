@@ -22,8 +22,8 @@ vlan_interfaces:
     vrf: Tenant_C
     ip_address_virtual: 10.10.81.1/24
     ipv6_enable: true
-    ipv6_address_virtual: fc00:10:10:81::1/64
     ipv6_address_virtuals:
+      - fc00:10:10:81::1/64
       - fc00:10:11:81::1/64
       - fc00:10:12:81::1/64
 
@@ -127,6 +127,27 @@ vlan_interfaces:
         source_interface: Loopback0
       10.10.64.150:
         source_interface: Loopback0
+
+  Vlan43:
+    description: SVI Description
+    shutdown: false
+    ipv6_address: a0::1/64
+    ipv6_dhcp_relay_destinations:
+      - address: a0::2
+        vrf: TEST
+        local_interface: Loopback44
+        link_address: a0::4
+
+  Vlan44:
+    description: SVI Description
+    shutdown: false
+    ipv6_address: a0::4/64
+    ipv6_dhcp_relay_destinations:
+      - address: a0::5
+        vrf: TEST
+        source_address: a0::6
+        link_address: a0::7
+      - address: a0::8
 
 # IPv6 SVI configuration
 

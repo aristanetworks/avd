@@ -1,5 +1,6 @@
 # management-security
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -8,25 +9,25 @@
   - [Management Security SSL Profiles](#management-security-ssl-profiles)
   - [Management Security Configuration](#management-security-configuration)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -36,9 +37,9 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Management Security
+## Management Security
 
-## Management Security Summary
+### Management Security Summary
 
 | Settings | Value |
 | -------- | ----- |
@@ -47,7 +48,7 @@ interface Management1
 | Reversible password encryption | aes-256-gcm |
 | Minimum password length | 17 |
 
-## Management Security SSL Profiles
+### Management Security SSL Profiles
 
 | SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Cipher List |
 | ---------------- | --------------------- | -------------------- | ------------ | ----------- |
@@ -57,7 +58,7 @@ interface Management1
 | tls-single-version-profile-as-string | 1.1 | - | - | - |
 | tls-versions-profile | 1.0 1.1 | - | - | - |
 
-## Management Security Configuration
+### Management Security Configuration
 
 ```eos
 !

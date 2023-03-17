@@ -12,11 +12,11 @@ class PortChannelInterfacesMixin(UtilsMixin):
     """
 
     @cached_property
-    def port_channel_interfaces(self) -> dict | None:
+    def port_channel_interfaces(self) -> list | None:
         """
         Return structured config for port_channel_interfaces
         """
-        port_channel_interfaces = {}
+        port_channel_interfaces = []
         for p2p_link in self._filtered_p2p_links:
             if p2p_link["data"]["port_channel_id"] is None:
                 continue
@@ -27,8 +27,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
             # Remove None values
             port_channel_interface = {key: value for key, value in port_channel_interface.items() if value is not None}
 
-            interface_name = p2p_link["data"]["interface"]
-            port_channel_interfaces[interface_name] = port_channel_interface
+            port_channel_interfaces.append(port_channel_interface)
             continue
 
         if port_channel_interfaces:

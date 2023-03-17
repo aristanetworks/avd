@@ -1,9 +1,9 @@
 {# doc - switchport default #}
 {% if switchport_default is arista.avd.defined %}
 
-## Switchport Default
+### Switchport Default
 
-### Switchport Defaults Summary
+#### Switchport Defaults Summary
 
 {%     if switchport_default.mode is arista.avd.defined %}
 - Default Switchport Mode: {{ switchport_default.mode }}
@@ -18,7 +18,7 @@
 - Default Switchport Phone VLAN: {{ switchport_default.phone.vlan }}
 {%     endif %}
 
-### Switchport Default Configuration
+#### Switchport Default Configuration
 
 ```eos
 {%     include 'eos/switchport-default.j2' %}

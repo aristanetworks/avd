@@ -16,14 +16,14 @@ snmp_server:
 spanning_tree:
   mode: mstp
   mst_instances:
-  - priority: 8192
-    id: '0'
+  - id: '0'
+    priority: 8192
   no_spanning_tree_vlan: '4094'
 local_users:
-- privilege: 15
+- name: admin
+  privilege: 15
   role: network-admin
   sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
-  name: admin
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -95,7 +95,8 @@ vlan_interfaces:
   no_autostate: true
   mtu: 1500
 port_channel_interfaces:
-- description: MLAG_PEER_DC1-POD1-L2LEAF2A_Po3
+- name: Port-Channel3
+  description: MLAG_PEER_DC1-POD1-L2LEAF2A_Po3
   type: switched
   shutdown: false
   vlans: 2-4094
@@ -103,15 +104,14 @@ port_channel_interfaces:
   service_profile: QOS-PROFILE
   trunk_groups:
   - MLAG
-  name: Port-Channel3
-- description: RACK2_MLAG_Po3
+- name: Port-Channel1
+  description: RACK2_MLAG_Po3
   type: switched
   shutdown: false
   mode: trunk
   service_profile: QOS-PROFILE
   vlans: 110-113,1100-1102,2500,2600-2601,4085
   mlag: 1
-  name: Port-Channel1
 ethernet_interfaces:
 - peer: DC1-POD1-L2LEAF2A
   peer_interface: Ethernet3
