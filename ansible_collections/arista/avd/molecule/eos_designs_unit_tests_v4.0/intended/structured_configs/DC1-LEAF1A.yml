@@ -6,112 +6,116 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
   peer_groups:
-    UNDERLAY-PEERS:
-      type: ipv4
-      password: 0nsCUm70mvSTxVO0ldytrg==
-      maximum_routes: 12000
-      send_community: all
-    EVPN-OVERLAY-PEERS:
-      type: evpn
-      update_source: Loopback0
-      bfd: true
-      password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: all
-      maximum_routes: 0
-      ebgp_multihop: 3
+  - name: UNDERLAY-PEERS
+    type: ipv4
+    password: 0nsCUm70mvSTxVO0ldytrg==
+    maximum_routes: 12000
+    send_community: all
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    update_source: Loopback0
+    bfd: true
+    password: q+VNViP5i4rVjW1cxFv2wA==
+    send_community: all
+    maximum_routes: 0
+    ebgp_multihop: 3
   address_family_ipv4:
     peer_groups:
-      UNDERLAY-PEERS:
-        activate: true
-      EVPN-OVERLAY-PEERS:
-        activate: false
+    - name: UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   redistribute_routes:
-    connected:
-      route_map: RM-CONN-2-BGP
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   neighbors:
-    172.31.255.0:
-      peer_group: UNDERLAY-PEERS
-      remote_as: '65001'
-      description: DC1-SPINE1_Ethernet1
-    172.31.255.2:
-      peer_group: UNDERLAY-PEERS
-      remote_as: '65001'
-      description: DC1-SPINE2_Ethernet1
-    172.31.255.4:
-      peer_group: UNDERLAY-PEERS
-      remote_as: '65001'
-      description: DC1-SPINE3_Ethernet1
-    172.31.255.6:
-      peer_group: UNDERLAY-PEERS
-      remote_as: '65001'
-      description: DC1-SPINE4_Ethernet1
-    192.168.255.1:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-SPINE1
-      remote_as: '65001'
-    192.168.255.2:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-SPINE2
-      remote_as: '65001'
-    192.168.255.3:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-SPINE3
-      remote_as: '65001'
-    192.168.255.4:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-SPINE4
-      remote_as: '65001'
+  - ip_address: 172.31.255.0
+    peer_group: UNDERLAY-PEERS
+    remote_as: '65001'
+    description: DC1-SPINE1_Ethernet1
+  - ip_address: 172.31.255.2
+    peer_group: UNDERLAY-PEERS
+    remote_as: '65001'
+    description: DC1-SPINE2_Ethernet1
+  - ip_address: 172.31.255.4
+    peer_group: UNDERLAY-PEERS
+    remote_as: '65001'
+    description: DC1-SPINE3_Ethernet1
+  - ip_address: 172.31.255.6
+    peer_group: UNDERLAY-PEERS
+    remote_as: '65001'
+    description: DC1-SPINE4_Ethernet1
+  - ip_address: 192.168.255.1
+    peer_group: EVPN-OVERLAY-PEERS
+    description: DC1-SPINE1
+    remote_as: '65001'
+  - ip_address: 192.168.255.2
+    peer_group: EVPN-OVERLAY-PEERS
+    description: DC1-SPINE2
+    remote_as: '65001'
+  - ip_address: 192.168.255.3
+    peer_group: EVPN-OVERLAY-PEERS
+    description: DC1-SPINE3
+    remote_as: '65001'
+  - ip_address: 192.168.255.4
+    peer_group: EVPN-OVERLAY-PEERS
+    description: DC1-SPINE4
+    remote_as: '65001'
   address_family_evpn:
     peer_groups:
-      EVPN-OVERLAY-PEERS:
-        activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
     evpn_hostflap_detection:
       window: 180
       threshold: 5
       enabled: true
       expiry_timeout: 10
   vrfs:
-    Tenant_A_APP_Zone:
-      router_id: 192.168.255.9
-      rd: 1.1.1.1:12
-      route_targets:
-        import:
-          evpn:
-          - '1234:12'
-        export:
-          evpn:
-          - '1234:12'
-      redistribute_routes:
-      - connected
-    Tenant_A_WEB_Zone:
-      router_id: 192.168.255.9
-      rd: 1.1.1.1:11
-      route_targets:
-        import:
-          evpn:
-          - '1234:11'
-        export:
-          evpn:
-          - '1234:11'
-      redistribute_routes:
-      - connected
-  vlan_aware_bundles:
-    Tenant_A_APP_Zone:
-      rd: 1.1.1.1:12
-      route_targets:
-        both:
+  - name: Tenant_A_APP_Zone
+    router_id: 192.168.255.9
+    rd: 1.1.1.1:12
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
         - '1234:12'
-      redistribute_routes:
-      - learned
-      vlan: 130-132
-    Tenant_A_WEB_Zone:
-      rd: 1.1.1.1:11
-      route_targets:
-        both:
+      export:
+      - address_family: evpn
+        route_targets:
+        - '1234:12'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: Tenant_A_WEB_Zone
+    router_id: 192.168.255.9
+    rd: 1.1.1.1:11
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
         - '1234:11'
-      redistribute_routes:
-      - learned
-      vlan: 120-121
+      export:
+      - address_family: evpn
+        route_targets:
+        - '1234:11'
+    redistribute_routes:
+    - source_protocol: connected
+  vlan_aware_bundles:
+  - name: Tenant_A_APP_Zone
+    rd: 1.1.1.1:12
+    route_targets:
+      both:
+      - '1234:12'
+    redistribute_routes:
+    - learned
+    vlan: 130-132
+  - name: Tenant_A_WEB_Zone
+    rd: 1.1.1.1:11
+    route_targets:
+      both:
+      - '1234:11'
+    redistribute_routes:
+    - learned
+    vlan: 120-121
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

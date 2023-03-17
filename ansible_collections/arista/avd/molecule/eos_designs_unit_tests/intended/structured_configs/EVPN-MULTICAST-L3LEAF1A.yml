@@ -16,40 +16,40 @@ router_bgp:
     type: ipv4
     maximum_routes: 12000
     send_community: all
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 3
-    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
     - name: MLAG-IPv4-UNDERLAY-PEER
       activate: true
     - name: IPv4-UNDERLAY-PEERS
       activate: true
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   neighbors:
   - ip_address: 10.255.251.1
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     description: EVPN-MULTICAST-L3LEAF1B
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.31.255.0
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
     description: EVPN-MULTICAST-SPINE1_Ethernet1
-    ip_address: 172.31.255.0
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.1
+    peer_group: EVPN-OVERLAY-PEERS
     description: EVPN-MULTICAST-SPINE1
     remote_as: '65001'
-    ip_address: 192.168.255.1
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
   vrfs:
   - name: MULTICAST_DISABLED_310_311
     router_id: 192.168.255.3

@@ -16,11 +16,11 @@ router_bgp:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
   neighbors:
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 192.168.0.1
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
     description: UNDERLAY_FILTER_PEER_AS_L3LEAF1_Ethernet1
     route_map_out: RM-BGP-AS65001-OUT
-    ip_address: 192.168.0.1
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:

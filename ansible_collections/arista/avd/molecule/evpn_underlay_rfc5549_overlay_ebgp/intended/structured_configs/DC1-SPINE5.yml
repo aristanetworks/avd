@@ -6,12 +6,13 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
+  - name: UNDERLAY_PEERS
+    type: ipv4
     password: af6F4WLl4wUrWRZcwbEwkQ==
     maximum_routes: 12000
     send_community: all
-    name: UNDERLAY_PEERS
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     password: q+VNViP5i4rVjW1cxFv2wA==
@@ -19,44 +20,43 @@ router_bgp:
     maximum_routes: 0
     ebgp_multihop: 3
     next_hop_unchanged: true
-    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
+    - name: UNDERLAY_PEERS
+      activate: true
       next_hop:
         address_family_ipv6_originate: true
-      name: UNDERLAY_PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   address_family_ipv6:
     peer_groups:
-    - activate: true
-      name: UNDERLAY_PEERS
+    - name: UNDERLAY_PEERS
+      activate: true
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   neighbor_interfaces:
-  - peer_group: UNDERLAY_PEERS
+  - name: Ethernet1
+    peer_group: UNDERLAY_PEERS
     remote_as: '65106'
     description: DC1-LEAF3A_Ethernet1
-    name: Ethernet1
-  - peer_group: UNDERLAY_PEERS
+  - name: Ethernet2
+    peer_group: UNDERLAY_PEERS
     remote_as: '65106'
     description: DC1-LEAF3B_Ethernet1
-    name: Ethernet2
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
   neighbors:
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 2001:1::c
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-LEAF3A
     remote_as: '65106'
-    ip_address: 2001:1::c
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 2001:1::d
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-LEAF3B
     remote_as: '65106'
-    ip_address: 2001:1::d
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

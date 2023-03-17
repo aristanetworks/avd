@@ -18,21 +18,21 @@ router_bgp:
     type: ipv4
     maximum_routes: 12000
     send_community: all
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 3
-    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
     - name: MLAG-IPv4-UNDERLAY-PEER
       activate: true
     - name: IPv4-UNDERLAY-PEERS
       activate: true
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   neighbors:
   - ip_address: 10.255.251.9
     peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -42,8 +42,8 @@ router_bgp:
     route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

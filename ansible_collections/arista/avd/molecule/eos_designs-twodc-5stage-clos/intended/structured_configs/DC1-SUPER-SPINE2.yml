@@ -8,40 +8,40 @@ router_bgp:
   - graceful-restart
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
     password: AQQvKeimxJu+uGQ/yYvv9w==
     maximum_routes: 12000
     send_community: all
-    name: IPv4-UNDERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: IPv4-UNDERLAY-PEERS
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   neighbors:
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.16.11.65
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65110.100'
     description: DC1-POD1-SPINE1_Ethernet2
-    ip_address: 172.16.11.65
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.16.11.67
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65110.100'
     description: DC1-POD1-SPINE2_Ethernet2
-    ip_address: 172.16.11.67
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.16.12.65
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65120'
     description: DC1-POD2-SPINE1_Ethernet2
-    ip_address: 172.16.12.65
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.16.12.67
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65120'
     description: DC1-POD2-SPINE2_Ethernet2
-    ip_address: 172.16.12.67
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.17.10.9
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65102'
     description: DC1-RS2_Ethernet1
     bfd: true
-    ip_address: 172.17.10.9
   - remote_as: '65200'
     description: DC2-SUPER-SPINE2
     peer_group: IPv4-UNDERLAY-PEERS

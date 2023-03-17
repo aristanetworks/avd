@@ -123,13 +123,12 @@ class RouterBgpMixin(UtilsMixin):
         if not self._network_services_l3:
             return None
 
-        # vrfs = {}
         vrfs = []
 
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
                 vrf_address_families = [af for af in vrf.get("address_families", ["evpn"]) if af in self._overlay_address_families]
-                if not vrf_address_families:  # list
+                if not vrf_address_families:
                     continue
 
                 vrf_name = vrf["name"]
@@ -148,18 +147,13 @@ class RouterBgpMixin(UtilsMixin):
                             if target["address_family"] == af:
                                 flag = 1
                                 target["route_targets"] = [leaf_overlay_rt if leaf_overlay_rt not in target["route_targets"] else None]
-                                # if leaf_overlay_rt not in target["route_targets"]:
-                                #     target["route_targets"] = [leaf_overlay_rt]
                                 break
 
                         if not flag:
                             route_targets[key].append({"address_family": af, "route_targets": [leaf_overlay_rt]})
 
                 for rt in vrf["additional_route_targets"]:
-                    # route_targets.setdefault(rt["type"], {}).setdefault(rt["address_family"], []).append(rt["route_target"])
-
                     flag = 0
-
                     for dic in route_targets[rt["type"]]:
                         if rt["address_family"] == dic["address_family"]:
                             flag = 1
@@ -171,12 +165,9 @@ class RouterBgpMixin(UtilsMixin):
 
                 if vrf_name == "default" and self._overlay_evpn and self._vrf_default_ipv4_subnets:
                     # Special handling of vrf default.
-                    # route_targets["export"].setdefault("evpn", []).append("route-map RM-EVPN-EXPORT-VRF-DEFAULT")
                     for exp_target in route_targets["export"]:
                         if exp_target["address_family"] == "evpn":
                             exp_target.setdefault("route_targets", []).append("route-map RM-EVPN-EXPORT-VRF-DEFAULT")
-
-                    # route_targets["export"] = [{"address_family": "evpn", "route_targets": ["route-map RM-EVPN-EXPORT-VRF-DEFAULT"]}]
 
                     bgp_vrf = {
                         "name": vrf_name,
@@ -187,7 +178,6 @@ class RouterBgpMixin(UtilsMixin):
                     }
                     # Strip None values from vlan before returning
                     bgp_vrf = {key: value for key, value in bgp_vrf.items() if value is not None}
-                    # vrfs[vrf_name] = bgp_vrf
                     vrfs.append(bgp_vrf)
                     continue
 
@@ -228,8 +218,6 @@ class RouterBgpMixin(UtilsMixin):
                 for bgp_peer in vrf["bgp_peers"]:
                     peer_ip = bgp_peer.pop("ip_address")
                     address_family = f"ipv{ipaddress.ip_address(peer_ip).version}"
-                    # address_families.setdefault(address_family, {}).setdefault("neighbors", {})[peer_ip] = {"activate": True}
-
                     flag = 0
                     for family in address_families:
                         if family["address_family"] == address_family:
@@ -270,7 +258,6 @@ class RouterBgpMixin(UtilsMixin):
 
                 # Strip None values from vlan before returning
                 bgp_vrf = {key: value for key, value in bgp_vrf.items() if value is not None}
-                # vrfs[vrf_name] = bgp_vrf
                 vrfs.append(bgp_vrf)
 
         if vrfs:
@@ -380,7 +367,6 @@ class RouterBgpMixin(UtilsMixin):
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
                 if (bundle := self._router_bgp_vlan_aware_bundles_vrf(vrf, tenant)) is not None:
-                    # bundle_name = vrf["name"]
                     bundles.append(bundle)
 
             # L2 Vlans per Tenant
@@ -462,7 +448,7 @@ class RouterBgpMixin(UtilsMixin):
         if self._vrf_default_ipv4_static_routes["redistribute_in_overlay"] or (
             self._vrf_default_ipv4_static_routes["redistribute_in_underlay"] and self._underlay_bgp
         ):
-            return {"static": {}}
+            return [{"source_protocol": "static"}]
 
         return None
 

@@ -4,248 +4,266 @@ router_bgp:
   bgp_defaults:
   - maximum-paths 4 ecmp 4
   peer_groups:
-    UNDERLAY-PEERS:
-      type: ipv4
-      password: 0nsCUm70mvSTxVO0ldytrg==
-      maximum_routes: 12000
-      send_community: all
-    EVPN-OVERLAY-PEERS:
-      type: evpn
-      update_source: Loopback0
-      bfd: true
-      password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: all
-      maximum_routes: 0
-      ebgp_multihop: 3
+  - name: UNDERLAY-PEERS
+    type: ipv4
+    password: 0nsCUm70mvSTxVO0ldytrg==
+    maximum_routes: 12000
+    send_community: all
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    update_source: Loopback0
+    bfd: true
+    password: q+VNViP5i4rVjW1cxFv2wA==
+    send_community: all
+    maximum_routes: 0
+    ebgp_multihop: 3
   address_family_ipv4:
     peer_groups:
-      UNDERLAY-PEERS:
-        activate: true
-      EVPN-OVERLAY-PEERS:
-        activate: false
+    - name: UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   redistribute_routes:
-    connected:
-      route_map: RM-CONN-2-BGP
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
-      EVPN-OVERLAY-PEERS:
-        activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
     evpn_hostflap_detection:
       window: 180
       threshold: 5
       enabled: true
       expiry_timeout: 10
   vrfs:
-    Tenant_A_APP_Zone:
-      router_id: 192.168.255.109
-      rd: 192.168.255.109:12
-      route_targets:
-        import:
-          evpn:
-          - '12:12'
-        export:
-          evpn:
-          - '12:12'
-      redistribute_routes:
-      - connected
-    Tenant_A_DB_Zone:
-      router_id: 192.168.255.109
-      rd: 192.168.255.109:13
-      route_targets:
-        import:
-          evpn:
-          - '13:13'
-        export:
-          evpn:
-          - '13:13'
-      redistribute_routes:
-      - connected
-    Tenant_A_OP_Zone:
-      router_id: 192.168.255.109
-      rd: 192.168.255.109:9
-      route_targets:
-        import:
-          evpn:
-          - '9:9'
-        export:
-          evpn:
-          - '9:9'
-      redistribute_routes:
-      - connected
-    Tenant_A_WAN_Zone:
-      router_id: 192.168.255.109
-      rd: 192.168.255.109:14
-      route_targets:
-        import:
-          evpn:
-          - '14:14'
-          - 65000:456
-        export:
-          evpn:
-          - '14:14'
-          - 65000:789
-      redistribute_routes:
-      - connected
-    Tenant_A_WEB_Zone:
-      router_id: 192.168.255.109
-      rd: 192.168.255.109:11
-      route_targets:
-        import:
-          evpn:
-          - '11:11'
-        export:
-          evpn:
-          - '11:11'
-      redistribute_routes:
-      - connected
-    Tenant_B_OP_Zone:
-      router_id: 192.168.255.109
-      rd: 192.168.255.109:20
-      route_targets:
-        import:
-          evpn:
-          - '20:20'
-        export:
-          evpn:
-          - '20:20'
-      redistribute_routes:
-      - connected
-    Tenant_B_WAN_Zone:
-      router_id: 192.168.255.109
-      rd: 192.168.255.109:21
-      route_targets:
-        import:
-          evpn:
-          - '21:21'
-        export:
-          evpn:
-          - '21:21'
-      redistribute_routes:
-      - connected
-    Tenant_C_OP_Zone:
-      router_id: 192.168.255.109
-      rd: 192.168.255.109:30
-      route_targets:
-        import:
-          evpn:
-          - '30:30'
-        export:
-          evpn:
-          - '30:30'
-      redistribute_routes:
-      - connected
-    Tenant_C_WAN_Zone:
-      router_id: 192.168.255.109
-      rd: 192.168.255.109:31
-      route_targets:
-        import:
-          evpn:
-          - '31:31'
-        export:
-          evpn:
-          - '31:31'
-      redistribute_routes:
-      - connected
-  vlan_aware_bundles:
-    Tenant_A_APP_Zone:
-      rd: 192.168.255.109:12
-      route_targets:
-        both:
+  - name: Tenant_A_APP_Zone
+    router_id: 192.168.255.109
+    rd: 192.168.255.109:12
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
         - '12:12'
-      redistribute_routes:
-      - learned
-      vlan: 130-132
-    Tenant_A_DB_Zone:
-      rd: 192.168.255.109:13
-      route_targets:
-        both:
+      export:
+      - address_family: evpn
+        route_targets:
+        - '12:12'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: Tenant_A_DB_Zone
+    router_id: 192.168.255.109
+    rd: 192.168.255.109:13
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
         - '13:13'
-      redistribute_routes:
-      - learned
-      vlan: 140-141
-    Tenant_A_OP_Zone:
-      rd: 192.168.255.109:9
-      route_targets:
-        both:
+      export:
+      - address_family: evpn
+        route_targets:
+        - '13:13'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: Tenant_A_OP_Zone
+    router_id: 192.168.255.109
+    rd: 192.168.255.109:9
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
         - '9:9'
-      redistribute_routes:
-      - learned
-      vlan: 110-112
-    Tenant_A_WAN_Zone:
-      rd: 192.168.255.109:14
-      route_targets:
-        both:
+      export:
+      - address_family: evpn
+        route_targets:
+        - '9:9'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: Tenant_A_WAN_Zone
+    router_id: 192.168.255.109
+    rd: 192.168.255.109:14
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
         - '14:14'
-      redistribute_routes:
-      - learned
-      vlan: 150-151
-    Tenant_A_WEB_Zone:
-      rd: 192.168.255.109:11
-      route_targets:
-        both:
+        - 65000:456
+      export:
+      - address_family: evpn
+        route_targets:
+        - '14:14'
+        - 65000:789
+    redistribute_routes:
+    - source_protocol: connected
+  - name: Tenant_A_WEB_Zone
+    router_id: 192.168.255.109
+    rd: 192.168.255.109:11
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
         - '11:11'
-      redistribute_routes:
-      - learned
-      vlan: 120-121
-    Tenant_A_NFS:
-      tenant: Tenant_A
-      rd: 192.168.255.109:20161
-      route_targets:
-        both:
-        - 20161:20161
-      redistribute_routes:
-      - learned
-      vlan: '161'
-    Tenant_A_VMOTION:
-      tenant: Tenant_A
-      rd: 192.168.255.109:20160
-      route_targets:
-        both:
-        - 20160:20160
-      redistribute_routes:
-      - learned
-      vlan: '160'
-    l2vlan_with_no_tags:
-      tenant: Tenant_A
-      rd: 192.168.255.109:20162
-      route_targets:
-        both:
-        - 20162:20162
-      redistribute_routes:
-      - learned
-      vlan: '162'
-    Tenant_B_OP_Zone:
-      rd: 192.168.255.109:20
-      route_targets:
-        both:
+      export:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: Tenant_B_OP_Zone
+    router_id: 192.168.255.109
+    rd: 192.168.255.109:20
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
         - '20:20'
-      redistribute_routes:
-      - learned
-      vlan: 210-211
-    Tenant_B_WAN_Zone:
-      rd: 192.168.255.109:21
-      route_targets:
-        both:
+      export:
+      - address_family: evpn
+        route_targets:
+        - '20:20'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: Tenant_B_WAN_Zone
+    router_id: 192.168.255.109
+    rd: 192.168.255.109:21
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
         - '21:21'
-      redistribute_routes:
-      - learned
-      vlan: '250'
-    Tenant_C_OP_Zone:
-      rd: 192.168.255.109:30
-      route_targets:
-        both:
+      export:
+      - address_family: evpn
+        route_targets:
+        - '21:21'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: Tenant_C_OP_Zone
+    router_id: 192.168.255.109
+    rd: 192.168.255.109:30
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
         - '30:30'
-      redistribute_routes:
-      - learned
-      vlan: 310-311
-    Tenant_C_WAN_Zone:
-      rd: 192.168.255.109:31
-      route_targets:
-        both:
+      export:
+      - address_family: evpn
+        route_targets:
+        - '30:30'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: Tenant_C_WAN_Zone
+    router_id: 192.168.255.109
+    rd: 192.168.255.109:31
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
         - '31:31'
-      redistribute_routes:
-      - learned
-      vlan: '350'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '31:31'
+    redistribute_routes:
+    - source_protocol: connected
+  vlan_aware_bundles:
+  - name: Tenant_A_APP_Zone
+    rd: 192.168.255.109:12
+    route_targets:
+      both:
+      - '12:12'
+    redistribute_routes:
+    - learned
+    vlan: 130-132
+  - name: Tenant_A_DB_Zone
+    rd: 192.168.255.109:13
+    route_targets:
+      both:
+      - '13:13'
+    redistribute_routes:
+    - learned
+    vlan: 140-141
+  - name: Tenant_A_OP_Zone
+    rd: 192.168.255.109:9
+    route_targets:
+      both:
+      - '9:9'
+    redistribute_routes:
+    - learned
+    vlan: 110-112
+  - name: Tenant_A_WAN_Zone
+    rd: 192.168.255.109:14
+    route_targets:
+      both:
+      - '14:14'
+    redistribute_routes:
+    - learned
+    vlan: 150-151
+  - name: Tenant_A_WEB_Zone
+    rd: 192.168.255.109:11
+    route_targets:
+      both:
+      - '11:11'
+    redistribute_routes:
+    - learned
+    vlan: 120-121
+  - name: Tenant_A_NFS
+    tenant: Tenant_A
+    rd: 192.168.255.109:20161
+    route_targets:
+      both:
+      - 20161:20161
+    redistribute_routes:
+    - learned
+    vlan: '161'
+  - name: Tenant_A_VMOTION
+    tenant: Tenant_A
+    rd: 192.168.255.109:20160
+    route_targets:
+      both:
+      - 20160:20160
+    redistribute_routes:
+    - learned
+    vlan: '160'
+  - name: l2vlan_with_no_tags
+    tenant: Tenant_A
+    rd: 192.168.255.109:20162
+    route_targets:
+      both:
+      - 20162:20162
+    redistribute_routes:
+    - learned
+    vlan: '162'
+  - name: Tenant_B_OP_Zone
+    rd: 192.168.255.109:20
+    route_targets:
+      both:
+      - '20:20'
+    redistribute_routes:
+    - learned
+    vlan: 210-211
+  - name: Tenant_B_WAN_Zone
+    rd: 192.168.255.109:21
+    route_targets:
+      both:
+      - '21:21'
+    redistribute_routes:
+    - learned
+    vlan: '250'
+  - name: Tenant_C_OP_Zone
+    rd: 192.168.255.109:30
+    route_targets:
+      both:
+      - '30:30'
+    redistribute_routes:
+    - learned
+    vlan: 310-311
+  - name: Tenant_C_WAN_Zone
+    rd: 192.168.255.109:31
+    route_targets:
+      both:
+      - '31:31'
+    redistribute_routes:
+    - learned
+    vlan: '350'
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

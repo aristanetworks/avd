@@ -20,65 +20,65 @@ router_bgp:
     password: 0nsCUm70mvSTxVO0ldytrg==
     maximum_routes: 12000
     send_community: all
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     password: q+VNViP5i4rVjW1cxFv2wA==
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 3
-    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
     - name: MLAG-PEERS
       activate: true
     - name: UNDERLAY-PEERS
       activate: true
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   neighbors:
   - ip_address: 10.255.251.24
     peer_group: MLAG-PEERS
     description: DC1_UNDEPLOYED_LEAF1A
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.255.160
+    peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     description: DC1-SPINE1_Ethernet29
-    ip_address: 172.31.255.160
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.255.162
+    peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     description: DC1-SPINE2_Ethernet29
-    ip_address: 172.31.255.162
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.255.164
+    peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     description: DC1-SPINE3_Ethernet29
-    ip_address: 172.31.255.164
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.255.166
+    peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     description: DC1-SPINE4_Ethernet29
-    ip_address: 172.31.255.166
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.1
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE1
     remote_as: '65001'
-    ip_address: 192.168.255.1
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.2
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE2
     remote_as: '65001'
-    ip_address: 192.168.255.2
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.3
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE3
     remote_as: '65001'
-    ip_address: 192.168.255.3
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.4
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE4
     remote_as: '65001'
-    ip_address: 192.168.255.4
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
     evpn_hostflap_detection:
       window: 180
       threshold: 5
