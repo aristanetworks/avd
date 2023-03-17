@@ -1,6 +1,7 @@
 {# doc - service routing configuration bgp #}
 {% if service_routing_configuration_bgp is arista.avd.defined %}
-## Service Routing Configuration BGP
+
+### Service Routing Configuration BGP
 
 {%     if service_routing_configuration_bgp.no_equals_default is arista.avd.defined(true) %}
 BGP no equals default enabled

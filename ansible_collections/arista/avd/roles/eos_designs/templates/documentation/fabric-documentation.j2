@@ -81,12 +81,12 @@
 {% set vtep_loopback_ipv4_pools = vtep_loopback_ipv4_pools | unique | reject("none") %}
 # {{ fabric_name }}
 
-# Table of Contents
+## Table of Contents
 
 <!-- toc -->
 <!-- toc -->
 
-# Fabric Switches and Management IP
+## Fabric Switches and Management IP
 
 | POD | Type | Node | Management IP | Platform | Provisioned in CloudVision |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- |
@@ -96,7 +96,8 @@
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
-## Fabric Switches with inband Management IP
+### Fabric Switches with inband Management IP
+
 | POD | Type | Node | Management IP | Inband Interface |
 | --- | ---- | ---- | ------------- | ---------------- |
 {% for fabric_switch in fabric_switches %}
@@ -105,7 +106,7 @@
 {%     endif %}
 {% endfor %}
 
-# Fabric Topology
+## Fabric Topology
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
 | ---- | ---- | -------------- | --------- | ----------| -------------- |
@@ -113,9 +114,9 @@
 | {{ topology_link.type }} | {{ topology_link.node }} | {{ topology_link.node_interface }} | {{ topology_link.peer_type }} | {{ topology_link.peer }} | {{ topology_link.peer_interface }} |
 {% endfor %}
 
-# Fabric IP Allocation
+## Fabric IP Allocation
 
-## Fabric Point-To-Point Links
+### Fabric Point-To-Point Links
 
 | Uplink IPv4 Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ---------------- | ------------------- | ------------------ | ------------------ |
@@ -125,7 +126,7 @@
 | {{ uplink_ipv4_pool }} | {{ size }} | {{ used }} | {{ (used / size * 100) | round(2,'ceil') }} % |
 {% endfor %}
 
-## Point-To-Point Links Node Allocation
+### Point-To-Point Links Node Allocation
 
 | Node | Node Interface | Node IP Address | Peer Node | Peer Interface | Peer IP Address |
 | ---- | -------------- | --------------- | --------- | -------------- | --------------- |
@@ -135,7 +136,7 @@
 {%     endif %}
 {% endfor %}
 
-## Loopback Interfaces (BGP EVPN Peering)
+### Loopback Interfaces (BGP EVPN Peering)
 
 | Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------- | ------------------- | ------------------ | ------------------ |
@@ -145,7 +146,7 @@
 | {{ overlay_loopback_network_summary }} | {{ size }} | {{ used }} | {{ (used / size * 100) | round(2,'ceil') }} % |
 {% endfor %}
 
-## Loopback0 Interfaces Node Allocation
+### Loopback0 Interfaces Node Allocation
 
 | POD | Node | Loopback0 |
 | --- | ---- | --------- |
@@ -156,7 +157,7 @@
 {% endfor %}
 
 {% if avd_switch_facts[inventory_hostname].switch.underlay_routing_protocol | arista.avd.default in ["isis", "isis-sr", "isis-ldp", "isis-sr-ldp"] %}
-## ISIS CLNS interfaces
+### ISIS CLNS interfaces
 
 | POD | Node | CLNS Address |
 | --- | ---- | ------------ |
@@ -167,7 +168,7 @@
 {%     endfor %}
 
 {% endif %}
-## VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
+### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | --------------------- | ------------------- | ------------------ | ------------------ |
@@ -177,7 +178,7 @@
 | {{ vtep_loopback_network_summary }} | {{ size }} | {{ used }} | {{ (used / size * 100) | round(2,'ceil') }} % |
 {% endfor %}
 
-## VTEP Loopback Node allocation
+### VTEP Loopback Node allocation
 
 | POD | Node | Loopback1 |
 | --- | ---- | --------- |

@@ -1,9 +1,9 @@
 {# doc - mpls #}
 {% if mpls is arista.avd.defined %}
 
-## MPLS and LDP
+### MPLS and LDP
 
-### MPLS and LDP Summary
+#### MPLS and LDP Summary
 
 | Setting | Value |
 | -------- | ---- |
@@ -13,7 +13,7 @@
 | LDP Interface Disabled Default | {{ mpls.ldp.interface_disabled_default | arista.avd.default('-') }} |
 | LDP Transport-Address Interface | {{ mpls.ldp.transport_address_interface | arista.avd.default('-') }} |
 
-### MPLS and LDP Configuration
+#### MPLS and LDP Configuration
 
 ```eos
 {%     include 'eos/mpls.j2' %}

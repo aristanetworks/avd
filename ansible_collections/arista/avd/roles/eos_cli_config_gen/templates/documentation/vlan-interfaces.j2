@@ -1,9 +1,9 @@
 {# doc - vlan interfaces #}
 {% if vlan_interfaces is arista.avd.defined %}
 
-## VLAN Interfaces
+### VLAN Interfaces
 
-### VLAN Interfaces Summary
+#### VLAN Interfaces Summary
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
@@ -25,7 +25,7 @@
 {%     endfor %}
 {%     if vlan_interface_pvlan.configured == true %}
 
-#### Private VLAN
+##### Private VLAN
 
 | Interface | PVLAN Mapping |
 | --------- | ------------- |
@@ -36,7 +36,7 @@
 {%         endfor %}
 {%     endif %}
 
-#### IPv4
+##### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
@@ -59,7 +59,7 @@
 {%     endfor %}
 {%     if vlan_interfaces_ipv6 | length > 0 %}
 
-#### IPv6
+##### IPv6
 
 | Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | --- | ------------ | -------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------- | ------------ |
@@ -93,7 +93,7 @@
 {%     endfor %}
 {%     if vlan_interfaces_vrrp_details | length > 0 %}
 
-#### VRRP Details
+##### VRRP Details
 
 | Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IP | IPv4 VRRP Version | IPv6 Virtual IP |
 | --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | --------------- | ----------------- | --------------- |
@@ -138,7 +138,7 @@
 {%     endfor %}
 {%     if vlan_interface_isis.configured == true %}
 
-#### ISIS
+##### ISIS
 
 | Interface | ISIS Instance | ISIS Metric | Mode |
 | --------- | ------------- | ----------- | ---- |
@@ -165,7 +165,7 @@
 {%     endfor %}
 {%     if multicast_interfaces | length > 0 %}
 
-#### Multicast Routing
+##### Multicast Routing
 
 | Interface | IP Version | Static Routes Allowed | Multicast Boundaries | Export Host Routes For Multicast Sources |
 | --------- | ---------- | --------------------- | -------------------- | ---------------------------------------- |
@@ -197,7 +197,7 @@
 {%         endfor %}
 {%     endif %}
 
-### VLAN Interfaces Device Configuration
+#### VLAN Interfaces Device Configuration
 
 ```eos
 {%     include 'eos/vlan-interfaces.j2' %}

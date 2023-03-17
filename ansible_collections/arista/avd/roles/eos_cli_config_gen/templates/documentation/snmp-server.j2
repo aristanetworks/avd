@@ -1,9 +1,9 @@
 {# doc - snmp server #}
 {% if snmp_server is arista.avd.defined %}
 
-## SNMP
+### SNMP
 
-### SNMP Configuration Summary
+#### SNMP Configuration Summary
 
 | Contact | Location | SNMP Traps | State |
 | ------- | -------- | ---------- | ----- |
@@ -27,7 +27,7 @@
 {%     endif %}
 {%     if snmp_server.engine_ids is arista.avd.defined %}
 
-### SNMP EngineID Configuration
+#### SNMP EngineID Configuration
 
 | Type | EngineID (Hex) | IP | Port |
 | ---- | -------------- | -- | ---- |
@@ -43,7 +43,7 @@
 {%     endif %}
 {%     if snmp_server.ipv4_acls is arista.avd.defined %}
 
-### SNMP ACLs
+#### SNMP ACLs
 | IP | ACL | VRF |
 | -- | --- | --- |
 {%         for acl in snmp_server.ipv4_acls %}
@@ -57,7 +57,7 @@
 {%     endif %}
 {%     if snmp_server.local_interfaces is arista.avd.defined %}
 
-### SNMP Local Interfaces
+#### SNMP Local Interfaces
 
 | Local Interface | VRF |
 | --------------- | --- |
@@ -67,7 +67,7 @@
 {%     endif %}
 {%     if snmp_server.vrfs is arista.avd.defined %}
 
-### SNMP VRF Status
+#### SNMP VRF Status
 
 | VRF | Status |
 | --- | ------ |
@@ -82,7 +82,7 @@
 {%     endif %}
 {%     if snmp_server.hosts is arista.avd.defined %}
 
-### SNMP Hosts Configuration
+#### SNMP Hosts Configuration
 
 | Host | VRF | Community | Username | Authentication level | SNMP Version |
 | ---- |---- | --------- | -------- | -------------------- | ------------ |
@@ -107,7 +107,7 @@
 {%     endif %}
 {%     if snmp_server.views is arista.avd.defined %}
 
-### SNMP Views Configuration
+#### SNMP Views Configuration
 
 | View | MIB Family Name | Status |
 | ---- | --------------- | ------ |
@@ -124,7 +124,7 @@
 {%     endif %}
 {%     if snmp_server.communities is arista.avd.defined %}
 
-### SNMP Communities
+#### SNMP Communities
 
 | Community | Access | Access List IPv4 | Access List IPv6 | View |
 | --------- | ------ | ---------------- | ---------------- | ---- |
@@ -138,7 +138,7 @@
 {%     endif %}
 {%     if snmp_server.groups is arista.avd.defined %}
 
-### SNMP Groups Configuration
+#### SNMP Groups Configuration
 
 | Group | SNMP Version | Authentication | Read | Write | Notify |
 | ----- | ------------ | -------------- | ---- | ----- | ------ |
@@ -154,7 +154,7 @@
 {%     endif %}
 {%     if snmp_server.users is arista.avd.defined %}
 
-### SNMP Users Configuration
+#### SNMP Users Configuration
 
 | User | Group | Version | Authentication | Privacy | Remote Address | Remote Port | Engine ID |
 | ---- | ----- | ------- | -------------- | ------- | -------------- | ----------- | --------- |
@@ -171,7 +171,7 @@
 {%         endfor %}
 {%     endif %}
 
-### SNMP Device Configuration
+#### SNMP Device Configuration
 
 ```eos
 {%     include 'eos/snmp-server.j2' %}

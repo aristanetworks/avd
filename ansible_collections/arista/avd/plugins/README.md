@@ -119,13 +119,13 @@ The module is used in `eos_designs` to create a table of contents for Fabric Doc
 To use this filter:
 
 ```jinja2
-{{ markdown string | arista.avd.add_md_toc(skip_lines=0, toc_levels=2, toc_marker='<!-- toc -->') }}
+{{ markdown string | arista.avd.add_md_toc(skip_lines=0, toc_levels=3, toc_marker='<!-- toc -->') }}
 ```
 
 | Argument | description | type | optional | default value |
 | -------- | ----------- | ---- | -------- | ------------- |
 | skip_lines | Skip first x lines when parsing MD file | Integer | True | 0 |
-| toc_levels | How many levels of headings will be included in the TOC | Integer | True | 2 |
+| toc_levels | How many levels of headings will be included in the TOC | Integer | True | 3 |
 | toc_marker | TOC will be inserted or updated between two of these markers in the MD file | String | True | `"<!-- toc -->"`
 
 **example:**

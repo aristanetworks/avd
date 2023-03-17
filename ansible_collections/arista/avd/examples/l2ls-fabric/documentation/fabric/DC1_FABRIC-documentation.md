@@ -1,6 +1,6 @@
 # DC1_FABRIC
 
-# Table of Contents
+## Table of Contents
 
 - [Fabric Switches and Management IP](#fabric-switches-and-management-ip)
   - [Fabric Switches with inband Management IP](#fabric-switches-with-inband-management-ip)
@@ -18,7 +18,7 @@
   - [Servers](#servers)
   - [Port Profiles](#port-profiles)
 
-# Fabric Switches and Management IP
+## Fabric Switches and Management IP
 
 | POD | Type | Node | Management IP | Platform | Provisioned in CloudVision |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- |
@@ -31,11 +31,12 @@
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
-## Fabric Switches with inband Management IP
+### Fabric Switches with inband Management IP
+
 | POD | Type | Node | Management IP | Inband Interface |
 | --- | ---- | ---- | ------------- | ---------------- |
 
-# Fabric Topology
+## Fabric Topology
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
 | ---- | ---- | -------------- | --------- | ----------| -------------- |
@@ -54,41 +55,41 @@
 | spine | SPINE1 | Ethernet47 | mlag_peer | SPINE2 | Ethernet47 |
 | spine | SPINE1 | Ethernet48 | mlag_peer | SPINE2 | Ethernet48 |
 
-# Fabric IP Allocation
+## Fabric IP Allocation
 
-## Fabric Point-To-Point Links
+### Fabric Point-To-Point Links
 
 | Uplink IPv4 Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ---------------- | ------------------- | ------------------ | ------------------ |
 
-## Point-To-Point Links Node Allocation
+### Point-To-Point Links Node Allocation
 
 | Node | Node Interface | Node IP Address | Peer Node | Peer Interface | Peer IP Address |
 | ---- | -------------- | --------------- | --------- | -------------- | --------------- |
 
-## Loopback Interfaces (BGP EVPN Peering)
+### Loopback Interfaces (BGP EVPN Peering)
 
 | Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------- | ------------------- | ------------------ | ------------------ |
 
-## Loopback0 Interfaces Node Allocation
+### Loopback0 Interfaces Node Allocation
 
 | POD | Node | Loopback0 |
 | --- | ---- | --------- |
 
-## VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
+### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | --------------------- | ------------------- | ------------------ | ------------------ |
 
-## VTEP Loopback Node allocation
+### VTEP Loopback Node allocation
 
 | POD | Node | Loopback1 |
 | --- | ---- | --------- |
 
-# Connected Endpoints
+## Connected Endpoints
 
-## Connected Endpoint Keys
+### Connected Endpoint Keys
 
 | Key | Type | Description |
 | --- | ---- | ----------- |
@@ -96,14 +97,14 @@
 | routers | router | - |
 | servers | server | - |
 
-## Firewalls
+### Firewalls
 
 | Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Type | Mode | VLANs | Profile |
 | ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ---- | ----- | ------- |
 | FIREWALL | Eth1 | SPINE1 | Ethernet5 | FIREWALL_Eth1 | False | switched | trunk | 10,20,30 | PP-FIREWALL |
 | FIREWALL | Eth2 | SPINE2 | Ethernet5 | FIREWALL_Eth2 | False | switched | trunk | 10,20,30 | PP-FIREWALL |
 
-## Servers
+### Servers
 
 | Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Type | Mode | VLANs | Profile |
 | ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ---- | ----- | ------- |
@@ -112,7 +113,7 @@
 | HostB | Eth1 | LEAF2 | Ethernet3 | HostB_Eth1 | False | switched | access | 20 | PP-GREEN |
 | HostC | Eth1 | LEAF3 | Ethernet3 | HostC_Eth1 | False | switched | access | 10 | PP-BLUE |
 
-## Port Profiles
+### Port Profiles
 
 | Profile Name | Parent Profile |
 | ------------ | -------------- |

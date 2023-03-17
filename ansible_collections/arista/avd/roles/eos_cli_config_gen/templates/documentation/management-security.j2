@@ -1,9 +1,9 @@
 {# doc - management security #}
 {% if management_security is arista.avd.defined %}
 
-# Management Security
+## Management Security
 
-## Management Security Summary
+### Management Security Summary
 
 | Settings | Value |
 | -------- | ----- |
@@ -21,7 +21,7 @@
 {%     endif %}
 {%     if management_security.ssl_profiles is arista.avd.defined %}
 
-## Management Security SSL Profiles
+### Management Security SSL Profiles
 
 | SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Cipher List |
 | ---------------- | --------------------- | -------------------- | ------------ | ----------- |
@@ -30,7 +30,7 @@
 {%         endfor %}
 {%     endif %}
 
-## Management Security Configuration
+### Management Security Configuration
 
 ```eos
 {%     include 'eos/management-security.j2' %}

@@ -1,30 +1,31 @@
 # roles
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Authentication](#authentication)
   - [Roles](#roles)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -34,13 +35,13 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Authentication
+## Authentication
 
-## Roles
+### Roles
 
-### Roles Summary
+#### Roles Summary
 
-#### Role network-limited
+##### Role network-limited
 
 | Sequence | Action | Mode | Command |
 | -------- | ------ | ---- | ------- |
@@ -48,7 +49,7 @@ interface Management1
 | 20 | deny | - | telnet |
 | 30 | permit | exec | traceroute |
 
-### Roles Device Configuration
+#### Roles Device Configuration
 
 ```eos
 !

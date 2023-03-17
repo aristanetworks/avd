@@ -1,9 +1,9 @@
 {# doc - mac security #}
 {% if mac_security is arista.avd.defined %}
 
-# MACsec
+## MACsec
 
-## MACsec Summary
+### MACsec Summary
 
 {%     if mac_security.license is arista.avd.defined %}
 License is installed.
@@ -15,7 +15,7 @@ License is not installed.
 FIPS restrictions enabled.
 {%     endif %}
 
-### MACsec Profiles Summary
+#### MACsec Profiles Summary
 {%     if mac_security.profiles is arista.avd.defined %}
 {%         for profile in mac_security.profiles | arista.avd.natural_sort('name') %}
 
@@ -60,7 +60,7 @@ L2 Protocols:
 {%         endfor %}
 {%     endif %}
 
-## MACsec Device Configuration
+### MACsec Device Configuration
 
 ```eos
 {%     include 'eos/mac-security.j2' %}

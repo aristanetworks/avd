@@ -1,30 +1,31 @@
 # ip-igmp-snooping-enable
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -34,11 +35,11 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Multicast
+## Multicast
 
-## IP IGMP Snooping
+### IP IGMP Snooping
 
-### IP IGMP Snooping Summary
+#### IP IGMP Snooping Summary
 
 | IGMP Snooping | Fast Leave | Interface Restart Query | Proxy | Restart Query Interval | Robustness Variable |
 | ------------- | ---------- | ----------------------- | ----- | ---------------------- | ------------------- |
@@ -48,7 +49,7 @@ interface Management1
 | --------------- | ---------- | -------------- | ----------------- | -------------------------- | ----------------------- | ---------------------- | ------------------- | ------- |
 | True | 10.10.10.1 | 40 | 10 | 5 | 2 | 20 | 2 | 3 |
 
-#### IP IGMP Snooping Vlan Summary
+##### IP IGMP Snooping Vlan Summary
 
 | Vlan | IGMP Snooping | Fast Leave | Max Groups | Proxy |
 | ---- | ------------- | ---------- | ---------- | ----- |
@@ -60,7 +61,7 @@ interface Management1
 | ---- | --------------- | ---------- | -------------- | ----------------- | -------------------------- | ----------------------- | ---------------------- | ------------------- | ------- |
 | 23 | True | 10.10.23.1 | 40 | 10 | 5 | 2 | 20 | 2 | 3 |
 
-### IP IGMP Snooping Device Configuration
+#### IP IGMP Snooping Device Configuration
 
 ```eos
 !

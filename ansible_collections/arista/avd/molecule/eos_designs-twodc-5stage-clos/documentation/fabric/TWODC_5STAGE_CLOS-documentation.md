@@ -1,6 +1,6 @@
 # TWODC_5STAGE_CLOS
 
-# Table of Contents
+## Table of Contents
 
 - [Fabric Switches and Management IP](#fabric-switches-and-management-ip)
   - [Fabric Switches with inband Management IP](#fabric-switches-with-inband-management-ip)
@@ -17,7 +17,7 @@
   - [Servers](#servers)
   - [Port Profiles](#port-profiles)
 
-# Fabric Switches and Management IP
+## Fabric Switches and Management IP
 
 | POD | Type | Node | Management IP | Platform | Provisioned in CloudVision |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- |
@@ -49,7 +49,8 @@
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
-## Fabric Switches with inband Management IP
+### Fabric Switches with inband Management IP
+
 | POD | Type | Node | Management IP | Inband Interface |
 | --- | ---- | ---- | ------------- | ---------------- |
 | DC1_POD1 | l2leaf | DC1-POD1-L2LEAF1A | 172.21.110.4/24 | Vlan4085 |
@@ -58,7 +59,7 @@
 | DC2_POD1 | l2leaf | DC2-POD1-L2LEAF1A | 172.21.210.4/24 | Vlan4092 |
 | DC2_POD1 | l2leaf | DC2-POD1-L2LEAF2A | 172.21.210.5/24 | Vlan4092 |
 
-# Fabric Topology
+## Fabric Topology
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
 | ---- | ---- | -------------- | --------- | ----------| -------------- |
@@ -118,9 +119,9 @@
 | overlay-controller | DC2-RS2 | Ethernet1 | super-spine | DC2-SUPER-SPINE1 | Ethernet5 |
 | overlay-controller | DC2-RS2 | Ethernet2 | super-spine | DC2-SUPER-SPINE1 | Ethernet7 |
 
-# Fabric IP Allocation
+## Fabric IP Allocation
 
-## Fabric Point-To-Point Links
+### Fabric Point-To-Point Links
 
 | Uplink IPv4 Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ---------------- | ------------------- | ------------------ | ------------------ |
@@ -133,7 +134,7 @@
 | 172.17.120.0/24 | 256 | 4 | 1.57 % |
 | 172.17.210.0/24 | 256 | 8 | 3.13 % |
 
-## Point-To-Point Links Node Allocation
+### Point-To-Point Links Node Allocation
 
 | Node | Node Interface | Node IP Address | Peer Node | Peer Interface | Peer IP Address |
 | ---- | -------------- | --------------- | --------- | -------------- | --------------- |
@@ -182,7 +183,7 @@
 | DC2-RS2 | Ethernet1 | 172.17.20.9/31 | DC2-SUPER-SPINE1 | Ethernet5 | 172.17.20.8/31 |
 | DC2-RS2 | Ethernet2 | 172.17.20.11/31 | DC2-SUPER-SPINE1 | Ethernet7 | 172.17.20.10/31 |
 
-## Loopback Interfaces (BGP EVPN Peering)
+### Loopback Interfaces (BGP EVPN Peering)
 
 | Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------- | ------------------- | ------------------ | ------------------ |
@@ -194,7 +195,7 @@
 | 172.16.200.0/24 | 256 | 2 | 0.79 % |
 | 172.16.210.0/24 | 256 | 4 | 1.57 % |
 
-## Loopback0 Interfaces Node Allocation
+### Loopback0 Interfaces Node Allocation
 
 | POD | Node | Loopback0 |
 | --- | ---- | --------- |
@@ -219,7 +220,7 @@
 | DC2 | DC2-SUPER-SPINE1 | 172.16.200.1/32 |
 | DC2 | DC2-SUPER-SPINE2 | 172.16.200.2/32 |
 
-## VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
+### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | --------------------- | ------------------- | ------------------ | ------------------ |
@@ -227,7 +228,7 @@
 | 172.18.120.0/24 | 256 | 1 | 0.4 % |
 | 172.18.210.0/24 | 256 | 2 | 0.79 % |
 
-## VTEP Loopback Node allocation
+### VTEP Loopback Node allocation
 
 | POD | Node | Loopback1 |
 | --- | ---- | --------- |
@@ -238,9 +239,9 @@
 | DC2_POD1 | DC2-POD1-LEAF1A | 172.18.210.3/32 |
 | DC2_POD1 | DC2-POD1-LEAF2A | 172.18.210.4/32 |
 
-# Connected Endpoints
+## Connected Endpoints
 
-## Connected Endpoint Keys
+### Connected Endpoint Keys
 
 | Key | Type | Description |
 | --- | ---- | ----------- |
@@ -250,7 +251,7 @@
 | servers | server | Server |
 | storage_arrays | storage_array | Storage Array |
 
-## Servers
+### Servers
 
 | Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Type | Mode | VLANs | Profile |
 | ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ---- | ----- | ------- |
@@ -263,7 +264,7 @@
 | server-1 | Eth5 | DC1.POD1.LEAF2A | Ethernet18 | server-1_Eth5 | False | switched | access | 110 | NESTED_TENANT_A |
 | server-1 | Eth7 | DC1.POD1.LEAF2A | Ethernet19 | server-1_Eth7 | False | switched | access | 110 | NESTED_TENANT_A |
 
-## Port Profiles
+### Port Profiles
 
 | Profile Name | Parent Profile |
 | ------------ | -------------- |

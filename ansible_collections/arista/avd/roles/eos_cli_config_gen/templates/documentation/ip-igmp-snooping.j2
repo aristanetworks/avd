@@ -1,9 +1,9 @@
 {# doc - ip igmp snooping #}
 {% if ip_igmp_snooping is arista.avd.defined %}
 
-## IP IGMP Snooping
+### IP IGMP Snooping
 
-### IP IGMP Snooping Summary
+#### IP IGMP Snooping Summary
 {%     if ip_igmp_snooping.globally_enabled is arista.avd.defined(false) %}
 
 IGMP snooping is globally disabled
@@ -35,7 +35,7 @@ IGMP snooping is globally disabled
 {%         if ip_igmp_snooping.vlans is arista.avd.defined %}
 {%             set qr_settings_vlans = [] %}
 
-#### IP IGMP Snooping Vlan Summary
+##### IP IGMP Snooping Vlan Summary
 
 | Vlan | IGMP Snooping | Fast Leave | Max Groups | Proxy |
 | ---- | ------------- | ---------- | ---------- | ----- |
@@ -69,7 +69,7 @@ IGMP snooping is globally disabled
 {%         endif %}
 {%     endif %}
 
-### IP IGMP Snooping Device Configuration
+#### IP IGMP Snooping Device Configuration
 
 ```eos
 {%     include 'eos/ip-igmp-snooping.j2' %}
