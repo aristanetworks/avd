@@ -1,9 +1,9 @@
 {# doc - trackers #}
 {% if trackers is arista.avd.defined %}
 
-## Object Tracking
+### Object Tracking
 
-### Object Tracking Summary
+#### Object Tracking Summary
 
 | Name | Interface | Tracked Property |
 | ---- | --------- | ---------------- |
@@ -13,7 +13,7 @@
 {%         endif %}
 {%     endfor %}
 
-### Object Tracking Configuration
+#### Object Tracking Configuration
 
 ```eos
 {%     include 'eos/trackers.j2' %}

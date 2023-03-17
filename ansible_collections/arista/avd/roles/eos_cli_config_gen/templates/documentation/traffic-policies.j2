@@ -1,7 +1,7 @@
 {# doc - traffic policies #}
 {% if traffic_policies is arista.avd.defined %}
 
-## Traffic Policies information
+### Traffic Policies information
 {%     if traffic_policies.field_sets is arista.avd.defined %}
 
 **IPv4 Field sets**
@@ -54,7 +54,7 @@ No Field-set configured on device.
 {%     endif %}
 {%     if traffic_policies.policies is arista.avd.defined %}
 
-### Traffic Policies
+#### Traffic Policies
 {%         for policy in traffic_policies.policies | arista.avd.natural_sort('name') %}
 
 **{{ policy.name }}:**
@@ -165,7 +165,7 @@ No Match condition configured.
 {%     endfor %}
 {%     if traffic_policy_interfaces | length > 0 %}
 
-#### Traffic-Policy Interfaces
+##### Traffic-Policy Interfaces
 
 | Interface | Input Traffic-Policy | Output Traffic-Policy |
 | --------- | -------------------- | --------------------- |
@@ -176,7 +176,7 @@ No Match condition configured.
 {%         endfor %}
 
 {%     endif %}
-### Traffic Policies Device Configuration
+#### Traffic Policies Device Configuration
 
 ```eos
 {%     include 'eos/traffic-policies.j2' %}

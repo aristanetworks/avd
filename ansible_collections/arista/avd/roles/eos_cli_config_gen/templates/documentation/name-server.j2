@@ -1,9 +1,9 @@
 {# doc - name server #}
 {% if name_server is arista.avd.defined %}
 
-## Name Servers
+### Name Servers
 
-### Name Servers Summary
+#### Name Servers Summary
 
 | Name Server | Source VRF |
 | ----------- | ---------- |
@@ -11,7 +11,7 @@
 | {{ node }} | {{ name_server.source.vrf | arista.avd.default('-') }} |
 {%     endfor %}
 
-### Name Servers Device Configuration
+#### Name Servers Device Configuration
 
 ```eos
 {%     include 'eos/name-server.j2' %}

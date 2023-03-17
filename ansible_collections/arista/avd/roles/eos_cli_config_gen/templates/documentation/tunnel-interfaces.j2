@@ -1,9 +1,9 @@
 {# doc - tunnel interfaces #}
 {% if tunnel_interfaces is arista.avd.defined %}
 
-## Tunnel Interfaces
+### Tunnel Interfaces
 
-### Tunnel Interfaces Summary
+#### Tunnel Interfaces Summary
 
 {%     set tunnel_interfaces_ipv4 = [] %}
 {%     set tunnel_interfaces_ipv6 = [] %}
@@ -28,7 +28,7 @@
 {# IPv4 #}
 {%     if tunnel_interfaces_ipv4 | length > 0 %}
 
-#### IPv4
+##### IPv4
 
 | Interface | VRF | IP Address | TCP MSS | TCP MSS Direction | ACL In | ACL Out |
 | --------- | --- | ---------- | ------- | ----------------- | ------ | ------- |
@@ -45,7 +45,7 @@
 {# IPv6 #}
 {%     if tunnel_interfaces_ipv6 | length > 0 %}
 
-#### IPv6
+##### IPv6
 
 | Interface | VRF | IPv6 Address | TCP MSS | TCP MSS Direction | IPv6 ACL In | IPv6 ACL Out |
 | --------- | --- | ------------ | ------- | ----------------- | ----------- | ------------ |
@@ -60,7 +60,7 @@
 {%         endfor %}
 {%     endif %}
 
-### Tunnel Interfaces Device Configuration
+#### Tunnel Interfaces Device Configuration
 
 ```eos
 {%     include 'eos/tunnel-interfaces.j2' %}

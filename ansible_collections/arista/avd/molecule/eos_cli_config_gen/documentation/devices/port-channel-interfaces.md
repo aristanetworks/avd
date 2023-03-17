@@ -1,5 +1,6 @@
 # port-channel-interfaces
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -16,25 +17,25 @@
   - [PIM Sparse Mode](#pim-sparse-mode)
 - [Quality Of Service](#quality-of-service)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -44,15 +45,15 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Monitoring
+## Monitoring
 
-## SFlow
+### SFlow
 
-### SFlow Summary
+#### SFlow Summary
 
 sFlow is disabled.
 
-### SFlow Interfaces
+#### SFlow Interfaces
 
 | Interface | Ingress Enabled | Egress Enabled |
 | --------- | --------------- | -------------- |
@@ -61,13 +62,13 @@ sFlow is disabled.
 | Port-Channel119 | False | False |
 | Port-Channel120 | False | False (unmodified) |
 
-# Interfaces
+## Interfaces
 
-## Ethernet Interfaces
+### Ethernet Interfaces
 
-### Ethernet Interfaces Summary
+#### Ethernet Interfaces Summary
 
-#### L2
+##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
@@ -86,27 +87,27 @@ sFlow is disabled.
 
 *Inherited from Port-Channel Interface
 
-#### IPv4
+##### IPv4
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet17 | LAG Member | *routed | 17 | *192.0.2.3/31 | **default | **- | **- | **- | **- |
 *Inherited from Port-Channel Interface
 
-#### ISIS
+##### ISIS
 
 | Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
 | --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
 | Ethernet10/10 | 110 | *ISIS_TEST | *99 | *point-to-point | *level-2 | *True | *text |
  *Inherited from Port-Channel Interface
 
-#### Error Correction Encoding Interfaces
+##### Error Correction Encoding Interfaces
 
 | Interface | Enabled |
 | --------- | ------- |
 | Ethernet11/1 | fire-code<br>reed-solomon |
 
-### Ethernet Interfaces Device Configuration
+#### Ethernet Interfaces Device Configuration
 
 ```eos
 !
@@ -192,11 +193,11 @@ interface Ethernet50
    no lldp receive
 ```
 
-## Port-Channel Interfaces
+### Port-Channel Interfaces
 
-### Port-Channel Interfaces Summary
+#### Port-Channel Interfaces Summary
 
-#### L2
+##### L2
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
@@ -225,13 +226,13 @@ interface Ethernet50
 | Port-Channel112 | LACP fallback individual | switched | trunk | 112 | - | - | 5 | individual | - | - |
 | Port-Channel115 | native-vlan-tag-precedence | switched | trunk | - | tag | - | - | - | - | - |
 
-#### Encapsulation Dot1q Interfaces
+##### Encapsulation Dot1q Interfaces
 
 | Interface | Description | Type | Vlan ID | Dot1q VLAN Tag |
 | --------- | ----------- | -----| ------- | -------------- |
 | Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | l3dot1q | - | 101 |
 
-#### Flexible Encapsulation Interfaces
+##### Flexible Encapsulation Interfaces
 
 | Interface | Description | Type | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
 | --------- | ----------- | ---- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
@@ -242,48 +243,48 @@ interface Ethernet50
 | Port-Channel111.400 | TENANT_A pseudowire 3 interface | l2dot1q | - | False | - | 400 | 20 | False | - | 401 | 21 |
 | Port-Channel111.1000 | L2 Subinterface | l2dot1q | 1000 | False | 100 | - | - | True | - | - | - |
 
-#### Private VLAN
+##### Private VLAN
 
 | Interface | PVLAN Mapping | Secondary Trunk |
 | --------- | ------------- | ----------------|
 | Port-Channel101 | 111 | - |
 | Port-Channel103 | - | True |
 
-#### VLAN Translations
+##### VLAN Translations
 
 | Interface | From VLAN ID(s) | To VLAN ID | Direction |
 | --------- | --------------- | -----------| --------- |
 | Port-Channel102 | 111-112 | 110 | out
 
-#### EVPN Multihoming
+##### EVPN Multihoming
 
-##### EVPN Multihoming Summary
+####### EVPN Multihoming Summary
 
 | Interface | Ethernet Segment Identifier | Multihoming Redundancy Mode | Route Target |
 | --------- | --------------------------- | --------------------------- | ------------ |
 | Port-Channel13 | 0000:0000:0000:0102:0304 | single-active | 00:00:01:02:03:04 |
 | Port-Channel14 | 0000:0000:0000:0102:0305 | all-active | 00:00:01:02:03:05 |
 
-##### Designated Forwarder Election Summary
+####### Designated Forwarder Election Summary
 
 | Interface | Algorithm | Preference Value | Dont Preempt | Hold time | Subsequent Hold Time | Candidate Reachability Required |
 | --------- | --------- | ---------------- | ------------ | --------- | -------------------- | ------------------------------- |
 | Port-Channel13 | preference | 100 | True | 10 | - | True |
 
-##### EVPN-MPLS summary
+####### EVPN-MPLS summary
 
 | Interface | Shared Index | Tunnel Flood Filter Time |
 | --------- | ------------ | ------------------------ |
 | Port-Channel14 | 100 | 100 |
 
-#### Link Tracking Groups
+##### Link Tracking Groups
 
 | Interface | Group Name | Direction |
 | --------- | ---------- | --------- |
 | Port-Channel5 | EVPN_MH_ES1 | downstream |
 | Port-Channel15 | EVPN_MH_ES2 | upstream |
 
-#### IPv4
+##### IPv4
 
 | Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
@@ -294,13 +295,13 @@ interface Ethernet50
 | Port-Channel113 | interface_with_mpls_enabled | routed | - | 172.31.128.9/31 | default | - | - | - | - |
 | Port-Channel114 | interface_with_mpls_disabled | routed | - | 172.31.128.10/31 | default | - | - | - | - |
 
-#### ISIS
+##### ISIS
 
 | Interface | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
 | --------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
 | Port-Channel110 | ISIS_TEST | 99 | point-to-point | level-2 | True | text |
 
-### Port-Channel Interfaces Device Configuration
+#### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
@@ -621,36 +622,36 @@ interface Port-Channel120
    no sflow egress unmodified enable
 ```
 
-# BFD
+## BFD
 
-## BFD Interfaces
+### BFD Interfaces
 
 | Interface | Interval | Minimum RX | Multiplier | Echo |
 | --------- | -------- | ---------- | ---------- | ---- |
 | Port-Channel9 | 500 | 500 | 5 | True |
 
-# MPLS
+## MPLS
 
-## MPLS Interfaces
+### MPLS Interfaces
 
 | Interface | MPLS IP Enabled | LDP Enabled | IGP Sync |
 | --------- | --------------- | ----------- | -------- |
 | Port-Channel113 | True | True | True |
 | Port-Channel114 | False | False | - |
 
-# Multicast
+## Multicast
 
-## PIM Sparse Mode
+### PIM Sparse Mode
 
-### PIM Sparse Mode enabled interfaces
+#### PIM Sparse Mode enabled interfaces
 
 | Interface Name | VRF Name | IP Version | DR Priority | Local Interface |
 | -------------- | -------- | ---------- | ----------- | --------------- |
 | Port-Channel99 | - | IPv4 | 200 | - |
 
-# Quality Of Service
+## Quality Of Service
 
-### QOS Interfaces
+#### QOS Interfaces
 
 | Interface | Trust | Default DSCP | Default COS | Shape rate |
 | --------- | ----- | ------------ | ----------- | ---------- |

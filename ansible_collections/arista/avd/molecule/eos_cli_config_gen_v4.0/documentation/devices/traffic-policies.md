@@ -1,29 +1,30 @@
 # traffic-policies
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [Traffic Policies information](#traffic-policies-information)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -33,7 +34,7 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-## Traffic Policies information
+### Traffic Policies information
 
 **IPv4 Field sets**
 
@@ -52,7 +53,7 @@ No IPv6 field-set configured.
 | -------------- | ------ |
 | SERVICE-DEMO | 10,20,80,440-450|
 
-### Traffic Policies
+#### Traffic Policies
 
 **BLUE-C1-POLICY:**
 
@@ -73,7 +74,7 @@ No IPv6 field-set configured.
 | BLUE-C2-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02 | ANY | tcp<br/>icmp | SERVICE-DEMO | ANY | action: PASS<br/>counter: DEMO-TRAFFIC<br/>dscp marking: 60 |
 | BLUE-C2-POLICY-03 | ipv4 | DEMO-01 | ANY | tcp | ANY | ANY | action: DROP<br/>logging |
 
-### Traffic Policies Device Configuration
+#### Traffic Policies Device Configuration
 
 ```eos
 !

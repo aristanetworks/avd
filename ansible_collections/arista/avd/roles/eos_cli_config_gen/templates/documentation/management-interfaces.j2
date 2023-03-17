@@ -1,11 +1,11 @@
 {# doc - management interfaces #}
 {% if management_interfaces is arista.avd.defined %}
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
@@ -18,7 +18,7 @@
 | {{ management_interface.name }} | {{ description }} | {{ int_type }} | {{ vrf }} | {{ ip }} | {{ ip_gateway }} |
 {%     endfor %}
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
@@ -31,7 +31,7 @@
 | {{ management_interface.name }} | {{ description }} | {{ int_type }} | {{ vrf }} | {{ ipv6 }} | {{ ipv6_gateway }} |
 {%     endfor %}
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 {%     include 'eos/management-interfaces.j2' %}

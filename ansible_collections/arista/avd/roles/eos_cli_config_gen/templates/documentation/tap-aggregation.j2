@@ -1,9 +1,9 @@
 {# doc - tap aggregation #}
 {% if tap_aggregation is arista.avd.defined and tap_aggregation.mode.exclusive.enabled is arista.avd.defined(true) %}
 
-## Tap Aggregation
+### Tap Aggregation
 
-### Tap Aggregation Summary
+#### Tap Aggregation Summary
 
 | Settings | Values |
 | -------- | ------ |
@@ -42,7 +42,7 @@
 | Mac FCS Error | {{ tap_aggregation.mac.fcs_error }} |
 {%     endif %}
 
-### Tap Aggregation Configuration
+#### Tap Aggregation Configuration
 
 ```eos
 {%     include 'eos/tap-aggregation.j2' %}

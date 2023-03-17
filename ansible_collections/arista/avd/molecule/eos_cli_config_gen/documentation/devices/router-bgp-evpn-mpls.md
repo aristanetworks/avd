@@ -1,30 +1,31 @@
 # router-bgp-evpn-mpls
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Routing](#routing)
   - [Router BGP](#router-bgp)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -34,11 +35,11 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Routing
+## Routing
 
-## Router BGP
+### Router BGP
 
-### Router BGP Summary
+#### Router BGP Summary
 
 | BGP AS | Router ID |
 | ------ | --------- |
@@ -52,9 +53,9 @@ interface Management1
 | graceful-restart |
 | maximum-paths 2 ecmp 2 |
 
-### Router BGP Peer Groups
+#### Router BGP Peer Groups
 
-#### EVPN-OVERLAY-PEERS
+##### EVPN-OVERLAY-PEERS
 
 | Settings | Value |
 | -------- | ----- |
@@ -68,35 +69,35 @@ interface Management1
 | Send community | all |
 | Maximum routes | 0 (no limit) |
 
-#### MLAG-IPv4-UNDERLAY-PEER
+##### MLAG-IPv4-UNDERLAY-PEER
 
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
 | Remote AS | 65101 |
 
-### BGP Neighbors
+#### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
 | 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - |
 | 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - |
 
-### Router BGP EVPN Address Family
+#### Router BGP EVPN Address Family
 
-#### EVPN Peer Groups
+##### EVPN Peer Groups
 
 | Peer Group | Activate | Encapsulation |
 | ---------- | -------- | ------------- |
 | EVPN-OVERLAY-PEERS | True | default |
 
-#### EVPN Neighbor Default Encapsulation
+##### EVPN Neighbor Default Encapsulation
 
 | Neighbor Default Encapsulation | Next-hop-self Source Interface |
 | ------------------------------ | ------------------------------ |
 | mpls | Loopback0 |
 
-### Router BGP Device Configuration
+#### Router BGP Device Configuration
 
 ```eos
 !

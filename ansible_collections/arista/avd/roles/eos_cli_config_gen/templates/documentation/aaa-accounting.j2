@@ -1,9 +1,9 @@
 {# doc - aaa accounting #}
 {% if aaa_accounting is arista.avd.defined %}
 
-## AAA Accounting
+### AAA Accounting
 
-### AAA Accounting Summary
+#### AAA Accounting Summary
 
 | Type | Commands | Record type | Group | Logging |
 | ---- | -------- | ----------- | ----- | ------- |
@@ -39,7 +39,7 @@
 {%         endfor %}
 {%     endif %}
 
-### AAA Accounting Device Configuration
+#### AAA Accounting Device Configuration
 
 ```eos
 {%     include 'eos/aaa-accounting.j2' %}

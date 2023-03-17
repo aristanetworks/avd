@@ -1,7 +1,7 @@
 {# doc - cvx #}
 {% if cvx is arista.avd.defined %}
 
-# CVX
+## CVX
 {%     if cvx.peer_hosts is arista.avd.defined %}
 
 | Peer Hosts |
@@ -17,7 +17,7 @@ CVX is disabled
 CVX is enabled
 {%         if cvx.services is arista.avd.defined %}
 
-## CVX services
+### CVX services
 
 | Service | Enabled | Settings |
 | ------- | ------- | -------- |
@@ -36,7 +36,7 @@ CVX is enabled
 {%         endif %}
 {%     endif %}
 
-## CVX configuration
+### CVX configuration
 
 ```eos
 {%     include 'eos/cvx.j2' %}

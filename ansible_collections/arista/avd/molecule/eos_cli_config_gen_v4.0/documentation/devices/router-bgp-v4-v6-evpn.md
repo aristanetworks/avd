@@ -1,30 +1,31 @@
 # router-bgp-v4-v6-evpn
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Routing](#routing)
   - [Router BGP](#router-bgp)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -34,11 +35,11 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Routing
+## Routing
 
-## Router BGP
+### Router BGP
 
-### Router BGP Summary
+#### Router BGP Summary
 
 | BGP AS | Router ID |
 | ------ | --------- |
@@ -51,9 +52,9 @@ interface Management1
 | distance bgp 20 200 200 |
 | maximum-paths 4 ecmp 4 |
 
-### Router BGP Peer Groups
+#### Router BGP Peer Groups
 
-#### EVPN-OVERLAY
+##### EVPN-OVERLAY
 
 | Settings | Value |
 | -------- | ----- |
@@ -65,7 +66,7 @@ interface Management1
 | Send community | all |
 | Maximum routes | 0 (no limit) |
 
-#### IPV4-UNDERLAY
+##### IPV4-UNDERLAY
 
 | Settings | Value |
 | -------- | ----- |
@@ -73,7 +74,7 @@ interface Management1
 | Send community | all |
 | Maximum routes | 12000 |
 
-#### IPV4-UNDERLAY-MLAG
+##### IPV4-UNDERLAY-MLAG
 
 | Settings | Value |
 | -------- | ----- |
@@ -82,7 +83,7 @@ interface Management1
 | Send community | all |
 | Maximum routes | 12000 |
 
-#### IPV6-UNDERLAY
+##### IPV6-UNDERLAY
 
 | Settings | Value |
 | -------- | ----- |
@@ -90,7 +91,7 @@ interface Management1
 | Send community | all |
 | Maximum routes | 12000 |
 
-#### IPV6-UNDERLAY-MLAG
+##### IPV6-UNDERLAY-MLAG
 
 | Settings | Value |
 | -------- | ----- |
@@ -99,7 +100,7 @@ interface Management1
 | Send community | all |
 | Maximum routes | 12000 |
 
-### BGP Neighbors
+#### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
@@ -116,15 +117,15 @@ interface Management1
 | 169.254.252.1 | Inherited from peer group IPV4-UNDERLAY-MLAG | default | - | Inherited from peer group IPV4-UNDERLAY-MLAG | Inherited from peer group IPV4-UNDERLAY-MLAG | - | - | - | - | - |
 | fe80::b%Vl4094 | Inherited from peer group IPV6-UNDERLAY-MLAG | default | - | Inherited from peer group IPV6-UNDERLAY-MLAG | Inherited from peer group IPV6-UNDERLAY-MLAG | - | - | - | - | - |
 
-### Router BGP EVPN Address Family
+#### Router BGP EVPN Address Family
 
-#### EVPN Peer Groups
+##### EVPN Peer Groups
 
 | Peer Group | Activate | Encapsulation |
 | ---------- | -------- | ------------- |
 | EVPN-OVERLAY | True | default |
 
-### Router BGP VLANs
+#### Router BGP VLANs
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
@@ -133,14 +134,14 @@ interface Management1
 | 42 | 10.50.64.15:10042 | 1:10042 | - | - | learned |
 | 65 | 10.50.64.15:10065 | 1:10065 | - | - | learned |
 
-### Router BGP VRFs
+#### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
 | Tenant_A | 10.50.64.15:30001 | connected |
 | Tenant_B | 10.50.64.15:30002 | - |
 
-### Router BGP Device Configuration
+#### Router BGP Device Configuration
 
 ```eos
 !

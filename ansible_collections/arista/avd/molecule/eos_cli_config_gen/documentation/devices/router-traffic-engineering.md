@@ -1,30 +1,31 @@
 # router-traffic-engineering
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Routing](#routing)
   - [Router Traffic-Engineering](#router-traffic-engineering)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -34,17 +35,17 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Routing
+## Routing
 
-## Router Traffic-Engineering
+### Router Traffic-Engineering
 
-### Segment Routing Summary
+#### Segment Routing Summary
 
 - SRTE is enabled.
 
 - system-colored-tunnel-rib is enabled
 
-#### SRTE Policies
+##### SRTE Policies
 
 | Endpoint | Color | Preference | Name | Description | SBFD Remote Discriminator | Label Stack | Index  | Weight | Explicit Null |
 | -------- | ----- | ---------- | ---- | ----------- | ------------------------- | ----------- | ------ | ------ | ------------- |
@@ -55,7 +56,7 @@ interface Management1
 | 5.6.7.8 | 20320 | 120 | - | - | 2600599809 | 900002 900008 900009 900006 | - | - | ipv6 |
 | 5.6.7.8 | 20320 | 120 | - | - | 2600599809 | 900002 900010 900011 900012 | - | - | ipv6 |
 
-### Router Traffic Engineering Device Configuration
+#### Router Traffic Engineering Device Configuration
 
 ```eos
 !

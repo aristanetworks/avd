@@ -1,5 +1,6 @@
 # base
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -11,25 +12,25 @@
   - [Management Security Configuration](#management-security-configuration)
 - [EOS CLI](#eos-cli)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -39,47 +40,47 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-## Management SSH
+### Management SSH
 
-### IPv4 ACL
+#### IPv4 ACL
 
 | IPv4 ACL | VRF |
 | -------- | --- |
 | ACL-SSH | - |
 | ACL-SSH-VRF | mgt |
 
-### IPv6 ACL
+#### IPv6 ACL
 
 | IPv6 ACL | VRF |
 | -------- | --- |
 | ACL-SSH6 | - |
 | ACL-SSH-VRF6 | mgt |
 
- ### SSH timeout and management
+#### SSH timeout and management
 
 | Idle Timeout | SSH Management |
 | ------------ | -------------- |
 | 15 | Enabled |
 
-### Max number of SSH sessions limit and per-host limit
+#### Max number of SSH sessions limit and per-host limit
 
 | Connection Limit | Max from a single Host |
 | ---------------- | ---------------------- |
 | - | 12 |
 
-### Ciphers and algorithms
+#### Ciphers and algorithms
 
 | Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
 |---------|----------------------|----------------|---------------------------|
 | default | default | default | default |
 
-### VRFs
+#### VRFs
 
 | VRF | Status |
 | --- | ------ |
 | mgt | Enabled |
 
-### Management SSH Configuration
+#### Management SSH Configuration
 
 ```eos
 !
@@ -96,13 +97,13 @@ management ssh
       no shutdown
 ```
 
-## Management Console
+### Management Console
 
-### Management Console Timeout
+#### Management Console Timeout
 
 Management Console Timeout is set to **300** minutes.
 
-### Management Console Configuration
+#### Management Console Configuration
 
 ```eos
 !
@@ -110,21 +111,21 @@ management console
    idle-timeout 300
 ```
 
-## Management API HTTP
+### Management API HTTP
 
-### Management API HTTP Summary
+#### Management API HTTP Summary
 
 | HTTP | HTTPS | Default Services |
 | ---- | ----- | ---------------- |
 | True | True | - |
 
-### Management API VRF Access
+#### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
 | mgt | ACL-API | - |
 
-### Management API HTTP Configuration
+#### Management API HTTP Configuration
 
 ```eos
 !
@@ -138,15 +139,15 @@ management api http-commands
       ip access-group ACL-API
 ```
 
-# Management Security
+## Management Security
 
-## Management Security Summary
+### Management Security Summary
 
 | Settings | Value |
 | -------- | ----- |
 | Common password encryption key | True |
 
-## Management Security Configuration
+### Management Security Configuration
 
 ```eos
 !
@@ -154,7 +155,7 @@ management security
    password encryption-key common
 ```
 
-# EOS CLI
+## EOS CLI
 
 ```eos
 !

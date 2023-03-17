@@ -12,8 +12,8 @@ vlan_internal_order:
 spanning_tree:
   mode: mstp
   mst_instances:
-  - priority: 16384
-    id: '0'
+  - id: '0'
+    priority: 16384
   no_spanning_tree_vlan: '4094'
 vrfs:
 - name: MGMT

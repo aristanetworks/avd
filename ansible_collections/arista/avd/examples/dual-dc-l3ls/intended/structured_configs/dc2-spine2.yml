@@ -82,14 +82,14 @@ vlan_internal_order:
 spanning_tree:
   mode: none
 local_users:
-- privilege: 15
+- name: admin
+  privilege: 15
   role: network-admin
   no_password: true
-  name: admin
-- privilege: 15
+- name: ansible
+  privilege: 15
   role: network-admin
   sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
-  name: ansible
 vrfs:
 - name: MGMT
   ip_routing: false

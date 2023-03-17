@@ -44,8 +44,8 @@ vlan_internal_order:
 spanning_tree:
   mode: mstp
   mst_instances:
-  - priority: 4096
-    id: '0'
+  - id: '0'
+    priority: 4096
 vrfs:
 - name: MGMT
   ip_routing: false

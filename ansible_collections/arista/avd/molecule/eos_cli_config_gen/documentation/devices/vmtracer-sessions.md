@@ -1,30 +1,31 @@
 # vmtracer-sessions
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Monitoring](#monitoring)
   - [VM Tracer Sessions](#vm-tracer-sessions)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -34,18 +35,18 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Monitoring
+## Monitoring
 
-## VM Tracer Sessions
+### VM Tracer Sessions
 
-### VM Tracer Summary
+#### VM Tracer Summary
 
 | Session | URL | Username | Autovlan | Source Interface |
 | ------- | --- | -------- | -------- | ---------------- |
 | session_1 | https://192.168.0.10 | user1 | disabled | Management1 |
 | session_2 | https://192.168.0.10 | user1 | enabled | - |
 
-### VM Tracer Device Configuration
+#### VM Tracer Device Configuration
 
 ```eos
 !
