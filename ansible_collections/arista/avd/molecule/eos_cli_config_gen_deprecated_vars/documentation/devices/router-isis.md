@@ -13,7 +13,7 @@
 | Settings | Value |
 | -------- | ----- |
 | Instance | EVPN_UNDERLAY |
-| Address Family | ipv4 unicast |
+| Address Family | ipv4 unicast, ipv6 unicast |
 
 ### ISIS Interfaces Summary
 
@@ -28,5 +28,9 @@ router isis EVPN_UNDERLAY
    !
    address-family ipv4 unicast
       maximum-paths 2
+      fast-reroute ti-lfa mode link-protection
+   address-family ipv6 unicast
+      maximum-paths 2
+      fast-reroute ti-lfa mode link-protection
    !
 ```
