@@ -198,9 +198,9 @@ For now this filter only supports encryption and decryption to type `7` and not 
 
 #### BGP passwords
 
-BGP password are encrypted/decrypted based on the Neighbor IP or the BGP Peer Group Name in EOS.
+BGP passwords are encrypted/decrypted based on the Neighbor IP or the BGP Peer Group Name in EOS.
 
-An example usage for `arista.avd.encrypt` filter for BGP is to use it in conjunction with Ansible Vault to be able to load a password and have it encrypted on the fly by AVD in `eos_designs`.
+Example usage for `arista.avd.encrypt` filter for BGP is to use it in conjunction with Ansible Vault to be able to load a password and have it encrypted on the fly by AVD in `eos_designs`.
 
 **example:**
 
@@ -213,14 +213,14 @@ bgp_peer_groups:
 
 #### OSPF passwords
 
-OSPF passwords are encrypted/decrypted based on the interface name (e.g., Ethernet1) and for message-digest-key the hash algorithm (in the list [md5, sha1, sha256, sha384, sha512]) and the key ID (between 1 and 255).
+OSPF passwords are encrypted/decrypted based on the interface name (e.g., Ethernet1), and for message-digest-key, the hash algorithm (in the list [md5, sha1, sha256, sha384, sha512]) and the key ID (between 1 and 255).
 
-The filters provide two types for OSPF:
+The filter provides two types for OSPF:
 
-- `ospf_simple` for simple authentication which requires only the password and the interface name as key as inputs.
-- `ospf_message_digest` for message digest keys which requires the password, the interface name as key, the hash algorithm and the key id as input.
+- `ospf_simple` for simple authentication, which requires only the password and the interface name as key inputs.
+- `ospf_message_digest` for message digest keys which requires the password, the interface name as the key, the hash algorithm, and the key id as input.
 
-An example usage for `arista.avd.encrypt` filter for OSPF is to use it in conjunction with Ansible Vault to be able to load a password and have it encrypted on the fly by AVD in `eos_designs`.
+Example usage for `arista.avd.encrypt` filter for OSPF is to use it in conjunction with Ansible Vault to be able to load a password and have it encrypted on the fly by AVD in `eos_designs`.
 
 **examples:**
 
