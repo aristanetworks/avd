@@ -191,7 +191,7 @@ Supported types:
 
 - bgp
 - ospf_simple
-- ospf_messaged_digest
+- ospf_message_digest
 
 !!! Note
 For now this filter only supports encryption and decryption to type `7` and not type `8a` for OSPF and BGP passwords
@@ -218,7 +218,7 @@ OSPF passwords are encrypted/decrypted based on the interface name (e.g., Ethern
 The filters provide two types for OSPF:
 
 - `ospf_simple` for simple authentication which requires only the password and the interface name as key as inputs.
-- `ospf_messaged_digest` for message digest keys which requires the password, the interface name as key, the hash algorithm and the key id as input.
+- `ospf_message_digest` for message digest keys which requires the password, the interface name as key, the hash algorithm and the key id as input.
 
 An example usage for `arista.avd.encrypt` filter for OSPF is to use it in conjunction with Ansible Vault to be able to load a password and have it encrypted on the fly by AVD in `eos_designs`.
 
@@ -230,7 +230,7 @@ An example usage for `arista.avd.encrypt` filter for OSPF is to use it in conjun
     ethernet_interfaces:
       - name: Ethernet1:
         ospf_authentication: simple
-        ospf_authentication_key: "{{ ospf_vault_password | arista.avd.encrypt(passwd_type='ospf', key='Ethernet1') }}"
+        ospf_authentication_key: "{{ ospf_vault_password | arista.avd.encrypt(passwd_type='ospf_simple', key='Ethernet1') }}"
     ```
 
 - Message Digest Keys
@@ -240,9 +240,9 @@ An example usage for `arista.avd.encrypt` filter for OSPF is to use it in conjun
       - name: Ethernet1:
         ospf_authentication: message-digest
         ospf_message_digest_keys:
-          1:
+          - id: 1
             hash_algorithm: md5
-            key: "{{ ospf_vault_password | arista.avd.encrypt(passwd_type='ospf', key='Ethernet1', hash_algorithm='md5', key_id='1') }}"
+            key: "{{ ospf_vault_password | arista.avd.encrypt(passwd_type='ospf_message_digest', key='Ethernet1', hash_algorithm='md5', key_id='1') }}"
     ```
 
 ## Plugin Tests
