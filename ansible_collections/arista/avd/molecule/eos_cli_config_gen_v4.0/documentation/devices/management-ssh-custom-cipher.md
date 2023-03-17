@@ -43,7 +43,7 @@ interface Management1
 | ACL-SSH | - |
 | ACL-SSH-VRF | mgt |
 
- #### SSH timeout and management
+#### SSH timeout and management
 
 | Idle Timeout | SSH Management |
 | ------------ | -------------- |

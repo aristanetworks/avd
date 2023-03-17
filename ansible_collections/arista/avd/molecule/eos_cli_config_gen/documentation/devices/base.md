@@ -56,7 +56,7 @@ interface Management1
 | ACL-SSH6 | - |
 | ACL-SSH-VRF6 | mgt |
 
- #### SSH timeout and management
+#### SSH timeout and management
 
 | Idle Timeout | SSH Management |
 | ------------ | -------------- |
