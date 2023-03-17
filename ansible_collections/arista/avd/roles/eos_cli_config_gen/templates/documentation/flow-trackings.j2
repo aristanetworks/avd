@@ -20,7 +20,7 @@ Sample: {{ flow_tracking.sample | arista.avd.default("default") }}
 {%                     set mpls = tracker.record_export.mpls | arista.avd.default("-") %}
 {%                     set count_exporter = tracker.exporters | arista.avd.default([]) | length %}
 {%                     set applied_on = [] %}
-{%                     for ethernet_interface in ethernet_interfaces %}
+{%                     for ethernet_interface in ethernet_interfaces | arista.avd.default([]) %}
 {%                         if ethernet_interface.flow_tracker.sampled is arista.avd.defined(tracker.name) %}
 {%                             do applied_on.append(ethernet_interface.name) %}
 {%                         endif %}
