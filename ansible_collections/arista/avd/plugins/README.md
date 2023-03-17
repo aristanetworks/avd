@@ -190,12 +190,17 @@ To use these filters:
 Supported types:
 
 - bgp
+- ospf_simple
+- ospf_message_digest
+
+!!! Note
+For now this filter only supports encryption and decryption to type `7` and not type `8a` for OSPF and BGP passwords
 
 #### BGP passwords
 
-BGP password are encrypted/decrypted based on the Neighbor IP or the BGP Peer Group Name in EOS.
+BGP passwords are encrypted/decrypted based on the Neighbor IP or the BGP Peer Group Name in EOS.
 
-An example usage for `arista.avd.encrypt` filter for BGP is to use it in conjunction with Ansible Vault to be able to load a password and have it encrypted on the fly by AVD in `eos_designs`.
+Example usage for `arista.avd.encrypt` filter for BGP is to use it in conjunction with Ansible Vault to be able to load a password and have it encrypted on the fly by AVD in `eos_designs`.
 
 **example:**
 
@@ -205,6 +210,40 @@ bgp_peer_groups:
     name: IPv4-UNDERLAY-PEERS
       password: "{{ bgp_vault_password | arista.avd.encrypt(passwd_type='bgp', key='IPv4-UNDERLAY-PEERS') }}"
 ```
+
+#### OSPF passwords
+
+OSPF passwords are encrypted/decrypted based on the interface name (e.g., Ethernet1), and for message-digest-key, the hash algorithm (in the list [md5, sha1, sha256, sha384, sha512]) and the key ID (between 1 and 255).
+
+The filter provides two types for OSPF:
+
+- `ospf_simple` for simple authentication, which requires only the password and the interface name as key inputs.
+- `ospf_message_digest` for message digest keys which requires the password, the interface name as the key, the hash algorithm, and the key id as input.
+
+Example usage for `arista.avd.encrypt` filter for OSPF is to use it in conjunction with Ansible Vault to be able to load a password and have it encrypted on the fly by AVD in `eos_designs`.
+
+**examples:**
+
+- Simple authentication
+
+    ```jinja
+    ethernet_interfaces:
+      - name: Ethernet1:
+        ospf_authentication: simple
+        ospf_authentication_key: "{{ ospf_vault_password | arista.avd.encrypt(passwd_type='ospf_simple', key='Ethernet1') }}"
+    ```
+
+- Message Digest Keys
+
+    ```jinja
+    ethernet_interfaces:
+      - name: Ethernet1:
+        ospf_authentication: message-digest
+        ospf_message_digest_keys:
+          - id: 1
+            hash_algorithm: md5
+            key: "{{ ospf_vault_password | arista.avd.encrypt(passwd_type='ospf_message_digest', key='Ethernet1', hash_algorithm='md5', key_id='1') }}"
+    ```
 
 ## Plugin Tests
 
