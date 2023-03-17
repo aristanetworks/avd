@@ -76,6 +76,7 @@ router_ospf:
           include_leaked: true
         bgp:
           route_map: rm-ospf-bgp
+          include_leaked: true
       areas:
         '0.0.0.2':
           filter:
@@ -92,6 +93,13 @@ router_ospf:
     300:
       max_metric:
         router_lsa:
+      redistribute:
+        static:
+          route_map: rm-ospf-static
+        connected:
+          route_map: rm-ospf-connected
+        bgp:
+          route_map: rm-ospf-bgp
     400:
       max_metric:
         router_lsa:
@@ -99,6 +107,16 @@ router_ospf:
           include_stub: true
           on_startup: "wait-for-bgp"
           summary_lsa:
+      redistribute:
+        static:
+          route_map: rm-ospf-static
+          include_leaked: false
+        connected:
+          route_map: rm-ospf-connected
+          include_leaked: false
+        bgp:
+          route_map: rm-ospf-bgp
+          include_leaked: false
     500:
       max_metric:
         router_lsa:

@@ -1419,6 +1419,7 @@ MAC address (hh:hh:hh:hh:hh:hh)
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_ospf.process_ids.[].redistribute.connected.include_leaked") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_ospf.process_ids.[].redistribute.bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_ospf.process_ids.[].redistribute.bgp.route_map") | String |  |  |  | Route Map Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_ospf.process_ids.[].redistribute.bgp.include_leaked") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auto_cost_reference_bandwidth</samp>](## "router_ospf.process_ids.[].auto_cost_reference_bandwidth") | Integer |  |  |  | Bandwidth in mbps |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;areas</samp>](## "router_ospf.process_ids.[].areas") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- id</samp>](## "router_ospf.process_ids.[].areas.[].id") | String | Required, Unique |  |  |  |
@@ -1494,6 +1495,7 @@ MAC address (hh:hh:hh:hh:hh:hh)
               include_leaked: <bool>
             bgp:
               route_map: <str>
+              include_leaked: <bool>
           auto_cost_reference_bandwidth: <int>
           areas:
             - id: <str>

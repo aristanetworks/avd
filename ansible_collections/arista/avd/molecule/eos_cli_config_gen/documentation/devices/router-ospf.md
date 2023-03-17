@@ -163,14 +163,20 @@ interface Vlan24
 
 #### Router OSPF Router Redistribution
 
-| Process ID | Source Protocol | Route Map |
-| ---------- | --------------- | --------- |
-| 100 | connected | - |
-| 100 | static | - |
-| 100 | bgp | - |
-| 200 | connected | rm-ospf-connected |
-| 200 | static | rm-ospf-static |
-| 200 | bgp | rm-ospf-bgp |
+| Process ID | Source Protocol | Include Leaked | Route Map |
+| ---------- | --------------- | -------------- | --------- |
+| 100 | connected | disabled | - |
+| 100 | static | disabled | - |
+| 100 | bgp | disabled | - |
+| 200 | connected | enabled | rm-ospf-connected |
+| 200 | static | enabled | rm-ospf-static |
+| 200 | bgp | enabled | rm-ospf-bgp |
+| 300 | connected | disabled | rm-ospf-connected |
+| 300 | static | disabled | rm-ospf-static |
+| 300 | bgp | disabled | rm-ospf-bgp |
+| 400 | connected | disabled | rm-ospf-connected |
+| 400 | static | disabled | rm-ospf-static |
+| 400 | bgp | disabled | rm-ospf-bgp |
 
 #### Router OSPF Router Max-Metric
 
@@ -272,12 +278,18 @@ router ospf 200 vrf ospf_zone
    default-information originate always
    redistribute static include leaked route-map rm-ospf-static
    redistribute connected include leaked route-map rm-ospf-connected
-   redistribute bgp route-map rm-ospf-bgp
+   redistribute bgp include leaked route-map rm-ospf-bgp
 !
 router ospf 300
+   redistribute static route-map rm-ospf-static
+   redistribute connected route-map rm-ospf-connected
+   redistribute bgp route-map rm-ospf-bgp
    max-metric router-lsa
 !
 router ospf 400
+   redistribute static route-map rm-ospf-static
+   redistribute connected route-map rm-ospf-connected
+   redistribute bgp route-map rm-ospf-bgp
    max-metric router-lsa external-lsa include-stub on-startup wait-for-bgp summary-lsa
 !
 router ospf 500
