@@ -59,7 +59,7 @@ class UtilsFilteredTenantsMixin(object):
     def _is_accepted_vlan(self, vlan: dict) -> bool:
         """
         Check if vlan is in accepted_vlans list
-        If filter.only_vlans_in_use also check if vlan id or trunk group is assigned to connected endpoint
+        If filter.only_vlans_in_use is True also check if vlan id or trunk group is assigned to connected endpoint
         """
         vlan_id = int(vlan["id"])
 
