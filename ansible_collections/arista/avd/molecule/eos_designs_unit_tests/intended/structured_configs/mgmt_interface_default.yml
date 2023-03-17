@@ -29,14 +29,14 @@ snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS mgmt_interface_default
 local_users:
-- disabled: true
-  name: admin
-- privilege: 15
+- name: admin
+  disabled: true
+- name: cvpadmin
+  privilege: 15
   role: network-admin
   sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
   ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
     cvpadmin@hostmachine.local
-  name: cvpadmin
 vrfs:
 - name: MGMT
   ip_routing: false

@@ -17,7 +17,7 @@ vrfs:
   ip_routing: false
 management_api_http:
   enable_vrfs:
-    MGMT: {}
+  - name: MGMT
   enable_https: true
 loopback_interfaces:
 - name: Loopback0

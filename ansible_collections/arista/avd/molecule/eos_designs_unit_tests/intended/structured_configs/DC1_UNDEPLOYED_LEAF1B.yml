@@ -339,14 +339,14 @@ service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware:
   speed_groups:
-  - serdes: 10G
-    speed_group: 1
-  - serdes: 25G
-    speed_group: 2
-  - serdes: 25G
-    speed_group: 3
-  - serdes: 10G
-    speed_group: 4
+  - speed_group: 1
+    serdes: 10G
+  - speed_group: 2
+    serdes: 25G
+  - speed_group: 3
+    serdes: 25G
+  - speed_group: 4
+    serdes: 10G
 daemon_terminattr:
   cvaddrs:
   - 192.168.200.11:9910
@@ -375,18 +375,18 @@ spanning_tree:
   root_super: true
   mode: mstp
   mst_instances:
-  - priority: 4096
-    id: '0'
+  - id: '0'
+    priority: 4096
   no_spanning_tree_vlan: 4090,4092
 local_users:
-- disabled: true
-  name: admin
-- privilege: 15
+- name: admin
+  disabled: true
+- name: cvpadmin
+  privilege: 15
   role: network-admin
   sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
   ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
     cvpadmin@hostmachine.local
-  name: cvpadmin
 vrfs:
 - name: MGMT
   ip_routing: false
