@@ -9,12 +9,3 @@ management_api_http:
       access_group: ACL-API
     - name: MGMT
       access_group: ACL-API
-
-# Standard ACLs
-standard_access_lists:
-  ACL-API:
-    sequence_numbers:
-      10:
-        action: "permit 10.0.0.0/8"
-      20:
-        action: "permit 100.0.0.0/8"
