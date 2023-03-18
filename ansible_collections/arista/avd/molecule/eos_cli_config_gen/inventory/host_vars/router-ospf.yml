@@ -172,7 +172,7 @@ loopback_interfaces:
   Loopback2:
     ospf_area: 0.0.0.2
 port_channel_interfaces:
-  Port-Channel12:
+  - name: Port-Channel12
     type: routed
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.12
@@ -183,7 +183,7 @@ port_channel_interfaces:
         hash_algorithm: md5
         key: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 vlan_interfaces:
-  Vlan24:
+  - name: Vlan24
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.24
     ospf_cost: 99

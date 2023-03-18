@@ -140,7 +140,7 @@ ethernet_interfaces:
       output: BLUE-C2-POLICY
 
 port_channel_interfaces:
-  Port-Channel2:
+  - name: Port-Channel2
     type: routed
     traffic_policy:
       input: BLUE-C1-POLICY

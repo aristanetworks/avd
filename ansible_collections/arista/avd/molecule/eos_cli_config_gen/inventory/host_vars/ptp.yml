@@ -37,7 +37,7 @@ ptp:
 
 # port-channels
 port_channel_interfaces:
-  Port-Channel5:
+  - name: Port-Channel5
     description: DC1_L2LEAF1_Po1
     vlans: 110,201
     mode: trunk

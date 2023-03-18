@@ -57,6 +57,6 @@ ethernet_interfaces:
       sampled: T3
 
 port_channel_interfaces:
-  Port-Channel42:
+  - name: Port-Channel42
     flow_tracker:
       sampled: T3

@@ -114,19 +114,19 @@ management_interfaces:
 
 ### VLAN Interfaces ###
 vlan_interfaces:
-  Vlan4093:
+  - name: Vlan4093
     description: MLAG_PEER_L3_PEERING
     ip_address: 10.255.251.0/31
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
     isis_network_point_to_point: true
-  Vlan4094:
+  - name: Vlan4094
     description: MLAG_PEER
     ip_address: 10.255.252.0/31
     no_autostate: true
     mtu: 1500
 ## Tenant_A ##
-  Vlan110:
+  - name: Vlan110
     tenant: Tenant_A
     tags: ['DC1']
     description: PR01-DEMO
