@@ -18,10 +18,10 @@ vlan_internal_order:
 
 ### VLANs ###
 vlans:
-  110:
+  - id: 110
     tenant: Tenant_A
     name: PR01-DMZ
-  3010:
+  - id: 3010
     tenant: Tenant_A
     name: MLAG_iBGP_TENANT_A_PROJECT01
     trunk_groups:
