@@ -1,0 +1,46 @@
+---
+traffic_policies:
+  field_sets:
+    # Testing ports as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    ports:
+      SERVICE-DEMO: "10,20,80,440-450"
+    # Testing ipv4 as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    ipv4:
+      DEMO-01:
+        - 10.0.0.0/8
+        - 192.168.0.0/16
+      DEMO-02:
+        - 172.16.0.0/12
+        - 224.0.0.0/8
+    # Testing ipv6 as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    ipv6:
+      DEMO-03:
+        - aaaa::/64
+        - bbbb::/64
+  # Testing policies as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  policies:
+    BLUE-C1-POLICY:
+      # Testing matches as dict of dict
+      # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+      matches:
+        BLUE-C1-POLICY-02:
+          type: ipv4
+          source:
+            prefix_lists:
+              - DEMO-01
+              - DEMO-02
+          # Testing protocols as dict of dict
+          # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+          protocols:
+            tcp:
+              dst_field: SERVICE-DEMO
+              flags:
+                - established
+            icmp:
+          actions:
+            count: DEMO-TRAFFIC
+            dscp: 60
