@@ -169,7 +169,7 @@ ethernet_interfaces:
         hash_algorithm: md5
         key: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 loopback_interfaces:
-  Loopback2:
+  - name: Loopback2
     ospf_area: 0.0.0.2
 port_channel_interfaces:
   - name: Port-Channel12

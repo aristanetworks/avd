@@ -92,13 +92,13 @@ ethernet_interfaces:
 
 ### Loopback Interfaces ###
 loopback_interfaces:
-  Loopback0:
+  - name: Loopback0
     description: EVPN_Overlay_Peering
     ip_address: 192.168.255.3/32
     isis_enable: EVPN_UNDERLAY
     isis_passive: true
 
-  Loopback1:
+  - name: Loopback1
     description: VTEP_VXLAN_Tunnel_Source
     ip_address: 192.168.254.3/32
     isis_enable: EVPN_UNDERLAY
