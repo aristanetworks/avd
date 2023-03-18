@@ -159,6 +159,10 @@ class AvdDataConverter:
                         # TODO: Log message
                         return
 
+                    if data[index] == value:
+                        # No change - when input is list and have the correct format in all items
+                        return
+
                     yield AvdConversionWarning(key=path_str, oldtype=convert_type, newtype=schema_type)
 
                 elif convert_type == "dict" and schema_type == "list":
