@@ -5,9 +5,9 @@ management_api_http:
   https_ssl_profile: SSL_PROFILE
   default_services: true
   enable_vrfs:
-    default:
+    - name: default
       access_group: ACL-API
-    MGMT:
+    - name: MGMT
       access_group: ACL-API
 
 # Standard ACLs
