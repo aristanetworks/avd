@@ -1,0 +1,9 @@
+### IP community lists ###
+
+# Testing community_lists as dict of dict
+# Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+community_lists:
+  TEST1:
+    action: "permit 1000:1000"
+  TEST2:
+    action: "permit 2000:3000"
