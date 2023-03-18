@@ -59,7 +59,7 @@ router_isis:
 
 ### Ethernet Interfaces ###
 ethernet_interfaces:
-  Ethernet1:
+  - name: Ethernet1
     peer: EAPI-SPINE1
     peer_interface: Ethernet1
     peer_type: spine
@@ -70,7 +70,7 @@ ethernet_interfaces:
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
     isis_network_point_to_point: true
-  Ethernet2:
+  - name: Ethernet2
     peer: EAPI-SPINE2
     peer_interface: Ethernet1
     peer_type: spine
@@ -81,7 +81,7 @@ ethernet_interfaces:
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
     isis_network_point_to_point: true
-  Ethernet3:
+  - name: Ethernet3
     peer: EAPI-LEAF1B
     peer_interface: Ethernet3
     peer_type: mlag_peer

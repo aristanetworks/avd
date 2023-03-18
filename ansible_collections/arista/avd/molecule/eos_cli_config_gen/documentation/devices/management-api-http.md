@@ -5,8 +5,6 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [Management API HTTP](#management-api-http)
-- [ACL](#acl)
-  - [Standard Access-lists](#standard-access-lists)
 
 ## Management
 

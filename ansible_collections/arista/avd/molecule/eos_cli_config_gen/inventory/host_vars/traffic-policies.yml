@@ -133,7 +133,7 @@ traffic_policies:
             log: true
 
 ethernet_interfaces:
-  Ethernet1:
+  - name: Ethernet1
     type: routed
     traffic_policy:
       input: BLUE-C1-POLICY

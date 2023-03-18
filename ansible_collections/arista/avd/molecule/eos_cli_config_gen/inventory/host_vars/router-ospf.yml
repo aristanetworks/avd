@@ -158,14 +158,14 @@ router_ospf:
 
 
 ethernet_interfaces:
-  Ethernet1:
+  - name: Ethernet1
     type: routed
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.1
     ospf_cost: 99
     ospf_authentication: message-digest
     ospf_message_digest_keys:
-      55:
+      - id: 55
         hash_algorithm: md5
         key: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 loopback_interfaces:
@@ -179,7 +179,7 @@ port_channel_interfaces:
     ospf_cost: 99
     ospf_authentication: message-digest
     ospf_message_digest_keys:
-      55:
+      - id: 55
         hash_algorithm: md5
         key: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 vlan_interfaces:
@@ -189,6 +189,6 @@ vlan_interfaces:
     ospf_cost: 99
     ospf_authentication: message-digest
     ospf_message_digest_keys:
-      55:
+      - id: 55
         hash_algorithm: md5
         key: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
