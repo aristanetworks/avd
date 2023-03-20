@@ -80,7 +80,7 @@ class VlansMixin(UtilsMixin):
         if self._enable_trunk_groups:
             trunk_groups = vlan.get("trunk_groups", [])
             if self._only_local_vlan_trunk_groups:
-                trunk_groups = list(self._endpoint_trunk_groups.intersection(trunk_groups))
+                trunk_groups = list(self._local_endpoint_trunk_groups.intersection(trunk_groups))
             if self._mlag:
                 trunk_groups.append(self._trunk_groups_mlag_name)
             if self._uplink_type == "port-channel":

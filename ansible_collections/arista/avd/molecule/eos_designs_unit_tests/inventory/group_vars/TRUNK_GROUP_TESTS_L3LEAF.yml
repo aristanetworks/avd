@@ -17,6 +17,8 @@ l3leaf:
     TRUNK_GROUP_TESTS_L3LEAF1:
       filter:
         tags: []
+        # Since this group does not have filter.only_vlans_in_use, we have to avoid the TENANT_WITH_DUPLICATE_VLANS tenant.
+        tenants: [TRUNK_GROUP_TESTS]
       nodes:
         trunk-group-tests-l3leaf1a:
           id: 1
