@@ -1,0 +1,24 @@
+### Spanning-Tree (MSTP) ###
+
+spanning_tree:
+  mst:
+    configuration:
+      name: test
+      revision: 5
+      # Testing instances as dict of dict
+      # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+      instances:
+        2:
+          vlans: 15,16,17,18
+        3:
+          vlans: 15
+        4:
+          vlans: 200-300
+  mode: mstp
+  # Testing mst_instances as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  mst_instances:
+    0:
+      priority: 4096
+    100-200:
+      priority: 8192
