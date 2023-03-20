@@ -1,4 +1,0 @@
-# hardware
-# Table of Contents
-
-
