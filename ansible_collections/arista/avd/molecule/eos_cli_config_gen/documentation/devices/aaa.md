@@ -110,7 +110,7 @@ tacacs-server host 10.10.10.249 timeout 23 key 7 071B245F5A
 !
 radius-server host 10.10.10.157 vrf mgt key 7 071B245F5A
 radius-server host 10.10.10.249 key 7 071B245F5A
-radius-server host 10.10.10.158 vrf default key 7 071B245F5A
+radius-server host 10.10.10.158 key 7 071B245F5A
 ```
 
 ## AAA Server Groups
