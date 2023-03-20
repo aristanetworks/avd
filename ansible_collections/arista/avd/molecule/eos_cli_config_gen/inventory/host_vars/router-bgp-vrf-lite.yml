@@ -1,15 +1,15 @@
 prefix_lists:
-  PL-BGP-DEFAULT-BLUE-C1:
+  - name: PL-BGP-DEFAULT-BLUE-C1
     sequence_numbers:
-      10:
+      - sequence: 10
         action: permit 0.0.0.0/0 le 1
-  PL-BGP-DEFAULT-RED-OUT-C1:
+  - name: PL-BGP-DEFAULT-RED-OUT-C1
     sequence_numbers:
-      10:
+      - sequence: 10
         action: permit 10.0.0.0/8
-  PL-BGP-DEFAULT-RED-IN-C1:
+  - name: PL-BGP-DEFAULT-RED-IN-C1
     sequence_numbers:
-      10:
+      - sequence: 10
         action: permit 0.0.0.0/0
 
 route_maps:

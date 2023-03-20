@@ -1,8 +1,8 @@
 ### Class-Maps ###
 
-# Testing class_maps as dict of dict
-# Dict type is deprecated in 4.0.0. To be removed in 5.0.0
 class_maps:
+  # Testing qos as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
   qos:
     CM_REPLICATION_LD:
       ip:
@@ -11,6 +11,8 @@ class_maps:
       vlan: "200"
     CM_REPLICATION_LD3:
       cos: 3
+  # Testing pbr as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
   pbr:
     CM_PBR_EXCLUDE:
       ip:

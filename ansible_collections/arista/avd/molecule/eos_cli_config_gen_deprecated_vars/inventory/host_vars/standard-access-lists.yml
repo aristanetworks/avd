@@ -4,6 +4,8 @@
 # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
 standard_access_lists:
   ACL-API:
+    # Testing sequence_numbers as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
     sequence_numbers:
       10:
         action: "remark ACL to restrict access to switch API to CVP and Ansible"
