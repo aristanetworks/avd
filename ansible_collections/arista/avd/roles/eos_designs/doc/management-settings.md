@@ -83,6 +83,12 @@ name_servers:
 # If both are set, the setting under "Fabric Topology" takes precedence.
 system_mac_address: < "xx:xx:xx:xx:xx:xx" >
 
+# Serial Number | Optional
+# Set to the Serial Number of the device
+# "serial_number" can also be set under "Fabric Topology".
+# If both are set, the setting under "Fabric Topology" takes precedence.
+serial_number: < string >
+
 # Set SNMP settings | Optional
 snmp_settings:
   contact: < contact_info >
