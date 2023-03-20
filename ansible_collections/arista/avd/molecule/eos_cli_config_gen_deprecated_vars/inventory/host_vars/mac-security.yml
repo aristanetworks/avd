@@ -1,0 +1,18 @@
+### MAC Security ###
+
+mac_security:
+  fips_restrictions: true
+  license:
+    license_name: license1
+    license_key: "123456"
+  # Testing profiles as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  profiles:
+    A1:
+      sci: true
+    A2:
+      # Testing connection_keys as dict of dict
+      # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+      connection_keys:
+        1234b:
+          encrypted_key: 12485744465E5A53
