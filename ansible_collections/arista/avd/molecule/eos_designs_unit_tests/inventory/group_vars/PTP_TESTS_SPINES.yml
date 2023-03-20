@@ -46,3 +46,10 @@ spine:
         clock_identity_prefix: "01:02:03"
         priority1: 20
         priority2: 10
+    # Test with "auto_clock_identity: false"
+    ptp-tests-spine3:
+      id: 3
+      mgmt_ip: 192.168.0.31/24
+      ptp:
+        enabled: true
+        auto_clock_identity: false
