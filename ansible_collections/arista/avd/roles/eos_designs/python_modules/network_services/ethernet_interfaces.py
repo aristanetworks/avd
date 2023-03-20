@@ -17,7 +17,7 @@ class EthernetInterfacesMixin(UtilsMixin):
     """
 
     @cached_property
-    def ethernet_interfaces(self) -> dict | None:
+    def ethernet_interfaces(self) -> list | None:
         """
         Return structured config for ethernet_interfaces
 
@@ -28,8 +28,9 @@ class EthernetInterfacesMixin(UtilsMixin):
             return None
 
         # Using temp variables to keep the order of interfaces from Jinja
-        ethernet_interfaces = {}
+        ethernet_interfaces = []
         subif_parent_interface_names = set()
+        interface_names = []
 
         if self._network_services_l3:
             for tenant in self._filtered_tenants:
@@ -53,84 +54,86 @@ class EthernetInterfacesMixin(UtilsMixin):
                                 continue
 
                             interface_name = str(l3_interface["interfaces"][node_index])
-                            # if 'descriptions' is set, it is preferred
-                            if (interface_descriptions := l3_interface.get("descriptions")) is not None:
-                                interface_description = interface_descriptions[node_index]
-                            else:
-                                interface_description = l3_interface.get("description")
-                            interface = {
-                                "peer_type": "l3_interface",
-                                "ip_address": l3_interface["ip_addresses"][node_index],
-                                "mtu": l3_interface.get("mtu"),
-                                "shutdown": not l3_interface.get("enabled", True),
-                                "description": interface_description,
-                                "eos_cli": l3_interface.get("raw_eos_cli"),
-                                "struct_cfg": l3_interface.get("structured_config"),
-                            }
-
-                            if "." in interface_name:
-                                # This is a subinterface so we need to ensure that the parent is created
-                                parent_interface_name, subif_id = interface_name.split(".", maxsplit=1)
-                                subif_parent_interface_names.add(parent_interface_name)
-
-                                interface["type"] = "l3dot1q"
-                                encapsulation_dot1q_vlans = l3_interface.get("encapsulation_dot1q_vlan", [])
-                                if len(encapsulation_dot1q_vlans) > node_index:
-                                    interface["encapsulation_dot1q_vlan"] = encapsulation_dot1q_vlans[node_index]
+                            if interface_name not in interface_names:
+                                # if 'descriptions' is set, it is preferred
+                                if (interface_descriptions := l3_interface.get("descriptions")) is not None:
+                                    interface_description = interface_descriptions[node_index]
                                 else:
-                                    interface["encapsulation_dot1q_vlan"] = int(subif_id)
+                                    interface_description = l3_interface.get("description")
+                                interface = {
+                                    "name": interface_name,
+                                    "peer_type": "l3_interface",
+                                    "ip_address": l3_interface["ip_addresses"][node_index],
+                                    "mtu": l3_interface.get("mtu"),
+                                    "shutdown": not l3_interface.get("enabled", True),
+                                    "description": interface_description,
+                                    "eos_cli": l3_interface.get("raw_eos_cli"),
+                                    "struct_cfg": l3_interface.get("structured_config"),
+                                }
 
-                            else:
-                                interface["type"] = "routed"
+                                if "." in interface_name:
+                                    # This is a subinterface so we need to ensure that the parent is created
+                                    parent_interface_name, subif_id = interface_name.split(".", maxsplit=1)
+                                    subif_parent_interface_names.add(parent_interface_name)
 
-                            if vrf["name"] != "default":
-                                interface["vrf"] = vrf["name"]
+                                    interface["type"] = "l3dot1q"
+                                    encapsulation_dot1q_vlans = l3_interface.get("encapsulation_dot1q_vlan", [])
+                                    if len(encapsulation_dot1q_vlans) > node_index:
+                                        interface["encapsulation_dot1q_vlan"] = encapsulation_dot1q_vlans[node_index]
+                                    else:
+                                        interface["encapsulation_dot1q_vlan"] = int(subif_id)
 
-                            if get(l3_interface, "ospf.enabled") is True and get(vrf, "ospf.enabled") is True:
-                                interface["ospf_area"] = l3_interface["ospf"].get("area", 0)
-                                interface["ospf_network_point_to_point"] = l3_interface["ospf"].get("point_to_point", False)
-                                interface["ospf_cost"] = l3_interface["ospf"].get("cost")
-                                ospf_authentication = l3_interface["ospf"].get("authentication")
-                                if ospf_authentication == "simple" and (ospf_simple_auth_key := l3_interface["ospf"].get("simple_auth_key")) is not None:
-                                    interface["ospf_authentication"] = ospf_authentication
-                                    interface["ospf_authentication_key"] = ospf_simple_auth_key
-                                elif (
-                                    ospf_authentication == "message-digest"
-                                    and (ospf_message_digest_keys := l3_interface["ospf"].get("message_digest_keys")) is not None
-                                ):
-                                    ospf_keys = {}
-                                    for ospf_key in ospf_message_digest_keys:
-                                        if not ("id" in ospf_key and "key" in ospf_key):
-                                            continue
+                                else:
+                                    interface["type"] = "routed"
 
-                                        ospf_keys[ospf_key["id"]] = {
-                                            "hash_algorithm": ospf_key.get("hash_algorithm", "sha512"),
-                                            "key": ospf_key["key"],
-                                        }
+                                if vrf["name"] != "default":
+                                    interface["vrf"] = vrf["name"]
 
-                                    if ospf_keys:
+                                if get(l3_interface, "ospf.enabled") is True and get(vrf, "ospf.enabled") is True:
+                                    interface["ospf_area"] = l3_interface["ospf"].get("area", 0)
+                                    interface["ospf_network_point_to_point"] = l3_interface["ospf"].get("point_to_point", False)
+                                    interface["ospf_cost"] = l3_interface["ospf"].get("cost")
+                                    ospf_authentication = l3_interface["ospf"].get("authentication")
+                                    if ospf_authentication == "simple" and (ospf_simple_auth_key := l3_interface["ospf"].get("simple_auth_key")) is not None:
                                         interface["ospf_authentication"] = ospf_authentication
-                                        interface["ospf_message_digest_keys"] = ospf_keys
+                                        interface["ospf_authentication_key"] = ospf_simple_auth_key
+                                    elif (
+                                        ospf_authentication == "message-digest"
+                                        and (ospf_message_digest_keys := l3_interface["ospf"].get("message_digest_keys")) is not None
+                                    ):
+                                        ospf_keys = {}
+                                        for ospf_key in ospf_message_digest_keys:
+                                            if not ("id" in ospf_key and "key" in ospf_key):
+                                                continue
 
-                            if get(l3_interface, "pim.enabled"):
-                                if not vrf.get("_evpn_l3_multicast_enabled"):
-                                    raise AristaAvdError(
-                                        f"'pim: enabled' set on l3_interface {interface_name} on {self._hostname} requires evpn_l3_multicast: enabled: true"
-                                        f" under VRF '{vrf.name}' or Tenant '{tenant.name}'"
-                                    )
+                                            ospf_keys[ospf_key["id"]] = {
+                                                "hash_algorithm": ospf_key.get("hash_algorithm", "sha512"),
+                                                "key": ospf_key["key"],
+                                            }
 
-                                if not vrf.get("_pim_rp_addresses"):
-                                    raise AristaAvdError(
-                                        f"'pim: enabled' set on l3_interface {interface_name} on {self._hostname} requires at least one RP defined in"
-                                        f" pim_rp_addresses under VRF '{vrf.name}' or Tenant '{tenant.name}'"
-                                    )
+                                        if ospf_keys:
+                                            interface["ospf_authentication"] = ospf_authentication
+                                            interface["ospf_message_digest_keys"] = ospf_keys
 
-                                interface["pim"] = {"ipv4": {"sparse_mode": True}}
+                                if get(l3_interface, "pim.enabled"):
+                                    if not vrf.get("_evpn_l3_multicast_enabled"):
+                                        raise AristaAvdError(
+                                            f"'pim: enabled' set on l3_interface {interface_name} on {self._hostname} requires evpn_l3_multicast: enabled: true"
+                                            f" under VRF '{vrf.name}' or Tenant '{tenant.name}'"
+                                        )
 
-                            # Strip None values from vlan before adding to list
-                            interface = {key: value for key, value in interface.items() if value is not None}
+                                    if not vrf.get("_pim_rp_addresses"):
+                                        raise AristaAvdError(
+                                            f"'pim: enabled' set on l3_interface {interface_name} on {self._hostname} requires at least one RP defined in"
+                                            f" pim_rp_addresses under VRF '{vrf.name}' or Tenant '{tenant.name}'"
+                                        )
 
-                            ethernet_interfaces[interface_name] = interface
+                                    interface["pim"] = {"ipv4": {"sparse_mode": True}}
+
+                                # Strip None values from vlan before adding to list
+                                interface = {key: value for key, value in interface.items() if value is not None}
+                                ethernet_interfaces.append(interface)
+                                interface_names.append(interface_name)
 
         if self._network_services_l1:
             for tenant in self._filtered_tenants:
@@ -144,63 +147,74 @@ class EthernetInterfacesMixin(UtilsMixin):
                             continue
 
                         for node_index, interface_name in enumerate(endpoint["interfaces"]):
-                            if endpoint["nodes"][node_index] != self._hostname:
-                                continue
+                            if interface_name not in interface_names:
+                                if endpoint["nodes"][node_index] != self._hostname:
+                                    continue
+                                interface_names.append(interface_name)
+                                if (port_channel_mode := get(endpoint, "port_channel.mode")) in ["active", "on"]:
+                                    first_interface_index = list(endpoint["nodes"]).index(self._hostname)
+                                    first_interface_name = endpoint["interfaces"][first_interface_index]
+                                    channel_group_id = int("".join(re.findall(r"\d", first_interface_name)))
+                                    ethernet_interfaces.append(
+                                        {
+                                            "name": interface_name,
+                                            "shutdown": False,
+                                            "channel_group": {
+                                                "id": channel_group_id,
+                                                "mode": port_channel_mode,
+                                            },
+                                        }
+                                    )
+                                    continue
 
-                            if (port_channel_mode := get(endpoint, "port_channel.mode")) in ["active", "on"]:
-                                first_interface_index = list(endpoint["nodes"]).index(self._hostname)
-                                first_interface_name = endpoint["interfaces"][first_interface_index]
-                                channel_group_id = int("".join(re.findall(r"\d", first_interface_name)))
-                                ethernet_interfaces[interface_name] = {
-                                    "shutdown": False,
-                                    "channel_group": {
-                                        "id": channel_group_id,
-                                        "mode": port_channel_mode,
-                                    },
-                                }
-                                continue
-
-                            if subifs:
-                                # This is a subinterface so we need to ensure that the parent is created
-                                subif_parent_interface_names.add(interface_name)
-                                for subif in subifs:
-                                    key = f"{interface_name}.{subif['number']}"
-                                    ethernet_interfaces[key] = {
-                                        "type": "l2dot1q",
-                                        "encapsulation_vlan": {
-                                            "client": {
-                                                "dot1q": {
-                                                    "vlan": subif["number"],
+                                if subifs:
+                                    # This is a subinterface so we need to ensure that the parent is created
+                                    subif_parent_interface_names.add(interface_name)
+                                    for subif in subifs:
+                                        subif_interface_name = f"{interface_name}.{subif['number']}"
+                                        ethernet_interfaces.append(
+                                            {
+                                                "name": subif_interface_name,
+                                                "type": "l2dot1q",
+                                                "encapsulation_vlan": {
+                                                    "client": {
+                                                        "dot1q": {
+                                                            "vlan": subif["number"],
+                                                        },
+                                                    },
+                                                    "network": {
+                                                        "client": True,
+                                                    },
                                                 },
-                                            },
-                                            "network": {
-                                                "client": True,
-                                            },
-                                        },
+                                                "peer_type": "l3_interface",
+                                                "shutdown": False,
+                                            }
+                                        )
+                                else:
+                                    interface = {
+                                        "name": interface_name,
+                                        "type": "routed",
                                         "peer_type": "l3_interface",
                                         "shutdown": False,
                                     }
-                            else:
-                                interface = {
-                                    "type": "routed",
-                                    "peer_type": "l3_interface",
-                                    "shutdown": False,
-                                }
-                                if point_to_point_service.get("lldp_disable") is True:
-                                    interface["lldp"] = {
-                                        "transmit": False,
-                                        "receive": False,
-                                    }
-                                ethernet_interfaces[interface_name] = interface
+                                    if point_to_point_service.get("lldp_disable") is True:
+                                        interface["lldp"] = {
+                                            "transmit": False,
+                                            "receive": False,
+                                        }
+                                    ethernet_interfaces.append(interface)
 
-        subif_parent_interface_names = subif_parent_interface_names.difference(ethernet_interfaces.keys())
+        subif_parent_interface_names = subif_parent_interface_names.difference(interface_names)
         if subif_parent_interface_names:
             for interface_name in natural_sort(subif_parent_interface_names):
-                ethernet_interfaces[interface_name] = {
-                    "type": "routed",
-                    "peer_type": "l3_interface",
-                    "shutdown": False,
-                }
+                ethernet_interfaces.append(
+                    {
+                        "name": interface_name,
+                        "type": "routed",
+                        "peer_type": "l3_interface",
+                        "shutdown": False,
+                    }
+                )
 
         if ethernet_interfaces:
             return ethernet_interfaces

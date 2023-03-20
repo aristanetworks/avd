@@ -18,11 +18,12 @@ class EthernetInterfacesMixin(UtilsMixin):
     """
 
     @cached_property
-    def ethernet_interfaces(self) -> dict | None:
+    def ethernet_interfaces(self) -> list | None:
         """
         Return structured config for ethernet_interfaces
         """
-        ethernet_interfaces = {}
+        # ethernet_interfaces = {}
+        ethernet_interfaces = []
         for connected_endpoint in self._filtered_connected_endpoints:
             for adapter in connected_endpoint["adapters"]:
                 for node_index, node_name in enumerate(adapter["switches"]):
@@ -30,7 +31,9 @@ class EthernetInterfacesMixin(UtilsMixin):
                         continue
 
                     ethernet_interface_name = adapter["switch_ports"][node_index]
-                    ethernet_interfaces[ethernet_interface_name] = self._get_ethernet_interface_cfg(adapter, node_index, connected_endpoint)
+                    ethernet_interface = self._get_ethernet_interface_cfg(adapter, node_index, connected_endpoint)
+                    ethernet_interfaces.append({"name": ethernet_interface_name, **ethernet_interface})
+                    # ethernet_interfaces[ethernet_interface_name] = self._get_ethernet_interface_cfg(adapter, node_index, connected_endpoint)
 
         for network_port in self._filtered_network_ports:
             connected_endpoint = {
@@ -46,8 +49,10 @@ class EthernetInterfacesMixin(UtilsMixin):
                     },
                     network_port,
                 )
-                ethernet_interfaces[ethernet_interface_name] = self._get_ethernet_interface_cfg(tmp_network_port, 0, connected_endpoint)
-
+                ethernet_interface = self._get_ethernet_interface_cfg(tmp_network_port, 0, connected_endpoint)
+                ethernet_interfaces.append({"name": ethernet_interface_name, **ethernet_interface})
+                # ethernet_interfaces[ethernet_interface_name] = self._get_ethernet_interface_cfg(tmp_network_port, 0, connected_endpoint)
+        # raise Exception(ethernet_interfaces)
         if ethernet_interfaces:
             return ethernet_interfaces
 

@@ -272,7 +272,8 @@ ethernet_interfaces:
       interface: true
       igp_sync: true
   speed: forced 10000full
-- peer: CPE_TENANT_A_SITE1
+- name: Ethernet8
+  peer: CPE_TENANT_A_SITE1
   peer_interface: Ethernet2
   peer_type: cpe
   port_profile: TENANT_A_WAN_SERVICE_10
@@ -285,29 +286,28 @@ ethernet_interfaces:
   channel_group:
     id: 8
     mode: active
-  name: Ethernet8
-- peer_type: l3_interface
+- name: Ethernet5.100
+  peer_type: l3_interface
   ip_address: 192.168.48.0/31
   shutdown: false
   description: TENANT_B_SITE_3
   type: l3dot1q
   encapsulation_dot1q_vlan: 100
   vrf: TENANT_B_WAN
-  name: Ethernet5.100
-- shutdown: false
+- name: Ethernet3
+  shutdown: false
   channel_group:
     id: 3
     mode: active
-  name: Ethernet3
-- shutdown: false
+- name: Ethernet4
+  shutdown: false
   channel_group:
     id: 3
     mode: active
-  name: Ethernet4
-- type: routed
+- name: Ethernet5
+  type: routed
   peer_type: l3_interface
   shutdown: false
-  name: Ethernet5
 port_channel_interfaces:
 - name: Port-Channel8
   description: CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel

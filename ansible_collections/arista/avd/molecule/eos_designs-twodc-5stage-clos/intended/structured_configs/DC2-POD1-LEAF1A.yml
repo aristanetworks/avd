@@ -194,7 +194,8 @@ eos_cli: "interface Loopback1010\n  description Loopback created from raw_eos_cl
   \ description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n\ninterface Loopback1000\n  description Loopback
   created from raw_eos_cli under VRF Common_VRF\n"
 ethernet_interfaces:
-- peer: DC2-POD1-SPINE1
+- name: Ethernet1
+  peer: DC2-POD1-SPINE1
   peer_interface: Ethernet3
   peer_type: spine
   description: P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet3
@@ -205,8 +206,8 @@ ethernet_interfaces:
   ptp:
     enable: true
   ip_address: 172.17.210.1/31
-  name: Ethernet1
-- peer: DC2-POD1-SPINE2
+- name: Ethernet2
+  peer: DC2-POD1-SPINE2
   peer_interface: Ethernet3
   peer_type: spine
   description: P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet3
@@ -217,8 +218,8 @@ ethernet_interfaces:
   ptp:
     enable: true
   ip_address: 172.17.210.3/31
-  name: Ethernet2
-- peer: DC2-POD1-L2LEAF1A
+- name: Ethernet3
+  peer: DC2-POD1-L2LEAF1A
   peer_interface: Ethernet1
   peer_type: l2leaf
   description: DC2-POD1-L2LEAF1A_Ethernet1
@@ -227,7 +228,6 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  name: Ethernet3
 - name: Ethernet6
   peer: DC1.POD1.LEAF2A
   peer_interface: Ethernet7

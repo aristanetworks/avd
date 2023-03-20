@@ -101,7 +101,8 @@ management_api_http:
   enable_https: true
 eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
 ethernet_interfaces:
-- peer: DC1-SUPER-SPINE1
+- name: Ethernet1
+  peer: DC1-SUPER-SPINE1
   peer_interface: Ethernet4
   peer_type: super-spine
   description: P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet4
@@ -114,8 +115,8 @@ ethernet_interfaces:
   ptp:
     enable: true
   ip_address: 172.16.12.3/31
-  name: Ethernet1
-- peer: DC1-SUPER-SPINE2
+- name: Ethernet2
+  peer: DC1-SUPER-SPINE2
   peer_interface: Ethernet4
   peer_type: super-spine
   description: P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet4
@@ -128,8 +129,8 @@ ethernet_interfaces:
   ptp:
     enable: true
   ip_address: 172.16.12.67/31
-  name: Ethernet2
-- peer: DC1-POD2-LEAF1A
+- name: Ethernet3
+  peer: DC1-POD2-LEAF1A
   peer_interface: Ethernet2
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-POD2-LEAF1A_Ethernet2
@@ -142,7 +143,6 @@ ethernet_interfaces:
   ptp:
     enable: true
   ip_address: 172.17.120.2/31
-  name: Ethernet3
 - name: Ethernet4
   peer: DC2-POD1-SPINE2
   peer_interface: Ethernet5

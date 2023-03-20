@@ -16,7 +16,9 @@ class EthernetInterfacesMixin(UtilsMixin):
         """
         Return structured config for ethernet_interfaces
         """
-        ethernet_interfaces = {}
+        # ethernet_interfaces = {}
+        ethernet_interfaces = []
+        interface_names = []
         for p2p_link in self._filtered_p2p_links:
             if p2p_link["data"]["port_channel_id"] is None:
                 # Ethernet interface
@@ -27,7 +29,10 @@ class EthernetInterfacesMixin(UtilsMixin):
                 ethernet_interface = {key: value for key, value in ethernet_interface.items() if value is not None}
 
                 interface_name = p2p_link["data"]["interface"]
-                ethernet_interfaces[interface_name] = ethernet_interface
+                if interface_name not in interface_names:
+                    ethernet_interfaces.append({"name": interface_name, **ethernet_interface})
+                    interface_names.append(interface_name)
+                # ethernet_interfaces[interface_name] = ethernet_interface
                 continue
 
             # Port-Channel members
@@ -39,7 +44,10 @@ class EthernetInterfacesMixin(UtilsMixin):
                 ethernet_interface = {key: value for key, value in ethernet_interface.items() if value is not None}
 
                 interface_name = member["interface"]
-                ethernet_interfaces[interface_name] = ethernet_interface
+                if interface_name not in interface_names:
+                    ethernet_interfaces.append({"name": interface_name, **ethernet_interface})
+                    interface_names.append(interface_name)
+                # ethernet_interfaces[interface_name] = ethernet_interface
 
         if ethernet_interfaces:
             return ethernet_interfaces
