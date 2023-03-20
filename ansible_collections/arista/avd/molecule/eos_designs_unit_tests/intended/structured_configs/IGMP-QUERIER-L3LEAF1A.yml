@@ -247,7 +247,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: IGMP-QUERIER-L2LEAF1A
+- name: Ethernet1
+  peer: IGMP-QUERIER-L2LEAF1A
   peer_interface: Ethernet1
   peer_type: l2leaf
   description: IGMP-QUERIER-L2LEAF1A_Ethernet1
@@ -256,7 +257,6 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet1
 port_channel_interfaces:
 - name: Port-Channel1
   description: IGMP-QUERIER-L2LEAF1A_Po1

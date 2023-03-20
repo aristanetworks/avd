@@ -1214,7 +1214,8 @@ ethernet_interfaces:
     id: 3
     mode: active
   name: Ethernet4
-- peer: EVPN-MULTICAST-SPINE1
+- name: Ethernet1
+  peer: EVPN-MULTICAST-SPINE1
   peer_interface: Ethernet1
   peer_type: spine
   description: P2P_LINK_TO_EVPN-MULTICAST-SPINE1_Ethernet1
@@ -1225,8 +1226,8 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  name: Ethernet1
-- peer: EVPN-MULTICAST-L2LEAF1A
+- name: Ethernet6
+  peer: EVPN-MULTICAST-L2LEAF1A
   peer_interface: Ethernet1
   peer_type: l2leaf
   description: EVPN-MULTICAST-L2LEAF1A_Ethernet1
@@ -1235,8 +1236,8 @@ ethernet_interfaces:
   channel_group:
     id: 6
     mode: active
-  name: Ethernet6
-- peer_type: l3_interface
+- name: Ethernet8
+  peer_type: l3_interface
   ip_address: 10.1.55.0/31
   shutdown: false
   type: routed
@@ -1244,8 +1245,8 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  name: Ethernet8
-- peer_type: l3_interface
+- name: Ethernet10
+  peer_type: l3_interface
   ip_address: 10.1.60.0/31
   shutdown: false
   type: routed
@@ -1253,8 +1254,8 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  name: Ethernet10
-- peer_type: l3_interface
+- name: Ethernet9
+  peer_type: l3_interface
   ip_address: 10.1.52.0/31
   shutdown: false
   type: routed
@@ -1262,8 +1263,8 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  name: Ethernet9
-- peer_type: l3_interface
+- name: Ethernet7
+  peer_type: l3_interface
   ip_address: 10.1.51.0/31
   shutdown: false
   type: routed
@@ -1271,7 +1272,6 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  name: Ethernet7
 mlag_configuration:
   domain_id: EVPN_MULTICAST_L3LEAF1
   local_interface: Vlan4094

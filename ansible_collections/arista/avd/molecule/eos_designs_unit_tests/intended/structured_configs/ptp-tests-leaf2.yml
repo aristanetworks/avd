@@ -131,7 +131,8 @@ ptp:
         follow_up: 13
         sync: 14
 ethernet_interfaces:
-- peer: ptp-tests-spine1
+- name: Ethernet1
+  peer: ptp-tests-spine1
   peer_interface: Ethernet3
   peer_type: spine
   description: P2P_LINK_TO_PTP-TESTS-SPINE1_Ethernet3
@@ -148,8 +149,8 @@ ethernet_interfaces:
     transport: ipv4
     enable: true
   ip_address: 10.254.2.5/31
-  name: Ethernet1
-- peer: ptp-tests-spine1
+- name: Ethernet2
+  peer: ptp-tests-spine1
   peer_interface: Ethernet4
   peer_type: spine
   description: P2P_LINK_TO_PTP-TESTS-SPINE1_Ethernet4
@@ -166,8 +167,8 @@ ethernet_interfaces:
     transport: ipv4
     enable: true
   ip_address: 10.254.2.7/31
-  name: Ethernet2
-- peer: video-endpoint
+- name: Ethernet5
+  peer: video-endpoint
   peer_interface: PCI2
   peer_type: server
   description: video-endpoint_PCI2
@@ -186,7 +187,6 @@ ethernet_interfaces:
     transport: ipv4
     enable: true
     role: master
-  name: Ethernet5
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

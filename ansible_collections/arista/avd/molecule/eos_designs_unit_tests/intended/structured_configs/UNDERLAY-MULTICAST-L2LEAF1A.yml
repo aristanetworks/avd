@@ -24,7 +24,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: UNDERLAY-MULTICAST-L3LEAF1A
+- name: Ethernet1
+  peer: UNDERLAY-MULTICAST-L3LEAF1A
   peer_interface: Ethernet6
   peer_type: l3leaf
   description: UNDERLAY-MULTICAST-L3LEAF1A_Ethernet6
@@ -33,7 +34,6 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet1
 port_channel_interfaces:
 - name: Port-Channel1
   description: DC1_LEAF1_Po6

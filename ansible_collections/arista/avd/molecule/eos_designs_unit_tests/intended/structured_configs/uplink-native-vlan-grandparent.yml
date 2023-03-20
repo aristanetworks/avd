@@ -12,7 +12,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: uplink-native-vlan-parent
+- name: Ethernet1
+  peer: uplink-native-vlan-parent
   peer_interface: Ethernet1
   peer_type: l2leaf
   description: UPLINK-NATIVE-VLAN-PARENT_Ethernet1
@@ -21,7 +22,6 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet1
 port_channel_interfaces:
 - name: Port-Channel1
   description: UPLINK-NATIVE-VLAN-PARENT_Po1

@@ -40,7 +40,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: UNDERLAY_FILTER_PEER_AS_SPINE1
+- name: Ethernet1
+  peer: UNDERLAY_FILTER_PEER_AS_SPINE1
   peer_interface: Ethernet1
   peer_type: spine
   description: P2P_LINK_TO_UNDERLAY_FILTER_PEER_AS_SPINE1_Ethernet1
@@ -48,8 +49,8 @@ ethernet_interfaces:
   mtu: 9000
   type: routed
   ip_address: 192.168.0.1/31
-  name: Ethernet1
-- peer: UNDERLAY_FILTER_PEER_AS_SPINE2
+- name: Ethernet2
+  peer: UNDERLAY_FILTER_PEER_AS_SPINE2
   peer_interface: Ethernet1
   peer_type: spine
   description: P2P_LINK_TO_UNDERLAY_FILTER_PEER_AS_SPINE2_Ethernet1
@@ -57,7 +58,6 @@ ethernet_interfaces:
   mtu: 9000
   type: routed
   ip_address: 192.168.0.3/31
-  name: Ethernet2
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

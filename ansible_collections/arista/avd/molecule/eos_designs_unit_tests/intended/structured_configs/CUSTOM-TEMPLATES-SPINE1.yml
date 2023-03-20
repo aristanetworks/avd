@@ -75,7 +75,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: CUSTOM-TEMPLATES-L3LEAF1A
+- name: Ethernet1
+  peer: CUSTOM-TEMPLATES-L3LEAF1A
   peer_interface: Ethernet1
   peer_type: l3leaf
   description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-TEMPLATES-L3LEAF1A_Ethernet1
@@ -83,8 +84,8 @@ ethernet_interfaces:
   mtu: 9000
   type: routed
   ip_address: 172.31.255.20/31
-  name: Ethernet1
-- peer: CUSTOM-TEMPLATES-L3LEAF1B
+- name: Ethernet2
+  peer: CUSTOM-TEMPLATES-L3LEAF1B
   peer_interface: Ethernet1
   peer_type: l3leaf
   description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-TEMPLATES-L3LEAF1B_Ethernet1
@@ -92,7 +93,6 @@ ethernet_interfaces:
   mtu: 9000
   type: routed
   ip_address: 172.31.255.22/31
-  name: Ethernet2
 loopback_interfaces:
 - name: Loopback0
   description: TEST_CUSTOM_PREFIX_EVPN_Overlay_Peering_SPINE

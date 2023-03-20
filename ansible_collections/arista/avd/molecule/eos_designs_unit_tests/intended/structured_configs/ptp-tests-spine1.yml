@@ -101,7 +101,8 @@ ptp:
         follow_up: 3
         sync: 3
 ethernet_interfaces:
-- peer: ptp-tests-leaf1
+- name: Ethernet1
+  peer: ptp-tests-leaf1
   peer_interface: Ethernet1
   peer_type: l3leaf
   description: P2P_LINK_TO_PTP-TESTS-LEAF1_Ethernet1
@@ -118,8 +119,8 @@ ethernet_interfaces:
     transport: ipv4
     enable: true
   ip_address: 10.254.2.0/31
-  name: Ethernet1
-- peer: ptp-tests-leaf1
+- name: Ethernet2
+  peer: ptp-tests-leaf1
   peer_interface: Ethernet2
   peer_type: l3leaf
   description: P2P_LINK_TO_PTP-TESTS-LEAF1_Ethernet2
@@ -136,8 +137,8 @@ ethernet_interfaces:
     transport: ipv4
     enable: true
   ip_address: 10.254.2.2/31
-  name: Ethernet2
-- peer: ptp-tests-leaf2
+- name: Ethernet3
+  peer: ptp-tests-leaf2
   peer_interface: Ethernet1
   peer_type: l3leaf
   description: P2P_LINK_TO_PTP-TESTS-LEAF2_Ethernet1
@@ -154,8 +155,8 @@ ethernet_interfaces:
     transport: ipv4
     enable: true
   ip_address: 10.254.2.4/31
-  name: Ethernet3
-- peer: ptp-tests-leaf2
+- name: Ethernet4
+  peer: ptp-tests-leaf2
   peer_interface: Ethernet2
   peer_type: l3leaf
   description: P2P_LINK_TO_PTP-TESTS-LEAF2_Ethernet2
@@ -172,7 +173,6 @@ ethernet_interfaces:
     transport: ipv4
     enable: true
   ip_address: 10.254.2.6/31
-  name: Ethernet4
 - name: Ethernet6
   peer: ptp-tests-spine2
   peer_interface: Ethernet6

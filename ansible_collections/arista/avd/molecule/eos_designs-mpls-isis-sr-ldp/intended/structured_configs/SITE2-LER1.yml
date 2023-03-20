@@ -284,12 +284,12 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
 - name: Ethernet6.10
   peer_type: l3_interface
-  ip_address: 123.1.1.2/31
+  ip_address: 192.168.48.2/31
   shutdown: false
-  description: TENANT_B_SITE_5_INTRA_L3VPN
+  description: TENANT_B_SITE_5
   type: l3dot1q
   encapsulation_dot1q_vlan: 10
-  vrf: TENANT_B_INTRA
+  vrf: TENANT_B_WAN
 - name: Ethernet6.100
   peer_type: l3_interface
   ip_address: 192.168.48.4/31

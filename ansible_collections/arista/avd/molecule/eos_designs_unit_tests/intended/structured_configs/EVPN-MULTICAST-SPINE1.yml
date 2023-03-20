@@ -102,7 +102,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: EVPN-MULTICAST-L3LEAF1A
+- name: Ethernet1
+  peer: EVPN-MULTICAST-L3LEAF1A
   peer_interface: Ethernet1
   peer_type: l3leaf
   description: P2P_LINK_TO_EVPN-MULTICAST-L3LEAF1A_Ethernet1
@@ -113,8 +114,8 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  name: Ethernet1
-- peer: EVPN-MULTICAST-L3LEAF1B
+- name: Ethernet2
+  peer: EVPN-MULTICAST-L3LEAF1B
   peer_interface: Ethernet1
   peer_type: l3leaf
   description: P2P_LINK_TO_EVPN-MULTICAST-L3LEAF1B_Ethernet1
@@ -125,8 +126,8 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  name: Ethernet2
-- peer: EVPN-MULTICAST-L3LEAF2A
+- name: Ethernet3
+  peer: EVPN-MULTICAST-L3LEAF2A
   peer_interface: Ethernet1
   peer_type: l3leaf
   description: P2P_LINK_TO_EVPN-MULTICAST-L3LEAF2A_Ethernet1
@@ -137,8 +138,8 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  name: Ethernet3
-- peer: EVPN-MULTICAST-L3LEAF3A
+- name: Ethernet4
+  peer: EVPN-MULTICAST-L3LEAF3A
   peer_interface: Ethernet1
   peer_type: l3leaf
   description: P2P_LINK_TO_EVPN-MULTICAST-L3LEAF3A_Ethernet1
@@ -149,8 +150,8 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  name: Ethernet4
-- peer: EVPN-MULTICAST-L3LEAF3B
+- name: Ethernet5
+  peer: EVPN-MULTICAST-L3LEAF3B
   peer_interface: Ethernet1
   peer_type: l3leaf
   description: P2P_LINK_TO_EVPN-MULTICAST-L3LEAF3B_Ethernet1
@@ -161,7 +162,6 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  name: Ethernet5
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

@@ -24,7 +24,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: EVPN-MULTICAST-L3LEAF1A
+- name: Ethernet1
+  peer: EVPN-MULTICAST-L3LEAF1A
   peer_interface: Ethernet6
   peer_type: l3leaf
   description: EVPN-MULTICAST-L3LEAF1A_Ethernet6
@@ -33,8 +34,8 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet1
-- peer: EVPN-MULTICAST-L3LEAF1B
+- name: Ethernet2
+  peer: EVPN-MULTICAST-L3LEAF1B
   peer_interface: Ethernet6
   peer_type: l3leaf
   description: EVPN-MULTICAST-L3LEAF1B_Ethernet6
@@ -43,7 +44,6 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet2
 port_channel_interfaces:
 - name: Port-Channel1
   description: EVPN_MULTICAST_L3LEAF1_Po6
