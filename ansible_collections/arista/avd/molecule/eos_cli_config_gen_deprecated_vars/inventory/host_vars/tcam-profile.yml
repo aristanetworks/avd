@@ -1,0 +1,9 @@
+### TCAM Profile ###
+
+tcam_profile:
+  system: traffic_policy
+  # Testing profiles as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  profiles:
+    traffic_policy: |
+      ! EOS_CLI inserted directly
