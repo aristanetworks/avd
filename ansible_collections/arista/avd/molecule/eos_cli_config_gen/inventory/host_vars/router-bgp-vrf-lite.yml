@@ -13,17 +13,17 @@ prefix_lists:
         action: permit 0.0.0.0/0
 
 route_maps:
-  RM-BGP-AGG-APPLY-SET:
+  - name: RM-BGP-AGG-APPLY-SET
     sequence_numbers:
-      10:
+      - sequence: 10
         type: permit
         description: RM for BGP AGG Set
         set:
           - "local-preference 50"
 
-  RM-BGP-EXPORT-DEFAULT-BLUE-C1:
+  - name: RM-BGP-EXPORT-DEFAULT-BLUE-C1
     sequence_numbers:
-      10:
+      - sequence: 10
         type: permit
         description: RM for BGP default route in BLUE-C1
         match:
