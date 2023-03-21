@@ -461,6 +461,7 @@ class EosDesignsFacts(AvdFacts):
         default_ptp_enabled = get(self._hostvars, "ptp.enabled")
         default_ptp_domain = get(self._hostvars, "ptp.domain", default=127)
         default_ptp_profile = get(self._hostvars, "ptp.profile", default="aes67-r16-2016")
+        default_clock_identity = None
         ptp = {}
         ptp["enabled"] = get(self._switch_data_combined, "ptp.enabled", default=default_ptp_enabled)
         if ptp["enabled"] is True:
