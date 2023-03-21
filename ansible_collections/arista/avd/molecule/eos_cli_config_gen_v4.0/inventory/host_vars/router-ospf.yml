@@ -108,14 +108,11 @@ router_ospf:
           summary_lsa:
       redistribute:
         static:
-          route_map: rm-ospf-static
-          include_leaked: false
+          include_leaked: true
         connected:
-          route_map: rm-ospf-connected
-          include_leaked: false
+          include_leaked: true
         bgp:
-          route_map: rm-ospf-bgp
-          include_leaked: false
+          include_leaked: true
     - id: 500
       max_metric:
         router_lsa:

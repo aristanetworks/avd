@@ -174,9 +174,9 @@ interface Vlan24
 | 300 | connected | disabled | rm-ospf-connected |
 | 300 | static | disabled | rm-ospf-static |
 | 300 | bgp | disabled | rm-ospf-bgp |
-| 400 | connected | disabled | rm-ospf-connected |
-| 400 | static | disabled | rm-ospf-static |
-| 400 | bgp | disabled | rm-ospf-bgp |
+| 400 | connected | enabled | - |
+| 400 | static | enabled | - |
+| 400 | bgp | enabled | - |
 
 #### Router OSPF Router Max-Metric
 
@@ -286,9 +286,9 @@ router ospf 300
    max-metric router-lsa
 !
 router ospf 400
-   redistribute static route-map rm-ospf-static
-   redistribute connected route-map rm-ospf-connected
-   redistribute bgp route-map rm-ospf-bgp
+   redistribute static include leaked
+   redistribute connected include leaked
+   redistribute bgp include leaked
    max-metric router-lsa external-lsa include-stub on-startup wait-for-bgp summary-lsa
 !
 router ospf 500
