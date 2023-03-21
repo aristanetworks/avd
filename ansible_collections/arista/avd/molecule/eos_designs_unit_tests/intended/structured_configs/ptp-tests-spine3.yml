@@ -4,31 +4,31 @@ router_bgp:
   bgp_defaults:
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
-    maximum_routes: 12000
-    send_community: all
-    name: IPv4-UNDERLAY-PEERS
-  - type: evpn
-    update_source: Loopback0
-    bfd: true
-    send_community: all
-    maximum_routes: 0
-    ebgp_multihop: 3
-    next_hop_unchanged: true
-    name: EVPN-OVERLAY-PEERS
+    IPv4-UNDERLAY-PEERS:
+      type: ipv4
+      maximum_routes: 12000
+      send_community: all
+    EVPN-OVERLAY-PEERS:
+      type: evpn
+      update_source: Loopback0
+      bfd: true
+      send_community: all
+      maximum_routes: 0
+      ebgp_multihop: 3
+      next_hop_unchanged: true
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: IPv4-UNDERLAY-PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+      IPv4-UNDERLAY-PEERS:
+        activate: true
+      EVPN-OVERLAY-PEERS:
+        activate: false
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+    connected:
+      route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+      EVPN-OVERLAY-PEERS:
+        activate: true
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -43,19 +43,19 @@ vlan_internal_order:
 spanning_tree:
   mode: none
 vrfs:
-- name: MGMT
-  ip_routing: false
+  MGMT:
+    ip_routing: false
 management_interfaces:
-- name: Management1
-  description: oob_management
-  shutdown: false
-  vrf: MGMT
-  ip_address: 192.168.0.31/24
-  gateway: 192.168.0.1
-  type: oob
+  Management1:
+    description: oob_management
+    shutdown: false
+    vrf: MGMT
+    ip_address: 192.168.0.31/24
+    gateway: 192.168.0.1
+    type: oob
 management_api_http:
   enable_vrfs:
-  - name: MGMT
+    MGMT: {}
   enable_https: true
 ptp:
   mode: boundary
@@ -75,22 +75,22 @@ ptp:
         follow_up: 3
         sync: 3
 loopback_interfaces:
-- name: Loopback0
-  description: EVPN_Overlay_Peering
-  shutdown: false
-  ip_address: 10.255.0.3/32
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    shutdown: false
+    ip_address: 10.255.0.3/32
 prefix_lists:
-- name: PL-LOOPBACKS-EVPN-OVERLAY
-  sequence_numbers:
-  - sequence: 10
-    action: permit 10.255.0.0/27 eq 32
+  PL-LOOPBACKS-EVPN-OVERLAY:
+    sequence_numbers:
+      10:
+        action: permit 10.255.0.0/27 eq 32
 route_maps:
-- name: RM-CONN-2-BGP
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    match:
-    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+  RM-CONN-2-BGP:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 router_bfd:
   multihop:
     interval: 300
