@@ -45,12 +45,12 @@ interface Management1
 
 #### IP Routing Summary
 
-| VRF | Routing Enabled |
-| --- | --------------- |
+| VRF | Routing Enabled | IPv6 Interfaces |
+| --- | --------------- | --------------- |
 | default | False |
-| default | true |
-| TEST1 | true |
-| TEST2 | false |
+| default | True | True |
+| TEST1 | True | False |
+| TEST2 | False | True |
 
 #### IP Routing Device Configuration
 
@@ -79,6 +79,7 @@ no ip routing vrf TEST2
 !
 ipv6 unicast-routing
 ip routing ipv6 interfaces
+ip routing ipv6 interfaces vrf TEST2
 !
 ipv6 unicast-routing vrf default
 ipv6 unicast-routing vrf TEST1

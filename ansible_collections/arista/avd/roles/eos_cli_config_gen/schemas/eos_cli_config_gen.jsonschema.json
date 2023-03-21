@@ -15589,6 +15589,10 @@
             "type": "boolean",
             "title": "IPv6 Routing"
           },
+          "ip_routing_ipv6_interfaces": {
+            "type": "boolean",
+            "title": "IP Routing IPv6 Interfaces"
+          },
           "tenant": {
             "type": "string",
             "description": "Key only used for documentation or validation purposes",

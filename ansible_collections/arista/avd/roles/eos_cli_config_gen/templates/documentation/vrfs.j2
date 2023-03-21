@@ -5,15 +5,20 @@
 
 ### VRF Instances Summary
 
-| VRF Name | IP Routing |
-| -------- | ---------- |
+| VRF Name | IP Routing | IPv6 Interfaces |
+| -------- | ---------- | --------------- |
 {%     for vrf in vrfs | arista.avd.natural_sort('name') %}
-{%         if vrf.ip_routing is arista.avd.defined(true) %}
+{%         if vrf.ip_routing_ipv6_interfaces is arista.avd.defined(true) %}
 {%             set ip_routing = 'enabled' %}
+{%             set ip_routing_ipv6_interfaces = 'enabled' %}
+{%         elif vrf.ip_routing is arista.avd.defined(true) %}
+{%             set ip_routing = 'enabled' %}
+{%             set ip_routing_ipv6_interfaces = 'disabled' %}
 {%         else %}
 {%             set ip_routing = 'disabled' %}
+{%             set ip_routing_ipv6_interfaces = 'disabled' %}
 {%         endif %}
-| {{ vrf.name }} | {{ ip_routing }} |
+| {{ vrf.name }} | {{ ip_routing }} | {{ ip_routing_ipv6_interfaces }} |
 {%     endfor %}
 
 ### VRF Instances Device Configuration

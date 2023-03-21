@@ -5,23 +5,26 @@
 
 #### IP Routing Summary
 
-| VRF | Routing Enabled |
-| --- | --------------- |
+| VRF | Routing Enabled | IPv6 Interfaces |
+| --- | --------------- | --------------- |
 | default | {{ ip_routing | arista.avd.default(false) }} |
 {%     for vrf in vrfs | arista.avd.natural_sort('name') %}
-{%         if vrf.ip_routing is arista.avd.defined(true) %}
-| {{ vrf.name }} | true |
-{%         elif vrf.ip_routing is arista.avd.defined(false) %}
-| {{ vrf.name }} | false |
+{%         set ip_routing = vrf.ip_routing | arista.avd.default("-") %}
+{%         set ipv6_interfaces = vrf.ip_routing_ipv6_interfaces | arista.avd.default(false) %}
+{%         if ipv6_interfaces is arista.avd.defined(true) %}
+{%             set ip_routing = true %}
 {%         endif %}
+| {{ vrf.name }} | {{ ip_routing }} | {{ ipv6_interfaces }} |
 {%     endfor %}
 
 #### IP Routing Device Configuration
 
 ```eos
 {%     include 'eos/ip-routing.j2' %}
+{%     include 'eos/ip-routing-ipv6-interfaces.j2' %}
 {%     include 'eos/ip-icmp-redirect.j2' %}
 {%     include 'eos/ip-hardware.j2' %}
 {%     include 'eos/ip-routing-vrfs.j2' %}
+{%     include 'eos/ip-routing-ipv6-interfaces-vrfs.j2' %}
 ```
 {% endif %}
