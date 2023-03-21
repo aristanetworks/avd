@@ -314,7 +314,7 @@ class ActionModule(ActionBase):
 
         _get_running_collection_version(running_collection_name, info["ansible"])
 
-        display.display(f"AVD version {info['ansible']['collection']['version']}", color=C.COLOR_HIGHLIGHT)
+        display.display(f"AVD version {info['ansible']['collection']['version']}", color=C.COLOR_OK)
         if display.verbosity < 1:
             display.display("Use -v for details.")
 

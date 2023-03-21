@@ -1,9 +1,9 @@
 {# doc - bgp group #}
 {% if bgp_groups is arista.avd.defined %}
 
-## BGP Groups
+### BGP Groups
 
-### BGP Groups Summary
+#### BGP Groups Summary
 
 | BGP group | VRF Name | Neighbors | BGP maintenance profiles |
 | --------- | -------- | --------- | ------------------------ |
@@ -22,7 +22,7 @@
 | {{ bgp_group.name }} | {{ vrf }} | {{ neighbors }} | {{ bgp_profile }} |
 {%     endfor %}
 
-### BGP Groups Configuration
+#### BGP Groups Configuration
 
 ```eos
 {%     include 'eos/bgp-groups.j2' %}

@@ -1,12 +1,12 @@
 {# doc - peer filters #}
 {% if peer_filters is arista.avd.defined %}
 
-## Peer Filters
+### Peer Filters
 
-### Peer Filters Summary
+#### Peer Filters Summary
 {%     for peer_filter in peer_filters | arista.avd.natural_sort('name') %}
 
-#### {{ peer_filter.name }}
+##### {{ peer_filter.name }}
 
 | Sequence | Match |
 | -------- | ----- |
@@ -15,7 +15,7 @@
 {%         endfor %}
 {%     endfor %}
 
-### Peer Filters Device Configuration
+#### Peer Filters Device Configuration
 
 ```eos
 {%     include 'eos/peer-filters.j2' %}

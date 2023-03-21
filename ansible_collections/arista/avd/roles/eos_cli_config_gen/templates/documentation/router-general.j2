@@ -1,7 +1,7 @@
 {# doc - router general #}
 {% if router_general is arista.avd.defined %}
 
-## Router General
+### Router General
 {%     if router_general.router_id.ipv4 is arista.avd.defined %}
 
 - Global IPv4 Router ID: {{ router_general.router_id.ipv4 }}
@@ -16,7 +16,7 @@
 {%     endif %}
 {%     if router_general.vrfs | arista.avd.default([]) | selectattr('leak_routes','arista.avd.defined') %}
 
-### VRF Route leaking
+#### VRF Route leaking
 
 | VRF | Source VRF | Route Map Policy |
 |-----|------------|------------------|
@@ -30,7 +30,7 @@
 {%     endif %}
 {%     if router_general.vrfs | arista.avd.default([]) | selectattr('routes.dynamic_prefix_lists','arista.avd.defined') %}
 
-### VRF Routes Dynamic Prefix-lists
+#### VRF Routes Dynamic Prefix-lists
 
 | VRF | Dynamic Prefix-list |
 |-----|---------------------|
@@ -43,7 +43,7 @@
 {%         endfor %}
 {%     endif %}
 
-### Router General configuration
+#### Router General configuration
 
 ```eos
 {%     include 'eos/router-general.j2' %}

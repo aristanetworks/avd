@@ -1,9 +1,9 @@
 {# doc - router bgp #}
 {% if router_bgp is arista.avd.defined %}
 
-## Router BGP
+### Router BGP
 
-### Router BGP Summary
+#### Router BGP Summary
 
 | BGP AS | Router ID |
 | ------ | --------- |
@@ -58,7 +58,7 @@
 {%     endif %}
 {%     if router_bgp.listen_ranges is arista.avd.defined or temp.bgp_vrf_listen_ranges is arista.avd.defined(true) %}
 
-### Router BGP Listen Ranges
+#### Router BGP Listen Ranges
 
 | Prefix | Peer-ID Include Router ID | Peer Group | Peer-Filter | Remote-AS | VRF |
 | ------ | ------------------------- | ---------- | ----------- | --------- | --- |
@@ -91,10 +91,10 @@
 {%     endif %}
 {%     if router_bgp.peer_groups is arista.avd.defined %}
 
-### Router BGP Peer Groups
+#### Router BGP Peer Groups
 {%         for peer_group in router_bgp.peer_groups | arista.avd.natural_sort('name') %}
 
-#### {{ peer_group.name }}
+##### {{ peer_group.name }}
 
 | Settings | Value |
 | -------- | ----- |
@@ -210,7 +210,7 @@
 {%     endif %}
 {%     if router_bgp.neighbors is arista.avd.defined or temp.bgp_vrf_neighbors is arista.avd.defined(true) %}
 
-### BGP Neighbors
+#### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
@@ -397,7 +397,7 @@
 {%     endfor %}
 {%     if neighbor_interfaces | length > 0 %}
 
-### BGP Neighbor Interfaces
+#### BGP Neighbor Interfaces
 
 | Neighbor Interface | VRF | Peer Group | Remote AS | Peer Filter |
 | ------------------ | --- | ---------- | --------- | ----------- |
@@ -411,7 +411,7 @@
 {%     endif %}
 {%     if router_bgp.aggregate_addresses is arista.avd.defined %}
 
-### BGP Route Aggregation
+#### BGP Route Aggregation
 
 | Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
 | ------ | ------ | ------------ | ------------- | --------- | -------------- |
@@ -438,14 +438,14 @@
 {%     endif %}
 {%     if router_bgp.address_family_evpn is arista.avd.defined %}
 
-### Router BGP EVPN Address Family
+#### Router BGP EVPN Address Family
 {%         if router_bgp.address_family_evpn.route.import_match_failure_action is arista.avd.defined('discard') %}
 
 - VPN import pruning is __enabled__
 {%         endif %}
 {%         if router_bgp.address_family_evpn.peer_groups is arista.avd.defined %}
 
-#### EVPN Peer Groups
+##### EVPN Peer Groups
 
 | Peer Group | Activate | Encapsulation |
 | ---------- | -------- | ------------- |
@@ -455,7 +455,7 @@
 {%         endif %}
 {%         if router_bgp.address_family_evpn.neighbor_default.encapsulation is arista.avd.defined %}
 
-#### EVPN Neighbor Default Encapsulation
+##### EVPN Neighbor Default Encapsulation
 
 | Neighbor Default Encapsulation | Next-hop-self Source Interface |
 | ------------------------------ | ------------------------------ |
@@ -465,7 +465,7 @@
 {%         endif %}
 {%         if router_bgp.address_family_evpn.evpn_hostflap_detection is arista.avd.defined %}
 
-#### EVPN Host Flapping Settings
+##### EVPN Host Flapping Settings
 
 | State | Window | Threshold | Expiry Timeout |
 | ----- | ------ | --------- | -------------- |
@@ -506,7 +506,7 @@
 {%     endif %}
 {%     if evpn_gw_config.configured is arista.avd.defined(true) %}
 
-#### EVPN DCI Gateway Summary
+##### EVPN DCI Gateway Summary
 
 | Settings | Value |
 | -------- | ----- |
@@ -522,14 +522,14 @@
 {%     endif %}
 {%     if router_bgp.address_family_vpn_ipv4 is arista.avd.defined %}
 
-### Router BGP VPN-IPv4 Address Family
+#### Router BGP VPN-IPv4 Address Family
 {%         if router_bgp.address_family_vpn_ipv4.route.import_match_failure_action is arista.avd.defined('discard') %}
 
 - VPN import pruning is __enabled__
 {%         endif %}
 {%         if router_bgp.address_family_vpn_ipv4.neighbors is arista.avd.defined %}
 
-#### VPN-IPv4 Neighbors
+##### VPN-IPv4 Neighbors
 
 | Neighbor | Activate | Route-map In | Route-map Out |
 | -------- | -------- | ------------ | ------------- |
@@ -541,7 +541,7 @@
 {%         endif %}
 {%         if router_bgp.address_family_vpn_ipv4.peer_groups is arista.avd.defined %}
 
-#### VPN-IPv4 Peer Groups
+##### VPN-IPv4 Peer Groups
 
 | Peer Group | Activate | Route-map In | Route-map Out |
 | ---------- | -------- | ------------ | ------------- |
@@ -554,14 +554,14 @@
 {%     endif %}
 {%     if router_bgp.address_family_vpn_ipv6 is arista.avd.defined %}
 
-### Router BGP VPN-IPv6 Address Family
+#### Router BGP VPN-IPv6 Address Family
 {%         if router_bgp.address_family_vpn_ipv6.route.import_match_failure_action is arista.avd.defined('discard') %}
 
 - VPN import pruning is __enabled__
 {%         endif %}
 {%         if router_bgp.address_family_vpn_ipv6.neighbors is arista.avd.defined %}
 
-#### VPN-IPv6 Neighbors
+##### VPN-IPv6 Neighbors
 
 | Neighbor | Activate | Route-map In | Route-map Out |
 | -------- | -------- | ------------ | ------------- |
@@ -573,7 +573,7 @@
 {%         endif %}
 {%         if router_bgp.address_family_vpn_ipv6.peer_groups is arista.avd.defined %}
 
-#### VPN-IPv6 Peer Groups
+##### VPN-IPv6 Peer Groups
 
 | Peer Group | Activate | Route-map In | Route-map Out |
 | ---------- | -------- | ------------ | ------------- |
@@ -586,7 +586,7 @@
 {%     endif %}
 {%     if router_bgp.vlan_aware_bundles is arista.avd.defined %}
 
-### Router BGP VLAN Aware Bundles
+#### Router BGP VLAN Aware Bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
@@ -619,7 +619,7 @@
 {%     endif %}
 {%     if router_bgp.vlans is arista.avd.defined %}
 
-### Router BGP VLANs
+#### Router BGP VLANs
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
@@ -651,7 +651,7 @@
 {%     endif %}
 {%     if router_bgp.vpws is arista.avd.defined %}
 
-### Router BGP VPWS Instances
+#### Router BGP VPWS Instances
 
 | Instance | Route-Distinguisher | Both Route-Target | MPLS Control Word | Label Flow | MTU | Pseudowire | Local ID | Remote ID |
 | -------- | ------------------- | ----------------- | ----------------- | -----------| --- | ---------- | -------- | --------- |
@@ -670,7 +670,7 @@
 {%     endif %}
 {%     if router_bgp.vrfs is arista.avd.defined %}
 
-### Router BGP VRFs
+#### Router BGP VRFs
 
 {%         if router_bgp.vrfs | selectattr('evpn_multicast', 'arista.avd.defined', true) %}
 | VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
@@ -695,7 +695,7 @@
 {%         endfor %}
 {%     endif %}
 
-### Router BGP Device Configuration
+#### Router BGP Device Configuration
 
 ```eos
 {%     include 'eos/router-bgp.j2' %}

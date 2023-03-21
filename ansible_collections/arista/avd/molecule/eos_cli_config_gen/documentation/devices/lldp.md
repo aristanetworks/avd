@@ -1,5 +1,6 @@
 # lldp
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -9,25 +10,25 @@
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -37,24 +38,24 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# LLDP
+## LLDP
 
-## LLDP Summary
+### LLDP Summary
 
-### LLDP Global Settings
+#### LLDP Global Settings
 
 | Enabled | Management Address | Management VRF | Timer | Hold-Time | Re-initialization Timer | Drop Received Tagged Packets |
 | ------- | ------------------ | -------------- | ----- | --------- | ----------------------- | ---------------------------- |
 | False | 192.168.1.1/24 | Management | 30 | 90 | 2 | - |
 
-### LLDP Explicit TLV Transmit Settings
+#### LLDP Explicit TLV Transmit Settings
 
 | TLV | Transmit |
 | --- | -------- |
 | system-capabilities | False |
 | system-description | True |
 
-### LLDP Interface Settings
+#### LLDP Interface Settings
 
 LLDP is **disabled** globally. Local interface configs will not apply.
 
@@ -64,7 +65,7 @@ LLDP is **disabled** globally. Local interface configs will not apply.
 | Ethernet2 | False | True |
 | Ethernet4 | True | False |
 
-## LLDP Device Configuration
+### LLDP Device Configuration
 
 ```eos
 !
@@ -77,13 +78,13 @@ no lldp tlv transmit system-capabilities
 lldp tlv transmit system-description
 ```
 
-# Interfaces
+## Interfaces
 
-## Ethernet Interfaces
+### Ethernet Interfaces
 
-### Ethernet Interfaces Summary
+#### Ethernet Interfaces Summary
 
-#### L2
+##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
@@ -92,7 +93,7 @@ lldp tlv transmit system-description
 
 *Inherited from Port-Channel Interface
 
-### Ethernet Interfaces Device Configuration
+#### Ethernet Interfaces Device Configuration
 
 ```eos
 !

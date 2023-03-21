@@ -4,7 +4,7 @@ __metaclass__ = type
 
 import pytest
 
-from ansible_collections.arista.avd.plugins.plugin_utils.bgp_utils import cbc_check_password, cbc_decrypt, cbc_encrypt
+from ansible_collections.arista.avd.plugins.plugin_utils.password_utils import cbc_check_password, cbc_decrypt, cbc_encrypt
 
 # password used is "arista"
 VALID_PASSWORD_KEY_PAIRS = [("42.42.42.42", b"3QGcqpU2YTwKh2jVQ4Vj/A=="), ("AVD-TEST", b"bM7t58t04qSqLHAfZR/Szg==")]
@@ -27,6 +27,21 @@ def test_cbc_decrypt(key, password):
     """
     augmented_key = bytes(f"{key}_passwd", encoding="utf-8")
     assert cbc_decrypt(augmented_key, password) == b"arista"
+
+
+@pytest.mark.parametrize(
+    "key, password, expected_raise",
+    [
+        pytest.param("TOTO", b"3QGcqpU2YTwKh2jVQ4Vj/A==", ValueError, id="ValueError"),
+    ],
+)
+def test_cbc_decrypt_failure(key, password, expected_raise):
+    """
+    Valid cases for both neighbor IP and peer group name
+    """
+    augmented_key = bytes(f"{key}_passwd", encoding="utf-8")
+    with pytest.raises(expected_raise):
+        cbc_decrypt(augmented_key, password)
 
 
 @pytest.mark.parametrize("key, password", VALID_PASSWORD_KEY_PAIRS)

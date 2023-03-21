@@ -1517,7 +1517,7 @@ keys:
           - message-digest
         ospf_authentication_key:
           type: str
-          description: Encrypted password
+          description: Encrypted password - only type 7 supported
         ospf_message_digest_keys:
           type: list
           primary_key: id
@@ -1541,7 +1541,7 @@ keys:
                 - sha512
               key:
                 type: str
-                description: Encrypted password
+                description: Encrypted password - only type 7 supported
         pim:
           type: dict
           keys:

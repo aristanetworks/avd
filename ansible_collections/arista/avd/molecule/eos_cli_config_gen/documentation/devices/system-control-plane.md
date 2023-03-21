@@ -1,29 +1,30 @@
 # system-control-plane
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [System Control-Plane](#system-control-plane)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -33,16 +34,16 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-## System Control-Plane
+### System Control-Plane
 
-#### TCP MSS Ceiling
+##### TCP MSS Ceiling
 
 | Protocol | Segment Size |
 | -------- | -------------|
 | IPv4 | 1344 |
 | IPv6 | 1366 |
 
-#### Control-Plane Access-Groups
+##### Control-Plane Access-Groups
 
 | Protocol | VRF | Access-list |
 | -------- | --- | ------------|
@@ -53,7 +54,7 @@ interface Management1
 | IPv6 | blue | acl6_2 |
 | IPv6 | default | acl6_3 |
 
-### System Control-Plane Configuration
+#### System Control-Plane Configuration
 
 ```eos
 !

@@ -1,4 +1,5 @@
 # generate-default-config
-# Table of Contents
+
+## Table of Contents
 
 

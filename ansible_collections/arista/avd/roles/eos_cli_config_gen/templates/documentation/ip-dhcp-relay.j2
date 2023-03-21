@@ -1,15 +1,15 @@
 {# doc - ip dhcp relay #}
 {% if ip_dhcp_relay is defined and ip_dhcp_relay is not none %}
 
-# IP DHCP Relay
-
 ## IP DHCP Relay
+
+### IP DHCP Relay
 {%     if ip_dhcp_relay.information_option is defined and ip_dhcp_relay.information_option == true %}
 
 IP DHCP Relay Option 82 is enabled.
 {%     endif %}
 
-## IP DHCP Relay Configuration
+### IP DHCP Relay Configuration
 
 ```eos
 {%     include 'eos/ip-dhcp-relay.j2' %}
