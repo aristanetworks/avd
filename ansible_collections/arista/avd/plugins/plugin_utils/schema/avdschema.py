@@ -35,7 +35,7 @@ class AvdSchema:
     Parameters
     ----------
     schema : dict
-        AVD Schema as dictionary. Will be verified towards avd_meta_schema.
+        AVD Schema as dictionary. Will be validated towards AVD_META_SCHEMA.
     schema_id : str
         ID of AVD Schema. Either 'eos_cli_config_gen' or 'eos_designs'
     """
@@ -47,27 +47,41 @@ class AvdSchema:
             raise AristaAvdError('Python library "deepmerge" must be installed to use this plugin') from DEEPMERGE_IMPORT_ERROR
 
         self.store = create_store()
-        if not schema:
-            if schema_id:
-                if schema_id not in self.store:
-                    raise AristaAvdError(f"Schema id {schema_id} not found in store. Must be one of {self.store.keys()}")
-
-                schema = self.store.get(schema_id, {})
-            else:
-                schema = DEFAULT_SCHEMA
-
         self._schema_validator = jsonschema.Draft7Validator(self.store["avd_meta_schema"])
-        self.load_schema(schema)
+        self.load_schema(schema, schema_id)
 
     def validate_schema(self, schema: dict):
         validation_errors = self._schema_validator.iter_errors(schema)
         for validation_error in validation_errors:
             yield self._error_handler(validation_error)
 
-    def load_schema(self, schema: dict):
-        for validation_error in self.validate_schema(schema):
-            # TODO: Find a way to wrap multiple schema errors in a single raise
-            raise validation_error
+    def load_schema(self, schema: dict = None, schema_id: str = None):
+        """
+        Load schema from dict or the ID of a builtin schema.
+        If none of them are set, a default "dummy" schema will be loaded.
+        schema -> schema_id -> DEFAULT_SCHEMA
+
+        Parameters
+        ----------
+        schema : dict, optional
+            AVD Schema as dictionary. Will be validated towards AVD_META_SCHEMA.
+        schema_id : str, optional
+            ID of AVD Schema. Either 'eos_cli_config_gen' or 'eos_designs'
+        """
+
+        if schema:
+            # Validate the schema
+            for validation_error in self.validate_schema(schema):
+                # TODO: Find a way to wrap multiple schema errors in a single raise
+                raise validation_error
+        elif schema_id:
+            if schema_id not in self.store:
+                raise AristaAvdError(f"Schema id {schema_id} not found in store. Must be one of {self.store.keys()}")
+
+            schema = self.store[schema_id]
+        else:
+            schema = DEFAULT_SCHEMA
+
         self._schema = schema
         try:
             self._validator = AvdValidator(schema, self.store)

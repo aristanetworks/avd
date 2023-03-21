@@ -12,6 +12,8 @@ def convert_schema(schema_id: str, type: str):
     """
     The `arista.avd.convert_schema` filter will convert AVD Schema to a chosen output format.
 
+    TODO: Split into separate filters or lookups for each type.
+
     Parameters
     ----------
     schema_id : str, ["eos_cli_config_gen" , "eos_designs"]
@@ -37,7 +39,7 @@ def convert_schema(schema_id: str, type: str):
         return AvdToJsonSchemaConverter(avdschema).convert_schema()
 
     else:
-        raise AristaAvdError(f"Filter arista.avd.convert_schema requires type 'documentation'. Got {type}")
+        raise AristaAvdError(f"Filter arista.avd.convert_schema requires type 'documentation' or 'jsonschema'. Got {type}")
 
 
 class FilterModule(object):
