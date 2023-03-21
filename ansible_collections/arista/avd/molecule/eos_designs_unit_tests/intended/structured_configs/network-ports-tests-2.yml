@@ -66,21 +66,6 @@ port_channel_interfaces:
   type: switched
   shutdown: false
   mlag: 42
-- name: Port-Channel42
-  description: Checking port-channels
-  type: switched
-  shutdown: false
-  mlag: 42
-- name: Port-Channel42
-  description: Checking port-channels
-  type: switched
-  shutdown: false
-  mlag: 42
-- name: Port-Channel42
-  description: Checking port-channels
-  type: switched
-  shutdown: false
-  mlag: 42
 ethernet_interfaces:
 - peer: network-ports-tests.1
   peer_interface: Ethernet10/1
