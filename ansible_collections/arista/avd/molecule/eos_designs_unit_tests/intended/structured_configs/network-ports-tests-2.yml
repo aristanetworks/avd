@@ -61,6 +61,26 @@ port_channel_interfaces:
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
   mlag: 2
+- name: Port-Channel42
+  description: Checking port-channels
+  type: switched
+  shutdown: false
+  mlag: 42
+- name: Port-Channel42
+  description: Checking port-channels
+  type: switched
+  shutdown: false
+  mlag: 42
+- name: Port-Channel42
+  description: Checking port-channels
+  type: switched
+  shutdown: false
+  mlag: 42
+- name: Port-Channel42
+  description: Checking port-channels
+  type: switched
+  shutdown: false
+  mlag: 42
 ethernet_interfaces:
 - peer: network-ports-tests.1
   peer_interface: Ethernet10/1
@@ -650,6 +670,42 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
   name: Ethernet2/48
+- peer: Checking port-channels
+  peer_type: network_port
+  description: Checking port-channels
+  type: switched
+  shutdown: false
+  channel_group:
+    id: 42
+    mode: active
+  name: Ethernet7
+- peer: Checking port-channels
+  peer_type: network_port
+  description: Checking port-channels
+  type: switched
+  shutdown: false
+  channel_group:
+    id: 42
+    mode: active
+  name: Ethernet8
+- peer: Checking port-channels
+  peer_type: network_port
+  description: Checking port-channels
+  type: switched
+  shutdown: false
+  channel_group:
+    id: 42
+    mode: active
+  name: Ethernet9
+- peer: Checking port-channels
+  peer_type: network_port
+  description: Checking port-channels
+  type: switched
+  shutdown: false
+  channel_group:
+    id: 42
+    mode: active
+  name: Ethernet10
 mlag_configuration:
   domain_id: mlag
   local_interface: Vlan4094

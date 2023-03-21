@@ -48,6 +48,15 @@ network_ports:
       - Ethernet5-6
     description: "N: blah"
 
+  - switches:
+      - network-ports-tests.2
+    switch_ports:
+      - Ethernet7-10
+    description: "Checking port-channels"
+    port_channel:
+      channel_id: 42
+      mode: "active"
+
 # Only creating network services required to test the filter "only_vlans_in_use" combined with network ports
 tenants:
   TEST:
