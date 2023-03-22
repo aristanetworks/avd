@@ -44,9 +44,7 @@ class EthernetInterfacesMixin(UtilsMixin):
 
         if ethernet_interfaces:
             for eth_name, eth_val in ethernet_interfaces.items():
-                ethernet_interfaces_lists.append(
-                    {"name":eth_name, **eth_val}
-                )
+                ethernet_interfaces_lists.append({"name": eth_name, **eth_val})
 
             return ethernet_interfaces_lists
 

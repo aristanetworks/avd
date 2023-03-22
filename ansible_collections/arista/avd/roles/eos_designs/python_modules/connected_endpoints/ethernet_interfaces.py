@@ -50,7 +50,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                 )
                 ethernet_interface = self._get_ethernet_interface_cfg(tmp_network_port, 0, connected_endpoint)
                 ethernet_interfaces.append({"name": ethernet_interface_name, **ethernet_interface})
-        
+
         if ethernet_interfaces:
             return ethernet_interfaces
 

@@ -104,11 +104,13 @@ class EthernetInterfacesMixin(UtilsMixin):
                                         if not ("id" in ospf_key and "key" in ospf_key):
                                             continue
 
-                                        ospf_keys.append({
-                                            "id": ospf_key["id"],
-                                            "hash_algorithm": ospf_key.get("hash_algorithm", "sha512"),
-                                            "key": ospf_key["key"],
-                                        })
+                                        ospf_keys.append(
+                                            {
+                                                "id": ospf_key["id"],
+                                                "hash_algorithm": ospf_key.get("hash_algorithm", "sha512"),
+                                                "key": ospf_key["key"],
+                                            }
+                                        )
 
                                     if ospf_keys:
                                         interface["ospf_authentication"] = ospf_authentication
@@ -206,9 +208,7 @@ class EthernetInterfacesMixin(UtilsMixin):
 
         if ethernet_interfaces:
             for eth_name, eth_val in ethernet_interfaces.items():
-                ethernet_interfaces_lists.append(
-                    {"name":eth_name, **eth_val}
-                )
+                ethernet_interfaces_lists.append({"name": eth_name, **eth_val})
 
             return ethernet_interfaces_lists
 

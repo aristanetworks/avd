@@ -121,15 +121,9 @@ class EthernetInterfacesMixin(UtilsMixin):
             interface_name = link["interface"]
             ethernet_interfaces[interface_name] = ethernet_interface
 
-        # if ethernet_interfaces:
-        #     return ethernet_interfaces
-
         if ethernet_interfaces:
             for eth_name, eth_val in ethernet_interfaces.items():
-                ethernet_interfaces_lists.append(
-                    {"name":eth_name, **eth_val}
-                )
+                ethernet_interfaces_lists.append({"name": eth_name, **eth_val})
             return ethernet_interfaces_lists
-
 
         return None
