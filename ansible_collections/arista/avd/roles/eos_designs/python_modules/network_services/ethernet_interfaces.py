@@ -17,7 +17,7 @@ class EthernetInterfacesMixin(UtilsMixin):
     """
 
     @cached_property
-    def ethernet_interfaces(self) -> dict | None:
+    def ethernet_interfaces(self) -> list | None:
         """
         Return structured config for ethernet_interfaces
 
@@ -30,6 +30,7 @@ class EthernetInterfacesMixin(UtilsMixin):
         # Using temp variables to keep the order of interfaces from Jinja
         ethernet_interfaces = {}
         subif_parent_interface_names = set()
+        ethernet_interfaces_lists = []
 
         if self._network_services_l3:
             for tenant in self._filtered_tenants:
@@ -203,8 +204,6 @@ class EthernetInterfacesMixin(UtilsMixin):
                     "shutdown": False,
                 }
 
-
-        ethernet_interfaces_lists = []
         if ethernet_interfaces:
             for eth_name, eth_val in ethernet_interfaces.items():
                 ethernet_interfaces_lists.append(

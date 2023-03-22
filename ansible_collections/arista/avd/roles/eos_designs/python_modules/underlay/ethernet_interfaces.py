@@ -20,6 +20,7 @@ class EthernetInterfacesMixin(UtilsMixin):
         Return structured config for ethernet_interfaces
         """
         ethernet_interfaces = {}
+        ethernet_interfaces_lists = []
         for link in self._underlay_links:
             # common values
             ethernet_interface = {
@@ -122,8 +123,7 @@ class EthernetInterfacesMixin(UtilsMixin):
 
         # if ethernet_interfaces:
         #     return ethernet_interfaces
-        
-        ethernet_interfaces_lists = []
+
         if ethernet_interfaces:
             for eth_name, eth_val in ethernet_interfaces.items():
                 ethernet_interfaces_lists.append(
