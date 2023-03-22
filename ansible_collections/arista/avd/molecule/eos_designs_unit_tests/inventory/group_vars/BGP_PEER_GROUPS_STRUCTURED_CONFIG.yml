@@ -23,7 +23,6 @@ node_type_keys:
       l1: true
       l2: true
       l3: true
-    mpls_ler: true
     default_overlay_routing_protocol: ibgp
     default_underlay_routing_protocol: isis-sr
     default_overlay_address_families: [ evpn ]
