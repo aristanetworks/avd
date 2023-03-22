@@ -92,80 +92,48 @@
     "node_type": {
       "type": "object",
       "properties": {
-        "node_groups": {
-          "type": "array",
-          "items": {
-            "$ref": "#/keys/node_type/keys/defaults",
-            "type": "object",
-            "properties": {
-              "group": {
-                "type": "string",
-                "description": "The Node Group Name is used for MLAG domain",
-                "title": "Group"
-              },
-              "nodes": {
-                "$ref": "#/keys/node_type/keys/nodes",
-                "title": "Nodes"
-              }
-            },
-            "required": [
-              "group"
-            ],
-            "additionalProperties": false
-          },
-          "title": "Node Groups"
-        },
-        "nodes": {
-          "type": "array",
-          "items": {
-            "$ref": "#/keys/node_type/keys/defaults",
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "The Node Name is used as \"hostname\"",
-                "title": "Name"
-              },
-              "mac_address": {
-                "type": "string",
-                "description": "`mac_address` can only be set under the node and is used by the `arista.avd.dhcp_provisioner` role",
-                "title": "MAC Address"
-              }
-            },
-            "required": [
-              "name"
-            ],
-            "additionalProperties": false
-          },
-          "title": "Nodes"
-        },
         "defaults": {
           "type": "object",
           "properties": {
             "id": {
-              "description": "Unique identifier used for IP addressing and other algorithms",
+              "description": "Unique identifier used for IP addressing and other algorithms.",
               "type": "integer",
               "title": "ID"
             },
-            "mgmt_ip": {
-              "description": "Management Interface IP Address",
-              "type": "string",
-              "title": "Mgmt IP"
-            },
             "platform": {
-              "description": "Arista platform family",
+              "description": "Arista platform family.",
               "type": "string",
               "title": "Platform"
             },
-            "mgmt_interface": {
-              "description": "Management Interface Name\nDefault -> platform_management_interface -> mgmt_interface -> \"Management1\"\n",
+            "mac_address": {
               "type": "string",
-              "title": "Mgmt Interface"
+              "description": "`mac_address` can be leverage to document management mac address for use with DHCP provisioning roles",
+              "title": "MAC Address"
+            },
+            "system_mac_address": {
+              "type": "string",
+              "description": "System MAC Address in this following format: \"xx:xx:xx:xx:xx:xx\"\nSet to the same MAC address as available in \"show version\" on the device.\n\"system_mac_address\" can also be set directly as a hostvar.\nIf both are set, the setting under \"Fabric Topology\" takes precedence.\n",
+              "title": "System MAC Address"
             },
             "rack": {
-              "description": "Rack that the switch is located in (only used in snmp_settings location)",
+              "description": "Rack that the switch is located in (only used in snmp_settings location).",
               "type": "string",
               "title": "Rack"
+            },
+            "mgmt_ip": {
+              "description": "Node management interface IPv4 address.",
+              "type": "string",
+              "title": "Mgmt IP"
+            },
+            "ipv6_mgmt_ip": {
+              "description": "Node management interface IPv6 address.",
+              "type": "string",
+              "title": "IPv6 Mgmt IP"
+            },
+            "mgmt_interface": {
+              "description": "Management Interface Name.\nDefault -> platform_management_interface -> mgmt_interface -> \"Management1\".\n",
+              "type": "string",
+              "title": "Mgmt Interface"
             },
             "link_tracking": {
               "description": "This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.\nUseful in EVPN multhoming designs.\n",
@@ -189,14 +157,14 @@
                     "properties": {
                       "name": {
                         "type": "string",
-                        "description": "Tracking group name",
+                        "description": "Tracking group name.",
                         "title": "Name"
                       },
                       "recovery_delay": {
                         "type": "integer",
                         "minimum": 0,
                         "maximum": 3600,
-                        "description": "default -> platform_settings_mlag_reload_delay -> 300",
+                        "description": "default -> platform_settings_mlag_reload_delay -> 300.",
                         "title": "Recovery Delay"
                       },
                       "links_minimum": {
@@ -230,7 +198,7 @@
                   "title": "Size"
                 },
                 "offset": {
-                  "description": "Offset is used to avoid overlapping port-id ranges of different switches\nUseful when a \"connected-endpoint\" is connected to switches in different \"node_groups\".\n",
+                  "description": "Offset is used to avoid overlapping port-id ranges of different switches.\nUseful when a \"connected-endpoint\" is connected to switches in different \"node_groups\".\n",
                   "type": "integer",
                   "default": 0,
                   "title": "Offset"
@@ -240,22 +208,22 @@
               "title": "LACP Port ID Range"
             },
             "raw_eos_cli": {
-              "description": "EOS CLI rendered directly on the root level of the final EOS configuration",
+              "description": "EOS CLI rendered directly on the root level of the final EOS configuration.",
               "type": "string",
               "title": "Raw EOS CLI"
             },
             "structured_config": {
-              "description": "Custom structured config for eos_cli_config_gen",
+              "description": "Custom structured config for eos_cli_config_gen.",
               "type": "object",
               "title": "Structured Config"
             },
             "uplink_ipv4_pool": {
-              "description": "IPv4 subnet to use to connect to uplink switches",
+              "description": "IPv4 subnet to use to connect to uplink switches.",
               "type": "string",
               "title": "Uplink IPv4 Pool"
             },
             "uplink_interfaces": {
-              "description": "Local uplink interfaces\nIf uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.\nPlease note that default_interfaces are not defined by default - you should define these yourself.\n",
+              "description": "Local uplink interfaces\nEach list item supports range syntax that can be expanded into a list of interfaces.\nIf uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.\nPlease note that default_interfaces are not defined by default, you should define these yourself.\n",
               "type": "array",
               "items": {
                 "type": "string",
@@ -263,13 +231,27 @@
               },
               "title": "Uplink Interfaces"
             },
+            "uplink_switch_interfaces": {
+              "description": "Interfaces located on uplink switches",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "Ethernet[\\d/]+"
+              },
+              "title": "Uplink Switch Interfaces"
+            },
             "uplink_switches": {
               "type": "array",
               "items": {
                 "type": "string",
-                "description": "Hostname of uplink switch\nIf parallel uplinks are in use, update max_parallel_uplinks below and specify each uplink switch multiple times\ne.g. uplink_switches: [ 'DC1-SPINE1', 'DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE2' ]\n"
+                "description": "Hostname of uplink switch.\nIf parallel uplinks are in use, update max_parallel_uplinks below and specify each uplink switch multiple times.\ne.g. uplink_switches: [ 'DC1-SPINE1', 'DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE2' ].\n"
               },
               "title": "Uplink Switches"
+            },
+            "uplink_interface_speed": {
+              "description": "Point-to-Point interface speed - will apply to uplinks on both ends\n< interface_speed or forced interface_speed or auto interface_speed >\n",
+              "type": "string",
+              "title": "Uplink Interface Speed"
             },
             "max_uplink_switches": {
               "type": "integer",
@@ -280,6 +262,19 @@
               "type": "integer",
               "description": "Number of parallel links towards uplink switches\nChanging this value may change interface naming on uplinks (and corresponding downlinks)\nCan be used to reserve interfaces for future parallel uplinks\n",
               "title": "Max Parallel Uplinks"
+            },
+            "uplink_bfd": {
+              "type": "boolean",
+              "default": false,
+              "description": "Enable bfd on uplink interfaces.",
+              "title": "Uplink BFD"
+            },
+            "uplink_native_vlan": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 4094,
+              "description": "Only applicable to switches with layer-2 port-channel uplinks.\nA suspended (disabled) vlan will be created in both ends of the link unless the vlan is defined under network services.\nBy default the uplink will not have a native_vlan configured, so EOS defaults to vlan 1.\n",
+              "title": "Uplink Native VLAN"
             },
             "uplink_ptp": {
               "description": "Enable PTP on all infrastructure links",
@@ -306,19 +301,25 @@
               "additionalProperties": false,
               "title": "Uplink Macsec"
             },
-            "uplink_interface_speed": {
-              "description": "Point-to-Point interface speed - will apply to uplinks on both ends\n< interface_speed or forced interface_speed or auto interface_speed >\n",
-              "type": "string",
-              "title": "Uplink Interface Speed"
+            "uplink_structured_config": {
+              "type": "object",
+              "description": "Custom structured config applied to \"uplink_interfaces\", and \"uplink_switch_interfaces\"\nWhen uplink_type == \"p2p\", custom structured config added under ethernet_interfaces.<interface> for eos_cli_config_gen overrides the settings on the ethernet interface level.\nWhen uplink_type == \"port-channel\", custom structured config added under port_channel_interfaces.<interface> for eos_cli_config_gen overrides the settings on the port-channel interface level.\n\"uplink_structured_config\" is applied after \"structured_config\", so it can override \"structured_config\" defined on node-level.\n",
+              "title": "Uplink Structured Config"
             },
-            "uplink_switch_interfaces": {
-              "description": "Interfaces located on uplink switches",
-              "type": "array",
-              "items": {
-                "type": "string",
-                "pattern": "Ethernet[\\d/]+"
-              },
-              "title": "Uplink Switch Interfaces"
+            "mlag_port_channel_structured_config": {
+              "type": "object",
+              "description": "Custom structured config applied to MLAG peer link port-channel id.\nAdded under port_channel_interfaces.<interface> for eos_cli_config_gen.\nOverrides the settings on the port-channel interface level.\n\"mlag_port_channel_structured_config\" is applied after \"structured_config\", so it can override \"structured_config\" defined on node-level.\n",
+              "title": "MLAG Port Channel Structured Config"
+            },
+            "mlag_peer_vlan_structured_config": {
+              "type": "object",
+              "description": "Custom structured config applied to MLAG Peer Link (control link) SVI interface id.\nAdded under vlan_interfaces.<interface> for eos_cli_config_gen.\nOverrides the settings on the vlan interface level.\n\"mlag_peer_vlan_structured_config\" is applied after \"structured_config\", so it can override \"structured_config\" defined on node-level.\n",
+              "title": "MLAG Peer VLAN Structured Config"
+            },
+            "mlag_peer_l3_vlan_structured_config": {
+              "type": "object",
+              "description": "Custom structured config applied to MLAG underlay L3 peering SVI interface id.\nAdded under vlan_interfaces.<interface> for eos_cli_config_gen.\nOverrides the settings on the vlan interface level.\n\"mlag_peer_l3_vlan_structured_config\" is applied after \"structured_config\", so it can override \"structured_config\" defined on node-level.\n",
+              "title": "MLAG Peer L3 VLAN Structured Config"
             },
             "short_esi": {
               "description": "short_esi only valid for l2leaf devices using port-channel uplink\nSetting short_esi to \"auto\" generates the short_esi automatically using a hash of configuration elements.\n< 0000:0000:0000 | auto >\n",
@@ -630,17 +631,16 @@
               "title": "MLAG"
             },
             "mlag_dual_primary_detection": {
-              "description": "Enable / Disable MLAG dual primary detection",
+              "description": "Enable / Disable MLAG dual primary detection.",
               "type": "boolean",
               "default": false,
               "title": "MLAG Dual Primary Detection"
             },
             "mlag_interfaces": {
-              "description": "Required when MLAG leafs are present in the topology",
+              "description": "Each list item supports range syntax that can be expanded into a list of interfaces.\nRequired when MLAG leafs are present in the topology.\n",
               "type": "array",
               "items": {
-                "type": "string",
-                "pattern": "Ethernet[\\d/]+"
+                "type": "string"
               },
               "title": "MLAG Interfaces"
             },
@@ -720,10 +720,302 @@
               "type": "integer",
               "default": 4092,
               "title": "Inband Management VLAN"
+            },
+            "mpls_overlay_role": {
+              "type": "string",
+              "enum": [
+                "client",
+                "server",
+                "none"
+              ],
+              "description": "Set the default mpls overlay role.\nActing role in overlay control plane.\n",
+              "title": "MPLS Overlay Role"
+            },
+            "overlay_address_families": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "evpn",
+                  "vpn-ipv4",
+                  "vpn-ipv6"
+                ]
+              },
+              "description": "Set the default overlay address families.\n",
+              "title": "Overlay Address Families"
+            },
+            "mpls_route_reflectors": {
+              "type": "array",
+              "description": "List of inventory hostname acting as MPLS route-reflectors.",
+              "items": {
+                "type": "string",
+                "description": "Inventory_hostname_of_mpls_route_reflectors."
+              },
+              "title": "MPLS Route Reflectors"
+            },
+            "bgp_cluster_id": {
+              "type": "string",
+              "description": "Set BGP cluster id.",
+              "title": "BGP Cluster ID"
+            },
+            "ptp": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "Enabled"
+                },
+                "profile": {
+                  "type": "string",
+                  "enum": [
+                    "aes67",
+                    "smpte2059-2",
+                    "aes67-r16-2016"
+                  ],
+                  "default": "aes67-r16-2016",
+                  "title": "Profile"
+                },
+                "domain": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 255,
+                  "default": 127,
+                  "title": "Domain"
+                },
+                "priority1": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 255,
+                  "description": "default -> automatically set based on node_type\n",
+                  "title": "Priority1"
+                },
+                "priority2": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 255,
+                  "description": "default -> (node_id modulus 256)\n",
+                  "title": "Priority2"
+                },
+                "auto_clock_identity": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "If you prefer to have PTP clock identity be the system MAC-address of the switch, which is the default EOS behaviour, simply disable the automatic PTP clock identity.\ndefault -> (clock_identity_prefix = 00:1C:73 (default)) + (PTP priority 1 as HEX) + \":00:\" + (PTP priority 2 as HEX).\n",
+                  "title": "Auto Clock Identity"
+                },
+                "clock_identity_prefix": {
+                  "type": "string",
+                  "description": "PTP clock idetentiy 3-byte prefix. i.e. \"01:02:03\".\nBy default the 3-byte prefix is \"00:1C:73\".\nThis can be overridden if auto_clock_identity is set to true (which is the default).\n",
+                  "title": "Clock Identity Prefix"
+                },
+                "clock_identity": {
+                  "type": "string",
+                  "description": "Set PTP clock identity manually. 6-byte value i.e. \"01:02:03:04:05:06\".\n",
+                  "title": "Clock Identity"
+                },
+                "source_ip": {
+                  "type": "string",
+                  "description": "By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.\nThis can be set manually if required, for example, to a value of 10.1.2.3\n",
+                  "title": "Source IP"
+                },
+                "ttl": {
+                  "type": "integer",
+                  "title": "TTL"
+                },
+                "forward_unicast": {
+                  "type": "boolean",
+                  "default": false,
+                  "description": "Enable PTP unicast forwarding\n",
+                  "title": "Forward Unicast"
+                },
+                "dscp": {
+                  "type": "object",
+                  "properties": {
+                    "general_messages": {
+                      "type": "integer",
+                      "title": "General Messages"
+                    },
+                    "event_messages": {
+                      "type": "integer",
+                      "title": "Event Messages"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "DSCP"
+                },
+                "monitor": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "default": true,
+                      "title": "Enabled"
+                    },
+                    "threshold": {
+                      "type": "object",
+                      "properties": {
+                        "offset_from_master": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 1000000000,
+                          "default": 250,
+                          "title": "Offset From Master"
+                        },
+                        "mean_path_delay": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 1000000000,
+                          "default": 1500,
+                          "title": "Mean Path Delay"
+                        },
+                        "drop": {
+                          "type": "object",
+                          "properties": {
+                            "offset_from_master": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 1000000000,
+                              "title": "Offset From Master"
+                            },
+                            "mean_path_delay": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 1000000000,
+                              "title": "Mean Path Delay"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "title": "Drop"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "title": "Threshold"
+                    },
+                    "missing_message": {
+                      "type": "object",
+                      "properties": {
+                        "intervals": {
+                          "type": "object",
+                          "properties": {
+                            "announce": {
+                              "type": "integer",
+                              "minimum": 2,
+                              "maximum": 255,
+                              "title": "Announce"
+                            },
+                            "follow_up": {
+                              "type": "integer",
+                              "minimum": 2,
+                              "maximum": 255,
+                              "title": "Follow Up"
+                            },
+                            "sync": {
+                              "type": "integer",
+                              "minimum": 2,
+                              "maximum": 255,
+                              "title": "Sync"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "title": "Intervals"
+                        },
+                        "sequence_ids": {
+                          "type": "object",
+                          "properties": {
+                            "enabled": {
+                              "type": "boolean",
+                              "default": true,
+                              "title": "Enabled"
+                            },
+                            "announce": {
+                              "type": "integer",
+                              "minimum": 2,
+                              "maximum": 255,
+                              "default": 3,
+                              "title": "Announce"
+                            },
+                            "delay_resp": {
+                              "type": "integer",
+                              "minimum": 2,
+                              "maximum": 255,
+                              "default": 3,
+                              "title": "Delay Resp"
+                            },
+                            "follow_up": {
+                              "type": "integer",
+                              "minimum": 2,
+                              "maximum": 255,
+                              "default": 3,
+                              "title": "Follow Up"
+                            },
+                            "sync": {
+                              "type": "integer",
+                              "minimum": 2,
+                              "maximum": 255,
+                              "default": 3,
+                              "title": "Sync"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "title": "Sequence IDs"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "title": "Missing Message"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "Monitor"
+                }
+              },
+              "additionalProperties": false,
+              "title": "PTP"
             }
           },
           "additionalProperties": false,
           "title": "Defaults"
+        },
+        "node_groups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/keys/node_type/keys/defaults",
+            "type": "object",
+            "properties": {
+              "group": {
+                "type": "string",
+                "description": "The Node Group Name is used for MLAG domain.",
+                "title": "Group"
+              },
+              "nodes": {
+                "$ref": "#/keys/node_type/keys/nodes",
+                "title": "Nodes"
+              }
+            },
+            "required": [
+              "group"
+            ],
+            "additionalProperties": false
+          },
+          "title": "Node Groups"
+        },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/keys/node_type/keys/defaults",
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "The Node Name is used as \"hostname\".",
+                "title": "Name"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          "title": "Nodes"
         }
       },
       "additionalProperties": false,
@@ -731,7 +1023,7 @@
     },
     "node_type_keys": {
       "type": "array",
-      "description": "Define Node Type Keys, to specify the properties of each node type in the fabric\nThis allows for complete customization of the fabric layout.\nThis should be defined in top level group_var for the fabric.\n",
+      "description": "Define Node Type Keys, to specify the properties of each node type in the fabric.\nThis allows for complete customization of the fabric layout.\nThis should be defined in top level group_var for the fabric.\n",
       "items": {
         "type": "object",
         "properties": {
@@ -741,13 +1033,13 @@
           },
           "type": {
             "type": "string",
-            "description": "Type value matching this node_type_key",
+            "description": "Type value matching this node_type_key.",
             "title": "Type"
           },
           "connected_endpoints": {
             "type": "boolean",
             "default": false,
-            "description": "Are endpoints connected to this node type",
+            "description": "Are endpoints connected to this node type.",
             "title": "Connected Endpoints"
           },
           "default_evpn_role": {
@@ -761,22 +1053,90 @@
             "description": "Default evpn_role. Can be overridden in topology vars.",
             "title": "Default EVPN Role"
           },
+          "default_ptp_priority1": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 255,
+            "default": 127,
+            "description": "Default PTP priority 1",
+            "title": "Default PTP Priority1"
+          },
           "default_underlay_routing_protocol": {
             "type": "string",
             "default": "ebgp",
-            "description": "Set the default underlay routing_protocol.\nCan be overridden by setting \"underlay_routing_protocol\" host/group_vars\n",
+            "enum": [
+              "ebgp",
+              "ibgp",
+              "ospf",
+              "ospf-ldp",
+              "isis",
+              "isis-sr",
+              "isis-ldp",
+              "isis-sr-ldp",
+              "none"
+            ],
+            "description": "Set the default underlay routing_protocol.\nCan be overridden by setting \"underlay_routing_protocol\" host/group_vars.\n",
             "title": "Default Underlay Routing Protocol"
+          },
+          "default_overlay_routing_protocol": {
+            "type": "string",
+            "default": "ebgp",
+            "enum": [
+              "ebgp",
+              "ibgp",
+              "none"
+            ],
+            "description": "Set the default overlay routing_protocol.\nCan be overridden by setting \"overlay_routing_protocol\" host/group_vars.\n",
+            "title": "Default Overlay Routing Protocol"
+          },
+          "default_mpls_overlay_role": {
+            "type": "string",
+            "enum": [
+              "client",
+              "server",
+              "none"
+            ],
+            "description": "Set the default mpls overlay role.\nActing role in overlay control plane.\n",
+            "title": "Default MPLS Overlay Role"
+          },
+          "default_overlay_address_families": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "evpn",
+                "vpn-ipv4",
+                "vpn-ipv6"
+              ]
+            },
+            "description": "Set the default overlay address families.\n",
+            "title": "Default Overlay Address Families"
+          },
+          "default_evpn_encapsulation": {
+            "type": "string",
+            "enum": [
+              "mpls",
+              "vxlan"
+            ],
+            "description": "Set the default evpn encapsulation.\n",
+            "title": "Default EVPN Encapsulation"
           },
           "mlag_support": {
             "type": "boolean",
             "default": false,
-            "description": "Can this node type support mlag",
+            "description": "Can this node type support mlag.",
             "title": "MLAG Support"
           },
           "network_services": {
-            "description": "Will network services be deployed on this node type",
+            "description": "Will network services be deployed on this node type.",
             "type": "object",
             "properties": {
+              "l1": {
+                "type": "boolean",
+                "default": false,
+                "description": "??",
+                "title": "L1"
+              },
               "l2": {
                 "type": "boolean",
                 "default": false,
@@ -786,7 +1146,7 @@
               "l3": {
                 "type": "boolean",
                 "default": false,
-                "description": "VRFs, SVIs (if l2 is true)\nOnly supported with underlay_router\n",
+                "description": "VRFs, SVIs (if l2 is true).\nOnly supported with underlay_router.\n",
                 "title": "L3"
               }
             },
@@ -796,7 +1156,7 @@
           "underlay_router": {
             "type": "boolean",
             "default": true,
-            "description": "Is this node type a L3 device",
+            "description": "Is this node type a L3 device.",
             "title": "Underlay Router"
           },
           "uplink_type": {
@@ -812,62 +1172,77 @@
           "vtep": {
             "type": "boolean",
             "default": false,
-            "description": "Is this switch an EVPN VTEP",
+            "description": "Is this switch an EVPN VTEP.",
             "title": "Vtep"
           },
           "mpls_lsr": {
             "type": "boolean",
             "default": false,
-            "description": "Is this switch an MPLS LSR",
+            "description": "Is this switch an MPLS LSR.",
             "title": "MPLS Lsr"
           },
           "ip_addressing": {
             "type": "object",
-            "description": "Override ip_addressing templates",
+            "description": "Override ip_addressing templates.",
             "properties": {
               "router_id": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.ip_addressing.router_id",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.router_id.",
                 "title": "Router ID"
+              },
+              "router_id_ipv6": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.router_id_ipv6.",
+                "title": "Router ID IPv6"
               },
               "mlag_ip_primary": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_ip_primary",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_ip_primary.",
                 "title": "MLAG IP Primary"
               },
               "mlag_ip_secondary": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_ip_secondary",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_ip_secondary.",
                 "title": "MLAG IP Secondary"
               },
               "mlag_l3_ip_primary": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_l3_ip_primary",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_l3_ip_primary.",
                 "title": "MLAG L3 IP Primary"
               },
               "mlag_l3_ip_secondary": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_l3_ip_secondary",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_l3_ip_secondary.",
                 "title": "MLAG L3 IP Secondary"
+              },
+              "mlag_ibgp_peering_ip_primary": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_ibgp_peering_ip_primary.",
+                "title": "MLAG Ibgp Peering IP Primary"
+              },
+              "mlag_ibgp_peering_ip_secondary": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_ibgp_peering_ip_secondary.",
+                "title": "MLAG Ibgp Peering IP Secondary"
               },
               "p2p_uplinks_ip": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.ip_addressing.p2p_uplinks_ip",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.p2p_uplinks_ip.",
                 "title": "P2P Uplinks IP"
               },
               "p2p_uplinks_peer_ip": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.ip_addressing.p2p_uplinks_peer_ip",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.p2p_uplinks_peer_ip.",
                 "title": "P2P Uplinks Peer IP"
               },
               "vtep_ip_mlag": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.ip_addressing.vtep_ip_mlag",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.vtep_ip_mlag.",
                 "title": "Vtep IP MLAG"
               },
               "vtep_ip": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.ip_addressing.vtep_ip",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.vtep_ip.",
                 "title": "Vtep IP"
               }
             },
@@ -876,46 +1251,46 @@
           },
           "interface_descriptions": {
             "type": "object",
-            "description": "Override interface_descriptions templates\nIf description templates use Jinja2, they have to strip whitespaces using {%- -%} on any code blocks\n",
+            "description": "Override interface_descriptions templates\nIf description templates use Jinja2, they have to strip whitespaces using {%- -%} on any code blocks.\n",
             "properties": {
               "underlay_ethernet_interfaces": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.interface_descriptions.underlay_ethernet_interfaces",
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.underlay_ethernet_interfaces.",
                 "title": "Underlay Ethernet Interfaces"
               },
               "underlay_port_channel_interfaces": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.interface_descriptions.underlay_port_channel_interfaces",
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.underlay_port_channel_interfaces.",
                 "title": "Underlay Port Channel Interfaces"
               },
-              "underlay_ethernet_mlag_interfaces": {
+              "mlag_ethernet_interfaces": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.interface_descriptions.underlay_ethernet_mlag_interfaces",
-                "title": "Underlay Ethernet MLAG Interfaces"
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.mlag_ethernet_interfaces.",
+                "title": "MLAG Ethernet Interfaces"
               },
-              "underlay_port_channel_mlag_interfaces": {
+              "mlag_port_channel_interfaces": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.interface_descriptions.underlay_port_channel_mlag_interfaces",
-                "title": "Underlay Port Channel MLAG Interfaces"
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.mlag_port_channel_interfaces.",
+                "title": "MLAG Port Channel Interfaces"
               },
               "connected_endpoints_ethernet_interfaces": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_ethernet_interfaces",
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_ethernet_interfaces.",
                 "title": "Connected Endpoints Ethernet Interfaces"
               },
               "connected_endpoints_port_channel_interfaces": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_port_channel_interfaces",
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_port_channel_interfaces.",
                 "title": "Connected Endpoints Port Channel Interfaces"
               },
               "overlay_loopback_interface": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.interface_descriptions.overlay_loopback_interface",
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.overlay_loopback_interface.",
                 "title": "Overlay Loopback Interface"
               },
               "vtep_loopback_interface": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.interface_descriptions.vtep_loopback_interface",
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.vtep_loopback_interface.",
                 "title": "Vtep Loopback Interface"
               }
             },
@@ -932,12 +1307,9 @@
     },
     "type": {
       "type": "string",
-      "description": "The `type:` variable needs to be defined for each device in the fabric.\nThis is leveraged to load the appropriate template to generate the configuration.\n",
+      "description": "The `type:` variable needs to be defined for each device in the fabric.\nThis is leveraged to load the appropriate template to generate the configuration.",
       "title": "Type"
     }
   },
-  "required": [
-    "type"
-  ],
   "additionalProperties": true
 }
