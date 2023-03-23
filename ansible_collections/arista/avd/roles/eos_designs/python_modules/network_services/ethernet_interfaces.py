@@ -30,7 +30,7 @@ class EthernetInterfacesMixin(UtilsMixin):
         # Using temp variables to keep the order of interfaces from Jinja
         ethernet_interfaces = {}
         subif_parent_interface_names = set()
-        ethernet_interfaces_lists = []
+        ethernet_interfaces_list = []
 
         if self._network_services_l3:
             for tenant in self._filtered_tenants:
@@ -208,8 +208,8 @@ class EthernetInterfacesMixin(UtilsMixin):
 
         if ethernet_interfaces:
             for eth_name, eth_val in ethernet_interfaces.items():
-                ethernet_interfaces_lists.append({"name": eth_name, **eth_val})
+                ethernet_interfaces_list.append({"name": eth_name, **eth_val})
 
-            return ethernet_interfaces_lists
+            return ethernet_interfaces_list
 
         return None
