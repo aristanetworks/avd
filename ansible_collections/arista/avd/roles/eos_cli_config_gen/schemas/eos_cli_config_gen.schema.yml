@@ -647,6 +647,17 @@ keys:
                     default: '7'
               shutdown:
                 type: bool
+          vxlan:
+            type: dict
+            description: VXLAN Controller service
+            keys:
+              shutdown:
+                type: bool
+              vtep_mac_learning:
+                type: str
+                valid_values:
+                - control-plane
+                - data-plane
   daemon_terminattr:
     documentation_options:
       filename: data_model/Monitoring
@@ -10821,6 +10832,9 @@ keys:
               source_interface:
                 type: str
                 description: Source Interface Name
+              controller_client:
+                type: bool
+                description: Client to CVX Controllers
               mlag_source_interface:
                 type: str
               udp_port:
