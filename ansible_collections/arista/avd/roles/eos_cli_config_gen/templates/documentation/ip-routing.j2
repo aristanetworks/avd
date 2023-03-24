@@ -7,7 +7,7 @@
 
 | VRF | Routing Enabled | IPv6 Interfaces |
 | --- | --------------- | --------------- |
-| default | {{ ip_routing | arista.avd.default(false) }} |
+| default | {{ ip_routing | arista.avd.default(false) }} | {{ ip_routing_ipv6_interfaces | arista.avd.default(false) }} |
 {%     for vrf in vrfs | arista.avd.natural_sort('name') %}
 {%         set ip_routing = vrf.ip_routing | arista.avd.default("-") %}
 {%         set ipv6_interfaces = vrf.ip_routing_ipv6_interfaces | arista.avd.default(false) %}

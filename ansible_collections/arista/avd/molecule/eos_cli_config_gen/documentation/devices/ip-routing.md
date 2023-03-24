@@ -47,7 +47,7 @@ interface Management1
 
 | VRF | Routing Enabled | IPv6 Interfaces |
 | --- | --------------- | --------------- |
-| default | False |
+| default | False | True |
 | default | True | True |
 | TEST1 | True | False |
 | TEST2 | False | True |
@@ -80,8 +80,6 @@ no ip routing vrf TEST2
 ipv6 unicast-routing
 ip routing ipv6 interfaces
 ip routing ipv6 interfaces vrf TEST2
-!
-ipv6 unicast-routing vrf default
 ipv6 unicast-routing vrf TEST1
 no ipv6 icmp redirect
 ```
