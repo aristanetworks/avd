@@ -606,7 +606,7 @@ network_ports:
 ```
 
 This will generate the following config:
- 
+
 ```shell
 interface Port-Channel42
    description Multiple interfaces in the same port-channel
