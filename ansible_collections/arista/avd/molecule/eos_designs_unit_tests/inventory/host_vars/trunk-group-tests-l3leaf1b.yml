@@ -8,6 +8,7 @@ trunk_groups:
   mlag:
     name: "CUSTOM_MLAG_TG_NAME"
   mlag_l3:
-    name: "CUSTOM_LEAF_PEER_L3_TG_NAME"
+    # Testing using the same name on mlag & mlag_l3
+    name: "CUSTOM_MLAG_TG_NAME"
   uplink:
     name: "CUSTOM_UPLINK_TG_NAME"
