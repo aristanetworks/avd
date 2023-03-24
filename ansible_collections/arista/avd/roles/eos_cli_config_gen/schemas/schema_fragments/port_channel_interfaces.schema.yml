@@ -669,6 +669,12 @@ keys:
             sampled:
               type: str
               description: Flow tracker name
+        bgp:
+          type: dict
+          keys:
+            session_tracker:
+              type: str
+              description: Name of session tracker
         peer:
           type: str
           description: Key only used for documentation or validation purposes

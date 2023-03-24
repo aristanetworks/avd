@@ -2049,6 +2049,12 @@ keys:
             output:
               type: str
               description: Egress traffic policy
+        bgp:
+          type: dict
+          keys:
+            session_tracker:
+              type: str
+              description: Name of session tracker
         peer:
           type: str
           description: Key only used for documentation or validation purposes
@@ -5616,6 +5622,12 @@ keys:
             sampled:
               type: str
               description: Flow tracker name
+        bgp:
+          type: dict
+          keys:
+            session_tracker:
+              type: str
+              description: Name of session tracker
         peer:
           type: str
           description: Key only used for documentation or validation purposes
@@ -6644,6 +6656,8 @@ keys:
                 avoid conflicts.
 
                 '
+            session_tracker:
+              type: str
       neighbors:
         type: list
         primary_key: ip_address
@@ -6791,6 +6805,8 @@ keys:
                   type: bool
                 replace_as:
                   type: bool
+            session_tracker:
+              type: str
       neighbor_interfaces:
         type: list
         primary_key: name
@@ -7921,8 +7937,26 @@ keys:
                           type: str
             eos_cli:
               type: str
-              description: Multiline EOS CLI rendered directly on the Router BGP,
+              description: 'Multiline EOS CLI rendered directly on the Router BGP,
                 VRF definition in the final EOS configuration
+
+                '
+      session_trackers:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Name of session tracker
+            recovery_delay:
+              type: int
+              description: Recovery delay in seconds
+              convert_types:
+              - str
+              min: 1
+              max: 3600
   router_general:
     documentation_options:
       filename: data_model/Routing

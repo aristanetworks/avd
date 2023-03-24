@@ -23,6 +23,8 @@ ethernet_interfaces:
       interval: 500
       min_rx: 500
       multiplier: 5
+    bgp:
+      session_tracker: ST1
     eos_cli: |
       comment
       Comment created from eos_cli under ethernet_interfaces.Ethernet1
