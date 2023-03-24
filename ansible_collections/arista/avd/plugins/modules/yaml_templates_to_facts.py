@@ -33,7 +33,7 @@ options:
   schema_id:
     description: ID of Schema conforming to "AVD Meta Schema".  Either schema or schema_id must be set.
     required: false
-    type: dict
+    type: str
     choices: [ "eos_cli_config_gen", "eos_designs" ]
   templates:
     description: List of dicts for Jinja templates to be run.
