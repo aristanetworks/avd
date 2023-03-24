@@ -30,9 +30,9 @@ class EthernetInterfacesMixin(UtilsMixin):
                     if node_name != self._hostname:
                         continue
 
-                    ethernet_interface_name = adapter["switch_ports"][node_index]
+                    # ethernet_interface_name = adapter["switch_ports"][node_index]
                     ethernet_interface = self._get_ethernet_interface_cfg(adapter, node_index, connected_endpoint)
-                    ethernet_interfaces.append({"name": ethernet_interface_name, **ethernet_interface})
+                    ethernet_interfaces.append(ethernet_interface)
 
         for network_port in self._filtered_network_ports:
             connected_endpoint = {
@@ -49,7 +49,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                     network_port,
                 )
                 ethernet_interface = self._get_ethernet_interface_cfg(tmp_network_port, 0, connected_endpoint)
-                ethernet_interfaces.append({"name": ethernet_interface_name, **ethernet_interface})
+                ethernet_interfaces.append(ethernet_interface)
 
         if ethernet_interfaces:
             return ethernet_interfaces
@@ -74,6 +74,7 @@ class EthernetInterfacesMixin(UtilsMixin):
         # Common ethernet_interface settings
         # TODO: avoid generating redundant structured config for port-channel members
         ethernet_interface = {
+            "name": adapter["switch_ports"][node_index],
             "peer": peer,
             "peer_interface": peer_interface,
             "peer_type": connected_endpoint["type"],

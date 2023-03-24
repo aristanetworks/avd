@@ -26,8 +26,8 @@ class EthernetInterfacesMixin(UtilsMixin):
                 # Remove None values
                 ethernet_interface = {key: value for key, value in ethernet_interface.items() if value is not None}
 
-                interface_name = p2p_link["data"]["interface"]
-                ethernet_interfaces.append({"name": interface_name, **ethernet_interface})
+                # interface_name = p2p_link["data"]["interface"]
+                ethernet_interfaces.append(ethernet_interface)
                 continue
 
             # Port-Channel members

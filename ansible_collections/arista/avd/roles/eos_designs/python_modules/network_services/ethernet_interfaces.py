@@ -28,9 +28,9 @@ class EthernetInterfacesMixin(UtilsMixin):
             return None
 
         # Using temp variables to keep the order of interfaces from Jinja
-        ethernet_interfaces = {}
+        ethernet_interfaces = []
         subif_parent_interface_names = set()
-        ethernet_interfaces_list = []
+        interface_names = []
 
         if self._network_services_l3:
             for tenant in self._filtered_tenants:
@@ -60,6 +60,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                             else:
                                 interface_description = l3_interface.get("description")
                             interface = {
+                                "name": interface_name,
                                 "peer_type": "l3_interface",
                                 "ip_address": l3_interface["ip_addresses"][node_index],
                                 "mtu": l3_interface.get("mtu"),
@@ -134,7 +135,14 @@ class EthernetInterfacesMixin(UtilsMixin):
                             # Strip None values from vlan before adding to list
                             interface = {key: value for key, value in interface.items() if value is not None}
 
-                            ethernet_interfaces[interface_name] = interface
+                            # ethernet_interfaces[interface_name] = interface
+                            if interface_name in interface_names:
+                                for idx, eth_int in enumerate(ethernet_interfaces):
+                                    if eth_int["name"] == interface_name:
+                                        ethernet_interfaces[idx] = interface
+                            else:
+                                ethernet_interfaces.append(interface)
+                                interface_names.append(interface_name)
 
         if self._network_services_l1:
             for tenant in self._filtered_tenants:
@@ -155,21 +163,31 @@ class EthernetInterfacesMixin(UtilsMixin):
                                 first_interface_index = list(endpoint["nodes"]).index(self._hostname)
                                 first_interface_name = endpoint["interfaces"][first_interface_index]
                                 channel_group_id = int("".join(re.findall(r"\d", first_interface_name)))
-                                ethernet_interfaces[interface_name] = {
+                                ethernet_interface = {
+                                    "name": interface_name,
                                     "shutdown": False,
                                     "channel_group": {
                                         "id": channel_group_id,
                                         "mode": port_channel_mode,
                                     },
                                 }
+                                if interface_name in interface_names:
+                                    for idx, eth_int in enumerate(ethernet_interfaces):
+                                        if eth_int["name"] == interface_name:
+                                            ethernet_interfaces[idx].update(ethernet_interface)
+                                else:
+                                    ethernet_interfaces.append(ethernet_interface)
+                                    interface_names.append(interface_name)
+
                                 continue
 
                             if subifs:
                                 # This is a subinterface so we need to ensure that the parent is created
                                 subif_parent_interface_names.add(interface_name)
                                 for subif in subifs:
-                                    key = f"{interface_name}.{subif['number']}"
-                                    ethernet_interfaces[key] = {
+                                    subif_name = f"{interface_name}.{subif['number']}"
+                                    ethernet_interface = {
+                                        "name": subif_name,
                                         "type": "l2dot1q",
                                         "encapsulation_vlan": {
                                             "client": {
@@ -184,8 +202,16 @@ class EthernetInterfacesMixin(UtilsMixin):
                                         "peer_type": "l3_interface",
                                         "shutdown": False,
                                     }
+                                    if subif_name in interface_names:
+                                        for idx, eth_int in enumerate(ethernet_interfaces):
+                                            if eth_int["name"] == subif_name:
+                                                ethernet_interfaces[idx].update(ethernet_interface)
+                                    else:
+                                        ethernet_interfaces.append(ethernet_interface)
+                                        interface_names.append(subif_name)
                             else:
                                 interface = {
+                                    "name": interface_name,
                                     "type": "routed",
                                     "peer_type": "l3_interface",
                                     "shutdown": False,
@@ -195,21 +221,30 @@ class EthernetInterfacesMixin(UtilsMixin):
                                         "transmit": False,
                                         "receive": False,
                                     }
-                                ethernet_interfaces[interface_name] = interface
+                                if interface_name in interface_names:
+                                    for idx, eth_int in enumerate(ethernet_interfaces):
+                                        if eth_int["name"] == interface_name:
+                                            ethernet_interfaces[idx] = interface
+                                else:
+                                    ethernet_interfaces.append(interface)
+                                    interface_names.append(interface_name)
+                                # ethernet_interfaces[interface_name] = interface
 
-        subif_parent_interface_names = subif_parent_interface_names.difference(ethernet_interfaces.keys())
+        subif_parent_interface_names = subif_parent_interface_names.difference(interface_names)
         if subif_parent_interface_names:
             for interface_name in natural_sort(subif_parent_interface_names):
-                ethernet_interfaces[interface_name] = {
-                    "type": "routed",
-                    "peer_type": "l3_interface",
-                    "shutdown": False,
-                }
+                ethernet_interfaces.append(
+                    {
+                        "name": interface_name,
+                        "type": "routed",
+                        "peer_type": "l3_interface",
+                        "shutdown": False,
+                    }
+                )
 
         if ethernet_interfaces:
-            for eth_name, eth_val in ethernet_interfaces.items():
-                ethernet_interfaces_list.append({"name": eth_name, **eth_val})
-
-            return ethernet_interfaces_list
+            # for eth_name, eth_val in ethernet_interfaces.items():
+            #     ethernet_interfaces_list.append({"name": eth_name, **eth_val})
+            return ethernet_interfaces
 
         return None

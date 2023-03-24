@@ -19,11 +19,12 @@ class EthernetInterfacesMixin(UtilsMixin):
         """
         Return structured config for ethernet_interfaces
         """
-        ethernet_interfaces = {}
-        ethernet_interfaces_list = []
+        ethernet_interfaces = []
+        interface_names = []
         for link in self._underlay_links:
             # common values
             ethernet_interface = {
+                "name": link["interface"],
                 "peer": link["peer"],
                 "peer_interface": link["peer_interface"],
                 "peer_type": link["peer_type"],
@@ -118,12 +119,17 @@ class EthernetInterfacesMixin(UtilsMixin):
             # Remove None values
             ethernet_interface = {key: value for key, value in ethernet_interface.items() if value is not None}
 
-            interface_name = link["interface"]
-            ethernet_interfaces[interface_name] = ethernet_interface
+            # interface_name = link["interface"]
+            # ethernet_interfaces[interface_name] = ethernet_interface
+            if link["interface"] in interface_names:
+                for idx, eth_int in enumerate(ethernet_interfaces):
+                    if eth_int["name"] == link["interface"]:
+                        ethernet_interfaces[idx] = ethernet_interface
+            else:
+                interface_names.append(link["interface"])
+                ethernet_interfaces.append(ethernet_interface)
 
         if ethernet_interfaces:
-            for eth_name, eth_val in ethernet_interfaces.items():
-                ethernet_interfaces_list.append({"name": eth_name, **eth_val})
-            return ethernet_interfaces_list
+            return ethernet_interfaces
 
         return None
