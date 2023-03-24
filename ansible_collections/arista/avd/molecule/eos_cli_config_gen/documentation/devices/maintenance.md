@@ -1,30 +1,31 @@
 # maintenance
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Maintenance Mode](#maintenance-mode)
   - [Maintenance](#maintenance)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -34,11 +35,11 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Maintenance Mode
+## Maintenance Mode
 
-## Maintenance
+### Maintenance
 
-### Maintenance defaults
+#### Maintenance defaults
 
 Default maintenance bgp profile: **BP1**
 
@@ -46,7 +47,7 @@ Default maintenance interface profile: **IP1**
 
 Default maintenance unit profile: **UP1**
 
-### Maintenance profiles
+#### Maintenance profiles
 
 | BGP profile | Initiator route-map |
 | ----------- | ------------------- |
@@ -63,14 +64,14 @@ Default maintenance unit profile: **UP1**
 | UP1 | 900 |
 | UP2 | 600 |
 
-### Maintenance units
+#### Maintenance units
 
 | Unit | Interface groups | BGP groups | Unit profile | Quiesce |
 | ---- | ---------------- | ---------- | ------------ | ------- |
 | System | - | - | UP1 | No |
 | UNIT1 | INTERFACE_GROUP_1 | BGP_GROUP_1<br/>BGP_GROUP_2 | UP1 | No |
 
-### Maintenance configuration
+#### Maintenance configuration
 
 ```eos
 !

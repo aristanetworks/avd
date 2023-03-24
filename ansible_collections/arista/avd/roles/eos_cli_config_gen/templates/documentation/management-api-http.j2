@@ -1,9 +1,9 @@
 {# doc - management api http #}
 {% if management_api_http is arista.avd.defined %}
 
-## Management API HTTP
+### Management API HTTP
 
-### Management API HTTP Summary
+#### Management API HTTP Summary
 
 | HTTP | HTTPS | Default Services |
 | ---- | ----- | ---------------- |
@@ -14,7 +14,7 @@ Management HTTPS is using the SSL profile {{ management_api_http.https_ssl_profi
 {%     endif %}
 {%     if management_api_http.enable_vrfs is arista.avd.defined %}
 
-### Management API VRF Access
+#### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
@@ -27,7 +27,7 @@ Management HTTPS is using the SSL profile {{ management_api_http.https_ssl_profi
 HTTPS certificate and private key are configured.
 {%     endif %}
 
-### Management API HTTP Configuration
+#### Management API HTTP Configuration
 
 ```eos
 {%     include 'eos/management-api-http.j2' %}

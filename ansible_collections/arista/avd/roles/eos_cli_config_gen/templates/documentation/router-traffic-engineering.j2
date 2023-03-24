@@ -1,10 +1,10 @@
 {# doc - router traffic engineering #}
 {% if router_traffic_engineering is arista.avd.defined %}
 
-## Router Traffic-Engineering
+### Router Traffic-Engineering
 {%     if router_traffic_engineering.segment_routing is arista.avd.defined %}
 
-### Segment Routing Summary
+#### Segment Routing Summary
 
 - SRTE is enabled.
 {%         if router_traffic_engineering.segment_routing.colored_tunnel_rib is arista.avd.defined(true) %}
@@ -13,7 +13,7 @@
 {%         endif %}
 {%         if router_traffic_engineering.segment_routing.policy_endpoints is arista.avd.defined %}
 
-#### SRTE Policies
+##### SRTE Policies
 
 | Endpoint | Color | Preference | Name | Description | SBFD Remote Discriminator | Label Stack | Index  | Weight | Explicit Null |
 | -------- | ----- | ---------- | ---- | ----------- | ------------------------- | ----------- | ------ | ------ | ------------- |
@@ -37,7 +37,7 @@
 {%         endif %}
 {%     endif %}
 
-### Router Traffic Engineering Device Configuration
+#### Router Traffic Engineering Device Configuration
 
 ```eos
 {%     include 'eos/router-traffic-engineering.j2' %}

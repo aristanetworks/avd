@@ -1,5 +1,6 @@
 # router-bgp-vrf-lite
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -10,25 +11,25 @@
   - [Prefix-lists](#prefix-lists)
   - [Route-maps](#route-maps)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -38,11 +39,11 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Routing
+## Routing
 
-## Static Routes
+### Static Routes
 
-### Static Routes Summary
+#### Static Routes Summary
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
@@ -50,7 +51,7 @@ interface Management1
 | BLUE-C1 | 193.1.1.0/24 | - | Null0 | 1 | - | - | - |
 | BLUE-C1 | 193.1.2.0/24 | - | Null0 | 1 | - | - | - |
 
-### Static Routes Device Configuration
+#### Static Routes Device Configuration
 
 ```eos
 !
@@ -59,9 +60,9 @@ ip route vrf BLUE-C1 193.1.1.0/24 Null0
 ip route vrf BLUE-C1 193.1.2.0/24 Null0
 ```
 
-## Router BGP
+### Router BGP
 
-### Router BGP Summary
+#### Router BGP Summary
 
 | BGP AS | Router ID |
 | ------ | --------- |
@@ -74,7 +75,7 @@ ip route vrf BLUE-C1 193.1.2.0/24 Null0
 | graceful-restart restart-time 300 |
 | graceful-restart |
 
-### Router BGP Listen Ranges
+#### Router BGP Listen Ranges
 
 | Prefix | Peer-ID Include Router ID | Peer Group | Peer-Filter | Remote-AS | VRF |
 | ------ | ------------------------- | ---------- | ----------- | --------- | --- |
@@ -82,16 +83,16 @@ ip route vrf BLUE-C1 193.1.2.0/24 Null0
 | 12.10.10.0/24 | True | my-peer-group3 | - | 65444 | YELLOW-C1 |
 | 13.10.10.0/24 | - | my-peer-group4 | my-peer-filter | - | YELLOW-C1 |
 
-### Router BGP Peer Groups
+#### Router BGP Peer Groups
 
-#### OBS_WAN
+##### OBS_WAN
 
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
 | Remote AS | 65000 |
 
-#### SEDI
+##### SEDI
 
 | Settings | Value |
 | -------- | ----- |
@@ -100,14 +101,14 @@ ip route vrf BLUE-C1 193.1.2.0/24 Null0
 | Source | Loopback101 |
 | Ebgp multihop | 10 |
 
-#### SEDI-shut
+##### SEDI-shut
 
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
 | Shutdown | True |
 
-#### TEST-PASSIVE
+##### TEST-PASSIVE
 
 | Settings | Value |
 | -------- | ----- |
@@ -115,14 +116,14 @@ ip route vrf BLUE-C1 193.1.2.0/24 Null0
 | Remote AS | 65003 |
 | Passive | True |
 
-#### WELCOME_ROUTERS
+##### WELCOME_ROUTERS
 
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
 | Remote AS | 65001 |
 
-### BGP Neighbors
+#### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
@@ -136,7 +137,7 @@ ip route vrf BLUE-C1 193.1.2.0/24 Null0
 | 10.1.1.0 | Inherited from peer group OBS_WAN | RED-C1 | - | - | - | - | - | - | - | - |
 | 10.1.1.0 | Inherited from peer group OBS_WAN | YELLOW-C1 | - | - | - | - | - | - | - | - |
 
-### Router BGP VRFs
+#### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
@@ -144,7 +145,7 @@ ip route vrf BLUE-C1 193.1.2.0/24 Null0
 | RED-C1 | 1.0.1.1:102 | - |
 | YELLOW-C1 | 1.0.1.1:103 | - |
 
-### Router BGP Device Configuration
+#### Router BGP Device Configuration
 
 ```eos
 !
@@ -224,31 +225,31 @@ router bgp 65001
       neighbor 10.1.1.0 peer group OBS_WAN
 ```
 
-# Filters
+## Filters
 
-## Prefix-lists
+### Prefix-lists
 
-### Prefix-lists Summary
+#### Prefix-lists Summary
 
-#### PL-BGP-DEFAULT-BLUE-C1
+##### PL-BGP-DEFAULT-BLUE-C1
 
 | Sequence | Action |
 | -------- | ------ |
 | 10 | permit 0.0.0.0/0 le 1 |
 
-#### PL-BGP-DEFAULT-RED-IN-C1
+##### PL-BGP-DEFAULT-RED-IN-C1
 
 | Sequence | Action |
 | -------- | ------ |
 | 10 | permit 0.0.0.0/0 |
 
-#### PL-BGP-DEFAULT-RED-OUT-C1
+##### PL-BGP-DEFAULT-RED-OUT-C1
 
 | Sequence | Action |
 | -------- | ------ |
 | 10 | permit 10.0.0.0/8 |
 
-### Prefix-lists Device Configuration
+#### Prefix-lists Device Configuration
 
 ```eos
 !
@@ -262,23 +263,23 @@ ip prefix-list PL-BGP-DEFAULT-RED-OUT-C1
    seq 10 permit 10.0.0.0/8
 ```
 
-## Route-maps
+### Route-maps
 
-### Route-maps Summary
+#### Route-maps Summary
 
-#### RM-BGP-AGG-APPLY-SET
+##### RM-BGP-AGG-APPLY-SET
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
 | 10 | permit | - | local-preference 50 | - | - |
 
-#### RM-BGP-EXPORT-DEFAULT-BLUE-C1
+##### RM-BGP-EXPORT-DEFAULT-BLUE-C1
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
 | 10 | permit | ip address prefix-list PL-BGP-DEFAULT-BLUE-C1 | - | - | - |
 
-### Route-maps Device Configuration
+#### Route-maps Device Configuration
 
 ```eos
 !

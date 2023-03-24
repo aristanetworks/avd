@@ -1,30 +1,31 @@
 # monitor-sessions
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Monitoring](#monitoring)
   - [Monitor Sessions](#monitor-sessions)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -34,22 +35,22 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Monitoring
+## Monitoring
 
-## Monitor Sessions
+### Monitor Sessions
 
-### Monitor Sessions Summary
+#### Monitor Sessions Summary
 
-#### myMonitoringSession1
+##### myMonitoringSession1
 
-##### myMonitoringSession1 Sources
+####### myMonitoringSession1 Sources
 
 | Sources | Direction | Access Group Type | Access Group Name | Access Group Priority |
 | ------- | --------- | ----------------- | ----------------- | --------------------- |
 | Ethernet0 | both | ipv6 | ipv6ACL | - |
 | Ethernet5 | both | ip | ipv4ACL | 10 |
 
-##### myMonitoringSession1 Destinations and Session Settings
+####### myMonitoringSession1 Destinations and Session Settings
 
 | Settings | Values |
 | -------- | ------ |
@@ -58,9 +59,9 @@ interface Management1
 | Header Remove Size | 32 |
 | Truncate Enabled | True |
 
-#### myMonitoringSession2
+##### myMonitoringSession2
 
-##### myMonitoringSession2 Sources
+####### myMonitoringSession2 Sources
 
 | Sources | Direction | Access Group Type | Access Group Name | Access Group Priority |
 | ------- | --------- | ----------------- | ----------------- | --------------------- |
@@ -69,7 +70,7 @@ interface Management1
 | Ethernet12 | rx | - | - | - |
 | Ethernet18 | tx | mac | macACL | 100 |
 
-##### myMonitoringSession2 Destinations and Session Settings
+####### myMonitoringSession2 Destinations and Session Settings
 
 | Settings | Values |
 | -------- | ------ |
@@ -79,7 +80,7 @@ interface Management1
 | Access Group Name | ipv4ACL |
 | Sample | 50 |
 
-### Monitor Sessions Configuration
+#### Monitor Sessions Configuration
 
 ```eos
 !

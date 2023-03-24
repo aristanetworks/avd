@@ -2,9 +2,9 @@
 {% if vlans is arista.avd.defined %}
 {%     set ns = namespace(show_private_vlan_table = false) %}
 
-# VLANs
+## VLANs
 
-## VLANs Summary
+### VLANs Summary
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
@@ -22,7 +22,7 @@
 {%     endfor %}
 {%     if ns.show_private_vlan_table %}
 
-### Private VLANs
+#### Private VLANs
 
 | Primary Vlan ID | Secondary VLAN ID | Private Vlan Type |
 | --------------- | ----------------- | ----------------- |
@@ -34,7 +34,7 @@
 {%         endfor %}
 {%     endif %}
 
-## VLANs Device Configuration
+### VLANs Device Configuration
 
 ```eos
 {%     include 'eos/vlans.j2' %}

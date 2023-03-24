@@ -1,9 +1,9 @@
 {# doc - interface groups #}
 {% if interface_groups is arista.avd.defined %}
 
-## Interface Groups
+### Interface Groups
 
-### Interface Groups Summary
+#### Interface Groups Summary
 
 | Interface Group | Interfaces | Interface maintenance profile | BGP maintenance profiles |
 | --------------- | ---------- | ----------------------------- | ------------------------ |
@@ -22,7 +22,7 @@
 | {{ interface_group.name }} | {{ interfaces }} | {{ interface_profile }} | {{ bgp_profile }} |
 {%     endfor %}
 
-### Interface Groups Configuration
+#### Interface Groups Configuration
 
 ```eos
 {%     include 'eos/interface-groups.j2' %}

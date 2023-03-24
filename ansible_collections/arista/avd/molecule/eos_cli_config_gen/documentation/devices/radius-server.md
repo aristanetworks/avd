@@ -1,30 +1,31 @@
 # radius-server
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Authentication](#authentication)
   - [RADIUS Server](#radius-server)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -34,15 +35,15 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Authentication
+## Authentication
 
-## RADIUS Server
+### RADIUS Server
 
 - Attribute 32 is included in access requests using hostname
 
 - Dynamic Authorization is enabled on port 1700 with SSL profile SSL_PROFILE
 
-### RADIUS Server Hosts
+#### RADIUS Server Hosts
 
 | VRF | RADIUS Servers | Timeout | Retransmit |
 | --- | -------------- | ------- | ---------- |
@@ -53,7 +54,7 @@ interface Management1
 | default | 10.10.11.249 | 1 | 1 |
 | default | 10.10.11.158 | 1 | 1 |
 
-### RADIUS Server Device Configuration
+#### RADIUS Server Device Configuration
 
 ```eos
 !

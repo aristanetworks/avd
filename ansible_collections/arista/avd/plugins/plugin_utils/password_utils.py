@@ -3,7 +3,7 @@ This code original credit goes to Kristian Kohntopp @isotopp who authorized to r
 
 https://blog.koehntopp.info/2021/11/22/arista-type-7-passwords.html
 
-It is used in bgp_encrypt and bgp_decrypt filters as well as in bgp_valid_password test
+It is used  in the encrypt and decrypt filters
 """
 
 import base64
@@ -196,7 +196,8 @@ def cbc_decrypt(key: bytes, data: bytes) -> bytes:
     """
     Decrypt a password. The key is either <PEER_GROUP_NAME>_passwd or <NEIGHBOR_IP>_passwd
 
-    raises TODO
+    raises:
+      * ValueError: if the length of the provided data is not a multiple of the block length.
     """
     if not HAS_CRYPTOGRAPHY:
         raise AristaAvdError("AVD could not import the required 'cryptography' Python library")

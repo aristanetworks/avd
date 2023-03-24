@@ -1,29 +1,30 @@
 # link-tracking-groups
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [Link Tracking](#link-tracking)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -33,16 +34,16 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-## Link Tracking
+### Link Tracking
 
-### Link Tracking Groups Summary
+#### Link Tracking Groups Summary
 
 | Group Name | Minimum Links | Recovery Delay |
 | ---------- | ------------- | -------------- |
 | EVPN_MH_ES1 | 30 | 500 |
 | EVPN_MH_ES2 | - | - |
 
-### Link Tracking Groups Configuration
+#### Link Tracking Groups Configuration
 
 ```eos
 !

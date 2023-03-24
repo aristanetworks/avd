@@ -1,11 +1,11 @@
 {# doc - loopback interfaces #}
 {% if loopback_interfaces is arista.avd.defined %}
 
-## Loopback Interfaces
+### Loopback Interfaces
 
-### Loopback Interfaces Summary
+#### Loopback Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
@@ -21,7 +21,7 @@
 | {{ loopback_interface.name }} | {{ description }} | {{ vrf }} | {{ ip | arista.avd.default('-') }} |
 {%     endfor %}
 
-#### IPv6
+##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
@@ -40,7 +40,7 @@
 {%         endif %}
 {%     endfor %}
 {%     if loopback_interface_isis.configured == true %}
-#### ISIS
+##### ISIS
 
 | Interface | ISIS instance | ISIS metric | Interface mode |
 | --------- | ------------- | ----------- | -------------- |
@@ -56,7 +56,7 @@
 {%         endfor %}
 {%     endif %}
 
-### Loopback Interfaces Device Configuration
+#### Loopback Interfaces Device Configuration
 
 ```eos
 {%     include 'eos/loopback-interfaces.j2' %}

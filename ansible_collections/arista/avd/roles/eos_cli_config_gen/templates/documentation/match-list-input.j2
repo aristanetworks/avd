@@ -1,13 +1,13 @@
 {# doc - match list input #}
 {% if match_list_input is arista.avd.defined %}
 
-## Match-lists
+### Match-lists
 
 {%     if match_list_input.string is arista.avd.defined %}
-### Match-list Input String Summary
+#### Match-list Input String Summary
 
 {%         for match_list in match_list_input.string | arista.avd.natural_sort('name') %}
-#### {{ match_list.name }}
+##### {{ match_list.name }}
 
 | Sequence | Match Regex |
 | -------- | ------ |
@@ -18,7 +18,7 @@
 {%         endfor %}
 
 {%     endif %}
-### Match-lists Device Configuration
+#### Match-lists Device Configuration
 
 ```eos
 {%     include 'eos/match-list-input.j2' %}
