@@ -141,15 +141,9 @@ class RouterBgpMixin(UtilsMixin):
                 route_targets = {"import": [], "export": []}
 
                 for af in vrf_address_families:
+                    route_target = {"address_family": af, "route_targets": [leaf_overlay_rt]}
                     for key, value in route_targets.items():
-                        flag = 0
-                        for route_target in value:
-                            if route_target["address_family"] == af:
-                                flag = 1
-                                route_target["route_targets"] = [leaf_overlay_rt if leaf_overlay_rt not in route_target["route_targets"] else None]
-                                break
-
-                        if not flag:
+                        if route_target not in value:
                             route_targets[key].append({"address_family": af, "route_targets": [leaf_overlay_rt]})
 
                 for rt in vrf["additional_route_targets"]:

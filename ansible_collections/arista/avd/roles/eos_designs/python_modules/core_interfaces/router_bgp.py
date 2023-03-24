@@ -35,8 +35,8 @@ class RouterBgpMixin(UtilsMixin):
             if self._underlay_rfc5549:
                 # RFC5549
 
-                interface = p2p_link["data"]["interface"]
-                neighbor_interfaces.append({"name": interface, **neighbor})
+                neighbor["name"] = p2p_link["data"]["interface"]
+                neighbor_interfaces.append(neighbor)
                 continue
 
             # Regular BGP Neighbors
