@@ -132,7 +132,7 @@ options:
   output_schema_id:
     description: ID of AVD Schema for output data. Used for automatic merge of data.
     required: false
-    type: dict
+    type: str
     choices: [ "eos_cli_config_gen", "eos_designs" ]
 """
 
