@@ -383,7 +383,6 @@ port_channel_interfaces:
   mode: trunk
   trunk_groups:
   - CUSTOM_MLAG_TG_NAME
-  - CUSTOM_MLAG_TG_NAME
 - name: Port-Channel1
   description: TRUNK_GROUP_TESTS_L2LEAF1_Po1
   type: switched

@@ -211,9 +211,10 @@ class AvdStructuredConfig(AvdFacts):
             "struct_cfg": get(self._hostvars, "switch.mlag_port_channel_structured_config"),
         }
 
-        if self._mlag_l3 is True:
+        if self._mlag_l3 is True and self._trunk_groups_mlag_l3_name != self._trunk_groups_mlag_name:
             # Add LEAF_PEER_L3 even if we reuse the MLAG trunk group for underlay peering
             # since this trunk group is also used for overlay iBGP peerings
+            # except in the case where the same trunk group name is defined.
             port_channel_interface["trunk_groups"].append(self._trunk_groups_mlag_l3_name)
             # Retain legacy order
             port_channel_interface["trunk_groups"].reverse()
