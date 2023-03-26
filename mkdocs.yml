@@ -2,7 +2,7 @@
 site_name: Arista AVD collection
 site_author: Arista Ansible Team
 site_description: Arista Validated Design collection's documentation
-copyright: Copyright &copy; 2019 - 2022 Arista Networks
+copyright: Copyright &copy; 2019 - 2023 Arista Networks
 
 # Repository information
 repo_name: AVD on Github
@@ -15,13 +15,13 @@ theme:
   name: material
   # custom_dir: ansible_collections/arista/avd/docs/_overrides
   features:
+    - content.code.annotate
+    - content.code.copy
+    - content.tabs.link
+    - header.autohide
     - navigation.instant
     - navigation.top
-    - navigation.indexes
     - search.highlight
-    - header.autohide
-    - content.code.annotate
-    - content.tabs.link
     - toc.integrate
     - toc.follow
   highlightjs: true
@@ -64,22 +64,21 @@ extra_javascript:
   - docs/stylesheets/tables.js
 
 plugins:
-  - search:
-      lang: en
-  - git-revision-date-localized:
-      type: date
   - exclude:
       glob:
         - molecule/*
         - tests/*
   - include_dir_to_nav
+  - git-revision-date-localized:
+      type: date
+  - search:
+      lang: en
 
 markdown_extensions:
   - admonition
   - attr_list
   - fontawesome_markdown
   - mdx_truly_sane_lists
-  - smarty
   - pymdownx.arithmatex
   - pymdownx.betterem:
       smart_enable: all
@@ -108,6 +107,7 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
+  - smarty
   - tables
   - toc:
       separator: "-"
