@@ -720,6 +720,50 @@ class EosDesignsFacts(AvdFacts):
         return None
 
     @cached_property
+    def _port_profiles(self):
+        port_profiles = get(self._hostvars, "port_profiles", default=[])
+        # Support legacy data model by converting nested dict to list of dict
+        return convert_dicts(port_profiles, "profile")
+
+    def _get_adapter_settings(self, adapter_or_network_port: dict) -> dict:
+        """
+        Applies port-profiles to the given adapter_or_network_port and returns the combined result.
+        adapter_or_network_port can either be an adapter of a connected endpoint or one item under network_ports.
+        """
+        profile_name = adapter_or_network_port.get("profile")
+        adapter_profile = get_item(self._port_profiles, "profile", profile_name, default={})
+        parent_profile_name = adapter_profile.get("parent_profile")
+        parent_profile = get_item(self._port_profiles, "profile", parent_profile_name, default={})
+        return combine(parent_profile, adapter_profile, adapter_or_network_port, recursive=True, list_merge="replace")
+
+    def _parse_adapter_settings(self, adapter_settings: dict) -> tuple[set, set]:
+        """
+        Parse the given adapter_settings and return relevant vlans and trunk_groups
+        """
+        vlans = set()
+        trunk_groups = set(adapter_settings.get("trunk_groups", []))
+        if "vlans" in adapter_settings and adapter_settings["vlans"] not in ["all", "", None]:
+            vlans.update(map(int, range_expand(str(adapter_settings["vlans"]))))
+        elif "trunk" in adapter_settings.get("mode", "") and not trunk_groups:
+            # No vlans or trunk_groups defined, but this is a trunk, so default is all vlans allowed
+            # No need to check further, since the list is now containing all vlans.
+            return set(range(1, 4094)), trunk_groups
+        else:
+            # No vlans or mode defined so this is an access port with only vlan 1 allowed
+            vlans.add(1)
+
+        if "native_vlan" in adapter_settings:
+            vlans.add(int(adapter_settings["native_vlan"]))
+
+        for subinterface in get(adapter_settings, "port_channel.subinterfaces", default=[]):
+            if "vlan_id" in subinterface:
+                vlans.add(int(subinterface["vlan_id"]))
+            elif "number" in subinterface:
+                vlans.add(int(subinterface["number"]))
+
+        return vlans, trunk_groups
+
+    @cached_property
     def _local_endpoint_vlans_and_trunk_groups(self) -> tuple[set, set]:
         """
         Return list of vlans and list of trunk groups used by connected_endpoints on this switch
@@ -729,10 +773,6 @@ class EosDesignsFacts(AvdFacts):
 
         vlans = set()
         trunk_groups = set()
-
-        port_profiles = get(self._hostvars, "port_profiles", default=[])
-        # Support legacy data model by converting nested dict to list of dict
-        port_profiles = convert_dicts(port_profiles, "profile")
 
         connected_endpoints_keys = get(self._hostvars, "connected_endpoints_keys", default=[])
         # Support legacy data model by converting nested dict to list of dict
@@ -748,43 +788,19 @@ class EosDesignsFacts(AvdFacts):
             connected_endpoints = convert_dicts(connected_endpoints, "name")
             for connected_endpoint in connected_endpoints:
                 for adapter in connected_endpoint.get("adapters", []):
-                    profile_name = adapter.get("profile")
-                    adapter_profile = get_item(port_profiles, "profile", profile_name, default={})
-                    parent_profile_name = adapter_profile.get("parent_profile")
-                    parent_profile = get_item(port_profiles, "profile", parent_profile_name, default={})
-
-                    adapter_settings = combine(parent_profile, adapter_profile, adapter, recursive=True, list_merge="replace")
-
+                    adapter_settings = self._get_adapter_settings(adapter)
                     if self.hostname not in adapter_settings.get("switches", []):
                         # This switch is not connected to this endpoint. Skipping.
                         continue
 
-                    if "vlans" in adapter_settings and adapter_settings["vlans"] not in ["all", "", None]:
-                        vlans.update(map(int, range_expand(str(adapter_settings["vlans"]))))
-                        if adapter_settings.get("trunk_groups"):
-                            trunk_groups.update(adapter_settings["trunk_groups"])
-                    elif "trunk" in adapter_settings.get("mode", ""):
-                        if adapter_settings.get("trunk_groups"):
-                            trunk_groups.update(adapter_settings["trunk_groups"])
-                        else:
-                            # No vlans or trunk_groups defined, but this is a trunk, so default is all vlans allowed
-                            # No need to check further, since the list is now containing all vlans.
-                            # The trunk group list may not be complete, but it will not matter, since we will
-                            # configure all vlans anyway.
-                            return set(range(1, 4094)), trunk_groups
-                    else:
-                        # No vlans or mode defined so this is an access port with only vlan 1 allowed
-                        vlans.add(1)
-
-                    if "native_vlan" in adapter_settings:
-                        vlans.add(int(adapter_settings["native_vlan"]))
-
-                    if get(adapter_settings, "port_channel.subinterfaces"):
-                        for subinterface in get(adapter_settings, "port_channel.subinterfaces"):
-                            if "vlan_id" in subinterface:
-                                vlans.add(int(subinterface["vlan_id"]))
-                            elif "number" in subinterface:
-                                vlans.add(int(subinterface["number"]))
+                    adapter_vlans, adapter_trunk_groups = self._parse_adapter_settings(adapter_settings)
+                    vlans.update(adapter_vlans)
+                    trunk_groups.update(adapter_trunk_groups)
+                    if len(vlans) >= 4094:
+                        # No need to check further, since the set is now containing all vlans.
+                        # The trunk group list may not be complete, but it will not matter, since we will
+                        # configure all vlans anyway.
+                        return vlans, trunk_groups
 
         network_ports = get(self._hostvars, "network_ports", default=[])
         for network_port_item in network_ports:
@@ -796,38 +812,15 @@ class EosDesignsFacts(AvdFacts):
                     # Skip entry if no match
                     continue
 
-                profile_name = network_port_item.get("profile")
-                adapter_profile = get_item(port_profiles, "profile", profile_name, default={})
-                parent_profile_name = adapter_profile.get("parent_profile")
-                parent_profile = get_item(port_profiles, "profile", parent_profile_name, default={})
-                adapter_settings = combine(parent_profile, adapter_profile, network_port_item, recursive=True, list_merge="replace")
-
-                if "vlans" in adapter_settings and adapter_settings["vlans"] not in ["all", "", None]:
-                    vlans.update(map(int, range_expand(str(adapter_settings["vlans"]))))
-                    if adapter_settings.get("trunk_groups"):
-                        trunk_groups.update(adapter_settings["trunk_groups"])
-                elif "trunk" in adapter_settings.get("mode", ""):
-                    if adapter_settings.get("trunk_groups"):
-                        trunk_groups.update(adapter_settings["trunk_groups"])
-                    else:
-                        # No vlans or trunk_groups defined, but this is a trunk, so default is all vlans allowed
-                        # No need to check further, since the list is now containing all vlans.
-                        # The trunk group list may not be complete, but it will not matter, since we will
-                        # configure all vlans anyway.
-                        return set(range(1, 4094)), trunk_groups
-                else:
-                    # No vlans or mode defined so this is an access port with only vlan 1 allowed
-                    vlans.add(1)
-
-                if "native_vlan" in adapter_settings:
-                    vlans.add(int(adapter_settings["native_vlan"]))
-
-                if get(adapter_settings, "port_channel.subinterfaces"):
-                    for subinterface in get(adapter_settings, "port_channel.subinterfaces"):
-                        if "vlan_id" in subinterface:
-                            vlans.add(int(subinterface["vlan_id"]))
-                        elif "number" in subinterface:
-                            vlans.add(int(subinterface["number"]))
+                adapter_settings = self._get_adapter_settings(network_port_item)
+                adapter_vlans, adapter_trunk_groups = self._parse_adapter_settings(adapter_settings)
+                vlans.update(adapter_vlans)
+                trunk_groups.update(adapter_trunk_groups)
+                if len(vlans) >= 4094:
+                    # No need to check further, since the list is now containing all vlans.
+                    # The trunk group list may not be complete, but it will not matter, since we will
+                    # configure all vlans anyway.
+                    return vlans, trunk_groups
 
         return vlans, trunk_groups
 
