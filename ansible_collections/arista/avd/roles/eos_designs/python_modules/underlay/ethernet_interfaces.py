@@ -15,7 +15,7 @@ class EthernetInterfacesMixin(UtilsMixin):
     """
 
     @cached_property
-    def ethernet_interfaces(self) -> dict | None:
+    def ethernet_interfaces(self) -> list | None:
         """
         Return structured config for ethernet_interfaces
         """
@@ -119,8 +119,6 @@ class EthernetInterfacesMixin(UtilsMixin):
             # Remove None values
             ethernet_interface = {key: value for key, value in ethernet_interface.items() if value is not None}
 
-            # interface_name = link["interface"]
-            # ethernet_interfaces[interface_name] = ethernet_interface
             if link["interface"] in interface_names:
                 for idx, eth_int in enumerate(ethernet_interfaces):
                     if eth_int["name"] == link["interface"]:

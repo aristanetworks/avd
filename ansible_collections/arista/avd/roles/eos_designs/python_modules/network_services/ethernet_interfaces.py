@@ -135,7 +135,6 @@ class EthernetInterfacesMixin(UtilsMixin):
                             # Strip None values from vlan before adding to list
                             interface = {key: value for key, value in interface.items() if value is not None}
 
-                            # ethernet_interfaces[interface_name] = interface
                             if interface_name in interface_names:
                                 for idx, eth_int in enumerate(ethernet_interfaces):
                                     if eth_int["name"] == interface_name:
@@ -228,7 +227,6 @@ class EthernetInterfacesMixin(UtilsMixin):
                                 else:
                                     ethernet_interfaces.append(interface)
                                     interface_names.append(interface_name)
-                                # ethernet_interfaces[interface_name] = interface
 
         subif_parent_interface_names = subif_parent_interface_names.difference(interface_names)
         if subif_parent_interface_names:
@@ -243,8 +241,6 @@ class EthernetInterfacesMixin(UtilsMixin):
                 )
 
         if ethernet_interfaces:
-            # for eth_name, eth_val in ethernet_interfaces.items():
-            #     ethernet_interfaces_list.append({"name": eth_name, **eth_val})
             return ethernet_interfaces
 
         return None

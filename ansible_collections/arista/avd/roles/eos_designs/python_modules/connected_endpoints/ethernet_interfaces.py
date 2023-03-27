@@ -30,7 +30,6 @@ class EthernetInterfacesMixin(UtilsMixin):
                     if node_name != self._hostname:
                         continue
 
-                    # ethernet_interface_name = adapter["switch_ports"][node_index]
                     ethernet_interface = self._get_ethernet_interface_cfg(adapter, node_index, connected_endpoint)
                     ethernet_interfaces.append(ethernet_interface)
 
