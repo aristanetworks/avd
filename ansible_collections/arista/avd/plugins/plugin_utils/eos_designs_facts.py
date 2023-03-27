@@ -474,9 +474,10 @@ class EosDesignsFacts(AvdFacts):
             auto_clock_identity = get(self._switch_data_combined, "ptp.auto_clock_identity", default=True)
             priority1 = get(self._switch_data_combined, "ptp.priority1", default=self.default_ptp_priority1)
             priority2 = get(self._switch_data_combined, "ptp.priority2")
-            if priority2 is None and self.id is None:
-                raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' to set ptp priority2")
-            priority2 = self.id % 256
+            if priority2 is None:
+                if self.id is None:
+                    raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' to set ptp priority2")
+                priority2 = self.id % 256
             if auto_clock_identity is True:
                 clock_identity_prefix = get(self._switch_data_combined, "ptp.clock_identity_prefix", default="00:1C:73")
                 default_clock_identity = f"{clock_identity_prefix}:{priority1:02x}:00:{priority2:02x}"
