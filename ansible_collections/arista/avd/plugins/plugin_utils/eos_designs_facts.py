@@ -1952,6 +1952,7 @@ class EosDesignsFacts(AvdFacts):
             peering_address = self.router_id
 
         cvx = self.overlay_routing_protocol == "cvx"
+        her = self.overlay_routing_protocol == "her"
         # Set overlay.evpn_vxlan and overlay.evpn_mpls to differentiate between VXLAN and MPLS use cases.
         evpn_vxlan = self._overlay_evpn and self.evpn_encapsulation == "vxlan"
         evpn_mpls = self._overlay_evpn and self.evpn_encapsulation == "mpls"
@@ -1963,6 +1964,7 @@ class EosDesignsFacts(AvdFacts):
             "ler": self._overlay_ler,
             "vtep": self._overlay_vtep,
             "cvx": cvx,
+            "her": her,
             "evpn": self._overlay_evpn,
             "evpn_vxlan": evpn_vxlan,
             "evpn_mpls": evpn_mpls,
