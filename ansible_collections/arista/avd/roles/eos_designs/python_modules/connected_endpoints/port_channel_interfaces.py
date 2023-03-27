@@ -192,7 +192,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
         If 1 and 2 are True, it means the candidate_port_channel_config is the same as the existing configuration already generated so no
         action is needed.
 
-        If 1 is False for every port-channel in the port_channle_interfaces, it is a new port-channel and it is appended to the list.
+        If 1 is False for every port-channel in the port_channel_interfaces, it is a new port-channel and it is appended to the list.
         """
         if (matching_port_channel_config := get_item(port_channel_interfaces, "name", candidate_port_channel_config["name"])) is None:
             # No port_channel_interface found with the same name in port_channel_interfaces
