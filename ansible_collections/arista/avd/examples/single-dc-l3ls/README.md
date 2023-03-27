@@ -567,7 +567,7 @@ As an example, here is the configuration for `dc1-leaf1-server1`:
   dc1-leaf1-server1:
     adapters: # (1)!
     - type: server
-      server_ports: [ PCI1, PCI2 ] # (2)!
+      endpoint_ports: [ PCI1, PCI2 ] # (2)!
       switch_ports: [ Ethernet5, Ethernet5 ] # (3)!
       switches: [ dc1-leaf1a, dc1-leaf1b ] # (4)!
       vlans: 11-12,21-22 # (5)!
@@ -579,7 +579,7 @@ As an example, here is the configuration for `dc1-leaf1-server1`:
         mode: active
 
     - type: ilo
-      server_ports: [ iLO ]
+      endpoint_ports: [ iLO ]
       switch_ports: [ Ethernet5 ]
       switches: [ dc1-leaf1c ]
       vlans: 11

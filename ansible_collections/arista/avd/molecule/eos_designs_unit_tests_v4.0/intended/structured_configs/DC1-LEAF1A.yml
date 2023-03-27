@@ -245,8 +245,8 @@ ethernet_interfaces:
     mode: trunk
     vlans: 1-4094
     spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: false
-    spanning_tree_bpduguard: false
+    spanning_tree_bpdufilter: 'False'
+    spanning_tree_bpduguard: 'False'
     storm_control:
       all:
         level: 10

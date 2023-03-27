@@ -33,28 +33,28 @@ servers:
   HostA:
     rack: POD1
     adapters:
-      - endpoint_ports: [Eth1]
+      - endpoint_ports:: [Eth1]
         switch_ports: [Ethernet3]
         switches: [LEAF1]
         profile: PP-BLUE
   HostB:
     rack: POD1
     adapters:
-      - endpoint_ports: [Eth1]
+      - endpoint_ports:: [Eth1]
         switch_ports: [Ethernet3]
         switches: [LEAF2]
         profile: PP-GREEN
   HostC:
     rack: POD2
     adapters:
-      - endpoint_ports: [Eth1]
+      - endpoint_ports:: [Eth1]
         switch_ports: [Ethernet3]
         switches: [LEAF3]
         profile: PP-BLUE
   Host2:
     rack: POD2
     adapters:
-      - endpoint_ports: [Eth1]
+      - endpoint_ports:: [Eth1]
         switch_ports: [Ethernet3]
         switches: [LEAF4]
         profile: PP-ORANGE
@@ -63,7 +63,7 @@ firewalls:
 
   FIREWALL:
     adapters:
-      - endpoint_ports: [Eth1, Eth2]
+      - endpoint_ports:: [Eth1, Eth2]
         switch_ports: [Ethernet5, Ethernet5]
         switches: [SPINE1, SPINE2]
         profile: PP-FIREWALL

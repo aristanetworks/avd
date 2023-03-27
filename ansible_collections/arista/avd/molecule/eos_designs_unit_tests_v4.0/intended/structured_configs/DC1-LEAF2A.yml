@@ -459,8 +459,8 @@ ethernet_interfaces:
     mtu: 1601
     type: switched
     shutdown: false
-    spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: true
+    spanning_tree_bpdufilter: 'True'
+    spanning_tree_bpduguard: 'True'
     channel_group:
       id: 12
       mode: active

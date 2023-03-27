@@ -90,7 +90,7 @@ tenants:
 servers:
   server_with_tg_100:
     adapters:
-      - server_ports: [ Nic1 ]
+      - endpoint_ports: [ Nic1 ]
         switch_ports: [ Ethernet11 ]
         switches: [ trunk-group-tests-l3leaf1a ]
         trunk_groups: [ TG_NOT_MATCHING_ANY_VLANS, TG_100 ]
@@ -98,7 +98,7 @@ servers:
         enabled: true
   server_with_tg_200:
     adapters:
-      - server_ports: [ Nic1, Nic2, Nic3 ]
+      - endpoint_ports: [ Nic1, Nic2, Nic3 ]
         switch_ports: [ Ethernet12, Ethernet12, Ethernet12 ]
         switches: [ trunk-group-tests-l2leaf1b, trunk-group-tests-l2leaf3, trunk-group-tests-l2leaf4 ]
         trunk_groups: [ TG_NOT_MATCHING_ANY_VLANS, TG_200 ]
@@ -106,7 +106,7 @@ servers:
         enabled: true
   server_with_tg_300:
     adapters:
-      - server_ports: [ Nic1, Nic2, Nic3, Nic4 ]
+      - endpoint_ports: [ Nic1, Nic2, Nic3, Nic4 ]
         switch_ports: [ Ethernet13, Ethernet13, Ethernet13, Ethernet13 ]
         switches: [ trunk-group-tests-l3leaf1a, trunk-group-tests-l3leaf1b, trunk-group-tests-l2leaf1a, trunk-group-tests-l2leaf1b ]
         trunk_groups: [ TG_NOT_MATCHING_ANY_VLANS, TG_300 ]

@@ -781,7 +781,10 @@ port_channel_interfaces:
   shutdown: false
   mode: trunk
   vlans: 110-111,210-211
-  mlag: 10
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0303:0202:0101
+    route_target: 03:03:02:02:01:01
+  lacp_id: 0303.0202.0101
 - name: Port-Channel14
   description: server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
   type: switched
@@ -1081,7 +1084,7 @@ ethernet_interfaces:
     mode: trunk
     vlans: 1-4094
     spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: true
+    spanning_tree_bpdufilter: 'True'
     spanning_tree_bpduguard: disabled
     storm_control:
       all:
@@ -1109,7 +1112,7 @@ ethernet_interfaces:
     vlans: '210'
     spanning_tree_portfast: network
     spanning_tree_bpdufilter: disabled
-    spanning_tree_bpduguard: true
+    spanning_tree_bpduguard: 'True'
     storm_control:
       all:
         level: 20
@@ -1163,7 +1166,7 @@ ethernet_interfaces:
     mode: trunk
     vlans: 1-4094
     spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: true
+    spanning_tree_bpdufilter: 'True'
     spanning_tree_bpduguard: disabled
     storm_control:
       all:
@@ -1194,7 +1197,7 @@ ethernet_interfaces:
     vlans: '210'
     spanning_tree_portfast: network
     spanning_tree_bpdufilter: disabled
-    spanning_tree_bpduguard: true
+    spanning_tree_bpduguard: 'True'
     storm_control:
       all:
         level: 20
@@ -1218,7 +1221,7 @@ ethernet_interfaces:
     mode: trunk
     vlans: 1-4094
     spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: true
+    spanning_tree_bpdufilter: 'True'
     spanning_tree_bpduguard: disabled
     storm_control:
       all:
@@ -1249,8 +1252,8 @@ ethernet_interfaces:
     mode: trunk
     vlans: 1-4094
     spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: true
+    spanning_tree_bpdufilter: 'True'
+    spanning_tree_bpduguard: 'True'
     storm_control:
       all:
         level: 10
@@ -1280,8 +1283,8 @@ ethernet_interfaces:
     mode: trunk
     vlans: 1-4094
     spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: true
+    spanning_tree_bpdufilter: 'True'
+    spanning_tree_bpduguard: 'True'
     storm_control:
       all:
         level: 10
