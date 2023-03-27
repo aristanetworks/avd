@@ -351,15 +351,18 @@ class EosDesignsFacts(AvdFacts):
         return get(self._switch_data, "node_group.nodes", default=[])
 
     @cached_property
-    def group(self):
+    def group(self) -> str:
         """
         switch.group set to "node_group" name or None
         """
         return get(self._switch_data, "group")
 
     @cached_property
-    def id(self):
-        return get(self._switch_data_combined, "id", required=True)
+    def id(self) -> int | None:
+        """
+        Make id not required for switches that would not use it
+        """
+        return get(self._switch_data_combined, "id")
 
     @cached_property
     def mgmt_ip(self):
@@ -393,6 +396,9 @@ class EosDesignsFacts(AvdFacts):
 
         if self.uplink_switches is None:
             return []
+
+        if self.id is None:
+            raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}'")
 
         uplink_switch_interfaces = []
         uplink_switch_counter = {}
@@ -467,8 +473,10 @@ class EosDesignsFacts(AvdFacts):
         if ptp["enabled"] is True:
             auto_clock_identity = get(self._switch_data_combined, "ptp.auto_clock_identity", default=True)
             priority1 = get(self._switch_data_combined, "ptp.priority1", default=self.default_ptp_priority1)
-            default_priority2 = self.id % 256
-            priority2 = get(self._switch_data_combined, "ptp.priority2", default=default_priority2)
+            priority2 = get(self._switch_data_combined, "ptp.priority2")
+            if priority2 is None and self.id is None:
+                raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' to set ptp priority2")
+            priority2 = self.id % 256
             if auto_clock_identity is True:
                 clock_identity_prefix = get(self._switch_data_combined, "ptp.clock_identity_prefix", default="00:1C:73")
                 default_clock_identity = f"{clock_identity_prefix}:{priority1:02x}:00:{priority2:02x}"
@@ -648,6 +656,8 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def lacp_port_id(self):
         if get(self._switch_data_combined, "lacp_port_id_range.enabled") is True:
+            if self.id is None:
+                raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' to set LACP swicth ids")
             node_group_length = max(len(self._switch_data_node_group_nodes), 1)
             lacp_port_id = {}
             switch_id = self.id
@@ -1063,6 +1073,8 @@ class EosDesignsFacts(AvdFacts):
             return self.bgp_as
 
         if tmp_overlay_rd_type_admin_subfield == "switch_id":
+            if self.id is None:
+                raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and 'overlay_rd_type_admin_subfield' is set to 'switch_id'")
             return self.id + tmp_overlay_rd_type_admin_subfield_offset
 
         if re.fullmatch(r"[0-9]+", str(tmp_overlay_rd_type_admin_subfield)):
@@ -1288,6 +1300,8 @@ class EosDesignsFacts(AvdFacts):
                         elif self.mlag:
                             return bgp_as_range_expanded[self.mlag_switch_ids["primary"] - 1]
                         else:
+                            if self.id is None:
+                                raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and is required when expanding 'bgp_as'")
                             return bgp_as_range_expanded[self.id - 1]
                     except IndexError as exc:
                         raise AristaAvdError(
@@ -1327,8 +1341,9 @@ class EosDesignsFacts(AvdFacts):
                 isis_system_id_prefix = get(self._switch_data_combined, "isis_system_id_prefix")
                 if isis_system_id_prefix is not None:
                     isis_area_id = get(self._hostvars, "isis_area_id", required=True)
-                    switch_id = self.id
-                    return f"{isis_area_id}.{isis_system_id_prefix}.{switch_id:04d}.00"
+                    if self.id is None:
+                        raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and is required to set ISIS NET address using prefix")
+                    return f"{isis_area_id}.{isis_system_id_prefix}.{self.id:04d}.00"
         return None
 
     @cached_property
@@ -1357,6 +1372,8 @@ class EosDesignsFacts(AvdFacts):
     def node_sid(self):
         if self.underlay_router is True:
             if self.underlay_routing_protocol in ["isis-sr", "isis-sr-ldp"]:
+                if self.id is None:
+                    raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and is required to set node SID")
                 node_sid_base = int(get(self._switch_data_combined, "node_sid_base", 0))
                 return self.id + node_sid_base
         return None
@@ -1534,6 +1551,8 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def inband_management_ip(self):
         if self.inband_management_role == "child":
+            if self.id is None:
+                raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and is required to set inband_management_ip")
             subnet = ipaddress.ip_network(self.inband_management_subnet, strict=False)
             hosts = list(subnet.hosts())
             inband_management_ip = str(hosts[2 + self.id])
@@ -1750,8 +1769,12 @@ class EosDesignsFacts(AvdFacts):
         Returns the switch id's of both primary and secondary switches for a given node group
         """
         if self.mlag_role == "primary":
+            if self.id is None:
+                raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and is required to compute MLAG ids")
             return {"primary": self.id, "secondary": self._mlag_peer_id}
         elif self.mlag_role == "secondary":
+            if self.id is None:
+                raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and is required to compute MLAG ids")
             return {"primary": self._mlag_peer_id, "secondary": self.id}
 
     @cached_property
