@@ -23,8 +23,9 @@ Both data models support variable inheritance from profiles defined under [`port
 
 - `network_ports` is intended to be used with `port_profiles` and `parent_profiles` to keep the configuration generic and compact, but all
   features and keys supported under `connected_endpoints.adapters` is also supported directly under `network_ports`.
-- Since all ranges defined under `network_ports` will be expanded to individual port configurations, it is not possible to configure a
-  port-channel with multiple interfaces on the same device. For this special case `connected_endpoints` should be used.
+- Since all ranges defined under `network_ports` will be expanded to individual port configurations, by default each port will be configured
+  in a port-channel with one member when leveraging automatic channel-id generation. To configure multiple ports as member of the same port-channel,
+  set the channel-id key (cf examples below).
 
 ## Variables and Options
 
@@ -301,8 +302,10 @@ Both data models support variable inheritance from profiles defined under [`port
 The `network_ports` data model is intended to be used with `port_profiles` and `parent_profiles` to keep the configuration generic and compact,
 but all features and keys supported under `connected_endpoints.adapters` is also supported directly under `network_ports`.
 
-Since all ranges defined under `network_ports` will be expanded to individual port configurations, it is not possible to configure a
-port-channel with multiple interfaces on the same device. For this special case `connected_endpoints` should be used.
+Since all ranges defined under `network_ports` will be expanded to individual port configurations, by default each port will be configured
+in a port-channel with one member when leveraging automatic channel-id generation. To configure multiple ports as member of the same port-channel,
+set the channel-id key (cf examples below).
+To leverage automatic channel-id computation and configure port-channel with multiple members, `connected_endpoints` should be used.
 
 The expansiont to individual port configurations also lead to inconsistent configurations when used with `short_esi: auto` or
 `designated_forwarder_algorithm: auto`, since those rely on information from multiple switches and interfaces.
@@ -583,4 +586,42 @@ network_ports:
       - Ethernet2/1-48
     profile: pc
     description: PCs
+```
+
+### Example using network ports to configure multiple ports in the same port-channel
+
+```yaml
+# Network Ports
+# By setting the channel_id key under port-channel, interfaces Ethernet3-4 will
+# be configured under the same port-channel.
+network_ports:
+  - switches:
+      - network-ports-tests-1
+    switch_ports:
+      - Ethernet3-4
+    description: Multiple interfaces in the same port-channel
+    port_channel:
+      mode: active
+      channel_id: 42
+```
+
+This will generate the following config:
+
+```shell
+interface Port-Channel42
+   description Multiple interfaces in the same port-channel
+   no shutdown
+   switchport
+!
+!
+interface Ethernet3
+   description Multiple interfaces in the same port-channel
+   no shutdown
+   channel-group 42 mode active
+!
+interface Ethernet4
+   description Multiple interfaces in the same port-channel
+   no shutdown
+   channel-group 42 mode active
+!
 ```
