@@ -49,6 +49,7 @@ CVX is enabled
 | Service | Enabled | Settings |
 | ------- | ------- | -------- |
 | MCS | True | Redis Password Set |
+| VXLAN | True | VTEP MAC learning: control-plane |
 
 ### CVX configuration
 
@@ -61,4 +62,7 @@ cvx
    service mcs
       redis password 7 070E334ddD1D18
       no shutdown
+   service vxlan
+      no shutdown
+      vtep mac-learning control-plane
 ```

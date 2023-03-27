@@ -912,6 +912,26 @@
               },
               "additionalProperties": false,
               "title": "MCS"
+            },
+            "vxlan": {
+              "type": "object",
+              "description": "VXLAN Controller service",
+              "properties": {
+                "shutdown": {
+                  "type": "boolean",
+                  "title": "Shutdown"
+                },
+                "vtep_mac_learning": {
+                  "type": "string",
+                  "enum": [
+                    "control-plane",
+                    "data-plane"
+                  ],
+                  "title": "Vtep MAC Learning"
+                }
+              },
+              "additionalProperties": false,
+              "title": "VxLAN"
             }
           },
           "additionalProperties": false,
@@ -15689,6 +15709,18 @@
                   "type": "string",
                   "description": "Source Interface Name",
                   "title": "Source Interface"
+                },
+                "controller_client": {
+                  "type": "object",
+                  "description": "Client to CVX Controllers",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "Controller Client"
                 },
                 "mlag_source_interface": {
                   "type": "string",
