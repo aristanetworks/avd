@@ -104,29 +104,29 @@ vlans:
 - tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
-  - LEAF_PEER_L3
+  - CUSTOM_MLAG_TG_NAME
   id: 4093
 - tenant: system
   name: MLAG_PEER
   trunk_groups:
-  - MLAG
+  - CUSTOM_MLAG_TG_NAME
   id: 4094
 - trunk_groups:
   - trunk-group-tests-l2leaf4
-  - MLAG
+  - CUSTOM_MLAG_TG_NAME
   id: 200
   name: svi200_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
 - trunk_groups:
   - trunk-group-tests-l2leaf4
-  - MLAG
+  - CUSTOM_MLAG_TG_NAME
   id: 210
   name: l2vlan210_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
 - id: 3199
   name: MLAG_iBGP_TG_200
   trunk_groups:
-  - LEAF_PEER_L3
+  - CUSTOM_MLAG_TG_NAME
   tenant: TRUNK_GROUP_TESTS
 vlan_interfaces:
 - name: Vlan4093
@@ -165,8 +165,7 @@ port_channel_interfaces:
   vlans: 2-4094
   mode: trunk
   trunk_groups:
-  - LEAF_PEER_L3
-  - MLAG
+  - CUSTOM_MLAG_TG_NAME
 - name: Port-Channel1
   description: TRUNK-GROUP-TESTS-L2LEAF4_Po1
   type: switched
