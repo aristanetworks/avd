@@ -20,7 +20,7 @@
 | Disable enforcement for locked ipv4 addresses | {{ address_locking.locked_address.ipv4_enforcement_disabled }} |
 {%     endif %}
 {%     if address_locking.locked_address.ipv6_enforcement_disabled is arista.avd.defined %}
-| Disable enforcement for locked ipv6 addresses | {{ locked_address.ipv6_enforcement_disabled }} |
+| Disable enforcement for locked ipv6 addresses | {{ address_locking.locked_address.ipv6_enforcement_disabled }} |
 {%     endif %}
 {%     if address_locking.dhcp_servers_ipv4 is arista.avd.defined %}
 
