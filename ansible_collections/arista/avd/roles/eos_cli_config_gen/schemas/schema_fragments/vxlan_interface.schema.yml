@@ -20,8 +20,11 @@ keys:
                 type: str
                 description: Source Interface Name
               controller_client:
-                type: bool
+                type: dict
                 description: Client to CVX Controllers
+                keys:
+                  enabled:
+                    type: bool
               mlag_source_interface:
                 type: str
               udp_port:

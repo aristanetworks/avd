@@ -15641,8 +15641,15 @@
                   "title": "Source Interface"
                 },
                 "controller_client": {
-                  "type": "boolean",
+                  "type": "object",
                   "description": "Client to CVX Controllers",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    }
+                  },
+                  "additionalProperties": false,
                   "title": "Controller Client"
                 },
                 "mlag_source_interface": {

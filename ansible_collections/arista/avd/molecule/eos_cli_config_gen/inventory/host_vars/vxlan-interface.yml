@@ -5,7 +5,8 @@ vxlan_interface:
     description: DC1-LEAF2A_VTEP
     vxlan:
       source_interface: Loopback0
-      controller_client: true
+      controller_client:
+        enabled: true
       mlag_source_interface: Loopback1
       udp_port: 4789
       virtual_router_encapsulation_mac_address: mlag-system-id
