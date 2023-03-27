@@ -203,7 +203,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
         if matching_port_channel_config != candidate_port_channel_config:
             # Found duplicate name with different generated configs
             raise AristaAvdError(
-                f"Duplicate port-channel name {port_channel_interfaces['name']} with conflicting configruations found while generating port-channels for"
+                f"Duplicate port-channel name {port_channel_interfaces['name']} with conflicting configurations found while generating port-channels for"
                 " connected-endpoints or network-ports"
             )
 
