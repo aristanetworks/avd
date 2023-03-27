@@ -695,14 +695,14 @@ ip virtual-router mac-address 00:1c:73:00:dc:01
 
 #### IP Routing Summary
 
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | True |
-| Common_VRF | true |
-| MGMT | false |
-| vrf_with_loopbacks_dc1_pod1_only | true |
-| vrf_with_loopbacks_from_overlapping_pool | true |
-| vrf_with_loopbacks_from_pod_pools | true |
+| VRF | Routing Enabled | IPv6 Interfaces |
+| --- | --------------- | --------------- |
+| default | True | False |
+| Common_VRF | True | False |
+| MGMT | False | False |
+| vrf_with_loopbacks_dc1_pod1_only | True | False |
+| vrf_with_loopbacks_from_overlapping_pool | True | False |
+| vrf_with_loopbacks_from_pod_pools | True | False |
 
 #### IP Routing Device Configuration
 
@@ -1120,13 +1120,13 @@ route-map RM-MLAG-PEER-IN permit 10
 
 ### VRF Instances Summary
 
-| VRF Name | IP Routing |
-| -------- | ---------- |
-| Common_VRF | enabled |
-| MGMT | disabled |
-| vrf_with_loopbacks_dc1_pod1_only | enabled |
-| vrf_with_loopbacks_from_overlapping_pool | enabled |
-| vrf_with_loopbacks_from_pod_pools | enabled |
+| VRF Name | IP Routing | IPv6 Interfaces |
+| -------- | ---------- | --------------- |
+| Common_VRF | enabled | disabled |
+| MGMT | disabled | disabled |
+| vrf_with_loopbacks_dc1_pod1_only | enabled | disabled |
+| vrf_with_loopbacks_from_overlapping_pool | enabled | disabled |
+| vrf_with_loopbacks_from_pod_pools | enabled | disabled |
 
 ### VRF Instances Device Configuration
 

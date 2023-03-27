@@ -487,18 +487,17 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 #### IP Routing Summary
 
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | True |
-| MGMT | false |
-| Tenant_A_APP_Zone | true |
-| Tenant_A_WEB_Zone | true |
+| VRF | Routing Enabled | IPv6 Interfaces |
+| --- | --------------- | --------------- |
+| default | False | True |
+| MGMT | False | False |
+| Tenant_A_APP_Zone | True | False |
+| Tenant_A_WEB_Zone | True | False |
 
 #### IP Routing Device Configuration
 
 ```eos
-!
-ip routing
+ip routing ipv6 interfaces
 no ip routing vrf MGMT
 ip routing vrf Tenant_A_APP_Zone
 ip routing vrf Tenant_A_WEB_Zone
@@ -520,7 +519,6 @@ ip routing vrf Tenant_A_WEB_Zone
 ```eos
 !
 ipv6 unicast-routing
-ip routing ipv6 interfaces
 ```
 
 ### Static Routes
@@ -778,11 +776,11 @@ route-map RM-CONN-2-BGP permit 10
 
 ### VRF Instances Summary
 
-| VRF Name | IP Routing |
-| -------- | ---------- |
-| MGMT | disabled |
-| Tenant_A_APP_Zone | enabled |
-| Tenant_A_WEB_Zone | enabled |
+| VRF Name | IP Routing | IPv6 Interfaces |
+| -------- | ---------- | --------------- |
+| MGMT | disabled | disabled |
+| Tenant_A_APP_Zone | enabled | disabled |
+| Tenant_A_WEB_Zone | enabled | disabled |
 
 ### VRF Instances Device Configuration
 

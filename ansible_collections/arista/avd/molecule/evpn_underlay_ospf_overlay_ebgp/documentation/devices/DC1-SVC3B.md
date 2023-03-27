@@ -533,11 +533,11 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 #### IP Routing Summary
 
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | True |
-| MGMT | false |
-| Tenant_B_OP_Zone | true |
+| VRF | Routing Enabled | IPv6 Interfaces |
+| --- | --------------- | --------------- |
+| default | True | False |
+| MGMT | False | False |
+| Tenant_B_OP_Zone | True | True |
 
 #### IP Routing Device Configuration
 
@@ -545,7 +545,7 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 !
 ip routing
 no ip routing vrf MGMT
-ip routing vrf Tenant_B_OP_Zone
+ip routing ipv6 interfaces vrf Tenant_B_OP_Zone
 ```
 
 ### IPv6 Routing
@@ -800,10 +800,10 @@ route-map RM-MLAG-PEER-IN permit 10
 
 ### VRF Instances Summary
 
-| VRF Name | IP Routing |
-| -------- | ---------- |
-| MGMT | disabled |
-| Tenant_B_OP_Zone | enabled |
+| VRF Name | IP Routing | IPv6 Interfaces |
+| -------- | ---------- | --------------- |
+| MGMT | disabled | disabled |
+| Tenant_B_OP_Zone | enabled | enabled |
 
 ### VRF Instances Device Configuration
 

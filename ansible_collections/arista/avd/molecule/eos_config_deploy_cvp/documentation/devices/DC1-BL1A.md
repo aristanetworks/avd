@@ -573,13 +573,13 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 #### IP Routing Summary
 
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | True |
-| MGMT | false |
-| Tenant_A_WAN_Zone | true |
-| Tenant_B_WAN_Zone | true |
-| Tenant_C_WAN_Zone | true |
+| VRF | Routing Enabled | IPv6 Interfaces |
+| --- | --------------- | --------------- |
+| default | True | False |
+| MGMT | False | False |
+| Tenant_A_WAN_Zone | True | True |
+| Tenant_B_WAN_Zone | True | True |
+| Tenant_C_WAN_Zone | True | True |
 
 #### IP Routing Device Configuration
 
@@ -587,9 +587,9 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 !
 ip routing
 no ip routing vrf MGMT
-ip routing vrf Tenant_A_WAN_Zone
-ip routing vrf Tenant_B_WAN_Zone
-ip routing vrf Tenant_C_WAN_Zone
+ip routing ipv6 interfaces vrf Tenant_A_WAN_Zone
+ip routing ipv6 interfaces vrf Tenant_B_WAN_Zone
+ip routing ipv6 interfaces vrf Tenant_C_WAN_Zone
 ```
 
 ### IPv6 Routing
@@ -899,12 +899,12 @@ route-map RM-MLAG-PEER-IN permit 10
 
 ### VRF Instances Summary
 
-| VRF Name | IP Routing |
-| -------- | ---------- |
-| MGMT | disabled |
-| Tenant_A_WAN_Zone | enabled |
-| Tenant_B_WAN_Zone | enabled |
-| Tenant_C_WAN_Zone | enabled |
+| VRF Name | IP Routing | IPv6 Interfaces |
+| -------- | ---------- | --------------- |
+| MGMT | disabled | disabled |
+| Tenant_A_WAN_Zone | enabled | enabled |
+| Tenant_B_WAN_Zone | enabled | enabled |
+| Tenant_C_WAN_Zone | enabled | enabled |
 
 ### VRF Instances Device Configuration
 

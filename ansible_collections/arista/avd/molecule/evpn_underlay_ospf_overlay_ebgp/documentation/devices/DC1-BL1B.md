@@ -483,10 +483,10 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 #### IP Routing Summary
 
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | True |
-| MGMT | false |
+| VRF | Routing Enabled | IPv6 Interfaces |
+| --- | --------------- | --------------- |
+| default | True | False |
+| MGMT | False | False |
 
 #### IP Routing Device Configuration
 
@@ -680,9 +680,9 @@ router bfd
 
 ### VRF Instances Summary
 
-| VRF Name | IP Routing |
-| -------- | ---------- |
-| MGMT | disabled |
+| VRF Name | IP Routing | IPv6 Interfaces |
+| -------- | ---------- | --------------- |
+| MGMT | disabled | disabled |
 
 ### VRF Instances Device Configuration
 

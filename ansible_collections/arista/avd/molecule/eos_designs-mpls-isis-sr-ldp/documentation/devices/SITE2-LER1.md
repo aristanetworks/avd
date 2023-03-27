@@ -458,12 +458,12 @@ ip virtual-router mac-address 00:1c:73:00:dc:00
 
 #### IP Routing Summary
 
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | True |
-| MGMT | false |
-| TENANT_B_INTRA | true |
-| TENANT_B_WAN | true |
+| VRF | Routing Enabled | IPv6 Interfaces |
+| --- | --------------- | --------------- |
+| default | True | False |
+| MGMT | False | False |
+| TENANT_B_INTRA | True | False |
+| TENANT_B_WAN | True | False |
 
 #### IP Routing Device Configuration
 
@@ -909,11 +909,11 @@ patch panel
 
 ### VRF Instances Summary
 
-| VRF Name | IP Routing |
-| -------- | ---------- |
-| MGMT | disabled |
-| TENANT_B_INTRA | enabled |
-| TENANT_B_WAN | enabled |
+| VRF Name | IP Routing | IPv6 Interfaces |
+| -------- | ---------- | --------------- |
+| MGMT | disabled | disabled |
+| TENANT_B_INTRA | enabled | disabled |
+| TENANT_B_WAN | enabled | disabled |
 
 ### VRF Instances Device Configuration
 

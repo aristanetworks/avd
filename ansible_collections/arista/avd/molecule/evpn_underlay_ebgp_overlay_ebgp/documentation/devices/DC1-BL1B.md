@@ -516,15 +516,15 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 #### IP Routing Summary
 
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | True |
-| MGMT | false |
-| Tenant_A_WAN_Zone | true |
-| Tenant_B_OP_Zone | true |
-| Tenant_B_WAN_Zone | true |
-| Tenant_C_WAN_Zone | true |
-| Tenant_L3_VRF_Zone | true |
+| VRF | Routing Enabled | IPv6 Interfaces |
+| --- | --------------- | --------------- |
+| default | True | False |
+| MGMT | False | False |
+| Tenant_A_WAN_Zone | True | False |
+| Tenant_B_OP_Zone | True | False |
+| Tenant_B_WAN_Zone | True | False |
+| Tenant_C_WAN_Zone | True | False |
+| Tenant_L3_VRF_Zone | True | False |
 
 #### IP Routing Device Configuration
 
@@ -895,14 +895,14 @@ route-map RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT permit 10
 
 ### VRF Instances Summary
 
-| VRF Name | IP Routing |
-| -------- | ---------- |
-| MGMT | disabled |
-| Tenant_A_WAN_Zone | enabled |
-| Tenant_B_OP_Zone | enabled |
-| Tenant_B_WAN_Zone | enabled |
-| Tenant_C_WAN_Zone | enabled |
-| Tenant_L3_VRF_Zone | enabled |
+| VRF Name | IP Routing | IPv6 Interfaces |
+| -------- | ---------- | --------------- |
+| MGMT | disabled | disabled |
+| Tenant_A_WAN_Zone | enabled | disabled |
+| Tenant_B_OP_Zone | enabled | disabled |
+| Tenant_B_WAN_Zone | enabled | disabled |
+| Tenant_C_WAN_Zone | enabled | disabled |
+| Tenant_L3_VRF_Zone | enabled | disabled |
 
 ### VRF Instances Device Configuration
 

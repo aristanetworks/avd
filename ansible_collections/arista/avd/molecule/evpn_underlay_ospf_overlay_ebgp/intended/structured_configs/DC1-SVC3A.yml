@@ -128,7 +128,7 @@ vrfs:
   ip_routing: false
 - name: Tenant_B_OP_Zone
   tenant: Tenant_A
-  ip_routing: true
+  ip_routing_ipv6_interfaces: true
 management_interfaces:
 - name: Management1
   description: oob_management

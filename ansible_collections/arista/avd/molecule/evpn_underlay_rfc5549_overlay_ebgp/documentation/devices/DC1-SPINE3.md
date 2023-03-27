@@ -317,16 +317,15 @@ service routing protocols model multi-agent
 
 #### IP Routing Summary
 
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | True |
-| MGMT | false |
+| VRF | Routing Enabled | IPv6 Interfaces |
+| --- | --------------- | --------------- |
+| default | False | True |
+| MGMT | False | False |
 
 #### IP Routing Device Configuration
 
 ```eos
-!
-ip routing
+ip routing ipv6 interfaces
 no ip routing vrf MGMT
 ```
 
@@ -344,7 +343,6 @@ no ip routing vrf MGMT
 ```eos
 !
 ipv6 unicast-routing
-ip routing ipv6 interfaces
 ```
 
 ### Static Routes
@@ -550,9 +548,9 @@ route-map RM-CONN-2-BGP permit 10
 
 ### VRF Instances Summary
 
-| VRF Name | IP Routing |
-| -------- | ---------- |
-| MGMT | disabled |
+| VRF Name | IP Routing | IPv6 Interfaces |
+| -------- | ---------- | --------------- |
+| MGMT | disabled | disabled |
 
 ### VRF Instances Device Configuration
 
