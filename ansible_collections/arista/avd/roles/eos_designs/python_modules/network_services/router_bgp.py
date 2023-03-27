@@ -144,7 +144,7 @@ class RouterBgpMixin(UtilsMixin):
                     route_target = {"address_family": af, "route_targets": [leaf_overlay_rt]}
                     for key, value in route_targets.items():
                         if route_target not in value:
-                            route_targets[key].append({"address_family": af, "route_targets": [leaf_overlay_rt]})
+                            value.append({"address_family": af, "route_targets": [leaf_overlay_rt]})
 
                 for rt in vrf["additional_route_targets"]:
                     flag = 0
