@@ -128,7 +128,10 @@ class AvdStructuredConfig(AvdFacts):
 
         return [
             {
-                str(key)[len(prefix) :]: self._hostvars[key]
+                # Disable black to prevent whitespace before colon PEP8 E203
+                # fmt: off
+                str(key)[len(prefix):]: self._hostvars[key]
+                # fmt: on
                 for key in self._hostvars
                 if str(key).startswith(prefix) and key not in CUSTOM_STRUCTURED_CONFIGURATION_EXEMPT_KEYS
             }
