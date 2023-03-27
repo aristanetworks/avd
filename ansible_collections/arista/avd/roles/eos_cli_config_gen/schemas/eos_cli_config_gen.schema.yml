@@ -1,3 +1,4 @@
+$id: eos_cli_config_gen
 type: dict
 allow_other_keys: true
 keys:
@@ -9851,7 +9852,7 @@ keys:
               description: 'TCAM Profile Config. Since these can be very long, it
                 is often a good idea to import the config from a file.
 
-                Example: "{{lookup(''file'', ''{{ root_dir }}/inventory/TCAM_TRAFFIC_POLICY.conf'')}}"'
+                Example: "{{ lookup(''file'', ''TCAM_TRAFFIC_POLICY.conf'') }}"'
   terminal:
     documentation_options:
       filename: data_model/Terminal Settings

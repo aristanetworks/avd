@@ -1,10 +1,12 @@
+{% set filename = item %}
+{% set documentation = documentation_schema[filename] %}
 ---
 search:
   boost: 2
 ---
 
-# {{ documentation_file.filename.split("/")[-1] }}
-{% for table in documentation_file.tables %}
+# {{ filename.split("/")[-1] }}
+{% for table in documentation.tables | arista.avd.natural_sort %}
 
 ## {{ table.display_name }}
 {%     if table.description %}

@@ -55,6 +55,7 @@ class ActionModule(ActionBase):
                 raise AnsibleActionFail("The argument 'templates' must be set as a list")
 
             schema = self._task.args.get("schema")
+            schema_id = self._task.args.get("schema_id")
             self.dest = self._task.args.get("dest", False)
             template_output = self._task.args.get("template_output", False)
             debug = self._task.args.get("debug", False)
@@ -62,6 +63,7 @@ class ActionModule(ActionBase):
             conversion_mode = self._task.args.get("conversion_mode")
             validation_mode = self._task.args.get("validation_mode")
             output_schema = self._task.args.get("output_schema")
+            output_schema_id = self._task.args.get("output_schema_id")
 
         else:
             raise AnsibleActionFail("The argument 'templates' must be set")
@@ -78,16 +80,32 @@ class ActionModule(ActionBase):
                     raise AnsibleActionFail(f"Exception during templating of task_var '{var}'") from e
 
         hostname = task_vars["inventory_hostname"]
-        if schema:
+        if schema or schema_id:
             # Load schema tools and perform conversion and validation
-            avdschematools = AvdSchemaTools(schema, hostname, display, conversion_mode, validation_mode)
+            avdschematools = AvdSchemaTools(
+                hostname=hostname,
+                ansible_display=display,
+                schema=schema,
+                schema_id=schema_id,
+                conversion_mode=conversion_mode,
+                validation_mode=validation_mode,
+                plugin_name=task_vars["ansible_role_name"],
+            )
             result.update(avdschematools.convert_and_validate_data(task_vars))
             if result.get("failed"):
                 # Input data validation failed so return errors.
                 return result
 
-        if output_schema:
-            output_avdschematools = AvdSchemaTools(output_schema, hostname, display, conversion_mode, validation_mode)
+        if output_schema or output_schema_id:
+            output_avdschematools = AvdSchemaTools(
+                hostname=hostname,
+                ansible_display=display,
+                schema=output_schema,
+                schema_id=output_schema_id,
+                conversion_mode=conversion_mode,
+                validation_mode=validation_mode,
+                plugin_name=task_vars["ansible_role_name"],
+            )
             output_avdschema = output_avdschematools.avdschema
         else:
             output_avdschema = None
@@ -177,7 +195,7 @@ class ActionModule(ActionBase):
 
                 # If output_schema is set, perform inplace conversion of each returned dict according to output_schema
                 # to normalize the data to correct format before merging
-                if output_schema:
+                if output_avdschema:
                     if debug:
                         debug_item["timestamps"]["data_conversion_from_schema"] = datetime.now()
 

@@ -27,9 +27,14 @@ options:
     required: false
     type: str
   schema:
-    description: Schema conforming to "AVD Meta Schema"
+    description: Schema conforming to "AVD Meta Schema". Either schema or schema_id must be set.
     required: false
     type: dict
+  schema_id:
+    description: ID of Schema conforming to "AVD Meta Schema".  Either schema or schema_id must be set.
+    required: false
+    type: str
+    choices: [ "eos_cli_config_gen", "eos_designs" ]
   templates:
     description: List of dicts for Jinja templates to be run.
     required: true
@@ -124,6 +129,11 @@ options:
     description: AVD Schema for output data. Used for automatic merge of data.
     required: false
     type: dict
+  output_schema_id:
+    description: ID of AVD Schema for output data. Used for automatic merge of data.
+    required: false
+    type: str
+    choices: [ "eos_cli_config_gen", "eos_designs" ]
 """
 
 EXAMPLES = r"""

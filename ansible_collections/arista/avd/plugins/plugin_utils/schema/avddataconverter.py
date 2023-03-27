@@ -142,7 +142,9 @@ class AvdDataConverter:
 
         # For simple conversions, skip conversion if the value is of the correct type
         if schema_type in SIMPLE_CONVERTERS and isinstance(value, SCHEMA_TO_PY_TYPE_MAP.get(schema_type)):
-            return
+            # Avoid corner case where we want to convert bool to int. Bool is a subclass of Int so it passes the check above.
+            if not (schema_type == "int" and isinstance(value, bool)):
+                return
 
         # Prepare string for var path used in warning messages.
         path_str = ".".join(path)

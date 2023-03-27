@@ -28,9 +28,10 @@ class ActionModule(ActionBase):
             profiler = cProfile.Profile()
             profiler.enable()
 
+        self._plugin_name = task_vars["ansible_role_name"]
+
         self._schema = self._task.args.get("schema")
-        if not isinstance(self._schema, dict):
-            raise AnsibleActionFail("The argument 'schema' must be set as a dict")
+        self._schema_id = self._task.args.get("schema_id")
 
         self.template_output = self._task.args.get("template_output", False)
         self._conversion_mode = self._task.args.get("conversion_mode")
@@ -119,7 +120,15 @@ class ActionModule(ActionBase):
             True if validation failed for one or more of the hosts
         """
         # Load schema tools once with empty host.
-        avdschematools = AvdSchemaTools(self._schema, "", display, self._conversion_mode, self._validation_mode)
+        avdschematools = AvdSchemaTools(
+            hostname="",
+            ansible_display=display,
+            schema=self._schema,
+            schema_id=self._schema_id,
+            conversion_mode=self._conversion_mode,
+            validation_mode=self._validation_mode,
+            plugin_name=self._plugin_name,
+        )
 
         all_hostvars = {}
         failed = False

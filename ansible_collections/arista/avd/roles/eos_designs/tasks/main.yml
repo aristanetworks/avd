@@ -29,7 +29,7 @@
     avd_switch_facts: true
     #cprofile_file: "eos_designs_facts.prof"
     template_output: true
-    schema: "{{ lookup('ansible.builtin.file', role_schema_path) | from_yaml }}"
+    schema_id: "eos_designs"
     conversion_mode: "{{ avd_data_conversion_mode }}"
     validation_mode: "{{ avd_data_validation_mode }}"
   check_mode: false
@@ -58,10 +58,10 @@
     dest: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
     #cprofile_file: "structured-{{inventory_hostname}}.prof"
     template_output: true
-    schema: "{{ lookup('ansible.builtin.file', role_schema_path) | from_yaml }}"
+    schema_id: "eos_designs"
     conversion_mode: "{{ avd_data_conversion_mode }}"
     validation_mode: "{{ avd_data_validation_mode }}"
-    output_schema: "{{ lookup('ansible.builtin.file', structured_config_schema_path) | from_yaml }}"
+    output_schema_id: "eos_cli_config_gen"
   delegate_to: localhost
   check_mode: false
   register: structured_config
