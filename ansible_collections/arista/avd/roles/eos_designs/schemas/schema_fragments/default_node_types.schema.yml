@@ -15,12 +15,12 @@ keys:
         node_type:
           type: str
           required: true
-          description: Resulting node type when regex matches
+          description: Resulting node type when regex matches.
         match_hostnames:
           type: list
           required: true
-          description: Regular expressions to match against hostnames
+          description: Regular expressions to match against hostnames.
           items:
             type: str
             required: true
-            description: Regex needs to match full hostname (i.e. is bounded by ^ and $ elements)
+            description: Regex needs to match full hostname (i.e. is bounded by ^ and $ elements).

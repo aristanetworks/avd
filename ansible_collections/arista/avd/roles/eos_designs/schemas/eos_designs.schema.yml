@@ -37,39 +37,39 @@ keys:
         types:
           type: list
           required: true
-          description: List of node type keys
+          description: List of node type keys.
           items:
             type: str
         platforms:
           type: list
           required: true
-          description: 'List of platform families
+          description: 'List of platform families.
 
             This is defined as a Python regular expression that matches the full platform
-            type
+            type.
 
             '
           items:
             type: str
-            description: Arista platform family regular expression
+            description: Arista platform family regular expression.
         uplink_interfaces:
           type: list
-          description: List of uplink interfaces or uplink interface ranges
+          description: List of uplink interfaces or uplink interface ranges.
           items:
             type: str
-            description: Interface range or interface
+            description: Interface range or interface.
         mlag_interfaces:
           type: list
-          description: List of MLAG interfaces or MLAG interface ranges
+          description: List of MLAG interfaces or MLAG interface ranges.
           items:
             type: str
-            description: Interface range or interface
+            description: Interface range or interface.
         downlink_interfaces:
           type: list
-          description: List of downlink interfaces or downlink interface ranges
+          description: List of downlink interfaces or downlink interface ranges.
           items:
             type: str
-            description: Interface range or interface
+            description: Interface range or interface.
   default_node_types:
     type: list
     documentation_options:
@@ -83,16 +83,16 @@ keys:
         node_type:
           type: str
           required: true
-          description: Resulting node type when regex matches
+          description: Resulting node type when regex matches.
         match_hostnames:
           type: list
           required: true
-          description: Regular expressions to match against hostnames
+          description: Regular expressions to match against hostnames.
           items:
             type: str
             required: true
             description: Regex needs to match full hostname (i.e. is bounded by ^
-              and $ elements)
+              and $ elements).
   node_type:
     documentation_options:
       filename: Fabric Topology
@@ -120,14 +120,13 @@ keys:
               filename: Fabric Topology
               table: Generic configuration management
             type: str
-            description: '`mac_address` can be leverage to document management mac
-              address for use with DHCP provisioning roles'
+            description: Leverage to document management interface mac address.
           system_mac_address:
             documentation_options:
               filename: Fabric Topology
               table: Generic configuration management
             type: str
-            description: 'System MAC Address in this following format: "xx:xx:xx:xx:xx:xx"
+            description: 'System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".
 
               Set to the same MAC address as available in "show version" on the device.
 
@@ -190,7 +189,7 @@ keys:
                   filename: Fabric Topology
                   table: Generic configuration management
                 type: list
-                description: 'Link Tracking Groups
+                description: 'Link Tracking Groups.
 
                   By default a single group named "LT_GROUP1" is defined with default
                   values.
@@ -341,11 +340,10 @@ keys:
             documentation_options:
               filename: Fabric Topology
               table: Uplink management
-            description: 'Point-to-Point interface speed - will apply to uplinks on
-              both ends
+            description: 'Set point-to-Point interface speed and will apply to uplink
+              interfaces on both ends.
 
-              < interface_speed or forced interface_speed or auto interface_speed
-              >
+              interface_speed or forced interface_speed or auto interface_speed.
 
               '
             type: str
@@ -370,12 +368,12 @@ keys:
             type: int
             convert_types:
             - str
-            description: 'Number of parallel links towards uplink switches
+            description: 'Number of parallel links towards uplink switches.
 
               Changing this value may change interface naming on uplinks (and corresponding
-              downlinks)
+              downlinks).
 
-              Can be used to reserve interfaces for future parallel uplinks
+              Can be used to reserve interfaces for future parallel uplinks.
 
               '
           uplink_bfd:
@@ -407,7 +405,7 @@ keys:
             documentation_options:
               filename: Fabric Topology
               table: Uplink management
-            description: Enable PTP on all infrastructure links
+            description: Enable PTP on all infrastructure links.
             type: dict
             keys:
               enable:
@@ -420,7 +418,7 @@ keys:
             documentation_options:
               filename: Fabric Topology
               table: Uplink management
-            description: Enable MacSec on all uplinks
+            description: Enable MacSec on all uplinks.
             type: dict
             keys:
               profile:
@@ -431,7 +429,7 @@ keys:
               table: Uplink management
             type: dict
             description: 'Custom structured config applied to "uplink_interfaces",
-              and "uplink_switch_interfaces"
+              and "uplink_switch_interfaces".
 
               When uplink_type == "p2p", custom structured config added under ethernet_interfaces.<interface>
               for eos_cli_config_gen overrides the settings on the ethernet interface
@@ -498,12 +496,12 @@ keys:
               filename: Fabric Topology
               table: Uplink management
             description: 'short_esi only valid for l2leaf devices using port-channel
-              uplink
+              uplink.
 
               Setting short_esi to "auto" generates the short_esi automatically using
               a hash of configuration elements.
 
-              < 0000:0000:0000 | auto >
+              < 0000:0000:0000 | auto >.
 
               '
             type: str
@@ -511,14 +509,14 @@ keys:
             documentation_options:
               filename: Fabric Topology
               table: ISIS underlay protocol management
-            description: (4.4 hexadecimal)
+            description: (4.4 hexadecimal).
             type: str
             pattern: '[0-9a-f]{4}\.[0-9a-f]{4}'
           isis_maximum_paths:
             documentation_options:
               filename: Fabric Topology
               table: ISIS underlay protocol management
-            description: Number of path to configure in ECMP for ISIS
+            description: Number of path to configure in ECMP for ISIS.
             type: int
             convert_types:
             - str
@@ -546,14 +544,14 @@ keys:
             documentation_options:
               filename: Fabric Topology
               table: Loopback and VTEP management
-            description: IPv4 subnet for Loopback0 allocation
+            description: IPv4 subnet for Loopback0 allocation.
             type: str
             format: ipv4_cidr
           vtep_loopback_ipv4_pool:
             documentation_options:
               filename: Fabric Topology
               table: Loopback and VTEP management
-            description: IPv4 subnet for VTEP-Loopback allocation
+            description: IPv4 subnet for VTEP-Loopback allocation.
             type: str
             format: ipv4_cidr
           loopback_ipv4_offset:
@@ -577,7 +575,7 @@ keys:
             documentation_options:
               filename: Fabric Topology
               table: Loopback and VTEP management
-            description: IPv6 subnet for Loopback0 allocation
+            description: IPv6 subnet for Loopback0 allocation.
             type: str
             format: ipv6_cidr
           loopback_ipv6_offset:
@@ -608,7 +606,7 @@ keys:
             documentation_options:
               filename: Fabric Topology
               table: BGP & EVPN control plane
-            description: Required with eBGP
+            description: Required with eBGP.
             type: str
             convert_types:
             - int
@@ -617,7 +615,7 @@ keys:
             documentation_options:
               filename: Fabric Topology
               table: BGP & EVPN control plane
-            description: List of EOS commands to apply to BGP daemon
+            description: List of EOS commands to apply to BGP daemon.
             type: list
             items:
               type: str
@@ -636,7 +634,7 @@ keys:
             documentation_options:
               filename: Fabric Topology
               table: BGP & EVPN control plane
-            description: List of nodes acting as EVPN Route-Servers / Route-Reflectors
+            description: List of nodes acting as EVPN Route-Servers / Route-Reflectors.
             type: list
             items:
               type: str
@@ -645,9 +643,9 @@ keys:
               filename: Fabric Topology
               table: EVPN services management
             description: 'Possibility to prevent configuration of Tenant VRFs and
-              SVIs
+              SVIs.
 
-              Override node definition "network_services_l3" from node_type_keys
+              Override node definition "network_services_l3" from node_type_keys.
 
               This allows support for centralized routing.
 
@@ -659,9 +657,9 @@ keys:
               filename: Fabric Topology
               table: EVPN services management
             description: 'Filter L3 and L2 network services based on tenant and tags
-              (and operation filter)
+              (and operation filter).
 
-              If filter is not defined it will default to all
+              If filter is not defined it will default to all.
 
               '
             type: dict
@@ -716,18 +714,19 @@ keys:
             documentation_options:
               filename: Fabric Topology
               table: EVPN services management
-            description: Activate or deactivate IGMP snooping on device level
+            description: Activate or deactivate IGMP snooping on device level.
             type: bool
             default: true
           evpn_gateway:
             documentation_options:
               filename: Fabric Topology
               table: BGP & EVPN multi-domain gateway
-            description: 'Node is acting as EVPN Multi-Domain Gateway
+            description: 'Node is acting as EVPN Multi-Domain Gateway.
 
               New BGP peer-group is generated between EVPN GWs in different domains
-              or between GWs and Route Servers. Name can be changed under "bgp_peer_groups.evpn_overlay_core"
-              variable
+              or between GWs and Route Servers.
+
+              Name can be changed under "bgp_peer_groups.evpn_overlay_core" variable.
 
               L3 rechability for different EVPN GWs must be already in place, it is
               recommended to use DCI & L3 Edge if Route Servers and GWs are not defined
@@ -757,20 +756,20 @@ keys:
                       documentation_options:
                         filename: Fabric Topology
                         table: BGP & EVPN multi-domain gateway
-                      description: Hostname of remote EVPN GW server
+                      description: Hostname of remote EVPN GW server.
                       type: str
                     ip_address:
                       documentation_options:
                         filename: Fabric Topology
                         table: BGP & EVPN multi-domain gateway
-                      description: Peering IP of remote Route Server
+                      description: Peering IP of remote Route Server.
                       type: str
                       format: ipv4
                     bgp_as:
                       documentation_options:
                         filename: Fabric Topology
                         table: BGP & EVPN multi-domain gateway
-                      description: BGP ASN of remote Route Server
+                      description: BGP ASN of remote Route Server.
                       type: str
                       convert_types:
                       - int
@@ -780,7 +779,7 @@ keys:
                   filename: Fabric Topology
                   table: BGP & EVPN multi-domain gateway
                 description: Enable EVPN Gateway functionality for route-types 2 (MAC-IP)
-                  and 3 (IMET)
+                  and 3 (IMET).
                 type: dict
                 keys:
                   enabled:
@@ -793,7 +792,7 @@ keys:
                 documentation_options:
                   filename: Fabric Topology
                   table: BGP & EVPN multi-domain gateway
-                description: Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX)
+                description: Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX).
                 type: dict
                 keys:
                   enabled:
@@ -943,17 +942,21 @@ keys:
             documentation_options:
               filename: Fabric Topology
               table: MLAG configuration management
-            description: < interface_speed or forced interface_speed or auto interface_speed
-              >
+            description: 'Set MLAG interface speed.
+
+              < interface_speed or forced interface_speed or auto interface_speed
+              >.
+
+              '
             type: str
           mlag_peer_l3_vlan:
             documentation_options:
               filename: Fabric Topology
               table: MLAG configuration management
-            description: 'Underlay L3 peering SVI interface id
+            description: 'Underlay L3 peering SVI interface id.
 
               If set to 0 or the same vlan as mlag_peer_vlan, the mlag_peer_vlan will
-              be used for L3 peering
+              be used for L3 peering.
 
               '
             type: int
@@ -980,7 +983,7 @@ keys:
             documentation_options:
               filename: Fabric Topology
               table: MLAG configuration management
-            description: MLAG Peer Link (control link) SVI interface id
+            description: MLAG Peer Link (control link) SVI interface id.
             type: int
             convert_types:
             - str
@@ -1009,10 +1012,13 @@ keys:
             documentation_options:
               filename: Fabric Topology
               table: MLAG configuration management
-            description: If not set, the mlag port-channel id is generated based on
-              the digits of the first interface present in 'mlag_interfaces'. Valid
-              port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 - 999999
-              > for EOS >= 4.25.0F.
+            description: 'If not set, the mlag port-channel id is generated based
+              on the digits of the first interface present in ''mlag_interfaces''.
+
+              Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and <
+              1 - 999999 > for EOS >= 4.25.0F.
+
+              '
             type: int
             convert_types:
             - str
@@ -1044,7 +1050,7 @@ keys:
             documentation_options:
               filename: Fabric Topology
               table: MLAG configuration management
-            description: Virtual router mac address for anycast gateway
+            description: Virtual router mac address for anycast gateway.
             type: str
             format: mac
           inband_management_subnet:
@@ -1055,7 +1061,7 @@ keys:
               l2leafs in default VRF.
 
               Parent l3leafs will have SVI with "ip virtual-router" and host-route
-              injection based on ARP. This allows all l3leafs to reuse the same subnet
+              injection based on ARP. This allows all l3leafs to reuse the same subnet.
 
               SVI IP address will be assigned as follows:
 
@@ -1079,7 +1085,7 @@ keys:
               filename: Fabric Topology
               table: Inband management VLAN
             description: VLAN number assigned to Inband Management SVI on l2leafs
-              in default VRF
+              in default VRF.
             type: int
             convert_types:
             - str
@@ -1177,7 +1183,7 @@ keys:
                 - str
                 min: 0
                 max: 255
-                description: 'default -> automatically set based on node_type
+                description: 'default -> automatically set based on node_type.
 
                   '
               priority2:
@@ -1189,7 +1195,7 @@ keys:
                 - str
                 min: 0
                 max: 255
-                description: 'default -> (node_id modulus 256)
+                description: 'default -> (node_id modulus 256).
 
                   '
               auto_clock_identity:
@@ -1237,7 +1243,7 @@ keys:
                   the recommended behaviour.
 
                   This can be set manually if required, for example, to a value of
-                  10.1.2.3
+                  "10.1.2.3".
 
                   '
               ttl:
@@ -1253,7 +1259,7 @@ keys:
                   table: PTP settings management
                 type: bool
                 default: false
-                description: 'Enable PTP unicast forwarding
+                description: 'Enable PTP unicast forwarding.
 
                   '
               dscp:
