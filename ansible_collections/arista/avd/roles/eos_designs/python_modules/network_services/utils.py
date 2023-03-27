@@ -283,6 +283,17 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
     def _mlag_peer(self) -> str:
         return get(self._hostvars, "switch.mlag_peer", required=True)
 
+    def _mlag_ibgp_peering_enabled(self, vrf, tenant) -> bool:
+        """
+        Returns True if mlag ibgp_peering is enabled
+        False otherwise
+        """
+        if not self._mlag_l3 or not self._network_services_l3:
+            return False
+
+        mlag_ibgp_peering: bool = default(vrf.get("enable_mlag_ibgp_peering_vrfs"), tenant.get("enable_mlag_ibgp_peering_vrfs"), True)
+        return vrf["name"] != "default" and mlag_ibgp_peering
+
     def _mlag_ibgp_peering_vlan_vrf(self, vrf, tenant) -> int | None:
         """
         MLAG IBGP Peering VLANs per VRF
@@ -290,12 +301,7 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         Performs all relevant checks if MLAG IBGP Peering is enabled
         Returns None if peering is not enabled
         """
-
-        if not (self._mlag_l3 and self._network_services_l3):
-            return None
-
-        mlag_ibgp_peering = default(vrf.get("enable_mlag_ibgp_peering_vrfs"), tenant.get("enable_mlag_ibgp_peering_vrfs"), True)
-        if vrf["name"] == "default" or not mlag_ibgp_peering:
+        if not self._mlag_ibgp_peering_enabled(vrf, tenant):
             return None
 
         if (mlag_ibgp_peering_vlan := get(vrf, "mlag_ibgp_peering_vlan")) is not None:
