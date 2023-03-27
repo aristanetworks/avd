@@ -53,7 +53,7 @@ class VxlanInterfaceMixin(UtilsMixin):
             vxlan["flood_vteps"] = natural_sort(unique(self._overlay_her_flood_lists.get("common", [])))
 
         if self._overlay_cvx:
-            vxlan["controller_client"] = True
+            vxlan["controller_client"] = {"enabled": True}
 
         vlans = []
         vrfs = []

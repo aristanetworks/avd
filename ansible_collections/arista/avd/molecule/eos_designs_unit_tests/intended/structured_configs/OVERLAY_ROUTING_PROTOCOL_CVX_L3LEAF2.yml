@@ -85,7 +85,8 @@ vxlan_interface:
     vxlan:
       udp_port: 4789
       source_interface: Loopback1
-      controller_client: true
+      controller_client:
+        enabled: true
       vlans:
       - id: 3910
         vni: 14910
