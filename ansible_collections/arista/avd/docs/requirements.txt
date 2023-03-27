@@ -1,6 +1,5 @@
 mkdocs
-mkdocs-bootswatch
-mkdocs-material==8.5.7
+mkdocs-material==9.0.12
 mkdocs-material-extensions
 fontawesome-markdown
 pymdown-extensions
