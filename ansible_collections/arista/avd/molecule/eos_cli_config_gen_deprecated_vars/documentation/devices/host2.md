@@ -1,5 +1,6 @@
 # host2
-# Table of Contents
+
+## Table of Contents
 
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
@@ -7,13 +8,13 @@
 - [Routing](#routing)
   - [Router BGP](#router-bgp)
 
-# Spanning Tree
+## Spanning Tree
 
-## Spanning Tree Summary
+### Spanning Tree Summary
 
 STP mode: **rapid-pvst**
 
-### Rapid-PVST Instance and Priority
+#### Rapid-PVST Instance and Priority
 
 | Instance(s) | Priority |
 | -------- | -------- |
@@ -21,7 +22,7 @@ STP mode: **rapid-pvst**
 | 3 | 8192 |
 | 100-500 | 16384 |
 
-## Spanning Tree Device Configuration
+### Spanning Tree Device Configuration
 
 ```eos
 !
@@ -31,23 +32,23 @@ spanning-tree vlan-id 3 priority 8192
 spanning-tree vlan-id 100-500 priority 16384
 ```
 
-# Routing
+## Routing
 
-## Router BGP
+### Router BGP
 
-### Router BGP Summary
+#### Router BGP Summary
 
 | BGP AS | Router ID |
 | ------ | --------- |
 | 65101|  192.168.255.3 |
 
-### Router BGP VRFs
+#### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
 | test | - | connected |
 
-### Router BGP Device Configuration
+#### Router BGP Device Configuration
 
 ```eos
 !
