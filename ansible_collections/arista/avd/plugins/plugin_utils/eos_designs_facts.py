@@ -360,7 +360,7 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def id(self) -> int | None:
         """
-        Make id not required for switches that would not use it
+        id is optional.
         """
         return get(self._switch_data_combined, "id")
 
