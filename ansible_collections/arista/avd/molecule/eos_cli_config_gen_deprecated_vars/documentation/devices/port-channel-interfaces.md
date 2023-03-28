@@ -1,28 +1,29 @@
 # port-channel-interfaces
-# Table of Contents
+
+## Table of Contents
 
 - [Interfaces](#interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
 
-# Interfaces
+## Interfaces
 
-## Port-Channel Interfaces
+### Port-Channel Interfaces
 
-### Port-Channel Interfaces Summary
+#### Port-Channel Interfaces Summary
 
-#### L2
+##### L2
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | SRV01_bond0 | switched | trunk | 2-3000 | - | - | - | - | - | 0000:0000:0404:0404:0303 |
 
-#### Flexible Encapsulation Interfaces
+##### Flexible Encapsulation Interfaces
 
 | Interface | Description | Type | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
 | --------- | ----------- | ---- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
 | Port-Channel2.1000 | L2 Subinterface | l2dot1q | 1000 | False | 100 | - | - | True | - | - | - |
 
-### Port-Channel Interfaces Device Configuration
+#### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
