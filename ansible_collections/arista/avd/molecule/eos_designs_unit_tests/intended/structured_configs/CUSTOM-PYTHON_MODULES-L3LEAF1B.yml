@@ -1,0 +1,255 @@
+router_bgp:
+  as: '65101'
+  router_id: 192.168.255.22
+  bgp_defaults:
+  - maximum-paths 4 ecmp 4
+  peer_groups:
+  - type: ipv4
+    remote_as: '65101'
+    next_hop_self: true
+    description: CUSTOM-PYTHON_MODULES-L3LEAF1A
+    maximum_routes: 12000
+    send_community: all
+    route_map_in: RM-MLAG-PEER-IN
+    name: MLAG-IPv4-UNDERLAY-PEER
+  - type: ipv4
+    maximum_routes: 12000
+    send_community: all
+    name: IPv4-UNDERLAY-PEERS
+  - type: evpn
+    update_source: Loopback0
+    bfd: true
+    send_community: all
+    maximum_routes: 0
+    ebgp_multihop: 3
+    name: EVPN-OVERLAY-PEERS
+  address_family_ipv4:
+    peer_groups:
+    - activate: true
+      name: MLAG-IPv4-UNDERLAY-PEER
+    - activate: true
+      name: IPv4-UNDERLAY-PEERS
+    - activate: false
+      name: EVPN-OVERLAY-PEERS
+  neighbors:
+  - peer_group: MLAG-IPv4-UNDERLAY-PEER
+    description: CUSTOM-PYTHON_MODULES-L3LEAF1A
+    ip_address: 10.255.251.10
+  - peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65001'
+    description: CUSTOM-PYTHON_MODULES-SPINE1_Ethernet2
+    ip_address: 172.31.255.22
+  - peer_group: EVPN-OVERLAY-PEERS
+    description: CUSTOM-PYTHON_MODULES-SPINE1
+    remote_as: '65001'
+    ip_address: 192.168.255.1
+  redistribute_routes:
+  - route_map: RM-CONN-2-BGP
+    source_protocol: connected
+  address_family_evpn:
+    peer_groups:
+    - activate: true
+      name: EVPN-OVERLAY-PEERS
+  vrfs:
+  - router_id: 192.168.255.22
+    rd: 192.168.255.22:1
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+    redistribute_routes:
+    - source_protocol: connected
+    neighbors:
+    - peer_group: MLAG-IPv4-UNDERLAY-PEER
+      ip_address: 10.255.240.10
+    name: TEST_VRF
+  vlans:
+  - tenant: CUSTOM_PYTHON_MODULES_TENANT
+    rd: 192.168.255.22:11110
+    route_targets:
+      both:
+      - 11110:11110
+    redistribute_routes:
+    - learned
+    id: 110
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.200.1
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: TEST_VRF
+  tenant: CUSTOM_PYTHON_MODULES_TENANT
+  ip_routing: true
+management_interfaces:
+- name: Management1
+  description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.200.102/24
+  gateway: 192.168.200.1
+  type: oob
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+spanning_tree:
+  no_spanning_tree_vlan: 4093-4094
+vlans:
+- tenant: system
+  name: LEAF_PEER_L3
+  trunk_groups:
+  - LEAF_PEER_L3
+  id: 4093
+- tenant: system
+  name: MLAG_PEER
+  trunk_groups:
+  - MLAG
+  id: 4094
+- id: 110
+  name: Tenant_A_OP_Zone_1
+  tenant: CUSTOM_PYTHON_MODULES_TENANT
+- id: 3000
+  name: MLAG_iBGP_TEST_VRF
+  trunk_groups:
+  - LEAF_PEER_L3
+  tenant: CUSTOM_PYTHON_MODULES_TENANT
+vlan_interfaces:
+- name: Vlan4093
+  description: MLAG_PEER_L3_PEERING
+  shutdown: false
+  mtu: 9000
+  ip_address: 10.255.251.11/31
+- name: Vlan4094
+  description: MLAG_PEER
+  shutdown: false
+  ip_address: 10.255.252.11/31
+  no_autostate: true
+  mtu: 9000
+- name: Vlan110
+  tenant: CUSTOM_PYTHON_MODULES_TENANT
+  tags:
+  - opzone
+  description: Tenant_A_OP_Zone_1
+  shutdown: false
+  ip_address_virtual: 10.1.10.1/24
+  vrf: TEST_VRF
+- name: Vlan3000
+  tenant: CUSTOM_PYTHON_MODULES_TENANT
+  type: underlay_peering
+  shutdown: false
+  description: 'MLAG_PEER_L3_iBGP: vrf TEST_VRF'
+  vrf: TEST_VRF
+  mtu: 9000
+  ip_address: 10.255.240.11/31
+port_channel_interfaces:
+- name: Port-Channel3
+  description: TEST_CUSTOM_PREFIX_MLAG_PEER_CUSTOM-PYTHON_MODULES-L3LEAF1A_Po3
+  type: switched
+  shutdown: false
+  vlans: 2-4094
+  mode: trunk
+  trunk_groups:
+  - LEAF_PEER_L3
+  - MLAG
+ethernet_interfaces:
+- peer: CUSTOM-PYTHON_MODULES-L3LEAF1A
+  peer_interface: Ethernet3
+  peer_type: mlag_peer
+  description: TEST_CUSTOM_PREFIX_MLAG_PEER_CUSTOM-PYTHON_MODULES-L3LEAF1A_Ethernet3
+  type: switched
+  shutdown: false
+  channel_group:
+    id: 3
+    mode: active
+  name: Ethernet3
+- peer: CUSTOM-PYTHON_MODULES-L3LEAF1A
+  peer_interface: Ethernet4
+  peer_type: mlag_peer
+  description: TEST_CUSTOM_PREFIX_MLAG_PEER_CUSTOM-PYTHON_MODULES-L3LEAF1A_Ethernet4
+  type: switched
+  shutdown: false
+  channel_group:
+    id: 3
+    mode: active
+  name: Ethernet4
+- peer: CUSTOM-PYTHON_MODULES-SPINE1
+  peer_interface: Ethernet2
+  peer_type: spine
+  description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON_MODULES-SPINE1_Ethernet2
+  shutdown: false
+  mtu: 9000
+  type: routed
+  ip_address: 172.31.255.23/31
+  name: Ethernet1
+mlag_configuration:
+  domain_id: CUSTOM_PYTHON_MODULES_L3LEAF1
+  local_interface: Vlan4094
+  peer_address: 10.255.252.10
+  peer_link: Port-Channel3
+  reload_delay_mlag: '300'
+  reload_delay_non_mlag: '330'
+route_maps:
+- name: RM-MLAG-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    set:
+    - origin incomplete
+    description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+loopback_interfaces:
+- name: Loopback0
+  description: TEST_CUSTOM_PREFIX_EVPN_Overlay_Peering_L3LEAF
+  shutdown: false
+  ip_address: 192.168.255.22/32
+- name: Loopback1
+  description: TEST_CUSTOM_PREFIX_VTEP_VXLAN_Tunnel_Source_L3LEAF
+  shutdown: false
+  ip_address: 192.168.254.21/32
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+ip_igmp_snooping:
+  globally_enabled: true
+ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+vxlan_interface:
+  Vxlan1:
+    description: CUSTOM-PYTHON_MODULES-L3LEAF1B_VTEP
+    vxlan:
+      udp_port: 4789
+      source_interface: Loopback1
+      virtual_router_encapsulation_mac_address: mlag-system-id
+      vlans:
+      - id: 110
+        vni: 11110
+      vrfs:
+      - name: TEST_VRF
+        vni: 1
