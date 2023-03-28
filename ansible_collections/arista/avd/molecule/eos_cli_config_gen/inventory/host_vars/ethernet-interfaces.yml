@@ -635,20 +635,3 @@ ethernet_interfaces:
         link_address: a0::5
         vrf: TEST
         local_interface: Loopback55
-
-  Ethernet56:
-    description: Address Locking Interface Testing 1
-    address_locking:
-      ipv4: true
-
-  Ethernet57:
-    description: Address Locking Interface Testing 2
-    address_locking:
-      ipv4: true
-      ipv6: true
-
-  Ethernet58:
-    description: Address Locking Interface Testing 3
-    address_locking:
-      ipv4: false
-      ipv6: true

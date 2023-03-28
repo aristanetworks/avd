@@ -4,8 +4,6 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Address Locking](#address-locking)
-- [Address Locking Interfaces](#address-locking-interfaces)
 - [Monitoring](#monitoring)
   - [SFlow](#sflow)
 - [Interfaces](#interfaces)
@@ -47,16 +45,6 @@ interface Management1
    vrf MGMT
    ip address 10.73.255.122/24
 ```
-
-## Address Locking
-
-## Address Locking Interfaces
-
-| Interface | IPv4 Address Locking | IPv6 Address Locking |
-| --------- | -------------------- | -------------------- |
-| Ethernet56 | True | False |
-| Ethernet57 | True | True |
-| Ethernet58 | False | True |
 
 ## Monitoring
 
@@ -130,9 +118,6 @@ sFlow is disabled.
 | Ethernet53 |  SFlow Interface Testing - SFlow ingress and egress disabled | access | - | - | - | - |
 | Ethernet54 |  SFlow Interface Testing - SFlow ingress and egress unmodified disabled | access | - | - | - | - |
 | Ethernet55 |  DHCPv6 Relay Testing | access | - | - | - | - |
-| Ethernet56 |  Address Locking Interface Testing 1 | access | - | - | - | - |
-| Ethernet57 |  Address Locking Interface Testing 2 | access | - | - | - | - |
-| Ethernet58 |  Address Locking Interface Testing 3 | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -720,21 +705,6 @@ interface Ethernet55
    ipv6 address a0::1/64
    ipv6 dhcp relay destination a0::2 link-address a0::3
    ipv6 dhcp relay destination a0::4 vrf TEST local-interface Loopback55 link-address a0::5
-!
-interface Ethernet56
-   description Address Locking Interface Testing 1
-   switchport
-   address locking ipv4
-!
-interface Ethernet57
-   description Address Locking Interface Testing 2
-   switchport
-   address locking ipv4 ipv6
-!
-interface Ethernet58
-   description Address Locking Interface Testing 3
-   switchport
-   address locking ipv6
 ```
 
 ## BFD
