@@ -3651,8 +3651,87 @@
       "properties": {
         "features": {
           "type": "array",
+          "description": "This data model allows to configure the list of hardware counters feature\navailable on Arista platforms.\n\nThe `name` key accepts a list of valid_values which MUST be updated to support\nnew feature as they are released in EOS.\n\nThe available values of the different keys 'direction', 'address_type', ...\nare feature and hardware dependent and this model DOES NOT validate that the\ncombinations are valid. For the sake of flexibility, it is the responsability\nof the user of this data model to make sure that the rendered CLI is accepted\nby the targeted device\n",
           "items": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "All hardware counter features SHOULD be configured with this knob\nexcept for the `route` feature which should use `feature_route`.\n",
+                "enum": [
+                  "acl",
+                  "decap-group",
+                  "directflow",
+                  "ecn",
+                  "flow-spec",
+                  "gre tunnel interface",
+                  "ip",
+                  "mpls interface",
+                  "mpls lfib",
+                  "mpls tunnel",
+                  "multicast",
+                  "nexthop",
+                  "pbr",
+                  "pdp",
+                  "policing interface",
+                  "qos",
+                  "qos dual-rate-policer",
+                  "route",
+                  "routed-port",
+                  "subinterface",
+                  "tapagg",
+                  "traffic-class",
+                  "traffic-policy",
+                  "vlan",
+                  "vlan-interface",
+                  "vni decap",
+                  "vni encap",
+                  "vtep decap",
+                  "vtep encap"
+                ],
+                "title": "Name"
+              },
+              "direction": {
+                "type": "string",
+                "enum": [
+                  "in",
+                  "out",
+                  "cpu"
+                ],
+                "description": "Most features support only 'in' and 'out'. Some like traffic-policy support 'cpu'.\nSome features DO NOT have any direction.\nThis validation IS NOT made by the schemas.\n",
+                "title": "Direction"
+              },
+              "address_type": {
+                "type": "string",
+                "enum": [
+                  "ipv4",
+                  "ipv6",
+                  "mac"
+                ],
+                "description": "Supported only for the following features:\n- acl: [ipv4, ipv6, mac] if direction is 'out'\n- multicast: [ipv4, ipv6]\n- route: [ipv4, ipv6]\nThis validation IS NOT made by the schemas.\n",
+                "title": "Address Type"
+              },
+              "layer3": {
+                "type": "boolean",
+                "description": "Supported only for the 'ip' feature\n",
+                "title": "Layer3"
+              },
+              "vrf": {
+                "type": "string",
+                "description": "Supported only for the 'route' feature.\nThis validation IS NOT made by the schemas.\n",
+                "title": "VRF"
+              },
+              "prefix": {
+                "type": "string",
+                "description": "Supported only for the 'route' feature.\nMandatory for the 'route' feature.\nThis validation IS NOT made by the schemas.\n",
+                "title": "Prefix"
+              },
+              "units_packets": {
+                "type": "boolean",
+                "title": "Units Packets"
+              }
+            },
+            "additionalProperties": false
           },
           "title": "Features"
         }
