@@ -7,10 +7,10 @@
 {% endfor %}
 {% if address_locking is arista.avd.defined or address_locking_intfs | length > 0 %}
 
-# Address Locking
+## Address Locking
 {%     if address_locking is arista.avd.defined %}
 
-## Address Locking Summary
+### Address Locking Summary
 
 | Settings | Value |
 | -------- | ----- |
@@ -29,7 +29,7 @@
 {%         endif %}
 {%         if address_locking.dhcp_servers_ipv4 is arista.avd.defined %}
 
-## DHCP Servers
+### DHCP Servers
 
 | Server IP |
 | --------- |
@@ -39,7 +39,7 @@
 {%         endif %}
 {%         if address_locking.leases is arista.avd.defined %}
 
-## Leases
+### Leases
 
 | Lease IP Address | Lease MAC Address |
 | ---------------- | ----------------- |
@@ -60,7 +60,7 @@
 {%     endif %}
 {%     if address_locking is arista.avd.defined %}
 
-## Address Locking Configuration
+### Address Locking Configuration
 
 ```eos
 {%         include 'eos/address-locking.j2' %}

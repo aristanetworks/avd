@@ -1,5 +1,6 @@
 # address-locking
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -7,30 +8,30 @@
   - [Address Locking Summary](#address-locking-summary)
   - [DHCP Servers](#dhcp-servers)
   - [Leases](#leases)
-  - [Address Locking Interfaces](#address-locking-interfaces)
+- [Address Locking Interfaces](#address-locking-interfaces)
   - [Address Locking Configuration](#address-locking-configuration)
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -40,9 +41,9 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Address Locking
+## Address Locking
 
-## Address Locking Summary
+### Address Locking Summary
 
 | Settings | Value |
 | -------- | ----- |
@@ -52,14 +53,14 @@ interface Management1
 | Disable enforcement for locked ipv4 addresses | True |
 | Disable enforcement for locked ipv6 addresses | True |
 
-## DHCP Servers
+### DHCP Servers
 
 | Server IP |
 | --------- |
 | 1.1.1.1 |
 | 4.4.4.4 |
 
-## Leases
+### Leases
 
 | Lease IP Address | Lease MAC Address |
 | ---------------- | ----------------- |
@@ -74,7 +75,7 @@ interface Management1
 | Ethernet2 | True | True |
 | Ethernet3 | False | True |
 
-## Address Locking Configuration
+### Address Locking Configuration
 
 ```eos
 !
@@ -90,13 +91,13 @@ address locking
    locked-address ipv6 enforcement disabled
 ```
 
-# Interfaces
+## Interfaces
 
-## Ethernet Interfaces
+### Ethernet Interfaces
 
-### Ethernet Interfaces Summary
+#### Ethernet Interfaces Summary
 
-#### L2
+##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
@@ -106,7 +107,7 @@ address locking
 
 *Inherited from Port-Channel Interface
 
-### Ethernet Interfaces Device Configuration
+#### Ethernet Interfaces Device Configuration
 
 ```eos
 !
