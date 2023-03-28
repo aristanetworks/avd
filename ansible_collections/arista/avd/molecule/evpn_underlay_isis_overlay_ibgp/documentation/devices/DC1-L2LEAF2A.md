@@ -366,10 +366,10 @@ service routing protocols model multi-agent
 
 #### IP Routing Summary
 
-| VRF | Routing Enabled | IPv6 Interfaces |
-| --- | --------------- | --------------- |
-| default | True | False |
-| MGMT | False | False |
+| VRF | Routing Enabled |
+| --- | --------------- |
+| default | True |
+| MGMT | False |
 
 #### IP Routing Device Configuration
 
@@ -422,9 +422,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 ### VRF Instances Summary
 
-| VRF Name | IP Routing | IPv6 Interfaces |
-| -------- | ---------- | --------------- |
-| MGMT | disabled | disabled |
+| VRF Name | IP Routing |
+| -------- | ---------- |
+| MGMT | disabled |
 
 ### VRF Instances Device Configuration
 

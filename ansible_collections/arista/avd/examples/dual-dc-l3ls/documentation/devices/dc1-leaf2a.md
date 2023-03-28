@@ -563,12 +563,12 @@ ip virtual-router mac-address 00:1c:73:00:00:99
 
 #### IP Routing Summary
 
-| VRF | Routing Enabled | IPv6 Interfaces |
-| --- | --------------- | --------------- |
-| default | True | False |
-| MGMT | False | False |
-| VRF10 | True | True |
-| VRF11 | True | True |
+| VRF | Routing Enabled |
+| --- | --------------- |
+| default | True |
+| MGMT | False |
+| VRF10 | True |
+| VRF11 | True |
 
 #### IP Routing Device Configuration
 
@@ -576,8 +576,8 @@ ip virtual-router mac-address 00:1c:73:00:00:99
 !
 ip routing
 no ip routing vrf MGMT
-ip routing ipv6 interfaces vrf VRF10
-ip routing ipv6 interfaces vrf VRF11
+ip routing vrf VRF10
+ip routing vrf VRF11
 ```
 
 ### IPv6 Routing
@@ -929,11 +929,11 @@ route-map RM-MLAG-PEER-IN permit 10
 
 ### VRF Instances Summary
 
-| VRF Name | IP Routing | IPv6 Interfaces |
-| -------- | ---------- | --------------- |
-| MGMT | disabled | disabled |
-| VRF10 | enabled | enabled |
-| VRF11 | enabled | enabled |
+| VRF Name | IP Routing |
+| -------- | ---------- |
+| MGMT | disabled |
+| VRF10 | enabled |
+| VRF11 | enabled |
 
 ### VRF Instances Device Configuration
 

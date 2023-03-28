@@ -243,10 +243,10 @@ service routing protocols model multi-agent
 
 #### IP Routing Summary
 
-| VRF | Routing Enabled | IPv6 Interfaces |
-| --- | --------------- | --------------- |
-| default | True | False |
-| MGMT | False | False |
+| VRF | Routing Enabled |
+| --- | --------------- |
+| default | True |
+| MGMT | False |
 
 #### IP Routing Device Configuration
 
@@ -301,9 +301,9 @@ ip route 0.0.0.0/0 172.21.210.1
 
 ### VRF Instances Summary
 
-| VRF Name | IP Routing | IPv6 Interfaces |
-| -------- | ---------- | --------------- |
-| MGMT | disabled | disabled |
+| VRF Name | IP Routing |
+| -------- | ---------- |
+| MGMT | disabled |
 
 ### VRF Instances Device Configuration
 

@@ -531,12 +531,12 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 #### IP Routing Summary
 
-| VRF | Routing Enabled | IPv6 Interfaces |
-| --- | --------------- | --------------- |
-| default | True | False |
-| MGMT | False | False |
-| Tenant_A_APP_Zone | True | False |
-| Tenant_A_WEB_Zone | True | False |
+| VRF | Routing Enabled |
+| --- | --------------- |
+| default | True |
+| MGMT | False |
+| Tenant_A_APP_Zone | True |
+| Tenant_A_WEB_Zone | True |
 
 #### IP Routing Device Configuration
 
@@ -814,11 +814,11 @@ route-map RM-CONN-2-BGP permit 10
 
 ### VRF Instances Summary
 
-| VRF Name | IP Routing | IPv6 Interfaces |
-| -------- | ---------- | --------------- |
-| MGMT | disabled | disabled |
-| Tenant_A_APP_Zone | enabled | disabled |
-| Tenant_A_WEB_Zone | enabled | disabled |
+| VRF Name | IP Routing |
+| -------- | ---------- |
+| MGMT | disabled |
+| Tenant_A_APP_Zone | enabled |
+| Tenant_A_WEB_Zone | enabled |
 
 ### VRF Instances Device Configuration
 

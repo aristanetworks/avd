@@ -45,16 +45,18 @@ interface Management1
 
 #### IP Routing Summary
 
-| VRF | Routing Enabled | IPv6 Interfaces |
-| --- | --------------- | --------------- |
-| default | False | False |
-| MGMT | False | False |
-| TENANT_A_PROJECT01 | True | False |
-| TENANT_A_PROJECT02 | True | False |
+| VRF | Routing Enabled |
+| --- | --------------- |
+| default | False |
+| MGMT | False |
+| TENANT_A_PROJECT01 | True |
+| TENANT_A_PROJECT02 | True |
 
 #### IP Routing Device Configuration
 
 ```eos
+!
+no ip routing
 no ip routing vrf MGMT
 ip routing vrf TENANT_A_PROJECT01
 ip routing vrf TENANT_A_PROJECT02
@@ -75,11 +77,11 @@ ip routing vrf TENANT_A_PROJECT02
 
 ### VRF Instances Summary
 
-| VRF Name | IP Routing | IPv6 Interfaces |
-| -------- | ---------- | --------------- |
-| MGMT | disabled | disabled |
-| TENANT_A_PROJECT01 | enabled | disabled |
-| TENANT_A_PROJECT02 | enabled | disabled |
+| VRF Name | IP Routing |
+| -------- | ---------- |
+| MGMT | disabled |
+| TENANT_A_PROJECT01 | enabled |
+| TENANT_A_PROJECT02 | enabled |
 
 ### VRF Instances Device Configuration
 

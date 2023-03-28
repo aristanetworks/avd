@@ -45,18 +45,16 @@ interface Management1
 
 #### IP Routing Summary
 
-| VRF | Routing Enabled | IPv6 Interfaces |
-| --- | --------------- | --------------- |
-| default | False | True |
-| default | True | True |
-| TEST1 | True | False |
-| TEST2 | True | True |
+| VRF | Routing Enabled |
+| --- | --------------- |
+| default | True (ipv6 interfaces) |
+| default | True (ipv6 interfaces) |
+| TEST1 | True |
+| TEST2 | True (ipv6 interfaces) |
 
 #### IP Routing Device Configuration
 
 ```eos
-!
-no ip routing
 ip routing ipv6 interfaces
 no ip icmp redirect
 ip routing vrf TEST1
@@ -88,11 +86,11 @@ no ipv6 icmp redirect
 
 ### VRF Instances Summary
 
-| VRF Name | IP Routing | IPv6 Interfaces |
-| -------- | ---------- | --------------- |
-| default | enabled | enabled |
-| TEST1 | enabled | disabled |
-| TEST2 | enabled | enabled |
+| VRF Name | IP Routing |
+| -------- | ---------- |
+| default | enabled (ipv6 interface) |
+| TEST1 | enabled |
+| TEST2 | enabled (ipv6 interface) |
 
 ### VRF Instances Device Configuration
 

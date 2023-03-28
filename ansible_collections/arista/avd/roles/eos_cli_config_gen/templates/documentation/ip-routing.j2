@@ -5,16 +5,19 @@
 
 #### IP Routing Summary
 
-| VRF | Routing Enabled | IPv6 Interfaces |
-| --- | --------------- | --------------- |
-| default | {{ ip_routing | arista.avd.default(false) }} | {{ ip_routing_ipv6_interfaces | arista.avd.default(false) }} |
+| VRF | Routing Enabled |
+| --- | --------------- |
+{%     set ip_routing = ip_routing | arista.avd.default(false) %}
+{%     if ip_routing_ipv6_interfaces | arista.avd.default(false) %}
+{%         set ip_routing = "True (ipv6 interfaces)" %}
+{%     endif %}
+| default | {{ ip_routing | arista.avd.default(false) }} |
 {%     for vrf in vrfs | arista.avd.natural_sort('name') %}
 {%         set ip_routing = vrf.ip_routing | arista.avd.default("-") %}
-{%         set ipv6_interfaces = vrf.ip_routing_ipv6_interfaces | arista.avd.default(false) %}
-{%         if ipv6_interfaces is arista.avd.defined(true) %}
-{%             set ip_routing = true %}
+{%         if vrf.ip_routing_ipv6_interfaces | arista.avd.default(false) %}
+{%             set ip_routing = "True (ipv6 interfaces)" %}
 {%         endif %}
-| {{ vrf.name }} | {{ ip_routing }} | {{ ipv6_interfaces }} |
+| {{ vrf.name }} | {{ ip_routing }} |
 {%     endfor %}
 
 #### IP Routing Device Configuration

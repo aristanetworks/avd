@@ -999,19 +999,19 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 #### IP Routing Summary
 
-| VRF | Routing Enabled | IPv6 Interfaces |
-| --- | --------------- | --------------- |
-| default | False | True |
-| MGMT | False | False |
-| Tenant_A_APP_Zone | True | True |
-| Tenant_A_DB_Zone | True | True |
-| Tenant_A_OP_Zone | True | True |
-| Tenant_A_WAN_Zone | True | True |
-| Tenant_A_WEB_Zone | True | True |
-| Tenant_B_OP_Zone | True | True |
-| Tenant_B_WAN_Zone | True | True |
-| Tenant_C_OP_Zone | True | True |
-| Tenant_C_WAN_Zone | True | True |
+| VRF | Routing Enabled |
+| --- | --------------- |
+| default | True (ipv6 interfaces) |
+| MGMT | False |
+| Tenant_A_APP_Zone | True (ipv6 interfaces) |
+| Tenant_A_DB_Zone | True (ipv6 interfaces) |
+| Tenant_A_OP_Zone | True (ipv6 interfaces) |
+| Tenant_A_WAN_Zone | True (ipv6 interfaces) |
+| Tenant_A_WEB_Zone | True (ipv6 interfaces) |
+| Tenant_B_OP_Zone | True (ipv6 interfaces) |
+| Tenant_B_WAN_Zone | True (ipv6 interfaces) |
+| Tenant_C_OP_Zone | True (ipv6 interfaces) |
+| Tenant_C_WAN_Zone | True (ipv6 interfaces) |
 
 #### IP Routing Device Configuration
 
@@ -1478,18 +1478,18 @@ route-map RM-MLAG-PEER-IN permit 10
 
 ### VRF Instances Summary
 
-| VRF Name | IP Routing | IPv6 Interfaces |
-| -------- | ---------- | --------------- |
-| MGMT | disabled | disabled |
-| Tenant_A_APP_Zone | enabled | enabled |
-| Tenant_A_DB_Zone | enabled | enabled |
-| Tenant_A_OP_Zone | enabled | enabled |
-| Tenant_A_WAN_Zone | enabled | enabled |
-| Tenant_A_WEB_Zone | enabled | enabled |
-| Tenant_B_OP_Zone | enabled | enabled |
-| Tenant_B_WAN_Zone | enabled | enabled |
-| Tenant_C_OP_Zone | enabled | enabled |
-| Tenant_C_WAN_Zone | enabled | enabled |
+| VRF Name | IP Routing |
+| -------- | ---------- |
+| MGMT | disabled |
+| Tenant_A_APP_Zone | enabled (ipv6 interface) |
+| Tenant_A_DB_Zone | enabled (ipv6 interface) |
+| Tenant_A_OP_Zone | enabled (ipv6 interface) |
+| Tenant_A_WAN_Zone | enabled (ipv6 interface) |
+| Tenant_A_WEB_Zone | enabled (ipv6 interface) |
+| Tenant_B_OP_Zone | enabled (ipv6 interface) |
+| Tenant_B_WAN_Zone | enabled (ipv6 interface) |
+| Tenant_C_OP_Zone | enabled (ipv6 interface) |
+| Tenant_C_WAN_Zone | enabled (ipv6 interface) |
 
 ### VRF Instances Device Configuration
 

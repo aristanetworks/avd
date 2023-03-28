@@ -392,32 +392,32 @@ vrfs:
   ip_routing: false
 - name: Tenant_A_APP_Zone
   tenant: Tenant_A
-  ip_routing_ipv6_interfaces: true
+  ip_routing: true
 - name: Tenant_A_DB_Zone
   tenant: Tenant_A
-  ip_routing_ipv6_interfaces: true
+  ip_routing: true
 - name: Tenant_A_OP_Zone
   tenant: Tenant_A
-  ip_routing_ipv6_interfaces: true
+  ip_routing: true
   description: Tenant_A_OP_Zone
 - name: Tenant_A_WAN_Zone
   tenant: Tenant_A
-  ip_routing_ipv6_interfaces: true
+  ip_routing: true
 - name: Tenant_A_WEB_Zone
   tenant: Tenant_A
-  ip_routing_ipv6_interfaces: true
+  ip_routing: true
 - name: Tenant_B_OP_Zone
   tenant: Tenant_B
-  ip_routing_ipv6_interfaces: true
+  ip_routing: true
 - name: Tenant_B_WAN_Zone
   tenant: Tenant_B
-  ip_routing_ipv6_interfaces: true
+  ip_routing: true
 - name: Tenant_C_OP_Zone
   tenant: Tenant_C
-  ip_routing_ipv6_interfaces: true
+  ip_routing: true
 - name: Tenant_C_WAN_Zone
   tenant: Tenant_C
-  ip_routing_ipv6_interfaces: true
+  ip_routing: true
 management_interfaces:
 - name: Management1
   description: oob_management

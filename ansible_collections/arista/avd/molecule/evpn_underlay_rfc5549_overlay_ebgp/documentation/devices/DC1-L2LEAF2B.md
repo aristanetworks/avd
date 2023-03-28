@@ -436,10 +436,10 @@ service routing protocols model multi-agent
 
 #### IP Routing Summary
 
-| VRF | Routing Enabled | IPv6 Interfaces |
-| --- | --------------- | --------------- |
-| default | False | True |
-| MGMT | False | False |
+| VRF | Routing Enabled |
+| --- | --------------- |
+| default | True (ipv6 interfaces) |
+| MGMT | False |
 
 #### IP Routing Device Configuration
 
@@ -506,9 +506,9 @@ no ip igmp snooping vlan 120
 
 ### VRF Instances Summary
 
-| VRF Name | IP Routing | IPv6 Interfaces |
-| -------- | ---------- | --------------- |
-| MGMT | disabled | disabled |
+| VRF Name | IP Routing |
+| -------- | ---------- |
+| MGMT | disabled |
 
 ### VRF Instances Device Configuration
 
