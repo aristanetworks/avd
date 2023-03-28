@@ -26,20 +26,12 @@ node_type_keys:
       l3: true
     vtep: true
     ip_addressing:
-      router_id: 'custom_templates/ip_addressing/router-id.j2'
-      router_id_ipv6: 'custom_templates/ip_addressing/router-id-ipv6.j2'
-      mlag_ip_primary: 'custom_templates/ip_addressing/mlag-ip-primary.j2'
-      mlag_ip_secondary: 'custom_templates/ip_addressing/mlag-ip-secondary.j2'
-      mlag_l3_ip_primary: 'custom_templates/ip_addressing/mlag-l3-ip-primary.j2'
-      mlag_l3_ip_secondary: 'custom_templates/ip_addressing/mlag-l3-ip-secondary.j2'
-      p2p_uplinks_ip: 'custom_templates/ip_addressing/p2p-uplinks-ip.j2'
-      p2p_uplinks_peer_ip: 'custom_templates/ip_addressing/p2p-uplinks-peer-ip.j2'
-      vtep_ip_mlag: 'custom_templates/ip_addressing/vtep-ip-mlag.j2'
-      vtep_ip: 'custom_templates/ip_addressing/vtep-ip.j2'
-      mlag_ibgp_peering_ip_primary: 'custom_templates/ip_addressing/mlag-ibgp-peering-ip-primary.j2'
-      mlag_ibgp_peering_ip_secondary: 'custom_templates/ip_addressing/mlag-ibgp-peering-ip-secondary.j2'
+      # Override default ip addressing with a custom python module
+      python_module: custom_ip_addressing
+
     interface_descriptions:
-      # Override interface description templates with our custom templates
+      # Override default interface description with a custom python module
+      python_module: custom_interface_descriptions
       underlay_ethernet_interfaces: 'custom_templates/interface_descriptions/underlay/ethernet-interfaces.j2'
       underlay_port_channel_interfaces: 'custom_templates/interface_descriptions/underlay/port-channel-interfaces.j2'
       mlag_ethernet_interfaces: 'custom_templates/interface_descriptions/mlag/ethernet-interfaces.j2'

@@ -49,6 +49,10 @@ class EosDesignsFacts(AvdFacts):
     '''
 
     def __init__(self, hostvars, templar):
+        # Add reference to this instance of EosDesignsFacts object inside hostvars.
+        # This is used to allow templates to access the facts object directly with "switch.*"
+        hostvars["switch"] = self
+
         super().__init__(hostvars, templar)
         self.avd_ip_addressing = load_ip_addressing(self._hostvars, self._templar)
 
