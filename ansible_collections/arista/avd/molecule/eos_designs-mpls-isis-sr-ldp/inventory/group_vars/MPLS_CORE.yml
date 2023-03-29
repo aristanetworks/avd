@@ -47,8 +47,8 @@ overlay_rt_type:
 
 # P-routers
 p:
-  platform: 7280SR
   defaults:
+    platform: 7280SR
     loopback_ipv4_pool: 100.70.0.0/24
     loopback_ipv6_pool: "2000:1234:ffff:ffff::/64"
     node_sid_base: 300
@@ -80,7 +80,6 @@ pe:
     is_type: level-1-2
     node_sid_base: 200
     isis_system_id_prefix: '0000.0001'
-    backbone_interface_speed: forced 100gfull
     spanning_tree_priority: 4096
     spanning_tree_mode: mstp
     overlay_address_families: [ evpn, vpn-ipv4, vpn-ipv6 ]

@@ -549,6 +549,8 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   service_profile: QOS-PROFILE
+  mac_security:
+    profile: MACSEC_PROFILE
   type: routed
   ptp:
     enable: true
@@ -561,6 +563,8 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   service_profile: QOS-PROFILE
+  mac_security:
+    profile: MACSEC_PROFILE
   type: routed
   ptp:
     enable: true
@@ -593,6 +597,8 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   service_profile: QOS-PROFILE
+  mac_security:
+    profile: MACSEC_PROFILE
   type: routed
   ptp:
     enable: true
@@ -605,6 +611,8 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   service_profile: QOS-PROFILE
+  mac_security:
+    profile: MACSEC_PROFILE
   type: routed
   ptp:
     enable: true
