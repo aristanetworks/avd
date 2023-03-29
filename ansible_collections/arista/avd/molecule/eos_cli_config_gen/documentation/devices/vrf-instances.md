@@ -55,8 +55,6 @@ interface Management1
 #### IP Routing Device Configuration
 
 ```eos
-!
-no ip routing
 no ip routing vrf MGMT
 ip routing vrf TENANT_A_PROJECT01
 ip routing vrf TENANT_A_PROJECT02

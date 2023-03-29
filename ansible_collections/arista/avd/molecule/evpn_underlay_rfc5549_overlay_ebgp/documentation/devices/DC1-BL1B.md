@@ -491,6 +491,7 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 #### IP Routing Device Configuration
 
 ```eos
+!
 ip routing ipv6 interfaces
 no ip routing vrf MGMT
 ip routing vrf Tenant_A_WAN_Zone

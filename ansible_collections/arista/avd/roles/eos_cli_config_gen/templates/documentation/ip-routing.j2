@@ -7,12 +7,21 @@
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-{%     set ip_routing = ip_routing | arista.avd.default(false) %}
-{%     if ip_routing_ipv6_interfaces | arista.avd.default(false) %}
-{%         set ip_routing = "True (ipv6 interfaces)" %}
+{%     set default_ip_routing = ip_routing | arista.avd.default(false) %}
+{%     set default_ip_routing_ipv6_interfaces = ip_routing_ipv6_interfaces | arista.avd.default(false) %}
+{# Handle the case where VRF default exists #}
+{%     set vrf_default = vrfs | arista.avd.default([]) | selectattr("name", "arista.avd.defined", "default") | first %}
+{%     if vrf_default is arista.avd.defined %}
+{%         set default_ip_routing = (vrf_default.ip_routing or default_ip_routing) %}
+{%         if default_ip_routing_ipv6_interfaces or (vrf_default.ip_routing_ipv6_interfaces | arista.avd.default(false)) %}
+{%             set default_ip_routing = "True (ipv6 interfaces)" %}
+{%         endif %}
+{# No VRF "default" defined - checking if default_ip_routing_ipv6_interfaces is True #}
+{%     elif default_ip_routing_ipv6_interfaces is arista.avd.defined(true) %}
+{%         set default_ip_routing = "True (ipv6 interfaces)" %}
 {%     endif %}
-| default | {{ ip_routing | arista.avd.default(false) }} |
-{%     for vrf in vrfs | arista.avd.natural_sort('name') %}
+| default | {{ default_ip_routing }} |
+{%     for vrf in vrfs | rejectattr("name", "arista.avd.defined", "default") | arista.avd.natural_sort('name') %}
 {%         set ip_routing = vrf.ip_routing | arista.avd.default("-") %}
 {%         if vrf.ip_routing_ipv6_interfaces | arista.avd.default(false) %}
 {%             set ip_routing = "True (ipv6 interfaces)" %}
@@ -24,10 +33,8 @@
 
 ```eos
 {%     include 'eos/ip-routing.j2' %}
-{%     include 'eos/ip-routing-ipv6-interfaces.j2' %}
 {%     include 'eos/ip-icmp-redirect.j2' %}
 {%     include 'eos/ip-hardware.j2' %}
 {%     include 'eos/ip-routing-vrfs.j2' %}
-{%     include 'eos/ip-routing-ipv6-interfaces-vrfs.j2' %}
 ```
 {% endif %}

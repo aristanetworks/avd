@@ -287,6 +287,7 @@ service routing protocols model multi-agent
 #### IP Routing Device Configuration
 
 ```eos
+!
 ip routing ipv6 interfaces
 no ip routing vrf MGMT
 ```
