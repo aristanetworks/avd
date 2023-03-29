@@ -262,15 +262,19 @@ def _get_running_collection_version(running_collection_name: str, result: dict) 
     collection_path = _get_collection_path(running_collection_name)
     version = _get_collection_version(collection_path)
 
-    # Try to detect a git tag
-    # Using subprocess for now
-    with Popen(["git", "describe", "--tags"], stdout=PIPE, stderr=PIPE, cwd=collection_path) as process:
-        output, err = process.communicate()
-        if err:
-            display.vvv("Not a git repository")
-        else:
-            display.vvv("This is a git repository, overwriting version with 'git describe --tags output'")
-            version = output.decode("UTF-8").strip()
+    try:
+        # Try to detect a git tag
+        # Using subprocess for now
+        with Popen(["git", "describe", "--tags"], stdout=PIPE, stderr=PIPE, cwd=collection_path) as process:
+            output, err = process.communicate()
+            if err:
+                display.vvv("Not a git repository")
+            else:
+                display.vvv("This is a git repository, overwriting version with 'git describe --tags output'")
+                version = output.decode("UTF-8").strip()
+    except FileNotFoundError:
+        # Handle the case where `git` is not installed or not in the PATH
+        display.vvv("Could not find 'git' executable, returning collection version")
 
     result["collection"] = {
         "name": running_collection_name,
