@@ -424,6 +424,13 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Ethernet4 | EVPN_UNDERLAY | 50 | point-to-point |
 | Loopback0 | EVPN_UNDERLAY | - | passive |
 
+#### ISIS IPv4 Address Family Summary
+
+| Settings | Value |
+| -------- | ----- |
+| IPv4 Address-family Enabled | True |
+| Maximum-paths | 4 |
+
 #### Router ISIS Device Configuration
 
 ```eos

@@ -571,6 +571,22 @@ router ospf 99 vrf TENANT_B_WAN
 | -------- | ---------- | ---------- |
 | Loopback0 | 207 | 207 |
 
+#### ISIS IPv4 Address Family Summary
+
+| Settings | Value |
+| -------- | ----- |
+| IPv4 Address-family Enabled | True |
+| Maximum-paths | 4 |
+| TI-LFA Mode | link-protection |
+
+#### ISIS IPv6 Address Family Summary
+
+| Settings | Value |
+| -------- | ----- |
+| IPv6 Address-family Enabled | True |
+| Maximum-paths | 4 |
+| TI-LFA Mode | link-protection |
+
 #### Router ISIS Device Configuration
 
 ```eos

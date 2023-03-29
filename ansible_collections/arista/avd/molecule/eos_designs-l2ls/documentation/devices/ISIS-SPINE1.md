@@ -319,6 +319,13 @@ ip route 10.1.0.0/16 10.1.100.100
 | --------- | ------------- | ----------- | -------------- |
 | Loopback0 | EVPN_UNDERLAY | - | passive |
 
+#### ISIS IPv4 Address Family Summary
+
+| Settings | Value |
+| -------- | ----- |
+| IPv4 Address-family Enabled | True |
+| Maximum-paths | 4 |
+
 #### Router ISIS Device Configuration
 
 ```eos

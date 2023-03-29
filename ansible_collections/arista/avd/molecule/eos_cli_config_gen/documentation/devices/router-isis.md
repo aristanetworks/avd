@@ -302,18 +302,14 @@ interface Vlan4094
 | -------- | ---------- | ---------- |
 | Loopback2 | 10 | 1000 |
 
-<<<<<<< HEAD
-#### Router ISIS Device Configuration
-=======
-### ISIS IPv4 Address Family Summary
+#### ISIS IPv4 Address Family Summary
 
 | Settings | Value |
 | -------- | ----- |
 | IPv4 Address-family Enabled | True |
 | Maximum-paths | 2 |
 
-### Router ISIS Device Configuration
->>>>>>> 90aa0f55b (refresh facts)
+#### Router ISIS Device Configuration
 
 ```eos
 !

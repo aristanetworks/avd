@@ -577,7 +577,7 @@ router ospf 19 vrf TENANT_B_INTRA
 | -------- | ---------- | ---------- |
 | Loopback0 | 205 | 205 |
 
-### ISIS IPv4 Address Family Summary
+#### ISIS IPv4 Address Family Summary
 
 | Settings | Value |
 | -------- | ----- |
@@ -585,7 +585,7 @@ router ospf 19 vrf TENANT_B_INTRA
 | Maximum-paths | 4 |
 | TI-LFA Mode | link-protection |
 
-### ISIS IPv6 Address Family Summary
+#### ISIS IPv6 Address Family Summary
 
 | Settings | Value |
 | -------- | ----- |
