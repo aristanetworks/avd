@@ -1,6 +1,0 @@
-{# eos - ip routing ipv6 interfaces vrfs #}
-{% for vrf in vrfs | arista.avd.natural_sort('name') %}
-{%     if vrf.ip_routing_ipv6_interfaces is arista.avd.defined(true) and vrf.name != 'default' %}
-ip routing ipv6 interfaces vrf {{ vrf.name }}
-{%     endif %}
-{% endfor %}
