@@ -748,12 +748,12 @@ options:
     description: Path to Jinja2 Template file
     required: true
     type: str
-  dest_format_string:
+  dest_format_str:
     description: Format string used to specify target file for each item. 'item' is the current item from 'items'. Like "mypath/{item}.md"
     required: true
     type: str
   items:
-    description: List of strings. Each list item is passed to 'dest_format_string' as 'item' and passed to templater as 'item'
+    description: List of strings. Each list item is passed to 'dest_format_str' as 'item' and passed to templater as 'item'
     required: true
     type: list
     elements: str
