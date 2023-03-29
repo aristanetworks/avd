@@ -94,6 +94,9 @@ keys:
             description: Regex needs to match full hostname (i.e. is bounded by ^
               and $ elements).
   evpn_ebgp_gateway_multihop:
+    documentation_options:
+      filename: Fabric Variables
+      table: EVPN Settings
     description: 'Default of 15, considering a large value to avoid BGP reachability
       issues in very complex DCI networks.
 
@@ -105,6 +108,9 @@ keys:
     - str
     default: 15
   evpn_ebgp_multihop:
+    documentation_options:
+      filename: Fabric Variables
+      table: EVPN Settings
     description: 'Default of 3, the recommended value for a 3 stage spine and leaf
       topology.
 
@@ -116,6 +122,9 @@ keys:
     - str
     default: 3
   evpn_hostflap_detection:
+    documentation_options:
+      filename: Fabric Variables
+      table: EVPN Settings
     type: dict
     keys:
       enabled:
@@ -140,6 +149,9 @@ keys:
         convert_types:
         - str
   evpn_import_pruning:
+    documentation_options:
+      filename: Fabric Variables
+      table: EVPN Settings
     description: 'Enable VPN import pruning (Min. EOS 4.24.2F)
 
       The Route Target extended communities carried by incoming VPN paths will
@@ -152,6 +164,9 @@ keys:
     type: bool
     default: false
   evpn_multicast:
+    documentation_options:
+      filename: Fabric Variables
+      table: EVPN Settings
     type: bool
     description: "General Configuration required for EVPN Multicast. \"evpn_l2_multicast\"
       must also be configured under the Network Services (tenants).\nRequires \"underlay_multicast:
@@ -166,6 +181,9 @@ keys:
       values for your environment.\n"
     default: false
   evpn_overlay_bgp_rtc:
+    documentation_options:
+      filename: Fabric Variables
+      table: EVPN Settings
     description: 'Enable Route Target Membership Constraint Address Family on EVPN
       overlay BGP peerings (Min. EOS 4.25.1F)
 
@@ -175,6 +193,9 @@ keys:
     type: bool
     default: false
   evpn_prevent_readvertise_to_server:
+    documentation_options:
+      filename: Fabric Variables
+      table: EVPN Settings
     description: 'Configure route-map on eBGP sessions towards route-servers, where
       prefixes with the peer''s ASN in the AS Path are filtered away.
 
@@ -188,10 +209,16 @@ keys:
     type: bool
     default: false
   evpn_short_esi_prefix:
+    documentation_options:
+      filename: Fabric Variables
+      table: EVPN Settings
     description: Configure prefix for "short_esi" values
     type: str
     default: '0000:0000:'
   evpn_vlan_aware_bundles:
+    documentation_options:
+      filename: Fabric Variables
+      table: EVPN Settings
     description: 'Enable vlan aware bundles for EVPN MAC-VRF
 
       Old variable name vxlan_vlan_aware_bundles, supported for backward-compatibility.

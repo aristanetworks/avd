@@ -4,6 +4,9 @@
 type: dict
 keys:
   evpn_hostflap_detection:
+    documentation_options:
+      filename: Fabric Variables
+      table: EVPN Settings
     type: dict
     keys:
       enabled:
