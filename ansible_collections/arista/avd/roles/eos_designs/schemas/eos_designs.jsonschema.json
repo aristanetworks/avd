@@ -1327,11 +1327,15 @@
             "properties": {
               "mlag": {
                 "type": "integer",
+                "minimum": 0,
+                "maximum": 86400,
                 "description": "In seconds",
                 "title": "MLAG"
               },
               "non_mlag": {
                 "type": "integer",
+                "minimum": 0,
+                "maximum": 86400,
                 "description": "In seconds",
                 "title": "Non MLAG"
               }

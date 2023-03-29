@@ -24,11 +24,15 @@ keys:
               type: int
               convert_types:
               - str
+              min: 0
+              max: 86400
               description: In seconds
             non_mlag:
               type: int
               convert_types:
               - str
+              min: 0
+              max: 86400
               description: In seconds
         tcam_profile:
           type: str
