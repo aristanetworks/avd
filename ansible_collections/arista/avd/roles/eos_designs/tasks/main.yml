@@ -93,5 +93,7 @@
   tags: [build, provision, facts, remove_avd_switch_facts]
   arista.avd.set_vars:
     avd_switch_facts: null
+    avd_overlay_peers: null
+    avd_topology_peers: null
   run_once: true
   check_mode: false
