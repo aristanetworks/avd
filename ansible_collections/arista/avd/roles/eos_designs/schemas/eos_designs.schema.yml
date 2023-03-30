@@ -3,9 +3,15 @@ type: dict
 allow_other_keys: true
 keys:
   cvp_ingestauth_key:
+    documentation_options:
+      filename: Management Settings
+      table: CloudVision Settings
     type: str
     description: CloudVision ingest authentication key is required for on-prem CVP
   cvp_instance_ip:
+    documentation_options:
+      filename: Management Settings
+      table: CloudVision Settings
     type: str
     description: 'IPv4 address.
 
@@ -19,6 +25,9 @@ keys:
 
       CVaaS defined, only on-prem is going to be configured.'
   cvp_instance_ips:
+    documentation_options:
+      filename: Management Settings
+      table: CloudVision Settings
     type: list
     description: 'You can either provide a list of IPs to target on-premise CloudVision
       cluster or
@@ -33,6 +42,9 @@ keys:
       type: str
       description: IPv4 address or CV as a Service hostname
   cvp_token_file:
+    documentation_options:
+      filename: Management Settings
+      table: CloudVision Settings
     type: str
     default: /tmp/cv-onboarding-token
     description: CVP token file is path to token file on switch and is only applicable
@@ -1811,18 +1823,30 @@ keys:
         - sso
         - rpr
   terminattr_disable_aaa:
+    documentation_options:
+      filename: Management Settings
+      table: CloudVision Settings
     type: bool
     default: false
   terminattr_ingestexclude:
+    documentation_options:
+      filename: Management Settings
+      table: CloudVision Settings
     type: str
     default: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
   terminattr_ingestgrpcurl_port:
+    documentation_options:
+      filename: Management Settings
+      table: CloudVision Settings
     type: int
     convert_types:
     - str
     default: 9910
     description: Port number
   terminattr_smashexcludes:
+    documentation_options:
+      filename: Management Settings
+      table: CloudVision Settings
     type: str
     default: ale,flexCounter,hardware,kni,pulse,strata
   type:

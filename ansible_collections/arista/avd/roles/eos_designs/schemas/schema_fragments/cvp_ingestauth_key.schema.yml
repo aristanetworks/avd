@@ -4,5 +4,8 @@
 type: dict
 keys:
   cvp_ingestauth_key:
+    documentation_options:
+      filename: Management Settings
+      table: CloudVision Settings
     type: str
     description: CloudVision ingest authentication key is required for on-prem CVP

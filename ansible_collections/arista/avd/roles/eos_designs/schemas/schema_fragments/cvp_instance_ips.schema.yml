@@ -4,6 +4,9 @@
 type: dict
 keys:
   cvp_instance_ips:
+    documentation_options:
+      filename: Management Settings
+      table: CloudVision Settings
     type: list
     description: |
       You can either provide a list of IPs to target on-premise CloudVision cluster or

@@ -4,6 +4,9 @@
 type: dict
 keys:
   cvp_token_file:
+    documentation_options:
+      filename: Management Settings
+      table: CloudVision Settings
     type: str
-    default: '/tmp/cv-onboarding-token'
+    default: "/tmp/cv-onboarding-token"
     description: CVP token file is path to token file on switch and is only applicable to CV as a Service
