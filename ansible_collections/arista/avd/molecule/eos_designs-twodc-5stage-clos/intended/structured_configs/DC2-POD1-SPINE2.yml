@@ -36,11 +36,11 @@ router_bgp:
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65212'
     description: DC2-POD1-LEAF2A_Ethernet2
-  - remote_as: '65112'
+  - ip_address: 200.200.200.101
+    remote_as: '65112'
     description: DC1-POD2-SPINE2
     peer_group: IPv4-UNDERLAY-PEERS
     bfd: false
-    ip_address: 200.200.200.101
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

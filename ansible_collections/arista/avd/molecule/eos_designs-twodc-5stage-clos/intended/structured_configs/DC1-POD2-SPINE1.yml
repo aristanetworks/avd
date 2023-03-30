@@ -53,10 +53,10 @@ router_bgp:
     peer_group: EVPN-OVERLAY-PEERS
     description: DC1-POD2-LEAF1A
     remote_as: '65121'
-  - remote_as: '65210'
+  - ip_address: 11.1.1.19
+    remote_as: '65210'
     description: DC2-POD1-SPINE1
     peer_group: IPv4-UNDERLAY-PEERS
-    ip_address: 11.1.1.19
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS

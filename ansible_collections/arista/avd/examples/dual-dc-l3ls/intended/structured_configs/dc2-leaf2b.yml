@@ -71,10 +71,10 @@ router_bgp:
     peer_group: EVPN-OVERLAY-CORE
     description: dc1-leaf2b
     remote_as: '65102'
-  - remote_as: '65102'
+  - ip_address: 172.100.100.2
+    remote_as: '65102'
     description: dc1-leaf2b
     peer_group: IPv4-UNDERLAY-PEERS
-    ip_address: 172.100.100.2
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP

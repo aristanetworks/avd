@@ -48,12 +48,12 @@ router_bgp:
     peer_group: EVPN-OVERLAY-PEERS
     description: DC1-POD2-LEAF1A
     remote_as: '65121'
-  - remote_as: '65210'
+  - ip_address: 200.200.200.201
+    remote_as: '65210'
     description: DC2-POD1-SPINE2
     peer_group: IPv4-UNDERLAY-PEERS
     bfd: false
     local_as: '65112'
-    ip_address: 200.200.200.201
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS

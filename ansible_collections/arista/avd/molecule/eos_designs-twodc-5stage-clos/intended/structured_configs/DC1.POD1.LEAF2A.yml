@@ -86,10 +86,10 @@ router_bgp:
     peer_group: EVPN-OVERLAY-CORE
     description: DC1-POD2-LEAF1A
     remote_as: '65121'
-  - remote_as: '65211'
+  - ip_address: 100.100.100.201
+    remote_as: '65211'
     description: DC2-POD1-LEAF1A
     peer_group: IPv4-UNDERLAY-PEERS
-    ip_address: 100.100.100.201
   redistribute_routes:
   - source_protocol: connected
   - source_protocol: attached-host

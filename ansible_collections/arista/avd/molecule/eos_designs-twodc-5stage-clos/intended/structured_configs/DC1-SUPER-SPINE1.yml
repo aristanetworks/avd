@@ -42,11 +42,11 @@ router_bgp:
     remote_as: '65101'
     description: DC1-RS1_Ethernet1
     bfd: true
-  - remote_as: '65200'
+  - ip_address: 11.1.2.1
+    remote_as: '65200'
     description: DC2-SUPER-SPINE1
     peer_group: IPv4-UNDERLAY-PEERS
     bfd: false
-    ip_address: 11.1.2.1
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

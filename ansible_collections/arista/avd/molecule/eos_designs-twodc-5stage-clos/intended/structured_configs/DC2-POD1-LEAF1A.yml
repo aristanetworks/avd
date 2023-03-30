@@ -59,15 +59,15 @@ router_bgp:
     peer_group: EVPN-OVERLAY-PEERS
     description: DC2-POD1-LEAF2A
     remote_as: '65212'
-  - remote_as: '65112.100'
+  - ip_address: 100.100.100.101
+    remote_as: '65112.100'
     description: DC1.POD1.LEAF2A
     peer_group: IPv4-UNDERLAY-PEERS
-    ip_address: 100.100.100.101
-  - remote_as: '65120'
+  - ip_address: 11.1.0.38
+    remote_as: '65120'
     description: DC1-POD1-LEAF2B
     peer_group: IPv4-UNDERLAY-PEERS
     bfd: true
-    ip_address: 11.1.0.38
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS

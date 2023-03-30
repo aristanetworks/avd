@@ -79,19 +79,23 @@ class RouterBgpMixin(UtilsMixin):
                 if link["type"] != "underlay_p2p":
                     continue
 
-                if link["peer_ip_address"] not in ip_addresses:
-                    neighbor = {
-                        "ip_address": link["peer_ip_address"],
-                        "peer_group": self._peer_group_ipv4_underlay_peers_name,
-                        "remote_as": get(link, "peer_bgp_as"),
-                        "description": "_".join([link["peer"], link["peer_interface"]]),
-                        "bfd": get(link, "bfd"),
-                    }
+                neighbor = {
+                    "ip_address": link["peer_ip_address"],
+                    "peer_group": self._peer_group_ipv4_underlay_peers_name,
+                    "remote_as": get(link, "peer_bgp_as"),
+                    "description": "_".join([link["peer"], link["peer_interface"]]),
+                    "bfd": get(link, "bfd"),
+                }
+
+                if self._filter_peer_as is True:
+                    neighbor["route_map_out"] = f"RM-BGP-AS{link['peer_bgp_as']}-OUT"
+
+                if link["peer_ip_address"] in ip_addresses:
+                    for idx, neighbor in enumerate(neighbors):
+                        if neighbor["ip_address"] == link["peer_ip_address"]:
+                            neighbors[idx] = neighbor
+                else:
                     ip_addresses.append(link["peer_ip_address"])
-
-                    if self._filter_peer_as is True:
-                        neighbor["route_map_out"] = f"RM-BGP-AS{link['peer_bgp_as']}-OUT"
-
                     neighbors.append(neighbor)
 
             if neighbors:

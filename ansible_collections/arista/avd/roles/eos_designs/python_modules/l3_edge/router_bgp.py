@@ -39,8 +39,7 @@ class RouterBgpMixin(UtilsMixin):
 
             # RFC5549
             if self._underlay_rfc5549:
-                neighbor["name"] = p2p_link["data"]["interface"]
-                neighbor_interfaces.append(neighbor)
+                neighbor_interfaces.append({"name": p2p_link["data"]["interface"], **neighbor})
                 continue
 
             # Regular BGP Neighbors
@@ -54,8 +53,7 @@ class RouterBgpMixin(UtilsMixin):
             # Remove None values
             neighbor = {key: value for key, value in neighbor.items() if value is not None}
 
-            neighbor["ip_address"] = p2p_link["data"]["peer_ip"].split("/")[0]
-            neighbors.append(neighbor)
+            neighbors.append({"ip_address": p2p_link["data"]["peer_ip"].split("/")[0], **neighbor})
 
         router_bgp = {}
         if neighbors:

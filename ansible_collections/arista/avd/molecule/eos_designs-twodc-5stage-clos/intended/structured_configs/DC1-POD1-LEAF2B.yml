@@ -86,12 +86,12 @@ router_bgp:
     peer_group: EVPN-OVERLAY-CORE
     description: HOSTNAME_NOT_IN_ANSIBLE
     remote_as: '1111'
-  - remote_as: '65211'
+  - ip_address: 11.1.0.39
+    remote_as: '65211'
     description: DC2-POD1-LEAF1A
     peer_group: IPv4-UNDERLAY-PEERS
     bfd: true
     local_as: '65120'
-    ip_address: 11.1.0.39
   redistribute_routes:
   - source_protocol: connected
   - source_protocol: attached-host

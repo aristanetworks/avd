@@ -62,10 +62,10 @@ router_bgp:
     peer_group: EVPN-OVERLAY-PEERS
     description: DC1-RS2
     remote_as: '65102'
-  - remote_as: '65120'
+  - ip_address: 11.1.1.18
+    remote_as: '65120'
     description: DC1-POD2-SPINE1
     peer_group: IPv4-UNDERLAY-PEERS
-    ip_address: 11.1.1.18
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS

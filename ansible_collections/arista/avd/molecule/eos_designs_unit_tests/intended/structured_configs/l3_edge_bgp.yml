@@ -16,26 +16,26 @@ router_bgp:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
   neighbors:
-  - remote_as: '65002'
+  - ip_address: 192.168.0.3
+    remote_as: '65002'
     description: peer2
     peer_group: IPv4-UNDERLAY-PEERS
-    ip_address: 192.168.0.3
-  - remote_as: '65003'
+  - ip_address: 192.168.0.5
+    remote_as: '65003'
     description: peer3
     peer_group: IPv4-UNDERLAY-PEERS
-    ip_address: 192.168.0.5
-  - remote_as: '65004'
+  - ip_address: 192.168.0.7
+    remote_as: '65004'
     description: peer4
     peer_group: IPv4-UNDERLAY-PEERS
-    ip_address: 192.168.0.7
-  - remote_as: '65005'
+  - ip_address: 192.168.0.9
+    remote_as: '65005'
     description: peer5
     peer_group: IPv4-UNDERLAY-PEERS
-    ip_address: 192.168.0.9
-  - remote_as: '65006'
+  - ip_address: 192.168.0.11
+    remote_as: '65006'
     description: peer6
     peer_group: IPv4-UNDERLAY-PEERS
-    ip_address: 192.168.0.11
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
