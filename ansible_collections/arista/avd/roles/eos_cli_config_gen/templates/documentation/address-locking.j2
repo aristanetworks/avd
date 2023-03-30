@@ -12,7 +12,7 @@
 
 ### Address Locking Summary
 
-| Settings | Value |
+| Setting | Value |
 | -------- | ----- |
 | Disable IP locking on configured ports | {{ address_locking.disabled | arista.avd.default(false) }} |
 {%         if address_locking.local_interface is arista.avd.defined %}
