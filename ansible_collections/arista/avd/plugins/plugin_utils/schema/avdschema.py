@@ -72,6 +72,9 @@ class AvdSchema:
             ID of AVD Schema. Either 'eos_cli_config_gen' or 'eos_designs'
         """
 
+        # Clear cached resolved_schema if any
+        self.__dict__.pop("resolved_schema", None)
+
         if schema:
             # Validate the schema
             for validation_error in self.validate_schema(schema):
@@ -93,18 +96,15 @@ class AvdSchema:
         except Exception as e:
             raise AristaAvdError("An error occured during creation of the validator") from e
 
+    def extend_schema(self, schema: dict):
         # Clear cached resolved_schema if any
         self.__dict__.pop("resolved_schema", None)
 
-    def extend_schema(self, schema: dict):
         for validation_error in self.validate_schema(schema):
             raise validation_error
         always_merger.merge(self._schema, schema)
         for validation_error in self.validate_schema(self._schema):
             raise validation_error
-
-        # Clear cached resolved_schema if any
-        self.__dict__.pop("resolved_schema", None)
 
     def validate(self, data):
         validation_errors = self._validator.iter_errors(data)
