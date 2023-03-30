@@ -36,3 +36,14 @@ keys:
                     default: "7"
               shutdown:
                 type: bool
+          vxlan:
+            type: dict
+            description: VXLAN Controller service
+            keys:
+              shutdown:
+                type: bool
+              vtep_mac_learning:
+                type: str
+                valid_values:
+                  - "control-plane"
+                  - "data-plane"

@@ -3,7 +3,8 @@ from __future__ import annotations
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AvdSchemaError, AvdValidationError
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avddataconverter import AvdDataConverter
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschemaresolver import AvdSchemaResolver
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdvalidator import AVD_META_SCHEMA, AvdValidator
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdvalidator import AvdValidator
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.store import create_store
 
 try:
     import jsonschema
@@ -26,31 +27,66 @@ DEFAULT_SCHEMA = {
 
 
 class AvdSchema:
-    def __init__(self, schema: dict = None):
+    """
+    AvdSchema takes either a schema as dict or the ID of a builtin schema.
+    If none of them are set, a default "dummy" schema will be loaded.
+    schema -> schema_id -> DEFAULT_SCHEMA
+
+    Parameters
+    ----------
+    schema : dict
+        AVD Schema as dictionary. Will be validated towards AVD_META_SCHEMA.
+    schema_id : str
+        ID of AVD Schema. Either 'eos_cli_config_gen' or 'eos_designs'
+    """
+
+    def __init__(self, schema: dict = None, schema_id: str = None):
         if JSONSCHEMA_IMPORT_ERROR:
             raise AristaAvdError('Python library "jsonschema" must be installed to use this plugin') from JSONSCHEMA_IMPORT_ERROR
         if DEEPMERGE_IMPORT_ERROR:
             raise AristaAvdError('Python library "deepmerge" must be installed to use this plugin') from DEEPMERGE_IMPORT_ERROR
 
-        if not schema:
-            schema = DEFAULT_SCHEMA
-        self._schema_validator = jsonschema.Draft7Validator(AVD_META_SCHEMA)
-        self.load_schema(schema)
+        self.store = create_store()
+        self._schema_validator = jsonschema.Draft7Validator(self.store["avd_meta_schema"])
+        self.load_schema(schema, schema_id)
 
     def validate_schema(self, schema: dict):
         validation_errors = self._schema_validator.iter_errors(schema)
         for validation_error in validation_errors:
             yield self._error_handler(validation_error)
 
-    def load_schema(self, schema: dict):
-        for validation_error in self.validate_schema(schema):
-            # TODO: Find a way to wrap multiple schema errors in a single raise
-            raise validation_error
+    def load_schema(self, schema: dict = None, schema_id: str = None):
+        """
+        Load schema from dict or the ID of a builtin schema.
+        If none of them are set, a default "dummy" schema will be loaded.
+        schema -> schema_id -> DEFAULT_SCHEMA
+
+        Parameters
+        ----------
+        schema : dict, optional
+            AVD Schema as dictionary. Will be validated towards AVD_META_SCHEMA.
+        schema_id : str, optional
+            ID of AVD Schema. Either 'eos_cli_config_gen' or 'eos_designs'
+        """
+
+        if schema:
+            # Validate the schema
+            for validation_error in self.validate_schema(schema):
+                # TODO: Find a way to wrap multiple schema errors in a single raise
+                raise validation_error
+        elif schema_id:
+            if schema_id not in self.store:
+                raise AristaAvdError(f"Schema id {schema_id} not found in store. Must be one of {self.store.keys()}")
+
+            schema = self.store[schema_id]
+        else:
+            schema = DEFAULT_SCHEMA
+
         self._schema = schema
         try:
-            self._validator = AvdValidator(schema)
+            self._validator = AvdValidator(schema, self.store)
             self._dataconverter = AvdDataConverter(self)
-            self._schemaresolver = AvdSchemaResolver(schema)
+            self._schemaresolver = AvdSchemaResolver(schema, self.store)
         except Exception as e:
             raise AristaAvdError("An error occured during creation of the validator") from e
 
@@ -204,16 +240,15 @@ class AvdSchema:
         if not isinstance(key, str):
             raise AvdSchemaError(f"All datapath items must be strings. Got {type(key)}")
 
-        if schema["type"] == "dict":
-            if key in schema.get("keys", []):
-                resolved_schema = self.get_resolved_schema(schema["keys"][key])
-                return self.subschema(datapath[1:], resolved_schema)
-            if key in schema.get("dynamic_keys", []):
-                resolved_schema = self.get_resolved_schema(schema["dynamic_keys"][key])
-                return self.subschema(datapath[1:], resolved_schema)
+        resolved_schema = self.get_resolved_schema(schema)
+        if resolved_schema["type"] == "dict":
+            if key in resolved_schema.get("keys", []):
+                return self.subschema(datapath[1:], resolved_schema["keys"][key])
+            if key in resolved_schema.get("dynamic_keys", []):
+                return self.subschema(datapath[1:], resolved_schema["dynamic_keys"][key])
 
-        if schema["type"] == "list" and key in schema.get("items", {}).get("keys", []):
-            return self.subschema(datapath[1:], schema["items"]["keys"][key])
+        if resolved_schema["type"] == "list" and key in resolved_schema.get("items", {}).get("keys", []):
+            return self.subschema(datapath[1:], resolved_schema["items"]["keys"][key])
 
         # Falling through here in case the schema is not covering the requested datapath
         raise AvdSchemaError(f"The datapath '{datapath}' could not be found in the schema")

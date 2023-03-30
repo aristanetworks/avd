@@ -33,6 +33,18 @@ CVX is enabled
 {%                 endif %}
 | MCS | {{ enabled }} | {{ settings | join("<br>") }} |
 {%             endif %}
+{%             if cvx.services.vxlan is arista.avd.defined %}
+{%                 if cvx.services.vxlan.shutdown is arista.avd.defined %}
+{%                     set enabled = not cvx.services.vxlan.shutdown %}
+{%                 else %}
+{%                     set enabled = '-' %}
+{%                 endif %}
+{%                 set settings = [] %}
+{%                 if cvx.services.vxlan.vtep_mac_learning is arista.avd.defined %}
+{%                     do settings.append("VTEP MAC learning: " ~ cvx.services.vxlan.vtep_mac_learning) %}
+{%                 endif %}
+| VXLAN | {{ enabled }} | {{ settings | join("<br>") }} |
+{%             endif %}
 {%         endif %}
 {%     endif %}
 

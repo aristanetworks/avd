@@ -19,16 +19,12 @@ class ActionModule(ActionBase):
         del tmp  # tmp no longer has any effect
 
         # Validate Arguments
-        if self._task.args and "schema" in self._task.args and "template" in self._task.args:
-            self.templatefile = self._task.args["template"]
-            if not isinstance(self.templatefile, str):
-                raise AnsibleActionFail("The argument 'template' must be a string")
-            schema = self._task.args["schema"]
-            if not isinstance(schema, dict):
-                raise AnsibleActionFail("The argument 'schema' must be a dict")
-        else:
-            raise AnsibleActionFail("The arguments 'template' and 'schema' must be set")
+        self.templatefile = self._task.args.get("template")
+        if not isinstance(self.templatefile, str):
+            raise AnsibleActionFail("The argument 'template' must be a string")
 
+        schema = self._task.args.get("schema")
+        schema_id = self._task.args.get("schema_id")
         conversion_mode = self._task.args.get("conversion_mode")
         validation_mode = self._task.args.get("validation_mode")
 
@@ -50,7 +46,15 @@ class ActionModule(ActionBase):
         self.data.update(task_vars["hostvars"].get(hostname))
 
         # Load schema tools and perform conversion and validation
-        avdschematools = AvdSchemaTools(schema, hostname, display, conversion_mode, validation_mode, task_vars["ansible_role_name"])
+        avdschematools = AvdSchemaTools(
+            hostname=hostname,
+            ansible_display=display,
+            schema=schema,
+            schema_id=schema_id,
+            conversion_mode=conversion_mode,
+            validation_mode=validation_mode,
+            plugin_name=task_vars["ansible_role_name"],
+        )
         result.update(avdschematools.convert_and_validate_data(self.data))
 
         # Template to file

@@ -484,6 +484,76 @@
         "additionalProperties": false
       }
     },
+    "address_locking": {
+      "type": "object",
+      "properties": {
+        "dhcp_servers_ipv4": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "DHCP server IPv4 address"
+          },
+          "title": "DHCP Servers IPv4"
+        },
+        "disabled": {
+          "type": "boolean",
+          "description": "Disable IP locking on configured ports",
+          "title": "Disabled"
+        },
+        "leases": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ip": {
+                "type": "string",
+                "description": "IP address",
+                "title": "IP"
+              },
+              "mac": {
+                "type": "string",
+                "description": "MAC address (hhhh.hhhh.hhhh or hh:hh:hh:hh:hh:hh)",
+                "title": "MAC"
+              }
+            },
+            "required": [
+              "ip",
+              "mac"
+            ],
+            "additionalProperties": false
+          },
+          "title": "Leases"
+        },
+        "local_interface": {
+          "type": "string",
+          "title": "Local Interface"
+        },
+        "locked_address": {
+          "type": "object",
+          "properties": {
+            "expiration_mac_disabled": {
+              "type": "boolean",
+              "description": "Configure deauthorizing locked addresses upon MAC aging out",
+              "title": "Expiration MAC Disabled"
+            },
+            "ipv4_enforcement_disabled": {
+              "type": "boolean",
+              "description": "Configure enforcement for locked IPv4 addresses",
+              "title": "IPv4 Enforcement Disabled"
+            },
+            "ipv6_enforcement_disabled": {
+              "type": "boolean",
+              "description": "Configure enforcement for locked IPv6 addresses",
+              "title": "IPv6 Enforcement Disabled"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Locked Address"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Address Locking"
+    },
     "aliases": {
       "type": "string",
       "description": "Multi-line string with one or more alias commands.\n\nExample:\n\n```yaml\naliases: |\n  alias wr copy running-config startup-config\n  alias siib show ip interface brief\n```",
@@ -842,6 +912,26 @@
               },
               "additionalProperties": false,
               "title": "MCS"
+            },
+            "vxlan": {
+              "type": "object",
+              "description": "VXLAN Controller service",
+              "properties": {
+                "shutdown": {
+                  "type": "boolean",
+                  "title": "Shutdown"
+                },
+                "vtep_mac_learning": {
+                  "type": "string",
+                  "enum": [
+                    "control-plane",
+                    "data-plane"
+                  ],
+                  "title": "Vtep MAC Learning"
+                }
+              },
+              "additionalProperties": false,
+              "title": "VxLAN"
             }
           },
           "additionalProperties": false,
@@ -14097,7 +14187,7 @@
               },
               "config": {
                 "type": "string",
-                "description": "TCAM Profile Config. Since these can be very long, it is often a good idea to import the config from a file.\nExample: \"{{lookup('file', '{{ root_dir }}/inventory/TCAM_TRAFFIC_POLICY.conf')}}\"",
+                "description": "TCAM Profile Config. Since these can be very long, it is often a good idea to import the config from a file.\nExample: \"{{ lookup('file', 'TCAM_TRAFFIC_POLICY.conf') }}\"",
                 "title": "Config"
               }
             },
@@ -15631,6 +15721,18 @@
                   "type": "string",
                   "description": "Source Interface Name",
                   "title": "Source Interface"
+                },
+                "controller_client": {
+                  "type": "object",
+                  "description": "Client to CVX Controllers",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "title": "Controller Client"
                 },
                 "mlag_source_interface": {
                   "type": "string",

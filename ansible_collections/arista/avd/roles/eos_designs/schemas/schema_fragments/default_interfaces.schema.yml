@@ -38,33 +38,33 @@ keys:
         types:
           type: list
           required: true
-          description: List of node type keys
+          description: List of node type keys.
           items:
             type: str
         platforms:
           type: list
           required: true
           description: |
-            List of platform families
-            This is defined as a Python regular expression that matches the full platform type
+            List of platform families.
+            This is defined as a Python regular expression that matches the full platform type.
           items:
             type: str
-            description: Arista platform family regular expression
+            description: Arista platform family regular expression.
         uplink_interfaces:
           type: list
-          description: List of uplink interfaces or uplink interface ranges
+          description: List of uplink interfaces or uplink interface ranges.
           items:
             type: str
-            description: Interface range or interface
+            description: Interface range or interface.
         mlag_interfaces:
           type: list
-          description: List of MLAG interfaces or MLAG interface ranges
+          description: List of MLAG interfaces or MLAG interface ranges.
           items:
             type: str
-            description: Interface range or interface
+            description: Interface range or interface.
         downlink_interfaces:
           type: list
-          description: List of downlink interfaces or downlink interface ranges
+          description: List of downlink interfaces or downlink interface ranges.
           items:
             type: str
-            description: Interface range or interface
+            description: Interface range or interface.

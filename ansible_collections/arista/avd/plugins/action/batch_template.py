@@ -4,7 +4,6 @@ __metaclass__ = type
 
 from collections import ChainMap
 from concurrent.futures import ProcessPoolExecutor
-from itertools import repeat
 from multiprocessing import get_context
 from os import open as os_open
 
@@ -13,12 +12,16 @@ from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_templar, template
 
+# Leveraging copy on write from fork
+GLOBALS = {}
+
 
 def opener(path, flags):
     return os_open(path, flags, 0o664)
 
 
-def _template_process(item: str, task_vars: dict, templatefile: str, dest_format_str: str, templar) -> dict:
+# def _template_process(item: str, task_vars: dict, templatefile: str, dest_format_str: str, templar) -> dict:
+def _template_process(item: str) -> dict:
     """
     This function runs as a separate fork.
 
@@ -43,6 +46,10 @@ def _template_process(item: str, task_vars: dict, templatefile: str, dest_format
     dict
         Ansible result dictionary with any errors caught during writing of the output file.
     """
+    dest_format_str = GLOBALS["dest_format_str"]
+    task_vars = GLOBALS["task_vars"]
+    templatefile = GLOBALS["templatefile"]
+    templar = GLOBALS["templar"]
     dest = str(dest_format_str).format(item=item)
 
     template_vars = ChainMap({"item": item}, task_vars)
@@ -76,6 +83,8 @@ class ActionModule(ActionBase):
         if task_vars is None:
             task_vars = {}
 
+        GLOBALS["task_vars"] = task_vars
+
         result = super().run(tmp, task_vars)
         del tmp  # tmp no longer has any effect
 
@@ -83,6 +92,7 @@ class ActionModule(ActionBase):
         templatefile = self._task.args["template"]
         if not isinstance(templatefile, str):
             raise AnsibleActionFail("The argument 'template' must be a string")
+        GLOBALS["templatefile"] = templatefile
 
         items = self._task.args.get("items")
         if not isinstance(items, list):
@@ -91,21 +101,19 @@ class ActionModule(ActionBase):
         dest_format_str = self._task.args.get("dest_format_str")
         if not isinstance(dest_format_str, str):
             raise AnsibleActionFail("The argument 'dest_format_str' must be a string")
+        GLOBALS["dest_format_str"] = dest_format_str
 
         forks = task_vars["ansible_forks"]
 
         # Get updated templar instance to be passed along to our simplified "templater"
         templar = get_templar(self, task_vars)
+        GLOBALS["templar"] = templar
 
         context = get_context("fork")
         with ProcessPoolExecutor(max_workers=forks, mp_context=context) as executor:
             return_values = executor.map(
                 _template_process,
                 items,
-                repeat(task_vars),
-                repeat(templatefile),
-                repeat(dest_format_str),
-                repeat(templar),
             )
 
         for return_value in return_values:

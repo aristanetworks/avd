@@ -2,6 +2,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFact
 from ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions import load_interfacedescriptions
 from ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing import load_ip_addressing
 
+from .cvx import CvxMixin
 from .ip_extcommunity_lists import IpExtCommunityListsMixin
 from .management_cvx import ManagementCvxMixin
 from .route_maps import RouteMapsMixin
@@ -11,6 +12,7 @@ from .router_bgp import RouterBgpMixin
 
 class AvdStructuredConfig(
     AvdFacts,
+    CvxMixin,
     IpExtCommunityListsMixin,
     ManagementCvxMixin,
     RouterBfdMixin,

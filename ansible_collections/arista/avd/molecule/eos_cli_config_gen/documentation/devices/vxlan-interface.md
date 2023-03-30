@@ -44,6 +44,7 @@ interface Management1
 | Setting | Value |
 | ------- | ----- |
 | Source Interface | Loopback0 |
+| Controller Client | True |
 | MLAG Source Interface | Loopback1 |
 | UDP port | 4789 |
 | EVPN MLAG Shared Router MAC | mlag-system-id |
@@ -83,6 +84,7 @@ interface Management1
 interface Vxlan1
    description DC1-LEAF2A_VTEP
    vxlan source-interface Loopback0
+   vxlan controller-client
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789
    vxlan flood vtep learned data-plane

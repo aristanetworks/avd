@@ -199,6 +199,7 @@ interface Ethernet3
    description P2P_LINK_TO_DC1-POD1-LEAF1A_Ethernet2
    no shutdown
    mtu 1500
+   mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.17.110.2/31
    ptp enable
@@ -208,6 +209,7 @@ interface Ethernet4
    description P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet2
    no shutdown
    mtu 1500
+   mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.17.110.10/31
    ptp enable
@@ -217,6 +219,7 @@ interface Ethernet5
    description P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet2
    no shutdown
    mtu 1500
+   mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.17.110.18/31
    ptp enable
@@ -226,6 +229,7 @@ interface Ethernet7
    description P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet12
    no shutdown
    mtu 1500
+   mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.17.110.14/31
    ptp enable
@@ -235,6 +239,7 @@ interface Ethernet8
    description P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet12
    no shutdown
    mtu 1500
+   mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.17.110.22/31
    ptp enable

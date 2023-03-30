@@ -49,8 +49,11 @@ class VxlanInterfaceMixin(UtilsMixin):
         if self._mlag_l3 and self._network_services_l3 and self._overlay_evpn:
             vxlan["virtual_router_encapsulation_mac_address"] = "mlag-system-id"
 
-        if self._overlay_routing_protocol == "her" and self._overlay_her_flood_list_per_vni is False:
+        if self._overlay_her and self._overlay_her_flood_list_per_vni is False:
             vxlan["flood_vteps"] = natural_sort(unique(self._overlay_her_flood_lists.get("common", [])))
+
+        if self._overlay_cvx:
+            vxlan["controller_client"] = {"enabled": True}
 
         vlans = []
         vrfs = []
@@ -149,7 +152,7 @@ class VxlanInterfaceMixin(UtilsMixin):
             offset = vlan_id - 1 + underlay_l2_multicast_group_ipv4_pool_offset
             vxlan_interface_vlan["multicast_group"] = self._avd_ip_addressing._ip(underlay_l2_multicast_group_ipv4_pool, 32, offset, 0)
 
-        if self._overlay_routing_protocol == "her" and self._overlay_her_flood_list_per_vni:
+        if self._overlay_her and self._overlay_her_flood_list_per_vni:
             vxlan_interface_vlan["flood_vteps"] = natural_sort(unique(self._overlay_her_flood_lists.get(vlan_id, [])))
 
         return vxlan_interface_vlan

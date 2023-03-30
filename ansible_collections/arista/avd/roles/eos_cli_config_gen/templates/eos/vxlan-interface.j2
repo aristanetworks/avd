@@ -9,6 +9,9 @@ interface Vxlan1
 {%     if vxlan_interface.Vxlan1.vxlan.source_interface is arista.avd.defined %}
    vxlan source-interface {{ vxlan_interface.Vxlan1.vxlan.source_interface }}
 {%     endif %}
+{%     if vxlan_interface.Vxlan1.vxlan.controller_client.enabled is arista.avd.defined(true) %}
+   vxlan controller-client
+{%     endif %}
 {%     if vxlan_interface.Vxlan1.vxlan.virtual_router_encapsulation_mac_address is arista.avd.defined %}
    vxlan virtual-router encapsulation mac-address {{ vxlan_interface.Vxlan1.vxlan.virtual_router_encapsulation_mac_address }}
 {%     endif %}

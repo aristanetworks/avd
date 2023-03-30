@@ -10,6 +10,7 @@ from deepmerge import always_merger
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AvdValidationError
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import DEFAULT_SCHEMA, AvdSchema
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.default_schemas import DEFAULT_SCHEMAS
 
 script_dir = os.path.dirname(__file__)
 with open(f"{script_dir}/access_lists.schema.yml", "r", encoding="utf-8") as schema_file:
@@ -237,3 +238,18 @@ class TestAvdSchema:
         with pytest.raises(AvdValidationError):
             avdschema = AvdSchema()
             avdschema.subschema([], INVALID_SCHEMA)
+
+    def test_avd_schema_subschema_with_ref_to_store_schemas(self):
+        test_schema = {"type": "dict", "keys": {}}
+        for id in DEFAULT_SCHEMAS:
+            if id == "avd_meta_schema":
+                continue
+            test_schema["keys"][id] = {"$ref": f"{id}#/"}
+
+        avdschema = AvdSchema(test_schema)
+        for id in DEFAULT_SCHEMAS:
+            if id == "avd_meta_schema":
+                continue
+            subschema = avdschema.subschema([id])
+            assert subschema.get("type") == "dict"
+            assert subschema.get("keys") is not None

@@ -1,9 +1,8 @@
 import copy
-import json
-import os
 from collections import ChainMap
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.refresolver import create_refresolver
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all
 
 try:
@@ -23,10 +22,6 @@ except ImportError as imp_exc:
     DEEPMERGE_IMPORT_ERROR = imp_exc
 else:
     DEEPMERGE_IMPORT_ERROR = None
-
-script_dir = os.path.dirname(__file__)
-with open(f"{script_dir}/avd_meta_schema.json", "r", encoding="UTF-8") as file:
-    AVD_META_SCHEMA = json.load(file)
 
 
 def _primary_key_validator(validator, primary_key: str, instance: list, schema: dict):
@@ -158,7 +153,7 @@ def _is_dict(validator, instance):
 
 
 class AvdValidator:
-    def __new__(cls, schema):
+    def __new__(cls, schema, store):
         """
         AvdSchemaValidator is used to validate AVD Data.
         It uses a combination of our own validators and builtin jsonschema validators
@@ -172,7 +167,7 @@ class AvdValidator:
             raise AristaAvdError('Python library "deepmerge" must be installed to use this plugin') from DEEPMERGE_IMPORT_ERROR
 
         ValidatorClass = jsonschema.validators.create(
-            meta_schema=AVD_META_SCHEMA,
+            meta_schema=store["avd_meta_schema"],
             validators={
                 "$ref": _ref_validator,
                 "type": jsonschema._validators.type,
@@ -209,4 +204,4 @@ class AvdValidator:
             # version="0.1",
         )
 
-        return ValidatorClass(schema)
+        return ValidatorClass(schema, resolver=create_refresolver(schema, store))
