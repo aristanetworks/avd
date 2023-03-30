@@ -133,26 +133,6 @@ class TestAvdSchema:
         with pytest.raises(TypeError):
             AvdSchema().validate()
 
-    @pytest.mark.parametrize("TEST_DATA", TEST_DATA_SETS)
-    def test_avd_schema_is_valid_without_schema(self, TEST_DATA):
-        assert AvdSchema().is_valid(TEST_DATA) is True
-
-    @pytest.mark.parametrize("TEST_SCHEMA", VALID_TEST_SCHEMAS)
-    @pytest.mark.parametrize("TEST_DATA", TEST_DATA_SETS)
-    def test_avd_schema_is_valid_with_loaded_schema(self, TEST_SCHEMA, TEST_DATA):
-        assert AvdSchema(TEST_SCHEMA).is_valid(TEST_DATA) is True
-
-    @pytest.mark.parametrize("INVALID_DATA", INVALID_ACL_DATA)
-    def test_avd_schema_is_valid_with_invalid_data(self, INVALID_DATA):
-        assert AvdSchema(combined_schema).is_valid(INVALID_DATA) is False
-
-    def test_avd_schema_is_valid_with_missing_data(self):
-        with pytest.raises(TypeError):
-            AvdSchema().is_valid()
-
-    def test_avd_schema_is_valid_with_none(self):
-        assert AvdSchema().is_valid(None) is False
-
     @pytest.mark.parametrize("TEST_SCHEMA", VALID_TEST_SCHEMAS)
     def test_avd_schema_load_valid_schema(self, TEST_SCHEMA):
         try:

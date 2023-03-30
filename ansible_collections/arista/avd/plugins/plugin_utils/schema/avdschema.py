@@ -144,13 +144,6 @@ class AvdSchema:
             return AvdSchemaError(error=error)
         return AvdSchemaError(str(error))
 
-    def is_valid(self, data):
-        try:
-            return self._validator.is_valid(data)
-        except Exception as error:
-            # TODO: Find a way to wrap multiple schema errors in a single raise
-            raise self._error_handler(error) from error
-
     def subschema(self, datapath: list, schema: dict = None):
         """
         Takes datapath elements as a list and returns the subschema for this datapath.
