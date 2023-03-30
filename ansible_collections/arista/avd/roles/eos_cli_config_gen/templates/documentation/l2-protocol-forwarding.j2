@@ -54,7 +54,7 @@
 {%         endif %}
 {%         if profile.lacp is arista.avd.defined %}
 {%             set row_lacp = [] %}
-{%            if profile.lacp.forward is arista.avd.defined(true) %}
+{%             if profile.lacp.forward is arista.avd.defined(true) %}
 {%                 do row_lacp.append('forward') %}
 {%             endif %}
 {%             if profile.lacp.tagged_forward is arista.avd.defined(true) %}
