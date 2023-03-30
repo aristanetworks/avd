@@ -1240,6 +1240,9 @@ keys:
               convert_types:
               - str
               description: Vlan tag to configure on sub-interface
+            forwarding_profile:
+              type: str
+              description: L2 protocol forwarding profile
         trunk_groups:
           type: list
           items:
@@ -3164,6 +3167,92 @@ keys:
     documentation_options:
       filename: data_model/Routing
     type: bool
+  l2_protocol:
+    documentation_options:
+      filename: data_model/L2 Protocol Forwarding
+    type: dict
+    keys:
+      forwarding_profiles:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+            bfd_per_link_rfc_7130:
+              type: dict
+              keys:
+                forward:
+                  type: bool
+                tagged_forward:
+                  type: bool
+                untagged_forward:
+                  type: bool
+            e_lmi:
+              type: dict
+              keys:
+                forward:
+                  type: bool
+                tagged_forward:
+                  type: bool
+                untagged_forward:
+                  type: bool
+            isis:
+              type: dict
+              keys:
+                forward:
+                  type: bool
+                tagged_forward:
+                  type: bool
+                untagged_forward:
+                  type: bool
+            lacp:
+              type: dict
+              keys:
+                forward:
+                  type: bool
+                tagged_forward:
+                  type: bool
+                untagged_forward:
+                  type: bool
+            lldp:
+              type: dict
+              keys:
+                forward:
+                  type: bool
+                tagged_forward:
+                  type: bool
+                untagged_forward:
+                  type: bool
+            macsec:
+              type: dict
+              keys:
+                forward:
+                  type: bool
+                tagged_forward:
+                  type: bool
+                untagged_forward:
+                  type: bool
+            pause:
+              type: dict
+              keys:
+                forward:
+                  type: bool
+                tagged_forward:
+                  type: bool
+                untagged_forward:
+                  type: bool
+            stp:
+              type: dict
+              keys:
+                forward:
+                  type: bool
+                tagged_forward:
+                  type: bool
+                untagged_forward:
+                  type: bool
   lacp:
     documentation_options:
       filename: data_model/LACP
@@ -5142,6 +5231,9 @@ keys:
               convert_types:
               - str
               description: Vlan tag to configure on sub-interface
+            forwarding_profile:
+              type: str
+              description: L2 protocol forwarding profile
         mtu:
           type: int
           convert_types:

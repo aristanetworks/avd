@@ -1,0 +1,123 @@
+{# doc - l2 protocol forwarding #}
+{% if l2_protocol.forwarding_profiles | arista.avd.default([]) | length > 0 %}
+
+## L2 Protocol Forwarding
+
+### Forwarding Profiles Summary
+
+| Profile | BFD Per-link RFC-7130 | E-LMI | ISIS | LACP | LLDP | MACSEC | Pause | STP |
+| ------- | --------------------- | ----- | ---- | ---- | ---- | ------ | ----- | --- |
+{%     for profile in l2_protocol.forwarding_profiles | arista.avd.natural_sort('name') %}
+{%         set row_bfd = ["-"] %}
+{%         set row_e_lmi = ["-"] %}
+{%         set row_isis = ["-"] %}
+{%         set row_lacp = ["-"] %}
+{%         set row_lldp = ["-"] %}
+{%         set row_macsec = ["-"] %}
+{%         set row_pause = ["-"] %}
+{%         set row_stp = ["-"] %}
+{%         if profile.bfd_per_link_rfc_7130 is arista.avd.defined %}
+{%             set row_bfd = [] %}
+{%             if profile.bfd_per_link_rfc_7130.forward is arista.avd.defined(true) %}
+{%                 do row_bfd.append('forward') %}
+{%             endif %}
+{%             if profile.bfd_per_link_rfc_7130.tagged_forward is arista.avd.defined(true) %}
+{%                 do row_bfd.append('tagged forward') %}
+{%             endif %}
+{%             if profile.bfd_per_link_rfc_7130.untagged_forward is arista.avd.defined(true) %}
+{%                 do row_bfd.append('untagged forward') %}
+{%             endif %}
+{%         endif %}
+{%         if profile.e_lmi is arista.avd.defined %}
+{%             set row_e_lmi = [] %}
+{%             if profile.e_lmi.forward is arista.avd.defined(true) %}
+{%                 do row_e_lmi.append('forward') %}
+{%             endif %}
+{%             if profile.e_lmi.tagged_forward is arista.avd.defined(true) %}
+{%                 do row_e_lmi.append('tagged forward') %}
+{%             endif %}
+{%             if profile.e_lmi.untagged_forward is arista.avd.defined(true) %}
+{%                 do row_e_lmi.append('untagged forward') %}
+{%             endif %}
+{%         endif %}
+{%         if profile.isis is arista.avd.defined %}
+{%             set row_isis = [] %}
+{%             if profile.isis.forward is arista.avd.defined(true) %}
+{%                 do row_isis.append('forward') %}
+{%             endif %}
+{%             if profile.isis.tagged_forward is arista.avd.defined(true) %}
+{%                 do row_isis.append('tagged forward') %}
+{%             endif %}
+{%             if profile.isis.untagged_forward is arista.avd.defined(true) %}
+{%                 do row_isis.append('untagged forward') %}
+{%             endif %}
+{%         endif %}
+{%         if profile.lacp is arista.avd.defined %}
+{%             set row_lacp = [] %}
+{%            if profile.lacp.forward is arista.avd.defined(true) %}
+{%                 do row_lacp.append('forward') %}
+{%             endif %}
+{%             if profile.lacp.tagged_forward is arista.avd.defined(true) %}
+{%                 do row_lacp.append('tagged forward') %}
+{%             endif %}
+{%             if profile.lacp.untagged_forward is arista.avd.defined(true) %}
+{%                 do row_lacp.append('untagged forward') %}
+{%             endif %}
+{%         endif %}
+{%         if profile.lldp is arista.avd.defined %}
+{%             set row_lldp = [] %}
+{%             if profile.lldp.forward is arista.avd.defined(true) %}
+{%                 do row_lldp.append('forward') %}
+{%             endif %}
+{%             if profile.lldp.tagged_forward is arista.avd.defined(true) %}
+{%                 do row_lldp.append('tagged forward') %}
+{%             endif %}
+{%             if profile.lldp.untagged_forward is arista.avd.defined(true) %}
+{%                 do row_lldp.append('untagged forward') %}
+{%             endif %}
+{%         endif %}
+{%         if profile.macsec is arista.avd.defined %}
+{%             set row_macsec = [] %}
+{%             if profile.macsec.forward is arista.avd.defined(true) %}
+{%                 do row_macsec.append('forward') %}
+{%             endif %}
+{%             if profile.macsec.tagged_forward is arista.avd.defined(true) %}
+{%                 do row_macsec.append('tagged forward') %}
+{%             endif %}
+{%             if profile.macsec.untagged_forward is arista.avd.defined(true) %}
+{%                 do row_macsec.append('untagged forward') %}
+{%             endif %}
+{%         endif %}
+{%         if profile.pause is arista.avd.defined %}
+{%             set row_pause = [] %}
+{%             if profile.pause.forward is arista.avd.defined(true) %}
+{%                 do row_pause.append('forward') %}
+{%             endif %}
+{%             if profile.pause.tagged_forward is arista.avd.defined(true) %}
+{%                 do row_pause.append('tagged forward') %}
+{%             endif %}
+{%             if profile.pause.untagged_forward is arista.avd.defined(true) %}
+{%                 do row_pause.append('untagged forward') %}
+{%             endif %}
+{%         endif %}
+{%         if profile.stp is arista.avd.defined %}
+{%             set row_stp = [] %}
+{%             if profile.stp.forward is arista.avd.defined(true) %}
+{%                 do row_stp.append('forward') %}
+{%             endif %}
+{%             if profile.stp.tagged_forward is arista.avd.defined(true) %}
+{%                 do row_stp.append('tagged forward') %}
+{%             endif %}
+{%             if profile.stp.untagged_forward is arista.avd.defined(true) %}
+{%                 do row_stp.append('untagged forward') %}
+{%             endif %}
+{%         endif %}
+| {{ profile.name }} | {{ row_bfd | join(",") }} | {{ row_e_lmi | join(",") }} | {{ row_isis | join(",") }} | {{ row_lacp | join(",") }} | {{ row_lldp | join(",") }} | {{ row_macsec | join(",") }} | {{ row_pause | join(",") }} | {{ row_stp | join(",") }} |
+{%     endfor %}
+
+### L2 Protocol Forwarding Configuration
+
+```eos
+{%     include 'eos/l2-protocol-forwarding.j2' %}
+```
+{% endif %}

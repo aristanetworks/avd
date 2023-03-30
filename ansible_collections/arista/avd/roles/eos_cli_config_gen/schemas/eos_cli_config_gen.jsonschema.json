@@ -1528,6 +1528,11 @@
                 "type": "integer",
                 "description": "Vlan tag to configure on sub-interface",
                 "title": "Encapsulation Dot1Q VLAN"
+              },
+              "forwarding_profile": {
+                "type": "string",
+                "description": "L2 protocol forwarding profile",
+                "title": "Forwarding Profile"
               }
             },
             "additionalProperties": false,
@@ -4175,6 +4180,182 @@
     "ipv6_unicast_routing": {
       "type": "boolean",
       "title": "IPv6 Unicast Routing"
+    },
+    "l2_protocol": {
+      "type": "object",
+      "properties": {
+        "forwarding_profiles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name"
+              },
+              "bfd_per_link_rfc_7130": {
+                "type": "object",
+                "properties": {
+                  "forward": {
+                    "type": "boolean",
+                    "title": "Forward"
+                  },
+                  "tagged_forward": {
+                    "type": "boolean",
+                    "title": "Tagged Forward"
+                  },
+                  "untagged_forward": {
+                    "type": "boolean",
+                    "title": "Untagged Forward"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "BFD Per Link Rfc 7130"
+              },
+              "e_lmi": {
+                "type": "object",
+                "properties": {
+                  "forward": {
+                    "type": "boolean",
+                    "title": "Forward"
+                  },
+                  "tagged_forward": {
+                    "type": "boolean",
+                    "title": "Tagged Forward"
+                  },
+                  "untagged_forward": {
+                    "type": "boolean",
+                    "title": "Untagged Forward"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "E Lmi"
+              },
+              "isis": {
+                "type": "object",
+                "properties": {
+                  "forward": {
+                    "type": "boolean",
+                    "title": "Forward"
+                  },
+                  "tagged_forward": {
+                    "type": "boolean",
+                    "title": "Tagged Forward"
+                  },
+                  "untagged_forward": {
+                    "type": "boolean",
+                    "title": "Untagged Forward"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "ISIS"
+              },
+              "lacp": {
+                "type": "object",
+                "properties": {
+                  "forward": {
+                    "type": "boolean",
+                    "title": "Forward"
+                  },
+                  "tagged_forward": {
+                    "type": "boolean",
+                    "title": "Tagged Forward"
+                  },
+                  "untagged_forward": {
+                    "type": "boolean",
+                    "title": "Untagged Forward"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "LACP"
+              },
+              "lldp": {
+                "type": "object",
+                "properties": {
+                  "forward": {
+                    "type": "boolean",
+                    "title": "Forward"
+                  },
+                  "tagged_forward": {
+                    "type": "boolean",
+                    "title": "Tagged Forward"
+                  },
+                  "untagged_forward": {
+                    "type": "boolean",
+                    "title": "Untagged Forward"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "LLDP"
+              },
+              "macsec": {
+                "type": "object",
+                "properties": {
+                  "forward": {
+                    "type": "boolean",
+                    "title": "Forward"
+                  },
+                  "tagged_forward": {
+                    "type": "boolean",
+                    "title": "Tagged Forward"
+                  },
+                  "untagged_forward": {
+                    "type": "boolean",
+                    "title": "Untagged Forward"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Macsec"
+              },
+              "pause": {
+                "type": "object",
+                "properties": {
+                  "forward": {
+                    "type": "boolean",
+                    "title": "Forward"
+                  },
+                  "tagged_forward": {
+                    "type": "boolean",
+                    "title": "Tagged Forward"
+                  },
+                  "untagged_forward": {
+                    "type": "boolean",
+                    "title": "Untagged Forward"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Pause"
+              },
+              "stp": {
+                "type": "object",
+                "properties": {
+                  "forward": {
+                    "type": "boolean",
+                    "title": "Forward"
+                  },
+                  "tagged_forward": {
+                    "type": "boolean",
+                    "title": "Tagged Forward"
+                  },
+                  "untagged_forward": {
+                    "type": "boolean",
+                    "title": "Untagged Forward"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Stp"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          "title": "Forwarding Profiles"
+        }
+      },
+      "additionalProperties": false,
+      "title": "L2 Protocol"
     },
     "lacp": {
       "type": "object",
@@ -7020,6 +7201,11 @@
                 "type": "integer",
                 "description": "Vlan tag to configure on sub-interface",
                 "title": "Encapsulation Dot1Q VLAN"
+              },
+              "forwarding_profile": {
+                "type": "string",
+                "description": "L2 protocol forwarding profile",
+                "title": "Forwarding Profile"
               }
             },
             "additionalProperties": false,
