@@ -209,8 +209,8 @@ router bgp 65101
       network 2001:db8:100::/40
       network 2001:db8:200::/40 route-map RM-BAR-MATCH
       redistribute static route-map RM-IPV6-STATIC-TO-BGP
-  session tracker ST1
-    recovery delay 666 seconds
-  session tracker ST2
-    recovery delay 42 seconds
+   session tracker ST1
+      recovery delay 666 seconds
+   session tracker ST2
+      recovery delay 42 seconds
 ```
