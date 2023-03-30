@@ -97,11 +97,8 @@ class AvdSchema:
         for validation_error in self.validate_schema(self._schema):
             raise validation_error
 
-    def validate(self, data, schema: dict = None):
-        if schema:
-            validation_errors = self._validator.iter_errors(data, _schema=schema)
-        else:
-            validation_errors = self._validator.iter_errors(data)
+    def validate(self, data):
+        validation_errors = self._validator.iter_errors(data)
 
         try:
             for validation_error in validation_errors:
@@ -109,11 +106,8 @@ class AvdSchema:
         except Exception as error:
             yield self._error_handler(error)
 
-    def convert(self, data, schema: dict = None):
-        if schema:
-            conversion_errors = self._dataconverter.convert_data(data, schema=schema)
-        else:
-            conversion_errors = self._dataconverter.convert_data(data)
+    def convert(self, data):
+        conversion_errors = self._dataconverter.convert_data(data)
 
         try:
             for conversion_error in conversion_errors:
@@ -150,10 +144,8 @@ class AvdSchema:
             return AvdSchemaError(error=error)
         return AvdSchemaError(str(error))
 
-    def is_valid(self, data, schema: dict = None):
+    def is_valid(self, data):
         try:
-            if schema:
-                return self._validator.is_valid(data, _schema=schema)
             return self._validator.is_valid(data)
         except Exception as error:
             # TODO: Find a way to wrap multiple schema errors in a single raise
@@ -235,9 +227,12 @@ class AvdSchema:
         raise AvdSchemaError(f"The datapath '{datapath}' could not be found in the schema")
 
     def get_resolved_schema(self, schema):
-        # Get fully resolved schema (where all $ref has been expanded recursively)
-        # Performs inplace update of the argument so we give an empty dict.
-        # By default it will resolve the full schema
+        """
+        Get fully resolved schema (where all $ref has been expanded recursively)
+        Performs inplace update of the argument so we give an empty dict.
+
+        The given schema is _not_ validated.
+        """
         resolved_schema = {}
         resolve_errors = self.resolve(resolved_schema, schema)
         for resolve_error in resolve_errors:
