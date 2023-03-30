@@ -99,10 +99,6 @@ class AvdSchema:
 
     def validate(self, data, schema: dict = None):
         if schema:
-            for schema_validation_error in self.validate_schema(schema):
-                yield schema_validation_error
-                return
-
             validation_errors = self._validator.iter_errors(data, _schema=schema)
         else:
             validation_errors = self._validator.iter_errors(data)
@@ -115,10 +111,6 @@ class AvdSchema:
 
     def convert(self, data, schema: dict = None):
         if schema:
-            for schema_validation_error in self.validate_schema(schema):
-                yield schema_validation_error
-                return
-
             conversion_errors = self._dataconverter.convert_data(data, schema=schema)
         else:
             conversion_errors = self._dataconverter.convert_data(data)
@@ -137,10 +129,6 @@ class AvdSchema:
         returns a Generator of resolve errors
         """
         if schema:
-            for schema_validation_error in self.validate_schema(schema):
-                yield schema_validation_error
-                return
-
             resolved_schema.update(schema)
             resolve_errors = self._schemaresolver.iter_errors(resolved_schema, _schema=schema)
         else:
@@ -163,10 +151,6 @@ class AvdSchema:
         return AvdSchemaError(str(error))
 
     def is_valid(self, data, schema: dict = None):
-        if schema:
-            for schema_validation_error in self.validate_schema(schema):
-                # TODO: Find a way to wrap multiple schema errors in a single raise
-                raise schema_validation_error
         try:
             if schema:
                 return self._validator.is_valid(data, _schema=schema)
@@ -226,10 +210,7 @@ class AvdSchema:
         if not isinstance(datapath, list):
             raise AvdSchemaError(f"The datapath argument must be a list. Got {type(datapath)}")
 
-        if schema:
-            for validation_error in self.validate_schema(schema):
-                raise validation_error
-        else:
+        if not schema:
             schema = self._schema
 
         if len(datapath) == 0:
