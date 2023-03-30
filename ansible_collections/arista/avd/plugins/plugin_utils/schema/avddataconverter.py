@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Generator
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AvdConversionWarning, AvdDeprecationWarning
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AvdConversionWarning, AvdDeprecationWarning
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all
 
 SCHEMA_TO_PY_TYPE_MAP = {
@@ -45,14 +45,7 @@ class AvdDataConverter:
         """
         if schema is None:
             # Get fully resolved schema (where all $ref has been expanded recursively)
-            # Performs inplace update of the argument so we give an empty dict.
-            # By default it will resolve the full schema
-            schema = {}
-            resolve_errors = self._avdschema.resolve(schema)
-            for resolve_error in resolve_errors:
-                if isinstance(resolve_error, Exception):
-                    # TODO: Raise/yield multiple errors
-                    raise AristaAvdError(resolve_error)
+            schema = self._avdschema.resolved_schema
 
         if path is None:
             path = []
