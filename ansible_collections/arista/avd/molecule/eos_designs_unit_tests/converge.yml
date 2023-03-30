@@ -15,13 +15,14 @@
   gather_facts: false
   connection: local
   tasks:
-    - block:
+    - name: Run failure scenario Test
+      block:
         - name: Trigger Error
           ansible.builtin.import_role:
             name: arista.avd.eos_designs
       rescue:
-        # Verify that the role failed and the error message is as we expect
-        - ansible.builtin.assert:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
             that:
               - ansible_failed_result is defined
               - ansible_failed_result.msg == expected_error_message
