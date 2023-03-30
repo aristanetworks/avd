@@ -15,10 +15,10 @@ search:
     | [<samp>cvp_instance_ip</samp>](## "cvp_instance_ip") | String |  |  |  | IPv4 address.<br>CloudVision - Telemetry Agent (TerminAttr) configuration is optional<br>You can either provide a list of IPs to target on-premise CloudVision cluster or<br>use DNS name for your CloudVision as a Service instance. If you have both on-prem and<br>CVaaS defined, only on-prem is going to be configured. |
     | [<samp>cvp_instance_ips</samp>](## "cvp_instance_ips") | List, items: String |  |  |  | You can either provide a list of IPs to target on-premise CloudVision cluster or<br>use DNS name for your CloudVision as a Service instance. If you have both on-prem and<br>CVaaS defined, only on-prem is going to be configured.<br> |
     | [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "cvp_instance_ips.[].&lt;str&gt;") | String |  |  |  | IPv4 address or CV as a Service hostname |
-    | [<samp>cvp_token_file</samp>](## "cvp_token_file") | String |  | /tmp/cv-onboarding-token |  | CVP token file is path to token file on switch and is only applicable to CV as a Service |
+    | [<samp>cvp_token_file</samp>](## "cvp_token_file") | String |  | /tmp/cv-onboarding-token |  | cvp_token_file is the path to the token file on the switch and is only applicable to CV as a Service |
     | [<samp>terminattr_disable_aaa</samp>](## "terminattr_disable_aaa") | Boolean |  | False |  |  |
     | [<samp>terminattr_ingestexclude</samp>](## "terminattr_ingestexclude") | String |  | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent |  |  |
-    | [<samp>terminattr_ingestgrpcurl_port</samp>](## "terminattr_ingestgrpcurl_port") | Integer |  | 9910 |  | Port number |
+    | [<samp>terminattr_ingestgrpcurl_port</samp>](## "terminattr_ingestgrpcurl_port") | Integer |  | 9910 |  | Port number for Terminattr ingest GRPC |
     | [<samp>terminattr_smashexcludes</samp>](## "terminattr_smashexcludes") | String |  | ale,flexCounter,hardware,kni,pulse,strata |  |  |
 
 === "YAML"

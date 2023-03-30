@@ -23,7 +23,7 @@
     "cvp_token_file": {
       "type": "string",
       "default": "/tmp/cv-onboarding-token",
-      "description": "CVP token file is path to token file on switch and is only applicable to CV as a Service",
+      "description": "cvp_token_file is the path to the token file on the switch and is only applicable to CV as a Service",
       "title": "CVP Token File"
     },
     "default_interfaces": {
@@ -1479,7 +1479,7 @@
     "terminattr_ingestgrpcurl_port": {
       "type": "integer",
       "default": 9910,
-      "description": "Port number",
+      "description": "Port number for Terminattr ingest GRPC",
       "title": "TerminAttr Ingestgrpcurl Port"
     },
     "terminattr_smashexcludes": {

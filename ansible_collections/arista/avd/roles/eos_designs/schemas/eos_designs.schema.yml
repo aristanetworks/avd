@@ -47,8 +47,8 @@ keys:
       table: CloudVision Settings
     type: str
     default: /tmp/cv-onboarding-token
-    description: CVP token file is path to token file on switch and is only applicable
-      to CV as a Service
+    description: cvp_token_file is the path to the token file on the switch and is
+      only applicable to CV as a Service
   default_interfaces:
     type: list
     documentation_options:
@@ -1842,7 +1842,7 @@ keys:
     convert_types:
     - str
     default: 9910
-    description: Port number
+    description: Port number for Terminattr ingest GRPC
   terminattr_smashexcludes:
     documentation_options:
       filename: Management Settings
