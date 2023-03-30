@@ -21,7 +21,7 @@
 | MPLS_CORE | pe | SITE1-LER1 | 192.168.200.105/24 | 7280SR3 | Provisioned | - |
 | MPLS_CORE | pe | SITE1-LER2 | 192.168.200.106/24 | 7280SR3 | Provisioned | - |
 | MPLS_CORE | p | SITE1-LSR1 | 192.168.200.101/24 | 7280SR | Provisioned | - |
-| MPLS_CORE | p | SITE1-LSR2 | 192.168.200.102/24 |7280SR | Provisioned | - |
+| MPLS_CORE | p | SITE1-LSR2 | 192.168.200.102/24 | 7280SR | Provisioned | - |
 | MPLS_CORE | rr | SITE1-RR1 | 10.30.30.108/24 | 7280SR3 | Provisioned | - |
 | MPLS_CORE | pe | SITE2-LER1 | 192.168.200.107/24 | 7280SR3 | Provisioned | - |
 | MPLS_CORE | p | SITE2-LSR1 | 192.168.200.103/24 | 7280SR | Provisioned | - |
