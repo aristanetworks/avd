@@ -4,6 +4,9 @@
 type: dict
 keys:
   underlay_isis_instance_name:
+    documentation_options:
+      filename: Fabric Variables
+      table: ISIS Settings
     description: Additional underlay ISIS parameters
     type: str
     default: "EVPN_UNDERLAY"

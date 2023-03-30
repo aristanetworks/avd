@@ -1708,7 +1708,7 @@
     },
     "underlay_routing_protocol": {
       "type": "string",
-      "description": "- The following underlay routing protocols are supported:\n  - EBGP (default for l3ls-evpn)\n  - OSPF.\n  - ISIS.\n  - ISIS-SR*.\n  - ISIS-LDP*.\n  - ISIS-SR-LDP*.\n  - OSPF-LDP*.\n- The variables should be applied to all devices in the fabric.\n\n*Only supported with core_interfaces data model.\n",
+      "description": "- The following underlay routing protocols are supported:\n  - EBGP (default for l3ls-evpn)\n  - OSPF.\n  - ISIS.\n  - ISIS-SR*.\n  - ISIS-LDP*.\n  - ISIS-SR-LDP*.\n  - OSPF-LDP*.\n- The variables should be applied to all devices in the fabric.\n*Only supported with core_interfaces data model.\n",
       "enum": [
         "ebgp",
         "ospf",

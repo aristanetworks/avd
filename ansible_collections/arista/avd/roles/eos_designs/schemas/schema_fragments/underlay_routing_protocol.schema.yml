@@ -4,6 +4,9 @@
 type: dict
 keys:
   underlay_routing_protocol:
+    documentation_options:
+      filename: Fabric Variables
+      table: Routing Protocol Selection
     type: str
     description: |
       - The following underlay routing protocols are supported:
@@ -15,7 +18,6 @@ keys:
         - ISIS-SR-LDP*.
         - OSPF-LDP*.
       - The variables should be applied to all devices in the fabric.
-
       *Only supported with core_interfaces data model.
     valid_values:
       - "ebgp"
