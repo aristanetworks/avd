@@ -45,7 +45,7 @@ search:
     | [<samp>isis_area_id</samp>](## "isis_area_id") | String |  | 49.0001 |  | Required when "underlay_routing_protocol" == ISIS variants |
     | [<samp>isis_default_circuit_type</samp>](## "isis_default_circuit_type") | String |  | level-2 | Valid Values:<br>- level-1-2<br>- level-1<br>- level-2 | These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden on link profile or link level. |
     | [<samp>isis_default_is_type</samp>](## "isis_default_is_type") | String |  | level-2 | Valid Values:<br>- level-1-2<br>- level-1<br>- level-2 | Additional underlay ISIS parameters |
-    | [<samp>isis_default_metric</samp>](## "isis_default_metric") | Integer |  | 50 |  | These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden on link profile or link level. |
+    | [<samp>isis_default_metric</samp>](## "isis_default_metric") | Integer |  | 50 |  | These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden at link profile or link level. |
     | [<samp>isis_ti_lfa</samp>](## "isis_ti_lfa") | Dictionary |  |  |  |  |
 
 === "YAML"

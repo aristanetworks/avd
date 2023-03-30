@@ -319,7 +319,7 @@ keys:
     - str
     default: 50
     description: These fabric level parameters can be used with core_interfaces running
-      ISIS, and may be overridden on link profile or link level.
+      ISIS, and may be overridden at link profile or link level.
   isis_ti_lfa:
     documentation_options:
       filename: Fabric Variables
@@ -335,7 +335,7 @@ keys:
         - link
         - node
       local_convergence_delay:
-        description: Local convergence delay in miliseconds
+        description: Local convergence delay in milliseconds
         type: int
         convert_types:
         - str

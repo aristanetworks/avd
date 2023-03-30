@@ -229,7 +229,7 @@
     "isis_default_metric": {
       "type": "integer",
       "default": 50,
-      "description": "These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden on link profile or link level.",
+      "description": "These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden at link profile or link level.",
       "title": "ISIS Default Metric"
     },
     "isis_ti_lfa": {
@@ -249,7 +249,7 @@
           "title": "Protection"
         },
         "local_convergence_delay": {
-          "description": "Local convergence delay in miliseconds",
+          "description": "Local convergence delay in milliseconds",
           "type": "integer",
           "default": 10000,
           "title": "Local Convergence Delay"
