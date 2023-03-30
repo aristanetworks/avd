@@ -4,9 +4,11 @@
 type: dict
 keys:
   isis_default_circuit_type:
+    documentation_options:
+      filename: Fabric Variables
+      table: ISIS Settings
     type: str
     valid_values: ["level-1-2", "level-1", "level-2"]
     default: "level-2"
     description: |
-      Fabric vevel variables. These fabric level parameters can be used with core_interfaces running ISIS,
-      and may be overridden on link profile or link level.
+      These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden on link profile or link level.

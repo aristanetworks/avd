@@ -4,10 +4,12 @@
 type: dict
 keys:
   isis_default_metric:
+    documentation_options:
+      filename: Fabric Variables
+      table: ISIS Settings
     type: int
     convert_types:
     - str
     default: 50
     description: |
-      Fabric level variables. These fabric level parameters can be used with core_interfaces running ISIS,
-      and may be overridden on link profile or link level.
+      These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden on link profile or link level.

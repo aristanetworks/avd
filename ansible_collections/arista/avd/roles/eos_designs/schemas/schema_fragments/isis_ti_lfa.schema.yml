@@ -4,6 +4,9 @@
 type: dict
 keys:
   isis_ti_lfa:
+    documentation_options:
+      filename: Fabric Variables
+      table: ISIS Settings
     type: dict
     keys:
       enabled:
@@ -15,7 +18,7 @@ keys:
           - link
           - node
       local_convergence_delay:
-        description: Local convergence delay in mpls
+        description: Local convergence delay in miliseconds
         type: int
         convert_types:
           - str
