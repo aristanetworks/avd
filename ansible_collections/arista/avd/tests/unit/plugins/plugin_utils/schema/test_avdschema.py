@@ -165,18 +165,6 @@ class TestAvdSchema:
             avdschema.extend_schema(INVALID_SCHEMA)
 
     @pytest.mark.parametrize("TEST_PATH", TEST_DATA_PATHS)
-    def test_avd_schema_subschema_with_adhoc_schema(self, TEST_PATH):
-        try:
-            avdschema = AvdSchema()
-            subschema = avdschema.subschema(TEST_PATH, combined_schema)
-        except Exception as e:
-            assert False, f"subschema(TEST_PATH, combined_schema) raised an exception: {e}"
-        if len(TEST_PATH) == 0:
-            assert subschema == EXPECTED_SUBSCHEMAS["_empty"]
-        else:
-            assert subschema == EXPECTED_SUBSCHEMAS[".".join(TEST_PATH)]
-
-    @pytest.mark.parametrize("TEST_PATH", TEST_DATA_PATHS)
     def test_avd_schema_subschema_with_loaded_schema(self, TEST_PATH):
         try:
             avdschema = AvdSchema(combined_schema)
