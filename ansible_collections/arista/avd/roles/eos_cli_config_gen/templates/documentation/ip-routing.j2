@@ -21,7 +21,7 @@
 {%         set default_ip_routing = "True (ipv6 interfaces)" %}
 {%     endif %}
 | default | {{ default_ip_routing }} |
-{%     for vrf in vrfs | rejectattr("name", "arista.avd.defined", "default") | arista.avd.natural_sort('name') %}
+{%     for vrf in vrfs | arista.avd.default([]) | rejectattr("name", "arista.avd.defined", "default") | arista.avd.natural_sort('name') %}
 {%         set ip_routing = vrf.ip_routing | arista.avd.default("-") %}
 {%         if vrf.ip_routing_ipv6_interfaces | arista.avd.default(false) %}
 {%             set ip_routing = "True (ipv6 interfaces)" %}
