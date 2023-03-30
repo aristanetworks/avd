@@ -45,6 +45,17 @@ keys:
               Set to the same MAC address as available in "show version" on the device.
               "system_mac_address" can also be set directly as a hostvar.
               If both are set, the setting under "Fabric Topology" takes precedence.
+          serial_number:
+            documentation_options:
+              filename: Fabric Topology
+              table: Generic configuration management
+            type: str
+            description: |
+              Set to the Serial Number of the device
+              For  now only used for documentation purpose in the fabric documentation
+              and part of the structured_config
+              "serial_number" can also be set directly as a hostvar.
+              If both are set, the setting under "Fabric Topology" takes precedence.
           rack:
             documentation_options:
               filename: Fabric Topology

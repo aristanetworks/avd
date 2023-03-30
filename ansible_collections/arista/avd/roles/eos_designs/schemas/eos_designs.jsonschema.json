@@ -115,6 +115,11 @@
               "description": "System MAC Address in this following format: \"xx:xx:xx:xx:xx:xx\".\nSet to the same MAC address as available in \"show version\" on the device.\n\"system_mac_address\" can also be set directly as a hostvar.\nIf both are set, the setting under \"Fabric Topology\" takes precedence.\n",
               "title": "System MAC Address"
             },
+            "serial_number": {
+              "type": "string",
+              "description": "Set to the Serial Number of the device\nFor  now only used for documentation purpose in the fabric documentation\nand part of the structured_config\n\"serial_number\" can also be set directly as a hostvar.\nIf both are set, the setting under \"Fabric Topology\" takes precedence.\n",
+              "title": "Serial Number"
+            },
             "rack": {
               "description": "Rack that the switch is located in (only used in snmp_settings location).",
               "type": "string",
