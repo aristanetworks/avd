@@ -192,6 +192,69 @@
       "default": false,
       "title": "EVPN VLAN Aware Bundles"
     },
+    "isis_advertise_passive_only": {
+      "type": "boolean",
+      "default": false,
+      "title": "ISIS Advertise Passive Only"
+    },
+    "isis_area_id": {
+      "type": "string",
+      "default": "49.0001",
+      "title": "ISIS Area ID"
+    },
+    "isis_default_circuit_type": {
+      "type": "string",
+      "enum": [
+        "level-1-2",
+        "level-1",
+        "level-2"
+      ],
+      "default": "level-2",
+      "description": "These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden on link profile or link level.",
+      "title": "ISIS Default Circuit Type"
+    },
+    "isis_default_is_type": {
+      "type": "string",
+      "enum": [
+        "level-1-2",
+        "level-1",
+        "level-2"
+      ],
+      "default": "level-2",
+      "title": "ISIS Default IS Type"
+    },
+    "isis_default_metric": {
+      "type": "integer",
+      "default": 50,
+      "description": "These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden at link profile or link level.",
+      "title": "ISIS Default Metric"
+    },
+    "isis_ti_lfa": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false,
+          "title": "Enabled"
+        },
+        "protection": {
+          "type": "string",
+          "enum": [
+            "link",
+            "node"
+          ],
+          "title": "Protection"
+        },
+        "local_convergence_delay": {
+          "description": "Local convergence delay in milliseconds",
+          "type": "integer",
+          "default": 10000,
+          "title": "Local Convergence Delay"
+        }
+      },
+      "additionalProperties": false,
+      "title": "ISIS TI LFA"
+    },
     "node_type": {
       "type": "object",
       "properties": {

@@ -273,6 +273,73 @@ keys:
       '
     type: bool
     default: false
+  isis_advertise_passive_only:
+    documentation_options:
+      filename: Fabric Variables
+      table: ISIS Settings
+    type: bool
+    default: false
+  isis_area_id:
+    documentation_options:
+      filename: Fabric Variables
+      table: ISIS Settings
+    type: str
+    default: '49.0001'
+    convert_types:
+    - int
+    - float
+  isis_default_circuit_type:
+    documentation_options:
+      filename: Fabric Variables
+      table: ISIS Settings
+    type: str
+    valid_values:
+    - level-1-2
+    - level-1
+    - level-2
+    default: level-2
+    description: These fabric level parameters can be used with core_interfaces running
+      ISIS, and may be overridden on link profile or link level.
+  isis_default_is_type:
+    documentation_options:
+      filename: Fabric Variables
+      table: ISIS Settings
+    type: str
+    valid_values:
+    - level-1-2
+    - level-1
+    - level-2
+    default: level-2
+  isis_default_metric:
+    documentation_options:
+      filename: Fabric Variables
+      table: ISIS Settings
+    type: int
+    convert_types:
+    - str
+    default: 50
+    description: These fabric level parameters can be used with core_interfaces running
+      ISIS, and may be overridden at link profile or link level.
+  isis_ti_lfa:
+    documentation_options:
+      filename: Fabric Variables
+      table: ISIS Settings
+    type: dict
+    keys:
+      enabled:
+        type: bool
+        default: false
+      protection:
+        type: str
+        valid_values:
+        - link
+        - node
+      local_convergence_delay:
+        description: Local convergence delay in milliseconds
+        type: int
+        convert_types:
+        - str
+        default: 10000
   node_type:
     documentation_options:
       filename: Fabric Topology
