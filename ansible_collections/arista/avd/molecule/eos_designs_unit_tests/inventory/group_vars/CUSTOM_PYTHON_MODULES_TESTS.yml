@@ -28,10 +28,12 @@ node_type_keys:
     ip_addressing:
       # Override default ip addressing with a custom python module
       python_module: custom_ip_addressing
+      python_class_name: CustomAvdIpAddressing
 
     interface_descriptions:
       # Override default interface description with a custom python module
       python_module: custom_interface_descriptions
+      python_class_name: CustomAvdInterfaceDescriptions
 
 ip_offset_10: 10
 ip_offset_20: 20

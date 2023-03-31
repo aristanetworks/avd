@@ -1,10 +1,10 @@
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
-from ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions import AvdInterfaceDescriptions as BaseAvdInterfaceDescriptions
+from ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions import AvdInterfaceDescriptions
 
 
-class AvdInterfaceDescriptions(BaseAvdInterfaceDescriptions):
+class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
     @cached_property
     def _custom_description_prefix(self):
         return get(self._hostvars, "description_prefix", "")

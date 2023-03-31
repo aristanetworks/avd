@@ -1,9 +1,9 @@
 from functools import cached_property
 
-from ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing import AvdIpAddressing as BaseAvdIpAddressing
+from ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing import AvdIpAddressing
 
 
-class AvdIpAddressing(BaseAvdIpAddressing):
+class CustomAvdIpAddressing(AvdIpAddressing):
     pass
 
     @cached_property
