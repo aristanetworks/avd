@@ -15103,6 +15103,7 @@
     },
     "vrfs": {
       "type": "array",
+      "description": "These keys are ignored if the name of the vrf is 'default'\n",
       "items": {
         "type": "object",
         "properties": {
@@ -15122,6 +15123,10 @@
           "ipv6_routing": {
             "type": "boolean",
             "title": "IPv6 Routing"
+          },
+          "ip_routing_ipv6_interfaces": {
+            "type": "boolean",
+            "title": "IP Routing IPv6 Interfaces"
           },
           "tenant": {
             "type": "string",

@@ -478,8 +478,8 @@ ip virtual-router mac-address 00:1c:73:00:dc:00
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
-| MGMT | false |
-| TENANT_B_INTRA | true |
+| MGMT | False |
+| TENANT_B_INTRA | True |
 
 ### IP Routing Device Configuration
 

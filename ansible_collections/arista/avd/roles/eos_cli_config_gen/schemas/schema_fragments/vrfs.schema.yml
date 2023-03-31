@@ -6,6 +6,8 @@ keys:
   vrfs:
     type: list
     primary_key: name
+    description: |
+      These keys are ignored if the name of the vrf is 'default'
     convert_types:
       - dict
     items:
@@ -19,6 +21,8 @@ keys:
         ip_routing:
           type: bool
         ipv6_routing:
+          type: bool
+        ip_routing_ipv6_interfaces:
           type: bool
         tenant:
           type: str
