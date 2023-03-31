@@ -9,5 +9,7 @@ keys:
       table: OSPF Settings
     description: Underlay OSFP Required when < underlay_routing_protocol > == OSPF variants
     type: str
+    convert_types:
+      - int
     format: ipv4
     default: "0.0.0.0"
