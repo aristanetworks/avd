@@ -2151,8 +2151,6 @@ keys:
     documentation_options:
       filename: Fabric Variables
       table: OSPF Settings
-    description: Underlay OSFP Required when < underlay_routing_protocol > == OSPF
-      variants
     type: str
     convert_types:
     - int
@@ -2162,8 +2160,6 @@ keys:
     documentation_options:
       filename: Fabric Variables
       table: OSPF Settings
-    description: Underlay OSFP Required when < underlay_routing_protocol > == OSPF
-      variants
     type: bool
     default: false
   underlay_ospf_max_lsa:
@@ -2178,8 +2174,6 @@ keys:
     documentation_options:
       filename: Fabric Variables
       table: OSPF Settings
-    description: Underlay OSFP Required when < underlay_routing_protocol > == OSPF
-      variants
     type: int
     convert_types:
     - str

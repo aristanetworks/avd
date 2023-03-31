@@ -7,6 +7,5 @@ keys:
     documentation_options:
       filename: Fabric Variables
       table: OSPF Settings
-    description: Underlay OSFP Required when < underlay_routing_protocol > == OSPF variants
     type: bool
     default: false

@@ -1676,14 +1676,12 @@
       "title": "Underlay Multicast"
     },
     "underlay_ospf_area": {
-      "description": "Underlay OSFP Required when < underlay_routing_protocol > == OSPF variants",
       "type": "string",
       "format": "ipv4",
       "default": "0.0.0.0",
       "title": "Underlay OSPF Area"
     },
     "underlay_ospf_bfd_enable": {
-      "description": "Underlay OSFP Required when < underlay_routing_protocol > == OSPF variants",
       "type": "boolean",
       "default": false,
       "title": "Underlay OSPF BFD Enable"
@@ -1694,7 +1692,6 @@
       "title": "Underlay OSPF Max LSA"
     },
     "underlay_ospf_process_id": {
-      "description": "Underlay OSFP Required when < underlay_routing_protocol > == OSPF variants",
       "type": "integer",
       "default": 100,
       "title": "Underlay OSPF Process ID"
