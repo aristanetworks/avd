@@ -7,17 +7,9 @@
 
 | VRF | Routing Enabled |
 | --- | --------------- |
+{# TODO - this currently does not handle when vrf default enables ip routing #}
 {%     set default_ip_routing = ip_routing | arista.avd.default(false) %}
-{%     set default_ip_routing_ipv6_interfaces = ip_routing_ipv6_interfaces | arista.avd.default(false) %}
-{# Handle the case where VRF default exists #}
-{%     set vrf_default = vrfs | arista.avd.default([]) | selectattr("name", "arista.avd.defined", "default") | first %}
-{%     if vrf_default is arista.avd.defined %}
-{%         set default_ip_routing = (vrf_default.ip_routing or default_ip_routing) %}
-{%         if default_ip_routing_ipv6_interfaces or (vrf_default.ip_routing_ipv6_interfaces | arista.avd.default(false)) %}
-{%             set default_ip_routing = "True (ipv6 interfaces)" %}
-{%         endif %}
-{# No VRF "default" defined - checking if default_ip_routing_ipv6_interfaces is True #}
-{%     elif default_ip_routing_ipv6_interfaces is arista.avd.defined(true) %}
+{%     if ip_routing_ipv6_interfaces | arista.avd.default(false) %}
 {%         set default_ip_routing = "True (ipv6 interfaces)" %}
 {%     endif %}
 | default | {{ default_ip_routing }} |
