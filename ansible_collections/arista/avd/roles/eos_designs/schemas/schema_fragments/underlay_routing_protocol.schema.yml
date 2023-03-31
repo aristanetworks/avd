@@ -28,5 +28,3 @@ keys:
       - "isis-sr-ldp"
       - "ospf-ldp"
       - "BGP" # Only supported for historic reasons - The code will change to the default
-    case_sensitive: false
-    default: "ebgp"

@@ -2213,8 +2213,6 @@ keys:
     - isis-sr-ldp
     - ospf-ldp
     - BGP
-    case_sensitive: false
-    default: ebgp
   uplink_ptp:
     documentation_options:
       filename: Fabric Variables

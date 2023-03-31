@@ -1719,7 +1719,6 @@
         "ospf-ldp",
         "BGP"
       ],
-      "default": "ebgp",
       "title": "Underlay Routing Protocol"
     },
     "uplink_ptp": {
