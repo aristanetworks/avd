@@ -35,13 +35,6 @@
   check_mode: false
   run_once: true
 
-- name: Set eos_designs facts per device
-  tags: [build, provision, facts]
-  ansible.builtin.set_fact:
-    switch: "{{ avd_switch_facts[inventory_hostname].switch }}"
-  delegate_to: localhost
-  changed_when: false
-
 - name: Generate YAML file with hostvars (only for debugging)
   tags: [debug, never]
   ansible.builtin.template:
@@ -98,7 +91,9 @@
 
 - name: Remove avd_switch_facts
   tags: [build, provision, facts, remove_avd_switch_facts]
-  ansible.builtin.set_fact:
+  arista.avd.set_vars:
     avd_switch_facts: null
+    avd_overlay_peers: null
+    avd_topology_peers: null
   run_once: true
   check_mode: false

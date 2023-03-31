@@ -18,7 +18,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvd
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_templar, load_python_class
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_templar, load_python_class
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import template as templater
 
 DEFAULT_PYTHON_CLASS_NAME = "AvdStructuredConfig"
@@ -59,7 +59,6 @@ class ActionModule(ActionBase):
             self.dest = self._task.args.get("dest", False)
             template_output = self._task.args.get("template_output", False)
             debug = self._task.args.get("debug", False)
-            remove_avd_switch_facts = self._task.args.get("remove_avd_switch_facts", False)
             conversion_mode = self._task.args.get("conversion_mode")
             validation_mode = self._task.args.get("validation_mode")
             output_schema = self._task.args.get("output_schema")
@@ -68,18 +67,21 @@ class ActionModule(ActionBase):
         else:
             raise AnsibleActionFail("The argument 'templates' must be set")
 
-        # Read ansible variables and perform templating to support inline jinja
+        hostname = task_vars["inventory_hostname"]
+
+        task_vars["switch"] = get(task_vars, f"avd_switch_facts..{hostname}..switch", separator="..", default={})
+
+        # Read ansible variables and perform templating to support inline jinja2
         for var in task_vars:
-            if str(var).startswith(("ansible", "molecule", "hostvars", "vars")):
+            if str(var).startswith(("ansible", "molecule", "hostvars", "vars", "avd_switch_facts")):
                 continue
             if self._templar.is_template(task_vars[var]):
-                # Var contains a jinja template.
+                # Var contains a jinja2 template.
                 try:
                     task_vars[var] = self._templar.template(task_vars[var], fail_on_undefined=False)
                 except Exception as e:
                     raise AnsibleActionFail(f"Exception during templating of task_var '{var}'") from e
 
-        hostname = task_vars["inventory_hostname"]
         if schema or schema_id:
             # Load schema tools and perform conversion and validation
             avdschematools = AvdSchemaTools(
@@ -256,8 +258,7 @@ class ActionModule(ActionBase):
         else:
             result["ansible_facts"] = output
 
-        if remove_avd_switch_facts:
-            result["ansible_facts"]["avd_switch_facts"] = None
+        result["ansible_facts"]["switch"] = task_vars.get("switch")
 
         if cprofile_file:
             profiler.disable()
