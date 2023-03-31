@@ -1953,8 +1953,8 @@ keys:
     type: int
     convert_types:
     - str
-    min: 0
-    max: 9216
+    min: 68
+    max: 65535
     default: 9000
   p2p_uplinks_qos_profile:
     documentation_options:
@@ -2154,6 +2154,8 @@ keys:
     description: Underlay OSFP Required when < underlay_routing_protocol > == OSPF
       variants
     type: str
+    convert_types:
+    - int
     format: ipv4
     default: 0.0.0.0
   underlay_ospf_bfd_enable:
@@ -2168,8 +2170,6 @@ keys:
     documentation_options:
       filename: Fabric Variables
       table: OSPF Settings
-    description: Underlay OSFP Required when < underlay_routing_protocol > == OSPF
-      variants
     type: int
     convert_types:
     - str

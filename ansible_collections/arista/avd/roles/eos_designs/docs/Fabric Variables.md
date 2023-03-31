@@ -113,7 +113,7 @@ search:
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>underlay_ospf_area</samp>](## "underlay_ospf_area") | String |  | 0.0.0.0 | Format: ipv4 | Underlay OSFP Required when < underlay_routing_protocol > == OSPF variants |
     | [<samp>underlay_ospf_bfd_enable</samp>](## "underlay_ospf_bfd_enable") | Boolean |  | False |  | Underlay OSFP Required when < underlay_routing_protocol > == OSPF variants |
-    | [<samp>underlay_ospf_max_lsa</samp>](## "underlay_ospf_max_lsa") | Integer |  | 12000 |  | Underlay OSFP Required when < underlay_routing_protocol > == OSPF variants |
+    | [<samp>underlay_ospf_max_lsa</samp>](## "underlay_ospf_max_lsa") | Integer |  | 12000 |  |  |
     | [<samp>underlay_ospf_process_id</samp>](## "underlay_ospf_process_id") | Integer |  | 100 |  | Underlay OSFP Required when < underlay_routing_protocol > == OSPF variants |
 
 === "YAML"
@@ -145,7 +145,7 @@ search:
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>p2p_uplinks_mtu</samp>](## "p2p_uplinks_mtu") | Integer |  | 9000 | Min: 0<br>Max: 9216 | Point to Point Links MTU |
+    | [<samp>p2p_uplinks_mtu</samp>](## "p2p_uplinks_mtu") | Integer |  | 9000 | Min: 68<br>Max: 65535 | Point to Point Links MTU |
     | [<samp>p2p_uplinks_qos_profile</samp>](## "p2p_uplinks_qos_profile") | String |  |  |  | QOS Profile assigned on all infrastructure links |
     | [<samp>uplink_ptp</samp>](## "uplink_ptp") | Dictionary |  |  |  | Enable PTP on all infrastructure links |
 

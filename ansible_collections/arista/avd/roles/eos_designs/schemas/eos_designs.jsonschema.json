@@ -1479,8 +1479,8 @@
     "p2p_uplinks_mtu": {
       "description": "Point to Point Links MTU",
       "type": "integer",
-      "minimum": 0,
-      "maximum": 9216,
+      "minimum": 68,
+      "maximum": 65535,
       "default": 9000,
       "title": "P2P Uplinks MTU"
     },
@@ -1689,7 +1689,6 @@
       "title": "Underlay OSPF BFD Enable"
     },
     "underlay_ospf_max_lsa": {
-      "description": "Underlay OSFP Required when < underlay_routing_protocol > == OSPF variants",
       "type": "integer",
       "default": 12000,
       "title": "Underlay OSPF Max LSA"
