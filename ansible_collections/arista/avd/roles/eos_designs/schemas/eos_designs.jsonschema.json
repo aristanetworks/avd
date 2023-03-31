@@ -1476,6 +1476,19 @@
       },
       "title": "Node Type Keys"
     },
+    "p2p_uplinks_mtu": {
+      "description": "Point to Point Links MTU",
+      "type": "integer",
+      "minimum": 68,
+      "maximum": 65535,
+      "default": 9000,
+      "title": "P2P Uplinks MTU"
+    },
+    "p2p_uplinks_qos_profile": {
+      "description": "QOS Profile assigned on all infrastructure links",
+      "type": "string",
+      "title": "P2P Uplinks QOS Profile"
+    },
     "platform_settings": {
       "type": "array",
       "items": {
@@ -1637,6 +1650,84 @@
       "type": "string",
       "description": "The `type:` variable needs to be defined for each device in the fabric.\nThis is leveraged to load the appropriate template to generate the configuration.",
       "title": "Type"
+    },
+    "underlay_filter_peer_as": {
+      "type": "boolean",
+      "description": "Configure route-map on eBGP sessions towards underlay peers, where prefixes with the peer's ASN in the AS Path are filtered away.\nThis is very useful in very large scale networks not using EVPN overlays, where convergence will be quicker by not having to return\nall updates received from Spine-1 to Spine-2 just for Spine-2 to throw them away because of AS Path loop detection.\nNote this key is ignored when EVPN is configured.\n",
+      "default": false,
+      "title": "Underlay Filter Peer As"
+    },
+    "underlay_ipv6": {
+      "description": "This feature allows IPv6 underlay routing protocol with RFC5549 addresses to be used along with IPv4 advertisements as VXLAN tunnel endpoints.\nRequires \"underlay_rfc5549: true\" and \"loopback_ipv6_pool\" under the \"Fabric Topology\"\n",
+      "type": "boolean",
+      "default": false,
+      "title": "Underlay IPv6"
+    },
+    "underlay_isis_instance_name": {
+      "description": "Default -> \"EVPN_UNDERLAY\" for l3ls, \"CORE\" for mpls",
+      "type": "string",
+      "title": "Underlay ISIS Instance Name"
+    },
+    "underlay_multicast": {
+      "type": "boolean",
+      "description": "Enable Multicast in the underlay on all p2p uplink interfaces and mlag l3 peer interface.\nSpecifically PIM Sparse-Mode will be configured on all routed underlay interfaces.\nNo other configuration is added, so the underlay will only support Source-Specific Multicast (SSM)\nThe configuration is intended to be used as multicast underlay for EVPN OISM overlay\n",
+      "default": false,
+      "title": "Underlay Multicast"
+    },
+    "underlay_ospf_area": {
+      "type": "string",
+      "format": "ipv4",
+      "default": "0.0.0.0",
+      "title": "Underlay OSPF Area"
+    },
+    "underlay_ospf_bfd_enable": {
+      "type": "boolean",
+      "default": false,
+      "title": "Underlay OSPF BFD Enable"
+    },
+    "underlay_ospf_max_lsa": {
+      "type": "integer",
+      "default": 12000,
+      "title": "Underlay OSPF Max LSA"
+    },
+    "underlay_ospf_process_id": {
+      "type": "integer",
+      "default": 100,
+      "title": "Underlay OSPF Process ID"
+    },
+    "underlay_rfc5549": {
+      "description": "Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered\nRequires \"underlay_routing_protocol: ebgp\"\n",
+      "type": "boolean",
+      "default": false,
+      "title": "Underlay Rfc5549"
+    },
+    "underlay_routing_protocol": {
+      "type": "string",
+      "description": "- The following underlay routing protocols are supported:\n  - EBGP (default for l3ls-evpn)\n  - OSPF.\n  - ISIS.\n  - ISIS-SR*.\n  - ISIS-LDP*.\n  - ISIS-SR-LDP*.\n  - OSPF-LDP*.\n- The variables should be applied to all devices in the fabric.\n*Only supported with core_interfaces data model.\n",
+      "enum": [
+        "ebgp",
+        "ospf",
+        "isis",
+        "isis-sr",
+        "isis-ldp",
+        "isis-sr-ldp",
+        "ospf-ldp",
+        "BGP"
+      ],
+      "title": "Underlay Routing Protocol"
+    },
+    "uplink_ptp": {
+      "description": "Enable PTP on all infrastructure links",
+      "type": "object",
+      "properties": {
+        "enable": {
+          "type": "boolean",
+          "default": false,
+          "title": "Enable"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Uplink PTP"
     }
   },
   "additionalProperties": true

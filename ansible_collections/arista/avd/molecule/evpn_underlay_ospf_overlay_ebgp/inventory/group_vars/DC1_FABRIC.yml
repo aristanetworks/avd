@@ -19,7 +19,7 @@ default_node_types:
     node_type: l2leaf
 
 # OSPF Parameters when underlay_routing_protocol=OSPF
-underlay_routing_protocol: OSPF
+underlay_routing_protocol: ospf
 underlay_ospf_process_id: 101
 underlay_ospf_area: 0.0.0.0
 underlay_ospf_max_lsa: 12000

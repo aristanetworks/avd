@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  p2p_uplinks_mtu:
+    documentation_options:
+      filename: Fabric Variables
+      table: Uplinks Settings
+    description: Point to Point Links MTU
+    type: int
+    convert_types:
+      - str
+    min: 68
+    max: 65535
+    default: 9000
