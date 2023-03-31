@@ -84,6 +84,16 @@ class AvdStructuredConfig(AvdFacts):
         serial_number variable set based on switch.serial_number fact
         """
         return get(self._hostvars, "switch.serial_number")
+    def diagram_groups(self) -> list:
+        diagram_groups = []
+        if (fabric_name := get(self._hostvars, "fabric_name")) is not None:
+            diagram_groups.append({"fabric_name": fabric_name})
+        if (dc_name := get(self._hostvars, "dc_name")) is not None:
+            diagram_groups.append({"dc_name": dc_name})
+        if (pod_name := get(self._hostvars, "pod_name")) is not None:
+            diagram_groups.append({"pod_name": pod_name})
+
+        return diagram_groups
 
     @cached_property
     def router_bgp(self) -> dict | None:

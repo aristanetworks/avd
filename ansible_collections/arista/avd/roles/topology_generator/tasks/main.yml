@@ -1,0 +1,20 @@
+---
+
+- name: topology
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Generate topology diagram from structure config in svg format
+      tags: [always]
+      arista.avd.topology_generator:
+        structured_config: "./tests/structured_configs_l2ls_fabric"
+        destination: "./example.svg"
+      delegate_to: localhost
+
+#for molecule
+# - name: topology
+#   tags: [topology_generator]
+#   run_once: true
+#   topology_generator:
+#     structured_config: "{{ playbook_dir }}/intended/structured_configs"
+#   delegate_to: localhost

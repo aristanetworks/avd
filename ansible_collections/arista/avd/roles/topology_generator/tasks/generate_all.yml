@@ -1,0 +1,23 @@
+---
+- name: topology
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Find test sets
+      find:
+        paths: ./tests
+        file_type: directory
+        recurse: No
+      register: folders
+
+    - name: Generate topology diagram from structure config in svg format
+      tags: [always]
+      arista.avd.topology_generator:
+        # structured_config: "./tests/structured_configs_l2ls_fabric"
+        structured_config: "{{ item.path }}"
+        # structured_config: "./tests/structured_configs_l3ls"
+        destination: "./outputs/{{ item.path.split('/')[1] }}.svg"
+      delegate_to: localhost
+      loop: "{{ folders.files|flatten(levels=1) }}"
+
+
