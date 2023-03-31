@@ -18,7 +18,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvd
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_templar, load_python_class
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_templar, load_python_class
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import template as templater
 
 DEFAULT_PYTHON_CLASS_NAME = "AvdStructuredConfig"
@@ -69,7 +69,7 @@ class ActionModule(ActionBase):
 
         hostname = task_vars["inventory_hostname"]
 
-        task_vars["switch"] = task_vars["avd_switch_facts"][hostname]["switch"]
+        task_vars["switch"] = get(task_vars, "avd_switch_facts/hostname/switch", separator="/", default={})
 
         # Read ansible variables and perform templating to support inline jinja2
         for var in task_vars:
@@ -258,7 +258,7 @@ class ActionModule(ActionBase):
         else:
             result["ansible_facts"] = output
 
-        result["ansible_facts"]["switch"] = task_vars["switch"]
+        result["ansible_facts"]["switch"] = task_vars.get("switch")
 
         if cprofile_file:
             profiler.disable()

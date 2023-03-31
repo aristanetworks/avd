@@ -22,8 +22,8 @@ short_description: Set vars as ansible_facts.
 description:
   - Set vars as ansible_facts.
   - Ansible will copy these into vars in the global namespace as well.
-  - Arguments are treated as a dict so all arguments will be set as vars.
-options:
+  - Arguments are treated as one dict so all arguments will be set as vars.
+options: {}
 """
 
 EXAMPLES = r"""
