@@ -38,6 +38,7 @@ spine:
       evpn_role: none
       mgmt_ip: 192.168.1.6/24
       uplink_switch_interfaces: ["Ethernet2", "Ethernet2"]
+      serial_number: "DEADBEEFC0FFEE"
 
 # In DC1 we define all variables on specific node / node_group
 l3leaf:

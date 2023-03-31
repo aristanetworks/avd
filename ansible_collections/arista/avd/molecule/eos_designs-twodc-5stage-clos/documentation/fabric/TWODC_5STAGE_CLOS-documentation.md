@@ -19,33 +19,33 @@
 
 ## Fabric Switches and Management IP
 
-| POD | Type | Node | Management IP | Platform | Provisioned in CloudVision |
-| --- | ---- | ---- | ------------- | -------- | -------------------------- |
-| DC1_POD1 | l2leaf | DC1-POD1-L2LEAF1A | - | vEOS-LAB | Provisioned |
-| DC1_POD1 | l2leaf | DC1-POD1-L2LEAF2A | - | vEOS-LAB | Provisioned |
-| DC1_POD1 | l2leaf | DC1-POD1-L2LEAF2B | 192.168.1.12/24 | vEOS-LAB | Provisioned |
-| DC1_POD1 | l3leaf | DC1-POD1-LEAF1A | - | vEOS-LAB | Provisioned |
-| DC1_POD1 | l3leaf | DC1-POD1-LEAF2B | 192.168.1.9/16 | vEOS-LAB | Provisioned |
-| DC1_POD1 | spine | DC1-POD1-SPINE1 | - | vEOS-LAB | Provisioned |
-| DC1_POD1 | spine | DC1-POD1-SPINE2 | 192.168.1.6/24 | vEOS-LAB | Provisioned |
-| DC1_POD2 | l3leaf | DC1-POD2-LEAF1A | 192.168.1.15/24 | vEOS-LAB | Provisioned |
-| DC1_POD2 | spine | DC1-POD2-SPINE1 | 192.168.1.13/24 | vEOS-LAB | Provisioned |
-| DC1_POD2 | spine | DC1-POD2-SPINE2 | 192.168.1.14/24 | vEOS-LAB | Provisioned |
-| DC1 | overlay-controller | DC1-RS1 | - | vEOS-LAB | Provisioned |
-| DC1 | overlay-controller | DC1-RS2 | 192.168.1.4/24 | vEOS-LAB | Provisioned |
-| DC1 | super-spine | DC1-SUPER-SPINE1 | - | vEOS-LAB | Provisioned |
-| DC1 | super-spine | DC1-SUPER-SPINE2 | 192.168.1.2/24 | vEOS-LAB | Provisioned |
-| DC1_POD1 | l3leaf | DC1.POD1.LEAF2A | - | vEOS-LAB | Provisioned |
-| DC2_POD1 | l2leaf | DC2-POD1-L2LEAF1A | 192.168.1.23/24 | vEOS-LAB | Provisioned |
-| DC2_POD1 | l2leaf | DC2-POD1-L2LEAF2A | 192.168.1.25/24 | vEOS-LAB | Provisioned |
-| DC2_POD1 | l3leaf | DC2-POD1-LEAF1A | 192.168.1.22/24 | vEOS-LAB | Provisioned |
-| DC2_POD1 | l3leaf | DC2-POD1-LEAF2A | 192.168.1.24/24 | vEOS-LAB | Provisioned |
-| DC2_POD1 | spine | DC2-POD1-SPINE1 | 192.168.1.20/24 | vEOS-LAB | Provisioned |
-| DC2_POD1 | spine | DC2-POD1-SPINE2 | 192.168.1.21/24 | vEOS-LAB | Provisioned |
-| DC2 | overlay-controller | DC2-RS1 | 192.168.1.18/24 | vEOS-LAB | Provisioned |
-| DC2 | overlay-controller | DC2-RS2 | 192.168.1.19/24 | vEOS-LAB | Provisioned |
-| DC2 | super-spine | DC2-SUPER-SPINE1 | 192.168.1.16/24 | vEOS-LAB | Provisioned |
-| DC2 | super-spine | DC2-SUPER-SPINE2 | 192.168.1.17/24 | vEOS-LAB | Provisioned |
+| POD | Type | Node | Management IP | Platform | Provisioned in CloudVision | Serial Number |
+| --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
+| DC1_POD1 | l2leaf | DC1-POD1-L2LEAF1A | - | vEOS-LAB | Provisioned | - |
+| DC1_POD1 | l2leaf | DC1-POD1-L2LEAF2A | - | vEOS-LAB | Provisioned | - |
+| DC1_POD1 | l2leaf | DC1-POD1-L2LEAF2B | 192.168.1.12/24 | vEOS-LAB | Provisioned | - |
+| DC1_POD1 | l3leaf | DC1-POD1-LEAF1A | - | vEOS-LAB | Provisioned | - |
+| DC1_POD1 | l3leaf | DC1-POD1-LEAF2B | 192.168.1.9/16 | vEOS-LAB | Provisioned | - |
+| DC1_POD1 | spine | DC1-POD1-SPINE1 | - | vEOS-LAB | Provisioned | - |
+| DC1_POD1 | spine | DC1-POD1-SPINE2 | 192.168.1.6/24 | vEOS-LAB | Provisioned | DEADBEEFC0FFEE |
+| DC1_POD2 | l3leaf | DC1-POD2-LEAF1A | 192.168.1.15/24 | vEOS-LAB | Provisioned | - |
+| DC1_POD2 | spine | DC1-POD2-SPINE1 | 192.168.1.13/24 | vEOS-LAB | Provisioned | - |
+| DC1_POD2 | spine | DC1-POD2-SPINE2 | 192.168.1.14/24 | vEOS-LAB | Provisioned | - |
+| DC1 | overlay-controller | DC1-RS1 | - | vEOS-LAB | Provisioned | - |
+| DC1 | overlay-controller | DC1-RS2 | 192.168.1.4/24 | vEOS-LAB | Provisioned | - |
+| DC1 | super-spine | DC1-SUPER-SPINE1 | - | vEOS-LAB | Provisioned | - |
+| DC1 | super-spine | DC1-SUPER-SPINE2 | 192.168.1.2/24 | vEOS-LAB | Provisioned | - |
+| DC1_POD1 | l3leaf | DC1.POD1.LEAF2A | - | vEOS-LAB | Provisioned | - |
+| DC2_POD1 | l2leaf | DC2-POD1-L2LEAF1A | 192.168.1.23/24 | vEOS-LAB | Provisioned | - |
+| DC2_POD1 | l2leaf | DC2-POD1-L2LEAF2A | 192.168.1.25/24 | vEOS-LAB | Provisioned | - |
+| DC2_POD1 | l3leaf | DC2-POD1-LEAF1A | 192.168.1.22/24 | vEOS-LAB | Provisioned | - |
+| DC2_POD1 | l3leaf | DC2-POD1-LEAF2A | 192.168.1.24/24 | vEOS-LAB | Provisioned | - |
+| DC2_POD1 | spine | DC2-POD1-SPINE1 | 192.168.1.20/24 | vEOS-LAB | Provisioned | - |
+| DC2_POD1 | spine | DC2-POD1-SPINE2 | 192.168.1.21/24 | vEOS-LAB | Provisioned | - |
+| DC2 | overlay-controller | DC2-RS1 | 192.168.1.18/24 | vEOS-LAB | Provisioned | - |
+| DC2 | overlay-controller | DC2-RS2 | 192.168.1.19/24 | vEOS-LAB | Provisioned | - |
+| DC2 | super-spine | DC2-SUPER-SPINE1 | 192.168.1.16/24 | vEOS-LAB | Provisioned | - |
+| DC2 | super-spine | DC2-SUPER-SPINE2 | 192.168.1.17/24 | vEOS-LAB | Provisioned | - |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
