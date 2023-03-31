@@ -69,7 +69,7 @@ class ActionModule(ActionBase):
 
         hostname = task_vars["inventory_hostname"]
 
-        task_vars["switch"] = get(task_vars, "avd_switch_facts/hostname/switch", separator="/", default={})
+        task_vars["switch"] = get(task_vars, f"avd_switch_facts..{hostname}..switch", separator="..", default={})
 
         # Read ansible variables and perform templating to support inline jinja2
         for var in task_vars:
