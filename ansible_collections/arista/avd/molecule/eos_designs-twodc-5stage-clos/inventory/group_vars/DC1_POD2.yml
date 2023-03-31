@@ -43,7 +43,7 @@ l3leaf:
     uplink_ipv4_pool: 172.17.120.0/24
     uplink_ptp:
       enable: True
-    mac_security:
+    uplink_macsec:
       profile: MACSEC_PROFILE
     bgp_defaults:
       - "no bgp default ipv4-unicast"

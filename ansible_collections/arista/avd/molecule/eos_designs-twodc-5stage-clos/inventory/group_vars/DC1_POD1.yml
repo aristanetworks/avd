@@ -38,6 +38,7 @@ spine:
       evpn_role: none
       mgmt_ip: 192.168.1.6/24
       uplink_switch_interfaces: ["Ethernet2", "Ethernet2"]
+      serial_number: "DEADBEEFC0FFEE"
 
 # In DC1 we define all variables on specific node / node_group
 l3leaf:
@@ -50,7 +51,7 @@ l3leaf:
     uplink_ipv4_pool: 172.17.110.0/24
     uplink_ptp:
       enable: True
-    mac_security:
+    uplink_macsec:
       profile: MACSEC_PROFILE
     bgp_defaults:
       - "no bgp default ipv4-unicast"

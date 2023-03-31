@@ -351,15 +351,18 @@ class EosDesignsFacts(AvdFacts):
         return get(self._switch_data, "node_group.nodes", default=[])
 
     @cached_property
-    def group(self):
+    def group(self) -> str:
         """
         switch.group set to "node_group" name or None
         """
         return get(self._switch_data, "group")
 
     @cached_property
-    def id(self):
-        return get(self._switch_data_combined, "id", required=True)
+    def id(self) -> int | None:
+        """
+        id is optional.
+        """
+        return get(self._switch_data_combined, "id")
 
     @cached_property
     def mgmt_ip(self):
@@ -393,6 +396,9 @@ class EosDesignsFacts(AvdFacts):
 
         if self.uplink_switches is None:
             return []
+
+        if self.id is None:
+            raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}'")
 
         uplink_switch_interfaces = []
         uplink_switch_counter = {}
@@ -467,8 +473,11 @@ class EosDesignsFacts(AvdFacts):
         if ptp["enabled"] is True:
             auto_clock_identity = get(self._switch_data_combined, "ptp.auto_clock_identity", default=True)
             priority1 = get(self._switch_data_combined, "ptp.priority1", default=self.default_ptp_priority1)
-            default_priority2 = self.id % 256
-            priority2 = get(self._switch_data_combined, "ptp.priority2", default=default_priority2)
+            priority2 = get(self._switch_data_combined, "ptp.priority2")
+            if priority2 is None:
+                if self.id is None:
+                    raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' to set ptp priority2")
+                priority2 = self.id % 256
             if auto_clock_identity is True:
                 clock_identity_prefix = get(self._switch_data_combined, "ptp.clock_identity_prefix", default="00:1C:73")
                 default_clock_identity = f"{clock_identity_prefix}:{priority1:02x}:00:{priority2:02x}"
@@ -602,10 +611,19 @@ class EosDesignsFacts(AvdFacts):
     def system_mac_address(self):
         """
         system_mac_address is inherited from
-        Host variable var system_mac_address ->
-          Fabric Topology data model system_mac_address
+        Fabric Topology data model system_mac_address ->
+            Host variable var system_mac_address ->
         """
         return default(get(self._switch_data_combined, "system_mac_address"), get(self._hostvars, "system_mac_address"))
+
+    @cached_property
+    def serial_number(self):
+        """
+        serial_number is inherited from
+        Fabric Topology data model serial_number ->
+            Host variable var serial_number
+        """
+        return default(get(self._switch_data_combined, "serial_number"), get(self._hostvars, "serial_number"))
 
     @cached_property
     def underlay_routing_protocol(self):
@@ -648,6 +666,8 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def lacp_port_id(self):
         if get(self._switch_data_combined, "lacp_port_id_range.enabled") is True:
+            if self.id is None:
+                raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' to set LACP swicth ids")
             node_group_length = max(len(self._switch_data_node_group_nodes), 1)
             lacp_port_id = {}
             switch_id = self.id
@@ -720,6 +740,50 @@ class EosDesignsFacts(AvdFacts):
         return None
 
     @cached_property
+    def _port_profiles(self):
+        port_profiles = get(self._hostvars, "port_profiles", default=[])
+        # Support legacy data model by converting nested dict to list of dict
+        return convert_dicts(port_profiles, "profile")
+
+    def _get_adapter_settings(self, adapter_or_network_port: dict) -> dict:
+        """
+        Applies port-profiles to the given adapter_or_network_port and returns the combined result.
+        adapter_or_network_port can either be an adapter of a connected endpoint or one item under network_ports.
+        """
+        profile_name = adapter_or_network_port.get("profile")
+        adapter_profile = get_item(self._port_profiles, "profile", profile_name, default={})
+        parent_profile_name = adapter_profile.get("parent_profile")
+        parent_profile = get_item(self._port_profiles, "profile", parent_profile_name, default={})
+        return combine(parent_profile, adapter_profile, adapter_or_network_port, recursive=True, list_merge="replace")
+
+    def _parse_adapter_settings(self, adapter_settings: dict) -> tuple[set, set]:
+        """
+        Parse the given adapter_settings and return relevant vlans and trunk_groups
+        """
+        vlans = set()
+        trunk_groups = set(adapter_settings.get("trunk_groups", []))
+        if "vlans" in adapter_settings and adapter_settings["vlans"] not in ["all", "", None]:
+            vlans.update(map(int, range_expand(str(adapter_settings["vlans"]))))
+        elif "trunk" in adapter_settings.get("mode", "") and not trunk_groups:
+            # No vlans or trunk_groups defined, but this is a trunk, so default is all vlans allowed
+            # No need to check further, since the list is now containing all vlans.
+            return set(range(1, 4094)), trunk_groups
+        else:
+            # No vlans or mode defined so this is an access port with only vlan 1 allowed
+            vlans.add(1)
+
+        if "native_vlan" in adapter_settings:
+            vlans.add(int(adapter_settings["native_vlan"]))
+
+        for subinterface in get(adapter_settings, "port_channel.subinterfaces", default=[]):
+            if "vlan_id" in subinterface:
+                vlans.add(int(subinterface["vlan_id"]))
+            elif "number" in subinterface:
+                vlans.add(int(subinterface["number"]))
+
+        return vlans, trunk_groups
+
+    @cached_property
     def _local_endpoint_vlans_and_trunk_groups(self) -> tuple[set, set]:
         """
         Return list of vlans and list of trunk groups used by connected_endpoints on this switch
@@ -729,10 +793,6 @@ class EosDesignsFacts(AvdFacts):
 
         vlans = set()
         trunk_groups = set()
-
-        port_profiles = get(self._hostvars, "port_profiles", default=[])
-        # Support legacy data model by converting nested dict to list of dict
-        port_profiles = convert_dicts(port_profiles, "profile")
 
         connected_endpoints_keys = get(self._hostvars, "connected_endpoints_keys", default=[])
         # Support legacy data model by converting nested dict to list of dict
@@ -748,43 +808,19 @@ class EosDesignsFacts(AvdFacts):
             connected_endpoints = convert_dicts(connected_endpoints, "name")
             for connected_endpoint in connected_endpoints:
                 for adapter in connected_endpoint.get("adapters", []):
-                    profile_name = adapter.get("profile")
-                    adapter_profile = get_item(port_profiles, "profile", profile_name, default={})
-                    parent_profile_name = adapter_profile.get("parent_profile")
-                    parent_profile = get_item(port_profiles, "profile", parent_profile_name, default={})
-
-                    adapter_settings = combine(parent_profile, adapter_profile, adapter, recursive=True, list_merge="replace")
-
+                    adapter_settings = self._get_adapter_settings(adapter)
                     if self.hostname not in adapter_settings.get("switches", []):
                         # This switch is not connected to this endpoint. Skipping.
                         continue
 
-                    if "vlans" in adapter_settings and adapter_settings["vlans"] not in ["all", "", None]:
-                        vlans.update(map(int, range_expand(str(adapter_settings["vlans"]))))
-                        if adapter_settings.get("trunk_groups"):
-                            trunk_groups.update(adapter_settings["trunk_groups"])
-                    elif "trunk" in adapter_settings.get("mode", ""):
-                        if adapter_settings.get("trunk_groups"):
-                            trunk_groups.update(adapter_settings["trunk_groups"])
-                        else:
-                            # No vlans or trunk_groups defined, but this is a trunk, so default is all vlans allowed
-                            # No need to check further, since the list is now containing all vlans.
-                            # The trunk group list may not be complete, but it will not matter, since we will
-                            # configure all vlans anyway.
-                            return set(range(1, 4094)), trunk_groups
-                    else:
-                        # No vlans or mode defined so this is an access port with only vlan 1 allowed
-                        vlans.add(1)
-
-                    if "native_vlan" in adapter_settings:
-                        vlans.add(int(adapter_settings["native_vlan"]))
-
-                    if get(adapter_settings, "port_channel.subinterfaces"):
-                        for subinterface in get(adapter_settings, "port_channel.subinterfaces"):
-                            if "vlan_id" in subinterface:
-                                vlans.add(int(subinterface["vlan_id"]))
-                            elif "number" in subinterface:
-                                vlans.add(int(subinterface["number"]))
+                    adapter_vlans, adapter_trunk_groups = self._parse_adapter_settings(adapter_settings)
+                    vlans.update(adapter_vlans)
+                    trunk_groups.update(adapter_trunk_groups)
+                    if len(vlans) >= 4094:
+                        # No need to check further, since the set is now containing all vlans.
+                        # The trunk group list may not be complete, but it will not matter, since we will
+                        # configure all vlans anyway.
+                        return vlans, trunk_groups
 
         network_ports = get(self._hostvars, "network_ports", default=[])
         for network_port_item in network_ports:
@@ -796,38 +832,15 @@ class EosDesignsFacts(AvdFacts):
                     # Skip entry if no match
                     continue
 
-                profile_name = network_port_item.get("profile")
-                adapter_profile = get_item(port_profiles, "profile", profile_name, default={})
-                parent_profile_name = adapter_profile.get("parent_profile")
-                parent_profile = get_item(port_profiles, "profile", parent_profile_name, default={})
-                adapter_settings = combine(parent_profile, adapter_profile, network_port_item, recursive=True, list_merge="replace")
-
-                if "vlans" in adapter_settings and adapter_settings["vlans"] not in ["all", "", None]:
-                    vlans.update(map(int, range_expand(str(adapter_settings["vlans"]))))
-                    if adapter_settings.get("trunk_groups"):
-                        trunk_groups.update(adapter_settings["trunk_groups"])
-                elif "trunk" in adapter_settings.get("mode", ""):
-                    if adapter_settings.get("trunk_groups"):
-                        trunk_groups.update(adapter_settings["trunk_groups"])
-                    else:
-                        # No vlans or trunk_groups defined, but this is a trunk, so default is all vlans allowed
-                        # No need to check further, since the list is now containing all vlans.
-                        # The trunk group list may not be complete, but it will not matter, since we will
-                        # configure all vlans anyway.
-                        return set(range(1, 4094)), trunk_groups
-                else:
-                    # No vlans or mode defined so this is an access port with only vlan 1 allowed
-                    vlans.add(1)
-
-                if "native_vlan" in adapter_settings:
-                    vlans.add(int(adapter_settings["native_vlan"]))
-
-                if get(adapter_settings, "port_channel.subinterfaces"):
-                    for subinterface in get(adapter_settings, "port_channel.subinterfaces"):
-                        if "vlan_id" in subinterface:
-                            vlans.add(int(subinterface["vlan_id"]))
-                        elif "number" in subinterface:
-                            vlans.add(int(subinterface["number"]))
+                adapter_settings = self._get_adapter_settings(network_port_item)
+                adapter_vlans, adapter_trunk_groups = self._parse_adapter_settings(adapter_settings)
+                vlans.update(adapter_vlans)
+                trunk_groups.update(adapter_trunk_groups)
+                if len(vlans) >= 4094:
+                    # No need to check further, since the list is now containing all vlans.
+                    # The trunk group list may not be complete, but it will not matter, since we will
+                    # configure all vlans anyway.
+                    return vlans, trunk_groups
 
         return vlans, trunk_groups
 
@@ -1070,6 +1083,8 @@ class EosDesignsFacts(AvdFacts):
             return self.bgp_as
 
         if tmp_overlay_rd_type_admin_subfield == "switch_id":
+            if self.id is None:
+                raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and 'overlay_rd_type_admin_subfield' is set to 'switch_id'")
             return self.id + tmp_overlay_rd_type_admin_subfield_offset
 
         if re.fullmatch(r"[0-9]+", str(tmp_overlay_rd_type_admin_subfield)):
@@ -1295,6 +1310,8 @@ class EosDesignsFacts(AvdFacts):
                         elif self.mlag:
                             return bgp_as_range_expanded[self.mlag_switch_ids["primary"] - 1]
                         else:
+                            if self.id is None:
+                                raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and is required when expanding 'bgp_as'")
                             return bgp_as_range_expanded[self.id - 1]
                     except IndexError as exc:
                         raise AristaAvdError(
@@ -1334,8 +1351,9 @@ class EosDesignsFacts(AvdFacts):
                 isis_system_id_prefix = get(self._switch_data_combined, "isis_system_id_prefix")
                 if isis_system_id_prefix is not None:
                     isis_area_id = get(self._hostvars, "isis_area_id", required=True)
-                    switch_id = self.id
-                    return f"{isis_area_id}.{isis_system_id_prefix}.{switch_id:04d}.00"
+                    if self.id is None:
+                        raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and is required to set ISIS NET address using prefix")
+                    return f"{isis_area_id}.{isis_system_id_prefix}.{self.id:04d}.00"
         return None
 
     @cached_property
@@ -1364,6 +1382,8 @@ class EosDesignsFacts(AvdFacts):
     def node_sid(self):
         if self.underlay_router is True:
             if self.underlay_routing_protocol in ["isis-sr", "isis-sr-ldp"]:
+                if self.id is None:
+                    raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and is required to set node SID")
                 node_sid_base = int(get(self._switch_data_combined, "node_sid_base", 0))
                 return self.id + node_sid_base
         return None
@@ -1541,6 +1561,8 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def inband_management_ip(self):
         if self.inband_management_role == "child":
+            if self.id is None:
+                raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and is required to set inband_management_ip")
             subnet = ipaddress.ip_network(self.inband_management_subnet, strict=False)
             hosts = list(subnet.hosts())
             inband_management_ip = str(hosts[2 + self.id])
@@ -1757,8 +1779,12 @@ class EosDesignsFacts(AvdFacts):
         Returns the switch id's of both primary and secondary switches for a given node group
         """
         if self.mlag_role == "primary":
+            if self.id is None:
+                raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and is required to compute MLAG ids")
             return {"primary": self.id, "secondary": self._mlag_peer_id}
         elif self.mlag_role == "secondary":
+            if self.id is None:
+                raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and is required to compute MLAG ids")
             return {"primary": self._mlag_peer_id, "secondary": self.id}
 
     @cached_property
@@ -1959,6 +1985,7 @@ class EosDesignsFacts(AvdFacts):
             peering_address = self.router_id
 
         cvx = self.overlay_routing_protocol == "cvx"
+        her = self.overlay_routing_protocol == "her"
         # Set overlay.evpn_vxlan and overlay.evpn_mpls to differentiate between VXLAN and MPLS use cases.
         evpn_vxlan = self._overlay_evpn and self.evpn_encapsulation == "vxlan"
         evpn_mpls = self._overlay_evpn and self.evpn_encapsulation == "mpls"
@@ -1970,6 +1997,7 @@ class EosDesignsFacts(AvdFacts):
             "ler": self._overlay_ler,
             "vtep": self._overlay_vtep,
             "cvx": cvx,
+            "her": her,
             "evpn": self._overlay_evpn,
             "evpn_vxlan": evpn_vxlan,
             "evpn_mpls": evpn_mpls,

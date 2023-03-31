@@ -1,0 +1,69 @@
+{# address locking #}
+{% set address_locking_intfs = [] %}
+{% for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
+{%     if ethernet_interface.address_locking.ipv4 is arista.avd.defined(true) or ethernet_interface.address_locking.ipv6 is arista.avd.defined(true) %}
+{%         do address_locking_intfs.append(ethernet_interface) %}
+{%     endif %}
+{% endfor %}
+{% if address_locking is arista.avd.defined or address_locking_intfs | length > 0 %}
+
+## Address Locking
+{%     if address_locking is arista.avd.defined %}
+
+### Address Locking Summary
+
+| Setting | Value |
+| -------- | ----- |
+| Disable IP locking on configured ports | {{ address_locking.disabled | arista.avd.default(false) }} |
+{%         if address_locking.local_interface is arista.avd.defined %}
+| Local Interface | {{ address_locking.local_interface | arista.avd.default("-") }} |
+{%         endif %}
+{%         if address_locking.locked_address.expiration_mac_disabled is arista.avd.defined(true) %}
+| Disable deauthorizing locked addresses upon MAC aging out | True |
+{%         endif %}
+{%         if address_locking.locked_address.ipv4_enforcement_disabled is arista.avd.defined(true) %}
+| Disable enforcement for locked ipv4 addresses | True |
+{%         endif %}
+{%         if address_locking.locked_address.ipv6_enforcement_disabled is arista.avd.defined(true) %}
+| Disable enforcement for locked ipv6 addresses | True |
+{%         endif %}
+{%         if address_locking.dhcp_servers_ipv4 is arista.avd.defined %}
+
+### DHCP Servers
+
+| Server IP |
+| --------- |
+{%             for ip in address_locking.dhcp_servers_ipv4 | arista.avd.natural_sort %}
+| {{ ip }} |
+{%             endfor %}
+{%         endif %}
+{%         if address_locking.leases is arista.avd.defined %}
+
+### Leases
+
+| Lease IP Address | Lease MAC Address |
+| ---------------- | ----------------- |
+{%             for lease in address_locking.leases | arista.avd.natural_sort('ip') %}
+| {{ lease.ip }} | {{ lease.mac }} |
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+{%     if address_locking_intfs | length > 0 %}
+
+## Address Locking Interfaces
+
+| Interface | IPv4 Address Locking | IPv6 Address Locking |
+| --------- | -------------------- | -------------------- |
+{%         for locking_intf in address_locking_intfs %}
+| {{ locking_intf.name }} | {{ locking_intf.address_locking.ipv4 | arista.avd.default(false) }} | {{ locking_intf.address_locking.ipv6 | arista.avd.default(false) }} |
+{%         endfor %}
+{%     endif %}
+{%     if address_locking is arista.avd.defined %}
+
+### Address Locking Configuration
+
+```eos
+{%         include 'eos/address-locking.j2' %}
+```
+{%     endif %}
+{% endif %}

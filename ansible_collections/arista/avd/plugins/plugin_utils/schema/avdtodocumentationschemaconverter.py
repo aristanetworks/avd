@@ -68,7 +68,7 @@ class AvdToDocumentationSchemaConverter:
     in the schema. See the schema documentation for details.
 
     Example:
-    - filename: myfile
+    "myfile":
       tables:
         - display_name: Foo
           description: "foo is an example of a schema key"
@@ -92,20 +92,15 @@ class AvdToDocumentationSchemaConverter:
 
     def convert_schema(self):
         schema = {}
-        output = []
+        output = {}
 
         # Get fully resolved schema (where all $ref has been expanded recursively)
-        # Performs inplace update of the argument so we give an empty dict.
-        # By default it will resolve the full schema
-        resolve_errors = self._avdschema.resolve(schema)
-        for resolve_error in resolve_errors:
-            if isinstance(resolve_error, Exception):
-                raise AristaAvdError(resolve_error)
+        schema = self._avdschema.resolved_schema
 
         filenames = self._get_filenames(schema)
 
         for filename in filenames:
-            output.append({"filename": filename, "tables": self.build_tables(filename, schema)})
+            output[filename] = {"tables": self.build_tables(filename, schema)}
 
         return output
 
@@ -377,7 +372,8 @@ class AvdToDocumentationSchemaConverter:
         if schema.get("dynamic_valid_values") is not None:
             schema.setdefault("valid_values", [])
             valid_value = f"<value(s) of {schema['dynamic_valid_values']}>"
-            schema["valid_values"].append(valid_value)
+            if valid_value not in schema["valid_values"]:
+                schema["valid_values"].append(valid_value)
         if schema.get("valid_values") is not None:
             restrictions.append("Valid Values:")
             for valid_value in schema["valid_values"]:

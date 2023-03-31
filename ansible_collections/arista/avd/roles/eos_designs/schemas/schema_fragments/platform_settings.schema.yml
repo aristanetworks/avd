@@ -1,0 +1,55 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  platform_settings:
+    documentation_options:
+      filename: Platform Specific Settings
+    type: list
+    items:
+      type: dict
+      keys:
+        platforms:
+          type: list
+          items:
+            type: str
+        trident_forwarding_table_partition:
+          type: str
+          description: Only applied when evpn_multicast is true
+        reload_delay:
+          type: dict
+          keys:
+            mlag:
+              type: int
+              convert_types:
+              - str
+              min: 0
+              max: 86400
+              description: In seconds
+            non_mlag:
+              type: int
+              convert_types:
+              - str
+              min: 0
+              max: 86400
+              description: In seconds
+        tcam_profile:
+          type: str
+        lag_hardware_only:
+          type: bool
+        feature_support:
+          type: dict
+          keys:
+            queue_monitor_length_notify:
+              type: bool
+              default: true
+            interface_storm_control:
+              type: bool
+              default: true
+        management_interface:
+          type: str
+          default: Management1
+        raw_eos_cli:
+          type: str
+          description: EOS CLI rendered directly on the root level of the final EOS configuration

@@ -25,6 +25,7 @@
 {%         set fabric_switch.inband_management_ip = node_facts.switch.inband_management_ip | arista.avd.default(none) %}
 {%         set fabric_switch.platform = node_facts.switch.platform | arista.avd.default('-') %}
 {%         set fabric_switch.provisioned = 'Not Available' if node_hostvars.is_deployed is arista.avd.defined(false) else 'Provisioned' %}
+{%         set fabric_switch.serial_number = node_facts.switch.serial_number | arista.avd.default("-") %}
 {%         if node_hostvars.loopback_interfaces is arista.avd.defined %}
 {%             set loopback0 = (node_hostvars.loopback_interfaces | arista.avd.convert_dicts("name") | selectattr("name", "arista.avd.defined", "Loopback0"))[0] | arista.avd.default %}
 {%             if loopback0.ip_address is arista.avd.defined %}
@@ -88,10 +89,10 @@
 
 ## Fabric Switches and Management IP
 
-| POD | Type | Node | Management IP | Platform | Provisioned in CloudVision |
-| --- | ---- | ---- | ------------- | -------- | -------------------------- |
+| POD | Type | Node | Management IP | Platform | Provisioned in CloudVision | Serial Number |
+| --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
 {% for fabric_switch in fabric_switches %}
-| {{ fabric_switch.pod }} | {{ fabric_switch.type }} | {{ fabric_switch.node }} | {{ fabric_switch.mgmt_ip }} | {{ fabric_switch.platform }} | {{ fabric_switch.provisioned }} |
+| {{ fabric_switch.pod }} | {{ fabric_switch.type }} | {{ fabric_switch.node }} | {{ fabric_switch.mgmt_ip }} | {{ fabric_switch.platform }} | {{ fabric_switch.provisioned }} | {{ fabric_switch.serial_number }} |
 {% endfor %}
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
@@ -121,8 +122,8 @@
 | Uplink IPv4 Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ---------------- | ------------------- | ------------------ | ------------------ |
 {% for uplink_ipv4_pool in uplink_ipv4_pools | arista.avd.natural_sort %}
-{%     set size = uplink_ipv4_pool | ansible.netcommon.ipaddr('size') %}
-{%     set used = assigned_ip_addresses | ansible.netcommon.ipaddr(uplink_ipv4_pool) | length %}
+{%     set size = uplink_ipv4_pool | ansible.utils.ipaddr('size') %}
+{%     set used = assigned_ip_addresses | ansible.utils.ipaddr(uplink_ipv4_pool) | length %}
 | {{ uplink_ipv4_pool }} | {{ size }} | {{ used }} | {{ (used / size * 100) | round(2,'ceil') }} % |
 {% endfor %}
 
@@ -141,8 +142,8 @@
 | Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------- | ------------------- | ------------------ | ------------------ |
 {% for overlay_loopback_network_summary in loopback_ipv4_pools | arista.avd.natural_sort %}
-{%     set size = overlay_loopback_network_summary | ansible.netcommon.ipaddr('size') %}
-{%     set used = assigned_ip_addresses | ansible.netcommon.ipaddr(overlay_loopback_network_summary) | length %}
+{%     set size = overlay_loopback_network_summary | ansible.utils.ipaddr('size') %}
+{%     set used = assigned_ip_addresses | ansible.utils.ipaddr(overlay_loopback_network_summary) | length %}
 | {{ overlay_loopback_network_summary }} | {{ size }} | {{ used }} | {{ (used / size * 100) | round(2,'ceil') }} % |
 {% endfor %}
 
@@ -173,8 +174,8 @@
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | --------------------- | ------------------- | ------------------ | ------------------ |
 {% for vtep_loopback_network_summary in vtep_loopback_ipv4_pools | arista.avd.natural_sort %}
-{%     set size = vtep_loopback_network_summary | ansible.netcommon.ipaddr('size') %}
-{%     set used = assigned_ip_addresses | ansible.netcommon.ipaddr(vtep_loopback_network_summary) | length %}
+{%     set size = vtep_loopback_network_summary | ansible.utils.ipaddr('size') %}
+{%     set used = assigned_ip_addresses | ansible.utils.ipaddr(vtep_loopback_network_summary) | length %}
 | {{ vtep_loopback_network_summary }} | {{ size }} | {{ used }} | {{ (used / size * 100) | round(2,'ceil') }} % |
 {% endfor %}
 

@@ -1,3 +1,4 @@
+$id: eos_cli_config_gen
 type: dict
 allow_other_keys: true
 keys:
@@ -375,6 +376,46 @@ keys:
                 description: 'Action as string
 
                   Example: "deny ip any any"'
+  address_locking:
+    documentation_options:
+      filename: data_model/Address Locking
+    type: dict
+    keys:
+      dhcp_servers_ipv4:
+        type: list
+        items:
+          type: str
+          description: DHCP server IPv4 address
+      disabled:
+        type: bool
+        description: Disable IP locking on configured ports
+      leases:
+        type: list
+        items:
+          type: dict
+          keys:
+            ip:
+              type: str
+              required: true
+              description: IP address
+            mac:
+              type: str
+              required: true
+              description: MAC address (hhhh.hhhh.hhhh or hh:hh:hh:hh:hh:hh)
+      local_interface:
+        type: str
+      locked_address:
+        type: dict
+        keys:
+          expiration_mac_disabled:
+            type: bool
+            description: Configure deauthorizing locked addresses upon MAC aging out
+          ipv4_enforcement_disabled:
+            type: bool
+            description: Configure enforcement for locked IPv4 addresses
+          ipv6_enforcement_disabled:
+            type: bool
+            description: Configure enforcement for locked IPv6 addresses
   aliases:
     documentation_options:
       filename: data_model/Aliases
@@ -647,6 +688,17 @@ keys:
                     default: '7'
               shutdown:
                 type: bool
+          vxlan:
+            type: dict
+            description: VXLAN Controller service
+            keys:
+              shutdown:
+                type: bool
+              vtep_mac_learning:
+                type: str
+                valid_values:
+                - control-plane
+                - data-plane
   daemon_terminattr:
     documentation_options:
       filename: data_model/Monitoring
@@ -1206,6 +1258,15 @@ keys:
             '
         snmp_trap_link_change:
           type: bool
+        address_locking:
+          type: dict
+          keys:
+            ipv4:
+              type: bool
+              description: Enable address locking for IPv4
+            ipv6:
+              type: bool
+              description: Enable address locking for IPv6
         flowcontrol:
           type: dict
           keys:
@@ -8665,18 +8726,24 @@ keys:
                     route_map:
                       type: str
                       description: Route Map Name
+                    include_leaked:
+                      type: bool
                 connected:
                   type: dict
                   keys:
                     route_map:
                       type: str
                       description: Route Map Name
+                    include_leaked:
+                      type: bool
                 bgp:
                   type: dict
                   keys:
                     route_map:
                       type: str
                       description: Route Map Name
+                    include_leaked:
+                      type: bool
             auto_cost_reference_bandwidth:
               type: int
               convert_types:
@@ -9811,7 +9878,7 @@ keys:
               description: 'TCAM Profile Config. Since these can be very long, it
                 is often a good idea to import the config from a file.
 
-                Example: "{{lookup(''file'', ''{{ root_dir }}/inventory/TCAM_TRAFFIC_POLICY.conf'')}}"'
+                Example: "{{ lookup(''file'', ''TCAM_TRAFFIC_POLICY.conf'') }}"'
   terminal:
     documentation_options:
       filename: data_model/Terminal Settings
@@ -10823,6 +10890,12 @@ keys:
               source_interface:
                 type: str
                 description: Source Interface Name
+              controller_client:
+                type: dict
+                description: Client to CVX Controllers
+                keys:
+                  enabled:
+                    type: bool
               mlag_source_interface:
                 type: str
               udp_port:

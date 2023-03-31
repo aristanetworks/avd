@@ -147,6 +147,14 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         return get(self._hostvars, "switch.overlay.evpn", required=True) is True
 
     @cached_property
+    def _overlay_cvx(self) -> bool:
+        return get(self._hostvars, "switch.overlay.cvx", required=True) is True
+
+    @cached_property
+    def _overlay_her(self) -> bool:
+        return get(self._hostvars, "switch.overlay.her", required=True) is True
+
+    @cached_property
     def _overlay_vtep(self) -> bool:
         return get(self._hostvars, "switch.overlay.vtep", required=True) is True
 

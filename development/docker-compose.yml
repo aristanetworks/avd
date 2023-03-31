@@ -15,21 +15,21 @@ services:
     command: [ "/bin/sh", "-c", "while true; do sleep 30; done;" ]
 
   webdoc_cvp:
-    image: titom73/mkdocs:latest
+    image: squidfunk/mkdocs-material:9.0.12
     container_name: webdoc_cvp
     volumes:
       - ${PWD}/:/docs
     ports:
       - 8001:8000
     entrypoint: ""
-    command: ["sh", "-c", "cd ansible-cvp/ && pip install -r ansible_collections/arista/cvp/docs/requirements.txt && mkdocs serve --no-livereload --dev-addr=0.0.0.0:8000 -f mkdocs.yml"]
+    command: ["sh", "-c", "cd ansible-cvp/ && pip install -r ansible_collections/arista/cvp/docs/requirements.txt --upgrade && mkdocs serve --no-livereload --dev-addr=0.0.0.0:8000 -f mkdocs.yml"]
 
   webdoc_avd:
-    image: titom73/mkdocs:latest
+    image: squidfunk/mkdocs-material:9.0.12
     container_name: webdoc_avd
     volumes:
       - ${PWD}/:/docs
     ports:
       - 8000:8000
     entrypoint: ""
-    command: ["sh", "-c", "cd ansible-avd/ && pip install -r ansible_collections/arista/avd/docs/requirements.txt && mkdocs serve --no-livereload --dev-addr=0.0.0.0:8000 -f mkdocs.yml"]
+    command: ["sh", "-c", "cd ansible-avd/ && pip install -r ansible_collections/arista/avd/docs/requirements.txt --upgrade && mkdocs serve --no-livereload --dev-addr=0.0.0.0:8000 -f mkdocs.yml"]

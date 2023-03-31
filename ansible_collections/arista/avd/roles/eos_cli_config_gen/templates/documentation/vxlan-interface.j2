@@ -11,6 +11,9 @@
 {%     if vxlan_interface.Vxlan1.vxlan.source_interface is arista.avd.defined %}
 | Source Interface | {{ vxlan_interface.Vxlan1.vxlan.source_interface }} |
 {%     endif %}
+{%     if vxlan_interface.Vxlan1.vxlan.controller_client.enabled is arista.avd.defined %}
+| Controller Client | {{ vxlan_interface.Vxlan1.vxlan.controller_client.enabled }} |
+{%     endif %}
 {%     if vxlan_interface.Vxlan1.vxlan.mlag_source_interface is arista.avd.defined %}
 | MLAG Source Interface | {{ vxlan_interface.Vxlan1.vxlan.mlag_source_interface }} |
 {%     endif %}

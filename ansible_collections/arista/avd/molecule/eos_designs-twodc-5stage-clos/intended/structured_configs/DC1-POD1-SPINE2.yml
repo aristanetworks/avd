@@ -1,3 +1,4 @@
+serial_number: DEADBEEFC0FFEE
 router_bgp:
   as: '65110.100'
   router_id: 172.16.110.2
@@ -120,6 +121,8 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   service_profile: QOS-PROFILE
+  mac_security:
+    profile: MACSEC_PROFILE
   type: routed
   ptp:
     enable: true
@@ -132,6 +135,8 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   service_profile: QOS-PROFILE
+  mac_security:
+    profile: MACSEC_PROFILE
   type: routed
   ptp:
     enable: true
@@ -144,6 +149,8 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   service_profile: QOS-PROFILE
+  mac_security:
+    profile: MACSEC_PROFILE
   type: routed
   ptp:
     enable: true
@@ -156,6 +163,8 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   service_profile: QOS-PROFILE
+  mac_security:
+    profile: MACSEC_PROFILE
   type: routed
   ptp:
     enable: true
@@ -168,6 +177,8 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   service_profile: QOS-PROFILE
+  mac_security:
+    profile: MACSEC_PROFILE
   type: routed
   ptp:
     enable: true

@@ -213,7 +213,8 @@ overlay_her_flood_list_per_vni: < true | false | default -> false >
 overlay_her_flood_list_scope: < "fabric" | "dc" | default -> "fabric" >
 
 # Overlay settings when using CVX as overlay controller | Required if overlay_routing_protocol == CVX
-overlay_cvx_servers: [ < cvx1_ip_or_hostname >, < cvx2_ip_or_hostname >, < cvx3_ip_or_hostname > ]
+# CVX servers (VMs) are peering using their management interface, so mgmt_ip must be set for all CVX servers.
+overlay_cvx_servers: [ < cvx1_inventory_hostname >, < cvx2_inventory_hostname >, < cvx3_inventory_hostname > ]
 
 # Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.
 # Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP. This allows all l3leafs to reuse the same subnet

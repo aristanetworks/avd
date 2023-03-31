@@ -56,6 +56,7 @@ route_maps:
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 management_cvx:
+  shutdown: false
   source_interface: Loopback0
   server_hosts:
   - 192.168.254.254
@@ -84,6 +85,8 @@ vxlan_interface:
     vxlan:
       udp_port: 4789
       source_interface: Loopback1
+      controller_client:
+        enabled: true
       vlans:
       - id: 3910
         vni: 14910

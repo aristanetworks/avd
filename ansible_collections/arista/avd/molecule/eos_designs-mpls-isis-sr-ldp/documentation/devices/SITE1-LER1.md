@@ -525,9 +525,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 #### Router OSPF Router Redistribution
 
-| Process ID | Source Protocol | Route Map |
-| ---------- | --------------- | --------- |
-| 19 | bgp | - |
+| Process ID | Source Protocol | Include Leaked | Route Map |
+| ---------- | --------------- | -------------- | --------- |
+| 19 | bgp | disabled | - |
 
 #### OSPF Interfaces
 

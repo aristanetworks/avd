@@ -171,6 +171,14 @@ defaults <- node_group <- node_group.node <- node
       # "system_mac_address" can also be set directly as a hostvar.
       # If both are set, the setting under "Fabric Topology" takes precedence.
       system_mac_address: < "xx:xx:xx:xx:xx:xx" >
+      # Serial Number | Optional
+      # Set to the Serial Number of the device
+      # For  now only used for documentation purpose in the fabric
+      # documentation.
+      # "serial_number" can also be set directly as a hostvar.
+      # If both are set, the setting under "Fabric Topology" takes precedence.
+      serial_number: < string >
+
 ```
 
 ## Node Variables details

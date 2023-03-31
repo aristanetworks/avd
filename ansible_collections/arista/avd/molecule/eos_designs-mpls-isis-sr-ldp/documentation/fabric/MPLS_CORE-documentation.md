@@ -16,18 +16,18 @@
 
 ## Fabric Switches and Management IP
 
-| POD | Type | Node | Management IP | Platform | Provisioned in CloudVision |
-| --- | ---- | ---- | ------------- | -------- | -------------------------- |
-| MPLS_CORE | pe | SITE1-LER1 | 192.168.200.105/24 | 7280SR3 | Provisioned |
-| MPLS_CORE | pe | SITE1-LER2 | 192.168.200.106/24 | 7280SR3 | Provisioned |
-| MPLS_CORE | p | SITE1-LSR1 | 192.168.200.101/24 | - | Provisioned |
-| MPLS_CORE | p | SITE1-LSR2 | 192.168.200.102/24 | - | Provisioned |
-| MPLS_CORE | rr | SITE1-RR1 | 10.30.30.108/24 | 7280SR3 | Provisioned |
-| MPLS_CORE | pe | SITE2-LER1 | 192.168.200.107/24 | 7280SR3 | Provisioned |
-| MPLS_CORE | p | SITE2-LSR1 | 192.168.200.103/24 | - | Provisioned |
-| MPLS_CORE | p | SITE2-LSR2 | 192.168.200.104/24 | - | Provisioned |
-| MPLS_CORE | rr | SITE2-RR1 | 10.30.30.109/24 | 7280SR3 | Provisioned |
-| MPLS_CORE | pe | SITE3-LER1 | 192.168.200.110/24 | 7280SR3 | Provisioned |
+| POD | Type | Node | Management IP | Platform | Provisioned in CloudVision | Serial Number |
+| --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
+| MPLS_CORE | pe | SITE1-LER1 | 192.168.200.105/24 | 7280SR3 | Provisioned | - |
+| MPLS_CORE | pe | SITE1-LER2 | 192.168.200.106/24 | 7280SR3 | Provisioned | - |
+| MPLS_CORE | p | SITE1-LSR1 | 192.168.200.101/24 | 7280SR | Provisioned | - |
+| MPLS_CORE | p | SITE1-LSR2 | 192.168.200.102/24 | 7280SR | Provisioned | - |
+| MPLS_CORE | rr | SITE1-RR1 | 10.30.30.108/24 | 7280SR3 | Provisioned | - |
+| MPLS_CORE | pe | SITE2-LER1 | 192.168.200.107/24 | 7280SR3 | Provisioned | - |
+| MPLS_CORE | p | SITE2-LSR1 | 192.168.200.103/24 | 7280SR | Provisioned | - |
+| MPLS_CORE | p | SITE2-LSR2 | 192.168.200.104/24 | 7280SR | Provisioned | - |
+| MPLS_CORE | rr | SITE2-RR1 | 10.30.30.109/24 | 7280SR3 | Provisioned | - |
+| MPLS_CORE | pe | SITE3-LER1 | 192.168.200.110/24 | 7280SR3 | Provisioned | - |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 

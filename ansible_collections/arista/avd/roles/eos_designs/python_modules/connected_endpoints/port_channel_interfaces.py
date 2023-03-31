@@ -6,8 +6,9 @@ from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.esi_management import generate_esi, generate_lacp_id, generate_route_target
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 
 from .utils import UtilsMixin
 
@@ -21,7 +22,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
     @cached_property
     def port_channel_interfaces(self) -> list | None:
         """
-        Return structured config for ethernet_interfaces
+        Return structured config for port_channel_interfaces
         """
         port_channel_interfaces = []
         for connected_endpoint in self._filtered_connected_endpoints:
@@ -33,7 +34,8 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 channel_group_id = get(adapter, "port_channel.channel_id", default=default_channel_group_id)
 
                 port_channel_interface_name = f"Port-Channel{channel_group_id}"
-                port_channel_interfaces.append(self._get_port_channel_interface_cfg(adapter, port_channel_interface_name, channel_group_id, connected_endpoint))
+                port_channel_config = self._get_port_channel_interface_cfg(adapter, port_channel_interface_name, channel_group_id, connected_endpoint)
+                self._add_if_not_duplicate(port_channel_config, port_channel_interfaces)
 
                 if (subinterfaces := get(adapter, "port_channel.subinterfaces")) is None:
                     continue
@@ -43,9 +45,10 @@ class PortChannelInterfacesMixin(UtilsMixin):
                         continue
 
                     port_channel_subinterface_name = f"Port-Channel{channel_group_id}.{subinterface['number']}"
-                    port_channel_interfaces.append(
-                        self._get_port_channel_subinterface_cfg(subinterface, adapter, port_channel_subinterface_name, channel_group_id)
+                    port_channel_subinterface_config = self._get_port_channel_subinterface_cfg(
+                        subinterface, adapter, port_channel_subinterface_name, channel_group_id
                     )
+                    self._add_if_not_duplicate(port_channel_subinterface_config, port_channel_interfaces)
 
         for network_port in self._filtered_network_ports:
             if get(network_port, "port_channel.mode") is None:
@@ -72,9 +75,8 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 channel_group_id = get(tmp_network_port, "port_channel.channel_id", default=default_channel_group_id)
 
                 port_channel_interface_name = f"Port-Channel{channel_group_id}"
-                port_channel_interfaces.append(
-                    self._get_port_channel_interface_cfg(tmp_network_port, port_channel_interface_name, channel_group_id, connected_endpoint)
-                )
+                port_channel_config = self._get_port_channel_interface_cfg(tmp_network_port, port_channel_interface_name, channel_group_id, connected_endpoint)
+                self._add_if_not_duplicate(port_channel_config, port_channel_interfaces)
 
         if port_channel_interfaces:
             return port_channel_interfaces
@@ -174,3 +176,36 @@ class PortChannelInterfacesMixin(UtilsMixin):
             }
 
         return strip_null_from_data(port_channel_interface)
+
+    def _add_if_not_duplicate(self, candidate_port_channel_config, port_channel_interfaces) -> None:
+        """
+        This function assumes that port_channel_interfaces list DO NOT contain duplicate port-channel names.
+        It CAN modify the input variable port_channel_interfaces by appending candidate_port_channel_config to it.
+
+        This check function does two things:
+            1. Check if the candidate_port_channel_config["name"] is already present in port_channel_interfaces computed so far
+            2. if 1 is True, check if the candidate_port_channel_config object is exactly the same as the existing one in port_channel_interfaces,
+
+        If 1 is True and 2 is False, then the function raise an AristaAvdError because a duplicate port-channel name would be generating two
+        different structured configurations and so there is a conflict
+
+        If 1 and 2 are True, it means the candidate_port_channel_config is the same as the existing configuration already generated so no
+        action is needed.
+
+        If 1 is False for every port-channel in the port_channel_interfaces, it is a new port-channel and it is appended to the list.
+        """
+        if (matching_port_channel_config := get_item(port_channel_interfaces, "name", candidate_port_channel_config["name"])) is None:
+            # No port_channel_interface found with the same name in port_channel_interfaces
+            # append to the list and return
+            port_channel_interfaces.append(candidate_port_channel_config)
+            return
+
+        if matching_port_channel_config != candidate_port_channel_config:
+            # Found duplicate name with different generated configs
+            raise AristaAvdError(
+                f"Duplicate port-channel name {candidate_port_channel_config['name']} with conflicting configurations found while generating port-channels for"
+                " connected-endpoints or network-ports"
+            )
+
+        # Duplicate name with same configuration - nothing to do
+        return
