@@ -1555,6 +1555,23 @@
             "type": "boolean",
             "title": "Snmp Trap Link Change"
           },
+          "address_locking": {
+            "type": "object",
+            "properties": {
+              "ipv4": {
+                "type": "boolean",
+                "description": "Enable address locking for IPv4",
+                "title": "IPv4"
+              },
+              "ipv6": {
+                "type": "boolean",
+                "description": "Enable address locking for IPv6",
+                "title": "IPv6"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Address Locking"
+          },
           "flowcontrol": {
             "type": "object",
             "properties": {
