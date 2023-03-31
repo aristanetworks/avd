@@ -193,13 +193,11 @@
       "title": "EVPN VLAN Aware Bundles"
     },
     "isis_advertise_passive_only": {
-      "description": "Additional underlay ISIS parameters",
       "type": "boolean",
       "default": false,
       "title": "ISIS Advertise Passive Only"
     },
     "isis_area_id": {
-      "description": "Required when \"underlay_routing_protocol\" == ISIS variants",
       "type": "string",
       "default": "49.0001",
       "title": "ISIS Area ID"
@@ -216,7 +214,6 @@
       "title": "ISIS Default Circuit Type"
     },
     "isis_default_is_type": {
-      "description": "Additional underlay ISIS parameters",
       "type": "string",
       "enum": [
         "level-1-2",

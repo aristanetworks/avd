@@ -7,7 +7,6 @@ keys:
     documentation_options:
       filename: Fabric Variables
       table: ISIS Settings
-    description: Additional underlay ISIS parameters
     type: str
     valid_values:
       - level-1-2

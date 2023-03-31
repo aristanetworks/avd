@@ -7,6 +7,5 @@ keys:
     documentation_options:
       filename: Fabric Variables
       table: ISIS Settings
-    description: Required when "underlay_routing_protocol" == ISIS variants
     type: str
     default: "49.0001"

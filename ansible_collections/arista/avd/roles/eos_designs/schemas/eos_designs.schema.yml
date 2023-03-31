@@ -277,14 +277,12 @@ keys:
     documentation_options:
       filename: Fabric Variables
       table: ISIS Settings
-    description: Additional underlay ISIS parameters
     type: bool
     default: false
   isis_area_id:
     documentation_options:
       filename: Fabric Variables
       table: ISIS Settings
-    description: Required when "underlay_routing_protocol" == ISIS variants
     type: str
     default: '49.0001'
   isis_default_circuit_type:
@@ -303,7 +301,6 @@ keys:
     documentation_options:
       filename: Fabric Variables
       table: ISIS Settings
-    description: Additional underlay ISIS parameters
     type: str
     valid_values:
     - level-1-2
