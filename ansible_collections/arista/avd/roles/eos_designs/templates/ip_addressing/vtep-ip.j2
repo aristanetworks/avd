@@ -1,1 +1,1 @@
-{{ switch_vtep_loopback_ipv4_pool | ansible.netcommon.ipaddr('network') | ansible.netcommon.ipmath(switch_id + loopback_ipv4_offset) }}
+{{ switch_vtep_loopback_ipv4_pool | ansible.utils.ipaddr('network') | ansible.utils.ipmath(switch_id + loopback_ipv4_offset) }}

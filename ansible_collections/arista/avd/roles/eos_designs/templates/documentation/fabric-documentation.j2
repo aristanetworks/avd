@@ -118,8 +118,8 @@
 | Uplink IPv4 Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ---------------- | ------------------- | ------------------ | ------------------ |
 {% for uplink_ipv4_pool in uplink_ipv4_pools | arista.avd.natural_sort %}
-{%     set size = uplink_ipv4_pool | ansible.netcommon.ipaddr('size') %}
-{%     set used = assigned_ip_addresses | ansible.netcommon.ipaddr(uplink_ipv4_pool) | length %}
+{%     set size = uplink_ipv4_pool | ansible.utils.ipaddr('size') %}
+{%     set used = assigned_ip_addresses | ansible.utils.ipaddr(uplink_ipv4_pool) | length %}
 | {{ uplink_ipv4_pool }} | {{ size }} | {{ used }} | {{ (used / size * 100) | round(2,'ceil') }} % |
 {% endfor %}
 
@@ -138,8 +138,8 @@
 | Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------- | ------------------- | ------------------ | ------------------ |
 {% for overlay_loopback_network_summary in loopback_ipv4_pools | arista.avd.natural_sort %}
-{%     set size = overlay_loopback_network_summary | ansible.netcommon.ipaddr('size') %}
-{%     set used = assigned_ip_addresses | ansible.netcommon.ipaddr(overlay_loopback_network_summary) | length %}
+{%     set size = overlay_loopback_network_summary | ansible.utils.ipaddr('size') %}
+{%     set used = assigned_ip_addresses | ansible.utils.ipaddr(overlay_loopback_network_summary) | length %}
 | {{ overlay_loopback_network_summary }} | {{ size }} | {{ used }} | {{ (used / size * 100) | round(2,'ceil') }} % |
 {% endfor %}
 
@@ -170,8 +170,8 @@
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | --------------------- | ------------------- | ------------------ | ------------------ |
 {% for vtep_loopback_network_summary in vtep_loopback_ipv4_pools | arista.avd.natural_sort %}
-{%     set size = vtep_loopback_network_summary | ansible.netcommon.ipaddr('size') %}
-{%     set used = assigned_ip_addresses | ansible.netcommon.ipaddr(vtep_loopback_network_summary) | length %}
+{%     set size = vtep_loopback_network_summary | ansible.utils.ipaddr('size') %}
+{%     set used = assigned_ip_addresses | ansible.utils.ipaddr(vtep_loopback_network_summary) | length %}
 | {{ vtep_loopback_network_summary }} | {{ size }} | {{ used }} | {{ (used / size * 100) | round(2,'ceil') }} % |
 {% endfor %}
 
