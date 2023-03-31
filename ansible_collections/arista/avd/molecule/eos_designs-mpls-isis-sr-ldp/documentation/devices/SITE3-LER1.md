@@ -191,7 +191,7 @@ ip virtual-router mac-address 00:1c:73:00:dc:00
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
-| MGMT | false |
+| MGMT | False |
 
 #### IP Routing Device Configuration
 

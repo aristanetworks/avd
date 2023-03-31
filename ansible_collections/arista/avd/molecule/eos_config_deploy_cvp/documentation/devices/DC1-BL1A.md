@@ -576,10 +576,10 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
-| MGMT | false |
-| Tenant_A_WAN_Zone | true |
-| Tenant_B_WAN_Zone | true |
-| Tenant_C_WAN_Zone | true |
+| MGMT | False |
+| Tenant_A_WAN_Zone | True |
+| Tenant_B_WAN_Zone | True |
+| Tenant_C_WAN_Zone | True |
 
 #### IP Routing Device Configuration
 

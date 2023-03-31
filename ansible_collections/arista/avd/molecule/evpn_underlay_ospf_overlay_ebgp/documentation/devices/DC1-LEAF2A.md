@@ -543,8 +543,8 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
-| MGMT | false |
-| Tenant_B_OP_Zone | true |
+| MGMT | False |
+| Tenant_B_OP_Zone | True |
 
 #### IP Routing Device Configuration
 

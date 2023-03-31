@@ -558,9 +558,9 @@ ip virtual-router mac-address 00:1c:73:00:00:99
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
-| MGMT | false |
-| VRF10 | true |
-| VRF11 | true |
+| MGMT | False |
+| VRF10 | True |
+| VRF11 | True |
 
 #### IP Routing Device Configuration
 
