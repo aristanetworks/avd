@@ -71,6 +71,13 @@ class AvdStructuredConfig(AvdFacts):
         return get(self._hostvars, "switch.system_mac_address")
 
     @cached_property
+    def serial_number(self) -> str | None:
+        """
+        serial_number variable set based on switch.serial_number fact
+        """
+        return get(self._hostvars, "switch.serial_number")
+
+    @cached_property
     def router_bgp(self) -> dict | None:
         """
         router_bgp set based on switch.bgp_as, switch.bgp_defaults, switch.router_id facts
@@ -160,8 +167,11 @@ class AvdStructuredConfig(AvdFacts):
     @cached_property
     def ip_routing(self) -> bool:
         """
-        ip_routing set to True
+        ip routing set to False if ip_routing_ipv6_interfaces is set to True as the command will have precedence
+        ip_routing set to True otherwise
         """
+        if self.ip_routing_ipv6_interfaces is True:
+            return None
         return True
 
     @cached_property

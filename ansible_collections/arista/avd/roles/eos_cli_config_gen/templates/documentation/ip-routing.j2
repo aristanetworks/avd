@@ -7,13 +7,18 @@
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | {{ ip_routing | arista.avd.default(false) }} |
-{%     for vrf in vrfs | arista.avd.natural_sort('name') %}
-{%         if vrf.ip_routing is arista.avd.defined(true) %}
-| {{ vrf.name }} | true |
-{%         elif vrf.ip_routing is arista.avd.defined(false) %}
-| {{ vrf.name }} | false |
+{# TODO - this currently does not handle when vrf default enables ip routing #}
+{%     set default_ip_routing = ip_routing | arista.avd.default(false) %}
+{%     if ip_routing_ipv6_interfaces | arista.avd.default(false) %}
+{%         set default_ip_routing = "True (ipv6 interfaces)" %}
+{%     endif %}
+| default | {{ default_ip_routing }} |
+{%     for vrf in vrfs | arista.avd.default([]) | rejectattr("name", "arista.avd.defined", "default") | arista.avd.natural_sort('name') %}
+{%         set ip_routing = vrf.ip_routing | arista.avd.default("-") %}
+{%         if vrf.ip_routing_ipv6_interfaces | arista.avd.default(false) %}
+{%             set ip_routing = "True (ipv6 interfaces)" %}
 {%         endif %}
+| {{ vrf.name }} | {{ ip_routing }} |
 {%     endfor %}
 
 #### IP Routing Device Configuration

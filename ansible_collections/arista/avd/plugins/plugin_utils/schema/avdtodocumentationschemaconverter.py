@@ -95,12 +95,7 @@ class AvdToDocumentationSchemaConverter:
         output = {}
 
         # Get fully resolved schema (where all $ref has been expanded recursively)
-        # Performs inplace update of the argument so we give an empty dict.
-        # By default it will resolve the full schema
-        resolve_errors = self._avdschema.resolve(schema)
-        for resolve_error in resolve_errors:
-            if isinstance(resolve_error, Exception):
-                raise AristaAvdError(resolve_error)
+        schema = self._avdschema.resolved_schema
 
         filenames = self._get_filenames(schema)
 

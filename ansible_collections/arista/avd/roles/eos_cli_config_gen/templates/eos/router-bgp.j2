@@ -165,6 +165,9 @@ router bgp {{ router_bgp.as }}
 {%         if peer_group.passive is arista.avd.defined(true) %}
    neighbor {{ peer_group.name }} passive
 {%         endif %}
+{%         if peer_group.session_tracker is arista.avd.defined %}
+   neighbor {{ peer_group.name }} session tracker {{ peer_group.session_tracker }}
+{%         endif %}
 {%         if peer_group.send_community is arista.avd.defined('all') %}
    neighbor {{ peer_group.name }} send-community
 {%         elif peer_group.send_community is arista.avd.defined %}
@@ -292,6 +295,9 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%         if neighbor.weight is arista.avd.defined %}
    neighbor {{ neighbor.ip_address }} weight {{ neighbor.weight }}
+{%         endif %}
+{%         if neighbor.session_tracker is arista.avd.defined() %}
+   neighbor {{ neighbor.ip_address }} session tracker {{ neighbor.session_tracker }}
 {%         endif %}
 {%         if neighbor.timers is arista.avd.defined %}
    neighbor {{ neighbor.ip_address }} timers {{ neighbor.timers }}
@@ -1086,6 +1092,13 @@ router bgp {{ router_bgp.as }}
 {%         if vrf.eos_cli is arista.avd.defined %}
       !
       {{ vrf.eos_cli | indent(6, false) }}
+{%         endif %}
+{%     endfor %}
+{# BGP session tracker #}
+{%     for session_tracker in router_bgp.session_trackers | arista.avd.natural_sort('name') %}
+   session tracker {{ session_tracker.name }}
+{%         if session_tracker.recovery_delay is arista.avd.defined %}
+      recovery delay {{ session_tracker.recovery_delay }} seconds
 {%         endif %}
 {%     endfor %}
 {% endif %}

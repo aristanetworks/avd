@@ -121,23 +121,6 @@ class TestAvdSchema:
             assert False, f"AvdSchema(TEST_SCHEMA).validate(TEST_DATA) raised an exception: {e}"
         assert True
 
-    @pytest.mark.parametrize("TEST_SCHEMA", VALID_TEST_SCHEMAS)
-    @pytest.mark.parametrize("TEST_DATA", TEST_DATA_SETS)
-    def test_avd_schema_validate_with_adhoc_schema(self, TEST_SCHEMA, TEST_DATA):
-        try:
-            for validation_error in AvdSchema().validate(TEST_DATA, TEST_SCHEMA):
-                assert False, f"Validation Error '{validation_error.message}' returned"
-        except Exception as e:
-            assert False, f"AvdSchema().validate(TEST_DATA, TEST_SCHEMA) raised an exception: {e}"
-        assert True
-
-    def test_avd_schema_validate_with_invalid_adhoc_schema(self):
-        try:
-            for validation_error in AvdSchema().validate({}, INVALID_SCHEMA):
-                assert isinstance(validation_error, AvdValidationError)
-        except Exception as e:
-            assert False, f"AvdSchema().validate({{}}, INVALID_SCHEMA) raised an exception: {e}"
-
     @pytest.mark.parametrize("INVALID_DATA", INVALID_ACL_DATA)
     def test_avd_schema_validate_with_invalid_data(self, INVALID_DATA):
         try:
@@ -149,35 +132,6 @@ class TestAvdSchema:
     def test_avd_schema_validate_with_missing_data(self):
         with pytest.raises(TypeError):
             AvdSchema().validate()
-
-    @pytest.mark.parametrize("TEST_DATA", TEST_DATA_SETS)
-    def test_avd_schema_is_valid_without_schema(self, TEST_DATA):
-        assert AvdSchema().is_valid(TEST_DATA) is True
-
-    @pytest.mark.parametrize("TEST_SCHEMA", VALID_TEST_SCHEMAS)
-    @pytest.mark.parametrize("TEST_DATA", TEST_DATA_SETS)
-    def test_avd_schema_is_valid_with_loaded_schema(self, TEST_SCHEMA, TEST_DATA):
-        assert AvdSchema(TEST_SCHEMA).is_valid(TEST_DATA) is True
-
-    @pytest.mark.parametrize("TEST_SCHEMA", VALID_TEST_SCHEMAS)
-    @pytest.mark.parametrize("TEST_DATA", TEST_DATA_SETS)
-    def test_avd_schema_is_valid_with_adhoc_schema(self, TEST_SCHEMA, TEST_DATA):
-        assert AvdSchema().is_valid(TEST_DATA, TEST_SCHEMA) is True
-
-    def test_avd_schema_is_valid_with_invalid_adhoc_schema(self):
-        with pytest.raises(AvdValidationError):
-            AvdSchema().is_valid({}, INVALID_SCHEMA)
-
-    @pytest.mark.parametrize("INVALID_DATA", INVALID_ACL_DATA)
-    def test_avd_schema_is_valid_with_invalid_data(self, INVALID_DATA):
-        assert AvdSchema(combined_schema).is_valid(INVALID_DATA) is False
-
-    def test_avd_schema_is_valid_with_missing_data(self):
-        with pytest.raises(TypeError):
-            AvdSchema().is_valid()
-
-    def test_avd_schema_is_valid_with_none(self):
-        assert AvdSchema().is_valid(None) is False
 
     @pytest.mark.parametrize("TEST_SCHEMA", VALID_TEST_SCHEMAS)
     def test_avd_schema_load_valid_schema(self, TEST_SCHEMA):
@@ -211,18 +165,6 @@ class TestAvdSchema:
             avdschema.extend_schema(INVALID_SCHEMA)
 
     @pytest.mark.parametrize("TEST_PATH", TEST_DATA_PATHS)
-    def test_avd_schema_subschema_with_adhoc_schema(self, TEST_PATH):
-        try:
-            avdschema = AvdSchema()
-            subschema = avdschema.subschema(TEST_PATH, combined_schema)
-        except Exception as e:
-            assert False, f"subschema(TEST_PATH, combined_schema) raised an exception: {e}"
-        if len(TEST_PATH) == 0:
-            assert subschema == EXPECTED_SUBSCHEMAS["_empty"]
-        else:
-            assert subschema == EXPECTED_SUBSCHEMAS[".".join(TEST_PATH)]
-
-    @pytest.mark.parametrize("TEST_PATH", TEST_DATA_PATHS)
     def test_avd_schema_subschema_with_loaded_schema(self, TEST_PATH):
         try:
             avdschema = AvdSchema(combined_schema)
@@ -233,11 +175,6 @@ class TestAvdSchema:
             assert subschema == EXPECTED_SUBSCHEMAS["_empty"]
         else:
             assert subschema == EXPECTED_SUBSCHEMAS[".".join(TEST_PATH)]
-
-    def test_avd_schema_subschema_empty_list_invalid_adhoc_schema(self):
-        with pytest.raises(AvdValidationError):
-            avdschema = AvdSchema()
-            avdschema.subschema([], INVALID_SCHEMA)
 
     def test_avd_schema_subschema_with_ref_to_store_schemas(self):
         test_schema = {"type": "dict", "keys": {}}

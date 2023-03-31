@@ -258,7 +258,6 @@ static_routes:
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.200.5
 service_routing_protocols_model: multi-agent
-ip_routing: true
 ipv6_unicast_routing: true
 ip_routing_ipv6_interfaces: true
 daemon_terminattr:
@@ -302,22 +301,22 @@ vrfs:
   ip_routing: false
 - name: Tenant_A_APP_Zone
   tenant: Tenant_A
-  ip_routing: true
+  ip_routing_ipv6_interfaces: true
 - name: Tenant_A_DB_Zone
   tenant: Tenant_A
-  ip_routing: true
+  ip_routing_ipv6_interfaces: true
 - name: Tenant_A_OP_Zone
   tenant: Tenant_A
-  ip_routing: true
+  ip_routing_ipv6_interfaces: true
 - name: Tenant_A_WEB_Zone
   tenant: Tenant_A
-  ip_routing: true
+  ip_routing_ipv6_interfaces: true
 - name: Tenant_B_OP_Zone
   tenant: Tenant_B
-  ip_routing: true
+  ip_routing_ipv6_interfaces: true
 - name: Tenant_C_OP_Zone
   tenant: Tenant_C
-  ip_routing: true
+  ip_routing_ipv6_interfaces: true
 management_interfaces:
 - name: Management1
   description: oob_management

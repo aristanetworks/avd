@@ -615,10 +615,19 @@ class EosDesignsFacts(AvdFacts):
     def system_mac_address(self):
         """
         system_mac_address is inherited from
-        Host variable var system_mac_address ->
-          Fabric Topology data model system_mac_address
+        Fabric Topology data model system_mac_address ->
+            Host variable var system_mac_address ->
         """
         return default(get(self._switch_data_combined, "system_mac_address"), get(self._hostvars, "system_mac_address"))
+
+    @cached_property
+    def serial_number(self):
+        """
+        serial_number is inherited from
+        Fabric Topology data model serial_number ->
+            Host variable var serial_number
+        """
+        return default(get(self._switch_data_combined, "serial_number"), get(self._hostvars, "serial_number"))
 
     @cached_property
     def underlay_routing_protocol(self):

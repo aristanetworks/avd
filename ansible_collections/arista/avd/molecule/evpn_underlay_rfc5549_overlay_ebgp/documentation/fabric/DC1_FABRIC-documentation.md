@@ -15,28 +15,28 @@
 
 ## Fabric Switches and Management IP
 
-| POD | Type | Node | Management IP | Platform | Provisioned in CloudVision |
-| --- | ---- | ---- | ------------- | -------- | -------------------------- |
-| DC1_FABRIC | l3leaf | DC1-BL1A | 192.168.200.110/24 | 7280R | Provisioned |
-| DC1_FABRIC | l3leaf | DC1-BL1B | 192.168.200.111/24 | 7280R | Provisioned |
-| DC1_FABRIC | l2leaf | DC1-L2LEAF1A | 192.168.200.112/24 | vEOS-LAB | Provisioned |
-| DC1_FABRIC | l2leaf | DC1-L2LEAF2A | 192.168.200.113/24 | vEOS-LAB | Provisioned |
-| DC1_FABRIC | l2leaf | DC1-L2LEAF2B | 192.168.200.114/24 | vEOS-LAB | Provisioned |
-| DC1_FABRIC | l3leaf | DC1-LEAF1A | 192.168.200.105/24 | 7280R | Provisioned |
-| DC1_FABRIC | l3leaf | DC1-LEAF2A | 192.168.200.106/24 | 7280R | Provisioned |
-| DC1_FABRIC | l3leaf | DC1-LEAF2B | 192.168.200.107/24 | 7280R | Provisioned |
-| DC1_FABRIC | l3leaf | DC1-LEAF3A | 192.168.200.106/24 | 7280R | Provisioned |
-| DC1_FABRIC | l3leaf | DC1-LEAF3B | 192.168.200.107/24 | 7280R | Provisioned |
-| DC1_FABRIC | l3leaf | DC1-LEAF4A | 192.168.200.106/24 | 7280R | Provisioned |
-| DC1_FABRIC | l3leaf | DC1-LEAF4B | 192.168.200.107/24 | 7280R | Provisioned |
-| DC1_FABRIC | spine | DC1-SPINE1 | 192.168.200.101/24 | vEOS-LAB | Provisioned |
-| DC1_FABRIC | spine | DC1-SPINE2 | 192.168.200.102/24 | vEOS-LAB | Provisioned |
-| DC1_FABRIC | spine | DC1-SPINE3 | 192.168.200.103/24 | vEOS-LAB | Provisioned |
-| DC1_FABRIC | spine | DC1-SPINE4 | 192.168.200.104/24 | vEOS-LAB | Provisioned |
-| DC1_FABRIC | spine | DC1-SPINE5 | 192.168.200.105/24 | vEOS-LAB | Provisioned |
-| DC1_FABRIC | spine | DC1-SPINE6 | 192.168.200.105/24 | vEOS-LAB | Provisioned |
-| DC1_FABRIC | l3leaf | DC1-SVC3A | 192.168.200.108/24 | 7280R | Provisioned |
-| DC1_FABRIC | l3leaf | DC1-SVC3B | 192.168.200.109/24 | 7280R | Provisioned |
+| POD | Type | Node | Management IP | Platform | Provisioned in CloudVision | Serial Number |
+| --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
+| DC1_FABRIC | l3leaf | DC1-BL1A | 192.168.200.110/24 | 7280R | Provisioned | - |
+| DC1_FABRIC | l3leaf | DC1-BL1B | 192.168.200.111/24 | 7280R | Provisioned | - |
+| DC1_FABRIC | l2leaf | DC1-L2LEAF1A | 192.168.200.112/24 | vEOS-LAB | Provisioned | - |
+| DC1_FABRIC | l2leaf | DC1-L2LEAF2A | 192.168.200.113/24 | vEOS-LAB | Provisioned | - |
+| DC1_FABRIC | l2leaf | DC1-L2LEAF2B | 192.168.200.114/24 | vEOS-LAB | Provisioned | - |
+| DC1_FABRIC | l3leaf | DC1-LEAF1A | 192.168.200.105/24 | 7280R | Provisioned | - |
+| DC1_FABRIC | l3leaf | DC1-LEAF2A | 192.168.200.106/24 | 7280R | Provisioned | - |
+| DC1_FABRIC | l3leaf | DC1-LEAF2B | 192.168.200.107/24 | 7280R | Provisioned | - |
+| DC1_FABRIC | l3leaf | DC1-LEAF3A | 192.168.200.106/24 | 7280R | Provisioned | - |
+| DC1_FABRIC | l3leaf | DC1-LEAF3B | 192.168.200.107/24 | 7280R | Provisioned | - |
+| DC1_FABRIC | l3leaf | DC1-LEAF4A | 192.168.200.106/24 | 7280R | Provisioned | - |
+| DC1_FABRIC | l3leaf | DC1-LEAF4B | 192.168.200.107/24 | 7280R | Provisioned | - |
+| DC1_FABRIC | spine | DC1-SPINE1 | 192.168.200.101/24 | vEOS-LAB | Provisioned | - |
+| DC1_FABRIC | spine | DC1-SPINE2 | 192.168.200.102/24 | vEOS-LAB | Provisioned | - |
+| DC1_FABRIC | spine | DC1-SPINE3 | 192.168.200.103/24 | vEOS-LAB | Provisioned | - |
+| DC1_FABRIC | spine | DC1-SPINE4 | 192.168.200.104/24 | vEOS-LAB | Provisioned | - |
+| DC1_FABRIC | spine | DC1-SPINE5 | 192.168.200.105/24 | vEOS-LAB | Provisioned | - |
+| DC1_FABRIC | spine | DC1-SPINE6 | 192.168.200.105/24 | vEOS-LAB | Provisioned | - |
+| DC1_FABRIC | l3leaf | DC1-SVC3A | 192.168.200.108/24 | 7280R | Provisioned | - |
+| DC1_FABRIC | l3leaf | DC1-SVC3B | 192.168.200.109/24 | 7280R | Provisioned | - |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 

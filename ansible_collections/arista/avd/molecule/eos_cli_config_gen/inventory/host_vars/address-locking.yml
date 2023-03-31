@@ -14,3 +14,21 @@ address_locking:
     expiration_mac_disabled: true
     ipv4_enforcement_disabled: true
     ipv6_enforcement_disabled: true
+
+ethernet_interfaces:
+  Ethernet1:
+    description: Address Locking Interface Testing 1
+    address_locking:
+      ipv4: true
+
+  Ethernet2:
+    description: Address Locking Interface Testing 2
+    address_locking:
+      ipv4: true
+      ipv6: true
+
+  Ethernet3:
+    description: Address Locking Interface Testing 3
+    address_locking:
+      ipv4: false
+      ipv6: true

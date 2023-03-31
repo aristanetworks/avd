@@ -1555,6 +1555,23 @@
             "type": "boolean",
             "title": "Snmp Trap Link Change"
           },
+          "address_locking": {
+            "type": "object",
+            "properties": {
+              "ipv4": {
+                "type": "boolean",
+                "description": "Enable address locking for IPv4",
+                "title": "IPv4"
+              },
+              "ipv6": {
+                "type": "boolean",
+                "description": "Enable address locking for IPv6",
+                "title": "IPv6"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Address Locking"
+          },
           "flowcontrol": {
             "type": "object",
             "properties": {
@@ -2856,6 +2873,18 @@
             },
             "additionalProperties": false,
             "title": "Traffic Policy"
+          },
+          "bgp": {
+            "type": "object",
+            "properties": {
+              "session_tracker": {
+                "type": "string",
+                "description": "Name of session tracker",
+                "title": "Session Tracker"
+              }
+            },
+            "additionalProperties": false,
+            "title": "BGP"
           },
           "peer": {
             "type": "string",
@@ -7768,6 +7797,18 @@
             "additionalProperties": false,
             "title": "Flow Tracker"
           },
+          "bgp": {
+            "type": "object",
+            "properties": {
+              "session_tracker": {
+                "type": "string",
+                "description": "Name of session tracker",
+                "title": "Session Tracker"
+              }
+            },
+            "additionalProperties": false,
+            "title": "BGP"
+          },
           "peer": {
             "type": "string",
             "description": "Key only used for documentation or validation purposes",
@@ -9189,6 +9230,10 @@
                 "type": "string",
                 "description": "IP prefix range\nnote: `bgp_listen_range_prefix` and `peer_filter` will be deprecated in AVD v4.0\nThese should not be mixed with the new `listen_ranges` key above to avoid conflicts.\n",
                 "title": "BGP Listen Range Prefix"
+              },
+              "session_tracker": {
+                "type": "string",
+                "title": "Session Tracker"
               }
             },
             "additionalProperties": false,
@@ -9419,6 +9464,10 @@
                 },
                 "additionalProperties": false,
                 "title": "Remove Private As Ingress"
+              },
+              "session_tracker": {
+                "type": "string",
+                "title": "Session Tracker"
               }
             },
             "additionalProperties": false,
@@ -11311,7 +11360,7 @@
               },
               "eos_cli": {
                 "type": "string",
-                "description": "Multiline EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration",
+                "description": "Multiline EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration\n",
                 "title": "EOS CLI"
               }
             },
@@ -11321,6 +11370,31 @@
             ]
           },
           "title": "VRFs"
+        },
+        "session_trackers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of session tracker",
+                "title": "Name"
+              },
+              "recovery_delay": {
+                "type": "integer",
+                "description": "Recovery delay in seconds",
+                "minimum": 1,
+                "maximum": 3600,
+                "title": "Recovery Delay"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Session Trackers"
         }
       },
       "additionalProperties": false,
@@ -15671,6 +15745,7 @@
     },
     "vrfs": {
       "type": "array",
+      "description": "These keys are ignored if the name of the vrf is 'default'\n",
       "items": {
         "type": "object",
         "properties": {
@@ -15690,6 +15765,10 @@
           "ipv6_routing": {
             "type": "boolean",
             "title": "IPv6 Routing"
+          },
+          "ip_routing_ipv6_interfaces": {
+            "type": "boolean",
+            "title": "IP Routing IPv6 Interfaces"
           },
           "tenant": {
             "type": "string",

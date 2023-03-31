@@ -15,22 +15,22 @@
 
 ## Fabric Switches and Management IP
 
-| POD | Type | Node | Management IP | Platform | Provisioned in CloudVision |
-| --- | ---- | ---- | ------------- | -------- | -------------------------- |
-| L2LS_BGP | leaf | BGP-LEAF1 | - | - | Provisioned |
-| L2LS_BGP | leaf | BGP-LEAF2 | - | - | Provisioned |
-| L2LS_BGP | l3spine | BGP-SPINE1 | - | - | Provisioned |
-| L2LS_BGP | l3spine | BGP-SPINE2 | - | - | Provisioned |
-| L2LS_ISIS | leaf | ISIS-LEAF1 | 192.168.200.105/24 | vEOS-LAB | Provisioned |
-| L2LS_ISIS | l3spine | ISIS-SPINE1 | 192.168.200.101/24 | vEOS-LAB | Provisioned |
-| L2LS_L2ONLY | leaf | L2ONLY-LEAF1 | - | - | Provisioned |
-| L2LS_L2ONLY | leaf | L2ONLY-LEAF2 | - | - | Provisioned |
-| L2LS_L2ONLY | spine | L2ONLY-SPINE1 | - | - | Provisioned |
-| L2LS_L2ONLY | spine | L2ONLY-SPINE2 | - | - | Provisioned |
-| L2LS_OSPF | leaf | OSPF-LEAF1 | - | - | Provisioned |
-| L2LS_OSPF | leaf | OSPF-LEAF2 | - | - | Provisioned |
-| L2LS_OSPF | l3spine | OSPF-SPINE1 | - | - | Provisioned |
-| L2LS_OSPF | l3spine | OSPF-SPINE2 | - | - | Provisioned |
+| POD | Type | Node | Management IP | Platform | Provisioned in CloudVision | Serial Number |
+| --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
+| L2LS_BGP | leaf | BGP-LEAF1 | - | - | Provisioned | - |
+| L2LS_BGP | leaf | BGP-LEAF2 | - | - | Provisioned | - |
+| L2LS_BGP | l3spine | BGP-SPINE1 | - | - | Provisioned | - |
+| L2LS_BGP | l3spine | BGP-SPINE2 | - | - | Provisioned | - |
+| L2LS_ISIS | leaf | ISIS-LEAF1 | 192.168.200.105/24 | vEOS-LAB | Provisioned | - |
+| L2LS_ISIS | l3spine | ISIS-SPINE1 | 192.168.200.101/24 | vEOS-LAB | Provisioned | - |
+| L2LS_L2ONLY | leaf | L2ONLY-LEAF1 | - | - | Provisioned | - |
+| L2LS_L2ONLY | leaf | L2ONLY-LEAF2 | - | - | Provisioned | - |
+| L2LS_L2ONLY | spine | L2ONLY-SPINE1 | - | - | Provisioned | - |
+| L2LS_L2ONLY | spine | L2ONLY-SPINE2 | - | - | Provisioned | - |
+| L2LS_OSPF | leaf | OSPF-LEAF1 | - | - | Provisioned | - |
+| L2LS_OSPF | leaf | OSPF-LEAF2 | - | - | Provisioned | - |
+| L2LS_OSPF | l3spine | OSPF-SPINE1 | - | - | Provisioned | - |
+| L2LS_OSPF | l3spine | OSPF-SPINE2 | - | - | Provisioned | - |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 

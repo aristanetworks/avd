@@ -317,6 +317,7 @@ interface Port-Channel3
 !
 interface Port-Channel5
    description DC1_L2LEAF1_Po1
+   bgp session tracker ST2
    switchport
    switchport trunk allowed vlan 110,201
    switchport mode trunk

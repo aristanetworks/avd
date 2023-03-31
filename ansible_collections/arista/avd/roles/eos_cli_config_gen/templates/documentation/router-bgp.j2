@@ -161,6 +161,9 @@
 {%             if peer_group.default_originate.enabled is arista.avd.defined(true) %}
 | Default originate | True |
 {%             endif %}
+{%             if peer_group.session_tracker is arista.avd.defined %}
+| Session tracker | {{ peer_group.session_tracker }} |
+{%             endif %}
 {%             if peer_group.send_community is arista.avd.defined %}
 | Send community | {{ peer_group.send_community }} |
 {%             endif %}
@@ -692,6 +695,16 @@
 {%             else %}
 | {{ vrf.name }} | {{ route_distinguisher }} | {{ redistribute | join("<br>") }} |
 {%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     if router_bgp.session_trackers is arista.avd.defined %}
+
+#### Router BGP Session Trackers
+
+| Session Tracker Name | Recovery Delay (in seconds) |
+| -------------------- | --------------------------- |
+{%         for session_tracker in router_bgp.session_trackers | arista.avd.natural_sort('name') %}
+| {{ session_tracker.name }} | {{ session_tracker.recovery_delay }} |
 {%         endfor %}
 {%     endif %}
 

@@ -18,6 +18,9 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.mtu is arista.avd.defined %}
    mtu {{ port_channel_interface.mtu }}
 {%     endif %}
+{%     if port_channel_interface.bgp.session_tracker is arista.avd.defined %}
+   bgp session tracker {{ port_channel_interface.bgp.session_tracker }}
+{%     endif %}
 {%     if port_channel_interface.type is arista.avd.defined("routed") %}
    no switchport
 {%     elif port_channel_interface.type | arista.avd.default in ['l3dot1q', 'l2dot1q'] %}

@@ -239,6 +239,7 @@ sFlow is disabled.
 interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet1
    mtu 1500
+   bgp session tracker ST1
    no switchport
    ip address 172.31.255.1/31
    bfd interval 500 min-rx 500 multiplier 5

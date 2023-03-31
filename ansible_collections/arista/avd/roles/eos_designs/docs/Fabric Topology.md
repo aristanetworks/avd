@@ -856,6 +856,7 @@ default_interfaces:
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "node_type.defaults.platform") | String |  |  |  | Arista platform family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "node_type.defaults.mac_address") | String |  |  |  | Leverage to document management interface mac address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;system_mac_address</samp>](## "node_type.defaults.system_mac_address") | String |  |  |  | System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".<br>Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set directly as a hostvar.<br>If both are set, the setting under "Fabric Topology" takes precedence.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;serial_number</samp>](## "node_type.defaults.serial_number") | String |  |  |  | Set to the Serial Number of the device<br>For  now only used for documentation purpose in the fabric documentation<br>and part of the structured_config<br>"serial_number" can also be set directly as a hostvar.<br>If both are set, the setting under "Fabric Topology" takes precedence.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "node_type.defaults.rack") | String |  |  |  | Rack that the switch is located in (only used in snmp_settings location). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "node_type.defaults.mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv4 address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_ip</samp>](## "node_type.defaults.ipv6_mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv6 address. |
@@ -877,6 +878,7 @@ default_interfaces:
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "node_type.node_groups.[].platform") | String |  |  |  | Arista platform family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "node_type.node_groups.[].mac_address") | String |  |  |  | Leverage to document management interface mac address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system_mac_address</samp>](## "node_type.node_groups.[].system_mac_address") | String |  |  |  | System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".<br>Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set directly as a hostvar.<br>If both are set, the setting under "Fabric Topology" takes precedence.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;serial_number</samp>](## "node_type.node_groups.[].serial_number") | String |  |  |  | Set to the Serial Number of the device<br>For  now only used for documentation purpose in the fabric documentation<br>and part of the structured_config<br>"serial_number" can also be set directly as a hostvar.<br>If both are set, the setting under "Fabric Topology" takes precedence.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "node_type.node_groups.[].rack") | String |  |  |  | Rack that the switch is located in (only used in snmp_settings location). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "node_type.node_groups.[].mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv4 address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_ip</samp>](## "node_type.node_groups.[].ipv6_mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv6 address. |
@@ -898,6 +900,7 @@ default_interfaces:
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "node_type.node_groups.[].nodes.[].platform") | String |  |  |  | Arista platform family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "node_type.node_groups.[].nodes.[].mac_address") | String |  |  |  | Leverage to document management interface mac address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system_mac_address</samp>](## "node_type.node_groups.[].nodes.[].system_mac_address") | String |  |  |  | System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".<br>Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set directly as a hostvar.<br>If both are set, the setting under "Fabric Topology" takes precedence.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;serial_number</samp>](## "node_type.node_groups.[].nodes.[].serial_number") | String |  |  |  | Set to the Serial Number of the device<br>For  now only used for documentation purpose in the fabric documentation<br>and part of the structured_config<br>"serial_number" can also be set directly as a hostvar.<br>If both are set, the setting under "Fabric Topology" takes precedence.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "node_type.node_groups.[].nodes.[].rack") | String |  |  |  | Rack that the switch is located in (only used in snmp_settings location). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "node_type.node_groups.[].nodes.[].mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv4 address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_ip</samp>](## "node_type.node_groups.[].nodes.[].ipv6_mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv6 address. |
@@ -919,6 +922,7 @@ default_interfaces:
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "node_type.nodes.[].platform") | String |  |  |  | Arista platform family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "node_type.nodes.[].mac_address") | String |  |  |  | Leverage to document management interface mac address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system_mac_address</samp>](## "node_type.nodes.[].system_mac_address") | String |  |  |  | System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".<br>Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set directly as a hostvar.<br>If both are set, the setting under "Fabric Topology" takes precedence.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;serial_number</samp>](## "node_type.nodes.[].serial_number") | String |  |  |  | Set to the Serial Number of the device<br>For  now only used for documentation purpose in the fabric documentation<br>and part of the structured_config<br>"serial_number" can also be set directly as a hostvar.<br>If both are set, the setting under "Fabric Topology" takes precedence.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "node_type.nodes.[].rack") | String |  |  |  | Rack that the switch is located in (only used in snmp_settings location). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "node_type.nodes.[].mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv4 address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_ip</samp>](## "node_type.nodes.[].ipv6_mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv6 address. |
@@ -941,6 +945,7 @@ default_interfaces:
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "&lt;node_type_keys.key&gt;.defaults.platform") | String |  |  |  | Arista platform family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "&lt;node_type_keys.key&gt;.defaults.mac_address") | String |  |  |  | Leverage to document management interface mac address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;system_mac_address</samp>](## "&lt;node_type_keys.key&gt;.defaults.system_mac_address") | String |  |  |  | System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".<br>Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set directly as a hostvar.<br>If both are set, the setting under "Fabric Topology" takes precedence.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;serial_number</samp>](## "&lt;node_type_keys.key&gt;.defaults.serial_number") | String |  |  |  | Set to the Serial Number of the device<br>For  now only used for documentation purpose in the fabric documentation<br>and part of the structured_config<br>"serial_number" can also be set directly as a hostvar.<br>If both are set, the setting under "Fabric Topology" takes precedence.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "&lt;node_type_keys.key&gt;.defaults.rack") | String |  |  |  | Rack that the switch is located in (only used in snmp_settings location). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "&lt;node_type_keys.key&gt;.defaults.mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv4 address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_ip</samp>](## "&lt;node_type_keys.key&gt;.defaults.ipv6_mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv6 address. |
@@ -962,6 +967,7 @@ default_interfaces:
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].platform") | String |  |  |  | Arista platform family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].mac_address") | String |  |  |  | Leverage to document management interface mac address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system_mac_address</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].system_mac_address") | String |  |  |  | System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".<br>Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set directly as a hostvar.<br>If both are set, the setting under "Fabric Topology" takes precedence.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;serial_number</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].serial_number") | String |  |  |  | Set to the Serial Number of the device<br>For  now only used for documentation purpose in the fabric documentation<br>and part of the structured_config<br>"serial_number" can also be set directly as a hostvar.<br>If both are set, the setting under "Fabric Topology" takes precedence.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].rack") | String |  |  |  | Rack that the switch is located in (only used in snmp_settings location). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv4 address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_ip</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].ipv6_mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv6 address. |
@@ -983,6 +989,7 @@ default_interfaces:
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].nodes.[].platform") | String |  |  |  | Arista platform family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].nodes.[].mac_address") | String |  |  |  | Leverage to document management interface mac address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system_mac_address</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].nodes.[].system_mac_address") | String |  |  |  | System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".<br>Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set directly as a hostvar.<br>If both are set, the setting under "Fabric Topology" takes precedence.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;serial_number</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].nodes.[].serial_number") | String |  |  |  | Set to the Serial Number of the device<br>For  now only used for documentation purpose in the fabric documentation<br>and part of the structured_config<br>"serial_number" can also be set directly as a hostvar.<br>If both are set, the setting under "Fabric Topology" takes precedence.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].nodes.[].rack") | String |  |  |  | Rack that the switch is located in (only used in snmp_settings location). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].nodes.[].mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv4 address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_ip</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].nodes.[].ipv6_mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv6 address. |
@@ -1004,6 +1011,7 @@ default_interfaces:
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].platform") | String |  |  |  | Arista platform family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].mac_address") | String |  |  |  | Leverage to document management interface mac address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system_mac_address</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].system_mac_address") | String |  |  |  | System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".<br>Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set directly as a hostvar.<br>If both are set, the setting under "Fabric Topology" takes precedence.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;serial_number</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].serial_number") | String |  |  |  | Set to the Serial Number of the device<br>For  now only used for documentation purpose in the fabric documentation<br>and part of the structured_config<br>"serial_number" can also be set directly as a hostvar.<br>If both are set, the setting under "Fabric Topology" takes precedence.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].rack") | String |  |  |  | Rack that the switch is located in (only used in snmp_settings location). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mgmt_ip</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv4 address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_mgmt_ip</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].ipv6_mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv6 address. |
@@ -1030,6 +1038,7 @@ default_interfaces:
         platform: <str>
         mac_address: <str>
         system_mac_address: <str>
+        serial_number: <str>
         rack: <str>
         mgmt_ip: <str>
         ipv6_mgmt_ip: <str>
@@ -1051,6 +1060,7 @@ default_interfaces:
           platform: <str>
           mac_address: <str>
           system_mac_address: <str>
+          serial_number: <str>
           rack: <str>
           mgmt_ip: <str>
           ipv6_mgmt_ip: <str>
@@ -1072,6 +1082,7 @@ default_interfaces:
               platform: <str>
               mac_address: <str>
               system_mac_address: <str>
+              serial_number: <str>
               rack: <str>
               mgmt_ip: <str>
               ipv6_mgmt_ip: <str>
@@ -1093,6 +1104,7 @@ default_interfaces:
           platform: <str>
           mac_address: <str>
           system_mac_address: <str>
+          serial_number: <str>
           rack: <str>
           mgmt_ip: <str>
           ipv6_mgmt_ip: <str>
@@ -1115,6 +1127,7 @@ default_interfaces:
         platform: <str>
         mac_address: <str>
         system_mac_address: <str>
+        serial_number: <str>
         rack: <str>
         mgmt_ip: <str>
         ipv6_mgmt_ip: <str>
@@ -1136,6 +1149,7 @@ default_interfaces:
           platform: <str>
           mac_address: <str>
           system_mac_address: <str>
+          serial_number: <str>
           rack: <str>
           mgmt_ip: <str>
           ipv6_mgmt_ip: <str>
@@ -1157,6 +1171,7 @@ default_interfaces:
               platform: <str>
               mac_address: <str>
               system_mac_address: <str>
+              serial_number: <str>
               rack: <str>
               mgmt_ip: <str>
               ipv6_mgmt_ip: <str>
@@ -1178,6 +1193,7 @@ default_interfaces:
           platform: <str>
           mac_address: <str>
           system_mac_address: <str>
+          serial_number: <str>
           rack: <str>
           mgmt_ip: <str>
           ipv6_mgmt_ip: <str>
