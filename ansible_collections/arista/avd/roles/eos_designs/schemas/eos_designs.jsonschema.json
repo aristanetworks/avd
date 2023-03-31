@@ -1664,9 +1664,8 @@
       "title": "Underlay IPv6"
     },
     "underlay_isis_instance_name": {
-      "description": "Additional underlay ISIS parameters",
+      "description": "Default -> \"EVPN_UNDERLAY\" for l3ls, \"CORE\" for mpls",
       "type": "string",
-      "default": "EVPN_UNDERLAY",
       "title": "Underlay ISIS Instance Name"
     },
     "underlay_multicast": {

@@ -7,8 +7,5 @@ keys:
     documentation_options:
       filename: Fabric Variables
       table: ISIS Settings
-    description: Additional underlay ISIS parameters
+    description: Default -> "EVPN_UNDERLAY" for l3ls, "CORE" for mpls
     type: str
-    default: "EVPN_UNDERLAY"
-  # TODO
-  # default -> "EVPN_UNDERLAY" for l3ls, "CORE" for mpls
