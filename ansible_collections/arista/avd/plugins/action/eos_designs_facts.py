@@ -46,7 +46,7 @@ class ActionModule(ActionBase):
         if fabric_name is None or not set(ansible_play_hosts_all).issubset(fabric_hosts):
             raise AnsibleActionFail(
                 "Invalid/missing 'fabric_name' variable."
-                "All hosts in the play must have the same 'fabric_name' value"
+                "All hosts in the play must have the same 'fabric_name' value "
                 "which must point to an Ansible Group containing the hosts."
             )
 
