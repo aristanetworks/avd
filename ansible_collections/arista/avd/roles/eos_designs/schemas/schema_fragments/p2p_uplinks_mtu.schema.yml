@@ -11,6 +11,6 @@ keys:
     type: int
     convert_types:
       - str
-    min: 0
-    max: 9216
+    min: 68
+    max: 65535
     default: 9000
