@@ -175,7 +175,7 @@
       "title": "EVPN Overlay BGP Rtc"
     },
     "evpn_prevent_readvertise_to_server": {
-      "description": "Configure route-map on eBGP sessions towards route-servers, where prefixes with the peer's ASN in the AS Path are filtered away.\nThis is very useful in very large scale networks, where convergence will be quicker by not having to return all updates received\nfrom Route-server-1 to Router-server-2 just for Route-server-2 to throw them away because of AS Path loop detection.\n",
+      "description": "Configure route-map on eBGP sessions towards route-servers, where prefixes with the peer's ASN in the AS Path are filtered away.\nThis is very useful in large-scale networks, where convergence will be quicker by not returning all updates received\nfrom Route-server-1 to Router-server-2 just for Route-server-2 to throw them away because of AS Path loop detection.\n",
       "type": "boolean",
       "default": false,
       "title": "EVPN Prevent Readvertise To Server"
