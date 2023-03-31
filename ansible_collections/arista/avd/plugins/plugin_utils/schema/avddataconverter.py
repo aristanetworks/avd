@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Generator
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AvdConversionWarning, AvdDeprecationWarning
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AvdConversionWarning, AvdDeprecationWarning
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all
 
 SCHEMA_TO_PY_TYPE_MAP = {
@@ -32,9 +32,12 @@ class AvdDataConverter:
     def __init__(self, avdschema):
         self._avdschema = avdschema
 
+        # We run through all the regular keys first, to ensure that all data has been converted
+        # in case some of it is referenced in "dynamic_keys" below
         self.converters = {
             "items": self.convert_items,
             "keys": self.convert_keys,
+            "dynamic_keys": self.convert_dynamic_keys,
             "deprecation": self.deprecation,
         }
 
@@ -45,14 +48,7 @@ class AvdDataConverter:
         """
         if schema is None:
             # Get fully resolved schema (where all $ref has been expanded recursively)
-            # Performs inplace update of the argument so we give an empty dict.
-            # By default it will resolve the full schema
-            schema = {}
-            resolve_errors = self._avdschema.resolve(schema)
-            for resolve_error in resolve_errors:
-                if isinstance(resolve_error, Exception):
-                    # TODO: Raise/yield multiple errors
-                    raise AristaAvdError(resolve_error)
+            schema = self._avdschema.resolved_schema
 
         if path is None:
             path = []
@@ -72,8 +68,6 @@ class AvdDataConverter:
         if not isinstance(data, dict):
             return
 
-        # We run through all the regular keys first, to ensure that all data has been converted
-        # in case some of it is referenced in "dynamic_keys" below
         for key, childschema in keys.items():
             if key not in data:
                 # Skip key since there is nothing to convert if the key is not set in data
@@ -85,25 +79,23 @@ class AvdDataConverter:
 
             yield from self.convert_data(data[key], childschema, path + [key])
 
-        # Compile "dynamic_keys"
-        dynamic_keys = {}
-        schema_dynamic_keys = schema.get("dynamic_keys", {})
-        for dynamic_key, childschema in schema_dynamic_keys.items():
+    def convert_dynamic_keys(self, dynamic_keys: dict, data: dict, schema: dict, path: list[str]):
+        """
+        This function resolves "dynamic_keys" by looking in the actual data.
+        Then calls convert_keys to performs conversion on each resolved key with the relevant subschema
+        """
+        if not isinstance(data, dict):
+            return
+
+        # Resolve "keys" from schema "dynamic_keys" by looking for the dynamic key in data.
+        keys = {}
+        for dynamic_key, childschema in dynamic_keys.items():
             resolved_keys = get_all(data, dynamic_key)
             for resolved_key in resolved_keys:
-                dynamic_keys.setdefault(resolved_key, childschema)
+                keys.setdefault(resolved_key, childschema)
 
-        for key, childschema in dynamic_keys.items():
-            if key not in data:
-                # Skip key since there is nothing to convert if the key is not set in data
-                continue
-
-            # Perform type conversion of the data for the child key if required based on "convert_types"
-            if "convert_types" in childschema:
-                yield from self.convert_types(childschema["convert_types"], data, key, childschema, path + [key])
-
-            # Dive in to child keys/schemas
-            yield from self.convert_data(data[key], childschema, path + [key])
+        # Reuse convert_keys to perform the actual conversion on the resolved dynamic keys
+        yield from self.convert_keys(keys, data, schema, path)
 
     def convert_items(self, items: dict, data: list, schema: dict, path: list[str]):
         """
