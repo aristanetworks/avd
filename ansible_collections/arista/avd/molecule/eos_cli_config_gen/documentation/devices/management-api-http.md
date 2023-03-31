@@ -5,6 +5,8 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [Management API HTTP](#management-api-http)
+- [ACL](#acl)
+  - [Standard Access-lists](#standard-access-lists)
 
 ## Management
 
@@ -69,4 +71,26 @@ management api http-commands
    vrf MGMT
       no shutdown
       ip access-group ACL-API
+```
+
+## ACL
+
+### Standard Access-lists
+
+#### Standard Access-lists Summary
+
+##### ACL-API
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit 10.0.0.0/8 |
+| 20 | permit 100.0.0.0/8 |
+
+#### Standard Access-lists Device Configuration
+
+```eos
+!
+ip access-list standard ACL-API
+   10 permit 10.0.0.0/8
+   20 permit 100.0.0.0/8
 ```
