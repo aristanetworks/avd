@@ -39,8 +39,8 @@ ztp:
   general:
     subnets:
 {% if ztp_network_summary is arista.avd.defined %}
-      - network: {{ ztp_network_summary | ansible.netcommon.ipaddr('network') }}
-        netmask: {{ ztp_network_summary | ansible.netcommon.ipaddr('netmask') }}
+      - network: {{ ztp_network_summary | ansible.utils.ipaddr('network') }}
+        netmask: {{ ztp_network_summary | ansible.utils.ipaddr('netmask') }}
 {% endif %}
 {% if hostvars[groups[fabric_group][0]]['mgmt_gateway'] is arista.avd.defined %}
         gateway: {{ hostvars[groups[fabric_group][0]]['mgmt_gateway'] }}
@@ -67,7 +67,7 @@ ztp:
 {%             if node_types[node_type]['node_groups'][node_group]['nodes'][node].mac_address is arista.avd.defined %}
     - name: {{ node }}
       mac: '{{ node_types[node_type]['node_groups'][node_group]['nodes'][node].mac_address }}'
-      ip4: {{ node_types[node_type]['node_groups'][node_group]['nodes'][node].mgmt_ip | ansible.netcommon.ipaddr('address') }}
+      ip4: {{ node_types[node_type]['node_groups'][node_group]['nodes'][node].mgmt_ip | ansible.utils.ipaddr('address') }}
 {%             endif %}
 {%         endfor %}
 {%     endfor %}
@@ -76,7 +76,7 @@ ztp:
 {%         if node_types[node_type]['nodes'][node].mac_address is arista.avd.defined %}
     - name: {{ node }}
       mac: '{{ node_types[node_type]['nodes'][node].mac_address }}'
-      ip4: {{ node_types[node_type]['nodes'][node].mgmt_ip | ansible.netcommon.ipaddr('address') }}
+      ip4: {{ node_types[node_type]['nodes'][node].mgmt_ip | ansible.utils.ipaddr('address') }}
 {%         endif %}
 {%     endfor %}
 {% endfor %}
