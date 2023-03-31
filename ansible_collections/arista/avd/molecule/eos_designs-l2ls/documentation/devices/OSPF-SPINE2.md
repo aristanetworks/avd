@@ -377,10 +377,10 @@ ip route 10.0.0.0/8 10.1.100.100
 
 #### Router OSPF Router Redistribution
 
-| Process ID | Source Protocol | Route Map |
-| ---------- | --------------- | --------- |
-| 100 | connected | - |
-| 100 | static | - |
+| Process ID | Source Protocol | Include Leaked | Route Map |
+| ---------- | --------------- | -------------- | --------- |
+| 100 | connected | disabled | - |
+| 100 | static | disabled | - |
 
 #### OSPF Interfaces
 

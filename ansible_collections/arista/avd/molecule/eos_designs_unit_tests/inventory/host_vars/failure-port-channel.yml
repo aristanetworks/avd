@@ -1,0 +1,31 @@
+---
+# Minimum config to only test the specific feature.
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.42.0.0/24
+    bgp_as: 42
+    vtep_loopback_ipv4_pool: 10.43.0.0/24
+  nodes:
+    failure-port-channel:
+      id: 42
+
+type: l3leaf
+
+servers:
+  server1:
+    adapters:
+      - switch_ports: [Ethernet1]
+        switches: [failure-port-channel]
+        port_channel:
+          description: Description1
+          mode: active
+          channel_id: 42
+      - switch_ports: [Ethernet2]
+        switches: [failure-port-channel]
+        port_channel:
+          description: Description2
+          mode: active
+          channel_id: 42
+
+
+expected_error_message: "Duplicate port-channel name Port-Channel42 with conflicting configurations found while generating port-channels for connected-endpoints or network-ports"

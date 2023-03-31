@@ -1,6 +1,6 @@
 ---
 - name: Converge
-  hosts: all
+  hosts: EOS_DESIGNS_UNIT_TESTS
   gather_facts: false
   connection: local
   tasks:
@@ -9,3 +9,20 @@
       delegate_to: 127.0.0.1
       ansible.builtin.import_role:
         name: arista.avd.eos_designs
+
+- name: Converge Negative tests
+  hosts: EOS_DESIGNS_FAILURES
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_designs
+      rescue:
+        - name: Assert eos_designs failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message
