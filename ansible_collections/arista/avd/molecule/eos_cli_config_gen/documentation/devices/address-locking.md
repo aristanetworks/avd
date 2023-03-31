@@ -45,7 +45,7 @@ interface Management1
 
 ### Address Locking Summary
 
-| Settings | Value |
+| Setting | Value |
 | -------- | ----- |
 | Disable IP locking on configured ports | True |
 | Local Interface | Loopback0 |
