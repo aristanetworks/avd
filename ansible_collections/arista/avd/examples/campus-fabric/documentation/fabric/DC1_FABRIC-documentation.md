@@ -15,18 +15,18 @@
 
 ## Fabric Switches and Management IP
 
-| POD | Type | Node | Management IP | Platform | Provisioned in CloudVision |
-| --- | ---- | ---- | ------------- | -------- | -------------------------- |
-| DC1_FABRIC | leaf | LEAF1A | 172.100.100.103/24 | cEOSLab | Provisioned |
-| DC1_FABRIC | leaf | LEAF1B | 172.100.100.104/24 | cEOSLab | Provisioned |
-| DC1_FABRIC | leaf | LEAF2A | 172.100.100.105/24 | cEOSLab | Provisioned |
-| DC1_FABRIC | leaf | LEAF3A | 172.100.100.106/24 | cEOSLab | Provisioned |
-| DC1_FABRIC | leaf | LEAF3B | 172.100.100.107/24 | cEOSLab | Provisioned |
-| DC1_FABRIC | leaf | LEAF3C | 172.100.100.108/24 | cEOSLab | Provisioned |
-| DC1_FABRIC | leaf | LEAF3D | 172.100.100.109/24 | cEOSLab | Provisioned |
-| DC1_FABRIC | leaf | LEAF3E | 172.100.100.110/24 | cEOSLab | Provisioned |
-| DC1_FABRIC | l3spine | SPINE1 | 172.100.100.101/24 | cEOSLab | Provisioned |
-| DC1_FABRIC | l3spine | SPINE2 | 172.100.100.102/24 | cEOSLab | Provisioned |
+| POD | Type | Node | Management IP | Platform | Provisioned in CloudVision | Serial Number |
+| --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
+| DC1_FABRIC | leaf | LEAF1A | 172.100.100.103/24 | cEOSLab | Provisioned | - |
+| DC1_FABRIC | leaf | LEAF1B | 172.100.100.104/24 | cEOSLab | Provisioned | - |
+| DC1_FABRIC | leaf | LEAF2A | 172.100.100.105/24 | cEOSLab | Provisioned | - |
+| DC1_FABRIC | leaf | LEAF3A | 172.100.100.106/24 | cEOSLab | Provisioned | - |
+| DC1_FABRIC | leaf | LEAF3B | 172.100.100.107/24 | cEOSLab | Provisioned | - |
+| DC1_FABRIC | leaf | LEAF3C | 172.100.100.108/24 | cEOSLab | Provisioned | - |
+| DC1_FABRIC | leaf | LEAF3D | 172.100.100.109/24 | cEOSLab | Provisioned | - |
+| DC1_FABRIC | leaf | LEAF3E | 172.100.100.110/24 | cEOSLab | Provisioned | - |
+| DC1_FABRIC | l3spine | SPINE1 | 172.100.100.101/24 | cEOSLab | Provisioned | - |
+| DC1_FABRIC | l3spine | SPINE2 | 172.100.100.102/24 | cEOSLab | Provisioned | - |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 

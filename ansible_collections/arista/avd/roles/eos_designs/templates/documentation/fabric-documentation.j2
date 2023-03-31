@@ -25,6 +25,7 @@
 {%         set fabric_switch.inband_management_ip = node_facts.switch.inband_management_ip | arista.avd.default(none) %}
 {%         set fabric_switch.platform = node_facts.switch.platform | arista.avd.default('-') %}
 {%         set fabric_switch.provisioned = 'Not Available' if node_hostvars.is_deployed is arista.avd.defined(false) else 'Provisioned' %}
+{%         set fabric_switch.serial_number = node_facts.switch.serial_number | arista.avd.default("-") %}
 {%         if node_hostvars.loopback_interfaces is arista.avd.defined %}
 {%             set loopback0 = (node_hostvars.loopback_interfaces | arista.avd.convert_dicts("name") | selectattr("name", "arista.avd.defined", "Loopback0"))[0] | arista.avd.default %}
 {%             if loopback0.ip_address is arista.avd.defined %}
@@ -88,10 +89,10 @@
 
 ## Fabric Switches and Management IP
 
-| POD | Type | Node | Management IP | Platform | Provisioned in CloudVision |
-| --- | ---- | ---- | ------------- | -------- | -------------------------- |
+| POD | Type | Node | Management IP | Platform | Provisioned in CloudVision | Serial Number |
+| --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
 {% for fabric_switch in fabric_switches %}
-| {{ fabric_switch.pod }} | {{ fabric_switch.type }} | {{ fabric_switch.node }} | {{ fabric_switch.mgmt_ip }} | {{ fabric_switch.platform }} | {{ fabric_switch.provisioned }} |
+| {{ fabric_switch.pod }} | {{ fabric_switch.type }} | {{ fabric_switch.node }} | {{ fabric_switch.mgmt_ip }} | {{ fabric_switch.platform }} | {{ fabric_switch.provisioned }} | {{ fabric_switch.serial_number }} |
 {% endfor %}
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
