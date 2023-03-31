@@ -1639,6 +1639,8 @@ MAC address (hh:hh:hh:hh:hh:hh)
 
 ## VRFs
 
+These keys are ignored if the name of the vrf is 'default'
+
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

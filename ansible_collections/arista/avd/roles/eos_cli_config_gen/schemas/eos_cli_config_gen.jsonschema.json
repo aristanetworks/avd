@@ -15688,6 +15688,7 @@
     },
     "vrfs": {
       "type": "array",
+      "description": "These keys are ignored if the name of the vrf is 'default'\n",
       "items": {
         "type": "object",
         "properties": {
