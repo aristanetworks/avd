@@ -1210,6 +1210,16 @@
             "type": "object",
             "description": "Override ip_addressing templates.",
             "properties": {
+              "python_module": {
+                "type": "string",
+                "description": "Python Module to import for IP addressing - default inherited from templates.ip_addressing.python_module",
+                "title": "Python Module"
+              },
+              "python_class_name": {
+                "type": "string",
+                "description": "Name of Python Class to import for IP addressing  - default inherited from templates.ip_addressing.python_class_name",
+                "title": "Python Class Name"
+              },
               "router_id": {
                 "type": "string",
                 "description": "Path to J2 template - default inherited from templates.ip_addressing.router_id.",
@@ -1278,6 +1288,16 @@
             "type": "object",
             "description": "Override interface_descriptions templates\nIf description templates use Jinja2, they have to strip whitespaces using {%- -%} on any code blocks.\n",
             "properties": {
+              "python_module": {
+                "type": "string",
+                "description": "Python Module to import for interface descriptions - default inherited from templates.interface_descriptions.python_module",
+                "title": "Python Module"
+              },
+              "python_class_name": {
+                "type": "string",
+                "description": "Name of Python Class to import for interface descriptions - default inherited from templates.interface_descriptions.python_class_name",
+                "title": "Python Class Name"
+              },
               "underlay_ethernet_interfaces": {
                 "type": "string",
                 "description": "Path to J2 template - default inherited from templates.interface_descriptions.underlay_ethernet_interfaces.",

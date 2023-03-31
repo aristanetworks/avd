@@ -1660,6 +1660,14 @@ keys:
           type: dict
           description: Override ip_addressing templates.
           keys:
+            python_module:
+              type: str
+              description: Python Module to import for IP addressing - default inherited
+                from templates.ip_addressing.python_module
+            python_class_name:
+              type: str
+              description: Name of Python Class to import for IP addressing  - default
+                inherited from templates.ip_addressing.python_class_name
             router_id:
               type: str
               description: Path to J2 template - default inherited from templates.ip_addressing.router_id.
@@ -1705,6 +1713,14 @@ keys:
 
             '
           keys:
+            python_module:
+              type: str
+              description: Python Module to import for interface descriptions - default
+                inherited from templates.interface_descriptions.python_module
+            python_class_name:
+              type: str
+              description: Name of Python Class to import for interface descriptions
+                - default inherited from templates.interface_descriptions.python_class_name
             underlay_ethernet_interfaces:
               type: str
               description: Path to J2 template - default inherited from templates.interface_descriptions.underlay_ethernet_interfaces.
