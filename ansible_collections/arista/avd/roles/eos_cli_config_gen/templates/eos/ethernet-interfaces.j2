@@ -60,6 +60,9 @@ interface {{ ethernet_interface.name }}
    l2 mtu {{ ethernet_interface.l2_mtu }}
 {%         endif %}
 {%     endif %}
+{%     if ethernet_interface.bgp.session_tracker is arista.avd.defined %}
+   bgp session tracker {{ ethernet_interface.bgp.session_tracker }}
+{%     endif %}
 {%     if ethernet_interface.mac_security.profile is arista.avd.defined %}
    mac security profile {{ ethernet_interface.mac_security.profile }}
 {%     endif %}

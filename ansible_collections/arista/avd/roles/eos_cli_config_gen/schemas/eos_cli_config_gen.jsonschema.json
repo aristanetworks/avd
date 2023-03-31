@@ -2874,6 +2874,18 @@
             "additionalProperties": false,
             "title": "Traffic Policy"
           },
+          "bgp": {
+            "type": "object",
+            "properties": {
+              "session_tracker": {
+                "type": "string",
+                "description": "Name of session tracker",
+                "title": "Session Tracker"
+              }
+            },
+            "additionalProperties": false,
+            "title": "BGP"
+          },
           "peer": {
             "type": "string",
             "description": "Key only used for documentation or validation purposes",
@@ -7785,6 +7797,18 @@
             "additionalProperties": false,
             "title": "Flow Tracker"
           },
+          "bgp": {
+            "type": "object",
+            "properties": {
+              "session_tracker": {
+                "type": "string",
+                "description": "Name of session tracker",
+                "title": "Session Tracker"
+              }
+            },
+            "additionalProperties": false,
+            "title": "BGP"
+          },
           "peer": {
             "type": "string",
             "description": "Key only used for documentation or validation purposes",
@@ -9206,6 +9230,10 @@
                 "type": "string",
                 "description": "IP prefix range\nnote: `bgp_listen_range_prefix` and `peer_filter` will be deprecated in AVD v4.0\nThese should not be mixed with the new `listen_ranges` key above to avoid conflicts.\n",
                 "title": "BGP Listen Range Prefix"
+              },
+              "session_tracker": {
+                "type": "string",
+                "title": "Session Tracker"
               }
             },
             "additionalProperties": false,
@@ -9436,6 +9464,10 @@
                 },
                 "additionalProperties": false,
                 "title": "Remove Private As Ingress"
+              },
+              "session_tracker": {
+                "type": "string",
+                "title": "Session Tracker"
               }
             },
             "additionalProperties": false,
@@ -11328,7 +11360,7 @@
               },
               "eos_cli": {
                 "type": "string",
-                "description": "Multiline EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration",
+                "description": "Multiline EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration\n",
                 "title": "EOS CLI"
               }
             },
@@ -11338,6 +11370,31 @@
             ]
           },
           "title": "VRFs"
+        },
+        "session_trackers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of session tracker",
+                "title": "Name"
+              },
+              "recovery_delay": {
+                "type": "integer",
+                "description": "Recovery delay in seconds",
+                "minimum": 1,
+                "maximum": 3600,
+                "title": "Recovery Delay"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Session Trackers"
         }
       },
       "additionalProperties": false,

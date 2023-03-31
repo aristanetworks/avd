@@ -19,6 +19,8 @@ port_channel_interfaces:
       unknown_unicast:
         level: 1
         unit: percent
+    bgp:
+      session_tracker: ST2
     eos_cli: |
       comment
       Comment created from eos_cli under port_channel_interfaces.Port-Channel5
