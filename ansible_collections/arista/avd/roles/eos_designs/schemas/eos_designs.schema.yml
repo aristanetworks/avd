@@ -285,6 +285,9 @@ keys:
       table: ISIS Settings
     type: str
     default: '49.0001'
+    convert_types:
+    - int
+    - float
   isis_default_circuit_type:
     documentation_options:
       filename: Fabric Variables
