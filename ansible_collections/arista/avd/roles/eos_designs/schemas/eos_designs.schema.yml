@@ -2,6 +2,53 @@ $id: eos_designs
 type: dict
 allow_other_keys: true
 keys:
+  cvp_ingestauth_key:
+    documentation_options:
+      filename: Management Settings
+      table: CloudVision Settings
+    type: str
+    description: CloudVision ingest authentication key is required for on-prem CVP
+  cvp_instance_ip:
+    documentation_options:
+      filename: Management Settings
+      table: CloudVision Settings
+    type: str
+    description: 'IPv4 address.
+
+      CloudVision - Telemetry Agent (TerminAttr) configuration is optional
+
+      You can either provide a list of IPs to target on-premise CloudVision cluster
+      or
+
+      use DNS name for your CloudVision as a Service instance. If you have both on-prem
+      and
+
+      CVaaS defined, only on-prem is going to be configured.'
+  cvp_instance_ips:
+    documentation_options:
+      filename: Management Settings
+      table: CloudVision Settings
+    type: list
+    description: 'You can either provide a list of IPs to target on-premise CloudVision
+      cluster or
+
+      use DNS name for your CloudVision as a Service instance. If you have both on-prem
+      and
+
+      CVaaS defined, only on-prem is going to be configured.
+
+      '
+    items:
+      type: str
+      description: IPv4 address or CV as a Service hostname
+  cvp_token_file:
+    documentation_options:
+      filename: Management Settings
+      table: CloudVision Settings
+    type: str
+    default: /tmp/cv-onboarding-token
+    description: cvp_token_file is the path to the token file on the switch and is
+      only applicable to CV as a Service
   default_interfaces:
     type: list
     documentation_options:
@@ -1908,6 +1955,33 @@ keys:
         valid_values:
         - sso
         - rpr
+  terminattr_disable_aaa:
+    documentation_options:
+      filename: Management Settings
+      table: CloudVision Settings
+    type: bool
+    default: false
+  terminattr_ingestexclude:
+    documentation_options:
+      filename: Management Settings
+      table: CloudVision Settings
+    type: str
+    default: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+  terminattr_ingestgrpcurl_port:
+    documentation_options:
+      filename: Management Settings
+      table: CloudVision Settings
+    type: int
+    convert_types:
+    - str
+    default: 9910
+    description: Port number for Terminattr ingest GRPC
+  terminattr_smashexcludes:
+    documentation_options:
+      filename: Management Settings
+      table: CloudVision Settings
+    type: str
+    default: ale,flexCounter,hardware,kni,pulse,strata
   type:
     documentation_options:
       filename: Fabric Topology
