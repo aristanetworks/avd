@@ -47,6 +47,7 @@ cvp_instance_ips:
   - < IPv4 address >
   - < IPv4 address >
   - < CV as a Service hostname >
+
 # On-premise CVP ingest auth key | Optional
 # If set, terminattr will be configured with key-based authentication for on-premise CVP.
 # If not set, terminattr will be configured with certificate based authentication using token-secure onboarding.
