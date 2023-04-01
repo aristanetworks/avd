@@ -7,7 +7,13 @@ keys:
       filename: Management Settings
       table: CloudVision Settings
     type: str
-    description: CloudVision ingest authentication key is required for on-prem CVP
+    description: 'On-premise CVP ingest auth key. If set, terminattr will be configured
+      with key-based authentication for on-premise CVP.
+
+      If not set, terminattr will be configured with certificate based authentication
+      using token-secure onboarding.
+
+      Token must be copied to the device first.'
   cvp_instance_ip:
     documentation_options:
       filename: Management Settings

@@ -3,7 +3,7 @@
   "properties": {
     "cvp_ingestauth_key": {
       "type": "string",
-      "description": "CloudVision ingest authentication key is required for on-prem CVP",
+      "description": "On-premise CVP ingest auth key. If set, terminattr will be configured with key-based authentication for on-premise CVP.\nIf not set, terminattr will be configured with certificate based authentication using token-secure onboarding.\nToken must be copied to the device first.",
       "title": "CVP Ingestauth Key"
     },
     "cvp_instance_ip": {
