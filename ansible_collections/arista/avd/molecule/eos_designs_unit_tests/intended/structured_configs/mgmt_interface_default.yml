@@ -3,7 +3,6 @@ static_routes:
   destination_address_prefix: 0.0.0.0/0
   gateway: 1.1.1.1
 service_routing_protocols_model: multi-agent
-ip_routing: true
 daemon_terminattr:
   cvaddrs:
   - 192.168.200.11:9910

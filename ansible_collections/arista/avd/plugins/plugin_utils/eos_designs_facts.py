@@ -381,6 +381,10 @@ class EosDesignsFacts(AvdFacts):
         return get(self._switch_data_combined, "platform")
 
     @cached_property
+    def always_configure_ip_routing(self):
+        return get(self._switch_data_combined, "always_configure_ip_routing")
+
+    @cached_property
     def max_parallel_uplinks(self):
         return get(self._switch_data_combined, "max_parallel_uplinks", default=1)
 
@@ -1069,7 +1073,9 @@ class EosDesignsFacts(AvdFacts):
 
     @cached_property
     def underlay_multicast(self):
-        return get(self._hostvars, "underlay_multicast")
+        if self.underlay_router is True:
+            return get(self._hostvars, "underlay_multicast")
+        return None
 
     @cached_property
     def overlay_rd_type_admin_subfield(self):

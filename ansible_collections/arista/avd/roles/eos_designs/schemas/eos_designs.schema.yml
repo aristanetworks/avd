@@ -533,6 +533,17 @@ keys:
                 convert_types:
                 - str
                 default: 0
+          always_configure_ip_routing:
+            documentation_options:
+              filename: Fabric Topology
+              table: Generic configuration management
+            type: bool
+            default: false
+            description: 'Force configuration of "ip routing" even on L2 devices.
+
+              Use this to retain behavior of AVD versions below 4.0.0.
+
+              '
           raw_eos_cli:
             documentation_options:
               filename: Fabric Topology
