@@ -1,0 +1,17 @@
+---
+# Schema ignores any key starting with underscore
+# This can be used with custom templates or other custom features
+# Setting custom keys like "_transceiver: xyz" using structured_config,
+# the custom keys will be carried over to the structured_config output
+# and can be picked up by eos_cli_config_gen or other roles.
+# There is no validation performed on the custom keys, so they can be of any type.
+type: l2leaf
+l2leaf:
+  _custom_key1: custom_value1
+  defaults:
+    structured_config:
+      _custom_key2: [custom_value2]
+      ethernet_interfaces:
+        - name: "Ethernet1"
+          _custom_key3:
+            custom_dict3: custom_value3

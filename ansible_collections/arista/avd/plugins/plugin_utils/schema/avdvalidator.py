@@ -82,8 +82,8 @@ def _keys_validator(validator, keys: dict, instance: dict, schema: dict):
 
     # Validation of "allow_other_keys"
     if not schema.get("allow_other_keys", False):
-        # Check what instance only contains the schema keys
-        invalid_keys = ", ".join([key for key in instance if key not in keys])
+        # Check that instance only contains the schema keys
+        invalid_keys = ", ".join([key for key in instance if key not in keys and key[0] != "_"])
         if invalid_keys:
             yield jsonschema.ValidationError(f"Unexpected key(s) '{invalid_keys}' found in dict.")
 
