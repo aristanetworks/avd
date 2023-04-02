@@ -4,19 +4,20 @@
 ### IP IGMP Snooping
 
 #### IP IGMP Snooping Summary
-{%     if ip_igmp_snooping.globally_enabled is arista.avd.defined(false) %}
-
-IGMP snooping is globally disabled
-{%     endif %}
 
 | IGMP Snooping | Fast Leave | Interface Restart Query | Proxy | Restart Query Interval | Robustness Variable |
 | ------------- | ---------- | ----------------------- | ----- | ---------------------- | ------------------- |
+{%     if ip_igmp_snooping.globally_enabled is arista.avd.defined(false) %}
+{%         set enabled = "Disabled" %}
+{%     else %}
+{%         set enabled = "Enabled" %}
+{%     endif %}
 {%     set fast_leave = ip_igmp_snooping.fast_leave | arista.avd.default('-') %}
 {%     set intf_res_qry = ip_igmp_snooping.interface_restart_query | arista.avd.default('-') %}
 {%     set proxy = ip_igmp_snooping.proxy | arista.avd.default('-') %}
 {%     set res_qry_int = ip_igmp_snooping.restart_query_interval | arista.avd.default('-') %}
 {%     set rv = ip_igmp_snooping.robustness_variable | arista.avd.default('-') %}
-| Enabled | {{ fast_leave }} | {{ intf_res_qry }} | {{ proxy }} | {{ res_qry_int }} | {{ rv }} |
+| {{ enabled }} | {{ fast_leave }} | {{ intf_res_qry }} | {{ proxy }} | {{ res_qry_int }} | {{ rv }} |
 {%     if ip_igmp_snooping.querier is arista.avd.defined %}
 
 | Querier Enabled | IP Address | Query Interval | Max Response Time | Last Member Query Interval | Last Member Query Count | Startup Query Interval | Startup Query Count | Version |
