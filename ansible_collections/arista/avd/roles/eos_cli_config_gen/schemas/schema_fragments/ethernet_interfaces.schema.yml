@@ -463,6 +463,53 @@ keys:
         isis_authentication_key:
           type: str
           description: Type-7 encrypted password
+        poe:
+          type: dict
+          keys:
+            disabled:
+              type: bool
+              description: Optional field used to disable PoE on a POE capable port. PoE is enabled on all ports that support it by default in EOS.
+            priority:
+              type: str
+              valid_values: ["critical", "high", "medium", "low"]
+              description: Optional field used to prioritize a port's power in the event that one of the switch's power supplies loses power
+            reboot_action:
+              type: str
+              valid_values: ["maintain", "power-off"]
+              description: Optional field used to set the PoE power behavior for a PoE port when the system is rebooted
+            link_down_action:
+              type: str
+              valid_values: ["maintain", "power-off"]
+              description: Optional field used to set the PoE power behavior for a PoE port when the port goes down
+            shutdown_action:
+              type: str
+              valid_values: ["maintain", "power-off"]
+              description: Optional field used to set the PoE power behavior for a PoE port when the port is admin down
+            limit:
+              type: dict
+              description: Optional field used to override the hardware-negotiated power limit using either wattage or a power class.
+              keys:
+                class:
+                  type: int
+                  min: 0
+                  max: 8
+                  convert_types:
+                  - str
+                watts:
+                  type: int
+                  min: 1
+                  max: 90
+                  convert_types:
+                  - str
+                fixed:
+                  type: bool
+                  description: Optional field used to ignore hardware classification
+            negotiation_lldp:
+              type: bool
+              description: Optional field used to disable to prevent port from negotiating power with powered devices over LLDP. Enabled by default in EOS.
+            legacy_detect:
+              type: bool
+              description: Optional field used to allow a subset of legacy devices to work with the PoE switch.  Disabled by default in EOS because it can cause false positive detections.
         ptp:
           type: dict
           keys:

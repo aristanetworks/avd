@@ -2525,6 +2525,91 @@
             "description": "Type-7 encrypted password",
             "title": "ISIS Authentication Key"
           },
+          "poe": {
+            "type": "object",
+            "properties": {
+              "disabled": {
+                "type": "boolean",
+                "description": "Optional field used to disable PoE on a POE capable port. PoE is enabled on all ports that support it by default in EOS.",
+                "title": "Disabled"
+              },
+              "priority": {
+                "type": "string",
+                "enum": [
+                  "critical",
+                  "high",
+                  "medium",
+                  "low"
+                ],
+                "description": "Optional field used to prioritize a port's power in the event that one of the switch's power supplies loses power",
+                "title": "Priority"
+              },
+              "reboot_action": {
+                "type": "string",
+                "enum": [
+                  "maintain",
+                  "power-off"
+                ],
+                "description": "Optional field used to set the PoE power behavior for a PoE port when the system is rebooted",
+                "title": "Reboot Action"
+              },
+              "link_down_action": {
+                "type": "string",
+                "enum": [
+                  "maintain",
+                  "power-off"
+                ],
+                "description": "Optional field used to set the PoE power behavior for a PoE port when the port goes down",
+                "title": "Link Down Action"
+              },
+              "shutdown_action": {
+                "type": "string",
+                "enum": [
+                  "maintain",
+                  "power-off"
+                ],
+                "description": "Optional field used to set the PoE power behavior for a PoE port when the port is admin down",
+                "title": "Shutdown Action"
+              },
+              "limit": {
+                "type": "object",
+                "description": "Optional field used to override the hardware-negotiated power limit using either wattage or a power class.",
+                "properties": {
+                  "class": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 8,
+                    "title": "Class"
+                  },
+                  "watts": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 90,
+                    "title": "Watts"
+                  },
+                  "fixed": {
+                    "type": "boolean",
+                    "description": "Optional field used to ignore hardware classification",
+                    "title": "Fixed"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Limit"
+              },
+              "negotiation_lldp": {
+                "type": "boolean",
+                "description": "Optional field used to disable to prevent port from negotiating power with powered devices over LLDP. Enabled by default in EOS.",
+                "title": "Negotiation LLDP"
+              },
+              "legacy_detect": {
+                "type": "boolean",
+                "description": "Optional field used to allow a subset of legacy devices to work with the PoE switch.  Disabled by default in EOS because it can cause false positive detections.",
+                "title": "Legacy Detect"
+              }
+            },
+            "additionalProperties": false,
+            "title": "Poe"
+          },
           "ptp": {
             "type": "object",
             "properties": {
