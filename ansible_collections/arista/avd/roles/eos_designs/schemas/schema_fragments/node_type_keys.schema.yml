@@ -43,6 +43,7 @@ keys:
         default_underlay_routing_protocol:
           type: str
           default: "ebgp"
+          convert_to_lower_case: true
           valid_values:
           - "ebgp"
           - "ibgp"
@@ -59,6 +60,7 @@ keys:
         default_overlay_routing_protocol:
           type: str
           default: "ebgp"
+          convert_to_lower_case: true
           valid_values:
           - "ebgp"
           - "ibgp"
@@ -81,6 +83,7 @@ keys:
           - "str"
           items:
             type: str
+            convert_to_lower_case: true
             valid_values:
             - "evpn"
             - "vpn-ipv4"
@@ -89,6 +92,7 @@ keys:
             Set the default overlay address families.
         default_evpn_encapsulation:
           type: str
+          convert_to_lower_case: true
           valid_values:
           - "mpls"
           - "vxlan"

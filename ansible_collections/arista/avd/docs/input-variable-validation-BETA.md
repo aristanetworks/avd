@@ -195,7 +195,7 @@ The meta-schema does not allow for other keys to be set in the schema.
 | Key | Type | Required | Default | Value Restrictions | Description |
 | ----| ---- | -------- | ------- | ------------------ | ----------- |
 | <samp>type</samp> | String | True | | Valid Values:<br>- `"str"` | Type of variable using the Python short names for each type.<br>`str` for String |
-| <samp>case_sensitive</samp> | Boolean | | True | | Perform value validations with case sensitivity or not. |
+| <samp>convert_to_lower_case</samp> | Boolean | | False | | Convert string value to lower case before performing validation |
 | <samp>convert_types</samp> | List, items: String | | | | List of types to auto-convert from.<br>For type `str`, auto-conversion is supported from `bool` and `int` |
 | <samp>default</samp> | String | | | | Default value |
 | <samp>&nbsp;&nbsp;- \<str\></samp> | String | | | Valid Values:<br>- `"bool"`<br>- `"int"` | |
