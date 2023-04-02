@@ -487,6 +487,38 @@ interface {{ ethernet_interface.name }}
 {%         if ethernet_interface.pim.ipv4.dr_priority is arista.avd.defined %}
    pim ipv4 dr-priority {{ ethernet_interface.pim.ipv4.dr_priority }}
 {%         endif %}
+{%         if ethernet_interface.poe.priority is arista.avd.defined %}
+   poe priority {{ ethernet_interface.poe.priority }}
+{%         endif %}
+{%         if ethernet_interface.poe.reboot_action is arista.avd.defined %}
+   poe reboot action {{ ethernet_interface.poe.reboot_action }}
+{%         endif %}
+{%         if ethernet_interface.poe.link_down_action is arista.avd.defined %}
+   poe link down action {{ ethernet_interface.poe.link_down_action }}
+{%         endif %}
+{%         if ethernet_interface.poe.shutdown_action is arista.avd.defined %}
+   poe shutdown action {{ ethernet_interface.poe.shutdown_action }}
+{%         endif %}
+{%         if ethernet_interface.poe.disabled is arista.avd.defined(true) %}
+   poe disabled
+{%         endif %}
+{%         if ethernet_interface.poe.limit.class is arista.avd.defined %}
+{%             set poe_limit_cli = 'poe limit class class' ~ ethernet_interface.poe.limit.class %}
+{%         elif ethernet_interface.poe.limit.watts is arista.avd.defined %}
+{%             set poe_limit_cli = 'poe limit ' ~ ethernet_interface.poe.limit.watts ~ ' watts' %}
+{%         endif %}
+{%         if poe_limit_cli is arista.avd.defined and ethernet_interface.poe.limit.fixed is arista.avd.defined(true) %}
+{%             set poe_limit_cli = poe_limit_cli ~ ' fixed' %}
+{%         endif %}
+{%         if poe_limit_cli is arista.avd.defined %}
+   {{ poe_limit_cli }}
+{%         endif %}
+{%         if ethernet_interface.poe.negotiation_lldp is arista.avd.defined(false) %}
+   poe negotiation lldp disabled
+{%         endif %}
+{%         if ethernet_interface.poe.legacy_detect is arista.avd.defined(true) %}
+   poe legacy detect
+{%         endif %}
 {%         if ethernet_interface.qos.trust is arista.avd.defined %}
 {%             if ethernet_interface.qos.trust == 'disabled' %}
    no qos trust
