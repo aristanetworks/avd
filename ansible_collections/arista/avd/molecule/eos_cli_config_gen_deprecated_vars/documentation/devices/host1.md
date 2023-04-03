@@ -811,9 +811,9 @@ interface Vxlan1
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| MGMT | false |
-| TENANT_A_PROJECT01 | true |
-| TENANT_A_PROJECT02 | true |
+| MGMT | False |
+| TENANT_A_PROJECT01 | True |
+| TENANT_A_PROJECT02 | True |
 
 #### IP Routing Device Configuration
 
