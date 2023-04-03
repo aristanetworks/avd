@@ -4,14 +4,20 @@
 type: dict
 keys:
   overlay_routing_protocol:
+    documentation_options:
+      filename: Fabric Variables
+      table: Routing Protocol Selection
     description: |
       - The following overlay routing protocols are supported:
-        - EBGP (default for l3ls-evpn)
-        - IBGP (only with OSPF or ISIS variants in underlay)
+        - eBGP (default for l3ls-evpn).
+        - iBGP (only with OSPF or ISIS variants in underlay).
+        - CVX (CloudVision eXchange)
+        - HER (Head-End Replication) eos_designs will configure static VXLAN flood-lists instead of using a dynamic overlay protocol.
     type: str
     valid_values:
       - "ebgp"
       - "ibgp"
-      - "BGP" # Only supported for historic reasons - The code will change to the default
+      - "CVX"
+      - "HER"
     case_sensitive: false
     default: "ebgp"

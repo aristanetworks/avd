@@ -4487,20 +4487,30 @@
       "properties": {
         "admin_subfield": {
           "type": "string",
-          "description": "< \"vtep_loopback\" or \"bgp_as\" or < IPv4 Address > or <0-65535> or <0-4294967295>, default -> <overlay_loopback_ip> >",
+          "description": "\"vtep_loopback\" or \"bgp_as\" or < IPv4 Address > or interger between <0-65535> or integer between <0-4294967295> or \"overlay_loopback_ip\"\n",
+          "default": "overlay_loopback_ip",
           "title": "Admin Subfield"
+        },
+        "admin_subfield_offset": {
+          "type": "string",
+          "description": "Offset can only be used if admin_subfield is an interger between <0-4294967295> or \"switch_id\".\nTotal value of admin_subfield + admin_subfield_offset must be <= 4294967295.",
+          "title": "Admin Subfield Offset"
         }
       },
       "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
       "title": "Overlay Rd Type"
     },
     "overlay_routing_protocol": {
-      "description": "- The following overlay routing protocols are supported:\n  - EBGP (default for l3ls-evpn)\n  - IBGP (only with OSPF or ISIS variants in underlay)\n",
+      "description": "- The following overlay routing protocols are supported:\n  - eBGP (default for l3ls-evpn).\n  - iBGP (only with OSPF or ISIS variants in underlay).\n  - CVX (CloudVision eXchange)\n  - HER (Head-End Replication) eos_designs will configure static VXLAN flood-lists instead of using a dynamic overlay protocol.\n",
       "type": "string",
       "enum": [
         "ebgp",
         "ibgp",
-        "BGP"
+        "CVX",
+        "HER"
       ],
       "default": "ebgp",
       "title": "Overlay Routing Protocol"
@@ -4517,7 +4527,7 @@
     },
     "overlay_rt_type": {
       "type": "object",
-      "description": "Specify RT type\nRoute Target (RT) for L2 / L3 services is set to <vni>:<vni> per default\nBy configuring overlay_rt_type the Administrator subfield (first part of RT) can be set to other values.\nNote: structured configuration is not merged recursively and will be taken directly from the most specific level in the following order:\n1. svi.nodes[inventory_hostname].structured_config\n2. svi_profile.nodes[inventory_hostname].structured_config\n3. svi_parent_profile.nodes[inventory_hostname].structured_config\n4. svi.structured_config\n5. svi_profile.structured_config\n6. svi_parent_profile.structured_config\n",
+      "description": "Specify RT type\nRoute Target (RT) for L2 / L3 services is set to <vni>:<vni> per default\nBy configuring overlay_rt_type the Administrator subfield (first part of RT) can be set to other values.\nNotes:\nRT is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.\nFor 32-bit ASN/number the VNI can only be a 16-bit number.\nFor 16-bit ASN/number the VNI can be a 32-bit number.\nOld variable name \"evpn_rt_type\", supported for backward-compatibility.\n",
       "properties": {
         "admin_subfield": {
           "type": "string",
@@ -4526,6 +4536,9 @@
         }
       },
       "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
       "title": "Overlay Rt Type"
     },
     "p2p_uplinks_mtu": {

@@ -4,18 +4,19 @@
 type: dict
 keys:
   overlay_rt_type:
+    documentation_options:
+      filename: Network Services
+      table: Global Network Services Settings
     type: dict
     description: |
       Specify RT type
       Route Target (RT) for L2 / L3 services is set to <vni>:<vni> per default
       By configuring overlay_rt_type the Administrator subfield (first part of RT) can be set to other values.
-      Note: structured configuration is not merged recursively and will be taken directly from the most specific level in the following order:
-      1. svi.nodes[inventory_hostname].structured_config
-      2. svi_profile.nodes[inventory_hostname].structured_config
-      3. svi_parent_profile.nodes[inventory_hostname].structured_config
-      4. svi.structured_config
-      5. svi_profile.structured_config
-      6. svi_parent_profile.structured_config
+      Notes:
+      RT is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
+      For 32-bit ASN/number the VNI can only be a 16-bit number.
+      For 16-bit ASN/number the VNI can be a 32-bit number.
+      Old variable name "evpn_rt_type", supported for backward-compatibility.
     keys:
       admin_subfield:
         type: str

@@ -4,6 +4,9 @@
 type: dict
 keys:
   overlay_routing_protocol_address_family:
+    documentation_options:
+      filename: Fabric Variables
+      table: IPv6 Underlay Settings
     type: str
     description: |
       Enable overlay EVPN peering with IPv6 addresses | Optional

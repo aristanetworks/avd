@@ -1982,6 +1982,9 @@ keys:
               type: str
               description: Path to J2 template - default inherited from templates.interface_descriptions.vtep_loopback_interface.
   overlay_her_flood_list_per_vni:
+    documentation_options:
+      filename: Fabric Variables
+      table: Routing Protocol Selection
     type: bool
     description: 'When using Head-End Replication, configure flood-lists per VNI.
       | Optional
@@ -1998,6 +2001,9 @@ keys:
       '
     default: false
   overlay_her_flood_list_scope:
+    documentation_options:
+      filename: Fabric Variables
+      table: Routing Protocol Selection
     type: str
     description: 'When using Head-End Replication, set the scope of flood-lists to
       Fabric or DC
@@ -2019,9 +2025,15 @@ keys:
     - dc
     default: fabric
   overlay_loopback_description:
+    documentation_options:
+      filename: Fabric Variables
+      table: Overlay General Settings
     description: Customizable overlay loopback description
     type: str
   overlay_mlag_rfc5549:
+    documentation_options:
+      filename: Fabric Variables
+      table: IPv6 Underlay Settings
     description: 'IPv6 Unnumbered for MLAG iBGP connections.
 
       Requires "underlay_rfc5549: true"
@@ -2030,6 +2042,9 @@ keys:
     type: bool
     default: false
   overlay_rd_type:
+    documentation_options:
+      filename: Network Services
+      table: Global Network Services Settings
     type: dict
     description: 'Specify RD type
 
@@ -2045,19 +2060,39 @@ keys:
         type: str
         convert_types:
         - int
-        description: < "vtep_loopback" or "bgp_as" or < IPv4 Address > or <0-65535>
-          or <0-4294967295>, default -> <overlay_loopback_ip> >
+        description: '"vtep_loopback" or "bgp_as" or < IPv4 Address > or interger
+          between <0-65535> or integer between <0-4294967295> or "overlay_loopback_ip"
+
+          '
+        default: overlay_loopback_ip
+      admin_subfield_offset:
+        type: str
+        convert_types:
+        - int
+        description: 'Offset can only be used if admin_subfield is an interger between
+          <0-4294967295> or "switch_id".
+
+          Total value of admin_subfield + admin_subfield_offset must be <= 4294967295.'
   overlay_routing_protocol:
-    description: "- The following overlay routing protocols are supported:\n  - EBGP
-      (default for l3ls-evpn)\n  - IBGP (only with OSPF or ISIS variants in underlay)\n"
+    documentation_options:
+      filename: Fabric Variables
+      table: Routing Protocol Selection
+    description: "- The following overlay routing protocols are supported:\n  - eBGP
+      (default for l3ls-evpn).\n  - iBGP (only with OSPF or ISIS variants in underlay).\n
+      \ - CVX (CloudVision eXchange)\n  - HER (Head-End Replication) eos_designs will
+      configure static VXLAN flood-lists instead of using a dynamic overlay protocol.\n"
     type: str
     valid_values:
     - ebgp
     - ibgp
-    - BGP
+    - CVX
+    - HER
     case_sensitive: false
     default: ebgp
   overlay_routing_protocol_address_family:
+    documentation_options:
+      filename: Fabric Variables
+      table: IPv6 Underlay Settings
     type: str
     description: 'Enable overlay EVPN peering with IPv6 addresses | Optional
 
@@ -2070,6 +2105,9 @@ keys:
     - ipv6
     default: ipv4
   overlay_rt_type:
+    documentation_options:
+      filename: Network Services
+      table: Global Network Services Settings
     type: dict
     description: 'Specify RT type
 
@@ -2078,20 +2116,15 @@ keys:
       By configuring overlay_rt_type the Administrator subfield (first part of RT)
       can be set to other values.
 
-      Note: structured configuration is not merged recursively and will be taken directly
-      from the most specific level in the following order:
+      Notes:
 
-      1. svi.nodes[inventory_hostname].structured_config
+      RT is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
 
-      2. svi_profile.nodes[inventory_hostname].structured_config
+      For 32-bit ASN/number the VNI can only be a 16-bit number.
 
-      3. svi_parent_profile.nodes[inventory_hostname].structured_config
+      For 16-bit ASN/number the VNI can be a 32-bit number.
 
-      4. svi.structured_config
-
-      5. svi_profile.structured_config
-
-      6. svi_parent_profile.structured_config
+      Old variable name "evpn_rt_type", supported for backward-compatibility.
 
       '
     keys:
@@ -2373,6 +2406,9 @@ keys:
         type: bool
         default: false
   vtep_vvtep_ip:
+    documentation_options:
+      filename: Fabric Variables
+      table: Overlay General Settings
     description: 'IP Address used as Virtual VTEP. Will be configured as secondary
       IP on loopback1
 

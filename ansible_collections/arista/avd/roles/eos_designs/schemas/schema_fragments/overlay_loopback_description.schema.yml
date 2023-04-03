@@ -4,5 +4,8 @@
 type: dict
 keys:
   overlay_loopback_description:
+    documentation_options:
+      filename: Fabric Variables
+      table: Overlay General Settings
     description: Customizable overlay loopback description
     type: str
