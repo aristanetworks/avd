@@ -27,7 +27,9 @@ class AvdToJsonSchemaConverter:
         self.converters = {
             "display_name": self.convert_display_name,
             "description": self.convert_description,
-            "$ref": self.convert_ref,
+            # Keeping ref and def out until vscode yaml plugin works well with refs and unevaluatedProperties
+            # "$ref": self.convert_ref,
+            # "$def": self.convert_def,
             "type": self.convert_type,
             "max": self.convert_max,
             "min": self.convert_min,
@@ -43,10 +45,14 @@ class AvdToJsonSchemaConverter:
         }
 
     def convert_schema(self, schema: dict = None) -> dict:
-        if schema is None:
-            schema = self.avdschema._schema
-
         output = {}
+        if schema is None:
+            # We are at the root level, so fetch the full schema
+            # Since vscode language server is not working well with "unevaluatedProperties",
+            # we have to stick with "additionalProperties" which does not work in combination with $ref.
+            # This means we have to fully expand the schema and not use $ref in jsonschema.
+            schema = self.avdschema.resolved_schema
+
         for word in schema:
             if word not in self.converters:
                 # Ignore unsupported keys
@@ -67,26 +73,38 @@ class AvdToJsonSchemaConverter:
         return {"type": TYPE_MAP[type]}
 
     def convert_keys(self, keys: dict, parent_schema: dict) -> dict:
-        output = {"properties": {}}
+        return self.__convert_keys(keys, parent_schema, "properties")
+
+    def __convert_keys(self, keys: dict, parent_schema: dict, output_key: str, ignore_required: str = False) -> dict:
+        """
+        Reusable function to convert keys, pattern_keys, $def
+        output_key is set to either "properties", "patternProperties" or "$def"
+        """
+        output = {output_key: {}}
         required = []
         for key, subschema in keys.items():
             if "deprecation" in subschema and get_deprecation(subschema)[0] == "removed":
                 # Skip key if marked as removed in the AVD schema
                 continue
 
-            output["properties"][key] = self.convert_schema(subschema)
+            output[output_key][key] = self.convert_schema(subschema)
 
             # Add an auto-generated title in case one is not set
-            if "title" not in output["properties"][key]:
-                output["properties"][key]["title"] = key_to_display_name(str(key))
+            if "title" not in output[output_key][key]:
+                output[output_key][key]["title"] = key_to_display_name(str(key))
 
-            if subschema.get("required") is True:
+            if not ignore_required and subschema.get("required") is True:
                 required.append(key)
 
         if required:
             output["required"] = required
 
+        # output["unevaluatedProperties"] = parent_schema.get("allow_other_keys", False)
         output["additionalProperties"] = parent_schema.get("allow_other_keys", False)
+
+        # Always permit keys starting with underscore
+        if not parent_schema.get("allow_other_keys", False):
+            output.setdefault("patternProperties", {})["^_.+$"] = {}
 
         return output
 
@@ -161,4 +179,10 @@ class AvdToJsonSchemaConverter:
         return {"description": description}
 
     def convert_ref(self, ref: str, parent_schema: dict) -> dict:
-        return {"$ref": ref}
+        jsonschema_ref = ref.replace("keys", "properties")
+        # TODO: Translate using paths set in avd schema store
+        jsonschema_ref = jsonschema_ref.replace("eos_cli_config_gen#", "../../eos_cli_config_gen/schemas/eos_cli_config_gen.jsonschema.json#")
+        return {"$ref": jsonschema_ref}
+
+    def convert_def(self, dollardef: dict, parent_schema: dict) -> dict:
+        return self.__convert_keys(dollardef, parent_schema, "$def", ignore_required=True)
