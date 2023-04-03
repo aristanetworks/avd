@@ -1731,8 +1731,7 @@
         "isis-sr",
         "isis-ldp",
         "isis-sr-ldp",
-        "ospf-ldp",
-        "BGP"
+        "ospf-ldp"
       ],
       "title": "Underlay Routing Protocol"
     },

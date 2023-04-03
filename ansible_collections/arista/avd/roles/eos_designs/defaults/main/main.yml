@@ -45,8 +45,6 @@ terminattr_ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
 
 p2p_uplinks_mtu: 9000
 
-underlay_routing_protocol: BGP
-overlay_routing_protocol: BGP
 underlay_ipv6: false
 
 evpn_ebgp_multihop: 3
