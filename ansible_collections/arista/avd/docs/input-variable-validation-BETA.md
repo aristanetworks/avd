@@ -78,11 +78,12 @@ This behavior can be adjusted by setting the variables described below.
 # Conversion Mode for AVD input data conversion | Optional
 # During conversion, messages will generated with information about the host(s) and key(s) which required conversion.
 # "disabled" means that conversion will not run - avoid this since conversion is also handling data deprecation and upgrade.
+# "error" will produce error messages and fail the task.
 # "warning" will produce warning messages.
 # "info" will produce regular log messages.
 # "debug" will produce hidden debug messages viewable with -v.
 # "quiet" will not produce any messages
-avd_data_conversion_mode: < "disabled" | "warning" | "info" | "debug" | "quiet" | default -> "debug" >
+avd_data_conversion_mode: < "disabled" | "error" | "warning" | "info" | "debug" | "quiet" | default -> "debug" >
 
 # Validation Mode for AVD input data validation | Optional
 # During validation, messages will generated with information about the host(s) and key(s) which failed validation.

@@ -151,6 +151,8 @@ class AvdDataConverter:
                         # TODO: Log message
                         return
 
+                    # Here we do not yield an AvdConversionWarning, since these will be accepted going forward.
+
                 elif convert_type in ["dict", "list"] and schema_type == "list" and "primary_key" in schema:
                     try:
                         data[index] = convert_dicts(value, schema["primary_key"], secondary_key=schema.get("secondary_key"))
