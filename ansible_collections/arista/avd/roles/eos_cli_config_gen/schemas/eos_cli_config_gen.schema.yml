@@ -1731,7 +1731,7 @@ keys:
                   valid_values:
                   - maintain
                   - power-off
-                  description: PoE action for interface take
+                  description: PoE action for interface
             link_down:
               description: Set the PoE power behavior for a PoE port when the port
                 goes down
@@ -1742,14 +1742,14 @@ keys:
                   valid_values:
                   - maintain
                   - power-off
-                  description: PoE action for interface take
+                  description: PoE action for interface
                 power_off_delay:
                   type: int
                   min: 1
                   max: 86400
                   convert_types:
                   - str
-                  description: Number in seconds to delay shutting the power off after
+                  description: Number of seconds to delay shutting the power off after
                     a link down event occurs. Default value is 5 seconds in EOS.
             shutdown:
               description: Set the PoE power behavior for a PoE port when the port
@@ -1761,7 +1761,7 @@ keys:
                   valid_values:
                   - maintain
                   - power-off
-                  description: PoE action for interface take
+                  description: PoE action for interface
             limit:
               type: dict
               description: Override the hardware-negotiated power limit using either
