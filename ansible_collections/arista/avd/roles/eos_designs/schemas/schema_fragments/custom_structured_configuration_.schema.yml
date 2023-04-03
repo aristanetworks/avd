@@ -3,10 +3,10 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 pattern_keys:
-  "custom_structured_configurations_.+":
+  "custom_structured_configuration_.+":
     documentation_options:
       filename: Custom Structured Configurations
-    display_name: Custom Structured Configurations
+    display_name: Custom Structured Configuration
     type: dict
     deprecation:
       warning: true

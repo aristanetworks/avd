@@ -1,6 +1,17 @@
 $id: eos_designs
 type: dict
 allow_other_keys: true
+pattern_keys:
+  custom_structured_configuration_.+:
+    documentation_options:
+      filename: Custom Structured Configurations
+    display_name: Custom Structured Configuration
+    type: dict
+    deprecation:
+      warning: true
+      new_key: structured_config_.+
+      remove_in_version: 5.0.0
+      url: https://avd.sh/en/devel/docs/porting-guides/4.x.x.html
 keys:
   cvp_ingestauth_key:
     documentation_options:

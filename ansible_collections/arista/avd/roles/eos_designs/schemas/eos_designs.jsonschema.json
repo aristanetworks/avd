@@ -1,5 +1,12 @@
 {
   "type": "object",
+  "patternProperties": {
+    "custom_structured_configuration_.+": {
+      "title": "Custom Structured Configuration",
+      "type": "object"
+    }
+  },
+  "additionalProperties": true,
   "properties": {
     "cvp_ingestauth_key": {
       "type": "string",
@@ -4728,6 +4735,5 @@
       },
       "title": "Uplink PTP"
     }
-  },
-  "additionalProperties": true
+  }
 }
