@@ -1,13 +1,13 @@
 import ipaddress
 from collections import ChainMap
-from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+
+from .utils import UtilsMixin
 
 
-class AvdIpAddressing(AvdFacts):
+class AvdIpAddressing(AvdFacts, UtilsMixin):
 
     """
     Class used to render IP addresses either from custom Jinja2 templates or using default Python Logic
@@ -36,65 +36,13 @@ class AvdIpAddressing(AvdFacts):
         template_vars = ChainMap(kwargs, self._hostvars)
         return self.template_var(template_path, template_vars)
 
-    @cached_property
-    def _mlag_primary_id(self) -> int:
-        return int(get(self._hostvars, "switch.mlag_switch_ids.primary", required=True))
-
-    @cached_property
-    def _mlag_secondary_id(self) -> int:
-        return int(get(self._hostvars, "switch.mlag_switch_ids.secondary", required=True))
-
-    @cached_property
-    def _mlag_peer_ipv4_pool(self) -> str:
-        return get(self._hostvars, "switch.mlag_peer_ipv4_pool", required=True)
-
-    @cached_property
-    def _mlag_peer_l3_ipv4_pool(self) -> str:
-        return get(self._hostvars, "switch.mlag_peer_l3_ipv4_pool", required=True)
-
-    @cached_property
-    def _uplink_ipv4_pool(self) -> str:
-        return get(self._hostvars, "switch.uplink_ipv4_pool", required=True)
-
-    @cached_property
-    def _id(self) -> int:
-        return int(get(self._hostvars, "switch.id", required=True))
-
-    @cached_property
-    def _max_uplink_switches(self) -> int:
-        return int(get(self._hostvars, "switch.max_uplink_switches", required=True))
-
-    @cached_property
-    def _max_parallel_uplinks(self) -> int:
-        return int(get(self._hostvars, "switch.max_parallel_uplinks", required=True))
-
-    @cached_property
-    def _loopback_ipv4_pool(self) -> str:
-        return get(self._hostvars, "switch.loopback_ipv4_pool", required=True)
-
-    @cached_property
-    def _loopback_ipv4_offset(self) -> int:
-        return get(self._hostvars, "switch.loopback_ipv4_offset", required=True)
-
-    @cached_property
-    def _loopback_ipv6_pool(self) -> str:
-        return get(self._hostvars, "switch.loopback_ipv6_pool", required=True)
-
-    @cached_property
-    def _loopback_ipv6_offset(self) -> int:
-        return get(self._hostvars, "switch.loopback_ipv6_offset", required=True)
-
-    @cached_property
-    def _vtep_loopback_ipv4_pool(self) -> str:
-        return get(self._hostvars, "switch.vtep_loopback_ipv4_pool", required=True)
-
     def mlag_ibgp_peering_ip_primary(self, mlag_ibgp_peering_ipv4_pool: str) -> str:
         """
         Return IP for L3 Peerings in VRFs for MLAG Primary
 
         Default offset from pool is `(mlag_primary_id - 1) * 2`
         """
-        if template_path := get(self._hostvars, "switch.ip_addressing.mlag_ibgp_peering_ip_primary"):
+        if template_path := self._ip_addressing_templates.get("mlag_ibgp_peering_ip_primary"):
             return self._template(
                 template_path,
                 vrf={"mlag_ibgp_peering_ipv4_pool": mlag_ibgp_peering_ipv4_pool},
@@ -109,7 +57,7 @@ class AvdIpAddressing(AvdFacts):
 
         Default offset from pool is `((mlag_primary_id - 1) * 2) + 1`
         """
-        if template_path := get(self._hostvars, "switch.ip_addressing.mlag_ibgp_peering_ip_secondary"):
+        if template_path := self._ip_addressing_templates.get("mlag_ibgp_peering_ip_secondary"):
             return self._template(
                 template_path,
                 vrf={"mlag_ibgp_peering_ipv4_pool": mlag_ibgp_peering_ipv4_pool},
@@ -125,7 +73,7 @@ class AvdIpAddressing(AvdFacts):
         Default pool is "switch.mlag_peer_ipv4_pool"
         Default offset from pool is `(mlag_primary_id - 1) * 2`
         """
-        if template_path := get(self._hostvars, "switch.ip_addressing.mlag_ip_primary"):
+        if template_path := self._ip_addressing_templates.get("mlag_ip_primary"):
             return self._template(
                 template_path,
                 mlag_primary_id=self._mlag_primary_id,
@@ -143,7 +91,7 @@ class AvdIpAddressing(AvdFacts):
         Default pool is "switch.mlag_peer_ipv4_pool"
         Default offset from pool is `((mlag_primary_id - 1) * 2) + 1`
         """
-        if template_path := get(self._hostvars, "switch.ip_addressing.mlag_ip_secondary"):
+        if template_path := self._ip_addressing_templates.get("mlag_ip_secondary"):
             return self._template(
                 template_path,
                 mlag_primary_id=self._mlag_primary_id,
@@ -161,7 +109,7 @@ class AvdIpAddressing(AvdFacts):
         Default pool is "switch.mlag_peer_l3_ipv4_pool"
         Default offset from pool is `(mlag_primary_id - 1) * 2`
         """
-        if template_path := get(self._hostvars, "switch.ip_addressing.mlag_l3_ip_primary"):
+        if template_path := self._ip_addressing_templates.get("mlag_l3_ip_primary"):
             return self._template(
                 template_path,
                 mlag_primary_id=self._mlag_primary_id,
@@ -179,7 +127,7 @@ class AvdIpAddressing(AvdFacts):
         Default pool is "switch.mlag_peer_l3_ipv4_pool"
         Default offset from pool is `((mlag_primary_id - 1) * 2) + 1`
         """
-        if template_path := get(self._hostvars, "switch.ip_addressing.mlag_l3_ip_secondary"):
+        if template_path := self._ip_addressing_templates.get("mlag_l3_ip_secondary"):
             return self._template(
                 template_path,
                 mlag_primary_id=self._mlag_primary_id,
@@ -198,7 +146,7 @@ class AvdIpAddressing(AvdFacts):
         Default offset from pool is `((switch.id - 1) * 2 * switch.max_uplink_switches * switch.max_parallel_uplinks) + (uplink_switch_index * 2) + 1`
         """
         uplink_switch_index = int(uplink_switch_index)
-        if template_path := get(self._hostvars, "switch.ip_addressing.p2p_uplinks_ip"):
+        if template_path := self._ip_addressing_templates.get("p2p_uplinks_ip"):
             return self._template(
                 template_path,
                 uplink_switch_index=uplink_switch_index,
@@ -215,7 +163,7 @@ class AvdIpAddressing(AvdFacts):
         Default offset from pool is `((switch.id - 1) * 2 * switch.max_uplink_switches * switch.max_parallel_uplinks) + (uplink_switch_index * 2)`
         """
         uplink_switch_index = int(uplink_switch_index)
-        if template_path := get(self._hostvars, "switch.ip_addressing.p2p_uplinks_peer_ip"):
+        if template_path := self._ip_addressing_templates.get("p2p_uplinks_peer_ip"):
             return self._template(
                 template_path,
                 uplink_switch_index=uplink_switch_index,
@@ -231,7 +179,7 @@ class AvdIpAddressing(AvdFacts):
         Default pool is "switch.loopback_ipv4_pool"
         Default offset from pool is `switch.id + switch.loopback_ipv4_offset`
         """
-        if template_path := get(self._hostvars, "switch.ip_addressing.router_id"):
+        if template_path := self._ip_addressing_templates.get("router_id"):
             return self._template(
                 template_path,
                 switch_id=self._id,
@@ -249,7 +197,7 @@ class AvdIpAddressing(AvdFacts):
         Default pool is "switch.loopback_ipv6_pool"
         Default offset from pool is `switch.id + switch.loopback_ipv6_offset`
         """
-        if template_path := get(self._hostvars, "switch.ip_addressing.ipv6_router_id"):
+        if template_path := self._ip_addressing_templates.get("ipv6_router_id"):
             return self._template(
                 template_path,
                 switch_id=self._id,
@@ -267,7 +215,7 @@ class AvdIpAddressing(AvdFacts):
         Default pool is "switch.vtep_loopback_ipv4_pool"
         Default offset from pool is `mlag_primary_id + switch.loopback_ipv4_offset`
         """
-        if template_path := get(self._hostvars, "switch.ip_addressing.vtep_ip_mlag"):
+        if template_path := self._ip_addressing_templates.get("vtep_ip_mlag"):
             return self._template(
                 template_path,
                 switch_id=self._id,
@@ -287,7 +235,7 @@ class AvdIpAddressing(AvdFacts):
         Default pool is "switch.vtep_loopback_ipv4_pool"
         Default offset from pool is `switch.id + switch.loopback_ipv4_offset`
         """
-        if template_path := get(self._hostvars, "switch.ip_addressing.vtep_ip"):
+        if template_path := self._ip_addressing_templates.get("vtep_ip"):
             return self._template(
                 template_path,
                 switch_id=self._id,

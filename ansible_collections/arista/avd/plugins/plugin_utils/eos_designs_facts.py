@@ -256,34 +256,6 @@ class EosDesignsFacts(AvdFacts):
         return get(self._node_type_key_data, "vtep", default=False)
 
     @cached_property
-    def ip_addressing(self):
-        """
-        switch.ip_addressing.* set based on
-        templates.ip_addressing.* combined with (overridden by)
-        node_type_keys.<node_type_key>.ip_addressing.*
-        """
-        hostvar_templates = get(self._hostvars, "templates.ip_addressing", default={})
-        node_type_templates = get(self._node_type_key_data, "ip_addressing", default={})
-        if hostvar_templates or node_type_templates:
-            return combine(hostvar_templates, node_type_templates, recursive=True, list_merge="replace")
-        else:
-            return {}
-
-    @cached_property
-    def interface_descriptions(self):
-        """
-        switch.interface_descriptions.* set based on
-        templates.interface_descriptions.* combined with (overridden by)
-        node_type_keys.<node_type_key>.interface_descriptions.*
-        """
-        hostvar_templates = get(self._hostvars, "templates.interface_descriptions", default={})
-        node_type_templates = get(self._node_type_key_data, "interface_descriptions", default={})
-        if hostvar_templates or node_type_templates:
-            return combine(hostvar_templates, node_type_templates, recursive=True, list_merge="replace")
-        else:
-            return {}
-
-    @cached_property
     def _switch_data(self):
         """
         internal _switch_data containing inherited vars from fabric_topology data model
