@@ -244,9 +244,9 @@ cvp_configlets:
     \  no shutdown\n   channel-group 1 mode active\n!\ninterface Ethernet2\n   description
     DC1-LEAF2B_Ethernet7\n   no shutdown\n   channel-group 1 mode active\n!\ninterface
     Management1\n   description oob_management\n   no shutdown\n   vrf MGMT\n   ip
-    address 192.168.200.112/24\n!\nip routing\nno ip routing vrf MGMT\n!\nip route
-    vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nmanagement api http-commands\n   protocol
-    https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
+    address 192.168.200.112/24\nno ip routing vrf MGMT\n!\nip route vrf MGMT 0.0.0.0/0
+    192.168.200.5\n!\nmanagement api http-commands\n   protocol https\n   no shutdown\n
+    \  !\n   vrf MGMT\n      no shutdown\n!\nend\n"
   AVD_DC1-L2LEAF2A: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
     -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
@@ -278,11 +278,11 @@ cvp_configlets:
     3 mode active\n!\ninterface Management1\n   description oob_management\n   no
     shutdown\n   vrf MGMT\n   ip address 192.168.200.113/24\n!\ninterface Vlan4094\n
     \  description MLAG_PEER\n   no shutdown\n   mtu 1500\n   no autostate\n   ip
-    address 10.255.252.16/31\n!\nip routing\nno ip routing vrf MGMT\n!\nmlag configuration\n
-    \  domain-id DC1_L2LEAF2\n   local-interface Vlan4094\n   peer-address 10.255.252.17\n
-    \  peer-link Port-Channel3\n   reload-delay mlag 300\n   reload-delay non-mlag
-    330\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nmanagement api http-commands\n
-    \  protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
+    address 10.255.252.16/31\nno ip routing vrf MGMT\n!\nmlag configuration\n   domain-id
+    DC1_L2LEAF2\n   local-interface Vlan4094\n   peer-address 10.255.252.17\n   peer-link
+    Port-Channel3\n   reload-delay mlag 300\n   reload-delay non-mlag 330\n!\nip route
+    vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nmanagement api http-commands\n   protocol
+    https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
   AVD_DC1-L2LEAF2B: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
     -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
@@ -314,11 +314,11 @@ cvp_configlets:
     3 mode active\n!\ninterface Management1\n   description oob_management\n   no
     shutdown\n   vrf MGMT\n   ip address 192.168.200.114/24\n!\ninterface Vlan4094\n
     \  description MLAG_PEER\n   no shutdown\n   mtu 1500\n   no autostate\n   ip
-    address 10.255.252.17/31\n!\nip routing\nno ip routing vrf MGMT\n!\nmlag configuration\n
-    \  domain-id DC1_L2LEAF2\n   local-interface Vlan4094\n   peer-address 10.255.252.16\n
-    \  peer-link Port-Channel3\n   reload-delay mlag 300\n   reload-delay non-mlag
-    330\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nmanagement api http-commands\n
-    \  protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
+    address 10.255.252.17/31\nno ip routing vrf MGMT\n!\nmlag configuration\n   domain-id
+    DC1_L2LEAF2\n   local-interface Vlan4094\n   peer-address 10.255.252.16\n   peer-link
+    Port-Channel3\n   reload-delay mlag 300\n   reload-delay non-mlag 330\n!\nip route
+    vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nmanagement api http-commands\n   protocol
+    https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
   AVD_DC1-LEAF1A: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr
     -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
     -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan

@@ -1,0 +1,7 @@
+---
+type: l2leaf
+underlay_rfc5549: true
+
+l2leaf:
+  defaults:
+    always_configure_ip_routing: true

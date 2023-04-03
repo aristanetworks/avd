@@ -22,11 +22,11 @@
 
 ```yaml
 # Underlay routing protocol | Required.
-underlay_routing_protocol: < EBGP | OSPF | ISIS | ISIS-SR | ISIS-LDP | ISIS-SR-LDP | OSPF-LDP | default for l3ls-evpn -> EBGP >
-overlay_routing_protocol: < EBGP | IBGP | default for l3ls-evpn -> EBGP >
+underlay_routing_protocol: < ebgp | ospf | isis | isis-sr | isis-ldp | isis-sr-ldp | ospf-ldp | default for l3ls-evpn -> ebgp >
+overlay_routing_protocol: < ebgp | ibgp | default for l3ls-evpn -> ebgp >
 
 # Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.
-# Requires "underlay_routing_protocol: EBGP"
+# Requires "underlay_routing_protocol: ebgp"
 underlay_rfc5549: < true | false | default -> false >
 
 # Underlay OSFP | Required when < underlay_routing_protocol > == OSPF variants

@@ -1,5 +1,4 @@
 service_routing_protocols_model: multi-agent
-ip_routing: true
 hardware_counters:
   features:
   - vlan-interface: in

@@ -220,6 +220,10 @@ defaults <- node_group <- node_group.node <- node
       # Useful when a "connected-endpoint" is connected to switches in different "node_groups".
       offset: < offset_for_lacp_port_id_range | default -> 0 >
 
+    # Force configuration of "ip routing" even on L2 devices | Optional
+    # Use this to retain behavior of AVD versions below 4.0.0.
+    always_configure_ip_routing: < true | false | default -> false >
+
     # EOS CLI rendered directly on the root level of the final EOS configuration | Optional
     raw_eos_cli: |
       < multiline eos cli >

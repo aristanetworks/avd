@@ -71,6 +71,14 @@ class AvdStructuredConfig(AvdFacts):
         return get(self._hostvars, "switch.system_mac_address")
 
     @cached_property
+    def _underlay_router(self) -> bool:
+        return get(self._hostvars, "switch.underlay_router") is True
+
+    @cached_property
+    def _always_configure_ip_routing(self) -> bool:
+        return get(self._hostvars, "switch.always_configure_ip_routing")
+
+    @cached_property
     def serial_number(self) -> str | None:
         """
         serial_number variable set based on switch.serial_number fact
@@ -167,9 +175,12 @@ class AvdStructuredConfig(AvdFacts):
     @cached_property
     def ip_routing(self) -> bool:
         """
-        ip routing set to False if ip_routing_ipv6_interfaces is set to True as the command will have precedence
-        ip_routing set to True otherwise
+        For l3 devices, configure ip routing unless ip_routing_ipv6_interfaces is True.
+        For other devices only configure if "always_configure_ip_routing" is True.
         """
+        if not self._underlay_router and not self._always_configure_ip_routing:
+            return None
+
         if self.ip_routing_ipv6_interfaces is True:
             return None
         return True
@@ -179,6 +190,9 @@ class AvdStructuredConfig(AvdFacts):
         """
         ipv6_unicast_routing set based on underlay_rfc5549 and switch.underlay_ipv6
         """
+        if not self._underlay_router and not self._always_configure_ip_routing:
+            return None
+
         if get(self._hostvars, "underlay_rfc5549") is True or get(self._hostvars, "switch.underlay_ipv6") is True:
             return True
         return None
@@ -188,6 +202,9 @@ class AvdStructuredConfig(AvdFacts):
         """
         ip_routing_ipv6_interfaces set based on underlay_rfc5549 variable
         """
+        if not self._underlay_router and not self._always_configure_ip_routing:
+            return None
+
         if get(self._hostvars, "underlay_rfc5549") is True:
             return True
         return None
@@ -198,7 +215,7 @@ class AvdStructuredConfig(AvdFacts):
         router_multicast set based on switch.underlay_multicast, switch.underlay_router
         and switch.evpn_multicast facts
         """
-        if get(self._hostvars, "switch.underlay_multicast") is not True or get(self._hostvars, "switch.underlay_router") is not True:
+        if get(self._hostvars, "switch.underlay_multicast") is not True:
             return None
 
         router_multicast = {"ipv4": {"routing": True}}

@@ -315,14 +315,12 @@ service routing protocols model multi-agent
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | True (ipv6 interfaces) |
+| default | False |
 | MGMT | False |
 
 #### IP Routing Device Configuration
 
 ```eos
-!
-ip routing ipv6 interfaces
 no ip routing vrf MGMT
 ```
 
@@ -332,15 +330,8 @@ no ip routing vrf MGMT
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | True |
+| default | False |
 | MGMT | false |
-
-#### IPv6 Routing Device Configuration
-
-```eos
-!
-ipv6 unicast-routing
-```
 
 ### Static Routes
 
