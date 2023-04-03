@@ -1781,6 +1781,7 @@ keys:
         default_underlay_routing_protocol:
           type: str
           default: ebgp
+          convert_to_lower_case: true
           valid_values:
           - ebgp
           - ibgp
@@ -1799,6 +1800,7 @@ keys:
         default_overlay_routing_protocol:
           type: str
           default: ebgp
+          convert_to_lower_case: true
           valid_values:
           - ebgp
           - ibgp
@@ -1825,6 +1827,7 @@ keys:
           - str
           items:
             type: str
+            convert_to_lower_case: true
             valid_values:
             - evpn
             - vpn-ipv4
@@ -1834,6 +1837,7 @@ keys:
             '
         default_evpn_encapsulation:
           type: str
+          convert_to_lower_case: true
           valid_values:
           - mpls
           - vxlan
@@ -2220,6 +2224,7 @@ keys:
       filename: Fabric Variables
       table: Routing Protocol Selection
     type: str
+    convert_to_lower_case: true
     description: "- The following underlay routing protocols are supported:\n  - EBGP
       (default for l3ls-evpn)\n  - OSPF.\n  - ISIS.\n  - ISIS-SR*.\n  - ISIS-LDP*.\n
       \ - ISIS-SR-LDP*.\n  - OSPF-LDP*.\n- The variables should be applied to all
