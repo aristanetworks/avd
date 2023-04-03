@@ -2232,7 +2232,6 @@ keys:
     - isis-ldp
     - isis-sr-ldp
     - ospf-ldp
-    - BGP
   uplink_ptp:
     documentation_options:
       filename: Fabric Variables
