@@ -1,5 +1,0 @@
-### Logging ###
-logging:
-  console: informational
-  monitor: debugging
-  facility: syslog

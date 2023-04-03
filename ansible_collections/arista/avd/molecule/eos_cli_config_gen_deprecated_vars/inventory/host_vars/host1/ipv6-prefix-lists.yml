@@ -1,0 +1,11 @@
+### IPv6 Prefix-lists ###
+
+# Testing prefix_lists as dict of dict
+# Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+ipv6_prefix_lists:
+  PL-IPV6-LOOPBACKS:
+    # Testing sequence_numbers as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    sequence_numbers:
+      10:
+        action: permit 1b11:3a00:22b0:0082::/64 eq 128

@@ -1,7 +1,7 @@
 ---
 ### Tunnel Interfaces ###
 tunnel_interfaces:
-  Tunnel1:
+  - name: Tunnel1
     description: test ipv4 only
     shutdown: false
     vrf: Tunnel-VRF
@@ -19,7 +19,7 @@ tunnel_interfaces:
       comment
       Comment created from eos_cli under tunnel_interfaces.Tunnel1
       EOF
-  Tunnel2:
+  - name: Tunnel2
     description: test ipv6 only
     shutdown: true
     ipv6_enable: true
@@ -33,7 +33,7 @@ tunnel_interfaces:
     destination: dead:beef::1
     path_mtu_discovery: false
 
-  Tunnel3:
+  - name: Tunnel3
     description: test dual stack
     mtu: 1500
     ip_address: 64.64.64.64/24
@@ -47,7 +47,7 @@ tunnel_interfaces:
     destination: 1.1.1.1
     # no PMTU
 
-  Tunnel4:
+  - name: Tunnel4
     description: test no tcp_mss
     mtu: 1500
     ip_address: 64.64.64.64/24

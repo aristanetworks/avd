@@ -3,31 +3,31 @@ maintenance:
   default_bgp_profile: BP1
   default_unit_profile: UP1
   interface_profiles:
-    IP1:
+    - name: IP1
       rate_monitoring:
         load_interval: 10
         threshold: 500
       shutdown:
         max_delay: 300
   bgp_profiles:
-    BP1:
+    - name: BP1
       initiator:
         route_map_inout: RM-MAINTENANCE
-    BP2:
+    - name: BP2
       initiator:
         route_map_inout: RM-MAINTENANCE2
-    BP3:
+    - name: BP3
       initiator:
         route_map_inout: RM-MAINTENANCE3
   unit_profiles:
-    UP1:
+    - name: UP1
       on_boot:
         duration: 900
-    UP2:
+    - name: UP2
       on_boot:
         duration: 600
   units:
-    UNIT1:
+    - name: UNIT1
       profile: UP1
       groups:
         bgp_groups:
@@ -36,4 +36,4 @@ maintenance:
         interface_groups:
           - INTERFACE_GROUP_1
     # Adding a unit with no profile for issue/2488
-    System:
+    - name: System

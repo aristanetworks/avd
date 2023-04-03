@@ -1,7 +1,7 @@
 ### Local Users ###
 local_users:
-  admin:
+  - name: admin
     disabled: true
-  shell:
+  - name: shell
     shell: /sbin/nologin
     no_password: true

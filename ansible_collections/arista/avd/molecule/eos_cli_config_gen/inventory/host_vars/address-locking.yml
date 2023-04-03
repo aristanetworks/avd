@@ -16,18 +16,18 @@ address_locking:
     ipv6_enforcement_disabled: true
 
 ethernet_interfaces:
-  Ethernet1:
+  - name: Ethernet1
     description: Address Locking Interface Testing 1
     address_locking:
       ipv4: true
 
-  Ethernet2:
+  - name: Ethernet2
     description: Address Locking Interface Testing 2
     address_locking:
       ipv4: true
       ipv6: true
 
-  Ethernet3:
+  - name: Ethernet3
     description: Address Locking Interface Testing 3
     address_locking:
       ipv4: false

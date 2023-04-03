@@ -59,7 +59,7 @@ router_isis:
 
 ### Ethernet Interfaces ###
 ethernet_interfaces:
-  Ethernet1:
+  - name: Ethernet1
     peer: EAPI-SPINE1
     peer_interface: Ethernet1
     peer_type: spine
@@ -70,7 +70,7 @@ ethernet_interfaces:
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
     isis_network_point_to_point: true
-  Ethernet2:
+  - name: Ethernet2
     peer: EAPI-SPINE2
     peer_interface: Ethernet1
     peer_type: spine
@@ -81,7 +81,7 @@ ethernet_interfaces:
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
     isis_network_point_to_point: true
-  Ethernet3:
+  - name: Ethernet3
     peer: EAPI-LEAF1B
     peer_interface: Ethernet3
     peer_type: mlag_peer
@@ -92,13 +92,13 @@ ethernet_interfaces:
 
 ### Loopback Interfaces ###
 loopback_interfaces:
-  Loopback0:
+  - name: Loopback0
     description: EVPN_Overlay_Peering
     ip_address: 192.168.255.3/32
     isis_enable: EVPN_UNDERLAY
     isis_passive: true
 
-  Loopback1:
+  - name: Loopback1
     description: VTEP_VXLAN_Tunnel_Source
     ip_address: 192.168.254.3/32
     isis_enable: EVPN_UNDERLAY
@@ -106,7 +106,7 @@ loopback_interfaces:
 
 ### Management Interfaces ###
 management_interfaces:
-  Management1:
+  - name: Management1
     description: oob_management
     vrf: MGMT
     ip_address: 10.73.254.11/24
@@ -114,19 +114,19 @@ management_interfaces:
 
 ### VLAN Interfaces ###
 vlan_interfaces:
-  Vlan4093:
+  - name: Vlan4093
     description: MLAG_PEER_L3_PEERING
     ip_address: 10.255.251.0/31
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
     isis_network_point_to_point: true
-  Vlan4094:
+  - name: Vlan4094
     description: MLAG_PEER
     ip_address: 10.255.252.0/31
     no_autostate: true
     mtu: 1500
 ## Tenant_A ##
-  Vlan110:
+  - name: Vlan110
     tenant: Tenant_A
     tags: ['DC1']
     description: PR01-DEMO

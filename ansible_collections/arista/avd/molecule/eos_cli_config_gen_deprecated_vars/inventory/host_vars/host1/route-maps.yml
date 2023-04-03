@@ -1,0 +1,13 @@
+### Route-maps ###
+
+# Testing route_maps as dict of dict
+# Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+route_maps:
+  RM-CONN-BL-BGP:
+    # Testing route_maps as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+          - ip address prefix-list PL-MLAG

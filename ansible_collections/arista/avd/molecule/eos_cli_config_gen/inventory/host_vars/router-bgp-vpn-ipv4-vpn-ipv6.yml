@@ -9,7 +9,7 @@ router_bgp:
     - graceful-restart
     - maximum-paths 2 ecmp 2
   peer_groups:
-    MPLS-IBGP-PEERS:
+    - name: MPLS-IBGP-PEERS
       type: "vpn-ipv4, vpn-ipv6"
       remote_as: 65000
       local_as: 65000
@@ -17,14 +17,14 @@ router_bgp:
       send_community: all
       maximum_routes: 0
   neighbors:
-    192.168.255.1:
+    - ip_address: 192.168.255.1
       peer_group: MPLS-IBGP-PEERS
-    192.168.255.2:
+    - ip_address: 192.168.255.2
       peer_group: MPLS-IBGP-PEERS
-    192.168.255.4:
+    - ip_address: 192.168.255.4
       remote_as: 65004
       send_community: all
-    2001:cafe:192:168::4:
+    - ip_address: 2001:cafe:192:168::4
       remote_as: 65004
       send_community: all
   address_family_vpn_ipv4:
@@ -32,12 +32,12 @@ router_bgp:
     route:
       import_match_failure_action: discard
     peer_groups:
-      MPLS-IBGP-PEERS:
+      - name: MPLS-IBGP-PEERS
         activate: true
         route_map_in: RM-IBGP-PEER-IN4
         route_map_out: RM-IBGP-PEER-OUT4
     neighbors:
-      192.168.255.4:
+      - ip_address: 192.168.255.4
         activate: true
         route_map_in: RM-NEIGHBOR-PEER-IN4
         route_map_out: RM-NEIGHBOR-PEER-OUT4
@@ -48,12 +48,12 @@ router_bgp:
     route:
       import_match_failure_action: discard
     peer_groups:
-      MPLS-IBGP-PEERS:
+      - name: MPLS-IBGP-PEERS
         activate: true
         route_map_in: RM-IBGP-PEER-IN6
         route_map_out: RM-IBGP-PEER-OUT6
     neighbors:
-      2001:cafe:192:168::4:
+      - ip_address: 2001:cafe:192:168::4
         activate: true
         route_map_in: RM-NEIGHBOR-PEER-IN6
         route_map_out: RM-NEIGHBOR-PEER-OUT6
