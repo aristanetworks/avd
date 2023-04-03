@@ -256,7 +256,7 @@ The meta-schema does not allow for other keys to be set in the schema.
 | <samp>default</samp> | Dict | | | | Default value |
 | <samp>keys</samp> | Dictionary | | | Key Pattern: `^[a-z][a-z0-9_]*$` | Dictionary of dictionary-keys in the format `{<keyname>: {<schema>}}`.<br>`keyname` must use snake_case.<br>`schema` is the schema for each key. This is a recursive schema, so the value must conform to AVD Schema |
 | <samp>dynamic_keys</samp> | Dictionary | | | Pattern: `^[a-z][a-z0-9_]*$` | Dictionary of dynamic dictionary-keys in the format `{<variable.path>: {<schema>}}`.<br>`variable.path` is a variable path using dot-notation and pointing to a variable under the parent dictionary containing dictionary-keys.<br>If an element of the variable path is a list, every list item will unpacked.<br>`schema` is the schema for each key. This is a recursive schema, so the value must conform to AVD Schema<br>**Note that this is building the schema from values in the *data* being validated!** |
-| <samp>allow_other_keys</samp> | Boolean | | False | | Allow keys in the dictionary which are not defined in the schema. |
+| <samp>allow_other_keys</samp> | Boolean | | False | | Allow keys in the dictionary which are not defined in the schema. Custom keys starting with an underscore, like `_mycustomkey` are exempt from this validation |
 | <samp>display_name</samp> | String | | | Regex Pattern: `"^[^\n]+$"` | Free text display name for forms and documentation (single line) |
 | <samp>description</samp> | String | | | Minimum Length: 1 | Free text description for forms and documentation (multi line) |
 | <samp>required</samp> | Boolean | | | | Set if variable is required |

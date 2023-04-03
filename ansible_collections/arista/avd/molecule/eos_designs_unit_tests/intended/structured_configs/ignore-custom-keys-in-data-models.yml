@@ -1,0 +1,21 @@
+service_routing_protocols_model: multi-agent
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+ip_igmp_snooping:
+  globally_enabled: true
+_custom_key2:
+- custom_value2
+ethernet_interfaces:
+- name: Ethernet1
+  _custom_key3:
+    custom_dict3: custom_value3
