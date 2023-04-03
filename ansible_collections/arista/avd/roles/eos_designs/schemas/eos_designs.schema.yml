@@ -7,10 +7,10 @@ keys:
       filename: Management Settings
       table: CloudVision Settings
     type: str
-    description: 'On-premise CVP ingest auth key. If set, terminattr will be configured
+    description: 'On-premise CVP ingest auth key. If set, TerminAttr will be configured
       with key-based authentication for on-premise CVP.
 
-      If not set, terminattr will be configured with certificate based authentication
+      If not set, TerminAttr will be configured with certificate based authentication
       using token-secure onboarding.
 
       Token must be copied to the device first.'
@@ -53,8 +53,7 @@ keys:
       table: CloudVision Settings
     type: str
     default: /tmp/cv-onboarding-token
-    description: cvp_token_file is the path to the token file on the switch and is
-      only applicable to CV as a Service
+    description: cvp_token_file is the path to the token file on the switch.
   default_interfaces:
     type: list
     documentation_options:
