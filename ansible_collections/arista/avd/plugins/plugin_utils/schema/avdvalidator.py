@@ -1,5 +1,6 @@
 import copy
 from collections import ChainMap
+from re import fullmatch
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.refresolver import create_refresolver
@@ -64,12 +65,25 @@ def _keys_validator(validator, keys: dict, instance: dict, schema: dict):
     if "$ref" in schema:
         return
 
+    # Avoid modifying the original keys
+    keys = keys.copy()
+
     # Compile and add any "dynamic_keys" to "keys"
     dynamic_keys = schema.get("dynamic_keys", {})
     for dynamic_key, childschema in dynamic_keys.items():
         resolved_keys = get_all(instance, dynamic_key)
         for resolved_key in resolved_keys:
             keys.setdefault(resolved_key, childschema)
+
+    # Compile and add any "pattern_keys" to "keys"
+    pattern_keys = schema.get("pattern_keys", {})
+    for pattern_key, childschema in pattern_keys.items():
+        for key in instance:
+            # Skip if key is already in schema. This also means if key matches multiple patterns, only the first match will be used.
+            if key in keys or not isinstance(key, str):
+                continue
+            if fullmatch(pattern_key, key) is not None:
+                keys.setdefault(resolved_key, childschema)
 
     # Resolve $ref for child keys, to support schema actions below which operates on the child schema
     for key, childschema in keys.items():

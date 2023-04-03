@@ -254,6 +254,16 @@
                                 }
                             }
                         },
+                        "pattern_keys": {
+                            "type": "object",
+                            "description": "Dictionary in the format `{<regex>: {<schema>}}`.\n`regex` is a regex string used for matching keys in the data. `schema` is the schema used for validating those keys. This is a recursive schema, so the value must conform to AVD Schema\nRegular expressions are anchored, meaning they must match the full key name.",
+                            "propertyNames": {
+                                "format": "regex"
+                            },
+                            "additionalProperties": {
+                                "$ref": "#/$def/avd_schema_var"
+                            }
+                        },
                         "allow_other_keys": {
                             "type": "boolean",
                             "default": false,
@@ -266,7 +276,8 @@
                         "$ref": { "$ref": "#/$def/$ref" },
                         "documentation_options": { "$ref": "#/$def/documentation_options" },
                         "$schema": { "type": "string" },
-                        "$id": { "type": "string" }
+                        "$id": { "type": "string" },
+                        "$def": { "$ref": "#/$def/$def" }
                     },
                     "additionalProperties": false
                 },
@@ -301,6 +312,16 @@
         "$ref": {
             "type": "string",
             "description": "Reference to Sub Schema using JSON Schema resolver.\nExample '#/keys/mykey' will resolve the schema for 'mykey' under the root dictionary of the current schema"
+        },
+        "$def": {
+            "type": "object",
+            "description": "Storage for reusable schema fragments",
+            "patternProperties": {
+                "^[a-z][a-z0-9_]*$": {
+                    "$comment": "The regex here matches valid key names",
+                    "$ref": "#/$def/avd_schema_var"
+                }
+            }
         },
         "documentation_options": {
             "type": "object",

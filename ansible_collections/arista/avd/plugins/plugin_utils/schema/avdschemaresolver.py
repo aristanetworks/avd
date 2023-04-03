@@ -52,6 +52,19 @@ def _dynamic_keys(validator, dynamic_keys: dict, resolved_schema: dict, schema: 
         )
 
 
+def _pattern_keys(validator, pattern_keys: dict, resolved_schema: dict, schema: dict):
+    # Resolve the child schemas
+    for pattern_key, childschema in pattern_keys.items():
+        if "$ref" in childschema:
+            _ref_on_child(validator, childschema["$ref"], resolved_schema["pattern_keys"][pattern_key])
+        yield from validator.descend(
+            resolved_schema["pattern_keys"][pattern_key],
+            resolved_schema["pattern_keys"][pattern_key],
+            path=pattern_key,
+            schema_path=pattern_key,
+        )
+
+
 def _items(validator, items: dict, resolved_schema: dict, schema: dict):
     # Resolve the child schema
     if "$ref" in items:
@@ -91,7 +104,7 @@ class AvdSchemaResolver:
         The "resolved_schema" must contain a copy of the original schema, and then
         the $ref resolver will merge in the resolved schema and do in-place update.
         """
-        if JSONSCHEMA_IMPORT_ERROR or DEEPMERGE_IMPORT_ERROR:
+        if JSONSCHEMA_IMPORT_ERROR:
             raise AristaAvdError('Python library "jsonschema" must be installed to use this plugin') from JSONSCHEMA_IMPORT_ERROR
         if DEEPMERGE_IMPORT_ERROR:
             raise AristaAvdError('Python library "deepmerge" must be installed to use this plugin') from DEEPMERGE_IMPORT_ERROR
@@ -102,6 +115,7 @@ class AvdSchemaResolver:
                 "items": _items,
                 "keys": _keys,
                 "dynamic_keys": _dynamic_keys,
+                "pattern_keys": _pattern_keys,
             },
         )
 

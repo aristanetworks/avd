@@ -196,7 +196,7 @@ class AvdToDocumentationSchemaConverter:
 
         output.append(row)
 
-        if schema.get("keys") or schema.get("dynamic_keys"):
+        if schema.get("keys") or schema.get("dynamic_keys") or schema.get("pattern_keys"):
             output.extend(self.keys(schema, indentation, var_path + [var_name], table))
         elif schema.get("items"):
             output.extend(self.items(schema, indentation, var_path + [var_name], table))
@@ -406,16 +406,17 @@ class AvdToDocumentationSchemaConverter:
         if table == DEFAULT_TABLE:
             if "keys" in schema:
                 for key, childschema in schema["keys"].items():
-                    # tables.extend(self._get_tables(childschema, default_table))
                     tables.extend(self._get_tables(childschema))
 
             if "dynamic_keys" in schema:
                 for key, childschema in schema["dynamic_keys"].items():
-                    # tables.extend(self._get_tables(childschema, default_table))
+                    tables.extend(self._get_tables(childschema))
+
+            if "pattern_keys" in schema:
+                for key, childschema in schema["pattern_keys"].items():
                     tables.extend(self._get_tables(childschema))
 
             if "items" in schema:
-                # tables.extend(self._get_tables(schema["items"], default_table))
                 tables.extend(self._get_tables(schema["items"]))
 
         # Return list of unique tables
@@ -436,6 +437,10 @@ class AvdToDocumentationSchemaConverter:
                 for key, childschema in schema["dynamic_keys"].items():
                     filenames.extend(self._get_filenames(childschema))
 
+            if "pattern_keys" in schema:
+                for key, childschema in schema["pattern_keys"].items():
+                    filenames.extend(self._get_filenames(childschema))
+
             if "items" in schema:
                 filenames.extend(self._get_filenames(schema["items"]))
 
@@ -444,6 +449,10 @@ class AvdToDocumentationSchemaConverter:
 
     def _get_keys(self, schema: dict):
         keys = schema.get("keys", {})
-        dynamic_keys = schema.get("dynamic_keys", {})
-        keys.update({f"<{dynamic_key}>": subschema for dynamic_key, subschema in dynamic_keys.items()})
+        if "dynamic_keys" in schema:
+            keys.update({f"<{dynamic_key}>": subschema for dynamic_key, subschema in schema["dynamic_keys"].items()})
+
+        if "pattern_keys" in schema:
+            keys.update(schema["pattern_keys"])
+
         return keys
