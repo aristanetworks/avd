@@ -637,3 +637,40 @@ ethernet_interfaces:
         link_address: a0::5
         vrf: TEST
         local_interface: Loopback55
+
+  Ethernet56:
+    description: interface_with_poe_commands_and_limit_in_watts
+    mode: "access"
+    vlans: 20
+    poe:
+      disabled: false
+      priority: critical
+      reboot:
+        action: maintain
+      link_down:
+        action: maintain
+      shutdown:
+        action: power-off
+      limit:
+        watts: 45
+        fixed: true
+      legacy_detect: true
+
+  Ethernet57:
+    description: interface_with_poe_commands_and_limit_in_class
+    mode: "access"
+    vlans: 20
+    poe:
+      disabled: true
+      priority: low
+      reboot:
+        action: power-off
+      link_down:
+        action: power-off
+        power_off_delay: 10
+      shutdown:
+        action: maintain
+      limit:
+        class: 4
+        fixed: false
+      negotiation_lldp: false

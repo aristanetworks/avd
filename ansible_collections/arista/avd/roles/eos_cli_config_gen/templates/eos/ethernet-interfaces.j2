@@ -490,22 +490,27 @@ interface {{ ethernet_interface.name }}
 {%         if ethernet_interface.poe.priority is arista.avd.defined %}
    poe priority {{ ethernet_interface.poe.priority }}
 {%         endif %}
-{%         if ethernet_interface.poe.reboot_action is arista.avd.defined %}
-   poe reboot action {{ ethernet_interface.poe.reboot_action }}
+{%         if ethernet_interface.poe.reboot.action is arista.avd.defined %}
+   poe reboot action {{ ethernet_interface.poe.reboot.action }}
 {%         endif %}
-{%         if ethernet_interface.poe.link_down_action is arista.avd.defined %}
-   poe link down action {{ ethernet_interface.poe.link_down_action }}
+{%         if ethernet_interface.poe.link_down.action is arista.avd.defined %}
+{%             set poe_link_down_action_cli = 'poe link down action ' ~ ethernet_interface.poe.link_down.action %}
+{%             if ethernet_interface.poe.link_down.power_off_delay is arista.avd.defined %}
+{%                 set poe_link_down_action_cli = poe_link_down_action_cli ~ ' ' ~ ethernet_interface.poe.link_down.power_off_delay %}
+{%             endif %}
+   {{ poe_link_down_action_cli }}
 {%         endif %}
-{%         if ethernet_interface.poe.shutdown_action is arista.avd.defined %}
-   poe shutdown action {{ ethernet_interface.poe.shutdown_action }}
+{%         if ethernet_interface.poe.shutdown.action is arista.avd.defined %}
+   poe shutdown action {{ ethernet_interface.poe.shutdown.action }}
 {%         endif %}
 {%         if ethernet_interface.poe.disabled is arista.avd.defined(true) %}
    poe disabled
 {%         endif %}
 {%         if ethernet_interface.poe.limit.class is arista.avd.defined %}
-{%             set poe_limit_cli = 'poe limit class class' ~ ethernet_interface.poe.limit.class %}
+{%             set poe_class_map = dict({0: "15.40", 1: "4.00", 2: "7.00", 3: "15.40", 4: "30.00", 5: "45.00", 6: "60.00", 7: "75.00", 8: "90.00"}) %}
+{%             set poe_limit_cli = 'poe limit ' ~ poe_class_map[ethernet_interface.poe.limit.class] ~ ' watts' %}
 {%         elif ethernet_interface.poe.limit.watts is arista.avd.defined %}
-{%             set poe_limit_cli = 'poe limit ' ~ ethernet_interface.poe.limit.watts ~ ' watts' %}
+{%             set poe_limit_cli = 'poe limit ' ~ "%.2f" | format(ethernet_interface.poe.limit.watts | float) ~ ' watts' %}
 {%         endif %}
 {%         if poe_limit_cli is arista.avd.defined and ethernet_interface.poe.limit.fixed is arista.avd.defined(true) %}
 {%             set poe_limit_cli = poe_limit_cli ~ ' fixed' %}

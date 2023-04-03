@@ -118,6 +118,8 @@ sFlow is disabled.
 | Ethernet53 |  SFlow Interface Testing - SFlow ingress and egress disabled | access | - | - | - | - |
 | Ethernet54 |  SFlow Interface Testing - SFlow ingress and egress unmodified disabled | access | - | - | - | - |
 | Ethernet55 |  DHCPv6 Relay Testing | access | - | - | - | - |
+| Ethernet56 |  interface_with_poe_commands_and_limit_in_watts | access | 20 | - | - | - |
+| Ethernet57 |  interface_with_poe_commands_and_limit_in_class | access | 20 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -706,6 +708,31 @@ interface Ethernet55
    ipv6 address a0::1/64
    ipv6 dhcp relay destination a0::2 link-address a0::3
    ipv6 dhcp relay destination a0::4 vrf TEST local-interface Loopback55 link-address a0::5
+!
+interface Ethernet56
+   description interface_with_poe_commands_and_limit_in_watts
+   switchport access vlan 20
+   switchport mode access
+   switchport
+   poe priority critical
+   poe reboot action maintain
+   poe link down action maintain
+   poe shutdown action power-off
+   poe limit 45.00 watts fixed
+   poe legacy detect
+!
+interface Ethernet57
+   description interface_with_poe_commands_and_limit_in_class
+   switchport access vlan 20
+   switchport mode access
+   switchport
+   poe priority low
+   poe reboot action power-off
+   poe link down action power-off 10
+   poe shutdown action maintain
+   poe disabled
+   poe limit 30.00 watts
+   poe negotiation lldp disabled
 ```
 
 ## BFD

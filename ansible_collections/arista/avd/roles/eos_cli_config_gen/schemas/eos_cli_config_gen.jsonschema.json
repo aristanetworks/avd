@@ -2530,7 +2530,7 @@
             "properties": {
               "disabled": {
                 "type": "boolean",
-                "description": "Optional field used to disable PoE on a POE capable port. PoE is enabled on all ports that support it by default in EOS.",
+                "description": "Disable PoE on a POE capable port. PoE is enabled on all ports that support it by default in EOS.",
                 "title": "Disabled"
               },
               "priority": {
@@ -2541,39 +2541,70 @@
                   "medium",
                   "low"
                 ],
-                "description": "Optional field used to prioritize a port's power in the event that one of the switch's power supplies loses power",
+                "description": "Prioritize a port's power in the event that one of the switch's power supplies loses power",
                 "title": "Priority"
               },
-              "reboot_action": {
-                "type": "string",
-                "enum": [
-                  "maintain",
-                  "power-off"
-                ],
-                "description": "Optional field used to set the PoE power behavior for a PoE port when the system is rebooted",
-                "title": "Reboot Action"
+              "reboot": {
+                "description": "Set the PoE power behavior for a PoE port when the system is rebooted",
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "maintain",
+                      "power-off"
+                    ],
+                    "description": "PoE action for interface take",
+                    "title": "Action"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Reboot"
               },
-              "link_down_action": {
-                "type": "string",
-                "enum": [
-                  "maintain",
-                  "power-off"
-                ],
-                "description": "Optional field used to set the PoE power behavior for a PoE port when the port goes down",
-                "title": "Link Down Action"
+              "link_down": {
+                "description": "Set the PoE power behavior for a PoE port when the port goes down",
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "maintain",
+                      "power-off"
+                    ],
+                    "description": "PoE action for interface take",
+                    "title": "Action"
+                  },
+                  "power_off_delay": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 86400,
+                    "description": "Number in seconds to delay shutting the power off after a link down event occurs. Default value is 5 seconds in EOS.",
+                    "title": "Power Off Delay"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Link Down"
               },
-              "shutdown_action": {
-                "type": "string",
-                "enum": [
-                  "maintain",
-                  "power-off"
-                ],
-                "description": "Optional field used to set the PoE power behavior for a PoE port when the port is admin down",
-                "title": "Shutdown Action"
+              "shutdown": {
+                "description": "Set the PoE power behavior for a PoE port when the port is admin down",
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "maintain",
+                      "power-off"
+                    ],
+                    "description": "PoE action for interface take",
+                    "title": "Action"
+                  }
+                },
+                "additionalProperties": false,
+                "title": "Shutdown"
               },
               "limit": {
                 "type": "object",
-                "description": "Optional field used to override the hardware-negotiated power limit using either wattage or a power class.",
+                "description": "Override the hardware-negotiated power limit using either wattage or a power class.",
                 "properties": {
                   "class": {
                     "type": "integer",
@@ -2582,14 +2613,12 @@
                     "title": "Class"
                   },
                   "watts": {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 90,
+                    "type": "string",
                     "title": "Watts"
                   },
                   "fixed": {
                     "type": "boolean",
-                    "description": "Optional field used to ignore hardware classification",
+                    "description": "Set to ignore hardware classification",
                     "title": "Fixed"
                   }
                 },
@@ -2598,12 +2627,12 @@
               },
               "negotiation_lldp": {
                 "type": "boolean",
-                "description": "Optional field used to disable to prevent port from negotiating power with powered devices over LLDP. Enabled by default in EOS.",
+                "description": "Disable to prevent port from negotiating power with powered devices over LLDP. Enabled by default in EOS.",
                 "title": "Negotiation LLDP"
               },
               "legacy_detect": {
                 "type": "boolean",
-                "description": "Optional field used to allow a subset of legacy devices to work with the PoE switch.  Disabled by default in EOS because it can cause false positive detections.",
+                "description": "Allow a subset of legacy devices to work with the PoE switch.  Disabled by default in EOS because it can cause false positive detections.",
                 "title": "Legacy Detect"
               }
             },

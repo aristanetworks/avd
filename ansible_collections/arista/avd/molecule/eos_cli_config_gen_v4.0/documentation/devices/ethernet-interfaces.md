@@ -71,8 +71,6 @@ interface Management1
 | Ethernet25 |  Molecule MAC | access | - | - | - | - |
 | Ethernet27 |  EVPN-Vxlan single-active redundancy | access | - | - | - | - |
 | Ethernet28 |  EVPN-MPLS multihoming | access | - | - | - | - |
-| Ethernet56 |  interface_with_poe_commands_and_limit_in_watts | access | 20 | - | - | - |
-| Ethernet57 |  interface_with_poe_commands_and_limit_in_class | access | 20 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -481,31 +479,6 @@ interface Ethernet46
    ip helper-address 10.10.96.101 source-interface Loopback0
    ip helper-address 10.10.96.150 vrf MGMT source-interface Loopback0
    ip helper-address 10.10.96.151 vrf MGMT
-!
-interface Ethernet56
-   description interface_with_poe_commands_and_limit_in_watts
-   switchport access vlan 20
-   switchport mode access
-   switchport
-   poe priority critical
-   poe reboot action maintain
-   poe link down action maintain
-   poe shutdown action power-off
-   poe limit 45 watts fixed
-   poe legacy detect
-!
-interface Ethernet57
-   description interface_with_poe_commands_and_limit_in_class
-   switchport access vlan 20
-   switchport mode access
-   switchport
-   poe priority low
-   poe reboot action power-off
-   poe link down action power-off
-   poe shutdown action maintain
-   poe disabled
-   poe limit class class4
-   poe negotiation lldp disabled
 ```
 
 ## BFD
