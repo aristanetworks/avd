@@ -3731,7 +3731,10 @@
                 "title": "Units Packets"
               }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
           },
           "title": "Features"
         }
