@@ -43,6 +43,8 @@ interface Management1
 | MGMT | enabled |
 | MONITORING | enabled |
 
+
+
 #### Management API gnmi configuration
 
 ```eos

@@ -36,6 +36,38 @@ management api gnmi
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
+{%         if management_api_gnmi.transport.grpc_tunnel is arista.avd.defined %}
+{%             for transport in management_api_gnmi.transport.grpc_tunnel %}
+{%                 if transport.name is arista.avd.defined %}
+   transport grpc-tunnel {{ transport.name }}
+{%                 endif %}
+{%                 if transport.shutdown is arista.avd.defined(true) %}
+      shutdown
+{%                 elif transport.shutdown is arista.avd.defined(false) %}
+      no shutdown
+{%                 endif %}
+{%                 if transport.vrf is arista.avd.defined %}
+      vrf {{ transport.vrf }}
+{%                 endif %}
+{%                 if transport.tunnel_ssl_profile is arista.avd.defined %}
+      tunnel ssl profile {{ transport.tunnel_ssl_profile }}
+{%                 endif %}
+{%                 if transport.gnmi_ssl_profile is arista.avd.defined %}
+      gnmi ssl profile {{ transport.gnmi_ssl_profile }}
+{%                 endif %}
+{%                 if transport.destination is arista.avd.defined %}
+      destination {{ transport.destination.address }} port {{ transport.destination.port }}
+{%                 endif %}
+{%                 if transport.local_interface is arista.avd.defined %}
+      local interface {{ transport.local_interface.interface }} port {{ transport.local_interface.port }}
+{%                 endif %}
+{%                 if transport.target.use_serial_number is arista.avd.defined(true) %}
+      target serial-number
+{%                 elif transport.target.target_id is arista.avd.defined %}
+      target {{ transport.target.target_id }}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
 {%     endif %}
 {%     if management_api_gnmi.provider is arista.avd.defined %}
    provider {{ management_api_gnmi.provider }}

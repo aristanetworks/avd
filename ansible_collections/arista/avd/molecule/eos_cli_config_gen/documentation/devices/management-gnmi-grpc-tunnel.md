@@ -1,4 +1,4 @@
-# management-gnmi-new-flags
+# management-gnmi-grpc-tunnel
 
 ## Table of Contents
 
@@ -40,12 +40,11 @@ interface Management1
 
 | Transport | SSL Profile | VRF | Notification Timestamp | ACL |
 | --------- | ----------- | --- | ---------------------- | --- |
-| MGMT | gnmi | MGMT | send-time | acl1 |
-| mytransport | - | - | send-time | acl1 |
 
 
 | Transport | Destination | Port | gNMI SSL Profile | Tunnel SSL Profile | VRF | Local Interface | Local Port | Target ID |
 | --------- | ----------- | ---- | ---------------- | ------------------ | --- | --------------- | ---------- | --------- |
+| gnmic | 10.1.1.100 | 10000 | ssl_profile | ssl_profile | management | Management1 | 10001 | testid1 |
 
 
 Provider eos-native is configured.
@@ -55,13 +54,13 @@ Provider eos-native is configured.
 ```eos
 !
 management api gnmi
-   transport grpc MGMT
-      ssl profile gnmi
-      vrf MGMT
-      ip access-group acl1
-      notification timestamp send-time
-   transport grpc mytransport
-      ip access-group acl1
-      notification timestamp send-time
+   transport grpc-tunnel gnmic
+      no shutdown
+      vrf management
+      tunnel ssl profile ssl_profile
+      gnmi ssl profile ssl_profile
+      destination 10.1.1.100 port 10000
+      local interface Management1 port 10001
+      target testid1
    provider eos-native
 ```

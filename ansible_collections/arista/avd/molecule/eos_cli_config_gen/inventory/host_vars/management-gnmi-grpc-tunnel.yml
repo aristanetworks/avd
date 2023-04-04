@@ -1,0 +1,18 @@
+management_api_gnmi:
+  provider: "eos-native"
+  transport:
+    grpc_tunnel:
+    - name: gnmic
+      shutdown: false
+      tunnel_ssl_profile: ssl_profile
+      gnmi_ssl_profile: ssl_profile
+      vrf: management
+      destination:
+        address: 10.1.1.100
+        port: 10000
+      local_interface:
+        interface: Management1
+        port: 10001
+      target:
+        use_serial_number: false
+        target_id: testid1

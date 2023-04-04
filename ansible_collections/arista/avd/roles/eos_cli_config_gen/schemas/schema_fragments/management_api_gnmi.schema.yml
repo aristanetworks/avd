@@ -39,11 +39,70 @@ keys:
                 ip_access_group:
                   type: str
                   description: ACL name
+          grpc_tunnel:
+            type: list
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Transport name
+                shutdown:
+                  type: bool
+                  description: Operational status of the gRPC tunnel
+                tunnel_ssl_profile:
+                  type: str
+                  description: Tunnel SSL profile name
+                gnmi_ssl_profile:
+                  type: str
+                  description: gNMI SSL profile name
+                vrf:
+                  type: str
+                  description: VRF name is optional
+                destination:
+                  type: dict
+                  keys:
+                    address:
+                      type: str
+                      description: IP address or hostname
+                    port:
+                      type: int
+                      min: 1
+                      max: 65535
+                      convert_types:
+                      - str
+                      description: TCP Port
+                local_interface:
+                  type: dict
+                  keys:
+                    interface:
+                      type: str
+                      description: Interface name
+                    port:
+                      type: int
+                      min: 1
+                      max: 65535
+                      convert_types:
+                      - str
+                      description: TCP Port
+                target:
+                  type: dict
+                  keys:
+                    use_serial_number:
+                      type: bool
+                      description: Use serial number as the Target ID
+                    target_id:
+                      type: str
+                      description: |
+                        Target IDs as a string. More than one Target ID can be specified.
+                        Examples:
+                        - "id1 id2 id3"
+                        - "id1"
       enable_vrfs:
         type: list
         primary_key: name
         convert_types:
-          - dict
+        - dict
         description: |
           Enable VRFs will be deprecated in AVD v4.0.
           These should not be mixed with the new keys above.

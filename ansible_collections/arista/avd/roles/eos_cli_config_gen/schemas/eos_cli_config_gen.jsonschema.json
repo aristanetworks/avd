@@ -6339,6 +6339,108 @@
                 }
               },
               "title": "Grpc"
+            },
+            "grpc_tunnel": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Transport name",
+                    "title": "Name"
+                  },
+                  "shutdown": {
+                    "type": "boolean",
+                    "description": "Operational status of the gRPC tunnel",
+                    "title": "Shutdown"
+                  },
+                  "tunnel_ssl_profile": {
+                    "type": "string",
+                    "description": "Tunnel SSL profile name",
+                    "title": "Tunnel SSL Profile"
+                  },
+                  "gnmi_ssl_profile": {
+                    "type": "string",
+                    "description": "gNMI SSL profile name",
+                    "title": "Gnmi SSL Profile"
+                  },
+                  "vrf": {
+                    "type": "string",
+                    "description": "VRF name is optional",
+                    "title": "VRF"
+                  },
+                  "destination": {
+                    "type": "object",
+                    "properties": {
+                      "address": {
+                        "type": "string",
+                        "description": "IP address or hostname",
+                        "title": "Address"
+                      },
+                      "port": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "description": "TCP Port",
+                        "title": "Port"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Destination"
+                  },
+                  "local_interface": {
+                    "type": "object",
+                    "properties": {
+                      "interface": {
+                        "type": "string",
+                        "description": "Interface name",
+                        "title": "Interface"
+                      },
+                      "port": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "description": "TCP Port",
+                        "title": "Port"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Local Interface"
+                  },
+                  "target": {
+                    "type": "object",
+                    "properties": {
+                      "use_serial_number": {
+                        "type": "boolean",
+                        "description": "Use serial number as the Target ID",
+                        "title": "Use Serial Number"
+                      },
+                      "target_id": {
+                        "type": "string",
+                        "description": "Target IDs as a string. More than one Target ID can be specified.\nExamples:\n- \"id1 id2 id3\"\n- \"id1\"\n",
+                        "title": "Target ID"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Target"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Grpc Tunnel"
             }
           },
           "additionalProperties": false,
