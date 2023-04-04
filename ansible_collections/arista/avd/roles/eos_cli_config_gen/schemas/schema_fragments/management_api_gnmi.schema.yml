@@ -78,6 +78,7 @@ keys:
                   keys:
                     name:
                       type: str
+                      required: true
                       description: Interface name
                     port:
                       type: int
