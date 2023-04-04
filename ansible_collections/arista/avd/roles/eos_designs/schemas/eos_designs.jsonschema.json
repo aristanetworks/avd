@@ -4471,7 +4471,7 @@
       "title": "Overlay Her Flood List Scope"
     },
     "overlay_loopback_description": {
-      "description": "Customizable overlay loopback description.",
+      "description": "Customize the description on overlay interface Loopback0.",
       "type": "string",
       "title": "Overlay Loopback Description"
     },
@@ -4483,7 +4483,7 @@
     },
     "overlay_rd_type": {
       "type": "object",
-      "description": "Specify RD type.\nRoute Distinguisher (RD) for L2 / L3 services is set to <overlay_loopback>:<vni> per default.\nBy configuring overlay_rd_type the Administrator subfield (first part of RD) can be set to other values.\n",
+      "description": "Specify RD type.\nRoute Distinguisher (RD) for L2 / L3 services is set to <overlay_loopback>:<vni> per default.\nBy configuring overlay_rd_type the Administrator subfield (first part of RD) can be set to other values.\nNote:\nRD is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.\nFor loopback or 32-bit ASN/number the VNI can only be a 16-bit number.\nFor 16-bit ASN/number the VNI can be a 32-bit number.\n",
       "properties": {
         "admin_subfield": {
           "type": "string",
@@ -4504,20 +4504,21 @@
       "title": "Overlay Rd Type"
     },
     "overlay_routing_protocol": {
-      "description": "- The following overlay routing protocols are supported:\n  - eBGP (default for l3ls-evpn).\n  - iBGP (only with OSPF or ISIS variants in underlay).\n  - CVX (CloudVision eXchange).\n  - HER (Head-End Replication) eos_designs will configure static VXLAN flood-lists instead of using a dynamic overlay protocol.\n",
+      "description": "- The following overlay routing protocols are supported:\n  - eBGP: Configures fabric with eBGP, default for l3ls-evpn design.\n  - iBGP: Configured fabric with iBGP, only supported with OSPF or ISIS variants in underlay, default for mpls design.\n  - CVX: Configures fabric to leverage CloudVision eXchange as the overlay controller.\n  - HER: Configures fabric with Head-End Replication, configures static VXLAN flood-lists instead of using a dynamic overlay protocol.\n  - none: No overlay configuration will be generated, default for l2ls design.\n",
       "type": "string",
       "enum": [
         "ebgp",
         "ibgp",
         "cvx",
-        "her"
+        "her",
+        "none"
       ],
       "default": "ebgp",
       "title": "Overlay Routing Protocol"
     },
     "overlay_routing_protocol_address_family": {
       "type": "string",
-      "description": "Enable overlay EVPN peering with IPv6 addresses.\nThis feature depends on underlay_ipv6 variable. As of today, only RFC5549 is capable to transport IPv6 in the underlay.\n",
+      "description": "When set to `ipv6`, enable overlay EVPN peering with IPv6 addresses.\nThis feature depends on underlay_ipv6 variable. As of today, only RFC5549 is capable to transport IPv6 in the underlay.\n",
       "enum": [
         "ipv4",
         "ipv6"
@@ -4527,7 +4528,7 @@
     },
     "overlay_rt_type": {
       "type": "object",
-      "description": "Specify RT type.\nRoute Target (RT) for L2 / L3 services is set to <vni>:<vni> per default.\nBy configuring overlay_rt_type the Administrator subfield (first part of RT) can be set to other values.\nNotes:\nRT is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.\nFor 32-bit ASN/number the VNI can only be a 16-bit number.\nFor 16-bit ASN/number the VNI can be a 32-bit number.\nOld variable name \"evpn_rt_type\", supported for backward-compatibility.\n",
+      "description": "Specify RT type.\nRoute Target (RT) for L2 / L3 services is set to <vni>:<vni> per default.\nBy configuring overlay_rt_type the Administrator subfield (first part of RT) can be set to other values.\nNotes:\nRT is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.\nFor 32-bit ASN/number the VNI can only be a 16-bit number.\nFor 16-bit ASN/number the VNI can be a 32-bit number.\n",
       "properties": {
         "admin_subfield": {
           "type": "string",
@@ -4816,7 +4817,7 @@
       "title": "Uplink PTP"
     },
     "vtep_vvtep_ip": {
-      "description": "IP Address used as Virtual VTEP. Will be configured as secondary IP on loopback1.\nThis is only needed for centralized routing designs.\n",
+      "description": "IP Address used as Virtual VTEP. Will be configured as secondary IP on Loopback1.\nThis is only needed for centralized routing designs.\n",
       "type": "string",
       "title": "Vtep Vvtep IP"
     }

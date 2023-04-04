@@ -7,5 +7,5 @@ keys:
     documentation_options:
       filename: Fabric Variables
       table: Overlay General Settings
-    description: Customizable overlay loopback description.
+    description: Customize the description on overlay interface Loopback0.
     type: str

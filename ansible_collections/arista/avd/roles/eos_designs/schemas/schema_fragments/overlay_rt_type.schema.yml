@@ -16,7 +16,6 @@ keys:
       RT is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
       For 32-bit ASN/number the VNI can only be a 16-bit number.
       For 16-bit ASN/number the VNI can be a 32-bit number.
-      Old variable name "evpn_rt_type", supported for backward-compatibility.
     keys:
       admin_subfield:
         type: str

@@ -11,4 +11,3 @@ keys:
       IP Address used as Virtual VTEP. Will be configured as secondary IP on Loopback1.
       This is only needed for centralized routing designs.
     type: str
-    format: ipv4_cidr

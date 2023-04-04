@@ -12,6 +12,10 @@ keys:
       Specify RD type.
       Route Distinguisher (RD) for L2 / L3 services is set to <overlay_loopback>:<vni> per default.
       By configuring overlay_rd_type the Administrator subfield (first part of RD) can be set to other values.
+      Note:
+      RD is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
+      For loopback or 32-bit ASN/number the VNI can only be a 16-bit number.
+      For 16-bit ASN/number the VNI can be a 32-bit number.
     keys:
       admin_subfield:
         type: str

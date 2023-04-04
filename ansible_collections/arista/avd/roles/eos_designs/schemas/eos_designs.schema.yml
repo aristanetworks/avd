@@ -2024,7 +2024,7 @@ keys:
     documentation_options:
       filename: Fabric Variables
       table: Overlay General Settings
-    description: Customizable overlay loopback description.
+    description: Customize the description on overlay interface Loopback0.
     type: str
   overlay_mlag_rfc5549:
     documentation_options:
@@ -2050,6 +2050,14 @@ keys:
       By configuring overlay_rd_type the Administrator subfield (first part of RD)
       can be set to other values.
 
+      Note:
+
+      RD is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
+
+      For loopback or 32-bit ASN/number the VNI can only be a 16-bit number.
+
+      For 16-bit ASN/number the VNI can be a 32-bit number.
+
       '
     keys:
       admin_subfield:
@@ -2073,16 +2081,20 @@ keys:
     documentation_options:
       filename: Fabric Variables
       table: Routing Protocol Selection
-    description: "- The following overlay routing protocols are supported:\n  - eBGP
-      (default for l3ls-evpn).\n  - iBGP (only with OSPF or ISIS variants in underlay).\n
-      \ - CVX (CloudVision eXchange).\n  - HER (Head-End Replication) eos_designs
-      will configure static VXLAN flood-lists instead of using a dynamic overlay protocol.\n"
+    description: "- The following overlay routing protocols are supported:\n  - eBGP:
+      Configures fabric with eBGP, default for l3ls-evpn design.\n  - iBGP: Configured
+      fabric with iBGP, only supported with OSPF or ISIS variants in underlay, default
+      for mpls design.\n  - CVX: Configures fabric to leverage CloudVision eXchange
+      as the overlay controller.\n  - HER: Configures fabric with Head-End Replication,
+      configures static VXLAN flood-lists instead of using a dynamic overlay protocol.\n
+      \ - none: No overlay configuration will be generated, default for l2ls design.\n"
     type: str
     valid_values:
     - ebgp
     - ibgp
     - cvx
     - her
+    - none
     default: ebgp
     convert_to_lower_case: true
   overlay_routing_protocol_address_family:
@@ -2090,7 +2102,7 @@ keys:
       filename: Fabric Variables
       table: IPv6 Underlay Settings
     type: str
-    description: 'Enable overlay EVPN peering with IPv6 addresses.
+    description: 'When set to `ipv6`, enable overlay EVPN peering with IPv6 addresses.
 
       This feature depends on underlay_ipv6 variable. As of today, only RFC5549 is
       capable to transport IPv6 in the underlay.
@@ -2119,8 +2131,6 @@ keys:
       For 32-bit ASN/number the VNI can only be a 16-bit number.
 
       For 16-bit ASN/number the VNI can be a 32-bit number.
-
-      Old variable name "evpn_rt_type", supported for backward-compatibility.
 
       '
     keys:
@@ -2408,13 +2418,12 @@ keys:
       filename: Fabric Variables
       table: Overlay General Settings
     description: 'IP Address used as Virtual VTEP. Will be configured as secondary
-      IP on loopback1.
+      IP on Loopback1.
 
       This is only needed for centralized routing designs.
 
       '
     type: str
-    format: ipv4_cidr
 dynamic_keys:
   node_type_keys.key:
     $ref: '#/keys/node_type'
