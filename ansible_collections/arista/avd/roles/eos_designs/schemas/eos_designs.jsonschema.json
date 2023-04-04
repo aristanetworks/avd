@@ -4509,8 +4509,8 @@
       "enum": [
         "ebgp",
         "ibgp",
-        "CVX",
-        "HER"
+        "cvx",
+        "her"
       ],
       "default": "ebgp",
       "title": "Overlay Routing Protocol"

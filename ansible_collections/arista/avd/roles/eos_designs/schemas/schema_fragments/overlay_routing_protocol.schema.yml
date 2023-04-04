@@ -17,6 +17,7 @@ keys:
     valid_values:
       - "ebgp"
       - "ibgp"
-      - "CVX"
-      - "HER"
+      - "cvx"
+      - "her"
     default: "ebgp"
+    convert_to_lower_case: true
