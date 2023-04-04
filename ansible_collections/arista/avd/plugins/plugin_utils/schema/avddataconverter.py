@@ -77,6 +77,10 @@ class AvdDataConverter:
             if "convert_types" in childschema:
                 yield from self.convert_types(childschema["convert_types"], data, key, childschema, path + [key])
 
+            # Convert to lower case if set in schema and value is a string
+            if childschema.get("convert_to_lower_case") and isinstance(data[key], str):
+                data[key] = data[key].lower()
+
             yield from self.convert_data(data[key], childschema, path + [key])
 
     def convert_dynamic_keys(self, dynamic_keys: dict, data: dict, schema: dict, path: list[str]):
@@ -108,6 +112,10 @@ class AvdDataConverter:
             # Perform type conversion of the items data if required based on "convert_types"
             if "convert_types" in items:
                 yield from self.convert_types(items["convert_types"], data, index, items, path + [f"[{index}]"])
+
+            # Convert to lower case if set in schema and item is a string
+            if items.get("convert_to_lower_case") and isinstance(item, str):
+                data[index] = item.lower()
 
             # Dive in to child items/schema
             yield from self.convert_data(item, items, path + [f"[{index}]"])
@@ -151,12 +159,18 @@ class AvdDataConverter:
                         # TODO: Log message
                         return
 
+                    # Here we do not yield an AvdConversionWarning, since these will be accepted going forward.
+
                 elif convert_type in ["dict", "list"] and schema_type == "list" and "primary_key" in schema:
                     try:
                         data[index] = convert_dicts(value, schema["primary_key"], secondary_key=schema.get("secondary_key"))
                     except Exception:
                         # Ignore errors
                         # TODO: Log message
+                        return
+
+                    if data[index] == value:
+                        # No change - when input is list and have the correct format in all items
                         return
 
                     yield AvdConversionWarning(key=path_str, oldtype=convert_type, newtype=schema_type)

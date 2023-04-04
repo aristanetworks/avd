@@ -1,0 +1,14 @@
+### VLANs ###
+
+# Testing vlans as dict of dict
+# Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+vlans:
+  110:
+    tenant: Tenant_A
+    name: PR01-DMZ
+  111:
+    tenant: Tenant_A
+    name: PRIVATE_VLAN_COMMUNITY
+    private_vlan:
+      type: community
+      primary_vlan: 110

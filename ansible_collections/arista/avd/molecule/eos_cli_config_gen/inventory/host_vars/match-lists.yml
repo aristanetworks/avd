@@ -1,8 +1,8 @@
 match_list_input:
   string:
-    molecule:
+    - name: molecule
       sequence_numbers:
-        10:
+        - sequence: 10
           match_regex: "^.*MOLECULE.*$"
-        20:
+        - sequence: 20
           match_regex: "^.*TESTING.*$"

@@ -1,0 +1,19 @@
+### Daemon TerminAttr
+daemon_terminattr:
+  # Testing clusters as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  clusters:
+    DC1:
+      cvaddrs:
+        - 10.20.20.1:9910
+      cvauth:
+        method: "key"
+        key: "arista"
+      cvvrf: mgt
+    DC2:
+      cvaddrs:
+        - 10.30.30.1:9910
+      cvauth:
+        method: "token"
+        token_file: "/tmp/tokenDC2"
+      cvvrf: mgt

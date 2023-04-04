@@ -103,9 +103,10 @@
                                 "str"
                             ]
                         },
-                        "case_sensitive": {
+                        "convert_to_lower_case" : {
+                            "description": "Convert string value to lower case before performing validation",
                             "type": "boolean",
-                            "default": true
+                            "default": false
                         },
                         "convert_types": {
                             "type": "array",

@@ -4,18 +4,21 @@ traffic_policies:
     counter_per_interface: true
   field_sets:
     ports:
-      SERVICE-DEMO: "10,20,80,440-450"
+      - name: SERVICE-DEMO
+        port_range: "10,20,80,440-450"
     ipv4:
-      DEMO-01:
-        - 10.0.0.0/8
-        - 192.168.0.0/16
-      DEMO-02:
-        - 172.16.0.0/12
-        - 224.0.0.0/8
+      - name: DEMO-01
+        prefixes:
+          - 10.0.0.0/8
+          - 192.168.0.0/16
+      - name: DEMO-02
+        prefixes:
+          - 172.16.0.0/12
+          - 224.0.0.0/8
   policies:
-    BLUE-C1-POLICY:
+    - name: BLUE-C1-POLICY
       matches:
-        BLUE-C1-POLICY-01:
+        - name: BLUE-C1-POLICY-01
           type: ipv4
           source:
             prefixes:
@@ -25,33 +28,33 @@ traffic_policies:
             prefix_lists:
               - DEMO-01
           protocols:
-            tcp:
+            - protocol: tcp
               src_port: "1,10-20"
           ttl: "10, 20-30"
           actions:
             traffic_class: 5
-        BLUE-C1-POLICY-02:
+        - name: BLUE-C1-POLICY-02
           type: ipv4
           source:
             prefix_lists:
               - DEMO-01
               - DEMO-02
           protocols:
-            tcp:
+            - protocol: tcp
               dst_field: SERVICE-DEMO
               flags:
                 - established
-            icmp:
+            - protocol: icmp
           actions:
             count: DEMO-TRAFFIC
             dscp: 60
-        BLUE-C1-POLICY-03:
+        - name: BLUE-C1-POLICY-03
           type: ipv4
           source:
             prefix_lists:
               - DEMO-01
           protocols:
-            icmp:
+            - protocol: icmp
               icmp_type:
                 - echo
                 - echo-reply
@@ -61,7 +64,7 @@ traffic_policies:
             count: DROP-PACKETS
             drop: true
             log: true
-        BLUE-C1-POLICY-04:
+        - name: BLUE-C1-POLICY-04
           type: ipv4
           source:
             prefix_lists:
@@ -70,14 +73,14 @@ traffic_policies:
             prefix_lists:
               - DEMO-01
           protocols:
-            tcp:
+            - protocol: tcp
               src_port: "22"
               flags:
                 - established
-            icmp:
+            - protocol: icmp
           actions:
             traffic_class: 5
-        BLUE-C1-POLICY-05:
+        - name: BLUE-C1-POLICY-05
           type: ipv4
           source:
             prefix_lists:
@@ -86,61 +89,61 @@ traffic_policies:
             prefix_lists:
               - DEMO-01
           protocols:
-            tcp:
+            - protocol: tcp
           fragment:
           actions:
             traffic_class: 5
-    BLUE-C2-POLICY:
+    - name: BLUE-C2-POLICY
       default_actions:
         ipv4:
           drop: true
           log: true
       matches:
-        BLUE-C2-POLICY-01:
+        - name: BLUE-C2-POLICY-01
           type: ipv4
           source:
             prefixes:
               - 10.0.0.0/8
               - 192.168.0.0/16
           protocols:
-            tcp:
+            - protocol: tcp
               src_port: "1,10-20"
-            icmp:
+            - protocol: icmp
           actions:
             traffic_class: 5
-        BLUE-C2-POLICY-02:
+        - name: BLUE-C2-POLICY-02
           type: ipv4
           source:
             prefix_lists:
               - DEMO-01
               - DEMO-02
           protocols:
-            tcp:
+            - protocol: tcp
               src_field: SERVICE-DEMO
-            icmp:
+            - protocol: icmp
           actions:
             count: DEMO-TRAFFIC
             dscp: 60
-        BLUE-C2-POLICY-03:
+        - name: BLUE-C2-POLICY-03
           type: ipv4
           source:
             prefix_lists:
               - DEMO-01
           protocols:
-            tcp:
+            - protocol: tcp
           actions:
             drop: true
             log: true
 
 ethernet_interfaces:
-  Ethernet1:
+  - name: Ethernet1
     type: routed
     traffic_policy:
       input: BLUE-C1-POLICY
       output: BLUE-C2-POLICY
 
 port_channel_interfaces:
-  Port-Channel2:
+  - name: Port-Channel2
     type: routed
     traffic_policy:
       input: BLUE-C1-POLICY

@@ -7,7 +7,13 @@ keys:
       filename: Management Settings
       table: CloudVision Settings
     type: str
-    description: CloudVision ingest authentication key is required for on-prem CVP
+    description: 'On-premise CVP ingest auth key. If set, TerminAttr will be configured
+      with key-based authentication for on-premise CVP.
+
+      If not set, TerminAttr will be configured with certificate based authentication
+      using token-secure onboarding.
+
+      Token must be copied to the device first.'
   cvp_instance_ip:
     documentation_options:
       filename: Management Settings
@@ -47,8 +53,7 @@ keys:
       table: CloudVision Settings
     type: str
     default: /tmp/cv-onboarding-token
-    description: cvp_token_file is the path to the token file on the switch and is
-      only applicable to CV as a Service
+    description: cvp_token_file is the path to the token file on the switch.
   default_interfaces:
     type: list
     documentation_options:
@@ -533,6 +538,17 @@ keys:
                 convert_types:
                 - str
                 default: 0
+          always_configure_ip_routing:
+            documentation_options:
+              filename: Fabric Topology
+              table: Generic configuration management
+            type: bool
+            default: false
+            description: 'Force configuration of "ip routing" even on L2 devices.
+
+              Use this to retain behavior of AVD versions below 4.0.0.
+
+              '
           raw_eos_cli:
             documentation_options:
               filename: Fabric Topology
@@ -1770,6 +1786,7 @@ keys:
         default_underlay_routing_protocol:
           type: str
           default: ebgp
+          convert_to_lower_case: true
           valid_values:
           - ebgp
           - ibgp
@@ -1788,6 +1805,7 @@ keys:
         default_overlay_routing_protocol:
           type: str
           default: ebgp
+          convert_to_lower_case: true
           valid_values:
           - ebgp
           - ibgp
@@ -1814,6 +1832,7 @@ keys:
           - str
           items:
             type: str
+            convert_to_lower_case: true
             valid_values:
             - evpn
             - vpn-ipv4
@@ -1823,6 +1842,7 @@ keys:
             '
         default_evpn_encapsulation:
           type: str
+          convert_to_lower_case: true
           valid_values:
           - mpls
           - vxlan
@@ -2209,6 +2229,7 @@ keys:
       filename: Fabric Variables
       table: Routing Protocol Selection
     type: str
+    convert_to_lower_case: true
     description: "- The following underlay routing protocols are supported:\n  - EBGP
       (default for l3ls-evpn)\n  - OSPF.\n  - ISIS.\n  - ISIS-SR*.\n  - ISIS-LDP*.\n
       \ - ISIS-SR-LDP*.\n  - OSPF-LDP*.\n- The variables should be applied to all
@@ -2221,7 +2242,6 @@ keys:
     - isis-ldp
     - isis-sr-ldp
     - ospf-ldp
-    - BGP
   uplink_ptp:
     documentation_options:
       filename: Fabric Variables

@@ -1,0 +1,10 @@
+### Interface profiles
+
+# Testing interface_profiles as dict of dict
+# Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+interface_profiles:
+  TEST-PROFILE-1:
+    commands:
+      - description Molecule
+      - no switchport
+      - no lldp transmit

@@ -1,0 +1,16 @@
+### Router BGP
+
+router_bgp:
+  as: 65101
+  router_id: 192.168.255.3
+  # Testing redistribute_routes as list
+  # List type is deprecated in 4.0.0. To be removed in 5.0.0
+  redistribute_routes:
+    - connected
+
+  vrfs:
+    - name: test
+      # Testing redistribute_routes as list
+      # List type is deprecated in 4.0.0. To be removed in 5.0.0
+      redistribute_routes:
+        - connected

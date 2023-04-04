@@ -2445,14 +2445,12 @@ service routing protocols model multi-agent
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | True |
+| default | False |
 | MGMT | False |
 
 #### IP Routing Device Configuration
 
 ```eos
-!
-ip routing
 no ip routing vrf MGMT
 ```
 

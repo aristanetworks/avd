@@ -309,8 +309,8 @@ The following section specifies variables that generate configuration to be appl
 ```yaml title="FABRIC.yml"
 fabric_name: FABRIC # (1)!
 
-underlay_routing_protocol: EBGP
-overlay_routing_protocol: EBGP
+underlay_routing_protocol: ebgp
+overlay_routing_protocol: ebgp
 
 local_users: # (2)!
   ansible:

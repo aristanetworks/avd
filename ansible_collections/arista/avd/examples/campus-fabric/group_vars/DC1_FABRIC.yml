@@ -131,7 +131,7 @@ leaf:
 p2p_uplinks_mtu: 1500
 
 # Underlay Routing Protocol
-underlay_routing_protocol: OSPF
+underlay_routing_protocol: ospf
 
 #### WAN/Core Edge Links ####
 core_interfaces:

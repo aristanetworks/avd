@@ -2,9 +2,9 @@
 spanning_tree:
   mode: rapid-pvst
   rapid_pvst_instances:
-    "1,2,3,4,5,10-15":
+    - id: "1,2,3,4,5,10-15"
       priority: 4096
-    "3":
+    - id: "3"
       priority: 8192
-    "100-500":
+    - id: "100-500"
       priority: 16384
