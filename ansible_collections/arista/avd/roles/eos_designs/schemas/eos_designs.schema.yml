@@ -361,15 +361,14 @@ keys:
     keys:
       type:
         type: str
-        description: 'By setting the `design.type` to `mpls`,
-
-          the default node-types and templates described in these documents will be
-          used.
+        description: 'By setting the design.type variable, the default node-types
+          and templates described in these documents will be used.
 
           '
         valid_values:
         - l3ls-evpn
         - mpls
+        - l2ls
         default: l3ls-evpn
   enable_trunk_groups:
     type: bool

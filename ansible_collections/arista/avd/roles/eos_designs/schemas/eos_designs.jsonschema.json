@@ -386,10 +386,11 @@
       "properties": {
         "type": {
           "type": "string",
-          "description": "By setting the `design.type` to `mpls`,\nthe default node-types and templates described in these documents will be used.\n",
+          "description": "By setting the design.type variable, the default node-types and templates described in these documents will be used.\n",
           "enum": [
             "l3ls-evpn",
-            "mpls"
+            "mpls",
+            "l2ls"
           ],
           "default": "l3ls-evpn",
           "title": "Type"
