@@ -19,11 +19,9 @@ my_special_dci_ethernet_interfaces:
   Ethernet4000:
     description: My second test
 
-# rd type using the old name of the setting (backwards compatible)
-evpn_rd_type:
+overlay_rd_type:
 #   # admin_subfield: < "overlay_loopback" | "vtep_loopback" | "leaf_asn" | "spine_asn" | < IPv4 Address > | <0-65535> | <0-4294967295> | default -> "overlay_loopback" >
   admin_subfield: vtep_loopback
 
-# rd type using the old name of the setting (backwards compatible)
-evpn_rt_type:
+overlay_rt_type:
   admin_subfield: "bgp_as"
