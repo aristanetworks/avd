@@ -2084,7 +2084,6 @@ keys:
     - CVX
     - HER
     default: ebgp
-    convert_to_lower_case: true
   overlay_routing_protocol_address_family:
     documentation_options:
       filename: Fabric Variables

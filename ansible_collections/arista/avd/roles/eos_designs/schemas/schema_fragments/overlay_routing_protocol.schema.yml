@@ -20,4 +20,3 @@ keys:
       - "CVX"
       - "HER"
     default: "ebgp"
-    convert_to_lower_case: true
