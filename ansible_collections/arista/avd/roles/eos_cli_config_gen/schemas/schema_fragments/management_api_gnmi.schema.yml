@@ -39,7 +39,7 @@ keys:
                 ip_access_group:
                   type: str
                   description: ACL name
-          grpc_tunnel:
+          grpc_tunnels:
             type: list
             items:
               type: dict
