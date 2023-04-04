@@ -260,6 +260,26 @@ keys:
       '
     type: bool
     default: false
+  evpn_rd_type:
+    documentation_options:
+      filename: Network Services
+      table: Global Network Services Settings
+    type: dict
+    deprecation:
+      warning: true
+      new_key: overlay_rd_type
+      removed: true
+      remove_in_version: 4.0.0
+  evpn_rt_type:
+    documentation_options:
+      filename: Network Services
+      table: Global Network Services Settings
+    type: dict
+    deprecation:
+      warning: true
+      new_key: overlay_rt_type
+      removed: true
+      remove_in_version: 4.0.0
   evpn_short_esi_prefix:
     documentation_options:
       filename: Fabric Variables
