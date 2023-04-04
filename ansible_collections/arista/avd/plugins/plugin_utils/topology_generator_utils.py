@@ -717,9 +717,7 @@ def draw_same_level_links(d, node, neigh, nol, nel, stroke, used_height):
 
     """
     if nel["dir"] == "right":
-        temp = nol
-        nol = nel
-        nel = temp
+        nol, nel = nel, nol
     routey = node["y"] + ROUTERSIZE / 2 + PORTHEIGHT + used_height
     routex = (nel["x"] + nol["x"]) / 2
 
@@ -794,7 +792,7 @@ def get_node_port_temp_graph_dict(graph_dict, node_level_dict, level_dict, undef
                         node_port_val[i["neighborDevice"]]["bottom"] = node_port_val[i["neighborDevice"]]["bottom"] + [i["neighborPort"]]
                         node_port_val[i["neighborDevice"]]["checked"] = node_port_val[i["neighborDevice"]]["checked"] + [i["neighborPort"]]
 
-    for _, level_list in level_dict.items():
+    for node_vals, level_list in level_dict.items():
         level_list.sort(key=natural_sort_key)
 
         for i in range(len(level_list) - 1):
