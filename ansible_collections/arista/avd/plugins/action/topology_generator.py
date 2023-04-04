@@ -30,7 +30,7 @@ class ActionModule(ActionBase):
         return result
 
     # def driver_func(self, directory_path):
-    def driver_func(self, directory_path, inventory_group, destination):  
+    def driver_func(self, directory_path, inventory_group, destination):
         files = glob.glob(directory_path + "/*.yml")
 
         output_list = []
@@ -53,7 +53,7 @@ class ActionModule(ActionBase):
         undefined_rank_nodes = list(set(rank_nodes_list) ^ set(global_node_list))
 
         node_port_val, temp_graph_dict = gt.get_node_port_temp_graph_dict(graph_dict, node_level_dict, level_dict, undefined_rank_nodes)
- 
+
         graph_dict = temp_graph_dict
 
         gt.generate_topology_hampton(destination, level_dict, graph_dict, output_list, undefined_rank_nodes, node_port_val)

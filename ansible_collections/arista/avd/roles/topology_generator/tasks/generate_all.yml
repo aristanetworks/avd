@@ -19,5 +19,3 @@
         destination: "./outputs/{{ item.path.split('/')[1] }}.svg"
       delegate_to: localhost
       loop: "{{ folders.files|flatten(levels=1) }}"
-
-

@@ -141,7 +141,7 @@ ethernet_interfaces:
     peer_type: spine
     description: SPINE2_Ethernet3
     type: switched
-    shutdown: false     
+    shutdown: false
 mlag_configuration:
   domain_id: RACK2
   local_interface: Vlan4094

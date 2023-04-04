@@ -84,6 +84,7 @@ class AvdStructuredConfig(AvdFacts):
         serial_number variable set based on switch.serial_number fact
         """
         return get(self._hostvars, "switch.serial_number")
+
     def diagram_groups(self) -> list:
         diagram_groups = []
         if (fabric_name := get(self._hostvars, "fabric_name")) is not None:
