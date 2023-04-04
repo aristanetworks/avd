@@ -393,17 +393,10 @@ class AvdStructuredConfig(AvdFacts):
                 ]
             }
 
-        address_family_ipv4_peer_group = {"activate": True}
+        address_family_ipv4_peer_group = {"name": peer_group_name, "activate": True}
         if self._underlay_rfc5549 is True:
             address_family_ipv4_peer_group["next_hop"] = {"address_family_ipv6_originate": True}
 
-        router_bgp["address_family_ipv4"] = {
-            "peer_groups": [
-                {
-                    "name": peer_group_name,
-                    **address_family_ipv4_peer_group,
-                }
-            ]
-        }
+        router_bgp["address_family_ipv4"] = {"peer_groups": [address_family_ipv4_peer_group]}
 
         return router_bgp

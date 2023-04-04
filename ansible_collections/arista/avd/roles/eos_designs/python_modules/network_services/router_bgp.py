@@ -140,10 +140,15 @@ class RouterBgpMixin(UtilsMixin):
                 route_targets = {"import": [], "export": []}
 
                 for af in vrf_address_families:
-                    route_target = {"address_family": af, "route_targets": [leaf_overlay_rt]}
-                    for key, value in route_targets.items():
-                        if route_target not in value:
-                            value.append({"address_family": af, "route_targets": [leaf_overlay_rt]})
+                    if (target := get_item(route_targets["import"], "address_family", af)) is None:
+                        route_targets["import"].append({"address_family": af, "route_targets": [leaf_overlay_rt]})
+                    else:
+                        target["route_targets"].append(leaf_overlay_rt)
+
+                    if (target := get_item(route_targets["export"], "address_family", af)) is None:
+                        route_targets["export"].append({"address_family": af, "route_targets": [leaf_overlay_rt]})
+                    else:
+                        target["route_targets"].append(leaf_overlay_rt)
 
                 for rt in vrf["additional_route_targets"]:
                     if (target := get_item(route_targets[rt["type"]], "address_family", rt["address_family"])) is None:
@@ -153,9 +158,11 @@ class RouterBgpMixin(UtilsMixin):
 
                 if vrf_name == "default" and self._overlay_evpn and self._vrf_default_ipv4_subnets:
                     # Special handling of vrf default.
-                    for exp_target in route_targets["export"]:
-                        if exp_target["address_family"] == "evpn":
-                            exp_target.setdefault("route_targets", []).append("route-map RM-EVPN-EXPORT-VRF-DEFAULT")
+
+                    if (target := get_item(route_targets["export"], "address_family", "evpn")) is None:
+                        route_targets["export"].append({"address_family": "evpn", "route_targets": "route-map RM-EVPN-EXPORT-VRF-DEFAULT"})
+                    else:
+                        target.setdefault("route_targets", []).append("route-map RM-EVPN-EXPORT-VRF-DEFAULT")
 
                     bgp_vrf = {
                         "name": vrf_name,
