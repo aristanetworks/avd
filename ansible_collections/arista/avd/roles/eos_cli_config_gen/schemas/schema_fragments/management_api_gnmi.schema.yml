@@ -84,6 +84,7 @@ keys:
                       type: int
                       min: 1
                       max: 65535
+                      required: true
                       convert_types:
                       - str
                       description: TCP Port
