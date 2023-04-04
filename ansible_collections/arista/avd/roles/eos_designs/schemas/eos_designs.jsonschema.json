@@ -60,11 +60,12 @@
             "name": {
               "type": "string",
               "default": "IPv4-UNDERLAY-PEERS",
+              "description": "Name of peer group.",
               "title": "Name"
             },
             "password": {
               "type": "string",
-              "description": "Encrypted Password",
+              "description": "Encrypted password.",
               "title": "Password"
             },
             "structured_config": {
@@ -85,11 +86,12 @@
             "name": {
               "type": "string",
               "default": "MLAG-IPv4-UNDERLAY-PEER",
+              "description": "Name of peer group.",
               "title": "Name"
             },
             "password": {
               "type": "string",
-              "description": "Encrypted Password",
+              "description": "Encrypted password.",
               "title": "Password"
             }
           },
@@ -105,11 +107,12 @@
             "name": {
               "type": "string",
               "default": "EVPN-OVERLAY-PEERS",
+              "description": "Name of peer group.",
               "title": "Name"
             },
             "password": {
               "type": "string",
-              "description": "Encrypted Password",
+              "description": "Encrypted password.",
               "title": "Password"
             }
           },
@@ -125,11 +128,12 @@
             "name": {
               "type": "string",
               "default": "EVPN-OVERLAY-CORE",
+              "description": "Name of peer group.",
               "title": "Name"
             },
             "password": {
               "type": "string",
-              "description": "Encrypted Password",
+              "description": "Encrypted password.",
               "title": "Password"
             }
           },
@@ -139,42 +143,39 @@
           },
           "title": "EVPN Overlay Core"
         },
-        "IPv4_UNDERLAY_PEERS": {
+        "mpls_overlay_peers": {
           "type": "object",
           "properties": {
             "name": {
               "type": "string",
-              "default": "IPv4-UNDERLAY-PEERS",
+              "default": "MPLS-OVERLAY-PEERS",
+              "description": "Name of peer group.",
               "title": "Name"
             },
             "password": {
               "type": "string",
-              "description": "Encrypted Password",
+              "description": "Encrypted password.",
               "title": "Password"
-            },
-            "structured_config": {
-              "type": "object",
-              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
-              "title": "Structured Config"
             }
           },
           "additionalProperties": false,
           "patternProperties": {
             "^_.+$": {}
           },
-          "title": "IPv4 Underlay Peers"
+          "title": "MPLS Overlay Peers"
         },
-        "MLAG_IPv4_UNDERLAY_PEER": {
+        "rr_overlay_peers": {
           "type": "object",
           "properties": {
             "name": {
               "type": "string",
-              "default": "MLAG-IPv4-UNDERLAY-PEER",
+              "default": "RR-OVERLAY-PEERS",
+              "description": "Name of peer group.",
               "title": "Name"
             },
             "password": {
               "type": "string",
-              "description": "Encrypted Password",
+              "description": "Encrypted password.",
               "title": "Password"
             }
           },
@@ -182,27 +183,7 @@
           "patternProperties": {
             "^_.+$": {}
           },
-          "title": "MLAG IPv4 Underlay Peer"
-        },
-        "EVPN_OVERLAY_PEERS": {
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string",
-              "default": "EVPN-OVERLAY-PEERS",
-              "title": "Name"
-            },
-            "password": {
-              "type": "string",
-              "description": "Encrypted Password",
-              "title": "Password"
-            }
-          },
-          "additionalProperties": false,
-          "patternProperties": {
-            "^_.+$": {}
-          },
-          "title": "EVPN Overlay Peers"
+          "title": "Rr Overlay Peers"
         }
       },
       "additionalProperties": false,
