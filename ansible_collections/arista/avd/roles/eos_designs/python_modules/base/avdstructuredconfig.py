@@ -291,10 +291,16 @@ class AvdStructuredConfig(AvdFacts):
                 # updating for cvp_on_prem_ips
                 cv_address = f"{cvp_instance_ip}:{get(self._hostvars, 'terminattr_ingestgrpcurl_port')}"
                 daemon_terminattr["cvaddrs"].append(cv_address)
-                daemon_terminattr["cvauth"] = {
-                    "method": "key",
-                    "key": get(self._hostvars, "cvp_ingestauth_key"),
-                }
+                if (cvp_ingestauth_key := get(self._hostvars, "cvp_ingestauth_key")) is not None:
+                    daemon_terminattr["cvauth"] = {
+                        "method": "key",
+                        "key": cvp_ingestauth_key,
+                    }
+                else:
+                    daemon_terminattr["cvauth"] = {
+                        "method": "token-secure",
+                        "token_file": get(self._hostvars, "cvp_token_file", "/tmp/cv-onboarding-token"),
+                    }
 
         daemon_terminattr["cvvrf"] = self._mgmt_interface_vrf
         daemon_terminattr["smashexcludes"] = get(self._hostvars, "terminattr_smashexcludes")
