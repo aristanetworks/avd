@@ -210,12 +210,13 @@
           },
           "title": "Rr Overlay Peers"
         },
-        "IPv4_UNDERLAY_PEERS": {
+        "ipvpn_gateway_peers": {
           "type": "object",
           "properties": {
             "name": {
               "type": "string",
-              "default": "IPv4-UNDERLAY-PEERS",
+              "default": "IPVPN-GATEWAY-PEERS",
+              "description": "Name of peer group.",
               "title": "Name"
             },
             "password": {
@@ -233,47 +234,7 @@
           "patternProperties": {
             "^_.+$": {}
           },
-          "title": "IPv4 Underlay Peers"
-        },
-        "MLAG_IPv4_UNDERLAY_PEER": {
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string",
-              "default": "MLAG-IPv4-UNDERLAY-PEER",
-              "title": "Name"
-            },
-            "password": {
-              "type": "string",
-              "description": "Encrypted password.",
-              "title": "Password"
-            }
-          },
-          "additionalProperties": false,
-          "patternProperties": {
-            "^_.+$": {}
-          },
-          "title": "MLAG IPv4 Underlay Peer"
-        },
-        "EVPN_OVERLAY_PEERS": {
-          "type": "object",
-          "properties": {
-            "name": {
-              "type": "string",
-              "default": "EVPN-OVERLAY-PEERS",
-              "title": "Name"
-            },
-            "password": {
-              "type": "string",
-              "description": "Encrypted password.",
-              "title": "Password"
-            }
-          },
-          "additionalProperties": false,
-          "patternProperties": {
-            "^_.+$": {}
-          },
-          "title": "EVPN Overlay Peers"
+          "title": "Ipvpn Gateway Peers"
         }
       },
       "additionalProperties": false,

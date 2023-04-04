@@ -90,36 +90,37 @@ keys:
           structured_config:
             type: dict
             description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
-      IPv4_UNDERLAY_PEERS:
+      ipvpn_gateway_peers:
         type: dict
-        #unsupported_from_version: 4.0
         keys:
           name:
             type: str
-            default: IPv4-UNDERLAY-PEERS
+            default: IPVPN-GATEWAY-PEERS
+            description: Name of peer group.
           password:
             type: str
             description: Encrypted password.
           structured_config:
             type: dict
             description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
+      IPv4_UNDERLAY_PEERS:
+        type: dict
+        deprecation:
+          warning: true
+          new_key: bgp_peer_groups.ipv4_underlay_peers
+          removed: true
+          remove_in_version: "4.0.0"
       MLAG_IPv4_UNDERLAY_PEER:
         type: dict
-        #unsupported_from_version: 4.0
-        keys:
-          name:
-            type: str
-            default: MLAG-IPv4-UNDERLAY-PEER
-          password:
-            type: str
-            description: Encrypted password.
+        deprecation:
+          warning: true
+          new_key: bgp_peer_groups.mlag_ipv4_underlay_peer
+          removed: true
+          remove_in_version: "4.0.0"
       EVPN_OVERLAY_PEERS:
         type: dict
-        #unsupported_from_version: 4.0
-        keys:
-          name:
-            type: str
-            default: EVPN-OVERLAY-PEERS
-          password:
-            type: str
-            description: Encrypted password.
+        deprecation:
+          warning: true
+          new_key: bgp_peer_groups.evpn_overlay_peers
+          removed: true
+          remove_in_version: "4.0.0"
