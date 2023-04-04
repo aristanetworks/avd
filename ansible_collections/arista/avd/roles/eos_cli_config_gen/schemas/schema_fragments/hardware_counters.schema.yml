@@ -22,6 +22,38 @@ keys:
           combinations are valid. For the sake of flexibility, it is the responsability
           of the user of this data model to make sure that the rendered CLI is accepted
           by the targeted device
+
+          Examples:
+
+            * Use:
+              ```yaml
+              hardware_counters:
+                features:
+                  - name: ip
+                    direction: out
+                    layer3: true
+                    units_packets: true
+              ```
+
+              to render:
+              ```eos
+              hardware counter feature ip out layer3 units packets
+              ```
+            * Use:
+              ```yaml
+              hardware_counters:
+                features:
+                  - name: route
+                    address_type: ipv4
+                    vrf: test
+                    prefix: 42.42.42.0/24
+              ```
+
+              to render:
+              ```eos
+              hardware counter feature route ipv4 vrf test 42.42.42.0/24
+              ```
+
         # primary_key: name
         # no primary key to allow multiple times the same name
         items:
