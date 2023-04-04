@@ -9,7 +9,7 @@ from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_s
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, groupby
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item, groupby
 
 from .utils import UtilsMixin
 
@@ -91,9 +91,8 @@ class RouterBgpMixin(UtilsMixin):
         bgp_peer_groups = []
         if peer_groups:
             for peer_group in peer_groups:
-                peer_group_name = peer_group.pop("name")
                 peer_group.pop("nodes", None)
-                bgp_peer_groups.append({"name": peer_group_name, **peer_group})
+                bgp_peer_groups.append(peer_group)
 
         # router bgp default vrf configuration for evpn
         if (self._vrf_default_ipv4_subnets or self._vrf_default_ipv4_static_routes["static_routes"]) and self._overlay_vtep and self._overlay_evpn:
@@ -147,15 +146,10 @@ class RouterBgpMixin(UtilsMixin):
                             value.append({"address_family": af, "route_targets": [leaf_overlay_rt]})
 
                 for rt in vrf["additional_route_targets"]:
-                    flag = 0
-                    for target in route_targets[rt["type"]]:
-                        if rt["address_family"] == target["address_family"]:
-                            flag = 1
-                            target.setdefault("route_targets", []).append(rt["route_target"])
-                            break
-
-                    if not flag:
+                    if (target := get_item(route_targets[rt["type"]], "address_family", rt["address_family"])) is None:
                         route_targets[rt["type"]].append({"address_family": rt["address_family"], "route_targets": [rt["route_target"]]})
+                    else:
+                        target["route_targets"].append(rt["route_target"])
 
                 if vrf_name == "default" and self._overlay_evpn and self._vrf_default_ipv4_subnets:
                     # Special handling of vrf default.
@@ -212,14 +206,12 @@ class RouterBgpMixin(UtilsMixin):
                 for bgp_peer in vrf["bgp_peers"]:
                     peer_ip = bgp_peer.pop("ip_address")
                     address_family = f"ipv{ipaddress.ip_address(peer_ip).version}"
-                    flag = 0
-                    for family in address_families:
-                        if family["address_family"] == address_family:
-                            flag = 1
-                            family.setdefault("neighbors", []).append({"ip_address": peer_ip, "activate": True})
-                            break
-                    if not flag:
-                        address_families.append({"address_family": address_family, "neighbors": [{"ip_address": peer_ip, "activate": True}]})
+
+                    neighbor = {"ip_address": peer_ip, "activate": True}
+                    if (af := get_item(address_families, "address_family", address_family)) is None:
+                        address_families.append({"address_family": address_family, "neighbors": [neighbor]})
+                    else:
+                        af["neighbors"].append(neighbor)
 
                     if bgp_peer.get("set_ipv4_next_hop") is not None or bgp_peer.get("set_ipv6_next_hop") is not None:
                         route_map = f"RM-{vrf_name}-{peer_ip}-SET-NEXT-HOP-OUT"
@@ -551,16 +543,9 @@ class RouterBgpMixin(UtilsMixin):
                 ]
             }
 
-        address_family_ipv4_peer_group = {"activate": True}
+        address_family_ipv4_peer_group = {"name": peer_group_name, "activate": True}
         if self._underlay_rfc5549 is True:
             address_family_ipv4_peer_group["next_hop"] = {"address_family_ipv6_originate": True}
 
-        router_bgp["address_family_ipv4"] = {
-            "peer_groups": [
-                {
-                    "name": peer_group_name,
-                    **address_family_ipv4_peer_group,
-                }
-            ]
-        }
+        router_bgp["address_family_ipv4"] = {"peer_groups": [address_family_ipv4_peer_group]}
         return strip_empties_from_dict(router_bgp)

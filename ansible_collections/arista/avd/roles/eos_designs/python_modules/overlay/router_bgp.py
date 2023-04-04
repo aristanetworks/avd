@@ -45,11 +45,12 @@ class RouterBgpMixin(UtilsMixin):
                 return get(self._hostvars, "switch.bgp_cluster_id", default=self._router_id)
         return None
 
-    def _generate_base_peer_group(self, pg_type: str, pg_name: str) -> dict:
+    def _generate_base_peer_group(self, peer_group_name: str, pg_type: str, pg_name: str) -> dict:
         if pg_type not in ["mpls", "evpn"]:
             raise AristaAvdError("_generate_base_peer_group should be called with pg_type in ['mpls', 'evpn']")
 
         peer_group = {
+            "name": peer_group_name,
             "type": pg_type,
             "update_source": "Loopback0",
             "bfd": True,
@@ -68,8 +69,7 @@ class RouterBgpMixin(UtilsMixin):
         if self._overlay_routing_protocol == "ebgp":
             # EVPN OVERLAY peer group
             ebgp_peer_group = {
-                "name": self._peer_group_evpn_overlay_peers,
-                **self._generate_base_peer_group("evpn", "evpn_overlay_peers"),
+                **self._generate_base_peer_group(self._peer_group_evpn_overlay_peers, "evpn", "evpn_overlay_peers"),
                 "ebgp_multihop": self._evpn_ebgp_multihop,
             }
 
@@ -81,8 +81,7 @@ class RouterBgpMixin(UtilsMixin):
             if self._evpn_gateway_vxlan_l2 is True or self._evpn_gateway_vxlan_l3 is True:
                 peer_groups.append(
                     {
-                        "name": self._peer_group_evpn_overlay_core,
-                        **self._generate_base_peer_group("evpn", "evpn_overlay_core"),
+                        **self._generate_base_peer_group(self._peer_group_evpn_overlay_core, "evpn", "evpn_overlay_core"),
                         "ebgp_multihop": self._evpn_ebgp_gateway_multihop,
                     }
                 )
@@ -92,8 +91,7 @@ class RouterBgpMixin(UtilsMixin):
                 # MPLS OVERLAY peer group
                 local_as = str(_as) if (_as := get(self._hostvars, "switch.ipvpn_gateway.local_as")) is not None else None
                 mpls_peer_group = {
-                    "name": self._peer_group_mpls_overlay_peers,
-                    **self._generate_base_peer_group("mpls", "mpls_overlay_peers"),
+                    **self._generate_base_peer_group(self._peer_group_mpls_overlay_peers, "mpls", "mpls_overlay_peers"),
                     "local_as": local_as,
                     "remote_as": self._bgp_as,
                 }
@@ -106,8 +104,7 @@ class RouterBgpMixin(UtilsMixin):
             if self._overlay_evpn_vxlan is True:
                 # EVPN OVERLAY peer group - also in EBGP..
                 ebgp_peer_group = {
-                    "name": self._peer_group_evpn_overlay_peers,
-                    **self._generate_base_peer_group("evpn", "evpn_overlay_peers"),
+                    **self._generate_base_peer_group(self._peer_group_evpn_overlay_peers, "evpn", "evpn_overlay_peers"),
                     "remote_as": self._bgp_as,
                 }
 
@@ -117,9 +114,7 @@ class RouterBgpMixin(UtilsMixin):
                 peer_groups.append(ebgp_peer_group)
 
             if self._is_mpls_server is True:
-                peer_groups.append(
-                    {"name": self._peer_group_rr_overlay_peers, **self._generate_base_peer_group("mpls", "rr_overlay_peers"), "remote_as": self._bgp_as}
-                )
+                peer_groups.append({**self._generate_base_peer_group(self._peer_group_rr_overlay_peers, "mpls", "rr_overlay_peers"), "remote_as": self._bgp_as})
 
         # same for ebgp and ibgp
         if self._overlay_ipvpn_gateway is True:
@@ -127,8 +122,7 @@ class RouterBgpMixin(UtilsMixin):
 
             peer_groups.append(
                 {
-                    "name": self._peer_group_ipvpn_gateway_peers,
-                    **self._generate_base_peer_group("mpls", "ipvpn_gateway_peers"),
+                    **self._generate_base_peer_group(self._peer_group_ipvpn_gateway_peers, "mpls", "ipvpn_gateway_peers"),
                     "local_as": local_as,
                     "maximum_routes": get(self._hostvars, "switch.ipvpn_gateway.max_routes"),
                 }
@@ -312,9 +306,9 @@ class RouterBgpMixin(UtilsMixin):
 
         return address_family_vpn_ipvx
 
-    def _create_neighbor(self, name: str, peer_group: str, remote_as: str = None) -> dict:
+    def _create_neighbor(self, ip_address: str, name: str, peer_group: str, remote_as: str = None) -> dict:
         """ """
-        neighbor = {"peer_group": peer_group, "description": name}
+        neighbor = {"ip_address": ip_address, "peer_group": peer_group, "description": name}
 
         if self._overlay_routing_protocol == "ebgp":
             if remote_as is None:
@@ -330,61 +324,50 @@ class RouterBgpMixin(UtilsMixin):
 
         if self._overlay_routing_protocol == "ebgp":
             for route_server, data in natural_sort(self._evpn_route_servers.items()):
-                neighbor = {
-                    "ip_address": data["ip_address"],
-                    **self._create_neighbor(route_server, self._peer_group_evpn_overlay_peers, remote_as=data["bgp_as"]),
-                }
+                neighbor = self._create_neighbor(data["ip_address"], route_server, self._peer_group_evpn_overlay_peers, remote_as=data["bgp_as"])
+
                 if self._evpn_prevent_readvertise_to_server is True:
                     neighbor["route_map_out"] = f"RM-EVPN-FILTER-AS{data['bgp_as']}"
                 neighbors.append(neighbor)
 
             for route_client, data in natural_sort(self._evpn_route_clients.items()):
-                neighbor = {
-                    "ip_address": data["ip_address"],
-                    **self._create_neighbor(route_client, self._peer_group_evpn_overlay_peers, remote_as=data["bgp_as"]),
-                }
+                neighbor = self._create_neighbor(data["ip_address"], route_client, self._peer_group_evpn_overlay_peers, remote_as=data["bgp_as"])
                 neighbors.append(neighbor)
 
             for gw_remote_peer, data in natural_sort(self._evpn_gateway_remote_peers.items()):
-                neighbor = {
-                    "ip_address": data["ip_address"],
-                    **self._create_neighbor(gw_remote_peer, self._peer_group_evpn_overlay_core, remote_as=data["bgp_as"]),
-                }
+                neighbor = self._create_neighbor(data["ip_address"], gw_remote_peer, self._peer_group_evpn_overlay_core, remote_as=data["bgp_as"])
                 neighbors.append(neighbor)
 
         if self._overlay_routing_protocol == "ibgp":
             if self._overlay_mpls is True:
                 for route_reflector, data in natural_sort(self._mpls_route_reflectors.items()):
-                    neighbor = {"ip_address": data["ip_address"], **self._create_neighbor(route_reflector, self._peer_group_mpls_overlay_peers)}
+                    neighbor = self._create_neighbor(data["ip_address"], route_reflector, self._peer_group_mpls_overlay_peers)
                     neighbors.append(neighbor)
 
                 for route_client, data in natural_sort(self._mpls_route_clients.items()):
-                    neighbor = {"ip_address": data["ip_address"], **self._create_neighbor(route_client, self._peer_group_mpls_overlay_peers)}
+                    neighbor = self._create_neighbor(data["ip_address"], route_client, self._peer_group_mpls_overlay_peers)
                     neighbors.append(neighbor)
 
                 for mesh_pe, data in natural_sort(self._mpls_mesh_pe.items()):
-                    neighbor = {"ip_address": data["ip_address"], **self._create_neighbor(mesh_pe, self._peer_group_mpls_overlay_peers)}
+                    neighbor = self._create_neighbor(data["ip_address"], mesh_pe, self._peer_group_mpls_overlay_peers)
                     neighbors.append(neighbor)
 
                 if self._is_mpls_server is True:
                     for rr_peer, data in natural_sort(self._mpls_rr_peers.items()):
-                        neighbor = {"ip_address": data["ip_address"], **self._create_neighbor(rr_peer, self._peer_group_rr_overlay_peers)}
+                        neighbor = self._create_neighbor(data["ip_address"], rr_peer, self._peer_group_rr_overlay_peers)
                         neighbors.append(neighbor)
 
             if self._overlay_evpn_vxlan is True:
                 for route_server, data in natural_sort(self._evpn_route_servers.items()):
-                    neighbor = {"ip_address": data["ip_address"], **self._create_neighbor(route_server, self._peer_group_evpn_overlay_peers)}
+                    neighbor = self._create_neighbor(data["ip_address"], route_server, self._peer_group_evpn_overlay_peers)
                     neighbors.append(neighbor)
 
                 for route_client, data in natural_sort(self._evpn_route_clients.items()):
-                    neighbor = {"ip_address": data["ip_address"], **self._create_neighbor(route_client, self._peer_group_evpn_overlay_peers)}
+                    neighbor = self._create_neighbor(data["ip_address"], route_client, self._peer_group_evpn_overlay_peers)
                     neighbors.append(neighbor)
 
         for ipvpn_gw_peer, data in natural_sort(self._ipvpn_gateway_remote_peers.items()):
-            neighbor = {
-                "ip_address": data["ip_address"],
-                **self._create_neighbor(ipvpn_gw_peer, self._peer_group_ipvpn_gateway_peers, remote_as=data["bgp_as"]),
-            }
+            neighbor = self._create_neighbor(data["ip_address"], ipvpn_gw_peer, self._peer_group_ipvpn_gateway_peers, remote_as=data["bgp_as"])
             neighbors.append(neighbor)
 
         if neighbors:
