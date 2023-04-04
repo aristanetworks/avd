@@ -65,11 +65,13 @@ keys:
                   keys:
                     address:
                       type: str
+                      required: true
                       description: IP address or hostname
                     port:
                       type: int
                       min: 1
                       max: 65535
+                      required: true
                       convert_types:
                       - str
                       description: TCP Port
