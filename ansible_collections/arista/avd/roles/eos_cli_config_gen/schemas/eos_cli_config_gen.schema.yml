@@ -761,6 +761,7 @@ keys:
                   - token
                   - token-secure
                   - key
+                  - certs
                 key:
                   type: str
                 token_file:
@@ -768,6 +769,27 @@ keys:
                   description: 'Token file path
 
                     e.g. "/tmp/token"
+
+                    '
+                cert_file:
+                  type: str
+                  description: 'Client certificate file path
+
+                    e.g. "/persist/secure/ssl/terminattr/primary/certs/client.crt"
+
+                    '
+                ca_file:
+                  type: str
+                  description: 'CA certificate file path (on-prem only)
+
+                    e.g. "/persist/secure/ssl/terminattr/primary/certs/ca.crt"
+
+                    '
+                key_file:
+                  type: str
+                  description: 'Client certificate key file path
+
+                    e.g. "/persist/secure/ssl/terminattr/primary/keys/client.key"
 
                     '
             cvobscurekeyfile:
@@ -812,6 +834,7 @@ keys:
             - token
             - token-secure
             - key
+            - certs
           key:
             type: str
           token_file:
@@ -819,6 +842,27 @@ keys:
             description: 'Token file path
 
               e.g. "/tmp/token"
+
+              '
+          cert_file:
+            type: str
+            description: 'Client certificate file path
+
+              e.g. "/persist/secure/ssl/terminattr/primary/certs/client.crt"
+
+              '
+          ca_file:
+            type: str
+            description: 'CA certificate file path (on-prem only)
+
+              e.g. "/persist/secure/ssl/terminattr/primary/certs/ca.crt"
+
+              '
+          key_file:
+            type: str
+            description: 'Client certificate key file path
+
+              e.g. "/persist/secure/ssl/terminattr/primary/keys/client.key"
 
               '
       cvobscurekeyfile:
