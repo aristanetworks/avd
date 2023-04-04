@@ -4,6 +4,9 @@
 type: dict
 keys:
   bgp_peer_groups:
+    documentation_options:
+      filename: Fabric Variables
+      table: BGP Peer Groups
     description: |
       Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.
       Note that the name of the peer groups use '-' instead of '_' in EOS configuration.
@@ -72,42 +75,42 @@ keys:
           password:
             type: str
             description: Encrypted password.
-      # IPv4_UNDERLAY_PEERS:
-      #   type: dict
-      #   #unsupported_from_version: 4.0
-      #   keys:
-      #     name:
-      #       type: str
-      #       default: IPv4-UNDERLAY-PEERS
-      #     password:
-      #       type: str
-      #       description: Encrypted password.
-      #     structured_config:
-      #       type: dict
-      #       description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
-      #   studios_options:
-      #     exclude: True
-      # MLAG_IPv4_UNDERLAY_PEER:
-      #   type: dict
-      #   #unsupported_from_version: 4.0
-      #   keys:
-      #     name:
-      #       type: str
-      #       default: MLAG-IPv4-UNDERLAY-PEER
-      #     password:
-      #       type: str
-      #       description: Encrypted password.
-      #   studios_options:
-      #     exclude: True
-      # EVPN_OVERLAY_PEERS:
-      #   type: dict
-      #   #unsupported_from_version: 4.0
-      #   keys:
-      #     name:
-      #       type: str
-      #       default: EVPN-OVERLAY-PEERS
-      #     password:
-      #       type: str
-      #       description: Encrypted password.
-      #   studios_options:
-      #     exclude: True
+      IPv4_UNDERLAY_PEERS:
+        type: dict
+        #unsupported_from_version: 4.0
+        keys:
+          name:
+            type: str
+            default: IPv4-UNDERLAY-PEERS
+          password:
+            type: str
+            description: Encrypted password.
+          structured_config:
+            type: dict
+            description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
+        studios_options:
+          exclude: True
+      MLAG_IPv4_UNDERLAY_PEER:
+        type: dict
+        #unsupported_from_version: 4.0
+        keys:
+          name:
+            type: str
+            default: MLAG-IPv4-UNDERLAY-PEER
+          password:
+            type: str
+            description: Encrypted password.
+        studios_options:
+          exclude: True
+      EVPN_OVERLAY_PEERS:
+        type: dict
+        #unsupported_from_version: 4.0
+        keys:
+          name:
+            type: str
+            default: EVPN-OVERLAY-PEERS
+          password:
+            type: str
+            description: Encrypted password.
+        studios_options:
+          exclude: True

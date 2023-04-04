@@ -184,6 +184,71 @@
             "^_.+$": {}
           },
           "title": "Rr Overlay Peers"
+        },
+        "IPv4_UNDERLAY_PEERS": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "IPv4-UNDERLAY-PEERS",
+              "title": "Name"
+            },
+            "password": {
+              "type": "string",
+              "description": "Encrypted password.",
+              "title": "Password"
+            },
+            "structured_config": {
+              "type": "object",
+              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
+              "title": "Structured Config"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "IPv4 Underlay Peers"
+        },
+        "MLAG_IPv4_UNDERLAY_PEER": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "MLAG-IPv4-UNDERLAY-PEER",
+              "title": "Name"
+            },
+            "password": {
+              "type": "string",
+              "description": "Encrypted password.",
+              "title": "Password"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "MLAG IPv4 Underlay Peer"
+        },
+        "EVPN_OVERLAY_PEERS": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "EVPN-OVERLAY-PEERS",
+              "title": "Name"
+            },
+            "password": {
+              "type": "string",
+              "description": "Encrypted password.",
+              "title": "Password"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "EVPN Overlay Peers"
         }
       },
       "additionalProperties": false,

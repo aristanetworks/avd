@@ -4,6 +4,9 @@
 type: dict
 keys:
   bgp_as:
+    documentation_options:
+      filename: Fabric Variables
+      table: BGP Settings
     description: AS number to use to configure overlay when "overlay_routing_protocol" == IBGP
     type: str
     convert_types:

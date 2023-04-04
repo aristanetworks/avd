@@ -3,6 +3,9 @@ type: dict
 allow_other_keys: true
 keys:
   bfd_multihop:
+    documentation_options:
+      filename: Fabric Variables
+      table: BFD Settings
     type: dict
     description: BFD Multihop tuning
     keys:
@@ -22,29 +25,44 @@ keys:
         - str
         default: 3
   bgp_as:
+    documentation_options:
+      filename: Fabric Variables
+      table: BGP Settings
     description: AS number to use to configure overlay when "overlay_routing_protocol"
       == IBGP
     type: str
     convert_types:
     - int
   bgp_ecmp:
+    documentation_options:
+      filename: Fabric Variables
+      table: BGP multi-path Settings
     description: Maximum ECMP for BGP multi-path
     type: int
     convert_types:
     - str
     default: 4
   bgp_maximum_paths:
+    documentation_options:
+      filename: Fabric Variables
+      table: BGP multi-path Settings
     description: Maximum Paths for BGP multi-path
     type: int
     convert_types:
     - str
     default: 4
   bgp_mesh_pes:
+    documentation_options:
+      filename: Fabric Variables
+      table: BGP Settings
     type: bool
     default: false
     description: Whether to configure an iBGP full mesh between PEs, either because
       there is no RR used or other reasons.
   bgp_peer_groups:
+    documentation_options:
+      filename: Fabric Variables
+      table: BGP Peer Groups
     description: 'Leverage an Arista EOS switch to generate the encrypted password
       using the correct peer group name.
 
@@ -117,6 +135,43 @@ keys:
           password:
             type: str
             description: Encrypted password.
+      IPv4_UNDERLAY_PEERS:
+        type: dict
+        keys:
+          name:
+            type: str
+            default: IPv4-UNDERLAY-PEERS
+          password:
+            type: str
+            description: Encrypted password.
+          structured_config:
+            type: dict
+            description: Custom structured config added under router_bgp.peer_groups.<name>
+              for eos_cli_config_gen
+        studios_options:
+          exclude: true
+      MLAG_IPv4_UNDERLAY_PEER:
+        type: dict
+        keys:
+          name:
+            type: str
+            default: MLAG-IPv4-UNDERLAY-PEER
+          password:
+            type: str
+            description: Encrypted password.
+        studios_options:
+          exclude: true
+      EVPN_OVERLAY_PEERS:
+        type: dict
+        keys:
+          name:
+            type: str
+            default: EVPN-OVERLAY-PEERS
+          password:
+            type: str
+            description: Encrypted password.
+        studios_options:
+          exclude: true
   cvp_ingestauth_key:
     documentation_options:
       filename: Management Settings
