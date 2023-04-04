@@ -2632,7 +2632,7 @@
               },
               "legacy_detect": {
                 "type": "boolean",
-                "description": "Allow a subset of legacy devices to work with the PoE switch.  Disabled by default in EOS because it can cause false positive detections.",
+                "description": "Allow a subset of legacy devices to work with the PoE switch. Disabled by default in EOS because it can cause false positive detections.",
                 "title": "Legacy Detect"
               }
             },

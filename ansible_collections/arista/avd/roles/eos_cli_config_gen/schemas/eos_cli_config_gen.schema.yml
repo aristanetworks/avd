@@ -1787,8 +1787,8 @@ keys:
                 devices over LLDP. Enabled by default in EOS.
             legacy_detect:
               type: bool
-              description: Allow a subset of legacy devices to work with the PoE switch.  Disabled
-                by default in EOS because it can cause false positive detections.
+              description: Allow a subset of legacy devices to work with the PoE switch.
+                Disabled by default in EOS because it can cause false positive detections.
         ptp:
           type: dict
           keys:
