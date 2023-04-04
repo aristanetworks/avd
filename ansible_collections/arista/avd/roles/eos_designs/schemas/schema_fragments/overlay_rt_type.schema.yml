@@ -9,8 +9,8 @@ keys:
       table: Global Network Services Settings
     type: dict
     description: |
-      Specify RT type
-      Route Target (RT) for L2 / L3 services is set to <vni>:<vni> per default
+      Specify RT type.
+      Route Target (RT) for L2 / L3 services is set to <vni>:<vni> per default.
       By configuring overlay_rt_type the Administrator subfield (first part of RT) can be set to other values.
       Notes:
       RT is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
@@ -22,4 +22,6 @@ keys:
         type: str
         convert_types:
           - int
-        description: < "bgp_as" or <0-65535> or <0-4294967295>, default -> <mac_vrf_id> >
+        description: |
+          "bgp_as" or interger between <0-65535> or integer between <0-4294967295>.
+        default: "mac_vrf_id"

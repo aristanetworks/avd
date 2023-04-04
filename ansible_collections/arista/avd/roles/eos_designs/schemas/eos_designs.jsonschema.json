@@ -4456,13 +4456,13 @@
     },
     "overlay_her_flood_list_per_vni": {
       "type": "boolean",
-      "description": "When using Head-End Replication, configure flood-lists per VNI. | Optional\nBy default HER will be configured with a common flood-list containing all VTEPs. This behavior can be changed\nto per-VNI flood-lists by setting `overlay_her_flood_list_per_vni: true`. This will make `eos_designs` consider\nconfigured VLANs per VTEP, and only include the relevant VTEPs to each VNI's flood-list.\n",
+      "description": "When using Head-End Replication, configure flood-lists per VNI.\nBy default HER will be configured with a common flood-list containing all VTEPs.\nThis behavior can be changed to per-VNI flood-lists by setting `overlay_her_flood_list_per_vni: true`.\nThis will make `eos_designs` consider configured VLANs per VTEP, and only include the relevant VTEPs to each VNI's flood-list.\n",
       "default": false,
       "title": "Overlay Her Flood List Per Vni"
     },
     "overlay_her_flood_list_scope": {
       "type": "string",
-      "description": "When using Head-End Replication, set the scope of flood-lists to Fabric or DC\nBy default all VTEPs in the Fabric (part of the inventory group referenced by \"fabric_name\") are added\nto the flood-lists. This can be changed to all VTEPs in the DC (part of the inventory group referenced\nby \"dc_name\")\nThis is useful if Border Leaf switches are dividing the VXLAN overlay into separate domains.\n",
+      "description": "When using Head-End Replication, set the scope of flood-lists to Fabric or DC.\nBy default all VTEPs in the Fabric (part of the inventory group referenced by \"fabric_name\") are added to the flood-lists.\nThis can be changed to all VTEPs in the DC (part of the inventory group referenced by \"dc_name\").\nThis is useful if Border Leaf switches are dividing the VXLAN overlay into separate domains.\n",
       "enum": [
         "fabric",
         "dc"
@@ -4471,23 +4471,23 @@
       "title": "Overlay Her Flood List Scope"
     },
     "overlay_loopback_description": {
-      "description": "Customizable overlay loopback description",
+      "description": "Customizable overlay loopback description.",
       "type": "string",
       "title": "Overlay Loopback Description"
     },
     "overlay_mlag_rfc5549": {
-      "description": "IPv6 Unnumbered for MLAG iBGP connections.\nRequires \"underlay_rfc5549: true\"\n",
+      "description": "IPv6 Unnumbered for MLAG iBGP connections.\nRequires \"underlay_rfc5549: true\".\n",
       "type": "boolean",
       "default": false,
       "title": "Overlay MLAG Rfc5549"
     },
     "overlay_rd_type": {
       "type": "object",
-      "description": "Specify RD type\nRoute Distinguisher (RD) for L2 / L3 services is set to <overlay_loopback>:<vni> per default.\nBy configuring overlay_rd_type the Administrator subfield (first part of RD) can be set to other values.\n",
+      "description": "Specify RD type.\nRoute Distinguisher (RD) for L2 / L3 services is set to <overlay_loopback>:<vni> per default.\nBy configuring overlay_rd_type the Administrator subfield (first part of RD) can be set to other values.\n",
       "properties": {
         "admin_subfield": {
           "type": "string",
-          "description": "\"vtep_loopback\" or \"bgp_as\" or < IPv4 Address > or interger between <0-65535> or integer between <0-4294967295> or \"overlay_loopback_ip\"\n",
+          "description": "\"vtep_loopback\" or \"bgp_as\" or <IPv4 Address> or interger between <0-65535> or integer between <0-4294967295> or \"overlay_loopback_ip\".\n",
           "default": "overlay_loopback_ip",
           "title": "Admin Subfield"
         },
@@ -4504,7 +4504,7 @@
       "title": "Overlay Rd Type"
     },
     "overlay_routing_protocol": {
-      "description": "- The following overlay routing protocols are supported:\n  - eBGP (default for l3ls-evpn).\n  - iBGP (only with OSPF or ISIS variants in underlay).\n  - CVX (CloudVision eXchange)\n  - HER (Head-End Replication) eos_designs will configure static VXLAN flood-lists instead of using a dynamic overlay protocol.\n",
+      "description": "- The following overlay routing protocols are supported:\n  - eBGP (default for l3ls-evpn).\n  - iBGP (only with OSPF or ISIS variants in underlay).\n  - CVX (CloudVision eXchange).\n  - HER (Head-End Replication) eos_designs will configure static VXLAN flood-lists instead of using a dynamic overlay protocol.\n",
       "type": "string",
       "enum": [
         "ebgp",
@@ -4517,7 +4517,7 @@
     },
     "overlay_routing_protocol_address_family": {
       "type": "string",
-      "description": "Enable overlay EVPN peering with IPv6 addresses | Optional\nThis feature depends on underlay_ipv6 variable. As of today, only RFC5549 is capable to transport IPv6 in the underlay.\n",
+      "description": "Enable overlay EVPN peering with IPv6 addresses.\nThis feature depends on underlay_ipv6 variable. As of today, only RFC5549 is capable to transport IPv6 in the underlay.\n",
       "enum": [
         "ipv4",
         "ipv6"
@@ -4527,11 +4527,12 @@
     },
     "overlay_rt_type": {
       "type": "object",
-      "description": "Specify RT type\nRoute Target (RT) for L2 / L3 services is set to <vni>:<vni> per default\nBy configuring overlay_rt_type the Administrator subfield (first part of RT) can be set to other values.\nNotes:\nRT is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.\nFor 32-bit ASN/number the VNI can only be a 16-bit number.\nFor 16-bit ASN/number the VNI can be a 32-bit number.\nOld variable name \"evpn_rt_type\", supported for backward-compatibility.\n",
+      "description": "Specify RT type.\nRoute Target (RT) for L2 / L3 services is set to <vni>:<vni> per default.\nBy configuring overlay_rt_type the Administrator subfield (first part of RT) can be set to other values.\nNotes:\nRT is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.\nFor 32-bit ASN/number the VNI can only be a 16-bit number.\nFor 16-bit ASN/number the VNI can be a 32-bit number.\nOld variable name \"evpn_rt_type\", supported for backward-compatibility.\n",
       "properties": {
         "admin_subfield": {
           "type": "string",
-          "description": "< \"bgp_as\" or <0-65535> or <0-4294967295>, default -> <mac_vrf_id> >",
+          "description": "\"bgp_as\" or interger between <0-65535> or integer between <0-4294967295>.\n",
+          "default": "mac_vrf_id",
           "title": "Admin Subfield"
         }
       },
@@ -4815,7 +4816,7 @@
       "title": "Uplink PTP"
     },
     "vtep_vvtep_ip": {
-      "description": "IP Address used as Virtual VTEP. Will be configured as secondary IP on loopback1\nThis is only needed for centralized routing designs\n",
+      "description": "IP Address used as Virtual VTEP. Will be configured as secondary IP on loopback1.\nThis is only needed for centralized routing designs.\n",
       "type": "string",
       "title": "Vtep Vvtep IP"
     }

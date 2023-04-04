@@ -11,7 +11,7 @@ keys:
       - The following overlay routing protocols are supported:
         - eBGP (default for l3ls-evpn).
         - iBGP (only with OSPF or ISIS variants in underlay).
-        - CVX (CloudVision eXchange)
+        - CVX (CloudVision eXchange).
         - HER (Head-End Replication) eos_designs will configure static VXLAN flood-lists instead of using a dynamic overlay protocol.
     type: str
     valid_values:
@@ -19,5 +19,5 @@ keys:
       - "ibgp"
       - "CVX"
       - "HER"
-    case_sensitive: false
     default: "ebgp"
+    convert_to_lower_case: true

@@ -9,7 +9,7 @@ keys:
       table: Global Network Services Settings
     type: dict
     description: |
-      Specify RD type
+      Specify RD type.
       Route Distinguisher (RD) for L2 / L3 services is set to <overlay_loopback>:<vni> per default.
       By configuring overlay_rd_type the Administrator subfield (first part of RD) can be set to other values.
     keys:
@@ -18,7 +18,7 @@ keys:
         convert_types:
           - int
         description: |
-          "vtep_loopback" or "bgp_as" or < IPv4 Address > or interger between <0-65535> or integer between <0-4294967295> or "overlay_loopback_ip"
+          "vtep_loopback" or "bgp_as" or <IPv4 Address> or interger between <0-65535> or integer between <0-4294967295> or "overlay_loopback_ip".
         default: "overlay_loopback_ip"
       admin_subfield_offset:
         type: str

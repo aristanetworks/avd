@@ -9,6 +9,6 @@ keys:
       table: IPv6 Underlay Settings
     description: |
       IPv6 Unnumbered for MLAG iBGP connections.
-      Requires "underlay_rfc5549: true"
+      Requires "underlay_rfc5549: true".
     type: bool
     default: false

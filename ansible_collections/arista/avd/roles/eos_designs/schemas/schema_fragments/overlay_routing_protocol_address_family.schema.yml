@@ -9,7 +9,7 @@ keys:
       table: IPv6 Underlay Settings
     type: str
     description: |
-      Enable overlay EVPN peering with IPv6 addresses | Optional
+      Enable overlay EVPN peering with IPv6 addresses.
       This feature depends on underlay_ipv6 variable. As of today, only RFC5549 is capable to transport IPv6 in the underlay.
     valid_values:
       - ipv4
