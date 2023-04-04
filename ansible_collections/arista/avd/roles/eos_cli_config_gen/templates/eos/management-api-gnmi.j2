@@ -36,8 +36,8 @@ management api gnmi
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
-{%         if management_api_gnmi.transport.grpc_tunnel is arista.avd.defined %}
-{%             for transport in management_api_gnmi.transport.grpc_tunnel %}
+{%         if management_api_gnmi.transport.grpc_tunnels is arista.avd.defined %}
+{%             for transport in management_api_gnmi.transport.grpc_tunnels %}
 {%                 if transport.name is arista.avd.defined %}
    transport grpc-tunnel {{ transport.name }}
 {%                 endif %}
@@ -59,10 +59,14 @@ management api gnmi
       destination {{ transport.destination.address }} port {{ transport.destination.port }}
 {%                 endif %}
 {%                 if transport.local_interface is arista.avd.defined %}
-      local interface {{ transport.local_interface.interface }} port {{ transport.local_interface.port }}
+      local interface {{ transport.local_interface.name }} port {{ transport.local_interface.port }}
 {%                 endif %}
 {%                 if transport.target.use_serial_number is arista.avd.defined(true) %}
+{%                     if transport.target.target_id is arista.avd.defined %}
+      target serial-number {{ transport.target.target_id }}
+{%                     else %}
       target serial-number
+{%                     endif %}
 {%                 elif transport.target.target_id is arista.avd.defined %}
       target {{ transport.target.target_id }}
 {%                 endif %}

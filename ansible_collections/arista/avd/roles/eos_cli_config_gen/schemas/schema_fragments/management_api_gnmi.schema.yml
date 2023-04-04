@@ -59,7 +59,7 @@ keys:
                   description: gNMI SSL profile name
                 vrf:
                   type: str
-                  description: VRF name is optional
+                  description: VRF name
                 destination:
                   type: dict
                   keys:
@@ -76,7 +76,7 @@ keys:
                 local_interface:
                   type: dict
                   keys:
-                    interface:
+                    name:
                       type: str
                       description: Interface name
                     port:

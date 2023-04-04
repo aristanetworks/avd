@@ -44,7 +44,6 @@ interface Management1
 | MONITORING | enabled |
 
 
-
 #### Management API gnmi configuration
 
 ```eos

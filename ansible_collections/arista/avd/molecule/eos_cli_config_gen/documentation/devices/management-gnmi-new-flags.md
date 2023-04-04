@@ -43,10 +43,8 @@ interface Management1
 | MGMT | gnmi | MGMT | send-time | acl1 |
 | mytransport | - | - | send-time | acl1 |
 
-
 | Transport | Destination | Port | gNMI SSL Profile | Tunnel SSL Profile | VRF | Local Interface | Local Port | Target ID |
 | --------- | ----------- | ---- | ---------------- | ------------------ | --- | --------------- | ---------- | --------- |
-
 
 Provider eos-native is configured.
 

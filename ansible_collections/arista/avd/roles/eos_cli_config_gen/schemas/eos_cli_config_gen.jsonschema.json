@@ -6340,7 +6340,7 @@
               },
               "title": "Grpc"
             },
-            "grpc_tunnel": {
+            "grpc_tunnels": {
               "type": "array",
               "items": {
                 "type": "object",
@@ -6367,7 +6367,7 @@
                   },
                   "vrf": {
                     "type": "string",
-                    "description": "VRF name is optional",
+                    "description": "VRF name",
                     "title": "VRF"
                   },
                   "destination": {
@@ -6395,10 +6395,10 @@
                   "local_interface": {
                     "type": "object",
                     "properties": {
-                      "interface": {
+                      "name": {
                         "type": "string",
                         "description": "Interface name",
-                        "title": "Interface"
+                        "title": "Name"
                       },
                       "port": {
                         "type": "integer",
@@ -6438,9 +6438,12 @@
                 "additionalProperties": false,
                 "patternProperties": {
                   "^_.+$": {}
-                }
+                },
+                "required": [
+                  "name"
+                ]
               },
-              "title": "Grpc Tunnel"
+              "title": "Grpc Tunnels"
             }
           },
           "additionalProperties": false,
