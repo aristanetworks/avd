@@ -95,6 +95,10 @@ keys:
           password:
             type: str
             description: Encrypted password.
+          structured_config:
+            type: dict
+            description: Custom structured config added under router_bgp.peer_groups.<name>
+              for eos_cli_config_gen
       evpn_overlay_peers:
         type: dict
         keys:
@@ -105,6 +109,10 @@ keys:
           password:
             type: str
             description: Encrypted password.
+          structured_config:
+            type: dict
+            description: Custom structured config added under router_bgp.peer_groups.<name>
+              for eos_cli_config_gen
       evpn_overlay_core:
         type: dict
         keys:
@@ -115,6 +123,10 @@ keys:
           password:
             type: str
             description: Encrypted password.
+          structured_config:
+            type: dict
+            description: Custom structured config added under router_bgp.peer_groups.<name>
+              for eos_cli_config_gen
       mpls_overlay_peers:
         type: dict
         keys:
@@ -125,6 +137,10 @@ keys:
           password:
             type: str
             description: Encrypted password.
+          structured_config:
+            type: dict
+            description: Custom structured config added under router_bgp.peer_groups.<name>
+              for eos_cli_config_gen
       rr_overlay_peers:
         type: dict
         keys:
@@ -135,6 +151,10 @@ keys:
           password:
             type: str
             description: Encrypted password.
+          structured_config:
+            type: dict
+            description: Custom structured config added under router_bgp.peer_groups.<name>
+              for eos_cli_config_gen
       IPv4_UNDERLAY_PEERS:
         type: dict
         keys:
@@ -148,8 +168,6 @@ keys:
             type: dict
             description: Custom structured config added under router_bgp.peer_groups.<name>
               for eos_cli_config_gen
-        studios_options:
-          exclude: true
       MLAG_IPv4_UNDERLAY_PEER:
         type: dict
         keys:
@@ -159,8 +177,6 @@ keys:
           password:
             type: str
             description: Encrypted password.
-        studios_options:
-          exclude: true
       EVPN_OVERLAY_PEERS:
         type: dict
         keys:
@@ -170,8 +186,6 @@ keys:
           password:
             type: str
             description: Encrypted password.
-        studios_options:
-          exclude: true
   cvp_ingestauth_key:
     documentation_options:
       filename: Management Settings

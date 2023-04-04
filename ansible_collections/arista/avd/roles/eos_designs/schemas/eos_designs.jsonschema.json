@@ -93,6 +93,11 @@
               "type": "string",
               "description": "Encrypted password.",
               "title": "Password"
+            },
+            "structured_config": {
+              "type": "object",
+              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
+              "title": "Structured Config"
             }
           },
           "additionalProperties": false,
@@ -114,6 +119,11 @@
               "type": "string",
               "description": "Encrypted password.",
               "title": "Password"
+            },
+            "structured_config": {
+              "type": "object",
+              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
+              "title": "Structured Config"
             }
           },
           "additionalProperties": false,
@@ -135,6 +145,11 @@
               "type": "string",
               "description": "Encrypted password.",
               "title": "Password"
+            },
+            "structured_config": {
+              "type": "object",
+              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
+              "title": "Structured Config"
             }
           },
           "additionalProperties": false,
@@ -156,6 +171,11 @@
               "type": "string",
               "description": "Encrypted password.",
               "title": "Password"
+            },
+            "structured_config": {
+              "type": "object",
+              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
+              "title": "Structured Config"
             }
           },
           "additionalProperties": false,
@@ -177,6 +197,11 @@
               "type": "string",
               "description": "Encrypted password.",
               "title": "Password"
+            },
+            "structured_config": {
+              "type": "object",
+              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
+              "title": "Structured Config"
             }
           },
           "additionalProperties": false,
