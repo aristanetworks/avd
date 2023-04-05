@@ -18,9 +18,9 @@ class ActionModule(ActionBase):
             task_vars = {}
         result = super().run(tmp, task_vars)
         del tmp  # tmp no longer has any effect
-        if self._task.args and "structured_config" not in self._task.args:
-            raise AnsibleActionFail("Missing 'structured_config' variable.")
-        path = self._task.args["structured_config"]
+        if self._task.args and "structured_config_dir" not in self._task.args:
+            raise AnsibleActionFail("Missing 'structured_config_dir' variable.")
+        path = self._task.args["structured_config_dir"]
         if self._task.args and "destination" not in self._task.args:
             raise AnsibleActionFail("Missing 'destination' variable.")
         destination = self._task.args["destination"]

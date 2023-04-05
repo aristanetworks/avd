@@ -15,22 +15,22 @@
 DOCUMENTATION = r"""
 ---
 module: topology_generator
-version_added: "1.0.0"
+version_added: "4.0.0"
 author: EMEA AS Team (@aristanetworks)
-short_description: Generate topology diagram from structure config
+short_description: Generate topology diagram from structured configurations
 description:
-  - Generate topology diagram from structure config
+  - Generate topology diagram from structured configurations
 options:
-  structured_config:
-    description: Structured config directory path.
+  structured_config_dir:
+    description: Structured configurations directory path.
     required: true
     type: str
 """
 
 EXAMPLES = r"""
-- name: Generate topology diagram from structure config in svg file format
+- name: Generate topology diagram from structured configurations in svg file format
   topology_generator:
-    structured_config: "base/main.j2"
+    structured_config_dir: "/structured_configs_twodc_5stage_clos"
   check_mode: no
   changed_when: False
 """

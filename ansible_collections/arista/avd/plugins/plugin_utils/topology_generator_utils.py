@@ -9,18 +9,12 @@ import textwrap
 
 import yaml
 
-import traceback
-
-from ansible.module_utils.basic import missing_required_lib
-
 try:
     import drawSvg as draw
-except ImportError:
-    HAS_ANOTHER_LIBRARY = False
-    ANOTHER_LIBRARY_IMPORT_ERROR = traceback.format_exc()
+except ImportError as imp_exc:
+    DRAWSVG_IMPORT_ERROR = imp_exc
 else:
-    HAS_ANOTHER_LIBRARY = True
-    ANOTHER_LIBRARY_IMPORT_ERROR = None
+    DRAWSVG_IMPORT_ERROR = None
 
 
 _nsre = re.compile("([0-9]+)")
