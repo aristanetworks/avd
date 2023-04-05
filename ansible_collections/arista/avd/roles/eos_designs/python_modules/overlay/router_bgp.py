@@ -45,7 +45,7 @@ class RouterBgpMixin(UtilsMixin):
                 return get(self._hostvars, "switch.bgp_cluster_id", default=self._router_id)
         return None
 
-    def _generate_base_peer_group(self, peer_group_name: str, pg_type: str, pg_name: str) -> dict:
+    def _generate_base_peer_group(self, pg_type: str, pg_name: str) -> dict:
         if pg_type not in ["mpls", "evpn"]:
             raise AristaAvdError("_generate_base_peer_group should be called with pg_type in ['mpls', 'evpn']")
 
@@ -69,7 +69,7 @@ class RouterBgpMixin(UtilsMixin):
         if self._overlay_routing_protocol == "ebgp":
             # EVPN OVERLAY peer group
             ebgp_peer_group = {
-                **self._generate_base_peer_group(self._peer_group_evpn_overlay_peers, "evpn", "evpn_overlay_peers"),
+                **self._generate_base_peer_group("evpn", "evpn_overlay_peers"),
                 "ebgp_multihop": self._evpn_ebgp_multihop,
             }
 
@@ -81,7 +81,7 @@ class RouterBgpMixin(UtilsMixin):
             if self._evpn_gateway_vxlan_l2 is True or self._evpn_gateway_vxlan_l3 is True:
                 peer_groups.append(
                     {
-                        **self._generate_base_peer_group(self._peer_group_evpn_overlay_core, "evpn", "evpn_overlay_core"),
+                        **self._generate_base_peer_group("evpn", "evpn_overlay_core"),
                         "ebgp_multihop": self._evpn_ebgp_gateway_multihop,
                     }
                 )
@@ -91,7 +91,7 @@ class RouterBgpMixin(UtilsMixin):
                 # MPLS OVERLAY peer group
                 local_as = str(_as) if (_as := get(self._hostvars, "switch.ipvpn_gateway.local_as")) is not None else None
                 mpls_peer_group = {
-                    **self._generate_base_peer_group(self._peer_group_mpls_overlay_peers, "mpls", "mpls_overlay_peers"),
+                    **self._generate_base_peer_group("mpls", "mpls_overlay_peers"),
                     "local_as": local_as,
                     "remote_as": self._bgp_as,
                 }
@@ -104,7 +104,7 @@ class RouterBgpMixin(UtilsMixin):
             if self._overlay_evpn_vxlan is True:
                 # EVPN OVERLAY peer group - also in EBGP..
                 ebgp_peer_group = {
-                    **self._generate_base_peer_group(self._peer_group_evpn_overlay_peers, "evpn", "evpn_overlay_peers"),
+                    **self._generate_base_peer_group("evpn", "evpn_overlay_peers"),
                     "remote_as": self._bgp_as,
                 }
 
@@ -114,7 +114,7 @@ class RouterBgpMixin(UtilsMixin):
                 peer_groups.append(ebgp_peer_group)
 
             if self._is_mpls_server is True:
-                peer_groups.append({**self._generate_base_peer_group(self._peer_group_rr_overlay_peers, "mpls", "rr_overlay_peers"), "remote_as": self._bgp_as})
+                peer_groups.append({**self._generate_base_peer_group("mpls", "rr_overlay_peers"), "remote_as": self._bgp_as})
 
         # same for ebgp and ibgp
         if self._overlay_ipvpn_gateway is True:
@@ -122,7 +122,7 @@ class RouterBgpMixin(UtilsMixin):
 
             peer_groups.append(
                 {
-                    **self._generate_base_peer_group(self._peer_group_ipvpn_gateway_peers, "mpls", "ipvpn_gateway_peers"),
+                    **self._generate_base_peer_group("mpls", "ipvpn_gateway_peers"),
                     "local_as": local_as,
                     "maximum_routes": get(self._hostvars, "switch.ipvpn_gateway.max_routes"),
                 }
