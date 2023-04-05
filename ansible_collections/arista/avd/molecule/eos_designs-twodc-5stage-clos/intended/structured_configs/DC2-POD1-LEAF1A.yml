@@ -1,3 +1,7 @@
+diagram_groups:
+- fabric_name: TWODC_5STAGE_CLOS
+- dc_name: DC2
+- pod_name: DC2_POD1
 router_bgp:
   as: '65211'
   router_id: 172.16.210.3

@@ -85,6 +85,7 @@ class AvdStructuredConfig(AvdFacts):
         """
         return get(self._hostvars, "switch.serial_number")
 
+    @cached_property
     def diagram_groups(self) -> list:
         diagram_groups = []
         if (fabric_name := get(self._hostvars, "fabric_name")) is not None:

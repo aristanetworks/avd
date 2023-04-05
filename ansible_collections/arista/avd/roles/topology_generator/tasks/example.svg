@@ -1,285 +1,135 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-     width="2130" height="1353.75" viewBox="0 -1353.75 2130 1353.75" font-family="monospace">
+     width="1185" height="1045.0" viewBox="0 -1045.0 1185 1045.0" font-family="monospace">
 <defs>
 </defs>
-<rect x="0" y="-1353.75" width="2130" height="1353.75" fill="#00285A" />
-<rect x="20" y="-1328.75" width="2080" height="1303.75" fill="hsl(0, 0%, 90%)" rx="25" stroke="hsl(0, 0%, 60.0%)" stroke-width="4" />
-<rect x="45.5" y="-1291.25" width="1375" height="1235.0" fill="hsl(0, 0%, 80%)" rx="25" stroke="hsl(0, 0%, 52.5%)" stroke-width="4" />
-<rect x="71.0" y="-1013.75" width="480" height="617.5" fill="hsl(0, 0%, 70%)" rx="25" stroke="hsl(0, 0%, 45.0%)" stroke-width="4" />
-<rect x="251.5" y="-651.25" width="120" height="120" fill="#5167B7" text="DC1-POD2-LEAF1A" />
-<text x="311.5" y="-594.25" font-size="18" fill="white" text-anchor="middle" dy="0em">DC1-POD2-L</text>
-<text x="311.5" y="-576.25" font-size="18" fill="white" text-anchor="middle" dy="0em">EAF1A</text>
-<rect x="131.0" y="-928.75" width="120" height="120" fill="#5167B7" text="DC1-POD2-SPINE1" />
-<text x="191.0" y="-871.75" font-size="18" fill="white" text-anchor="middle" dy="0em">DC1-POD2-S</text>
-<text x="191.0" y="-853.75" font-size="18" fill="white" text-anchor="middle" dy="0em">PINE1</text>
-<rect x="371.0" y="-928.75" width="120" height="120" fill="#5167B7" text="DC1-POD2-SPINE2" />
-<text x="431.0" y="-871.75" font-size="18" fill="white" text-anchor="middle" dy="0em">DC1-POD2-S</text>
-<text x="431.0" y="-853.75" font-size="18" fill="white" text-anchor="middle" dy="0em">PINE2</text>
-<rect x="576.0" y="-1013.75" width="820" height="926.25" fill="hsl(0, 0%, 70%)" rx="25" stroke="hsl(0, 0%, 45.0%)" stroke-width="4" />
-<rect x="687.0" y="-373.75" width="120" height="120" fill="#5167B7" text="DC1-POD1-L2LEAF1A" />
-<text x="747.0" y="-316.75" font-size="18" fill="white" text-anchor="middle" dy="0em">DC1-POD1-L</text>
-<text x="747.0" y="-298.75" font-size="18" fill="white" text-anchor="middle" dy="0em">2LEAF1A</text>
-<rect x="927.0" y="-373.75" width="120" height="120" fill="#5167B7" text="DC1-POD1-L2LEAF2A" />
-<text x="987.0" y="-316.75" font-size="18" fill="white" text-anchor="middle" dy="0em">DC1-POD1-L</text>
-<text x="987.0" y="-298.75" font-size="18" fill="white" text-anchor="middle" dy="0em">2LEAF2A</text>
-<rect x="1167.0" y="-373.75" width="120" height="120" fill="#5167B7" text="DC1-POD1-L2LEAF2B" />
-<text x="1227.0" y="-316.75" font-size="18" fill="white" text-anchor="middle" dy="0em">DC1-POD1-L</text>
-<text x="1227.0" y="-298.75" font-size="18" fill="white" text-anchor="middle" dy="0em">2LEAF2B</text>
-<rect x="806.5" y="-651.25" width="120" height="120" fill="#5167B7" text="DC1-POD1-LEAF1A" />
-<text x="866.5" y="-594.25" font-size="18" fill="white" text-anchor="middle" dy="0em">DC1-POD1-L</text>
-<text x="866.5" y="-576.25" font-size="18" fill="white" text-anchor="middle" dy="0em">EAF1A</text>
-<rect x="1046.5" y="-651.25" width="120" height="120" fill="#5167B7" text="DC1-POD1-LEAF2B" />
-<text x="1106.5" y="-594.25" font-size="18" fill="white" text-anchor="middle" dy="0em">DC1-POD1-L</text>
-<text x="1106.5" y="-576.25" font-size="18" fill="white" text-anchor="middle" dy="0em">EAF2B</text>
-<rect x="806.0" y="-928.75" width="120" height="120" fill="#5167B7" text="DC1-POD1-SPINE1" />
-<text x="866.0" y="-871.75" font-size="18" fill="white" text-anchor="middle" dy="0em">DC1-POD1-S</text>
-<text x="866.0" y="-853.75" font-size="18" fill="white" text-anchor="middle" dy="0em">PINE1</text>
-<rect x="1046.0" y="-928.75" width="120" height="120" fill="#5167B7" text="DC1-POD1-SPINE2" />
-<text x="1106.0" y="-871.75" font-size="18" fill="white" text-anchor="middle" dy="0em">DC1-POD1-S</text>
-<text x="1106.0" y="-853.75" font-size="18" fill="white" text-anchor="middle" dy="0em">PINE2</text>
-<rect x="553.0" y="-1206.25" width="120" height="120" fill="#5167B7" text="DC1-SUPER-SPINE1" />
-<text x="613.0" y="-1149.25" font-size="18" fill="white" text-anchor="middle" dy="0em">DC1-SUPER</text>
-<text x="613.0" y="-1131.25" font-size="18" fill="white" text-anchor="middle" dy="0em">SPINE1</text>
-<rect x="793.0" y="-1206.25" width="120" height="120" fill="#5167B7" text="DC1-SUPER-SPINE2" />
-<text x="853.0" y="-1149.25" font-size="18" fill="white" text-anchor="middle" dy="0em">DC1-SUPER</text>
-<text x="853.0" y="-1131.25" font-size="18" fill="white" text-anchor="middle" dy="0em">SPINE2</text>
-<rect x="1445.5" y="-1291.25" width="630" height="1235.0" fill="hsl(0, 0%, 80%)" rx="25" stroke="hsl(0, 0%, 52.5%)" stroke-width="4" />
-<rect x="1471.0" y="-1013.75" width="580" height="926.25" fill="hsl(0, 0%, 70%)" rx="25" stroke="hsl(0, 0%, 45.0%)" stroke-width="4" />
-<rect x="1582.0" y="-373.75" width="120" height="120" fill="#5167B7" text="DC2-POD1-L2LEAF1A" />
-<text x="1642.0" y="-316.75" font-size="18" fill="white" text-anchor="middle" dy="0em">DC2-POD1-L</text>
-<text x="1642.0" y="-298.75" font-size="18" fill="white" text-anchor="middle" dy="0em">2LEAF1A</text>
-<rect x="1822.0" y="-373.75" width="120" height="120" fill="#5167B7" text="DC2-POD1-L2LEAF2A" />
-<text x="1882.0" y="-316.75" font-size="18" fill="white" text-anchor="middle" dy="0em">DC2-POD1-L</text>
-<text x="1882.0" y="-298.75" font-size="18" fill="white" text-anchor="middle" dy="0em">2LEAF2A</text>
-<rect x="1581.5" y="-651.25" width="120" height="120" fill="#5167B7" text="DC2-POD1-LEAF1A" />
-<text x="1641.5" y="-594.25" font-size="18" fill="white" text-anchor="middle" dy="0em">DC2-POD1-L</text>
-<text x="1641.5" y="-576.25" font-size="18" fill="white" text-anchor="middle" dy="0em">EAF1A</text>
-<rect x="1821.5" y="-651.25" width="120" height="120" fill="#5167B7" text="DC2-POD1-LEAF2A" />
-<text x="1881.5" y="-594.25" font-size="18" fill="white" text-anchor="middle" dy="0em">DC2-POD1-L</text>
-<text x="1881.5" y="-576.25" font-size="18" fill="white" text-anchor="middle" dy="0em">EAF2A</text>
-<rect x="1581.0" y="-928.75" width="120" height="120" fill="#5167B7" text="DC2-POD1-SPINE1" />
-<text x="1641.0" y="-871.75" font-size="18" fill="white" text-anchor="middle" dy="0em">DC2-POD1-S</text>
-<text x="1641.0" y="-853.75" font-size="18" fill="white" text-anchor="middle" dy="0em">PINE1</text>
-<rect x="1821.0" y="-928.75" width="120" height="120" fill="#5167B7" text="DC2-POD1-SPINE2" />
-<text x="1881.0" y="-871.75" font-size="18" fill="white" text-anchor="middle" dy="0em">DC2-POD1-S</text>
-<text x="1881.0" y="-853.75" font-size="18" fill="white" text-anchor="middle" dy="0em">PINE2</text>
-<rect x="1580.5" y="-1206.25" width="120" height="120" fill="#5167B7" text="DC2-SUPER-SPINE1" />
-<text x="1640.5" y="-1149.25" font-size="18" fill="white" text-anchor="middle" dy="0em">DC2-SUPER</text>
-<text x="1640.5" y="-1131.25" font-size="18" fill="white" text-anchor="middle" dy="0em">SPINE1</text>
-<rect x="1820.5" y="-1206.25" width="120" height="120" fill="#5167B7" text="DC2-SUPER-SPINE2" />
-<text x="1880.5" y="-1149.25" font-size="18" fill="white" text-anchor="middle" dy="0em">DC2-SUPER</text>
-<text x="1880.5" y="-1131.25" font-size="18" fill="white" text-anchor="middle" dy="0em">SPINE2</text>
-<rect x="568.5" y="-1086.25" width="20" height="30" fill="white" stroke="black" />
-<text x="578.5" y="-1065.9166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">1</text>
-<rect x="591.5" y="-1086.25" width="20" height="30" fill="white" stroke="black" />
-<text x="601.5" y="-1065.9166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">2</text>
-<rect x="614.5" y="-1086.25" width="20" height="30" fill="white" stroke="black" />
-<text x="624.5" y="-1065.9166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">3</text>
-<rect x="637.5" y="-1086.25" width="20" height="30" fill="white" stroke="black" />
-<text x="647.5" y="-1065.9166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">4</text>
-<rect x="673.0" y="-1156.25" width="30" height="20" fill="white" stroke="black" />
-<text x="688.0" y="-1140.9166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">6</text>
-<rect x="808.5" y="-1086.25" width="20" height="30" fill="white" stroke="black" />
-<text x="818.5" y="-1065.9166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">1</text>
-<rect x="831.5" y="-1086.25" width="20" height="30" fill="white" stroke="black" />
-<text x="841.5" y="-1065.9166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">2</text>
-<rect x="854.5" y="-1086.25" width="20" height="30" fill="white" stroke="black" />
-<text x="864.5" y="-1065.9166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">3</text>
-<rect x="877.5" y="-1086.25" width="20" height="30" fill="white" stroke="black" />
-<text x="887.5" y="-1065.9166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">4</text>
-<rect x="913.0" y="-1156.25" width="30" height="20" fill="white" stroke="black" />
-<text x="928.0" y="-1140.9166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">6</text>
-<rect x="1859.0" y="-1086.25" width="20" height="30" fill="white" stroke="black" />
-<text x="1869.0" y="-1065.9166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">1</text>
-<rect x="1882.0" y="-1086.25" width="20" height="30" fill="white" stroke="black" />
-<text x="1892.0" y="-1065.9166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">2</text>
-<rect x="1790.5" y="-1156.25" width="30" height="20" fill="white" stroke="black" />
-<text x="1805.5" y="-1140.9166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">4</text>
-<rect x="1619.0" y="-1086.25" width="20" height="30" fill="white" stroke="black" />
-<text x="1629.0" y="-1065.9166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">1</text>
-<rect x="1642.0" y="-1086.25" width="20" height="30" fill="white" stroke="black" />
-<text x="1652.0" y="-1065.9166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">2</text>
-<rect x="1550.5" y="-1156.25" width="30" height="20" fill="white" stroke="black" />
-<text x="1565.5" y="-1140.9166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">4</text>
-<rect x="844.5" y="-958.75" width="20" height="30" fill="white" stroke="black" />
-<text x="854.5" y="-938.4166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">1</text>
-<rect x="867.5" y="-958.75" width="20" height="30" fill="white" stroke="black" />
-<text x="877.5" y="-938.4166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">2</text>
-<rect x="833.0" y="-808.75" width="20" height="30" fill="white" stroke="black" />
-<text x="843.0" y="-788.4166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">5</text>
-<rect x="856.0" y="-808.75" width="20" height="30" fill="white" stroke="black" />
-<text x="866.0" y="-788.4166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">8</text>
-<rect x="879.0" y="-808.75" width="20" height="30" fill="white" stroke="black" />
-<text x="889.0" y="-788.4166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">3</text>
-<rect x="1084.5" y="-958.75" width="20" height="30" fill="white" stroke="black" />
-<text x="1094.5" y="-938.4166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">1</text>
-<rect x="1107.5" y="-958.75" width="20" height="30" fill="white" stroke="black" />
-<text x="1117.5" y="-938.4166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">2</text>
-<rect x="1073.0" y="-808.75" width="20" height="30" fill="white" stroke="black" />
-<text x="1083.0" y="-788.4166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">5</text>
-<rect x="1096.0" y="-808.75" width="20" height="30" fill="white" stroke="black" />
-<text x="1106.0" y="-788.4166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">8</text>
-<rect x="1119.0" y="-808.75" width="20" height="30" fill="white" stroke="black" />
-<text x="1129.0" y="-788.4166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">3</text>
-<rect x="169.5" y="-958.75" width="20" height="30" fill="white" stroke="black" />
-<text x="179.5" y="-938.4166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">1</text>
-<rect x="192.5" y="-958.75" width="20" height="30" fill="white" stroke="black" />
-<text x="202.5" y="-938.4166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">2</text>
-<rect x="181.0" y="-808.75" width="20" height="30" fill="white" stroke="black" />
-<text x="191.0" y="-788.4166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">3</text>
-<rect x="251.0" y="-878.75" width="30" height="20" fill="white" stroke="black" />
-<text x="266.0" y="-863.4166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">5</text>
-<rect x="409.5" y="-958.75" width="20" height="30" fill="white" stroke="black" />
-<text x="419.5" y="-938.4166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">1</text>
-<rect x="432.5" y="-958.75" width="20" height="30" fill="white" stroke="black" />
-<text x="442.5" y="-938.4166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">2</text>
-<rect x="421.0" y="-808.75" width="20" height="30" fill="white" stroke="black" />
-<text x="431.0" y="-788.4166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">3</text>
-<rect x="491.0" y="-878.75" width="30" height="20" fill="white" stroke="black" />
-<text x="506.0" y="-863.4166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">4</text>
-<rect x="1619.5" y="-958.75" width="20" height="30" fill="white" stroke="black" />
-<text x="1629.5" y="-938.4166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">2</text>
-<rect x="1642.5" y="-958.75" width="20" height="30" fill="white" stroke="black" />
-<text x="1652.5" y="-938.4166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">1</text>
-<rect x="1619.5" y="-808.75" width="20" height="30" fill="white" stroke="black" />
-<text x="1629.5" y="-788.4166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">3</text>
-<rect x="1642.5" y="-808.75" width="20" height="30" fill="white" stroke="black" />
-<text x="1652.5" y="-788.4166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">4</text>
-<rect x="1551.0" y="-878.75" width="30" height="20" fill="white" stroke="black" />
-<text x="1566.0" y="-863.4166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">5</text>
-<rect x="1859.5" y="-958.75" width="20" height="30" fill="white" stroke="black" />
-<text x="1869.5" y="-938.4166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">2</text>
-<rect x="1882.5" y="-958.75" width="20" height="30" fill="white" stroke="black" />
-<text x="1892.5" y="-938.4166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">1</text>
-<rect x="1859.5" y="-808.75" width="20" height="30" fill="white" stroke="black" />
-<text x="1869.5" y="-788.4166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">3</text>
-<rect x="1882.5" y="-808.75" width="20" height="30" fill="white" stroke="black" />
-<text x="1892.5" y="-788.4166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">4</text>
-<rect x="1791.0" y="-878.75" width="30" height="20" fill="white" stroke="black" />
-<text x="1806.0" y="-863.4166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">5</text>
-<rect x="845.0" y="-681.25" width="20" height="30" fill="white" stroke="black" />
-<text x="855.0" y="-660.9166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">1</text>
-<rect x="868.0" y="-681.25" width="20" height="30" fill="white" stroke="black" />
-<text x="878.0" y="-660.9166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">2</text>
-<rect x="856.5" y="-531.25" width="20" height="30" fill="white" stroke="black" />
-<text x="866.5" y="-510.9166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">3</text>
-<rect x="1062.0" y="-681.25" width="20" height="30" fill="white" stroke="black" />
-<text x="1072.0" y="-660.9166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">1</text>
-<rect x="1085.0" y="-681.25" width="20" height="30" fill="white" stroke="black" />
-<text x="1095.0" y="-660.9166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">2</text>
-<rect x="1108.0" y="-681.25" width="20" height="30" fill="white" stroke="black" />
-<text x="1118.0" y="-660.9166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">11</text>
-<rect x="1131.0" y="-681.25" width="20" height="30" fill="white" stroke="black" />
-<text x="1141.0" y="-660.9166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">12</text>
-<rect x="1085.0" y="-531.25" width="20" height="30" fill="white" stroke="black" />
-<text x="1095.0" y="-510.9166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">3</text>
-<rect x="1108.0" y="-531.25" width="20" height="30" fill="white" stroke="black" />
-<text x="1118.0" y="-510.9166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">4</text>
-<rect x="1166.5" y="-601.25" width="30" height="20" fill="white" stroke="black" />
-<text x="1181.5" y="-585.9166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">7</text>
-<rect x="290.0" y="-681.25" width="20" height="30" fill="white" stroke="black" />
-<text x="300.0" y="-660.9166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">1</text>
-<rect x="313.0" y="-681.25" width="20" height="30" fill="white" stroke="black" />
-<text x="323.0" y="-660.9166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">2</text>
-<rect x="1620.0" y="-681.25" width="20" height="30" fill="white" stroke="black" />
-<text x="1630.0" y="-660.9166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">1</text>
-<rect x="1643.0" y="-681.25" width="20" height="30" fill="white" stroke="black" />
-<text x="1653.0" y="-660.9166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">2</text>
-<rect x="1631.5" y="-531.25" width="20" height="30" fill="white" stroke="black" />
-<text x="1641.5" y="-510.9166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">3</text>
-<rect x="1551.5" y="-601.25" width="30" height="20" fill="white" stroke="black" />
-<text x="1566.5" y="-585.9166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">7</text>
-<rect x="1860.0" y="-681.25" width="20" height="30" fill="white" stroke="black" />
-<text x="1870.0" y="-660.9166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">1</text>
-<rect x="1883.0" y="-681.25" width="20" height="30" fill="white" stroke="black" />
-<text x="1893.0" y="-660.9166666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">2</text>
-<rect x="1871.5" y="-531.25" width="20" height="30" fill="white" stroke="black" />
-<text x="1881.5" y="-510.9166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">3</text>
-<rect x="737.0" y="-403.75" width="20" height="30" fill="white" stroke="black" />
-<text x="747.0" y="-383.4166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">1</text>
-<rect x="977.0" y="-403.75" width="20" height="30" fill="white" stroke="black" />
-<text x="987.0" y="-383.4166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">2</text>
-<rect x="1047.0" y="-335.25" width="30" height="20" fill="white" stroke="black" />
-<text x="1062.0" y="-319.9166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">3</text>
-<rect x="1047.0" y="-312.25" width="30" height="20" fill="white" stroke="black" />
-<text x="1062.0" y="-296.9166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">4</text>
-<rect x="1217.0" y="-403.75" width="20" height="30" fill="white" stroke="black" />
-<text x="1227.0" y="-383.4166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">2</text>
-<rect x="1137.0" y="-335.25" width="30" height="20" fill="white" stroke="black" />
-<text x="1152.0" y="-319.9166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">3</text>
-<rect x="1137.0" y="-312.25" width="30" height="20" fill="white" stroke="black" />
-<text x="1152.0" y="-296.9166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">4</text>
-<rect x="1632.0" y="-403.75" width="20" height="30" fill="white" stroke="black" />
-<text x="1642.0" y="-383.4166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">1</text>
-<rect x="1872.0" y="-403.75" width="20" height="30" fill="white" stroke="black" />
-<text x="1882.0" y="-383.4166666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">1</text>
-<path d="M578.5,-1056.25 L854.5,-958.75" stroke="black" stroke-width="2" />
-<path d="M601.5,-1056.25 L1094.5,-958.75" stroke="black" stroke-width="2" />
-<path d="M624.5,-1056.25 L179.5,-958.75" stroke="black" stroke-width="2" />
-<path d="M647.5,-1056.25 L419.5,-958.75" stroke="black" stroke-width="2" />
-<path d="M703.0,-1146.25 L713.0,-1146.25" stroke="black" stroke-width="2" />
-<path d="M713.0,-1146.25 L713.0,-1252.25" stroke="black" stroke-width="2" />
-<path d="M713.0,-1252.25 L1126.75,-1252.25" stroke="black" stroke-width="2" />
-<path d="M1550.5,-1146.25 L1540.5,-1146.25" stroke="black" stroke-width="2" />
-<path d="M1540.5,-1146.25 L1540.5,-1252.25" stroke="black" stroke-width="2" />
-<path d="M1540.5,-1252.25 L1126.75,-1252.25" stroke="black" stroke-width="2" />
-<path d="M818.5,-1056.25 L877.5,-958.75" stroke="black" stroke-width="2" />
-<path d="M841.5,-1056.25 L1117.5,-958.75" stroke="black" stroke-width="2" />
-<path d="M864.5,-1056.25 L202.5,-958.75" stroke="black" stroke-width="2" />
-<path d="M887.5,-1056.25 L442.5,-958.75" stroke="black" stroke-width="2" />
-<path d="M943.0,-1146.25 L953.0,-1146.25" stroke="black" stroke-width="2" />
-<path d="M953.0,-1146.25 L953.0,-1258.25" stroke="black" stroke-width="2" />
-<path d="M953.0,-1258.25 L1366.75,-1258.25" stroke="black" stroke-width="2" />
-<path d="M1790.5,-1146.25 L1780.5,-1146.25" stroke="black" stroke-width="2" />
-<path d="M1780.5,-1146.25 L1780.5,-1258.25" stroke="black" stroke-width="2" />
-<path d="M1780.5,-1258.25 L1366.75,-1258.25" stroke="black" stroke-width="2" />
-<path d="M191.0,-778.75 L300.0,-681.25" stroke="black" stroke-width="2" />
-<path d="M281.0,-868.75 L291.0,-868.75" stroke="black" stroke-width="2" />
-<path d="M291.0,-868.75 L291.0,-974.75" stroke="black" stroke-width="2" />
-<path d="M291.0,-974.75 L916.0,-974.75" stroke="black" stroke-width="2" />
-<path d="M1551.0,-868.75 L1541.0,-868.75" stroke="black" stroke-width="2" />
-<path d="M1541.0,-868.75 L1541.0,-974.75" stroke="black" stroke-width="2" />
-<path d="M1541.0,-974.75 L916.0,-974.75" stroke="black" stroke-width="2" />
-<path d="M431.0,-778.75 L323.0,-681.25" stroke="black" stroke-width="2" />
-<path d="M521.0,-868.75 L531.0,-868.75" stroke="black" stroke-width="2" />
-<path d="M531.0,-868.75 L531.0,-980.75" stroke="black" stroke-width="2" />
-<path d="M531.0,-980.75 L1156.0,-980.75" stroke="black" stroke-width="2" />
-<path d="M1791.0,-868.75 L1781.0,-868.75" stroke="black" stroke-width="2" />
-<path d="M1781.0,-868.75 L1781.0,-980.75" stroke="black" stroke-width="2" />
-<path d="M1781.0,-980.75 L1156.0,-980.75" stroke="black" stroke-width="2" />
-<path d="M1072.0,-681.25 L843.0,-778.75" stroke="black" stroke-width="2" />
-<path d="M1095.0,-681.25 L1083.0,-778.75" stroke="black" stroke-width="2" />
-<path d="M1095.0,-501.25 L987.0,-403.75" stroke="black" stroke-width="2" />
-<path d="M1118.0,-501.25 L1227.0,-403.75" stroke="black" stroke-width="2" />
-<path d="M1118.0,-681.25 L866.0,-778.75" stroke="black" stroke-width="2" />
-<path d="M1141.0,-681.25 L1106.0,-778.75" stroke="black" stroke-width="2" />
-<path d="M1196.5,-591.25 L1551.5,-591.25" stroke="black" stroke-width="2" />
-<path d="M1137.0,-325.25 L1077.0,-325.25" stroke="black" stroke-width="2" />
-<path d="M1137.0,-302.25 L1077.0,-302.25" stroke="black" stroke-width="2" />
-<path d="M747.0,-403.75 L866.5,-501.25" stroke="black" stroke-width="2" />
-<path d="M855.0,-681.25 L889.0,-778.75" stroke="black" stroke-width="2" />
-<path d="M878.0,-681.25 L1129.0,-778.75" stroke="black" stroke-width="2" />
-<path d="M1869.0,-1056.25 L1629.5,-958.75" stroke="black" stroke-width="2" />
-<path d="M1892.0,-1056.25 L1869.5,-958.75" stroke="black" stroke-width="2" />
-<path d="M1629.0,-1056.25 L1652.5,-958.75" stroke="black" stroke-width="2" />
-<path d="M1652.0,-1056.25 L1892.5,-958.75" stroke="black" stroke-width="2" />
-<path d="M1630.0,-681.25 L1629.5,-778.75" stroke="black" stroke-width="2" />
-<path d="M1653.0,-681.25 L1869.5,-778.75" stroke="black" stroke-width="2" />
-<path d="M1641.5,-501.25 L1642.0,-403.75" stroke="black" stroke-width="2" />
-<path d="M1882.0,-403.75 L1881.5,-501.25" stroke="black" stroke-width="2" />
-<path d="M1652.5,-778.75 L1870.0,-681.25" stroke="black" stroke-width="2" />
-<path d="M1892.5,-778.75 L1893.0,-681.25" stroke="black" stroke-width="2" />
-<rect x="933.52" y="-1324.75" width="252.96" height="23" fill="hsl(0, 0%, 90%)" />
-<text x="1060.0" y="-1304.75" font-size="24" fill="black" text-anchor="middle" dy="0em">TWODC_5STAGE_CLOS</text>
-<rect x="710.68" y="-1287.25" width="44.64" height="23" fill="hsl(0, 0%, 80%)" />
-<text x="733.0" y="-1267.25" font-size="24" fill="black" text-anchor="middle" dy="0em">DC1</text>
-<rect x="251.48000000000002" y="-1009.75" width="119.03999999999999" height="23" fill="hsl(0, 0%, 70%)" />
-<text x="311.0" y="-989.75" font-size="24" fill="black" text-anchor="middle" dy="0em">DC1_POD2</text>
-<rect x="926.48" y="-1009.75" width="119.03999999999999" height="23" fill="hsl(0, 0%, 70%)" />
-<text x="986.0" y="-989.75" font-size="24" fill="black" text-anchor="middle" dy="0em">DC1_POD1</text>
-<rect x="1738.18" y="-1287.25" width="44.64" height="23" fill="hsl(0, 0%, 80%)" />
-<text x="1760.5" y="-1267.25" font-size="24" fill="black" text-anchor="middle" dy="0em">DC2</text>
-<rect x="1701.48" y="-1009.75" width="119.03999999999999" height="23" fill="hsl(0, 0%, 70%)" />
-<text x="1761.0" y="-989.75" font-size="24" fill="black" text-anchor="middle" dy="0em">DC2_POD1</text>
+<rect x="0" y="-1045.0" width="1185" height="1045.0" fill="#00285A" />
+<rect x="20" y="-1020.0" width="1135" height="995.0" fill="hsl(0, 0%, 90%)" rx="25" stroke="hsl(0, 0%, 60.0%)" stroke-width="4" />
+<rect x="45.5" y="-982.5" width="1085" height="926.25" fill="hsl(0, 0%, 80%)" rx="25" stroke="hsl(0, 0%, 52.5%)" stroke-width="4" />
+<rect x="71.0" y="-705.0" width="1035" height="617.5" fill="hsl(0, 0%, 70%)" rx="25" stroke="hsl(0, 0%, 45.0%)" stroke-width="4" />
+<rect x="96.5" y="-427.5" width="480" height="308.75" fill="hsl(0, 0%, 60%)" rx="25" stroke="hsl(0, 0%, 37.5%)" stroke-width="4" />
+<rect x="156.5" y="-342.5" width="120" height="120" fill="#5167B7" text="LEAF1" />
+<text x="216.5" y="-276.5" font-size="25" fill="white" text-anchor="middle" dy="0em">LEAF1</text>
+<rect x="396.5" y="-342.5" width="120" height="120" fill="#5167B7" text="LEAF2" />
+<text x="456.5" y="-276.5" font-size="25" fill="white" text-anchor="middle" dy="0em">LEAF2</text>
+<rect x="601.5" y="-427.5" width="480" height="308.75" fill="hsl(0, 0%, 60%)" rx="25" stroke="hsl(0, 0%, 37.5%)" stroke-width="4" />
+<rect x="661.5" y="-342.5" width="120" height="120" fill="#5167B7" text="LEAF3" />
+<text x="721.5" y="-276.5" font-size="25" fill="white" text-anchor="middle" dy="0em">LEAF3</text>
+<rect x="901.5" y="-342.5" width="120" height="120" fill="#5167B7" text="LEAF4" />
+<text x="961.5" y="-276.5" font-size="25" fill="white" text-anchor="middle" dy="0em">LEAF4</text>
+<rect x="408.5" y="-620.0" width="120" height="120" fill="#5167B7" text="SPINE1" />
+<text x="468.5" y="-554.0" font-size="25" fill="white" text-anchor="middle" dy="0em">SPINE1</text>
+<rect x="648.5" y="-620.0" width="120" height="120" fill="#5167B7" text="SPINE2" />
+<text x="708.5" y="-554.0" font-size="25" fill="white" text-anchor="middle" dy="0em">SPINE2</text>
+<rect x="408.0" y="-897.5" width="120" height="120" fill="#5167B7" text="SUPER-SPINE1" />
+<text x="468.0" y="-840.5" font-size="18" fill="white" text-anchor="middle" dy="0em">SUPER</text>
+<text x="468.0" y="-822.5" font-size="18" fill="white" text-anchor="middle" dy="0em">SPINE1</text>
+<rect x="648.0" y="-897.5" width="120" height="120" fill="#5167B7" text="SUPER-SPINE2" />
+<text x="708.0" y="-840.5" font-size="18" fill="white" text-anchor="middle" dy="0em">SUPER</text>
+<text x="708.0" y="-822.5" font-size="18" fill="white" text-anchor="middle" dy="0em">SPINE2</text>
+<rect x="446.5" y="-777.5" width="20" height="30" fill="white" stroke="black" />
+<text x="456.5" y="-757.1666666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">6</text>
+<rect x="469.5" y="-777.5" width="20" height="30" fill="white" stroke="black" />
+<text x="479.5" y="-757.1666666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">7</text>
+<rect x="686.5" y="-777.5" width="20" height="30" fill="white" stroke="black" />
+<text x="696.5" y="-757.1666666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">6</text>
+<rect x="709.5" y="-777.5" width="20" height="30" fill="white" stroke="black" />
+<text x="719.5" y="-757.1666666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">7</text>
+<rect x="447.0" y="-650.0" width="20" height="30" fill="white" stroke="black" />
+<text x="457.0" y="-629.6666666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">6</text>
+<rect x="470.0" y="-650.0" width="20" height="30" fill="white" stroke="black" />
+<text x="480.0" y="-629.6666666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">7</text>
+<rect x="424.0" y="-500.0" width="20" height="30" fill="white" stroke="black" />
+<text x="434.0" y="-479.6666666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">1</text>
+<rect x="447.0" y="-500.0" width="20" height="30" fill="white" stroke="black" />
+<text x="457.0" y="-479.6666666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">2</text>
+<rect x="470.0" y="-500.0" width="20" height="30" fill="white" stroke="black" />
+<text x="480.0" y="-479.6666666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">3</text>
+<rect x="493.0" y="-500.0" width="20" height="30" fill="white" stroke="black" />
+<text x="503.0" y="-479.6666666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">4</text>
+<rect x="528.5" y="-581.5" width="30" height="20" fill="white" stroke="black" />
+<text x="543.5" y="-566.1666666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">47</text>
+<rect x="528.5" y="-558.5" width="30" height="20" fill="white" stroke="black" />
+<text x="543.5" y="-543.1666666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">48</text>
+<rect x="687.0" y="-650.0" width="20" height="30" fill="white" stroke="black" />
+<text x="697.0" y="-629.6666666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">6</text>
+<rect x="710.0" y="-650.0" width="20" height="30" fill="white" stroke="black" />
+<text x="720.0" y="-629.6666666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">7</text>
+<rect x="664.0" y="-500.0" width="20" height="30" fill="white" stroke="black" />
+<text x="674.0" y="-479.6666666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">1</text>
+<rect x="687.0" y="-500.0" width="20" height="30" fill="white" stroke="black" />
+<text x="697.0" y="-479.6666666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">2</text>
+<rect x="710.0" y="-500.0" width="20" height="30" fill="white" stroke="black" />
+<text x="720.0" y="-479.6666666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">3</text>
+<rect x="733.0" y="-500.0" width="20" height="30" fill="white" stroke="black" />
+<text x="743.0" y="-479.6666666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">4</text>
+<rect x="618.5" y="-581.5" width="30" height="20" fill="white" stroke="black" />
+<text x="633.5" y="-566.1666666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">47</text>
+<rect x="618.5" y="-558.5" width="30" height="20" fill="white" stroke="black" />
+<text x="633.5" y="-543.1666666666666" font-size="16" fill="black" text-anchor="middle" dy="0em">48</text>
+<rect x="195.0" y="-372.5" width="20" height="30" fill="white" stroke="black" />
+<text x="205.0" y="-352.1666666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">2</text>
+<rect x="218.0" y="-372.5" width="20" height="30" fill="white" stroke="black" />
+<text x="228.0" y="-352.1666666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">1</text>
+<rect x="276.5" y="-304.0" width="30" height="20" fill="white" stroke="black" />
+<text x="291.5" y="-288.6666666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">47</text>
+<rect x="276.5" y="-281.0" width="30" height="20" fill="white" stroke="black" />
+<text x="291.5" y="-265.6666666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">48</text>
+<rect x="435.0" y="-372.5" width="20" height="30" fill="white" stroke="black" />
+<text x="445.0" y="-352.1666666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">2</text>
+<rect x="458.0" y="-372.5" width="20" height="30" fill="white" stroke="black" />
+<text x="468.0" y="-352.1666666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">1</text>
+<rect x="516.5" y="-292.5" width="30" height="20" fill="white" stroke="black" />
+<text x="531.5" y="-277.1666666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">50</text>
+<rect x="366.5" y="-304.0" width="30" height="20" fill="white" stroke="black" />
+<text x="381.5" y="-288.6666666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">47</text>
+<rect x="366.5" y="-281.0" width="30" height="20" fill="white" stroke="black" />
+<text x="381.5" y="-265.6666666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">48</text>
+<rect x="700.0" y="-372.5" width="20" height="30" fill="white" stroke="black" />
+<text x="710.0" y="-352.1666666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">2</text>
+<rect x="723.0" y="-372.5" width="20" height="30" fill="white" stroke="black" />
+<text x="733.0" y="-352.1666666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">1</text>
+<rect x="781.5" y="-304.0" width="30" height="20" fill="white" stroke="black" />
+<text x="796.5" y="-288.6666666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">47</text>
+<rect x="781.5" y="-281.0" width="30" height="20" fill="white" stroke="black" />
+<text x="796.5" y="-265.6666666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">48</text>
+<rect x="631.5" y="-292.5" width="30" height="20" fill="white" stroke="black" />
+<text x="646.5" y="-277.1666666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">50</text>
+<rect x="940.0" y="-372.5" width="20" height="30" fill="white" stroke="black" />
+<text x="950.0" y="-352.1666666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">2</text>
+<rect x="963.0" y="-372.5" width="20" height="30" fill="white" stroke="black" />
+<text x="973.0" y="-352.1666666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">1</text>
+<rect x="871.5" y="-304.0" width="30" height="20" fill="white" stroke="black" />
+<text x="886.5" y="-288.6666666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">47</text>
+<rect x="871.5" y="-281.0" width="30" height="20" fill="white" stroke="black" />
+<text x="886.5" y="-265.6666666666667" font-size="16" fill="black" text-anchor="middle" dy="0em">48</text>
+<path d="M456.5,-747.5 L457.0,-650.0" stroke="black" stroke-width="2" />
+<path d="M479.5,-747.5 L697.0,-650.0" stroke="black" stroke-width="2" />
+<path d="M696.5,-747.5 L480.0,-650.0" stroke="black" stroke-width="2" />
+<path d="M719.5,-747.5 L720.0,-650.0" stroke="black" stroke-width="2" />
+<path d="M618.5,-571.5 L558.5,-571.5" stroke="black" stroke-width="2" />
+<path d="M618.5,-548.5 L558.5,-548.5" stroke="black" stroke-width="2" />
+<path d="M674.0,-470.0 L205.0,-372.5" stroke="black" stroke-width="2" />
+<path d="M697.0,-470.0 L445.0,-372.5" stroke="black" stroke-width="2" />
+<path d="M720.0,-470.0 L710.0,-372.5" stroke="black" stroke-width="2" />
+<path d="M743.0,-470.0 L950.0,-372.5" stroke="black" stroke-width="2" />
+<path d="M434.0,-470.0 L228.0,-372.5" stroke="black" stroke-width="2" />
+<path d="M457.0,-470.0 L468.0,-372.5" stroke="black" stroke-width="2" />
+<path d="M480.0,-470.0 L733.0,-372.5" stroke="black" stroke-width="2" />
+<path d="M503.0,-470.0 L973.0,-372.5" stroke="black" stroke-width="2" />
+<path d="M306.5,-294.0 L366.5,-294.0" stroke="black" stroke-width="2" />
+<path d="M306.5,-271.0 L366.5,-271.0" stroke="black" stroke-width="2" />
+<path d="M546.5,-282.5 L631.5,-282.5" stroke="black" stroke-width="2" />
+<path d="M811.5,-294.0 L871.5,-294.0" stroke="black" stroke-width="2" />
+<path d="M811.5,-271.0 L871.5,-271.0" stroke="black" stroke-width="2" />
+<rect x="513.1" y="-1016.0" width="148.8" height="23" fill="hsl(0, 0%, 90%)" />
+<text x="587.5" y="-996.0" font-size="24" fill="black" text-anchor="middle" dy="0em">DC1_FABRIC</text>
+<rect x="513.6" y="-978.5" width="148.8" height="23" fill="hsl(0, 0%, 80%)" />
+<text x="588.0" y="-958.5" font-size="24" fill="black" text-anchor="middle" dy="0em">DC1_SPINES</text>
+<rect x="506.65999999999997" y="-701.0" width="163.68" height="23" fill="hsl(0, 0%, 70%)" />
+<text x="588.5" y="-681.0" font-size="24" fill="black" text-anchor="middle" dy="0em">DC1_SPINES2</text>
+<rect x="299.3" y="-423.5" width="74.4" height="23" fill="hsl(0, 0%, 60%)" />
+<text x="336.5" y="-403.5" font-size="24" fill="black" text-anchor="middle" dy="0em">RACK1</text>
+<rect x="804.3" y="-423.5" width="74.4" height="23" fill="hsl(0, 0%, 60%)" />
+<text x="841.5" y="-403.5" font-size="24" fill="black" text-anchor="middle" dy="0em">RACK2</text>
 </svg>

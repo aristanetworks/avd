@@ -1,6 +1,8 @@
 from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
+from ansible.plugins.action import display
+
 import math
 import os
 import queue
@@ -63,7 +65,7 @@ def read_yaml_file(filename):
         try:
             data = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
-            print(exc)
+            display.error(exc)
         return data
 
 
@@ -83,9 +85,10 @@ def create_node_dict(file_data, filename):
     node_dict["name"] = os.path.splitext(filename)[0].split("/")[-1]
     node_dict["neighbors"] = []
     if file_data and file_data.get("ethernet_interfaces"):
-        if type(file_data["ethernet_interfaces"]) == dict:
+        if isinstance(file_data["ethernet_interfaces"], dict):
             for key, value in file_data["ethernet_interfaces"].items():
                 if "peer_interface" not in value:
+                    display.vvv(f"peer_interface not in {value}")
                     continue
                 neighbor_dict = {}
                 neighbor_dict["neighborDevice"] = value["peer"]
@@ -99,6 +102,7 @@ def create_node_dict(file_data, filename):
         else:
             for value in file_data["ethernet_interfaces"]:
                 if "peer_interface" not in value:
+                    display.vvv(f"peer_interface not in {value}")
                     continue
                 neighbor_dict = {}
                 neighbor_dict["neighborDevice"] = value["peer"]

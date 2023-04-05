@@ -10,4 +10,3 @@ md-toc>=7.1.0
 deepmerge>=1.1.0
 cryptography>=38.0.4
 drawSvg
-textwrap
