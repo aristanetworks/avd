@@ -18,15 +18,12 @@ dependency:
 driver:
   name: delegated
 platforms:
-  - name: DC1-LEAF1A
+  - name: failure-port-channel
     image: avdteam/base:3.8-v2.0
     pre_build_image: true
     managed: false
     groups:
-      - DC1_LEAF1
-      - DC1_LEAFS
-      - DC1_FABRIC
-      - AVD_LAB
+      - EOS_DESIGNS_FAILURES
 provisioner:
   name: ansible
   config_options:
