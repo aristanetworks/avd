@@ -38,9 +38,7 @@ management api gnmi
 {%         endif %}
 {%         if management_api_gnmi.transport.grpc_tunnels is arista.avd.defined %}
 {%             for transport in management_api_gnmi.transport.grpc_tunnels %}
-{%                 if transport.name is arista.avd.defined %}
    transport grpc-tunnel {{ transport.name }}
-{%                 endif %}
 {%                 if transport.shutdown is arista.avd.defined(true) %}
       shutdown
 {%                 elif transport.shutdown is arista.avd.defined(false) %}
