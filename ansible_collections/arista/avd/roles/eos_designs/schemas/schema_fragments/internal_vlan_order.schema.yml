@@ -4,6 +4,9 @@
 type: dict
 keys:
   internal_vlan_order:
+    documentation_options:
+      filename: Fabric Variables
+      table: VLAN Settings
     type: dict
     description: Internal vlan allocation order and range
     required: true

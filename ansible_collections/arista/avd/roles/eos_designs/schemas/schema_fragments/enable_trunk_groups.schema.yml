@@ -4,6 +4,9 @@
 type: dict
 keys:
   enable_trunk_groups:
+    documentation_options:
+      filename: Fabric Variables
+      table: VLAN Settings
     type: bool
     description: |
       Enable Trunk Group support across eos_designs

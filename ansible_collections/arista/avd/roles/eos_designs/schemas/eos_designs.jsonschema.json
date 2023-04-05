@@ -277,7 +277,7 @@
       "title": "CVP Token File"
     },
     "dc_name": {
-      "description": "Optional DC Name, only used in SNMP location and Fabric Documentation.\nRecommended to be common between all devices within a Site\n",
+      "description": "DC Name, required to match Ansible Group name covering all devices in the DC.\nRequired for 5-stage CLOS (Super-spines).\n",
       "type": "string",
       "title": "DC Name"
     },

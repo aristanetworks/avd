@@ -4,6 +4,9 @@
 type: dict
 keys:
   mac_address_table:
+    documentation_options:
+      filename: Fabric Variables
+      table: MAC Address Table Settings
     type: dict
     description: |
       MAC address-table aging time
