@@ -1,0 +1,80 @@
+router_bgp:
+  as: '65000'
+  router_id: 42.42.42.42
+  bgp_defaults:
+  - maximum-paths 4 ecmp 4
+  peer_groups:
+  - type: ipv4
+    maximum_routes: 12000
+    send_community: all
+    name: IPv4-UNDERLAY-PEERS
+  - type: evpn
+    update_source: Loopback0
+    bfd: true
+    send_community: all
+    maximum_routes: 0
+    ebgp_multihop: 3
+    name: EVPN-OVERLAY-PEERS
+  address_family_ipv4:
+    peer_groups:
+    - activate: true
+      name: IPv4-UNDERLAY-PEERS
+    - activate: false
+      name: EVPN-OVERLAY-PEERS
+  redistribute_routes:
+  - route_map: RM-CONN-2-BGP
+    source_protocol: connected
+  address_family_evpn:
+    peer_groups:
+    - activate: true
+      name: EVPN-OVERLAY-PEERS
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+loopback_interfaces:
+- name: Loopback0
+  description: EVPN_Overlay_Peering
+  shutdown: false
+  ip_address: 42.42.42.42/32
+- name: Loopback1
+  description: VTEP_VXLAN_Tunnel_Source
+  shutdown: false
+  ip_address: 1.1.1.1/32
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 42.42.42.42/32 eq 32
+  - sequence: 20
+    action: permit 1.1.1.1/32 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+ip_igmp_snooping:
+  globally_enabled: true
+vxlan_interface:
+  Vxlan1:
+    description: loopback_pool_one_host_VTEP
+    vxlan:
+      udp_port: 4789
+      source_interface: Loopback1

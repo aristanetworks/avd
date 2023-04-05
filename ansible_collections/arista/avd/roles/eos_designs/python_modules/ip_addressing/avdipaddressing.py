@@ -22,6 +22,12 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
     def _ip(self, pool: str, prefixlen: int, subnet_offset: int, ip_offset: int) -> str:
         pool_network = ipaddress.ip_network(pool, strict=False)
         prefixlen_diff = prefixlen - pool_network.prefixlen
+        if prefixlen == pool_network.prefixlen and (
+            (prefixlen == 32 and isinstance(pool_network, ipaddress.IPv4Network)) or (prefixlen == 128 and isinstance(pool_network, ipaddress.IPv6Network))
+        ):
+            # Ignore subnet_offset and ip_offset ?
+            return str(pool_network.network_address)
+
         subnet_size = (int(pool_network.hostmask) + 1) >> prefixlen_diff
         if (subnet_offset + 1) * subnet_size > pool_network.num_addresses:
             raise AristaAvdError(f"Unable to get {subnet_offset + 1} /{prefixlen} subnets from pool {pool}")

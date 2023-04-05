@@ -1,0 +1,11 @@
+# Minimum config to only test /32 IPv4 and /128 IPv6 loopbacks pool
+type: l3leaf
+
+l3leaf:
+  nodes:
+    loopback_pool_one_host:
+      id: 1
+      bgp_as: 65000
+      loopback_ipv4_pool: 42.42.42.42/32
+      vtep_loopback_ipv4_pool: 1.1.1.1/32
+      loopback_ipv6_pool: dead:beef::cafe/128
