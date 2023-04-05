@@ -379,6 +379,16 @@ port_channel_interfaces:
       egress:
         unmodified_enable: false
 
+  - name: Port-Channel121
+    description: access_port_with_no_vlans
+    type: switched
+    mode: access
+
+  - name: Port-Channel122
+    description: trunk_port_with_no_vlans
+    type: switched
+    mode: trunk
+
 # Children interfaces
 ethernet_interfaces:
   - name: Ethernet5

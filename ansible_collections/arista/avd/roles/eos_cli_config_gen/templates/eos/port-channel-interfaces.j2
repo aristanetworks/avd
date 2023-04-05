@@ -54,7 +54,7 @@ interface {{ port_channel_interface.name }}
 {%     else %}
    switchport
 {%     endif %}
-{%     if port_channel_interface.mode is arista.avd.defined("access") %}
+{%     if port_channel_interface.vlans is arista.avd.defined and port_channel_interface.mode is arista.avd.defined("access") %}
    switchport access vlan {{ port_channel_interface.vlans }}
 {%     endif %}
 {%     if port_channel_interface.vlans is arista.avd.defined and port_channel_interface.mode is arista.avd.defined("trunk") %}
