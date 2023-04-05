@@ -56,4 +56,4 @@ class ActionModule(ActionBase):
 
         graph_dict = temp_graph_dict
 
-        gt.generate_topology_hampton(destination, level_dict, graph_dict, output_list, undefined_rank_nodes, node_port_val)
+        gt.generate_topology(destination, level_dict, graph_dict, output_list, undefined_rank_nodes, node_port_val)

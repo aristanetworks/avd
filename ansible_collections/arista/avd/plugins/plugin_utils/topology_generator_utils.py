@@ -7,8 +7,21 @@ import queue
 import re
 import textwrap
 
-import drawSvg as draw
 import yaml
+
+import traceback
+
+from ansible.module_utils.basic import missing_required_lib
+
+try:
+    import drawSvg as draw
+except ImportError:
+    HAS_ANOTHER_LIBRARY = False
+    ANOTHER_LIBRARY_IMPORT_ERROR = traceback.format_exc()
+else:
+    HAS_ANOTHER_LIBRARY = True
+    ANOTHER_LIBRARY_IMPORT_ERROR = None
+
 
 _nsre = re.compile("([0-9]+)")
 
@@ -313,7 +326,7 @@ def find_node_levels(graph, start_node, node_list):
     return level_dict, node_level_dict
 
 
-def generate_topology_hampton(destination, old_level_dict, node_neighbor_dict, ol, undefined_rank_nodes, node_port_val):
+def generate_topology(destination, old_level_dict, node_neighbor_dict, ol, undefined_rank_nodes, node_port_val):
     """
     Generate topology diagram using node neighbour dictionary
 
