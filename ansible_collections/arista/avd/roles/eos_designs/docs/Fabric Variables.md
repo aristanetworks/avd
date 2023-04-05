@@ -55,12 +55,16 @@ search:
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>overlay_mlag_rfc5549</samp>](## "overlay_mlag_rfc5549") | Boolean |  | False |  | IPv6 Unnumbered for MLAG iBGP connections.<br>Requires "underlay_rfc5549: true".<br> |
+    | [<samp>overlay_routing_protocol_address_family</samp>](## "overlay_routing_protocol_address_family") | String |  | ipv4 | Valid Values:<br>- ipv4<br>- ipv6 | When set to `ipv6`, enable overlay EVPN peering with IPv6 addresses.<br>This feature depends on underlay_ipv6 variable. As of today, only RFC5549 is capable to transport IPv6 in the underlay.<br> |
     | [<samp>underlay_ipv6</samp>](## "underlay_ipv6") | Boolean |  | False |  | This feature allows IPv6 underlay routing protocol with RFC5549 addresses to be used along with IPv4 advertisements as VXLAN tunnel endpoints.<br>Requires "underlay_rfc5549: true" and "loopback_ipv6_pool" under the "Fabric Topology"<br> |
     | [<samp>underlay_rfc5549</samp>](## "underlay_rfc5549") | Boolean |  | False |  | Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered<br>Requires "underlay_routing_protocol: ebgp"<br> |
 
 === "YAML"
 
     ```yaml
+    overlay_mlag_rfc5549: <bool>
+    overlay_routing_protocol_address_family: <str>
     underlay_ipv6: <bool>
     underlay_rfc5549: <bool>
     ```
@@ -125,17 +129,39 @@ search:
     underlay_ospf_process_id: <int>
     ```
 
+## Overlay General Settings
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>overlay_loopback_description</samp>](## "overlay_loopback_description") | String |  |  |  | Customize the description on overlay interface Loopback0. |
+    | [<samp>vtep_vvtep_ip</samp>](## "vtep_vvtep_ip") | String |  |  |  | IP Address used as Virtual VTEP. Will be configured as secondary IP on Loopback1.<br>This is only needed for centralized routing designs.<br> |
+
+=== "YAML"
+
+    ```yaml
+    overlay_loopback_description: <str>
+    vtep_vvtep_ip: <str>
+    ```
+
 ## Routing Protocol Selection
 
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>overlay_her_flood_list_per_vni</samp>](## "overlay_her_flood_list_per_vni") | Boolean |  | False |  | When using Head-End Replication, configure flood-lists per VNI.<br>By default HER will be configured with a common flood-list containing all VTEPs.<br>This behavior can be changed to per-VNI flood-lists by setting `overlay_her_flood_list_per_vni: true`.<br>This will make `eos_designs` consider configured VLANs per VTEP, and only include the relevant VTEPs to each VNI's flood-list.<br> |
+    | [<samp>overlay_her_flood_list_scope</samp>](## "overlay_her_flood_list_scope") | String |  | fabric | Valid Values:<br>- fabric<br>- dc | When using Head-End Replication, set the scope of flood-lists to Fabric or DC.<br>By default all VTEPs in the Fabric (part of the inventory group referenced by "fabric_name") are added to the flood-lists.<br>This can be changed to all VTEPs in the DC (part of the inventory group referenced by "dc_name").<br>This is useful if Border Leaf switches are dividing the VXLAN overlay into separate domains.<br> |
+    | [<samp>overlay_routing_protocol</samp>](## "overlay_routing_protocol") | String |  | ebgp | Value is converted to lower case<br>Valid Values:<br>- ebgp<br>- ibgp<br>- cvx<br>- her<br>- none | - The following overlay routing protocols are supported:<br>  - eBGP: Configures fabric with eBGP, default for l3ls-evpn design.<br>  - iBGP: Configured fabric with iBGP, only supported with OSPF or ISIS variants in underlay, default for mpls design.<br>  - CVX: Configures fabric to leverage CloudVision eXchange as the overlay controller.<br>  - HER: Configures fabric with Head-End Replication, configures static VXLAN flood-lists instead of using a dynamic overlay protocol.<br>  - none: No overlay configuration will be generated, default for l2ls design.<br> |
     | [<samp>underlay_routing_protocol</samp>](## "underlay_routing_protocol") | String |  |  | Value is converted to lower case<br>Valid Values:<br>- ebgp<br>- ospf<br>- isis<br>- isis-sr<br>- isis-ldp<br>- isis-sr-ldp<br>- ospf-ldp | - The following underlay routing protocols are supported:<br>  - EBGP (default for l3ls-evpn)<br>  - OSPF.<br>  - ISIS.<br>  - ISIS-SR*.<br>  - ISIS-LDP*.<br>  - ISIS-SR-LDP*.<br>  - OSPF-LDP*.<br>- The variables should be applied to all devices in the fabric.<br>*Only supported with core_interfaces data model.<br> |
 
 === "YAML"
 
     ```yaml
+    overlay_her_flood_list_per_vni: <bool>
+    overlay_her_flood_list_scope: <str>
+    overlay_routing_protocol: <str>
     underlay_routing_protocol: <str>
     ```
 

@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  overlay_mlag_rfc5549:
+    documentation_options:
+      filename: Fabric Variables
+      table: IPv6 Underlay Settings
+    description: |
+      IPv6 Unnumbered for MLAG iBGP connections.
+      Requires "underlay_rfc5549: true".
+    type: bool
+    default: false

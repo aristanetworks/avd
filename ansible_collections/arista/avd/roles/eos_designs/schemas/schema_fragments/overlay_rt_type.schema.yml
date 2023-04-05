@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  overlay_rt_type:
+    documentation_options:
+      filename: Network Services
+      table: Global Network Services Settings
+    type: dict
+    description: |
+      Specify RT type.
+      Route Target (RT) for L2 / L3 services is set to <vni>:<vni> per default.
+      By configuring overlay_rt_type the Administrator subfield (first part of RT) can be set to other values.
+      Notes:
+      RT is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
+      For 32-bit ASN/number the VNI can only be a 16-bit number.
+      For 16-bit ASN/number the VNI can be a 32-bit number.
+    keys:
+      admin_subfield:
+        type: str
+        convert_types:
+          - int
+        description: |
+          "bgp_as" or interger between <0-65535> or integer between <0-4294967295>.
+        default: "mac_vrf_id"
