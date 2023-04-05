@@ -90,10 +90,17 @@ class RouterBgpMixin(UtilsMixin):
                 if self._filter_peer_as is True:
                     neighbor["route_map_out"] = f"RM-BGP-AS{link['peer_bgp_as']}-OUT"
 
-                if (get_item(neighbors, "ip_address", link["peer_ip_address"])) is None:
+                if (found_neighbor := get_item(neighbors, "ip_address", link["peer_ip_address"])) is None:
                     neighbors.append(neighbor)
                 else:
-                    raise AristaAvdError(f"Duplicate ip_address {link['peer_ip_address']} found while generating neighbor configurations")
+                    if found_neighbor == neighbor:
+                        # Same neighbor information twice in the input data. So not duplicate IPs.
+                        continue
+
+                    raise AristaAvdError(
+                        f"Duplicate ip_address {link['peer_ip_address']} found while generating BGP neighbor configuration for {link['peer']},"
+                        f" {link['peer_interface']}. Duplicate IP of {found_neighbor['description']}"
+                    )
 
             if neighbors:
                 router_bgp["neighbors"] = neighbors
