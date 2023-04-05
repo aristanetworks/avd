@@ -28,7 +28,7 @@
       "title": "BFD Multihop"
     },
     "bgp_as": {
-      "description": "AS number to use to configure overlay when \"overlay_routing_protocol\" == IBGP",
+      "description": "AS number to use to configure overlay when \"overlay_routing_protocol\" == ibgp",
       "type": "string",
       "title": "BGP As"
     },

@@ -7,7 +7,7 @@ keys:
     documentation_options:
       filename: Fabric Variables
       table: BGP Settings
-    description: AS number to use to configure overlay when "overlay_routing_protocol" == IBGP
+    description: AS number to use to configure overlay when "overlay_routing_protocol" == ibgp
     type: str
     convert_types:
       - int
