@@ -2,8 +2,9 @@ from __future__ import annotations
 
 from functools import cached_property
 
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 from ansible_collections.arista.avd.roles.eos_designs.python_modules.underlay.utils import UtilsMixin
 
 
@@ -74,7 +75,6 @@ class RouterBgpMixin(UtilsMixin):
         # Neighbors
         else:
             neighbors = []
-            ip_addresses = []
             for link in self._underlay_links:
                 if link["type"] != "underlay_p2p":
                     continue
@@ -90,13 +90,10 @@ class RouterBgpMixin(UtilsMixin):
                 if self._filter_peer_as is True:
                     neighbor["route_map_out"] = f"RM-BGP-AS{link['peer_bgp_as']}-OUT"
 
-                if link["peer_ip_address"] in ip_addresses:
-                    for idx, neighbor in enumerate(neighbors):
-                        if neighbor["ip_address"] == link["peer_ip_address"]:
-                            neighbors[idx] = neighbor
-                else:
-                    ip_addresses.append(link["peer_ip_address"])
+                if (get_item(neighbors, "ip_address", link["peer_ip_address"])) is None:
                     neighbors.append(neighbor)
+                else:
+                    raise AristaAvdError(f"Duplicate ip_address {link['peer_ip_address']} found while generating neighbor configurations")
 
             if neighbors:
                 router_bgp["neighbors"] = neighbors
