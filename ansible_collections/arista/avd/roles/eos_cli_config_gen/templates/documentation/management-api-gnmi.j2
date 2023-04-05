@@ -38,7 +38,7 @@
 {%     endif %}
 {%     if management_api_gnmi.transport is arista.avd.defined %}
 
-| Transport | Destination | Port | gNMI SSL Profile | Tunnel SSL Profile | VRF | Local Interface | Local Port | Target ID |
+| Transport | Destination | Destination Port | gNMI SSL Profile | Tunnel SSL Profile | VRF | Local Interface | Local Port | Target ID |
 | --------- | ----------- | ---- | ---------------- | ------------------ | --- | --------------- | ---------- | --------- |
 {%         if management_api_gnmi.transport.grpc_tunnels is arista.avd.defined %}
 {%             for transport in management_api_gnmi.transport.grpc_tunnels %}
