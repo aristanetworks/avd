@@ -674,3 +674,10 @@ ethernet_interfaces:
         class: 4
         fixed: false
       negotiation_lldp: false
+
+  Ethernet58:
+    description: interface_with_poe_commands_and_limit_in_class
+    mode: "access"
+    vlans: 20
+    poe:
+      disabled: true

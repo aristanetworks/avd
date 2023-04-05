@@ -16,6 +16,8 @@
   - [PIM Sparse Mode](#pim-sparse-mode)
 - [802.1X Port Security](#8021x-port-security)
   - [802.1X Summary](#8021x-summary)
+- [Power Over Ethernet (PoE)](#power-over-ethernet-poe)
+  - [PoE Summary](#poe-summary)
 - [Quality Of Service](#quality-of-service)
 
 ## Management
@@ -120,6 +122,7 @@ sFlow is disabled.
 | Ethernet55 |  DHCPv6 Relay Testing | access | - | - | - | - |
 | Ethernet56 |  interface_with_poe_commands_and_limit_in_watts | access | 20 | - | - | - |
 | Ethernet57 |  interface_with_poe_commands_and_limit_in_class | access | 20 | - | - | - |
+| Ethernet58 |  interface_with_poe_commands_and_limit_in_class | access | 20 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -733,6 +736,13 @@ interface Ethernet57
    poe disabled
    poe limit 30.00 watts
    poe negotiation lldp disabled
+!
+interface Ethernet58
+   description interface_with_poe_commands_and_limit_in_class
+   switchport access vlan 20
+   switchport mode access
+   switchport
+   poe disabled
 ```
 
 ## BFD
@@ -787,6 +797,17 @@ interface Ethernet57
 | Ethernet43 | - | - | - | - | - | - | - | - |
 | Ethernet44 | - | - | - | - | - | - | - | - |
 | Ethernet45 | authenticator | auto | - | True | allow vlan 800 | multi-host | True | True |
+## Power Over Ethernet (PoE)
+
+### PoE Summary
+
+#### PoE Interfaces
+
+| Interface | PoE Enabled | Priority | Limit | Reboot Action | Link Down Action | Shutdown Action | LLDP Negotiation | Legacy Detection |
+| --------- | --------- | --------- | ----------- | ----------- | ----------- | ----------- | --------- | --------- |
+| Ethernet56 | True | critical | 45.00 watts (fixed) | maintain | maintain | power-off | True | True |
+| Ethernet57 | False | low | 30.00 watts | power-off | power-off (delayed 10 seconds) | maintain | False | False |
+| Ethernet58 | False | - | - | power-off | - | maintain | True | False |
 
 ## Quality Of Service
 
