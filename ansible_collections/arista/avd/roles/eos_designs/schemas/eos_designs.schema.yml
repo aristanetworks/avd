@@ -267,7 +267,7 @@ keys:
       table: Multicast Settings
     description: 'Disable IGMP snooping at fabric level.
 
-      If set, it overrides per vlan settings
+      If set, it overrides per vlan settings.
 
       '
     type: bool
@@ -399,7 +399,7 @@ keys:
       If trunk groups are not assigned to a trunk, no vlans will be enabled on that
       trunk.
 
-      See "Details on enable_trunk_groups" below before enabling this feature
+      See "Details on enable_trunk_groups" below before enabling this feature.
 
       '
     default: false
@@ -569,7 +569,7 @@ keys:
       filename: Fabric Variables
       table: VLAN Settings
     type: dict
-    description: Internal vlan allocation order and range
+    description: Internal vlan allocation order and range.
     required: true
     keys:
       allocation:
@@ -585,14 +585,18 @@ keys:
             type: int
             convert_types:
             - str
-            default: 1006
             description: VLAN ID
+            default: 1006
+            min: 1
+            max: 4094
           ending:
             type: int
             convert_types:
             - str
             description: VLAN ID
             default: 1199
+            min: 1
+            max: 4094
   isis_advertise_passive_only:
     documentation_options:
       filename: Fabric Variables
@@ -712,7 +716,7 @@ keys:
         convert_types:
         - str
         min: 1
-        max: 4000
+        max: 4093
         default: 3000
   node_type:
     documentation_options:
@@ -2686,8 +2690,10 @@ keys:
 
       - To overcome this and shutdown interfaces towards undeployed peers, the variable
       `shutdown_interfaces_towards_undeployed_peers` can be used, satisfying the `eos_validate_state`
-      role interface tests. Again, this is only an issue if `eos_config_deploy_cvp`
-      is used and the devices are not present in the network.'
+      role interface tests.
+
+      - Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices
+      are not present in the network.'
   terminattr_disable_aaa:
     documentation_options:
       filename: Management Settings

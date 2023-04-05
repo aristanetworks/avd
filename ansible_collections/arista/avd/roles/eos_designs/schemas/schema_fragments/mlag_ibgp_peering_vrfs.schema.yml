@@ -22,5 +22,5 @@ keys:
         convert_types:
           - str
         min: 1
-        max: 4000
+        max: 4093
         default: 3000

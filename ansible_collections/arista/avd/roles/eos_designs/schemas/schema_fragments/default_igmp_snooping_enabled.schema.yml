@@ -9,6 +9,6 @@ keys:
       table: Multicast Settings
     description: |
       Disable IGMP snooping at fabric level.
-      If set, it overrides per vlan settings
+      If set, it overrides per vlan settings.
     type: bool
     default: true
