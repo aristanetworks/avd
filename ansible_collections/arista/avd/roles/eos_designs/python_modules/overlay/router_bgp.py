@@ -50,7 +50,7 @@ class RouterBgpMixin(UtilsMixin):
             raise AristaAvdError("_generate_base_peer_group should be called with pg_type in ['mpls', 'evpn']")
 
         peer_group = {
-            "name": peer_group_name,
+            "name": get(self._hostvars, f"switch.bgp_peer_groups.{pg_name}.name"),
             "type": pg_type,
             "update_source": "Loopback0",
             "bfd": True,
