@@ -110,8 +110,12 @@ router_bgp:
     peer_group: UNDERLAY-PEERS
     remote_as: '65111'
     description: DC1_UNDEPLOYED_LEAF1B_Ethernet49/1
-  - ip_address: 192.168.255.14
-    peer_group: EVPN-OVERLAY-PEERS
+    ip_address: 172.31.255.161
+  - peer_group: UNDERLAY-PEERS
+    remote_as: '65161'
+    description: MLAG-OSPF-L3LEAF1B_Ethernet1
+    ip_address: 10.10.101.9
+  - peer_group: EVPN-OVERLAY-PEERS
     description: DC1-BL1A
     remote_as: '65104'
   - ip_address: 192.168.255.15
@@ -315,14 +319,14 @@ ethernet_interfaces:
   type: routed
   ip_address: 172.31.254.128/31
 - name: Ethernet18
-  peer: MLAG-OSPF-L3LEAF1B
+  peer: MLAG-OSPF-L3LEAF1A
   peer_interface: Ethernet1
   peer_type: l3leaf
-  description: P2P_LINK_TO_MLAG-OSPF-L3LEAF1B_Ethernet1
+  description: P2P_LINK_TO_MLAG-OSPF-L3LEAF1A_Ethernet1
   shutdown: false
   mtu: 1500
   type: routed
-  ip_address: 10.10.101.8/31
+  ip_address: 10.10.101.6/31
 - name: Ethernet19
   peer: MH-LEAF1A
   peer_interface: Ethernet1
@@ -430,6 +434,15 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.160/31
+- name: Ethernet220
+  peer: MLAG-OSPF-L3LEAF1B
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  description: P2P_LINK_TO_MLAG-OSPF-L3LEAF1B_Ethernet1
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.10.101.8/31
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

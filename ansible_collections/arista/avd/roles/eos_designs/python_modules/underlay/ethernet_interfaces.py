@@ -5,6 +5,9 @@ from functools import cached_property
 from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_item
+
 from .utils import UtilsMixin
 
 
@@ -20,7 +23,7 @@ class EthernetInterfacesMixin(UtilsMixin):
         Return structured config for ethernet_interfaces
         """
         ethernet_interfaces = []
-        interface_names = []
+
         for link in self._underlay_links:
             # common values
             ethernet_interface = {
@@ -119,15 +122,21 @@ class EthernetInterfacesMixin(UtilsMixin):
             # Remove None values
             ethernet_interface = {key: value for key, value in ethernet_interface.items() if value is not None}
 
-            if link["interface"] in interface_names:
-                for idx, eth_int in enumerate(ethernet_interfaces):
-                    if eth_int["name"] == link["interface"]:
-                        ethernet_interfaces[idx] = ethernet_interface
+            if (found_eth_interface := get_item(ethernet_interfaces, "name", ethernet_interface["name"])) is None:
+                    ethernet_interfaces.append(ethernet_interface)
             else:
-                interface_names.append(link["interface"])
-                ethernet_interfaces.append(ethernet_interface)
+                if found_eth_interface == ethernet_interface:
+                    # Same ethernet_interface information twice in the input data. So not duplicate interface name.
+                    continue
+
+                raise AristaAvdError(
+                    f"Duplicate interface name {ethernet_interface['name']} found while generating ethernet_interfaces for underlay"
+                    f" peer: {ethernet_interface['peer']}, peer_interface: {ethernet_interface['peer_interface']}. Duplicate interface name of description: {found_eth_interface['description']}"
+                )
 
         if ethernet_interfaces:
             return ethernet_interfaces
 
         return None
+
+
