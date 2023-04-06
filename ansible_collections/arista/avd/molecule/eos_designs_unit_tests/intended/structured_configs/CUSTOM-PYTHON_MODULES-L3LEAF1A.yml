@@ -186,7 +186,8 @@ ethernet_interfaces:
     id: 3
     mode: active
   name: Ethernet4
-- peer: CUSTOM-PYTHON_MODULES-SPINE1
+- name: Ethernet1
+  peer: CUSTOM-PYTHON_MODULES-SPINE1
   peer_interface: Ethernet1
   peer_type: spine
   description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON_MODULES-SPINE1_Ethernet1
@@ -194,7 +195,6 @@ ethernet_interfaces:
   mtu: 9000
   type: routed
   ip_address: 172.31.255.21/31
-  name: Ethernet1
 mlag_configuration:
   domain_id: CUSTOM_PYTHON_MODULES_L3LEAF1
   local_interface: Vlan4094

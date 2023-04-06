@@ -30,7 +30,6 @@ class EthernetInterfacesMixin(UtilsMixin):
         # Using temp variables to keep the order of interfaces from Jinja
         ethernet_interfaces = []
         subif_parent_interface_names = set()
-        interface_names = []
 
         if self._network_services_l3:
             for tenant in self._filtered_tenants:
@@ -137,7 +136,6 @@ class EthernetInterfacesMixin(UtilsMixin):
 
                             if (found_eth_interface := get_item(ethernet_interfaces, "name", interface["name"])) is None:
                                 ethernet_interfaces.append(interface)
-                                interface_names.append(interface["name"])
                             else:
                                 if found_eth_interface == interface:
                                     # Same ethernet_interface information twice in the input data. So not duplicate interface name.
@@ -178,7 +176,6 @@ class EthernetInterfacesMixin(UtilsMixin):
 
                                 if (found_eth_interface := get_item(ethernet_interfaces, "name", ethernet_interface["name"])) is None:
                                     ethernet_interfaces.append(ethernet_interface)
-                                    interface_names.append(ethernet_interface["name"])
                                 else:
                                     if found_eth_interface == ethernet_interface:
                                         # Same ethernet_interface information twice in the input data. So not duplicate interface name.
@@ -216,7 +213,6 @@ class EthernetInterfacesMixin(UtilsMixin):
 
                                 if (found_eth_interface := get_item(ethernet_interfaces, "name", ethernet_interface["name"])) is None:
                                     ethernet_interfaces.append(ethernet_interface)
-                                    interface_names.append(ethernet_interface["name"])
                                 else:
                                     if found_eth_interface == ethernet_interface:
                                         # Same ethernet_interface information twice in the input data. So not duplicate interface name.
@@ -240,7 +236,6 @@ class EthernetInterfacesMixin(UtilsMixin):
 
                                 if (found_eth_interface := get_item(ethernet_interfaces, "name", interface["name"])) is None:
                                     ethernet_interfaces.append(interface)
-                                    interface_names.append(interface["name"])
                                 else:
                                     if found_eth_interface == interface:
                                         # Same ethernet_interface information twice in the input data. So not duplicate interface name.
@@ -250,7 +245,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                                         f"Duplicate interface_name {interface['name']} found while generating ethernet_interfaces for network_services subinterface"
                                     )
 
-        subif_parent_interface_names = subif_parent_interface_names.difference(interface_names)
+        subif_parent_interface_names = subif_parent_interface_names.difference([ eth_int['name'] for eth_int in ethernet_interfaces ])
         if subif_parent_interface_names:
             for interface_name in natural_sort(subif_parent_interface_names):
                 ethernet_interfaces.append(
