@@ -153,11 +153,11 @@ Search list of DNS domains
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gnmi_ssl_profile</samp>](## "management_api_gnmi.transport.grpc_tunnels.[].gnmi_ssl_profile") | String |  |  |  | gNMI SSL profile name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "management_api_gnmi.transport.grpc_tunnels.[].vrf") | String |  |  |  | VRF name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "management_api_gnmi.transport.grpc_tunnels.[].destination") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address</samp>](## "management_api_gnmi.transport.grpc_tunnels.[].destination.address") | String |  |  |  | IP address or hostname |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "management_api_gnmi.transport.grpc_tunnels.[].destination.port") | Integer |  |  | Min: 1<br>Max: 65535 | TCP Port |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address</samp>](## "management_api_gnmi.transport.grpc_tunnels.[].destination.address") | String | Required |  |  | IP address or hostname |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "management_api_gnmi.transport.grpc_tunnels.[].destination.port") | Integer | Required |  | Min: 1<br>Max: 65535 | TCP Port |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "management_api_gnmi.transport.grpc_tunnels.[].local_interface") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "management_api_gnmi.transport.grpc_tunnels.[].local_interface.name") | String |  |  |  | Interface name |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "management_api_gnmi.transport.grpc_tunnels.[].local_interface.port") | Integer |  |  | Min: 1<br>Max: 65535 | TCP Port |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "management_api_gnmi.transport.grpc_tunnels.[].local_interface.name") | String | Required |  |  | Interface name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "management_api_gnmi.transport.grpc_tunnels.[].local_interface.port") | Integer | Required |  | Min: 1<br>Max: 65535 | TCP Port |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;target</samp>](## "management_api_gnmi.transport.grpc_tunnels.[].target") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use_serial_number</samp>](## "management_api_gnmi.transport.grpc_tunnels.[].target.use_serial_number") | Boolean |  |  |  | Use serial number as the Target ID |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;target_id</samp>](## "management_api_gnmi.transport.grpc_tunnels.[].target.target_id") | String |  |  |  | Target IDs as a string. More than one Target ID can be specified.<br>Examples:<br>- "id1 id2 id3"<br>- "id1"<br> |
