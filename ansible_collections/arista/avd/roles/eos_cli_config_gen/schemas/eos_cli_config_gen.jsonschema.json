@@ -7813,6 +7813,7 @@
       "properties": {
         "reboot": {
           "type": "object",
+          "description": "Set the global level PoE power behavior for PoE ports when the system is rebooted",
           "properties": {
             "action": {
               "type": "string",
@@ -7820,6 +7821,7 @@
                 "power-off",
                 "maintain"
               ],
+              "description": "PoE action for interface",
               "title": "Action"
             }
           },
@@ -7828,6 +7830,7 @@
         },
         "interface_shutdown": {
           "type": "object",
+          "description": "Set the global level PoE power behavior for PoE ports when ports are admin down",
           "properties": {
             "action": {
               "type": "string",
@@ -7835,6 +7838,7 @@
                 "power-off",
                 "maintain"
               ],
+              "description": "PoE action for interface",
               "title": "Action"
             }
           },

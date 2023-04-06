@@ -5124,20 +5124,26 @@ keys:
     keys:
       reboot:
         type: dict
+        description: Set the global level PoE power behavior for PoE ports when the
+          system is rebooted
         keys:
           action:
             type: str
             valid_values:
             - power-off
             - maintain
+            description: PoE action for interface
       interface_shutdown:
         type: dict
+        description: Set the global level PoE power behavior for PoE ports when ports
+          are admin down
         keys:
           action:
             type: str
             valid_values:
             - power-off
             - maintain
+            description: PoE action for interface
   policy_maps:
     documentation_options:
       filename: data_model/Quality of Service
