@@ -5,7 +5,7 @@ from functools import cached_property
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 
 from .utils import UtilsMixin
 
@@ -194,14 +194,13 @@ class RouterBgpMixin(UtilsMixin):
 
             # partly duplicate with ebgp
             if self._overlay_vtep is True:
-                for peer_group in peer_groups:
-                    if peer_group["name"] == overlay_peer_group_name:
-                        peer_group.update(
-                            {
-                                "route_map_in": "RM-EVPN-SOO-IN",
-                                "route_map_out": "RM-EVPN-SOO-OUT",
-                            }
-                        )
+                if (peer_group := get_item(peer_groups, "name", overlay_peer_group_name)) is not None:
+                    peer_group.update(
+                        {
+                            "route_map_in": "RM-EVPN-SOO-IN",
+                            "route_map_out": "RM-EVPN-SOO-OUT",
+                        }
+                    )
 
             if self._is_mpls_server is True:
                 peer_groups.append({"name": self._peer_group_rr_overlay_peers, "activate": True})
@@ -240,9 +239,9 @@ class RouterBgpMixin(UtilsMixin):
         address_family_rtc = {}
 
         peer_groups = []
-        evpn_overlay_peers = {}
+        evpn_overlay_peers = {"name": self._peer_group_evpn_overlay_peers}
         if self._overlay_evpn_vxlan is True:
-            evpn_overlay_peers = {"name": self._peer_group_evpn_overlay_peers, "activate": True}
+            evpn_overlay_peers["activate"] = True
 
         if self._overlay_routing_protocol == "ebgp":
             if self._evpn_gateway_vxlan_l2 is True or self._evpn_gateway_vxlan_l3 is True:
@@ -255,7 +254,7 @@ class RouterBgpMixin(UtilsMixin):
             # Transposing the Jinja2 logic which is that if the selfevpn_overlay_core peer group is not
             # configured thenthe default_route_target is applied in the evpn_overlay_peers peer group.
             elif self._evpn_role == "server":
-                evpn_overlay_peers.update({"name": self._peer_group_evpn_overlay_peers, "default_route_target": {"only": True}})
+                evpn_overlay_peers["default_route_target"] = {"only": True}
 
         if self._overlay_routing_protocol == "ibgp":
             if self._overlay_mpls is True:
@@ -266,10 +265,9 @@ class RouterBgpMixin(UtilsMixin):
 
             if self._overlay_evpn_vxlan is True:
                 if self._evpn_role == "server" or self._mpls_overlay_role == "server":
-                    evpn_overlay_peers.update({"name": self._peer_group_evpn_overlay_peers, "default_route_target": {"only": True}})
+                    evpn_overlay_peers["default_route_target"] = {"only": True}
 
         peer_groups.append(evpn_overlay_peers)
-
         address_family_rtc["peer_groups"] = peer_groups
 
         return address_family_rtc

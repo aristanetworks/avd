@@ -109,7 +109,7 @@ class RouterBgpMixin(UtilsMixin):
         return strip_empties_from_dict(router_bgp, strip_values_tuple=(None, ""))
 
     @cached_property
-    def _router_bgp_redistribute_routes(self) -> list | None:
+    def _router_bgp_redistribute_routes(self) -> list:
         """
         Return structured config for router_bgp.redistribute_routes
         """
