@@ -5,7 +5,7 @@ from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 
 from .utils import UtilsMixin
 
@@ -135,13 +135,18 @@ class EthernetInterfacesMixin(UtilsMixin):
                             # Strip None values from vlan before adding to list
                             interface = {key: value for key, value in interface.items() if value is not None}
 
-                            if interface_name in interface_names:
-                                for idx, eth_int in enumerate(ethernet_interfaces):
-                                    if eth_int["name"] == interface_name:
-                                        ethernet_interfaces[idx] = interface
-                            else:
+                            if (found_eth_interface := get_item(ethernet_interfaces, "name", interface["name"])) is None:
                                 ethernet_interfaces.append(interface)
-                                interface_names.append(interface_name)
+                                interface_names.append(interface["name"])
+                            else:
+                                if found_eth_interface == interface:
+                                    # Same ethernet_interface information twice in the input data. So not duplicate interface name.
+                                    continue
+
+                                raise AristaAvdError(
+                                    f"Duplicate interface_name {interface['name']} found while generating ethernet_interfaces for network_services vrf:"
+                                    f" {interface['vrf']}. Duplicate interface_name of description: {found_eth_interface['description']}"
+                                )
 
         if self._network_services_l1:
             for tenant in self._filtered_tenants:
@@ -170,13 +175,20 @@ class EthernetInterfacesMixin(UtilsMixin):
                                         "mode": port_channel_mode,
                                     },
                                 }
-                                if interface_name in interface_names:
-                                    for idx, eth_int in enumerate(ethernet_interfaces):
-                                        if eth_int["name"] == interface_name:
-                                            ethernet_interfaces[idx].update(ethernet_interface)
-                                else:
+
+                                if (found_eth_interface := get_item(ethernet_interfaces, "name", ethernet_interface["name"])) is None:
                                     ethernet_interfaces.append(ethernet_interface)
-                                    interface_names.append(interface_name)
+                                    interface_names.append(ethernet_interface["name"])
+                                else:
+                                    if found_eth_interface == ethernet_interface:
+                                        # Same ethernet_interface information twice in the input data. So not duplicate interface name.
+                                        continue
+
+                                    raise AristaAvdError(
+                                        f"Duplicate interface_name {ethernet_interface['name']} found while generating ethernet_interfaces for network_services point_to_point_services "
+                                        f" channel_group: (id: {channel_group_id}, mode: {port_channel_mode}). Duplicate interface_name of channel_group:"
+                                        f" (id: {found_eth_interface['channel_group']['id']}, mode: {found_eth_interface['channel_group']['mode']})"
+                                    )
 
                                 continue
 
@@ -201,13 +213,18 @@ class EthernetInterfacesMixin(UtilsMixin):
                                         "peer_type": "l3_interface",
                                         "shutdown": False,
                                     }
-                                    if subif_name in interface_names:
-                                        for idx, eth_int in enumerate(ethernet_interfaces):
-                                            if eth_int["name"] == subif_name:
-                                                ethernet_interfaces[idx].update(ethernet_interface)
-                                    else:
-                                        ethernet_interfaces.append(ethernet_interface)
-                                        interface_names.append(subif_name)
+
+                                if (found_eth_interface := get_item(ethernet_interfaces, "name", ethernet_interface["name"])) is None:
+                                    ethernet_interfaces.append(ethernet_interface)
+                                    interface_names.append(ethernet_interface["name"])
+                                else:
+                                    if found_eth_interface == ethernet_interface:
+                                        # Same ethernet_interface information twice in the input data. So not duplicate interface name.
+                                        continue
+
+                                    raise AristaAvdError(
+                                        f"Duplicate interface_name {ethernet_interface['name']} found while generating ethernet_interfaces for network_services subinterface"
+                                    )
                             else:
                                 interface = {
                                     "name": interface_name,
@@ -220,13 +237,18 @@ class EthernetInterfacesMixin(UtilsMixin):
                                         "transmit": False,
                                         "receive": False,
                                     }
-                                if interface_name in interface_names:
-                                    for idx, eth_int in enumerate(ethernet_interfaces):
-                                        if eth_int["name"] == interface_name:
-                                            ethernet_interfaces[idx] = interface
-                                else:
+
+                                if (found_eth_interface := get_item(ethernet_interfaces, "name", interface["name"])) is None:
                                     ethernet_interfaces.append(interface)
-                                    interface_names.append(interface_name)
+                                    interface_names.append(interface["name"])
+                                else:
+                                    if found_eth_interface == interface:
+                                        # Same ethernet_interface information twice in the input data. So not duplicate interface name.
+                                        continue
+
+                                    raise AristaAvdError(
+                                        f"Duplicate interface_name {interface['name']} found while generating ethernet_interfaces for network_services subinterface"
+                                    )
 
         subif_parent_interface_names = subif_parent_interface_names.difference(interface_names)
         if subif_parent_interface_names:
