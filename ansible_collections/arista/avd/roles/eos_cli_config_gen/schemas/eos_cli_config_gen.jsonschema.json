@@ -7808,6 +7808,43 @@
       },
       "title": "Platform"
     },
+    "poe": {
+      "type": "object",
+      "properties": {
+        "reboot": {
+          "type": "object",
+          "properties": {
+            "action": {
+              "type": "string",
+              "enum": [
+                "power-off",
+                "maintain"
+              ],
+              "title": "Action"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Reboot"
+        },
+        "interface_shutdown": {
+          "type": "object",
+          "properties": {
+            "action": {
+              "type": "string",
+              "enum": [
+                "power-off",
+                "maintain"
+              ],
+              "title": "Action"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Interface Shutdown"
+        }
+      },
+      "additionalProperties": false,
+      "title": "Poe"
+    },
     "policy_maps": {
       "type": "object",
       "properties": {

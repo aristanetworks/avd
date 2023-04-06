@@ -18,8 +18,8 @@
 | Reboot Action | Shutdown Action | LLDP Negotiation |
 | ------------------- | -------------------- | ----------------------|
 {# Get global poe settings for defaults #}
-{%         set poe_global_defaults.reboot_action = poe.reboot_action | arista.avd.default(poe_global_defaults.reboot_action) %}
-{%         set poe_global_defaults.interface_shutdown_action = poe.interface_shutdown_action | arista.avd.default(poe_global_defaults.interface_shutdown_action) %}
+{%         set poe_global_defaults.reboot_action = poe.reboot.action | arista.avd.default(poe_global_defaults.reboot_action) %}
+{%         set poe_global_defaults.interface_shutdown_action = poe.interface_shutdown.action | arista.avd.default(poe_global_defaults.interface_shutdown_action) %}
 {#         get lldp transmit power via mdi #}
 {%         if lldp.tlvs is arista.avd.defined %}
 {%             for tlv in lldp.tlvs if tlv.name == 'power-via-mdi' %}

@@ -1,0 +1,18 @@
+{# eos - poe #}
+{% set print_poe = false %}
+{% if poe.reboot.action is arista.avd.defined('maintain') %}
+{%     set print_poe = true %}
+{% endif %}
+{% if poe.interface_shutdown.action is arista.avd.defined('power-off') %}
+{%     set print_poe = true %}
+{% endif %}
+{% if print_poe %}
+!
+poe
+{%     if poe.reboot.action is arista.avd.defined('maintain') %}
+   reboot action {{ poe.reboot.action }}
+{%     endif %}
+{%     if poe.interface_shutdown.action is arista.avd.defined('power-off') %}
+   interface shutdown action {{ poe.interface_shutdown.action }}
+{%     endif %}
+{% endif %}

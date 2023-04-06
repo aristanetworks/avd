@@ -5117,6 +5117,27 @@ keys:
                 valid_values:
                 - ingress
                 - egress
+  poe:
+    documentation_options:
+      filename: data_model/POE
+    type: dict
+    keys:
+      reboot:
+        type: dict
+        keys:
+          action:
+            type: str
+            valid_values:
+            - power-off
+            - maintain
+      interface_shutdown:
+        type: dict
+        keys:
+          action:
+            type: str
+            valid_values:
+            - power-off
+            - maintain
   policy_maps:
     documentation_options:
       filename: data_model/Quality of Service

@@ -1,8 +1,10 @@
 ---
 ### PoE Global ###
 poe:
-  reboot_action: maintain
-  interface_shutdown_action: power-off
+  reboot:
+    action: maintain
+  interface_shutdown:
+    action: power-off
 
 lldp:
   tlvs:
