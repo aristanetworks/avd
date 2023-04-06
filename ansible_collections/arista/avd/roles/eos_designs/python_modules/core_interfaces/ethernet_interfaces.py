@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from .utils import UtilsMixin
-
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_item
+
+from .utils import UtilsMixin
 
 
 class EthernetInterfacesMixin(UtilsMixin):
@@ -38,8 +38,9 @@ class EthernetInterfacesMixin(UtilsMixin):
                         continue
 
                     raise AristaAvdError(
-                        f"Duplicate interface name {ethernet_interface['name']} found while generating ethernet_interface for core_interfaces"
-                        f" peer: {ethernet_interface['peer']}, peer_interface: {ethernet_interface['peer_interface']}. Duplicate interface name of description: {found_eth_interface['description']}"
+                        f"Duplicate interface name {ethernet_interface['name']} found while generating ethernet_interface for core_interfaces peer:"
+                        f" {ethernet_interface['peer']}, peer_interface: {ethernet_interface['peer_interface']}. Duplicate interface name of description:"
+                        f" {found_eth_interface['description']}"
                     )
 
             # Port-Channel members
@@ -58,10 +59,10 @@ class EthernetInterfacesMixin(UtilsMixin):
                         continue
 
                     raise AristaAvdError(
-                        f"Duplicate interface name {ethernet_interface['name']} found while generating ethernet_interfaces for core_interfaces"
-                        f" peer: {ethernet_interface['peer']}, peer_interface: {ethernet_interface['peer_interface']}. Duplicate interface name of description: {found_eth_interface['description']}"
+                        f"Duplicate interface name {ethernet_interface['name']} found while generating ethernet_interfaces for core_interfaces peer:"
+                        f" {ethernet_interface['peer']}, peer_interface: {ethernet_interface['peer_interface']}. Duplicate interface name of description:"
+                        f" {found_eth_interface['description']}"
                     )
-
 
         if ethernet_interfaces:
             return ethernet_interfaces
