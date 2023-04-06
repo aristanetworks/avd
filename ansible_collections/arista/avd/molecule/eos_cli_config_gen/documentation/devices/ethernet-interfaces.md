@@ -807,7 +807,7 @@ interface Ethernet58
 | --------- | --------- | --------- | ----------- | ----------- | ----------- | ----------- | --------- | --------- |
 | Ethernet56 | True | critical | 45.00 watts (fixed) | maintain | maintain | power-off | True | True |
 | Ethernet57 | False | low | 30.00 watts | power-off | power-off (delayed 10 seconds) | maintain | False | False |
-| Ethernet58 | False | - | - | power-off | - | maintain | True | False |
+| Ethernet58 | False | - | - | power-off | maintain | maintain | True | False |
 
 ## Quality Of Service
 

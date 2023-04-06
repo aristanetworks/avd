@@ -1,0 +1,12 @@
+---
+### PoE Global ###
+poe:
+  reboot_action: maintain
+  interface_shutdown_action: power-off
+
+lldp:
+  tlvs:
+    - name: power-via-mdi
+      transmit: false
+    - name: system-capabilities
+      transmit: true

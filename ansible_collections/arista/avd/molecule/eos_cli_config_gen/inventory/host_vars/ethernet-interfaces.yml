@@ -640,7 +640,7 @@ ethernet_interfaces:
 
   Ethernet56:
     description: interface_with_poe_commands_and_limit_in_watts
-    mode: "access"
+    mode: access
     vlans: 20
     poe:
       disabled: false
@@ -655,10 +655,11 @@ ethernet_interfaces:
         watts: 45
         fixed: true
       legacy_detect: true
+      negotiation_lldp: true
 
   Ethernet57:
     description: interface_with_poe_commands_and_limit_in_class
-    mode: "access"
+    mode: access
     vlans: 20
     poe:
       disabled: true
@@ -677,7 +678,7 @@ ethernet_interfaces:
 
   Ethernet58:
     description: interface_with_poe_commands_and_limit_in_class
-    mode: "access"
+    mode: access
     vlans: 20
     poe:
       disabled: true
