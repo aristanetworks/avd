@@ -9,7 +9,7 @@ from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_s
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, groupby
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item, groupby
 
 from .utils import UtilsMixin
 
@@ -50,7 +50,7 @@ class RouterBgpMixin(UtilsMixin):
         return router_bgp
 
     @cached_property
-    def _router_bgp_peer_groups(self) -> dict | None:
+    def _router_bgp_peer_groups(self) -> list | None:
         """
         Return the structured config for router_bgp.peer_groups
 
@@ -88,20 +88,21 @@ class RouterBgpMixin(UtilsMixin):
                 ]
             )
 
-        bgp_peer_groups = {}
+        bgp_peer_groups = []
         if peer_groups:
             for peer_group in peer_groups:
-                peer_group_name = peer_group.pop("name")
                 peer_group.pop("nodes", None)
-                bgp_peer_groups[peer_group_name] = peer_group
+                bgp_peer_groups.append(peer_group)
 
         # router bgp default vrf configuration for evpn
         if (self._vrf_default_ipv4_subnets or self._vrf_default_ipv4_static_routes["static_routes"]) and self._overlay_vtep and self._overlay_evpn:
-            peer_group_name = self._peer_group_ipv4_underlay_peers_name
-            bgp_peer_groups[peer_group_name] = {
-                "type": "ipv4",
-                "route_map_out": "RM-BGP-UNDERLAY-PEERS-OUT",
-            }
+            bgp_peer_groups.append(
+                {
+                    "name": self._peer_group_ipv4_underlay_peers_name,
+                    "type": "ipv4",
+                    "route_map_out": "RM-BGP-UNDERLAY-PEERS-OUT",
+                }
+            )
 
         if bgp_peer_groups:
             return bgp_peer_groups
@@ -109,7 +110,7 @@ class RouterBgpMixin(UtilsMixin):
         return None
 
     @cached_property
-    def _router_bgp_vrfs(self) -> dict | None:
+    def _router_bgp_vrfs(self) -> list | None:
         """
         Return structured config for router_bgp.vrfs
 
@@ -121,7 +122,8 @@ class RouterBgpMixin(UtilsMixin):
         if not self._network_services_l3:
             return None
 
-        vrfs = {}
+        vrfs = []
+
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
                 vrf_address_families = [af for af in vrf.get("address_families", ["evpn"]) if af in self._overlay_address_families]
@@ -134,17 +136,36 @@ class RouterBgpMixin(UtilsMixin):
                     raise AristaAvdMissingVariableError(f"'vrf_id' or 'vrf_vni' for VRF '{vrf_name}")
 
                 leaf_overlay_rt = f"{self._rt_admin_subfield or bgp_vrf_id}:{bgp_vrf_id}"
-                route_targets = {
-                    "import": {af: [leaf_overlay_rt] for af in vrf_address_families},
-                    "export": {af: [leaf_overlay_rt] for af in vrf_address_families},
-                }
+
+                route_targets = {"import": [], "export": []}
+
+                for af in vrf_address_families:
+                    if (target := get_item(route_targets["import"], "address_family", af)) is None:
+                        route_targets["import"].append({"address_family": af, "route_targets": [leaf_overlay_rt]})
+                    else:
+                        target["route_targets"].append(leaf_overlay_rt)
+
+                    if (target := get_item(route_targets["export"], "address_family", af)) is None:
+                        route_targets["export"].append({"address_family": af, "route_targets": [leaf_overlay_rt]})
+                    else:
+                        target["route_targets"].append(leaf_overlay_rt)
+
                 for rt in vrf["additional_route_targets"]:
-                    route_targets.setdefault(rt["type"], {}).setdefault(rt["address_family"], []).append(rt["route_target"])
+                    if (target := get_item(route_targets[rt["type"]], "address_family", rt["address_family"])) is None:
+                        route_targets[rt["type"]].append({"address_family": rt["address_family"], "route_targets": [rt["route_target"]]})
+                    else:
+                        target["route_targets"].append(rt["route_target"])
 
                 if vrf_name == "default" and self._overlay_evpn and self._vrf_default_ipv4_subnets:
                     # Special handling of vrf default.
-                    route_targets["export"].setdefault("evpn", []).append("route-map RM-EVPN-EXPORT-VRF-DEFAULT")
+
+                    if (target := get_item(route_targets["export"], "address_family", "evpn")) is None:
+                        route_targets["export"].append({"address_family": "evpn", "route_targets": ["route-map RM-EVPN-EXPORT-VRF-DEFAULT"]})
+                    else:
+                        target.setdefault("route_targets", []).append("route-map RM-EVPN-EXPORT-VRF-DEFAULT")
+
                     bgp_vrf = {
+                        "name": vrf_name,
                         "rd": f"{self._overlay_rd_type_admin_subfield}:{bgp_vrf_id}",
                         "route_targets": route_targets,
                         "eos_cli": get(vrf, "bgp.raw_eos_cli"),
@@ -152,14 +173,15 @@ class RouterBgpMixin(UtilsMixin):
                     }
                     # Strip None values from vlan before returning
                     bgp_vrf = {key: value for key, value in bgp_vrf.items() if value is not None}
-                    vrfs[vrf_name] = bgp_vrf
+                    vrfs.append(bgp_vrf)
                     continue
 
                 bgp_vrf = {
+                    "name": vrf_name,
                     "router_id": self._router_id,
                     "rd": f"{self._overlay_rd_type_admin_subfield}:{bgp_vrf_id}",
                     "route_targets": route_targets,
-                    "redistribute_routes": ["connected"],
+                    "redistribute_routes": [{"source_protocol": "connected"}],
                     "eos_cli": get(vrf, "bgp.raw_eos_cli"),
                     "struct_cfg": get(vrf, "bgp.structured_config"),
                     "evpn_multicast": get(vrf, "_evpn_l3_multicast_enabled"),
@@ -168,12 +190,14 @@ class RouterBgpMixin(UtilsMixin):
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is not None:
                     if self._underlay_rfc5549 and self._overlay_mlag_rfc5549:
                         interface_name = f"Vlan{vlan_id}"
-                        bgp_vrf.setdefault("neighbor_interfaces", {})[interface_name] = {
-                            "peer_group": self._peer_group_mlag_ipv4_underlay_peer_name,
-                            "remote_as": self._bgp_as,
-                            "description": self._mlag_peer,
-                        }
-
+                        bgp_vrf.setdefault("neighbor_interfaces", []).append(
+                            {
+                                "name": interface_name,
+                                "peer_group": self._peer_group_mlag_ipv4_underlay_peer_name,
+                                "remote_as": self._bgp_as,
+                                "description": self._mlag_peer,
+                            }
+                        )
                     else:
                         if (mlag_ibgp_peering_ipv4_pool := vrf.get("mlag_ibgp_peering_ipv4_pool")) is not None:
                             if self._mlag_role == "primary":
@@ -183,13 +207,19 @@ class RouterBgpMixin(UtilsMixin):
                         else:
                             ip_address = self._mlag_peer_ibgp_ip
 
-                        bgp_vrf.setdefault("neighbors", {})[ip_address] = {"peer_group": self._peer_group_mlag_ipv4_underlay_peer_name}
+                        bgp_vrf.setdefault("neighbors", []).append({"ip_address": ip_address, "peer_group": self._peer_group_mlag_ipv4_underlay_peer_name})
 
-                address_families = {}
+                address_families = []
                 for bgp_peer in vrf["bgp_peers"]:
                     peer_ip = bgp_peer.pop("ip_address")
                     address_family = f"ipv{ipaddress.ip_address(peer_ip).version}"
-                    address_families.setdefault(address_family, {}).setdefault("neighbors", {})[peer_ip] = {"activate": True}
+
+                    neighbor = {"ip_address": peer_ip, "activate": True}
+                    if (af := get_item(address_families, "address_family", address_family)) is None:
+                        address_families.append({"address_family": address_family, "neighbors": [neighbor]})
+                    else:
+                        af["neighbors"].append(neighbor)
+
                     if bgp_peer.get("set_ipv4_next_hop") is not None or bgp_peer.get("set_ipv6_next_hop") is not None:
                         route_map = f"RM-{vrf_name}-{peer_ip}-SET-NEXT-HOP-OUT"
                         bgp_peer["route_map_out"] = route_map
@@ -200,18 +230,18 @@ class RouterBgpMixin(UtilsMixin):
                         bgp_peer.pop("set_ipv6_next_hop", None)
 
                     bgp_peer.pop("nodes", None)
-                    bgp_vrf.setdefault("neighbors", {})[peer_ip] = bgp_peer
+                    bgp_vrf.setdefault("neighbors", []).append({"ip_address": peer_ip, **bgp_peer})
 
                 bgp_vrf_redistribute_static = vrf.get("redistribute_static")
                 if bgp_vrf_redistribute_static is True or (vrf["static_routes"] and bgp_vrf_redistribute_static is not False):
-                    bgp_vrf["redistribute_routes"].append("static")
+                    bgp_vrf["redistribute_routes"].append({"source_protocol": "static"})
 
                 if (
                     get(vrf, "ospf.enabled") is True
                     and vrf.get("redistribute_ospf") is not False
                     and self._hostname in get(vrf, "ospf.nodes", default=[self._hostname])
                 ):
-                    bgp_vrf["redistribute_routes"].append("ospf")
+                    bgp_vrf["redistribute_routes"].append({"source_protocol": "ospf"})
 
                 if address_families:
                     bgp_vrf["address_families"] = address_families
@@ -221,7 +251,7 @@ class RouterBgpMixin(UtilsMixin):
 
                 # Strip None values from vlan before returning
                 bgp_vrf = {key: value for key, value in bgp_vrf.items() if value is not None}
-                vrfs[vrf_name] = bgp_vrf
+                vrfs.append(bgp_vrf)
 
         if vrfs:
             return vrfs
@@ -229,7 +259,7 @@ class RouterBgpMixin(UtilsMixin):
         return None
 
     @cached_property
-    def _router_bgp_vlans(self) -> dict | None:
+    def _router_bgp_vlans(self) -> list | None:
         """
         Return structured config for router_bgp.vlans
         """
@@ -242,19 +272,19 @@ class RouterBgpMixin(UtilsMixin):
         ):
             return None
 
-        vlans = {}
+        vlans = []
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
                 for svi in vrf["svis"]:
                     if (vlan := self._router_bgp_vlans_vlan(svi, tenant, vrf)) is not None:
                         vlan_id = int(svi["id"])
-                        vlans[vlan_id] = vlan
+                        vlans.append({"id": vlan_id, **vlan})
 
             # L2 Vlans per Tenant
             for l2vlan in tenant["l2vlans"]:
                 if (vlan := self._router_bgp_vlans_vlan(l2vlan, tenant, vrf={})) is not None:
                     vlan_id = int(l2vlan["id"])
-                    vlans[vlan_id] = vlan
+                    vlans.append({"id": vlan_id, **vlan})
 
         if vlans:
             return vlans
@@ -315,7 +345,7 @@ class RouterBgpMixin(UtilsMixin):
         return default(get(self._hostvars, "vxlan_vlan_aware_bundles"), get(self._hostvars, "evpn_vlan_aware_bundles"), False)
 
     @cached_property
-    def _router_bgp_vlan_aware_bundles(self) -> dict | None:
+    def _router_bgp_vlan_aware_bundles(self) -> list | None:
         """
         Return structured config for router_bgp.vlan_aware_bundles
         """
@@ -326,12 +356,11 @@ class RouterBgpMixin(UtilsMixin):
         if not self._evpn_vlan_aware_bundles:
             return None
 
-        bundles = {}
+        bundles = []
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
                 if (bundle := self._router_bgp_vlan_aware_bundles_vrf(vrf, tenant)) is not None:
-                    bundle_name = vrf["name"]
-                    bundles[bundle_name] = bundle
+                    bundles.append(bundle)
 
             # L2 Vlans per Tenant
             # If multiple L2 Vlans share the same name, they will be part of the same bundle
@@ -340,7 +369,7 @@ class RouterBgpMixin(UtilsMixin):
                 if (bundle := self._router_bgp_vlans_vlan(l2vlans[0], tenant, vrf={})) is not None:
                     # We are reusing the regular bgp vlan function so need to add vlan info
                     bundle["vlan"] = list_compress([int(l2vlan["id"]) for l2vlan in l2vlans])
-                    bundles[bundle_name] = bundle
+                    bundles.append({"name": bundle_name, **bundle})
 
         if bundles:
             return bundles
@@ -364,6 +393,7 @@ class RouterBgpMixin(UtilsMixin):
         bundle_rd = f"{self._overlay_rd_type_admin_subfield}:{bundle_number}"
         bundle_rt = f"{self._rt_admin_subfield or bundle_number}:{bundle_number}"
         bundle = {
+            "name": vrf_name,
             "rd": bundle_rd,
             "route_targets": {
                 "both": [bundle_rt],
@@ -411,7 +441,7 @@ class RouterBgpMixin(UtilsMixin):
         if self._vrf_default_ipv4_static_routes["redistribute_in_overlay"] or (
             self._vrf_default_ipv4_static_routes["redistribute_in_underlay"] and self._underlay_bgp
         ):
-            return {"static": {}}
+            return [{"source_protocol": "static"}]
 
         return None
 
@@ -494,6 +524,7 @@ class RouterBgpMixin(UtilsMixin):
         peer_group_name = self._peer_group_mlag_ipv4_underlay_peer_name
         router_bgp = {}
         peer_group = {
+            "name": peer_group_name,
             "type": "ipv4",
             "remote_as": self._bgp_as,
             "next_hop_self": True,
@@ -507,24 +538,21 @@ class RouterBgpMixin(UtilsMixin):
         if self._mlag_ibgp_origin_incomplete is True:
             peer_group["route_map_in"] = "RM-MLAG-PEER-IN"
 
-        router_bgp["peer_groups"] = {peer_group_name: peer_group}
+        router_bgp["peer_groups"] = [peer_group]
 
         if get(self._hostvars, "switch.underlay_ipv6") is True:
             router_bgp["address_family_ipv6"] = {
-                "peer_groups": {
-                    peer_group_name: {
+                "peer_groups": [
+                    {
+                        "name": peer_group_name,
                         "activate": True,
                     }
-                }
+                ]
             }
 
-        address_family_ipv4_peer_group = {"activate": True}
+        address_family_ipv4_peer_group = {"name": peer_group_name, "activate": True}
         if self._underlay_rfc5549 is True:
             address_family_ipv4_peer_group["next_hop"] = {"address_family_ipv6_originate": True}
 
-        router_bgp["address_family_ipv4"] = {
-            "peer_groups": {
-                peer_group_name: address_family_ipv4_peer_group,
-            }
-        }
+        router_bgp["address_family_ipv4"] = {"peer_groups": [address_family_ipv4_peer_group]}
         return strip_empties_from_dict(router_bgp)

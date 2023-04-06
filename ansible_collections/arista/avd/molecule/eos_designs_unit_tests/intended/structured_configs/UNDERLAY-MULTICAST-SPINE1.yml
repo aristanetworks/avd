@@ -4,64 +4,64 @@ router_bgp:
   bgp_defaults:
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
     maximum_routes: 12000
     send_community: all
-    name: IPv4-UNDERLAY-PEERS
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 3
     next_hop_unchanged: true
-    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: IPv4-UNDERLAY-PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   neighbors:
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.31.255.1
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65101'
     description: UNDERLAY-MULTICAST-L3LEAF1A_Ethernet1
-    ip_address: 172.31.255.1
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.31.255.5
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65101'
     description: UNDERLAY-MULTICAST-L3LEAF1B_Ethernet1
-    ip_address: 172.31.255.5
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.31.255.9
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65102'
     description: UNDERLAY-MULTICAST-L3LEAF2A_Ethernet1
-    ip_address: 172.31.255.9
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.31.255.13
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65102'
     description: UNDERLAY-MULTICAST-L3LEAF2B_Ethernet1
-    ip_address: 172.31.255.13
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.3
+    peer_group: EVPN-OVERLAY-PEERS
     description: UNDERLAY-MULTICAST-L3LEAF1A
     remote_as: '65101'
-    ip_address: 192.168.255.3
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.4
+    peer_group: EVPN-OVERLAY-PEERS
     description: UNDERLAY-MULTICAST-L3LEAF1B
     remote_as: '65101'
-    ip_address: 192.168.255.4
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.5
+    peer_group: EVPN-OVERLAY-PEERS
     description: UNDERLAY-MULTICAST-L3LEAF2A
     remote_as: '65102'
-    ip_address: 192.168.255.5
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.6
+    peer_group: EVPN-OVERLAY-PEERS
     description: UNDERLAY-MULTICAST-L3LEAF2B
     remote_as: '65102'
-    ip_address: 192.168.255.6
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

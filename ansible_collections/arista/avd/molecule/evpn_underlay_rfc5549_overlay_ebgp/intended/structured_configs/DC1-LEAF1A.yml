@@ -6,74 +6,75 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
+  - name: UNDERLAY_PEERS
+    type: ipv4
     password: af6F4WLl4wUrWRZcwbEwkQ==
     maximum_routes: 12000
     send_community: all
-    name: UNDERLAY_PEERS
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     password: q+VNViP5i4rVjW1cxFv2wA==
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 3
-    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
+    - name: UNDERLAY_PEERS
+      activate: true
       next_hop:
         address_family_ipv6_originate: true
-      name: UNDERLAY_PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   neighbor_interfaces:
-  - peer_group: UNDERLAY_PEERS
+  - name: Ethernet1
+    peer_group: UNDERLAY_PEERS
     remote_as: '65001'
     description: DC1-SPINE1_Ethernet1
-    name: Ethernet1
-  - peer_group: UNDERLAY_PEERS
+  - name: Ethernet2
+    peer_group: UNDERLAY_PEERS
     remote_as: '65001'
     description: DC1-SPINE2_Ethernet1
-    name: Ethernet2
-  - peer_group: UNDERLAY_PEERS
+  - name: Ethernet3
+    peer_group: UNDERLAY_PEERS
     remote_as: '65001'
     description: DC1-SPINE3_Ethernet1
-    name: Ethernet3
-  - peer_group: UNDERLAY_PEERS
+  - name: Ethernet4
+    peer_group: UNDERLAY_PEERS
     remote_as: '65001'
     description: DC1-SPINE4_Ethernet1
-    name: Ethernet4
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
     evpn_hostflap_detection:
       window: 20
       threshold: 30
       enabled: true
   neighbors:
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.1
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE1
     remote_as: '65001'
-    ip_address: 192.168.255.1
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.2
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE2
     remote_as: '65001'
-    ip_address: 192.168.255.2
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.3
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE3
     remote_as: '65001'
-    ip_address: 192.168.255.3
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.4
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE4
     remote_as: '65001'
-    ip_address: 192.168.255.4
   vrfs:
-  - router_id: 192.168.255.5
+  - name: Tenant_A_APP_Zone
+    router_id: 192.168.255.5
     rd: 192.168.255.5:12
     route_targets:
       import:
@@ -86,8 +87,8 @@ router_bgp:
         - '12:12'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_A_APP_Zone
-  - router_id: 192.168.255.5
+  - name: Tenant_A_WEB_Zone
+    router_id: 192.168.255.5
     rd: 192.168.255.5:11
     route_targets:
       import:
@@ -100,24 +101,23 @@ router_bgp:
         - '11:11'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_A_WEB_Zone
   vlan_aware_bundles:
-  - rd: 192.168.255.5:12
+  - name: Tenant_A_APP_Zone
+    rd: 192.168.255.5:12
     route_targets:
       both:
       - '12:12'
     redistribute_routes:
     - learned
     vlan: 130-131
-    name: Tenant_A_APP_Zone
-  - rd: 192.168.255.5:11
+  - name: Tenant_A_WEB_Zone
+    rd: 192.168.255.5:11
     route_targets:
       both:
       - '11:11'
     redistribute_routes:
     - learned
     vlan: 120-121
-    name: Tenant_A_WEB_Zone
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

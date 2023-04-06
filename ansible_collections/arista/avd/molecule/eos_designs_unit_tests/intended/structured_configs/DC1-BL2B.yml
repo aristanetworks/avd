@@ -6,28 +6,29 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
+  - name: UNDERLAY-PEERS
+    type: ipv4
     password: 0nsCUm70mvSTxVO0ldytrg==
     maximum_routes: 12000
     send_community: all
-    name: UNDERLAY-PEERS
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     password: q+VNViP5i4rVjW1cxFv2wA==
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 3
-    name: EVPN-OVERLAY-PEERS
-  - type: mpls
+  - name: IPVPN-INTERWORKING-PEERS
+    type: mpls
     update_source: Loopback0
     bfd: true
     password: nWwwZQLPI34O1AhoANg77g==
     send_community: all
     maximum_routes: 50000
     local_as: '65001'
-    name: IPVPN-INTERWORKING-PEERS
-  - remote_as: '666'
+  - name: Tenant_C_WAN_Zone_BGP_PEER_GROUP
+    remote_as: '666'
     description: Tenant C VRF WAN Zone peer group
     send_community: all
     next_hop_self: true
@@ -41,63 +42,62 @@ router_bgp:
     route_map_out: TEST_OUT
     route_map_in: TEST_IN
     local_as: '777'
-    name: Tenant_C_WAN_Zone_BGP_PEER_GROUP
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: UNDERLAY-PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
-    - activate: false
-      name: IPVPN-INTERWORKING-PEERS
+    - name: UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+    - name: IPVPN-INTERWORKING-PEERS
+      activate: false
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   neighbors:
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.255.0
+    peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     description: DC1-SPINE1_Ethernet25
-    ip_address: 172.31.255.0
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.255.2
+    peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     description: DC1-SPINE2_Ethernet25
-    ip_address: 172.31.255.2
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.255.4
+    peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     description: DC1-SPINE3_Ethernet25
-    ip_address: 172.31.255.4
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.255.6
+    peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     description: DC1-SPINE4_Ethernet25
-    ip_address: 172.31.255.6
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.1
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE1
     remote_as: '65001'
-    ip_address: 192.168.255.1
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.2
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE2
     remote_as: '65001'
-    ip_address: 192.168.255.2
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.3
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE3
     remote_as: '65001'
-    ip_address: 192.168.255.3
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.4
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE4
     remote_as: '65001'
-    ip_address: 192.168.255.4
-  - peer_group: IPVPN-INTERWORKING-PEERS
+  - ip_address: 100.70.0.1
+    peer_group: IPVPN-INTERWORKING-PEERS
     description: rr1
     remote_as: '64512'
-    ip_address: 100.70.0.1
-  - peer_group: IPVPN-INTERWORKING-PEERS
+  - ip_address: 100.70.0.2
+    peer_group: IPVPN-INTERWORKING-PEERS
     description: rr2
     remote_as: '64512'
-    ip_address: 100.70.0.2
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
     evpn_hostflap_detection:
       window: 180
       threshold: 5
@@ -111,18 +111,19 @@ router_bgp:
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: Loopback0
     peer_groups:
-    - activate: true
-      name: IPVPN-INTERWORKING-PEERS
+    - name: IPVPN-INTERWORKING-PEERS
+      activate: true
     domain_identifier: '65000:4'
   address_family_vpn_ipv6:
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: Loopback0
     peer_groups:
-    - activate: true
-      name: IPVPN-INTERWORKING-PEERS
+    - name: IPVPN-INTERWORKING-PEERS
+      activate: true
     domain_identifier: '65000:4'
   vrfs:
-  - router_id: 192.168.255.17
+  - name: Tenant_A_WAN_Zone
+    router_id: 192.168.255.17
     rd: 192.168.255.17:14
     route_targets:
       import:
@@ -143,8 +144,8 @@ router_bgp:
         - 65000:123
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_A_WAN_Zone
-  - router_id: 192.168.255.17
+  - name: Tenant_B_OP_Zone
+    router_id: 192.168.255.17
     rd: 192.168.255.17:20
     route_targets:
       import:
@@ -157,8 +158,8 @@ router_bgp:
         - '20:20'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_B_OP_Zone
-  - router_id: 192.168.255.17
+  - name: Tenant_B_WAN_Zone
+    router_id: 192.168.255.17
     rd: 192.168.255.17:21
     route_targets:
       import:
@@ -171,8 +172,8 @@ router_bgp:
         - '21:21'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_B_WAN_Zone
-  - router_id: 192.168.255.17
+  - name: Tenant_C_WAN_Zone
+    router_id: 192.168.255.17
     rd: 192.168.255.17:31
     route_targets:
       import:
@@ -186,48 +187,47 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
+    - ip_address: 1.1.1.1
+      peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
       description: test_description
       route_map_out: RM-Tenant_C_WAN_Zone-1.1.1.1-SET-NEXT-HOP-OUT
-      ip_address: 1.1.1.1
-    - peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
+    - ip_address: BEBA::C0CA:C07A
+      peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
       description: test_ipv6
-      ip_address: BEBA::C0CA:C07A
     address_families:
-    - neighbors:
-      - activate: true
-        ip_address: 1.1.1.1
-      address_family: ipv4
-    - neighbors:
-      - activate: true
-        ip_address: BEBA::C0CA:C07A
-      address_family: ipv6
-    name: Tenant_C_WAN_Zone
+    - address_family: ipv4
+      neighbors:
+      - ip_address: 1.1.1.1
+        activate: true
+    - address_family: ipv6
+      neighbors:
+      - ip_address: BEBA::C0CA:C07A
+        activate: true
   vlan_aware_bundles:
-  - rd: 192.168.255.17:14
+  - name: Tenant_A_WAN_Zone
+    rd: 192.168.255.17:14
     route_targets:
       both:
       - '14:14'
     redistribute_routes:
     - learned
     vlan: '150'
-    name: Tenant_A_WAN_Zone
-  - rd: 192.168.255.17:21
+  - name: Tenant_B_WAN_Zone
+    rd: 192.168.255.17:21
     route_targets:
       both:
       - '21:21'
     redistribute_routes:
     - learned
     vlan: '250'
-    name: Tenant_B_WAN_Zone
-  - rd: 192.168.255.17:31
+  - name: Tenant_C_WAN_Zone
+    rd: 192.168.255.17:31
     route_targets:
       both:
       - '31:31'
     redistribute_routes:
     - learned
     vlan: '350'
-    name: Tenant_C_WAN_Zone
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

@@ -343,10 +343,10 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         if self._underlay_bgp or (bgp_vrfs := self._router_bgp_vrfs) is None:
             return False
 
-        for bgp_vrf in bgp_vrfs.values():
+        for bgp_vrf in bgp_vrfs:
             if "neighbors" not in bgp_vrf:
                 continue
-            for neighbor_settings in bgp_vrf["neighbors"].values():
+            for neighbor_settings in bgp_vrf["neighbors"]:
                 if neighbor_settings.get("peer_group") == self._peer_group_mlag_ipv4_underlay_peer_name:
                     return True
 

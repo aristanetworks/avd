@@ -10,7 +10,8 @@ router_bgp:
   - maximum-paths 4 ecmp 4
   bgp_cluster_id: 1.1.1.1
   peer_groups:
-  - type: mpls
+  - name: MPLS-OVERLAY-PEERS
+    type: mpls
     update_source: Loopback0
     bfd: true
     password: SHsTgDgjVUU5a9blyxSt3Q==
@@ -18,54 +19,53 @@ router_bgp:
     maximum_routes: 0
     remote_as: '65000'
     route_reflector_client: true
-    name: MPLS-OVERLAY-PEERS
-  - type: mpls
+  - name: RR-OVERLAY-PEERS
+    type: mpls
     update_source: Loopback0
     bfd: true
     password: 04FdfTXWrEfpDTUc3mlSjg==
     send_community: all
     maximum_routes: 0
     remote_as: '65000'
-    name: RR-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: false
-      name: MPLS-OVERLAY-PEERS
-    - activate: false
-      name: RR-OVERLAY-PEERS
+    - name: MPLS-OVERLAY-PEERS
+      activate: false
+    - name: RR-OVERLAY-PEERS
+      activate: false
   address_family_evpn:
     neighbor_default:
       encapsulation: mpls
     peer_groups:
-    - activate: true
-      name: MPLS-OVERLAY-PEERS
-    - activate: true
-      name: RR-OVERLAY-PEERS
+    - name: MPLS-OVERLAY-PEERS
+      activate: true
+    - name: RR-OVERLAY-PEERS
+      activate: true
   address_family_vpn_ipv4:
     peer_groups:
-    - activate: true
-      name: MPLS-OVERLAY-PEERS
-    - activate: true
-      name: RR-OVERLAY-PEERS
+    - name: MPLS-OVERLAY-PEERS
+      activate: true
+    - name: RR-OVERLAY-PEERS
+      activate: true
   address_family_vpn_ipv6:
     peer_groups:
-    - activate: true
-      name: MPLS-OVERLAY-PEERS
-    - activate: true
-      name: RR-OVERLAY-PEERS
+    - name: MPLS-OVERLAY-PEERS
+      activate: true
+    - name: RR-OVERLAY-PEERS
+      activate: true
   neighbors:
-  - peer_group: MPLS-OVERLAY-PEERS
+  - ip_address: 100.70.0.5
+    peer_group: MPLS-OVERLAY-PEERS
     description: SITE1-LER1
-    ip_address: 100.70.0.5
-  - peer_group: MPLS-OVERLAY-PEERS
+  - ip_address: 100.70.0.6
+    peer_group: MPLS-OVERLAY-PEERS
     description: SITE1-LER2
-    ip_address: 100.70.0.6
-  - peer_group: MPLS-OVERLAY-PEERS
+  - ip_address: 100.70.0.7
+    peer_group: MPLS-OVERLAY-PEERS
     description: SITE2-LER1
-    ip_address: 100.70.0.7
-  - peer_group: RR-OVERLAY-PEERS
+  - ip_address: 100.70.0.9
+    peer_group: RR-OVERLAY-PEERS
     description: SITE2-RR1
-    ip_address: 100.70.0.9
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

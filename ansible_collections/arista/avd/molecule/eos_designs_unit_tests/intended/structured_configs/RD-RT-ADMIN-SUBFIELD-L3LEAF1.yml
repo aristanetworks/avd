@@ -4,32 +4,33 @@ router_bgp:
   bgp_defaults:
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
     maximum_routes: 12000
     send_community: all
-    name: IPv4-UNDERLAY-PEERS
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 3
-    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: IPv4-UNDERLAY-PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
   vrfs:
-  - router_id: 192.168.255.1
+  - name: TEST1
+    router_id: 192.168.255.1
     rd: 192.168.255.1:11
     route_targets:
       import:
@@ -42,24 +43,23 @@ router_bgp:
         - '11:11'
     redistribute_routes:
     - source_protocol: connected
-    name: TEST1
   vlans:
-  - tenant: Tenant_A
+  - id: 1
+    tenant: Tenant_A
     rd: 192.168.255.1:10001
     route_targets:
       both:
       - 10001:10001
     redistribute_routes:
     - learned
-    id: 1
-  - tenant: Tenant_A
+  - id: 2
+    tenant: Tenant_A
     rd: 192.168.255.1:10002
     route_targets:
       both:
       - 10002:10002
     redistribute_routes:
     - learned
-    id: 2
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

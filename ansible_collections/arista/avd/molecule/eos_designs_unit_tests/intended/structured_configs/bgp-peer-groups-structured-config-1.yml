@@ -4,51 +4,51 @@ router_bgp:
   bgp_defaults:
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
+  - name: MLAG-IPv4-UNDERLAY-PEER
+    type: ipv4
     remote_as: '65001'
     next_hop_self: true
     description: Description for mlag_ipv4_underlay_peer via structured_config
     maximum_routes: 12000
     send_community: all
     route_map_in: RM-MLAG-PEER-IN
-    name: MLAG-IPv4-UNDERLAY-PEER
-  - type: ipv4
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
     maximum_routes: 12000
     send_community: all
-    name: IPv4-UNDERLAY-PEERS
     description: Description for ipv4_underlay_peers via structured_config
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     send_community: all
     maximum_routes: 0
     remote_as: '65001'
-    name: EVPN-OVERLAY-PEERS
     description: Description for evpn_overlay_peers via structured_config
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: MLAG-IPv4-UNDERLAY-PEER
-    - activate: true
-      name: IPv4-UNDERLAY-PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: MLAG-IPv4-UNDERLAY-PEER
+      activate: true
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   neighbors:
-  - peer_group: MLAG-IPv4-UNDERLAY-PEER
+  - ip_address: 192.168.253.205
+    peer_group: MLAG-IPv4-UNDERLAY-PEER
     description: bgp-peer-groups-structured-config-2
-    ip_address: 192.168.253.205
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.112
+    peer_group: EVPN-OVERLAY-PEERS
     description: bgp-peer-groups-structured-config-2
-    ip_address: 192.168.255.112
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
-    - activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
-      name: EVPN-OVERLAY-PEERS
   address_family_vpn_ipv4: {}
 static_routes:
 - vrf: MGMT
