@@ -129,6 +129,12 @@ repos:
         language: system
         files: ansible_collections/arista/avd/roles/[a-z_]+/schemas
         pass_filenames: false
+      - id: molecule-coverage
+        name: Check molecule coverage
+        entry: sh -c "PYTHONPATH=$PYTHONPATH:`pwd` python .pre_commit_scripts/molecule-coverage.py"
+        language: system
+        files: ansible_collections/arista/avd/(roles|molecule)/[a-z_]+/
+        pass_filenames: false
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.32.1
