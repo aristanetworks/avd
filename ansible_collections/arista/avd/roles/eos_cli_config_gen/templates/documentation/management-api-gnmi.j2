@@ -19,52 +19,48 @@
 {%         endfor %}
 {%     endif %}
 {# new table view using the new flags #}
-{%     if management_api_gnmi.transport is arista.avd.defined %}
+{%     if management_api_gnmi.transport.grpc is arista.avd.defined %}
 
 | Transport | SSL Profile | VRF | Notification Timestamp | ACL |
 | --------- | ----------- | --- | ---------------------- | --- |
-{%         if management_api_gnmi.transport.grpc is arista.avd.defined %}
-{%             for transport in management_api_gnmi.transport.grpc %}
-{%                 if transport.name is arista.avd.defined %}
-{%                     set transport_name = transport.name %}
-{%                     set ssl_profile = transport.ssl_profile | arista.avd.default('-') %}
-{%                     set vrf = transport.vrf | arista.avd.default('-') %}
-{%                     set notif = transport.notification_timestamp | arista.avd.default('last-change-time') %}
-{%                     set acl = transport.ip_access_group | arista.avd.default('-') %}
+{%         for transport in management_api_gnmi.transport.grpc %}
+{%             if transport.name is arista.avd.defined %}
+{%                 set transport_name = transport.name %}
+{%                 set ssl_profile = transport.ssl_profile | arista.avd.default('-') %}
+{%                 set vrf = transport.vrf | arista.avd.default('-') %}
+{%                 set notif = transport.notification_timestamp | arista.avd.default('last-change-time') %}
+{%                 set acl = transport.ip_access_group | arista.avd.default('-') %}
 | {{ transport_name }} | {{ ssl_profile }} | {{ vrf }} | {{ notif }} | {{ acl }} |
-{%                 endif %}
-{%             endfor %}
-{%         endif %}
+{%             endif %}
+{%         endfor %}
 {%     endif %}
-{%     if management_api_gnmi.transport is arista.avd.defined %}
+{%     if management_api_gnmi.transport.grpc_tunnels is arista.avd.defined %}
 
 | Transport | Destination | Destination Port | gNMI SSL Profile | Tunnel SSL Profile | VRF | Local Interface | Local Port | Target ID |
 | --------- | ----------- | ---------------- | ---------------- | ------------------ | --- | --------------- | ---------- | --------- |
-{%         if management_api_gnmi.transport.grpc_tunnels is arista.avd.defined %}
-{%             for transport in management_api_gnmi.transport.grpc_tunnels %}
-{%                 set transport_name = transport.name %}
-{%                 set destination = transport.destination.address %}
-{%                 set port = transport.destination.port %}
-{%                 set gnmi_ssl_profile = transport.gnmi_ssl_profile | arista.avd.default('-') %}
-{%                 set tunnel_ssl_profile = transport.tunnel_ssl_profile | arista.avd.default('-') %}
-{%                 set vrf = transport.vrf | arista.avd.default('-') %}
-{%                 set local_interface = transport.local_interface.name | arista.avd.default('-') %}
-{%                 set local_port = transport.local_interface.port | arista.avd.default('-') %}
-{%                 if transport.target.use_serial_number is arista.avd.defined(true) %}
-{%                     if transport.target.target_id is arista.avd.defined %}
-{%                         set target_id = 'Serial Number' ~ ' ' ~ transport.target.target_id %}
-{%                     else %}
-{%                         set target_id = arista.avd.default('Serial Number') %}
-{%                     endif %}
-{%                 elif transport.target.target_id is arista.avd.defined %}
-{%                     set target_id = transport.target.target_id | arista.avd.default('-') %}
+{%         for transport in management_api_gnmi.transport.grpc_tunnels %}
+{%             set transport_name = transport.name %}
+{%             set destination = transport.destination.address %}
+{%             set port = transport.destination.port %}
+{%             set gnmi_ssl_profile = transport.gnmi_ssl_profile | arista.avd.default('-') %}
+{%             set tunnel_ssl_profile = transport.tunnel_ssl_profile | arista.avd.default('-') %}
+{%             set vrf = transport.vrf | arista.avd.default('-') %}
+{%             set local_interface = transport.local_interface.name | arista.avd.default('-') %}
+{%             set local_port = transport.local_interface.port | arista.avd.default('-') %}
+{%             if transport.target.use_serial_number is arista.avd.defined(true) %}
+{%                 if transport.target.target_id is arista.avd.defined %}
+{%                     set target_id = 'Serial Number' ~ ' ' ~ transport.target.target_id %}
+{%                 else %}
+{%                     set target_id = arista.avd.default('Serial Number') %}
 {%                 endif %}
+{%             elif transport.target.target_id is arista.avd.defined %}
+{%                 set target_id = transport.target.target_id | arista.avd.default('-') %}
+{%             endif %}
 | {{ transport_name }} | {{ destination }} | {{ port }} | {{ gnmi_ssl_profile }} | {{ tunnel_ssl_profile }} | {{ vrf }} | {{ local_interface }} | {{ local_port }} | {{ target_id }} |
-{%             endfor %}
-{%         endif %}
-
+{%         endfor %}
 {%     endif %}
 {%     if management_api_gnmi.provider is arista.avd.defined %}
+
 Provider {{ management_api_gnmi.provider }} is configured.
 {%     endif %}
 

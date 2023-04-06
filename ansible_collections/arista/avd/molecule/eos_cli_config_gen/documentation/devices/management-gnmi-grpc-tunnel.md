@@ -38,9 +38,6 @@ interface Management1
 
 #### Management API GNMI Summary
 
-| Transport | SSL Profile | VRF | Notification Timestamp | ACL |
-| --------- | ----------- | --- | ---------------------- | --- |
-
 | Transport | Destination | Destination Port | gNMI SSL Profile | Tunnel SSL Profile | VRF | Local Interface | Local Port | Target ID |
 | --------- | ----------- | ---------------- | ---------------- | ------------------ | --- | --------------- | ---------- | --------- |
 | onetarget | 10.1.1.100 | 10000 | ssl_profile | ssl_profile | management | Management1 | 10001 | testid1 |
