@@ -7814,7 +7814,7 @@
       "properties": {
         "reboot": {
           "type": "object",
-          "description": "Set the global PoE power behavior for PoE ports when the system is rebooted",
+          "description": "Set the global PoE power behavior for PoE ports when the system is rebooted.",
           "properties": {
             "action": {
               "type": "string",
@@ -7822,8 +7822,7 @@
                 "power-off",
                 "maintain"
               ],
-              "description": "PoE action for interface",
-              "default": "power-off",
+              "description": "PoE action for interface. By default in EOS, reboot action is set to power-off.",
               "title": "Action"
             }
           },
@@ -7840,8 +7839,7 @@
                 "power-off",
                 "maintain"
               ],
-              "description": "PoE action for interface",
-              "default": "maintain",
+              "description": "PoE action for interface. By default in EOS, interface shutdown action is set to maintain.",
               "title": "Action"
             }
           },

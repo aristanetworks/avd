@@ -639,23 +639,6 @@ ethernet_interfaces:
         local_interface: Loopback55
 
   Ethernet56:
-    description: Interface with POE commands and limit in watts
-    poe:
-      disabled: false
-      priority: critical
-      reboot:
-        action: maintain
-      link_down:
-        action: maintain
-      shutdown:
-        action: power-off
-      limit:
-        watts: 45
-        fixed: true
-      legacy_detect: true
-      negotiation_lldp: true
-
-  Ethernet57:
     description: Interface with poe commands and limit in class
     poe:
       priority: low
@@ -670,6 +653,23 @@ ethernet_interfaces:
         class: 4
         fixed: false
       negotiation_lldp: false
+
+  Ethernet57:
+    description: Interface with poe commands and limit in watts
+    poe:
+      disabled: false
+      priority: critical
+      reboot:
+        action: maintain
+      link_down:
+        action: maintain
+      shutdown:
+        action: power-off
+      limit:
+        watts: 45
+        fixed: true
+      legacy_detect: true
+      negotiation_lldp: true
 
   Ethernet58:
     description: Interface with poe disabled and no other poe keys

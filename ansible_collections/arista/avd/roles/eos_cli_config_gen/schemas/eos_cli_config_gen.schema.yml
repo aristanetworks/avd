@@ -5128,15 +5128,15 @@ keys:
       reboot:
         type: dict
         description: Set the global PoE power behavior for PoE ports when the system
-          is rebooted
+          is rebooted.
         keys:
           action:
             type: str
             valid_values:
             - power-off
             - maintain
-            description: PoE action for interface
-            default: power-off
+            description: PoE action for interface. By default in EOS, reboot action
+              is set to power-off.
       interface_shutdown:
         type: dict
         description: Set the global PoE power behavior for PoE ports when ports are
@@ -5147,8 +5147,8 @@ keys:
             valid_values:
             - power-off
             - maintain
-            description: PoE action for interface
-            default: maintain
+            description: PoE action for interface. By default in EOS, interface shutdown
+              action is set to maintain.
   policy_maps:
     documentation_options:
       filename: data_model/Quality of Service

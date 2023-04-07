@@ -120,8 +120,8 @@ sFlow is disabled.
 | Ethernet53 |  SFlow Interface Testing - SFlow ingress and egress disabled | access | - | - | - | - |
 | Ethernet54 |  SFlow Interface Testing - SFlow ingress and egress unmodified disabled | access | - | - | - | - |
 | Ethernet55 |  DHCPv6 Relay Testing | access | - | - | - | - |
-| Ethernet56 |  Interface with POE commands and limit in_watts | access | - | - | - | - |
-| Ethernet57 |  Interface with poe commands and limit in class | access | - | - | - | - |
+| Ethernet56 |  Interface with poe commands and limit in class | access | - | - | - | - |
+| Ethernet57 |  Interface with poe commands and limit in watts | access | - | - | - | - |
 | Ethernet58 |  Interface with poe disabled and no other poe keys | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
@@ -713,16 +713,6 @@ interface Ethernet55
    ipv6 dhcp relay destination a0::4 vrf TEST local-interface Loopback55 link-address a0::5
 !
 interface Ethernet56
-   description Interface with POE commands and limit in_watts
-   switchport
-   poe priority critical
-   poe reboot action maintain
-   poe link down action maintain
-   poe shutdown action power-off
-   poe limit 45.00 watts fixed
-   poe legacy detect
-!
-interface Ethernet57
    description Interface with poe commands and limit in class
    switchport
    poe priority low
@@ -731,6 +721,16 @@ interface Ethernet57
    poe shutdown action maintain
    poe limit 30.00 watts
    poe negotiation lldp disabled
+!
+interface Ethernet57
+   description Interface with poe commands and limit in watts
+   switchport
+   poe priority critical
+   poe reboot action maintain
+   poe link down action maintain
+   poe shutdown action power-off
+   poe limit 45.00 watts fixed
+   poe legacy detect
 !
 interface Ethernet58
    description Interface with poe disabled and no other poe keys
@@ -798,8 +798,8 @@ interface Ethernet58
 
 | Interface | PoE Enabled | Priority | Limit | Reboot Action | Link Down Action | Shutdown Action | LLDP Negotiation | Legacy Detection |
 | --------- | --------- | --------- | ----------- | ----------- | ----------- | ----------- | --------- | --------- |
-| Ethernet56 | True | critical | 45.00 watts (fixed) | maintain | maintain | power-off | True | True |
-| Ethernet57 | True | low | 30.00 watts | power-off | power-off (delayed 10 seconds) | maintain | False | False |
+| Ethernet56 | True | low | 30.00 watts | power-off | power-off (delayed 10 seconds) | maintain | False | False |
+| Ethernet57 | True | critical | 45.00 watts (fixed) | maintain | maintain | power-off | True | True |
 | Ethernet58 | False | - | - | power-off | maintain | maintain | True | False |
 
 ## Quality Of Service
