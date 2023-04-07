@@ -182,9 +182,10 @@ class EthernetInterfacesMixin(UtilsMixin):
                                         continue
 
                                     raise AristaAvdError(
-                                        f"Duplicate interface_name {ethernet_interface['name']} found while generating ethernet_interfaces for network_services point_to_point_services "
-                                        f" channel_group: (id: {channel_group_id}, mode: {port_channel_mode}). Duplicate interface_name of channel_group:"
-                                        f" (id: {found_eth_interface['channel_group']['id']}, mode: {found_eth_interface['channel_group']['mode']})"
+                                        f"Duplicate interface_name {ethernet_interface['name']} found while generating ethernet_interfaces for network_services"
+                                        f" point_to_point_services  channel_group: (id: {channel_group_id}, mode: {port_channel_mode}). Duplicate"
+                                        f" interface_name of channel_group: (id: {found_eth_interface['channel_group']['id']}, mode:"
+                                        f" {found_eth_interface['channel_group']['mode']})"
                                     )
 
                                 continue
@@ -219,7 +220,8 @@ class EthernetInterfacesMixin(UtilsMixin):
                                         continue
 
                                     raise AristaAvdError(
-                                        f"Duplicate interface_name {ethernet_interface['name']} found while generating ethernet_interfaces for network_services subinterface"
+                                        f"Duplicate interface_name {ethernet_interface['name']} found while generating ethernet_interfaces for network_services"
+                                        " subinterface"
                                     )
                             else:
                                 interface = {
@@ -242,10 +244,11 @@ class EthernetInterfacesMixin(UtilsMixin):
                                         continue
 
                                     raise AristaAvdError(
-                                        f"Duplicate interface_name {interface['name']} found while generating ethernet_interfaces for network_services subinterface"
+                                        f"Duplicate interface_name {interface['name']} found while generating ethernet_interfaces for network_services"
+                                        " subinterface"
                                     )
 
-        subif_parent_interface_names = subif_parent_interface_names.difference([ eth_int['name'] for eth_int in ethernet_interfaces ])
+        subif_parent_interface_names = subif_parent_interface_names.difference([eth_int["name"] for eth_int in ethernet_interfaces])
         if subif_parent_interface_names:
             for interface_name in natural_sort(subif_parent_interface_names):
                 ethernet_interfaces.append(

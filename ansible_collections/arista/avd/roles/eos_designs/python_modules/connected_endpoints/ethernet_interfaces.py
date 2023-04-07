@@ -5,8 +5,9 @@ from collections import ChainMap
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 
 from .utils import UtilsMixin
 
@@ -31,7 +32,18 @@ class EthernetInterfacesMixin(UtilsMixin):
                         continue
 
                     ethernet_interface = self._get_ethernet_interface_cfg(adapter, node_index, connected_endpoint)
-                    ethernet_interfaces.append(ethernet_interface)
+                    if (found_eth_interface := get_item(ethernet_interfaces, "name", ethernet_interface["name"])) is None:
+                        ethernet_interfaces.append(ethernet_interface)
+                    else:
+                        if found_eth_interface == ethernet_interface:
+                            # Same ethernet_interface information twice in the input data. So not duplicate interface name.
+                            continue
+
+                        raise AristaAvdError(
+                            f"Duplicate interface name {ethernet_interface['name']} found while generating ethernet_interfaces for connected_endpoints peer:"
+                            f" {ethernet_interface['peer']}, peer_interface: {ethernet_interface['peer_interface']}. Duplicate interface name of description:"
+                            f" {found_eth_interface['description']}"
+                        )
 
         for network_port in self._filtered_network_ports:
             connected_endpoint = {
@@ -48,7 +60,18 @@ class EthernetInterfacesMixin(UtilsMixin):
                     network_port,
                 )
                 ethernet_interface = self._get_ethernet_interface_cfg(tmp_network_port, 0, connected_endpoint)
-                ethernet_interfaces.append(ethernet_interface)
+                if (found_eth_interface := get_item(ethernet_interfaces, "name", ethernet_interface["name"])) is None:
+                    ethernet_interfaces.append(ethernet_interface)
+                else:
+                    if found_eth_interface == ethernet_interface:
+                        # Same ethernet_interface information twice in the input data. So not duplicate interface name.
+                        continue
+
+                    raise AristaAvdError(
+                        f"Duplicate interface name {ethernet_interface['name']} found while generating ethernet_interfaces for connected_endpoints peer:"
+                        f" {ethernet_interface['peer']}, peer_interface: {ethernet_interface['peer_interface']}. Duplicate interface name of description:"
+                        f" {found_eth_interface['description']}"
+                    )
 
         if ethernet_interfaces:
             return ethernet_interfaces
