@@ -37,7 +37,7 @@
 | --------- | --------- | --------- | ----------- | ----------- | ----------- | ----------- | --------- | --------- |
 {%             for ethernet_interface in ethernet_interfaces_poe | arista.avd.natural_sort('name') %}
 {%                 set poe = ethernet_interface.poe %}
-{%                 set enabled = not poe.disabled | arista.avd.default(true) %}
+{%                 set enabled = not (poe.disabled | arista.avd.default(false)) %}
 {%                 set priority = poe.priority | arista.avd.default("-") %}
 {%                 set limit = "-" %}
 {%                 if poe.limit is arista.avd.defined %}

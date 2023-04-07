@@ -1712,6 +1712,7 @@ keys:
               type: bool
               description: Disable PoE on a POE capable port. PoE is enabled on all
                 ports that support it by default in EOS.
+              default: false
             priority:
               type: str
               valid_values:
@@ -1765,7 +1766,9 @@ keys:
             limit:
               type: dict
               description: Override the hardware-negotiated power limit using either
-                wattage or a power class.
+                wattage or a power class. Note that if using a power class, AVD will
+                automatically convert the class value to the wattage value corresponding
+                to that power class.
               keys:
                 class:
                   type: int
@@ -5124,8 +5127,8 @@ keys:
     keys:
       reboot:
         type: dict
-        description: Set the global level PoE power behavior for PoE ports when the
-          system is rebooted
+        description: Set the global PoE power behavior for PoE ports when the system
+          is rebooted
         keys:
           action:
             type: str
@@ -5133,10 +5136,11 @@ keys:
             - power-off
             - maintain
             description: PoE action for interface
+            default: power-off
       interface_shutdown:
         type: dict
-        description: Set the global level PoE power behavior for PoE ports when ports
-          are admin down
+        description: Set the global PoE power behavior for PoE ports when ports are
+          admin down
         keys:
           action:
             type: str
@@ -5144,6 +5148,7 @@ keys:
             - power-off
             - maintain
             description: PoE action for interface
+            default: maintain
   policy_maps:
     documentation_options:
       filename: data_model/Quality of Service

@@ -469,6 +469,7 @@ keys:
             disabled:
               type: bool
               description: Disable PoE on a POE capable port. PoE is enabled on all ports that support it by default in EOS.
+              default: false
             priority:
               type: str
               valid_values: ["critical", "high", "medium", "low"]
@@ -506,7 +507,7 @@ keys:
                   description: PoE action for interface
             limit:
               type: dict
-              description: Override the hardware-negotiated power limit using either wattage or a power class.
+              description: Override the hardware-negotiated power limit using either wattage or a power class. Note that if using a power class, AVD will automatically convert the class value to the wattage value corresponding to that power class.
               keys:
                 class:
                   type: int

@@ -2531,6 +2531,7 @@
               "disabled": {
                 "type": "boolean",
                 "description": "Disable PoE on a POE capable port. PoE is enabled on all ports that support it by default in EOS.",
+                "default": false,
                 "title": "Disabled"
               },
               "priority": {
@@ -2604,7 +2605,7 @@
               },
               "limit": {
                 "type": "object",
-                "description": "Override the hardware-negotiated power limit using either wattage or a power class.",
+                "description": "Override the hardware-negotiated power limit using either wattage or a power class. Note that if using a power class, AVD will automatically convert the class value to the wattage value corresponding to that power class.",
                 "properties": {
                   "class": {
                     "type": "integer",
@@ -7813,7 +7814,7 @@
       "properties": {
         "reboot": {
           "type": "object",
-          "description": "Set the global level PoE power behavior for PoE ports when the system is rebooted",
+          "description": "Set the global PoE power behavior for PoE ports when the system is rebooted",
           "properties": {
             "action": {
               "type": "string",
@@ -7822,6 +7823,7 @@
                 "maintain"
               ],
               "description": "PoE action for interface",
+              "default": "power-off",
               "title": "Action"
             }
           },
@@ -7830,7 +7832,7 @@
         },
         "interface_shutdown": {
           "type": "object",
-          "description": "Set the global level PoE power behavior for PoE ports when ports are admin down",
+          "description": "Set the global PoE power behavior for PoE ports when ports are admin down",
           "properties": {
             "action": {
               "type": "string",
@@ -7839,6 +7841,7 @@
                 "maintain"
               ],
               "description": "PoE action for interface",
+              "default": "maintain",
               "title": "Action"
             }
           },

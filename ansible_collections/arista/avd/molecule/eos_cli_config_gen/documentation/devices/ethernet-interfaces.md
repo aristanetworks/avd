@@ -120,9 +120,9 @@ sFlow is disabled.
 | Ethernet53 |  SFlow Interface Testing - SFlow ingress and egress disabled | access | - | - | - | - |
 | Ethernet54 |  SFlow Interface Testing - SFlow ingress and egress unmodified disabled | access | - | - | - | - |
 | Ethernet55 |  DHCPv6 Relay Testing | access | - | - | - | - |
-| Ethernet56 |  interface_with_poe_commands_and_limit_in_watts | access | 20 | - | - | - |
-| Ethernet57 |  interface_with_poe_commands_and_limit_in_class | access | 20 | - | - | - |
-| Ethernet58 |  interface_with_poe_commands_and_limit_in_class | access | 20 | - | - | - |
+| Ethernet56 |  Interface with POE commands and limit in_watts | access | - | - | - | - |
+| Ethernet57 |  Interface with poe commands and limit in class | access | - | - | - | - |
+| Ethernet58 |  Interface with poe disabled and no other poe keys | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -713,9 +713,7 @@ interface Ethernet55
    ipv6 dhcp relay destination a0::4 vrf TEST local-interface Loopback55 link-address a0::5
 !
 interface Ethernet56
-   description interface_with_poe_commands_and_limit_in_watts
-   switchport access vlan 20
-   switchport mode access
+   description Interface with POE commands and limit in_watts
    switchport
    poe priority critical
    poe reboot action maintain
@@ -725,22 +723,17 @@ interface Ethernet56
    poe legacy detect
 !
 interface Ethernet57
-   description interface_with_poe_commands_and_limit_in_class
-   switchport access vlan 20
-   switchport mode access
+   description Interface with poe commands and limit in class
    switchport
    poe priority low
    poe reboot action power-off
    poe link down action power-off 10
    poe shutdown action maintain
-   poe disabled
    poe limit 30.00 watts
    poe negotiation lldp disabled
 !
 interface Ethernet58
-   description interface_with_poe_commands_and_limit_in_class
-   switchport access vlan 20
-   switchport mode access
+   description Interface with poe disabled and no other poe keys
    switchport
    poe disabled
 ```
@@ -806,7 +799,7 @@ interface Ethernet58
 | Interface | PoE Enabled | Priority | Limit | Reboot Action | Link Down Action | Shutdown Action | LLDP Negotiation | Legacy Detection |
 | --------- | --------- | --------- | ----------- | ----------- | ----------- | ----------- | --------- | --------- |
 | Ethernet56 | True | critical | 45.00 watts (fixed) | maintain | maintain | power-off | True | True |
-| Ethernet57 | False | low | 30.00 watts | power-off | power-off (delayed 10 seconds) | maintain | False | False |
+| Ethernet57 | True | low | 30.00 watts | power-off | power-off (delayed 10 seconds) | maintain | False | False |
 | Ethernet58 | False | - | - | power-off | maintain | maintain | True | False |
 
 ## Quality Of Service

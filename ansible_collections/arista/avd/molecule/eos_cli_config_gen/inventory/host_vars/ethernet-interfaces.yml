@@ -639,9 +639,7 @@ ethernet_interfaces:
         local_interface: Loopback55
 
   Ethernet56:
-    description: interface_with_poe_commands_and_limit_in_watts
-    mode: access
-    vlans: 20
+    description: Interface with POE commands and limit in watts
     poe:
       disabled: false
       priority: critical
@@ -658,11 +656,8 @@ ethernet_interfaces:
       negotiation_lldp: true
 
   Ethernet57:
-    description: interface_with_poe_commands_and_limit_in_class
-    mode: access
-    vlans: 20
+    description: Interface with poe commands and limit in class
     poe:
-      disabled: true
       priority: low
       reboot:
         action: power-off
@@ -677,8 +672,6 @@ ethernet_interfaces:
       negotiation_lldp: false
 
   Ethernet58:
-    description: interface_with_poe_commands_and_limit_in_class
-    mode: access
-    vlans: 20
+    description: Interface with poe disabled and no other poe keys
     poe:
       disabled: true
