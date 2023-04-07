@@ -2560,6 +2560,9 @@
                   }
                 },
                 "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
                 "title": "Reboot"
               },
               "link_down": {
@@ -2584,6 +2587,9 @@
                   }
                 },
                 "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
                 "title": "Link Down"
               },
               "shutdown": {
@@ -2601,6 +2607,9 @@
                   }
                 },
                 "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
                 "title": "Shutdown"
               },
               "limit": {
@@ -2624,6 +2633,9 @@
                   }
                 },
                 "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
                 "title": "Limit"
               },
               "negotiation_lldp": {
@@ -2638,6 +2650,9 @@
               }
             },
             "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
             "title": "Poe"
           },
           "ptp": {
@@ -7827,6 +7842,9 @@
             }
           },
           "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
           "title": "Reboot"
         },
         "interface_shutdown": {
@@ -7844,10 +7862,16 @@
             }
           },
           "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
           "title": "Interface Shutdown"
         }
       },
       "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
       "title": "Poe"
     },
     "policy_maps": {

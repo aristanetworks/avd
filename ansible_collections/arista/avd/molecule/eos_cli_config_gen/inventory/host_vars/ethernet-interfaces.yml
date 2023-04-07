@@ -638,7 +638,7 @@ ethernet_interfaces:
         vrf: TEST
         local_interface: Loopback55
 
-  Ethernet56:
+  - name: Ethernet56
     description: Interface with poe commands and limit in class
     poe:
       priority: low
@@ -654,7 +654,7 @@ ethernet_interfaces:
         fixed: false
       negotiation_lldp: false
 
-  Ethernet57:
+  - name: Ethernet57
     description: Interface with poe commands and limit in watts
     poe:
       disabled: false
@@ -671,7 +671,7 @@ ethernet_interfaces:
       legacy_detect: true
       negotiation_lldp: true
 
-  Ethernet58:
+  - name: Ethernet58
     description: Interface with poe disabled and no other poe keys
     poe:
       disabled: true
