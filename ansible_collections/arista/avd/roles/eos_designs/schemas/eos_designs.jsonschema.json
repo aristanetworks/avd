@@ -282,7 +282,7 @@
       "title": "DC Name"
     },
     "default_igmp_snooping_enabled": {
-      "description": "Disable IGMP snooping at fabric level.\nIf set, it overrides per vlan settings.\n",
+      "description": "When set to false, disables IGMP snooping at fabric level and overrides per vlan settings.\n",
       "type": "boolean",
       "default": true,
       "title": "Default IGMP Snooping Enabled"
@@ -512,7 +512,7 @@
           "properties": {
             "beginning": {
               "type": "integer",
-              "description": "VLAN ID",
+              "description": "VLAN ID lower then `internal_vlan_order.range.ending` value.",
               "default": 1006,
               "minimum": 1,
               "maximum": 4094,
@@ -520,7 +520,7 @@
             },
             "ending": {
               "type": "integer",
-              "description": "VLAN ID",
+              "description": "VLAN ID higher then `internal_vlan_order.range.beginning` value.",
               "default": 1199,
               "minimum": 1,
               "maximum": 4094,
@@ -612,7 +612,9 @@
       "properties": {
         "aging_time": {
           "type": "integer",
-          "description": "Time in seconds",
+          "description": "Aging time in seconds 10-1000000.\nEnter 0 to disable aging.\n",
+          "minimum": 0,
+          "maximum": 1000000,
           "title": "Aging Time"
         }
       },
@@ -624,7 +626,7 @@
     },
     "mlag_ibgp_peering_vrfs": {
       "type": "object",
-      "description": "On mlag leafs, an SVI interface is defined per vrf, to establish iBGP peering (required when mlag leafs in topology)\nThe SVI id will be derived from the base vlan defined: mlag_ibgp_peering_vrfs.base_vlan + (vrf_id or vrf_vni) - 1\nDepending on the values of vrf_id / vrf_id it may be required to adjust the base_vlan to avoid overlaps or invalid vlan ids.\nThe SVI ip address derived from mlag_l3_peer_ipv4_pool is re-used across all iBGP peerings.\n",
+      "description": "On mlag leafs, an SVI interface is defined per vrf, to establish iBGP peering (required when there are MLAG leafs in topology)\nThe SVI id will be derived from the base vlan defined: mlag_ibgp_peering_vrfs.base_vlan + (vrf_id or vrf_vni) - 1\nDepending on the values of vrf_id / vrf_vni it may be required to adjust the base_vlan to avoid overlaps or invalid vlan ids.\nThe SVI ip address derived from mlag_l3_peer_ipv4_pool is re-used across all iBGP peerings.\n",
       "properties": {
         "base_vlan": {
           "type": "integer",
@@ -5073,7 +5075,7 @@
       "title": "Platform Speed Groups"
     },
     "pod_name": {
-      "description": "POD Name, only used in Fabric Documentation (Optional), fallback to dc_name and then to fabric_name.\nRecommended to be common between Spines, Leafs within a POD (One l3ls topology)\n",
+      "description": "POD Name, only used in Fabric Documentation (Optional), fallback to dc_name and then to fabric_name.\nRecommended to be common between Spines and Leafs within a POD (One l3ls topology).\n",
       "type": "string",
       "title": "Pod Name"
     },
@@ -5128,7 +5130,7 @@
       "properties": {
         "mlag": {
           "type": "object",
-          "description": "\"mlag\" is the Trunk Group used for MLAG VLAN (Typically VLAN 4094)\n",
+          "description": "Trunk Group used for MLAG VLAN (Typically VLAN 4094)\n",
           "properties": {
             "name": {
               "type": "string",
@@ -5144,7 +5146,7 @@
         },
         "mlag_l3": {
           "type": "object",
-          "description": "\"mlag_l3\" is the Trunk Group used for MLAG L3 peering VLAN (Typically VLAN 4093)\n\"mlag_l3\" is also the Trunk Group used for VRF L3 peering VLANs\n",
+          "description": "Trunk Group used for MLAG L3 peering VLAN and for VRF L3 peering VLANs (Typically VLAN 4093)\n",
           "properties": {
             "name": {
               "type": "string",
@@ -5160,7 +5162,7 @@
         },
         "uplink": {
           "type": "object",
-          "description": "\"uplink\" is the Trunk Group used on L2 Leaf switches when \"enable_trunk_groups\" is set\n",
+          "description": "Trunk Group used on L2 Leaf switches when \"enable_trunk_groups\" is set\n",
           "properties": {
             "name": {
               "type": "string",

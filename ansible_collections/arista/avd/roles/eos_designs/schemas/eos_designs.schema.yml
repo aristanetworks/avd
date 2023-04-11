@@ -265,9 +265,8 @@ keys:
     documentation_options:
       filename: Fabric Variables
       table: Multicast Settings
-    description: 'Disable IGMP snooping at fabric level.
-
-      If set, it overrides per vlan settings.
+    description: 'When set to false, disables IGMP snooping at fabric level and overrides
+      per vlan settings.
 
       '
     type: bool
@@ -573,27 +572,40 @@ keys:
     required: true
     keys:
       allocation:
+        documentation_options:
+          filename: Fabric Variables
+          table: VLAN Settings
         type: str
         valid_values:
         - ascending
         - descending
         default: ascending
       range:
+        documentation_options:
+          filename: Fabric Variables
+          table: VLAN Settings
         type: dict
         keys:
           beginning:
+            documentation_options:
+              filename: Fabric Variables
+              table: VLAN Settings
             type: int
             convert_types:
             - str
-            description: VLAN ID
+            description: VLAN ID lower then `internal_vlan_order.range.ending` value.
             default: 1006
             min: 1
             max: 4094
           ending:
+            documentation_options:
+              filename: Fabric Variables
+              table: VLAN Settings
             type: int
             convert_types:
             - str
-            description: VLAN ID
+            description: VLAN ID higher then `internal_vlan_order.range.beginning`
+              value.
             default: 1199
             min: 1
             max: 4094
@@ -685,22 +697,31 @@ keys:
       '
     keys:
       aging_time:
+        documentation_options:
+          filename: Fabric Variables
+          table: MAC Address Table Settings
         type: int
         convert_types:
         - str
-        description: Time in seconds
+        description: 'Aging time in seconds 10-1000000.
+
+          Enter 0 to disable aging.
+
+          '
+        min: 0
+        max: 1000000
   mlag_ibgp_peering_vrfs:
     documentation_options:
       filename: Fabric Variables
       table: MLAG Settings
     type: dict
     description: 'On mlag leafs, an SVI interface is defined per vrf, to establish
-      iBGP peering (required when mlag leafs in topology)
+      iBGP peering (required when there are MLAG leafs in topology)
 
       The SVI id will be derived from the base vlan defined: mlag_ibgp_peering_vrfs.base_vlan
       + (vrf_id or vrf_vni) - 1
 
-      Depending on the values of vrf_id / vrf_id it may be required to adjust the
+      Depending on the values of vrf_id / vrf_vni it may be required to adjust the
       base_vlan to avoid overlaps or invalid vlan ids.
 
       The SVI ip address derived from mlag_l3_peer_ipv4_pool is re-used across all
@@ -2642,7 +2663,7 @@ keys:
     description: 'POD Name, only used in Fabric Documentation (Optional), fallback
       to dc_name and then to fabric_name.
 
-      Recommended to be common between Spines, Leafs within a POD (One l3ls topology)
+      Recommended to be common between Spines and Leafs within a POD (One l3ls topology).
 
       '
     type: str
@@ -2732,8 +2753,7 @@ keys:
           filename: Fabric Variables
           table: VLAN Settings
         type: dict
-        description: '"mlag" is the Trunk Group used for MLAG VLAN (Typically VLAN
-          4094)
+        description: 'Trunk Group used for MLAG VLAN (Typically VLAN 4094)
 
           '
         keys:
@@ -2748,10 +2768,8 @@ keys:
           filename: Fabric Variables
           table: VLAN Settings
         type: dict
-        description: '"mlag_l3" is the Trunk Group used for MLAG L3 peering VLAN (Typically
-          VLAN 4093)
-
-          "mlag_l3" is also the Trunk Group used for VRF L3 peering VLANs
+        description: 'Trunk Group used for MLAG L3 peering VLAN and for VRF L3 peering
+          VLANs (Typically VLAN 4093)
 
           '
         keys:
@@ -2766,7 +2784,7 @@ keys:
           filename: Fabric Variables
           table: VLAN Settings
         type: dict
-        description: '"uplink" is the Trunk Group used on L2 Leaf switches when "enable_trunk_groups"
+        description: 'Trunk Group used on L2 Leaf switches when "enable_trunk_groups"
           is set
 
           '

@@ -12,27 +12,39 @@ keys:
     required: true
     keys:
       allocation:
+        documentation_options:
+          filename: Fabric Variables
+          table: VLAN Settings
         type: str
         valid_values:
         - ascending
         - descending
         default: ascending
       range:
+        documentation_options:
+          filename: Fabric Variables
+          table: VLAN Settings
         type: dict
         keys:
           beginning:
+            documentation_options:
+              filename: Fabric Variables
+              table: VLAN Settings
             type: int
             convert_types:
             - str
-            description: VLAN ID
+            description: VLAN ID lower then `internal_vlan_order.range.ending` value.
             default: 1006
             min: 1
             max: 4094
           ending:
+            documentation_options:
+              filename: Fabric Variables
+              table: VLAN Settings
             type: int
             convert_types:
             - str
-            description: VLAN ID
+            description: VLAN ID higher then `internal_vlan_order.range.beginning` value.
             default: 1199
             min: 1
             max: 4094
