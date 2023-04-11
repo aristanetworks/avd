@@ -861,6 +861,12 @@
               "default": false,
               "title": "MLAG Dual Primary Detection"
             },
+            "mlag_ibgp_origin_incomplete": {
+              "description": "Set origin of routes received from MLAG iBGP peer to incomplete.\nThe purpose is to optimize routing for leaf loopbacks from spine perspective and\navoid suboptimal routing via peerlink for control plane traffic.\n",
+              "type": "boolean",
+              "default": true,
+              "title": "MLAG Ibgp Origin Incomplete"
+            },
             "mlag_interfaces": {
               "description": "Each list item supports range syntax that can be expanded into a list of interfaces.\nRequired when MLAG leafs are present in the topology.\n",
               "type": "array",
@@ -1820,6 +1826,12 @@
                 "default": false,
                 "title": "MLAG Dual Primary Detection"
               },
+              "mlag_ibgp_origin_incomplete": {
+                "description": "Set origin of routes received from MLAG iBGP peer to incomplete.\nThe purpose is to optimize routing for leaf loopbacks from spine perspective and\navoid suboptimal routing via peerlink for control plane traffic.\n",
+                "type": "boolean",
+                "default": true,
+                "title": "MLAG Ibgp Origin Incomplete"
+              },
               "mlag_interfaces": {
                 "description": "Each list item supports range syntax that can be expanded into a list of interfaces.\nRequired when MLAG leafs are present in the topology.\n",
                 "type": "array",
@@ -2776,6 +2788,12 @@
                       "type": "boolean",
                       "default": false,
                       "title": "MLAG Dual Primary Detection"
+                    },
+                    "mlag_ibgp_origin_incomplete": {
+                      "description": "Set origin of routes received from MLAG iBGP peer to incomplete.\nThe purpose is to optimize routing for leaf loopbacks from spine perspective and\navoid suboptimal routing via peerlink for control plane traffic.\n",
+                      "type": "boolean",
+                      "default": true,
+                      "title": "MLAG Ibgp Origin Incomplete"
                     },
                     "mlag_interfaces": {
                       "description": "Each list item supports range syntax that can be expanded into a list of interfaces.\nRequired when MLAG leafs are present in the topology.\n",
@@ -3755,6 +3773,12 @@
                 "type": "boolean",
                 "default": false,
                 "title": "MLAG Dual Primary Detection"
+              },
+              "mlag_ibgp_origin_incomplete": {
+                "description": "Set origin of routes received from MLAG iBGP peer to incomplete.\nThe purpose is to optimize routing for leaf loopbacks from spine perspective and\navoid suboptimal routing via peerlink for control plane traffic.\n",
+                "type": "boolean",
+                "default": true,
+                "title": "MLAG Ibgp Origin Incomplete"
               },
               "mlag_interfaces": {
                 "description": "Each list item supports range syntax that can be expanded into a list of interfaces.\nRequired when MLAG leafs are present in the topology.\n",

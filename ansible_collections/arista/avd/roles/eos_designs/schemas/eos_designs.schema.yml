@@ -1224,6 +1224,20 @@ keys:
             description: Enable / Disable MLAG dual primary detection.
             type: bool
             default: false
+          mlag_ibgp_origin_incomplete:
+            documentation_options:
+              filename: Fabric Topology
+              table: MLAG configuration management
+            description: 'Set origin of routes received from MLAG iBGP peer to incomplete.
+
+              The purpose is to optimize routing for leaf loopbacks from spine perspective
+              and
+
+              avoid suboptimal routing via peerlink for control plane traffic.
+
+              '
+            type: bool
+            default: true
           mlag_interfaces:
             documentation_options:
               filename: Fabric Topology

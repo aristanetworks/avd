@@ -248,6 +248,7 @@ l3leaf:
           bgp_as: 65108
           mgmt_ip: 192.168.200.119/24
           uplink_switch_interfaces: [ Ethernet26, Ethernet26, Ethernet26, Ethernet26 ]
+          mlag_ibgp_origin_incomplete: false
         DC1-CL1B:
           platform: 7300X3
           id: 11
