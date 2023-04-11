@@ -67,13 +67,11 @@ def eos_cli_config_gen_schema_molecule_coverage():
     """
     schema_id = "eos_cli_config_gen"
     # Maybe make a function to generate data_paths
-    eos_cli_config_gen_scenarios = ["eos_cli_config_gen"]
+    scenarios = ["eos_cli_config_gen"]
     data_paths = []
-    for scenario in eos_cli_config_gen_scenarios:
-        path = MOLECULE_PATH / scenario / "inventory" / "host_vars"
-        data_paths.extend(path.iterdir())
-        path = MOLECULE_PATH / scenario / "inventory" / "group_vars"
-        data_paths.extend(path.iterdir())
+    for scenario in scenarios:
+        path = MOLECULE_PATH / scenario / "inventory"
+        data_paths.extend(path.glob("*_vars/**/*.yml"))
 
     _run_schema_molecule_coverage(schema_id, data_paths)
 
@@ -83,13 +81,38 @@ def eos_designs_schema_molecule_coverage():
     Runs schema coverage for eos_designs schema
     """
     schema_id = "eos_designs"
-    eos_cli_config_gen_scenarios = ["eos_cli_config_gen"]
+    scenarios = [
+        "eos_designs-l2ls",
+        "eos_designs-mpls-isis-sr-ldp",
+        "eos_designs-twodc-5stage-clos",
+        "eos_designs_negative_unit_tests",
+        "eos_designs_unit_tests",
+        "eos_designs_unit_tests_v4.0",
+        "evpn_underlay_ebgp_overlay_ebgp",
+        "evpn_underlay_isis_overlay_ibgp",
+        "evpn_underlay_ospf_overlay_ebgp",
+        "evpn_underlay_rfc5549_overlay_ebgp",
+        "example-campus-fabric",
+        "example-dual-dc-l3ls",
+        "example-l2ls-fabric",
+        "example-single-dc-l3ls",
+    ]
     data_paths = []
-    for scenario in eos_cli_config_gen_scenarios:
-        path = MOLECULE_PATH / scenario / "inventory" / "host_vars"
-        data_paths.extend(path.iterdir())
-        path = MOLECULE_PATH / scenario / "inventory" / "group_vars"
-        data_paths.extend(path.iterdir())
+    for scenario in scenarios:
+        path = MOLECULE_PATH / scenario / "inventory"
+        data_paths.extend(path.glob("*_vars/**/*.yml"))
+        # try:
+        #     path = MOLECULE_PATH / scenario / "inventory" / "host_vars"
+        #     data_paths.extend(path.iterdir())
+        # except FileNotFoundError:
+        #     # No host_vars
+        #     pass
+        # try:
+        #     path = MOLECULE_PATH / scenario / "inventory" / "group_vars"
+        #     data_paths.extend(path.iterdir())
+        # except FileNotFoundError:
+        #     # No group_vars
+        #     pass
 
     _run_schema_molecule_coverage(schema_id, data_paths)
 
@@ -109,9 +132,9 @@ if __name__ == "__main__":
         exceptions.append(e)
     print("### eos_cli_config_gen - [done]")
 
-    # print("### eos_designs ...")
-    # eos_designs_schema_molecule_coverage()
-    # print("### eos_designs - [done]")
+    print("### eos_designs ...")
+    eos_designs_schema_molecule_coverage()
+    print("### eos_designs - [done]")
 
     if exceptions:
         print("\n#############################################\n")
