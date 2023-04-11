@@ -1526,6 +1526,7 @@ default_interfaces:
     | [<samp>&nbsp;&nbsp;defaults</samp>](## "node_type.defaults") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag</samp>](## "node_type.defaults.mlag") | Boolean |  | True |  | Enable / Disable auto MLAG, when two nodes are defined in node group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_dual_primary_detection</samp>](## "node_type.defaults.mlag_dual_primary_detection") | Boolean |  | False |  | Enable / Disable MLAG dual primary detection. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_origin_incomplete</samp>](## "node_type.defaults.mlag_ibgp_origin_incomplete") | Boolean |  | True |  | Set origin of routes received from MLAG iBGP peer to incomplete.<br>The purpose is to optimize routing for leaf loopbacks from spine perspective and<br>avoid suboptimal routing via peerlink for control plane traffic.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_interfaces</samp>](## "node_type.defaults.mlag_interfaces") | List, items: String |  |  |  | Each list item supports range syntax that can be expanded into a list of interfaces.<br>Required when MLAG leafs are present in the topology.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "node_type.defaults.mlag_interfaces.[].&lt;str&gt;") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_interfaces_speed</samp>](## "node_type.defaults.mlag_interfaces_speed") | String |  |  |  | Set MLAG interface speed.<br>< interface_speed or forced interface_speed or auto interface_speed >.<br> |
@@ -1542,6 +1543,7 @@ default_interfaces:
     | [<samp>&nbsp;&nbsp;node_groups</samp>](## "node_type.node_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- mlag</samp>](## "node_type.node_groups.[].mlag") | Boolean |  | True |  | Enable / Disable auto MLAG, when two nodes are defined in node group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_dual_primary_detection</samp>](## "node_type.node_groups.[].mlag_dual_primary_detection") | Boolean |  | False |  | Enable / Disable MLAG dual primary detection. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_origin_incomplete</samp>](## "node_type.node_groups.[].mlag_ibgp_origin_incomplete") | Boolean |  | True |  | Set origin of routes received from MLAG iBGP peer to incomplete.<br>The purpose is to optimize routing for leaf loopbacks from spine perspective and<br>avoid suboptimal routing via peerlink for control plane traffic.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_interfaces</samp>](## "node_type.node_groups.[].mlag_interfaces") | List, items: String |  |  |  | Each list item supports range syntax that can be expanded into a list of interfaces.<br>Required when MLAG leafs are present in the topology.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "node_type.node_groups.[].mlag_interfaces.[].&lt;str&gt;") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_interfaces_speed</samp>](## "node_type.node_groups.[].mlag_interfaces_speed") | String |  |  |  | Set MLAG interface speed.<br>< interface_speed or forced interface_speed or auto interface_speed >.<br> |
@@ -1558,6 +1560,7 @@ default_interfaces:
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "node_type.node_groups.[].nodes") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- mlag</samp>](## "node_type.node_groups.[].nodes.[].mlag") | Boolean |  | True |  | Enable / Disable auto MLAG, when two nodes are defined in node group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_dual_primary_detection</samp>](## "node_type.node_groups.[].nodes.[].mlag_dual_primary_detection") | Boolean |  | False |  | Enable / Disable MLAG dual primary detection. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_origin_incomplete</samp>](## "node_type.node_groups.[].nodes.[].mlag_ibgp_origin_incomplete") | Boolean |  | True |  | Set origin of routes received from MLAG iBGP peer to incomplete.<br>The purpose is to optimize routing for leaf loopbacks from spine perspective and<br>avoid suboptimal routing via peerlink for control plane traffic.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_interfaces</samp>](## "node_type.node_groups.[].nodes.[].mlag_interfaces") | List, items: String |  |  |  | Each list item supports range syntax that can be expanded into a list of interfaces.<br>Required when MLAG leafs are present in the topology.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "node_type.node_groups.[].nodes.[].mlag_interfaces.[].&lt;str&gt;") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_interfaces_speed</samp>](## "node_type.node_groups.[].nodes.[].mlag_interfaces_speed") | String |  |  |  | Set MLAG interface speed.<br>< interface_speed or forced interface_speed or auto interface_speed >.<br> |
@@ -1574,6 +1577,7 @@ default_interfaces:
     | [<samp>&nbsp;&nbsp;nodes</samp>](## "node_type.nodes") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- mlag</samp>](## "node_type.nodes.[].mlag") | Boolean |  | True |  | Enable / Disable auto MLAG, when two nodes are defined in node group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_dual_primary_detection</samp>](## "node_type.nodes.[].mlag_dual_primary_detection") | Boolean |  | False |  | Enable / Disable MLAG dual primary detection. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_origin_incomplete</samp>](## "node_type.nodes.[].mlag_ibgp_origin_incomplete") | Boolean |  | True |  | Set origin of routes received from MLAG iBGP peer to incomplete.<br>The purpose is to optimize routing for leaf loopbacks from spine perspective and<br>avoid suboptimal routing via peerlink for control plane traffic.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_interfaces</samp>](## "node_type.nodes.[].mlag_interfaces") | List, items: String |  |  |  | Each list item supports range syntax that can be expanded into a list of interfaces.<br>Required when MLAG leafs are present in the topology.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "node_type.nodes.[].mlag_interfaces.[].&lt;str&gt;") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_interfaces_speed</samp>](## "node_type.nodes.[].mlag_interfaces_speed") | String |  |  |  | Set MLAG interface speed.<br>< interface_speed or forced interface_speed or auto interface_speed >.<br> |
@@ -1591,6 +1595,7 @@ default_interfaces:
     | [<samp>&nbsp;&nbsp;defaults</samp>](## "&lt;node_type_keys.key&gt;.defaults") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag</samp>](## "&lt;node_type_keys.key&gt;.defaults.mlag") | Boolean |  | True |  | Enable / Disable auto MLAG, when two nodes are defined in node group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_dual_primary_detection</samp>](## "&lt;node_type_keys.key&gt;.defaults.mlag_dual_primary_detection") | Boolean |  | False |  | Enable / Disable MLAG dual primary detection. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_origin_incomplete</samp>](## "&lt;node_type_keys.key&gt;.defaults.mlag_ibgp_origin_incomplete") | Boolean |  | True |  | Set origin of routes received from MLAG iBGP peer to incomplete.<br>The purpose is to optimize routing for leaf loopbacks from spine perspective and<br>avoid suboptimal routing via peerlink for control plane traffic.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_interfaces</samp>](## "&lt;node_type_keys.key&gt;.defaults.mlag_interfaces") | List, items: String |  |  |  | Each list item supports range syntax that can be expanded into a list of interfaces.<br>Required when MLAG leafs are present in the topology.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "&lt;node_type_keys.key&gt;.defaults.mlag_interfaces.[].&lt;str&gt;") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_interfaces_speed</samp>](## "&lt;node_type_keys.key&gt;.defaults.mlag_interfaces_speed") | String |  |  |  | Set MLAG interface speed.<br>< interface_speed or forced interface_speed or auto interface_speed >.<br> |
@@ -1607,6 +1612,7 @@ default_interfaces:
     | [<samp>&nbsp;&nbsp;node_groups</samp>](## "&lt;node_type_keys.key&gt;.node_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- mlag</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].mlag") | Boolean |  | True |  | Enable / Disable auto MLAG, when two nodes are defined in node group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_dual_primary_detection</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].mlag_dual_primary_detection") | Boolean |  | False |  | Enable / Disable MLAG dual primary detection. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_origin_incomplete</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].mlag_ibgp_origin_incomplete") | Boolean |  | True |  | Set origin of routes received from MLAG iBGP peer to incomplete.<br>The purpose is to optimize routing for leaf loopbacks from spine perspective and<br>avoid suboptimal routing via peerlink for control plane traffic.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_interfaces</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].mlag_interfaces") | List, items: String |  |  |  | Each list item supports range syntax that can be expanded into a list of interfaces.<br>Required when MLAG leafs are present in the topology.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].mlag_interfaces.[].&lt;str&gt;") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_interfaces_speed</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].mlag_interfaces_speed") | String |  |  |  | Set MLAG interface speed.<br>< interface_speed or forced interface_speed or auto interface_speed >.<br> |
@@ -1623,6 +1629,7 @@ default_interfaces:
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].nodes") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- mlag</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].nodes.[].mlag") | Boolean |  | True |  | Enable / Disable auto MLAG, when two nodes are defined in node group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_dual_primary_detection</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].nodes.[].mlag_dual_primary_detection") | Boolean |  | False |  | Enable / Disable MLAG dual primary detection. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_origin_incomplete</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].nodes.[].mlag_ibgp_origin_incomplete") | Boolean |  | True |  | Set origin of routes received from MLAG iBGP peer to incomplete.<br>The purpose is to optimize routing for leaf loopbacks from spine perspective and<br>avoid suboptimal routing via peerlink for control plane traffic.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_interfaces</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].nodes.[].mlag_interfaces") | List, items: String |  |  |  | Each list item supports range syntax that can be expanded into a list of interfaces.<br>Required when MLAG leafs are present in the topology.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].nodes.[].mlag_interfaces.[].&lt;str&gt;") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_interfaces_speed</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].nodes.[].mlag_interfaces_speed") | String |  |  |  | Set MLAG interface speed.<br>< interface_speed or forced interface_speed or auto interface_speed >.<br> |
@@ -1639,6 +1646,7 @@ default_interfaces:
     | [<samp>&nbsp;&nbsp;nodes</samp>](## "&lt;node_type_keys.key&gt;.nodes") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- mlag</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].mlag") | Boolean |  | True |  | Enable / Disable auto MLAG, when two nodes are defined in node group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_dual_primary_detection</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].mlag_dual_primary_detection") | Boolean |  | False |  | Enable / Disable MLAG dual primary detection. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_origin_incomplete</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].mlag_ibgp_origin_incomplete") | Boolean |  | True |  | Set origin of routes received from MLAG iBGP peer to incomplete.<br>The purpose is to optimize routing for leaf loopbacks from spine perspective and<br>avoid suboptimal routing via peerlink for control plane traffic.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_interfaces</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].mlag_interfaces") | List, items: String |  |  |  | Each list item supports range syntax that can be expanded into a list of interfaces.<br>Required when MLAG leafs are present in the topology.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].mlag_interfaces.[].&lt;str&gt;") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_interfaces_speed</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].mlag_interfaces_speed") | String |  |  |  | Set MLAG interface speed.<br>< interface_speed or forced interface_speed or auto interface_speed >.<br> |
@@ -1660,6 +1668,7 @@ default_interfaces:
       defaults:
         mlag: <bool>
         mlag_dual_primary_detection: <bool>
+        mlag_ibgp_origin_incomplete: <bool>
         mlag_interfaces:
           - <str>
         mlag_interfaces_speed: <str>
@@ -1676,6 +1685,7 @@ default_interfaces:
       node_groups:
         - mlag: <bool>
           mlag_dual_primary_detection: <bool>
+          mlag_ibgp_origin_incomplete: <bool>
           mlag_interfaces:
             - <str>
           mlag_interfaces_speed: <str>
@@ -1692,6 +1702,7 @@ default_interfaces:
           nodes:
             - mlag: <bool>
               mlag_dual_primary_detection: <bool>
+              mlag_ibgp_origin_incomplete: <bool>
               mlag_interfaces:
                 - <str>
               mlag_interfaces_speed: <str>
@@ -1708,6 +1719,7 @@ default_interfaces:
       nodes:
         - mlag: <bool>
           mlag_dual_primary_detection: <bool>
+          mlag_ibgp_origin_incomplete: <bool>
           mlag_interfaces:
             - <str>
           mlag_interfaces_speed: <str>
@@ -1725,6 +1737,7 @@ default_interfaces:
       defaults:
         mlag: <bool>
         mlag_dual_primary_detection: <bool>
+        mlag_ibgp_origin_incomplete: <bool>
         mlag_interfaces:
           - <str>
         mlag_interfaces_speed: <str>
@@ -1741,6 +1754,7 @@ default_interfaces:
       node_groups:
         - mlag: <bool>
           mlag_dual_primary_detection: <bool>
+          mlag_ibgp_origin_incomplete: <bool>
           mlag_interfaces:
             - <str>
           mlag_interfaces_speed: <str>
@@ -1757,6 +1771,7 @@ default_interfaces:
           nodes:
             - mlag: <bool>
               mlag_dual_primary_detection: <bool>
+              mlag_ibgp_origin_incomplete: <bool>
               mlag_interfaces:
                 - <str>
               mlag_interfaces_speed: <str>
@@ -1773,6 +1788,7 @@ default_interfaces:
       nodes:
         - mlag: <bool>
           mlag_dual_primary_detection: <bool>
+          mlag_ibgp_origin_incomplete: <bool>
           mlag_interfaces:
             - <str>
           mlag_interfaces_speed: <str>
