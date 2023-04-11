@@ -6,6 +6,6 @@ l3leaf:
     loopback_pool_one_host:
       id: 1
       bgp_as: 65000
-      loopback_ipv4_pool: 42.42.42.42/32
+      loopback_ipv4_pool: 192.168.42.42/32
       vtep_loopback_ipv4_pool: 1.1.1.1/32
-      loopback_ipv6_pool: dead:beef::cafe/128
+      loopback_ipv6_pool: 2001:db8::cafe/128

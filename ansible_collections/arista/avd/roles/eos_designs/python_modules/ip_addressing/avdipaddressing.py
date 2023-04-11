@@ -22,12 +22,6 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
     def _ip(self, pool: str, prefixlen: int, subnet_offset: int, ip_offset: int) -> str:
         pool_network = ipaddress.ip_network(pool, strict=False)
         prefixlen_diff = prefixlen - pool_network.prefixlen
-        if prefixlen == pool_network.prefixlen and (
-            (prefixlen == 32 and isinstance(pool_network, ipaddress.IPv4Network)) or (prefixlen == 128 and isinstance(pool_network, ipaddress.IPv6Network))
-        ):
-            # Ignore subnet_offset and ip_offset ?
-            return str(pool_network.network_address)
-
         subnet_size = (int(pool_network.hostmask) + 1) >> prefixlen_diff
         if (subnet_offset + 1) * subnet_size > pool_network.num_addresses:
             raise AristaAvdError(f"Unable to get {subnet_offset + 1} /{prefixlen} subnets from pool {pool}")
@@ -37,6 +31,15 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         except IndexError as e:
             raise AristaAvdError(f"Unable to get {ip_offset+1} hosts in subnet {subnet} taken from pool {pool}") from e
         return str(ip)
+
+    def _is_host_subnet(self, pool):
+        """
+        Return True if the pool is a /32 for IPv4 or a /128 for IPv6
+        """
+        pool_network = ipaddress.ip_network(pool, strict=False)
+        return (pool_network.prefixlen == 32 and isinstance(pool_network, ipaddress.IPv4Network)) or (
+            pool_network.prefixlen == 128 and isinstance(pool_network, ipaddress.IPv6Network)
+        )
 
     def _template(self, template_path, **kwargs):
         template_vars = ChainMap(kwargs, self._hostvars)
@@ -193,7 +196,11 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
                 loopback_ipv4_offset=self._loopback_ipv4_offset,
             )
 
-        offset = self._id + self._loopback_ipv4_offset
+        if self._is_host_subnet(self._loopback_ipv4_pool):
+            offset = 0
+        else:
+            offset = self._id + self._loopback_ipv4_offset
+
         return self._ip(self._loopback_ipv4_pool, 32, offset, 0)
 
     def ipv6_router_id(self) -> str:
@@ -211,7 +218,11 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
                 loopback_ipv6_offset=self._loopback_ipv6_offset,
             )
 
-        offset = self._id + self._loopback_ipv6_offset
+        if self._is_host_subnet(self._loopback_ipv6_pool):
+            offset = 0
+        else:
+            offset = self._id + self._loopback_ipv6_offset
+
         return self._ip(self._loopback_ipv6_pool, 128, offset, 0)
 
     def vtep_ip_mlag(self) -> str:
@@ -231,7 +242,11 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
                 mlag_secondary_id=self._mlag_secondary_id,
             )
 
-        offset = self._mlag_primary_id + self._loopback_ipv4_offset
+        if self._is_host_subnet(self._vtep_loopback_ipv4_pool):
+            offset = 0
+        else:
+            offset = self._mlag_primary_id + self._loopback_ipv4_offset
+
         return self._ip(self._vtep_loopback_ipv4_pool, 32, offset, 0)
 
     def vtep_ip(self) -> str:
@@ -249,5 +264,9 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
                 loopback_ipv4_offset=self._loopback_ipv4_offset,
             )
 
-        offset = self._id + self._loopback_ipv4_offset
+        if self._is_host_subnet(self._vtep_loopback_ipv4_pool):
+            offset = 0
+        else:
+            offset = self._id + self._loopback_ipv4_offset
+
         return self._ip(self._vtep_loopback_ipv4_pool, 32, offset, 0)

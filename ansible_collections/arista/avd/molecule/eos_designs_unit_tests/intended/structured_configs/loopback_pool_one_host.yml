@@ -1,6 +1,6 @@
 router_bgp:
   as: '65000'
-  router_id: 42.42.42.42
+  router_id: 192.168.42.42
   bgp_defaults:
   - maximum-paths 4 ecmp 4
   peer_groups:
@@ -46,7 +46,7 @@ loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
   shutdown: false
-  ip_address: 42.42.42.42/32
+  ip_address: 192.168.42.42/32
 - name: Loopback1
   description: VTEP_VXLAN_Tunnel_Source
   shutdown: false
@@ -55,7 +55,7 @@ prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
   - sequence: 10
-    action: permit 42.42.42.42/32 eq 32
+    action: permit 192.168.42.42/32 eq 32
   - sequence: 20
     action: permit 1.1.1.1/32 eq 32
 route_maps:
