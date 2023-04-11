@@ -3,16 +3,24 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  uplink_ptp:
+  mac_address_table:
     documentation_options:
       filename: Fabric Variables
-      table: Uplinks Settings
-    description: Enable PTP on all infrastructure links
+      table: MAC Address Table Settings
     type: dict
+    description: |
+      MAC address-table aging time
+      Use to change the EOS default of 300.
     keys:
-      enable:
+      aging_time:
         documentation_options:
           filename: Fabric Variables
-          table: Uplinks Settings
-        type: bool
-        default: false
+          table: MAC Address Table Settings
+        type: int
+        convert_types:
+          - str
+        description: |
+          Aging time in seconds 10-1000000.
+          Enter 0 to disable aging.
+        min: 0
+        max: 1000000

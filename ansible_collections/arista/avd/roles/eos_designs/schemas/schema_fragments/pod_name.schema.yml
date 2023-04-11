@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  pod_name:
+    documentation_options:
+      filename: Fabric Topology
+      table: Topology Variables
+    description: |
+      POD Name, only used in Fabric Documentation (Optional), fallback to dc_name and then to fabric_name.
+      Recommended to be common between Spines and Leafs within a POD (One l3ls topology).
+    type: str
