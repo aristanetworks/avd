@@ -21,7 +21,7 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: Encrypted password.
+            description: Type 7 encrypted password.
           structured_config:
             type: dict
             description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
@@ -34,7 +34,7 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: Encrypted password.
+            description: Type 7 encrypted password.
           structured_config:
             type: dict
             description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
@@ -47,7 +47,7 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: Encrypted password.
+            description: Type 7 encrypted password.
           structured_config:
             type: dict
             description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
@@ -60,7 +60,7 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: Encrypted password.
+            description: Type 7 encrypted password.
           structured_config:
             type: dict
             description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
@@ -73,7 +73,7 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: Encrypted password.
+            description: Type 7 encrypted password.
           structured_config:
             type: dict
             description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
@@ -86,7 +86,7 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: Encrypted password.
+            description: Type 7 encrypted password.
           structured_config:
             type: dict
             description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
@@ -99,7 +99,7 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: Encrypted password.
+            description: Type 7 encrypted password.
           structured_config:
             type: dict
             description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen

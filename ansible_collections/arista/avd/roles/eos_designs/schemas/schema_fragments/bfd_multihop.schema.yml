@@ -15,13 +15,19 @@ keys:
         convert_types:
           - str
         default: 300
+        min: 50
+        max: 60000
       min_rx:
         type: int
         convert_types:
           - str
         default: 300
+        min: 50
+        max: 60000
       multiplier:
         type: int
         convert_types:
           - str
         default: 3
+        min: 3
+        max: 50

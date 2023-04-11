@@ -26,7 +26,7 @@ search:
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>bgp_ecmp</samp>](## "bgp_ecmp") | Integer |  | 4 |  | Maximum ECMP for BGP multi-path |
-    | [<samp>bgp_maximum_paths</samp>](## "bgp_maximum_paths") | Integer |  | 4 |  | Maximum Paths for BGP multi-path |
+    | [<samp>bgp_maximum_paths</samp>](## "bgp_maximum_paths") | Integer |  | 4 | Min: 1<br>Max: 512 | Maximum Paths for BGP multi-path |
 
 === "YAML"
 

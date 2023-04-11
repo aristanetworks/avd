@@ -8,16 +8,22 @@
         "interval": {
           "type": "integer",
           "default": 300,
+          "minimum": 50,
+          "maximum": 60000,
           "title": "Interval"
         },
         "min_rx": {
           "type": "integer",
           "default": 300,
+          "minimum": 50,
+          "maximum": 60000,
           "title": "Min RX"
         },
         "multiplier": {
           "type": "integer",
           "default": 3,
+          "minimum": 3,
+          "maximum": 50,
           "title": "Multiplier"
         }
       },
@@ -42,6 +48,8 @@
       "description": "Maximum Paths for BGP multi-path",
       "type": "integer",
       "default": 4,
+      "minimum": 1,
+      "maximum": 512,
       "title": "BGP Maximum Paths"
     },
     "bgp_mesh_pes": {
@@ -65,7 +73,7 @@
             },
             "password": {
               "type": "string",
-              "description": "Encrypted password.",
+              "description": "Type 7 encrypted password.",
               "title": "Password"
             },
             "structured_config": {
@@ -91,7 +99,7 @@
             },
             "password": {
               "type": "string",
-              "description": "Encrypted password.",
+              "description": "Type 7 encrypted password.",
               "title": "Password"
             },
             "structured_config": {
@@ -117,7 +125,7 @@
             },
             "password": {
               "type": "string",
-              "description": "Encrypted password.",
+              "description": "Type 7 encrypted password.",
               "title": "Password"
             },
             "structured_config": {
@@ -143,7 +151,7 @@
             },
             "password": {
               "type": "string",
-              "description": "Encrypted password.",
+              "description": "Type 7 encrypted password.",
               "title": "Password"
             },
             "structured_config": {
@@ -169,7 +177,7 @@
             },
             "password": {
               "type": "string",
-              "description": "Encrypted password.",
+              "description": "Type 7 encrypted password.",
               "title": "Password"
             },
             "structured_config": {
@@ -195,7 +203,7 @@
             },
             "password": {
               "type": "string",
-              "description": "Encrypted password.",
+              "description": "Type 7 encrypted password.",
               "title": "Password"
             },
             "structured_config": {
@@ -221,7 +229,7 @@
             },
             "password": {
               "type": "string",
-              "description": "Encrypted password.",
+              "description": "Type 7 encrypted password.",
               "title": "Password"
             },
             "structured_config": {
