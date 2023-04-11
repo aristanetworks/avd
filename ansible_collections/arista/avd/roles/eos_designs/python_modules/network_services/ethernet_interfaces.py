@@ -142,8 +142,8 @@ class EthernetInterfacesMixin(UtilsMixin):
                                     continue
 
                                 raise AristaAvdError(
-                                    f"Duplicate interface_name {interface['name']} found while generating ethernet_interfaces for network_services vrf:"
-                                    f" {interface['vrf']}. Duplicate interface_name of description: {found_eth_interface['description']}"
+                                    f"Duplicate interface_name {interface['name']} found while generating l3_interfaces under network_services vrf:"
+                                    f" {interface['vrf']}. Description on duplicate interface: {found_eth_interface['description']}"
                                 )
 
         if self._network_services_l1:
@@ -220,8 +220,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                                         continue
 
                                     raise AristaAvdError(
-                                        f"Duplicate interface_name {ethernet_interface['name']} found while generating ethernet_interfaces for network_services"
-                                        " subinterface"
+                                        f"Duplicate interface_name {ethernet_interface['name']} found while generating subinterfaces under port_to_point_services"
                                     )
                             else:
                                 interface = {
@@ -244,8 +243,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                                         continue
 
                                     raise AristaAvdError(
-                                        f"Duplicate interface_name {interface['name']} found while generating ethernet_interfaces for network_services"
-                                        " subinterface"
+                                        f"Duplicate interface_name {interface['name']} found while generating ethernet_interfaces for point_to_point_services"
                                     )
 
         subif_parent_interface_names = subif_parent_interface_names.difference([eth_int["name"] for eth_int in ethernet_interfaces])

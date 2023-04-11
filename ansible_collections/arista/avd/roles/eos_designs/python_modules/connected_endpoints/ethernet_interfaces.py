@@ -41,7 +41,7 @@ class EthernetInterfacesMixin(UtilsMixin):
 
                         raise AristaAvdError(
                             f"Duplicate interface name {ethernet_interface['name']} found while generating ethernet_interfaces for connected_endpoints peer:"
-                            f" {ethernet_interface['peer']}, peer_interface: {ethernet_interface['peer_interface']}. Duplicate interface name of description:"
+                            f" {ethernet_interface['peer']}, peer_interface: {ethernet_interface['peer_interface']}. Description on duplicate interface:"
                             f" {found_eth_interface['description']}"
                         )
 
@@ -69,7 +69,7 @@ class EthernetInterfacesMixin(UtilsMixin):
 
                     raise AristaAvdError(
                         f"Duplicate interface name {ethernet_interface['name']} found while generating ethernet_interfaces for connected_endpoints peer:"
-                        f" {ethernet_interface['peer']}, peer_interface: {ethernet_interface['peer_interface']}. Duplicate interface name of description:"
+                        f" {ethernet_interface['peer']}, peer_interface: {ethernet_interface['peer_interface']}. Description on duplicate interface:"
                         f" {found_eth_interface['description']}"
                     )
 
