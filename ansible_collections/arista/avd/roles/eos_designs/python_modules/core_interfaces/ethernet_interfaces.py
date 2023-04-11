@@ -45,7 +45,7 @@ class EthernetInterfacesMixin(UtilsMixin):
 
             # Port-Channel members
             for member in p2p_link["data"]["port_channel_members"]:
-                ethernet_interface = self._get_port_channel_member_cfg(p2p_link, member)
+                ethernet_interface = self._get_port_channel_member_cfg(p2p_link, member["interface"])
                 ethernet_interface.update(self._get_ethernet_cfg(p2p_link))
 
                 # Remove None values

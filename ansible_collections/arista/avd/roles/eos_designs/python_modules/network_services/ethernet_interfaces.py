@@ -182,10 +182,9 @@ class EthernetInterfacesMixin(UtilsMixin):
                                         continue
 
                                     raise AristaAvdError(
-                                        f"Duplicate interface_name {ethernet_interface['name']} found while generating ethernet_interfaces for network_services"
-                                        f" point_to_point_services  channel_group: (id: {channel_group_id}, mode: {port_channel_mode}). Duplicate"
-                                        f" interface_name of channel_group: (id: {found_eth_interface['channel_group']['id']}, mode:"
-                                        f" {found_eth_interface['channel_group']['mode']})"
+                                        f"Duplicate interface_name {ethernet_interface['name']} found while generating ethernet_interfaces for"
+                                        f" point_to_point_services channel group id: {channel_group_id}. Channel group id on duplicate"
+                                        f" interface: {found_eth_interface['channel_group']['id']}"
                                     )
 
                                 continue
@@ -220,7 +219,8 @@ class EthernetInterfacesMixin(UtilsMixin):
                                         continue
 
                                     raise AristaAvdError(
-                                        f"Duplicate interface_name {ethernet_interface['name']} found while generating subinterfaces under port_to_point_services"
+                                        f"Duplicate interface_name {ethernet_interface['name']} found while generating subinterfaces under"
+                                        " port_to_point_services"
                                     )
                             else:
                                 interface = {
