@@ -1148,7 +1148,8 @@
                     "enum": [
                       "token",
                       "token-secure",
-                      "key"
+                      "key",
+                      "certs"
                     ],
                     "title": "Method"
                   },
@@ -1160,6 +1161,21 @@
                     "type": "string",
                     "description": "Token file path\ne.g. \"/tmp/token\"\n",
                     "title": "Token File"
+                  },
+                  "cert_file": {
+                    "type": "string",
+                    "description": "Client certificate file path\ne.g. \"/persist/secure/ssl/terminattr/primary/certs/client.crt\"\n",
+                    "title": "Cert File"
+                  },
+                  "ca_file": {
+                    "type": "string",
+                    "description": "CA certificate file path (on-prem only)\ne.g. \"/persist/secure/ssl/terminattr/primary/certs/ca.crt\"\n",
+                    "title": "Ca File"
+                  },
+                  "key_file": {
+                    "type": "string",
+                    "description": "Client certificate key file path\ne.g. \"/persist/secure/ssl/terminattr/primary/keys/client.key\"\n",
+                    "title": "Key File"
                   }
                 },
                 "additionalProperties": false,
@@ -1213,7 +1229,8 @@
               "enum": [
                 "token",
                 "token-secure",
-                "key"
+                "key",
+                "certs"
               ],
               "title": "Method"
             },
@@ -1225,6 +1242,21 @@
               "type": "string",
               "description": "Token file path\ne.g. \"/tmp/token\"\n",
               "title": "Token File"
+            },
+            "cert_file": {
+              "type": "string",
+              "description": "Client certificate file path\ne.g. \"/persist/secure/ssl/terminattr/primary/certs/client.crt\"\n",
+              "title": "Cert File"
+            },
+            "ca_file": {
+              "type": "string",
+              "description": "CA certificate file path (on-prem only)\ne.g. \"/persist/secure/ssl/terminattr/primary/certs/ca.crt\"\n",
+              "title": "Ca File"
+            },
+            "key_file": {
+              "type": "string",
+              "description": "Client certificate key file path\ne.g. \"/persist/secure/ssl/terminattr/primary/keys/client.key\"\n",
+              "title": "Key File"
             }
           },
           "additionalProperties": false,

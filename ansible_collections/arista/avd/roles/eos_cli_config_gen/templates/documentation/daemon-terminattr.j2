@@ -15,6 +15,11 @@
 {%             set auth = 'token,' ~ cluster.cvauth.token_file %}
 {%         elif cluster.cvauth.method is arista.avd.defined('token-secure') and cluster.cvauth.token_file is arista.avd.defined %}
 {%             set auth = 'token-secure,' ~ cluster.cvauth.token_file %}+
+{%         elif cluster.cvauth.method is arista.avd.defined('certs') and cluster.cvauth.cert_file is arista.avd.defined and cluster.cvauth.key_file is arista.avd.defined %}
+{%             set auth = 'certs,' ~ cluster.cvauth.cert_file ~ "," ~ cluster.cvauth.key_file %}
+{%             if  cluster.cvauth.ca_file is arista.avd.defined %}
+{%                 set auth = auth ~ "," ~ cluster.cvauth.ca_file %}
+{%             endif %}
 {%         endif %}
 {%         if cluster.cvvrf is arista.avd.defined %}
 {%             set cvvrf = cluster.cvvrf %}
@@ -31,6 +36,11 @@
 {%             set auth = 'token,' ~ daemon_terminattr.cvauth.token_file %}
 {%         elif daemon_terminattr.cvauth.method is arista.avd.defined('token-secure') and daemon_terminattr.cvauth.token_file is arista.avd.defined %}
 {%             set auth = 'token-secure,' ~ daemon_terminattr.cvauth.token_file %}
+{%         elif daemon_terminattr.cvauth.method is arista.avd.defined('certs') and daemon_terminattr.cvauth.cert_file is arista.avd.defined and daemon_terminattr.cvauth.key_file is arista.avd.defined %}
+{%             set auth = 'certs,' ~ daemon_terminattr.cvauth.cert_file ~ "," ~ daemon_terminattr.cvauth.key_file %}
+{%             if  daemon_terminattr.cvauth.ca_file is arista.avd.defined %}
+{%                 set auth = auth ~ "," ~ daemon_terminattr.cvauth.ca_file %}
+{%             endif %}
 {%         endif %}
 | gzip | {{ url }} | {{ daemon_terminattr.cvvrf | arista.avd.default('-') }} | {{ auth | arista.avd.default('-') }} | {{ daemon_terminattr.smashexcludes | arista.avd.default('-') }} | {{ daemon_terminattr.ingestexclude | arista.avd.default('-') }} | {{ daemon_terminattr.disable_aaa | arista.avd.default (false) }} |
 {%     endif %}
