@@ -4,9 +4,11 @@ from functools import cached_property
 
 
 class CoverageNode:
-    def __init__(self, key, parent, primary_key=None, valid_values=None):
+    def __init__(self, key, parent, is_dynamic=False, primary_key=None, valid_values=None):
         self.parent = parent
+        self.root = self.parent.root if self.parent else self
         self.key = key
+        self.is_dynamic = is_dynamic
         self.value = None
         # if this node is in a list keep the value of the parent
         self.ancestor_primary_key_paths = []
@@ -37,6 +39,8 @@ class CoverageNode:
         else:
             if self.primary_key:
                 node_path = [f"{self.key}[<{self.primary_key}>]"]
+            elif self.is_dynamic:
+                node_path = [f"{self.key}[<DYNAMIC>]"]
             else:
                 node_path = [self.key]
 
@@ -54,6 +58,9 @@ class CoverageNode:
             if node.primary_key:
                 node_path = [f"{node.key}[{node.primary_key}:{ancestors_path[-1]}]"]
                 ancestors_path = ancestors_path[:-1]
+            elif node.is_dynamic:
+                node_path = [f"{ancestors_path[-1]}"]
+                ancestors_path = ancestors_path[:-1]
             else:
                 node_path = [self.key]
             return _list(node.parent, ancestors_path) + node_path
@@ -68,10 +75,24 @@ class CoverageNode:
         if isinstance(data, dict):
             self.hit(ancestor_primary_key_path)
             for key, value in data.items():
+                # if self.key == "__root__":
+                #     for child in self.children:
+                #         print(f"{child.key} - {child.is_dynamic}")
                 key_found = False
-                for child in self.children:
+                for child in [child for child in self.children if not child.is_dynamic]:
                     if child.key == key:
                         child.get_coverage(value, ancestor_primary_key_path=ancestor_primary_key_path)
+                        key_found = True
+                # check if it could be a dynamic key
+                for child in [child for child in self.children if child.is_dynamic]:
+                    # Need to see if the key could be one of the dynamic values
+                    # TODO - could be a problem if multiple children have the same dynamic key
+                    dynamic_key_values = self._get_dynamic_key_values(child.key)
+                    # print(f"DK {dynamic_key_values}")
+                    if key in dynamic_key_values:
+                        child_apkp = ancestor_primary_key_path.copy()
+                        child_apkp.append(key)
+                        child.get_coverage(value, ancestor_primary_key_path=child_apkp)
                         key_found = True
                 if not key_found:
                     # keep track of the unknown keys
@@ -90,6 +111,22 @@ class CoverageNode:
                     self.get_coverage(element, ancestor_primary_key_path=ancestor_primary_key_path)
         else:
             self.hit(ancestor_primary_key_path)
+
+    def _get_dynamic_key_values(self, key):
+        """
+        TODO
+        This is a dynamic key which is necessarily a top level key for now (TBC with Claus)
+        The key has the format of a path from root e.g.  node_type_keys.key
+
+        # Assume for now we look for primary key values in before last
+        """
+        key_as_list = key.split(".")
+        current_node = self.root
+        for elem in key_as_list[:-1]:
+            # print(f"CURRENT {current_node.key}, path: {key_as_list}, elem: {elem}")
+            current_node = current_node.get_child(elem)
+        # print(f"FINAL CURRENT {current_node.key}, pkv: {current_node.primary_key_values}")
+        return current_node.primary_key_values
 
     def get_coverage_percentage(self) -> float:
         def inner_percentage(node):
@@ -194,7 +231,8 @@ class CoverageNode:
     def merge_nodes(cls, *nodes, parent=None):
         """
         TODO merge hit_aths as well
-
+        WARNING
+        TODO this method is out of date
         """
         # no argument means empty tuple
         if nodes:
@@ -264,6 +302,16 @@ class AvdToCoverageSchemaConverter:
             parent_node.add_child(output_node)
             self.build_node(output_node, childschema)
 
+        # Handle dynamic keys
+        if schema.get("type") == "dict":
+            dynamic_schema_keys = self._get_dynamic_keys(schema)
+            for key, childschema in dynamic_schema_keys.items():
+                output_node = CoverageNode(key, parent_node, is_dynamic=True)
+                if primary_key is not None:
+                    parent_node.primary_key = primary_key
+                parent_node.add_child(output_node)
+                self.build_node(output_node, childschema)
+
     def _get_items(self, schema: dict):
         primary_key = schema.get("primary_key")
         keys = {}
@@ -273,6 +321,17 @@ class AvdToCoverageSchemaConverter:
 
     def _get_keys(self, schema: dict):
         keys = schema.get("keys", {})
+        # TODO - HACK - remove keys that should be definitions
+        keys_which_are_defs = [
+            "node_type",
+        ]
+        for key in keys_which_are_defs:
+            keys.pop(key, None)
+
+        return keys
+
+    def _get_dynamic_keys(self, schema: dict):
+        keys = {}
         dynamic_keys = schema.get("dynamic_keys", {})
-        keys.update({f"<{dynamic_key}>": subschema for dynamic_key, subschema in dynamic_keys.items()})
+        keys.update({f"{dynamic_key}": subschema for dynamic_key, subschema in dynamic_keys.items()})
         return keys
