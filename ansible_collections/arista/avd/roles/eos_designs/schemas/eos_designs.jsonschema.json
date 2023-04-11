@@ -4201,6 +4201,8 @@
             "enum": [
               "ebgp",
               "ibgp",
+              "her",
+              "cvx",
               "none"
             ],
             "description": "Set the default overlay routing_protocol.\nCan be overridden by setting \"overlay_routing_protocol\" host/group_vars.\n",

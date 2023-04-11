@@ -1829,6 +1829,8 @@ keys:
           valid_values:
           - ebgp
           - ibgp
+          - her
+          - cvx
           - none
           description: 'Set the default overlay routing_protocol.
 
