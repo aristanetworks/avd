@@ -15,7 +15,7 @@ keys:
           table: VLAN Settings
         type: dict
         description: |
-          "mlag" is the Trunk Group used for MLAG VLAN (Typically VLAN 4094)
+          Trunk Group used for MLAG VLAN (Typically VLAN 4094)
         keys:
           name:
             documentation_options:
@@ -29,8 +29,7 @@ keys:
           table: VLAN Settings
         type: dict
         description: |
-          "mlag_l3" is the Trunk Group used for MLAG L3 peering VLAN (Typically VLAN 4093)
-          "mlag_l3" is also the Trunk Group used for VRF L3 peering VLANs
+          Trunk Group used for MLAG L3 peering VLAN and for VRF L3 peering VLANs (Typically VLAN 4093)
         keys:
           name:
             documentation_options:
@@ -44,7 +43,7 @@ keys:
           table: VLAN Settings
         type: dict
         description: |
-          "uplink" is the Trunk Group used on L2 Leaf switches when "enable_trunk_groups" is set
+          Trunk Group used on L2 Leaf switches when "enable_trunk_groups" is set
         keys:
           name:
             documentation_options:
