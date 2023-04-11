@@ -9,6 +9,7 @@
   - [LLDP Device Configuration](#lldp-device-configuration)
 - [Power Over Ethernet (PoE)](#power-over-ethernet-poe)
   - [PoE Summary](#poe-summary)
+  - [PoE Device Configuration](#poe-device-configuration)
 
 ## Management
 
@@ -71,3 +72,11 @@ lldp tlv transmit system-capabilities
 | Reboot Action | Shutdown Action | LLDP Negotiation |
 | ------------------- | -------------------- | ----------------------|
 | maintain | power-off | False |
+### PoE Device Configuration
+
+```eos
+!
+poe
+   reboot action maintain
+   interface shutdown action power-off
+```
