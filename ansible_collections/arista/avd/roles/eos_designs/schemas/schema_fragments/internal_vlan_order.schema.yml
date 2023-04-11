@@ -33,9 +33,9 @@ keys:
             type: int
             convert_types:
             - str
-            description: VLAN ID lower then `internal_vlan_order.range.ending` value.
+            description: Beginning VLAN ID.
             default: 1006
-            min: 1
+            min: 2
             max: 4094
           ending:
             documentation_options:
@@ -44,7 +44,7 @@ keys:
             type: int
             convert_types:
             - str
-            description: VLAN ID higher then `internal_vlan_order.range.beginning` value.
+            description: Ending VLAN ID.
             default: 1199
-            min: 1
+            min: 2
             max: 4094

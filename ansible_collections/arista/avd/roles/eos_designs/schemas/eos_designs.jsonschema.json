@@ -512,17 +512,17 @@
           "properties": {
             "beginning": {
               "type": "integer",
-              "description": "VLAN ID lower then `internal_vlan_order.range.ending` value.",
+              "description": "Beginning VLAN ID.",
               "default": 1006,
-              "minimum": 1,
+              "minimum": 2,
               "maximum": 4094,
               "title": "Beginning"
             },
             "ending": {
               "type": "integer",
-              "description": "VLAN ID higher then `internal_vlan_order.range.beginning` value.",
+              "description": "Ending VLAN ID.",
               "default": 1199,
-              "minimum": 1,
+              "minimum": 2,
               "maximum": 4094,
               "title": "Ending"
             }
