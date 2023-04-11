@@ -580,6 +580,7 @@ keys:
         - ascending
         - descending
         default: ascending
+        required: true
       range:
         documentation_options:
           filename: Fabric Variables
@@ -593,10 +594,11 @@ keys:
             type: int
             convert_types:
             - str
-            description: Beginning VLAN ID.
+            description: First VLAN ID.
             default: 1006
             min: 2
             max: 4094
+            required: true
           ending:
             documentation_options:
               filename: Fabric Variables
@@ -604,10 +606,11 @@ keys:
             type: int
             convert_types:
             - str
-            description: Ending VLAN ID.
+            description: Last VLAN ID.
             default: 1199
             min: 2
             max: 4094
+            required: true
   isis_advertise_passive_only:
     documentation_options:
       filename: Fabric Variables

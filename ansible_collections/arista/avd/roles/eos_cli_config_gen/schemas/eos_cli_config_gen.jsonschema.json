@@ -17661,16 +17661,16 @@
           "properties": {
             "beginning": {
               "type": "integer",
-              "minimum": 1,
+              "minimum": 2,
               "maximum": 4094,
-              "description": "Vlan ID",
+              "description": "First VLAN ID.",
               "title": "Beginning"
             },
             "ending": {
               "type": "integer",
-              "minimum": 1,
+              "minimum": 2,
               "maximum": 4094,
-              "description": "Vlan ID",
+              "description": "Last VLAN ID.",
               "title": "Ending"
             }
           },

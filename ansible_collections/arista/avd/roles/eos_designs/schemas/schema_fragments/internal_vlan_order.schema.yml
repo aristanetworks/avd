@@ -20,6 +20,7 @@ keys:
         - ascending
         - descending
         default: ascending
+        required: true
       range:
         documentation_options:
           filename: Fabric Variables
@@ -37,6 +38,7 @@ keys:
             default: 1006
             min: 2
             max: 4094
+            required: true
           ending:
             documentation_options:
               filename: Fabric Variables
@@ -48,3 +50,4 @@ keys:
             default: 1199
             min: 2
             max: 4094
+            required: true

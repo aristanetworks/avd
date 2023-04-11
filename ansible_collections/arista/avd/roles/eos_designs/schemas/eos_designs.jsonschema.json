@@ -512,7 +512,7 @@
           "properties": {
             "beginning": {
               "type": "integer",
-              "description": "Beginning VLAN ID.",
+              "description": "First VLAN ID.",
               "default": 1006,
               "minimum": 2,
               "maximum": 4094,
@@ -520,13 +520,17 @@
             },
             "ending": {
               "type": "integer",
-              "description": "Ending VLAN ID.",
+              "description": "Last VLAN ID.",
               "default": 1199,
               "minimum": 2,
               "maximum": 4094,
               "title": "Ending"
             }
           },
+          "required": [
+            "beginning",
+            "ending"
+          ],
           "additionalProperties": false,
           "patternProperties": {
             "^_.+$": {}
@@ -534,6 +538,9 @@
           "title": "Range"
         }
       },
+      "required": [
+        "allocation"
+      ],
       "additionalProperties": false,
       "patternProperties": {
         "^_.+$": {}

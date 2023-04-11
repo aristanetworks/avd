@@ -10802,18 +10802,18 @@ keys:
         keys:
           beginning:
             type: int
-            min: 1
+            min: 2
             max: 4094
             required: true
-            description: Vlan ID
+            description: First VLAN ID.
             convert_types:
             - str
           ending:
             type: int
-            min: 1
+            min: 2
             max: 4094
             required: true
-            description: Vlan ID
+            description: Last VLAN ID.
             convert_types:
             - str
   vlans:
