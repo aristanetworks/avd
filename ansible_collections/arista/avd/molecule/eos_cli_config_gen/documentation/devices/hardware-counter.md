@@ -52,8 +52,8 @@ interface Management1
 | ip | in | - | - | False | - | False |
 | ip | out | - | - | True | - | True |
 | mpls lfib | - | - | - | - | - | True |
-| route | - | ipv4 | test | - | 42.42.42.0/24 | - |
-| route | - | ipv6 | - | - | dead:beef:cafe::/64 | - |
+| route | - | ipv4 | test | - | 192.168.0.0/24 | - |
+| route | - | ipv6 | - | - | 2001:db8:cafe::/64 | - |
 
 #### Hardware Counters Configuration
 
@@ -64,6 +64,6 @@ hardware counter feature gre tunnel interface out
 hardware counter feature ip in
 hardware counter feature ip out layer3 units packets
 hardware counter feature mpls lfib units packets
-hardware counter feature route ipv4 vrf test 42.42.42.0/24
-hardware counter feature route ipv6 dead:beef:cafe::/64
+hardware counter feature route ipv4 vrf test 192.168.0.0/24
+hardware counter feature route ipv6 2001:db8:cafe::/64
 ```

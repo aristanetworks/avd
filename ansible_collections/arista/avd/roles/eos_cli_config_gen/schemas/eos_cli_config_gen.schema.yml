@@ -2360,29 +2360,23 @@ keys:
         description: "This data model allows to configure the list of hardware counters
           feature\navailable on Arista platforms.\n\nThe `name` key accepts a list
           of valid_values which MUST be updated to support\nnew feature as they are
-          released in EOS.\n\nThe available values of the different keys 'direction',
-          'address_type', ...\nare feature and hardware dependent and this model DOES
-          NOT validate that the\ncombinations are valid. For the sake of flexibility,
-          it is the responsability\nof the user of this data model to make sure that
-          the rendered CLI is accepted\nby the targeted device\n\nExamples:\n\n  *
-          Use:\n    ```yaml\n    hardware_counters:\n      features:\n        - name:
-          ip\n          direction: out\n          layer3: true\n          units_packets:
-          true\n    ```\n\n    to render:\n    ```eos\n    hardware counter feature
-          ip out layer3 units packets\n    ```\n  * Use:\n    ```yaml\n    hardware_counters:\n
-          \     features:\n        - name: route\n          address_type: ipv4\n          vrf:
-          test\n          prefix: 42.42.42.0/24\n    ```\n\n    to render:\n    ```eos\n
-          \   hardware counter feature route ipv4 vrf test 42.42.42.0/24\n    ```\n"
+          released in EOS.\n\nThe available values of the different keys like 'direction'
+          or 'address_type'\nare feature and hardware dependent and this model DOES
+          NOT validate that the\ncombinations are valid. It is the responsability
+          of the user of this data model\nto make sure that the rendered CLI is accepted
+          by the targeted device.\n\nExamples:\n\n  * Use:\n    ```yaml\n    hardware_counters:\n
+          \     features:\n        - name: ip\n          direction: out\n          layer3:
+          true\n          units_packets: true\n    ```\n\n    to render:\n    ```eos\n
+          \   hardware counter feature ip out layer3 units packets\n    ```\n  * Use:\n
+          \   ```yaml\n    hardware_counters:\n      features:\n        - name: route\n
+          \         address_type: ipv4\n          vrf: test\n          prefix: 192.168.0.0/24\n
+          \   ```\n\n    to render:\n    ```eos\n    hardware counter feature route
+          ipv4 vrf test 192.168.0.0/24\n    ```\n"
         items:
           type: dict
           keys:
             name:
               type: str
-              description: 'All hardware counter features SHOULD be configured with
-                this knob
-
-                except for the `route` feature which should use `feature_route`.
-
-                '
               valid_values:
               - acl
               - decap-group

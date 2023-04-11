@@ -17,11 +17,10 @@ keys:
           The `name` key accepts a list of valid_values which MUST be updated to support
           new feature as they are released in EOS.
 
-          The available values of the different keys 'direction', 'address_type', ...
+          The available values of the different keys like 'direction' or 'address_type'
           are feature and hardware dependent and this model DOES NOT validate that the
-          combinations are valid. For the sake of flexibility, it is the responsability
-          of the user of this data model to make sure that the rendered CLI is accepted
-          by the targeted device
+          combinations are valid. It is the responsability of the user of this data model
+          to make sure that the rendered CLI is accepted by the targeted device.
 
           Examples:
 
@@ -46,12 +45,12 @@ keys:
                   - name: route
                     address_type: ipv4
                     vrf: test
-                    prefix: 42.42.42.0/24
+                    prefix: 192.168.0.0/24
               ```
 
               to render:
               ```eos
-              hardware counter feature route ipv4 vrf test 42.42.42.0/24
+              hardware counter feature route ipv4 vrf test 192.168.0.0/24
               ```
 
         # primary_key: name
@@ -61,9 +60,6 @@ keys:
           keys:
             name:
               type: str
-              description: |
-                All hardware counter features SHOULD be configured with this knob
-                except for the `route` feature which should use `feature_route`.
               valid_values:
                 - acl
                 - decap-group

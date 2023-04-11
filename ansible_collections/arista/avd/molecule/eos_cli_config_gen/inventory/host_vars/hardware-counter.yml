@@ -19,7 +19,7 @@ hardware_counters:
     - name: route
       address_type: ipv4
       vrf: test
-      prefix: 42.42.42.0/24
+      prefix: 192.168.0.0/24
     - name: route
       address_type: ipv6
-      prefix: dead:beef:cafe::/64
+      prefix: 2001:db8:cafe::/64
