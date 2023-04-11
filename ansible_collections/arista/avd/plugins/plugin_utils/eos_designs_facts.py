@@ -1187,47 +1187,19 @@ class EosDesignsFacts(AvdFacts):
         if self.underlay_router is True:
             return {
                 "ipv4_underlay_peers": {
-                    "name": default(
-                        get(self._hostvars, "bgp_peer_groups.ipv4_underlay_peers.name"),
-                        get(self._hostvars, "bgp_peer_groups.IPv4_UNDERLAY_PEERS.name"),
-                        "IPv4-UNDERLAY-PEERS",
-                    ),
-                    "password": default(
-                        get(self._hostvars, "bgp_peer_groups.ipv4_underlay_peers.password"), get(self._hostvars, "bgp_peer_groups.IPv4_UNDERLAY_PEERS.password")
-                    ),
-                    "structured_config": default(
-                        get(self._hostvars, "bgp_peer_groups.ipv4_underlay_peers.structured_config"),
-                        get(self._hostvars, "bgp_peer_groups.IPv4_UNDERLAY_PEERS.structured_config"),
-                    ),
+                    "name": get(self._hostvars, "bgp_peer_groups.ipv4_underlay_peers.name", default="IPv4-UNDERLAY-PEERS"),
+                    "password": get(self._hostvars, "bgp_peer_groups.ipv4_underlay_peers.password"),
+                    "structured_config": get(self._hostvars, "bgp_peer_groups.ipv4_underlay_peers.structured_config"),
                 },
                 "mlag_ipv4_underlay_peer": {
-                    "name": default(
-                        get(self._hostvars, "bgp_peer_groups.mlag_ipv4_underlay_peer.name"),
-                        get(self._hostvars, "bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.name"),
-                        "MLAG-IPv4-UNDERLAY-PEER",
-                    ),
-                    "password": default(
-                        get(self._hostvars, "bgp_peer_groups.mlag_ipv4_underlay_peer.password"),
-                        get(self._hostvars, "bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.password"),
-                    ),
-                    "structured_config": default(
-                        get(self._hostvars, "bgp_peer_groups.mlag_ipv4_underlay_peer.structured_config"),
-                        get(self._hostvars, "bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.structured_config"),
-                    ),
+                    "name": get(self._hostvars, "bgp_peer_groups.mlag_ipv4_underlay_peer.name", default="MLAG-IPv4-UNDERLAY-PEER"),
+                    "password": get(self._hostvars, "bgp_peer_groups.mlag_ipv4_underlay_peer.password"),
+                    "structured_config": get(self._hostvars, "bgp_peer_groups.mlag_ipv4_underlay_peer.structured_config"),
                 },
                 "evpn_overlay_peers": {
-                    "name": default(
-                        get(self._hostvars, "bgp_peer_groups.evpn_overlay_peers.name"),
-                        get(self._hostvars, "bgp_peer_groups.EVPN_OVERLAY_PEERS.name"),
-                        "EVPN-OVERLAY-PEERS",
-                    ),
-                    "password": default(
-                        get(self._hostvars, "bgp_peer_groups.evpn_overlay_peers.password"), get(self._hostvars, "bgp_peer_groups.EVPN_OVERLAY_PEERS.password")
-                    ),
-                    "structured_config": default(
-                        get(self._hostvars, "bgp_peer_groups.evpn_overlay_peers.structured_config"),
-                        get(self._hostvars, "bgp_peer_groups.EVPN_OVERLAY_PEERS.structured_config"),
-                    ),
+                    "name": get(self._hostvars, "bgp_peer_groups.evpn_overlay_peers.name", default="EVPN-OVERLAY-PEERS"),
+                    "password": get(self._hostvars, "bgp_peer_groups.evpn_overlay_peers.password"),
+                    "structured_config": get(self._hostvars, "bgp_peer_groups.evpn_overlay_peers.structured_config"),
                 },
                 "evpn_overlay_core": {
                     "name": get(self._hostvars, "bgp_peer_groups.evpn_overlay_core.name", default="EVPN-OVERLAY-CORE"),

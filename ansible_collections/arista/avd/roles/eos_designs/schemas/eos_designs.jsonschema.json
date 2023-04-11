@@ -1,6 +1,256 @@
 {
   "type": "object",
   "properties": {
+    "bfd_multihop": {
+      "type": "object",
+      "description": "BFD Multihop tuning",
+      "properties": {
+        "interval": {
+          "type": "integer",
+          "default": 300,
+          "minimum": 50,
+          "maximum": 60000,
+          "title": "Interval"
+        },
+        "min_rx": {
+          "type": "integer",
+          "default": 300,
+          "minimum": 50,
+          "maximum": 60000,
+          "title": "Min RX"
+        },
+        "multiplier": {
+          "type": "integer",
+          "default": 3,
+          "minimum": 3,
+          "maximum": 50,
+          "title": "Multiplier"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "BFD Multihop"
+    },
+    "bgp_as": {
+      "description": "AS number to use to configure overlay when \"overlay_routing_protocol\" == ibgp",
+      "type": "string",
+      "title": "BGP As"
+    },
+    "bgp_ecmp": {
+      "description": "Maximum ECMP for BGP multi-path",
+      "type": "integer",
+      "default": 4,
+      "title": "BGP Ecmp"
+    },
+    "bgp_maximum_paths": {
+      "description": "Maximum Paths for BGP multi-path",
+      "type": "integer",
+      "default": 4,
+      "minimum": 1,
+      "maximum": 512,
+      "title": "BGP Maximum Paths"
+    },
+    "bgp_mesh_pes": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether to configure an iBGP full mesh between PEs, either because there is no RR used or other reasons.",
+      "title": "BGP Mesh Pes"
+    },
+    "bgp_peer_groups": {
+      "description": "Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.\nNote that the name of the peer groups use '-' instead of '_' in EOS configuration.\n",
+      "type": "object",
+      "properties": {
+        "ipv4_underlay_peers": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "IPv4-UNDERLAY-PEERS",
+              "description": "Name of peer group.",
+              "title": "Name"
+            },
+            "password": {
+              "type": "string",
+              "description": "Type 7 encrypted password.",
+              "title": "Password"
+            },
+            "structured_config": {
+              "type": "object",
+              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
+              "title": "Structured Config"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "IPv4 Underlay Peers"
+        },
+        "mlag_ipv4_underlay_peer": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "MLAG-IPv4-UNDERLAY-PEER",
+              "description": "Name of peer group.",
+              "title": "Name"
+            },
+            "password": {
+              "type": "string",
+              "description": "Type 7 encrypted password.",
+              "title": "Password"
+            },
+            "structured_config": {
+              "type": "object",
+              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
+              "title": "Structured Config"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "MLAG IPv4 Underlay Peer"
+        },
+        "evpn_overlay_peers": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "EVPN-OVERLAY-PEERS",
+              "description": "Name of peer group.",
+              "title": "Name"
+            },
+            "password": {
+              "type": "string",
+              "description": "Type 7 encrypted password.",
+              "title": "Password"
+            },
+            "structured_config": {
+              "type": "object",
+              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
+              "title": "Structured Config"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "EVPN Overlay Peers"
+        },
+        "evpn_overlay_core": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "EVPN-OVERLAY-CORE",
+              "description": "Name of peer group.",
+              "title": "Name"
+            },
+            "password": {
+              "type": "string",
+              "description": "Type 7 encrypted password.",
+              "title": "Password"
+            },
+            "structured_config": {
+              "type": "object",
+              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
+              "title": "Structured Config"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "EVPN Overlay Core"
+        },
+        "mpls_overlay_peers": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "MPLS-OVERLAY-PEERS",
+              "description": "Name of peer group.",
+              "title": "Name"
+            },
+            "password": {
+              "type": "string",
+              "description": "Type 7 encrypted password.",
+              "title": "Password"
+            },
+            "structured_config": {
+              "type": "object",
+              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
+              "title": "Structured Config"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "MPLS Overlay Peers"
+        },
+        "rr_overlay_peers": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "RR-OVERLAY-PEERS",
+              "description": "Name of peer group.",
+              "title": "Name"
+            },
+            "password": {
+              "type": "string",
+              "description": "Type 7 encrypted password.",
+              "title": "Password"
+            },
+            "structured_config": {
+              "type": "object",
+              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
+              "title": "Structured Config"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Rr Overlay Peers"
+        },
+        "ipvpn_gateway_peers": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "IPVPN-GATEWAY-PEERS",
+              "description": "Name of peer group.",
+              "title": "Name"
+            },
+            "password": {
+              "type": "string",
+              "description": "Type 7 encrypted password.",
+              "title": "Password"
+            },
+            "structured_config": {
+              "type": "object",
+              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
+              "title": "Structured Config"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Ipvpn Gateway Peers"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "BGP Peer Groups"
+    },
     "cvp_ingestauth_key": {
       "type": "string",
       "description": "On-premise CVP ingest auth key. If set, TerminAttr will be configured with key-based authentication for on-premise CVP.\nIf not set, TerminAttr will be configured with certificate based authentication using token-secure onboarding.\nToken must be copied to the device first.",
