@@ -61,13 +61,13 @@ l2_protocol:
         untagged_forward: true
 
 ethernet_interfaces:
-  Ethernet1:
+  - name: Ethernet1
     description: L2PF test
     l2_protocol:
       forwarding_profile: TEST1
 
 port_channel_interfaces:
-  Port-Channel1:
+  - name: Port-Channel1
     description: L2PF test
     l2_protocol:
       forwarding_profile: TEST2
