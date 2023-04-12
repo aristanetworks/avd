@@ -761,6 +761,7 @@ keys:
                   - token
                   - token-secure
                   - key
+                  - certs
                 key:
                   type: str
                 token_file:
@@ -768,6 +769,27 @@ keys:
                   description: 'Token file path
 
                     e.g. "/tmp/token"
+
+                    '
+                cert_file:
+                  type: str
+                  description: 'Client certificate file path
+
+                    e.g. "/persist/secure/ssl/terminattr/primary/certs/client.crt"
+
+                    '
+                ca_file:
+                  type: str
+                  description: 'CA certificate file path (on-prem only)
+
+                    e.g. "/persist/secure/ssl/terminattr/primary/certs/ca.crt"
+
+                    '
+                key_file:
+                  type: str
+                  description: 'Client certificate key file path
+
+                    e.g. "/persist/secure/ssl/terminattr/primary/keys/client.key"
 
                     '
             cvobscurekeyfile:
@@ -812,6 +834,7 @@ keys:
             - token
             - token-secure
             - key
+            - certs
           key:
             type: str
           token_file:
@@ -819,6 +842,27 @@ keys:
             description: 'Token file path
 
               e.g. "/tmp/token"
+
+              '
+          cert_file:
+            type: str
+            description: 'Client certificate file path
+
+              e.g. "/persist/secure/ssl/terminattr/primary/certs/client.crt"
+
+              '
+          ca_file:
+            type: str
+            description: 'CA certificate file path (on-prem only)
+
+              e.g. "/persist/secure/ssl/terminattr/primary/certs/ca.crt"
+
+              '
+          key_file:
+            type: str
+            description: 'Client certificate key file path
+
+              e.g. "/persist/secure/ssl/terminattr/primary/keys/client.key"
 
               '
       cvobscurekeyfile:
@@ -1261,6 +1305,15 @@ keys:
             '
         snmp_trap_link_change:
           type: bool
+        address_locking:
+          type: dict
+          keys:
+            ipv4:
+              type: bool
+              description: Enable address locking for IPv4
+            ipv6:
+              type: bool
+              description: Enable address locking for IPv6
         flowcontrol:
           type: dict
           keys:
@@ -2104,6 +2157,12 @@ keys:
             output:
               type: str
               description: Egress traffic policy
+        bgp:
+          type: dict
+          keys:
+            session_tracker:
+              type: str
+              description: Name of session tracker
         peer:
           type: str
           description: Key only used for documentation or validation purposes
@@ -2345,8 +2404,110 @@ keys:
     keys:
       features:
         type: list
+        description: "This data model allows to configure the list of hardware counters
+          feature\navailable on Arista platforms.\n\nThe `name` key accepts a list
+          of valid_values which MUST be updated to support\nnew feature as they are
+          released in EOS.\n\nThe available values of the different keys like 'direction'
+          or 'address_type'\nare feature and hardware dependent and this model DOES
+          NOT validate that the\ncombinations are valid. It is the responsability
+          of the user of this data model\nto make sure that the rendered CLI is accepted
+          by the targeted device.\n\nExamples:\n\n  * Use:\n    ```yaml\n    hardware_counters:\n
+          \     features:\n        - name: ip\n          direction: out\n          layer3:
+          true\n          units_packets: true\n    ```\n\n    to render:\n    ```eos\n
+          \   hardware counter feature ip out layer3 units packets\n    ```\n  * Use:\n
+          \   ```yaml\n    hardware_counters:\n      features:\n        - name: route\n
+          \         address_type: ipv4\n          vrf: test\n          prefix: 192.168.0.0/24\n
+          \   ```\n\n    to render:\n    ```eos\n    hardware counter feature route
+          ipv4 vrf test 192.168.0.0/24\n    ```\n"
         items:
           type: dict
+          keys:
+            name:
+              type: str
+              valid_values:
+              - acl
+              - decap-group
+              - directflow
+              - ecn
+              - flow-spec
+              - gre tunnel interface
+              - ip
+              - mpls interface
+              - mpls lfib
+              - mpls tunnel
+              - multicast
+              - nexthop
+              - pbr
+              - pdp
+              - policing interface
+              - qos
+              - qos dual-rate-policer
+              - route
+              - routed-port
+              - subinterface
+              - tapagg
+              - traffic-class
+              - traffic-policy
+              - vlan
+              - vlan-interface
+              - vni decap
+              - vni encap
+              - vtep decap
+              - vtep encap
+            direction:
+              type: str
+              valid_values:
+              - in
+              - out
+              - cpu
+              description: 'Most features support only ''in'' and ''out''. Some like
+                traffic-policy support ''cpu''.
+
+                Some features DO NOT have any direction.
+
+                This validation IS NOT made by the schemas.
+
+                '
+            address_type:
+              type: str
+              valid_values:
+              - ipv4
+              - ipv6
+              - mac
+              description: 'Supported only for the following features:
+
+                - acl: [ipv4, ipv6, mac] if direction is ''out''
+
+                - multicast: [ipv4, ipv6]
+
+                - route: [ipv4, ipv6]
+
+                This validation IS NOT made by the schemas.
+
+                '
+            layer3:
+              type: bool
+              description: 'Supported only for the ''ip'' feature
+
+                '
+            vrf:
+              type: str
+              description: 'Supported only for the ''route'' feature.
+
+                This validation IS NOT made by the schemas.
+
+                '
+            prefix:
+              type: str
+              description: 'Supported only for the ''route'' feature.
+
+                Mandatory for the ''route'' feature.
+
+                This validation IS NOT made by the schemas.
+
+                '
+            units_packets:
+              type: bool
   interface_defaults:
     documentation_options:
       filename: data_model/Interfaces
@@ -5760,6 +5921,12 @@ keys:
             sampled:
               type: str
               description: Flow tracker name
+        bgp:
+          type: dict
+          keys:
+            session_tracker:
+              type: str
+              description: Name of session tracker
         peer:
           type: str
           description: Key only used for documentation or validation purposes
@@ -6788,6 +6955,8 @@ keys:
                 avoid conflicts.
 
                 '
+            session_tracker:
+              type: str
       neighbors:
         type: list
         primary_key: ip_address
@@ -6935,6 +7104,8 @@ keys:
                   type: bool
                 replace_as:
                   type: bool
+            session_tracker:
+              type: str
       neighbor_interfaces:
         type: list
         primary_key: name
@@ -8065,8 +8236,26 @@ keys:
                           type: str
             eos_cli:
               type: str
-              description: Multiline EOS CLI rendered directly on the Router BGP,
+              description: 'Multiline EOS CLI rendered directly on the Router BGP,
                 VRF definition in the final EOS configuration
+
+                '
+      session_trackers:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Name of session tracker
+            recovery_delay:
+              type: int
+              description: Recovery delay in seconds
+              convert_types:
+              - str
+              min: 1
+              max: 3600
   router_general:
     documentation_options:
       filename: data_model/Routing
@@ -8809,18 +8998,24 @@ keys:
                     route_map:
                       type: str
                       description: Route Map Name
+                    include_leaked:
+                      type: bool
                 connected:
                   type: dict
                   keys:
                     route_map:
                       type: str
                       description: Route Map Name
+                    include_leaked:
+                      type: bool
                 bgp:
                   type: dict
                   keys:
                     route_map:
                       type: str
                       description: Route Map Name
+                    include_leaked:
+                      type: bool
             auto_cost_reference_bandwidth:
               type: int
               convert_types:
@@ -10022,6 +10217,7 @@ keys:
                     description: IPv4 Prefix
           ipv6:
             type: list
+            secondary_key: prefixes
             primary_key: name
             convert_types:
             - dict
@@ -10844,18 +11040,18 @@ keys:
         keys:
           beginning:
             type: int
-            min: 1
+            min: 2
             max: 4094
             required: true
-            description: Vlan ID
+            description: First VLAN ID.
             convert_types:
             - str
           ending:
             type: int
-            min: 1
+            min: 2
             max: 4094
             required: true
-            description: Vlan ID
+            description: Last VLAN ID.
             convert_types:
             - str
   vlans:
@@ -10932,6 +11128,9 @@ keys:
       filename: data_model/Routing
     type: list
     primary_key: name
+    description: 'These keys are ignored if the name of the vrf is ''default''
+
+      '
     convert_types:
     - dict
     items:
@@ -10945,6 +11144,8 @@ keys:
         ip_routing:
           type: bool
         ipv6_routing:
+          type: bool
+        ip_routing_ipv6_interfaces:
           type: bool
         tenant:
           type: str

@@ -49,6 +49,10 @@ class EosDesignsFacts(AvdFacts):
     '''
 
     def __init__(self, hostvars, templar):
+        # Add reference to this instance of EosDesignsFacts object inside hostvars.
+        # This is used to allow templates to access the facts object directly with "switch.*"
+        hostvars["switch"] = self
+
         super().__init__(hostvars, templar)
         self.avd_ip_addressing = load_ip_addressing(self._hostvars, self._templar)
 
@@ -252,34 +256,6 @@ class EosDesignsFacts(AvdFacts):
         return get(self._node_type_key_data, "vtep", default=False)
 
     @cached_property
-    def ip_addressing(self):
-        """
-        switch.ip_addressing.* set based on
-        templates.ip_addressing.* combined with (overridden by)
-        node_type_keys.<node_type_key>.ip_addressing.*
-        """
-        hostvar_templates = get(self._hostvars, "templates.ip_addressing", default={})
-        node_type_templates = get(self._node_type_key_data, "ip_addressing", default={})
-        if hostvar_templates or node_type_templates:
-            return combine(hostvar_templates, node_type_templates, recursive=True, list_merge="replace")
-        else:
-            return {}
-
-    @cached_property
-    def interface_descriptions(self):
-        """
-        switch.interface_descriptions.* set based on
-        templates.interface_descriptions.* combined with (overridden by)
-        node_type_keys.<node_type_key>.interface_descriptions.*
-        """
-        hostvar_templates = get(self._hostvars, "templates.interface_descriptions", default={})
-        node_type_templates = get(self._node_type_key_data, "interface_descriptions", default={})
-        if hostvar_templates or node_type_templates:
-            return combine(hostvar_templates, node_type_templates, recursive=True, list_merge="replace")
-        else:
-            return {}
-
-    @cached_property
     def _switch_data(self):
         """
         internal _switch_data containing inherited vars from fabric_topology data model
@@ -351,15 +327,18 @@ class EosDesignsFacts(AvdFacts):
         return get(self._switch_data, "node_group.nodes", default=[])
 
     @cached_property
-    def group(self):
+    def group(self) -> str:
         """
         switch.group set to "node_group" name or None
         """
         return get(self._switch_data, "group")
 
     @cached_property
-    def id(self):
-        return get(self._switch_data_combined, "id", required=True)
+    def id(self) -> int | None:
+        """
+        id is optional.
+        """
+        return get(self._switch_data_combined, "id")
 
     @cached_property
     def mgmt_ip(self):
@@ -372,6 +351,10 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def platform(self):
         return get(self._switch_data_combined, "platform")
+
+    @cached_property
+    def always_configure_ip_routing(self):
+        return get(self._switch_data_combined, "always_configure_ip_routing")
 
     @cached_property
     def max_parallel_uplinks(self):
@@ -393,6 +376,9 @@ class EosDesignsFacts(AvdFacts):
 
         if self.uplink_switches is None:
             return []
+
+        if self.id is None:
+            raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}'")
 
         uplink_switch_interfaces = []
         uplink_switch_counter = {}
@@ -467,8 +453,11 @@ class EosDesignsFacts(AvdFacts):
         if ptp["enabled"] is True:
             auto_clock_identity = get(self._switch_data_combined, "ptp.auto_clock_identity", default=True)
             priority1 = get(self._switch_data_combined, "ptp.priority1", default=self.default_ptp_priority1)
-            default_priority2 = self.id % 256
-            priority2 = get(self._switch_data_combined, "ptp.priority2", default=default_priority2)
+            priority2 = get(self._switch_data_combined, "ptp.priority2")
+            if priority2 is None:
+                if self.id is None:
+                    raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' to set ptp priority2")
+                priority2 = self.id % 256
             if auto_clock_identity is True:
                 clock_identity_prefix = get(self._switch_data_combined, "ptp.clock_identity_prefix", default="00:1C:73")
                 default_clock_identity = f"{clock_identity_prefix}:{priority1:02x}:00:{priority2:02x}"
@@ -602,10 +591,19 @@ class EosDesignsFacts(AvdFacts):
     def system_mac_address(self):
         """
         system_mac_address is inherited from
-        Host variable var system_mac_address ->
-          Fabric Topology data model system_mac_address
+        Fabric Topology data model system_mac_address ->
+            Host variable var system_mac_address ->
         """
         return default(get(self._switch_data_combined, "system_mac_address"), get(self._hostvars, "system_mac_address"))
+
+    @cached_property
+    def serial_number(self):
+        """
+        serial_number is inherited from
+        Fabric Topology data model serial_number ->
+            Host variable var serial_number
+        """
+        return default(get(self._switch_data_combined, "serial_number"), get(self._hostvars, "serial_number"))
 
     @cached_property
     def underlay_routing_protocol(self):
@@ -648,6 +646,8 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def lacp_port_id(self):
         if get(self._switch_data_combined, "lacp_port_id_range.enabled") is True:
+            if self.id is None:
+                raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' to set LACP swicth ids")
             node_group_length = max(len(self._switch_data_node_group_nodes), 1)
             lacp_port_id = {}
             switch_id = self.id
@@ -1045,14 +1045,14 @@ class EosDesignsFacts(AvdFacts):
 
     @cached_property
     def underlay_multicast(self):
-        return get(self._hostvars, "underlay_multicast")
+        if self.underlay_router is True:
+            return get(self._hostvars, "underlay_multicast")
+        return None
 
     @cached_property
     def overlay_rd_type_admin_subfield(self):
-        tmp_overlay_rd_type_admin_subfield = default(get(self._hostvars, "evpn_rd_type.admin_subfield"), get(self._hostvars, "overlay_rd_type.admin_subfield"))
-        tmp_overlay_rd_type_admin_subfield_offset = int(
-            default(get(self._hostvars, "evpn_rd_type.admin_subfield_offset"), get(self._hostvars, "overlay_rd_type.admin_subfield_offset"), 0)
-        )
+        tmp_overlay_rd_type_admin_subfield = get(self._hostvars, "overlay_rd_type.admin_subfield")
+        tmp_overlay_rd_type_admin_subfield_offset = int(default(get(self._hostvars, "overlay_rd_type.admin_subfield_offset"), 0))
         if tmp_overlay_rd_type_admin_subfield is None:
             return self.router_id
 
@@ -1063,6 +1063,8 @@ class EosDesignsFacts(AvdFacts):
             return self.bgp_as
 
         if tmp_overlay_rd_type_admin_subfield == "switch_id":
+            if self.id is None:
+                raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and 'overlay_rd_type_admin_subfield' is set to 'switch_id'")
             return self.id + tmp_overlay_rd_type_admin_subfield_offset
 
         if re.fullmatch(r"[0-9]+", str(tmp_overlay_rd_type_admin_subfield)):
@@ -1185,47 +1187,19 @@ class EosDesignsFacts(AvdFacts):
         if self.underlay_router is True:
             return {
                 "ipv4_underlay_peers": {
-                    "name": default(
-                        get(self._hostvars, "bgp_peer_groups.ipv4_underlay_peers.name"),
-                        get(self._hostvars, "bgp_peer_groups.IPv4_UNDERLAY_PEERS.name"),
-                        "IPv4-UNDERLAY-PEERS",
-                    ),
-                    "password": default(
-                        get(self._hostvars, "bgp_peer_groups.ipv4_underlay_peers.password"), get(self._hostvars, "bgp_peer_groups.IPv4_UNDERLAY_PEERS.password")
-                    ),
-                    "structured_config": default(
-                        get(self._hostvars, "bgp_peer_groups.ipv4_underlay_peers.structured_config"),
-                        get(self._hostvars, "bgp_peer_groups.IPv4_UNDERLAY_PEERS.structured_config"),
-                    ),
+                    "name": get(self._hostvars, "bgp_peer_groups.ipv4_underlay_peers.name", default="IPv4-UNDERLAY-PEERS"),
+                    "password": get(self._hostvars, "bgp_peer_groups.ipv4_underlay_peers.password"),
+                    "structured_config": get(self._hostvars, "bgp_peer_groups.ipv4_underlay_peers.structured_config"),
                 },
                 "mlag_ipv4_underlay_peer": {
-                    "name": default(
-                        get(self._hostvars, "bgp_peer_groups.mlag_ipv4_underlay_peer.name"),
-                        get(self._hostvars, "bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.name"),
-                        "MLAG-IPv4-UNDERLAY-PEER",
-                    ),
-                    "password": default(
-                        get(self._hostvars, "bgp_peer_groups.mlag_ipv4_underlay_peer.password"),
-                        get(self._hostvars, "bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.password"),
-                    ),
-                    "structured_config": default(
-                        get(self._hostvars, "bgp_peer_groups.mlag_ipv4_underlay_peer.structured_config"),
-                        get(self._hostvars, "bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.structured_config"),
-                    ),
+                    "name": get(self._hostvars, "bgp_peer_groups.mlag_ipv4_underlay_peer.name", default="MLAG-IPv4-UNDERLAY-PEER"),
+                    "password": get(self._hostvars, "bgp_peer_groups.mlag_ipv4_underlay_peer.password"),
+                    "structured_config": get(self._hostvars, "bgp_peer_groups.mlag_ipv4_underlay_peer.structured_config"),
                 },
                 "evpn_overlay_peers": {
-                    "name": default(
-                        get(self._hostvars, "bgp_peer_groups.evpn_overlay_peers.name"),
-                        get(self._hostvars, "bgp_peer_groups.EVPN_OVERLAY_PEERS.name"),
-                        "EVPN-OVERLAY-PEERS",
-                    ),
-                    "password": default(
-                        get(self._hostvars, "bgp_peer_groups.evpn_overlay_peers.password"), get(self._hostvars, "bgp_peer_groups.EVPN_OVERLAY_PEERS.password")
-                    ),
-                    "structured_config": default(
-                        get(self._hostvars, "bgp_peer_groups.evpn_overlay_peers.structured_config"),
-                        get(self._hostvars, "bgp_peer_groups.EVPN_OVERLAY_PEERS.structured_config"),
-                    ),
+                    "name": get(self._hostvars, "bgp_peer_groups.evpn_overlay_peers.name", default="EVPN-OVERLAY-PEERS"),
+                    "password": get(self._hostvars, "bgp_peer_groups.evpn_overlay_peers.password"),
+                    "structured_config": get(self._hostvars, "bgp_peer_groups.evpn_overlay_peers.structured_config"),
                 },
                 "evpn_overlay_core": {
                     "name": get(self._hostvars, "bgp_peer_groups.evpn_overlay_core.name", default="EVPN-OVERLAY-CORE"),
@@ -1288,6 +1262,8 @@ class EosDesignsFacts(AvdFacts):
                         elif self.mlag:
                             return bgp_as_range_expanded[self.mlag_switch_ids["primary"] - 1]
                         else:
+                            if self.id is None:
+                                raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and is required when expanding 'bgp_as'")
                             return bgp_as_range_expanded[self.id - 1]
                     except IndexError as exc:
                         raise AristaAvdError(
@@ -1327,8 +1303,9 @@ class EosDesignsFacts(AvdFacts):
                 isis_system_id_prefix = get(self._switch_data_combined, "isis_system_id_prefix")
                 if isis_system_id_prefix is not None:
                     isis_area_id = get(self._hostvars, "isis_area_id", required=True)
-                    switch_id = self.id
-                    return f"{isis_area_id}.{isis_system_id_prefix}.{switch_id:04d}.00"
+                    if self.id is None:
+                        raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and is required to set ISIS NET address using prefix")
+                    return f"{isis_area_id}.{isis_system_id_prefix}.{self.id:04d}.00"
         return None
 
     @cached_property
@@ -1357,6 +1334,8 @@ class EosDesignsFacts(AvdFacts):
     def node_sid(self):
         if self.underlay_router is True:
             if self.underlay_routing_protocol in ["isis-sr", "isis-sr-ldp"]:
+                if self.id is None:
+                    raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and is required to set node SID")
                 node_sid_base = int(get(self._switch_data_combined, "node_sid_base", 0))
                 return self.id + node_sid_base
         return None
@@ -1534,6 +1513,8 @@ class EosDesignsFacts(AvdFacts):
     @cached_property
     def inband_management_ip(self):
         if self.inband_management_role == "child":
+            if self.id is None:
+                raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and is required to set inband_management_ip")
             subnet = ipaddress.ip_network(self.inband_management_subnet, strict=False)
             hosts = list(subnet.hosts())
             inband_management_ip = str(hosts[2 + self.id])
@@ -1750,8 +1731,12 @@ class EosDesignsFacts(AvdFacts):
         Returns the switch id's of both primary and secondary switches for a given node group
         """
         if self.mlag_role == "primary":
+            if self.id is None:
+                raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and is required to compute MLAG ids")
             return {"primary": self.id, "secondary": self._mlag_peer_id}
         elif self.mlag_role == "secondary":
+            if self.id is None:
+                raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and is required to compute MLAG ids")
             return {"primary": self._mlag_peer_id, "secondary": self.id}
 
     @cached_property

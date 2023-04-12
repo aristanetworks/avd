@@ -1,3 +1,4 @@
+serial_number: DEADBEEFC0FFEE
 router_bgp:
   as: '65110.100'
   router_id: 172.16.110.2
@@ -8,46 +9,46 @@ router_bgp:
   - graceful-restart
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
     password: AQQvKeimxJu+uGQ/yYvv9w==
     maximum_routes: 12000
     send_community: all
-    name: IPv4-UNDERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: IPv4-UNDERLAY-PEERS
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
   redistribute_routes:
   - source_protocol: connected
   neighbors:
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.16.11.2
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
     description: DC1-SUPER-SPINE1_Ethernet2
-    ip_address: 172.16.11.2
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.16.11.66
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
     description: DC1-SUPER-SPINE2_Ethernet2
-    ip_address: 172.16.11.66
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.17.110.3
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65111.100'
     description: DC1-POD1-LEAF1A_Ethernet2
-    ip_address: 172.17.110.3
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.17.110.11
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65112.100'
     description: DC1.POD1.LEAF2A_Ethernet2
-    ip_address: 172.17.110.11
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.17.110.19
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65112.100'
     description: DC1-POD1-LEAF2B_Ethernet2
-    ip_address: 172.17.110.19
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.17.110.15
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65112.100'
     description: DC1.POD1.LEAF2A_Ethernet12
-    ip_address: 172.17.110.15
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.17.110.23
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65112.100'
     description: DC1-POD1-LEAF2B_Ethernet12
-    ip_address: 172.17.110.23
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

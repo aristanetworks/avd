@@ -8,74 +8,74 @@ router_bgp:
   - graceful-restart
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
     maximum_routes: 12000
     send_community: all
-    name: IPv4-UNDERLAY-PEERS
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 5
     next_hop_unchanged: true
-    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: IPv4-UNDERLAY-PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   neighbors:
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.16.21.0
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65200'
     description: DC2-SUPER-SPINE1_Ethernet1
-    ip_address: 172.16.21.0
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.16.21.64
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65200'
     description: DC2-SUPER-SPINE2_Ethernet1
-    ip_address: 172.16.21.64
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.17.210.1
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65211'
     description: DC2-POD1-LEAF1A_Ethernet1
-    ip_address: 172.17.210.1
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.17.210.5
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65212'
     description: DC2-POD1-LEAF2A_Ethernet1
-    ip_address: 172.17.210.5
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 172.16.110.3
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-POD1-LEAF1A
     remote_as: '65111.100'
-    ip_address: 172.16.110.3
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 172.16.110.1
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-POD1-SPINE1
     remote_as: '65110.100'
-    ip_address: 172.16.110.1
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 172.16.10.1
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-RS1
     remote_as: '65101'
-    ip_address: 172.16.10.1
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 172.16.10.2
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-RS2
     remote_as: '65102'
-    ip_address: 172.16.10.2
-  - remote_as: '65120'
+  - ip_address: 11.1.1.18
+    remote_as: '65120'
     description: DC1-POD2-SPINE1
     peer_group: IPv4-UNDERLAY-PEERS
-    ip_address: 11.1.1.18
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
   address_family_rtc:
     peer_groups:
-    - activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
       default_route_target:
         only: true
-      name: EVPN-OVERLAY-PEERS
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

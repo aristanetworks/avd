@@ -46,7 +46,7 @@ class ActionModule(ActionBase):
         if fabric_name is None or not set(ansible_play_hosts_all).issubset(fabric_hosts):
             raise AnsibleActionFail(
                 "Invalid/missing 'fabric_name' variable."
-                "All hosts in the play must have the same 'fabric_name' value"
+                "All hosts in the play must have the same 'fabric_name' value "
                 "which must point to an Ansible Group containing the hosts."
             )
 
@@ -174,9 +174,6 @@ class ActionModule(ActionBase):
             # This is used to access EosDesignsFacts objects of other switches during rendering of one switch.
             host_hostvars["avd_switch_facts"] = avd_switch_facts
             avd_switch_facts[host] = {"switch": EosDesignsFacts(hostvars=host_hostvars, templar=self.templar)}
-            # Add reference to EosDesignsFacts object inside hostvars.
-            # This is used to allow templates to access the facts object directly with "switch.*"
-            host_hostvars["switch"] = avd_switch_facts[host]["switch"]
 
         return avd_switch_facts
 

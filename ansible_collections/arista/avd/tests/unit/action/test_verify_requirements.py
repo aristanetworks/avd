@@ -1,5 +1,6 @@
 __metaclass__ = type
 
+import os
 from collections import namedtuple
 from importlib.metadata import PackageNotFoundError
 from unittest.mock import patch
@@ -8,6 +9,7 @@ import pytest
 
 from ansible_collections.arista.avd.plugins.action.verify_requirements import (
     MIN_PYTHON_SUPPORTED_VERSION,
+    _get_running_collection_version,
     _validate_ansible_collections,
     _validate_ansible_version,
     _validate_python_requirements,
@@ -195,3 +197,23 @@ def test__validate_ansible_collections(n_reqs, mocked_version, requirement_versi
 
         ret = _validate_ansible_collections("arista.avd", result)
         assert ret == expected_return
+
+
+def test__get_running_collection_version_git_not_installed():
+    """
+    Verify that when git is not found in PATH the function returns properly
+    """
+    # setting PATH to empty string to make sure git is not present
+    os.environ["PATH"] = ""
+    # setting ANSIBLE_VERBOSITY to trigger the log message when raising the exception
+    os.environ["ANSIBLE_VERBOSITY"] = "3"
+    result = {}
+    with patch("ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_path") as patched__get_collection_path, patch(
+        "ansible_collections.arista.avd.plugins.action.verify_requirements._get_collection_version"
+    ) as patched__get_collection_version, patch("ansible_collections.arista.avd.plugins.action.verify_requirements.display") as patched_display:
+        patched__get_collection_path.return_value = "."
+        patched__get_collection_version.return_value = "42.0.0"
+
+        _get_running_collection_version("dummy", result)
+        patched_display.vvv.assert_called_once_with("Could not find 'git' executable, returning collection version")
+    assert result == {"collection": {"name": "dummy", "path": "", "version": "42.0.0"}}

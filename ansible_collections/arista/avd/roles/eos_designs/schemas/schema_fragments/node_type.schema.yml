@@ -45,6 +45,17 @@ keys:
               Set to the same MAC address as available in "show version" on the device.
               "system_mac_address" can also be set directly as a hostvar.
               If both are set, the setting under "Fabric Topology" takes precedence.
+          serial_number:
+            documentation_options:
+              filename: Fabric Topology
+              table: Generic configuration management
+            type: str
+            description: |
+              Set to the Serial Number of the device
+              For  now only used for documentation purpose in the fabric documentation
+              and part of the structured_config
+              "serial_number" can also be set directly as a hostvar.
+              If both are set, the setting under "Fabric Topology" takes precedence.
           rack:
             documentation_options:
               filename: Fabric Topology
@@ -162,6 +173,15 @@ keys:
                 convert_types:
                   - str
                 default: 0
+          always_configure_ip_routing:
+            documentation_options:
+              filename: Fabric Topology
+              table: Generic configuration management
+            type: bool
+            default: false
+            description: |
+              Force configuration of "ip routing" even on L2 devices.
+              Use this to retain behavior of AVD versions below 4.0.0.
           raw_eos_cli:
             documentation_options:
               filename: Fabric Topology
@@ -711,6 +731,16 @@ keys:
             description: Enable / Disable MLAG dual primary detection.
             type: bool
             default: false
+          mlag_ibgp_origin_incomplete:
+            documentation_options:
+              filename: Fabric Topology
+              table: MLAG configuration management
+            description: |
+              Set origin of routes received from MLAG iBGP peer to incomplete.
+              The purpose is to optimize routing for leaf loopbacks from spine perspective and
+              avoid suboptimal routing via peerlink for control plane traffic.
+            type: bool
+            default: true
           mlag_interfaces:
             documentation_options:
               filename: Fabric Topology

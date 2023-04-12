@@ -1,7 +1,7 @@
 ### Routing - OSPF ###
 router_ospf:
   process_ids:
-    100:
+    - id: 100
       passive_interface_default: true
       router_id: 192.168.255.3
       no_passive_interfaces:
@@ -9,9 +9,9 @@ router_ospf:
         - Ethernet2
         - Vlan4093
       network_prefixes:
-        198.51.100.0/24:
+        - ipv4_prefix: 198.51.100.0/24
           area: 0.0.0.1
-        203.0.113.0/24:
+        - ipv4_prefix: 203.0.113.0/24
           area: 0.0.0.2
       bfd_enable: true
       bfd_adjacency_state_any: true
@@ -30,7 +30,7 @@ router_ospf:
         inter_area: 70
       distribute_list_in:
         route_map: RM-OSPF-DIST-IN
-    101:
+    - id: 101
       vrf: CUSTOMER01
       passive_interface_default: true
       router_id: 1.0.1.1
@@ -58,7 +58,7 @@ router_ospf:
           min: 200
           max: 300
 
-    200:
+    - id: 200
       vrf: ospf_zone
       passive_interface_default: false
       router_id: 192.168.254.1
@@ -70,34 +70,51 @@ router_ospf:
       redistribute:
         static:
           route_map: rm-ospf-static
+          include_leaked: true
         connected:
           route_map: rm-ospf-connected
+          include_leaked: true
         bgp:
           route_map: rm-ospf-bgp
+          include_leaked: true
       areas:
-        '0.0.0.2':
+        - id: '0.0.0.2'
           filter:
             networks:
               - 1.1.1.0/24
               - 2.2.2.0/24
-        3:
+        - id: 3
           filter:
             prefix_list: PL-OSPF-FILTERING
       max_metric: # not expected to produce config. Just here to test proper variable checks.
       timers:
         lsa:
           rx_min_interval: 100
-    300:
+    - id: 300
       max_metric:
         router_lsa:
-    400:
+      redistribute:
+        static:
+          route_map: rm-ospf-static
+        connected:
+          route_map: rm-ospf-connected
+        bgp:
+          route_map: rm-ospf-bgp
+    - id: 400
       max_metric:
         router_lsa:
           external_lsa:
           include_stub: true
           on_startup: "wait-for-bgp"
           summary_lsa:
-    500:
+      redistribute:
+        static:
+          include_leaked: true
+        connected:
+          include_leaked: true
+        bgp:
+          include_leaked: true
+    - id: 500
       max_metric:
         router_lsa:
           external_lsa:
@@ -105,33 +122,33 @@ router_ospf:
           on_startup: 222
           summary_lsa:
             override_metric: 456
-    600:
+    - id: 600
       areas:
-        0.0.0.1:
-        0.0.10.11:
+        - id: 0.0.0.1
+        - id: 0.0.10.11
           type: stub
           no_summary: true
-        0.0.20.20:
+        - id: 0.0.20.20
           type: nssa
-        0.0.20.21:
+        - id: 0.0.20.21
           type: nssa
           no_summary: true
-        0.0.20.22:
+        - id: 0.0.20.22
           type: nssa
           nssa_only: true
-        0.0.20.23:
+        - id: 0.0.20.23
           type: nssa
           default_information_originate:
-        0.0.20.24:
+        - id: 0.0.20.24
           type: nssa
           default_information_originate:
             metric: 50
-        0.0.20.25:
+        - id: 0.0.20.25
           type: nssa
           default_information_originate:
             metric_type: 1
           no_summary: true
-        0.0.20.26:
+        - id: 0.0.20.26
           type: nssa
           no_summary: true
           nssa_only: true
@@ -141,37 +158,37 @@ router_ospf:
 
 
 ethernet_interfaces:
-  Ethernet1:
+  - name: Ethernet1
     type: routed
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.1
     ospf_cost: 99
     ospf_authentication: message-digest
     ospf_message_digest_keys:
-      55:
+      - id: 55
         hash_algorithm: md5
         key: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 loopback_interfaces:
-  Loopback2:
+  - name: Loopback2
     ospf_area: 0.0.0.2
 port_channel_interfaces:
-  Port-Channel12:
+  - name: Port-Channel12
     type: routed
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.12
     ospf_cost: 99
     ospf_authentication: message-digest
     ospf_message_digest_keys:
-      55:
+      - id: 55
         hash_algorithm: md5
         key: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 vlan_interfaces:
-  Vlan24:
+  - name: Vlan24
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.24
     ospf_cost: 99
     ospf_authentication: message-digest
     ospf_message_digest_keys:
-      55:
+      - id: 55
         hash_algorithm: md5
         key: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"

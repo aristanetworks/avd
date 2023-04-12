@@ -37,7 +37,7 @@ ptp:
 
 # port-channels
 port_channel_interfaces:
-  Port-Channel5:
+  - name: Port-Channel5
     description: DC1_L2LEAF1_Po1
     vlans: 110,201
     mode: trunk
@@ -53,7 +53,7 @@ port_channel_interfaces:
 
 ### interface
 ethernet_interfaces:
-  Ethernet3:
+  - name: Ethernet3
     peer: DC1-SPINE2
     peer_interface: Ethernet5
     peer_type: spine
@@ -69,7 +69,7 @@ ethernet_interfaces:
       role: dynamic
       vlan: 2
       transport: layer2
-  Ethernet6:
+  - name: Ethernet6
     peer: DC1-SPINE1
     peer_interface: Ethernet6
     peer_type: spine
@@ -89,7 +89,7 @@ ethernet_interfaces:
       role: dynamic
       transport: ipv4
 # port-channel interfaces
-  Ethernet5:
+  - name: Ethernet5
     peer: DC1-AGG01
     peer_interface: Ethernet1
     peer_type: l2leaf

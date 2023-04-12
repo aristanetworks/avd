@@ -534,9 +534,9 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
-| MGMT | false |
-| Tenant_A_APP_Zone | true |
-| Tenant_A_WEB_Zone | true |
+| MGMT | False |
+| Tenant_A_APP_Zone | True |
+| Tenant_A_WEB_Zone | True |
 
 #### IP Routing Device Configuration
 

@@ -43,20 +43,22 @@ router_bgp:
       peer_filter: my-peer-filter
       remote_as: 65444
   peer_groups:
-    test-link-bandwidth1:
+    - name: test-link-bandwidth1
       link_bandwidth:
         enabled: true
         default: 100G
-    test-link-bandwidth2:
+    - name: test-link-bandwidth2
       link_bandwidth:
         enabled: true
-    test-passive:
+    - name: test-passive
       passive: true
+    - name: test-session-tracker
+      session_tracker: ST2
   aggregate_addresses:
-    1.1.1.0/24:
+    - prefix: 1.1.1.0/24
       advertise_only: true
-    2.2.1.0/24:
-    1.12.1.0/24:
+    - prefix: 2.2.1.0/24
+    - prefix: 1.12.1.0/24
       as_set: true
       summary_only: true
       attribute_map: RM-ATTRIBUTE
@@ -64,39 +66,39 @@ router_bgp:
       advertise_only: true
   address_family_ipv4:
     networks:
-      10.0.0.0/8:
-      172.16.0.0/12:
-      192.168.0.0/16:
+      - prefix: 10.0.0.0/8
+      - prefix: 172.16.0.0/12
+      - prefix: 192.168.0.0/16
         route_map: RM-FOO-MATCH
     peer_groups:
-      foo:
+      - name: foo
         prefix_list_in: PL-BAR-v4-IN
         prefix_list_out: PL-BAR-v4-OUT
         default_originate:
           always: true
           route_map: RM-FOO-MATCH
     neighbors:
-      192.0.2.1:
+      - ip_address: 192.0.2.1
         prefix_list_in: PL-FOO-v4-IN
         prefix_list_out: PL-FOO-v4-OUT
   address_family_ipv6:
     networks:
-      2001:db8:100::/40:
-      2001:db8:200::/40:
+      - prefix: 2001:db8:100::/40
+      - prefix: 2001:db8:200::/40
         route_map: RM-BAR-MATCH
     peer_groups:
-      baz:
+      - name: baz
         prefix_list_in: PL-BAR-v6-IN
         prefix_list_out: PL-BAR-v6-OUT
     neighbors:
-      2001:db8::1:
+      - ip_address: 2001:db8::1
         prefix_list_in: PL-FOO-v6-IN
         prefix_list_out: PL-FOO-v6-OUT
     redistribute_routes:
-      static:
+      - source_protocol: static
         route_map: RM-IPV6-STATIC-TO-BGP
   neighbors:
-    192.0.3.1:
+    - ip_address: 192.0.3.1
       remote_as: 65432
       send_community: all
       passive: true
@@ -111,7 +113,8 @@ router_bgp:
       as_path:
         remote_as_replace_out: true
         prepend_own_disabled: true
-    192.0.3.2:
+      session_tracker: ST1
+    - ip_address: 192.0.3.2
       remote_as: 65433
       send_community: extended
       maximum_routes: 10000
@@ -124,7 +127,7 @@ router_bgp:
       rib_in_pre_policy_retain:
         enabled: true
         all: true
-    192.0.3.3:
+    - ip_address: 192.0.3.3
       remote_as: 65434
       send_community: standard
       rib_in_pre_policy_retain:
@@ -132,20 +135,20 @@ router_bgp:
         all: false
       # Test no config generation
       default_originate:
-    192.0.3.4:
+    - ip_address: 192.0.3.4
       remote_as: 65435
       send_community: large
       default_originate:
         enabled: false
       rib_in_pre_policy_retain:
         enabled: false
-    192.0.3.5:
+    - ip_address: 192.0.3.5
       remote_as: 65436
       description: test_ebgp_multihop
       send_community: standard
       ebgp_multihop: 2
       maximum_routes: 12000
-    192.0.3.6:
+    - ip_address: 192.0.3.6
       remote_as: 65437
       description: test_remove_private_as
       remove_private_as:
@@ -153,7 +156,7 @@ router_bgp:
       remove_private_as_ingress:
         enabled: true
       route_reflector_client: false
-    192.0.3.7:
+    - ip_address: 192.0.3.7
       remote_as: 65438
       description: test_remove_private_as_all
       remove_private_as:
@@ -165,9 +168,14 @@ router_bgp:
         replace_as: true
       route_reflector_client: true
   neighbor_interfaces:
-    Ethernet2:
+    - name: Ethernet2
       peer_group: PG-FOO-v4
       remote_as: 65102
-    Ethernet3:
+    - name: Ethernet3
       peer_group: PG-FOO-v4
       peer_filter: PF-BAR-v4
+  session_trackers:
+    - name: ST1
+      recovery_delay: 666
+    - name: ST2
+      recovery_delay: 42

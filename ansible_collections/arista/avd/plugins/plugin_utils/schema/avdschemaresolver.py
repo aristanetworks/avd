@@ -33,7 +33,7 @@ def _keys(validator, keys: dict, resolved_schema: dict, schema: dict):
             _ref_on_child(validator, childschema["$ref"], resolved_schema["keys"][key])
         yield from validator.descend(
             resolved_schema["keys"][key],
-            childschema,
+            resolved_schema["keys"][key],
             path=key,
             schema_path=key,
         )
@@ -46,7 +46,7 @@ def _dynamic_keys(validator, dynamic_keys: dict, resolved_schema: dict, schema: 
             _ref_on_child(validator, childschema["$ref"], resolved_schema["dynamic_keys"][key])
         yield from validator.descend(
             resolved_schema["dynamic_keys"][key],
-            childschema,
+            resolved_schema["dynamic_keys"][key],
             path=key,
             schema_path=key,
         )
@@ -58,7 +58,7 @@ def _items(validator, items: dict, resolved_schema: dict, schema: dict):
         _ref_on_child(validator, items["$ref"], resolved_schema["items"])
     yield from validator.descend(
         resolved_schema["items"],
-        items,
+        resolved_schema["items"],
         path=0,
         schema_path=0,
     )
@@ -86,7 +86,7 @@ class AvdSchemaResolver:
         It is used to generate full documentation covering all nested schemas.
 
         Since we return generators, we cannot also return the resolved schema.
-        Instead we use the "instance" of jsonschema - the variable normally holding
+        Instead we use the "instance" in jsonschema - the variable normally holding
         the data to be validated - called "resolved_schema" above.
         The "resolved_schema" must contain a copy of the original schema, and then
         the $ref resolver will merge in the resolved schema and do in-place update.

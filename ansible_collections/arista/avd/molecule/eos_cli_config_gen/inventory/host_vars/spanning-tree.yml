@@ -5,11 +5,11 @@ spanning_tree:
       name: test
       revision: 5
       instances:
-        2:
+        - id: 2
           vlans: 15,16,17,18
-        3:
+        - id: 3
           vlans: 15
-        4:
+        - id: 4
           vlans: 200-300
     pvst_border: true
   edge_port:
@@ -17,7 +17,7 @@ spanning_tree:
   mode: mstp
   no_spanning_tree_vlan: 105,202,505-506
   mst_instances:
-    0:
+    - id: 0
       priority: 4096
-    100-200:
+    - id: 100-200
       priority: 8192

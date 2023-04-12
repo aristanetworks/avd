@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  cvp_instance_ip:
+    documentation_options:
+      filename: Management Settings
+      table: CloudVision Settings
+    type: str
+    description: |
+      IPv4 address.
+      CloudVision - Telemetry Agent (TerminAttr) configuration is optional
+      You can either provide a list of IPs to target on-premise CloudVision cluster or
+      use DNS name for your CloudVision as a Service instance. If you have both on-prem and
+      CVaaS defined, only on-prem is going to be configured.

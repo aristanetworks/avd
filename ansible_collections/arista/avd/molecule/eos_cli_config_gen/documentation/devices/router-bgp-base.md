@@ -82,6 +82,12 @@ interface Management1
 | -------- | ----- |
 | Passive | True |
 
+##### test-session-tracker
+
+| Settings | Value |
+| -------- | ----- |
+| Session tracker | ST2 |
+
 #### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
@@ -109,6 +115,13 @@ interface Management1
 | 1.12.1.0/24 | True | True | RM-ATTRIBUTE | RM-MATCH | True |
 | 2.2.1.0/24 | False | False | - | - | False |
 
+#### Router BGP Session Trackers
+
+| Session Tracker Name | Recovery Delay (in seconds) |
+| -------------------- | --------------------------- |
+| ST1 | 666 |
+| ST2 | 42 |
+
 #### Router BGP Device Configuration
 
 ```eos
@@ -134,6 +147,8 @@ router bgp 65101
    neighbor test-link-bandwidth2 link-bandwidth
    neighbor test-passive peer group
    neighbor test-passive passive
+   neighbor test-session-tracker peer group
+   neighbor test-session-tracker session tracker ST2
    neighbor interface Ethernet2 peer-group PG-FOO-v4 remote-as 65102
    neighbor interface Ethernet3 peer-group PG-FOO-v4 peer-filter PF-BAR-v4
    neighbor 192.0.3.1 remote-as 65432
@@ -141,6 +156,7 @@ router bgp 65101
    neighbor 192.0.3.1 as-path prepend-own disabled
    neighbor 192.0.3.1 rib-in pre-policy retain
    neighbor 192.0.3.1 passive
+   neighbor 192.0.3.1 session tracker ST1
    neighbor 192.0.3.1 default-originate always
    neighbor 192.0.3.1 send-community
    neighbor 192.0.3.1 link-bandwidth default 100G
@@ -193,4 +209,8 @@ router bgp 65101
       network 2001:db8:100::/40
       network 2001:db8:200::/40 route-map RM-BAR-MATCH
       redistribute static route-map RM-IPV6-STATIC-TO-BGP
+   session tracker ST1
+      recovery delay 666 seconds
+   session tracker ST2
+      recovery delay 42 seconds
 ```

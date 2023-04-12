@@ -1,5 +1,5 @@
+serial_number: A37383692F12C7DE733D9A9B8E2B37AE
 service_routing_protocols_model: multi-agent
-ip_routing: true
 vlan_internal_order:
   allocation: ascending
   range:

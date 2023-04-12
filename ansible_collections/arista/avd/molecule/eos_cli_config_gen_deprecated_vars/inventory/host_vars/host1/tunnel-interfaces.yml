@@ -1,0 +1,23 @@
+---
+### Tunnel Interfaces ###
+
+# Testing tunnel_interfaces as dict of dict
+# Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+tunnel_interfaces:
+  Tunnel3:
+    description: test dual stack
+    mtu: 1500
+    ip_address: 64.64.64.64/24
+    ipv6_enable: true
+    ipv6_address: beef::64/64
+    source_interface: Ethernet42
+    destination: 1.1.1.1
+
+  Tunnel4:
+    description: test no tcp_mss
+    mtu: 1500
+    ip_address: 64.64.64.64/24
+    ipv6_enable: true
+    ipv6_address: beef::64/64
+    source_interface: Ethernet42
+    destination: 1.1.1.1

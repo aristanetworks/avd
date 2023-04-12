@@ -1,0 +1,5 @@
+type: l2leaf
+l2leaf: {}
+
+cvp_instance_ips:
+  - myonpremcvpserver

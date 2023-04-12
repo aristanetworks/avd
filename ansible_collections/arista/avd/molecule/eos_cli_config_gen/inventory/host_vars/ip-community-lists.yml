@@ -1,9 +1,9 @@
 ### IP community lists ###
 
 community_lists:
-  TEST1:
+  - name: TEST1
     action: "permit 1000:1000"
-  TEST2:
+  - name: TEST2
     action: "permit 2000:3000"
 
 ip_community_lists:

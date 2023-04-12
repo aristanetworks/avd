@@ -7,7 +7,7 @@ mpls:
     transport_address_interface: Loopback0
 
 ethernet_interfaces:
-  Ethernet1:
+  - name: Ethernet1
     type: routed
     ip_address: 192.168.100.1/31
     mpls:
@@ -17,7 +17,7 @@ ethernet_interfaces:
         igp_sync: true
 
 loopback_interfaces:
-  Loopback0:
+  - name: Loopback0
     ip_address: 192.168.1.1/32
     mpls:
       ldp:

@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  overlay_her_flood_list_scope:
+    documentation_options:
+      filename: Fabric Variables
+      table: Routing Protocol Selection
+    type: str
+    description: |
+      When using Head-End Replication, set the scope of flood-lists to Fabric or DC.
+      By default all VTEPs in the Fabric (part of the inventory group referenced by "fabric_name") are added to the flood-lists.
+      This can be changed to all VTEPs in the DC (part of the inventory group referenced by "dc_name").
+      This is useful if Border Leaf switches are dividing the VXLAN overlay into separate domains.
+    valid_values:
+      - "fabric"
+      - "dc"
+    default: "fabric"

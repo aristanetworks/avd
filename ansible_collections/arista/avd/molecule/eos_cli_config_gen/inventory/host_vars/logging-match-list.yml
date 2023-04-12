@@ -5,5 +5,5 @@ logging:
   policy:
     match:
       match_lists:
-        molecule:
+        - name: molecule
           action: discard

@@ -46,17 +46,17 @@ flow_trackings:
     shutdown: false
 
 ethernet_interfaces:
-  Ethernet40:
+  - name: Ethernet40
     flow_tracker:
       sampled: T2
-  Ethernet41:
+  - name: Ethernet41
     flow_tracker:
       sampled: T3
-  Ethernet42:
+  - name: Ethernet42
     flow_tracker:
       sampled: T3
 
 port_channel_interfaces:
-  Port-Channel42:
+  - name: Port-Channel42
     flow_tracker:
       sampled: T3

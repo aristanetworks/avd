@@ -471,8 +471,8 @@ ip virtual-router mac-address 00:1c:73:00:dc:00
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
-| MGMT | false |
-| TENANT_B_INTRA | true |
+| MGMT | False |
+| TENANT_B_INTRA | True |
 
 #### IP Routing Device Configuration
 
@@ -525,9 +525,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 #### Router OSPF Router Redistribution
 
-| Process ID | Source Protocol | Route Map |
-| ---------- | --------------- | --------- |
-| 19 | bgp | - |
+| Process ID | Source Protocol | Include Leaked | Route Map |
+| ---------- | --------------- | -------------- | --------- |
+| 19 | bgp | disabled | - |
 
 #### OSPF Interfaces
 

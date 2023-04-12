@@ -1,7 +1,7 @@
 ---
 ### Ethernet Interfaces ###
 ethernet_interfaces:
-  Ethernet1:
+  - name: Ethernet1
     peer: DC1-SPINE1
     peer_interface: Ethernet1
     peer_type: spine
@@ -23,12 +23,14 @@ ethernet_interfaces:
       interval: 500
       min_rx: 500
       multiplier: 5
+    bgp:
+      session_tracker: ST1
     eos_cli: |
       comment
       Comment created from eos_cli under ethernet_interfaces.Ethernet1
       EOF
 
-  Ethernet2:
+  - name: Ethernet2
     peer: SRV-POD03
     peer_interface: Eth1
     peer_type: server
@@ -61,7 +63,7 @@ ethernet_interfaces:
     spanning_tree_bpduguard: disabled
     spanning_tree_bpdufilter: disabled
 
-  Ethernet3:
+  - name: Ethernet3
     peer: DC1-SPINE2
     peer_interface: Ethernet2
     peer_type: spine
@@ -76,22 +78,22 @@ ethernet_interfaces:
     ipv6_enable: true
     ipv6_address: 2002:ABDC::1/64
     ipv6_nd_prefixes:
-      2345:ABCD:3FE0::1/96:
+      - ipv6_prefix: 2345:ABCD:3FE0::1/96
         valid_lifetime: infinite
         preferred_lifetime: 50
         no_autoconfig_flag: true
-      2345:ABCD:3FE0::2/96:
+      - ipv6_prefix: 2345:ABCD:3FE0::2/96
         valid_lifetime: 50
         preferred_lifetime: infinite
         no_autoconfig_flag: false
-      2345:ABCD:3FE0::3/96:
+      - ipv6_prefix: 2345:ABCD:3FE0::3/96
         valid_lifetime: 100000
         no_autoconfig_flag: true
     priority_flow_control:
       enabled: false
     spanning_tree_guard: root
 
-  Ethernet4:
+  - name: Ethernet4
     description: Molecule IPv6
     shutdown: true
     mtu: 9100
@@ -118,7 +120,7 @@ ethernet_interfaces:
           - boundary: ff00::/16
           - boundary: ff01::/16
 
-  Ethernet5:
+  - name: Ethernet5
     description: Molecule Routing
     shutdown: false
     mtu: 9100
@@ -129,7 +131,7 @@ ethernet_interfaces:
     ospf_authentication: message-digest
     ospf_authentication_key: "asfddja23452"
     ospf_message_digest_keys:
-      1:
+      - id: 1
         hash_algorithm: sha512
         key: "asfddja23452"
     pim:
@@ -146,7 +148,7 @@ ethernet_interfaces:
     isis_authentication_key: "asfddja23452"
     spanning_tree_guard: loop
 
-  Ethernet6:
+  - name: Ethernet6
     logging:
       event:
         link_status: true
@@ -160,7 +162,7 @@ ethernet_interfaces:
     spanning_tree_bpduguard: enabled
     spanning_tree_bpdufilter: enabled
 
-  Ethernet7:
+  - name: Ethernet7
     description: Molecule L2
     shutdown: false
     type: switched
@@ -202,13 +204,13 @@ ethernet_interfaces:
       media:
         override: 100gbase-ar4
 
-  Ethernet8:
+  - name: Ethernet8
     description: to WAN-ISP1-01 Ethernet2
     type: routed
     lldp:
       transmit: false
       receive: false
-  Ethernet8.101:
+  - name: Ethernet8.101
     description: to WAN-ISP-01 Ethernet2.101 - VRF-C1
     type: l3dot1q
     encapsulation_dot1q_vlan: 101
@@ -216,7 +218,7 @@ ethernet_interfaces:
     ipv6_enable: true
     ipv6_address: 2002:ABDC::1/64
 
-  Ethernet9:
+  - name: Ethernet9
     description: interface_with_mpls_enabled
     type: routed
     ip_address: 172.31.128.9/31
@@ -232,7 +234,7 @@ ethernet_interfaces:
       ldp:
         interface: true
 
-  Ethernet10:
+  - name: Ethernet10
     description: interface_with_mpls_disabled
     type: routed
     ip_address: 172.31.128.10/31
@@ -241,7 +243,7 @@ ethernet_interfaces:
       ldp:
         interface: false
 
-  Ethernet11:
+  - name: Ethernet11
     description: interface_in_mode_access_accepting_tagged_LACP
     type: switched
     mode: access
@@ -251,13 +253,13 @@ ethernet_interfaces:
     spanning_tree_bpduguard: false # No config should be rendered for this case
     spanning_tree_bpdufilter: false # No config should be rendered for this case
 
-  Ethernet12:
+  - name: Ethernet12
     description: interface_with_dot1q_tunnel
     type: switched
     mode: dot1q-tunnel
     vlans: 300
 
-  Ethernet13:
+  - name: Ethernet13
     logging:
       event:
         link_status: false
@@ -270,7 +272,7 @@ ethernet_interfaces:
       trunk: untagged
       vlan: 70
 
-  Ethernet14:
+  - name: Ethernet14
     logging:
       event:
         link_status: true
@@ -281,13 +283,13 @@ ethernet_interfaces:
     mode: trunk
     vlans: 110-111,210-211
 
-  Ethernet15:
+  - name: Ethernet15
     description: PVLAN Promiscuous Access - only one secondary
     mode: access
     vlans: 110
     pvlan_mapping: 111
 
-  Ethernet16:
+  - name: Ethernet16
     description: PVLAN Promiscuous Trunk - vlan translation out
     mode: trunk
     vlans: 110-112
@@ -296,13 +298,13 @@ ethernet_interfaces:
         from: 111-112
         to: 110
 
-  Ethernet17:
+  - name: Ethernet17
     description: PVLAN Secondary Trunk
     mode: trunk
     vlans: 110-112
     trunk_private_vlan_secondary: true
 
-  Ethernet18:
+  - name: Ethernet18
     description: PBR Description
     mtu: 1500
     type: routed
@@ -311,7 +313,7 @@ ethernet_interfaces:
       pbr:
         input: MyLANServicePolicy
 
-  Ethernet19:
+  - name: Ethernet19
     description: Switched port with no LLDP rx/tx
     mode: access
     vlans: 110
@@ -319,50 +321,50 @@ ethernet_interfaces:
       transmit: false
       receive: false
 
-  Ethernet20:
+  - name: Ethernet20
     description: Port patched through patch-panel to pseudowire
     type: routed
     lldp:
       transmit: false
       receive: false
 
-  Ethernet21:
+  - name: Ethernet21
     description: 200MBit/s shape
     qos:
       trust: disabled
     shape:
       rate: "200000 kbps"
 
-  Ethernet22:
+  - name: Ethernet22
     description: 10% shape
     shape:
       rate: "10 percent"
 
-  Ethernet23:
+  - name: Ethernet23
     description: Error-correction encoding
     error_correction_encoding:
       fire_code: true
       reed_solomon: true
 
-  Ethernet24:
+  - name: Ethernet24
     description: Disable error-correction encoding
     error_correction_encoding:
       enabled: false
 
-  Ethernet25:
+  - name: Ethernet25
     description: Molecule MAC
     mac_access_group_in: MAC_ACL_IN
     mac_access_group_out: MAC_ACL_OUT
 
-  Ethernet26:
+  - name: Ethernet26
     type: routed
-  Ethernet26.1:
+  - name: Ethernet26.1
     type: l2dot1q
     description: TENANT_A pseudowire 1 interface
     encapsulation_vlan:
       client:
         unmatched: true
-  Ethernet26.100:
+  - name: Ethernet26.100
     type: l2dot1q
     description: TENANT_A pseudowire 1 interface
     encapsulation_vlan:
@@ -371,14 +373,14 @@ ethernet_interfaces:
           vlan: 100
       network:
         client: true
-  Ethernet26.200:
+  - name: Ethernet26.200
     type: l2dot1q
     description: TENANT_A pseudowire 2 interface
     encapsulation_vlan:
       client:
         dot1q:
           vlan: 200
-  Ethernet26.300:
+  - name: Ethernet26.300
     type: l2dot1q
     description: TENANT_A pseudowire 3 interface
     encapsulation_vlan:
@@ -388,7 +390,7 @@ ethernet_interfaces:
       network:
         dot1q:
           vlan: 400
-  Ethernet26.400:
+  - name: Ethernet26.400
     type: l2dot1q
     description: TENANT_A pseudowire 3 interface
     encapsulation_vlan:
@@ -400,7 +402,7 @@ ethernet_interfaces:
         dot1q:
           outer: 401
           inner: 21
-  Ethernet26.500:
+  - name: Ethernet26.500
     type: l2dot1q
     description: TENANT_A pseudowire 3 interface
     encapsulation_vlan:
@@ -411,7 +413,7 @@ ethernet_interfaces:
       network:
         client: true
 
-  Ethernet27:
+  - name: Ethernet27
     description: EVPN-Vxlan single-active redundancy
     evpn_ethernet_segment:
       identifier: "0000:0000:0000:0102:0304"
@@ -424,7 +426,7 @@ ethernet_interfaces:
         hold_time: 10
         candidate_reachability_required: true
 
-  Ethernet28:
+  - name: Ethernet28
     description: EVPN-MPLS multihoming
     evpn_ethernet_segment:
       identifier: "0000:0000:0000:0102:0305"
@@ -433,82 +435,82 @@ ethernet_interfaces:
         shared_index: 100
         tunnel_flood_filter_time: 100
 
-  Ethernet29:
+  - name: Ethernet29
     description: DOT1X Testing - auto phone true
     dot1x:
       port_control: auto
       port_control_force_authorized_phone: true
 
-  Ethernet30:
+  - name: Ethernet30
     description: DOT1X Testing - force-authorized phone false
     dot1x:
       port_control: force-authorized
       port_control_force_authorized_phone: false
 
-  Ethernet31:
+  - name: Ethernet31
     description: DOT1X Testing - force-unauthorized - no phone
     dot1x:
       port_control: force-unauthorized
 
-  Ethernet32:
+  - name: Ethernet32
     description: DOT1X Testing - auto reauthentication
     dot1x:
       port_control: auto
       reauthentication: true
 
-  Ethernet33:
+  - name: Ethernet33
     description: DOT1X Testing - pae mode authenticator
     dot1x:
       pae:
         mode: authenticator
 
-  Ethernet34:
+  - name: Ethernet34
     description: DOT1X Testing - authentication_failure allow
     dot1x:
       authentication_failure:
         action: allow
         allow_vlan: 800
 
-  Ethernet35:
+  - name: Ethernet35
     description: DOT1X Testing - authentication_failure drop
     dot1x:
       authentication_failure:
         action: drop
 
-  Ethernet36:
+  - name: Ethernet36
     description: DOT1X Testing - host-mode single-host
     dot1x:
       host_mode:
         mode: single-host
 
-  Ethernet37:
+  - name: Ethernet37
     description: DOT1X Testing - host-mode multi-host
     dot1x:
       host_mode:
         mode: multi-host
 
-  Ethernet38:
+  - name: Ethernet38
     description: DOT1X Testing - host-mode multi-host authenticated
     dot1x:
       host_mode:
         mode: multi-host
         multi_host_authenticated: true
 
-  Ethernet39:
+  - name: Ethernet39
     description: DOT1X Testing - mac_based_authentication host-mode common true
     dot1x:
       mac_based_authentication:
         enabled: true
         host_mode_common: true
 
-  Ethernet40:
+  - name: Ethernet40
     description: DOT1X Testing - mac_based_authentication always
     dot1x:
       mac_based_authentication:
         enabled: true
         always: true
 
-  Ethernet41:
+  - name: Ethernet41
     description: DOT1X Testing - mac_based_authentication always and host-mode common
     dot1x:
       mac_based_authentication:
@@ -516,13 +518,13 @@ ethernet_interfaces:
         always: true
         host_mode_common: true
 
-  Ethernet42:
+  - name: Ethernet42
     description: DOT1X Testing - mac_based_authentication
     dot1x:
       mac_based_authentication:
         enabled: true
 
-  Ethernet43:
+  - name: Ethernet43
     description: DOT1X Testing - timeout values
     dot1x:
       timeout:
@@ -532,14 +534,14 @@ ethernet_interfaces:
         reauth_timeout_ignore: true
         tx_period: 6
 
-  Ethernet44:
+  - name: Ethernet44
     description: DOT1X Testing - reauthorization_request_limit
     dot1x:
       reauthorization_request_limit: 3
       eapol:
         disabled: true
 
-  Ethernet45:
+  - name: Ethernet45
     description: DOT1X Testing - all features
     dot1x:
       port_control: auto
@@ -567,64 +569,64 @@ ethernet_interfaces:
           timeout: 600
       reauthorization_request_limit: 2
 
-  Ethernet46:
+  - name: Ethernet46
     description: native-vlan-tag-precedence
     native_vlan_tag: true
     native_vlan: 100
     mode: trunk
 
-  Ethernet47:
+  - name: Ethernet47
     description: IP Helper
     type: routed
     ip_address: 172.31.255.1/31
     ip_helpers:
-      10.10.96.101:
+      - ip_helper: 10.10.96.101
         source_interface: Loopback0
-      10.10.96.151:
+      - ip_helper: 10.10.96.151
         vrf: MGMT
-      10.10.96.150:
+      - ip_helper: 10.10.96.150
         source_interface: Loopback0
         vrf: MGMT
-      10.10.64.151:
+      - ip_helper: 10.10.64.151
 
-  Ethernet48:
+  - name: Ethernet48
     description: Load Interval
     type: switched
     load_interval: 5
 
-  Ethernet50:
+  - name: Ethernet50
     description: SFlow Interface Testing - SFlow ingress enabled
     sflow:
       enable: true
 
-  Ethernet51:
+  - name: Ethernet51
     description: SFlow Interface Testing - SFlow egress enabled
     sflow:
       egress:
         enable: true
 
-  Ethernet52:
+  - name: Ethernet52
     description: SFlow Interface Testing - SFlow ingress and egress unmodified enabled
     sflow:
       enable: true
       egress:
         unmodified_enable: true
 
-  Ethernet53:
+  - name: Ethernet53
     description: SFlow Interface Testing - SFlow ingress and egress disabled
     sflow:
       enable: false
       egress:
         enable: false
 
-  Ethernet54:
+  - name: Ethernet54
     description: SFlow Interface Testing - SFlow ingress and egress unmodified disabled
     sflow:
       enable: false
       egress:
         unmodified_enable: false
 
-  Ethernet55:
+  - name: Ethernet55
     description: DHCPv6 Relay Testing
     shutdown: false
     ipv6_address: a0::1/64

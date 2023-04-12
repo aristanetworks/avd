@@ -4,60 +4,60 @@ router_bgp:
   bgp_defaults:
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
+  - name: MLAG-IPv4-UNDERLAY-PEER
+    type: ipv4
     remote_as: '65102'
     next_hop_self: true
     description: UNDERLAY-MULTICAST-L3LEAF2A
     maximum_routes: 12000
     send_community: all
     route_map_in: RM-MLAG-PEER-IN
-    name: MLAG-IPv4-UNDERLAY-PEER
-  - type: ipv4
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
     maximum_routes: 12000
     send_community: all
-    name: IPv4-UNDERLAY-PEERS
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 3
-    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: MLAG-IPv4-UNDERLAY-PEER
-    - activate: true
-      name: IPv4-UNDERLAY-PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: MLAG-IPv4-UNDERLAY-PEER
+      activate: true
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   neighbors:
-  - peer_group: MLAG-IPv4-UNDERLAY-PEER
+  - ip_address: 10.255.252.4
+    peer_group: MLAG-IPv4-UNDERLAY-PEER
     description: UNDERLAY-MULTICAST-L3LEAF2A
-    ip_address: 10.255.252.4
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.31.255.12
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
     description: UNDERLAY-MULTICAST-SPINE1_Ethernet4
-    ip_address: 172.31.255.12
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.31.255.14
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
     description: UNDERLAY-MULTICAST-SPINE2_Ethernet4
-    ip_address: 172.31.255.14
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.1
+    peer_group: EVPN-OVERLAY-PEERS
     description: UNDERLAY-MULTICAST-SPINE1
     remote_as: '65001'
-    ip_address: 192.168.255.1
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.2
+    peer_group: EVPN-OVERLAY-PEERS
     description: UNDERLAY-MULTICAST-SPINE2
     remote_as: '65001'
-    ip_address: 192.168.255.2
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

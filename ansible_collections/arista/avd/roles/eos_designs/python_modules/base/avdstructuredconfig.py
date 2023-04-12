@@ -71,6 +71,21 @@ class AvdStructuredConfig(AvdFacts):
         return get(self._hostvars, "switch.system_mac_address")
 
     @cached_property
+    def _underlay_router(self) -> bool:
+        return get(self._hostvars, "switch.underlay_router") is True
+
+    @cached_property
+    def _always_configure_ip_routing(self) -> bool:
+        return get(self._hostvars, "switch.always_configure_ip_routing")
+
+    @cached_property
+    def serial_number(self) -> str | None:
+        """
+        serial_number variable set based on switch.serial_number fact
+        """
+        return get(self._hostvars, "switch.serial_number")
+
+    @cached_property
     def router_bgp(self) -> dict | None:
         """
         router_bgp set based on switch.bgp_as, switch.bgp_defaults, switch.router_id facts
@@ -160,8 +175,14 @@ class AvdStructuredConfig(AvdFacts):
     @cached_property
     def ip_routing(self) -> bool:
         """
-        ip_routing set to True
+        For l3 devices, configure ip routing unless ip_routing_ipv6_interfaces is True.
+        For other devices only configure if "always_configure_ip_routing" is True.
         """
+        if not self._underlay_router and not self._always_configure_ip_routing:
+            return None
+
+        if self.ip_routing_ipv6_interfaces is True:
+            return None
         return True
 
     @cached_property
@@ -169,6 +190,9 @@ class AvdStructuredConfig(AvdFacts):
         """
         ipv6_unicast_routing set based on underlay_rfc5549 and switch.underlay_ipv6
         """
+        if not self._underlay_router and not self._always_configure_ip_routing:
+            return None
+
         if get(self._hostvars, "underlay_rfc5549") is True or get(self._hostvars, "switch.underlay_ipv6") is True:
             return True
         return None
@@ -178,6 +202,9 @@ class AvdStructuredConfig(AvdFacts):
         """
         ip_routing_ipv6_interfaces set based on underlay_rfc5549 variable
         """
+        if not self._underlay_router and not self._always_configure_ip_routing:
+            return None
+
         if get(self._hostvars, "underlay_rfc5549") is True:
             return True
         return None
@@ -188,7 +215,7 @@ class AvdStructuredConfig(AvdFacts):
         router_multicast set based on switch.underlay_multicast, switch.underlay_router
         and switch.evpn_multicast facts
         """
-        if get(self._hostvars, "switch.underlay_multicast") is not True or get(self._hostvars, "switch.underlay_router") is not True:
+        if get(self._hostvars, "switch.underlay_multicast") is not True:
             return None
 
         router_multicast = {"ipv4": {"routing": True}}
@@ -264,10 +291,16 @@ class AvdStructuredConfig(AvdFacts):
                 # updating for cvp_on_prem_ips
                 cv_address = f"{cvp_instance_ip}:{get(self._hostvars, 'terminattr_ingestgrpcurl_port')}"
                 daemon_terminattr["cvaddrs"].append(cv_address)
-                daemon_terminattr["cvauth"] = {
-                    "method": "key",
-                    "key": get(self._hostvars, "cvp_ingestauth_key"),
-                }
+                if (cvp_ingestauth_key := get(self._hostvars, "cvp_ingestauth_key")) is not None:
+                    daemon_terminattr["cvauth"] = {
+                        "method": "key",
+                        "key": cvp_ingestauth_key,
+                    }
+                else:
+                    daemon_terminattr["cvauth"] = {
+                        "method": "token-secure",
+                        "token_file": get(self._hostvars, "cvp_token_file", "/tmp/cv-onboarding-token"),
+                    }
 
         daemon_terminattr["cvvrf"] = self._mgmt_interface_vrf
         daemon_terminattr["smashexcludes"] = get(self._hostvars, "terminattr_smashexcludes")

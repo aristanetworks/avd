@@ -171,6 +171,14 @@ defaults <- node_group <- node_group.node <- node
       # "system_mac_address" can also be set directly as a hostvar.
       # If both are set, the setting under "Fabric Topology" takes precedence.
       system_mac_address: < "xx:xx:xx:xx:xx:xx" >
+      # Serial Number | Optional
+      # Set to the Serial Number of the device
+      # For  now only used for documentation purpose in the fabric
+      # documentation.
+      # "serial_number" can also be set directly as a hostvar.
+      # If both are set, the setting under "Fabric Topology" takes precedence.
+      serial_number: < string >
+
 ```
 
 ## Node Variables details
@@ -211,6 +219,10 @@ defaults <- node_group <- node_group.node <- node
       # Offset is used to avoid overlapping port-id ranges of different switches | Optional
       # Useful when a "connected-endpoint" is connected to switches in different "node_groups".
       offset: < offset_for_lacp_port_id_range | default -> 0 >
+
+    # Force configuration of "ip routing" even on L2 devices | Optional
+    # Use this to retain behavior of AVD versions below 4.0.0.
+    always_configure_ip_routing: < true | false | default -> false >
 
     # EOS CLI rendered directly on the root level of the final EOS configuration | Optional
     raw_eos_cli: |

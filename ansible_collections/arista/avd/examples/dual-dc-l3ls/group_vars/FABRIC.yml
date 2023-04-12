@@ -21,8 +21,8 @@ ansible_httpapi_validate_certs: false
 fabric_name: FABRIC
 
 # Define underlay and overlay routing protocol to be used
-underlay_routing_protocol: EBGP
-overlay_routing_protocol: EBGP
+underlay_routing_protocol: ebgp
+overlay_routing_protocol: ebgp
 
 # Local users
 local_users:

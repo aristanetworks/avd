@@ -1,0 +1,22 @@
+### Class-Maps ###
+
+class_maps:
+  # Testing qos as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  qos:
+    CM_REPLICATION_LD:
+      ip:
+        access_group: ACL_REPLICATION_LD
+    CM_REPLICATION_LD2:
+      vlan: "200"
+    CM_REPLICATION_LD3:
+      cos: 3
+  # Testing pbr as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  pbr:
+    CM_PBR_EXCLUDE:
+      ip:
+        access_group: ACL_PBR_EXCLUDE
+    CM_PBR_INCLUDE:
+      ip:
+        access_group: ACL_PBR_INCLUDE

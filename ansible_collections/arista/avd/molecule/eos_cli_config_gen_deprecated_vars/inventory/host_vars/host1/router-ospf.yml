@@ -1,0 +1,25 @@
+### Router OSPF ###
+
+router_ospf:
+  # Testing process_ids as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  process_ids:
+    100:
+      # Testing network_prefixes as dict of dict
+      # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+      network_prefixes:
+        198.51.100.0/24:
+          area: 0.0.0.1
+        203.0.113.0/24:
+          area: 0.0.0.2
+      # Testing areas as dict of dict
+      # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+      areas:
+        '0.0.0.2':
+          filter:
+            networks:
+              - 1.1.1.0/24
+              - 2.2.2.0/24
+        3:
+          filter:
+            prefix_list: PL-OSPF-FILTERING

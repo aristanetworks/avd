@@ -851,27 +851,27 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | True |
-| MGMT | false |
-| Tenant_A_APP_Zone | true |
-| Tenant_A_DB_Zone | true |
-| Tenant_A_OP_Zone | true |
-| Tenant_A_WEB_Zone | true |
-| Tenant_B_OP_Zone | true |
-| Tenant_C_OP_Zone | true |
+| default | True (ipv6 interfaces) |
+| MGMT | False |
+| Tenant_A_APP_Zone | True (ipv6 interfaces) |
+| Tenant_A_DB_Zone | True (ipv6 interfaces) |
+| Tenant_A_OP_Zone | True (ipv6 interfaces) |
+| Tenant_A_WEB_Zone | True (ipv6 interfaces) |
+| Tenant_B_OP_Zone | True (ipv6 interfaces) |
+| Tenant_C_OP_Zone | True (ipv6 interfaces) |
 
 #### IP Routing Device Configuration
 
 ```eos
 !
-ip routing
+ip routing ipv6 interfaces
 no ip routing vrf MGMT
-ip routing vrf Tenant_A_APP_Zone
-ip routing vrf Tenant_A_DB_Zone
-ip routing vrf Tenant_A_OP_Zone
-ip routing vrf Tenant_A_WEB_Zone
-ip routing vrf Tenant_B_OP_Zone
-ip routing vrf Tenant_C_OP_Zone
+ip routing ipv6 interfaces vrf Tenant_A_APP_Zone
+ip routing ipv6 interfaces vrf Tenant_A_DB_Zone
+ip routing ipv6 interfaces vrf Tenant_A_OP_Zone
+ip routing ipv6 interfaces vrf Tenant_A_WEB_Zone
+ip routing ipv6 interfaces vrf Tenant_B_OP_Zone
+ip routing ipv6 interfaces vrf Tenant_C_OP_Zone
 ```
 
 ### IPv6 Routing
@@ -894,7 +894,6 @@ ip routing vrf Tenant_C_OP_Zone
 ```eos
 !
 ipv6 unicast-routing
-ip routing ipv6 interfaces
 ```
 
 ### Static Routes
@@ -1273,12 +1272,12 @@ route-map RM-MLAG-PEER-IN permit 10
 | VRF Name | IP Routing |
 | -------- | ---------- |
 | MGMT | disabled |
-| Tenant_A_APP_Zone | enabled |
-| Tenant_A_DB_Zone | enabled |
-| Tenant_A_OP_Zone | enabled |
-| Tenant_A_WEB_Zone | enabled |
-| Tenant_B_OP_Zone | enabled |
-| Tenant_C_OP_Zone | enabled |
+| Tenant_A_APP_Zone | enabled (ipv6 interface) |
+| Tenant_A_DB_Zone | enabled (ipv6 interface) |
+| Tenant_A_OP_Zone | enabled (ipv6 interface) |
+| Tenant_A_WEB_Zone | enabled (ipv6 interface) |
+| Tenant_B_OP_Zone | enabled (ipv6 interface) |
+| Tenant_C_OP_Zone | enabled (ipv6 interface) |
 
 ### VRF Instances Device Configuration
 

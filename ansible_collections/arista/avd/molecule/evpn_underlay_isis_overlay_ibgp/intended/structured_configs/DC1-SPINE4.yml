@@ -7,7 +7,8 @@ router_bgp:
   - maximum-paths 4 ecmp 4
   bgp_cluster_id: 192.168.255.4
   peer_groups:
-  - type: evpn
+  - name: OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     password: 64fqSH5CFUNLRHErezMrRg==
@@ -15,37 +16,36 @@ router_bgp:
     maximum_routes: 0
     remote_as: '65000'
     route_reflector_client: true
-    name: OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: false
-      name: OVERLAY-PEERS
+    - name: OVERLAY-PEERS
+      activate: false
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: OVERLAY-PEERS
+    - name: OVERLAY-PEERS
+      activate: true
   neighbors:
-  - peer_group: OVERLAY-PEERS
+  - ip_address: 192.168.255.10
+    peer_group: OVERLAY-PEERS
     description: DC1-BL1A
-    ip_address: 192.168.255.10
-  - peer_group: OVERLAY-PEERS
+  - ip_address: 192.168.255.11
+    peer_group: OVERLAY-PEERS
     description: DC1-BL1B
-    ip_address: 192.168.255.11
-  - peer_group: OVERLAY-PEERS
+  - ip_address: 192.168.255.5
+    peer_group: OVERLAY-PEERS
     description: DC1-LEAF1A
-    ip_address: 192.168.255.5
-  - peer_group: OVERLAY-PEERS
+  - ip_address: 192.168.255.6
+    peer_group: OVERLAY-PEERS
     description: DC1-LEAF2A
-    ip_address: 192.168.255.6
-  - peer_group: OVERLAY-PEERS
+  - ip_address: 192.168.255.7
+    peer_group: OVERLAY-PEERS
     description: DC1-LEAF2B
-    ip_address: 192.168.255.7
-  - peer_group: OVERLAY-PEERS
+  - ip_address: 192.168.255.8
+    peer_group: OVERLAY-PEERS
     description: DC1-SVC3A
-    ip_address: 192.168.255.8
-  - peer_group: OVERLAY-PEERS
+  - ip_address: 192.168.255.9
+    peer_group: OVERLAY-PEERS
     description: DC1-SVC3B
-    ip_address: 192.168.255.9
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

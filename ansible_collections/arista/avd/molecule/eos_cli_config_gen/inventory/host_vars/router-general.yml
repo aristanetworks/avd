@@ -4,7 +4,7 @@ router_general:
     ipv6: 2001:beef:cafe::1
   nexthop_fast_failover: true
   vrfs:
-    BLUE-C2:
+    - name: BLUE-C2
       leak_routes:
         - source_vrf: BLUE-C1
           subscribe_policy: RM-BLUE-LEAKING

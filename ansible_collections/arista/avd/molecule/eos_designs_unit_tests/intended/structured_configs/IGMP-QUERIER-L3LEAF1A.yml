@@ -4,32 +4,33 @@ router_bgp:
   bgp_defaults:
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
     maximum_routes: 12000
     send_community: all
-    name: IPv4-UNDERLAY-PEERS
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 3
-    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: IPv4-UNDERLAY-PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
   vrfs:
-  - router_id: 192.168.255.1
+  - name: IGMP_QUERIER_TEST_1
+    router_id: 192.168.255.1
     rd: 192.168.255.1:11
     route_targets:
       import:
@@ -42,8 +43,8 @@ router_bgp:
         - '11:11'
     redistribute_routes:
     - source_protocol: connected
-    name: IGMP_QUERIER_TEST_1
-  - router_id: 192.168.255.1
+  - name: IGMP_QUERIER_TEST_2
+    router_id: 192.168.255.1
     rd: 192.168.255.1:21
     route_targets:
       import:
@@ -56,8 +57,8 @@ router_bgp:
         - '21:21'
     redistribute_routes:
     - source_protocol: connected
-    name: IGMP_QUERIER_TEST_2
-  - router_id: 192.168.255.1
+  - name: IGMP_QUERIER_TEST_3
+    router_id: 192.168.255.1
     rd: 192.168.255.1:41
     route_targets:
       import:
@@ -70,144 +71,143 @@ router_bgp:
         - '41:41'
     redistribute_routes:
     - source_protocol: connected
-    name: IGMP_QUERIER_TEST_3
   vlans:
-  - tenant: Tenant_A
+  - id: 1
+    tenant: Tenant_A
     rd: 192.168.255.1:10001
     route_targets:
       both:
       - 10001:10001
     redistribute_routes:
     - learned
-    id: 1
-  - tenant: Tenant_A
+  - id: 2
+    tenant: Tenant_A
     rd: 192.168.255.1:10002
     route_targets:
       both:
       - 10002:10002
     redistribute_routes:
     - learned
-    id: 2
-  - tenant: Tenant_A
+  - id: 3
+    tenant: Tenant_A
     rd: 192.168.255.1:10003
     route_targets:
       both:
       - 10003:10003
     redistribute_routes:
     - learned
-    id: 3
-  - tenant: Tenant_A
+  - id: 101
+    tenant: Tenant_A
     rd: 192.168.255.1:10101
     route_targets:
       both:
       - 10101:10101
     redistribute_routes:
     - learned
-    id: 101
-  - tenant: Tenant_A
+  - id: 102
+    tenant: Tenant_A
     rd: 192.168.255.1:10102
     route_targets:
       both:
       - 10102:10102
     redistribute_routes:
     - learned
-    id: 102
-  - tenant: Tenant_A
+  - id: 103
+    tenant: Tenant_A
     rd: 192.168.255.1:10103
     route_targets:
       both:
       - 10103:10103
     redistribute_routes:
     - learned
-    id: 103
-  - tenant: Tenant_B
+  - id: 11
+    tenant: Tenant_B
     rd: 192.168.255.1:20011
     route_targets:
       both:
       - 20011:20011
     redistribute_routes:
     - learned
-    id: 11
-  - tenant: Tenant_B
+  - id: 12
+    tenant: Tenant_B
     rd: 192.168.255.1:20012
     route_targets:
       both:
       - 20012:20012
     redistribute_routes:
     - learned
-    id: 12
-  - tenant: Tenant_B
+  - id: 111
+    tenant: Tenant_B
     rd: 192.168.255.1:20111
     route_targets:
       both:
       - 20111:20111
     redistribute_routes:
     - learned
-    id: 111
-  - tenant: Tenant_B
+  - id: 112
+    tenant: Tenant_B
     rd: 192.168.255.1:20112
     route_targets:
       both:
       - 20112:20112
     redistribute_routes:
     - learned
-    id: 112
-  - tenant: Tenant_B
+  - id: 113
+    tenant: Tenant_B
     rd: 192.168.255.1:20113
     route_targets:
       both:
       - 20113:20113
     redistribute_routes:
     - learned
-    id: 113
-  - tenant: Tenant_D
+  - id: 21
+    tenant: Tenant_D
     rd: 192.168.255.1:40021
     route_targets:
       both:
       - 40021:40021
     redistribute_routes:
     - learned
-    id: 21
-  - tenant: Tenant_D
+  - id: 22
+    tenant: Tenant_D
     rd: 192.168.255.1:40022
     route_targets:
       both:
       - 40022:40022
     redistribute_routes:
     - learned
-    id: 22
-  - tenant: Tenant_D
+  - id: 23
+    tenant: Tenant_D
     rd: 192.168.255.1:40023
     route_targets:
       both:
       - 40023:40023
     redistribute_routes:
     - learned
-    id: 23
-  - tenant: Tenant_D
+  - id: 121
+    tenant: Tenant_D
     rd: 192.168.255.1:40121
     route_targets:
       both:
       - 40121:40121
     redistribute_routes:
     - learned
-    id: 121
-  - tenant: Tenant_D
+  - id: 122
+    tenant: Tenant_D
     rd: 192.168.255.1:40122
     route_targets:
       both:
       - 40122:40122
     redistribute_routes:
     - learned
-    id: 122
-  - tenant: Tenant_D
+  - id: 123
+    tenant: Tenant_D
     rd: 192.168.255.1:40123
     route_targets:
       both:
       - 40123:40123
     redistribute_routes:
     - learned
-    id: 123
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

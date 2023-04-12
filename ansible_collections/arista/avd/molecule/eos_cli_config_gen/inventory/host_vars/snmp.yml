@@ -13,23 +13,23 @@ snmp_server:
   contact: DC1_OPS
   location: DC1
   communities:
-    SNMP-COMMUNITY-1:
+    - name: SNMP-COMMUNITY-1
       access: ro
       access_list_ipv4:
         name: onur
-    SNMP-COMMUNITY-2:
+    - name: SNMP-COMMUNITY-2
       access: rw
       access_list_ipv4:
         name: SNMP-MGMT
       access_list_ipv6:
         name: SNMP-MGMT
       view: VW-READ
-    SNMP-COMMUNITY-3:
+    - name: SNMP-COMMUNITY-3
   local_interfaces:
-    Management1:
+    - name: Management1
       vrf: MGMT
-    Loopback0:
-    Loopback12:
+    - name: Loopback0
+    - name: Loopback12
       vrf: Tenant_A_APP_Zone
   ipv4_acls:
     - name: SNMP-MGMT

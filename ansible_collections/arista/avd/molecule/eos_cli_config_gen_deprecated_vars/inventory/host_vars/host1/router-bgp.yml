@@ -1,0 +1,213 @@
+### Router BGP
+
+router_bgp:
+  as: 65101
+  router_id: 192.168.255.3
+  # Testing peer_groups as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  peer_groups:
+    EVPN-OVERLAY-PEERS:
+      type: evpn
+      remote_as: 65001
+      update_source: Loopback0
+  # Testing neighbors as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  neighbors:
+    192.168.255.1:
+      peer_group: EVPN-OVERLAY-PEERS
+    192.168.255.2:
+      peer_group: EVPN-OVERLAY-PEERS
+  # Testing neighbor_interfaces as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  neighbor_interfaces:
+    Ethernet2:
+      peer_group: EVPN-OVERLAY-PEERS
+      remote_as: 65102
+  address_family_ipv4:
+    # Testing neighbors as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    neighbors:
+      192.0.2.1:
+        prefix_list_in: PL-FOO-v4-IN
+        prefix_list_out: PL-FOO-v4-OUT
+    # Testing peer_groups as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+    # Testing networks as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    networks:
+      10.0.0.0/8:
+      172.16.0.0/12:
+      192.168.0.0/16:
+        route_map: RM-FOO-MATCH
+  address_family_ipv6:
+    # Testing neighbors as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    neighbors:
+      2001:db8::1:
+        prefix_list_in: PL-FOO-v6-IN
+        prefix_list_out: PL-FOO-v6-OUT
+    # Testing peer_groups as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+    # Testing redistribute_routes as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    redistribute_routes:
+      static:
+        route_map: RM-IPV6-STATIC-TO-BGP
+    # Testing networks as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    networks:
+      2001:db8:100::/40:
+      2001:db8:200::/40:
+        route_map: RM-BAR-MATCH
+  address_family_evpn:
+    # Testing peer_groups as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+  address_family_rtc:
+    # Testing peer_groups as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+  address_family_ipv4_multicast:
+    # Testing peer_groups as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+    # Testing redistribute_routes as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    redistribute_routes:
+      attached-host:
+  address_family_vpn_ipv4:
+    # Testing neighbors as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    neighbors:
+      192.168.255.4:
+        activate: true
+    # Testing peer_groups as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+  address_family_vpn_ipv6:
+    # Testing neighbors as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    neighbors:
+      2001:cafe:192:168::4:
+        activate: true
+    # Testing peer_groups as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+  # Testing vrfs as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  vrfs:
+    TENANT_A_PROJECT01:
+      router_id: 192.168.255.3
+      rd: "192.168.255.3:11"
+      # Testing networks as dict of dict
+      # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+      networks:
+        10.0.0.0/8:
+        100.64.0.0/10:
+      route_targets:
+        # Testing import as dict of dict
+        # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+        import:
+          evpn:
+            - "11:11"
+        # Testing export as dict of dict
+        # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+        export:
+          evpn:
+            - "11:11"
+      # Testing neighbors as dict of dict
+      # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+      neighbors:
+        10.255.251.1:
+          peer_group: EVPN-OVERLAY-PEERS
+      # Testing neighbors as dict of dict
+      # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+      redistribute_routes:
+        connected:
+        static:
+          route_map: RM-CONN-2-BGP
+      # Testing aggregate_addresses as dict of dict
+      # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+      aggregate_addresses:
+        0.0.0.0/0:
+          as_set: true
+          summary_only: true
+          attribute_map: RM-BGP-AGG-APPLY-SET
+          advertise_only: false
+      # Testing neighbor_interfaces as dict of dict
+      # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+      neighbor_interfaces:
+        Ethernet27:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
+          remote_as: 1
+      # Testing address_families as dict of dict
+      # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+      address_families:
+        ipv4:
+          # Testing neighbors as dict of dict
+          # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+          neighbors:
+            10.2.3.4:
+              activate: true
+              route_map_out: RM-10.2.3.4-SET-NEXT-HOP-OUT
+            10.2.3.5:
+              activate: true
+              route_map_in: RM-10.2.3.5-SET-NEXT-HOP-IN
+          # Testing networks as dict of dict
+          # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+          networks:
+            10.0.0.0/8:
+            100.64.0.0/10:
+              route_map: RM-10.2.3.4
+          # Testing peer_groups as dict of dict
+          # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+          peer_groups:
+            TEST_PEER_GRP:
+              activate: true
+  # Testing redistribute_routes as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP
+  # Testing vlans as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  vlans:
+    24:
+      rd: "10.50.64.15:10024"
+      route_targets:
+        both:
+          - "1:10024"
+  # Testing aggregate_addresses as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  aggregate_addresses:
+    1.1.1.0/24:
+      advertise_only: true
+    2.2.1.0/24:
+  # Testing vlan_aware_bundles as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  vlan_aware_bundles:
+    TENANT_A_PROJECT01:
+      rd: "192.168.255.3:11"
+      description: TENANT_A_PROJECT01
+      route_targets:
+        both:
+          - "11:11"
+      redistribute_routes:
+        - learned
+      vlan: 110

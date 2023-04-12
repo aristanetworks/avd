@@ -1,7 +1,7 @@
 ---
 ### Port-Channel Interfaces ###
 port_channel_interfaces:
-  Port-Channel5:
+  - name: Port-Channel5
     description: DC1_L2LEAF1_Po1
     vlans: 110,201
     link_tracking_groups:
@@ -19,12 +19,14 @@ port_channel_interfaces:
       unknown_unicast:
         level: 1
         unit: percent
+    bgp:
+      session_tracker: ST2
     eos_cli: |
       comment
       Comment created from eos_cli under port_channel_interfaces.Port-Channel5
       EOF
 
-  Port-Channel15:
+  - name: Port-Channel15
     description: DC1_L2LEAF3_Po1
     vlans: 110,201
     link_tracking_groups:
@@ -34,7 +36,7 @@ port_channel_interfaces:
     mlag: 15
     spanning_tree_guard: loop
 
-  Port-Channel16:
+  - name: Port-Channel16
     description: DC1_L2LEAF4_Po1
     vlans: 110,201
     mode: trunk
@@ -42,7 +44,7 @@ port_channel_interfaces:
     mlag: 16
     spanning_tree_guard: disabled
 
-  Port-Channel3:
+  - name: Port-Channel3
     description: MLAG_PEER_DC1-LEAF1B_Po3
     vlans: "2-4094"
     mode: trunk
@@ -53,7 +55,7 @@ port_channel_interfaces:
       - LEAF_PEER_L3
       - MLAG
 
-  Port-Channel10:
+  - name: Port-Channel10
     description: SRV01_bond0
     vlans: 2-3000
     mode: trunk
@@ -62,7 +64,7 @@ port_channel_interfaces:
     shape:
       rate: 50 percent
 
-  Port-Channel50:
+  - name: Port-Channel50
     description: SRV-POD03_PortChanne1
     vlans: 1-4000
     mode: trunk
@@ -70,22 +72,22 @@ port_channel_interfaces:
     rt: 03:03:02:02:01:01
     lacp_id: 0303.0202.0101
 
-  Port-Channel51:
+  - name: Port-Channel51
     description: ipv6_prefix
     vlans: 1-500
     mode: trunk
     ipv6_nd_prefixes:
-      a1::/64:
+      - ipv6_prefix: a1::/64
         valid_lifetime: infinite
         preferred_lifetime: infinite
         no_autoconfig_flag: true
 
-  Port-Channel100:
+  - name: Port-Channel100
     type: routed
     logging:
       event:
         link_status: true
-  Port-Channel100.101:
+  - name: Port-Channel100.101
     logging:
       event:
         link_status: true
@@ -93,7 +95,7 @@ port_channel_interfaces:
     mtu: 1500
     ip_address: 10.1.1.3/31
     encapsulation_dot1q_vlan: 101
-  Port-Channel100.102:
+  - name: Port-Channel100.102
     logging:
       event:
         link_status: false
@@ -104,16 +106,16 @@ port_channel_interfaces:
     encapsulation_dot1q_vlan: 102
     bfd:
 
-  Port-Channel8:
+  - name: Port-Channel8
     description: to Dev02 Port-channel 8
     type: routed
-  Port-Channel8.101:
+  - name: Port-Channel8.101
     description: to Dev02 Port-Channel8.101 - VRF-C1
     type: l3dot1q
     ip_address: 10.1.2.3/31
     encapsulation_dot1q_vlan: 101
 
-  Port-Channel9:
+  - name: Port-Channel9
     type: routed
     ip_address: 10.9.2.3/31
     bfd:
@@ -123,7 +125,7 @@ port_channel_interfaces:
       multiplier: 5
     spanning_tree_guard: root
 
-  Port-Channel20:
+  - name: Port-Channel20
     description: Po_in_mode_access_accepting_tagged_LACP_frames
     type: switched
     mode: access
@@ -131,7 +133,7 @@ port_channel_interfaces:
     l2_protocol:
       encapsulation_dot1q_vlan: 200
 
-  Port-Channel12:
+  - name: Port-Channel12
     description: interface_in_mode_access_with_voice
     type: switched
     native_vlan: 100
@@ -140,7 +142,7 @@ port_channel_interfaces:
       trunk: untagged
       vlan: 70
 
-  Port-Channel13:
+  - name: Port-Channel13
     description: EVPN-Vxlan single-active redundancy
     esi: "0000:0000:0000:0102:0304"
     rt: "00:00:01:02:03:04"
@@ -153,7 +155,7 @@ port_channel_interfaces:
         hold_time: 10
         candidate_reachability_required: true
 
-  Port-Channel14:
+  - name: Port-Channel14
     description: EVPN-MPLS multihoming
     evpn_ethernet_segment:
       identifier: "0000:0000:0000:0102:0305"
@@ -162,7 +164,7 @@ port_channel_interfaces:
         tunnel_flood_filter_time: 100
       route_target: "00:00:01:02:03:05"
 
-  Port-Channel17:
+  - name: Port-Channel17
     description: PBR Description
     type: routed
     ip_address: 192.0.2.3/31
@@ -170,7 +172,7 @@ port_channel_interfaces:
       pbr:
         input: MyPolicy
 
-  Port-Channel99:
+  - name: Port-Channel99
     description: MCAST
     type: routed
     ip_address: 192.0.2.10/31
@@ -179,7 +181,7 @@ port_channel_interfaces:
         dr_priority: 200
         sparse_mode: true
 
-  Port-Channel101:
+  - name: Port-Channel101
     description: PVLAN Promiscuous Access - only one secondary
     mode: access
     vlans: 110
@@ -187,7 +189,7 @@ port_channel_interfaces:
     qos:
       trust: disabled
 
-  Port-Channel102:
+  - name: Port-Channel102
     description: PVLAN Promiscuous Trunk - vlan translation out
     mode: trunk
     vlans: 110-112
@@ -196,40 +198,40 @@ port_channel_interfaces:
         from: 111-112
         to: 110
 
-  Port-Channel103:
+  - name: Port-Channel103
     description: PVLAN Secondary Trunk
     mode: trunk
     vlans: 110-112
     trunk_private_vlan_secondary: true
 
-  Port-Channel104:
+  - name: Port-Channel104
     description: LACP fallback individual
     mode: trunk
     vlans: 112
     lacp_fallback_timeout: 300
     lacp_fallback_mode: individual
 
-  Port-Channel105:
+  - name: Port-Channel105
     description: bpdu disabled
     spanning_tree_bpduguard: disabled
     spanning_tree_bpdufilter: disabled
 
-  Port-Channel106:
+  - name: Port-Channel106
     description: bpdu enabled
     spanning_tree_bpduguard: enabled
     spanning_tree_bpdufilter: enabled
 
-  Port-Channel107:
+  - name: Port-Channel107
     description: bpdu true
     spanning_tree_bpduguard: true
     spanning_tree_bpdufilter: true
 
-  Port-Channel108:
+  - name: Port-Channel108
     description: bpdu false
     spanning_tree_bpduguard: false # No config should be rendered for this case
     spanning_tree_bpdufilter: false # No config should be rendered for this case
 
-  Port-Channel109:
+  - name: Port-Channel109
     description: Molecule ACLs
     mode: access
     vlans: 110
@@ -240,7 +242,7 @@ port_channel_interfaces:
     mac_access_group_in: MAC_ACL_IN
     mac_access_group_out: MAC_ACL_OUT
 
-  Port-Channel110:
+  - name: Port-Channel110
     description: isis_interface_knobs
     type: routed
     isis_enable: ISIS_TEST
@@ -252,16 +254,16 @@ port_channel_interfaces:
     isis_authentication_mode: text
     isis_authentication_key: "asfddja23452"
 
-  Port-Channel111:
+  - name: Port-Channel111
     description: Flexencap Port-Channel
     type: routed
-  Port-Channel111.1:
+  - name: Port-Channel111.1
     type: l2dot1q
     description: TENANT_A pseudowire 1 interface
     encapsulation_vlan:
       client:
         unmatched: true
-  Port-Channel111.100:
+  - name: Port-Channel111.100
     type: l2dot1q
     description: TENANT_A pseudowire 2 interface
     encapsulation_vlan:
@@ -270,14 +272,14 @@ port_channel_interfaces:
           vlan: 100
       network:
         client: true
-  Port-Channel111.200:
+  - name: Port-Channel111.200
     type: l2dot1q
     description: TENANT_A pseudowire 3 interface
     encapsulation_vlan:
       client:
         dot1q:
           vlan: 200
-  Port-Channel111.300:
+  - name: Port-Channel111.300
     type: l2dot1q
     description: TENANT_A pseudowire 4 interface
     encapsulation_vlan:
@@ -287,7 +289,7 @@ port_channel_interfaces:
       network:
         dot1q:
           vlan: 400
-  Port-Channel111.400:
+  - name: Port-Channel111.400
     type: l2dot1q
     description: TENANT_A pseudowire 3 interface
     encapsulation_vlan:
@@ -299,7 +301,7 @@ port_channel_interfaces:
         dot1q:
           outer: 401
           inner: 21
-  Port-Channel111.1000:
+  - name: Port-Channel111.1000
     type: l2dot1q
     description: L2 Subinterface
     vlan_id: 1000
@@ -313,14 +315,14 @@ port_channel_interfaces:
     rt: 03:03:02:02:01:01
     lacp_id: 0303.0202.0101
 
-  Port-Channel112:
+  - name: Port-Channel112
     description: LACP fallback individual
     mode: trunk
     vlans: 112
     lacp_fallback_timeout: 5
     lacp_fallback_mode: individual
 
-  Port-Channel113:
+  - name: Port-Channel113
     description: interface_with_mpls_enabled
     type: routed
     ip_address: 172.31.128.9/31
@@ -330,7 +332,7 @@ port_channel_interfaces:
         interface: true
         igp_sync: true
 
-  Port-Channel114:
+  - name: Port-Channel114
     description: interface_with_mpls_disabled
     type: routed
     ip_address: 172.31.128.10/31
@@ -339,13 +341,13 @@ port_channel_interfaces:
       ldp:
         interface: false
 
-  Port-Channel115:
+  - name: Port-Channel115
     description: native-vlan-tag-precedence
     native_vlan_tag: true
     native_vlan: 100
     mode: trunk
 
-  Port-Channel117:
+  - name: Port-Channel117
     description: interface_with_sflow_ingress_egress_enabled
     type: routed
     sflow:
@@ -353,7 +355,7 @@ port_channel_interfaces:
       egress:
         enable: true
 
-  Port-Channel118:
+  - name: Port-Channel118
     description: interface_with_sflow_ingress_egress_unmodified_enabled
     type: routed
     sflow:
@@ -361,7 +363,7 @@ port_channel_interfaces:
       egress:
         unmodified_enable: true
 
-  Port-Channel119:
+  - name: Port-Channel119
     description: interface_with_sflow_ingress_egress_disabled
     type: routed
     sflow:
@@ -369,7 +371,7 @@ port_channel_interfaces:
       egress:
         enable: false
 
-  Port-Channel120:
+  - name: Port-Channel120
     description: interface_with_sflow_ingress_egress_unmodified_disabled
     type: routed
     sflow:
@@ -377,9 +379,19 @@ port_channel_interfaces:
       egress:
         unmodified_enable: false
 
+  - name: Port-Channel121
+    description: access_port_with_no_vlans
+    type: switched
+    mode: access
+
+  - name: Port-Channel122
+    description: trunk_port_with_no_vlans
+    type: switched
+    mode: trunk
+
 # Children interfaces
 ethernet_interfaces:
-  Ethernet5:
+  - name: Ethernet5
     peer: DC1-AGG01
     peer_interface: Ethernet1
     peer_type: l2leaf
@@ -391,7 +403,7 @@ ethernet_interfaces:
       media:
         override: 100gbase-ar4
 
-  Ethernet3:
+  - name: Ethernet3
     peer: DC1-LEAF1B
     peer_interface: Ethernet3
     peer_type: mlag_peer
@@ -400,7 +412,7 @@ ethernet_interfaces:
       id: 3
       mode: active
 
-  Ethernet4:
+  - name: Ethernet4
     peer: DC1-LEAF1B
     peer_interface: Ethernet4
     peer_type: mlag_peer
@@ -409,7 +421,7 @@ ethernet_interfaces:
       id: 3
       mode: active
 
-  Ethernet50:
+  - name: Ethernet50
     peer: SRV-POD03
     peer_interface: Eth1
     peer_type: server
@@ -423,7 +435,7 @@ ethernet_interfaces:
       receive: false
       transmit: false
 
-  Ethernet8:
+  - name: Ethernet8
     peer: DC1-LEAF1B
     peer_interface: Ethernet4
     description: MLAG_PEER_DC1-LEAF1B_Ethernet8
@@ -431,7 +443,7 @@ ethernet_interfaces:
       id: 8
       mode: active
 
-  Ethernet15:
+  - name: Ethernet15
     peer: DC1-AGG03
     peer_interface: Ethernet1
     peer_type: l2leaf
@@ -443,7 +455,7 @@ ethernet_interfaces:
       mode: fast
       multiplier: 30
 
-  Ethernet16:
+  - name: Ethernet16
     peer: DC1-AGG04
     peer_interface: Ethernet1
     peer_type: l2leaf
@@ -454,31 +466,31 @@ ethernet_interfaces:
     lacp_timer:
       mode: normal
 
-  Ethernet17:
+  - name: Ethernet17
     description: LAG Member
     channel_group:
       id: 17
       mode: active
 
-  Ethernet10/1:
+  - name: Ethernet10/1
     description: LAG Member
     channel_group:
       id: 101
       mode: active
 
-  Ethernet10/2:
+  - name: Ethernet10/2
     description: LAG Member
     channel_group:
       id: 102
       mode: active
 
-  Ethernet10/3:
+  - name: Ethernet10/3
     description: LAG Member
     channel_group:
       id: 103
       mode: active
 
-  Ethernet10/4:
+  - name: Ethernet10/4
     description: LAG Member LACP fallback
     channel_group:
       id: 104
@@ -487,19 +499,19 @@ ethernet_interfaces:
     vlans: 100
     spanning_tree_portfast: edge
 
-  Ethernet18:
+  - name: Ethernet18
     description: LAG Member
     channel_group:
       id: 109
       mode: active
 
-  Ethernet10/10:
+  - name: Ethernet10/10
     description: isis_port_channel_member
     channel_group:
       id: 110
       mode: active
 
-  Ethernet11/1:
+  - name: Ethernet11/1
     description: LAG Member with error_correction
     error_correction_encoding:
       fire_code: true
@@ -508,7 +520,7 @@ ethernet_interfaces:
       id: 111
       mode: active
 
-  Ethernet11/2:
+  - name: Ethernet11/2
     description: LAG Member LACP fallback LLDP ZTP VLAN
     channel_group:
       id: 112

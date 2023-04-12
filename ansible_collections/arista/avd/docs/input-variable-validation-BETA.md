@@ -78,11 +78,12 @@ This behavior can be adjusted by setting the variables described below.
 # Conversion Mode for AVD input data conversion | Optional
 # During conversion, messages will generated with information about the host(s) and key(s) which required conversion.
 # "disabled" means that conversion will not run - avoid this since conversion is also handling data deprecation and upgrade.
+# "error" will produce error messages and fail the task.
 # "warning" will produce warning messages.
 # "info" will produce regular log messages.
 # "debug" will produce hidden debug messages viewable with -v.
 # "quiet" will not produce any messages
-avd_data_conversion_mode: < "disabled" | "warning" | "info" | "debug" | "quiet" | default -> "debug" >
+avd_data_conversion_mode: < "disabled" | "error" | "warning" | "info" | "debug" | "quiet" | default -> "debug" >
 
 # Validation Mode for AVD input data validation | Optional
 # During validation, messages will generated with information about the host(s) and key(s) which failed validation.
@@ -195,7 +196,7 @@ The meta-schema does not allow for other keys to be set in the schema.
 | Key | Type | Required | Default | Value Restrictions | Description |
 | ----| ---- | -------- | ------- | ------------------ | ----------- |
 | <samp>type</samp> | String | True | | Valid Values:<br>- `"str"` | Type of variable using the Python short names for each type.<br>`str` for String |
-| <samp>case_sensitive</samp> | Boolean | | True | | Perform value validations with case sensitivity or not. |
+| <samp>convert_to_lower_case</samp> | Boolean | | False | | Convert string value to lower case before performing validation |
 | <samp>convert_types</samp> | List, items: String | | | | List of types to auto-convert from.<br>For type `str`, auto-conversion is supported from `bool` and `int` |
 | <samp>default</samp> | String | | | | Default value |
 | <samp>&nbsp;&nbsp;- \<str\></samp> | String | | | Valid Values:<br>- `"bool"`<br>- `"int"` | |
@@ -256,7 +257,7 @@ The meta-schema does not allow for other keys to be set in the schema.
 | <samp>default</samp> | Dict | | | | Default value |
 | <samp>keys</samp> | Dictionary | | | Key Pattern: `^[a-z][a-z0-9_]*$` | Dictionary of dictionary-keys in the format `{<keyname>: {<schema>}}`.<br>`keyname` must use snake_case.<br>`schema` is the schema for each key. This is a recursive schema, so the value must conform to AVD Schema |
 | <samp>dynamic_keys</samp> | Dictionary | | | Pattern: `^[a-z][a-z0-9_]*$` | Dictionary of dynamic dictionary-keys in the format `{<variable.path>: {<schema>}}`.<br>`variable.path` is a variable path using dot-notation and pointing to a variable under the parent dictionary containing dictionary-keys.<br>If an element of the variable path is a list, every list item will unpacked.<br>`schema` is the schema for each key. This is a recursive schema, so the value must conform to AVD Schema<br>**Note that this is building the schema from values in the *data* being validated!** |
-| <samp>allow_other_keys</samp> | Boolean | | False | | Allow keys in the dictionary which are not defined in the schema. |
+| <samp>allow_other_keys</samp> | Boolean | | False | | Allow keys in the dictionary which are not defined in the schema. Custom keys starting with an underscore, like `_mycustomkey` are exempt from this validation |
 | <samp>display_name</samp> | String | | | Regex Pattern: `"^[^\n]+$"` | Free text display name for forms and documentation (single line) |
 | <samp>description</samp> | String | | | Minimum Length: 1 | Free text description for forms and documentation (multi line) |
 | <samp>required</samp> | Boolean | | | | Set if variable is required |

@@ -6,7 +6,8 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
+  - name: MLAG_PEER
+    type: ipv4
     remote_as: '65102'
     next_hop_self: true
     description: DC1-LEAF2A
@@ -14,83 +15,83 @@ router_bgp:
     maximum_routes: 12000
     send_community: all
     route_map_in: RM-MLAG-PEER-IN
-    name: MLAG_PEER
-  - type: ipv4
+  - name: UNDERLAY_PEERS
+    type: ipv4
     password: af6F4WLl4wUrWRZcwbEwkQ==
     maximum_routes: 12000
     send_community: all
-    name: UNDERLAY_PEERS
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     password: q+VNViP5i4rVjW1cxFv2wA==
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 3
-    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
+    - name: MLAG_PEER
+      activate: true
       next_hop:
         address_family_ipv6_originate: true
-      name: MLAG_PEER
-    - activate: true
+    - name: UNDERLAY_PEERS
+      activate: true
       next_hop:
         address_family_ipv6_originate: true
-      name: UNDERLAY_PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   neighbor_interfaces:
-  - peer_group: MLAG_PEER
+  - name: Vlan4093
+    peer_group: MLAG_PEER
     remote_as: '65102'
     description: DC1-LEAF2A
-    name: Vlan4093
-  - peer_group: UNDERLAY_PEERS
+  - name: Ethernet1
+    peer_group: UNDERLAY_PEERS
     remote_as: '65001'
     description: DC1-SPINE1_Ethernet3
-    name: Ethernet1
-  - peer_group: UNDERLAY_PEERS
+  - name: Ethernet2
+    peer_group: UNDERLAY_PEERS
     remote_as: '65001'
     description: DC1-SPINE2_Ethernet3
-    name: Ethernet2
-  - peer_group: UNDERLAY_PEERS
+  - name: Ethernet3
+    peer_group: UNDERLAY_PEERS
     remote_as: '65001'
     description: DC1-SPINE3_Ethernet3
-    name: Ethernet3
-  - peer_group: UNDERLAY_PEERS
+  - name: Ethernet4
+    peer_group: UNDERLAY_PEERS
     remote_as: '65001'
     description: DC1-SPINE4_Ethernet3
-    name: Ethernet4
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
     evpn_hostflap_detection:
       window: 20
       threshold: 30
       enabled: true
   neighbors:
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.1
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE1
     remote_as: '65001'
-    ip_address: 192.168.255.1
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.2
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE2
     remote_as: '65001'
-    ip_address: 192.168.255.2
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.3
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE3
     remote_as: '65001'
-    ip_address: 192.168.255.3
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.4
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE4
     remote_as: '65001'
-    ip_address: 192.168.255.4
   vrfs:
-  - router_id: 192.168.255.7
+  - name: Tenant_A_APP_Zone
+    router_id: 192.168.255.7
     rd: 192.168.255.7:12
     route_targets:
       import:
@@ -104,12 +105,12 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbor_interfaces:
-    - peer_group: MLAG_PEER
+    - name: Vlan3011
+      peer_group: MLAG_PEER
       remote_as: '65102'
       description: DC1-LEAF2A
-      name: Vlan3011
-    name: Tenant_A_APP_Zone
-  - router_id: 192.168.255.7
+  - name: Tenant_A_DB_Zone
+    router_id: 192.168.255.7
     rd: 192.168.255.7:13
     route_targets:
       import:
@@ -123,12 +124,12 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbor_interfaces:
-    - peer_group: MLAG_PEER
+    - name: Vlan3012
+      peer_group: MLAG_PEER
       remote_as: '65102'
       description: DC1-LEAF2A
-      name: Vlan3012
-    name: Tenant_A_DB_Zone
-  - router_id: 192.168.255.7
+  - name: Tenant_A_OP_Zone
+    router_id: 192.168.255.7
     rd: 192.168.255.7:10
     route_targets:
       import:
@@ -142,12 +143,12 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbor_interfaces:
-    - peer_group: MLAG_PEER
+    - name: Vlan3009
+      peer_group: MLAG_PEER
       remote_as: '65102'
       description: DC1-LEAF2A
-      name: Vlan3009
-    name: Tenant_A_OP_Zone
-  - router_id: 192.168.255.7
+  - name: Tenant_A_WEB_Zone
+    router_id: 192.168.255.7
     rd: 192.168.255.7:11
     route_targets:
       import:
@@ -161,12 +162,12 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbor_interfaces:
-    - peer_group: MLAG_PEER
+    - name: Vlan3010
+      peer_group: MLAG_PEER
       remote_as: '65102'
       description: DC1-LEAF2A
-      name: Vlan3010
-    name: Tenant_A_WEB_Zone
-  - router_id: 192.168.255.7
+  - name: Tenant_B_OP_Zone
+    router_id: 192.168.255.7
     rd: 192.168.255.7:20
     route_targets:
       import:
@@ -180,12 +181,12 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbor_interfaces:
-    - peer_group: MLAG_PEER
+    - name: Vlan3019
+      peer_group: MLAG_PEER
       remote_as: '65102'
       description: DC1-LEAF2A
-      name: Vlan3019
-    name: Tenant_B_OP_Zone
-  - router_id: 192.168.255.7
+  - name: Tenant_C_OP_Zone
+    router_id: 192.168.255.7
     rd: 192.168.255.7:30
     route_targets:
       import:
@@ -199,45 +200,45 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbor_interfaces:
-    - peer_group: MLAG_PEER
+    - name: Vlan2
+      peer_group: MLAG_PEER
       remote_as: '65102'
       description: DC1-LEAF2A
-      name: Vlan2
-    name: Tenant_C_OP_Zone
   vlan_aware_bundles:
-  - rd: 192.168.255.7:12
+  - name: Tenant_A_APP_Zone
+    rd: 192.168.255.7:12
     route_targets:
       both:
       - '12:12'
     redistribute_routes:
     - learned
     vlan: 130-131
-    name: Tenant_A_APP_Zone
-  - rd: 192.168.255.7:13
+  - name: Tenant_A_DB_Zone
+    rd: 192.168.255.7:13
     route_targets:
       both:
       - '13:13'
     redistribute_routes:
     - learned
     vlan: 140-141
-    name: Tenant_A_DB_Zone
-  - rd: 192.168.255.7:10
+  - name: Tenant_A_OP_Zone
+    rd: 192.168.255.7:10
     route_targets:
       both:
       - '10:10'
     redistribute_routes:
     - learned
     vlan: 110-111
-    name: Tenant_A_OP_Zone
-  - rd: 192.168.255.7:11
+  - name: Tenant_A_WEB_Zone
+    rd: 192.168.255.7:11
     route_targets:
       both:
       - '11:11'
     redistribute_routes:
     - learned
     vlan: 120-121
-    name: Tenant_A_WEB_Zone
-  - tenant: Tenant_A
+  - name: Tenant_A_NFS
+    tenant: Tenant_A
     rd: 192.168.255.7:10161
     route_targets:
       both:
@@ -245,8 +246,8 @@ router_bgp:
     redistribute_routes:
     - learned
     vlan: '161'
-    name: Tenant_A_NFS
-  - tenant: Tenant_A
+  - name: Tenant_A_VMOTION
+    tenant: Tenant_A
     rd: 192.168.255.7:10160
     route_targets:
       both:
@@ -254,29 +255,27 @@ router_bgp:
     redistribute_routes:
     - learned
     vlan: '160'
-    name: Tenant_A_VMOTION
-  - rd: 192.168.255.7:20
+  - name: Tenant_B_OP_Zone
+    rd: 192.168.255.7:20
     route_targets:
       both:
       - '20:20'
     redistribute_routes:
     - learned
     vlan: 210-211
-    name: Tenant_B_OP_Zone
-  - rd: 192.168.255.7:30
+  - name: Tenant_C_OP_Zone
+    rd: 192.168.255.7:30
     route_targets:
       both:
       - '30:30'
     redistribute_routes:
     - learned
     vlan: 310-311
-    name: Tenant_C_OP_Zone
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.200.5
 service_routing_protocols_model: multi-agent
-ip_routing: true
 ipv6_unicast_routing: true
 ip_routing_ipv6_interfaces: true
 daemon_terminattr:
@@ -320,22 +319,22 @@ vrfs:
   ip_routing: false
 - name: Tenant_A_APP_Zone
   tenant: Tenant_A
-  ip_routing: true
+  ip_routing_ipv6_interfaces: true
 - name: Tenant_A_DB_Zone
   tenant: Tenant_A
-  ip_routing: true
+  ip_routing_ipv6_interfaces: true
 - name: Tenant_A_OP_Zone
   tenant: Tenant_A
-  ip_routing: true
+  ip_routing_ipv6_interfaces: true
 - name: Tenant_A_WEB_Zone
   tenant: Tenant_A
-  ip_routing: true
+  ip_routing_ipv6_interfaces: true
 - name: Tenant_B_OP_Zone
   tenant: Tenant_B
-  ip_routing: true
+  ip_routing_ipv6_interfaces: true
 - name: Tenant_C_OP_Zone
   tenant: Tenant_C
-  ip_routing: true
+  ip_routing_ipv6_interfaces: true
 management_interfaces:
 - name: Management1
   description: oob_management
