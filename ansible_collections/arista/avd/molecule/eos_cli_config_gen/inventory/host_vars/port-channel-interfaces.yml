@@ -55,23 +55,6 @@ port_channel_interfaces:
       - LEAF_PEER_L3
       - MLAG
 
-  - name: Port-Channel10
-    description: SRV01_bond0
-    vlans: 2-3000
-    mode: trunk
-    esi: 0000:0000:0404:0404:0303
-    rt: 04:04:03:03:02:02
-    shape:
-      rate: 50 percent
-
-  - name: Port-Channel50
-    description: SRV-POD03_PortChanne1
-    vlans: 1-4000
-    mode: trunk
-    esi: 0000:0000:0303:0202:0101
-    rt: 03:03:02:02:01:01
-    lacp_id: 0303.0202.0101
-
   - name: Port-Channel51
     description: ipv6_prefix
     vlans: 1-500
