@@ -4910,6 +4910,9 @@
                   }
                 },
                 "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
                 "title": "BFD Per Link Rfc 7130"
               },
               "e_lmi": {
@@ -4929,6 +4932,9 @@
                   }
                 },
                 "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
                 "title": "E Lmi"
               },
               "isis": {
@@ -4948,6 +4954,9 @@
                   }
                 },
                 "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
                 "title": "ISIS"
               },
               "lacp": {
@@ -4967,6 +4976,9 @@
                   }
                 },
                 "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
                 "title": "LACP"
               },
               "lldp": {
@@ -4986,6 +4998,9 @@
                   }
                 },
                 "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
                 "title": "LLDP"
               },
               "macsec": {
@@ -5005,6 +5020,9 @@
                   }
                 },
                 "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
                 "title": "Macsec"
               },
               "pause": {
@@ -5024,6 +5042,9 @@
                   }
                 },
                 "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
                 "title": "Pause"
               },
               "stp": {
@@ -5043,18 +5064,27 @@
                   }
                 },
                 "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
                 "title": "Stp"
               }
             },
             "required": [
               "name"
             ],
-            "additionalProperties": false
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
           },
           "title": "Forwarding Profiles"
         }
       },
       "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
       "title": "L2 Protocol"
     },
     "lacp": {
