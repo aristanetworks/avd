@@ -10,14 +10,19 @@ The example includes and describes all the AVD files and their content used to b
 - Two sets of (virtual) leaf switches, serving endpoints such as servers.
 - Two (virtual) layer2-only switches often used for management connectivity to the servers.
 
-Integration with CloudVision is not included in this example to keep everything as simple as possible. In this case, the Ansible host will communicate directly with the switches using eAPI.
+Ansible playbooks are included to show the following:
+
+- Building the intended configuration and documentation
+- Deploying the configuration directly to the switches using eAPI
+- Deploying the configuration via CloudVision to the switches, thereby including a full change-based workflow with rollback capability etc.
 
 ## Installation
 
 Requirements to use this example:
 
 - Follow the installation guide for AVD found [here](../../docs/installation/collection-installation.md).
-- Run the following playbook to copy the examples to your current working directory, for example `ansible-avd-examples`:
+- If you intend to use the integration with CloudVision, follow the separate installation guide for the CVP collection [here](https://cvp.avd.sh/en/latest/docs/installation/collection-installation/).
+- Run the following playbook to copy the AVD **examples** to your current working directory, for example `ansible-avd-examples`:
 
 `ansible-playbook arista.avd.install_examples`
 
@@ -47,7 +52,9 @@ ansible-avd-examples/ (or wherever the playbook was run)
     ├── images
     ├── intended
     ├── inventory.yml
-    ├── playbook.yml
+    ├── build.yml
+    ├── deploy.yml
+    ├── deploy-cvp.yml
     ├── README.md
     └── switch-basic-configurations
 ```
@@ -90,6 +97,8 @@ The drawing below shows the physical topology used in this example. The interfac
 | DC1                                                 | 10.255.1.64/27              |
 | **MLAG iBGP Peering (interface vlan 4093)**         | **(Leaf switches)**         |
 | DC1                                                 | 10.255.1.96/27              |
+| **CloudVision**                                     |                             |
+| cvp                                                 | 192.168.1.12                |
 
 ### BGP design
 
@@ -131,6 +140,7 @@ The following drawing shows a graphic overview of the Ansible inventory, group v
 
 Group names use uppercase and underscore syntax:
 
+- CLOUDVISION
 - FABRIC
 - DC1
 - DC1_SPINES
@@ -139,6 +149,7 @@ Group names use uppercase and underscore syntax:
 
 All hostnames use lowercase and dashes, for example:
 
+- cvp
 - dc1-spine1
 - dc1-leaf1a
 - dc1-leaf2c
@@ -166,6 +177,20 @@ Alternatively, if there is no DNS available, or if devices need to be reached us
 ---
 all:
   children:
+    CLOUDVISION:
+      hosts:
+        cvp:
+          # Ansible variables used by the ansible_avd and ansible_cvp roles to push configuration to devices via CVP
+          ansible_httpapi_host: 192.168.1.12
+          ansible_host: 192.168.1.12
+          ansible_user: ansible
+          ansible_password: ansible
+          ansible_connection: httpapi
+          ansible_httpapi_use_ssl: true
+          ansible_httpapi_validate_certs: false
+          ansible_network_os: eos
+          # Configuration to get Virtual Env information
+          ansible_python_interpreter: $(which python3)
     FABRIC:
       children:
         DC1:
@@ -209,6 +234,20 @@ The above is what is included in this example, *purely* to make it as simple as 
 ---
 all:
   children:
+    CLOUDVISION: # (1)!
+      hosts:
+        cvp:
+          # Ansible variables used by the ansible_avd and ansible_cvp roles to push configuration to devices via CVP
+          ansible_httpapi_host: cvp
+          ansible_host: cvp
+          ansible_user: ansible
+          ansible_password: ansible
+          ansible_connection: httpapi
+          ansible_httpapi_use_ssl: true
+          ansible_httpapi_validate_certs: false
+          ansible_network_os: eos
+          # Configuration to get Virtual Env information
+          ansible_python_interpreter: $(which python3)
     FABRIC:
       children:
         DC1:
@@ -228,23 +267,30 @@ all:
                 dc1-leaf1c:
                 dc1-leaf2c:
 
-        NETWORK_SERVICES: # (1)!
+        NETWORK_SERVICES: # (2)!
           children:
             DC1_L3_LEAVES:
             DC1_L2_LEAVES:
-        CONNECTED_ENDPOINTS: # (2)!
+        CONNECTED_ENDPOINTS: # (3)!
           children:
             DC1_L3_LEAVES:
             DC1_L2_LEAVES:
 ```
 
-1. `NETWORK_SERVICES`
+1. `CLOUDVISION`
+
+   - Defines the relevant values required to enable communication with CloudVision.
+   - Specifically the hostname of the CloudVision Portal server used, the username and password, connection method, SSL and certificate settings.
+   - Please note that the username and password defined here must exist in CloudVision.
+   - More information is available [here](https://avd.sh/en/stable/roles/eos_config_deploy_cvp/index.html?h=is_deployed#inputs)
+
+2. `NETWORK_SERVICES`
 
     - Creates a group named `NETWORK_SERVICES`. Ansible variable resolution resolves this group name to the identically named group_vars file (`ansible-avd-examples/single-dc-l3ls/group_vars/NETWORK_SERVICES.yml`).
 
     - The file's contents, which in this case are specifications of VRFs and VLANs, are then applied to the group's children. In this case, the two groups `DC1_L3_LEAVES` and `DC1_L2_LEAVES`.
 
-2. `CONNECTED_ENDPOINTS`
+3. `CONNECTED_ENDPOINTS`
 
     - Creates a group named `CONNECTED_ENDPOINTS`. Ansible variable resolution resolves this group name to the identically named group_vars file (`ansible-avd-examples/single-dc-l3ls/group_vars/CONNECTED_ENDPOINTS.yml`).
 

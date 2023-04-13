@@ -1,6 +1,6 @@
 # FABRIC
 
-## Table of Contents
+# Table of Contents
 
 - [Fabric Switches and Management IP](#fabric-switches-and-management-ip)
   - [Fabric Switches with inband Management IP](#fabric-switches-with-inband-management-ip)
@@ -13,27 +13,26 @@
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
 
-## Fabric Switches and Management IP
+# Fabric Switches and Management IP
 
-| POD | Type | Node | Management IP | Platform | Provisioned in CloudVision | Serial Number |
-| --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
-| FABRIC | l3leaf | dc1-leaf1a | 172.16.1.101/24 | vEOS-lab | Provisioned | - |
-| FABRIC | l3leaf | dc1-leaf1b | 172.16.1.102/24 | vEOS-lab | Provisioned | - |
-| FABRIC | l2leaf | dc1-leaf1c | 172.16.1.151/24 | vEOS-lab | Provisioned | - |
-| FABRIC | l3leaf | dc1-leaf2a | 172.16.1.103/24 | vEOS-lab | Provisioned | - |
-| FABRIC | l3leaf | dc1-leaf2b | 172.16.1.104/24 | vEOS-lab | Provisioned | - |
-| FABRIC | l2leaf | dc1-leaf2c | 172.16.1.152/24 | vEOS-lab | Provisioned | - |
-| FABRIC | spine | dc1-spine1 | 172.16.1.11/24 | vEOS-lab | Provisioned | - |
-| FABRIC | spine | dc1-spine2 | 172.16.1.12/24 | vEOS-lab | Provisioned | - |
+| POD | Type | Node | Management IP | Platform | Provisioned in CloudVision |
+| --- | ---- | ---- | ------------- | -------- | -------------------------- |
+| FABRIC | l3leaf | dc1-leaf1a | 172.16.1.101/24 | vEOS-lab | Provisioned |
+| FABRIC | l3leaf | dc1-leaf1b | 172.16.1.102/24 | vEOS-lab | Provisioned |
+| FABRIC | l2leaf | dc1-leaf1c | 172.16.1.151/24 | vEOS-lab | Provisioned |
+| FABRIC | l3leaf | dc1-leaf2a | 172.16.1.103/24 | vEOS-lab | Provisioned |
+| FABRIC | l3leaf | dc1-leaf2b | 172.16.1.104/24 | vEOS-lab | Provisioned |
+| FABRIC | l2leaf | dc1-leaf2c | 172.16.1.152/24 | vEOS-lab | Provisioned |
+| FABRIC | spine | dc1-spine1 | 172.16.1.11/24 | vEOS-lab | Provisioned |
+| FABRIC | spine | dc1-spine2 | 172.16.1.12/24 | vEOS-lab | Provisioned |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
-### Fabric Switches with inband Management IP
-
+## Fabric Switches with inband Management IP
 | POD | Type | Node | Management IP | Inband Interface |
 | --- | ---- | ---- | ------------- | ---------------- |
 
-## Fabric Topology
+# Fabric Topology
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
 | ---- | ---- | -------------- | --------- | ----------| -------------- |
@@ -54,15 +53,15 @@
 | l3leaf | dc1-leaf2b | Ethernet2 | spine | dc1-spine2 | Ethernet4 |
 | l3leaf | dc1-leaf2b | Ethernet8 | l2leaf | dc1-leaf2c | Ethernet2 |
 
-## Fabric IP Allocation
+# Fabric IP Allocation
 
-### Fabric Point-To-Point Links
+## Fabric Point-To-Point Links
 
 | Uplink IPv4 Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ---------------- | ------------------- | ------------------ | ------------------ |
 | 10.255.255.0/26 | 64 | 16 | 25.0 % |
 
-### Point-To-Point Links Node Allocation
+## Point-To-Point Links Node Allocation
 
 | Node | Node Interface | Node IP Address | Peer Node | Peer Interface | Peer IP Address |
 | ---- | -------------- | --------------- | --------- | -------------- | --------------- |
@@ -75,13 +74,13 @@
 | dc1-leaf2b | Ethernet1 | 10.255.255.13/31 | dc1-spine1 | Ethernet4 | 10.255.255.12/31 |
 | dc1-leaf2b | Ethernet2 | 10.255.255.15/31 | dc1-spine2 | Ethernet4 | 10.255.255.14/31 |
 
-### Loopback Interfaces (BGP EVPN Peering)
+## Loopback Interfaces (BGP EVPN Peering)
 
 | Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------- | ------------------- | ------------------ | ------------------ |
 | 10.255.0.0/27 | 32 | 6 | 18.75 % |
 
-### Loopback0 Interfaces Node Allocation
+## Loopback0 Interfaces Node Allocation
 
 | POD | Node | Loopback0 |
 | --- | ---- | --------- |
@@ -92,13 +91,13 @@
 | FABRIC | dc1-spine1 | 10.255.0.1/32 |
 | FABRIC | dc1-spine2 | 10.255.0.2/32 |
 
-### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
+## VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | --------------------- | ------------------- | ------------------ | ------------------ |
 | 10.255.1.0/27 | 32 | 4 | 12.5 % |
 
-### VTEP Loopback Node allocation
+## VTEP Loopback Node allocation
 
 | POD | Node | Loopback1 |
 | --- | ---- | --------- |

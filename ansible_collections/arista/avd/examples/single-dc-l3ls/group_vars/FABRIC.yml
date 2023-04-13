@@ -49,3 +49,32 @@ bgp_peer_groups:
 # If you're running vEOS-lab or cEOS, you should use MTU of 1500 instead as shown in the following line
 # p2p_uplinks_mtu: 1500
 p2p_uplinks_mtu: 1500
+
+# CloudVision Portal definitions
+cvp_instance_ip: 192.168.1.12
+terminattr_smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
+terminattr_ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
+terminattr_disable_aaa: true
+# custom_structured_configuration_daemon_terminattr:
+#   cvaddrs:
+#     - 192.168.1.12:9910
+#   cvauth:
+#     method: token
+#     token_file: /tmp/token
+#   cvvrf: MGMT
+#   smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
+#   ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
+#   disable_aaa: true
+
+# DNS Server
+name_servers:
+  - 192.168.1.1
+
+# NTP Servers IP or DNS name, first NTP server will be prefered, and sourced from Management VRF
+custom_structured_configuration_ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+    - name: 0.pool.ntp.org
+      vrf: MGMT

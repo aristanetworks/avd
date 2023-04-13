@@ -1,0 +1,19 @@
+---
+# Please note, comments below are intended for site documentation only
+
+- name: Push to CVP # (1)!
+  hosts: CLOUDVISION
+  gather_facts: false
+  connection: local
+  tasks:
+
+    - name: run CVP provisioning # (2)!
+      import_role:
+        name: arista.avd.eos_config_deploy_cvp
+      vars:
+        container_root: 'DC1'
+        configlets_prefix: 'AVD'
+        execute_tasks: true
+        apply_mode: strict
+        state: present
+        cv_collection: v3
