@@ -11,9 +11,4 @@
       import_role:
         name: arista.avd.eos_config_deploy_cvp
       vars:
-        container_root: 'DC1'
-        configlets_prefix: 'AVD'
-        execute_tasks: true
-        apply_mode: strict
-        state: present
-        cv_collection: v3
+        cv_collection: v3 # (3)!

@@ -377,12 +377,53 @@ bgp_peer_groups: # (3)!
     password: 4b21pAdCvWeAqpcKDFMdWw==
 
 p2p_uplinks_mtu: 1500 # (4)!
+
+default_interfaces: # (5)!
+  - types: [ spine ]
+    platforms: [ default ]
+    uplink_interfaces: [ Ethernet1-2 ]
+    downlink_interfaces: [ Ethernet1-8 ]
+  - types: [ l3leaf ]
+    platforms: [ default ]
+    uplink_interfaces: [ Ethernet1-2 ]
+    mlag_interfaces: [ Ethernet3-4 ]
+    downlink_interfaces: [ Ethernet8 ]
+  - types: [ l2leaf ]
+    platforms: [ default ]
+    uplink_interfaces: [ Ethernet1-2 ]
+
+cvp_instance_ip: 192.168.1.12 # (6)!
+terminattr_smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
+terminattr_ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
+terminattr_disable_aaa: true
+custom_structured_configuration_daemon_terminattr:
+  cvauth:
+    method: token
+    token_file: /tmp/token
+
+name_servers: # (7)!
+  - 192.168.1.1
+
+custom_structured_configuration_ntp: # (8)!
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+    - name: 0.pool.ntp.org
+      vrf: MGMT
 ```
 
 1. The name of the fabric for internal AVD use. This name *must* match the name of an Ansible Group (and therefore a corresponding group_vars file) covering all network devices.
 2. Local users/passwords and their privilege levels. In this case, the `ansible` user is set with the password `ansible` and an `admin` user is set with no password.
 3. BGP peer groups and their passwords (all passwords are "arista").
 4. Point-to-point interface MTU, in this case, is set to 1500 since the example uses vEOS, but when using hardware, this should be set to 9214 instead.
+5. Defines which interfaces to use for uplinks, MLAG peer-links and downlinks. In this example they are specified per node type.
+   1. `uplink_interfaces` specify which local interfaces connect to an upstream device.
+   2. `mlag_interfaces` specify which local interfaces connect to an MLAG peer.
+   3. `downlink_interfaces` specify which local interfaces connect to a downstream device.
+6. Relevant settings for the software agent on EOS, responsible for streaming telemetry back to CloudVision Portal.
+7. DNS Server specification. Used in this example primarily to resolve the IP address of the NTP server.
+8. NTP server settings. Correct and synchronized time on EOS is required for proper connectivity to CloudVision Portal.
 
 ## Setting device specific configuration parameters
 
@@ -434,23 +475,24 @@ l3leaf:
     virtual_router_mac_address: 00:1c:73:00:00:99 # (11)!
     spanning_tree_priority: 4096 # (12)!
     spanning_tree_mode: mstp # (13)!
+=======
+      - graceful-restart restart-time 300
+      - graceful-restart
+    virtual_router_mac_address: 00:1c:73:00:00:99 # (9)!
+    spanning_tree_priority: 4096 # (10)!
+    spanning_tree_mode: mstp # (11)!
+>>>>>>> 5ab47d831... Updated
 
-  node_groups: # (14)!
+  node_groups: # (12)!
     DC1_L3_LEAF1:
-      bgp_as: 65101 # (15)!
+      bgp_as: 65101 # (13)!
       nodes:
         dc1-leaf1a:
           id: 1
           mgmt_ip: 172.16.1.101/24
-          uplink_switch_interfaces: # (16)!
-            - Ethernet1
-            - Ethernet1
         dc1-leaf1b:
           id: 2
           mgmt_ip: 172.16.1.102/24
-          uplink_switch_interfaces:
-            - Ethernet2
-            - Ethernet2
 
     DC1_L3_LEAF2:
       bgp_as: 65102
@@ -458,33 +500,24 @@ l3leaf:
         dc1-leaf2a:
           id: 3
           mgmt_ip: 172.16.1.103/24
-          uplink_switch_interfaces:
-            - Ethernet3
-            - Ethernet3
         dc1-leaf2b:
           id: 4
           mgmt_ip: 172.16.1.104/24
-          uplink_switch_interfaces:
-            - Ethernet4
-            - Ethernet4
 ```
 
 1. `platform` references default settings defined in AVD specific to certain switch platforms.
 2. `loopback_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for Loopback0. Please note that this IP pool is identical to the one used for the spine switches in this example. To avoid setting the same IP addresses for several devices, we define the option `loopback_ipv4_offset`.
 3. `loopback_ipv4_offset` offsets all assigned loopback IP addresses counting from the beginning of the IP scope. This is required when the same IP pool is used for two different node_types (like spine and l3leaf in this example) to avoid overlapping IPs. The offset is "2" in this case because each spine switch uses one loopback address.
 4. `vtep_loopback_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the VTEP (Loopback1).
-5. `uplink_interfaces` defines the interfaces used locally on the leaf switches.
-6. `uplink_switches` defines the uplink switches, which are dc1-spine1 and dc1-spine2. Note that the `uplink_interfaces` and `uplink_switches` are paired vertically.
-7. `uplink_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the uplink interfaces that were just defined.
-8. `mlag_interfaces` defines the MLAG interfaces used on each leaf switch, in this case, Ethernet3 and Ethernet4. These two interfaces will form PortChannel3 used for the MLAG peer link. Note that PortChannel3 is selected since the first interface is Ethernet3.
-9. `mlag_peer_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the MLAG peer link interface VLAN4094.
-10. `mlag_peer_l3_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the iBGP peering established between the two leaf switches via the SVI/IRB interface VLAN4093.
-11. `virtual_router_mac_address` defines the MAC address used for the anycast gateway on the various subnets. This is the MAC address connected endpoints will learn when ARPing for their default gateway.
-12. `spanning_tree_priority` sets the spanning tree priority. Since spanning tree in an L3LS network is effectively only running locally on the switch, the same priority across all L3 leaf switches can be re-used.
-13. `spanning_tree_mode` defines the spanning tree mode. In this case, we are using MSTP, which is the default. However, other modes are supported should they be required, for example, for connectivity to legacy or third-party vendor environments.
-14. `node_groups` defines settings common to more than one node. For example, for leaf switches, when exactly two nodes are part of a node group, AVD will, by default, automatically generate MLAG configuration.
-15. `bgp_as` is defined once since an MLAG pair shares a single BGP AS number.
-16. `uplink_switch_interfaces` defines the interfaces used on the uplink switches (Ethernet1 on dc1-spine1 and dc1-spine2 in this example). Defining which spine interfaces the leaf is connected to under the leaf switch settings makes adding and removing leaf switches much easier. There is no need to add/remove any settings under the spine switch section; AVD takes care of that for you. This child device/parent device hierarchy also applies to L2 and L3 leaves.
+5. `uplink_switches` defines the uplink switches, which are dc1-spine1 and dc1-spine2. Note that the `uplink_interfaces` and `uplink_switches` are paired vertically.
+6. `uplink_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the uplink interfaces that were just defined.
+7. `mlag_peer_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the MLAG peer link interface VLAN4094.
+8. `mlag_peer_l3_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the iBGP peering established between the two leaf switches via the SVI/IRB interface VLAN4093.
+9. `virtual_router_mac_address` defines the MAC address used for the anycast gateway on the various subnets. This is the MAC address connected endpoints will learn when ARPing for their default gateway.
+10. `spanning_tree_priority` sets the spanning tree priority. Since spanning tree in an L3LS network is effectively only running locally on the switch, the same priority across all L3 leaf switches can be re-used.
+11. `spanning_tree_mode` defines the spanning tree mode. In this case, we are using MSTP, which is the default. However, other modes are supported should they be required, for example, for connectivity to legacy or third-party vendor environments.
+12. `node_groups` defines settings common to more than one node. For example, for leaf switches, when exactly two nodes are part of a node group, AVD will, by default, automatically generate MLAG configuration.
+13. `bgp_as` is defined once since an MLAG pair shares a single BGP AS number.
 
 Finally, more of the same, but this time for the L2 leaf switches:
 
@@ -492,7 +525,6 @@ Finally, more of the same, but this time for the L2 leaf switches:
 l2leaf:
   defaults:
     platform: vEOS-lab
-    uplink_interfaces: ['Ethernet1', 'Ethernet2']
     spanning_tree_mode: mstp
 
   node_groups:
@@ -502,22 +534,19 @@ l2leaf:
         dc1-leaf1c:
           id: 1
           mgmt_ip: 172.16.1.151/24
-          uplink_switch_interfaces:
-            - Ethernet8
-            - Ethernet8
 
     DC1_L2_LEAF2:
       uplink_switches: ['dc1-leaf2a', 'dc1-leaf2b']
       nodes:
         dc1-leaf2c:
-          id: 2
+          id: 1
           mgmt_ip: 172.16.1.152/24
-          uplink_switch_interfaces:
-            - Ethernet8
-            - Ethernet8
 ```
 
-As should be clear, an L2 leaf switch is much simpler than an L3 switch. Hence there are fewer settings to define.
+As should be clear, a L2 leaf switch is much simpler than a L3 switch. Hence there are fewer settings to define.
+
+!!! note
+    The `id:` is set to `1` on both `dc1-leaf1c` and `dc1-leaf2c` on purpose. This is a workaround to ensure that the `default_interfaces` specificied in FABRIC.yml works correctly with the topology used in this example. Future versions of AVD will remove the need for this workaround.
 
 ## Specifying network services (VRFs and VLANs) in the EVPN/VXLAN fabric
 
@@ -632,46 +661,156 @@ As an example, here is the configuration for `dc1-leaf1-server1`:
 8. `spanning_tree_portfast` defines whether the switch port should be a spanning tree edge port or a network port.
 9. `port-channel` defines the description and mode for the port-channel.
 
-## The playbook
+## The playbooks
 
-In this example, the playbook looks like the following:
+In this example, three playbooks are included, whereof two must be used:
 
-```yaml title="playbook.yml"
+1. The first playbook `build.yml` is mandatory and is used to build the structured configuration, documentation and finally the actual EOS CLI configuration.
+2. The second playbook is a choice between:
+   1. `deploy.yml` to deploy the data generated from `build.yml` to the Arista switches directly using eAPI.
+   2. `deploy-cvp.yml` to deploy the data generated from `build.yml` to the Arista switches using CloudVision
+
+The `build.yml` playbook looks like the following:
+
+```yaml title="build.yml"
 --8<--
-examples/single-dc-l3ls/playbook.yml
+examples/single-dc-l3ls/build.yml
 --8<--
 ```
 
 1. At the highest level, the name and scope of the playbook is set, which in this example is the entire fabric. For instance, `FABRIC` is a group name defined in the inventory. If the playbook should only apply to a subset of devices, it can be changed here.
 2. This task uses the role `arista.avd.eos_designs`, which generates structured configuration for each device. This structured configuration can be found in the `ansible-avd-examples/single-dc-l3ls/intended/structured_configs` folder.
 3. This task uses the role `arista.avd.eos_cli_config_gen`, which generates the actual Arista EOS CLI configurations found in the `ansible-avd-examples/single-dc-l3ls/intended/configs` folder, along with the device-specific and fabric wide documentation found in the `ansible-avd-examples/single-dc-l3ls/documentation/` folder. It relies on the structured configuration generated by `arista.avd.eos_designs`.
-4. This task uses the role `arista.avd.eos_config_deploy_eapi` that pushes the generated configuration to the devices in scope.
+
+The `deploy.yml` playbook looks like the following:
+
+```yaml title="deploy.yml"
+--8<--
+examples/single-dc-l3ls/deploy.yml
+--8<--
+```
+
+1. At the highest level, the name and scope of the playbook is set, which in this example is the entire fabric. For instance, `FABRIC` is a group name defined in the inventory. If the playbook should only apply to a subset of devices, it can be changed here.
+2. This task uses the role `arista.avd.eos_config_deploy_eapi` to do the following:
+   1. Read the AVD inventory and use this to build the containers topology in CloudVision.
+   2. Looks for configuration previously generated by arista.avd.eos_cli_config_gen and build configlets list, one per device.
+   3. Looks for additional configlets to attach to either devices or containers.
+   4. Build CloudVision configuration using the `arista.cvp` Ansible collection:
+      1. Build configlets on CV
+      2. Create containers topology
+      3. Move devices to container
+      4. Bind configlet to device
+   5. Deploy Fabric configuration by running all pending tasks (optional, if execute_tasks == true)
+
+The `deploy-cvp.yml` playbook looks like the following:
+
+```yaml title="deploy-cvp.yml"
+--8<--
+examples/single-dc-l3ls/deploy-cvp.yml
+--8<--
+```
+
+1. At the highest level, the name and scope of the playbook is set, which in this example is the CloudVision server named `CLOUDVISION`.
+2. This task uses the role `arista.avd.eos_config_deploy_cvp` that pushes the generated configuration to the devices in scope.
+3. Specifies to use v3 of the collection.
 
 ### Testing AVD output without a lab
 
-Example of using this playbook without devices (local tasks):
-
-```yaml title="playbook.yml"
-- name: Run AVD
-  hosts: FABRIC
-  gather_facts: false
-  tasks:
-    - name: Generate intended variables
-      ansible.builtin.import_role:
-        name: arista.avd.eos_designs
-    - name: Generate device intended config and documentation
-      ansible.builtin.import_role:
-        name: arista.avd.eos_cli_config_gen
-    # - name: Deploy configuration to device
-    #   ansible.builtin.import_role:
-    #      name: arista.avd.eos_config_deploy_eapi
-```
-
-By simply commenting out (or deleting) the last task definition, the playbook will generate all of the output (variables, configurations, documentation), but will not attempt to communicate with any devices.
+It is possible to use the `build.yml` playbook without any actual devices. The playbook will generate all of the output (variables, configurations, documentation), but will not attempt to communicate with any devices.
 
 Please look through the folders and files described above to learn more about the output generated by AVD.
 
-### Executing the playbook
+## The Playbooks
+
+Now that we have defined all of our Ansible variables (AVD inputs), it is time to generate some configs. To make things simple, we provide two playbooks. One playbook will allow you to build and view EOS CLI intended configurations per device. The second playbook has an additional task to deploy the configurations to your switches. The playbooks are provided in the tabs below. The playbook is straightforward as it imports two AVD roles: eos_designs and eos_cli_config_gen, which do all the heavy lifting. The combination of these two roles produces recommended configurations that follow Arista Design Guides.
+
+=== "build.yml"
+
+    ``` yaml
+    --8<--
+    examples/l2ls-fabric/build.yml
+    --8<--
+    ```
+
+=== "deploy.yml"
+
+    ``` yaml
+    --8<--
+    examples/l2ls-fabric/deploy.yml
+    --8<--
+    ```
+
+### Playbook Run
+
+To build the configurations files, run the playbook called `build.yml`.
+
+``` bash
+### Build configurations
+ansible-playbook playbooks/build.yml
+```
+
+After the playbook run finishes, EOS CLI intended configuration files were written to `intended/configs`.
+
+To build and deploy the configurations to your switches, run the playbook called `deploy.yml`. This assumes that your Ansible host has access and authentication rights to the switches. Those auth variables were defined in DC1_FABRIC.yml.
+
+``` bash
+### Build configurations & Push Configs to switches
+ansible-playbook playbooks/deploy.yml
+```
+
+### EOS Intended Configurations
+
+Your configuration files should be similar to these.
+
+=== "SPINE1"
+
+    ``` shell
+    --8<--
+    examples/l2ls-fabric/intended/configs/SPINE1.cfg
+    --8<--
+    ```
+
+=== "SPINE2"
+
+    ``` shell
+    --8<--
+    examples/l2ls-fabric/intended/configs/SPINE2.cfg
+    --8<--
+    ```
+
+=== "LEAF1"
+
+    ``` shell
+    --8<--
+    examples/l2ls-fabric/intended/configs/LEAF1.cfg
+    --8<--
+    ```
+
+=== "LEAF2"
+
+    ``` shell
+    --8<--
+    examples/l2ls-fabric/intended/configs/LEAF2.cfg
+    --8<--
+    ```
+
+=== "LEAF3"
+
+    ``` shell
+    --8<--
+    examples/l2ls-fabric/intended/configs/LEAF3.cfg
+    --8<--
+    ```
+
+=== "LEAF4"
+
+    ``` shell
+    --8<--
+    examples/l2ls-fabric/intended/configs/LEAF4.cfg
+    --8<--
+    ```
+
+### Executing the playbooks
 
 The execution of the playbook should produce the following output:
 

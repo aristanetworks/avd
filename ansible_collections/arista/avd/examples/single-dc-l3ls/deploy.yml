@@ -1,17 +1,11 @@
 ---
 # deploy.yml
 
-- name: Build and Deploy Configs
+- name: Build and Deploy Configs # (1)!
   hosts: FABRIC
   gather_facts: false
   tasks:
 
-    - name: Generate AVD Structured Configurations and Fabric Documentation
-      ansible.builtin.import_role:
-        name: arista.avd.eos_designs
-    - name: Generate Device Configurations and Documentation
-      ansible.builtin.import_role:
-        name: arista.avd.eos_cli_config_gen
-    - name: Deploy Configurations to Devices
+    - name: Deploy Configurations to Devices # (2)!
       ansible.builtin.import_role:
         name: arista.avd.eos_config_deploy_eapi

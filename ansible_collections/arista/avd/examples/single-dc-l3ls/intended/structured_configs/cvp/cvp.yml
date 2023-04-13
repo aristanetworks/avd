@@ -1,5 +1,5 @@
 ---
-CVP_DEVICES:
+cvp_devices:
   - fqdn: dc1-leaf1a
     parentContainerName: DC1_L3_LEAVES
     configlets:
@@ -32,7 +32,7 @@ CVP_DEVICES:
     parentContainerName: DC1_SPINES
     configlets:
       - AVD_dc1-spine2
-CVP_CONTAINERS:
+cvp_containers:
   DC1:
     parentContainerName: Tenant
   DC1_L2_LEAVES:
