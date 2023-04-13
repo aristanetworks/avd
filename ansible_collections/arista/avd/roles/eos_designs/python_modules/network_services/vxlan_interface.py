@@ -7,7 +7,6 @@ from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_s
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, unique
-from ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing import AvdIpAddressing
 
 from .utils import UtilsMixin
 
@@ -21,7 +20,6 @@ class VxlanInterfaceMixin(UtilsMixin):
     # Set type hints for Attributes of the main class as needed
     _hostvars: dict
     _filtered_tenants: list[dict]
-    _avd_ip_addressing: AvdIpAddressing
 
     @cached_property
     def vxlan_interface(self) -> dict | None:
@@ -39,14 +37,13 @@ class VxlanInterfaceMixin(UtilsMixin):
         vxlan = {
             "udp_port": 4789,
         }
-        vtep_loopback = get(self._hostvars, "switch.vtep_loopback", required=True)
-        if get(self._hostvars, "switch.multi_vtep") is True:
+        if self._multi_vtep:
             vxlan["source_interface"] = "Loopback0"
-            vxlan["mlag_source_interface"] = vtep_loopback
+            vxlan["mlag_source_interface"] = self.shared_utils.vtep_loopback
         else:
-            vxlan["source_interface"] = vtep_loopback
+            vxlan["source_interface"] = self.shared_utils.vtep_loopback
 
-        if self._mlag_l3 and self._network_services_l3 and self._overlay_evpn:
+        if self.shared_utils.mlag_l3 and self.shared_utils.network_services_l3 and self._overlay_evpn:
             vxlan["virtual_router_encapsulation_mac_address"] = "mlag-system-id"
 
         if self._overlay_her and self._overlay_her_flood_list_per_vni is False:
@@ -70,7 +67,7 @@ class VxlanInterfaceMixin(UtilsMixin):
                         vnis[vni] = tenant["name"]
                         vlans.append({"id": vlan_id, **vlan})
 
-                if self._network_services_l3 and self._overlay_evpn:
+                if self.shared_utils.network_services_l3 and self._overlay_evpn:
                     vrf_name = vrf["name"]
                     vni = default(
                         vrf.get("vrf_vni"),
@@ -96,7 +93,7 @@ class VxlanInterfaceMixin(UtilsMixin):
                                 tenant, "evpn_l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset", default=0
                             )
                             offset = vni - 1 + underlay_l3_mcast_group_ipv4_pool_offset
-                            vrf_data["multicast_group"] = self._avd_ip_addressing._ip(underlay_l3_multicast_group_ipv4_pool, 32, offset, 0)
+                            vrf_data["multicast_group"] = self.shared_utils.ip_addressing._ip(underlay_l3_multicast_group_ipv4_pool, 32, offset, 0)
 
                         vrfs.append(vrf_data)
 
@@ -117,7 +114,7 @@ class VxlanInterfaceMixin(UtilsMixin):
 
         return {
             "Vxlan1": {
-                "description": f"{self._hostname}_VTEP",
+                "description": f"{self.shared_utils.hostname}_VTEP",
                 "vxlan": vxlan,
             }
         }
@@ -150,7 +147,7 @@ class VxlanInterfaceMixin(UtilsMixin):
             )
             underlay_l2_multicast_group_ipv4_pool_offset = get(tenant, "evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool_offset", default=0)
             offset = vlan_id - 1 + underlay_l2_multicast_group_ipv4_pool_offset
-            vxlan_interface_vlan["multicast_group"] = self._avd_ip_addressing._ip(underlay_l2_multicast_group_ipv4_pool, 32, offset, 0)
+            vxlan_interface_vlan["multicast_group"] = self.shared_utils.ip_addressing._ip(underlay_l2_multicast_group_ipv4_pool, 32, offset, 0)
 
         if self._overlay_her and self._overlay_her_flood_list_per_vni:
             vxlan_interface_vlan["flood_vteps"] = natural_sort(unique(self._overlay_her_flood_lists.get(vlan_id, [])))
@@ -188,7 +185,7 @@ class VxlanInterfaceMixin(UtilsMixin):
         peers = get(self._hostvars, f"groups..{scope}", separator="..", required=True)
         avd_switch_facts = get(self._hostvars, "avd_switch_facts", required=True)
         for peer in peers:
-            if peer == self._hostname:
+            if peer == self.shared_utils.hostname:
                 continue
             if (vtep_ip := get(avd_switch_facts, f"{peer}..switch..vtep_ip", separator="..")) is None:
                 continue
@@ -211,3 +208,7 @@ class VxlanInterfaceMixin(UtilsMixin):
             msg = f"{msg} Other VNI is in Tenant '{duplicate_vni_tenant}'."
 
         raise AristaAvdError(msg)
+
+    @cached_property
+    def _multi_vtep(self) -> bool:
+        return self.shared_utils.mlag is True and self._evpn_multicast is True

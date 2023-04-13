@@ -23,12 +23,12 @@ class CvxMixin(UtilsMixin):
             return None
 
         overlay_cvx_servers = get(self._hostvars, "overlay_cvx_servers", default=[])
-        if self._hostname not in overlay_cvx_servers:
+        if self.shared_utils.hostname not in overlay_cvx_servers:
             return None
 
         peer_hosts = []
         for overlay_cvx_server in overlay_cvx_servers:
-            if overlay_cvx_server == self._hostname:
+            if overlay_cvx_server == self.shared_utils.hostname:
                 continue
 
             peer_switch_facts = self._get_peer_facts(overlay_cvx_server, True)

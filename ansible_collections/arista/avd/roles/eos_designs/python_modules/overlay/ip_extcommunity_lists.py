@@ -16,7 +16,7 @@ class IpExtCommunityListsMixin(UtilsMixin):
         """
         Return structured config for ip_extcommunity_lists
         """
-        if self._overlay_routing_protocol != "ibgp":
+        if self.shared_utils.overlay_routing_protocol != "ibgp":
             return None
 
         if self._vtep_ip is not None:

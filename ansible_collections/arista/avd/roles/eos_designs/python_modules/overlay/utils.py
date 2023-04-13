@@ -3,6 +3,7 @@ from __future__ import annotations
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
+from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils.shared_utils import SharedUtils
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 
@@ -14,13 +15,14 @@ class UtilsMixin:
 
     # Set type hints for Attributes of the main class as needed
     _hostvars: dict
+    shared_utils: SharedUtils
 
     @cached_property
     def _avd_overlay_peers(self) -> list:
         """
         Returns a list of overlay peers for the device
         """
-        return get(self._hostvars, f"avd_overlay_peers..{self._hostname}", separator="..", default=[])
+        return get(self._hostvars, f"avd_overlay_peers..{self.shared_utils.hostname}", separator="..", default=[])
 
     @cached_property
     def _bfd_multihop(self) -> dict | None:
@@ -40,21 +42,15 @@ class UtilsMixin:
         return get(self._hostvars, "evpn_ebgp_gateway_multihop")
 
     @cached_property
-    def _evpn_gateway_vxlan_l2(self) -> bool:
-        return get(self._hostvars, "switch.evpn_gateway_vxlan_l2") is True
-
-    @cached_property
-    def _evpn_gateway_vxlan_l3(self) -> bool:
-        return get(self._hostvars, "switch.evpn_gateway_vxlan_l3") is True
-
-    @cached_property
     def _evpn_gateway_remote_peers(self) -> dict:
         if not self._overlay_evpn:
             return {}
 
         evpn_gateway_remote_peers = {}
 
-        for gw_remote_peer_dict in natural_sort(get(self._hostvars, "switch.evpn_gateway_remote_peers", default=[]), sort_key="hostname"):
+        evpn_gateway_remote_peers_list = get(self.shared_utils.switch_data_combined, "evpn_gateway.remote_peers", default=[])
+
+        for gw_remote_peer_dict in natural_sort(evpn_gateway_remote_peers_list, sort_key="hostname"):
             # These remote gw can be outside of the inventory
             gw_remote_peer = gw_remote_peer_dict["hostname"]
             peer_facts = self._get_peer_facts(gw_remote_peer, required=False)
@@ -100,7 +96,7 @@ class UtilsMixin:
                 continue
 
             if (
-                self._hostname in peer_facts.get("evpn_route_servers", [])
+                self.shared_utils.hostname in peer_facts.get("evpn_route_servers", [])
                 and peer_facts.get("evpn_role") in ["server", "client"]
                 and avd_peer not in self._evpn_route_servers.keys()
             ):
@@ -133,10 +129,6 @@ class UtilsMixin:
         fabric_name = get(self._hostvars, "fabric_name", required=True)
         return get(self._hostvars, f"groups.{fabric_name}")
 
-    @cached_property
-    def _hostname(self) -> str:
-        return get(self._hostvars, "switch.hostname", required=True)
-
     # The next four should probably be moved to facts
     @cached_property
     def _is_mpls_client(self) -> bool:
@@ -163,7 +155,7 @@ class UtilsMixin:
 
         ipvpn_gateway_remote_peers = {}
 
-        for ipvpn_gw_peer_dict in natural_sort(get(self._hostvars, "switch.ipvpn_gateway.remote_peers", default=[]), "hostname"):
+        for ipvpn_gw_peer_dict in natural_sort(get(self.shared_utils.switch_data_combined, "ipvpn_gateway.remote_peers", default=[]), "hostname"):
             # These remote gw are outside of the inventory
 
             bgp_as = ipvpn_gw_peer_dict["bgp_as"]
@@ -191,7 +183,7 @@ class UtilsMixin:
             if not peer_facts or self._is_peer_mpls_client(peer_facts) is not True:
                 continue
 
-            if self._hostname in peer_facts.get("mpls_route_reflectors", []) and avd_peer not in self._mpls_route_reflectors.keys():
+            if self.shared_utils.hostname in peer_facts.get("mpls_route_reflectors", []) and avd_peer not in self._mpls_route_reflectors.keys():
                 self._append_peer(mpls_route_clients, avd_peer, peer_facts)
 
         return mpls_route_clients
@@ -210,7 +202,7 @@ class UtilsMixin:
         for fabric_switch in self._fabric_group_devices:
             if self._mpls_route_reflectors is not None and fabric_switch in self._mpls_route_reflectors:
                 continue
-            if fabric_switch == self._hostname:
+            if fabric_switch == self.shared_utils.hostname:
                 continue
 
             peer_facts = self._get_peer_facts(fabric_switch)
@@ -229,7 +221,7 @@ class UtilsMixin:
         mpls_route_reflectors = {}
 
         for route_reflector in natural_sort(get(self._hostvars, "switch.mpls_route_reflectors", default=[])):
-            if route_reflector == self._hostname:
+            if route_reflector == self.shared_utils.hostname:
                 continue
 
             peer_facts = self._get_peer_facts(route_reflector)
@@ -248,7 +240,7 @@ class UtilsMixin:
         mpls_rr_peers = {}
 
         for route_reflector in natural_sort(get(self._hostvars, "switch.mpls_route_reflectors", default=[])):
-            if route_reflector == self._hostname:
+            if route_reflector == self.shared_utils.hostname:
                 continue
 
             peer_facts = self._get_peer_facts(route_reflector)
@@ -262,7 +254,7 @@ class UtilsMixin:
             if not peer_facts or self._is_peer_mpls_server(peer_facts) is not True:
                 continue
 
-            if self._hostname in peer_facts.get("mpls_route_reflectors", []) and avd_peer not in get(
+            if self.shared_utils.hostname in peer_facts.get("mpls_route_reflectors", []) and avd_peer not in get(
                 self._hostvars, "switch.mpls_route_reflectors", default=[]
             ):
                 self._append_peer(mpls_rr_peers, avd_peer, peer_facts)
@@ -302,10 +294,6 @@ class UtilsMixin:
         return (self._overlay_evpn_mpls is True or self._overlay_vpn_ipv4 is True or self._overlay_vpn_ipv6 is True) and self._overlay_evpn_vxlan is not True
 
     @cached_property
-    def _overlay_routing_protocol(self) -> str | None:
-        return get(self._hostvars, "switch.overlay_routing_protocol")
-
-    @cached_property
     def _overlay_vtep(self) -> bool:
         return get(self._hostvars, "switch.overlay.vtep", required=True) is True
 
@@ -316,30 +304,6 @@ class UtilsMixin:
     @cached_property
     def _overlay_vpn_ipv6(self) -> bool:
         return get(self._hostvars, "switch.overlay.vpn_ipv6", required=True) is True
-
-    @cached_property
-    def _peer_group_evpn_overlay_core(self) -> str | None:
-        return get(self._hostvars, "switch.bgp_peer_groups.evpn_overlay_core.name")
-
-    @cached_property
-    def _peer_group_evpn_overlay_peers(self) -> str | None:
-        return get(self._hostvars, "switch.bgp_peer_groups.evpn_overlay_peers.name")
-
-    @cached_property
-    def _peer_group_ipvpn_gateway_peers(self) -> str | None:
-        return get(self._hostvars, "switch.bgp_peer_groups.ipvpn_gateway_peers.name")
-
-    @cached_property
-    def _peer_group_mpls_overlay_peers(self) -> str | None:
-        return get(self._hostvars, "switch.bgp_peer_groups.mpls_overlay_peers.name")
-
-    @cached_property
-    def _peer_group_rr_overlay_peers(self) -> str:
-        return get(self._hostvars, "switch.bgp_peer_groups.rr_overlay_peers.name")
-
-    @cached_property
-    def _router_id(self) -> str | None:
-        return get(self._hostvars, "switch.router_id")
 
     @cached_property
     def _vtep_ip(self) -> str:

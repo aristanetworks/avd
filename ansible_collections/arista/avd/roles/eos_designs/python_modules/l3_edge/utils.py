@@ -6,11 +6,10 @@ from ipaddress import ip_network
 from itertools import islice
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
+from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
-from ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions import AvdInterfaceDescriptions
-from ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing import AvdIpAddressing
 
 
 class UtilsMixin:
@@ -21,8 +20,7 @@ class UtilsMixin:
 
     # Set type hints for Attributes of the main class as needed
     _hostvars: dict
-    _avd_ip_addressing: AvdIpAddressing
-    _avd_interface_descriptions: AvdInterfaceDescriptions
+    shared_utils: SharedUtils
 
     @cached_property
     def _l3_edge(self) -> list:
@@ -41,10 +39,6 @@ class UtilsMixin:
         return get(self._hostvars, "l3_edge.p2p_links", default=[])
 
     @cached_property
-    def _hostname(self) -> str:
-        return get(self._hostvars, "switch.hostname", required=True)
-
-    @cached_property
     def _p2p_uplinks_mtu(self) -> str:
         return get(self._hostvars, "p2p_uplinks_mtu", required=True)
 
@@ -55,22 +49,6 @@ class UtilsMixin:
     @cached_property
     def _underlay_rfc5549(self) -> bool:
         return get(self._hostvars, "underlay_rfc5549") is True
-
-    @cached_property
-    def _underlay_bgp(self) -> bool:
-        return get(self._hostvars, "switch.underlay.bgp") is True
-
-    @cached_property
-    def _underlay_ospf(self) -> bool:
-        return get(self._hostvars, "switch.underlay.ospf") is True
-
-    @cached_property
-    def _underlay_isis(self) -> bool:
-        return get(self._hostvars, "switch.underlay.isis") is True
-
-    @cached_property
-    def _underlay_ldp(self) -> bool:
-        return get(self._hostvars, "switch.underlay.ldp") is True
 
     @cached_property
     def _mpls_lsr(self) -> bool:
@@ -85,10 +63,6 @@ class UtilsMixin:
         return get(self._hostvars, "underlay_ospf_process_id", required=True)
 
     @cached_property
-    def _isis_instance_name(self) -> str:
-        return get(self._hostvars, "switch.isis_instance_name", required=True)
-
-    @cached_property
     def _isis_default_metric(self) -> int | None:
         return get(self._hostvars, "isis_default_metric")
 
@@ -97,20 +71,8 @@ class UtilsMixin:
         return get(self._hostvars, "isis_default_circuit_type")
 
     @cached_property
-    def _peer_group_ipv4_underlay_peers_name(self) -> str:
-        return get(self._hostvars, "switch.bgp_peer_groups.ipv4_underlay_peers.name", required=True)
-
-    @cached_property
     def _bgp_as(self) -> str | None:
         return get(self._hostvars, "switch.bgp_as")
-
-    @cached_property
-    def _ptp_profile(self) -> dict:
-        if (ptp_profile_name := get(self._hostvars, "switch.ptp.profile")) is None:
-            return {}
-
-        ptp_profiles = get(self._hostvars, "ptp_profiles", [])
-        return get_item(ptp_profiles, "profile", ptp_profile_name, default={})
 
     @cached_property
     def _filtered_p2p_links(self) -> list:
@@ -128,7 +90,7 @@ class UtilsMixin:
             p2p_links = [self._apply_p2p_profile(p2p_link) for p2p_link in p2p_links]
 
         # Filter to only include p2p_links with our hostname under "nodes"
-        p2p_links = [p2p_link for p2p_link in p2p_links if self._hostname in p2p_link.get("nodes", [])]
+        p2p_links = [p2p_link for p2p_link in p2p_links if self.shared_utils.hostname in p2p_link.get("nodes", [])]
         if not p2p_links:
             return []
 
@@ -200,7 +162,7 @@ class UtilsMixin:
             peer_bgp_as: <peer as if set | None>
         }
         """
-        index = p2p_link["nodes"].index(self._hostname)
+        index = p2p_link["nodes"].index(self.shared_utils.hostname)
         peer_index = (index + 1) % 2
         peer = p2p_link["nodes"][peer_index]
         peer_type = get(self._hostvars, f"avd_switch_facts..{peer}..switch..type", default="other", separator="..")
@@ -225,7 +187,7 @@ class UtilsMixin:
         node_child_interfaces = get(p2p_link, "port_channel.nodes_child_interfaces")
         # Convert to new data models
         node_child_interfaces = convert_dicts(node_child_interfaces, primary_key="node", secondary_key="interfaces")
-        if member_interfaces := get_item(node_child_interfaces, "node", self._hostname, default={}).get("interfaces"):
+        if member_interfaces := get_item(node_child_interfaces, "node", self.shared_utils.hostname, default={}).get("interfaces"):
             # Port-channel
             peer_member_interfaces = get_item(
                 node_child_interfaces,
@@ -273,7 +235,7 @@ class UtilsMixin:
         This config will only be used on the main interface - so not port-channel members.
         """
 
-        index = p2p_link["nodes"].index(self._hostname)
+        index = p2p_link["nodes"].index(self.shared_utils.hostname)
         peer = p2p_link["data"]["peer"]
         peer_interface = p2p_link["data"]["peer_interface"]
         default_description = f"P2P_LINK_TO_{peer}_{peer_interface}"
@@ -297,7 +259,7 @@ class UtilsMixin:
             if self._underlay_rfc5549 or p2p_link.get("ipv6_enable") is True:
                 interface_cfg["ipv6_enable"] = True
 
-            if self._underlay_ospf:
+            if self.shared_utils.underlay_ospf:
                 interface_cfg.update(
                     {
                         "ospf_network_point_to_point": True,
@@ -305,10 +267,10 @@ class UtilsMixin:
                     }
                 )
 
-            if self._underlay_isis:
+            if self.shared_utils.underlay_isis:
                 interface_cfg.update(
                     {
-                        "isis_enable": self._isis_instance_name,
+                        "isis_enable": self.shared_utils.isis_instance_name,
                         "isis_metric": default(p2p_link.get("isis_metric"), self._isis_default_metric, 50),
                         "isis_network_point_to_point": (p2p_link.get("isis_network_type", "point-to-point") == "point-to-point"),
                         # TODO: Update defaults below to have same as core_interfaces - or vice versa
@@ -326,7 +288,7 @@ class UtilsMixin:
 
         if self._mpls_lsr and p2p_link.get("mpls_ip", True) is True:
             interface_cfg["mpls"] = {"ip": True}
-            if p2p_link.get("include_in_underlay_protocol") is True and self._underlay_ldp and p2p_link.get("mpls_ldp", True) is True:
+            if p2p_link.get("include_in_underlay_protocol") is True and self.shared_utils.underlay_ldp and p2p_link.get("mpls_ldp", True) is True:
                 interface_cfg["mpls"].update(
                     {
                         "ldp": {
@@ -352,8 +314,9 @@ class UtilsMixin:
 
         ptp_config = {}
 
-        # Apply PTP profile config
-        ptp_config.update(self._ptp_profile)
+        # Apply PTP profile config if using the new ptp config style
+        if self.shared_utils.ptp_enabled:
+            ptp_config.update(self.shared_utils.ptp_profile)
 
         ptp_config["enable"] = True
         ptp_config.pop("profile", None)

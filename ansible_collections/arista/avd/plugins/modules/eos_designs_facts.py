@@ -41,12 +41,6 @@ options:
     required: false
     type: str
     choices: [ "eos_cli_config_gen", "eos_designs" ]
-  template_output:
-    description: |
-      If true the output data will be run through another jinja2 rendering before returning.
-      This is to resolve any input values with inline jinja using variables/facts set by the input templates.
-    required: false
-    type: bool
   conversion_mode:
     description:
       - Run data conversion in either "warning", "info", "debug", "quiet" or "disabled" mode.
@@ -83,7 +77,7 @@ EXAMPLES = r"""
 - name: Set eos_designs facts
   tags: [build, provision, facts]
   arista.avd.eos_designs_facts:
-    avd_switch_facts: True
+    schema_id: eos_designs
   check_mode: False
   run_once: True
 

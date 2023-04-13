@@ -20,7 +20,7 @@ class RouteMapsMixin(UtilsMixin):
         - Route-maps for tenant bgp peers set_ipv4_next_hop parameter
         - Route-maps for EVPN services in VRF "default" (using _route_maps_default_vrf)
         """
-        if not self._network_services_l3:
+        if not self.shared_utils.network_services_l3:
             return None
 
         route_maps = []
@@ -57,7 +57,7 @@ class RouteMapsMixin(UtilsMixin):
             if (route_maps_vrf_default := self._route_maps_vrf_default) is not None:
                 route_maps.extend(route_maps_vrf_default)
 
-        if self._configure_bgp_mlag_peer_group and self._mlag_ibgp_origin_incomplete:
+        if self._configure_bgp_mlag_peer_group and self.shared_utils.mlag_ibgp_origin_incomplete:
             route_maps.append(self._bgp_mlag_peer_group_route_map())
 
         if route_maps:

@@ -24,7 +24,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
         Only used with L1 network services
         """
 
-        if not self._network_services_l1:
+        if not self.shared_utils.network_services_l1:
             return None
 
         # Using temp variables to keep the order of interfaces from Jinja
@@ -39,10 +39,10 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 if subifs := point_to_point_service.get("subinterfaces", []):
                     subifs = [subif for subif in subifs if subif.get("number") is not None]
                 for endpoint in point_to_point_service.get("endpoints", []):
-                    if self._hostname not in endpoint.get("nodes", []):
+                    if self.shared_utils.hostname not in endpoint.get("nodes", []):
                         continue
 
-                    node_index = list(endpoint["nodes"]).index(self._hostname)
+                    node_index = list(endpoint["nodes"]).index(self.shared_utils.hostname)
                     interface_name = endpoint["interfaces"][node_index]
                     if (port_channel_mode := get(endpoint, "port_channel.mode")) not in ["active", "on"]:
                         continue

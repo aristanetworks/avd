@@ -22,7 +22,7 @@ class LoopbackInterfacesMixin(UtilsMixin):
         This function is also called from virtual_source_nat_vrfs to avoid duplicate logic
         """
 
-        if not (self._network_services_l3):
+        if not (self.shared_utils.network_services_l3):
             return None
 
         loopback_interfaces = []
@@ -46,14 +46,14 @@ class LoopbackInterfacesMixin(UtilsMixin):
 
                 # If we ended up here, it means we have a loopback_ipv4_pool set
                 interface_name = f"Loopback{loopback}"
-                offset = self._id + self._loopback_ipv4_offset
+                offset = self._id + self.shared_utils.loopback_ipv4_offset
                 loopback_interfaces.append(
                     {
                         "name": interface_name,
                         "description": get(vrf, "vtep_diagnostic.loopback_description", default=f"{vrf['name']}_VTEP_DIAGNOSTICS"),
                         "shutdown": False,
                         "vrf": vrf["name"],
-                        "ip_address": f"{self._avd_ip_addressing._ip(loopback_ipv4_pool, 32, offset, 0)}/32",
+                        "ip_address": f"{self.shared_utils.ip_addressing._ip(loopback_ipv4_pool, 32, offset, 0)}/32",
                     }
                 )
         if loopback_interfaces:

@@ -34,7 +34,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
 
             port_channel_interface = {
                 "name": port_channel_name,
-                "description": self._avd_interface_descriptions.underlay_port_channel_interfaces(
+                "description": self.shared_utils.interface_descriptions.underlay_port_channel_interfaces(
                     link["peer"], link["peer_channel_group_id"], link.get("channel_description")
                 ),
                 "type": "switched",
@@ -50,7 +50,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
             elif (vlans := link.get("vlans")) is not None:
                 port_channel_interface["vlans"] = vlans
 
-            if self._mlag is True:
+            if self.shared_utils.mlag is True:
                 port_channel_interface["mlag"] = int(link.get("channel_group_id"))
 
             if (short_esi := link.get("short_esi")) is not None:

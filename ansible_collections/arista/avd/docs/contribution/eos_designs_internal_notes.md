@@ -1,0 +1,464 @@
+# EOS Designs internal notes
+
+!!! Warning
+
+    Anything mentioned here is subject to change without notice. Use of `avd_switch_facts` or `switch.*` facts in custom templates is not supported and should be avoided.
+
+## Overview
+
+```mermaid
+flowchart TD
+  subgraph role[arista.avd.eos_designs role]
+    eos_designs_facts[[arista.avd.eos_designs_facts action plugin]] -->
+    SetSwitchFacts(Set switch.* Facts) -->
+    yaml_templates_to_facts[[arista.avd.yaml_templates_to_facts action plugin]]-->
+    RemoveAvdSwitchFacts(Remove AvdSwitchFacts)
+  end
+```
+
+## Ansible Action Plugins
+
+### `arista.avd.eos_designs_facts`
+
+The `arista.avd.eos_designs_facts` module is an Ansible Action Plugin providing the following capabilities:
+
+- Set `avd_switch_facts` fact containing `switch` facts per switch.
+- Set `avd_topology_peers` fact containing a list of downlink switches per host. This list is built based on the `uplink_switches` from all other hosts.
+- Set `avd_overlay_peers` fact containing a list of EVPN or MPLS overlay peers per host. This list is built based on the `evpn_route_servers` and `mpls_route_reflectors` from all other hosts.
+
+The plugin is designed to `run_once`. With this, Ansible will set the same facts on all devices, so all devices can lookup values of any other device without using the slower `hostvars`.
+
+The facts can also be copied to the "root" `switch` variable in a task run per device (see example below).
+
+The module is used in `arista.avd.eos_designs` to set facts for devices, which are then used by Python modules loaded in `arista.avd.yaml_templates_to_facts` to generate the `structured_configuration`.
+
+#### Arguments
+
+```yaml
+  schema:
+    description: Schema conforming to "AVD Meta Schema". Either schema or schema_id must be set.
+    required: false
+    type: dict
+  schema_id:
+    description: ID of Schema conforming to "AVD Meta Schema".  Either schema or schema_id must be set.
+    required: false
+    type: str
+    choices: [ "eos_cli_config_gen", "eos_designs" ]
+  template_output:
+    description: |
+      If true the output data will be run through another jinja2 rendering before returning.
+      This is to resolve any input values with inline jinja using variables/facts set by the input templates.
+    required: false
+    type: bool
+  conversion_mode:
+    description:
+      - Run data conversion in either "warning", "info", "debug", "quiet" or "disabled" mode.
+      - Conversion will perform type conversion of input variables as defined in the schema.
+      - Conversion is intended to help the user to identify minor issues with the input data, while still allowing the data to be validated.
+      - During conversion, messages will be generated with information about the host(s) and key(s) which required conversion.
+      - conversion_mode:disabled means that conversion will not run.
+      - conversion_mode:error will produce error messages and fail the task.
+      - conversion_mode:warning will produce warning messages.
+      - conversion_mode:info will produce regular log messages.
+      - conversion_mode:debug will produce hidden messages viewable with -v.
+      - conversion_mode:quiet will not produce any messages.
+    required: false
+    default: "debug"
+    type: str
+    choices: [ "warning", "info", "debug", "quiet", "disabled" ]
+  validation_mode:
+    description:
+      - Run validation in either "error", "warning", "info", "debug" or "disabled" mode.
+      - Validation will validate the input variables according to the schema.
+      - During validation, messages will be generated with information about the host(s) and key(s) which failed validation.
+      - validation_mode:disabled means that validation will not run.
+      - validation_mode:error will produce error messages and fail the task.
+      - validation_mode:warning will produce warning messages.
+      - validation_mode:info will produce regular log messages.
+      - validation_mode:debug will produce hidden messages viewable with -v.
+    required: false
+    default: "warning"
+    type: str
+    choices: [ "error", "warning", "info", "debug", "disabled" ]
+```
+
+#### Output data model
+
+```yaml
+ansible_facts:
+  avd_switch_facts:
+    <switch_1>:
+      switch:
+        < switch.* facts used by eos_designs >
+    <switch_2>:
+      ...
+  avd_topology_peers:
+    <uplink_switch_1>:
+      - <downlink_switch_1>
+      - <downlink_switch_2>
+      - <downlink_switch_3>
+    <uplink_switch_1>:
+      ...
+  avd_overlay_peers:
+    <route_server_1>:
+      - <route_server_client_1>
+      - <route_server_client_2>
+      - <route_server_client_3>
+    <route_server_2>:
+      - <route_server_client_1>
+      - <route_server_client_2>
+      - <route_server_client_3>
+```
+
+The facts can be inspected in a file per device by running the `arista.avd.eos_designs` role with `--tags facts,debug`.
+
+#### Example Playbook
+
+```yaml
+- name: Set eos_designs facts
+  tags: [build, provision, facts]
+  arista.avd.eos_designs_facts:
+    schema_id: eos_designs
+  check_mode: False
+  run_once: True
+
+- name: Set eos_designs facts per device
+  tags: [build, provision, facts]
+  ansible.builtin.set_fact:
+    switch: "{{ avd_switch_facts[inventory_hostname].switch }}"
+  delegate_to: localhost
+  changed_when: false
+```
+
+#### Internal structure
+
+```mermaid
+classDiagram
+  direction LR
+  class eos_designs_facts["arista.avd.eos_designs_facts"]{
+    - Verify devices are in one fabric group
+    - Read and template default role_vars
+    - Read and validate Hostvars for all devices
+    - Instantiate EosDesignsFacts class per device
+    - Update hostvars with reference to all EosDesignsFacts instances
+    - Run "render" method on all EosDesignsFacts instances
+    - Build facts from data returned by "render"
+  }
+  class ActionBase["Ansible ActionBase"]{
+  }
+  class AvdSchemaTools{
+  }
+  class EosDesignsFacts{
+    avd_switch_facts: dict[str, EosDesignsFacts]
+    render(): dict
+  }
+  ActionBase <|-- eos_designs_facts : extends
+  eos_designs_facts --* AvdSchemaTools
+  eos_designs_facts --* "many" EosDesignsFacts : per device
+  EosDesignsFacts ..> eos_designs_facts : pointer to instances for other devices
+```
+
+### `arista.avd.yaml_templates_to_facts`
+
+TODO
+
+## Python packages
+
+### EosDesignsFacts
+
+Path: `ansible_collections/arista/avd/plugins/plugin_utils/eos_designs_facts/`
+
+```mermaid
+classDiagram
+  direction LR
+  class AvdFacts{
+    render(): dict
+  }
+  class EosDesignsFacts{
+    shared_utils: SharedUtils
+    _hostvars: dict
+    _hostvars["switch"]: self
+  }
+  class MlagMixin{
+  }
+  class OverlayMixin{
+  }
+  class ShortEsiMixin{
+  }
+  class UplinksMixin{
+  }
+  class VlansMixin{
+  }
+  class SharedUtils{
+  }
+  AvdFacts <|-- EosDesignsFacts : extends
+  MlagMixin <|-- EosDesignsFacts : extends
+  OverlayMixin <|-- EosDesignsFacts : extends
+  ShortEsiMixin <|-- EosDesignsFacts : extends
+  UplinksMixin <|-- EosDesignsFacts : extends
+  VlansMixin <|-- EosDesignsFacts : extends
+  EosDesignsFacts --* SharedUtils
+  SharedUtils ..> EosDesignsFacts : hostvars.switch
+```
+
+### SharedUtils
+
+Path: `ansible_collections/arista/avd/plugins/plugin_utils/shared_utils/`
+
+```mermaid
+classDiagram
+  direction LR
+  class InterfaceDescriptionsMixin
+  class BgpPeerGroupsMixin
+  class LinkTrackingGroupsMixin
+  class MlagMixin
+  class MiscMixin
+  class NodeTypeKeyMixin
+  class OverlayMixin
+  class PlatformMixin
+  class PtpMixin
+  class SwitchDataMixin
+  class RoutingMixin
+  class TemplateMixin
+  class UnderlayMixin
+  class IpAddressingMixin
+  InterfaceDescriptionsMixin --* AvdInterfaceDescriptions
+  InterfaceDescriptionsMixin <|-- SharedUtils : extends
+  BgpPeerGroupsMixin <|-- SharedUtils : extends
+  LinkTrackingGroupsMixin <|-- SharedUtils : extends
+  MlagMixin <|-- SharedUtils : extends
+  MiscMixin <|-- SharedUtils : extends
+  NodeTypeKeyMixin <|-- SharedUtils : extends
+  OverlayMixin <|-- SharedUtils : extends
+  PlatformMixin <|-- SharedUtils : extends
+  PtpMixin <|-- SharedUtils : extends
+  SwitchDataMixin <|-- SharedUtils : extends
+  RoutingMixin <|-- SharedUtils : extends
+  TemplateMixin <|-- SharedUtils : extends
+  UnderlayMixin <|-- SharedUtils : extends
+  IpAddressingMixin <|-- SharedUtils : extends
+  IpAddressingMixin --* AvdIpAddressing
+```
+
+### AvdStructuredConfig
+
+The generation of the final `structured_config` is split into multiple python modules, which are loaded dynamically in `yaml_templates_to_facts`, to allow the advanced user to override the functionality.
+
+Paths:
+- `ansible_collections/arista/avd/roles/eos_designs/python_modules/base/`
+- `ansible_collections/arista/avd/roles/eos_designs/python_modules/connected_endpoints/`
+- `ansible_collections/arista/avd/roles/eos_designs/python_modules/core_interfaces/`
+- `ansible_collections/arista/avd/roles/eos_designs/python_modules/custom_structured_configuration/`
+- `ansible_collections/arista/avd/roles/eos_designs/python_modules/inband_management/`
+- `ansible_collections/arista/avd/roles/eos_designs/python_modules/l3_edge/`
+- `ansible_collections/arista/avd/roles/eos_designs/python_modules/mlag/`
+- `ansible_collections/arista/avd/roles/eos_designs/python_modules/network_services/`
+- `ansible_collections/arista/avd/roles/eos_designs/python_modules/overlay/`
+- `ansible_collections/arista/avd/roles/eos_designs/python_modules/underlay/`
+
+Unfortunate naming. Base here refers to base configurations. Not a Base class.
+
+```mermaid
+classDiagram
+  direction LR
+  class AvdFacts{
+    render(): dict
+  }
+  class AvdStructuredConfigBase["AvdStructuredConfig - base"]{
+  }
+  class AvdStructuredConfigConnectedEndpoints["AvdStructuredConfig - connected_endpoints"]{
+  }
+  class AvdStructuredConfigCoreInterfaces["AvdStructuredConfig - core_interfaces"]{
+  }
+  class AvdStructuredConfigCustomStructuredConfiguration["AvdStructuredConfig - custom_structured_configuration"]{
+  }
+  class AvdStructuredConfigInbandManagement["AvdStructuredConfig - inband_management"]{
+  }
+  class AvdStructuredConfigL3Edge["AvdStructuredConfig - l3_edge"]{
+  }
+  class AvdStructuredConfigMlag["AvdStructuredConfig - mlag"]{
+  }
+  class AvdStructuredConfigNetworkServices["AvdStructuredConfig - network_services"]{
+  }
+  class AvdStructuredConfigOverlay["AvdStructuredConfig - overlay"]{
+  }
+  class AvdStructuredConfigUnderlay["AvdStructuredConfig - underlay"]{
+  }
+  AvdFacts <|-- AvdStructuredConfigBase : extends
+  AvdFacts <|-- AvdStructuredConfigConnectedEndpoints : extends
+  AvdFacts <|-- AvdStructuredConfigCoreInterfaces : extends
+  AvdFacts <|-- AvdStructuredConfigCustomStructuredConfiguration : extends
+  AvdFacts <|-- AvdStructuredConfigInbandManagement : extends
+  AvdFacts <|-- AvdStructuredConfigL3Edge : extends
+  AvdFacts <|-- AvdStructuredConfigMlag : extends
+  AvdFacts <|-- AvdStructuredConfigNetworkServices : extends
+  AvdFacts <|-- AvdStructuredConfigOverlay : extends
+  AvdFacts <|-- AvdStructuredConfigUnderlay : extends
+  AvdStructuredConfigBase --* SharedUtils
+  AvdStructuredConfigConnectedEndpoints --* SharedUtils
+  AvdStructuredConfigCoreInterfaces --* SharedUtils
+  AvdStructuredConfigCustomStructuredConfiguration --* SharedUtils
+  AvdStructuredConfigInbandManagement --* SharedUtils
+  AvdStructuredConfigL3Edge --* SharedUtils
+  AvdStructuredConfigMlag --* SharedUtils
+  AvdStructuredConfigNetworkServices --* SharedUtils
+  AvdStructuredConfigOverlay --* SharedUtils
+  AvdStructuredConfigUnderlay --* SharedUtils
+```
+
+## Facts set at runtime
+
+### avd_switch_facts
+
+The following `avd_switch_facts` model is the minimum required to be set in `eos_designs_facts`.
+The source of the requirement is in the sections below.
+
+There might be other vars in use internally within `eos_designs_facts` or by structured_config modules
+for the same host, but they don't *have* to be rendered to `avd_switch_facts`. They can likely be moved
+to shared_utils or just kept internal by adding a leading underscore on the method/property.
+
+```yaml
+avd_switch_facts:
+  <hostname>:
+    switch:
+      bgp_as: <str>
+      endpoint_trunk_groups: <list>
+      endpoint_vlans: <str>
+      evpn_multicast: <bool>
+      evpn_role: <str>
+      evpn_route_servers: <list[str]>
+      id: <int>
+      inband_management_gateway: <str>
+      inband_management_interface: <str>
+      inband_management_ip: <str>
+      inband_management_parents: <list[str]>
+      inband_management_subnet: <str>
+      inband_management_role: <str>
+      inband_management_vlan: <int>
+      is_deployed: <bool>
+      loopback_ipv4_pool: <str>
+      max_parallel_uplinks: <int>
+      max_uplink_switches: <int>
+      mlag_interfaces: <list[str]>
+      mlag_ip: <str>
+      mlag_peer: <str>
+      mlag_port_channel_id: <int>
+      mlag_switch_ids:
+        primary: <int>
+        secondary: <int>
+      mgmt_ip: <int>
+      mpls_lsr: <bool>
+      mpls_overlay_role: <str>
+      mpls_route_reflectors: <list[str]>
+      overlay:
+        peering_address: <str>
+        evpn_mpls: <bool>
+        ler: <bool>
+        vtep: <bool>
+        cvx: <bool>
+        her: <bool>
+        evpn: <bool>
+        evpn_vxlan: <bool>
+        vpn_ipv4: <bool>
+        vpn_ipv6: <bool>
+        ipvpn_gateway: <bool>
+        dpath: <bool>
+      platform: <str>
+      serial_number: <str>
+      type: <str>
+      underlay_routing_protocol: <str>
+      uplink_ipv4_pool: <str>
+      uplink_peers: <list[str]>
+      uplinks: <list[dict]>
+      vlans: <str>
+      vtep_ip: <str>
+      vtep_loopback_ipv4_pool: <str>
+```
+
+#### avd_switch_facts leveraged in eos_designs python_modules
+
+These variables are read for all or some devices as part of structured_config generation,
+so they must be available in the `avd_switch_facts` object.
+
+| Variable | Used in file |
+| -------- | ------------ |
+| switch.type | core_interfaces/utils.py |
+| switch.type | l3_edge/utils.py |
+| switch.inband_management_parents | inband_management/avdstructuredconfig.py |
+| switch.inband_management_subnet | inband_management/avdstructuredconfig.py |
+| switch.inband_management_vlan | inband_management/avdstructuredconfig.py |
+| switch.vlans | network_services/utils_filtered_tenants.py |
+| switch.vtep_ip | network_services/vxlan_interface.py |
+| switch.vlans | network_services/vxlan_interface.py |
+| switch.uplinks | underlay/utils.py |
+| switch.type | underlay/utils.py |
+| switch.is_deployed | underlay/utils.py |
+| switch.bgp_as | underlay/utils.py |
+| switch | overlay/utils.py |
+| switch.evpn_route_servers | overlay/utils.py |
+| switch.evpn_role | overlay/utils.py |
+| switch.mpls_route_reflectors | overlay/utils.py |
+| switch.bgp_as | overlay/utils.py |
+| switch.overlay.peering_address | overlay/utils.py |
+| switch.mpls_overlay_role | overlay/utils.py |
+| switch.overlay.evpn_mpls | overlay/utils.py |
+
+#### switch.* leveraged for Jinja2 templates
+
+These variables are historically used in builtin jinja2 templates so the should not be removed without warning.
+
+| Variable | Used in file |
+| -------- | ------------ |
+| switch.type | fabric-documentation.j2 |
+| switch.uplink_ipv4_pool | fabric-documentation.j2 |
+| switch.loopback_ipv4_pool | fabric-documentation.j2 |
+| switch.vtep_loopback_ipv4_pool | fabric-documentation.j2 |
+| switch.node | fabric-documentation.j2 |
+| switch.mgmt_ip | fabric-documentation.j2 |
+| switch.inband_management_interface | fabric-documentation.j2 |
+| switch.inband_management_ip | fabric-documentation.j2 |
+| switch.platform | fabric-documentation.j2 |
+| switch.serial_number | fabric-documentation.j2 |
+| switch.underlay_routing_protocol | fabric-documentation.j2 |
+| switch.type | fabric-p2p-links.j2 |
+| switch.type | fabric-topology.j2 |
+| switch.mpls_overlay_role |interface_descriptions/loopback_interfaces/overlay-loopback.j2 |
+| switch.mpls_lsr |interface_descriptions/loopback_interfaces/overlay-loopback.j2 |
+| switch.mlag_peer | interface_descriptions/mlag/ethernet-interfaces.j2 |
+| switch.mlag_interfaces | interface_descriptions/mlag/port-channel-interfaces.j2 |
+| switch.mlag_peer | interface_descriptions/mlag/port-channel-interfaces.j2 |
+| switch.mlag_port_channel_id | interface_descriptions/mlag/port-channel-interfaces.j2 |
+| switch.uplink_ipv4_pool | ip_addressing/avd-v2-spine-p2p-uplinks-ip.j2 |
+| switch.id | ip_addressing/avd-v2-spine-p2p-uplinks-ip.j2 |
+| switch.max_parallel_uplinks | ip_addressing/avd-v2-spine-p2p-uplinks-ip.j2 |
+| switch.max_uplink_switches | ip_addressing/avd-v2-spine-p2p-uplinks-ip.j2 |
+| switch.uplink_ipv4_pool | ip_addressing/avd-v2-spine-p2p-uplinks-peer-ip.j2 |
+| switch.id | ip_addressing/avd-v2-spine-p2p-uplinks-peer-ip.j2 |
+| switch.max_parallel_uplinks | ip_addressing/avd-v2-spine-p2p-uplinks-peer-ip.j2 |
+| switch.max_uplink_switches | ip_addressing/avd-v2-spine-p2p-uplinks-peer-ip.j2 |
+| switch.mlag_switch_ids.primary | ip_addressing/mlag-ibgp-peering-ip-primary.j2 |
+| switch.mlag_switch_ids.primary | ip_addressing/mlag-ibgp-peering-ip-secondary.j2 |
+| switch.uplink_ipv4_pool | ip_addressing/p2p-uplinks-ip.j2 |
+| switch.id | ip_addressing/p2p-uplinks-ip.j2 |
+| switch.max_uplink_switches | ip_addressing/p2p-uplinks-ip.j2 |
+| switch.max_parallel_uplinks | ip_addressing/p2p-uplinks-ip.j2 |
+| switch.uplink_ipv4_pool | ip_addressing/p2p-uplinks-peer-ip.j2 |
+| switch.id | ip_addressing/p2p-uplinks-peer-ip.j2 |
+| switch.max_uplink_switches | ip_addressing/p2p-uplinks-peer-ip.j2 |
+| switch.max_parallel_uplinks | ip_addressing/p2p-uplinks-peer-ip.j2 |
+
+#### Other switch.* variables set in eos_designs_facts
+
+| Variable | Reason |
+| -------- | ------------ |
+| switch.evpn_multicast | Since the code behind evpn_multicast has to check the mlag peer facts for 'overlay_rd_type_admin_subfield' we can either expose that field in facts, or perform the check inside eos_designs_facts. |
+| switch.inband_management_role | Required in both eos_designs_facts and the inband management module. Not used often, but could be rewritten to reuse the existing uplink information instead. TBD. |
+| switch.inband_management_gateway | Required in both eos_designs_facts and the inband management module. Not used often, but could be rewritten to reuse the existing uplink information instead. TBD. |
+| switch.endpoint_trunk_groups | Complex calculations leveraging data from peers leading to compact output, so instead of repeating in multiple areas, we do it once and store the result. |
+| switch.endpoint_vlans | Complex calculations leveraging data from peers leading to compact output, so instead of repeating in multiple areas, we do it once and store the result. |
+| switch.local_endpoint_trunk_groups | Complex calculations leveraging data from peers leading to compact output, so instead of repeating in multiple areas, we do it once and store the result. |
+| switch.mlag_ip | mlag_ip must be available to the mlag peer. |
+| switch.mlag_l3_ip | mlag_l3_ip must be available to the mlag peer. |
+| switch.mgmt_ip | mgmp_ip must be available to the mlag peer. |
+| switch.uplink_peers | These are used to generate the "avd_topology_peers" fact covering downlinks for all devices in eos_designs_facts action plugin. |
+| switch.overlay.* | Two subkeys are required for other reasons above, so we take the full dict. |

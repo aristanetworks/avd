@@ -24,14 +24,14 @@ class EthernetInterfacesMixin(UtilsMixin):
         Only used with L3 or L1 network services
         """
 
-        if not (self._network_services_l3 or self._network_services_l1):
+        if not (self.shared_utils.network_services_l3 or self.shared_utils.network_services_l1):
             return None
 
         # Using temp variables to keep the order of interfaces from Jinja
         ethernet_interfaces = {}
         subif_parent_interface_names = set()
 
-        if self._network_services_l3:
+        if self.shared_utils.network_services_l3:
             for tenant in self._filtered_tenants:
                 for vrf in tenant["vrfs"]:
                     # The l3_interfaces has already been filtered in _filtered_tenants
@@ -49,7 +49,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                             )
 
                         for node_index, node_name in enumerate(l3_interface["nodes"]):
-                            if node_name != self._hostname:
+                            if node_name != self.shared_utils.hostname:
                                 continue
 
                             interface_name = str(l3_interface["interfaces"][node_index])
@@ -115,14 +115,14 @@ class EthernetInterfacesMixin(UtilsMixin):
                             if get(l3_interface, "pim.enabled"):
                                 if not vrf.get("_evpn_l3_multicast_enabled"):
                                     raise AristaAvdError(
-                                        f"'pim: enabled' set on l3_interface {interface_name} on {self._hostname} requires evpn_l3_multicast: enabled: true"
-                                        f" under VRF '{vrf.name}' or Tenant '{tenant.name}'"
+                                        f"'pim: enabled' set on l3_interface {interface_name} on {self.shared_utils.hostname} requires evpn_l3_multicast:"
+                                        f" enabled: true under VRF '{vrf.name}' or Tenant '{tenant.name}'"
                                     )
 
                                 if not vrf.get("_pim_rp_addresses"):
                                     raise AristaAvdError(
-                                        f"'pim: enabled' set on l3_interface {interface_name} on {self._hostname} requires at least one RP defined in"
-                                        f" pim_rp_addresses under VRF '{vrf.name}' or Tenant '{tenant.name}'"
+                                        f"'pim: enabled' set on l3_interface {interface_name} on {self.shared_utils.hostname} requires at least one RP defined"
+                                        f" in pim_rp_addresses under VRF '{vrf.name}' or Tenant '{tenant.name}'"
                                     )
 
                                 interface["pim"] = {"ipv4": {"sparse_mode": True}}
@@ -132,7 +132,7 @@ class EthernetInterfacesMixin(UtilsMixin):
 
                             ethernet_interfaces[interface_name] = interface
 
-        if self._network_services_l1:
+        if self.shared_utils.network_services_l1:
             for tenant in self._filtered_tenants:
                 if "point_to_point_services" not in tenant:
                     continue
@@ -140,15 +140,15 @@ class EthernetInterfacesMixin(UtilsMixin):
                 for point_to_point_service in natural_sort(tenant["point_to_point_services"], "name"):
                     subifs = [subif for subif in point_to_point_service.get("subinterfaces", []) if subif.get("number") is not None]
                     for endpoint in point_to_point_service.get("endpoints", []):
-                        if self._hostname not in endpoint.get("nodes", []):
+                        if self.shared_utils.hostname not in endpoint.get("nodes", []):
                             continue
 
                         for node_index, interface_name in enumerate(endpoint["interfaces"]):
-                            if endpoint["nodes"][node_index] != self._hostname:
+                            if endpoint["nodes"][node_index] != self.shared_utils.hostname:
                                 continue
 
                             if (port_channel_mode := get(endpoint, "port_channel.mode")) in ["active", "on"]:
-                                first_interface_index = list(endpoint["nodes"]).index(self._hostname)
+                                first_interface_index = list(endpoint["nodes"]).index(self.shared_utils.hostname)
                                 first_interface_name = endpoint["interfaces"][first_interface_index]
                                 channel_group_id = int("".join(re.findall(r"\d", first_interface_name)))
                                 ethernet_interfaces[interface_name] = {

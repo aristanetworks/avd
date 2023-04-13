@@ -33,7 +33,7 @@ class RouteMapsMixin(UtilsMixin):
 
         route_maps = []
 
-        if self._overlay_routing_protocol == "ebgp":
+        if self.shared_utils.overlay_routing_protocol == "ebgp":
             if self._evpn_prevent_readvertise_to_server is True:
                 remote_asns = natural_sort(set(rs_dict.get("bgp_as") for route_server, rs_dict in self._evpn_route_servers.items()))
                 for remote_asn in remote_asns:
@@ -55,7 +55,7 @@ class RouteMapsMixin(UtilsMixin):
                         }
                     )
 
-        elif self._overlay_routing_protocol == "ibgp":
+        elif self.shared_utils.overlay_routing_protocol == "ibgp":
             if self._vtep_ip is not None:
                 # Route-map IN and OUT for SOO
                 route_maps.append(

@@ -8,6 +8,7 @@ from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_s
 from ansible_collections.arista.avd.plugins.filter.snmp_hash import hash_passphrase
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 
@@ -35,14 +36,6 @@ class AvdStructuredConfig(AvdFacts):
         return get(self._hostvars, "ipv6_mgmt_gateway")
 
     @cached_property
-    def _platform_settings(self) -> list:
-        """
-        Returns the value for switch.platform_settings fact used in queue_monitor_length, tcam_profile, platform
-        and eos_cli data-models
-        """
-        return get(self._hostvars, "switch.platform_settings")
-
-    @cached_property
     def _mgmt_ip(self) -> str | None:
         """
         Returns the value for switch.mgmt_ip fact used in snmp_server and management_interfaces data-models
@@ -52,31 +45,13 @@ class AvdStructuredConfig(AvdFacts):
     @cached_property
     def _ipv6_mgmt_ip(self) -> str | None:
         """
-        Returns the value for switch.ipv6_mgmt_ip fact used in management_interfaces data-models
+        Returns the value for ipv6_mgmt_ip used in management_interfaces data-models
         """
-        return get(self._hostvars, "switch.ipv6_mgmt_ip")
-
-    @cached_property
-    def _hostname(self) -> str | None:
-        """
-        hostname variable set based on switch.hostname fact
-        """
-        return get(self._hostvars, "switch.hostname", required=True)
-
-    @cached_property
-    def _system_mac_address(self) -> str | None:
-        """
-        system_mac_address variable set based on switch.system_mac_address fact
-        """
-        return get(self._hostvars, "switch.system_mac_address")
-
-    @cached_property
-    def _underlay_router(self) -> bool:
-        return get(self._hostvars, "switch.underlay_router") is True
+        return get(self.shared_utils.switch_data_combined, "ipv6_mgmt_ip")
 
     @cached_property
     def _always_configure_ip_routing(self) -> bool:
-        return get(self._hostvars, "switch.always_configure_ip_routing")
+        return get(self.shared_utils.switch_data_combined, "always_configure_ip_routing")
 
     @cached_property
     def serial_number(self) -> str | None:
@@ -88,13 +63,14 @@ class AvdStructuredConfig(AvdFacts):
     @cached_property
     def router_bgp(self) -> dict | None:
         """
-        router_bgp set based on switch.bgp_as, switch.bgp_defaults, switch.router_id facts
+        router_bgp set based on switch.bgp_as, switch.bgp_defaults, router_id facts
         and aggregating the values of bgp_maximum_paths and bgp_ecmp variables
         """
         if (bgp_as := get(self._hostvars, "switch.bgp_as")) is None:
             return None
 
-        bgp_defaults = get(self._hostvars, "switch.bgp_defaults")
+        bgp_defaults = get(self.shared_utils.switch_data_combined, "bgp_defaults", default=[])
+
         if (bgp_maximum_paths := get(self._hostvars, "bgp_maximum_paths")) is not None:
             max_paths_str = f"maximum-paths {bgp_maximum_paths}"
             if (bgp_ecmp := get(self._hostvars, "bgp_ecmp")) is not None:
@@ -103,7 +79,7 @@ class AvdStructuredConfig(AvdFacts):
 
         return {
             "as": bgp_as,
-            "router_id": get(self._hostvars, "switch.router_id"),
+            "router_id": self.shared_utils.router_id,
             "bgp_defaults": bgp_defaults,
         }
 
@@ -178,7 +154,7 @@ class AvdStructuredConfig(AvdFacts):
         For l3 devices, configure ip routing unless ip_routing_ipv6_interfaces is True.
         For other devices only configure if "always_configure_ip_routing" is True.
         """
-        if not self._underlay_router and not self._always_configure_ip_routing:
+        if not self.shared_utils.underlay_router and not self._always_configure_ip_routing:
             return None
 
         if self.ip_routing_ipv6_interfaces is True:
@@ -188,12 +164,12 @@ class AvdStructuredConfig(AvdFacts):
     @cached_property
     def ipv6_unicast_routing(self) -> bool | None:
         """
-        ipv6_unicast_routing set based on underlay_rfc5549 and switch.underlay_ipv6
+        ipv6_unicast_routing set based on underlay_rfc5549 and underlay_ipv6
         """
-        if not self._underlay_router and not self._always_configure_ip_routing:
+        if not self.shared_utils.underlay_router and not self._always_configure_ip_routing:
             return None
 
-        if get(self._hostvars, "underlay_rfc5549") is True or get(self._hostvars, "switch.underlay_ipv6") is True:
+        if get(self._hostvars, "underlay_rfc5549") is True or self.shared_utils.underlay_ipv6:
             return True
         return None
 
@@ -202,7 +178,7 @@ class AvdStructuredConfig(AvdFacts):
         """
         ip_routing_ipv6_interfaces set based on underlay_rfc5549 variable
         """
-        if not self._underlay_router and not self._always_configure_ip_routing:
+        if not self.shared_utils.underlay_router and not self._always_configure_ip_routing:
             return None
 
         if get(self._hostvars, "underlay_rfc5549") is True:
@@ -212,10 +188,10 @@ class AvdStructuredConfig(AvdFacts):
     @cached_property
     def router_multicast(self) -> dict | None:
         """
-        router_multicast set based on switch.underlay_multicast, switch.underlay_router
+        router_multicast set based on underlay_multicast, underlay_router
         and switch.evpn_multicast facts
         """
-        if get(self._hostvars, "switch.underlay_multicast") is not True:
+        if not self.shared_utils.underlay_multicast:
             return None
 
         router_multicast = {"ipv4": {"routing": True}}
@@ -351,14 +327,14 @@ class AvdStructuredConfig(AvdFacts):
     def queue_monitor_length(self) -> dict | None:
         """
         queue_monitor_length set based on queue_monitor_length data-model and
-        switch.feature_support.queue_monitor_length_notify fact
+        platform_settings.feature_support.queue_monitor_length_notify fact
         """
         if (queue_monitor_length := get(self._hostvars, "queue_monitor_length")) is None:
             return None
 
         queue_monitor_length_dict = {"enabled": True}
         queue_monitor_length_notifying = get(queue_monitor_length, "notifying")
-        notify_supported = get(self._platform_settings, "feature_support.queue_monitor_length_notify")
+        notify_supported = get(self.shared_utils.platform_settings, "feature_support.queue_monitor_length_notify")
         if queue_monitor_length_notifying is not None and notify_supported is not False:
             queue_monitor_length_dict["notifying"] = queue_monitor_length_notifying
 
@@ -399,7 +375,7 @@ class AvdStructuredConfig(AvdFacts):
         snmp_server set based on snmp_settings data-model, using various snmp_settings information.
 
         if snmp_settings.compute_local_engineid is True we will use sha1 to create a
-        unique local_engine_id value based on switch.hostname and switch.mgmt_ip facts.
+        unique local_engine_id value based on hostname and switch.mgmt_ip facts.
 
         If user.version is set to 'v3', compute_local_engineid and compute_v3_user_localized_key are set to 'True'
         we will use hash_passphrase filter to create an instance of hashlib._hashlib.HASH corresponding to the auth_type
@@ -415,12 +391,12 @@ class AvdStructuredConfig(AvdFacts):
         if snmp_settings.get("compute_local_engineid") is True:
             compute_source = get(snmp_settings, "compute_local_engineid_source", default="hostname_and_ip")
             if compute_source == "hostname_and_ip":
-                local_engine_id = sha1(f"{self._hostname}{self._mgmt_ip}".encode("utf-8")).hexdigest()
+                local_engine_id = sha1(f"{self.shared_utils.hostname}{self._mgmt_ip}".encode("utf-8")).hexdigest()
             elif compute_source == "system_mac":
-                if self._system_mac_address is None:
+                if self.shared_utils.system_mac_address is None:
                     raise AristaAvdMissingVariableError("default_engine_id_from_system_mac: true requires system_mac_address to be set!")
                 # the default engine id on switches is derived as per the following formula
-                local_engine_id = f"f5717f{str(self._system_mac_address).replace(':', '').lower()}00"
+                local_engine_id = f"f5717f{str(self.shared_utils.system_mac_address).replace(':', '').lower()}00"
             else:
                 # Unknown mode
                 raise AristaAvdError(
@@ -437,8 +413,8 @@ class AvdStructuredConfig(AvdFacts):
                 get(self._hostvars, "fabric_name"),
                 get(self._hostvars, "dc_name"),
                 get(self._hostvars, "pod_name"),
-                get(self._hostvars, "switch.rack"),
-                self._hostname,
+                get(self.shared_utils.switch_data_combined, "rack"),
+                self.shared_utils.hostname,
             ]
             location_elements = [location for location in location_elements if location is not None]
             snmp_location = " ".join(location_elements)
@@ -481,11 +457,14 @@ class AvdStructuredConfig(AvdFacts):
     @cached_property
     def spanning_tree(self) -> dict | None:
         """
-        spanning_tree set based on switch.spanning_tree_root_super, switch.spanning_tree_mode
-        and switch.spanning_tree_priority facts
+        spanning_tree set based on switch.spanning_tree_root_super, spanning_tree_mode
+        and spanning_tree_priority
         """
-        spanning_tree_root_super = get(self._hostvars, "switch.spanning_tree_root_super")
-        spanning_tree_mode = get(self._hostvars, "switch.spanning_tree_mode")
+        if not self.shared_utils.network_services_l2:
+            return {"mode": "none"}
+
+        spanning_tree_root_super = get(self.shared_utils.switch_data_combined, "spanning_tree_root_super")
+        spanning_tree_mode = get(self.shared_utils.switch_data_combined, "spanning_tree_mode")
         if spanning_tree_root_super is not True and spanning_tree_mode is None:
             return None
 
@@ -495,7 +474,7 @@ class AvdStructuredConfig(AvdFacts):
 
         if spanning_tree_mode is not None:
             spanning_tree["mode"] = spanning_tree_mode
-            priority = get(self._hostvars, "switch.spanning_tree_priority", "32768")
+            priority = get(self.shared_utils.switch_data_combined, "spanning_tree_priority", default="32768")
             if spanning_tree_mode == "mstp":
                 spanning_tree["mst_instances"] = [{"id": "0", "priority": priority}]
             elif spanning_tree_mode == "rapid-pvst":
@@ -572,10 +551,10 @@ class AvdStructuredConfig(AvdFacts):
     @cached_property
     def management_interfaces(self) -> list | None:
         """
-        management_interfaces set based on switch.mgmt_interface, switch.mgmt_ip, switch.ipv6_mgmt_ip facts,
+        management_interfaces set based on mgmt_interface, switch.mgmt_ip, switch.ipv6_mgmt_ip facts,
         mgmt_gateway, ipv6_mgmt_gateway and mgmt_interface_vrf variables
         """
-        mgmt_interface = get(self._hostvars, "switch.mgmt_interface")
+        mgmt_interface = self.shared_utils.mgmt_interface
         if mgmt_interface is not None and self._mgmt_interface_vrf is not None and (self._mgmt_ip is not None or self._ipv6_mgmt_ip is not None):
             interface_settings = {
                 "name": mgmt_interface,
@@ -605,23 +584,23 @@ class AvdStructuredConfig(AvdFacts):
     @cached_property
     def tcam_profile(self) -> dict | None:
         """
-        tcam_profile set based on switch.platform_settings.tcam_profile fact
+        tcam_profile set based on platform_settings.tcam_profile fact
         """
-        if (tcam_profile := get(self._platform_settings, "tcam_profile")) is not None:
+        if (tcam_profile := get(self.shared_utils.platform_settings, "tcam_profile")) is not None:
             return {"system": tcam_profile}
         return None
 
     @cached_property
     def platform(self) -> dict | None:
         """
-        platform set based on switch.platform_settings.lag_hardware_only,
-        switch.platform_settings.trident_forwarding_table_partition and switch.evpn_multicast facts
+        platform set based on platform_settings.lag_hardware_only,
+        platform_settings.trident_forwarding_table_partition and switch.evpn_multicast facts
         """
         platform = {}
-        if (lag_hardware_only := get(self._platform_settings, "lag_hardware_only")) is not None:
+        if (lag_hardware_only := get(self.shared_utils.platform_settings, "lag_hardware_only")) is not None:
             platform["sand"] = {"lag": {"hardware_only": lag_hardware_only}}
 
-        trident_forwarding_table_partition = get(self._platform_settings, "trident_forwarding_table_partition")
+        trident_forwarding_table_partition = get(self.shared_utils.platform_settings, "trident_forwarding_table_partition")
         if trident_forwarding_table_partition is not None and get(self._hostvars, "switch.evpn_multicast") is True:
             platform["trident"] = {"forwarding_table_partition": trident_forwarding_table_partition}
 
@@ -679,57 +658,124 @@ class AvdStructuredConfig(AvdFacts):
     @cached_property
     def link_tracking_groups(self) -> list | None:
         """
-        link_tracking_groups set based on switch.link_tracking_groups fact
+        link_tracking_groups
         """
-        if (link_tracking_groups := get(self._hostvars, "switch.link_tracking_groups")) is not None:
-            return link_tracking_groups
-        return None
+        return self.shared_utils.link_tracking_groups
 
     @cached_property
     def lacp(self) -> dict | None:
         """
-        lacp set based on switch.lacp_port_id fact
+        lacp set based on lacp_port_id_range
         """
+        lacp_port_id_range = get(self.shared_utils.switch_data_combined, "lacp_port_id_range", default={})
+        if lacp_port_id_range.get("enabled") is not True:
+            return None
 
-        begin = get(self._hostvars, "switch.lacp_port_id.begin")
-        end = get(self._hostvars, "switch.lacp_port_id.end")
-        if begin is not None and end is not None:
-            return {
-                "port_id": {
-                    "range": {
-                        "begin": begin,
-                        "end": end,
-                    }
+        if (switch_id := self.shared_utils.id) is None:
+            raise AristaAvdMissingVariableError(f"'id' is not set on '{self.shared_utils.hostname}' to set LACP port ID ranges")
+
+        node_group_length = max(len(self.shared_utils.switch_data_node_group_nodes), 1)
+        port_range = int(get(lacp_port_id_range, "size", default=128))
+        port_offset = int(get(lacp_port_id_range, "offset", default=0))
+
+        begin = 1 + (((switch_id - 1) % node_group_length) * port_range) + port_offset
+        end = (((switch_id - 1) % node_group_length + 1) * port_range) + port_offset
+
+        return {
+            "port_id": {
+                "range": {
+                    "begin": begin,
+                    "end": end,
                 }
             }
-
-        return None
+        }
 
     @cached_property
     def ptp(self) -> dict | None:
         """
-        ptp set to contents of switch.ptp.device_config if switch.ptp.enabled is True
+        Generates PTP config on node level as well as for interfaces, using various defaults.
+        - The following are set in roles/eos_designs/defaults/main/default-node-type-keys.yml
+            default_node_type_keys:
+              "l3ls-evpn":
+                spine:
+                  default_ptp_priority1: 20
+                l3leaf:
+                  default_ptp_priority1: 30
+        PTP priority2 is set in the code below, calculated based on the node id:
+            default_priority2 = self.id % 256
         """
-        if get(self._hostvars, "switch.ptp.enabled") is True:
-            return get(self._hostvars, "switch.ptp.device_config")
-        return None
+        if not self.shared_utils.ptp_enabled:
+            return None
+
+        default_ptp_domain = get(self._hostvars, "ptp.domain", default=127)
+        default_ptp_priority1 = get(self.shared_utils.node_type_key_data, "default_ptp_priority1", default=127)
+        default_clock_identity = None
+
+        priority1 = get(self.shared_utils.switch_data_combined, "ptp.priority1", default=default_ptp_priority1)
+        priority2 = get(self.shared_utils.switch_data_combined, "ptp.priority2")
+        if priority2 is None:
+            if self.shared_utils.id is None:
+                raise AristaAvdMissingVariableError(f"'id' must be set on '{self.shared_utils.hostname}' to set ptp priority2")
+
+            priority2 = self.shared_utils.id % 256
+
+        if get(self.shared_utils.switch_data_combined, "ptp.auto_clock_identity", default=True) is True:
+            clock_identity_prefix = get(self.shared_utils.switch_data_combined, "ptp.clock_identity_prefix", default="00:1C:73")
+            default_clock_identity = f"{clock_identity_prefix}:{priority1:02x}:00:{priority2:02x}"
+
+        ptp = {
+            "mode": get(self.shared_utils.switch_data_combined, "ptp.mode", default="boundary"),
+            "forward_unicast": get(self.shared_utils.switch_data_combined, "ptp.forward_unicast"),
+            "clock_identity": get(self.shared_utils.switch_data_combined, "ptp.clock_identity", default=default_clock_identity),
+            "source": {"ip": get(self.shared_utils.switch_data_combined, "ptp.source_ip")},
+            "priority1": priority1,
+            "priority2": priority2,
+            "ttl": get(self.shared_utils.switch_data_combined, "ptp.ttl"),
+            "domain": get(self.shared_utils.switch_data_combined, "ptp.domain", default=default_ptp_domain),
+            "message_type": {
+                "general": {
+                    "dscp": get(self.shared_utils.switch_data_combined, "ptp.dscp.general_messages"),
+                },
+                "event": {
+                    "dscp": get(self.shared_utils.switch_data_combined, "ptp.dscp.event_messages"),
+                },
+            },
+            "monitor": {
+                "enabled": get(self.shared_utils.switch_data_combined, "ptp.monitor.enabled", default=True),
+                "threshold": {
+                    "offset_from_master": get(self.shared_utils.switch_data_combined, "ptp.monitor.threshold.offset_from_master", default=250),
+                    "mean_path_delay": get(self.shared_utils.switch_data_combined, "ptp.monitor.threshold.mean_path_delay", default=1500),
+                    "drop": {
+                        "offset_from_master": get(self.shared_utils.switch_data_combined, "ptp.monitor.threshold.drop.offset_from_master"),
+                        "mean_path_delay": get(self.shared_utils.switch_data_combined, "ptp.monitor.threshold.drop.mean_path_delay"),
+                    },
+                },
+                "missing_message": {
+                    "intervals": {
+                        "announce": get(self.shared_utils.switch_data_combined, "ptp.monitor.missing_message.intervals.announce"),
+                        "follow_up": get(self.shared_utils.switch_data_combined, "ptp.monitor.missing_message.intervals.follow_up"),
+                        "sync": get(self.shared_utils.switch_data_combined, "ptp.monitor.missing_message.intervals.sync"),
+                    },
+                    "sequence_ids": {
+                        "enabled": get(self.shared_utils.switch_data_combined, "ptp.monitor.missing_message.sequence_ids.enabled", default=True),
+                        "announce": get(self.shared_utils.switch_data_combined, "ptp.monitor.missing_message.sequence_ids.announce", default=3),
+                        "delay_resp": get(self.shared_utils.switch_data_combined, "ptp.monitor.missing_message.sequence_ids.delay_resp", default=3),
+                        "follow_up": get(self.shared_utils.switch_data_combined, "ptp.monitor.missing_message.sequence_ids.follow_up", default=3),
+                        "sync": get(self.shared_utils.switch_data_combined, "ptp.monitor.missing_message.sequence_ids.sync", default=3),
+                    },
+                },
+            },
+        }
+        ptp = strip_null_from_data(ptp, (None, {}))
+        return ptp
 
     @cached_property
     def eos_cli(self) -> str | None:
         """
-        Aggregate the values of switch.raw_eos_cli and switch.platform_settings.platform_raw_eos_cli facts
+        Aggregate the values of raw_eos_cli and platform_settings.platform_raw_eos_cli facts
         """
-        raw_eos_cli = get(self._hostvars, "switch.raw_eos_cli")
-        platform_raw_eos_cli = get(self._platform_settings, "raw_eos_cli")
+        raw_eos_cli = get(self.shared_utils.switch_data_combined, "raw_eos_cli")
+        platform_raw_eos_cli = get(self.shared_utils.platform_settings, "raw_eos_cli")
         if raw_eos_cli is not None or platform_raw_eos_cli is not None:
             return "\n".join(filter(None, [raw_eos_cli, platform_raw_eos_cli]))
-        return None
-
-    @cached_property
-    def struct_cfg(self):
-        """
-        struct_cfg set based on switch.struct_cfg facts
-        """
-        if (struct_cfg := get(self._hostvars, "switch.struct_cfg")) is not None:
-            return struct_cfg
         return None

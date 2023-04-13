@@ -6,11 +6,10 @@ from hashlib import sha256
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.filter.esi_management import generate_esi, generate_route_target
+from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
-from ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions import AvdInterfaceDescriptions
-from ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing import AvdIpAddressing
 
 
 class UtilsMixin:
@@ -21,8 +20,7 @@ class UtilsMixin:
 
     # Set type hints for Attributes of the main class as needed
     _hostvars: dict
-    _avd_ip_addressing: AvdIpAddressing
-    _avd_interface_descriptions: AvdInterfaceDescriptions
+    shared_utils: SharedUtils
 
     @cached_property
     def _filtered_connected_endpoints(self) -> list:
@@ -46,7 +44,7 @@ class UtilsMixin:
                         # Notice reusing the same variable, but assigning a new instance with the merged adapter
                         adapter = merge(port_profile, adapter, list_merge="replace", destructive_merge=False)
 
-                    if self._hostname not in adapter.get("switches", []):
+                    if self.shared_utils.hostname not in adapter.get("switches", []):
                         continue
 
                     # Verify that length of all lists are the same
@@ -80,7 +78,7 @@ class UtilsMixin:
                 # Notice reusing the same variable, but assigning a new instance with the merged network_port
                 network_port = merge(port_profile, network_port, list_merge="replace", destructive_merge=False)
 
-            if not self._match_regexes(network_port.get("switches"), self._hostname):
+            if not self._match_regexes(network_port.get("switches"), self.shared_utils.hostname):
                 continue
 
             filtered_network_ports.append(network_port)
@@ -126,24 +124,8 @@ class UtilsMixin:
         return convert_dicts(get(self._hostvars, "connected_endpoints_keys", default=[]), "key")
 
     @cached_property
-    def _hostname(self) -> str:
-        return get(self._hostvars, "switch.hostname", required=True)
-
-    @cached_property
-    def _link_tracking_groups(self) -> list | None:
-        return get(self._hostvars, "switch.link_tracking_groups")
-
-    @cached_property
-    def _mlag(self) -> bool:
-        return get(self._hostvars, "switch.mlag") is True
-
-    @cached_property
-    def _enable_trunk_groups(self) -> bool:
-        return get(self._hostvars, "switch.enable_trunk_groups") is True
-
-    @cached_property
     def _platform_settings_feature_support_interface_storm_control(self) -> bool:
-        return get(self._hostvars, "switch.platform_settings.feature_support.interface_storm_control", default=True) is True
+        return get(self.shared_utils.platform_settings, "feature_support.interface_storm_control", default=True) is True
 
     @cached_property
     def _evpn_short_esi_prefix(self) -> str:
@@ -186,7 +168,7 @@ class UtilsMixin:
         """
         Return trunk_groups for one adapter
         """
-        if self._enable_trunk_groups and "trunk" in adapter.get("mode", ""):
+        if self.shared_utils.enable_trunk_groups and "trunk" in adapter.get("mode", ""):
             return get(adapter, "trunk_groups", required=True, org_key=f"'trunk_groups' for the connected_endpoint {connected_endpoint['name']}")
 
         return None
@@ -255,19 +237,15 @@ class UtilsMixin:
         """
         Return link_tracking_groups for one adapter
         """
-        if self._link_tracking_groups is None or get(adapter, "link_tracking.enabled") is not True:
+        if self.shared_utils.link_tracking_groups is None or get(adapter, "link_tracking.enabled") is not True:
             return None
 
         return [
             {
-                "name": get(adapter, "link_tracking.name", default=self._link_tracking_groups[0]["name"]),
+                "name": get(adapter, "link_tracking.name", default=self.shared_utils.link_tracking_groups[0]["name"]),
                 "direction": "downstream",
             }
         ]
-
-    @cached_property
-    def _ptp_profile(self) -> str | None:
-        return get(self._hostvars, "switch.ptp.profile")
 
     @cached_property
     def _ptp_profiles(self) -> list:
@@ -286,7 +264,7 @@ class UtilsMixin:
         ptp_config = {}
 
         # Apply PTP profile config
-        if (ptp_profile_name := get(adapter, "ptp.profile", default=self._ptp_profile)) is not None:
+        if (ptp_profile_name := get(adapter, "ptp.profile", default=self.shared_utils.ptp_profile_name)) is not None:
             ptp_config.update(get_item(self._ptp_profiles, "profile", ptp_profile_name, default={}))
 
         ptp_config["enable"] = True

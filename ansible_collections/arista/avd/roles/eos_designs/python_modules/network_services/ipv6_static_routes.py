@@ -21,7 +21,7 @@ class Ipv6StaticRoutesMixin(UtilsMixin):
         - static routes added automatically for VARPv6 with prefixes
         """
 
-        if not self._network_services_l3:
+        if not self.shared_utils.network_services_l3:
             return None
 
         ipv6_static_routes = []

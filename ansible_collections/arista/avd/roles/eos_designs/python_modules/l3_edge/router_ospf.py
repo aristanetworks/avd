@@ -17,7 +17,7 @@ class RouterOspfMixin(UtilsMixin):
         Return structured config for router_ospf
         """
 
-        if not self._underlay_ospf:
+        if not self.shared_utils.underlay_ospf:
             return None
 
         no_passive_interfaces = [p2p_link["data"]["interface"] for p2p_link in self._filtered_p2p_links if p2p_link.get("include_in_underlay_protocol") is True]

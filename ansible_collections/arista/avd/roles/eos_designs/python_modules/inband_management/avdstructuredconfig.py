@@ -4,13 +4,11 @@ from functools import cached_property
 from ipaddress import ip_network
 
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
+from ansible_collections.arista.avd.plugins.plugin_utils.errors.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 
 class AvdStructuredConfig(AvdFacts):
-    def __init__(self, hostvars, templar):
-        super().__init__(hostvars, templar)
-
     @cached_property
     def _inband_management_role(self) -> str:
         if (inband_management_role := get(self._hostvars, "switch.inband_management_role")) is not None:
@@ -38,18 +36,6 @@ class AvdStructuredConfig(AvdFacts):
     @cached_property
     def _inband_management_gateway(self) -> str:
         return get(self._hostvars, "switch.inband_management_gateway", required=True)
-
-    @cached_property
-    def _hostname(self) -> str:
-        return get(self._hostvars, "switch.hostname", required=True)
-
-    @cached_property
-    def _mlag(self) -> bool:
-        return get(self._hostvars, "switch.mlag") is True
-
-    @cached_property
-    def _mlag_role(self) -> str | None:
-        return get(self._hostvars, "switch.mlag_role")
 
     @cached_property
     def vlans(self) -> dict | None:
@@ -99,10 +85,10 @@ class AvdStructuredConfig(AvdFacts):
     def _inband_management_data(self) -> dict:
         vlans = []
         subnets = []
-        peers = get(self._hostvars, f"avd_topology_peers..{self._hostname}", separator="..", default=[])
+        peers = get(self._hostvars, f"avd_topology_peers..{self.shared_utils.hostname}", separator="..", default=[])
         avd_switch_facts = get(self._hostvars, "avd_switch_facts", required=True)
         for peer in peers:
-            if self._hostname not in get(avd_switch_facts, f"{peer}..switch..inband_management_parents", separator="..", default=[]):
+            if self.shared_utils.hostname not in get(avd_switch_facts, f"{peer}..switch..inband_management_parents", separator="..", default=[]):
                 continue
 
             if (subnet := get(avd_switch_facts, f"{peer}..switch..inband_management_subnet", separator="..", required=True)) in subnets:
@@ -140,7 +126,7 @@ class AvdStructuredConfig(AvdFacts):
         hosts = list(subnet.hosts())
         prefix = str(subnet.prefixlen)
 
-        if self._mlag and self._mlag_role == "secondary":
+        if self.shared_utils.mlag_role == "secondary":
             ip_address = f"{str(hosts[2])}/{prefix}"
         else:
             ip_address = f"{str(hosts[1])}/{prefix}"
@@ -161,18 +147,16 @@ class AvdStructuredConfig(AvdFacts):
         if self._inband_management_role != "parent":
             return None
 
-        return str(get(self._hostvars, "switch.virtual_router_mac_address", required=True)).lower()
-
-    @cached_property
-    def _underlay_bgp(self) -> bool:
-        return get(self._hostvars, "switch.underlay.bgp") is True
+        if self.shared_utils.virtual_router_mac_address is None:
+            raise AristaAvdMissingVariableError("'virtual_router_mac_address' must be set for inband management parent.")
+        return str(self.shared_utils.virtual_router_mac_address).lower()
 
     @cached_property
     def router_bgp(self) -> dict | None:
         if self._inband_management_role != "parent":
             return None
 
-        if not self._underlay_bgp:
+        if not self.shared_utils.underlay_bgp:
             return None
 
         return {
@@ -190,7 +174,7 @@ class AvdStructuredConfig(AvdFacts):
         if self._inband_management_role != "parent":
             return None
 
-        if not self._underlay_bgp:
+        if not self.shared_utils.underlay_bgp:
             return None
 
         if not self._underlay_filter_redistribute_connected:
@@ -215,7 +199,7 @@ class AvdStructuredConfig(AvdFacts):
         if self._inband_management_role != "parent":
             return None
 
-        if not self._underlay_bgp:
+        if not self.shared_utils.underlay_bgp:
             return None
 
         if not self._underlay_filter_redistribute_connected:

@@ -16,10 +16,10 @@ class PrefixListsMixin(UtilsMixin):
         """
         Return structured config for prefix_lists
         """
-        if self._underlay_bgp is not True:
+        if self.shared_utils.underlay_bgp is not True:
             return None
 
-        if self._overlay_routing_protocol == "none":
+        if self.shared_utils.overlay_routing_protocol == "none":
             return None
 
         if not self._underlay_filter_redistribute_connected:
@@ -28,10 +28,10 @@ class PrefixListsMixin(UtilsMixin):
         # IPv4 - PL-LOOPBACKS-EVPN-OVERLAY
         sequence_numbers = [{"sequence": 10, "action": f"permit {self._loopback_ipv4_pool} eq 32"}]
 
-        if self._vtep_ip is not None and self._vtep_loopback.lower() != "loopback0":
+        if self._vtep_ip is not None and self.shared_utils.vtep_loopback.lower() != "loopback0":
             sequence_numbers.append({"sequence": 20, "action": f"permit {self._vtep_loopback_ipv4_pool} eq 32"})
 
-        if self._vtep_vvtep_ip is not None and self._network_services_l3 is True:
+        if self._vtep_vvtep_ip is not None and self.shared_utils.network_services_l3 is True:
             sequence_numbers.append({"sequence": 30, "action": f"permit {self._vtep_vvtep_ip}"})
 
         prefix_lists = [{"name": "PL-LOOPBACKS-EVPN-OVERLAY", "sequence_numbers": sequence_numbers}]
@@ -43,17 +43,19 @@ class PrefixListsMixin(UtilsMixin):
         """
         Return structured config for IPv6 prefix_lists
         """
-        if self._underlay_bgp is not True:
+        if self.shared_utils.underlay_bgp is not True:
             return None
 
-        if self._underlay_ipv6 is not True:
+        if self.shared_utils.underlay_ipv6 is not True:
             return None
 
-        if self._overlay_routing_protocol == "none":
+        if self.shared_utils.overlay_routing_protocol == "none":
             return None
 
         if not self._underlay_filter_redistribute_connected:
             return None
 
         # IPv6 - PL-LOOPBACKS-EVPN-OVERLAY-V6
-        return [{"name": "PL-LOOPBACKS-EVPN-OVERLAY-V6", "sequence_numbers": [{"sequence": 10, "action": f"permit {self._loopback_ipv6_pool} eq 128"}]}]
+        return [
+            {"name": "PL-LOOPBACKS-EVPN-OVERLAY-V6", "sequence_numbers": [{"sequence": 10, "action": f"permit {self.shared_utils.loopback_ipv6_pool} eq 128"}]}
+        ]

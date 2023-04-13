@@ -19,11 +19,11 @@ class IpIgmpSnoopingMixin(UtilsMixin):
         Return structured config for ip_igmp_snooping
         """
 
-        if not self._network_services_l2:
+        if not self.shared_utils.network_services_l2:
             return None
 
         ip_igmp_snooping = {}
-        igmp_snooping_enabled = get(self._hostvars, "switch.igmp_snooping_enabled", required=True)
+        igmp_snooping_enabled = self.shared_utils.igmp_snooping_enabled
         ip_igmp_snooping["globally_enabled"] = igmp_snooping_enabled
         if not (igmp_snooping_enabled is True):
             return ip_igmp_snooping
@@ -68,7 +68,7 @@ class IpIgmpSnoopingMixin(UtilsMixin):
 
         else:
             igmp_snooping_enabled = vlan.get("igmp_snooping_enabled")
-            if self._network_services_l3 and self._uplink_type == "p2p":
+            if self.shared_utils.network_services_l3 and self.shared_utils.uplink_type == "p2p":
                 igmp_snooping_querier_enabled = default(
                     igmp_snooping_querier.get("enabled"),
                     tenant_igmp_snooping_querier.get("enabled"),
@@ -82,7 +82,7 @@ class IpIgmpSnoopingMixin(UtilsMixin):
             ip_igmp_snooping_vlan["querier"] = {"enabled": igmp_snooping_querier_enabled}
             # TODO: The if below should be uncommented when we have settled the behavioral change
             # if svi_igmp_snooping_querier_enabled is True:
-            address = default(igmp_snooping_querier.get("source_address"), tenant_igmp_snooping_querier.get("source_address"), self._router_id)
+            address = default(igmp_snooping_querier.get("source_address"), tenant_igmp_snooping_querier.get("source_address"), self.shared_utils.router_id)
             if address is not None:
                 ip_igmp_snooping_vlan["querier"]["address"] = address
 

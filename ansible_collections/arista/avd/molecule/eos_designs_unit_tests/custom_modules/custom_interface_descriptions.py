@@ -44,14 +44,14 @@ class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
         Implementation of custom code similar to jinja:
         custom_templates/interface_descriptions/mlag/ethernet-interfaces.j2
         """
-        return f"{self._custom_description_prefix}_MLAG_PEER_{self._mlag_peer}_{mlag_interface}"
+        return f"{self._custom_description_prefix}_MLAG_PEER_{self.shared_utils.mlag_peer}_{mlag_interface}"
 
     def mlag_port_channel_interfaces(self) -> str:
         """
         Implementation of custom code similar to jinja:
         custom_templates/interface_descriptions/mlag/port-channel-interfaces.j2
         """
-        return f"{self._custom_description_prefix}_MLAG_PEER_{self._mlag_peer}_Po{self._mlag_port_channel_id}"
+        return f"{self._custom_description_prefix}_MLAG_PEER_{self.shared_utils.mlag_peer}_Po{self._mlag_port_channel_id}"
 
     def connected_endpoints_ethernet_interfaces(self, peer: str = None, peer_interface: str = None) -> str:
         """
