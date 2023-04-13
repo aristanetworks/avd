@@ -17,75 +17,19 @@ keys:
             name:
               type: str
               required: true
-            bfd_per_link_rfc_7130:
-              type: dict
-              keys:
-                forward:
-                  type: bool
-                tagged_forward:
-                  type: bool
-                untagged_forward:
-                  type: bool
-            e_lmi:
-              type: dict
-              keys:
-                forward:
-                  type: bool
-                tagged_forward:
-                  type: bool
-                untagged_forward:
-                  type: bool
-            isis:
-              type: dict
-              keys:
-                forward:
-                  type: bool
-                tagged_forward:
-                  type: bool
-                untagged_forward:
-                  type: bool
-            lacp:
-              type: dict
-              keys:
-                forward:
-                  type: bool
-                tagged_forward:
-                  type: bool
-                untagged_forward:
-                  type: bool
-            lldp:
-              type: dict
-              keys:
-                forward:
-                  type: bool
-                tagged_forward:
-                  type: bool
-                untagged_forward:
-                  type: bool
-            macsec:
-              type: dict
-              keys:
-                forward:
-                  type: bool
-                tagged_forward:
-                  type: bool
-                untagged_forward:
-                  type: bool
-            pause:
-              type: dict
-              keys:
-                forward:
-                  type: bool
-                tagged_forward:
-                  type: bool
-                untagged_forward:
-                  type: bool
-            stp:
-              type: dict
-              keys:
-                forward:
-                  type: bool
-                tagged_forward:
-                  type: bool
-                untagged_forward:
-                  type: bool
+            protocols:
+              type: list
+              primary_key: name
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    required: true
+                    valid_values: ["bfd per-link rfc-7130", "e-lmi", "isis", "lacp", "lldp", "macsec", "pause", "stp"]
+                  forward:
+                    type: bool
+                  tagged_forward:
+                    type: bool
+                  untagged_forward:
+                    type: bool

@@ -3,77 +3,16 @@
 l2-protocol
 {%     for profile in l2_protocol.forwarding_profiles | arista.avd.natural_sort('name') %}
    forwarding profile {{ profile.name }}
-{%         if profile.bfd_per_link_rfc_7130.forward is arista.avd.defined(true) %}
-      bfd per-link rfc-7130 forward
-{%         endif %}
-{%         if profile.bfd_per_link_rfc_7130.tagged_forward is arista.avd.defined(true) %}
-      bfd per-link rfc-7130 tagged forward
-{%         endif %}
-{%         if profile.bfd_per_link_rfc_7130.untagged_forward is arista.avd.defined(true) %}
-      bfd per-link rfc-7130 untagged forward
-{%         endif %}
-{%         if profile.e_lmi.forward is arista.avd.defined(true) %}
-      e-lmi forward
-{%         endif %}
-{%         if profile.e_lmi.tagged_forward is arista.avd.defined(true) %}
-      e-lmi tagged forward
-{%         endif %}
-{%         if profile.e_lmi.untagged_forward is arista.avd.defined(true) %}
-      e-lmi untagged forward
-{%         endif %}
-{%         if profile.isis.forward is arista.avd.defined(true) %}
-      isis forward
-{%         endif %}
-{%         if profile.isis.tagged_forward is arista.avd.defined(true) %}
-      isis tagged forward
-{%         endif %}
-{%         if profile.isis.untagged_forward is arista.avd.defined(true) %}
-      isis untagged forward
-{%         endif %}
-{%         if profile.lacp.forward is arista.avd.defined(true) %}
-      lacp forward
-{%         endif %}
-{%         if profile.lacp.tagged_forward is arista.avd.defined(true) %}
-      lacp tagged forward
-{%         endif %}
-{%         if profile.lacp.untagged_forward is arista.avd.defined(true) %}
-      lacp untagged forward
-{%         endif %}
-{%         if profile.lldp.forward is arista.avd.defined(true) %}
-      lldp forward
-{%         endif %}
-{%         if profile.lldp.tagged_forward is arista.avd.defined(true) %}
-      lldp tagged forward
-{%         endif %}
-{%         if profile.lldp.untagged_forward is arista.avd.defined(true) %}
-      lldp untagged forward
-{%         endif %}
-{%         if profile.macsec.forward is arista.avd.defined(true) %}
-      macsec forward
-{%         endif %}
-{%         if profile.macsec.tagged_forward is arista.avd.defined(true) %}
-      macsec tagged forward
-{%         endif %}
-{%         if profile.macsec.untagged_forward is arista.avd.defined(true) %}
-      macsec untagged forward
-{%         endif %}
-{%         if profile.pause.forward is arista.avd.defined(true) %}
-      pause forward
-{%         endif %}
-{%         if profile.pause.tagged_forward is arista.avd.defined(true) %}
-      pause tagged forward
-{%         endif %}
-{%         if profile.pause.untagged_forward is arista.avd.defined(true) %}
-      pause untagged forward
-{%         endif %}
-{%         if profile.stp.forward is arista.avd.defined(true) %}
-      stp forward
-{%         endif %}
-{%         if profile.stp.tagged_forward is arista.avd.defined(true) %}
-      stp tagged forward
-{%         endif %}
-{%         if profile.stp.untagged_forward is arista.avd.defined(true) %}
-      stp untagged forward
-{%         endif %}
+{%         for protocol in profile.protocols %}
+{%             if protocol.forward is arista.avd.defined(true) %}
+      {{ protocol.name }} forward
+{%             endif %}
+{%             if protocol.tagged_forward is arista.avd.defined(true) %}
+      {{ protocol.name }} tagged forward
+{%             endif %}
+{%             if protocol.untagged_forward is arista.avd.defined(true) %}
+      {{ protocol.name }} untagged forward
+{%             endif %}
+{%         endfor %}
 {%     endfor %}
 {% endif %}

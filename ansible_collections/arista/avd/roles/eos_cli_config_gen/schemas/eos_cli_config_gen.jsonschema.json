@@ -4893,181 +4893,47 @@
                 "type": "string",
                 "title": "Name"
               },
-              "bfd_per_link_rfc_7130": {
-                "type": "object",
-                "properties": {
-                  "forward": {
-                    "type": "boolean",
-                    "title": "Forward"
+              "protocols": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "bfd per-link rfc-7130",
+                        "e-lmi",
+                        "isis",
+                        "lacp",
+                        "lldp",
+                        "macsec",
+                        "pause",
+                        "stp"
+                      ],
+                      "title": "Name"
+                    },
+                    "forward": {
+                      "type": "boolean",
+                      "title": "Forward"
+                    },
+                    "tagged_forward": {
+                      "type": "boolean",
+                      "title": "Tagged Forward"
+                    },
+                    "untagged_forward": {
+                      "type": "boolean",
+                      "title": "Untagged Forward"
+                    }
                   },
-                  "tagged_forward": {
-                    "type": "boolean",
-                    "title": "Tagged Forward"
-                  },
-                  "untagged_forward": {
-                    "type": "boolean",
-                    "title": "Untagged Forward"
+                  "required": [
+                    "name"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
                   }
                 },
-                "additionalProperties": false,
-                "patternProperties": {
-                  "^_.+$": {}
-                },
-                "title": "BFD Per Link Rfc 7130"
-              },
-              "e_lmi": {
-                "type": "object",
-                "properties": {
-                  "forward": {
-                    "type": "boolean",
-                    "title": "Forward"
-                  },
-                  "tagged_forward": {
-                    "type": "boolean",
-                    "title": "Tagged Forward"
-                  },
-                  "untagged_forward": {
-                    "type": "boolean",
-                    "title": "Untagged Forward"
-                  }
-                },
-                "additionalProperties": false,
-                "patternProperties": {
-                  "^_.+$": {}
-                },
-                "title": "E Lmi"
-              },
-              "isis": {
-                "type": "object",
-                "properties": {
-                  "forward": {
-                    "type": "boolean",
-                    "title": "Forward"
-                  },
-                  "tagged_forward": {
-                    "type": "boolean",
-                    "title": "Tagged Forward"
-                  },
-                  "untagged_forward": {
-                    "type": "boolean",
-                    "title": "Untagged Forward"
-                  }
-                },
-                "additionalProperties": false,
-                "patternProperties": {
-                  "^_.+$": {}
-                },
-                "title": "ISIS"
-              },
-              "lacp": {
-                "type": "object",
-                "properties": {
-                  "forward": {
-                    "type": "boolean",
-                    "title": "Forward"
-                  },
-                  "tagged_forward": {
-                    "type": "boolean",
-                    "title": "Tagged Forward"
-                  },
-                  "untagged_forward": {
-                    "type": "boolean",
-                    "title": "Untagged Forward"
-                  }
-                },
-                "additionalProperties": false,
-                "patternProperties": {
-                  "^_.+$": {}
-                },
-                "title": "LACP"
-              },
-              "lldp": {
-                "type": "object",
-                "properties": {
-                  "forward": {
-                    "type": "boolean",
-                    "title": "Forward"
-                  },
-                  "tagged_forward": {
-                    "type": "boolean",
-                    "title": "Tagged Forward"
-                  },
-                  "untagged_forward": {
-                    "type": "boolean",
-                    "title": "Untagged Forward"
-                  }
-                },
-                "additionalProperties": false,
-                "patternProperties": {
-                  "^_.+$": {}
-                },
-                "title": "LLDP"
-              },
-              "macsec": {
-                "type": "object",
-                "properties": {
-                  "forward": {
-                    "type": "boolean",
-                    "title": "Forward"
-                  },
-                  "tagged_forward": {
-                    "type": "boolean",
-                    "title": "Tagged Forward"
-                  },
-                  "untagged_forward": {
-                    "type": "boolean",
-                    "title": "Untagged Forward"
-                  }
-                },
-                "additionalProperties": false,
-                "patternProperties": {
-                  "^_.+$": {}
-                },
-                "title": "Macsec"
-              },
-              "pause": {
-                "type": "object",
-                "properties": {
-                  "forward": {
-                    "type": "boolean",
-                    "title": "Forward"
-                  },
-                  "tagged_forward": {
-                    "type": "boolean",
-                    "title": "Tagged Forward"
-                  },
-                  "untagged_forward": {
-                    "type": "boolean",
-                    "title": "Untagged Forward"
-                  }
-                },
-                "additionalProperties": false,
-                "patternProperties": {
-                  "^_.+$": {}
-                },
-                "title": "Pause"
-              },
-              "stp": {
-                "type": "object",
-                "properties": {
-                  "forward": {
-                    "type": "boolean",
-                    "title": "Forward"
-                  },
-                  "tagged_forward": {
-                    "type": "boolean",
-                    "title": "Tagged Forward"
-                  },
-                  "untagged_forward": {
-                    "type": "boolean",
-                    "title": "Untagged Forward"
-                  }
-                },
-                "additionalProperties": false,
-                "patternProperties": {
-                  "^_.+$": {}
-                },
-                "title": "Stp"
+                "title": "Protocols"
               }
             },
             "required": [
