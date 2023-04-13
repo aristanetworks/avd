@@ -1,6 +1,6 @@
 {# doc - poe #}
 {% set POE_CLASS_MAP = {0: "15.40", 1: "4.00", 2: "7.00", 3: "15.40", 4: "30.00", 5: "45.00", 6: "60.00", 7: "75.00", 8: "90.00"} %}
-{% set poe_global_defaults = namespace(reboot_action="power-off (default)", interface_shutdown_action="maintain (default)", lldp_negotiate="True (default)") %}
+{% set poe_global_defaults = namespace(reboot_action="-", interface_shutdown_action="-", lldp_negotiate="-") %}
 {% set ethernet_interfaces_poe = [] %}
 {% for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
 {%     if ethernet_interface.poe is arista.avd.defined %}
@@ -51,13 +51,13 @@
 {%                     endif %}
 {%                 endif %}
 {%                 set reboot_action = poe.reboot.action | arista.avd.default(poe_global_defaults.reboot_action) %}
-{%                 set link_down_action = poe.link_down.action | arista.avd.default("maintain (default)") %}
-{%                 if poe.link_down.action is arista.avd.defined('power-off') %}
-{%                     set link_down_action = link_down_action ~ ' (delayed ' ~ poe.link_down.power_off_delay | arista.avd.default('5') ~ ' seconds)' %}
+{%                 set link_down_action = poe.link_down.action | arista.avd.default("-") %}
+{%                 if poe.link_down.action is arista.avd.defined('power-off') and poe.link_down.power_off_delay is arista.avd.defined %}
+{%                     set link_down_action = link_down_action ~ ' (delayed ' ~ poe.link_down.power_off_delay ~ ' seconds)' %}
 {%                 endif %}
 {%                 set shutdown_action = poe.shutdown.action | arista.avd.default(poe_global_defaults.interface_shutdown_action) %}
 {%                 set negotiation_lldp = poe.negotiation_lldp | arista.avd.default(poe_global_defaults.lldp_negotiate) %}
-{%                 set legacy_detect = poe.legacy_detect | arista.avd.default(false) %}
+{%                 set legacy_detect = poe.legacy_detect | arista.avd.default("-") %}
 | {{ ethernet_interface.name }} | {{ enabled }} | {{ priority }} | {{ limit }} | {{ reboot_action }} | {{ link_down_action }} | {{ shutdown_action }} | {{ negotiation_lldp }} | {{ legacy_detect }} |
 {%             endfor %}
 {%         endif %}

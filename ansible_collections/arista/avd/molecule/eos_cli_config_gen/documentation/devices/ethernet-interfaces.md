@@ -798,9 +798,9 @@ interface Ethernet58
 
 | Interface | PoE Enabled | Priority | Limit | Reboot Action | Link Down Action | Shutdown Action | LLDP Negotiation | Legacy Detection |
 | --------- | --------- | --------- | ----------- | ----------- | ----------- | ----------- | --------- | --------- |
-| Ethernet56 | True | low | 30.00 watts | power-off | power-off (delayed 10 seconds) | maintain | False | False |
+| Ethernet56 | True | low | 30.00 watts | power-off | power-off (delayed 10 seconds) | maintain | False | - |
 | Ethernet57 | True | critical | 45.00 watts (fixed) | maintain | maintain | power-off | True | True |
-| Ethernet58 | False | - | - | power-off (default) | maintain (default) | maintain (default) | True (default) | False |
+| Ethernet58 | False | - | - | - | - | - | - | - |
 
 ## Quality Of Service
 
