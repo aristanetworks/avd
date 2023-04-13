@@ -10,18 +10,19 @@
 {%     for profile in l2_protocol.forwarding_profiles | arista.avd.natural_sort('name') %}
 {%         set rows = {} %}
 {%         for protocol in profile.protocols %}
-{%             do rows.update({protocol.name: []})%}
+{%             set proto_name = protocol.name | replace(" ", "_") | replace("-", "_") %}
+{%             do rows.update({proto_name: []}) %}
 {%             if protocol.forward is arista.avd.defined(true) %}
-{%                 do rows[protocol.name].append('forward') %}
+{%                 do rows[proto_name].append('forward') %}
 {%             endif %}
 {%             if protocol.tagged_forward is arista.avd.defined(true) %}
-{%                 do rows[protocol.name].append('tagged forward') %}
+{%                 do rows[proto_name].append('tagged forward') %}
 {%             endif %}
 {%             if protocol.untagged_forward is arista.avd.defined(true) %}
-{%                 do rows[protocol.name].append('untagged forward') %}
+{%                 do rows[proto_name].append('untagged forward') %}
 {%             endif %}
 {%         endfor %}
-| {{ profile.name }} | {{ rows["bfd per-link rfc-7130"] | arista.avd.default(["-"]) | join(",") }} | {{ rows["e-lmi"] | arista.avd.default(["-"]) | join(",") }} | {{ rows["isis"] | arista.avd.default(["-"]) | join(",") }} | {{ rows["lacp"] | arista.avd.default(["-"]) | join(",") }} | {{ rows["lldp"] | arista.avd.default(["-"]) | join(",") }} | {{ rows["macsec"] | arista.avd.default(["-"]) | join(",") }} | {{ rows["pause"] | arista.avd.default(["-"]) | join(",") }} | {{ rows["stp"] | arista.avd.default(["-"]) | join(",") }} |
+| {{ profile.name }} | {{ rows["bfd_per_link_rfc_7130"] | arista.avd.default(["-"]) | join(",") }} | {{ rows["e_lmi"] | arista.avd.default(["-"]) | join(",") }} | {{ rows["isis"] | arista.avd.default(["-"]) | join(",") }} | {{ rows["lacp"] | arista.avd.default(["-"]) | join(",") }} | {{ rows["lldp"] | arista.avd.default(["-"]) | join(",") }} | {{ rows["macsec"] | arista.avd.default(["-"]) | join(",") }} | {{ rows["pause"] | arista.avd.default(["-"]) | join(",") }} | {{ rows["stp"] | arista.avd.default(["-"]) | join(",") }} |
 {%     endfor %}
 
 ### L2 Protocol Forwarding Configuration
