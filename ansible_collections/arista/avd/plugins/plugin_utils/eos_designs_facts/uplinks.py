@@ -225,7 +225,7 @@ class UplinksMixin:
                     uplink["peer_channel_description"] = self.shared_utils.group
 
                 if self.shared_utils.mlag_role == "secondary":
-                    mlag_peer_switch_facts: EosDesignsFacts = (self.shared_utils.mlag_peer_facts,)
+                    mlag_peer_switch_facts: EosDesignsFacts = self.shared_utils.mlag_peer_facts
                     uplink["channel_group_id"] = "".join(re.findall(r"\d", mlag_peer_switch_facts._uplink_interfaces[0]))
                     uplink["peer_channel_group_id"] = "".join(re.findall(r"\d", mlag_peer_switch_facts._uplink_switch_interfaces[0]))
                 else:

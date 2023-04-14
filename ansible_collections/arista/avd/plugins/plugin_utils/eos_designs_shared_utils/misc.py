@@ -125,7 +125,7 @@ class MiscMixin:
         return get(self.switch_data_combined, "vtep_loopback", default="Loopback1")
 
     @cached_property
-    def vtep_ip(self) -> str | None:
+    def vtep_ip(self) -> str:
         """
         Render ipv4 address for vtep_ip using dynamically loaded python module.
         """

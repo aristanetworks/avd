@@ -170,6 +170,6 @@ class VlanInterfacesMixin(UtilsMixin):
             else:
                 vlan_interface_config["ip_address"] = f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_secondary(mlag_ibgp_peering_ipv4_pool)}/31"
         else:
-            vlan_interface_config["ip_address"] = f"{self._mlag_ibgp_ip}/31"
+            vlan_interface_config["ip_address"] = f"{self.shared_utils.mlag_ibgp_ip}/31"
 
         return vlan_interface_config

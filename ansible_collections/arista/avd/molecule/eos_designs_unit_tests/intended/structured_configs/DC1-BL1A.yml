@@ -595,6 +595,6 @@ sflow:
   - destinations:
     - destination: 192.168.200.10
     - destination: 10.0.200.90
-    source_interface: '{{ switch.mgmt_interface }}'
+    source_interface: Management1
     name: OOB
 ntp: null

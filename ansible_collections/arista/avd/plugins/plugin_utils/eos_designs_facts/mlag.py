@@ -13,15 +13,15 @@ class MlagMixin:
     Class should only be used as Mixin to the EosDesignsFacts class
     """
 
-    _hostvars: dict
-    shared_utils: SharedUtils
+    _hostvars: "dict"
+    shared_utils: "SharedUtils"
 
     @cached_property
     def mlag_peer(self) -> str | None:
         """
         Exposed in avd_switch_facts
         """
-        if self.shared_utils.mlag is True:
+        if self.shared_utils.mlag:
             return self.shared_utils.mlag_peer
         return None
 
@@ -30,7 +30,7 @@ class MlagMixin:
         """
         Exposed in avd_switch_facts
         """
-        if self.shared_utils.mlag is True:
+        if self.shared_utils.mlag:
             return self.shared_utils.mlag_port_channel_id
         return None
 
@@ -39,7 +39,7 @@ class MlagMixin:
         """
         Exposed in avd_switch_facts
         """
-        if self.shared_utils.mlag is True:
+        if self.shared_utils.mlag:
             return self.shared_utils.mlag_interfaces
         return None
 
@@ -48,7 +48,7 @@ class MlagMixin:
         """
         Exposed in avd_switch_facts
         """
-        if self.shared_utils.mlag is True:
+        if self.shared_utils.mlag:
             return self.shared_utils.mlag_ip
         return None
 
@@ -57,7 +57,7 @@ class MlagMixin:
         """
         Exposed in avd_switch_facts
         """
-        if self.shared_utils.mlag_l3 is True and self.shared_utils.mlag_peer_l3_vlan is not None:
+        if self.shared_utils.mlag_l3 and self.shared_utils.mlag_peer_l3_vlan is not None:
             return self.shared_utils.mlag_l3_ip
         return None
 

@@ -56,7 +56,7 @@ class RouteMapsMixin(UtilsMixin):
                     )
 
         elif self.shared_utils.overlay_routing_protocol == "ibgp":
-            if self.shared_utils.vtep_ip is not None:
+            if self.shared_utils.overlay_vtep:
                 # Route-map IN and OUT for SOO
                 route_maps.append(
                     {

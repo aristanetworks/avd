@@ -74,4 +74,6 @@ class OverlayMixin:
         """
         Exposed in avd_switch_facts
         """
-        return self.shared_utils.vtep_ip
+        if self.shared_utils.vtep:
+            return self.shared_utils.vtep_ip
+        return None

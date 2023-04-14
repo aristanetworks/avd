@@ -3,6 +3,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
+from ansible_collections.arista.avd.plugins.plugin_utils.errors.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 if TYPE_CHECKING:
@@ -20,11 +21,15 @@ class UtilsMixin:
 
     @cached_property
     def _mlag_primary_id(self) -> int:
-        self.shared_utils.mlag_switch_ids["primary"]
+        if self.shared_utils.mlag_switch_ids is None or self.shared_utils.mlag_switch_ids.get("primary") is None:
+            raise AristaAvdMissingVariableError("'id' is required to calculate MLAG IP addresses")
+        return self.shared_utils.mlag_switch_ids["primary"]
 
     @cached_property
     def _mlag_secondary_id(self) -> int:
-        self.shared_utils.mlag_switch_ids["secondary"]
+        if self.shared_utils.mlag_switch_ids is None or self.shared_utils.mlag_switch_ids.get("secondary") is None:
+            raise AristaAvdMissingVariableError("'id' is required to calculate MLAG IP addresses")
+        return self.shared_utils.mlag_switch_ids["secondary"]
 
     @cached_property
     def _mlag_peer_ipv4_pool(self) -> str:
@@ -40,7 +45,9 @@ class UtilsMixin:
 
     @cached_property
     def _id(self) -> int:
-        return int(get(self._hostvars, "switch.id", required=True))
+        if self.shared_utils.id is None:
+            raise AristaAvdMissingVariableError("'id' is required to calculate IP addresses")
+        return self.shared_utils.id
 
     @cached_property
     def _max_uplink_switches(self) -> int:

@@ -76,6 +76,13 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
         return default(get(self.shared_utils.switch_data_combined, "serial_number"), get(self._hostvars, "serial_number"))
 
     @cached_property
+    def mgmt_interface(self) -> str | None:
+        """
+        Exposed in avd_switch_facts
+        """
+        return self.shared_utils.mgmt_interface
+
+    @cached_property
     def mgmt_ip(self) -> str | None:
         """
         Exposed in avd_switch_facts
@@ -93,6 +100,10 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
     def evpn_multicast(self) -> bool | None:
         """
         Exposed in avd_switch_facts
+
+        This method _must_ be in EosDesignsFacts and not in SharedUtils, since it reads the SharedUtils instance on the peer.
+        This is only possible when running from EosDesignsFacts, since this is the only time where we can access the actual
+        python instance of EosDesignsFacts and not the simplified dict.
         """
         if "evpn" not in self.shared_utils.overlay_address_families:
             return None

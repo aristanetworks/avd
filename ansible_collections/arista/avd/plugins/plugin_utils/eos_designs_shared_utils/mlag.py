@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from functools import cached_property
+from ipaddress import ip_interface
 from re import findall
 from typing import TYPE_CHECKING
 
@@ -119,7 +120,10 @@ class MlagMixin:
 
     @cached_property
     def mlag_peer_mgmt_ip(self) -> str | None:
-        return self.get_mlag_peer_fact("mgmt_ip", False)
+        if (mlag_peer_mgmt_ip := self.get_mlag_peer_fact("mgmt_ip", required=False)) is None:
+            return None
+
+        return str(ip_interface(mlag_peer_mgmt_ip).ip)
 
     @cached_property
     def mlag_ip(self) -> str | None:
