@@ -150,9 +150,17 @@ To use serial number as the key, each device must have a hostvar `serial_number`
         serial_number: ABCDEF0123456789
 ```
 
-If using `arista.avd.eos_designs`, it is also possible to set `serial_number` under the fabric topology definitions like `l3leaf`.
-Since `eos_designs` will output the `serial_number` as part of the `structured_config`, this config is only available within th same play as where `eos_designs` was run. If you wish to split Ansible playbooks, you can either add an `include_vars` task
-first, to import the `structured_config` file per host, or just set the `serial_number` in the inventory like in the example above.
+If using `arista.avd.eos_designs`, it is also possible to set `serial_number` under the fabric topology definitions like:
+
+```yaml
+spine:
+  nodes:
+    - name: DC1-SPINE1
+      serial_number: ABCDEF0123456789
+```
+
+Since `eos_designs` will output the `serial_number` as part of the `structured_config`, this config is only available within the same play as where `eos_designs` was run. If you wish to split Ansible playbooks, you can either add an `include_vars` task
+first, to import the `structured_config` file per host, or just set the `serial_number` in the inventory like in the first example above.
 
 To instruct the `arista.avd.eos_config_deploy_cvp` role to use the serial number as the identifier of devices, the playbook should be updates with `cv_collection: v3` and `device_search_key: serialNumber` similar to this example:
 
