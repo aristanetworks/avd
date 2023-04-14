@@ -20,6 +20,9 @@ SCOPES = [
     "eos_validate_state",
     "plugins",
     "requirements",
+    # Handle multiple scopes ',' are not supported in Github labels and so replaced with '|' by our action
+    "eos_designs|eos_cli_config_gen",
+    "eos_cli_config_gen|eos_designs",
 ]
 
 # CI and Test are excluded from Release Notes
@@ -51,6 +54,17 @@ class SafeDumper(yaml.SafeDumper):
 if __name__ == "__main__":
     exclude_list = []
     categories_list = []
+    other_scopes = [
+        scope
+        for scope in SCOPES
+        if scope
+        not in [
+            "eos_cli_config_gen",
+            "eos_designs",
+            "eos_cli_config_gen|eos_designs",
+            "eos_designs|eos_cli_config_gen",
+        ]
+    ]
 
     # First add exclude labels
     for scope in SCOPES:
@@ -85,9 +99,19 @@ if __name__ == "__main__":
             "labels": ["rn: Fix(eos_designs)"],
         }
     )
+    # Add fixes in eos_cli_config_gen|eos_designs or eos_designs|eos_cli_config_gen
+    categories_list.append(
+        {
+            "title": "Fixed issues in both eos_designs and eos_cli_config_gen",
+            "labels": [
+                "rn: Fix(eos_cli_config_gen|eos_designs)",
+                "rn: Fix(eos_designs|eos_cli_config_gen)",
+            ],
+        }
+    )
 
     # Add other fixes
-    other_fixes_labels = [f"rn: Fix({scope})" for scope in SCOPES if scope not in ["eos_cli_config_gen", "eos_designs"]]
+    other_fixes_labels = [f"rn: Fix({scope})" for scope in other_scopes]
     other_fixes_labels.append("rn: Fix")
 
     categories_list.append(
@@ -124,8 +148,19 @@ if __name__ == "__main__":
         }
     )
 
+    # Add new features in both eos_cli_config_gen|eos_designs or eos_designs|eos_cli_config_gen
+    categories_list.append(
+        {
+            "title": "New features and enhancement in both eos_designs and eos_cli_config_gen",
+            "labels": [
+                "rn: Feat(eos_cli_config_gen|eos_designs)",
+                "rn: Feat(eos_designs|eos_cli_config_gen)",
+            ],
+        }
+    )
+
     # Add other new features
-    other_feat_labels = [f"rn: Feat({scope})" for scope in SCOPES if scope not in ["eos_cli_config_gen", "eos_designs"]]
+    other_feat_labels = [f"rn: Feat({scope})" for scope in other_scopes]
     other_feat_labels.append("rn: Feat")
 
     categories_list.append(
