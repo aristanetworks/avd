@@ -8,6 +8,7 @@
 {%     endif %}
 {% endfor %}
 {% if (poe is arista.avd.defined) or (ethernet_interfaces_poe | length > 0) %}
+
 ## Power Over Ethernet (PoE)
 
 ### PoE Summary
@@ -32,38 +33,37 @@
 
 #### PoE Interfaces
 
-{%         if ethernet_interfaces_poe | length > 0 %}
 | Interface | PoE Enabled | Priority | Limit | Reboot Action | Link Down Action | Shutdown Action | LLDP Negotiation | Legacy Detection |
 | --------- | --------- | --------- | ----------- | ----------- | ----------- | ----------- | --------- | --------- |
-{%             for ethernet_interface in ethernet_interfaces_poe | arista.avd.natural_sort('name') %}
-{%                 set poe = ethernet_interface.poe %}
-{%                 set enabled = not (poe.disabled | arista.avd.default(false)) %}
-{%                 set priority = poe.priority | arista.avd.default("-") %}
-{%                 set limit = "-" %}
-{%                 if poe.limit is arista.avd.defined %}
-{%                     if poe.limit.class is arista.avd.defined %}
-{%                         set limit = POE_CLASS_MAP[poe.limit.class] ~ ' watts' %}
-{%                     elif poe.limit.watts is arista.avd.defined %}
-{%                         set limit = "%.2f" | format(poe.limit.watts | float) ~ ' watts' %}
-{%                     endif %}
-{%                     if limit != '-' and poe.limit.fixed is arista.avd.defined(true) %}
-{%                         set limit = limit ~ ' (fixed)' %}
-{%                     endif %}
+{%         for ethernet_interface in ethernet_interfaces_poe | arista.avd.natural_sort('name') %}
+{%             set poe = ethernet_interface.poe %}
+{%             set enabled = not (poe.disabled | arista.avd.default(false)) %}
+{%             set priority = poe.priority | arista.avd.default("-") %}
+{%             set limit = "-" %}
+{%             if poe.limit is arista.avd.defined %}
+{%                 if poe.limit.class is arista.avd.defined %}
+{%                     set limit = POE_CLASS_MAP[poe.limit.class] ~ ' watts' %}
+{%                 elif poe.limit.watts is arista.avd.defined %}
+{%                     set limit = "%.2f" | format(poe.limit.watts | float) ~ ' watts' %}
 {%                 endif %}
-{%                 set reboot_action = poe.reboot.action | arista.avd.default(poe_global_defaults.reboot_action) %}
-{%                 set link_down_action = poe.link_down.action | arista.avd.default("-") %}
-{%                 if poe.link_down.action is arista.avd.defined('power-off') and poe.link_down.power_off_delay is arista.avd.defined %}
-{%                     set link_down_action = link_down_action ~ ' (delayed ' ~ poe.link_down.power_off_delay ~ ' seconds)' %}
+{%                 if limit != '-' and poe.limit.fixed is arista.avd.defined(true) %}
+{%                     set limit = limit ~ ' (fixed)' %}
 {%                 endif %}
-{%                 set shutdown_action = poe.shutdown.action | arista.avd.default(poe_global_defaults.interface_shutdown_action) %}
-{%                 set negotiation_lldp = poe.negotiation_lldp | arista.avd.default(poe_global_defaults.lldp_negotiate) %}
-{%                 set legacy_detect = poe.legacy_detect | arista.avd.default("-") %}
+{%             endif %}
+{%             set reboot_action = poe.reboot.action | arista.avd.default(poe_global_defaults.reboot_action) %}
+{%             set link_down_action = poe.link_down.action | arista.avd.default("-") %}
+{%             if poe.link_down.action is arista.avd.defined('power-off') and poe.link_down.power_off_delay is arista.avd.defined %}
+{%                 set link_down_action = link_down_action ~ ' (delayed ' ~ poe.link_down.power_off_delay ~ ' seconds)' %}
+{%             endif %}
+{%             set shutdown_action = poe.shutdown.action | arista.avd.default(poe_global_defaults.interface_shutdown_action) %}
+{%             set negotiation_lldp = poe.negotiation_lldp | arista.avd.default(poe_global_defaults.lldp_negotiate) %}
+{%             set legacy_detect = poe.legacy_detect | arista.avd.default("-") %}
 | {{ ethernet_interface.name }} | {{ enabled }} | {{ priority }} | {{ limit }} | {{ reboot_action }} | {{ link_down_action }} | {{ shutdown_action }} | {{ negotiation_lldp }} | {{ legacy_detect }} |
-{%             endfor %}
-{%         endif %}
+{%         endfor %}
 {%     endif %}
 {% endif %}
 {% if poe is arista.avd.defined %}
+
 ### PoE Device Configuration
 
 ```eos

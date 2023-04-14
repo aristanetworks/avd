@@ -790,6 +790,7 @@ interface Ethernet58
 | Ethernet43 | - | - | - | - | - | - | - | - |
 | Ethernet44 | - | - | - | - | - | - | - | - |
 | Ethernet45 | authenticator | auto | - | True | allow vlan 800 | multi-host | True | True |
+
 ## Power Over Ethernet (PoE)
 
 ### PoE Summary

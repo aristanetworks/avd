@@ -63,6 +63,7 @@ interface Management1
 no lldp tlv transmit power-via-mdi
 lldp tlv transmit system-capabilities
 ```
+
 ## Power Over Ethernet (PoE)
 
 ### PoE Summary
@@ -72,6 +73,7 @@ lldp tlv transmit system-capabilities
 | Reboot Action | Shutdown Action | LLDP Negotiation |
 | ------------------- | -------------------- | ----------------------|
 | maintain | power-off | False |
+
 ### PoE Device Configuration
 
 ```eos
