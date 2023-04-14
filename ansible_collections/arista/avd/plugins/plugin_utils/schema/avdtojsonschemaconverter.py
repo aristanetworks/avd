@@ -29,7 +29,7 @@ class AvdToJsonSchemaConverter:
             "description": self.convert_description,
             # Keeping ref and def out until vscode yaml plugin works well with refs and unevaluatedProperties
             # "$ref": self.convert_ref,
-            # "$def": self.convert_def,
+            # "$defs": self.convert_defs,
             "type": self.convert_type,
             "max": self.convert_max,
             "min": self.convert_min,
@@ -77,8 +77,8 @@ class AvdToJsonSchemaConverter:
 
     def __convert_keys(self, keys: dict, parent_schema: dict, output_key: str, ignore_required: str = False) -> dict:
         """
-        Reusable function to convert keys, pattern_keys, $def
-        output_key is set to either "properties", "patternProperties" or "$def"
+        Reusable function to convert keys, pattern_keys, $defs
+        output_key is set to either "properties", "patternProperties" or "$defs"
         """
         output = {output_key: {}}
         required = []
@@ -184,5 +184,5 @@ class AvdToJsonSchemaConverter:
         jsonschema_ref = jsonschema_ref.replace("eos_cli_config_gen#", "../../eos_cli_config_gen/schemas/eos_cli_config_gen.jsonschema.json#")
         return {"$ref": jsonschema_ref}
 
-    def convert_def(self, dollardef: dict, parent_schema: dict) -> dict:
-        return self.__convert_keys(dollardef, parent_schema, "$def", ignore_required=True)
+    def convert_defs(self, dollardef: dict, parent_schema: dict) -> dict:
+        return self.__convert_keys(dollardef, parent_schema, "$defs", ignore_required=True)
