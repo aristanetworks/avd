@@ -22,7 +22,15 @@
 {%                 do rows[proto_name].append('untagged forward') %}
 {%             endif %}
 {%         endfor %}
-| {{ profile.name }} | {{ rows["bfd_per_link_rfc_7130"] | arista.avd.default(["-"]) | join(",") }} | {{ rows["e_lmi"] | arista.avd.default(["-"]) | join(",") }} | {{ rows["isis"] | arista.avd.default(["-"]) | join(",") }} | {{ rows["lacp"] | arista.avd.default(["-"]) | join(",") }} | {{ rows["lldp"] | arista.avd.default(["-"]) | join(",") }} | {{ rows["macsec"] | arista.avd.default(["-"]) | join(",") }} | {{ rows["pause"] | arista.avd.default(["-"]) | join(",") }} | {{ rows["stp"] | arista.avd.default(["-"]) | join(",") }} |
+{%         set row_bfd = rows["bfd_per_link_rfc_7130"] | arista.avd.default(["-"]) | join(",") %}
+{%         set row_e_lmi = rows["e_lmi"] | arista.avd.default(["-"]) | join(",") %}
+{%         set row_isis = rows["isis"] | arista.avd.default(["-"]) | join(",") %}
+{%         set row_lacp = rows["lacp"] | arista.avd.default(["-"]) | join(",") %}
+{%         set row_lldp = rows["lldp"] | arista.avd.default(["-"]) | join(",") %}
+{%         set row_macsec = rows["macsec"] | arista.avd.default(["-"]) | join(",") %}
+{%         set row_pause = rows["pause"] | arista.avd.default(["-"]) | join(",") %}
+{%         set row_stp = rows["stp"] | arista.avd.default(["-"]) | join(",") %}
+| {{ profile.name }} | {{ row_bfd }} | {{ row_e_lmi }} | {{ row_isis }} | {{ row_lacp }} | {{ row_lldp }} | {{ row_macsec }} | {{ row_pause }} | {{ row_stp }} |
 {%     endfor %}
 
 ### L2 Protocol Forwarding Configuration
