@@ -345,6 +345,16 @@ port_channel_interfaces:
     native_vlan: 100
     mode: trunk
 
+  Port-Channel121:
+    description: access_port_with_no_vlans
+    type: switched
+    mode: access
+
+  Port-Channel122:
+    description: trunk_port_with_no_vlans
+    type: switched
+    mode: trunk
+
 # Children interfaces
 ethernet_interfaces:
   Ethernet5:

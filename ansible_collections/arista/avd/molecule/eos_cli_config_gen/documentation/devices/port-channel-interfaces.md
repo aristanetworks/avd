@@ -228,6 +228,8 @@ interface Ethernet50
 | Port-Channel109 | Molecule ACLs | switched | access | 110 | - | - | - | - | - | - |
 | Port-Channel112 | LACP fallback individual | switched | trunk | 112 | - | - | 5 | individual | - | - |
 | Port-Channel115 | native-vlan-tag-precedence | switched | trunk | - | tag | - | - | - | - | - |
+| Port-Channel121 | access_port_with_no_vlans | switched | access | - | - | - | - | - | - | - |
+| Port-Channel122 | trunk_port_with_no_vlans | switched | trunk | - | - | - | - | - | - | - |
 
 #### Encapsulation Dot1q Interfaces
 
@@ -598,6 +600,15 @@ interface Port-Channel115
    description native-vlan-tag-precedence
    switchport
    switchport trunk native vlan tag
+   switchport mode trunk
+!
+interface Port-Channel121
+   description access_port_with_no_vlans
+   switchport
+!
+interface Port-Channel122
+   description trunk_port_with_no_vlans
+   switchport
    switchport mode trunk
 ```
 
