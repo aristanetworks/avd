@@ -84,6 +84,9 @@ vlans:
   112:
     tenant: Tenant_A
     name: Tenant_A_OP_Zone_3
+  113:
+    tenant: Tenant_A
+    name: Tenant_A_OP_Zone_4
   150:
     tenant: Tenant_A
     name: Tenant_A_WAN_Zone_1

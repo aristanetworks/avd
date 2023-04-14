@@ -125,6 +125,7 @@ class VlanInterfacesMixin(UtilsMixin):
 
                     ospf_keys[ospf_key["id"]] = {"hash_algorithm": ospf_key.get("hash_algorithm", "sha512"), "key": ospf_key["key"]}
                 if ospf_keys:
+                    vlan_interface_config["ospf_authentication"] = ospf_authentication
                     vlan_interface_config["ospf_message_digest_keys"] = ospf_keys
 
         # Strip None values from vlan_interface_config before adding to list
