@@ -3,9 +3,9 @@ search:
   boost: 2
 ---
 
-# POE
+# Power over Ethernet
 
-## Poe
+## PoE
 
 === "Table"
 

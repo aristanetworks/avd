@@ -2653,7 +2653,7 @@
             "patternProperties": {
               "^_.+$": {}
             },
-            "title": "Poe"
+            "title": "PoE"
           },
           "ptp": {
             "type": "object",
@@ -7872,7 +7872,7 @@
       "patternProperties": {
         "^_.+$": {}
       },
-      "title": "Poe"
+      "title": "PoE"
     },
     "policy_maps": {
       "type": "object",

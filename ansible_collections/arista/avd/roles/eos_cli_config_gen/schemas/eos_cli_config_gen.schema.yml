@@ -5122,7 +5122,7 @@ keys:
                 - egress
   poe:
     documentation_options:
-      filename: data_model/POE
+      filename: data_model/Power over Ethernet
     type: dict
     keys:
       reboot:
