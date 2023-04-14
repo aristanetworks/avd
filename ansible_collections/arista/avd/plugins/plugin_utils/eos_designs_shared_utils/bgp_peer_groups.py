@@ -12,6 +12,7 @@ class BgpPeerGroupsMixin:
     """
 
     hostvars: dict
+    underlay_router: bool
 
     @cached_property
     def bgp_peer_groups(self):

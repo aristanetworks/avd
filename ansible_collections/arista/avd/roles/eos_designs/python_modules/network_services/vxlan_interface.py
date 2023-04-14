@@ -183,19 +183,21 @@ class VxlanInterfaceMixin(UtilsMixin):
             scope = get(self._hostvars, "fabric_name", required=True)
 
         peers = get(self._hostvars, f"groups..{scope}", separator="..", required=True)
-        avd_switch_facts = get(self._hostvars, "avd_switch_facts", required=True)
         for peer in peers:
             if peer == self.shared_utils.hostname:
                 continue
-            if (vtep_ip := get(avd_switch_facts, f"{peer}..switch..vtep_ip", separator="..")) is None:
+
+            peer_facts = self.shared_utils.get_peer_facts(peer, required=True)
+            if (vtep_ip := peer_facts.get("vtep_ip")) is None:
                 continue
+
             if not self._overlay_her_flood_list_per_vni:
                 # Use common flood list
                 overlay_her_flood_lists.setdefault("common", []).append(vtep_ip)
                 continue
 
             # Use flood lists per vlan
-            peer_vlans = get(avd_switch_facts, f"{peer}..switch..vlans", separator="..", default=[])
+            peer_vlans = peer_facts.get("vlans", [])
             peer_vlans_list = range_expand(peer_vlans)
             for vlan in peer_vlans_list:
                 overlay_her_flood_lists.setdefault(int(vlan), []).append(vtep_ip)

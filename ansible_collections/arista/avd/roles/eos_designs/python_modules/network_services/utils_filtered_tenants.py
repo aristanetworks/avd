@@ -100,13 +100,8 @@ class UtilsFilteredTenantsMixin(object):
         uplink_switches = unique(self.shared_utils.uplink_switches)
         uplink_switches = [uplink_switch for uplink_switch in uplink_switches if uplink_switch in fabric_group]
         for uplink_switch in uplink_switches:
-            uplink_switch_vlans = get(
-                self._hostvars,
-                f"avd_switch_facts..{uplink_switch}..switch..vlans",
-                default=[],
-                separator="..",
-                org_key="avd_switch_facts[{uplink_switch}].switch.vlans",
-            )
+            uplink_switch_facts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
+            uplink_switch_vlans = uplink_switch_facts.get("vlans", [])
             uplink_switch_vlans_list = range_expand(uplink_switch_vlans)
             uplink_switch_vlans_list = [int(vlan) for vlan in uplink_switch_vlans_list]
             accepted_vlans = [vlan for vlan in accepted_vlans if vlan in uplink_switch_vlans_list]

@@ -63,13 +63,7 @@ class UplinksMixin:
         uplink_switch_interfaces = []
         uplink_switch_counter = {}
         for uplink_switch in self.shared_utils.uplink_switches:
-            uplink_switch_facts: EosDesignsFacts = get(
-                self._hostvars,
-                f"avd_switch_facts..{uplink_switch}..switch",
-                required=True,
-                org_key=f"avd_switch_facts.({uplink_switch}).switch",
-                separator="..",
-            )
+            uplink_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
 
             # Count the number of instances the current switch was processed
             uplink_switch_counter[uplink_switch] = uplink_switch_counter.get(uplink_switch, 0) + 1
@@ -137,13 +131,7 @@ class UplinksMixin:
                     # Invalid uplink_switch. Skipping.
                     continue
 
-                uplink_switch_facts: EosDesignsFacts = get(
-                    self._hostvars,
-                    f"avd_switch_facts..{uplink_switch}..switch",
-                    required=True,
-                    org_key=f"avd_switch_facts.({uplink_switch}).switch",
-                    separator="..",
-                )
+                uplink_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
                 uplink = {}
                 uplink["interface"] = uplink_interface
                 uplink["peer"] = uplink_switch
@@ -164,7 +152,7 @@ class UplinksMixin:
                     uplink["mac_security"] = self._uplink_macsec
                 if self.shared_utils.underlay_multicast is True and uplink_switch_facts.shared_utils.underlay_multicast is True:
                     uplink["underlay_multicast"] = True
-                if get(self._hostvars, "underlay_rfc5549") is True:
+                if self.shared_utils.underlay_rfc5549:
                     uplink["ipv6_enable"] = True
                 else:
                     uplink["ip_address"] = self.shared_utils.ip_addressing.p2p_uplinks_ip(uplink_index)
@@ -198,13 +186,7 @@ class UplinksMixin:
                     # Invalid uplink_switch. Skipping.
                     continue
 
-                uplink_switch_facts: EosDesignsFacts = get(
-                    self._hostvars,
-                    f"avd_switch_facts..{uplink_switch}..switch",
-                    required=True,
-                    org_key=f"avd_switch_facts.({uplink_switch}).switch",
-                    separator="..",
-                )
+                uplink_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
                 uplink = {}
                 uplink["interface"] = uplink_interface
                 uplink["peer"] = uplink_switch

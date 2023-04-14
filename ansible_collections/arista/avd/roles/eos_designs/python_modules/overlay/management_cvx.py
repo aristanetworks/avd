@@ -22,7 +22,7 @@ class ManagementCvxMixin(UtilsMixin):
         server_hosts = []
         overlay_cvx_servers = get(self._hostvars, "overlay_cvx_servers", required=True)
         for overlay_cvx_server in overlay_cvx_servers:
-            peer_switch_facts = self._get_peer_facts(overlay_cvx_server, True)
+            peer_switch_facts = self.shared_utils.get_peer_facts(overlay_cvx_server, required=True)
             cvx_server_ip = get(peer_switch_facts, "mgmt_ip", required=True, org_key=f"'mgmt_ip' for CVX Server {overlay_cvx_server}")
             server_hosts.append(str(ip_interface(cvx_server_ip).ip))
 

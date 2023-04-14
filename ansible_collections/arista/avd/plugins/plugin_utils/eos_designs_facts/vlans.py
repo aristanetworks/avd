@@ -158,9 +158,7 @@ class VlansMixin:
         vlans = set()
         trunk_groups = set()
         for fabric_switch in get(self._hostvars, "avd_switch_facts", default=[]):
-            fabric_switch_facts: EosDesignsFacts = get(
-                self._hostvars, f"avd_switch_facts..{fabric_switch}..switch", required=True, separator="..", org_key=f"avd_switch_facts.{fabric_switch}.switch"
-            )
+            fabric_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(fabric_switch, required=True)
             if fabric_switch_facts.shared_utils.uplink_type == "port-channel" and self.shared_utils.hostname in fabric_switch_facts.uplink_peers:
                 fabric_switch_endpoint_vlans, fabric_switch_endpoint_trunk_groups = fabric_switch_facts._endpoint_vlans_and_trunk_groups
                 vlans.update(fabric_switch_endpoint_vlans)

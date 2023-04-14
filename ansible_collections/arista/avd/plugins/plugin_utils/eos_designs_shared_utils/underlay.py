@@ -55,3 +55,11 @@ class UnderlayMixin:
     @cached_property
     def underlay_multicast(self) -> bool:
         return get(self.hostvars, "underlay_multicast") and self.underlay_router
+
+    @cached_property
+    def underlay_filter_redistribute_connected(self) -> bool:
+        return get(self.hostvars, "underlay_filter_redistribute_connected", default=True) is True
+
+    @cached_property
+    def underlay_rfc5549(self) -> bool:
+        return get(self.hostvars, "underlay_rfc5549") is True

@@ -39,7 +39,7 @@ class RouterBgpMixin(UtilsMixin):
         # TODO - see if it makes sense to extract logic in method
         address_family_ipv4_peer_group = {"activate": True}
 
-        if self._underlay_rfc5549 is True:
+        if self.shared_utils.underlay_rfc5549 is True:
             address_family_ipv4_peer_group["next_hop"] = {"address_family_ipv6_originate": True}
 
         router_bgp["address_family_ipv4"] = {
@@ -53,7 +53,7 @@ class RouterBgpMixin(UtilsMixin):
         router_bgp["redistribute_routes"] = self._router_bgp_redistribute_routes
 
         # Neighbor Interfaces
-        if self._underlay_rfc5549 is True:
+        if self.shared_utils.underlay_rfc5549 is True:
             neighbor_interfaces = []
             for link in self._underlay_links:
                 if link["type"] != "underlay_p2p":
@@ -115,7 +115,7 @@ class RouterBgpMixin(UtilsMixin):
         """
         Return structured config for router_bgp.redistribute_routes
         """
-        if self.shared_utils.overlay_routing_protocol == "none" or not self._underlay_filter_redistribute_connected:
+        if self.shared_utils.overlay_routing_protocol == "none" or not self.shared_utils.underlay_filter_redistribute_connected:
             return [{"source_protocol": "connected"}]
 
         return [{"source_protocol": "connected", "route_map": "RM-CONN-2-BGP"}]

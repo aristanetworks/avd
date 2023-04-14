@@ -30,7 +30,7 @@ class RouterBgpMixin(UtilsMixin):
         TODO: Fix so this also works for L2LS with VRFs
         """
 
-        if not (self._bgp_as):
+        if not self.shared_utils.bgp:
             return None
 
         router_bgp = {
@@ -192,13 +192,13 @@ class RouterBgpMixin(UtilsMixin):
                 }
                 # MLAG IBGP Peering VLANs per VRF
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is not None:
-                    if self._underlay_rfc5549 and self.shared_utils.overlay_mlag_rfc5549:
+                    if self.shared_utils.underlay_rfc5549 and self.shared_utils.overlay_mlag_rfc5549:
                         interface_name = f"Vlan{vlan_id}"
                         bgp_vrf.setdefault("neighbor_interfaces", []).append(
                             {
                                 "name": interface_name,
                                 "peer_group": self.shared_utils.bgp_peer_groups["mlag_ipv4_underlay_peer"]["name"],
-                                "remote_as": self._bgp_as,
+                                "remote_as": self.shared_utils.bgp_as,
                                 "description": self.shared_utils.mlag_peer,
                             }
                         )
@@ -425,7 +425,7 @@ class RouterBgpMixin(UtilsMixin):
             return None
 
         if admin_subfield == "bgp_as":
-            return self._bgp_as
+            return self.shared_utils.bgp_as
 
         if re_fullmatch(r"[0-9]+", str(admin_subfield)):
             return admin_subfield
@@ -528,7 +528,7 @@ class RouterBgpMixin(UtilsMixin):
         peer_group = {
             "name": peer_group_name,
             "type": "ipv4",
-            "remote_as": self._bgp_as,
+            "remote_as": self.shared_utils.bgp_as,
             "next_hop_self": True,
             "description": self.shared_utils.mlag_peer,
             "password": self.shared_utils.bgp_peer_groups["mlag_ipv4_underlay_peer"]["password"],
@@ -553,7 +553,7 @@ class RouterBgpMixin(UtilsMixin):
             }
 
         address_family_ipv4_peer_group = {"name": peer_group_name, "activate": True}
-        if self._underlay_rfc5549 is True:
+        if self.shared_utils.underlay_rfc5549:
             address_family_ipv4_peer_group["next_hop"] = {"address_family_ipv6_originate": True}
 
         router_bgp["address_family_ipv4"] = {"peer_groups": [address_family_ipv4_peer_group]}

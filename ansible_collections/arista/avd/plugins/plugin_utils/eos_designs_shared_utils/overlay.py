@@ -28,7 +28,9 @@ class OverlayMixin:
     overlay_routing_protocol: str
     router_id: str
     switch_data_combined: dict
+    underlay_ipv6: bool
     underlay_mpls: bool
+    underlay_rfc5549: bool
     underlay_router: bool
     uplink_type: str
     vtep: bool
@@ -93,7 +95,7 @@ class OverlayMixin:
     def overlay_routing_protocol_address_family(self) -> str:
         overlay_routing_protocol_address_family = get(self.hostvars, "overlay_routing_protocol_address_family", default="ipv4")
         if overlay_routing_protocol_address_family == "ipv6":
-            if not (get(self.hostvars, "underlay_ipv6") is True and get(self.hostvars, "underlay_rfc5549") is True):
+            if not (self.underlay_ipv6 is True and self.underlay_rfc5549):
                 raise AristaAvdError(
                     "'overlay_routing_protocol_address_family: ipv6' is only supported in combination with 'underlay_ipv6: True' and 'underlay_rfc5549: True'"
                 )

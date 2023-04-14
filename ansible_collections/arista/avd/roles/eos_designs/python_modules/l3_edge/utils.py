@@ -47,10 +47,6 @@ class UtilsMixin:
         return get(self._hostvars, "p2p_uplinks_qos_profile")
 
     @cached_property
-    def _underlay_rfc5549(self) -> bool:
-        return get(self._hostvars, "underlay_rfc5549") is True
-
-    @cached_property
     def _mpls_lsr(self) -> bool:
         return get(self._hostvars, "switch.mpls_lsr") is True
 
@@ -69,10 +65,6 @@ class UtilsMixin:
     @cached_property
     def _isis_default_circuit_type(self) -> str | None:
         return get(self._hostvars, "isis_default_circuit_type")
-
-    @cached_property
-    def _bgp_as(self) -> str | None:
-        return get(self._hostvars, "switch.bgp_as")
 
     @cached_property
     def _filtered_p2p_links(self) -> list:
@@ -165,7 +157,11 @@ class UtilsMixin:
         index = p2p_link["nodes"].index(self.shared_utils.hostname)
         peer_index = (index + 1) % 2
         peer = p2p_link["nodes"][peer_index]
-        peer_type = get(self._hostvars, f"avd_switch_facts..{peer}..switch..type", default="other", separator="..")
+        peer_facts = self.shared_utils.get_peer_facts(peer, required=False)
+        if peer_facts is None:
+            peer_type = "other"
+        else:
+            peer_type = peer_facts.get("type", "other")
 
         # Set ip or fallback to list with None values
         ip = get(p2p_link, "ip", default=[None, None])
@@ -256,7 +252,7 @@ class UtilsMixin:
             interface_cfg["ip_address"] = ip[index]
 
         if p2p_link.get("include_in_underlay_protocol") is True:
-            if self._underlay_rfc5549 or p2p_link.get("ipv6_enable") is True:
+            if self.shared_utils.underlay_rfc5549 or p2p_link.get("ipv6_enable") is True:
                 interface_cfg["ipv6_enable"] = True
 
             if self.shared_utils.underlay_ospf:

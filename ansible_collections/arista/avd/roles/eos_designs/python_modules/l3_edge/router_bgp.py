@@ -38,7 +38,7 @@ class RouterBgpMixin(UtilsMixin):
             }
 
             # RFC5549
-            if self._underlay_rfc5549:
+            if self.shared_utils.underlay_rfc5549:
                 neighbor_interfaces.append({"name": p2p_link["data"]["interface"], **neighbor})
                 continue
 
@@ -47,7 +47,7 @@ class RouterBgpMixin(UtilsMixin):
                 raise AristaAvdMissingVariableError("l3_edge.p2p_links.[].ip, .subnet or .ip_pool")
 
             neighbor["bfd"] = p2p_link.get("bfd")
-            if p2p_link["data"]["bgp_as"] != self._bgp_as:
+            if p2p_link["data"]["bgp_as"] != self.shared_utils.bgp_as:
                 neighbor["local_as"] = p2p_link["data"]["bgp_as"]
 
             # Remove None values

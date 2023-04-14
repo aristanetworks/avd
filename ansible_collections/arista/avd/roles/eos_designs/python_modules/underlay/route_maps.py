@@ -25,7 +25,7 @@ class RouteMapsMixin(UtilsMixin):
 
         route_maps = []
 
-        if self.shared_utils.overlay_routing_protocol != "none" and self._underlay_filter_redistribute_connected:
+        if self.shared_utils.overlay_routing_protocol != "none" and self.shared_utils.underlay_filter_redistribute_connected:
             # RM-CONN-2-BGP
             sequence_numbers = []
             sequence_numbers.append(

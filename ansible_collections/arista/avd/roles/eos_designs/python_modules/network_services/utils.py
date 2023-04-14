@@ -59,16 +59,8 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         return [int(id) for id in range_expand(endpoint_vlans)]
 
     @cached_property
-    def _underlay_rfc5549(self) -> bool:
-        return get(self._hostvars, "underlay_rfc5549") is True
-
-    @cached_property
     def _p2p_uplinks_mtu(self) -> int:
         return int(get(self._hostvars, "p2p_uplinks_mtu", required=True))
-
-    @cached_property
-    def _bgp_as(self) -> str | None:
-        return get(self._hostvars, "switch.bgp_as")
 
     @cached_property
     def _pod_name(self) -> str | None:
@@ -215,7 +207,3 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
     @cached_property
     def _evpn_multicast(self) -> bool:
         return get(self._hostvars, "switch.evpn_multicast") is True
-
-    @cached_property
-    def _underlay_filter_redistribute_connected(self) -> bool:
-        return get(self._hostvars, "underlay_filter_redistribute_connected", default=True) is True

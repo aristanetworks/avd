@@ -10,32 +10,8 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 class AvdStructuredConfig(AvdFacts):
     @cached_property
-    def _inband_management_role(self) -> str:
-        if (inband_management_role := get(self._hostvars, "switch.inband_management_role")) is not None:
-            return inband_management_role
-
-        if self._inband_management_data:
-            return "parent"
-
-    @cached_property
-    def _inband_management_vlan(self) -> int:
-        return get(self._hostvars, "switch.inband_management_vlan", required=True)
-
-    @cached_property
-    def _inband_management_interface(self) -> str:
-        return get(self._hostvars, "switch.inband_management_interface", required=True)
-
-    @cached_property
-    def _inband_management_ip(self) -> str:
-        return get(self._hostvars, "switch.inband_management_ip", required=True)
-
-    @cached_property
     def _p2p_uplinks_mtu(self) -> int:
         return get(self._hostvars, "p2p_uplinks_mtu", required=True)
-
-    @cached_property
-    def _inband_management_gateway(self) -> str:
-        return get(self._hostvars, "switch.inband_management_gateway", required=True)
 
     @cached_property
     def vlans(self) -> dict | None:
@@ -44,58 +20,58 @@ class AvdStructuredConfig(AvdFacts):
             "name": "L2LEAF_INBAND_MGMT",
         }
 
-        if self._inband_management_role == "child":
-            return {self._inband_management_vlan: vlan_cfg}
+        if self.shared_utils.inband_management_vlan is not None:
+            return {self.shared_utils.inband_management_vlan: vlan_cfg}
 
-        if self._inband_management_role == "parent":
-            return {vlan: vlan_cfg for vlan in self._inband_management_data["vlans"]}
+        if self._inband_management_parent_data.get("subnets"):
+            return {vlan: vlan_cfg for vlan in self._inband_management_parent_data["vlans"]}
 
         return None
 
     @cached_property
     def management_interfaces(self) -> list | None:
-        if self._inband_management_role != "child":
+        if self.shared_utils.inband_management_vlan is None:
             return None
 
         return [
             {
-                "name": self._inband_management_interface,
+                "name": self.shared_utils.inband_management_interface,
                 "description": "L2LEAF_INBAND_MGMT",
                 "shutdown": False,
                 "mtu": self._p2p_uplinks_mtu,
-                "ip_address": self._inband_management_ip,
-                "gateway": self._inband_management_gateway,
+                "ip_address": self.shared_utils.inband_management_ip,
+                "gateway": self.shared_utils.inband_management_gateway,
                 "type": "inband",
             }
         ]
 
     @cached_property
     def static_routes(self) -> list | None:
-        if self._inband_management_role != "child":
+        if self.shared_utils.inband_management_vlan is None:
             return None
 
         return [
             {
                 "destination_address_prefix": "0.0.0.0/0",
-                "gateway": self._inband_management_gateway,
+                "gateway": self.shared_utils.inband_management_gateway,
             }
         ]
 
     @cached_property
-    def _inband_management_data(self) -> dict:
+    def _inband_management_parent_data(self) -> dict:
         vlans = []
         subnets = []
         peers = get(self._hostvars, f"avd_topology_peers..{self.shared_utils.hostname}", separator="..", default=[])
-        avd_switch_facts = get(self._hostvars, "avd_switch_facts", required=True)
         for peer in peers:
-            if self.shared_utils.hostname not in get(avd_switch_facts, f"{peer}..switch..inband_management_parents", separator="..", default=[]):
+            peer_facts = self.shared_utils.get_peer_facts(peer, required=True)
+            if (vlan := peer_facts.get("inband_management_vlan")) is None:
                 continue
 
-            if (subnet := get(avd_switch_facts, f"{peer}..switch..inband_management_subnet", separator="..", required=True)) in subnets:
+            if (subnet := peer_facts.get("inband_management_subnet")) in subnets:
                 continue
 
             subnets.append(subnet)
-            vlans.append(get(avd_switch_facts, f"{peer}..switch..inband_management_vlan", separator="..", required=True))
+            vlans.append(vlan)
 
         if not subnets:
             return {}
@@ -107,21 +83,21 @@ class AvdStructuredConfig(AvdFacts):
 
     @cached_property
     def vlan_interfaces(self) -> list | None:
-        if self._inband_management_role != "parent":
+        if not self.shared_utils.network_services_l3:
             return None
 
-        if not self._inband_management_data["subnets"]:
+        if not self._inband_management_parent_data.get("subnets"):
             return None
 
         vlan_interfaces = []
-        for index, subnet in enumerate(self._inband_management_data["subnets"]):
-            vlan = self._inband_management_data["vlans"][index]
-            vlan_interface_name = f"Vlan{vlan}"
-            vlan_interfaces.append({"name": vlan_interface_name, **self._get_svi_cfg(subnet)})
+        for index, subnet in enumerate(self._inband_management_parent_data["subnets"]):
+            vlan = self._inband_management_parent_data["vlans"][index]
+
+            vlan_interfaces.append(self._get_svi_cfg(vlan, subnet))
 
         return vlan_interfaces
 
-    def _get_svi_cfg(self, subnet) -> dict:
+    def _get_svi_cfg(self, vlan, subnet) -> dict:
         subnet = ip_network(subnet, strict=False)
         hosts = list(subnet.hosts())
         prefix = str(subnet.prefixlen)
@@ -132,6 +108,7 @@ class AvdStructuredConfig(AvdFacts):
             ip_address = f"{str(hosts[1])}/{prefix}"
 
         return {
+            "name": f"Vlan{vlan}",
             "description": "L2LEAF_INBAND_MGMT",
             "shutdown": False,
             "mtu": self._p2p_uplinks_mtu,
@@ -144,7 +121,10 @@ class AvdStructuredConfig(AvdFacts):
 
     @cached_property
     def ip_virtual_router_mac_address(self) -> str | None:
-        if self._inband_management_role != "parent":
+        if not self.shared_utils.network_services_l3:
+            return None
+
+        if not self._inband_management_parent_data.get("subnets"):
             return None
 
         if self.shared_utils.virtual_router_mac_address is None:
@@ -153,7 +133,10 @@ class AvdStructuredConfig(AvdFacts):
 
     @cached_property
     def router_bgp(self) -> dict | None:
-        if self._inband_management_role != "parent":
+        if not self.shared_utils.network_services_l3:
+            return None
+
+        if not self._inband_management_parent_data.get("subnets"):
             return None
 
         if not self.shared_utils.underlay_bgp:
@@ -166,18 +149,17 @@ class AvdStructuredConfig(AvdFacts):
         }
 
     @cached_property
-    def _underlay_filter_redistribute_connected(self) -> bool:
-        return get(self._hostvars, "underlay_filter_redistribute_connected", default=True) is True
-
-    @cached_property
     def prefix_lists(self) -> list | None:
-        if self._inband_management_role != "parent":
+        if not self.shared_utils.network_services_l3:
+            return None
+
+        if not self._inband_management_parent_data.get("subnets"):
             return None
 
         if not self.shared_utils.underlay_bgp:
             return None
 
-        if not self._underlay_filter_redistribute_connected:
+        if not self.shared_utils.underlay_filter_redistribute_connected:
             return None
 
         sequence_numbers = [
@@ -185,7 +167,7 @@ class AvdStructuredConfig(AvdFacts):
                 "sequence": ((index + 1) * 10),
                 "action": f"permit {subnet}",
             }
-            for index, subnet in enumerate(self._inband_management_data["subnets"])
+            for index, subnet in enumerate(self._inband_management_parent_data["subnets"])
         ]
         return [
             {
@@ -196,13 +178,16 @@ class AvdStructuredConfig(AvdFacts):
 
     @cached_property
     def route_maps(self) -> dict | None:
-        if self._inband_management_role != "parent":
+        if not self.shared_utils.network_services_l3:
+            return None
+
+        if not self._inband_management_parent_data.get("subnets"):
             return None
 
         if not self.shared_utils.underlay_bgp:
             return None
 
-        if not self._underlay_filter_redistribute_connected:
+        if not self.shared_utils.underlay_filter_redistribute_connected:
             return None
 
         return {

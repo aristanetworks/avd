@@ -129,7 +129,7 @@ class RouteMapsMixin(UtilsMixin):
                 }
             )
 
-        if not self._underlay_filter_redistribute_connected:
+        if not self.shared_utils.underlay_filter_redistribute_connected:
             return [vrf_default, peers_out]
 
         bgp = {

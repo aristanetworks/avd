@@ -79,7 +79,7 @@ class RoutingMixin:
         """
         Render IPv6 address for router_id
         """
-        if self.underlay_ipv6:
+        if self.underlay_router and self.underlay_ipv6:
             return self.ip_addressing.ipv6_router_id()
         return None
 

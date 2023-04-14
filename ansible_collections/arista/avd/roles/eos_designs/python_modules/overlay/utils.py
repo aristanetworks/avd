@@ -29,11 +29,6 @@ class UtilsMixin:
         return get(self._hostvars, "bfd_multihop")
 
     @cached_property
-    def _bgp_as(self) -> str | None:
-        bgp_as = get(self._hostvars, "switch.bgp_as")
-        return str(bgp_as) if bgp_as is not None else None
-
-    @cached_property
     def _evpn_ebgp_multihop(self) -> int | None:
         return get(self._hostvars, "evpn_ebgp_multihop")
 
@@ -53,7 +48,7 @@ class UtilsMixin:
         for gw_remote_peer_dict in natural_sort(evpn_gateway_remote_peers_list, sort_key="hostname"):
             # These remote gw can be outside of the inventory
             gw_remote_peer = gw_remote_peer_dict["hostname"]
-            peer_facts = self._get_peer_facts(gw_remote_peer, required=False)
+            peer_facts = self.shared_utils.get_peer_facts(gw_remote_peer, required=False)
 
             if peer_facts is not None:
                 # Found a matching server in inventory
@@ -91,10 +86,7 @@ class UtilsMixin:
         evpn_route_clients = {}
 
         for avd_peer in self._avd_overlay_peers:
-            peer_facts = self._get_peer_facts(avd_peer)
-            if not peer_facts:
-                continue
-
+            peer_facts = self.shared_utils.get_peer_facts(avd_peer, required=True)
             if (
                 self.shared_utils.hostname in peer_facts.get("evpn_route_servers", [])
                 and peer_facts.get("evpn_role") in ["server", "client"]
@@ -112,8 +104,8 @@ class UtilsMixin:
         evpn_route_servers = {}
 
         for route_server in natural_sort(get(self._hostvars, "switch.evpn_route_servers", default=[])):
-            peer_facts = self._get_peer_facts(route_server)
-            if not peer_facts or peer_facts.get("evpn_role") != "server":
+            peer_facts = self.shared_utils.get_peer_facts(route_server, required=True)
+            if peer_facts.get("evpn_role") != "server":
                 continue
 
             self._append_peer(evpn_route_servers, route_server, peer_facts)
@@ -171,8 +163,8 @@ class UtilsMixin:
         mpls_route_clients = {}
 
         for avd_peer in self._avd_overlay_peers:
-            peer_facts = self._get_peer_facts(avd_peer)
-            if not peer_facts or self._is_peer_mpls_client(peer_facts) is not True:
+            peer_facts = self.shared_utils.get_peer_facts(avd_peer, required=True)
+            if self._is_peer_mpls_client(peer_facts) is not True:
                 continue
 
             if self.shared_utils.hostname in peer_facts.get("mpls_route_reflectors", []) and avd_peer not in self._mpls_route_reflectors.keys():
@@ -197,8 +189,8 @@ class UtilsMixin:
             if fabric_switch == self.shared_utils.hostname:
                 continue
 
-            peer_facts = self._get_peer_facts(fabric_switch)
-            if not peer_facts or self._is_peer_mpls_client(peer_facts) is not True:
+            peer_facts = self.shared_utils.get_peer_facts(fabric_switch, required=True)
+            if self._is_peer_mpls_client(peer_facts) is not True:
                 continue
 
             self._append_peer(mpls_mesh_pe, fabric_switch, peer_facts)
@@ -216,8 +208,8 @@ class UtilsMixin:
             if route_reflector == self.shared_utils.hostname:
                 continue
 
-            peer_facts = self._get_peer_facts(route_reflector)
-            if not peer_facts or self._is_peer_mpls_server(peer_facts) is not True:
+            peer_facts = self.shared_utils.get_peer_facts(route_reflector, required=True)
+            if self._is_peer_mpls_server(peer_facts) is not True:
                 continue
 
             self._append_peer(mpls_route_reflectors, route_reflector, peer_facts)
@@ -235,15 +227,15 @@ class UtilsMixin:
             if route_reflector == self.shared_utils.hostname:
                 continue
 
-            peer_facts = self._get_peer_facts(route_reflector)
-            if not peer_facts or self._is_peer_mpls_server(peer_facts) is not True:
+            peer_facts = self.shared_utils.get_peer_facts(route_reflector, required=True)
+            if self._is_peer_mpls_server(peer_facts) is not True:
                 continue
 
             self._append_peer(mpls_rr_peers, route_reflector, peer_facts)
 
         for avd_peer in self._avd_overlay_peers:
-            peer_facts = self._get_peer_facts(avd_peer)
-            if not peer_facts or self._is_peer_mpls_server(peer_facts) is not True:
+            peer_facts = self.shared_utils.get_peer_facts(avd_peer, required=True)
+            if self._is_peer_mpls_server(peer_facts) is not True:
                 continue
 
             if self.shared_utils.hostname in peer_facts.get("mpls_route_reflectors", []) and avd_peer not in get(
@@ -252,24 +244,6 @@ class UtilsMixin:
                 self._append_peer(mpls_rr_peers, avd_peer, peer_facts)
 
         return mpls_rr_peers
-
-    # utils functions
-    def _get_peer_facts(self, peer_name: str, required: bool = True) -> dict | None:
-        """
-        util function to retrieve peer_facts for peer_name
-
-        returns avd_switch_facts.{peer_name}.switch
-
-        by default required is True and so the function will raise is peer_facts cannot be found
-        using the separator `..` to be able to handle hostnames with `.` inside
-        """
-        return get(
-            self._hostvars,
-            f"avd_switch_facts..{peer_name}..switch",
-            separator="..",
-            required=required,
-            org_key=f"avd_switch_facts.{peer_name}.switch",
-        )
 
     def _append_peer(self, peers_dict: dict, peer_name: str, peer_facts: dict) -> None:
         """

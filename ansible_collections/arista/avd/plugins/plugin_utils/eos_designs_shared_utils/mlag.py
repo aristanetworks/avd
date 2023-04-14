@@ -11,6 +11,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, g
 
 if TYPE_CHECKING:
     from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_facts import EosDesignsFacts
+    from ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing.avdipaddressing import AvdIpAddressing
 
 
 class MlagMixin:
@@ -27,6 +28,8 @@ class MlagMixin:
     switch_data_combined: dict
     switch_data_node_group_nodes: list
     underlay_router: bool
+    get_peer_facts: EosDesignsFacts | dict
+    ip_addressing: AvdIpAddressing
 
     @cached_property
     def mlag(self) -> bool:
@@ -110,13 +113,7 @@ class MlagMixin:
 
     @cached_property
     def mlag_peer_facts(self) -> EosDesignsFacts | dict:
-        return get(
-            self.hostvars,
-            f"avd_switch_facts..{self.mlag_peer}..switch",
-            required=True,
-            org_key=f"avd_switch_facts.({self.mlag_peer}).switch",
-            separator="..",
-        )
+        return self.get_peer_facts(self.mlag_peer, required=True)
 
     @cached_property
     def mlag_peer_mgmt_ip(self) -> str | None:

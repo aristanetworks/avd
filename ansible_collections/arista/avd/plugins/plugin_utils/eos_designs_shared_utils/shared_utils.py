@@ -1,4 +1,5 @@
 from .bgp_peer_groups import BgpPeerGroupsMixin
+from .inband_management import InbandManagementMixin
 from .interface_descriptions import InterfaceDescriptionsMixin
 from .ip_addressing import IpAddressingMixin
 from .link_tracking_groups import LinkTrackingGroupsMixin
@@ -12,10 +13,12 @@ from .routing import RoutingMixin
 from .switch_data import SwitchDataMixin
 from .template import TemplateMixin
 from .underlay import UnderlayMixin
+from .utils import UtilsMixin
 
 
 class SharedUtils(
     BgpPeerGroupsMixin,
+    InbandManagementMixin,
     InterfaceDescriptionsMixin,
     IpAddressingMixin,
     LinkTrackingGroupsMixin,
@@ -29,6 +32,7 @@ class SharedUtils(
     RoutingMixin,
     TemplateMixin,
     UnderlayMixin,
+    UtilsMixin,
 ):
     """
     Class with commonly used methods / cached_properties to be shared between all the python_modules

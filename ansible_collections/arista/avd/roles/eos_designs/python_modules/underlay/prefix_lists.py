@@ -22,7 +22,7 @@ class PrefixListsMixin(UtilsMixin):
         if self.shared_utils.overlay_routing_protocol == "none":
             return None
 
-        if not self._underlay_filter_redistribute_connected:
+        if not self.shared_utils.underlay_filter_redistribute_connected:
             return None
 
         # IPv4 - PL-LOOPBACKS-EVPN-OVERLAY
@@ -52,7 +52,7 @@ class PrefixListsMixin(UtilsMixin):
         if self.shared_utils.overlay_routing_protocol == "none":
             return None
 
-        if not self._underlay_filter_redistribute_connected:
+        if not self.shared_utils.underlay_filter_redistribute_connected:
             return None
 
         # IPv6 - PL-LOOPBACKS-EVPN-OVERLAY-V6

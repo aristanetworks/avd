@@ -93,7 +93,7 @@ class RouterBgpMixin(UtilsMixin):
                 mpls_peer_group = {
                     **self._generate_base_peer_group("mpls", "mpls_overlay_peers"),
                     "local_as": local_as,
-                    "remote_as": self._bgp_as,
+                    "remote_as": self.shared_utils.bgp_as,
                 }
 
                 if self.shared_utils.mpls_overlay_role == "server" or (self.shared_utils.evpn_role == "server" and self.shared_utils.overlay_evpn_mpls is True):
@@ -105,7 +105,7 @@ class RouterBgpMixin(UtilsMixin):
                 # EVPN OVERLAY peer group - also in EBGP..
                 ebgp_peer_group = {
                     **self._generate_base_peer_group("evpn", "evpn_overlay_peers"),
-                    "remote_as": self._bgp_as,
+                    "remote_as": self.shared_utils.bgp_as,
                 }
 
                 if self.shared_utils.evpn_role == "server":
@@ -114,7 +114,7 @@ class RouterBgpMixin(UtilsMixin):
                 peer_groups.append(ebgp_peer_group)
 
             if self._is_mpls_server is True:
-                peer_groups.append({**self._generate_base_peer_group("mpls", "rr_overlay_peers"), "remote_as": self._bgp_as})
+                peer_groups.append({**self._generate_base_peer_group("mpls", "rr_overlay_peers"), "remote_as": self.shared_utils.bgp_as})
 
         # same for ebgp and ibgp
         if self.shared_utils.overlay_ipvpn_gateway is True:

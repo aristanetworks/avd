@@ -1,12 +1,11 @@
 from __future__ import annotations
 
-import ipaddress
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 from .mlag import MlagMixin
 from .overlay import OverlayMixin
@@ -68,12 +67,8 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
     def serial_number(self) -> str | None:
         """
         Exposed in avd_switch_facts
-
-        serial_number is inherited from
-        Fabric Topology data model serial_number ->
-            Host variable var serial_number
         """
-        return default(get(self.shared_utils.switch_data_combined, "serial_number"), get(self._hostvars, "serial_number"))
+        return self.shared_utils.serial_number
 
     @cached_property
     def mgmt_interface(self) -> str | None:
@@ -87,7 +82,7 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
         """
         Exposed in avd_switch_facts
         """
-        return get(self.shared_utils.switch_data_combined, "mgmt_ip")
+        return self.shared_utils.mgmt_ip
 
     @cached_property
     def mpls_lsr(self) -> bool:
@@ -168,63 +163,11 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
         """
         Exposed in avd_switch_facts
         """
-        return get(self.shared_utils.switch_data_combined, "inband_management_subnet")
-
-    @cached_property
-    def inband_management_role(self) -> str | None:
-        if self.inband_management_subnet is not None and self.shared_utils.uplink_type == "port-channel":
-            return "child"
-        return None
-
-    @cached_property
-    def inband_management_parents(self) -> list | None:
-        """
-        Exposed in avd_switch_facts
-        """
-        if self.inband_management_role == "child":
-            return self.shared_utils.uplink_switches
-        return None
+        return self.shared_utils.inband_management_subnet
 
     @cached_property
     def inband_management_vlan(self) -> int | None:
         """
         Exposed in avd_switch_facts
         """
-        if self.inband_management_role == "child":
-            return int(get(self.shared_utils.switch_data_combined, "inband_management_vlan", default=4092))
-        return None
-
-    @cached_property
-    def inband_management_ip(self) -> str | None:
-        """
-        Exposed in avd_switch_facts
-        """
-        if self.inband_management_role == "child":
-            if self.id is None:
-                raise AristaAvdMissingVariableError(f"'id' is not set on '{self.shared_utils.hostname}' and is required to set inband_management_ip")
-            subnet = ipaddress.ip_network(self.inband_management_subnet, strict=False)
-            hosts = list(subnet.hosts())
-            inband_management_ip = str(hosts[2 + self.id])
-            inband_management_prefix = str(subnet.prefixlen)
-            return f"{inband_management_ip}/{inband_management_prefix}"
-        return None
-
-    @cached_property
-    def inband_management_gateway(self) -> str | None:
-        """
-        Exposed in avd_switch_facts
-        """
-        if self.inband_management_role == "child":
-            subnet = ipaddress.ip_network(self.inband_management_subnet, strict=False)
-            hosts = list(subnet.hosts())
-            return str(hosts[0])
-        return None
-
-    @cached_property
-    def inband_management_interface(self) -> str | None:
-        """
-        Exposed in avd_switch_facts
-        """
-        if self.inband_management_role == "child":
-            return f"Vlan{self.inband_management_vlan}"
-        return None
+        return self.shared_utils.inband_management_vlan

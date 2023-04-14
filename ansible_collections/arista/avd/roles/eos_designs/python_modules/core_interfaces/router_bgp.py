@@ -32,7 +32,7 @@ class RouterBgpMixin(UtilsMixin):
                 "peer_group": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["name"],
             }
 
-            if self._underlay_rfc5549:
+            if self.shared_utils.underlay_rfc5549:
                 # RFC5549
 
                 neighbor_interfaces.append({"name": p2p_link["data"]["interface"], **neighbor})
@@ -40,7 +40,7 @@ class RouterBgpMixin(UtilsMixin):
 
             # Regular BGP Neighbors
             neighbor["bfd"] = p2p_link.get("bfd")
-            if p2p_link["data"]["bgp_as"] != self._bgp_as:
+            if p2p_link["data"]["bgp_as"] != self.shared_utils.bgp_as:
                 neighbor["local_as"] = p2p_link["data"]["bgp_as"]
 
             # Remove None values

@@ -30,14 +30,6 @@ class AvdStructuredConfig(AvdFacts):
         return get(self._hostvars, "p2p_uplinks_mtu", required=True)
 
     @cached_property
-    def _underlay_rfc5549(self):
-        return get(self._hostvars, "underlay_rfc5549")
-
-    @cached_property
-    def _bgp_as(self):
-        return get(self._hostvars, "switch.bgp_as", required=True)
-
-    @cached_property
     def spanning_tree(self):
         if self.shared_utils.mlag_peer_l3_vlan is not None:
             vlans = [self.shared_utils.mlag_peer_vlan, self.shared_utils.mlag_peer_l3_vlan]
@@ -109,7 +101,7 @@ class AvdStructuredConfig(AvdFacts):
         if self.shared_utils.underlay_multicast:
             l3_cfg["pim"] = {"ipv4": {"sparse_mode": True}}
 
-        if self._underlay_rfc5549 is True:
+        if self.shared_utils.underlay_rfc5549:
             l3_cfg["ipv6_enable"] = True
 
         # Add L3 config if the main interface is also used for L3 peering
@@ -129,7 +121,7 @@ class AvdStructuredConfig(AvdFacts):
             "shutdown": False,
             "mtu": self._p2p_uplinks_mtu,
         }
-        if self._underlay_rfc5549 is not True:
+        if not self.shared_utils.underlay_rfc5549:
             l3_vlan_interface["ip_address"] = f"{self.shared_utils.mlag_l3_ip}/31"
 
         l3_vlan_interface.update(l3_cfg)
@@ -273,14 +265,14 @@ class AvdStructuredConfig(AvdFacts):
         if not self.shared_utils.underlay_bgp:
             return strip_empties_from_dict(router_bgp)
 
-        if self._underlay_rfc5549 is True:
+        if self.shared_utils.underlay_rfc5549:
             vlan = default(self.shared_utils.mlag_peer_l3_vlan, self.shared_utils.mlag_peer_vlan)
             neighbor_interface_name = f"Vlan{vlan}"
             router_bgp["neighbor_interfaces"] = [
                 {
                     "name": neighbor_interface_name,
                     "peer_group": peer_group_name,
-                    "remote_as": self._bgp_as,
+                    "remote_as": self.shared_utils.bgp_as,
                     "description": self.shared_utils.mlag_peer,
                 }
             ]
@@ -309,7 +301,7 @@ class AvdStructuredConfig(AvdFacts):
         peer_group = {
             "name": peer_group_name,
             "type": "ipv4",
-            "remote_as": self._bgp_as,
+            "remote_as": self.shared_utils.bgp_as,
             "next_hop_self": True,
             "description": self.shared_utils.mlag_peer,
             "password": self.shared_utils.bgp_peer_groups["mlag_ipv4_underlay_peer"]["password"],
@@ -333,7 +325,7 @@ class AvdStructuredConfig(AvdFacts):
             }
 
         address_family_ipv4_peer_group = {"name": peer_group_name, "activate": True}
-        if self._underlay_rfc5549 is True:
+        if self.shared_utils.underlay_rfc5549:
             address_family_ipv4_peer_group["next_hop"] = {"address_family_ipv6_originate": True}
 
         router_bgp["address_family_ipv4"] = {"peer_groups": [address_family_ipv4_peer_group]}

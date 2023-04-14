@@ -26,14 +26,6 @@ class UtilsMixin:
         return get(self._hostvars, f"avd_topology_peers..{self.shared_utils.hostname}", separator="..", default=[])
 
     @cached_property
-    def _bgp_as(self) -> str | None:
-        return get(self._hostvars, "switch.bgp_as")
-
-    @cached_property
-    def _evpn_role(self) -> str | None:
-        return get(self._hostvars, "switch.evpn_role")
-
-    @cached_property
     def _evpn_short_esi_prefix(self) -> str:
         return get(self._hostvars, "evpn_short_esi_prefix", required=True)
 
@@ -58,10 +50,6 @@ class UtilsMixin:
         return get(self._hostvars, "underlay_filter_peer_as") is True
 
     @cached_property
-    def _underlay_filter_redistribute_connected(self) -> bool:
-        return get(self._hostvars, "underlay_filter_redistribute_connected", default=True) is True
-
-    @cached_property
     def _underlay_filter_peer_as_route_maps_asns(self) -> list:
         """
         Filtered ASNs
@@ -81,13 +69,7 @@ class UtilsMixin:
         underlay_links.extend(self._uplinks)
 
         for peer in self._avd_peers:
-            peer_facts = get(
-                self._hostvars,
-                f"avd_switch_facts..{peer}..switch",
-                separator="..",
-                required=True,
-                org_key=f"avd_switch_facts.{peer}.switch",
-            )
+            peer_facts = self.shared_utils.get_peer_facts(peer, required=True)
             for uplink in peer_facts["uplinks"]:
                 if uplink["peer"] == self.shared_utils.hostname:
                     link = {
@@ -128,10 +110,6 @@ class UtilsMixin:
         return get(self._hostvars, "underlay_ospf_process_id", required=True)
 
     @cached_property
-    def _underlay_rfc5549(self) -> bool:
-        return get(self._hostvars, "underlay_rfc5549") is True
-
-    @cached_property
     def _underlay_vlan_trunk_groups(self) -> list:
         """
         Returns a list of trunk groups to configure on the underlay link
@@ -142,13 +120,7 @@ class UtilsMixin:
         trunk_groups = []
 
         for peer in self._avd_peers:
-            peer_facts = get(
-                self._hostvars,
-                f"avd_switch_facts..{peer}..switch",
-                separator="..",
-                required=True,
-                org_key=f"avd_switch_facts.{peer}.switch",
-            )
+            peer_facts = self.shared_utils.get_peer_facts(peer, required=True)
             for uplink in peer_facts["uplinks"]:
                 if uplink["peer"] == self.shared_utils.hostname:
                     if (peer_trunk_groups := get(uplink, "peer_trunk_groups")) is None:

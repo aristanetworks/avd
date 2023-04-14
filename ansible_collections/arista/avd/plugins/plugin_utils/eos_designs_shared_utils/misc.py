@@ -1,8 +1,12 @@
 from __future__ import annotations
 
 from functools import cached_property
+from typing import TYPE_CHECKING
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+
+if TYPE_CHECKING:
+    from ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing.avdipaddressing import AvdIpAddressing
 
 
 class MiscMixin:
@@ -13,11 +17,13 @@ class MiscMixin:
 
     any_network_services: bool
     hostvars: dict
+    ip_addressing: AvdIpAddressing
     mlag: bool
     platform_settings: dict
     switch_data_combined: dict
     switch_data: dict
     underlay_ipv6: bool
+    uplink_type: str
     vtep: bool
 
     @cached_property
@@ -82,7 +88,7 @@ class MiscMixin:
         return get(self.switch_data_combined, "loopback_ipv6_offset", default=0)
 
     @cached_property
-    def loopback_ipv6_pool(self):
+    def loopback_ipv6_pool(self) -> str:
         return get(self.switch_data_combined, "loopback_ipv6_pool", required=True)
 
     @cached_property
@@ -138,3 +144,36 @@ class MiscMixin:
     @cached_property
     def vtep_vvtep_ip(self) -> str | None:
         return get(self.hostvars, "vtep_vvtep_ip")
+
+    @cached_property
+    def ipv6_mgmt_ip(self) -> str | None:
+        return get(self.switch_data_combined, "ipv6_mgmt_ip")
+
+    @cached_property
+    def mgmt_ip(self) -> str | None:
+        return get(self.switch_data_combined, "mgmt_ip")
+
+    @cached_property
+    def mgmt_interface_vrf(self) -> str | None:
+        return get(self.hostvars, "mgmt_interface_vrf")
+
+    @cached_property
+    def mgmt_gateway(self) -> str | None:
+        return get(self.hostvars, "mgmt_gateway")
+
+    @cached_property
+    def ipv6_mgmt_gateway(self) -> str | None:
+        return get(self.hostvars, "ipv6_mgmt_gateway")
+
+    @cached_property
+    def always_configure_ip_routing(self) -> bool:
+        return get(self.switch_data_combined, "always_configure_ip_routing")
+
+    @cached_property
+    def serial_number(self) -> str | None:
+        """
+        serial_number is inherited from
+        Fabric Topology data model serial_number ->
+            Host variable var serial_number
+        """
+        return default(get(self.switch_data_combined, "serial_number"), get(self.hostvars, "serial_number"))

@@ -14,53 +14,6 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 class AvdStructuredConfig(AvdFacts):
     @cached_property
-    def _mgmt_interface_vrf(self) -> str | None:
-        """
-        Returns the value for mgmt_interface_vrf variable used in static_routes, name_Server,
-        vrfs and management_interfaces data-models
-        """
-        return get(self._hostvars, "mgmt_interface_vrf")
-
-    @cached_property
-    def _mgmt_gateway(self) -> str | None:
-        """
-        Returns the value for mgmt_gateway variable used in static_routes and management_interfaces data-models
-        """
-        return get(self._hostvars, "mgmt_gateway")
-
-    @cached_property
-    def _ipv6_mgmt_gateway(self) -> str | None:
-        """
-        Returns the value for ipv6_mgmt_gateway variable used in ipv6_static_routes and management_interfaces data-models
-        """
-        return get(self._hostvars, "ipv6_mgmt_gateway")
-
-    @cached_property
-    def _mgmt_ip(self) -> str | None:
-        """
-        Returns the value for switch.mgmt_ip fact used in snmp_server and management_interfaces data-models
-        """
-        return get(self._hostvars, "switch.mgmt_ip")
-
-    @cached_property
-    def _ipv6_mgmt_ip(self) -> str | None:
-        """
-        Returns the value for ipv6_mgmt_ip used in management_interfaces data-models
-        """
-        return get(self.shared_utils.switch_data_combined, "ipv6_mgmt_ip")
-
-    @cached_property
-    def _always_configure_ip_routing(self) -> bool:
-        return get(self.shared_utils.switch_data_combined, "always_configure_ip_routing")
-
-    @cached_property
-    def serial_number(self) -> str | None:
-        """
-        serial_number variable set based on switch.serial_number fact
-        """
-        return get(self._hostvars, "switch.serial_number")
-
-    @cached_property
     def router_bgp(self) -> dict | None:
         """
         router_bgp set based on switch.bgp_as, switch.bgp_defaults, router_id facts
@@ -88,7 +41,7 @@ class AvdStructuredConfig(AvdFacts):
         """
         static_routes set based on mgmt_gateway, mgmt_destination_networks and mgmt_interface_vrf
         """
-        if self._mgmt_gateway is None:
+        if self.shared_utils.mgmt_gateway is None:
             return None
 
         static_routes = []
@@ -96,17 +49,17 @@ class AvdStructuredConfig(AvdFacts):
             for mgmt_destination_network in mgmt_destination_networks:
                 static_routes.append(
                     {
-                        "vrf": self._mgmt_interface_vrf,
+                        "vrf": self.shared_utils.mgmt_interface_vrf,
                         "destination_address_prefix": mgmt_destination_network,
-                        "gateway": self._mgmt_gateway,
+                        "gateway": self.shared_utils.mgmt_gateway,
                     }
                 )
         else:
             static_routes.append(
                 {
-                    "vrf": self._mgmt_interface_vrf,
+                    "vrf": self.shared_utils.mgmt_interface_vrf,
                     "destination_address_prefix": "0.0.0.0/0",
-                    "gateway": self._mgmt_gateway,
+                    "gateway": self.shared_utils.mgmt_gateway,
                 }
             )
 
@@ -117,7 +70,7 @@ class AvdStructuredConfig(AvdFacts):
         """
         ipv6_static_routes set based on ipv6_mgmt_gateway, ipv6_mgmt_destination_networks and mgmt_interface_vrf
         """
-        if self._ipv6_mgmt_gateway is None or self._ipv6_mgmt_ip is None:
+        if self.shared_utils.ipv6_mgmt_gateway is None or self.shared_utils.ipv6_mgmt_ip is None:
             return None
 
         ipv6_static_routes = []
@@ -125,17 +78,17 @@ class AvdStructuredConfig(AvdFacts):
             for mgmt_destination_network in ipv6_mgmt_destination_networks:
                 ipv6_static_routes.append(
                     {
-                        "vrf": self._mgmt_interface_vrf,
+                        "vrf": self.shared_utils.mgmt_interface_vrf,
                         "destination_address_prefix": mgmt_destination_network,
-                        "gateway": self._ipv6_mgmt_gateway,
+                        "gateway": self.shared_utils.ipv6_mgmt_gateway,
                     }
                 )
         else:
             ipv6_static_routes.append(
                 {
-                    "vrf": self._mgmt_interface_vrf,
+                    "vrf": self.shared_utils.mgmt_interface_vrf,
                     "destination_address_prefix": "::/0",
-                    "gateway": self._ipv6_mgmt_gateway,
+                    "gateway": self.shared_utils.ipv6_mgmt_gateway,
                 }
             )
 
@@ -154,7 +107,7 @@ class AvdStructuredConfig(AvdFacts):
         For l3 devices, configure ip routing unless ip_routing_ipv6_interfaces is True.
         For other devices only configure if "always_configure_ip_routing" is True.
         """
-        if not self.shared_utils.underlay_router and not self._always_configure_ip_routing:
+        if not self.shared_utils.underlay_router and not self.shared_utils.always_configure_ip_routing:
             return None
 
         if self.ip_routing_ipv6_interfaces is True:
@@ -166,10 +119,10 @@ class AvdStructuredConfig(AvdFacts):
         """
         ipv6_unicast_routing set based on underlay_rfc5549 and underlay_ipv6
         """
-        if not self.shared_utils.underlay_router and not self._always_configure_ip_routing:
+        if not self.shared_utils.underlay_router and not self.shared_utils.always_configure_ip_routing:
             return None
 
-        if get(self._hostvars, "underlay_rfc5549") is True or self.shared_utils.underlay_ipv6:
+        if self.shared_utils.underlay_rfc5549 or self.shared_utils.underlay_ipv6:
             return True
         return None
 
@@ -178,10 +131,10 @@ class AvdStructuredConfig(AvdFacts):
         """
         ip_routing_ipv6_interfaces set based on underlay_rfc5549 variable
         """
-        if not self.shared_utils.underlay_router and not self._always_configure_ip_routing:
+        if not self.shared_utils.underlay_router and not self.shared_utils.always_configure_ip_routing:
             return None
 
-        if get(self._hostvars, "underlay_rfc5549") is True:
+        if self.shared_utils.underlay_rfc5549:
             return True
         return None
 
@@ -278,7 +231,7 @@ class AvdStructuredConfig(AvdFacts):
                         "token_file": get(self._hostvars, "cvp_token_file", "/tmp/cv-onboarding-token"),
                     }
 
-        daemon_terminattr["cvvrf"] = self._mgmt_interface_vrf
+        daemon_terminattr["cvvrf"] = self.shared_utils.mgmt_interface_vrf
         daemon_terminattr["smashexcludes"] = get(self._hostvars, "terminattr_smashexcludes")
         daemon_terminattr["ingestexclude"] = get(self._hostvars, "terminattr_ingestexclude")
         daemon_terminattr["disable_aaa"] = get(self._hostvars, "terminattr_disable_aaa", False)
@@ -351,14 +304,14 @@ class AvdStructuredConfig(AvdFacts):
         ip_name_servers = [
             {
                 "ip_address": name_server,
-                "vrf": self._mgmt_interface_vrf,
+                "vrf": self.shared_utils.mgmt_interface_vrf,
             }
             for name_server in get(self._hostvars, "name_servers", default=[])
         ]
-        if ip_name_servers == []:
-            return None
+        if ip_name_servers:
+            return ip_name_servers
 
-        return ip_name_servers
+        return None
 
     @cached_property
     def redundancy(self) -> dict | None:
@@ -375,7 +328,7 @@ class AvdStructuredConfig(AvdFacts):
         snmp_server set based on snmp_settings data-model, using various snmp_settings information.
 
         if snmp_settings.compute_local_engineid is True we will use sha1 to create a
-        unique local_engine_id value based on hostname and switch.mgmt_ip facts.
+        unique local_engine_id value based on hostname and mgmt_ip facts.
 
         If user.version is set to 'v3', compute_local_engineid and compute_v3_user_localized_key are set to 'True'
         we will use hash_passphrase filter to create an instance of hashlib._hashlib.HASH corresponding to the auth_type
@@ -391,7 +344,7 @@ class AvdStructuredConfig(AvdFacts):
         if snmp_settings.get("compute_local_engineid") is True:
             compute_source = get(snmp_settings, "compute_local_engineid_source", default="hostname_and_ip")
             if compute_source == "hostname_and_ip":
-                local_engine_id = sha1(f"{self.shared_utils.hostname}{self._mgmt_ip}".encode("utf-8")).hexdigest()
+                local_engine_id = sha1(f"{self.shared_utils.hostname}{self.shared_utils.mgmt_ip}".encode("utf-8")).hexdigest()
             elif compute_source == "system_mac":
                 if self.shared_utils.system_mac_address is None:
                     raise AristaAvdMissingVariableError("default_engine_id_from_system_mac: true requires system_mac_address to be set!")
@@ -541,39 +494,43 @@ class AvdStructuredConfig(AvdFacts):
         vrfs set based on mgmt_interface_vrf variable
         """
         vrf_settings = {
-            "name": self._mgmt_interface_vrf,
+            "name": self.shared_utils.mgmt_interface_vrf,
             "ip_routing": get(self._hostvars, "mgmt_vrf_routing"),
         }
-        if self._ipv6_mgmt_ip is not None:
+        if self.shared_utils.ipv6_mgmt_ip is not None:
             vrf_settings["ipv6_routing"] = get(self._hostvars, "mgmt_vrf_routing")
         return [vrf_settings]
 
     @cached_property
     def management_interfaces(self) -> list | None:
         """
-        management_interfaces set based on mgmt_interface, switch.mgmt_ip, switch.ipv6_mgmt_ip facts,
+        management_interfaces set based on mgmt_interface, mgmt_ip, ipv6_mgmt_ip facts,
         mgmt_gateway, ipv6_mgmt_gateway and mgmt_interface_vrf variables
         """
         mgmt_interface = self.shared_utils.mgmt_interface
-        if mgmt_interface is not None and self._mgmt_interface_vrf is not None and (self._mgmt_ip is not None or self._ipv6_mgmt_ip is not None):
+        if (
+            mgmt_interface is not None
+            and self.shared_utils.mgmt_interface_vrf is not None
+            and (self.shared_utils.mgmt_ip is not None or self.shared_utils.ipv6_mgmt_ip is not None)
+        ):
             interface_settings = {
                 "name": mgmt_interface,
                 "description": get(self._hostvars, "mgmt_interface_description", default="oob_management"),
                 "shutdown": False,
-                "vrf": self._mgmt_interface_vrf,
-                "ip_address": self._mgmt_ip,
-                "gateway": self._mgmt_gateway,
+                "vrf": self.shared_utils.mgmt_interface_vrf,
+                "ip_address": self.shared_utils.mgmt_ip,
+                "gateway": self.shared_utils.mgmt_gateway,
                 "type": "oob",
             }
             """
-            inserting ipv6 variables if self._ipv6_mgmt_ip is set
+            inserting ipv6 variables if ipv6_mgmt_ip is set
             """
-            if self._ipv6_mgmt_ip is not None:
+            if self.shared_utils.ipv6_mgmt_ip is not None:
                 interface_settings.update(
                     {
                         "ipv6_enable": True,
-                        "ipv6_address": self._ipv6_mgmt_ip,
-                        "ipv6_gateway": self._ipv6_mgmt_gateway,
+                        "ipv6_address": self.shared_utils.ipv6_mgmt_ip,
+                        "ipv6_gateway": self.shared_utils.ipv6_mgmt_gateway,
                     }
                 )
 
@@ -644,7 +601,7 @@ class AvdStructuredConfig(AvdFacts):
         if (management_eapi := get(self._hostvars, "management_eapi")) is None:
             return None
 
-        management_api_http = {"enable_vrfs": [{"name": self._mgmt_interface_vrf}]}
+        management_api_http = {"enable_vrfs": [{"name": self.shared_utils.mgmt_interface_vrf}]}
         management_api = management_eapi.fromkeys(["enable_http", "enable_https", "default_services"])
         for key in dict(management_api).keys():
             if (value := management_eapi.get(key)) is not None:
