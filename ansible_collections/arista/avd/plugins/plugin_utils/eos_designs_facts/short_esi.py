@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 class ShortEsiMixin:
     """
-    Mixin Class used to generate structured config for one key.
+    Mixin Class used to generate some of the EosDesignsFacts.
     Class should only be used as Mixin to the EosDesignsFacts class
     """
 

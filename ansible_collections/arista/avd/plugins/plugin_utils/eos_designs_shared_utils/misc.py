@@ -7,7 +7,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, g
 
 class MiscMixin:
     """
-    Mixin Class used to generate structured config for one key.
+    Mixin Class providing a subset of SharedUtils
     Class should only be used as Mixin to the SharedUtils class
     """
 
@@ -103,7 +103,7 @@ class MiscMixin:
         return self.enable_trunk_groups and get(self.hostvars, "only_local_vlan_trunk_groups", default=False)
 
     @cached_property
-    def system_mac_address(self):
+    def system_mac_address(self) -> str | None:
         """
         system_mac_address is inherited from
         Fabric Topology data model system_mac_address ->

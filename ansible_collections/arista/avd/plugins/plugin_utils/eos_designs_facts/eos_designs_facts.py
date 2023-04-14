@@ -52,21 +52,21 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
         return self.shared_utils.type
 
     @cached_property
-    def platform(self):
+    def platform(self) -> str | None:
         """
         Exposed in avd_switch_facts
         """
         return self.shared_utils.platform
 
     @cached_property
-    def is_deployed(self):
+    def is_deployed(self) -> bool:
         """
         Exposed in avd_switch_facts
         """
         return get(self._hostvars, "is_deployed", default=True)
 
     @cached_property
-    def serial_number(self):
+    def serial_number(self) -> str | None:
         """
         Exposed in avd_switch_facts
 
@@ -84,14 +84,14 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
         return get(self.shared_utils.switch_data_combined, "mgmt_ip")
 
     @cached_property
-    def mpls_lsr(self):
+    def mpls_lsr(self) -> bool:
         """
         Exposed in avd_switch_facts
         """
         return self.shared_utils.mpls_lsr
 
     @cached_property
-    def evpn_multicast(self):
+    def evpn_multicast(self) -> bool | None:
         """
         Exposed in avd_switch_facts
         """
@@ -117,7 +117,7 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
         return None
 
     @cached_property
-    def loopback_ipv4_pool(self):
+    def loopback_ipv4_pool(self) -> str | None:
         """
         Exposed in avd_switch_facts
         """
@@ -126,7 +126,7 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
         return None
 
     @cached_property
-    def uplink_ipv4_pool(self):
+    def uplink_ipv4_pool(self) -> str | None:
         """
         Exposed in avd_switch_facts
         """
@@ -135,58 +135,22 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
         return None
 
     @cached_property
-    def bgp_as(self):
+    def bgp_as(self) -> str | None:
         """
         Exposed in avd_switch_facts
-
-        Get global bgp_as or fabric_topology bgp_as.
-
-        At least one of global bgp_as or fabric_topology bgp_as must be defined.
-
-        AS ranges in fabric_topology bgp_as will be expanded to a list and:
-         - For standalone or A/A MH devices, the node id will be used to index into the list to find the ASN.
-         - For MLAG devices, the node id of the first node in the node group will be used to index into the ASN list.
-         - If a bare ASN is used, that ASN will be used for all relevant devices (depending on whether defined
-           at the defaults, node_group or node level).
-         - Lower level definitions override higher level definitions as is standard with AVD.
         """
         if self.shared_utils.underlay_router is True:
-            if self.shared_utils.underlay_routing_protocol == "ebgp" or self.shared_utils.evpn_role != "none" or self.shared_utils.mpls_overlay_role != "none":
-                if get(self._hostvars, "bgp_as") is not None:
-                    return str(get(self._hostvars, "bgp_as"))
-                else:
-                    bgp_as_range_expanded = range_expand(str(get(self.shared_utils.switch_data_combined, "bgp_as", required=True)))
-                    try:
-                        if len(bgp_as_range_expanded) == 1:
-                            return bgp_as_range_expanded[0]
-                        elif self.shared_utils.mlag:
-                            return bgp_as_range_expanded[self.mlag_switch_ids["primary"] - 1]
-                        else:
-                            if self.id is None:
-                                raise AristaAvdMissingVariableError(
-                                    f"'id' is not set on '{self.shared_utils.hostname}' and is required when expanding 'bgp_as'"
-                                )
-                            return bgp_as_range_expanded[self.id - 1]
-                    except IndexError as exc:
-                        raise AristaAvdError(
-                            f"Unable to allocate BGP AS: bgp_as range is too small ({len(bgp_as_range_expanded)}) for the id of the device"
-                        ) from exc
-
-            # Hack to make mpls PR non-breaking, adds empty bgp to igp topology spines
-            # TODO: Remove this as part of AVD4.0
-            elif self.shared_utils.underlay_routing_protocol in ["isis", "ospf"] and self.shared_utils.evpn_role == "none" and get(self._hostvars, "bgp_as") is not None:
-                return str(get(self._hostvars, "bgp_as"))
-        return None
+            return self.shared_utils.bgp_as
 
     @cached_property
-    def underlay_routing_protocol(self):
+    def underlay_routing_protocol(self) -> str:
         """
         Exposed in avd_switch_facts
         """
         return self.shared_utils.underlay_routing_protocol
 
     @cached_property
-    def vtep_loopback_ipv4_pool(self):
+    def vtep_loopback_ipv4_pool(self) -> str | None:
         """
         Exposed in avd_switch_facts
         """
@@ -195,20 +159,20 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
         return None
 
     @cached_property
-    def inband_management_subnet(self):
+    def inband_management_subnet(self) -> str | None:
         """
         Exposed in avd_switch_facts
         """
         return get(self.shared_utils.switch_data_combined, "inband_management_subnet")
 
     @cached_property
-    def inband_management_role(self):
+    def inband_management_role(self) -> str | None:
         if self.inband_management_subnet is not None and self.shared_utils.uplink_type == "port-channel":
             return "child"
         return None
 
     @cached_property
-    def inband_management_parents(self):
+    def inband_management_parents(self) -> list | None:
         """
         Exposed in avd_switch_facts
         """
@@ -217,7 +181,7 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
         return None
 
     @cached_property
-    def inband_management_vlan(self):
+    def inband_management_vlan(self) -> int | None:
         """
         Exposed in avd_switch_facts
         """
@@ -226,7 +190,7 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
         return None
 
     @cached_property
-    def inband_management_ip(self):
+    def inband_management_ip(self) -> str | None:
         """
         Exposed in avd_switch_facts
         """
@@ -241,7 +205,7 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
         return None
 
     @cached_property
-    def inband_management_gateway(self):
+    def inband_management_gateway(self) -> str | None:
         """
         Exposed in avd_switch_facts
         """
@@ -252,7 +216,7 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
         return None
 
     @cached_property
-    def inband_management_interface(self):
+    def inband_management_interface(self) -> str | None:
         """
         Exposed in avd_switch_facts
         """
@@ -261,7 +225,7 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
         return None
 
     @cached_property
-    def vtep_ip(self):
+    def vtep_ip(self) -> str | None:
         """
         Exposed in avd_switch_facts
 

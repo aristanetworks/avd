@@ -18,7 +18,7 @@ if TYPE_CHECKING:
 
 class VlansMixin:
     """
-    Mixin Class used to generate structured config for one key.
+    Mixin Class used to generate some of the EosDesignsFacts.
     Class should only be used as Mixin to the EosDesignsFacts class
     """
 
@@ -28,7 +28,7 @@ class VlansMixin:
     shared_utils: SharedUtils
 
     @cached_property
-    def vlans(self):
+    def vlans(self) -> str:
         """
         Exposed in avd_switch_facts
 
@@ -42,7 +42,7 @@ class VlansMixin:
         return list_compress(self._vlans)
 
     @cached_property
-    def _port_profiles(self):
+    def _port_profiles(self) -> list:
         port_profiles = get(self._hostvars, "port_profiles", default=[])
         # Support legacy data model by converting nested dict to list of dict
         return convert_dicts(port_profiles, "profile")
@@ -255,7 +255,7 @@ class VlansMixin:
         return list(self._endpoint_trunk_groups)
 
     @cached_property
-    def _vlans(self):
+    def _vlans(self) -> list[int]:
         """
         Return list of vlans after filtering network services.
         The filter is based on filter.tenants, filter.tags and filter.only_vlans_in_use

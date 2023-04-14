@@ -9,7 +9,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 class SwitchDataMixin:
     """
-    Mixin Class used to generate structured config for one key.
+    Mixin Class providing a subset of SharedUtils
     Class should only be used as Mixin to the SharedUtils class
     """
 

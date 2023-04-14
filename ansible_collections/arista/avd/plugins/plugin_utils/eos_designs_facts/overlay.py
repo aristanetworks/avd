@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 class OverlayMixin:
     """
-    Mixin Class used to generate structured config for one key.
+    Mixin Class used to generate some of the EosDesignsFacts.
     Class should only be used as Mixin to the EosDesignsFacts class
     """
 
@@ -21,21 +21,21 @@ class OverlayMixin:
     shared_utils: SharedUtils
 
     @cached_property
-    def evpn_role(self):
+    def evpn_role(self) -> str | None:
         """
         Exposed in avd_switch_facts
         """
         return self.shared_utils.evpn_role
 
     @cached_property
-    def mpls_overlay_role(self):
+    def mpls_overlay_role(self) -> str | None:
         """
         Exposed in avd_switch_facts
         """
         return self.shared_utils.mpls_overlay_role
 
     @cached_property
-    def evpn_route_servers(self):
+    def evpn_route_servers(self) -> list:
         """
         Exposed in avd_switch_facts
 
@@ -50,7 +50,7 @@ class OverlayMixin:
         return []
 
     @cached_property
-    def mpls_route_reflectors(self):
+    def mpls_route_reflectors(self) -> list | None:
         """
         Exposed in avd_switch_facts
         """

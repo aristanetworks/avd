@@ -8,7 +8,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, g
 
 class PlatformMixin:
     """
-    Mixin Class used to generate structured config for one key.
+    Mixin Class providing a subset of SharedUtils
     Class should only be used as Mixin to the SharedUtils class
     """
 
@@ -17,11 +17,11 @@ class PlatformMixin:
     type: str
 
     @cached_property
-    def platform(self):
+    def platform(self) -> str | None:
         return get(self.switch_data_combined, "platform")
 
     @cached_property
-    def platform_settings(self):
+    def platform_settings(self) -> dict:
         platform_settings = get(self.hostvars, "platform_settings", default=[])
 
         # First look for a matching platform setting specifying our platform
@@ -37,7 +37,7 @@ class PlatformMixin:
         return {}
 
     @cached_property
-    def default_interfaces(self):
+    def default_interfaces(self) -> dict:
         """
         default_interfaces set based on default_interfaces
         """

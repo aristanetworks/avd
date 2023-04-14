@@ -10,7 +10,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 class NodeTypeKeyMixin:
     """
-    Mixin Class used to generate structured config for one key.
+    Mixin Class providing a subset of SharedUtils
     Class should only be used as Mixin to the SharedUtils class
     """
 
@@ -19,7 +19,7 @@ class NodeTypeKeyMixin:
     switch_data_combined: dict
 
     @cached_property
-    def type(self):
+    def type(self) -> str:
         """
         switch.type fact set based on type variable
         """
@@ -31,7 +31,7 @@ class NodeTypeKeyMixin:
         raise AristaAvdMissingVariableError(f"'type' for host {self.hostname}")
 
     @cached_property
-    def _default_node_type(self):
+    def _default_node_type(self) -> str:
         """
         switch._default_node_type set based on hostname, returning
         first node type matching a regex in default_node_types
@@ -121,7 +121,7 @@ class NodeTypeKeyMixin:
         return self.network_services_l1 is True or self.network_services_l2 is True or self.network_services_l3 is True
 
     @cached_property
-    def mpls_lsr(self):
+    def mpls_lsr(self) -> bool:
         """
         switch.mpls_lsr set based on
         node_type_keys.<node_type_key>.mpls_lsr

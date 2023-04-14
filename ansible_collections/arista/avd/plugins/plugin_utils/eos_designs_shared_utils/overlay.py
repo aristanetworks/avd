@@ -10,7 +10,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, g
 
 class OverlayMixin:
     """
-    Mixin Class used to generate structured config for one key.
+    Mixin Class providing a subset of SharedUtils
     Class should only be used as Mixin to the SharedUtils class
     """
 
@@ -33,21 +33,21 @@ class OverlayMixin:
     vtep: bool
 
     @cached_property
-    def evpn_role(self):
+    def evpn_role(self) -> str | None:
         if self.underlay_router is True:
             default_evpn_role = get(self.node_type_key_data, "default_evpn_role", default="none")
             return get(self.switch_data_combined, "evpn_role", default=default_evpn_role)
         return None
 
     @cached_property
-    def mpls_overlay_role(self):
+    def mpls_overlay_role(self) -> str | None:
         if self.underlay_router is True:
             default_mpls_overlay_role = get(self.node_type_key_data, "default_mpls_overlay_role", default="none")
             return get(self.switch_data_combined, "mpls_overlay_role", default=default_mpls_overlay_role)
         return None
 
     @cached_property
-    def overlay_rd_type_admin_subfield(self):
+    def overlay_rd_type_admin_subfield(self) -> str:
         tmp_overlay_rd_type_admin_subfield = get(self.hostvars, "overlay_rd_type.admin_subfield")
         tmp_overlay_rd_type_admin_subfield_offset = int(default(get(self.hostvars, "overlay_rd_type.admin_subfield_offset"), 0))
         if tmp_overlay_rd_type_admin_subfield is None:
@@ -88,7 +88,7 @@ class OverlayMixin:
         return get(self.switch_data_combined, "evpn_gateway.evpn_l3.inter_domain", default=True)
 
     @cached_property
-    def overlay_routing_protocol_address_family(self):
+    def overlay_routing_protocol_address_family(self) -> str:
         overlay_routing_protocol_address_family = get(self.hostvars, "overlay_routing_protocol_address_family", default="ipv4")
         if overlay_routing_protocol_address_family == "ipv6":
             if not (get(self.hostvars, "underlay_ipv6") is True and get(self.hostvars, "underlay_rfc5549") is True):
@@ -98,7 +98,7 @@ class OverlayMixin:
         return overlay_routing_protocol_address_family
 
     @cached_property
-    def evpn_encapsulation(self):
+    def evpn_encapsulation(self) -> str:
         """
         EVPN encapsulation based on fabric_evpn_encapsulation and node default_evpn_encapsulation.
         """

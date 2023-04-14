@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 class MlagMixin:
     """
-    Mixin Class used to generate structured config for one key.
+    Mixin Class used to generate some of the EosDesignsFacts.
     Class should only be used as Mixin to the EosDesignsFacts class
     """
 
@@ -17,7 +17,7 @@ class MlagMixin:
     shared_utils: SharedUtils
 
     @cached_property
-    def mlag_peer(self):
+    def mlag_peer(self) -> str | None:
         """
         Exposed in avd_switch_facts
         """
@@ -26,7 +26,7 @@ class MlagMixin:
         return None
 
     @cached_property
-    def mlag_port_channel_id(self):
+    def mlag_port_channel_id(self) -> int | None:
         """
         Exposed in avd_switch_facts
         """
@@ -35,7 +35,7 @@ class MlagMixin:
         return None
 
     @cached_property
-    def mlag_interfaces(self):
+    def mlag_interfaces(self) -> list | None:
         """
         Exposed in avd_switch_facts
         """
@@ -44,7 +44,7 @@ class MlagMixin:
         return None
 
     @cached_property
-    def mlag_ip(self):
+    def mlag_ip(self) -> str | None:
         """
         Exposed in avd_switch_facts
         """
@@ -53,7 +53,7 @@ class MlagMixin:
         return None
 
     @cached_property
-    def mlag_l3_ip(self):
+    def mlag_l3_ip(self) -> str | None:
         """
         Exposed in avd_switch_facts
         """
@@ -62,7 +62,7 @@ class MlagMixin:
         return None
 
     @cached_property
-    def mlag_switch_ids(self):
+    def mlag_switch_ids(self) -> dict | None:
         """
         Exposed in avd_switch_facts
 

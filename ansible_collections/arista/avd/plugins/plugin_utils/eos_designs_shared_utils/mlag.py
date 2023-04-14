@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 class MlagMixin:
     """
-    Mixin Class used to generate structured config for one key.
+    Mixin Class providing a subset of SharedUtils
     Class should only be used as Mixin to the SharedUtils class
     """
 
@@ -101,7 +101,7 @@ class MlagMixin:
         return None
 
     @cached_property
-    def mlag_peer_id(self):
+    def mlag_peer_id(self) -> int:
         return self.get_mlag_peer_fact("id")
 
     def get_mlag_peer_fact(self, key, required=True):
@@ -118,11 +118,11 @@ class MlagMixin:
         )
 
     @cached_property
-    def mlag_peer_mgmt_ip(self):
-        return self.get_mlag_peer_fact("mgmt_ip")
+    def mlag_peer_mgmt_ip(self) -> str | None:
+        return self.get_mlag_peer_fact("mgmt_ip", False)
 
     @cached_property
-    def mlag_ip(self):
+    def mlag_ip(self) -> str | None:
         """
         Render ipv4 address for mlag_ip using dynamically loaded python module.
         """
@@ -132,7 +132,7 @@ class MlagMixin:
             return self.ip_addressing.mlag_ip_secondary()
 
     @cached_property
-    def mlag_l3_ip(self):
+    def mlag_l3_ip(self) -> str | None:
         """
         Render ipv4 address for mlag_l3_ip using dynamically loaded python module.
         """
@@ -142,7 +142,7 @@ class MlagMixin:
             return self.ip_addressing.mlag_l3_ip_secondary()
 
     @cached_property
-    def mlag_switch_ids(self):
+    def mlag_switch_ids(self) -> dict | None:
         """
         Returns the switch id's of both primary and secondary switches for a given node group
         {"primary": int, "secondary": int}
@@ -157,12 +157,14 @@ class MlagMixin:
             return {"primary": self.mlag_peer_id, "secondary": self.id}
 
     @cached_property
-    def mlag_port_channel_id(self):
+    def mlag_port_channel_id(self) -> int:
+        if not self.mlag_interfaces:
+            raise AristaAvdMissingVariableError(f"'mlag_interfaces' not set on '{self.hostname}.")
         default_mlag_port_channel_id = "".join(findall(r"\d", self.mlag_interfaces[0]))
         return get(self.switch_data_combined, "mlag_port_channel_id", default_mlag_port_channel_id)
 
     @cached_property
-    def mlag_peer_vlan_structured_config(self):
+    def mlag_peer_vlan_structured_config(self) -> dict | None:
         return get(self.switch_data_combined, "mlag_peer_vlan_structured_config")
 
     @cached_property

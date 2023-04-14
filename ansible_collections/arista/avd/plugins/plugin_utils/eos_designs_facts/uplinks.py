@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 
 class UplinksMixin:
     """
-    Mixin Class used to generate structured config for one key.
+    Mixin Class used to generate some of the EosDesignsFacts.
     Class should only be used as Mixin to the EosDesignsFacts class
     """
 
@@ -270,7 +270,7 @@ class UplinksMixin:
         return uplinks
 
     @cached_property
-    def uplink_peers(self) -> uplinks:
+    def uplink_peers(self) -> list:
         """
         Exposed in avd_switch_facts
 
@@ -284,7 +284,7 @@ class UplinksMixin:
         return [uplink_switch for uplink_switch in uplink_switches if uplink_switch in inventory_group]
 
     @cached_property
-    def _default_downlink_interfaces(self):
+    def _default_downlink_interfaces(self) -> list:
         """
         internal _default_downlink_interfaces set based on default_interfaces.
         Parsed by downstream switches during eos_designs_facts phase

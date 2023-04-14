@@ -7,7 +7,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 class LinkTrackingGroupsMixin:
     """
-    Mixin Class used to generate structured config for one key.
+    Mixin Class providing a subset of SharedUtils
     Class should only be used as Mixin to the SharedUtils class
     """
 
@@ -15,7 +15,7 @@ class LinkTrackingGroupsMixin:
     switch_data_combined: dict
 
     @cached_property
-    def link_tracking_groups(self):
+    def link_tracking_groups(self) -> list | None:
         if get(self.switch_data_combined, "link_tracking.enabled") is True:
             link_tracking_groups = []
             default_recovery_delay = get(self.hostvars, "switch.reload_delay.mlag", 300)

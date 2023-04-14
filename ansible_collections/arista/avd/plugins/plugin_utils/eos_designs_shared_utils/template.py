@@ -6,11 +6,11 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import template_v
 
 class TemplateMixin:
     """
-    Mixin Class used to generate structured config for one key.
+    Mixin Class providing a subset of SharedUtils
     Class should only be used as Mixin to the SharedUtils class
     """
 
-    def template_var(self, template_file, template_vars):
+    def template_var(self, template_file, template_vars) -> str:
         """
         Run the simplified templater using the passed Ansible "templar" engine.
         """
