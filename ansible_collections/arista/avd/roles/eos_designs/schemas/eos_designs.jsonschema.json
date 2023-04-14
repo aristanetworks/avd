@@ -889,7 +889,7 @@
         "append_rp",
         "prepend_rp"
       ],
-      "default": "replace",
+      "default": "append_rp",
       "title": "Custom Structured Configuration List Merge"
     },
     "custom_structured_configuration_prefix": {

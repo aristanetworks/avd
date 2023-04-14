@@ -14,4 +14,4 @@ keys:
       - prepend
       - append_rp
       - prepend_rp
-    default: "replace"
+    default: "append_rp"

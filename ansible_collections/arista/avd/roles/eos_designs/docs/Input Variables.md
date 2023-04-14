@@ -2929,7 +2929,7 @@ The List-merge strategy can be changed using `custom_structured_configuration_li
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>custom_structured_configuration_list_merge</samp>](## "custom_structured_configuration_list_merge") | String |  | replace | Valid Values:<br>- replace<br>- append<br>- keep<br>- prepend<br>- append_rp<br>- prepend_rp |  |
+    | [<samp>custom_structured_configuration_list_merge</samp>](## "custom_structured_configuration_list_merge") | String |  | append_rp | Valid Values:<br>- replace<br>- append<br>- keep<br>- prepend<br>- append_rp<br>- prepend_rp |  |
 
 === "YAML"
 

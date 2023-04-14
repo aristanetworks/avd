@@ -327,7 +327,7 @@ keys:
     - prepend
     - append_rp
     - prepend_rp
-    default: replace
+    default: append_rp
   custom_structured_configuration_prefix:
     type: list
     convert_types:
