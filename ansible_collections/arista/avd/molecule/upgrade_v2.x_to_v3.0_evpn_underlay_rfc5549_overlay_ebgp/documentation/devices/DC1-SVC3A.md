@@ -1016,23 +1016,23 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | True |
-| MGMT | false |
-| Tenant_A_APP_Zone | true |
-| Tenant_A_DB_Zone | true |
-| Tenant_A_OP_Zone | true |
-| Tenant_A_WAN_Zone | true |
-| Tenant_A_WEB_Zone | true |
-| Tenant_B_OP_Zone | true |
-| Tenant_B_WAN_Zone | true |
-| Tenant_C_OP_Zone | true |
-| Tenant_C_WAN_Zone | true |
+| default | True (ipv6 interfaces) |
+| MGMT | False |
+| Tenant_A_APP_Zone | True |
+| Tenant_A_DB_Zone | True |
+| Tenant_A_OP_Zone | True |
+| Tenant_A_WAN_Zone | True |
+| Tenant_A_WEB_Zone | True |
+| Tenant_B_OP_Zone | True |
+| Tenant_B_WAN_Zone | True |
+| Tenant_C_OP_Zone | True |
+| Tenant_C_WAN_Zone | True |
 
 ### IP Routing Device Configuration
 
 ```eos
 !
-ip routing
+ip routing ipv6 interfaces
 no ip routing vrf MGMT
 ip routing vrf Tenant_A_APP_Zone
 ip routing vrf Tenant_A_DB_Zone
@@ -1067,7 +1067,6 @@ ip routing vrf Tenant_C_WAN_Zone
 ```eos
 !
 ipv6 unicast-routing
-ip routing ipv6 interfaces
 ```
 
 ## Static Routes

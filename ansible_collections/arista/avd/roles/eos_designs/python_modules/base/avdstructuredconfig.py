@@ -115,8 +115,11 @@ class AvdStructuredConfig(AvdFacts):
     @cached_property
     def ip_routing(self):
         """
-        ip_routing set to True
+        ip routing set to False if ip_routing_ipv6_interfaces is set to True as the command will have precedence
+        ip_routing set to True otherwise
         """
+        if self.ip_routing_ipv6_interfaces is True:
+            return None
         return True
 
     @cached_property
