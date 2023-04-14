@@ -171,13 +171,5 @@ class UtilsMixin:
         return get(self._hostvars, "switch.uplinks")
 
     @cached_property
-    def _vtep_ip(self) -> str:
-        return get(self._hostvars, "switch.vtep_ip")
-
-    @cached_property
     def _vtep_loopback_ipv4_pool(self) -> str:
         return get(self._hostvars, "switch.vtep_loopback_ipv4_pool")
-
-    @cached_property
-    def _vtep_vvtep_ip(self) -> str:
-        return get(self._hostvars, "vtep_vvtep_ip")

@@ -19,14 +19,14 @@ class IpExtCommunityListsMixin(UtilsMixin):
         if self.shared_utils.overlay_routing_protocol != "ibgp":
             return None
 
-        if self._vtep_ip is not None:
+        if self.shared_utils.vtep_ip is not None:
             return [
                 {
                     "name": "ECL-EVPN-SOO",
                     "entries": [
                         {
                             "type": "permit",
-                            "extcommunities": f"soo {self._vtep_ip}:1",
+                            "extcommunities": f"soo {self.shared_utils.vtep_ip}:1",
                         },
                     ],
                 }

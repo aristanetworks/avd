@@ -3,7 +3,6 @@ from __future__ import annotations
 import ipaddress
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
@@ -103,12 +102,7 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
                     "'evpn_multicast: True' is only supported in combination with 'underlay_multicast: True' and 'igmp_snooping_enabled : True'"
                 )
             elif self.shared_utils.mlag is True:
-                peer_eos_designs_facts: EosDesignsFacts = get(
-                    self._hostvars,
-                    f"avd_switch_facts..{self.mlag_peer}..switch",
-                    org_key=f"avd_switch_facts.({self.mlag_peer}).switch",
-                    separator="..",
-                )
+                peer_eos_designs_facts: EosDesignsFacts = self.shared_utils.mlag_peer_facts
                 if self.shared_utils.overlay_rd_type_admin_subfield == peer_eos_designs_facts.shared_utils.overlay_rd_type_admin_subfield:
                     raise AristaAvdError(
                         "For MLAG devices Route Distinguisher must be unique when 'evpn_multicast: True' since it will create a multi-vtep configuration."
@@ -222,20 +216,4 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
         """
         if self.inband_management_role == "child":
             return f"Vlan{self.inband_management_vlan}"
-        return None
-
-    @cached_property
-    def vtep_ip(self) -> str | None:
-        """
-        Exposed in avd_switch_facts
-
-        Render ipv4 address for vtep_ip using dynamically loaded python module.
-        """
-        if self.shared_utils.vtep is True:
-            if self.shared_utils.mlag is True:
-                return self.shared_utils.ip_addressing.vtep_ip_mlag()
-
-            else:
-                return self.shared_utils.ip_addressing.vtep_ip()
-
         return None

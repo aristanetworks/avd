@@ -59,11 +59,11 @@ class LoopbackInterfacesMixin(UtilsMixin):
                 "name": self.shared_utils.vtep_loopback,
                 "description": self.shared_utils.interface_descriptions.vtep_loopback_interface(),
                 "shutdown": False,
-                "ip_address": f"{self._vtep_ip}/32",
+                "ip_address": f"{self.shared_utils.vtep_ip}/32",
             }
 
-            if self.shared_utils.network_services_l3 is True and self._vtep_vvtep_ip is not None:
-                vtep_loopback["ip_address_secondaries"] = [self._vtep_vvtep_ip]
+            if self.shared_utils.network_services_l3 is True and self.shared_utils.vtep_vvtep_ip is not None:
+                vtep_loopback["ip_address_secondaries"] = [self.shared_utils.vtep_vvtep_ip]
 
             if self.shared_utils.underlay_ospf is True:
                 vtep_loopback["ospf_area"] = self._underlay_ospf_area

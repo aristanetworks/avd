@@ -68,3 +68,10 @@ class OverlayMixin:
             "peering_address": self.shared_utils.overlay_peering_address,
             "evpn_mpls": self.shared_utils.overlay_evpn_mpls,
         }
+
+    @cached_property
+    def vtep_ip(self) -> str | None:
+        """
+        Exposed in avd_switch_facts
+        """
+        return self.shared_utils.vtep_ip

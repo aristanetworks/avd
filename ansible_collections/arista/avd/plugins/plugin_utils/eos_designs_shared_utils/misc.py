@@ -11,8 +11,9 @@ class MiscMixin:
     Class should only be used as Mixin to the SharedUtils class
     """
 
-    hostvars: dict
     any_network_services: bool
+    hostvars: dict
+    mlag: bool
     platform_settings: dict
     switch_data_combined: dict
     switch_data: dict
@@ -122,3 +123,18 @@ class MiscMixin:
     @cached_property
     def vtep_loopback(self) -> str:
         return get(self.switch_data_combined, "vtep_loopback", default="Loopback1")
+
+    @cached_property
+    def vtep_ip(self) -> str | None:
+        """
+        Render ipv4 address for vtep_ip using dynamically loaded python module.
+        """
+        if self.mlag is True:
+            return self.ip_addressing.vtep_ip_mlag()
+
+        else:
+            return self.ip_addressing.vtep_ip()
+
+    @cached_property
+    def vtep_vvtep_ip(self) -> str | None:
+        return get(self.hostvars, "vtep_vvtep_ip")

@@ -16,6 +16,7 @@ class OverlayMixin:
 
     any_network_services: bool
     bgp: bool
+    bgp_as: str
     hostname: str
     hostvars: dict
     id: int
@@ -31,6 +32,7 @@ class OverlayMixin:
     underlay_router: bool
     uplink_type: str
     vtep: bool
+    vtep_ip: str
 
     @cached_property
     def evpn_role(self) -> str | None:
@@ -54,10 +56,10 @@ class OverlayMixin:
             return self.router_id
 
         if tmp_overlay_rd_type_admin_subfield == "vtep_loopback":
-            return get(self.hostvars, "switch.vtep_ip")
+            return self.vtep_ip
 
         if tmp_overlay_rd_type_admin_subfield == "bgp_as":
-            return get(self.hostvars, "switch.bgp_as")
+            return self.bgp_as
 
         if tmp_overlay_rd_type_admin_subfield == "switch_id":
             if self.id is None:

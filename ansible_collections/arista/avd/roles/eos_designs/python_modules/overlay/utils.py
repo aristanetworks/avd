@@ -253,10 +253,6 @@ class UtilsMixin:
 
         return mpls_rr_peers
 
-    @cached_property
-    def _vtep_ip(self) -> str:
-        return get(self._hostvars, "switch.vtep_ip")
-
     # utils functions
     def _get_peer_facts(self, peer_name: str, required: bool = True) -> dict | None:
         """

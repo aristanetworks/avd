@@ -12,13 +12,14 @@ class LinkTrackingGroupsMixin:
     """
 
     hostvars: dict
+    platform_settings: dict
     switch_data_combined: dict
 
     @cached_property
     def link_tracking_groups(self) -> list | None:
         if get(self.switch_data_combined, "link_tracking.enabled") is True:
             link_tracking_groups = []
-            default_recovery_delay = get(self.hostvars, "switch.reload_delay.mlag", 300)
+            default_recovery_delay = get(self.platform_settings, "reload_delay.mlag", 300)
             lt_groups = get(self.switch_data_combined, "link_tracking.groups", default=[])
 
             if len(lt_groups) > 0:
