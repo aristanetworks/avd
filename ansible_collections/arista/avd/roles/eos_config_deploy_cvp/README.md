@@ -84,33 +84,39 @@ For a complete list of authentication options available with CloudVision Ansible
 Below is an example of how to use role with a single string as `device_filter`:
 
 ```yaml
-tasks:
-  - name: Run CVP provisioning
-    ansible.builtin.import_role:
-        name: eos_config_deploy_cvp
-    vars:
-      container_root: 'DC1_FABRIC'
-      configlets_prefix: 'DC1-AVD'
-      device_filter: 'DC1'
-      state: present
-      execute_tasks: false
+- name: Deploy Configs
+  hosts: CVP
+  gather_facts: false
+  tasks:
+    - name: Run CVP provisioning
+      ansible.builtin.import_role:
+          name: eos_config_deploy_cvp
+      vars:
+        container_root: 'DC1_FABRIC'
+        configlets_prefix: 'DC1-AVD'
+        device_filter: 'DC1'
+        state: present
+        execute_tasks: false
 ```
 
 The following code block is an example of how to use this role with a list of strings to create `device_filter` entries:
 
 ```yaml
-tasks:
-  - name: Run CVP provisioning
-    ansible.builtin.import_role:
-        name: eos_config_deploy_cvp
-    vars:
-      container_root: 'DC1_FABRIC'
-      configlets_prefix: 'DC1-AVD'
-      device_filter:
-        - 'DC1'
-        - 'DC2'
-      state: present
-      execute_tasks: false
+- name: Deploy Configs
+  hosts: CVP
+  gather_facts: false
+  tasks:
+    - name: Run CVP provisioning
+      ansible.builtin.import_role:
+          name: eos_config_deploy_cvp
+      vars:
+        container_root: 'DC1_FABRIC'
+        configlets_prefix: 'DC1-AVD'
+        device_filter:
+          - 'DC1'
+          - 'DC2'
+        state: present
+        execute_tasks: false
 ```
 
 #### Ignore devices not provisioned in CloudVision
