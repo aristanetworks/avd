@@ -83,6 +83,19 @@ router_bgp:
           - '1234:12'
       redistribute_routes:
       - connected
+    Tenant_A_OP_Zone:
+      router_id: 192.168.255.9
+      rd: 1.1.1.1:9
+      route_targets:
+        import:
+          evpn:
+          - '1234:9'
+        export:
+          evpn:
+          - '1234:9'
+      redistribute_routes:
+      - connected
+      - ospf
     Tenant_A_WEB_Zone:
       router_id: 192.168.255.9
       rd: 1.1.1.1:11
@@ -116,6 +129,14 @@ router_bgp:
       redistribute_routes:
       - learned
       vlan: 130-132
+    Tenant_A_OP_Zone:
+      rd: 1.1.1.1:9
+      route_targets:
+        both:
+        - '1234:9'
+      redistribute_routes:
+      - learned
+      vlan: '113'
     Tenant_A_WEB_Zone:
       rd: 1.1.1.1:11
       route_targets:
@@ -191,6 +212,10 @@ vrfs:
   Tenant_A_APP_Zone:
     tenant: Tenant_A
     ip_routing: true
+  Tenant_A_OP_Zone:
+    tenant: Tenant_A
+    ip_routing: true
+    description: Tenant_A_OP_Zone
   Tenant_A_WEB_Zone:
     tenant: Tenant_A
     ip_routing: true
@@ -283,6 +308,11 @@ loopback_interfaces:
     description: VTEP_VXLAN_Tunnel_Source
     shutdown: false
     ip_address: 192.168.254.9/32
+  Loopback100:
+    description: Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
+    shutdown: false
+    vrf: Tenant_A_OP_Zone
+    ip_address: 10.255.1.9/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:
@@ -312,6 +342,9 @@ vlans:
   132:
     tenant: Tenant_A
     name: Tenant_A_APP_Zone_3
+  113:
+    tenant: Tenant_A
+    name: Tenant_A_OP_Zone_4
   120:
     tenant: Tenant_A
     name: Tenant_A_WEB_Zone_1
@@ -363,6 +396,23 @@ vlan_interfaces:
     - 10.2.32.254/24
     - 10.3.32.254/24
     vrf: Tenant_A_APP_Zone
+  Vlan113:
+    tenant: Tenant_A
+    tags:
+    - DC1_LEAF1
+    description: Tenant_A_OP_Zone_4
+    shutdown: false
+    vrf: Tenant_A_OP_Zone
+    ospf_area: 0
+    ospf_network_point_to_point: true
+    ospf_authentication: message-digest
+    ospf_message_digest_keys:
+      1:
+        hash_algorithm: sha1
+        key: AQQvKeimxJu+uGQ/yYvv9w==
+      2:
+        hash_algorithm: sha512
+        key: AQQvKeimxJu+uGQ/yYvv9w==
   Vlan120:
     tenant: Tenant_A
     tags:
@@ -415,6 +465,16 @@ vlan_interfaces:
     ip_address_virtual: 10.4.12.254/24
     ipv6_address_virtual: 2001:db8:412::1/64
     vrf: Tenant_D_WAN_Zone
+router_ospf:
+  process_ids:
+    9:
+      vrf: Tenant_A_OP_Zone
+      passive_interface_default: true
+      router_id: 192.168.255.9
+      no_passive_interfaces:
+      - Vlan113
+      redistribute:
+        bgp: {}
 vxlan_interface:
   Vxlan1:
     description: DC1-LEAF1A_VTEP
@@ -428,6 +488,8 @@ vxlan_interface:
           vni: 10131
         132:
           vni: 10132
+        113:
+          vni: 10113
         120:
           vni: 10120
         121:
@@ -441,7 +503,12 @@ vxlan_interface:
       vrfs:
         Tenant_A_APP_Zone:
           vni: 12
+        Tenant_A_OP_Zone:
+          vni: 10
         Tenant_A_WEB_Zone:
           vni: 11
         Tenant_D_WAN_Zone:
           vni: 41
+virtual_source_nat_vrfs:
+  Tenant_A_OP_Zone:
+    ip_address: 10.255.1.9

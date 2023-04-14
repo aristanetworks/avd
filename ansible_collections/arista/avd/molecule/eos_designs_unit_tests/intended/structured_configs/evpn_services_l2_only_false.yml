@@ -194,7 +194,7 @@ router_bgp:
         - '9:9'
       redistribute_routes:
       - learned
-      vlan: 110-112
+      vlan: 110-113
     Tenant_A_WAN_Zone:
       rd: 192.168.255.109:14
       route_targets:
@@ -440,6 +440,9 @@ vlans:
   112:
     tenant: Tenant_A
     name: Tenant_A_OP_Zone_3
+  113:
+    tenant: Tenant_A
+    name: Tenant_A_OP_Zone_4
   150:
     tenant: Tenant_A
     name: Tenant_A_WAN_Zone_1
@@ -589,6 +592,23 @@ vlan_interfaces:
       2.2.2.2:
         source_interface: lo101
         vrf: MGMT
+  Vlan113:
+    tenant: Tenant_A
+    tags:
+    - DC1_LEAF1
+    description: Tenant_A_OP_Zone_4
+    shutdown: false
+    vrf: Tenant_A_OP_Zone
+    ospf_area: 0
+    ospf_network_point_to_point: true
+    ospf_authentication: message-digest
+    ospf_message_digest_keys:
+      1:
+        hash_algorithm: sha1
+        key: AQQvKeimxJu+uGQ/yYvv9w==
+      2:
+        hash_algorithm: sha512
+        key: AQQvKeimxJu+uGQ/yYvv9w==
   Vlan150:
     tenant: Tenant_A
     tags:
@@ -784,6 +804,8 @@ vxlan_interface:
           vni: 50111
         112:
           vni: 10112
+        113:
+          vni: 10113
         150:
           vni: 10150
         151:
