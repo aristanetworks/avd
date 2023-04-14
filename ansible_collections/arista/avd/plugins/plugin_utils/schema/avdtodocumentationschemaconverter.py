@@ -87,7 +87,7 @@ class AvdToDocumentationSchemaConverter:
     def __init__(self, avdschema: AvdSchema):
         self._avdschema = avdschema
         meta_schema = self._avdschema._validator.META_SCHEMA
-        documentation_options_schema = meta_schema["$def"]["documentation_options"]
+        documentation_options_schema = meta_schema["$defs"]["documentation_options"]
         self._default_filename = documentation_options_schema["properties"]["filename"]["default"]
 
     def convert_schema(self):
