@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import ipaddress
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress

@@ -95,7 +95,11 @@ class RouterBgpMixin(UtilsMixin):
                 bgp_peer_groups.append(peer_group)
 
         # router bgp default vrf configuration for evpn
-        if (self._vrf_default_ipv4_subnets or self._vrf_default_ipv4_static_routes["static_routes"]) and self.shared_utils.overlay_vtep and self.shared_utils.overlay_evpn:
+        if (
+            (self._vrf_default_ipv4_subnets or self._vrf_default_ipv4_static_routes["static_routes"])
+            and self.shared_utils.overlay_vtep
+            and self.shared_utils.overlay_evpn
+        ):
             bgp_peer_groups.append(
                 {
                     "name": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["name"],

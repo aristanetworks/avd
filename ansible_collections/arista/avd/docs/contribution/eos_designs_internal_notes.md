@@ -278,6 +278,7 @@ which at the time where `yaml_templates_to_facts` run, is a nested `dict`. It co
 Subclasses are typically using Mixin classes to split all the attributes/`cached_properties` into managable files.
 
 Paths:
+
 - `ansible_collections/arista/avd/roles/eos_designs/python_modules/base/`
   Unfortunate naming. Base here refers to base configurations. Not a Base class.
 - `ansible_collections/arista/avd/roles/eos_designs/python_modules/connected_endpoints/`
