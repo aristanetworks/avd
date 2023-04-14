@@ -20,11 +20,11 @@ class UtilsMixin:
 
     @cached_property
     def _mlag_primary_id(self) -> int:
-        return int(get(self._hostvars, "switch.mlag_switch_ids.primary", required=True))
+        self.shared_utils.mlag_switch_ids["primary"]
 
     @cached_property
     def _mlag_secondary_id(self) -> int:
-        return int(get(self._hostvars, "switch.mlag_switch_ids.secondary", required=True))
+        self.shared_utils.mlag_switch_ids["secondary"]
 
     @cached_property
     def _mlag_peer_ipv4_pool(self) -> str:

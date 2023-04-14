@@ -63,54 +63,8 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         return get(self._hostvars, "underlay_rfc5549") is True
 
     @cached_property
-    def _overlay_mlag_rfc5549(self) -> bool:
-        return get(self._hostvars, "overlay_mlag_rfc5549") is True
-
-    @cached_property
-    def _mlag_ibgp_ip(self) -> str:
-        if (mlag_ip := get(self._hostvars, "switch.mlag_l3_ip")) is not None:
-            return mlag_ip
-
-        return get(self._hostvars, "switch.mlag_ip", required=True)
-
-    @cached_property
-    def _mlag_peer_ibgp_ip(self) -> str:
-        if self.shared_utils.mlag_peer_l3_ip is not None:
-            return self.shared_utils.mlag_peer_l3_ip
-
-        return self.shared_utils.mlag_peer_ip
-
-    @cached_property
     def _p2p_uplinks_mtu(self) -> int:
         return int(get(self._hostvars, "p2p_uplinks_mtu", required=True))
-
-    @cached_property
-    def _mlag_ibgp_peering_vrfs_base_vlan(self) -> int:
-        return int(get(self._hostvars, "mlag_ibgp_peering_vrfs.base_vlan", required=True))
-
-    @cached_property
-    def _overlay_evpn(self) -> bool:
-        return get(self._hostvars, "switch.overlay.evpn", required=True) is True
-
-    @cached_property
-    def _overlay_cvx(self) -> bool:
-        return get(self._hostvars, "switch.overlay.cvx", required=True) is True
-
-    @cached_property
-    def _overlay_her(self) -> bool:
-        return get(self._hostvars, "switch.overlay.her", required=True) is True
-
-    @cached_property
-    def _overlay_vtep(self) -> bool:
-        return get(self._hostvars, "switch.overlay.vtep", required=True) is True
-
-    @cached_property
-    def _overlay_ler(self) -> bool:
-        return get(self._hostvars, "switch.overlay.ler") is True
-
-    @cached_property
-    def _overlay_evpn_mpls(self) -> bool:
-        return get(self._hostvars, "switch.overlay.evpn_mpls") is True
 
     @cached_property
     def _bgp_as(self) -> str | None:
@@ -178,7 +132,7 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
 
             vrf_default_redistribute_static = vrf_default.get("redistribute_static", vrf_default_redistribute_static)
 
-        if self._overlay_evpn and self._overlay_vtep:
+        if self.shared_utils.overlay_evpn and self.shared_utils.overlay_vtep:
             # This is an EVPN VTEP
             redistribute_in_underlay = False
             redistribute_in_overlay = vrf_default_redistribute_static and vrf_default_ipv4_static_routes
@@ -229,7 +183,7 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         if (mlag_ibgp_peering_vlan := get(vrf, "mlag_ibgp_peering_vlan")) is not None:
             vlan_id = mlag_ibgp_peering_vlan
         else:
-            base_vlan = self._mlag_ibgp_peering_vrfs_base_vlan
+            base_vlan = self.shared_utils.mlag_ibgp_peering_vrfs_base_vlan
             vrf_id = vrf.get("vrf_id", vrf.get("vrf_vni"))
             if vrf_id is None:
                 raise AristaAvdMissingVariableError(
@@ -238,10 +192,6 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
             vlan_id = base_vlan + int(vrf_id) - 1
 
         return vlan_id
-
-    @cached_property
-    def _mpls_overlay_role(self) -> str | None:
-        return get(self._hostvars, "switch.mpls_overlay_role")
 
     @cached_property
     def _configure_bgp_mlag_peer_group(self) -> bool:

@@ -100,7 +100,7 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
         if overlay_loopback_description is not None:
             return overlay_loopback_description
 
-        if self._mpls_overlay_role in ["server", "client"]:
+        if self.shared_utils.mpls_overlay_role in ["server", "client"]:
             return "MPLS_Overlay_peering"
 
         if self._mpls_lsr is True:

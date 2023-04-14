@@ -20,7 +20,7 @@ class UtilsMixin:
 
     @cached_property
     def _mpls_overlay_role(self) -> str:
-        return get(self._hostvars, "switch.mpls_overlay_role")
+        return self.shared_utils.mpls_overlay_role
 
     @cached_property
     def _overlay_routing_protocol(self) -> str:
@@ -32,7 +32,7 @@ class UtilsMixin:
 
     @cached_property
     def _mlag_port_channel_id(self) -> str:
-        return get(self._hostvars, "switch.mlag_port_channel_id", required=True)
+        return self.shared_utils.mlag_port_channel_id
 
     @cached_property
     def _mpls_lsr(self) -> str:

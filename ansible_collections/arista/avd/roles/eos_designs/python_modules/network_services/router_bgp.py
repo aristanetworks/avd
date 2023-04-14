@@ -95,7 +95,7 @@ class RouterBgpMixin(UtilsMixin):
                 bgp_peer_groups.append(peer_group)
 
         # router bgp default vrf configuration for evpn
-        if (self._vrf_default_ipv4_subnets or self._vrf_default_ipv4_static_routes["static_routes"]) and self._overlay_vtep and self._overlay_evpn:
+        if (self._vrf_default_ipv4_subnets or self._vrf_default_ipv4_static_routes["static_routes"]) and self.shared_utils.overlay_vtep and self.shared_utils.overlay_evpn:
             bgp_peer_groups.append(
                 {
                     "name": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["name"],
@@ -116,7 +116,7 @@ class RouterBgpMixin(UtilsMixin):
 
         TODO: Optimize this to allow bgp VRF config without overlays (vtep or mpls)
         """
-        if not (self._overlay_vtep or self._overlay_ler):
+        if not (self.shared_utils.overlay_vtep or self.shared_utils.overlay_ler):
             return None
 
         if not self.shared_utils.network_services_l3:
@@ -156,7 +156,7 @@ class RouterBgpMixin(UtilsMixin):
                     else:
                         target["route_targets"].append(rt["route_target"])
 
-                if vrf_name == "default" and self._overlay_evpn and self._vrf_default_ipv4_subnets:
+                if vrf_name == "default" and self.shared_utils.overlay_evpn and self._vrf_default_ipv4_subnets:
                     # Special handling of vrf default.
 
                     if (target := get_item(route_targets["export"], "address_family", "evpn")) is None:
@@ -188,7 +188,7 @@ class RouterBgpMixin(UtilsMixin):
                 }
                 # MLAG IBGP Peering VLANs per VRF
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is not None:
-                    if self._underlay_rfc5549 and self._overlay_mlag_rfc5549:
+                    if self._underlay_rfc5549 and self.shared_utils.overlay_mlag_rfc5549:
                         interface_name = f"Vlan{vlan_id}"
                         bgp_vrf.setdefault("neighbor_interfaces", []).append(
                             {
@@ -205,7 +205,7 @@ class RouterBgpMixin(UtilsMixin):
                             else:
                                 ip_address = self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_primary(mlag_ibgp_peering_ipv4_pool)
                         else:
-                            ip_address = self._mlag_peer_ibgp_ip
+                            ip_address = self.shared_utils.mlag_peer_ibgp_ip
 
                         bgp_vrf.setdefault("neighbors", []).append(
                             {"ip_address": ip_address, "peer_group": self.shared_utils.bgp_peer_groups["mlag_ipv4_underlay_peer"]["name"]}
@@ -269,8 +269,8 @@ class RouterBgpMixin(UtilsMixin):
             self.shared_utils.network_services_l2
             and "evpn" in self.shared_utils.overlay_address_families
             and not self._evpn_vlan_aware_bundles
-            and (self._overlay_vtep or self._overlay_ler)
-            and (self._overlay_evpn)
+            and (self.shared_utils.overlay_vtep or self.shared_utils.overlay_ler)
+            and (self.shared_utils.overlay_evpn)
         ):
             return None
 
@@ -348,7 +348,7 @@ class RouterBgpMixin(UtilsMixin):
         Return structured config for router_bgp.vlan_aware_bundles
         """
 
-        if not (self.shared_utils.network_services_l2 and self._overlay_evpn):
+        if not (self.shared_utils.network_services_l2 and self.shared_utils.overlay_evpn):
             return None
 
         if not self._evpn_vlan_aware_bundles:
@@ -449,7 +449,7 @@ class RouterBgpMixin(UtilsMixin):
         Return structured config for router_bgp.vpws
         """
 
-        if not (self.shared_utils.network_services_l1 and self._overlay_ler and self._overlay_evpn_mpls):
+        if not (self.shared_utils.network_services_l1 and self.shared_utils.overlay_ler and self.shared_utils.overlay_evpn_mpls):
             return None
 
         vpws = []

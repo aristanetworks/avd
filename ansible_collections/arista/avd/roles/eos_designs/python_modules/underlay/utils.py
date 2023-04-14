@@ -39,15 +39,11 @@ class UtilsMixin:
 
     @cached_property
     def _filter_peer_as(self) -> bool:
-        return self._underlay_filter_peer_as is True and self._evpn_role not in ["client", "server"]
+        return self._underlay_filter_peer_as is True and self.shared_utils.evpn_role not in ["client", "server"]
 
     @cached_property
     def _loopback_ipv4_pool(self) -> str:
         return get(self._hostvars, "switch.loopback_ipv4_pool")
-
-    @cached_property
-    def _overlay_vtep(self) -> bool:
-        return get(self._hostvars, "switch.overlay.vtep", required=True) is True
 
     @cached_property
     def _p2p_uplinks_mtu(self):

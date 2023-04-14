@@ -16,7 +16,7 @@ class ManagementCvxMixin(UtilsMixin):
 
     @cached_property
     def management_cvx(self) -> dict | None:
-        if not (self._overlay_cvx and self._overlay_vtep):
+        if not (self.shared_utils.overlay_cvx and self.shared_utils.overlay_vtep):
             return None
 
         server_hosts = []

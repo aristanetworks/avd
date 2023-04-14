@@ -28,13 +28,15 @@ class UplinksMixin:
 
     @cached_property
     def max_parallel_uplinks(self) -> int:
-        """REQUIRED in avd_switch_facts"""
+        """
+        Exposed in avd_switch_facts
+        """
         return get(self.shared_utils.switch_data_combined, "max_parallel_uplinks", default=1)
 
     @cached_property
     def max_uplink_switches(self) -> int:
         """
-        REQUIRED in avd_switch_facts
+        Exposed in avd_switch_facts
 
         max_uplink_switches will default to the length of uplink_switches
         """
@@ -110,7 +112,7 @@ class UplinksMixin:
     @cached_property
     def uplinks(self) -> list:
         """
-        REQUIRED in avd_switch_facts
+        Exposed in avd_switch_facts
 
         List of uplinks with all parameters
 
@@ -223,14 +225,7 @@ class UplinksMixin:
                     uplink["peer_channel_description"] = self.shared_utils.group
 
                 if self.shared_utils.mlag_role == "secondary":
-                    mlag_peer_switch_facts: EosDesignsFacts = get(
-                        self._hostvars,
-                        f"avd_switch_facts..{self.mlag_peer}..switch",
-                        required=True,
-                        separator="..",
-                        org_key=f"avd_switch_facts.{self.mlag_peer}.switch",
-                    )
-
+                    mlag_peer_switch_facts: EosDesignsFacts = (self.shared_utils.mlag_peer_facts,)
                     uplink["channel_group_id"] = "".join(re.findall(r"\d", mlag_peer_switch_facts._uplink_interfaces[0]))
                     uplink["peer_channel_group_id"] = "".join(re.findall(r"\d", mlag_peer_switch_facts._uplink_switch_interfaces[0]))
                 else:
@@ -277,7 +272,7 @@ class UplinksMixin:
     @cached_property
     def uplink_peers(self) -> uplinks:
         """
-        REQUIRED in avd_switch_facts
+        Exposed in avd_switch_facts
 
         List of all uplink peers
 

@@ -162,7 +162,7 @@ class VlanInterfacesMixin(UtilsMixin):
             "vrf": vrf["name"],
             "mtu": self._p2p_uplinks_mtu,
         }
-        if self._underlay_rfc5549 and self._overlay_mlag_rfc5549:
+        if self._underlay_rfc5549 and self.shared_utils.overlay_mlag_rfc5549:
             vlan_interface_config["ipv6_enable"] = True
         elif (mlag_ibgp_peering_ipv4_pool := vrf.get("mlag_ibgp_peering_ipv4_pool")) is not None:
             if self.shared_utils.mlag_role == "primary":

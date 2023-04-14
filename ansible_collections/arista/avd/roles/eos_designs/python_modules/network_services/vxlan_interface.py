@@ -31,7 +31,7 @@ class VxlanInterfaceMixin(UtilsMixin):
         This function also detects duplicate VNIs and raise an error in case of duplicates between
         all Network Services deployed on this device.
         """
-        if not self._overlay_vtep:
+        if not self.shared_utils.overlay_vtep:
             return None
 
         vxlan = {
@@ -43,13 +43,13 @@ class VxlanInterfaceMixin(UtilsMixin):
         else:
             vxlan["source_interface"] = self.shared_utils.vtep_loopback
 
-        if self.shared_utils.mlag_l3 and self.shared_utils.network_services_l3 and self._overlay_evpn:
+        if self.shared_utils.mlag_l3 and self.shared_utils.network_services_l3 and self.shared_utils.overlay_evpn:
             vxlan["virtual_router_encapsulation_mac_address"] = "mlag-system-id"
 
-        if self._overlay_her and self._overlay_her_flood_list_per_vni is False:
+        if self.shared_utils.overlay_her and self._overlay_her_flood_list_per_vni is False:
             vxlan["flood_vteps"] = natural_sort(unique(self._overlay_her_flood_lists.get("common", [])))
 
-        if self._overlay_cvx:
+        if self.shared_utils.overlay_cvx:
             vxlan["controller_client"] = {"enabled": True}
 
         vlans = []
@@ -67,7 +67,7 @@ class VxlanInterfaceMixin(UtilsMixin):
                         vnis[vni] = tenant["name"]
                         vlans.append({"id": vlan_id, **vlan})
 
-                if self.shared_utils.network_services_l3 and self._overlay_evpn:
+                if self.shared_utils.network_services_l3 and self.shared_utils.overlay_evpn:
                     vrf_name = vrf["name"]
                     vni = default(
                         vrf.get("vrf_vni"),
@@ -149,7 +149,7 @@ class VxlanInterfaceMixin(UtilsMixin):
             offset = vlan_id - 1 + underlay_l2_multicast_group_ipv4_pool_offset
             vxlan_interface_vlan["multicast_group"] = self.shared_utils.ip_addressing._ip(underlay_l2_multicast_group_ipv4_pool, 32, offset, 0)
 
-        if self._overlay_her and self._overlay_her_flood_list_per_vni:
+        if self.shared_utils.overlay_her and self._overlay_her_flood_list_per_vni:
             vxlan_interface_vlan["flood_vteps"] = natural_sort(unique(self._overlay_her_flood_lists.get(vlan_id, [])))
 
         return vxlan_interface_vlan

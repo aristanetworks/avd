@@ -31,28 +31,12 @@ class AvdStructuredConfig(AvdFacts):
         return get(self._hostvars, "p2p_uplinks_mtu", required=True)
 
     @cached_property
-    def _mlag_port_channel_id(self) -> int:
-        return int(get(self._hostvars, "switch.mlag_port_channel_id", required=True))
-
-    @cached_property
     def _underlay_rfc5549(self):
         return get(self._hostvars, "underlay_rfc5549")
 
     @cached_property
     def _bgp_as(self):
         return get(self._hostvars, "switch.bgp_as", required=True)
-
-    @cached_property
-    def _mlag_ip(self):
-        return get(self._hostvars, "switch.mlag_ip", required=True)
-
-    @cached_property
-    def _mlag_l3_ip(self):
-        return get(self._hostvars, "switch.mlag_l3_ip", required=True)
-
-    @cached_property
-    def _mlag_peer_vlan_structured_config(self):
-        return get(self.shared_utils.switch_data_combined, "mlag_peer_vlan_structured_config")
 
     @cached_property
     def spanning_tree(self):
@@ -94,9 +78,9 @@ class AvdStructuredConfig(AvdFacts):
             "name": main_vlan_interface_name,
             "description": "MLAG_PEER",
             "shutdown": False,
-            "ip_address": f"{self._mlag_ip}/31",
+            "ip_address": f"{self.shared_utils.mlag_ip}/31",
             "no_autostate": True,
-            "struct_cfg": self._mlag_peer_vlan_structured_config,
+            "struct_cfg": self.shared_utils.mlag_peer_vlan_structured_config,
             "mtu": self._p2p_uplinks_mtu,
         }
         if not self.shared_utils.mlag_l3:
@@ -133,8 +117,8 @@ class AvdStructuredConfig(AvdFacts):
         if self.shared_utils.mlag_peer_l3_vlan is None:
             main_vlan_interface.update(l3_cfg)
             # Applying structured config again in the case it is set on both l3vlan and main vlan
-            if self._mlag_peer_vlan_structured_config is not None:
-                main_vlan_interface["struct_cfg"] = self._mlag_peer_vlan_structured_config
+            if self.shared_utils.mlag_peer_vlan_structured_config is not None:
+                main_vlan_interface["struct_cfg"] = self.shared_utils.mlag_peer_vlan_structured_config
 
             return [strip_empties_from_dict(main_vlan_interface)]
 
@@ -147,7 +131,7 @@ class AvdStructuredConfig(AvdFacts):
             "mtu": self._p2p_uplinks_mtu,
         }
         if self._underlay_rfc5549 is not True:
-            l3_vlan_interface["ip_address"] = f"{self._mlag_l3_ip}/31"
+            l3_vlan_interface["ip_address"] = f"{self.shared_utils.mlag_l3_ip}/31"
 
         l3_vlan_interface.update(l3_cfg)
 
@@ -162,7 +146,7 @@ class AvdStructuredConfig(AvdFacts):
         Return dict with one Port Channel Interface used for MLAG Peer Link
         """
 
-        port_channel_interface_name = f"Port-Channel{self._mlag_port_channel_id}"
+        port_channel_interface_name = f"Port-Channel{self.shared_utils.mlag_port_channel_id}"
         port_channel_interface = {
             "name": port_channel_interface_name,
             "description": self.shared_utils.interface_descriptions.mlag_port_channel_interfaces(),
@@ -204,7 +188,7 @@ class AvdStructuredConfig(AvdFacts):
                 "type": "switched",
                 "shutdown": False,
                 "channel_group": {
-                    "id": self._mlag_port_channel_id,
+                    "id": self.shared_utils.mlag_port_channel_id,
                     "mode": "active",
                 },
                 "speed": self.shared_utils.mlag_interfaces_speed,
@@ -213,19 +197,6 @@ class AvdStructuredConfig(AvdFacts):
             ethernet_interfaces[mlag_interface] = ethernet_interface
 
         return strip_empties_from_dict(ethernet_interfaces)
-
-    @cached_property
-    def _mlag_peer_mgmt_ip(self):
-        peer_mgmt_ip = get(
-            self._hostvars,
-            f"avd_switch_facts..{self.shared_utils.mlag_peer}..switch..mgmt_ip",
-            org_key=f"avd_switch_facts.({self.shared_utils.mlag_peer}).switch.mgmt_ip",
-            separator="..",
-        )
-        if peer_mgmt_ip is not None:
-            return str(ipaddress.ip_interface(peer_mgmt_ip).ip)
-
-        return None
 
     @cached_property
     def mlag_configuration(self):
@@ -237,19 +208,19 @@ class AvdStructuredConfig(AvdFacts):
             "domain_id": self.shared_utils.group,
             "local_interface": f"Vlan{self.shared_utils.mlag_peer_vlan}",
             "peer_address": self.shared_utils.mlag_peer_ip,
-            "peer_link": f"Port-Channel{self._mlag_port_channel_id}",
+            "peer_link": f"Port-Channel{self.shared_utils.mlag_port_channel_id}",
             "reload_delay_mlag": get(self.shared_utils.platform_settings, "reload_delay.mlag"),
             "reload_delay_non_mlag": get(self.shared_utils.platform_settings, "reload_delay.non_mlag"),
         }
         if (
             get(self.shared_utils.switch_data_combined, "mlag_dual_primary_detection", default=False) is True
-            and self._mlag_peer_mgmt_ip is not None
+            and self.shared_utils.mlag_peer_mgmt_ip is not None
             and (mgmt_interface_vrf := get(self._hostvars, "mgmt_interface_vrf")) is not None
         ):
             mlag_configuration.update(
                 {
                     "peer_address_heartbeat": {
-                        "peer_ip": self._mlag_peer_mgmt_ip,
+                        "peer_ip": self.shared_utils.mlag_peer_mgmt_ip,
                         "vrf": mgmt_interface_vrf,
                     },
                     "dual_primary_detection_delay": 5,

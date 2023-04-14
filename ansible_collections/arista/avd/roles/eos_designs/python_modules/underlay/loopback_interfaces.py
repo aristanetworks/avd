@@ -54,7 +54,7 @@ class LoopbackInterfacesMixin(UtilsMixin):
         loopback_interfaces.append(loopback0)
 
         # VTEP loopback
-        if self._overlay_vtep is True and self.shared_utils.vtep_loopback.lower() != "loopback0":
+        if self.shared_utils.overlay_vtep is True and self.shared_utils.vtep_loopback.lower() != "loopback0":
             vtep_loopback = {
                 "name": self.shared_utils.vtep_loopback,
                 "description": self.shared_utils.interface_descriptions.vtep_loopback_interface(),

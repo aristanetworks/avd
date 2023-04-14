@@ -1,10 +1,15 @@
 from __future__ import annotations
 
 from functools import cached_property
+from re import findall
+from typing import TYPE_CHECKING
 
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+
+if TYPE_CHECKING:
+    from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_facts import EosDesignsFacts
 
 
 class MlagMixin:
@@ -16,6 +21,7 @@ class MlagMixin:
     default_interfaces: dict
     hostname: str
     hostvars: dict
+    id: int
     node_type_key_data: dict
     switch_data_combined: dict
     switch_data_node_group_nodes: list
@@ -86,22 +92,93 @@ class MlagMixin:
 
     @cached_property
     def mlag_peer_ip(self) -> str:
-        return get(
-            self.hostvars,
-            f"avd_switch_facts..{self.mlag_peer}..switch..mlag_ip",
-            required=True,
-            org_key=f"avd_switch_facts.({self.mlag_peer}).switch.mlag_ip",
-            separator="..",
-        )
+        return self.get_mlag_peer_fact("mlag_ip")
 
     @cached_property
     def mlag_peer_l3_ip(self) -> str | None:
         if self.mlag_peer_l3_vlan is not None:
-            return get(
-                self.hostvars,
-                f"avd_switch_facts..{self.mlag_peer}..switch..mlag_l3_ip",
-                required=True,
-                org_key=f"avd_switch_facts.({self.mlag_peer}).switch.mlag_l3_ip",
-                separator="..",
-            )
+            return self.get_mlag_peer_fact("mlag_l3_ip")
         return None
+
+    @cached_property
+    def mlag_peer_id(self):
+        return self.get_mlag_peer_fact("id")
+
+    def get_mlag_peer_fact(self, key, required=True):
+        return get(self.mlag_peer_facts, key, required=required, org_key=f"avd_switch_facts.({self.mlag_peer}).switch.{key}")
+
+    @cached_property
+    def mlag_peer_facts(self) -> EosDesignsFacts | dict:
+        return get(
+            self.hostvars,
+            f"avd_switch_facts..{self.mlag_peer}..switch",
+            required=True,
+            org_key=f"avd_switch_facts.({self.mlag_peer}).switch",
+            separator="..",
+        )
+
+    @cached_property
+    def mlag_peer_mgmt_ip(self):
+        return self.get_mlag_peer_fact("mgmt_ip")
+
+    @cached_property
+    def mlag_ip(self):
+        """
+        Render ipv4 address for mlag_ip using dynamically loaded python module.
+        """
+        if self.mlag_role == "primary":
+            return self.ip_addressing.mlag_ip_primary()
+        elif self.mlag_role == "secondary":
+            return self.ip_addressing.mlag_ip_secondary()
+
+    @cached_property
+    def mlag_l3_ip(self):
+        """
+        Render ipv4 address for mlag_l3_ip using dynamically loaded python module.
+        """
+        if self.mlag_role == "primary":
+            return self.ip_addressing.mlag_l3_ip_primary()
+        elif self.mlag_role == "secondary":
+            return self.ip_addressing.mlag_l3_ip_secondary()
+
+    @cached_property
+    def mlag_switch_ids(self):
+        """
+        Returns the switch id's of both primary and secondary switches for a given node group
+        {"primary": int, "secondary": int}
+        """
+        if self.mlag_role == "primary":
+            if self.id is None:
+                raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and is required to compute MLAG ids")
+            return {"primary": self.id, "secondary": self.mlag_peer_id}
+        elif self.mlag_role == "secondary":
+            if self.id is None:
+                raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and is required to compute MLAG ids")
+            return {"primary": self.mlag_peer_id, "secondary": self.id}
+
+    @cached_property
+    def mlag_port_channel_id(self):
+        default_mlag_port_channel_id = "".join(findall(r"\d", self.mlag_interfaces[0]))
+        return get(self.switch_data_combined, "mlag_port_channel_id", default_mlag_port_channel_id)
+
+    @cached_property
+    def mlag_peer_vlan_structured_config(self):
+        return get(self.switch_data_combined, "mlag_peer_vlan_structured_config")
+
+    @cached_property
+    def mlag_ibgp_ip(self) -> str:
+        if self.mlag_l3_ip is not None:
+            return self.mlag_l3_ip
+
+        return self.mlag_ip
+
+    @cached_property
+    def mlag_peer_ibgp_ip(self) -> str:
+        if self.mlag_peer_l3_ip is not None:
+            return self.mlag_peer_l3_ip
+
+        return self.mlag_peer_ip
+
+    @cached_property
+    def mlag_ibgp_peering_vrfs_base_vlan(self) -> int:
+        return int(get(self.hostvars, "mlag_ibgp_peering_vrfs.base_vlan", required=True))

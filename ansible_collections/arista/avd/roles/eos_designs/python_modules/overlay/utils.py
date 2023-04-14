@@ -43,7 +43,7 @@ class UtilsMixin:
 
     @cached_property
     def _evpn_gateway_remote_peers(self) -> dict:
-        if not self._overlay_evpn:
+        if not self.shared_utils.overlay_evpn:
             return {}
 
         evpn_gateway_remote_peers = {}
@@ -82,10 +82,10 @@ class UtilsMixin:
 
     @cached_property
     def _evpn_route_clients(self) -> dict:
-        if not self._overlay_evpn:
+        if not self.shared_utils.overlay_evpn:
             return {}
 
-        if self._evpn_role != "server":
+        if self.shared_utils.evpn_role != "server":
             return {}
 
         evpn_route_clients = {}
@@ -106,7 +106,7 @@ class UtilsMixin:
 
     @cached_property
     def _evpn_route_servers(self) -> dict:
-        if not self._overlay_evpn:
+        if not self.shared_utils.overlay_evpn:
             return {}
 
         evpn_route_servers = {}
@@ -121,10 +121,6 @@ class UtilsMixin:
         return evpn_route_servers
 
     @cached_property
-    def _evpn_role(self) -> str | None:
-        return get(self._hostvars, "switch.evpn_role")
-
-    @cached_property
     def _fabric_group_devices(self) -> list:
         fabric_name = get(self._hostvars, "fabric_name", required=True)
         return get(self._hostvars, f"groups.{fabric_name}")
@@ -132,11 +128,11 @@ class UtilsMixin:
     # The next four should probably be moved to facts
     @cached_property
     def _is_mpls_client(self) -> bool:
-        return self._mpls_overlay_role == "client" or (self._evpn_role == "client" and self._overlay_evpn_mpls is True)
+        return self.shared_utils.mpls_overlay_role == "client" or (self.shared_utils.evpn_role == "client" and self.shared_utils.overlay_evpn_mpls)
 
     @cached_property
     def _is_mpls_server(self) -> bool:
-        return self._mpls_overlay_role == "server" or (self._evpn_role == "server" and self._overlay_evpn_mpls is True)
+        return self.shared_utils.mpls_overlay_role == "server" or (self.shared_utils.evpn_role == "server" and self.shared_utils.overlay_evpn_mpls)
 
     def _is_peer_mpls_client(self, peer_facts: dict) -> bool:
         return peer_facts.get("mpls_overlay_role", None) == "client" or (
@@ -150,7 +146,7 @@ class UtilsMixin:
 
     @cached_property
     def _ipvpn_gateway_remote_peers(self) -> dict:
-        if self._overlay_ipvpn_gateway is not True:
+        if self.shared_utils.overlay_ipvpn_gateway is not True:
             return {}
 
         ipvpn_gateway_remote_peers = {}
@@ -166,10 +162,6 @@ class UtilsMixin:
             }
 
         return ipvpn_gateway_remote_peers
-
-    @cached_property
-    def _mpls_overlay_role(self) -> str | None:
-        return get(self._hostvars, "switch.mpls_overlay_role")
 
     @cached_property
     def _mpls_route_clients(self) -> dict:
@@ -190,7 +182,7 @@ class UtilsMixin:
 
     @cached_property
     def _mpls_mesh_pe(self) -> dict:
-        if self._overlay_mpls is not True:
+        if self.shared_utils.overlay_mpls is not True:
             return {}
 
         _bgp_mesh_pe = get(self._hostvars, "bgp_mesh_pe") is True
@@ -260,50 +252,6 @@ class UtilsMixin:
                 self._append_peer(mpls_rr_peers, avd_peer, peer_facts)
 
         return mpls_rr_peers
-
-    @cached_property
-    def _overlay_dpath(self) -> bool:
-        return get(self._hostvars, "switch.overlay.dpath") is True
-
-    @cached_property
-    def _overlay_cvx(self) -> bool:
-        return get(self._hostvars, "switch.overlay.cvx") is True
-
-    @cached_property
-    def _overlay_evpn(self) -> bool:
-        return get(self._hostvars, "switch.overlay.evpn") is True
-
-    @cached_property
-    def _overlay_evpn_mpls(self) -> bool:
-        return get(self._hostvars, "switch.overlay.evpn_mpls") is True
-
-    @cached_property
-    def _overlay_evpn_vxlan(self) -> bool:
-        return get(self._hostvars, "switch.overlay.evpn_vxlan") is True
-
-    @cached_property
-    def _overlay_ipvpn_gateway(self) -> bool:
-        return get(self._hostvars, "switch.overlay.ipvpn_gateway", required=True) is True
-
-    @cached_property
-    def _overlay_ler(self) -> bool:
-        return get(self._hostvars, "switch.overlay.ler", required=True) is True
-
-    @cached_property
-    def _overlay_mpls(self) -> bool:
-        return (self._overlay_evpn_mpls is True or self._overlay_vpn_ipv4 is True or self._overlay_vpn_ipv6 is True) and self._overlay_evpn_vxlan is not True
-
-    @cached_property
-    def _overlay_vtep(self) -> bool:
-        return get(self._hostvars, "switch.overlay.vtep", required=True) is True
-
-    @cached_property
-    def _overlay_vpn_ipv4(self) -> bool:
-        return get(self._hostvars, "switch.overlay.vpn_ipv4", required=True) is True
-
-    @cached_property
-    def _overlay_vpn_ipv6(self) -> bool:
-        return get(self._hostvars, "switch.overlay.vpn_ipv6", required=True) is True
 
     @cached_property
     def _vtep_ip(self) -> str:

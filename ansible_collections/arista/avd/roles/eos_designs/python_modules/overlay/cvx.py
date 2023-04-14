@@ -19,7 +19,7 @@ class CvxMixin(UtilsMixin):
         """
         Detect if this is a CVX server for overlay and configure service & peer hosts accordingly.
         """
-        if not (self._overlay_cvx):
+        if not (self.shared_utils.overlay_cvx):
             return None
 
         overlay_cvx_servers = get(self._hostvars, "overlay_cvx_servers", default=[])

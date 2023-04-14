@@ -17,34 +17,15 @@ from .vlans import VlansMixin
 
 
 class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksMixin, VlansMixin):
+    """
+    `EosDesignsFacts` is based on `AvdFacts`, so make sure to read the description there first.
 
-    '''
-    ------------------------------------------------
-    Example function to set a fact based on hostvars
-    ------------------------------------------------
-    @cached_property
-    def foo(self):
-        """
-        "switch.foo" fact set based on "bar" data model
-        """
-        return get(self._hostvars, "bar.foo", default="zoo")
+    The class is instantiated once per device. Methods may use references to other device instances using `hostvars.avd_switch_facts`,
+    which is a dict of `EosDesignsfacts` instances covering all devices.
 
-    -----------------------------------------------------------------------------------------------------
-    Example function to set a fact based on a required key under ex "l3leaf.node_groups.<>.nodes.<>.<key>
-
-    Notice the variable shared_utils.switch_data_combined starts with _ meaning it is an internal variable which will
-    not be returned as part of the facts. We can load such variables with commonly used data, leveraged
-    by multiple facts functions.
-    -----------------------------------------------------------------------------------------------------
-    @cached_property
-    def foo(self):
-        """
-        "switch.foo" fact set based on "<node_type_key>.*" data model
-
-        Example l3leaf.defaults.foo -> switch.foo
-        """
-        return get(self.shared_utils.switch_data_combined, "foo", required=True)
-    '''
+    hostvars["switch"] is set to self, to allow `shared_utils` to work the same when they are called from `EosDesignsFacts` or from
+    `AvdStructuredConfig`.
+    """
 
     def __init__(self, hostvars, templar):
         # Add reference to this instance of EosDesignsFacts object inside hostvars.
@@ -57,16 +38,14 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
     @cached_property
     def id(self) -> int | None:
         """
-        REQUIRED in avd_switch_facts
-
-        id is optional.
+        Exposed in avd_switch_facts
         """
         return self.shared_utils.id
 
     @cached_property
     def type(self) -> str:
         """
-        REQUIRED in avd_switch_facts
+        Exposed in avd_switch_facts
 
         switch.type fact set based on type variable
         """
@@ -74,18 +53,22 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
 
     @cached_property
     def platform(self):
-        """REQUIRED in avd_switch_facts"""
+        """
+        Exposed in avd_switch_facts
+        """
         return self.shared_utils.platform
 
     @cached_property
     def is_deployed(self):
-        """REQUIRED in avd_switch_facts"""
+        """
+        Exposed in avd_switch_facts
+        """
         return get(self._hostvars, "is_deployed", default=True)
 
     @cached_property
     def serial_number(self):
         """
-        REQUIRED in avd_switch_facts
+        Exposed in avd_switch_facts
 
         serial_number is inherited from
         Fabric Topology data model serial_number ->
@@ -95,19 +78,23 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
 
     @cached_property
     def mgmt_ip(self) -> str | None:
-        """REQUIRED in avd_switch_facts"""
+        """
+        Exposed in avd_switch_facts
+        """
         return get(self.shared_utils.switch_data_combined, "mgmt_ip")
 
     @cached_property
     def mpls_lsr(self):
         """
-        REQUIRED in avd_switch_facts
+        Exposed in avd_switch_facts
         """
         return self.shared_utils.mpls_lsr
 
     @cached_property
     def evpn_multicast(self):
-        """REQUIRED in avd_switch_facts"""
+        """
+        Exposed in avd_switch_facts
+        """
         if "evpn" not in self.shared_utils.overlay_address_families:
             return None
         if get(self._hostvars, "evpn_multicast") is True and self.shared_utils.vtep is True:
@@ -131,14 +118,18 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
 
     @cached_property
     def loopback_ipv4_pool(self):
-        """REQUIRED in avd_switch_facts"""
+        """
+        Exposed in avd_switch_facts
+        """
         if self.shared_utils.underlay_router is True:
             return get(self.shared_utils.switch_data_combined, "loopback_ipv4_pool", required=True)
         return None
 
     @cached_property
     def uplink_ipv4_pool(self):
-        """REQUIRED in avd_switch_facts"""
+        """
+        Exposed in avd_switch_facts
+        """
         if self.shared_utils.underlay_router is True:
             return get(self.shared_utils.switch_data_combined, "uplink_ipv4_pool")
         return None
@@ -146,7 +137,7 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
     @cached_property
     def bgp_as(self):
         """
-        REQUIRED in avd_switch_facts
+        Exposed in avd_switch_facts
 
         Get global bgp_as or fabric_topology bgp_as.
 
@@ -160,7 +151,7 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
          - Lower level definitions override higher level definitions as is standard with AVD.
         """
         if self.shared_utils.underlay_router is True:
-            if self.shared_utils.underlay_routing_protocol == "ebgp" or self.evpn_role != "none" or self.mpls_overlay_role != "none":
+            if self.shared_utils.underlay_routing_protocol == "ebgp" or self.shared_utils.evpn_role != "none" or self.shared_utils.mpls_overlay_role != "none":
                 if get(self._hostvars, "bgp_as") is not None:
                     return str(get(self._hostvars, "bgp_as"))
                 else:
@@ -183,25 +174,31 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
 
             # Hack to make mpls PR non-breaking, adds empty bgp to igp topology spines
             # TODO: Remove this as part of AVD4.0
-            elif self.shared_utils.underlay_routing_protocol in ["isis", "ospf"] and self.evpn_role == "none" and get(self._hostvars, "bgp_as") is not None:
+            elif self.shared_utils.underlay_routing_protocol in ["isis", "ospf"] and self.shared_utils.evpn_role == "none" and get(self._hostvars, "bgp_as") is not None:
                 return str(get(self._hostvars, "bgp_as"))
         return None
 
     @cached_property
     def underlay_routing_protocol(self):
-        """REQUIRED in avd_switch_facts"""
+        """
+        Exposed in avd_switch_facts
+        """
         return self.shared_utils.underlay_routing_protocol
 
     @cached_property
     def vtep_loopback_ipv4_pool(self):
-        """REQUIRED in avd_switch_facts"""
+        """
+        Exposed in avd_switch_facts
+        """
         if self.shared_utils.vtep is True:
             return get(self.shared_utils.switch_data_combined, "vtep_loopback_ipv4_pool", required=True)
         return None
 
     @cached_property
     def inband_management_subnet(self):
-        """REQUIRED in avd_switch_facts"""
+        """
+        Exposed in avd_switch_facts
+        """
         return get(self.shared_utils.switch_data_combined, "inband_management_subnet")
 
     @cached_property
@@ -212,21 +209,27 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
 
     @cached_property
     def inband_management_parents(self):
-        """REQUIRED in avd_switch_facts"""
+        """
+        Exposed in avd_switch_facts
+        """
         if self.inband_management_role == "child":
             return self.shared_utils.uplink_switches
         return None
 
     @cached_property
     def inband_management_vlan(self):
-        """REQUIRED in avd_switch_facts"""
+        """
+        Exposed in avd_switch_facts
+        """
         if self.inband_management_role == "child":
             return int(get(self.shared_utils.switch_data_combined, "inband_management_vlan", default=4092))
         return None
 
     @cached_property
     def inband_management_ip(self):
-        """REQUIRED in avd_switch_facts"""
+        """
+        Exposed in avd_switch_facts
+        """
         if self.inband_management_role == "child":
             if self.id is None:
                 raise AristaAvdMissingVariableError(f"'id' is not set on '{self.shared_utils.hostname}' and is required to set inband_management_ip")
@@ -239,6 +242,9 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
 
     @cached_property
     def inband_management_gateway(self):
+        """
+        Exposed in avd_switch_facts
+        """
         if self.inband_management_role == "child":
             subnet = ipaddress.ip_network(self.inband_management_subnet, strict=False)
             hosts = list(subnet.hosts())
@@ -247,7 +253,9 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
 
     @cached_property
     def inband_management_interface(self):
-        """REQUIRED in avd_switch_facts"""
+        """
+        Exposed in avd_switch_facts
+        """
         if self.inband_management_role == "child":
             return f"Vlan{self.inband_management_vlan}"
         return None
@@ -255,7 +263,7 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
     @cached_property
     def vtep_ip(self):
         """
-        REQUIRED in avd_switch_facts
+        Exposed in avd_switch_facts
 
         Render ipv4 address for vtep_ip using dynamically loaded python module.
         """

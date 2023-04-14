@@ -24,7 +24,8 @@ The `arista.avd.eos_designs_facts` module is an Ansible Action Plugin providing 
 
 - Set `avd_switch_facts` fact containing `switch` facts per switch.
 - Set `avd_topology_peers` fact containing a list of downlink switches per host. This list is built based on the `uplink_switches` from all other hosts.
-- Set `avd_overlay_peers` fact containing a list of EVPN or MPLS overlay peers per host. This list is built based on the `evpn_route_servers` and `mpls_route_reflectors` from all other hosts.
+- Set `avd_evpn_overlay_peers` fact containing a list of EVPN overlay peers per host. This list is built based on the `evpn_route_servers` and `mpls_route_reflectors` from all other hosts.
+- Set `avd_evpn_overlay_peers` fact containing a list of EVPN or MPLS overlay peers per host. This list is built based on the `evpn_route_servers` and `mpls_route_reflectors` from all other hosts.
 
 The plugin is designed to `run_once`. With this, Ansible will set the same facts on all devices, so all devices can lookup values of any other device without using the slower `hostvars`.
 
@@ -44,12 +45,6 @@ The module is used in `arista.avd.eos_designs` to set facts for devices, which a
     required: false
     type: str
     choices: [ "eos_cli_config_gen", "eos_designs" ]
-  template_output:
-    description: |
-      If true the output data will be run through another jinja2 rendering before returning.
-      This is to resolve any input values with inline jinja using variables/facts set by the input templates.
-    required: false
-    type: bool
   conversion_mode:
     description:
       - Run data conversion in either "warning", "info", "debug", "quiet" or "disabled" mode.
@@ -65,7 +60,7 @@ The module is used in `arista.avd.eos_designs` to set facts for devices, which a
     required: false
     default: "debug"
     type: str
-    choices: [ "warning", "info", "debug", "quiet", "disabled" ]
+    choices: [ "error", "warning", "info", "debug", "quiet", "disabled" ]
   validation_mode:
     description:
       - Run validation in either "error", "warning", "info", "debug" or "disabled" mode.
@@ -164,7 +159,37 @@ TODO
 
 ## Python packages
 
+### AvdFacts
+
+The `AvdFacts` class serve as a base class for `EosDesignsFacts` as well as the many `AvdStructuredConfig` variants.
+
+The purpose of `AvdFacts` subclasses is to return a dictionary when the `render` method is called.
+
+The class is also partially emulating a `dict` type by exposing `keys()` and `get()` methods and exposing all public attributes
+as `cached_property`. This allows for a class instance to be used as part of a deeper data model, where our utility tools
+can traverse deeper data models using dot-notation. It also allows for partial rendering of data, since only the accessed
+attributes/cached_properties will be rendered.
+
+The base class has a few important methods:
+
+- `keys()` return a list of attributes not beginning with an undercore and where the attribute is decorated with `cached_property`.
+  These attributes represent the keys in the emulated dict.
+- `render()` loop over every attribute returned by `keys()` and return a dict with all the returned `cached_properties`, except
+  `cached_property` with a value of `None` which will be skipped.
+- `get(key, default=None)` returns the value of the requested "key" (`cached_property`) if the "key" is in the list returned by `keys()`.
+  Otherwise the default value is returned.
+
+Path: `ansible_collections/arista/avd/plugins/plugin_utils/avdfacts.py`
+
 ### EosDesignsFacts
+
+`EosDesignsFacts` is based on `AvdFacts`, so make sure to read the description there first.
+
+The class is instantiated once per device. Methods may use references to other device instances using `hostvars.avd_switch_facts`,
+which is a dict of `EosDesignsfacts` instances covering all devices.
+
+hostvars["switch"] is set to self, to allow `shared_utils` to work the same when they are called from `EosDesignsFacts` or from
+`AvdStructuredConfig`.
 
 Path: `ansible_collections/arista/avd/plugins/plugin_utils/eos_designs_facts/`
 
@@ -242,10 +267,19 @@ classDiagram
 
 ### AvdStructuredConfig
 
-The generation of the final `structured_config` is split into multiple python modules, which are loaded dynamically in `yaml_templates_to_facts`, to allow the advanced user to override the functionality.
+`AvdStructuredConfig` is based on `AvdFacts`, so make sure to read the description there first.
+
+The generation of the final `structured_config` is split into multiple python modules which are subclasses of `AvdStructuredConfig`.
+Each subclass is loaded dynamically in `yaml_templates_to_facts` and rendered. All the results are deepmerged into the final `structured_config`.
+
+The class is instantiated once per device. Methods may use references to other device instances using `hostvars.avd_switch_facts`,
+which at the time where `yaml_templates_to_facts` run, is a nested `dict`. It contains the output from `EosDesignsFacts`'s `render()` method.
+
+Subclasses are typically using Mixin classes to split all the attributes/`cached_properties` into managable files.
 
 Paths:
 - `ansible_collections/arista/avd/roles/eos_designs/python_modules/base/`
+  Unfortunate naming. Base here refers to base configurations. Not a Base class.
 - `ansible_collections/arista/avd/roles/eos_designs/python_modules/connected_endpoints/`
 - `ansible_collections/arista/avd/roles/eos_designs/python_modules/core_interfaces/`
 - `ansible_collections/arista/avd/roles/eos_designs/python_modules/custom_structured_configuration/`
@@ -255,8 +289,6 @@ Paths:
 - `ansible_collections/arista/avd/roles/eos_designs/python_modules/network_services/`
 - `ansible_collections/arista/avd/roles/eos_designs/python_modules/overlay/`
 - `ansible_collections/arista/avd/roles/eos_designs/python_modules/underlay/`
-
-Unfortunate naming. Base here refers to base configurations. Not a Base class.
 
 ```mermaid
 classDiagram
@@ -353,16 +385,6 @@ avd_switch_facts:
       overlay:
         peering_address: <str>
         evpn_mpls: <bool>
-        ler: <bool>
-        vtep: <bool>
-        cvx: <bool>
-        her: <bool>
-        evpn: <bool>
-        evpn_vxlan: <bool>
-        vpn_ipv4: <bool>
-        vpn_ipv6: <bool>
-        ipvpn_gateway: <bool>
-        dpath: <bool>
       platform: <str>
       serial_number: <str>
       type: <str>
@@ -405,7 +427,7 @@ so they must be available in the `avd_switch_facts` object.
 
 #### switch.* leveraged for Jinja2 templates
 
-These variables are historically used in builtin jinja2 templates so the should not be removed without warning.
+These variables are historically used in *builtin* jinja2 templates so they **should not** be removed without warning.
 
 | Variable | Used in file |
 | -------- | ------------ |
@@ -461,4 +483,3 @@ These variables are historically used in builtin jinja2 templates so the should 
 | switch.mlag_l3_ip | mlag_l3_ip must be available to the mlag peer. |
 | switch.mgmt_ip | mgmp_ip must be available to the mlag peer. |
 | switch.uplink_peers | These are used to generate the "avd_topology_peers" fact covering downlinks for all devices in eos_designs_facts action plugin. |
-| switch.overlay.* | Two subkeys are required for other reasons above, so we take the full dict. |

@@ -21,13 +21,13 @@ class RouteMapsMixin(UtilsMixin):
         TODO
         """
 
-        if self._overlay_cvx:
+        if self.shared_utils.overlay_cvx:
             return None
 
-        if self._overlay_mpls is True:
+        if self.shared_utils.overlay_mpls is True:
             # some logic
             pass
-        if self._overlay_evpn is True:
+        if self.shared_utils.overlay_evpn is True:
             # some logic
             pass
 

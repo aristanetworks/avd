@@ -39,7 +39,7 @@ class RouterIsisMixin(UtilsMixin):
             mlag_l3_vlan = default(self.shared_utils.mlag_peer_l3_vlan, self.shared_utils.mlag_peer_vlan)
             no_passive_interfaces.append(f"Vlan{mlag_l3_vlan}")
 
-        if self._overlay_vtep is True:
+        if self.shared_utils.overlay_vtep is True:
             no_passive_interfaces.append(self.shared_utils.vtep_loopback)
 
         if no_passive_interfaces:

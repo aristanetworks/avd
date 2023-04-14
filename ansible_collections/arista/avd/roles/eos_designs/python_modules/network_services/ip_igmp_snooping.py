@@ -58,7 +58,7 @@ class IpIgmpSnoopingMixin(UtilsMixin):
             get(vlan, "evpn_l2_multicast.enabled"),
             get(tenant, "evpn_l2_multicast.enabled"),
         )
-        if self._overlay_vtep and evpn_l2_multicast_enabled is True:
+        if self.shared_utils.overlay_vtep and evpn_l2_multicast_enabled is True:
             # Leaving igmp_snooping_enabled unset, to avoid extra line of config as we already check
             # that global igmp snooping is enabled and igmp snooping is required for evpn_l2_multicast.
 

@@ -33,11 +33,18 @@ class AvdStructuredConfig(
     def render(self) -> dict:
         """
         Wrap class render function with a check if one of the following vars are True:
-        - switch.overlay.cvx
-        - switch.overlay.evpn
-        - switch.overlay.vpn_ipv4
-        - switch.overlay.vpn_ipv6
+        - overlay_cvx
+        - overlay_evpn
+        - overlay_vpn_ipv4
+        - overlay_vpn_ipv6
         """
-        if any([self._overlay_cvx, self._overlay_evpn, self._overlay_vpn_ipv4, self._overlay_vpn_ipv6]):
+        if any(
+            [
+                self.shared_utils.overlay_cvx,
+                self.shared_utils.overlay_evpn,
+                self.shared_utils.overlay_vpn_ipv4,
+                self.shared_utils.overlay_vpn_ipv6,
+            ]
+        ):
             return super().render()
         return {}

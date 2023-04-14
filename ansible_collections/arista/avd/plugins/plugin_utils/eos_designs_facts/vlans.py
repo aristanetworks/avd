@@ -30,7 +30,7 @@ class VlansMixin:
     @cached_property
     def vlans(self):
         """
-        REQUIRED in avd_switch_facts
+        Exposed in avd_switch_facts
 
         Return the compressed list of vlans to be defined on this switch
 
@@ -177,9 +177,7 @@ class VlansMixin:
         if not self.shared_utils.mlag:
             return set(), set()
 
-        mlag_peer_facts: EosDesignsFacts = get(self._hostvars, f"avd_switch_facts..{self.shared_utils.mlag_peer}..switch", separator="..")
-        if not mlag_peer_facts:
-            return set(), set()
+        mlag_peer_facts: EosDesignsFacts = self.shared_utils.mlag_peer_facts
 
         return mlag_peer_facts._endpoint_vlans_and_trunk_groups
 

@@ -21,7 +21,7 @@ class RouterBfdMixin(UtilsMixin):
         if self._bfd_multihop is None:
             return None
 
-        if self._overlay_cvx:
+        if self.shared_utils.overlay_cvx:
             return None
 
         return strip_empties_from_dict({"multihop": self._bfd_multihop})
