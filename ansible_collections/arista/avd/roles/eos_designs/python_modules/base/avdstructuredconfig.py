@@ -14,6 +14,13 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 class AvdStructuredConfig(AvdFacts):
     @cached_property
+    def serial_number(self) -> str | None:
+        """
+        serial_number variable set based on serial_number fact
+        """
+        return self.shared_utils.serial_number
+
+    @cached_property
     def router_bgp(self) -> dict | None:
         """
         router_bgp set based on switch.bgp_as, switch.bgp_defaults, router_id facts
