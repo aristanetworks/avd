@@ -12,6 +12,10 @@ cvp_devices:
 {%     if device | arista.avd.is_in_filter(local_var.device_filter) %}
 {%         if hostvars[device]['is_deployed'] is arista.avd.defined(true) or hostvars[device]['is_deployed'] is not arista.avd.defined %}
   - fqdn: {{ device }}
+{%             if device_search_key is arista.avd.defined('serialNumber')
+                  and hostvars[device]['serial_number'] is arista.avd.defined(fail_action="error", var_name="When using 'device_search_key: serialNumber', on device " ~ device ~ " 'serial_number'") %}
+    serialNumber: "{{ hostvars[device]['serial_number'] }}"
+{%             endif %}
 {%             set dev_cntr.value = dev_cntr.value + 1 %}
 {%             for container_name, container in cvp_vars.cvp_topology.items() | arista.avd.natural_sort %}
 {%                 if 'devices' in container %}

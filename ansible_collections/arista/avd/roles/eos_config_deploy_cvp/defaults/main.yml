@@ -40,3 +40,12 @@ cv_collection: v1
 
 # For "inventory_to_container" the inventory is read from memory unless 'avd_inventory_to_container_file' is set
 avd_inventory_to_container_file: null
+
+# Apply mode for cv_container_v3
+container_apply_mode: "loose"
+
+# Apply mode for cv_device_v3
+device_apply_mode: "loose"
+
+# Search key for cv_device_v3 - 'fqdn', 'hostname', 'serialNumber'
+device_search_key: "hostname"
