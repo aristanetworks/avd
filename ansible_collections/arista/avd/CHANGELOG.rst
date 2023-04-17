@@ -5,6 +5,24 @@ Arista.Avd Release Notes
 .. contents:: Topics
 
 
+v3.8.5
+======
+
+Release Summary
+---------------
+
+Release 3.8.5 - See documentation on avd.sh for details.
+
+
+Bugfixes
+--------
+
+- Fix(eos_cli_config_gen) - Checks for missing "vlans" key on access port-channel (#2701) (https://github.com/aristanetworks/ansible-avd/pull/2731)
+- Fix(eos_designs) - Avoid configuring trunk-group twice on mlag peer-link if using the same name (#2658) (https://github.com/aristanetworks/ansible-avd/pull/2735)
+- Fix(eos_designs) - Change IP addressing templates from ansible netcommon to ansible.utils (#2677) (https://github.com/aristanetworks/ansible-avd/pull/2732)
+- Fix(eos_designs) - network services vlan interfaces ospf authentication message-digest (#2727) (https://github.com/aristanetworks/ansible-avd/pull/2730)
+- Fix(eos_designs) - Configure "ip routing ipv6 interface vrf X" for RFC5549 (#2660) (https://github.com/aristanetworks/ansible-avd/pull/2733)
+
 v3.8.4
 ======
 
