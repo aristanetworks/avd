@@ -15,11 +15,11 @@ class SwitchDataMixin:
     """
     Mixin Class providing a subset of SharedUtils
     Class should only be used as Mixin to the SharedUtils class
-    Using quoted type-hint on self to get proper type-hints on attributes across all Mixins.
+    Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
     @cached_property
-    def switch_data(self: "SharedUtils") -> dict:
+    def switch_data(self: SharedUtils) -> dict:
         """
         internal _switch_data containing inherited vars from fabric_topology data model
 
@@ -75,14 +75,14 @@ class SwitchDataMixin:
         return switch_data
 
     @property
-    def switch_data_combined(self: "SharedUtils") -> dict:
+    def switch_data_combined(self: SharedUtils) -> dict:
         """
         switch_data_combined containing self._switch_data['combined'] for easier reference.
         """
         return self.switch_data["combined"]
 
     @cached_property
-    def switch_data_node_group_nodes(self: "SharedUtils") -> list:
+    def switch_data_node_group_nodes(self: SharedUtils) -> list:
         """
         switch_data_node_group_nodes pointing to
         self.switch_data['node_group']['nodes'] for easier reference.

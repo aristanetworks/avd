@@ -22,35 +22,18 @@ class UtilsMixin:
     def _avd_peers(self) -> list:
         """
         Returns a list of peers
+
+        This cannot be loaded in shared_utils since it will not be calculated until EosDesignsFacts has been rendered
+        and shared_utils are shared between EosDesignsFacts and AvdStructuredConfig classes like this one.
         """
         return get(self._hostvars, f"avd_topology_peers..{self.shared_utils.hostname}", separator="..", default=[])
-
-    @cached_property
-    def _evpn_short_esi_prefix(self) -> str:
-        return get(self._hostvars, "evpn_short_esi_prefix", required=True)
-
-    @cached_property
-    def _filter_peer_as(self) -> bool:
-        return self._underlay_filter_peer_as is True and self.shared_utils.evpn_role not in ["client", "server"]
-
-    @cached_property
-    def _p2p_uplinks_mtu(self):
-        return get(self._hostvars, "p2p_uplinks_mtu", required=True)
-
-    @cached_property
-    def _shutdown_interfaces_towards_undeployed_peers(self) -> bool:
-        return get(self._hostvars, "shutdown_interfaces_towards_undeployed_peers") is True
-
-    @cached_property
-    def _underlay_filter_peer_as(self) -> bool:
-        return get(self._hostvars, "underlay_filter_peer_as") is True
 
     @cached_property
     def _underlay_filter_peer_as_route_maps_asns(self) -> list:
         """
         Filtered ASNs
         """
-        if self._filter_peer_as is False:
+        if self.shared_utils.underlay_filter_peer_as is False:
             return []
 
         # using set comprehension with `{}`
@@ -96,14 +79,6 @@ class UtilsMixin:
                     underlay_links.append(strip_empties_from_dict(link))
 
         return natural_sort(underlay_links, "interface")
-
-    @cached_property
-    def _underlay_ospf_area(self) -> str:
-        return get(self._hostvars, "underlay_ospf_area", required=True)
-
-    @cached_property
-    def _underlay_ospf_process_id(self) -> int:
-        return get(self._hostvars, "underlay_ospf_process_id", required=True)
 
     @cached_property
     def _underlay_vlan_trunk_groups(self) -> list:

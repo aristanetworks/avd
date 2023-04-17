@@ -15,10 +15,11 @@ class ShortEsiMixin:
     """
     Mixin Class used to generate some of the EosDesignsFacts.
     Class should only be used as Mixin to the EosDesignsFacts class
+    Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
     @cached_property
-    def short_esi(self: "EosDesignsFacts") -> str:
+    def short_esi(self: EosDesignsFacts) -> str:
         """
         If short_esi is set to "auto" we will use sha256 to create a
         unique short_esi value based on various uplink information.

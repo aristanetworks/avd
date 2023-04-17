@@ -160,7 +160,7 @@ class VlanInterfacesMixin(UtilsMixin):
             "shutdown": False,
             "description": f"MLAG_PEER_L3_iBGP: vrf {vrf['name']}",
             "vrf": vrf["name"],
-            "mtu": self._p2p_uplinks_mtu,
+            "mtu": self.shared_utils.p2p_uplinks_mtu,
         }
         if self.shared_utils.underlay_rfc5549 and self.shared_utils.overlay_mlag_rfc5549:
             vlan_interface_config["ipv6_enable"] = True

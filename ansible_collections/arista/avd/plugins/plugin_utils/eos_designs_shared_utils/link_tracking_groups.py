@@ -13,11 +13,11 @@ class LinkTrackingGroupsMixin:
     """
     Mixin Class providing a subset of SharedUtils
     Class should only be used as Mixin to the SharedUtils class
-    Using quoted type-hint on self to get proper type-hints on attributes across all Mixins.
+    Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
     @cached_property
-    def link_tracking_groups(self: "SharedUtils") -> list | None:
+    def link_tracking_groups(self: SharedUtils) -> list | None:
         if get(self.switch_data_combined, "link_tracking.enabled") is True:
             link_tracking_groups = []
             default_recovery_delay = get(self.platform_settings, "reload_delay.mlag", 300)

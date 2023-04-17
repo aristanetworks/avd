@@ -95,10 +95,8 @@ class UtilsFilteredTenantsMixin(object):
         if self.shared_utils.uplink_type != "port-channel":
             return accepted_vlans
 
-        fabric_name = get(self._hostvars, "fabric_name", required=True)
-        fabric_group = get(self._hostvars, f"groups.{fabric_name}", required=True)
         uplink_switches = unique(self.shared_utils.uplink_switches)
-        uplink_switches = [uplink_switch for uplink_switch in uplink_switches if uplink_switch in fabric_group]
+        uplink_switches = [uplink_switch for uplink_switch in uplink_switches if uplink_switch in self.shared_utils.all_fabric_devices]
         for uplink_switch in uplink_switches:
             uplink_switch_facts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
             uplink_switch_vlans = uplink_switch_facts.get("vlans", [])

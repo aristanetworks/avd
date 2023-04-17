@@ -355,6 +355,7 @@ avd_switch_facts:
   <hostname>:
     switch:
       bgp_as: <str>
+      dc_name: <str>
       endpoint_trunk_groups: <list>
       endpoint_vlans: <str>
       evpn_multicast: <bool>
@@ -484,3 +485,4 @@ These variables are historically used in *builtin* jinja2 templates so they **sh
 | switch.mlag_l3_ip | mlag_l3_ip must be available to the mlag peer. |
 | switch.mgmt_ip | mgmp_ip must be available to the mlag peer. |
 | switch.uplink_peers | These are used to generate the "avd_topology_peers" fact covering downlinks for all devices in eos_designs_facts action plugin. |
+| switch.dc_name | Used for underlay HER flood-list calculations when using scope dc_name

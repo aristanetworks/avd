@@ -14,15 +14,15 @@ class PlatformMixin:
     """
     Mixin Class providing a subset of SharedUtils
     Class should only be used as Mixin to the SharedUtils class
-    Using quoted type-hint on self to get proper type-hints on attributes across all Mixins.
+    Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
     @cached_property
-    def platform(self: "SharedUtils") -> str | None:
+    def platform(self: SharedUtils) -> str | None:
         return get(self.switch_data_combined, "platform")
 
     @cached_property
-    def platform_settings(self: "SharedUtils") -> dict:
+    def platform_settings(self: SharedUtils) -> dict:
         platform_settings = get(self.hostvars, "platform_settings", default=[])
 
         # First look for a matching platform setting specifying our platform
@@ -38,7 +38,7 @@ class PlatformMixin:
         return {}
 
     @cached_property
-    def default_interfaces(self: "SharedUtils") -> dict:
+    def default_interfaces(self: SharedUtils) -> dict:
         """
         default_interfaces set based on default_interfaces
         """

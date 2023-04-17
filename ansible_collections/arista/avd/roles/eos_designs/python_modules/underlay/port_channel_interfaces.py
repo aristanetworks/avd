@@ -55,7 +55,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
 
             if (short_esi := link.get("short_esi")) is not None:
                 port_channel_interface["evpn_ethernet_segment"] = {
-                    "identifier": generate_esi(short_esi, self._evpn_short_esi_prefix),
+                    "identifier": generate_esi(short_esi, self.shared_utils.evpn_short_esi_prefix),
                     "route_target": generate_route_target(short_esi),
                 }
                 port_channel_interface["lacp_id"] = generate_lacp_id(short_esi)

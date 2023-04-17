@@ -21,20 +21,11 @@ class UtilsMixin:
     def _avd_overlay_peers(self) -> list:
         """
         Returns a list of overlay peers for the device
+
+        This cannot be loaded in shared_utils since it will not be calculated until EosDesignsFacts has been rendered
+        and shared_utils are shared between EosDesignsFacts and AvdStructuredConfig classes like this one.
         """
         return get(self._hostvars, f"avd_overlay_peers..{self.shared_utils.hostname}", separator="..", default=[])
-
-    @cached_property
-    def _bfd_multihop(self) -> dict | None:
-        return get(self._hostvars, "bfd_multihop")
-
-    @cached_property
-    def _evpn_ebgp_multihop(self) -> int | None:
-        return get(self._hostvars, "evpn_ebgp_multihop")
-
-    @cached_property
-    def _evpn_ebgp_gateway_multihop(self) -> int | None:
-        return get(self._hostvars, "evpn_ebgp_gateway_multihop")
 
     @cached_property
     def _evpn_gateway_remote_peers(self) -> dict:
@@ -66,14 +57,6 @@ class UtilsMixin:
                 }
 
         return evpn_gateway_remote_peers
-
-    @cached_property
-    def _evpn_overlay_bgp_rtc(self) -> bool:
-        return get(self._hostvars, "evpn_overlay_bgp_rtc") is True
-
-    @cached_property
-    def _evpn_prevent_readvertise_to_server(self) -> bool:
-        return get(self._hostvars, "evpn_prevent_readvertise_to_server") is True
 
     @cached_property
     def _evpn_route_clients(self) -> dict:
@@ -111,11 +94,6 @@ class UtilsMixin:
             self._append_peer(evpn_route_servers, route_server, peer_facts)
 
         return evpn_route_servers
-
-    @cached_property
-    def _fabric_group_devices(self) -> list:
-        fabric_name = get(self._hostvars, "fabric_name", required=True)
-        return get(self._hostvars, f"groups.{fabric_name}")
 
     # The next four should probably be moved to facts
     @cached_property
@@ -177,13 +155,12 @@ class UtilsMixin:
         if self.shared_utils.overlay_mpls is not True:
             return {}
 
-        _bgp_mesh_pe = get(self._hostvars, "bgp_mesh_pe") is True
-        if _bgp_mesh_pe is not True:
+        if get(self._hostvars, "bgp_mesh_pe") is not True:
             return {}
 
         mpls_mesh_pe = {}
 
-        for fabric_switch in self._fabric_group_devices:
+        for fabric_switch in self.shared_utils.all_fabric_devices:
             if self._mpls_route_reflectors is not None and fabric_switch in self._mpls_route_reflectors:
                 continue
             if fabric_switch == self.shared_utils.hostname:

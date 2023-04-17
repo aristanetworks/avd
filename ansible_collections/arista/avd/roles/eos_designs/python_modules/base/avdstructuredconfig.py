@@ -371,7 +371,7 @@ class AvdStructuredConfig(AvdFacts):
         if snmp_settings.get("location") is not None:
             location_elements = [
                 get(self._hostvars, "fabric_name"),
-                get(self._hostvars, "dc_name"),
+                self.shared_utils.dc_name,
                 get(self._hostvars, "pod_name"),
                 get(self.shared_utils.switch_data_combined, "rack"),
                 self.shared_utils.hostname,

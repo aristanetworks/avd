@@ -18,11 +18,11 @@ class InterfaceDescriptionsMixin:
     """
     Mixin Class providing a subset of SharedUtils
     Class should only be used as Mixin to the SharedUtils class
-    Using quoted type-hint on self to get proper type-hints on attributes across all Mixins.
+    Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
     @cached_property
-    def interface_descriptions(self: "SharedUtils") -> AvdInterfaceDescriptions:
+    def interface_descriptions(self: SharedUtils) -> AvdInterfaceDescriptions:
         """
         Load the python_module defined in `templates.interface_descriptions.python_module`
         Return an instance of the class defined by `templates.interface_descriptions.python_class_name` as cached_property
@@ -39,7 +39,7 @@ class InterfaceDescriptionsMixin:
         return cls(hostvars=self.hostvars, shared_utils=self)
 
     @cached_property
-    def interface_descriptions_templates(self: "SharedUtils") -> dict:
+    def interface_descriptions_templates(self: SharedUtils) -> dict:
         """
         Return dict with interface_descriptions templates set based on
         templates.interface_descriptions.* combined with (overridden by)

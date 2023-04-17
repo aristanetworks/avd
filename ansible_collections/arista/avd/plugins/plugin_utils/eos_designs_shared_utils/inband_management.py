@@ -15,27 +15,27 @@ class InbandManagementMixin:
     """
     Mixin Class providing a subset of SharedUtils
     Class should only be used as Mixin to the SharedUtils class
-    Using quoted type-hint on self to get proper type-hints on attributes across all Mixins.
+    Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
     @cached_property
-    def inband_management_subnet(self: "SharedUtils") -> str | None:
+    def inband_management_subnet(self: SharedUtils) -> str | None:
         return get(self.switch_data_combined, "inband_management_subnet")
 
     @cached_property
-    def inband_management_vlan(self: "SharedUtils") -> int | None:
+    def inband_management_vlan(self: SharedUtils) -> int | None:
         if self.inband_management_subnet is not None and self.uplink_type == "port-channel":
             return int(get(self.switch_data_combined, "inband_management_vlan", default=4092))
         return None
 
     @cached_property
-    def inband_management_gateway(self: "SharedUtils") -> str:
+    def inband_management_gateway(self: SharedUtils) -> str:
         subnet = ip_network(self.inband_management_subnet, strict=False)
         hosts = list(subnet.hosts())
         return str(hosts[0])
 
     @cached_property
-    def inband_management_ip(self: "SharedUtils") -> str:
+    def inband_management_ip(self: SharedUtils) -> str:
         if self.id is None:
             raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and is required to set inband_management_ip")
 
@@ -46,5 +46,5 @@ class InbandManagementMixin:
         return f"{inband_management_ip}/{inband_management_prefix}"
 
     @cached_property
-    def inband_management_interface(self: "SharedUtils") -> str | None:
+    def inband_management_interface(self: SharedUtils) -> str | None:
         return f"Vlan{self.inband_management_vlan}"

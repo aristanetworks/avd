@@ -16,11 +16,11 @@ class NodeTypeKeyMixin:
     """
     Mixin Class providing a subset of SharedUtils
     Class should only be used as Mixin to the SharedUtils class
-    Using quoted type-hint on self to get proper type-hints on attributes across all Mixins.
+    Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
     @cached_property
-    def type(self: "SharedUtils") -> str:
+    def type(self: SharedUtils) -> str:
         """
         type fact set based on type variable
         """
@@ -32,7 +32,7 @@ class NodeTypeKeyMixin:
         raise AristaAvdMissingVariableError(f"'type' for host {self.hostname}")
 
     @cached_property
-    def default_node_type(self: "SharedUtils") -> str:
+    def default_node_type(self: SharedUtils) -> str:
         """
         default_node_type set based on hostname, returning
         first node type matching a regex in default_node_types
@@ -47,7 +47,7 @@ class NodeTypeKeyMixin:
         return None
 
     @cached_property
-    def node_type_key_data(self: "SharedUtils") -> dict:
+    def node_type_key_data(self: SharedUtils) -> dict:
         """
         node_type_key_data containing settings for this node_type.
         """
@@ -62,7 +62,7 @@ class NodeTypeKeyMixin:
         raise AristaAvdMissingVariableError(f"node_type_keys.<>.type=={self.type}")
 
     @cached_property
-    def connected_endpoints(self: "SharedUtils") -> bool:
+    def connected_endpoints(self: SharedUtils) -> bool:
         """
         connected_endpoints set based on
         node_type_keys.<node_type_key>.connected_endpoints
@@ -70,7 +70,7 @@ class NodeTypeKeyMixin:
         return get(self.node_type_key_data, "connected_endpoints", default=False)
 
     @cached_property
-    def underlay_router(self: "SharedUtils") -> bool:
+    def underlay_router(self: SharedUtils) -> bool:
         """
         underlay_router set based on
         node_type_keys.<node_type_key>.underlay_router
@@ -78,7 +78,7 @@ class NodeTypeKeyMixin:
         return get(self.node_type_key_data, "underlay_router", default=True)
 
     @cached_property
-    def uplink_type(self: "SharedUtils") -> str:
+    def uplink_type(self: SharedUtils) -> str:
         """
         uplink_type set based on
         node_type_keys.<node_type_key>.uplink_type
@@ -86,7 +86,7 @@ class NodeTypeKeyMixin:
         return get(self.node_type_key_data, "uplink_type", default="p2p")
 
     @cached_property
-    def network_services_l1(self: "SharedUtils") -> bool:
+    def network_services_l1(self: SharedUtils) -> bool:
         """
         network_services_l1 set based on
         node_type_keys.<node_type_key>.network_services.l1
@@ -94,7 +94,7 @@ class NodeTypeKeyMixin:
         return get(self.node_type_key_data, "network_services.l1", default=False)
 
     @cached_property
-    def network_services_l2(self: "SharedUtils") -> bool:
+    def network_services_l2(self: SharedUtils) -> bool:
         """
         network_services_l2 set based on
         node_type_keys.<node_type_key>.network_services.l2
@@ -102,7 +102,7 @@ class NodeTypeKeyMixin:
         return get(self.node_type_key_data, "network_services.l2", default=False)
 
     @cached_property
-    def network_services_l3(self: "SharedUtils") -> bool:
+    def network_services_l3(self: SharedUtils) -> bool:
         """
         network_services_l3 set based on
         node_type_keys.<node_type_key>.network_services.l3 and
@@ -115,14 +115,14 @@ class NodeTypeKeyMixin:
         return get(self.node_type_key_data, "network_services.l3", default=False)
 
     @cached_property
-    def any_network_services(self: "SharedUtils") -> bool:
+    def any_network_services(self: SharedUtils) -> bool:
         """
         Returns True if either L1, L2 or L3 network_services are enabled
         """
         return self.network_services_l1 is True or self.network_services_l2 is True or self.network_services_l3 is True
 
     @cached_property
-    def mpls_lsr(self: "SharedUtils") -> bool:
+    def mpls_lsr(self: SharedUtils) -> bool:
         """
         mpls_lsr set based on
         node_type_keys.<node_type_key>.mpls_lsr
@@ -130,7 +130,7 @@ class NodeTypeKeyMixin:
         return get(self.node_type_key_data, "mpls_lsr", default=False)
 
     @cached_property
-    def vtep(self: "SharedUtils") -> bool:
+    def vtep(self: SharedUtils) -> bool:
         """
         vtep set based on
         node_type_keys.<node_type_key>.vtep

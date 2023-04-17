@@ -17,30 +17,31 @@ class UplinksMixin:
     """
     Mixin Class used to generate some of the EosDesignsFacts.
     Class should only be used as Mixin to the EosDesignsFacts class
+    Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
     @cached_property
-    def max_parallel_uplinks(self: "EosDesignsFacts") -> int:
+    def max_parallel_uplinks(self: EosDesignsFacts) -> int:
         """
         Exposed in avd_switch_facts
         """
         return self.shared_utils.max_parallel_uplinks
 
     @cached_property
-    def max_uplink_switches(self: "EosDesignsFacts") -> int:
+    def max_uplink_switches(self: EosDesignsFacts) -> int:
         """
         Exposed in avd_switch_facts
         """
         return self.shared_utils.max_uplink_switches
 
     @cached_property
-    def _uplink_interfaces(self: "EosDesignsFacts") -> list:
+    def _uplink_interfaces(self: EosDesignsFacts) -> list:
         return range_expand(
             default(get(self.shared_utils.switch_data_combined, "uplink_interfaces"), get(self.shared_utils.default_interfaces, "uplink_interfaces"), [])
         )
 
     @cached_property
-    def _uplink_switch_interfaces(self: "EosDesignsFacts") -> list:
+    def _uplink_switch_interfaces(self: EosDesignsFacts) -> list:
         uplink_switch_interfaces = get(self.shared_utils.switch_data_combined, "uplink_switch_interfaces")
         if uplink_switch_interfaces is not None:
             return uplink_switch_interfaces
@@ -75,27 +76,27 @@ class UplinksMixin:
         return uplink_switch_interfaces
 
     @cached_property
-    def _uplink_interface_speed(self: "EosDesignsFacts") -> str | None:
+    def _uplink_interface_speed(self: EosDesignsFacts) -> str | None:
         return get(self.shared_utils.switch_data_combined, "uplink_interface_speed")
 
     @cached_property
-    def _uplink_bfd(self: "EosDesignsFacts") -> bool:
+    def _uplink_bfd(self: EosDesignsFacts) -> bool:
         return get(self.shared_utils.switch_data_combined, "uplink_bfd") is True
 
     @cached_property
-    def _uplink_ptp(self: "EosDesignsFacts") -> dict | None:
+    def _uplink_ptp(self: EosDesignsFacts) -> dict | None:
         return get(self.shared_utils.switch_data_combined, "uplink_ptp")
 
     @cached_property
-    def _uplink_macsec(self: "EosDesignsFacts") -> dict | None:
+    def _uplink_macsec(self: EosDesignsFacts) -> dict | None:
         return get(self.shared_utils.switch_data_combined, "uplink_macsec")
 
     @cached_property
-    def _uplink_structured_config(self: "EosDesignsFacts") -> dict | None:
+    def _uplink_structured_config(self: EosDesignsFacts) -> dict | None:
         return get(self.shared_utils.switch_data_combined, "uplink_structured_config")
 
     @cached_property
-    def uplinks(self: "EosDesignsFacts") -> list:
+    def uplinks(self: EosDesignsFacts) -> list:
         """
         Exposed in avd_switch_facts
 
@@ -110,15 +111,13 @@ class UplinksMixin:
             uplink_interfaces = self._uplink_interfaces
             uplink_switches = self.shared_utils.uplink_switches
             uplink_switch_interfaces = self._uplink_switch_interfaces
-            fabric_name = get(self._hostvars, "fabric_name", required=True)
-            inventory_group = get(self._hostvars, f"groups.{fabric_name}", required=True)
             for uplink_index, uplink_interface in enumerate(uplink_interfaces):
                 if len(uplink_switches) <= uplink_index or len(uplink_switch_interfaces) <= uplink_index:
                     # Invalid length of input variables. Skipping
                     continue
 
                 uplink_switch = uplink_switches[uplink_index]
-                if uplink_switch is None or uplink_switch not in inventory_group:
+                if uplink_switch is None or uplink_switch not in self.shared_utils.all_fabric_devices:
                     # Invalid uplink_switch. Skipping.
                     continue
 
@@ -164,16 +163,13 @@ class UplinksMixin:
             uplink_interfaces = self._uplink_interfaces
             uplink_switches = self.shared_utils.uplink_switches
             uplink_switch_interfaces = self._uplink_switch_interfaces
-            fabric_name = get(self._hostvars, "fabric_name", required=True)
-            inventory_group = get(self._hostvars, f"groups.{fabric_name}", required=True)
-
             for uplink_index, uplink_interface in enumerate(uplink_interfaces):
                 if len(uplink_switches) <= uplink_index or len(uplink_switch_interfaces) <= uplink_index:
                     # Invalid length of input variables. Skipping
                     continue
 
                 uplink_switch = uplink_switches[uplink_index]
-                if uplink_switch is None or uplink_switch not in inventory_group:
+                if uplink_switch is None or uplink_switch not in self.shared_utils.all_fabric_devices:
                     # Invalid uplink_switch. Skipping.
                     continue
 
@@ -243,7 +239,7 @@ class UplinksMixin:
         return uplinks
 
     @cached_property
-    def uplink_peers(self: "EosDesignsFacts") -> list:
+    def uplink_peers(self: EosDesignsFacts) -> list:
         """
         Exposed in avd_switch_facts
 
@@ -251,13 +247,11 @@ class UplinksMixin:
 
         These are used to generate the "avd_topology_peers" fact covering downlinks for all devices.
         """
-        fabric_name = get(self._hostvars, "fabric_name", required=True)
-        inventory_group = get(self._hostvars, f"groups.{fabric_name}", required=True)
         uplink_switches = self.shared_utils.uplink_switches
-        return [uplink_switch for uplink_switch in uplink_switches if uplink_switch in inventory_group]
+        return [uplink_switch for uplink_switch in uplink_switches if uplink_switch in self.shared_utils.all_fabric_devices]
 
     @cached_property
-    def _default_downlink_interfaces(self: "EosDesignsFacts") -> list:
+    def _default_downlink_interfaces(self: EosDesignsFacts) -> list:
         """
         internal _default_downlink_interfaces set based on default_interfaces.
         Parsed by downstream switches during eos_designs_facts phase

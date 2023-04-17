@@ -66,7 +66,7 @@ class RouterBgpMixin(UtilsMixin):
                     "description": "_".join([link["peer"], link["peer_interface"]]),
                 }
 
-                if self._filter_peer_as is True:
+                if self.shared_utils.underlay_filter_peer_as is True:
                     self._underlay_filter_peer_as_route_maps_asns.append(link["peer_bgp_as"])
 
                 neighbor_interfaces.append(neighbor_interface)
@@ -89,7 +89,7 @@ class RouterBgpMixin(UtilsMixin):
                     "bfd": get(link, "bfd"),
                 }
 
-                if self._filter_peer_as is True:
+                if self.shared_utils.underlay_filter_peer_as is True:
                     neighbor["route_map_out"] = f"RM-BGP-AS{link['peer_bgp_as']}-OUT"
 
                 if (found_neighbor := get_item(neighbors, "ip_address", link["peer_ip_address"])) is None:

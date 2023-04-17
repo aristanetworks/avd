@@ -70,7 +70,7 @@ class RouterBgpMixin(UtilsMixin):
             # EVPN OVERLAY peer group
             ebgp_peer_group = {
                 **self._generate_base_peer_group("evpn", "evpn_overlay_peers"),
-                "ebgp_multihop": self._evpn_ebgp_multihop,
+                "ebgp_multihop": self.shared_utils.evpn_ebgp_multihop,
             }
 
             if self.shared_utils.evpn_role == "server":
@@ -82,7 +82,7 @@ class RouterBgpMixin(UtilsMixin):
                 peer_groups.append(
                     {
                         **self._generate_base_peer_group("evpn", "evpn_overlay_core"),
-                        "ebgp_multihop": self._evpn_ebgp_gateway_multihop,
+                        "ebgp_multihop": self.shared_utils.evpn_ebgp_gateway_multihop,
                     }
                 )
 
@@ -233,7 +233,7 @@ class RouterBgpMixin(UtilsMixin):
 
         if the evpn_role is server, enable default_route_target only
         """
-        if self._evpn_overlay_bgp_rtc is not True:
+        if self.shared_utils.evpn_overlay_bgp_rtc is not True:
             return None
 
         address_family_rtc = {}
@@ -326,7 +326,7 @@ class RouterBgpMixin(UtilsMixin):
                     data["ip_address"], route_server, self.shared_utils.bgp_peer_groups["evpn_overlay_peers"]["name"], remote_as=data["bgp_as"]
                 )
 
-                if self._evpn_prevent_readvertise_to_server is True:
+                if self.shared_utils.evpn_prevent_readvertise_to_server is True:
                     neighbor["route_map_out"] = f"RM-EVPN-FILTER-AS{data['bgp_as']}"
                 neighbors.append(neighbor)
 

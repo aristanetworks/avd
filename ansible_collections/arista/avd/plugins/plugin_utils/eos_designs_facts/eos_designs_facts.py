@@ -171,3 +171,10 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
         Exposed in avd_switch_facts
         """
         return self.shared_utils.inband_management_vlan
+
+    @cached_property
+    def dc_name(self) -> str | None:
+        """
+        Exposed in avd_switch_facts
+        """
+        return self.shared_utils.dc_name

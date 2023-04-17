@@ -15,30 +15,30 @@ class RoutingMixin:
     """
     Mixin Class providing a subset of SharedUtils
     Class should only be used as Mixin to the SharedUtils class
-    Using quoted type-hint on self to get proper type-hints on attributes across all Mixins.
+    Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
     @cached_property
-    def underlay_routing_protocol(self: "SharedUtils") -> str:
+    def underlay_routing_protocol(self: SharedUtils) -> str:
         default_underlay_routing_protocol = get(self.node_type_key_data, "default_underlay_routing_protocol", default="ebgp")
         underlay_routing_protocol = str(get(self.hostvars, "underlay_routing_protocol", default=default_underlay_routing_protocol)).lower()
         return underlay_routing_protocol
 
     @cached_property
-    def overlay_routing_protocol(self: "SharedUtils") -> str:
+    def overlay_routing_protocol(self: SharedUtils) -> str:
         default_overlay_routing_protocol = get(self.node_type_key_data, "default_overlay_routing_protocol", default="ebgp")
         overlay_routing_protocol = str(get(self.hostvars, "overlay_routing_protocol", default=default_overlay_routing_protocol)).lower()
         return overlay_routing_protocol
 
     @cached_property
-    def overlay_address_families(self: "SharedUtils") -> list:
+    def overlay_address_families(self: SharedUtils) -> list:
         if self.overlay_routing_protocol in ["ebgp", "ibgp"]:
             default_overlay_address_families = get(self.node_type_key_data, "default_overlay_address_families", ["evpn"])
             return get(self.switch_data_combined, "overlay_address_families", default=default_overlay_address_families)
         return []
 
     @cached_property
-    def bgp(self: "SharedUtils") -> bool:
+    def bgp(self: SharedUtils) -> bool:
         """
         Boolean telling if BGP Routing should be configured.
         """
@@ -55,7 +55,7 @@ class RoutingMixin:
         )
 
     @cached_property
-    def router_id(self: "SharedUtils") -> str | None:
+    def router_id(self: SharedUtils) -> str | None:
         """
         Render IP address for router_id
         """
@@ -64,7 +64,7 @@ class RoutingMixin:
         return None
 
     @cached_property
-    def ipv6_router_id(self: "SharedUtils") -> str | None:
+    def ipv6_router_id(self: SharedUtils) -> str | None:
         """
         Render IPv6 address for router_id
         """
@@ -73,7 +73,7 @@ class RoutingMixin:
         return None
 
     @cached_property
-    def isis_instance_name(self: "SharedUtils") -> str | None:
+    def isis_instance_name(self: SharedUtils) -> str | None:
         if self.underlay_router:
             if self.underlay_routing_protocol in ["isis", "isis-ldp", "isis-sr", "isis-sr-ldp"]:
                 if self.mpls_lsr:
@@ -84,7 +84,7 @@ class RoutingMixin:
         return None
 
     @cached_property
-    def bgp_as(self: "SharedUtils") -> str | None:
+    def bgp_as(self: SharedUtils) -> str | None:
         """
         Get global bgp_as or fabric_topology bgp_as.
 
@@ -122,5 +122,5 @@ class RoutingMixin:
             return str(get(self.hostvars, "bgp_as"))
 
     @cached_property
-    def always_configure_ip_routing(self: "SharedUtils") -> bool:
+    def always_configure_ip_routing(self: SharedUtils) -> bool:
         return get(self.switch_data_combined, "always_configure_ip_routing")

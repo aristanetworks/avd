@@ -15,10 +15,10 @@ class UtilsMixin:
     """
     Mixin Class providing a subset of SharedUtils
     Class should only be used as Mixin to the SharedUtils class
-    Using quoted type-hint on self to get proper type-hints on attributes across all Mixins.
+    Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
-    def get_peer_facts(self: "SharedUtils", peer_name: str, required: bool = True) -> EosDesignsFacts | dict | None:
+    def get_peer_facts(self: SharedUtils, peer_name: str, required: bool = True) -> EosDesignsFacts | dict | None:
         """
         util function to retrieve peer_facts for peer_name
 
@@ -35,7 +35,7 @@ class UtilsMixin:
             org_key=f"avd_switch_facts.{peer_name}.switch",
         )
 
-    def template_var(self: "SharedUtils", template_file, template_vars) -> str:
+    def template_var(self: SharedUtils, template_file, template_vars) -> str:
         """
         Run the simplified templater using the passed Ansible "templar" engine.
         """

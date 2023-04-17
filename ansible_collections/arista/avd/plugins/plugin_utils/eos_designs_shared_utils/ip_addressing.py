@@ -18,35 +18,35 @@ class IpAddressingMixin:
     """
     Mixin Class providing a subset of SharedUtils
     Class should only be used as Mixin to the SharedUtils class
-    Using quoted type-hint on self to get proper type-hints on attributes across all Mixins.
+    Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
     @cached_property
-    def loopback_ipv4_offset(self: "SharedUtils") -> int:
+    def loopback_ipv4_offset(self: SharedUtils) -> int:
         return get(self.switch_data_combined, "loopback_ipv4_offset", default=0)
 
     @cached_property
-    def loopback_ipv6_offset(self: "SharedUtils") -> int:
+    def loopback_ipv6_offset(self: SharedUtils) -> int:
         return get(self.switch_data_combined, "loopback_ipv6_offset", default=0)
 
     @cached_property
-    def loopback_ipv6_pool(self: "SharedUtils") -> str:
+    def loopback_ipv6_pool(self: SharedUtils) -> str:
         return get(self.switch_data_combined, "loopback_ipv6_pool", required=True)
 
     @cached_property
-    def uplink_ipv4_pool(self: "SharedUtils") -> str | None:
+    def uplink_ipv4_pool(self: SharedUtils) -> str | None:
         return get(self.switch_data_combined, "uplink_ipv4_pool")
 
     @cached_property
-    def loopback_ipv4_pool(self: "SharedUtils") -> str:
+    def loopback_ipv4_pool(self: SharedUtils) -> str:
         return get(self.switch_data_combined, "loopback_ipv4_pool", required=True)
 
     @cached_property
-    def vtep_loopback_ipv4_pool(self: "SharedUtils") -> str:
+    def vtep_loopback_ipv4_pool(self: SharedUtils) -> str:
         return get(self.switch_data_combined, "vtep_loopback_ipv4_pool", required=True)
 
     @cached_property
-    def vtep_ip(self: "SharedUtils") -> str:
+    def vtep_ip(self: SharedUtils) -> str:
         """
         Render ipv4 address for vtep_ip using dynamically loaded python module.
         """
@@ -57,11 +57,11 @@ class IpAddressingMixin:
             return self.ip_addressing.vtep_ip()
 
     @cached_property
-    def vtep_vvtep_ip(self: "SharedUtils") -> str | None:
+    def vtep_vvtep_ip(self: SharedUtils) -> str | None:
         return get(self.hostvars, "vtep_vvtep_ip")
 
     @cached_property
-    def ip_addressing(self: "SharedUtils") -> AvdIpAddressing:
+    def ip_addressing(self: SharedUtils) -> AvdIpAddressing:
         """
         Load the python_module defined in `templates.ip_addressing.python_module`
         Return an instance of the class defined by `templates.ip_addressing.python_class_name` as cached_property
@@ -78,7 +78,7 @@ class IpAddressingMixin:
         return cls(hostvars=self.hostvars, shared_utils=self)
 
     @cached_property
-    def ip_addressing_templates(self: "SharedUtils") -> dict:
+    def ip_addressing_templates(self: SharedUtils) -> dict:
         """
         Return dict with ip_addressing templates set based on
         templates.ip_addressing.* combined with (overridden by)

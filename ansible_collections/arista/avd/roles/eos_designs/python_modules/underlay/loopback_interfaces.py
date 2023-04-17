@@ -35,7 +35,7 @@ class LoopbackInterfacesMixin(UtilsMixin):
             loopback0["ipv6_address"] = f"{self.shared_utils.ipv6_router_id}/128"
 
         if self.shared_utils.underlay_ospf:
-            loopback0["ospf_area"] = self._underlay_ospf_area
+            loopback0["ospf_area"] = self.shared_utils.underlay_ospf_area
 
         if self.shared_utils.underlay_ldp:
             loopback0["mpls"] = {"ldp": {"interface": True}}
@@ -66,7 +66,7 @@ class LoopbackInterfacesMixin(UtilsMixin):
                 vtep_loopback["ip_address_secondaries"] = [self.shared_utils.vtep_vvtep_ip]
 
             if self.shared_utils.underlay_ospf is True:
-                vtep_loopback["ospf_area"] = self._underlay_ospf_area
+                vtep_loopback["ospf_area"] = self.shared_utils.underlay_ospf_area
 
             if self.shared_utils.underlay_isis is True:
                 vtep_loopback.update({"isis_enable": self.shared_utils.isis_instance_name, "isis_passive": True})

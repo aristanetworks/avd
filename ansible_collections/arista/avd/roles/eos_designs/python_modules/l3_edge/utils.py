@@ -39,20 +39,8 @@ class UtilsMixin:
         return get(self._hostvars, "l3_edge.p2p_links", default=[])
 
     @cached_property
-    def _p2p_uplinks_mtu(self) -> str:
-        return get(self._hostvars, "p2p_uplinks_mtu", required=True)
-
-    @cached_property
     def _p2p_uplinks_qos_profile(self) -> str | None:
         return get(self._hostvars, "p2p_uplinks_qos_profile")
-
-    @cached_property
-    def _underlay_ospf_area(self) -> str:
-        return get(self._hostvars, "underlay_ospf_area", required=True)
-
-    @cached_property
-    def _underlay_ospf_process_id(self) -> int:
-        return get(self._hostvars, "underlay_ospf_process_id", required=True)
 
     @cached_property
     def _isis_default_metric(self) -> int | None:
@@ -239,7 +227,7 @@ class UtilsMixin:
             "description": get(p2p_link, "data.description", default=default_description),
             "type": "routed",
             "shutdown": False,
-            "mtu": p2p_link.get("mtu", self._p2p_uplinks_mtu),
+            "mtu": p2p_link.get("mtu", self.shared_utils.p2p_uplinks_mtu),
             # TODO: Set p2p_uplinks_qos_profile as default like it is in core_interfaces.
             "service_profile": p2p_link.get("qos_profile"),
             "eos_cli": p2p_link.get("raw_eos_cli"),
@@ -255,7 +243,7 @@ class UtilsMixin:
                 interface_cfg.update(
                     {
                         "ospf_network_point_to_point": True,
-                        "ospf_area": self._underlay_ospf_area,
+                        "ospf_area": self.shared_utils.underlay_ospf_area,
                     }
                 )
 

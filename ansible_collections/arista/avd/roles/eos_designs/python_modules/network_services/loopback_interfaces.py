@@ -46,7 +46,7 @@ class LoopbackInterfacesMixin(UtilsMixin):
 
                 # If we ended up here, it means we have a loopback_ipv4_pool set
                 interface_name = f"Loopback{loopback}"
-                offset = self._id + self.shared_utils.loopback_ipv4_offset
+                offset = self.shared_utils.id + self.shared_utils.loopback_ipv4_offset
                 loopback_interfaces.append(
                     {
                         "name": interface_name,

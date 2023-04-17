@@ -5,7 +5,7 @@ from typing import NoReturn
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, unique
 
 from .utils import UtilsMixin
@@ -177,17 +177,19 @@ class VxlanInterfaceMixin(UtilsMixin):
         """
         overlay_her_flood_lists = {}
         overlay_her_flood_list_scope = get(self._hostvars, "overlay_her_flood_list_scope")
-        if overlay_her_flood_list_scope == "dc":
-            scope = get(self._hostvars, "dc_name", required=True, org_key="With 'overlay_her_flood_list_scope: dc', 'dc_name'")
-        else:
-            scope = get(self._hostvars, "fabric_name", required=True)
 
-        peers = get(self._hostvars, f"groups..{scope}", separator="..", required=True)
-        for peer in peers:
+        if overlay_her_flood_list_scope == "dc" and self.shared_utils.dc_name is None:
+            raise AristaAvdMissingVariableError("'dc_name' is required with 'overlay_her_flood_list_scope: dc'")
+
+        for peer in self.shared_utils.all_fabric_devices:
             if peer == self.shared_utils.hostname:
                 continue
 
             peer_facts = self.shared_utils.get_peer_facts(peer, required=True)
+
+            if overlay_her_flood_list_scope == "dc" and peer_facts.get("dc_name") != self.shared_utils.dc_name:
+                continue
+
             if (vtep_ip := peer_facts.get("vtep_ip")) is None:
                 continue
 

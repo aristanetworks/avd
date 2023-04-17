@@ -18,10 +18,10 @@ class RouterBfdMixin(UtilsMixin):
         """
         return structured config for router_bfd
         """
-        if self._bfd_multihop is None:
+        if self.shared_utils.bfd_multihop is None:
             return None
 
         if self.shared_utils.overlay_cvx:
             return None
 
-        return strip_empties_from_dict({"multihop": self._bfd_multihop})
+        return strip_empties_from_dict({"multihop": self.shared_utils.bfd_multihop})

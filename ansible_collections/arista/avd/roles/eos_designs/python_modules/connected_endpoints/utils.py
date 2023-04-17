@@ -127,10 +127,6 @@ class UtilsMixin:
     def _platform_settings_feature_support_interface_storm_control(self) -> bool:
         return get(self.shared_utils.platform_settings, "feature_support.interface_storm_control", default=True) is True
 
-    @cached_property
-    def _evpn_short_esi_prefix(self) -> str:
-        return get(self._hostvars, "evpn_short_esi_prefix", required=True)
-
     def _get_short_esi(self, adapter: dict, channel_group_id: int, short_esi: str = None, hash_extra_value: str = "") -> str | None:
         """
         Return short_esi for one adapter
@@ -199,7 +195,7 @@ class UtilsMixin:
 
         adapter_ethernet_segment: dict = adapter.get("ethernet_segment", {})
         evpn_ethernet_segment = {
-            "identifier": generate_esi(short_esi, self._evpn_short_esi_prefix),
+            "identifier": generate_esi(short_esi, self.shared_utils.evpn_short_esi_prefix),
             "redundancy": adapter_ethernet_segment.get("redundancy", default_redundancy),
             "route_target": generate_route_target(short_esi),
         }

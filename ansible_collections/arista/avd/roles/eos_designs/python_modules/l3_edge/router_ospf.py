@@ -25,7 +25,7 @@ class RouterOspfMixin(UtilsMixin):
             return {
                 "process_ids": [
                     {
-                        "id": self._underlay_ospf_process_id,
+                        "id": self.shared_utils.underlay_ospf_process_id,
                         "no_passive_interfaces": no_passive_interfaces,
                     }
                 ]

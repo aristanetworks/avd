@@ -28,14 +28,14 @@ class EthernetInterfacesMixin(UtilsMixin):
                 "peer_type": link["peer_type"],
                 "description": self.shared_utils.interface_descriptions.underlay_ethernet_interfaces(link["type"], link["peer"], link["peer_interface"]),
                 "speed": link.get("speed"),
-                "shutdown": self._shutdown_interfaces_towards_undeployed_peers and not link["peer_is_deployed"],
+                "shutdown": self.shared_utils.shutdown_interfaces_towards_undeployed_peers and not link["peer_is_deployed"],
             }
 
             # L3 interface
             if link["type"] == "underlay_p2p":
                 ethernet_interface.update(
                     {
-                        "mtu": self._p2p_uplinks_mtu,
+                        "mtu": self.shared_utils.p2p_uplinks_mtu,
                         "service_profile": get(self._hostvars, "p2p_uplinks_qos_profile"),
                         "mac_security": link.get("mac_security"),
                         "type": "routed",
@@ -77,7 +77,7 @@ class EthernetInterfacesMixin(UtilsMixin):
 
                 if self.shared_utils.underlay_ospf is True:
                     ethernet_interface["ospf_network_point_to_point"] = True
-                    ethernet_interface["ospf_area"] = self._underlay_ospf_area
+                    ethernet_interface["ospf_area"] = self.shared_utils.underlay_ospf_area
 
                 if self.shared_utils.underlay_isis is True:
                     ethernet_interface.update(

@@ -13,24 +13,25 @@ class OverlayMixin:
     """
     Mixin Class used to generate some of the EosDesignsFacts.
     Class should only be used as Mixin to the EosDesignsFacts class
+    Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
     @cached_property
-    def evpn_role(self: "EosDesignsFacts") -> str | None:
+    def evpn_role(self: EosDesignsFacts) -> str | None:
         """
         Exposed in avd_switch_facts
         """
         return self.shared_utils.evpn_role
 
     @cached_property
-    def mpls_overlay_role(self: "EosDesignsFacts") -> str | None:
+    def mpls_overlay_role(self: EosDesignsFacts) -> str | None:
         """
         Exposed in avd_switch_facts
         """
         return self.shared_utils.mpls_overlay_role
 
     @cached_property
-    def evpn_route_servers(self: "EosDesignsFacts") -> list:
+    def evpn_route_servers(self: EosDesignsFacts) -> list:
         """
         Exposed in avd_switch_facts
 
@@ -45,7 +46,7 @@ class OverlayMixin:
         return []
 
     @cached_property
-    def mpls_route_reflectors(self: "EosDesignsFacts") -> list | None:
+    def mpls_route_reflectors(self: EosDesignsFacts) -> list | None:
         """
         Exposed in avd_switch_facts
         """
@@ -55,7 +56,7 @@ class OverlayMixin:
         return None
 
     @cached_property
-    def overlay(self: "EosDesignsFacts") -> dict:
+    def overlay(self: EosDesignsFacts) -> dict:
         """
         Exposed in avd_switch_facts
         """
@@ -65,7 +66,7 @@ class OverlayMixin:
         }
 
     @cached_property
-    def vtep_ip(self: "EosDesignsFacts") -> str | None:
+    def vtep_ip(self: EosDesignsFacts) -> str | None:
         """
         Exposed in avd_switch_facts
         """

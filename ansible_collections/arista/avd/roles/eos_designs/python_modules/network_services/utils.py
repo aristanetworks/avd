@@ -59,16 +59,8 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         return [int(id) for id in range_expand(endpoint_vlans)]
 
     @cached_property
-    def _p2p_uplinks_mtu(self) -> int:
-        return int(get(self._hostvars, "p2p_uplinks_mtu", required=True))
-
-    @cached_property
     def _pod_name(self) -> str | None:
         return get(self._hostvars, "pod_name")
-
-    @cached_property
-    def _id(self) -> int:
-        return int(get(self._hostvars, "switch.id", required=True))
 
     @cached_property
     def _vrf_default_ipv4_subnets(self) -> list[str]:
@@ -138,18 +130,6 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
             "redistribute_in_underlay": redistribute_in_underlay,
             "redistribute_in_overlay": redistribute_in_overlay,
         }
-
-    @cached_property
-    def _evpn_short_esi_prefix(self) -> str:
-        return get(self._hostvars, "evpn_short_esi_prefix", required=True)
-
-    @cached_property
-    def _underlay_routing_protocol(self) -> str | None:
-        return get(self._hostvars, "switch.underlay_routing_protocol")
-
-    @cached_property
-    def _underlay_ospf_process_id(self) -> int:
-        return get(self._hostvars, "underlay_ospf_process_id", required=True)
 
     def _mlag_ibgp_peering_enabled(self, vrf, tenant) -> bool:
         """

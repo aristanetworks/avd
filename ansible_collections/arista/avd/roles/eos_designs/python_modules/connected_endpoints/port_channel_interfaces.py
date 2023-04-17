@@ -171,7 +171,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
             short_esi := self._get_short_esi(adapter, channel_group_id, short_esi=subinterface.get("short_esi"), hash_extra_value=str(subinterface["number"]))
         ) is not None:
             port_channel_interface["evpn_ethernet_segment"] = {
-                "identifier": generate_esi(short_esi, self._evpn_short_esi_prefix),
+                "identifier": generate_esi(short_esi, self.shared_utils.evpn_short_esi_prefix),
                 "route_target": generate_route_target(short_esi),
             }
 

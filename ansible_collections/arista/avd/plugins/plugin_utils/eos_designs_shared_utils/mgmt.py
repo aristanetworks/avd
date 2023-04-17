@@ -13,11 +13,11 @@ class MgmtMixin:
     """
     Mixin Class providing a subset of SharedUtils
     Class should only be used as Mixin to the SharedUtils class
-    Using quoted type-hint on self to get proper type-hints on attributes across all Mixins.
+    Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
     @cached_property
-    def mgmt_interface(self: "SharedUtils") -> str | None:
+    def mgmt_interface(self: SharedUtils) -> str | None:
         """
         mgmt_interface is inherited from
         Global var mgmt_interface ->
@@ -31,21 +31,21 @@ class MgmtMixin:
         )
 
     @cached_property
-    def ipv6_mgmt_ip(self: "SharedUtils") -> str | None:
+    def ipv6_mgmt_ip(self: SharedUtils) -> str | None:
         return get(self.switch_data_combined, "ipv6_mgmt_ip")
 
     @cached_property
-    def mgmt_ip(self: "SharedUtils") -> str | None:
+    def mgmt_ip(self: SharedUtils) -> str | None:
         return get(self.switch_data_combined, "mgmt_ip")
 
     @cached_property
-    def mgmt_interface_vrf(self: "SharedUtils") -> str | None:
+    def mgmt_interface_vrf(self: SharedUtils) -> str | None:
         return get(self.hostvars, "mgmt_interface_vrf")
 
     @cached_property
-    def mgmt_gateway(self: "SharedUtils") -> str | None:
+    def mgmt_gateway(self: SharedUtils) -> str | None:
         return get(self.hostvars, "mgmt_gateway")
 
     @cached_property
-    def ipv6_mgmt_gateway(self: "SharedUtils") -> str | None:
+    def ipv6_mgmt_gateway(self: SharedUtils) -> str | None:
         return get(self.hostvars, "ipv6_mgmt_gateway")

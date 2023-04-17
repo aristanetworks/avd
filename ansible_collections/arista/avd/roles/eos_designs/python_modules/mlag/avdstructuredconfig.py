@@ -26,10 +26,6 @@ class AvdStructuredConfig(AvdFacts):
         return get(self.shared_utils.trunk_groups, "mlag_l3.name", required=True)
 
     @cached_property
-    def _p2p_uplinks_mtu(self):
-        return get(self._hostvars, "p2p_uplinks_mtu", required=True)
-
-    @cached_property
     def spanning_tree(self):
         if self.shared_utils.mlag_peer_l3_vlan is not None:
             vlans = [self.shared_utils.mlag_peer_vlan, self.shared_utils.mlag_peer_l3_vlan]
@@ -72,7 +68,7 @@ class AvdStructuredConfig(AvdFacts):
             "ip_address": f"{self.shared_utils.mlag_ip}/31",
             "no_autostate": True,
             "struct_cfg": self.shared_utils.mlag_peer_vlan_structured_config,
-            "mtu": self._p2p_uplinks_mtu,
+            "mtu": self.shared_utils.p2p_uplinks_mtu,
         }
         if not self.shared_utils.mlag_l3:
             return [strip_empties_from_dict(main_vlan_interface)]
@@ -85,7 +81,7 @@ class AvdStructuredConfig(AvdFacts):
             l3_cfg.update(
                 {
                     "ospf_network_point_to_point": True,
-                    "ospf_area": get(self._hostvars, "underlay_ospf_area", required=True),
+                    "ospf_area": self.shared_utils.underlay_ospf_area,
                 }
             )
 
@@ -119,7 +115,7 @@ class AvdStructuredConfig(AvdFacts):
             "name": l3_vlan_interface_name,
             "description": "MLAG_PEER_L3_PEERING",
             "shutdown": False,
-            "mtu": self._p2p_uplinks_mtu,
+            "mtu": self.shared_utils.p2p_uplinks_mtu,
         }
         if not self.shared_utils.underlay_rfc5549:
             l3_vlan_interface["ip_address"] = f"{self.shared_utils.mlag_l3_ip}/31"

@@ -11,10 +11,11 @@ class MlagMixin:
     """
     Mixin Class used to generate some of the EosDesignsFacts.
     Class should only be used as Mixin to the EosDesignsFacts class
+    Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
     @cached_property
-    def mlag_peer(self: "EosDesignsFacts") -> str | None:
+    def mlag_peer(self: EosDesignsFacts) -> str | None:
         """
         Exposed in avd_switch_facts
         """
@@ -23,7 +24,7 @@ class MlagMixin:
         return None
 
     @cached_property
-    def mlag_port_channel_id(self: "EosDesignsFacts") -> int | None:
+    def mlag_port_channel_id(self: EosDesignsFacts) -> int | None:
         """
         Exposed in avd_switch_facts
         """
@@ -32,7 +33,7 @@ class MlagMixin:
         return None
 
     @cached_property
-    def mlag_interfaces(self: "EosDesignsFacts") -> list | None:
+    def mlag_interfaces(self: EosDesignsFacts) -> list | None:
         """
         Exposed in avd_switch_facts
         """
@@ -41,7 +42,7 @@ class MlagMixin:
         return None
 
     @cached_property
-    def mlag_ip(self: "EosDesignsFacts") -> str | None:
+    def mlag_ip(self: EosDesignsFacts) -> str | None:
         """
         Exposed in avd_switch_facts
         """
@@ -50,7 +51,7 @@ class MlagMixin:
         return None
 
     @cached_property
-    def mlag_l3_ip(self: "EosDesignsFacts") -> str | None:
+    def mlag_l3_ip(self: EosDesignsFacts) -> str | None:
         """
         Exposed in avd_switch_facts
         """
@@ -59,7 +60,7 @@ class MlagMixin:
         return None
 
     @cached_property
-    def mlag_switch_ids(self: "EosDesignsFacts") -> dict | None:
+    def mlag_switch_ids(self: EosDesignsFacts) -> dict | None:
         """
         Exposed in avd_switch_facts
 

@@ -10,10 +10,6 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 class AvdStructuredConfig(AvdFacts):
     @cached_property
-    def _p2p_uplinks_mtu(self) -> int:
-        return get(self._hostvars, "p2p_uplinks_mtu", required=True)
-
-    @cached_property
     def vlans(self) -> dict | None:
         vlan_cfg = {
             "tenant": "system",
@@ -38,7 +34,7 @@ class AvdStructuredConfig(AvdFacts):
                 "name": self.shared_utils.inband_management_interface,
                 "description": "L2LEAF_INBAND_MGMT",
                 "shutdown": False,
-                "mtu": self._p2p_uplinks_mtu,
+                "mtu": self.shared_utils.p2p_uplinks_mtu,
                 "ip_address": self.shared_utils.inband_management_ip,
                 "gateway": self.shared_utils.inband_management_gateway,
                 "type": "inband",
@@ -111,7 +107,7 @@ class AvdStructuredConfig(AvdFacts):
             "name": f"Vlan{vlan}",
             "description": "L2LEAF_INBAND_MGMT",
             "shutdown": False,
-            "mtu": self._p2p_uplinks_mtu,
+            "mtu": self.shared_utils.p2p_uplinks_mtu,
             "ip_address": ip_address,
             "ip_virtual_router_addresses": [str(hosts[0])],
             "ip_attached_host_route_export": {

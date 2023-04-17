@@ -23,7 +23,7 @@ class RouterOspfMixin(UtilsMixin):
 
         ospf_processes = []
 
-        process_id = self._underlay_ospf_process_id
+        process_id = self.shared_utils.underlay_ospf_process_id
 
         no_passive_interfaces = [link["interface"] for link in self._underlay_links if link["type"] == "underlay_p2p"]
 
