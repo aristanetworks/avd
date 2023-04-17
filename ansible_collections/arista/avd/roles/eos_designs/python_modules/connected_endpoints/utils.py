@@ -8,7 +8,6 @@ from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_
 from ansible_collections.arista.avd.plugins.filter.esi_management import generate_esi, generate_route_target
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 
 
@@ -31,7 +30,7 @@ class UtilsMixin:
         Adapters are filtered to contain only the ones connected to this switch.
         """
         filtered_connected_endpoints = []
-        for connected_endpoints_key in self._connected_endpoints_keys:
+        for connected_endpoints_key in self.shared_utils.connected_endpoints_keys:
             connected_endpoints = convert_dicts(get(self._hostvars, connected_endpoints_key["key"], default=[]), "name")
             for connected_endpoint in connected_endpoints:
                 if "adapters" not in connected_endpoint:
@@ -39,25 +38,22 @@ class UtilsMixin:
 
                 filtered_adapters = []
                 for adapter_index, adapter in enumerate(connected_endpoint["adapters"]):
-                    if "profile" in adapter:
-                        port_profile = get_item(self._merged_port_profiles, "profile", adapter["profile"], default={})
-                        # Notice reusing the same variable, but assigning a new instance with the merged adapter
-                        adapter = merge(port_profile, adapter, list_merge="replace", destructive_merge=False)
+                    adapter_settings = self.shared_utils.get_merged_adapter_settings(adapter)
 
-                    if self.shared_utils.hostname not in adapter.get("switches", []):
+                    if self.shared_utils.hostname not in adapter_settings.get("switches", []):
                         continue
 
                     # Verify that length of all lists are the same
-                    nodes_length = len(adapter["switches"])
-                    endpoint_ports = default(adapter.get("endpoint_ports"), adapter.get("server_ports"))
-                    if len(adapter["switch_ports"]) != nodes_length or (endpoint_ports is not None and len(endpoint_ports) != nodes_length):
+                    nodes_length = len(adapter_settings["switches"])
+                    endpoint_ports = default(adapter_settings.get("endpoint_ports"), adapter_settings.get("server_ports"))
+                    if len(adapter_settings["switch_ports"]) != nodes_length or (endpoint_ports is not None and len(endpoint_ports) != nodes_length):
                         raise AristaAvdError(
                             f"Length of lists 'switches', 'switch_ports', 'endpoint_ports' (if used) did not match on adapter {adapter_index} on"
                             f" connected_endpoint '{connected_endpoint['name']}' under '{connected_endpoints_key['key']}'."
                             " Notice that some or all of these variables could be inherited from 'port_profiles'"
                         )
 
-                    filtered_adapters.append(adapter)
+                    filtered_adapters.append(adapter_settings)
 
                 connected_endpoint["adapters"] = filtered_adapters
                 connected_endpoint["type"] = connected_endpoints_key["type"]
@@ -73,15 +69,11 @@ class UtilsMixin:
         """
         filtered_network_ports = []
         for network_port in get(self._hostvars, "network_ports", default=[]):
-            if "profile" in network_port:
-                port_profile = get_item(self._merged_port_profiles, "profile", network_port["profile"], default={})
-                # Notice reusing the same variable, but assigning a new instance with the merged network_port
-                network_port = merge(port_profile, network_port, list_merge="replace", destructive_merge=False)
-
-            if not self._match_regexes(network_port.get("switches"), self.shared_utils.hostname):
+            network_port_settings = self.shared_utils.get_merged_adapter_settings(network_port)
+            if not self._match_regexes(network_port_settings.get("switches"), self.shared_utils.hostname):
                 continue
 
-            filtered_network_ports.append(network_port)
+            filtered_network_ports.append(network_port_settings)
 
         return filtered_network_ports
 
@@ -91,41 +83,6 @@ class UtilsMixin:
         Regex must match the full value to pass, so regex is wrapped in ^$
         """
         return any(re.match(rf"^{regex}$", value) for regex in regexes)
-
-    @cached_property
-    def _port_profiles(self) -> list:
-        """
-        Return list of "port_profiles"
-        """
-        return convert_dicts(get(self._hostvars, "port_profiles", default=[]), "profile")
-
-    @cached_property
-    def _merged_port_profiles(self) -> list:
-        """
-        Return list of merged "port_profiles" where "parent_profile" has been applied.
-        """
-        merged_port_profiles = []
-
-        for port_profile in self._port_profiles:
-            if "parent_profile" in port_profile:
-                parent_profile = get_item(self._port_profiles, "profile", port_profile["parent_profile"], default={})
-                # Notice reusing the same variable, but assigning a new instance with the merged port_profile
-                port_profile = merge(parent_profile, port_profile, list_merge="replace", destructive_merge=False)
-                port_profile.pop("parent_profile")
-            merged_port_profiles.append(port_profile)
-
-        return merged_port_profiles
-
-    @cached_property
-    def _connected_endpoints_keys(self) -> list:
-        """
-        Return connected_endpoints_keys converted to list
-        """
-        return convert_dicts(get(self._hostvars, "connected_endpoints_keys", default=[]), "key")
-
-    @cached_property
-    def _platform_settings_feature_support_interface_storm_control(self) -> bool:
-        return get(self.shared_utils.platform_settings, "feature_support.interface_storm_control", default=True) is True
 
     def _get_short_esi(self, adapter: dict, channel_group_id: int, short_esi: str = None, hash_extra_value: str = "") -> str | None:
         """
@@ -173,7 +130,7 @@ class UtilsMixin:
         """
         Return storm_control for one adapter
         """
-        if self._platform_settings_feature_support_interface_storm_control:
+        if self.shared_utils.platform_settings_feature_support_interface_storm_control:
             return get(adapter, "storm_control")
 
         return None
@@ -243,13 +200,6 @@ class UtilsMixin:
             }
         ]
 
-    @cached_property
-    def _ptp_profiles(self) -> list:
-        """
-        Return ptp_profiles or []
-        """
-        return get(self._hostvars, "ptp_profiles", default=[])
-
     def _get_adapter_ptp(self, adapter: dict) -> dict | None:
         """
         Return ptp for one adapter
@@ -261,7 +211,7 @@ class UtilsMixin:
 
         # Apply PTP profile config
         if (ptp_profile_name := get(adapter, "ptp.profile", default=self.shared_utils.ptp_profile_name)) is not None:
-            ptp_config.update(get_item(self._ptp_profiles, "profile", ptp_profile_name, default={}))
+            ptp_config.update(get_item(self.shared_utils.ptp_profiles, "profile", ptp_profile_name, default={}))
 
         ptp_config["enable"] = True
 

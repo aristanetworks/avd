@@ -135,6 +135,8 @@ class MlagMixin:
         """
         Render ipv4 address for mlag_l3_ip using dynamically loaded python module.
         """
+        if self.mlag_peer_l3_vlan is None:
+            return None
         if self.mlag_role == "primary":
             return self.ip_addressing.mlag_l3_ip_primary()
         elif self.mlag_role == "secondary":

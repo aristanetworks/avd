@@ -8,8 +8,7 @@ from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_
 from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
-from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 if TYPE_CHECKING:
     from .eos_designs_facts import EosDesignsFacts
@@ -35,23 +34,6 @@ class VlansMixin:
         This is to ensure that native vlan is not necessarily permitted on the uplink trunk.
         """
         return list_compress(self._vlans)
-
-    @cached_property
-    def _port_profiles(self: EosDesignsFacts) -> list:
-        port_profiles = get(self._hostvars, "port_profiles", default=[])
-        # Support legacy data model by converting nested dict to list of dict
-        return convert_dicts(port_profiles, "profile")
-
-    def _get_adapter_settings(self: EosDesignsFacts, adapter_or_network_port: dict) -> dict:
-        """
-        Applies port-profiles to the given adapter_or_network_port and returns the combined result.
-        adapter_or_network_port can either be an adapter of a connected endpoint or one item under network_ports.
-        """
-        profile_name = adapter_or_network_port.get("profile")
-        adapter_profile = get_item(self._port_profiles, "profile", profile_name, default={})
-        parent_profile_name = adapter_profile.get("parent_profile")
-        parent_profile = get_item(self._port_profiles, "profile", parent_profile_name, default={})
-        return merge(parent_profile, adapter_profile, adapter_or_network_port, list_merge="replace", destructive_merge=False)
 
     def _parse_adapter_settings(self: EosDesignsFacts, adapter_settings: dict) -> tuple[set, set]:
         """
@@ -91,21 +73,11 @@ class VlansMixin:
         vlans = set()
         trunk_groups = set()
 
-        connected_endpoints_keys = get(self._hostvars, "connected_endpoints_keys", default=[])
-        # Support legacy data model by converting nested dict to list of dict
-        connected_endpoints_keys = convert_dicts(connected_endpoints_keys, "key")
-        for connected_endpoints_key in connected_endpoints_keys:
-            connected_endpoints_key_key = connected_endpoints_key.get("key")
-            if connected_endpoints_key_key is None or get(self._hostvars, connected_endpoints_key_key) is None:
-                # Invalid connected_endpoints_key.key. Skipping.
-                continue
-
-            connected_endpoints = get(self._hostvars, connected_endpoints_key_key)
-            # Support legacy data model by converting nested dict to list of dict
-            connected_endpoints = convert_dicts(connected_endpoints, "name")
+        for connected_endpoints_key in self.shared_utils.connected_endpoints_keys:
+            connected_endpoints = convert_dicts(get(self._hostvars, connected_endpoints_key["key"], default=[]), "name")
             for connected_endpoint in connected_endpoints:
                 for adapter in connected_endpoint.get("adapters", []):
-                    adapter_settings = self._get_adapter_settings(adapter)
+                    adapter_settings = self.shared_utils.get_merged_adapter_settings(adapter)
                     if self.shared_utils.hostname not in adapter_settings.get("switches", []):
                         # This switch is not connected to this endpoint. Skipping.
                         continue
@@ -129,7 +101,7 @@ class VlansMixin:
                     # Skip entry if no match
                     continue
 
-                adapter_settings = self._get_adapter_settings(network_port_item)
+                adapter_settings = self.shared_utils.get_merged_adapter_settings(network_port_item)
                 adapter_vlans, adapter_trunk_groups = self._parse_adapter_settings(adapter_settings)
                 vlans.update(adapter_vlans)
                 trunk_groups.update(adapter_trunk_groups)
@@ -264,14 +236,8 @@ class VlansMixin:
                 endpoint_trunk_groups = self._endpoint_trunk_groups
                 endpoint_vlans = self._endpoint_vlans
 
-            network_services_keys = get(self._hostvars, "network_services_keys", default=[])
-            for network_services_key in natural_sort(network_services_keys, "name"):
-                network_services_key_name = network_services_key.get("name")
-                if network_services_key_name is None or get(self._hostvars, network_services_key_name) is None:
-                    # Invalid network_services_key.name. Skipping.
-                    continue
-
-                tenants = get(self._hostvars, network_services_key_name)
+            for network_services_key in self.shared_utils.network_services_keys:
+                tenants = get(self._hostvars, network_services_key["name"])
                 # Support legacy data model by converting nested dict to list of dict
                 tenants = convert_dicts(tenants, "name")
                 for tenant in natural_sort(tenants, "name"):

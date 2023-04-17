@@ -3,6 +3,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
+from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
+from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
 
 if TYPE_CHECKING:
@@ -146,3 +148,65 @@ class MiscMixin:
     @cached_property
     def dc_name(self: SharedUtils) -> str | None:
         return get(self.hostvars, "dc_name")
+
+    @cached_property
+    def connected_endpoints_keys(self: SharedUtils) -> list:
+        """
+        Return connected_endpoints_keys filtered for invalid entries and unused keys
+        """
+        connected_endpoints_keys = []
+        # Support legacy data model by converting nested dict to list of dict
+        connected_endpoints_keys = convert_dicts(get(self.hostvars, "connected_endpoints_keys", default=[]), "key")
+        connected_endpoints_keys = [entry for entry in connected_endpoints_keys if entry.get("key") is not None and self.hostvars.get(entry["key"]) is not None]
+        return connected_endpoints_keys
+
+    @cached_property
+    def network_services_keys(self: SharedUtils) -> list[dict]:
+        """
+        Return sorted network_services_keys filtered for invalid entries and unused keys
+        """
+        network_services_keys = get(self.hostvars, "network_services_keys", required=True)
+        network_services_keys = [entry for entry in network_services_keys if entry.get("name") is not None and self.hostvars.get(entry["name"]) is not None]
+        return natural_sort(network_services_keys, "name")
+
+    @cached_property
+    def port_profiles(self: SharedUtils) -> list:
+        port_profiles = get(self.hostvars, "port_profiles", default=[])
+        # Support legacy data model by converting nested dict to list of dict
+        return convert_dicts(port_profiles, "profile")
+
+    @cached_property
+    def uplink_interface_speed(self: SharedUtils) -> str | None:
+        return get(self.switch_data_combined, "uplink_interface_speed")
+
+    @cached_property
+    def uplink_bfd(self: SharedUtils) -> bool:
+        return get(self.switch_data_combined, "uplink_bfd") is True
+
+    @cached_property
+    def uplink_ptp(self: SharedUtils) -> dict | None:
+        return get(self.switch_data_combined, "uplink_ptp")
+
+    @cached_property
+    def uplink_macsec(self: SharedUtils) -> dict | None:
+        return get(self.switch_data_combined, "uplink_macsec")
+
+    @cached_property
+    def uplink_structured_config(self: SharedUtils) -> dict | None:
+        return get(self.switch_data_combined, "uplink_structured_config")
+
+    @cached_property
+    def p2p_uplinks_qos_profile(self: SharedUtils) -> str | None:
+        return get(self.hostvars, "p2p_uplinks_qos_profile")
+
+    @cached_property
+    def isis_default_metric(self: SharedUtils) -> int:
+        return get(self.hostvars, "isis_default_metric", default=50)
+
+    @cached_property
+    def isis_default_circuit_type(self: SharedUtils) -> str | None:
+        return get(self.hostvars, "isis_default_circuit_type")
+
+    @cached_property
+    def pod_name(self: SharedUtils) -> str | None:
+        return get(self.hostvars, "pod_name")

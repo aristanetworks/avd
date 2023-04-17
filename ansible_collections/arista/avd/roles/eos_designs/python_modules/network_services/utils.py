@@ -3,7 +3,6 @@ from __future__ import annotations
 import ipaddress
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
@@ -21,15 +20,6 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
     # Set type hints for Attributes of the main class as needed
     _hostvars: dict
     shared_utils: SharedUtils
-
-    @cached_property
-    def _network_services_keys(self) -> list[dict]:
-        """
-        Return sorted network_services_keys filtered for invalid entries and unused keys
-        """
-        network_services_keys = get(self._hostvars, "network_services_keys", required=True)
-        network_services_keys = [entry for entry in network_services_keys if "name" in entry and entry["name"] in self._hostvars]
-        return natural_sort(network_services_keys, "name")
 
     @cached_property
     def _trunk_groups_mlag_name(self) -> str:
@@ -57,10 +47,6 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         if not endpoint_vlans:
             return []
         return [int(id) for id in range_expand(endpoint_vlans)]
-
-    @cached_property
-    def _pod_name(self) -> str | None:
-        return get(self._hostvars, "pod_name")
 
     @cached_property
     def _vrf_default_ipv4_subnets(self) -> list[str]:

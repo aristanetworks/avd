@@ -28,5 +28,11 @@ class PtpMixin:
 
     @cached_property
     def ptp_profile(self: SharedUtils) -> dict:
-        ptp_profiles = get(self.hostvars, "ptp_profiles", [])
-        return get_item(ptp_profiles, "profile", self.ptp_profile_name, default={})
+        return get_item(self.ptp_profiles, "profile", self.ptp_profile_name, default={})
+
+    @cached_property
+    def ptp_profiles(self: SharedUtils) -> list:
+        """
+        Return ptp_profiles or []
+        """
+        return get(self.hostvars, "ptp_profiles", default=[])

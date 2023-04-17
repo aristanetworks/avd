@@ -15,11 +15,13 @@ class UtilsFilteredTenantsMixin(object):
     """
     Utils Mixin Class with internal functions.
     Class should only be used as Mixin to the UtilsMixin class
+
+    These filtered functions should not be moved to shared_utils, since expand a lot more data than needed
+    in EosDesignsFacts.
     """
 
     # Set type hints for Attributes of the main class as needed
     _hostvars: dict
-    _network_services_keys: list[dict]
     shared_utils: SharedUtils
 
     @cached_property
@@ -31,7 +33,7 @@ class UtilsFilteredTenantsMixin(object):
         """
         filtered_tenants = []
         filter_tenants = self.shared_utils.filter_tenants
-        for network_services_key in self._network_services_keys:
+        for network_services_key in self.shared_utils.network_services_keys:
             tenants = convert_dicts(get(self._hostvars, network_services_key["name"]), "name")
             for tenant in tenants:
                 if tenant["name"] in filter_tenants or "all" in filter_tenants:

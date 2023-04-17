@@ -3,7 +3,6 @@ from __future__ import annotations
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.esi_management import generate_esi, generate_lacp_id, generate_route_target
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 from .utils import UtilsMixin
 
@@ -40,7 +39,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 "type": "switched",
                 "shutdown": False,
                 "mode": "trunk",
-                "service_profile": get(self._hostvars, "p2p_uplinks_qos_profile"),
+                "service_profile": self.shared_utils.p2p_uplinks_qos_profile,
                 "link_tracking_groups": link.get("link_tracking_groups"),
                 "native_vlan": link.get("native_vlan"),
             }

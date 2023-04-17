@@ -141,7 +141,7 @@ class AvdStructuredConfig(AvdFacts):
             "shutdown": False,
             "vlans": get(self.shared_utils.switch_data_combined, "mlag_peer_link_allowed_vlans", default="2-4094"),
             "mode": "trunk",
-            "service_profile": get(self._hostvars, "p2p_uplinks_qos_profile"),
+            "service_profile": self.shared_utils.p2p_uplinks_qos_profile,
             "trunk_groups": [self._trunk_groups_mlag_name],
             "struct_cfg": get(self.shared_utils.switch_data_combined, "mlag_port_channel_structured_config"),
         }

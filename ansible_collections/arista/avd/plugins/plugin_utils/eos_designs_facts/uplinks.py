@@ -76,26 +76,6 @@ class UplinksMixin:
         return uplink_switch_interfaces
 
     @cached_property
-    def _uplink_interface_speed(self: EosDesignsFacts) -> str | None:
-        return get(self.shared_utils.switch_data_combined, "uplink_interface_speed")
-
-    @cached_property
-    def _uplink_bfd(self: EosDesignsFacts) -> bool:
-        return get(self.shared_utils.switch_data_combined, "uplink_bfd") is True
-
-    @cached_property
-    def _uplink_ptp(self: EosDesignsFacts) -> dict | None:
-        return get(self.shared_utils.switch_data_combined, "uplink_ptp")
-
-    @cached_property
-    def _uplink_macsec(self: EosDesignsFacts) -> dict | None:
-        return get(self.shared_utils.switch_data_combined, "uplink_macsec")
-
-    @cached_property
-    def _uplink_structured_config(self: EosDesignsFacts) -> dict | None:
-        return get(self.shared_utils.switch_data_combined, "uplink_structured_config")
-
-    @cached_property
     def uplinks(self: EosDesignsFacts) -> list:
         """
         Exposed in avd_switch_facts
@@ -130,16 +110,16 @@ class UplinksMixin:
                 uplink["peer_is_deployed"] = uplink_switch_facts.is_deployed
                 uplink["peer_bgp_as"] = uplink_switch_facts.bgp_as
                 uplink["type"] = "underlay_p2p"
-                if self._uplink_interface_speed is not None:
-                    uplink["speed"] = self._uplink_interface_speed
-                if self._uplink_bfd:
+                if self.shared_utils.uplink_interface_speed is not None:
+                    uplink["speed"] = self.shared_utils.uplink_interface_speed
+                if self.shared_utils.uplink_bfd:
                     uplink["bfd"] = True
-                if self._uplink_ptp is not None:
-                    uplink["ptp"] = self._uplink_ptp
+                if self.shared_utils.uplink_ptp is not None:
+                    uplink["ptp"] = self.shared_utils.uplink_ptp
                 elif self.shared_utils.ptp_enabled:
                     uplink["ptp"] = {"enable": True}
-                if self._uplink_macsec is not None:
-                    uplink["mac_security"] = self._uplink_macsec
+                if self.shared_utils.uplink_macsec is not None:
+                    uplink["mac_security"] = self.shared_utils.uplink_macsec
                 if self.shared_utils.underlay_multicast is True and uplink_switch_facts.shared_utils.underlay_multicast is True:
                     uplink["underlay_multicast"] = True
                 if self.shared_utils.underlay_rfc5549:
@@ -153,8 +133,8 @@ class UplinksMixin:
                     for lt_group in self.shared_utils.link_tracking_groups:
                         uplink["link_tracking_groups"].append({"name": lt_group["name"], "direction": "upstream"})
 
-                if self._uplink_structured_config is not None:
-                    uplink["structured_config"] = self._uplink_structured_config
+                if self.shared_utils.uplink_structured_config is not None:
+                    uplink["structured_config"] = self.shared_utils.uplink_structured_config
 
                 uplinks.append(uplink)
             return uplinks
@@ -182,8 +162,8 @@ class UplinksMixin:
                 uplink["peer_is_deployed"] = uplink_switch_facts.is_deployed
                 uplink["type"] = "underlay_l2"
 
-                if self._uplink_interface_speed is not None:
-                    uplink["speed"] = self._uplink_interface_speed
+                if self.shared_utils.uplink_interface_speed is not None:
+                    uplink["speed"] = self.shared_utils.uplink_interface_speed
 
                 if uplink_switch_facts.shared_utils.mlag is True or self.short_esi is not None:
                     # Override our description on port-channel to be peer's group name if they are mlag pair or A/A #}
@@ -232,8 +212,8 @@ class UplinksMixin:
                     for lt_group in self.shared_utils.link_tracking_groups:
                         uplink["link_tracking_groups"].append({"name": lt_group["name"], "direction": "upstream"})
 
-                if self._uplink_structured_config is not None:
-                    uplink["structured_config"] = self._uplink_structured_config
+                if self.shared_utils.uplink_structured_config is not None:
+                    uplink["structured_config"] = self.shared_utils.uplink_structured_config
 
                 uplinks.append(uplink)
         return uplinks

@@ -59,3 +59,7 @@ class PlatformMixin:
                     return default_interface
 
         return {}
+
+    @cached_property
+    def platform_settings_feature_support_interface_storm_control(self) -> bool:
+        return get(self.platform_settings, "feature_support.interface_storm_control", default=True) is True

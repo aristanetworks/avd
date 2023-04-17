@@ -36,7 +36,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                 ethernet_interface.update(
                     {
                         "mtu": self.shared_utils.p2p_uplinks_mtu,
-                        "service_profile": get(self._hostvars, "p2p_uplinks_qos_profile"),
+                        "service_profile": self.shared_utils.p2p_uplinks_qos_profile,
                         "mac_security": link.get("mac_security"),
                         "type": "routed",
                         "ipv6_enable": link.get("ipv6_enable"),
@@ -83,9 +83,9 @@ class EthernetInterfacesMixin(UtilsMixin):
                     ethernet_interface.update(
                         {
                             "isis_enable": self.shared_utils.isis_instance_name,
-                            "isis_metric": get(self._hostvars, "isis_default_metric", default=50),
+                            "isis_metric": self.shared_utils.isis_default_metric,
                             "isis_network_point_to_point": True,
-                            "isis_circuit_type": get(self._hostvars, "isis_default_circuit_type"),
+                            "isis_circuit_type": self.shared_utils.isis_default_circuit_type,
                         }
                     )
 
@@ -110,7 +110,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                         {
                             "vlans": list_compress(vlans),
                             "native_vlan": link.get("native_vlan"),
-                            "service_profile": get(self._hostvars, "p2p_uplinks_qos_profile"),
+                            "service_profile": self.shared_utils.p2p_uplinks_qos_profile,
                             "link_tracking_groups": link.get("link_tracking_groups"),
                         }
                     )

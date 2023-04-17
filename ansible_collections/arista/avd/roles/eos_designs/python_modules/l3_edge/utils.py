@@ -39,18 +39,6 @@ class UtilsMixin:
         return get(self._hostvars, "l3_edge.p2p_links", default=[])
 
     @cached_property
-    def _p2p_uplinks_qos_profile(self) -> str | None:
-        return get(self._hostvars, "p2p_uplinks_qos_profile")
-
-    @cached_property
-    def _isis_default_metric(self) -> int | None:
-        return get(self._hostvars, "isis_default_metric")
-
-    @cached_property
-    def _isis_default_circuit_type(self) -> str | None:
-        return get(self._hostvars, "isis_default_circuit_type")
-
-    @cached_property
     def _filtered_p2p_links(self) -> list:
         """
         Returns a filtered list of p2p_links, which only contains links with our hostname.
@@ -229,6 +217,7 @@ class UtilsMixin:
             "shutdown": False,
             "mtu": p2p_link.get("mtu", self.shared_utils.p2p_uplinks_mtu),
             # TODO: Set p2p_uplinks_qos_profile as default like it is in core_interfaces.
+            # "service_profile": p2p_link.get("qos_profile", self.shared_utils.p2p_uplinks_qos_profile),
             "service_profile": p2p_link.get("qos_profile"),
             "eos_cli": p2p_link.get("raw_eos_cli"),
         }
@@ -251,11 +240,11 @@ class UtilsMixin:
                 interface_cfg.update(
                     {
                         "isis_enable": self.shared_utils.isis_instance_name,
-                        "isis_metric": default(p2p_link.get("isis_metric"), self._isis_default_metric, 50),
+                        "isis_metric": default(p2p_link.get("isis_metric"), self.shared_utils.isis_default_metric),
                         "isis_network_point_to_point": (p2p_link.get("isis_network_type", "point-to-point") == "point-to-point"),
                         # TODO: Update defaults below to have same as core_interfaces - or vice versa
                         "isis_hello_padding": p2p_link.get("isis_hello_padding"),
-                        "isis_circuit_type": default(p2p_link.get("isis_circuit_type"), self._isis_default_circuit_type),
+                        "isis_circuit_type": default(p2p_link.get("isis_circuit_type"), self.shared_utils.isis_default_circuit_type),
                         "isis_authentication_mode": p2p_link.get("isis_authentication_mode"),
                         "isis_authentication_key": p2p_link.get("isis_authentication_key"),
                     }

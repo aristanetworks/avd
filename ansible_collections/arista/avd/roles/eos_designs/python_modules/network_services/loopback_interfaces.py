@@ -32,7 +32,7 @@ class LoopbackInterfacesMixin(UtilsMixin):
                     continue
 
                 if (loopback_ipv4_pool := get(vrf, "vtep_diagnostic.loopback_ip_range")) is None:
-                    if (pod_name := self._pod_name) is None:
+                    if (pod_name := self.shared_utils.pod_name) is None:
                         # Skip this vrf since we have no loopback_ip_range and pod_name
                         continue
 
