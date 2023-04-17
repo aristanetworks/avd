@@ -99,20 +99,18 @@ Search list of DNS domains
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ip_name_servers</samp>](## "ip_name_servers") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;source</samp>](## "ip_name_servers.source") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "ip_name_servers.source.vrf") | String |  |  |  | VRF Name |
-    | [<samp>&nbsp;&nbsp;nodes</samp>](## "ip_name_servers.nodes") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "ip_name_servers.nodes.[].&lt;str&gt;") | String |  |  |  |  |
+    | [<samp>ip_name_servers</samp>](## "ip_name_servers") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;- ip_address</samp>](## "ip_name_servers.[].ip_address") | String | Required, Unique |  |  | IPv4 or IPv6 address for DNS server |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "ip_name_servers.[].vrf") | String |  |  |  | VRF Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "ip_name_servers.[].priority") | Integer |  |  | Min: 0<br>Max: 4 | Priority value (lower is first) |
 
 === "YAML"
 
     ```yaml
     ip_name_servers:
-      source:
+      - ip_address: <str>
         vrf: <str>
-      nodes:
-        - <str>
+        priority: <int>
     ```
 
 ## IP SSH Client Source Interfaces

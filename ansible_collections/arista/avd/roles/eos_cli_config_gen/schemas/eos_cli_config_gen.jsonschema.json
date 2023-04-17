@@ -4529,34 +4529,35 @@
       "title": "IP IGMP Snooping"
     },
     "ip_name_servers": {
-      "type": "object",
-      "properties": {
-        "source": {
-          "type": "object",
-          "properties": {
-            "vrf": {
-              "description": "VRF Name",
-              "type": "string",
-              "title": "VRF"
-            }
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ip_address": {
+            "type": "string",
+            "description": "IPv4 or IPv6 address for DNS server",
+            "title": "IP Address"
           },
-          "additionalProperties": false,
-          "patternProperties": {
-            "^_.+$": {}
+          "vrf": {
+            "description": "VRF Name",
+            "type": "string",
+            "title": "VRF"
           },
-          "title": "Source"
+          "priority": {
+            "description": "Priority value (lower is first)",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 4,
+            "title": "Priority"
+          }
         },
-        "nodes": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "title": "Nodes"
-        }
-      },
-      "additionalProperties": false,
-      "patternProperties": {
-        "^_.+$": {}
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "ip_address"
+        ]
       },
       "title": "IP Name Servers"
     },

@@ -52,16 +52,20 @@ dns domain test.local
 
 #### IP Name Servers Summary
 
-| Name Server | Source VRF |
-| ----------- | ---------- |
-| 10.10.128.10 | mgt |
-| 10.10.129.10 | mgt |
+| Name Server | VRF | Priority |
+| ----------- | --- | -------- |
+| 10.10.130.10 | - | - |
+| 10.10.131.10 | - | 0 |
+| 10.10.128.10 | mgmt | - |
+| 10.10.129.10 | mgmt | 3 |
 
 #### IP Name Servers Device Configuration
 
 ```eos
-ip name-server vrf mgt 10.10.128.10
-ip name-server vrf mgt 10.10.129.10
+ip name-server vrf mgmt 10.10.128.10
+ip name-server vrf mgmt 10.10.129.10 priority 3
+ip name-server 10.10.130.10
+ip name-server 10.10.131.10 priority 0
 ```
 
 ### Domain Lookup

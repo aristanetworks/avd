@@ -81,11 +81,11 @@ interface Management1
 
 #### IP Name Servers Summary
 
-| Name Server | Source VRF |
-| ----------- | ---------- |
-| 192.168.200.5 | MGMT |
-| 8.8.8.8 | MGMT |
-| 1.1.1.1 | MGMT |
+| Name Server | VRF | Priority |
+| ----------- | --- | -------- |
+| 192.168.200.5 | MGMT | - |
+| 8.8.8.8 | MGMT | - |
+| 1.1.1.1 | MGMT | - |
 
 #### IP Name Servers Device Configuration
 

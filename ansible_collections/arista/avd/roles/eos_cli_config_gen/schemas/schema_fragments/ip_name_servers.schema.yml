@@ -6,15 +6,21 @@ keys:
   ip_name_servers:
     documentation_options:
       filename: data_model/Management
-    type: dict
-    keys:
-      source:
-        type: dict
-        keys:
-          vrf:
-            description: VRF Name
-            type: str
-      nodes:
-        type: list
-        items:
+    type: list
+    primary_key: ip_address
+    items:
+      type: dict
+      keys:
+        ip_address:
           type: str
+          description: IPv4 or IPv6 address for DNS server
+        vrf:
+          description: VRF Name
+          type: str
+        priority:
+          description: Priority value (lower is first)
+          type: int
+          convert_types:
+            - str
+          min: 0
+          max: 4

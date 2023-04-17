@@ -114,10 +114,10 @@ interface Management1
 
 #### IP Name Servers Summary
 
-| Name Server | Source VRF |
-| ----------- | ---------- |
-| 10.10.128.10 | mgt |
-| 10.10.129.10 | mgt |
+| Name Server | VRF | Priority |
+| ----------- | --- | -------- |
+| 10.10.128.10 | mgt | - |
+| 10.10.129.10 | mgt | - |
 
 #### IP Name Servers Device Configuration
 

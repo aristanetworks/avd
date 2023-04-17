@@ -368,14 +368,18 @@ class AvdStructuredConfig(AvdFacts):
         return queue_monitor_length_dict
 
     @cached_property
-    def ip_name_servers(self) -> dict | None:
+    def ip_name_servers(self) -> list | None:
         """
         ip_name_servers set based on name_servers data-model and mgmt_interface_vrf
         """
-        if (name_servers := get(self._hostvars, "name_servers")) is not None:
-            return {"source": {"vrf": self._mgmt_interface_vrf}, "nodes": name_servers}
-
-        return None
+        ip_name_servers = [
+            {
+                "ip_address": name_server,
+                "vrf": self._mgmt_interface_vrf,
+            }
+            for name_server in get(self._hostvars, "name_servers", default=[])
+        ]
+        return ip_name_servers or None
 
     @cached_property
     def redundancy(self) -> dict | None:
