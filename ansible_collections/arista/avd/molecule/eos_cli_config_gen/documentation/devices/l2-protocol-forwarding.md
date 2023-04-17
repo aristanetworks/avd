@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [L2 Protocol Forwarding](#l2-protocol-forwarding)
-  - [Forwarding Profiles Summary](#forwarding-profiles-summary)
+  - [Forwarding Profiles](#forwarding-profiles)
   - [L2 Protocol Forwarding Configuration](#l2-protocol-forwarding-configuration)
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
@@ -41,12 +41,12 @@ interface Management1
 
 ## L2 Protocol Forwarding
 
-### Forwarding Profiles Summary
+### Forwarding Profiles
 
 #### TEST1
 
-| Protocol |Forward | Tagged Forward | Untagged Forward |
-| -------- | ------ | -------------- | ---------------- |
+| Protocol | Forward | Tagged Forward | Untagged Forward |
+| -------- | ------- | -------------- | ---------------- |
 | bfd per-link rfc-7130 | True | True | True |
 | e-lmi | True | True | True |
 | isis | True | True | True |
@@ -58,8 +58,8 @@ interface Management1
 
 #### TEST2
 
-| Protocol |Forward | Tagged Forward | Untagged Forward |
-| -------- | ------ | -------------- | ---------------- |
+| Protocol | Forward | Tagged Forward | Untagged Forward |
+| -------- | ------- | -------------- | ---------------- |
 | bfd per-link rfc-7130 | False | True | - |
 | e-lmi | True | - | - |
 | isis | - | - | True |

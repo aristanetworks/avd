@@ -8,8 +8,8 @@
 
 #### {{ profile.name }}
 
-| Protocol |Forward | Tagged Forward | Untagged Forward |
-| -------- | ------ | -------------- | ---------------- |
+| Protocol | Forward | Tagged Forward | Untagged Forward |
+| -------- | ------- | -------------- | ---------------- |
 {%         for protocol in profile.protocols %}
 {%             set proto_forward =  protocol.forward | arista.avd.default("-") %}
 {%             set proto_tagged_forward =  protocol.tagged_forward | arista.avd.default("-") %}
