@@ -342,7 +342,7 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-name_server:
+ip_name_servers:
   source:
     vrf: MGMT
   nodes:

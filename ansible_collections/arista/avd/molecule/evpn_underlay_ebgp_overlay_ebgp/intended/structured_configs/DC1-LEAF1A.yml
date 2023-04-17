@@ -139,7 +139,7 @@ vlan_internal_order:
 queue_monitor_length:
   enabled: true
   log: 5
-name_server:
+ip_name_servers:
   source:
     vrf: MGMT
   nodes:

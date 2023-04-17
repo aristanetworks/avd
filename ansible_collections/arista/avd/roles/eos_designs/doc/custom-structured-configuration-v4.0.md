@@ -103,7 +103,7 @@ custom_structured_configuration_list_merge: < replace (default) | append | keep 
 #### Example using default prefix
 
 ```yaml
-custom_structured_configuration_name_server:
+custom_structured_configuration_ip_name_servers:
   nodes:
     - 10.2.3.4
 custom_structured_configuration_ethernet_interfaces:
@@ -118,7 +118,7 @@ custom_structured_configuration_ethernet_interfaces:
     peer_type: my_precious
 ```
 
-In this example the contents of the `name_server.nodes` variable in the Structured Configuration will be replaced by the list `[ 10.2.3.4 ]`
+In this example the contents of the `ip_name_servers.nodes` variable in the Structured Configuration will be replaced by the list `[ 10.2.3.4 ]`
 and `Ethernet4000` will be added to the `ethernet_interfaces` dictionary in the Structured Configuration.
 
 `custom_structured_configuration_prefix` allows the user to customize the prefix for Custom Structured Configuration variables.
@@ -164,15 +164,15 @@ name_servers:
 custom_structured_configuration_list_merge: append
 custom_structured_configuration_list_prefix: [ override_ ]
 
-override_name_server:
+override_ip_name_servers:
   nodes:
   - 10.10.10.12
 ```
 
-In this example the `name_servers` variable will be read by `eos_designs` templates and the `name_server` structured configuration will be generated accordingly:
+In this example the `name_servers` variable will be read by `eos_designs` templates and the `ip_name_servers` structured configuration will be generated accordingly:
 
 ```yaml
-name_server:
+ip_name_servers:
   source:
     vrf: MGMT
   nodes:
@@ -180,10 +180,10 @@ name_server:
   - 10.10.10.11
 ```
 
-The `override_name_server.nodes` list will be `appended` to `name_server.nodes` list resulting in:
+The `override_ip_name_servers.nodes` list will be `appended` to `ip_name_servers.nodes` list resulting in:
 
 ```yaml
-name_server:
+ip_name_servers:
   source:
     vrf: MGMT
   nodes:

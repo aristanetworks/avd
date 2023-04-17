@@ -368,9 +368,9 @@ class AvdStructuredConfig(AvdFacts):
         return queue_monitor_length_dict
 
     @cached_property
-    def name_server(self) -> dict | None:
+    def ip_name_servers(self) -> dict | None:
         """
-        name_server set based on name_servers data-model and mgmt_interface_vrf
+        ip_name_servers set based on name_servers data-model and mgmt_interface_vrf
         """
         if (name_servers := get(self._hostvars, "name_servers")) is not None:
             return {"source": {"vrf": self._mgmt_interface_vrf}, "nodes": name_servers}

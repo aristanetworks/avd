@@ -4,6 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+  - [IP Name Servers](#ip-name-servers)
   - [Domain Lookup](#domain-lookup)
   - [Management SSH](#management-ssh)
   - [Management API GNMI](#management-api-gnmi)
@@ -107,6 +108,22 @@ interface Management1
    description oob_management
    vrf MGMT
    ip address 10.73.255.122/24
+```
+
+### IP Name Servers
+
+#### IP Name Servers Summary
+
+| Name Server | Source VRF |
+| ----------- | ---------- |
+| 10.10.128.10 | mgt |
+| 10.10.129.10 | mgt |
+
+#### IP Name Servers Device Configuration
+
+```eos
+ip name-server vrf mgt 10.10.128.10
+ip name-server vrf mgt 10.10.129.10
 ```
 
 ### Domain Lookup

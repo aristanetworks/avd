@@ -3095,6 +3095,21 @@ keys:
               type: bool
               description: Global proxy settings should be enabled before enabling
                 per-vlan
+  ip_name_servers:
+    documentation_options:
+      filename: data_model/Management
+    type: dict
+    keys:
+      source:
+        type: dict
+        keys:
+          vrf:
+            description: VRF Name
+            type: str
+      nodes:
+        type: list
+        items:
+          type: str
   ip_radius_source_interfaces:
     documentation_options:
       filename: data_model/Authentication
@@ -4778,6 +4793,10 @@ keys:
             description: Interface Name
             type: str
   name_server:
+    deprecation:
+      warning: true
+      new_key: ip_name_servers
+      remove_in_version: v5.0.0
     documentation_options:
       filename: data_model/Management
     type: dict

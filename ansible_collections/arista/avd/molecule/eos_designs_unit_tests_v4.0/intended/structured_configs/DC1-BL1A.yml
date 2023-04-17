@@ -304,7 +304,7 @@ event_handlers:
   trigger: on-logging
   regex: EVPN-3-BLACKLISTED_DUPLICATE_MAC
   asynchronous: true
-name_server:
+ip_name_servers:
   source:
     vrf: MGMT
   nodes:

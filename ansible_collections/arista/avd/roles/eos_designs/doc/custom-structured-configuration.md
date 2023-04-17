@@ -36,7 +36,7 @@ There are multiple ways of supplying Custom Structured Configuration and they ca
 
 ### Examples
 
-A good example to demonstrate the various behaviors is to use the `ip name-server` configuration as it is quite straightforward. It is configured by `name_servers` for `eos_designs` and by `name_server` for `eos_cli_config_gen`.
+A good example to demonstrate the various behaviors is to use the `ip name-server` configuration as it is quite straightforward. It is configured by `name_servers` for `eos_designs` and by `ip_name_servers` for `eos_cli_config_gen`.
 
 #### eos_designs variables only
 
@@ -59,9 +59,9 @@ ip name-server vrf MGMT 192.168.42.40
 
 ```yaml
 ---
-# Only name_server from eos_ci_config_gen.
+# Only ip_name_servers from eos_ci_config_gen.
 # The variables will make it to the intended config
-name_server:
+ip_name_servers:
   source:
     vrf: EOS_CLI
   nodes:
@@ -80,14 +80,14 @@ ip name-server vrf EOS_CLI 8.8.8.8
 #### eos_cli_config_gen variables overwritten by eos_designs variables
 
 ```yaml
-# Both name_servers from eos_designs and name_server from
+# Both name_servers from eos_designs and ip_name_servers from
 # eos_ci_config_gen. The second ones WON'T be displayed
 # as they are overwritten by the generated structured_configuration
 name_servers:
   - 192.168.42.10
   - 192.168.42.40
 
-name_server:
+ip_name_servers:
   source:
     vrf: EOS_CLI
   nodes:
@@ -113,7 +113,7 @@ name_servers:
   - 192.168.42.10
   - 192.168.42.40
 
-custom_structured_configuration_name_server:
+custom_structured_configuration_ip_name_servers:
   source:
     vrf: CUSTOM_STRUCT
   nodes:
@@ -134,16 +134,16 @@ ip name-server vrf CUSTOM_STRUCT 2.2.2.2
 
 ```yaml
 ---
-# Both name_server from eos_cli_config_gen and leveraging the
+# Both ip_name_servers from eos_cli_config_gen and leveraging the
 # custom_structured_configuration only custom_struct  will make it
-name_server:
+ip_name_servers:
   source:
     vrf: EOS_CLI
   nodes:
     - 8.8.8.8
     - 4.4.4.4
 
-custom_structured_configuration_name_server:
+custom_structured_configuration_ip_name_servers:
   source:
     vrf: CUSTOM_STRUCT
   nodes:
@@ -260,7 +260,7 @@ custom_structured_configuration_list_merge: < append | keep | prepend | append_r
 #### Example using default prefix
 
 ```yaml
-custom_structured_configuration_name_server:
+custom_structured_configuration_ip_name_servers:
   nodes:
     - 10.2.3.4
 custom_structured_configuration_ethernet_interfaces:
@@ -275,7 +275,7 @@ custom_structured_configuration_ethernet_interfaces:
     peer_type: my_precious
 ```
 
-In this example the contents of the `name_server.nodes` variable in the Structured Configuration will be replaced by the list `[ 10.2.3.4 ]`
+In this example the contents of the `ip_name_servers.nodes` variable in the Structured Configuration will be replaced by the list `[ 10.2.3.4 ]`
 and `Ethernet4000` will be added to the `ethernet_interfaces` dictionary in the Structured Configuration.
 
 `custom_structured_configuration_prefix` allows the user to customize the prefix for Custom Structured Configuration variables.
@@ -321,15 +321,15 @@ name_servers:
 custom_structured_configuration_list_merge: append
 custom_structured_configuration_list_prefix: [ override_ ]
 
-override_name_server:
+override_ip_name_servers:
   nodes:
   - 10.10.10.12
 ```
 
-In this example the `name_servers` variable will be read by `eos_designs` templates and the `name_server` structured configuration will be generated accordingly:
+In this example the `name_servers` variable will be read by `eos_designs` templates and the `ip_name_servers` structured configuration will be generated accordingly:
 
 ```yaml
-name_server:
+ip_name_servers:
   source:
     vrf: MGMT
   nodes:
@@ -337,10 +337,10 @@ name_server:
   - 10.10.10.11
 ```
 
-The `override_name_server.nodes` list will be `appended` to `name_server.nodes` list resulting in:
+The `override_ip_name_servers.nodes` list will be `appended` to `ip_name_servers.nodes` list resulting in:
 
 ```yaml
-name_server:
+ip_name_servers:
   source:
     vrf: MGMT
   nodes:

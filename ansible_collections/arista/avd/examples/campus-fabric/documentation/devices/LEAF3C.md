@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [Name Servers](#name-servers)
+  - [IP Name Servers](#ip-name-servers)
   - [NTP](#ntp)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
@@ -72,16 +72,16 @@ interface Vlan10
    ip address 10.10.10.11/24
 ```
 
-### Name Servers
+### IP Name Servers
 
-#### Name Servers Summary
+#### IP Name Servers Summary
 
 | Name Server | Source VRF |
 | ----------- | ---------- |
 | 8.8.4.4 | MGMT |
 | 8.8.8.8 | MGMT |
 
-#### Name Servers Device Configuration
+#### IP Name Servers Device Configuration
 
 ```eos
 ip name-server vrf MGMT 8.8.4.4

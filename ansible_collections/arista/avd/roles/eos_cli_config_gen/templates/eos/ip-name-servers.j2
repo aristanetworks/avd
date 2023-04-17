@@ -1,0 +1,16 @@
+{# eos - ip name servers #}
+{% for node in ip_name_servers.nodes | arista.avd.natural_sort %}
+{%     if ip_name_servers.source.vrf is arista.avd.defined %}
+ip name-server vrf {{ ip_name_servers.source.vrf }} {{ node }}
+{%     else %}
+ip name-server {{ node }}
+{%     endif %}
+{% endfor %}
+{# legacy data model to be removed in AVD v5.0.0 #}
+{% for node in name_server.nodes | arista.avd.natural_sort %}
+{%     if name_server.source.vrf is arista.avd.defined %}
+ip name-server vrf {{ name_server.source.vrf }} {{ node }}
+{%     else %}
+ip name-server {{ node }}
+{%     endif %}
+{% endfor %}

@@ -4528,6 +4528,38 @@
       },
       "title": "IP IGMP Snooping"
     },
+    "ip_name_servers": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "object",
+          "properties": {
+            "vrf": {
+              "description": "VRF Name",
+              "type": "string",
+              "title": "VRF"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Source"
+        },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Nodes"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "IP Name Servers"
+    },
     "ip_radius_source_interfaces": {
       "type": "array",
       "items": {

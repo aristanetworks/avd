@@ -8,7 +8,7 @@ ip_domain_lookup:
     # So this is added to ensure we catch regression.
 
 ### Name Servers ###
-name_server:
+ip_name_servers:
   source:
     vrf: mgt
   nodes:

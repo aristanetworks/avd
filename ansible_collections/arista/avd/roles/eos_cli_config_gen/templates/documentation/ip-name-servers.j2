@@ -1,0 +1,23 @@
+{# doc - ip name servers #}
+{% if ip_name_servers is arista.avd.defined or name_server is arista.avd.defined %}
+
+### IP Name Servers
+
+#### IP Name Servers Summary
+
+| Name Server | Source VRF |
+| ----------- | ---------- |
+{%     for node in ip_name_servers.nodes | arista.avd.default([]) %}
+| {{ node }} | {{ ip_name_servers.source.vrf | arista.avd.default('-') }} |
+{%     endfor %}
+{# legacy data model to be removed in AVD 5.0.0 #}
+{%     for node in name_server.nodes | arista.avd.default([]) %}
+| {{ node }} | {{ name_server.source.vrf | arista.avd.default('-') }} |
+{%     endfor %}
+
+#### IP Name Servers Device Configuration
+
+```eos
+{%     include 'eos/ip-name-servers.j2' %}
+```
+{% endif %}
