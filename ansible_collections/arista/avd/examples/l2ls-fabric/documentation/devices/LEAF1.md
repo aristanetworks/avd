@@ -71,10 +71,10 @@ interface Management0
 
 #### IP Name Servers Summary
 
-| Name Server | Source VRF |
-| ----------- | ---------- |
-| 8.8.4.4 | MGMT |
-| 8.8.8.8 | MGMT |
+| Name Server | VRF | Priority |
+| ----------- | --- | -------- |
+| 8.8.4.4 | MGMT | - |
+| 8.8.8.8 | MGMT | - |
 
 #### IP Name Servers Device Configuration
 
