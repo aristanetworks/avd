@@ -284,7 +284,7 @@
     },
     "core_interfaces": {
       "type": "object",
-      "description": "The `core_interfaces` data model can be used to configure L3 P2P links anywhere in the fabric.\nIt can be between two switches that are already part of the fabric inventory, or it can be towards another device,\nwhere only one end of the link is on a switch in the fabric.\n",
+      "description": "The `core_interfaces` data model can be used to configure L3 P2P links anywhere in the fabric.\nIt can be between two switches that are already part of the fabric inventory, or it can be towards another device,\nwhere only one end of the link is on a switch in the fabric.",
       "properties": {
         "p2p_links_ip_pools": {
           "type": "array",
@@ -293,15 +293,26 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": "P2P pool name",
+                "description": "P2P pool name.",
                 "title": "Name"
               },
               "ipv4_pool": {
                 "type": "string",
-                "description": "IPv4 address/Mask",
+                "description": "IPv4 address/Mask.",
                 "title": "IPv4 Pool"
+              },
+              "prefix_size": {
+                "type": "integer",
+                "description": "Subnet mask size.",
+                "default": 31,
+                "minimum": 8,
+                "maximum": 31,
+                "title": "Prefix Size"
               }
             },
+            "required": [
+              "name"
+            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
@@ -321,7 +332,7 @@
               },
               "speed": {
                 "type": "string",
-                "description": "The values can be speed or auto speed or forced speed",
+                "description": "The values can be speed or auto speed or forced speed.",
                 "title": "Speed"
               },
               "mtu": {
@@ -331,46 +342,43 @@
               },
               "ip_pool": {
                 "type": "string",
-                "description": "P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link",
+                "description": "P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link.",
                 "title": "IP Pool"
               },
               "isis_hello_padding": {
                 "type": "boolean",
                 "default": false,
-                "description": "IS-IS parameters",
                 "title": "ISIS Hello Padding"
               },
               "isis_metric": {
                 "type": "integer",
-                "default": 60,
-                "description": "IS-IS parameters",
                 "title": "ISIS Metric"
               },
               "isis_circuit_type": {
                 "type": "string",
                 "default": "level-2",
-                "description": "IS-IS parameters",
                 "title": "ISIS Circuit Type"
               },
               "isis_authentication_mode": {
                 "type": "string",
                 "default": "md5",
-                "description": "IS-IS parameters",
                 "title": "ISIS Authentication Mode"
               },
               "isis_authentication_key": {
                 "type": "string",
                 "default": "$1c$sTNAlR6rKSw=",
-                "description": "IS-IS parameters",
                 "title": "ISIS Authentication Key"
               },
               "ipv6_enable": {
                 "type": "boolean",
                 "default": false,
-                "description": "Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol)",
+                "description": "Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol).",
                 "title": "IPv6 Enable"
               }
             },
+            "required": [
+              "name"
+            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
@@ -390,7 +398,7 @@
               },
               "speed": {
                 "type": "string",
-                "description": "The values can be speed or auto speed or forced speed",
+                "description": "The values can be speed or auto speed or forced speed.",
                 "title": "Speed"
               },
               "ip_pool": {
@@ -400,50 +408,58 @@
               },
               "subnet": {
                 "type": "string",
-                "description": "IPv4 address/Mask. Subnet used on this P2P link (Optional)",
+                "description": "IPv4 address/Mask. Subnet used on this P2P link (Optional).",
                 "title": "Subnet"
               },
               "ip": {
                 "type": "array",
-                "description": "Specific IP addresses used on this P2P link",
+                "description": "Specific IP addresses used on this P2P link.",
                 "items": {
                   "type": "string",
-                  "description": "Node IPv4 address/Mask"
+                  "description": "Node IPv4 address/Mask."
                 },
                 "title": "IP"
               },
               "ipv6_enable": {
                 "type": "boolean",
                 "default": false,
-                "description": "Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol)",
+                "description": "Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol).",
                 "title": "IPv6 Enable"
               },
               "nodes": {
                 "type": "array",
-                "description": "Nodes where this link should be configured",
+                "description": "Nodes where this link should be configured.",
                 "items": {
                   "type": "string",
-                  "description": "The values can be < node_a >, < node_b >\nex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ]\n"
+                  "description": "The values can be < node_a >, < node_b >.\nex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].\n"
                 },
                 "title": "Nodes"
               },
               "interfaces": {
                 "type": "array",
-                "description": "Interfaces where this link should be configured and Required unless using port-channels",
+                "description": "Interfaces where this link should be configured and Required unless using port-channels.",
                 "items": {
                   "type": "string",
-                  "description": "The value can be like < node_a_interface >, < node_b_interface >\nex. - [ Ethernet2, Ethernet2 ]\n"
+                  "description": "The value can be like < node_a_interface >, < node_b_interface >.\nex. - [ Ethernet2, Ethernet2 ].\n"
                 },
                 "title": "Interfaces"
               },
               "as": {
                 "type": "array",
-                "description": "AS Numbers for BGP or Required with bgp peering",
+                "description": "AS Numbers for BGP or Required with bgp peering.",
                 "items": {
                   "type": "string",
-                  "description": "The values can be like [\"node_a_as\", \"node_b_as\"]"
+                  "description": "The values can be like [\"node_a_as\", \"node_b_as\"]."
                 },
                 "title": "As"
+              },
+              "descriptions": {
+                "type": "array",
+                "description": "Interface description.",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Descriptions"
               },
               "include_in_underlay_protocol": {
                 "type": "boolean",
@@ -479,17 +495,17 @@
               },
               "isis_authentication_key": {
                 "type": "string",
-                "description": "type-7 encrypted password",
+                "description": "Type-7 encrypted password.",
                 "title": "ISIS Authentication Key"
               },
               "mpls_ip": {
                 "type": "boolean",
-                "description": "MPLS parameters. Default value is true if switch.mpls_lsr is true",
+                "description": "MPLS parameters. Default value is true if switch.mpls_lsr is true.",
                 "title": "MPLS IP"
               },
               "mpls_ldp": {
                 "type": "boolean",
-                "description": "MPLS parameters. Default value is true for ldp underlay variants, otherwise false",
+                "description": "MPLS parameters. Default value is true for ldp underlay variants, otherwise false.",
                 "title": "MPLS LDP"
               },
               "mtu": {
@@ -511,17 +527,17 @@
               },
               "qos_profile": {
                 "type": "string",
-                "description": "QOS service profile",
+                "description": "QOS service profile.",
                 "title": "QOS Profile"
               },
               "macsec_profile": {
                 "type": "string",
-                "description": "MAC security profile",
+                "description": "MAC security profile.",
                 "title": "Macsec Profile"
               },
               "profile": {
                 "type": "string",
-                "description": "P2P profile name. Profile defined under p2p_profiles",
+                "description": "P2P profile name. Profile defined under p2p_profiles.",
                 "title": "Profile"
               },
               "raw_eos_cli": {
@@ -530,7 +546,7 @@
                 "title": "Raw EOS CLI"
               },
               "port_channel": {
-                "description": "Port-channel parameters",
+                "description": "Port-channel parameters.",
                 "type": "object",
                 "properties": {
                   "mode": {
@@ -549,7 +565,7 @@
                         },
                         "interfaces": {
                           "type": "array",
-                          "description": "List of node interfaces. Ex.- [ 'node1 interface1', 'node1 interface2' ]",
+                          "description": "List of node interfaces. Ex.- [ 'node1 interface1', 'node1 interface2' ].",
                           "items": {
                             "type": "string"
                           },
@@ -954,8 +970,8 @@
       "title": "ISIS TI LFA"
     },
     "l3_edge": {
-      "description": "The `l3_edge` data model can be used to configure extra L3 P2P links anywhere in the fabric. It can be between two switches that are already part of the fabric inventory, or it can be towards another device, where only one end of the link is on a switch in the fabric. Fabric switches can be types `l3leaf`, `spine` or `super-spine`.\n\nThe data model supports using IP pools, Subnet per link or specifying the IP addresses manually.\nFor BGP peerings the AS number must be specified. If the AS number is different than the AS number configured for the node, the local-as will be replaced on this BGP peering (`neighbor <ip> local-as <as> no-prepend replace-as`).\n\nMake sure to configure the variables in a group_vars file covering all devices mentioned in the data model.\n",
       "type": "object",
+      "description": "The `l3_edge` data model can be used to configure extra L3 P2P links anywhere in the fabric. It can be between two switches that are already part of the fabric inventory, or it can be towards another device, where only one end of the link is on a switch in the fabric. Fabric switches can be types `l3leaf`, `spine` or `super-spine`.\n\nThe data model supports using IP pools, Subnet per link or specifying the IP addresses manually.\nFor BGP peerings the AS number must be specified. If the AS number is different than the AS number configured for the node, the local-as will be replaced on this BGP peering (`neighbor <ip> local-as <as> no-prepend replace-as`).\n\nMake sure to configure the variables in a group_vars file covering all devices mentioned in the data model.",
       "properties": {
         "p2p_links_ip_pools": {
           "type": "array",
@@ -964,15 +980,26 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": "P2P pool name",
+                "description": "P2P pool name.",
                 "title": "Name"
               },
               "ipv4_pool": {
                 "type": "string",
-                "description": "IPv4 address/Mask",
+                "description": "IPv4 address/Mask.",
                 "title": "IPv4 Pool"
+              },
+              "prefix_size": {
+                "type": "integer",
+                "description": "Subnet mask size.",
+                "default": 31,
+                "minimum": 8,
+                "maximum": 31,
+                "title": "Prefix Size"
               }
             },
+            "required": [
+              "name"
+            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
@@ -992,7 +1019,7 @@
               },
               "speed": {
                 "type": "string",
-                "description": "The values can be speed or auto speed or forced speed",
+                "description": "The values can be speed or auto speed or forced speed.",
                 "title": "Speed"
               },
               "mtu": {
@@ -1002,46 +1029,43 @@
               },
               "ip_pool": {
                 "type": "string",
-                "description": "P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link",
+                "description": "P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link.",
                 "title": "IP Pool"
               },
               "isis_hello_padding": {
                 "type": "boolean",
                 "default": false,
-                "description": "IS-IS parameters",
                 "title": "ISIS Hello Padding"
               },
               "isis_metric": {
                 "type": "integer",
-                "default": 60,
-                "description": "IS-IS parameters",
                 "title": "ISIS Metric"
               },
               "isis_circuit_type": {
                 "type": "string",
                 "default": "level-2",
-                "description": "IS-IS parameters",
                 "title": "ISIS Circuit Type"
               },
               "isis_authentication_mode": {
                 "type": "string",
                 "default": "md5",
-                "description": "IS-IS parameters",
                 "title": "ISIS Authentication Mode"
               },
               "isis_authentication_key": {
                 "type": "string",
                 "default": "$1c$sTNAlR6rKSw=",
-                "description": "IS-IS parameters",
                 "title": "ISIS Authentication Key"
               },
               "ipv6_enable": {
                 "type": "boolean",
                 "default": false,
-                "description": "Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol)",
+                "description": "Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol).",
                 "title": "IPv6 Enable"
               }
             },
+            "required": [
+              "name"
+            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
@@ -1061,7 +1085,7 @@
               },
               "speed": {
                 "type": "string",
-                "description": "The values can be speed or auto speed or forced speed",
+                "description": "The values can be speed or auto speed or forced speed.",
                 "title": "Speed"
               },
               "ip_pool": {
@@ -1071,50 +1095,58 @@
               },
               "subnet": {
                 "type": "string",
-                "description": "IPv4 address/Mask. Subnet used on this P2P link (Optional)",
+                "description": "IPv4 address/Mask. Subnet used on this P2P link (Optional).",
                 "title": "Subnet"
               },
               "ip": {
                 "type": "array",
-                "description": "Specific IP addresses used on this P2P link",
+                "description": "Specific IP addresses used on this P2P link.",
                 "items": {
                   "type": "string",
-                  "description": "Node IPv4 address/Mask"
+                  "description": "Node IPv4 address/Mask."
                 },
                 "title": "IP"
               },
               "ipv6_enable": {
                 "type": "boolean",
                 "default": false,
-                "description": "Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol)",
+                "description": "Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol).",
                 "title": "IPv6 Enable"
               },
               "nodes": {
                 "type": "array",
-                "description": "Nodes where this link should be configured",
+                "description": "Nodes where this link should be configured.",
                 "items": {
                   "type": "string",
-                  "description": "The values can be < node_a >, < node_b >\nex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ]\n"
+                  "description": "The values can be < node_a >, < node_b >.\nex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].\n"
                 },
                 "title": "Nodes"
               },
               "interfaces": {
                 "type": "array",
-                "description": "Interfaces where this link should be configured and Required unless using port-channels",
+                "description": "Interfaces where this link should be configured and Required unless using port-channels.",
                 "items": {
                   "type": "string",
-                  "description": "The value can be like < node_a_interface >, < node_b_interface >\nex. - [ Ethernet2, Ethernet2 ]\n"
+                  "description": "The value can be like < node_a_interface >, < node_b_interface >.\nex. - [ Ethernet2, Ethernet2 ].\n"
                 },
                 "title": "Interfaces"
               },
               "as": {
                 "type": "array",
-                "description": "AS Numbers for BGP or Required with bgp peering",
+                "description": "AS Numbers for BGP or Required with bgp peering.",
                 "items": {
                   "type": "string",
-                  "description": "The values can be like [\"node_a_as\", \"node_b_as\"]"
+                  "description": "The values can be like [\"node_a_as\", \"node_b_as\"]."
                 },
                 "title": "As"
+              },
+              "descriptions": {
+                "type": "array",
+                "description": "Interface description.",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Descriptions"
               },
               "include_in_underlay_protocol": {
                 "type": "boolean",
@@ -1150,17 +1182,17 @@
               },
               "isis_authentication_key": {
                 "type": "string",
-                "description": "type-7 encrypted password",
+                "description": "Type-7 encrypted password.",
                 "title": "ISIS Authentication Key"
               },
               "mpls_ip": {
                 "type": "boolean",
-                "description": "MPLS parameters. Default value is true if switch.mpls_lsr is true",
+                "description": "MPLS parameters. Default value is true if switch.mpls_lsr is true.",
                 "title": "MPLS IP"
               },
               "mpls_ldp": {
                 "type": "boolean",
-                "description": "MPLS parameters. Default value is true for ldp underlay variants, otherwise false",
+                "description": "MPLS parameters. Default value is true for ldp underlay variants, otherwise false.",
                 "title": "MPLS LDP"
               },
               "mtu": {
@@ -1182,17 +1214,17 @@
               },
               "qos_profile": {
                 "type": "string",
-                "description": "QOS service profile",
+                "description": "QOS service profile.",
                 "title": "QOS Profile"
               },
               "macsec_profile": {
                 "type": "string",
-                "description": "MAC security profile",
+                "description": "MAC security profile.",
                 "title": "Macsec Profile"
               },
               "profile": {
                 "type": "string",
-                "description": "P2P profile name. Profile defined under p2p_profiles",
+                "description": "P2P profile name. Profile defined under p2p_profiles.",
                 "title": "Profile"
               },
               "raw_eos_cli": {
@@ -1201,7 +1233,7 @@
                 "title": "Raw EOS CLI"
               },
               "port_channel": {
-                "description": "Port-channel parameters",
+                "description": "Port-channel parameters.",
                 "type": "object",
                 "properties": {
                   "mode": {
@@ -1220,7 +1252,7 @@
                         },
                         "interfaces": {
                           "type": "array",
-                          "description": "List of node interfaces. Ex.- [ 'node1 interface1', 'node1 interface2' ]",
+                          "description": "List of node interfaces. Ex.- [ 'node1 interface1', 'node1 interface2' ].",
                           "items": {
                             "type": "string"
                           },
