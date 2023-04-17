@@ -122,7 +122,7 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
         Exposed in avd_switch_facts
         """
         if self.shared_utils.underlay_router is True:
-            return get(self.shared_utils.switch_data_combined, "loopback_ipv4_pool", required=True)
+            return self.shared_utils.loopback_ipv4_pool
         return None
 
     @cached_property
@@ -130,8 +130,8 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
         """
         Exposed in avd_switch_facts
         """
-        if self.shared_utils.underlay_router is True:
-            return get(self.shared_utils.switch_data_combined, "uplink_ipv4_pool")
+        if self.shared_utils.underlay_router:
+            return self.shared_utils.uplink_ipv4_pool
         return None
 
     @cached_property
@@ -155,7 +155,7 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
         Exposed in avd_switch_facts
         """
         if self.shared_utils.vtep is True:
-            return get(self.shared_utils.switch_data_combined, "vtep_loopback_ipv4_pool", required=True)
+            return self.shared_utils.vtep_loopback_ipv4_pool
         return None
 
     @cached_property

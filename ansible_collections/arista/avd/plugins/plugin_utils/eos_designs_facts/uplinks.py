@@ -10,8 +10,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvd
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
 
 if TYPE_CHECKING:
-    from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_facts import EosDesignsFacts
-    from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
+    from .eos_designs_facts import EosDesignsFacts
 
 
 class UplinksMixin:
@@ -20,36 +19,28 @@ class UplinksMixin:
     Class should only be used as Mixin to the EosDesignsFacts class
     """
 
-    _hostvars: dict
-    _vlans: list
-    inband_management_vlan: int
-    shared_utils: SharedUtils
-    short_esi: str
-
     @cached_property
-    def max_parallel_uplinks(self) -> int:
+    def max_parallel_uplinks(self: "EosDesignsFacts") -> int:
         """
         Exposed in avd_switch_facts
         """
-        return get(self.shared_utils.switch_data_combined, "max_parallel_uplinks", default=1)
+        return self.shared_utils.max_parallel_uplinks
 
     @cached_property
-    def max_uplink_switches(self) -> int:
+    def max_uplink_switches(self: "EosDesignsFacts") -> int:
         """
         Exposed in avd_switch_facts
-
-        max_uplink_switches will default to the length of uplink_switches
         """
-        return default(get(self.shared_utils.switch_data_combined, "max_uplink_switches"), len(self.shared_utils.uplink_switches))
+        return self.shared_utils.max_uplink_switches
 
     @cached_property
-    def _uplink_interfaces(self) -> list:
+    def _uplink_interfaces(self: "EosDesignsFacts") -> list:
         return range_expand(
             default(get(self.shared_utils.switch_data_combined, "uplink_interfaces"), get(self.shared_utils.default_interfaces, "uplink_interfaces"), [])
         )
 
     @cached_property
-    def _uplink_switch_interfaces(self) -> list:
+    def _uplink_switch_interfaces(self: "EosDesignsFacts") -> list:
         uplink_switch_interfaces = get(self.shared_utils.switch_data_combined, "uplink_switch_interfaces")
         if uplink_switch_interfaces is not None:
             return uplink_switch_interfaces
@@ -72,7 +63,7 @@ class UplinksMixin:
             # Add uplink_switch_interface based on this switch's ID (-1 for 0-based) * max_parallel_uplinks + index_of_parallel_uplinks.
             # For max_parallel_uplinks: 2 this would assign downlink interfaces like this:
             # spine1 downlink-interface mapping: [ leaf-id1, leaf-id1, leaf-id2, leaf-id2, leaf-id3, leaf-id3, ... ]
-            downlink_index = (self.id - 1) * self.max_parallel_uplinks + index_of_parallel_uplinks
+            downlink_index = (self.id - 1) * self.shared_utils.max_parallel_uplinks + index_of_parallel_uplinks
             if len(uplink_switch_facts._default_downlink_interfaces) > downlink_index:
                 uplink_switch_interfaces.append(uplink_switch_facts._default_downlink_interfaces[downlink_index])
             else:
@@ -84,27 +75,27 @@ class UplinksMixin:
         return uplink_switch_interfaces
 
     @cached_property
-    def _uplink_interface_speed(self) -> str | None:
+    def _uplink_interface_speed(self: "EosDesignsFacts") -> str | None:
         return get(self.shared_utils.switch_data_combined, "uplink_interface_speed")
 
     @cached_property
-    def _uplink_bfd(self) -> bool:
+    def _uplink_bfd(self: "EosDesignsFacts") -> bool:
         return get(self.shared_utils.switch_data_combined, "uplink_bfd") is True
 
     @cached_property
-    def _uplink_ptp(self) -> dict | None:
+    def _uplink_ptp(self: "EosDesignsFacts") -> dict | None:
         return get(self.shared_utils.switch_data_combined, "uplink_ptp")
 
     @cached_property
-    def _uplink_macsec(self) -> dict | None:
+    def _uplink_macsec(self: "EosDesignsFacts") -> dict | None:
         return get(self.shared_utils.switch_data_combined, "uplink_macsec")
 
     @cached_property
-    def _uplink_structured_config(self) -> dict | None:
+    def _uplink_structured_config(self: "EosDesignsFacts") -> dict | None:
         return get(self.shared_utils.switch_data_combined, "uplink_structured_config")
 
     @cached_property
-    def uplinks(self) -> list:
+    def uplinks(self: "EosDesignsFacts") -> list:
         """
         Exposed in avd_switch_facts
 
@@ -252,7 +243,7 @@ class UplinksMixin:
         return uplinks
 
     @cached_property
-    def uplink_peers(self) -> list:
+    def uplink_peers(self: "EosDesignsFacts") -> list:
         """
         Exposed in avd_switch_facts
 
@@ -266,7 +257,7 @@ class UplinksMixin:
         return [uplink_switch for uplink_switch in uplink_switches if uplink_switch in inventory_group]
 
     @cached_property
-    def _default_downlink_interfaces(self) -> list:
+    def _default_downlink_interfaces(self: "EosDesignsFacts") -> list:
         """
         internal _default_downlink_interfaces set based on default_interfaces.
         Parsed by downstream switches during eos_designs_facts phase

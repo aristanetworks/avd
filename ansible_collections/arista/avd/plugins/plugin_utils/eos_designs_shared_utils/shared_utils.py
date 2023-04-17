@@ -3,6 +3,7 @@ from .inband_management import InbandManagementMixin
 from .interface_descriptions import InterfaceDescriptionsMixin
 from .ip_addressing import IpAddressingMixin
 from .link_tracking_groups import LinkTrackingGroupsMixin
+from .mgmt import MgmtMixin
 from .misc import MiscMixin
 from .mlag import MlagMixin
 from .node_type_key import NodeTypeKeyMixin
@@ -11,7 +12,6 @@ from .platform import PlatformMixin
 from .ptp import PtpMixin
 from .routing import RoutingMixin
 from .switch_data import SwitchDataMixin
-from .template import TemplateMixin
 from .underlay import UnderlayMixin
 from .utils import UtilsMixin
 
@@ -22,6 +22,7 @@ class SharedUtils(
     InterfaceDescriptionsMixin,
     IpAddressingMixin,
     LinkTrackingGroupsMixin,
+    MgmtMixin,
     MlagMixin,
     MiscMixin,
     NodeTypeKeyMixin,
@@ -30,7 +31,6 @@ class SharedUtils(
     PtpMixin,
     SwitchDataMixin,
     RoutingMixin,
-    TemplateMixin,
     UnderlayMixin,
     UtilsMixin,
 ):

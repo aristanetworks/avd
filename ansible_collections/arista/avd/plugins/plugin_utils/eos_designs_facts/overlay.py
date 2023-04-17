@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 if TYPE_CHECKING:
-    from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
+    from .eos_designs_facts import EosDesignsFacts
 
 
 class OverlayMixin:
@@ -15,27 +15,22 @@ class OverlayMixin:
     Class should only be used as Mixin to the EosDesignsFacts class
     """
 
-    _hostvars: dict
-    _vlans: list
-    inband_management_vlan: int
-    shared_utils: SharedUtils
-
     @cached_property
-    def evpn_role(self) -> str | None:
+    def evpn_role(self: "EosDesignsFacts") -> str | None:
         """
         Exposed in avd_switch_facts
         """
         return self.shared_utils.evpn_role
 
     @cached_property
-    def mpls_overlay_role(self) -> str | None:
+    def mpls_overlay_role(self: "EosDesignsFacts") -> str | None:
         """
         Exposed in avd_switch_facts
         """
         return self.shared_utils.mpls_overlay_role
 
     @cached_property
-    def evpn_route_servers(self) -> list:
+    def evpn_route_servers(self: "EosDesignsFacts") -> list:
         """
         Exposed in avd_switch_facts
 
@@ -50,7 +45,7 @@ class OverlayMixin:
         return []
 
     @cached_property
-    def mpls_route_reflectors(self) -> list | None:
+    def mpls_route_reflectors(self: "EosDesignsFacts") -> list | None:
         """
         Exposed in avd_switch_facts
         """
@@ -60,7 +55,7 @@ class OverlayMixin:
         return None
 
     @cached_property
-    def overlay(self) -> dict:
+    def overlay(self: "EosDesignsFacts") -> dict:
         """
         Exposed in avd_switch_facts
         """
@@ -70,7 +65,7 @@ class OverlayMixin:
         }
 
     @cached_property
-    def vtep_ip(self) -> str | None:
+    def vtep_ip(self: "EosDesignsFacts") -> str | None:
         """
         Exposed in avd_switch_facts
         """

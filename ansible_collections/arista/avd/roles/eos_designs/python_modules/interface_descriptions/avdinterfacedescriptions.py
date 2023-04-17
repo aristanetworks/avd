@@ -103,7 +103,7 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
         if self.shared_utils.mpls_overlay_role in ["server", "client"]:
             return "MPLS_Overlay_peering"
 
-        if self._mpls_lsr is True:
+        if self.shared_utils.mpls_lsr is True:
             return "LSR_Router_ID"
 
         # Covers L2LS

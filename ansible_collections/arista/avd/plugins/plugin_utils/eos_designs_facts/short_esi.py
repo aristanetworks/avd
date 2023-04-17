@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
 
 if TYPE_CHECKING:
-    from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
+    from .eos_designs_facts import EosDesignsFacts
 
 
 class ShortEsiMixin:
@@ -17,12 +17,8 @@ class ShortEsiMixin:
     Class should only be used as Mixin to the EosDesignsFacts class
     """
 
-    shared_utils: SharedUtils
-    _uplink_interfaces: list
-    _uplink_switch_interfaces: list
-
     @cached_property
-    def short_esi(self) -> str:
+    def short_esi(self: "EosDesignsFacts") -> str:
         """
         If short_esi is set to "auto" we will use sha256 to create a
         unique short_esi value based on various uplink information.

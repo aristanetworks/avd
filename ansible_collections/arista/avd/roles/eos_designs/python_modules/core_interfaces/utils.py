@@ -43,10 +43,6 @@ class UtilsMixin:
         return get(self._hostvars, "p2p_uplinks_qos_profile")
 
     @cached_property
-    def _mpls_lsr(self) -> bool:
-        return get(self._hostvars, "switch.mpls_lsr") is True
-
-    @cached_property
     def _underlay_ospf_area(self) -> str:
         return get(self._hostvars, "underlay_ospf_area", required=True)
 
@@ -275,7 +271,7 @@ class UtilsMixin:
                 "profile": p2p_link["macsec_profile"],
             }
 
-        if self._mpls_lsr and p2p_link.get("mpls_ip", True) is True:
+        if self.shared_utils.mpls_lsr and p2p_link.get("mpls_ip", True) is True:
             interface_cfg["mpls"] = {"ip": True}
             if p2p_link.get("include_in_underlay_protocol", True) is True and self.shared_utils.underlay_ldp and p2p_link.get("mpls_ldp", True) is True:
                 interface_cfg["mpls"].update(

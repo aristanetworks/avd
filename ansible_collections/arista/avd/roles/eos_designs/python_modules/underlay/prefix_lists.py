@@ -26,10 +26,10 @@ class PrefixListsMixin(UtilsMixin):
             return None
 
         # IPv4 - PL-LOOPBACKS-EVPN-OVERLAY
-        sequence_numbers = [{"sequence": 10, "action": f"permit {self._loopback_ipv4_pool} eq 32"}]
+        sequence_numbers = [{"sequence": 10, "action": f"permit {self.shared_utils.loopback_ipv4_pool} eq 32"}]
 
         if self.shared_utils.overlay_vtep and self.shared_utils.vtep_loopback.lower() != "loopback0":
-            sequence_numbers.append({"sequence": 20, "action": f"permit {self._vtep_loopback_ipv4_pool} eq 32"})
+            sequence_numbers.append({"sequence": 20, "action": f"permit {self.shared_utils.vtep_loopback_ipv4_pool} eq 32"})
 
         if self.shared_utils.vtep_vvtep_ip is not None and self.shared_utils.network_services_l3 is True:
             sequence_numbers.append({"sequence": 30, "action": f"permit {self.shared_utils.vtep_vvtep_ip}"})

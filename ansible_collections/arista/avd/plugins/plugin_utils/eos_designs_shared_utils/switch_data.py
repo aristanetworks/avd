@@ -1,24 +1,25 @@
 from __future__ import annotations
 
 from functools import cached_property
+from typing import TYPE_CHECKING
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+
+if TYPE_CHECKING:
+    from .shared_utils import SharedUtils
 
 
 class SwitchDataMixin:
     """
     Mixin Class providing a subset of SharedUtils
     Class should only be used as Mixin to the SharedUtils class
+    Using quoted type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
-    hostvars: dict
-    hostname: str
-    node_type_key_data: dict
-
     @cached_property
-    def switch_data(self) -> dict:
+    def switch_data(self: "SharedUtils") -> dict:
         """
         internal _switch_data containing inherited vars from fabric_topology data model
 
@@ -74,14 +75,14 @@ class SwitchDataMixin:
         return switch_data
 
     @property
-    def switch_data_combined(self) -> dict:
+    def switch_data_combined(self: "SharedUtils") -> dict:
         """
         switch_data_combined containing self._switch_data['combined'] for easier reference.
         """
         return self.switch_data["combined"]
 
     @cached_property
-    def switch_data_node_group_nodes(self) -> list:
+    def switch_data_node_group_nodes(self: "SharedUtils") -> list:
         """
         switch_data_node_group_nodes pointing to
         self.switch_data['node_group']['nodes'] for easier reference.

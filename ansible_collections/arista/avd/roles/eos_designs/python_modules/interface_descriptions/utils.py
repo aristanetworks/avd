@@ -31,7 +31,3 @@ class UtilsMixin:
     @cached_property
     def _mlag_port_channel_id(self) -> str:
         return self.shared_utils.mlag_port_channel_id
-
-    @cached_property
-    def _mpls_lsr(self) -> str:
-        return self.shared_utils.mpls_lsr

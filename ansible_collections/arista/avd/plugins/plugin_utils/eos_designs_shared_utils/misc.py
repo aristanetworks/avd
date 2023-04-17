@@ -6,39 +6,29 @@ from typing import TYPE_CHECKING
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
 
 if TYPE_CHECKING:
-    from ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing.avdipaddressing import AvdIpAddressing
+    from .shared_utils import SharedUtils
 
 
 class MiscMixin:
     """
     Mixin Class providing a subset of SharedUtils
     Class should only be used as Mixin to the SharedUtils class
+    Using quoted type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
-    any_network_services: bool
-    hostvars: dict
-    ip_addressing: AvdIpAddressing
-    mlag: bool
-    platform_settings: dict
-    switch_data_combined: dict
-    switch_data: dict
-    underlay_ipv6: bool
-    uplink_type: str
-    vtep: bool
-
     @cached_property
-    def hostname(self) -> str:
+    def hostname(self: "SharedUtils") -> str:
         """
         hostname set based on inventory_hostname variable
         """
         return get(self.hostvars, "inventory_hostname", required=True)
 
     @cached_property
-    def id(self) -> int | None:
+    def id(self: "SharedUtils") -> int | None:
         return get(self.switch_data_combined, "id")
 
     @cached_property
-    def trunk_groups(self) -> dict:
+    def trunk_groups(self: "SharedUtils") -> dict:
         return {
             "mlag": {"name": get(self.hostvars, "trunk_groups.mlag.name", default="MLAG")},
             "mlag_l3": {"name": get(self.hostvars, "trunk_groups.mlag_l3.name", default="LEAF_PEER_L3")},
@@ -46,15 +36,15 @@ class MiscMixin:
         }
 
     @cached_property
-    def enable_trunk_groups(self) -> bool:
+    def enable_trunk_groups(self: "SharedUtils") -> bool:
         return get(self.hostvars, "enable_trunk_groups", default=False)
 
     @cached_property
-    def filter_only_vlans_in_use(self) -> bool:
+    def filter_only_vlans_in_use(self: "SharedUtils") -> bool:
         return get(self.switch_data_combined, "filter.only_vlans_in_use", default=False)
 
     @cached_property
-    def filter_tags(self) -> list:
+    def filter_tags(self: "SharedUtils") -> list:
         """
         Return filter.tags + group if defined
         """
@@ -64,53 +54,20 @@ class MiscMixin:
         return filter_tags
 
     @cached_property
-    def filter_tenants(self) -> list:
+    def filter_tenants(self: "SharedUtils") -> list:
         return get(self.switch_data_combined, "filter.tenants", default=["all"])
 
     @cached_property
-    def group(self) -> str | None:
-        """
-        group set to "node_group" name or None
-        """
-        return get(self.switch_data, "group")
-
-    @cached_property
-    def igmp_snooping_enabled(self) -> bool:
+    def igmp_snooping_enabled(self: "SharedUtils") -> bool:
         default_igmp_snooping_enabled = get(self.hostvars, "default_igmp_snooping_enabled")
         return get(self.switch_data_combined, "igmp_snooping_enabled", default=default_igmp_snooping_enabled) is True
 
     @cached_property
-    def loopback_ipv4_offset(self) -> int:
-        return get(self.switch_data_combined, "loopback_ipv4_offset", default=0)
-
-    @cached_property
-    def loopback_ipv6_offset(self) -> int:
-        return get(self.switch_data_combined, "loopback_ipv6_offset", default=0)
-
-    @cached_property
-    def loopback_ipv6_pool(self) -> str:
-        return get(self.switch_data_combined, "loopback_ipv6_pool", required=True)
-
-    @cached_property
-    def mgmt_interface(self) -> str | None:
-        """
-        mgmt_interface is inherited from
-        Global var mgmt_interface ->
-          Platform Settings management_interface ->
-            Fabric Topology data model mgmt_interface
-        """
-        return default(
-            get(self.switch_data_combined, "mgmt_interface"),
-            self.platform_settings.get("management_interface"),
-            get(self.hostvars, "mgmt_interface"),
-        )
-
-    @cached_property
-    def only_local_vlan_trunk_groups(self) -> bool:
+    def only_local_vlan_trunk_groups(self: "SharedUtils") -> bool:
         return self.enable_trunk_groups and get(self.hostvars, "only_local_vlan_trunk_groups", default=False)
 
     @cached_property
-    def system_mac_address(self) -> str | None:
+    def system_mac_address(self: "SharedUtils") -> str | None:
         """
         system_mac_address is inherited from
         Fabric Topology data model system_mac_address ->
@@ -119,61 +76,32 @@ class MiscMixin:
         return default(get(self.switch_data_combined, "system_mac_address"), get(self.hostvars, "system_mac_address"))
 
     @cached_property
-    def uplink_switches(self) -> list:
+    def uplink_switches(self: "SharedUtils") -> list:
         return get(self.switch_data_combined, "uplink_switches", default=[])
 
     @cached_property
-    def virtual_router_mac_address(self) -> str | None:
+    def virtual_router_mac_address(self: "SharedUtils") -> str | None:
         return get(self.switch_data_combined, "virtual_router_mac_address")
 
     @cached_property
-    def vtep_loopback(self) -> str:
-        return get(self.switch_data_combined, "vtep_loopback", default="Loopback1")
-
-    @cached_property
-    def vtep_ip(self) -> str:
-        """
-        Render ipv4 address for vtep_ip using dynamically loaded python module.
-        """
-        if self.mlag is True:
-            return self.ip_addressing.vtep_ip_mlag()
-
-        else:
-            return self.ip_addressing.vtep_ip()
-
-    @cached_property
-    def vtep_vvtep_ip(self) -> str | None:
-        return get(self.hostvars, "vtep_vvtep_ip")
-
-    @cached_property
-    def ipv6_mgmt_ip(self) -> str | None:
-        return get(self.switch_data_combined, "ipv6_mgmt_ip")
-
-    @cached_property
-    def mgmt_ip(self) -> str | None:
-        return get(self.switch_data_combined, "mgmt_ip")
-
-    @cached_property
-    def mgmt_interface_vrf(self) -> str | None:
-        return get(self.hostvars, "mgmt_interface_vrf")
-
-    @cached_property
-    def mgmt_gateway(self) -> str | None:
-        return get(self.hostvars, "mgmt_gateway")
-
-    @cached_property
-    def ipv6_mgmt_gateway(self) -> str | None:
-        return get(self.hostvars, "ipv6_mgmt_gateway")
-
-    @cached_property
-    def always_configure_ip_routing(self) -> bool:
-        return get(self.switch_data_combined, "always_configure_ip_routing")
-
-    @cached_property
-    def serial_number(self) -> str | None:
+    def serial_number(self: "SharedUtils") -> str | None:
         """
         serial_number is inherited from
         Fabric Topology data model serial_number ->
             Host variable var serial_number
         """
         return default(get(self.switch_data_combined, "serial_number"), get(self.hostvars, "serial_number"))
+
+    @cached_property
+    def max_parallel_uplinks(self: "SharedUtils") -> int:
+        """
+        Exposed in avd_switch_facts
+        """
+        return get(self.switch_data_combined, "max_parallel_uplinks", default=1)
+
+    @cached_property
+    def max_uplink_switches(self: "SharedUtils") -> int:
+        """
+        max_uplink_switches will default to the length of uplink_switches
+        """
+        return get(self.switch_data_combined, "max_uplink_switches", default=len(self.uplink_switches))

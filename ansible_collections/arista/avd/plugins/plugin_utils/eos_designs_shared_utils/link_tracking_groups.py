@@ -1,22 +1,23 @@
 from __future__ import annotations
 
 from functools import cached_property
+from typing import TYPE_CHECKING
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+
+if TYPE_CHECKING:
+    from .shared_utils import SharedUtils
 
 
 class LinkTrackingGroupsMixin:
     """
     Mixin Class providing a subset of SharedUtils
     Class should only be used as Mixin to the SharedUtils class
+    Using quoted type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
-    hostvars: dict
-    platform_settings: dict
-    switch_data_combined: dict
-
     @cached_property
-    def link_tracking_groups(self) -> list | None:
+    def link_tracking_groups(self: "SharedUtils") -> list | None:
         if get(self.switch_data_combined, "link_tracking.enabled") is True:
             link_tracking_groups = []
             default_recovery_delay = get(self.platform_settings, "reload_delay.mlag", 300)

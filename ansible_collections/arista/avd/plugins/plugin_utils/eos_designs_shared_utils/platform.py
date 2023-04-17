@@ -2,26 +2,27 @@ from __future__ import annotations
 
 from functools import cached_property
 from re import search
+from typing import TYPE_CHECKING
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+
+if TYPE_CHECKING:
+    from .shared_utils import SharedUtils
 
 
 class PlatformMixin:
     """
     Mixin Class providing a subset of SharedUtils
     Class should only be used as Mixin to the SharedUtils class
+    Using quoted type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
-    hostvars: dict
-    switch_data_combined: dict
-    type: str
-
     @cached_property
-    def platform(self) -> str | None:
+    def platform(self: "SharedUtils") -> str | None:
         return get(self.switch_data_combined, "platform")
 
     @cached_property
-    def platform_settings(self) -> dict:
+    def platform_settings(self: "SharedUtils") -> dict:
         platform_settings = get(self.hostvars, "platform_settings", default=[])
 
         # First look for a matching platform setting specifying our platform
@@ -37,7 +38,7 @@ class PlatformMixin:
         return {}
 
     @cached_property
-    def default_interfaces(self) -> dict:
+    def default_interfaces(self: "SharedUtils") -> dict:
         """
         default_interfaces set based on default_interfaces
         """

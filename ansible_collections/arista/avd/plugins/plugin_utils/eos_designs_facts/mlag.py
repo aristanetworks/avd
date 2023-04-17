@@ -4,7 +4,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
+    from .eos_designs_facts import EosDesignsFacts
 
 
 class MlagMixin:
@@ -13,11 +13,8 @@ class MlagMixin:
     Class should only be used as Mixin to the EosDesignsFacts class
     """
 
-    _hostvars: "dict"
-    shared_utils: "SharedUtils"
-
     @cached_property
-    def mlag_peer(self) -> str | None:
+    def mlag_peer(self: "EosDesignsFacts") -> str | None:
         """
         Exposed in avd_switch_facts
         """
@@ -26,7 +23,7 @@ class MlagMixin:
         return None
 
     @cached_property
-    def mlag_port_channel_id(self) -> int | None:
+    def mlag_port_channel_id(self: "EosDesignsFacts") -> int | None:
         """
         Exposed in avd_switch_facts
         """
@@ -35,7 +32,7 @@ class MlagMixin:
         return None
 
     @cached_property
-    def mlag_interfaces(self) -> list | None:
+    def mlag_interfaces(self: "EosDesignsFacts") -> list | None:
         """
         Exposed in avd_switch_facts
         """
@@ -44,7 +41,7 @@ class MlagMixin:
         return None
 
     @cached_property
-    def mlag_ip(self) -> str | None:
+    def mlag_ip(self: "EosDesignsFacts") -> str | None:
         """
         Exposed in avd_switch_facts
         """
@@ -53,7 +50,7 @@ class MlagMixin:
         return None
 
     @cached_property
-    def mlag_l3_ip(self) -> str | None:
+    def mlag_l3_ip(self: "EosDesignsFacts") -> str | None:
         """
         Exposed in avd_switch_facts
         """
@@ -62,7 +59,7 @@ class MlagMixin:
         return None
 
     @cached_property
-    def mlag_switch_ids(self) -> dict | None:
+    def mlag_switch_ids(self: "EosDesignsFacts") -> dict | None:
         """
         Exposed in avd_switch_facts
 

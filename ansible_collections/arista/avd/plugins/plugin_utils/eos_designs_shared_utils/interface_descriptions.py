@@ -1,10 +1,14 @@
 from __future__ import annotations
 
 from functools import cached_property
+from typing import TYPE_CHECKING
 
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, load_python_class
 from ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions.avdinterfacedescriptions import AvdInterfaceDescriptions
+
+if TYPE_CHECKING:
+    from .shared_utils import SharedUtils
 
 DEFAULT_AVD_INTERFACE_DESCRIPTIONS_PYTHON_MODULE = "ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions"
 DEFAULT_AVD_INTERFACE_DESCRIPTIONS_PYTHON_CLASS_NAME = "AvdInterfaceDescriptions"
@@ -14,13 +18,11 @@ class InterfaceDescriptionsMixin:
     """
     Mixin Class providing a subset of SharedUtils
     Class should only be used as Mixin to the SharedUtils class
+    Using quoted type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
-    node_type_key_data: dict
-    hostvars: dict
-
     @cached_property
-    def interface_descriptions(self) -> AvdInterfaceDescriptions:
+    def interface_descriptions(self: "SharedUtils") -> AvdInterfaceDescriptions:
         """
         Load the python_module defined in `templates.interface_descriptions.python_module`
         Return an instance of the class defined by `templates.interface_descriptions.python_class_name` as cached_property
@@ -37,7 +39,7 @@ class InterfaceDescriptionsMixin:
         return cls(hostvars=self.hostvars, shared_utils=self)
 
     @cached_property
-    def interface_descriptions_templates(self) -> dict:
+    def interface_descriptions_templates(self: "SharedUtils") -> dict:
         """
         Return dict with interface_descriptions templates set based on
         templates.interface_descriptions.* combined with (overridden by)

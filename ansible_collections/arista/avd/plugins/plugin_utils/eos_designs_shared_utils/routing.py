@@ -1,53 +1,44 @@
 from __future__ import annotations
 
 from functools import cached_property
+from typing import TYPE_CHECKING
 
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.errors.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+
+if TYPE_CHECKING:
+    from .shared_utils import SharedUtils
 
 
 class RoutingMixin:
     """
     Mixin Class providing a subset of SharedUtils
     Class should only be used as Mixin to the SharedUtils class
+    Using quoted type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
-    evpn_role: str
-    mpls_overlay_role: str
-    hostname: str
-    hostvars: dict
-    id: int
-    mlag: bool
-    mlag_switch_ids: dict
-    mpls_lsr: bool
-    node_type_key_data: dict
-    switch_data_combined: dict
-    underlay_router: bool
-    underlay_ipv6: bool
-    uplink_type: str
-
     @cached_property
-    def underlay_routing_protocol(self) -> str:
+    def underlay_routing_protocol(self: "SharedUtils") -> str:
         default_underlay_routing_protocol = get(self.node_type_key_data, "default_underlay_routing_protocol", default="ebgp")
         underlay_routing_protocol = str(get(self.hostvars, "underlay_routing_protocol", default=default_underlay_routing_protocol)).lower()
         return underlay_routing_protocol
 
     @cached_property
-    def overlay_routing_protocol(self) -> str:
+    def overlay_routing_protocol(self: "SharedUtils") -> str:
         default_overlay_routing_protocol = get(self.node_type_key_data, "default_overlay_routing_protocol", default="ebgp")
         overlay_routing_protocol = str(get(self.hostvars, "overlay_routing_protocol", default=default_overlay_routing_protocol)).lower()
         return overlay_routing_protocol
 
     @cached_property
-    def overlay_address_families(self) -> list:
+    def overlay_address_families(self: "SharedUtils") -> list:
         if self.overlay_routing_protocol in ["ebgp", "ibgp"]:
             default_overlay_address_families = get(self.node_type_key_data, "default_overlay_address_families", ["evpn"])
             return get(self.switch_data_combined, "overlay_address_families", default=default_overlay_address_families)
         return []
 
     @cached_property
-    def bgp(self) -> bool:
+    def bgp(self: "SharedUtils") -> bool:
         """
         Boolean telling if BGP Routing should be configured.
         """
@@ -58,15 +49,13 @@ class RoutingMixin:
                 self.underlay_routing_protocol == "ebgp"
                 or (
                     self.overlay_routing_protocol in ["ebgp", "ibgp"]
-                    and (
-                        get(self.hostvars, "switch.evpn_role") in ["client", "server"] or get(self.hostvars, "switch.mpls_overlay_role") in ["client", "server"]
-                    )
+                    and (self.evpn_role in ["client", "server"] or self.mpls_overlay_role in ["client", "server"])
                 )
             )
         )
 
     @cached_property
-    def router_id(self) -> str | None:
+    def router_id(self: "SharedUtils") -> str | None:
         """
         Render IP address for router_id
         """
@@ -75,7 +64,7 @@ class RoutingMixin:
         return None
 
     @cached_property
-    def ipv6_router_id(self) -> str | None:
+    def ipv6_router_id(self: "SharedUtils") -> str | None:
         """
         Render IPv6 address for router_id
         """
@@ -84,7 +73,7 @@ class RoutingMixin:
         return None
 
     @cached_property
-    def isis_instance_name(self) -> str | None:
+    def isis_instance_name(self: "SharedUtils") -> str | None:
         if self.underlay_router:
             if self.underlay_routing_protocol in ["isis", "isis-ldp", "isis-sr", "isis-sr-ldp"]:
                 if self.mpls_lsr:
@@ -95,7 +84,7 @@ class RoutingMixin:
         return None
 
     @cached_property
-    def bgp_as(self) -> str | None:
+    def bgp_as(self: "SharedUtils") -> str | None:
         """
         Get global bgp_as or fabric_topology bgp_as.
 
@@ -108,7 +97,7 @@ class RoutingMixin:
            at the defaults, node_group or node level).
          - Lower level definitions override higher level definitions as is standard with AVD.
         """
-        if self.underlay_routing_protocol == "ebgp" or self.evpn_role != "none" or self.mpls_overlay_role != "none":
+        if self.bgp:
             if get(self.hostvars, "bgp_as") is not None:
                 return str(get(self.hostvars, "bgp_as"))
             else:
@@ -131,3 +120,7 @@ class RoutingMixin:
         # TODO: Remove this as part of AVD4.0
         elif self.underlay_routing_protocol in ["isis", "ospf"] and self.evpn_role == "none" and get(self.hostvars, "bgp_as") is not None:
             return str(get(self.hostvars, "bgp_as"))
+
+    @cached_property
+    def always_configure_ip_routing(self: "SharedUtils") -> bool:
+        return get(self.switch_data_combined, "always_configure_ip_routing")

@@ -26,7 +26,7 @@ class AvdStructuredConfig(AvdFacts):
         router_bgp set based on switch.bgp_as, switch.bgp_defaults, router_id facts
         and aggregating the values of bgp_maximum_paths and bgp_ecmp variables
         """
-        if (bgp_as := get(self._hostvars, "switch.bgp_as")) is None:
+        if self.shared_utils.bgp_as is None:
             return None
 
         bgp_defaults = get(self.shared_utils.switch_data_combined, "bgp_defaults", default=[])
@@ -38,7 +38,7 @@ class AvdStructuredConfig(AvdFacts):
             bgp_defaults.append(max_paths_str)
 
         return {
-            "as": bgp_as,
+            "as": self.shared_utils.bgp_as,
             "router_id": self.shared_utils.router_id,
             "bgp_defaults": bgp_defaults,
         }
@@ -174,7 +174,7 @@ class AvdStructuredConfig(AvdFacts):
         Converting nested dict to list of dict to support avd_v4.0
         """
         platform_speed_groups = get(self._hostvars, "platform_speed_groups")
-        switch_platform = get(self._hostvars, "switch.platform")
+        switch_platform = self.shared_utils.platform
         if platform_speed_groups is None or switch_platform is None:
             return None
 
@@ -417,7 +417,7 @@ class AvdStructuredConfig(AvdFacts):
     @cached_property
     def spanning_tree(self) -> dict | None:
         """
-        spanning_tree set based on switch.spanning_tree_root_super, spanning_tree_mode
+        spanning_tree set based on spanning_tree_root_super, spanning_tree_mode
         and spanning_tree_priority
         """
         if not self.shared_utils.network_services_l2:
