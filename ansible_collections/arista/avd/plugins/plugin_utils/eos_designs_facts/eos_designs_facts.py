@@ -178,3 +178,17 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
         Exposed in avd_switch_facts
         """
         return self.shared_utils.dc_name
+
+    @cached_property
+    def group(self) -> str | None:
+        """
+        Exposed in avd_switch_facts
+        """
+        return self.shared_utils.group
+
+    @cached_property
+    def router_id(self) -> str | None:
+        """
+        Exposed in avd_switch_facts
+        """
+        return self.shared_utils.router_id

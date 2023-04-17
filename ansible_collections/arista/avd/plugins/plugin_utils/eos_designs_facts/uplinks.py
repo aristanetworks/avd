@@ -165,7 +165,7 @@ class UplinksMixin:
                 if self.shared_utils.uplink_interface_speed is not None:
                     uplink["speed"] = self.shared_utils.uplink_interface_speed
 
-                if uplink_switch_facts.shared_utils.mlag is True or self.short_esi is not None:
+                if uplink_switch_facts.shared_utils.mlag is True or self._short_esi is not None:
                     # Override our description on port-channel to be peer's group name if they are mlag pair or A/A #}
                     uplink["channel_description"] = uplink_switch_facts.shared_utils.group
 
@@ -204,8 +204,8 @@ class UplinksMixin:
                 if uplink_native_vlan := get(self.shared_utils.switch_data_combined, "uplink_native_vlan"):
                     uplink["native_vlan"] = uplink_native_vlan
 
-                if self.short_esi is not None:
-                    uplink["peer_short_esi"] = self.short_esi
+                if self._short_esi is not None:
+                    uplink["peer_short_esi"] = self._short_esi
 
                 if self.shared_utils.link_tracking_groups is not None:
                     uplink["link_tracking_groups"] = []

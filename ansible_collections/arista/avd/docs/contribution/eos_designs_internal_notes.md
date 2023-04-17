@@ -361,25 +361,24 @@ avd_switch_facts:
       evpn_multicast: <bool>
       evpn_role: <str>
       evpn_route_servers: <list[str]>
+      group: <str>
       id: <int>
-      inband_management_gateway: <str>
-      inband_management_interface: <str>
-      inband_management_ip: <str>
-      inband_management_parents: <list[str]>
       inband_management_subnet: <str>
-      inband_management_role: <str>
       inband_management_vlan: <int>
       is_deployed: <bool>
       loopback_ipv4_pool: <str>
+      local_endpoint_trunk_groups: <list[str]>
       max_parallel_uplinks: <int>
       max_uplink_switches: <int>
       mlag_interfaces: <list[str]>
       mlag_ip: <str>
+      mlag_l3_ip: <str>
       mlag_peer: <str>
       mlag_port_channel_id: <int>
       mlag_switch_ids:
         primary: <int>
         secondary: <int>
+      mgmt_interface: <str>
       mgmt_ip: <int>
       mpls_lsr: <bool>
       mpls_overlay_role: <str>
@@ -388,6 +387,7 @@ avd_switch_facts:
         peering_address: <str>
         evpn_mpls: <bool>
       platform: <str>
+      router_id: <str>
       serial_number: <str>
       type: <str>
       underlay_routing_protocol: <str>
@@ -408,7 +408,6 @@ so they must be available in the `avd_switch_facts` object.
 | -------- | ------------ |
 | switch.type | core_interfaces/utils.py |
 | switch.type | l3_edge/utils.py |
-| switch.inband_management_parents | inband_management/avdstructuredconfig.py |
 | switch.inband_management_subnet | inband_management/avdstructuredconfig.py |
 | switch.inband_management_vlan | inband_management/avdstructuredconfig.py |
 | switch.vlans | network_services/utils_filtered_tenants.py |
@@ -439,8 +438,6 @@ These variables are historically used in *builtin* jinja2 templates so they **sh
 | switch.vtep_loopback_ipv4_pool | fabric-documentation.j2 |
 | switch.node | fabric-documentation.j2 |
 | switch.mgmt_ip | fabric-documentation.j2 |
-| switch.inband_management_interface | fabric-documentation.j2 |
-| switch.inband_management_ip | fabric-documentation.j2 |
 | switch.platform | fabric-documentation.j2 |
 | switch.serial_number | fabric-documentation.j2 |
 | switch.underlay_routing_protocol | fabric-documentation.j2 |
@@ -470,14 +467,19 @@ These variables are historically used in *builtin* jinja2 templates so they **sh
 | switch.id | ip_addressing/p2p-uplinks-peer-ip.j2 |
 | switch.max_uplink_switches | ip_addressing/p2p-uplinks-peer-ip.j2 |
 | switch.max_parallel_uplinks | ip_addressing/p2p-uplinks-peer-ip.j2 |
+| switch.bgp_as | Known customer deployments |
+| switch.group | Known customer deployments |
+| switch.hostname | Known customer deployments |
+| switch.id | Known customer deployments |
+| switch.mgmt_interface | Known customer deployments |
+| switch.mgmt_ip | Known customer deployments |
+| switch.router_id | Known customer deployments |
 
 #### Other switch.* variables set in eos_designs_facts
 
 | Variable | Reason |
 | -------- | ------------ |
 | switch.evpn_multicast | Since the code behind evpn_multicast has to check the mlag peer facts for 'overlay_rd_type_admin_subfield' we can either expose that field in facts, or perform the check inside eos_designs_facts. |
-| switch.inband_management_role | Required in both eos_designs_facts and the inband management module. Not used often, but could be rewritten to reuse the existing uplink information instead. TBD. |
-| switch.inband_management_gateway | Required in both eos_designs_facts and the inband management module. Not used often, but could be rewritten to reuse the existing uplink information instead. TBD. |
 | switch.endpoint_trunk_groups | Complex calculations leveraging data from peers leading to compact output, so instead of repeating in multiple areas, we do it once and store the result. |
 | switch.endpoint_vlans | Complex calculations leveraging data from peers leading to compact output, so instead of repeating in multiple areas, we do it once and store the result. |
 | switch.local_endpoint_trunk_groups | Complex calculations leveraging data from peers leading to compact output, so instead of repeating in multiple areas, we do it once and store the result. |
