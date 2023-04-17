@@ -467,13 +467,6 @@ These variables are historically used in *builtin* jinja2 templates so they **sh
 | switch.id | ip_addressing/p2p-uplinks-peer-ip.j2 |
 | switch.max_uplink_switches | ip_addressing/p2p-uplinks-peer-ip.j2 |
 | switch.max_parallel_uplinks | ip_addressing/p2p-uplinks-peer-ip.j2 |
-| switch.bgp_as | Known customer deployments |
-| switch.group | Known customer deployments |
-| switch.hostname | Known customer deployments |
-| switch.id | Known customer deployments |
-| switch.mgmt_interface | Known customer deployments |
-| switch.mgmt_ip | Known customer deployments |
-| switch.router_id | Known customer deployments |
 
 #### Other switch.* variables set in eos_designs_facts
 
@@ -488,3 +481,10 @@ These variables are historically used in *builtin* jinja2 templates so they **sh
 | switch.mgmt_ip | mgmp_ip must be available to the mlag peer. |
 | switch.uplink_peers | These are used to generate the "avd_topology_peers" fact covering downlinks for all devices in eos_designs_facts action plugin. |
 | switch.dc_name | Used for underlay HER flood-list calculations when using scope dc_name
+| switch.bgp_as | Known use of inline jinja in customer deployments |
+| switch.group | Known use of inline jinja in customer deployments |
+| switch.hostname | Known use of inline jinja in customer deployments |
+| switch.id | Known use of inline jinja in customer deployments |
+| switch.mgmt_interface | Known use of inline jinja in customer deployments |
+| switch.mgmt_ip | Known use of inline jinja in customer deployments |
+| switch.router_id | Known use of inline jinja in customer deployments |
