@@ -43,10 +43,31 @@ interface Management1
 
 ### Forwarding Profiles Summary
 
-| Profile | BFD Per-link RFC-7130 | E-LMI | ISIS | LACP | LLDP | MACSEC | Pause | STP |
-| ------- | --------------------- | ----- | ---- | ---- | ---- | ------ | ----- | --- |
-| TEST1 | forward,tagged forward,untagged forward | forward,tagged forward,untagged forward | forward,tagged forward,untagged forward | forward,tagged forward,untagged forward | forward,tagged forward,untagged forward | forward,tagged forward,untagged forward | forward,tagged forward,untagged forward | forward,tagged forward,untagged forward |
-| TEST2 | tagged forward | forward | untagged forward | forward,untagged forward | tagged forward | tagged forward | untagged forward | tagged forward,untagged forward |
+#### TEST1
+
+| Protocol |Forward | Tagged Forward | Untagged Forward |
+| -------- | ------ | -------------- | ---------------- |
+| bfd per-link rfc-7130 | True | True | True |
+| e-lmi | True | True | True |
+| isis | True | True | True |
+| lacp | True | True | True |
+| lldp | True | True | True |
+| macsec | True | True | True |
+| pause | True | True | True |
+| stp | True | True | True |
+
+#### TEST2
+
+| Protocol |Forward | Tagged Forward | Untagged Forward |
+| -------- | ------ | -------------- | ---------------- |
+| bfd per-link rfc-7130 | False | True | - |
+| e-lmi | True | - | - |
+| isis | - | - | True |
+| lacp | True | False | True |
+| lldp | False | True | False |
+| macsec | - | True | - |
+| pause | False | - | True |
+| stp | - | True | True |
 
 ### L2 Protocol Forwarding Configuration
 

@@ -3,34 +3,19 @@
 
 ## L2 Protocol Forwarding
 
-### Forwarding Profiles Summary
-
-| Profile | BFD Per-link RFC-7130 | E-LMI | ISIS | LACP | LLDP | MACSEC | Pause | STP |
-| ------- | --------------------- | ----- | ---- | ---- | ---- | ------ | ----- | --- |
+### Forwarding Profiles
 {%     for profile in l2_protocol.forwarding_profiles | arista.avd.natural_sort('name') %}
-{%         set rows = {} %}
+
+#### {{ profile.name }}
+
+| Protocol |Forward | Tagged Forward | Untagged Forward |
+| -------- | ------ | -------------- | ---------------- |
 {%         for protocol in profile.protocols %}
-{%             set proto_name = protocol.name | replace(" ", "_") | replace("-", "_") %}
-{%             do rows.update({proto_name: []}) %}
-{%             if protocol.forward is arista.avd.defined(true) %}
-{%                 do rows[proto_name].append('forward') %}
-{%             endif %}
-{%             if protocol.tagged_forward is arista.avd.defined(true) %}
-{%                 do rows[proto_name].append('tagged forward') %}
-{%             endif %}
-{%             if protocol.untagged_forward is arista.avd.defined(true) %}
-{%                 do rows[proto_name].append('untagged forward') %}
-{%             endif %}
+{%             set proto_forward =  protocol.forward | arista.avd.default("-") %}
+{%             set proto_tagged_forward =  protocol.tagged_forward | arista.avd.default("-") %}
+{%             set proto_untagged_forward =  protocol.untagged_forward | arista.avd.default("-") %}
+| {{ protocol.name }} | {{ proto_forward }} | {{ proto_tagged_forward }} | {{ proto_untagged_forward }} |
 {%         endfor %}
-{%         set row_bfd = rows["bfd_per_link_rfc_7130"] | arista.avd.default(["-"]) | join(",") %}
-{%         set row_e_lmi = rows["e_lmi"] | arista.avd.default(["-"]) | join(",") %}
-{%         set row_isis = rows["isis"] | arista.avd.default(["-"]) | join(",") %}
-{%         set row_lacp = rows["lacp"] | arista.avd.default(["-"]) | join(",") %}
-{%         set row_lldp = rows["lldp"] | arista.avd.default(["-"]) | join(",") %}
-{%         set row_macsec = rows["macsec"] | arista.avd.default(["-"]) | join(",") %}
-{%         set row_pause = rows["pause"] | arista.avd.default(["-"]) | join(",") %}
-{%         set row_stp = rows["stp"] | arista.avd.default(["-"]) | join(",") %}
-| {{ profile.name }} | {{ row_bfd }} | {{ row_e_lmi }} | {{ row_isis }} | {{ row_lacp }} | {{ row_lldp }} | {{ row_macsec }} | {{ row_pause }} | {{ row_stp }} |
 {%     endfor %}
 
 ### L2 Protocol Forwarding Configuration
