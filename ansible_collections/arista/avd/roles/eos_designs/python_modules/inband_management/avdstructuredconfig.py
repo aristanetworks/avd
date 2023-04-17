@@ -79,10 +79,10 @@ class AvdStructuredConfig(AvdFacts):
 
     @cached_property
     def vlan_interfaces(self) -> list | None:
-        if not self.shared_utils.network_services_l3:
+        if not self._inband_management_parent_data.get("subnets"):
             return None
 
-        if not self._inband_management_parent_data.get("subnets"):
+        if not self.shared_utils.underlay_router:
             return None
 
         vlan_interfaces = []
@@ -117,10 +117,10 @@ class AvdStructuredConfig(AvdFacts):
 
     @cached_property
     def ip_virtual_router_mac_address(self) -> str | None:
-        if not self.shared_utils.network_services_l3:
+        if not self._inband_management_parent_data.get("subnets"):
             return None
 
-        if not self._inband_management_parent_data.get("subnets"):
+        if not self.shared_utils.underlay_router:
             return None
 
         if self.shared_utils.virtual_router_mac_address is None:
@@ -129,9 +129,6 @@ class AvdStructuredConfig(AvdFacts):
 
     @cached_property
     def router_bgp(self) -> dict | None:
-        if not self.shared_utils.network_services_l3:
-            return None
-
         if not self._inband_management_parent_data.get("subnets"):
             return None
 
@@ -146,9 +143,6 @@ class AvdStructuredConfig(AvdFacts):
 
     @cached_property
     def prefix_lists(self) -> list | None:
-        if not self.shared_utils.network_services_l3:
-            return None
-
         if not self._inband_management_parent_data.get("subnets"):
             return None
 
@@ -174,9 +168,6 @@ class AvdStructuredConfig(AvdFacts):
 
     @cached_property
     def route_maps(self) -> dict | None:
-        if not self.shared_utils.network_services_l3:
-            return None
-
         if not self._inband_management_parent_data.get("subnets"):
             return None
 

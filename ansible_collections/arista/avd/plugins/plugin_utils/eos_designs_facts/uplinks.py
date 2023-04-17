@@ -193,8 +193,8 @@ class UplinksMixin:
                 uplink_switch_vlans = uplink_switch_facts._vlans
                 uplink_vlans = list(set(switch_vlans).intersection(uplink_switch_vlans))
 
-                if self.inband_management_vlan is not None:
-                    uplink_vlans.append(int(self.inband_management_vlan))
+                if self.shared_utils.inband_management_vlan is not None:
+                    uplink_vlans.append(self.shared_utils.inband_management_vlan)
 
                 if uplink_vlans:
                     uplink["vlans"] = list_compress(uplink_vlans)
