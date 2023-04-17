@@ -10,14 +10,16 @@ ip_domain_lookup:
 ### Name Servers ###
 ip_name_servers:
   # no VRF
-  - ip_address: 10.10.130.10
+  - ip_address: 10.10.128.10
   # no VRF priority
-  - ip_address: 10.10.131.10
+  - ip_address: 10.10.129.10
     priority: 0
+  # Same DNS management VRF
   - ip_address: 10.10.128.10
     vrf: mgmt
-  - ip_address: 10.10.129.10
-    vrf: mgmt
+  # Same DNS different VRF and priority
+  - ip_address: 10.10.128.10
+    vrf: TEST
     priority: 3
 
 ### DNS Domain ###

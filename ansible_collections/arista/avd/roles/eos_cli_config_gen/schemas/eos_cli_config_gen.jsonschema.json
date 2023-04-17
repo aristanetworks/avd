@@ -4554,10 +4554,7 @@
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        },
-        "required": [
-          "ip_address"
-        ]
+        }
       },
       "title": "IP Name Servers"
     },

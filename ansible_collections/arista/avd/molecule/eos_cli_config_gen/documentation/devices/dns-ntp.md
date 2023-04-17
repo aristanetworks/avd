@@ -54,18 +54,18 @@ dns domain test.local
 
 | Name Server | VRF | Priority |
 | ----------- | --- | -------- |
-| 10.10.130.10 | - | - |
-| 10.10.131.10 | - | 0 |
+| 10.10.128.10 | - | - |
+| 10.10.129.10 | - | 0 |
 | 10.10.128.10 | mgmt | - |
-| 10.10.129.10 | mgmt | 3 |
+| 10.10.128.10 | TEST | 3 |
 
 #### IP Name Servers Device Configuration
 
 ```eos
+ip name-server 10.10.128.10
 ip name-server vrf mgmt 10.10.128.10
-ip name-server vrf mgmt 10.10.129.10 priority 3
-ip name-server 10.10.130.10
-ip name-server 10.10.131.10 priority 0
+ip name-server vrf TEST 10.10.128.10 priority 3
+ip name-server 10.10.129.10 priority 0
 ```
 
 ### Domain Lookup
