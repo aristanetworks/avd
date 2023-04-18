@@ -1,7 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft-07/schema",
     "$id": "https://avd.sh/development/schema-schema.json",
-    "$def": {
+    "$defs": {
         "avd_schema_var": {
             "type": "object",
             "oneOf": [
@@ -43,13 +43,13 @@
                                 "type": "number"
                             }
                         },
-                        "display_name": { "$ref": "#/$def/display_name" },
-                        "description": { "$ref": "#/$def/description" },
-                        "required": { "$ref": "#/$def/required" },
-                        "dynamic_valid_values": { "$ref": "#/$def/dynamic_valid_values" },
-                        "deprecation": { "$ref": "#/$def/deprecation" },
-                        "$ref": { "$ref": "#/$def/$ref" },
-                        "documentation_options": { "$ref": "#/$def/documentation_options" }
+                        "display_name": { "$ref": "#/$defs/display_name" },
+                        "description": { "$ref": "#/$defs/description" },
+                        "required": { "$ref": "#/$defs/required" },
+                        "dynamic_valid_values": { "$ref": "#/$defs/dynamic_valid_values" },
+                        "deprecation": { "$ref": "#/$defs/deprecation" },
+                        "$ref": { "$ref": "#/$defs/$ref" },
+                        "documentation_options": { "$ref": "#/$defs/documentation_options" }
                     },
                     "additionalProperties": false
                 },
@@ -84,13 +84,13 @@
                                 "type": "boolean"
                             }
                         },
-                        "display_name": { "$ref": "#/$def/display_name" },
-                        "description": { "$ref": "#/$def/description" },
-                        "required": { "$ref": "#/$def/required" },
-                        "dynamic_valid_values": { "$ref": "#/$def/dynamic_valid_values" },
-                        "deprecation": { "$ref": "#/$def/deprecation" },
-                        "$ref": { "$ref": "#/$def/$ref" },
-                        "documentation_options": { "$ref": "#/$def/documentation_options" }
+                        "display_name": { "$ref": "#/$defs/display_name" },
+                        "description": { "$ref": "#/$defs/description" },
+                        "required": { "$ref": "#/$defs/required" },
+                        "dynamic_valid_values": { "$ref": "#/$defs/dynamic_valid_values" },
+                        "deprecation": { "$ref": "#/$defs/deprecation" },
+                        "$ref": { "$ref": "#/$defs/$ref" },
+                        "documentation_options": { "$ref": "#/$defs/documentation_options" }
                     },
                     "additionalProperties": false
                 },
@@ -155,13 +155,13 @@
                                 "type": "string"
                             }
                         },
-                        "display_name": { "$ref": "#/$def/display_name" },
-                        "description": { "$ref": "#/$def/description" },
-                        "required": { "$ref": "#/$def/required" },
-                        "dynamic_valid_values": { "$ref": "#/$def/dynamic_valid_values" },
-                        "deprecation": { "$ref": "#/$def/deprecation" },
-                        "$ref": { "$ref": "#/$def/$ref" },
-                        "documentation_options": { "$ref": "#/$def/documentation_options" }
+                        "display_name": { "$ref": "#/$defs/display_name" },
+                        "description": { "$ref": "#/$defs/description" },
+                        "required": { "$ref": "#/$defs/required" },
+                        "dynamic_valid_values": { "$ref": "#/$defs/dynamic_valid_values" },
+                        "deprecation": { "$ref": "#/$defs/deprecation" },
+                        "$ref": { "$ref": "#/$defs/$ref" },
+                        "documentation_options": { "$ref": "#/$defs/documentation_options" }
                     },
                     "additionalProperties": false
                 },
@@ -193,7 +193,7 @@
                         "items": {
                             "description": "Schema for list items",
                             "$comment": "Recursive reference to allow infinite nested data models",
-                            "$ref": "#/$def/avd_schema_var"
+                            "$ref": "#/$defs/avd_schema_var"
                         },
                         "min_length": {
                             "type": "number"
@@ -213,12 +213,12 @@
                             "pattern": "^[a-z][a-z0-9_]*$",
                             "description": "Name of a secondary key, which is used with `convert_types:[dict]` in case of values not being dictionaries."
                         },
-                        "display_name": { "$ref": "#/$def/display_name" },
-                        "description": { "$ref": "#/$def/description" },
-                        "required": { "$ref": "#/$def/required" },
-                        "deprecation": { "$ref": "#/$def/deprecation" },
-                        "$ref": { "$ref": "#/$def/$ref" },
-                        "documentation_options": { "$ref": "#/$def/documentation_options" }
+                        "display_name": { "$ref": "#/$defs/display_name" },
+                        "description": { "$ref": "#/$defs/description" },
+                        "required": { "$ref": "#/$defs/required" },
+                        "deprecation": { "$ref": "#/$defs/deprecation" },
+                        "$ref": { "$ref": "#/$defs/$ref" },
+                        "documentation_options": { "$ref": "#/$defs/documentation_options" }
                     },
                     "additionalProperties": false
                 },
@@ -242,7 +242,7 @@
                             "patternProperties": {
                                 "^[a-z][a-z0-9_]*$": {
                                     "$comment": "The regex here matches valid key names",
-                                    "$ref": "#/$def/avd_schema_var"
+                                    "$ref": "#/$defs/avd_schema_var"
                                 }
                             }
                         },
@@ -251,7 +251,7 @@
                             "description": "Dictionary of dynamic dictionary-keys in the format `{<variable.path>: {<schema>}}`.\n`variable.path` is a variable path using dot-notation and pointing to a variable under the parent dictionary containing dictionary-keys.\nIf an element of the variable path is a list, every list item will unpacked.\n`schema` is the schema for each key. This is a recursive schema, so the value must conform to AVD Schema\nNote that this is building the schema from values in the _data_ being validated!",
                             "patternProperties": {
                                 "^[a-z][a-z0-9_.]*$": {
-                                    "$ref": "#/$def/avd_schema_var"
+                                    "$ref": "#/$defs/avd_schema_var"
                                 }
                             }
                         },
@@ -260,21 +260,22 @@
                             "default": false,
                             "description": "Allow keys in the dictionary which are not defined in the schema."
                         },
-                        "display_name": { "$ref": "#/$def/display_name" },
-                        "description": { "$ref": "#/$def/description" },
-                        "required": { "$ref": "#/$def/required" },
-                        "deprecation": { "$ref": "#/$def/deprecation" },
-                        "$ref": { "$ref": "#/$def/$ref" },
-                        "documentation_options": { "$ref": "#/$def/documentation_options" },
+                        "display_name": { "$ref": "#/$defs/display_name" },
+                        "description": { "$ref": "#/$defs/description" },
+                        "required": { "$ref": "#/$defs/required" },
+                        "deprecation": { "$ref": "#/$defs/deprecation" },
+                        "$ref": { "$ref": "#/$defs/$ref" },
+                        "documentation_options": { "$ref": "#/$defs/documentation_options" },
                         "$schema": { "type": "string" },
-                        "$id": { "type": "string" }
+                        "$id": { "type": "string" },
+                        "$defs": { "$ref": "#/$defs/$defs" }
                     },
                     "additionalProperties": false
                 },
                 {
                     "required": [ "$ref" ],
                     "properties": {
-                        "$ref": { "$ref": "#/$def/$ref" }
+                        "$ref": { "$ref": "#/$defs/$ref" }
                     },
                     "additionalProperties": false
                 }
@@ -319,6 +320,16 @@
             },
             "additionalProperties": false
         },
+        "$defs": {
+            "type": "object",
+            "description": "Storage for reusable schema fragments",
+            "patternProperties": {
+                "^[a-z][a-z0-9_]*$": {
+                    "$comment": "The regex here matches valid key names",
+                    "$ref": "#/$defs/avd_schema_var"
+                }
+            }
+        },
         "deprecation": {
             "type": "object",
             "description": "Deprecation settings",
@@ -354,5 +365,5 @@
         }
     },
     "title": "Arista AVD Schema",
-    "$ref": "#/$def/avd_schema_var"
+    "$ref": "#/$defs/avd_schema_var"
 }

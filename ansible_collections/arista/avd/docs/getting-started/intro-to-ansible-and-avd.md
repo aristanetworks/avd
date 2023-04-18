@@ -446,7 +446,6 @@ If you want to push to switches in the entire fabric using CloudVision and your 
         container_root: 'DC1'
         configlets_prefix: 'AVD'
         execute_tasks: false
-        apply_mode: strict
         state: present
         cv_collection: v3
 ```
