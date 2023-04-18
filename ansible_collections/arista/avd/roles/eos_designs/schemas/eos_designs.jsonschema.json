@@ -762,12 +762,12 @@
     },
     "cvp_instance_ip": {
       "type": "string",
-      "description": "IPv4 address.\nCloudVision - Telemetry Agent (TerminAttr) configuration is optional\nYou can either provide a list of IPs to target on-premise CloudVision cluster or\nuse DNS name for your CloudVision as a Service instance. If you have both on-prem and\nCVaaS defined, only on-prem is going to be configured.",
+      "description": "IPv4 address.\nCloudVision - Telemetry Agent (TerminAttr) configuration is optional.\nYou can either provide a list of IPs to target on-premise CloudVision cluster or\nuse DNS name for your CloudVision as a Service instance. If you have both on-prem and\nCVaaS defined, only on-prem is configured.",
       "title": "CVP Instance IP"
     },
     "cvp_instance_ips": {
       "type": "array",
-      "description": "You can either provide a list of IPs to target on-premise CloudVision cluster or\nuse DNS name for your CloudVision as a Service instance. If you have both on-prem and\nCVaaS defined, only on-prem is going to be configured.\n",
+      "description": "You can either provide a list of IPs to target on-premise CloudVision cluster or\nuse DNS name for your CloudVision as a Service instance. If you have both on-prem and\nCVaaS defined, only on-prem is configured.\n",
       "items": {
         "type": "string",
         "description": "IPv4 address or CV as a Service hostname"
@@ -913,13 +913,13 @@
     },
     "event_handlers": {
       "type": "array",
-      "description": "Gives ability to monitor and react to Syslog messages provides a powerful and flexible tool that can be used to apply self-healing actions,\ncustomize the system behavior, and implement workarounds to problems discovered in the field.\n",
+      "description": "Gives the ability to monitor and react to Syslog messages.\nEvent Handlers provide a powerful and flexible tool that can be used to apply self-healing actions,\ncustomize the system behavior, and implement workarounds to problems discovered in the field.\n",
       "items": {
         "type": "object",
         "properties": {
           "name": {
             "type": "string",
-            "description": "Event handler name",
+            "description": "Event handler name.",
             "title": "Name"
           },
           "action_type": {
@@ -932,12 +932,12 @@
           },
           "action": {
             "type": "string",
-            "description": "Command to run when handler is triggered",
+            "description": "Command to run when the handler is triggered.",
             "title": "Action"
           },
           "delay": {
             "type": "integer",
-            "description": "Event-handler delay in seconds",
+            "description": "Event-handler delay in seconds.",
             "title": "Delay"
           },
           "trigger": {
@@ -950,7 +950,7 @@
           },
           "regex": {
             "type": "string",
-            "description": "Regular expression to use for searching log messages. Required for on-logging trigger",
+            "description": "Regular expression to use for searching log messages.\nRequired for on-logging trigger.\n",
             "title": "Regex"
           },
           "asynchronous": {
@@ -1661,7 +1661,7 @@
     },
     "local_users": {
       "type": "array",
-      "description": "Dictionary of local users",
+      "description": "Dictionary of local users.",
       "items": {
         "type": "object",
         "properties": {
@@ -1679,7 +1679,7 @@
           },
           "role": {
             "type": "string",
-            "description": "EOS RBAC Role to be assigned to the user such as \"network-admin\" or \"network-operator\"",
+            "description": "EOS RBAC Role to be assigned to the user such as \"network-admin\" or \"network-operator\".",
             "title": "Role"
           },
           "sha512_password": {
@@ -1690,7 +1690,7 @@
           "no_password": {
             "type": "boolean",
             "default": true,
-            "description": "If set a password will not be configured for this user. \"sha512_password\" MUST not be defined for this user.",
+            "description": "If set, a password will not be configured for this user. \"sha512_password\" MUST not be defined for this user.",
             "title": "No Password"
           },
           "ssh_key": {
@@ -1733,7 +1733,7 @@
       "title": "MAC Address Table"
     },
     "management_eapi": {
-      "description": "Default is https management eAPI enabled.\nThe vrf is set to < mgmt_interface_vrf >\n",
+      "description": "Default is \"https management eAPI enabled\".\nThe VRF is set to < mgmt_interface_vrf >.\n",
       "type": "object",
       "properties": {
         "enable_http": {
@@ -1762,31 +1762,31 @@
       "description": "OOB mgmt interface destination networks - override default route",
       "items": {
         "type": "string",
-        "description": "IPv4_network/Mask"
+        "description": "IPv4 network and Mask.\nFor example, \"192.0.2.0/24\"."
       },
       "title": "Mgmt Destination Networks"
     },
     "mgmt_gateway": {
       "type": "string",
-      "description": "Management interface configuration and it is IPv4 address",
+      "description": "Management interface configuration in IPv4 format.",
       "title": "Mgmt Gateway"
     },
     "mgmt_interface": {
       "type": "string",
       "default": "Management1",
-      "description": "Management interface configuration",
+      "description": "Management interface configuration.",
       "title": "Mgmt Interface"
     },
     "mgmt_interface_vrf": {
       "type": "string",
       "default": "MGMT",
-      "description": "Management interface configuration",
+      "description": "Management interface configuration.",
       "title": "Mgmt Interface VRF"
     },
     "mgmt_vrf_routing": {
       "type": "boolean",
       "default": false,
-      "description": "Management interface configuration",
+      "description": "Management interface configuration.",
       "title": "Mgmt VRF Routing"
     },
     "mlag_ibgp_peering_vrfs": {
@@ -1841,7 +1841,7 @@
     },
     "name_servers": {
       "type": "array",
-      "description": "Only eos_designs name_servers variables",
+      "description": "Only eos_designs name_servers variables.",
       "items": {
         "type": "string",
         "description": "IPv4 address"
@@ -4089,29 +4089,39 @@
     },
     "snmp_settings": {
       "type": "object",
-      "description": "Set SNMP settings. It is optional.",
+      "description": "Set SNMP settings (optional).",
       "properties": {
         "contact": {
           "type": "string",
-          "description": "SNMP contact",
+          "description": "SNMP contact.",
           "title": "Contact"
         },
         "location": {
           "type": "boolean",
           "default": false,
-          "description": "SNMP location. Formatted as {{ fabric_name }} {{ dc_name }} {{ pod_name }} {{ switch_rack }} {{ inventory_hostname }}",
+          "description": "SNMP location. Formatted as {{ fabric_name }} {{ dc_name }} {{ pod_name }} {{ switch_rack }} {{ inventory_hostname }}.",
           "title": "Location"
         },
         "compute_local_engineid": {
           "type": "boolean",
           "default": false,
-          "description": "Generate a local engineId for SNMP by hashing via SHA1 the string\ngenerated via the concatenation of the hostname plus the management IP.\n{{ inventory_hostname }} + {{ switch.mgmt_ip }}\n",
+          "description": "Generate a local engineId for SNMP by hashing via SHA1, the string\ngenerated via the concatenation of the hostname plus the management IP.\n{{ inventory_hostname }} + {{ switch.mgmt_ip }}\n",
           "title": "Compute Local Engineid"
+        },
+        "compute_local_engineid_source": {
+          "type": "string",
+          "default": "hostname_and_ip",
+          "description": "If set to \"system_mac\", `system_mac_address` MUST be set for the device.",
+          "enum": [
+            "hostname_and_ip",
+            "system_mac"
+          ],
+          "title": "Compute Local Engineid Source"
         },
         "compute_v3_user_localized_key": {
           "type": "boolean",
           "default": false,
-          "description": "Requires compute_local_engineid to be `true` if enabled, the SNMPv3\npassphrases for auth and priv are transfromed using RFC 2574,\nmatching the value they would take in EOS cli the algorithm requires\na local engineId which is unknown to AVD hence the necessity to generate\none beforehand.\n",
+          "description": "Requires compute_local_engineid to be `true`. If enabled, the SNMPv3\npassphrases for auth and priv are transformed using RFC 2574,\nmatching the value they would take in EOS CLI. The algorithm requires\na local engineId, which is unknown to AVD, hence the necessity to generate\none beforehand.\n",
           "title": "Compute V3 User Localized Key"
         },
         "users": {
@@ -4146,12 +4156,12 @@
                   "sha384",
                   "sha512"
                 ],
-                "description": "It is optional",
+                "description": "It is optional.",
                 "title": "Auth"
               },
               "auth_passphrase": {
                 "type": "string",
-                "description": "Clear passphrase, requires auth, recommended to use vault",
+                "description": "Clear passphrase, requires auth, recommended to use vault.",
                 "title": "Auth Passphrase"
               },
               "priv": {
@@ -4162,12 +4172,12 @@
                   "aes192",
                   "aes256"
                 ],
-                "description": "It is optional",
+                "description": "It is optional.",
                 "title": "Priv"
               },
               "priv_passphrase": {
                 "type": "string",
-                "description": "Clear pasphrase, requires priv, recommended to use vault",
+                "description": "Clear passphrase, requires priv, recommended to use vault.",
                 "title": "Priv Passphrase"
               }
             },
@@ -4198,7 +4208,7 @@
     "terminattr_ingestgrpcurl_port": {
       "type": "integer",
       "default": 9910,
-      "description": "Port number for Terminattr ingest GRPC",
+      "description": "Port number for Terminattr ingest GRPC.",
       "title": "TerminAttr Ingestgrpcurl Port"
     },
     "terminattr_smashexcludes": {
@@ -4208,7 +4218,7 @@
     },
     "timezone": {
       "type": "string",
-      "description": "Clock timezone is optional",
+      "description": "Clock timezone is optional.",
       "title": "Timezone"
     },
     "trunk_groups": {

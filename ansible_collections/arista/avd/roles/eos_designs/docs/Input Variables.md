@@ -7,7 +7,8 @@ search:
 
 ## Event Handlers
 
-Gives ability to monitor and react to Syslog messages provides a powerful and flexible tool that can be used to apply self-healing actions,
+Gives the ability to monitor and react to Syslog messages.
+Event Handlers provide a powerful and flexible tool that can be used to apply self-healing actions,
 customize the system behavior, and implement workarounds to problems discovered in the field.
 
 === "Table"
@@ -15,12 +16,12 @@ customize the system behavior, and implement workarounds to problems discovered 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>event_handlers</samp>](## "event_handlers") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- name</samp>](## "event_handlers.[].name") | String | Required, Unique |  |  | Event handler name |
+    | [<samp>&nbsp;&nbsp;- name</samp>](## "event_handlers.[].name") | String | Required, Unique |  |  | Event handler name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;action_type</samp>](## "event_handlers.[].action_type") | String |  |  | Valid Values:<br>- bash<br>- increment |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "event_handlers.[].action") | String |  |  |  | Command to run when handler is triggered |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "event_handlers.[].delay") | Integer |  |  |  | Event-handler delay in seconds |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "event_handlers.[].action") | String |  |  |  | Command to run when the handler is triggered. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "event_handlers.[].delay") | Integer |  |  |  | Event-handler delay in seconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trigger</samp>](## "event_handlers.[].trigger") | String |  |  | Valid Values:<br>- on-logging | Configure event trigger condition. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;regex</samp>](## "event_handlers.[].regex") | String |  |  |  | Regular expression to use for searching log messages. Required for on-logging trigger |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;regex</samp>](## "event_handlers.[].regex") | String |  |  |  | Regular expression to use for searching log messages.<br>Required for on-logging trigger.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous</samp>](## "event_handlers.[].asynchronous") | Boolean |  | False |  | Set the action to be non-blocking. |
 
 === "YAML"
@@ -78,7 +79,7 @@ VLAN number assigned to Inband Management SVI on l2leafs in default VRF.
 
 ## Local Users
 
-Dictionary of local users
+Dictionary of local users.
 
 === "Table"
 
@@ -87,9 +88,9 @@ Dictionary of local users
     | [<samp>local_users</samp>](## "local_users") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;- name</samp>](## "local_users.[].name") | String | Required, Unique |  |  | Username |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;privilege</samp>](## "local_users.[].privilege") | Integer |  |  | Min: 1<br>Max: 15 | Initial privilege level with local EXEC authorization. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;role</samp>](## "local_users.[].role") | String |  |  |  | EOS RBAC Role to be assigned to the user such as "network-admin" or "network-operator" |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;role</samp>](## "local_users.[].role") | String |  |  |  | EOS RBAC Role to be assigned to the user such as "network-admin" or "network-operator". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sha512_password</samp>](## "local_users.[].sha512_password") | String |  |  |  | Must be the hash of the password. By default EOS salts the password with the username, so the simplest is to generate the hash on an EOS device using the same username. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;no_password</samp>](## "local_users.[].no_password") | Boolean |  | True |  | If set a password will not be configured for this user. "sha512_password" MUST not be defined for this user. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;no_password</samp>](## "local_users.[].no_password") | Boolean |  | True |  | If set, a password will not be configured for this user. "sha512_password" MUST not be defined for this user. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ssh_key</samp>](## "local_users.[].ssh_key") | String |  |  |  | SSH key string |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "local_users.[].disabled") | Boolean |  |  |  | If "disabled" is true, the user will be removed and all other settings are ignored.<br>Useful for removing the default "admin" user. |
 
@@ -108,8 +109,8 @@ Dictionary of local users
 
 ## Management Eapi
 
-Default is https management eAPI enabled.
-The vrf is set to < mgmt_interface_vrf >
+Default is "https management eAPI enabled".
+The VRF is set to < mgmt_interface_vrf >.
 
 === "Table"
 
@@ -138,7 +139,7 @@ OOB mgmt interface destination networks - override default route
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>mgmt_destination_networks</samp>](## "mgmt_destination_networks") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "mgmt_destination_networks.[].&lt;str&gt;") | String |  |  |  | IPv4_network/Mask |
+    | [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "mgmt_destination_networks.[].&lt;str&gt;") | String |  |  |  | IPv4 network and Mask.<br>For example, "192.0.2.0/24". |
 
 === "YAML"
 
@@ -149,7 +150,7 @@ OOB mgmt interface destination networks - override default route
 
 ## Mgmt Gateway
 
-Management interface configuration and it is IPv4 address
+Management interface configuration in IPv4 format.
 
 === "Table"
 
@@ -165,7 +166,7 @@ Management interface configuration and it is IPv4 address
 
 ## Mgmt Interface VRF
 
-Management interface configuration
+Management interface configuration.
 
 === "Table"
 
@@ -181,7 +182,7 @@ Management interface configuration
 
 ## Mgmt Interface
 
-Management interface configuration
+Management interface configuration.
 
 === "Table"
 
@@ -197,7 +198,7 @@ Management interface configuration
 
 ## Mgmt VRF Routing
 
-Management interface configuration
+Management interface configuration.
 
 === "Table"
 
@@ -238,7 +239,7 @@ The variables will make it to the intended config.
 
 ## Name Servers
 
-Only eos_designs name_servers variables
+Only eos_designs name_servers variables.
 
 === "Table"
 
@@ -256,25 +257,26 @@ Only eos_designs name_servers variables
 
 ## Snmp Settings
 
-Set SNMP settings. It is optional.
+Set SNMP settings (optional).
 
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>snmp_settings</samp>](## "snmp_settings") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;contact</samp>](## "snmp_settings.contact") | String |  |  |  | SNMP contact |
-    | [<samp>&nbsp;&nbsp;location</samp>](## "snmp_settings.location") | Boolean |  | False |  | SNMP location. Formatted as {{ fabric_name }} {{ dc_name }} {{ pod_name }} {{ switch_rack }} {{ inventory_hostname }} |
-    | [<samp>&nbsp;&nbsp;compute_local_engineid</samp>](## "snmp_settings.compute_local_engineid") | Boolean |  | False |  | Generate a local engineId for SNMP by hashing via SHA1 the string<br>generated via the concatenation of the hostname plus the management IP.<br>{{ inventory_hostname }} + {{ switch.mgmt_ip }}<br> |
-    | [<samp>&nbsp;&nbsp;compute_v3_user_localized_key</samp>](## "snmp_settings.compute_v3_user_localized_key") | Boolean |  | False |  | Requires compute_local_engineid to be `true` if enabled, the SNMPv3<br>passphrases for auth and priv are transfromed using RFC 2574,<br>matching the value they would take in EOS cli the algorithm requires<br>a local engineId which is unknown to AVD hence the necessity to generate<br>one beforehand.<br> |
+    | [<samp>&nbsp;&nbsp;contact</samp>](## "snmp_settings.contact") | String |  |  |  | SNMP contact. |
+    | [<samp>&nbsp;&nbsp;location</samp>](## "snmp_settings.location") | Boolean |  | False |  | SNMP location. Formatted as {{ fabric_name }} {{ dc_name }} {{ pod_name }} {{ switch_rack }} {{ inventory_hostname }}. |
+    | [<samp>&nbsp;&nbsp;compute_local_engineid</samp>](## "snmp_settings.compute_local_engineid") | Boolean |  | False |  | Generate a local engineId for SNMP by hashing via SHA1, the string<br>generated via the concatenation of the hostname plus the management IP.<br>{{ inventory_hostname }} + {{ switch.mgmt_ip }}<br> |
+    | [<samp>&nbsp;&nbsp;compute_local_engineid_source</samp>](## "snmp_settings.compute_local_engineid_source") | String |  | hostname_and_ip | Valid Values:<br>- hostname_and_ip<br>- system_mac | If set to "system_mac", `system_mac_address` MUST be set for the device. |
+    | [<samp>&nbsp;&nbsp;compute_v3_user_localized_key</samp>](## "snmp_settings.compute_v3_user_localized_key") | Boolean |  | False |  | Requires compute_local_engineid to be `true`. If enabled, the SNMPv3<br>passphrases for auth and priv are transformed using RFC 2574,<br>matching the value they would take in EOS CLI. The algorithm requires<br>a local engineId, which is unknown to AVD, hence the necessity to generate<br>one beforehand.<br> |
     | [<samp>&nbsp;&nbsp;users</samp>](## "snmp_settings.users") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "snmp_settings.users.[].name") | String |  |  |  | Username |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "snmp_settings.users.[].group") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "snmp_settings.users.[].version") | String |  |  | Valid Values:<br>- v1<br>- v2c<br>- v3 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth</samp>](## "snmp_settings.users.[].auth") | String |  |  | Valid Values:<br>- md5<br>- sha<br>- sha256<br>- sha384<br>- sha512 | It is optional |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_passphrase</samp>](## "snmp_settings.users.[].auth_passphrase") | String |  |  |  | Clear passphrase, requires auth, recommended to use vault |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv</samp>](## "snmp_settings.users.[].priv") | String |  |  | Valid Values:<br>- des<br>- aes<br>- aes192<br>- aes256 | It is optional |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv_passphrase</samp>](## "snmp_settings.users.[].priv_passphrase") | String |  |  |  | Clear pasphrase, requires priv, recommended to use vault |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth</samp>](## "snmp_settings.users.[].auth") | String |  |  | Valid Values:<br>- md5<br>- sha<br>- sha256<br>- sha384<br>- sha512 | It is optional. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_passphrase</samp>](## "snmp_settings.users.[].auth_passphrase") | String |  |  |  | Clear passphrase, requires auth, recommended to use vault. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv</samp>](## "snmp_settings.users.[].priv") | String |  |  | Valid Values:<br>- des<br>- aes<br>- aes192<br>- aes256 | It is optional. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv_passphrase</samp>](## "snmp_settings.users.[].priv_passphrase") | String |  |  |  | Clear passphrase, requires priv, recommended to use vault. |
 
 === "YAML"
 
@@ -283,6 +285,7 @@ Set SNMP settings. It is optional.
       contact: <str>
       location: <bool>
       compute_local_engineid: <bool>
+      compute_local_engineid_source: <str>
       compute_v3_user_localized_key: <bool>
       users:
         - name: <str>
@@ -296,7 +299,7 @@ Set SNMP settings. It is optional.
 
 ## Timezone
 
-Clock timezone is optional
+Clock timezone is optional.
 
 === "Table"
 

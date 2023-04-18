@@ -6,4 +6,4 @@ keys:
   mgmt_interface_vrf:
     type: str
     default: MGMT
-    description: Management interface configuration
+    description: Management interface configuration.

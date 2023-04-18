@@ -5,4 +5,4 @@ type: dict
 keys:
   timezone:
     type: str
-    description: Clock timezone is optional
+    description: Clock timezone is optional.

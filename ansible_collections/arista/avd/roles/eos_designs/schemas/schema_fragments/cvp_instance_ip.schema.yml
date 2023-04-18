@@ -10,7 +10,7 @@ keys:
     type: str
     description: |
       IPv4 address.
-      CloudVision - Telemetry Agent (TerminAttr) configuration is optional
+      CloudVision - Telemetry Agent (TerminAttr) configuration is optional.
       You can either provide a list of IPs to target on-premise CloudVision cluster or
       use DNS name for your CloudVision as a Service instance. If you have both on-prem and
-      CVaaS defined, only on-prem is going to be configured.
+      CVaaS defined, only on-prem is configured.

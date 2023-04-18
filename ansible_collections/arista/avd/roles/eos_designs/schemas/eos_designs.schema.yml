@@ -259,7 +259,7 @@ keys:
     type: str
     description: 'IPv4 address.
 
-      CloudVision - Telemetry Agent (TerminAttr) configuration is optional
+      CloudVision - Telemetry Agent (TerminAttr) configuration is optional.
 
       You can either provide a list of IPs to target on-premise CloudVision cluster
       or
@@ -267,7 +267,7 @@ keys:
       use DNS name for your CloudVision as a Service instance. If you have both on-prem
       and
 
-      CVaaS defined, only on-prem is going to be configured.'
+      CVaaS defined, only on-prem is configured.'
   cvp_instance_ips:
     documentation_options:
       filename: Management Settings
@@ -279,7 +279,7 @@ keys:
       use DNS name for your CloudVision as a Service instance. If you have both on-prem
       and
 
-      CVaaS defined, only on-prem is going to be configured.
+      CVaaS defined, only on-prem is configured.
 
       '
     items:
@@ -452,8 +452,10 @@ keys:
     primary_key: name
     convert_types:
     - dict
-    description: 'Gives ability to monitor and react to Syslog messages provides a
-      powerful and flexible tool that can be used to apply self-healing actions,
+    description: 'Gives the ability to monitor and react to Syslog messages.
+
+      Event Handlers provide a powerful and flexible tool that can be used to apply
+      self-healing actions,
 
       customize the system behavior, and implement workarounds to problems discovered
       in the field.
@@ -465,7 +467,7 @@ keys:
         name:
           type: str
           required: true
-          description: Event handler name
+          description: Event handler name.
         action_type:
           type: str
           valid_values:
@@ -473,12 +475,12 @@ keys:
           - increment
         action:
           type: str
-          description: Command to run when handler is triggered
+          description: Command to run when the handler is triggered.
         delay:
           type: int
           convert_types:
           - str
-          description: Event-handler delay in seconds
+          description: Event-handler delay in seconds.
         trigger:
           type: str
           description: Configure event trigger condition.
@@ -486,8 +488,11 @@ keys:
           - on-logging
         regex:
           type: str
-          description: Regular expression to use for searching log messages. Required
-            for on-logging trigger
+          description: 'Regular expression to use for searching log messages.
+
+            Required for on-logging trigger.
+
+            '
         asynchronous:
           type: bool
           default: false
@@ -839,7 +844,7 @@ keys:
     primary_key: name
     convert_types:
     - dict
-    description: Dictionary of local users
+    description: Dictionary of local users.
     items:
       type: dict
       keys:
@@ -857,7 +862,7 @@ keys:
         role:
           type: str
           description: EOS RBAC Role to be assigned to the user such as "network-admin"
-            or "network-operator"
+            or "network-operator".
         sha512_password:
           type: str
           description: Must be the hash of the password. By default EOS salts the
@@ -866,7 +871,7 @@ keys:
         no_password:
           type: bool
           default: true
-          description: If set a password will not be configured for this user. "sha512_password"
+          description: If set, a password will not be configured for this user. "sha512_password"
             MUST not be defined for this user.
         ssh_key:
           type: str
@@ -903,9 +908,9 @@ keys:
         min: 0
         max: 1000000
   management_eapi:
-    description: 'Default is https management eAPI enabled.
+    description: 'Default is "https management eAPI enabled".
 
-      The vrf is set to < mgmt_interface_vrf >
+      The VRF is set to < mgmt_interface_vrf >.
 
       '
     type: dict
@@ -923,22 +928,24 @@ keys:
     description: OOB mgmt interface destination networks - override default route
     items:
       type: str
-      description: IPv4_network/Mask
+      description: 'IPv4 network and Mask.
+
+        For example, "192.0.2.0/24".'
   mgmt_gateway:
     type: str
-    description: Management interface configuration and it is IPv4 address
+    description: Management interface configuration in IPv4 format.
   mgmt_interface:
     type: str
     default: Management1
-    description: Management interface configuration
+    description: Management interface configuration.
   mgmt_interface_vrf:
     type: str
     default: MGMT
-    description: Management interface configuration
+    description: Management interface configuration.
   mgmt_vrf_routing:
     type: bool
     default: false
-    description: Management interface configuration
+    description: Management interface configuration.
   mlag_ibgp_peering_vrfs:
     documentation_options:
       filename: Fabric Variables
@@ -987,7 +994,7 @@ keys:
           type: str
   name_servers:
     type: list
-    description: Only eos_designs name_servers variables
+    description: Only eos_designs name_servers variables.
     items:
       type: str
       description: IPv4 address
@@ -1628,37 +1635,46 @@ keys:
       are not present in the network.'
   snmp_settings:
     type: dict
-    description: Set SNMP settings. It is optional.
+    description: Set SNMP settings (optional).
     keys:
       contact:
         type: str
-        description: SNMP contact
+        description: SNMP contact.
       location:
         type: bool
         default: false
         description: SNMP location. Formatted as {{ fabric_name }} {{ dc_name }} {{
-          pod_name }} {{ switch_rack }} {{ inventory_hostname }}
+          pod_name }} {{ switch_rack }} {{ inventory_hostname }}.
       compute_local_engineid:
         type: bool
         default: false
-        description: 'Generate a local engineId for SNMP by hashing via SHA1 the string
+        description: 'Generate a local engineId for SNMP by hashing via SHA1, the
+          string
 
           generated via the concatenation of the hostname plus the management IP.
 
           {{ inventory_hostname }} + {{ switch.mgmt_ip }}
 
           '
+      compute_local_engineid_source:
+        type: str
+        default: hostname_and_ip
+        description: If set to "system_mac", `system_mac_address` MUST be set for
+          the device.
+        valid_values:
+        - hostname_and_ip
+        - system_mac
       compute_v3_user_localized_key:
         type: bool
         default: false
-        description: 'Requires compute_local_engineid to be `true` if enabled, the
+        description: 'Requires compute_local_engineid to be `true`. If enabled, the
           SNMPv3
 
-          passphrases for auth and priv are transfromed using RFC 2574,
+          passphrases for auth and priv are transformed using RFC 2574,
 
-          matching the value they would take in EOS cli the algorithm requires
+          matching the value they would take in EOS CLI. The algorithm requires
 
-          a local engineId which is unknown to AVD hence the necessity to generate
+          a local engineId, which is unknown to AVD, hence the necessity to generate
 
           one beforehand.
 
@@ -1687,10 +1703,10 @@ keys:
               - sha256
               - sha384
               - sha512
-              description: It is optional
+              description: It is optional.
             auth_passphrase:
               type: str
-              description: Clear passphrase, requires auth, recommended to use vault
+              description: Clear passphrase, requires auth, recommended to use vault.
             priv:
               type: str
               valid_values:
@@ -1698,10 +1714,10 @@ keys:
               - aes
               - aes192
               - aes256
-              description: It is optional
+              description: It is optional.
             priv_passphrase:
               type: str
-              description: Clear pasphrase, requires priv, recommended to use vault
+              description: Clear passphrase, requires priv, recommended to use vault.
   terminattr_disable_aaa:
     documentation_options:
       filename: Management Settings
@@ -1722,7 +1738,7 @@ keys:
     convert_types:
     - str
     default: 9910
-    description: Port number for Terminattr ingest GRPC
+    description: Port number for Terminattr ingest GRPC.
   terminattr_smashexcludes:
     documentation_options:
       filename: Management Settings
@@ -1731,7 +1747,7 @@ keys:
     default: ale,flexCounter,hardware,kni,pulse,strata
   timezone:
     type: str
-    description: Clock timezone is optional
+    description: Clock timezone is optional.
   trunk_groups:
     documentation_options:
       filename: Fabric Variables

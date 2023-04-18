@@ -6,4 +6,4 @@ keys:
   mgmt_vrf_routing:
     type: bool
     default: False
-    description: Management interface configuration
+    description: Management interface configuration.

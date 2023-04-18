@@ -5,30 +5,35 @@ type: dict
 keys:
   snmp_settings:
     type: dict
-    description: Set SNMP settings. It is optional.
+    description: Set SNMP settings (optional).
     keys:
       contact:
         type: str
-        description: SNMP contact
+        description: SNMP contact.
       location:
         type: bool
         default: False
-        description: SNMP location. Formatted as {{ fabric_name }} {{ dc_name }} {{ pod_name }} {{ switch_rack }} {{ inventory_hostname }}
+        description: SNMP location. Formatted as {{ fabric_name }} {{ dc_name }} {{ pod_name }} {{ switch_rack }} {{ inventory_hostname }}.
       compute_local_engineid:
         type: bool
         default: False
         description: |
-          Generate a local engineId for SNMP by hashing via SHA1 the string
+          Generate a local engineId for SNMP by hashing via SHA1, the string
           generated via the concatenation of the hostname plus the management IP.
           {{ inventory_hostname }} + {{ switch.mgmt_ip }}
+      compute_local_engineid_source:
+        type: str
+        default: "hostname_and_ip"
+        description: If set to "system_mac", `system_mac_address` MUST be set for the device.
+        valid_values: ["hostname_and_ip", "system_mac"]
       compute_v3_user_localized_key:
         type: bool
         default: False
         description: |
-          Requires compute_local_engineid to be `true` if enabled, the SNMPv3
-          passphrases for auth and priv are transfromed using RFC 2574,
-          matching the value they would take in EOS cli the algorithm requires
-          a local engineId which is unknown to AVD hence the necessity to generate
+          Requires compute_local_engineid to be `true`. If enabled, the SNMPv3
+          passphrases for auth and priv are transformed using RFC 2574,
+          matching the value they would take in EOS CLI. The algorithm requires
+          a local engineId, which is unknown to AVD, hence the necessity to generate
           one beforehand.
       users:
         type: list
@@ -46,14 +51,14 @@ keys:
             auth:
               type: str
               valid_values: ["md5", "sha", "sha256", "sha384", "sha512"]
-              description: It is optional
+              description: It is optional.
             auth_passphrase:
               type: str
-              description: Clear passphrase, requires auth, recommended to use vault
+              description: Clear passphrase, requires auth, recommended to use vault.
             priv:
               type: str
               valid_values: ["des", "aes", "aes192", "aes256"]
-              description: It is optional
+              description: It is optional.
             priv_passphrase:
               type: str
-              description: Clear pasphrase, requires priv, recommended to use vault
+              description: Clear passphrase, requires priv, recommended to use vault.
