@@ -3767,6 +3767,23 @@ $defs:
               convert_types:
               - str
               description: MTU for this P2P link. Default value same as p2p_uplinks_mtu.
+            bfd:
+              type: bool
+              default: false
+              description: Enable BFD (only considered for BGP).
+            ptp_enable:
+              type: bool
+              default: false
+              description: Enable PTP
+            qos_profile:
+              type: str
+              description: QOS service profile.
+            macsec_profile:
+              type: str
+              description: MAC security profile.
+            profile:
+              type: str
+              description: P2P profile name. Profile defined under p2p_profiles.
             ip_pool:
               type: str
               description: P2P pool name. IP Pool defined under p2p_links_ip_pools.
@@ -3792,6 +3809,10 @@ $defs:
               default: false
               description: Allows turning on ipv6 for the link or profile (also autodetected
                 based on underlay_rfc5549 and include_in_underlay_protocol).
+            raw_eos_cli:
+              type: str
+              description: EOS CLI rendered directly on the point-to-point interface
+                in the final EOS configuration.
       p2p_links:
         type: list
         items:
@@ -3919,10 +3940,6 @@ $defs:
             profile:
               type: str
               description: P2P profile name. Profile defined under p2p_profiles.
-            raw_eos_cli:
-              type: str
-              description: EOS CLI rendered directly on the point-to-point interface
-                in the final EOS configuration.
             port_channel:
               description: Port-channel parameters.
               type: dict
@@ -3948,3 +3965,7 @@ $defs:
                           'node1 interface2' ].
                         items:
                           type: str
+            raw_eos_cli:
+              type: str
+              description: EOS CLI rendered directly on the point-to-point interface
+                in the final EOS configuration.

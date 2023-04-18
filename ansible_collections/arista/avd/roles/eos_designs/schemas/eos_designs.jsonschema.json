@@ -340,6 +340,33 @@
                 "description": "MTU for this P2P link. Default value same as p2p_uplinks_mtu.",
                 "title": "MTU"
               },
+              "bfd": {
+                "type": "boolean",
+                "default": false,
+                "description": "Enable BFD (only considered for BGP).",
+                "title": "BFD"
+              },
+              "ptp_enable": {
+                "type": "boolean",
+                "default": false,
+                "description": "Enable PTP",
+                "title": "PTP Enable"
+              },
+              "qos_profile": {
+                "type": "string",
+                "description": "QOS service profile.",
+                "title": "QOS Profile"
+              },
+              "macsec_profile": {
+                "type": "string",
+                "description": "MAC security profile.",
+                "title": "Macsec Profile"
+              },
+              "profile": {
+                "type": "string",
+                "description": "P2P profile name. Profile defined under p2p_profiles.",
+                "title": "Profile"
+              },
               "ip_pool": {
                 "type": "string",
                 "description": "P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link.",
@@ -374,6 +401,11 @@
                 "default": false,
                 "description": "Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol).",
                 "title": "IPv6 Enable"
+              },
+              "raw_eos_cli": {
+                "type": "string",
+                "description": "EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.",
+                "title": "Raw EOS CLI"
               }
             },
             "required": [
@@ -540,11 +572,6 @@
                 "description": "P2P profile name. Profile defined under p2p_profiles.",
                 "title": "Profile"
               },
-              "raw_eos_cli": {
-                "type": "string",
-                "description": "EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.",
-                "title": "Raw EOS CLI"
-              },
               "port_channel": {
                 "description": "Port-channel parameters.",
                 "type": "object",
@@ -588,6 +615,11 @@
                   "^_.+$": {}
                 },
                 "title": "Port Channel"
+              },
+              "raw_eos_cli": {
+                "type": "string",
+                "description": "EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.",
+                "title": "Raw EOS CLI"
               }
             },
             "required": [
@@ -1027,6 +1059,33 @@
                 "description": "MTU for this P2P link. Default value same as p2p_uplinks_mtu.",
                 "title": "MTU"
               },
+              "bfd": {
+                "type": "boolean",
+                "default": false,
+                "description": "Enable BFD (only considered for BGP).",
+                "title": "BFD"
+              },
+              "ptp_enable": {
+                "type": "boolean",
+                "default": false,
+                "description": "Enable PTP",
+                "title": "PTP Enable"
+              },
+              "qos_profile": {
+                "type": "string",
+                "description": "QOS service profile.",
+                "title": "QOS Profile"
+              },
+              "macsec_profile": {
+                "type": "string",
+                "description": "MAC security profile.",
+                "title": "Macsec Profile"
+              },
+              "profile": {
+                "type": "string",
+                "description": "P2P profile name. Profile defined under p2p_profiles.",
+                "title": "Profile"
+              },
               "ip_pool": {
                 "type": "string",
                 "description": "P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link.",
@@ -1061,6 +1120,11 @@
                 "default": false,
                 "description": "Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol).",
                 "title": "IPv6 Enable"
+              },
+              "raw_eos_cli": {
+                "type": "string",
+                "description": "EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.",
+                "title": "Raw EOS CLI"
               }
             },
             "required": [
@@ -1227,11 +1291,6 @@
                 "description": "P2P profile name. Profile defined under p2p_profiles.",
                 "title": "Profile"
               },
-              "raw_eos_cli": {
-                "type": "string",
-                "description": "EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.",
-                "title": "Raw EOS CLI"
-              },
               "port_channel": {
                 "description": "Port-channel parameters.",
                 "type": "object",
@@ -1275,6 +1334,11 @@
                   "^_.+$": {}
                 },
                 "title": "Port Channel"
+              },
+              "raw_eos_cli": {
+                "type": "string",
+                "description": "EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.",
+                "title": "Raw EOS CLI"
               }
             },
             "required": [
