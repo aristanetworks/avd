@@ -2,7 +2,10 @@
 {% if hardware_counters.features is arista.avd.defined %}
 !
 {%     for feature in hardware_counters.features | arista.avd.natural_sort("name") %}
-{%         set hardware_counters_cli = "hardware counter feature " ~ feature.name %}
+{%         set hardware_counters_cli = "" %}
+{%         if feature.name is arista.avd.defined(fail_action="error", var_name="hardware_counters.features.name") %}
+{%             set hardware_counters_cli = "hardware counter feature " ~ feature.name %}
+{%         endif %}
 {%         if feature.direction is arista.avd.defined %}
 {%             set hardware_counters_cli = hardware_counters_cli ~ " " ~ feature.direction %}
 {%         endif %}
