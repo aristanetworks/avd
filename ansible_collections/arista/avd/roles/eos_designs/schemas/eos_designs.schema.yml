@@ -3728,6 +3728,7 @@ $defs:
         convert_types:
         - dict
         primary_key: name
+        secondary_key: ipv4_pool
         items:
           type: dict
           keys:
