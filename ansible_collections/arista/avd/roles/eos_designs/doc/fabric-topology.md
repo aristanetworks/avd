@@ -488,8 +488,8 @@ default_interfaces:
         enabled: < true | false | default -> False >
 
         # Domain IDs are required to perform D-Path lookups for loop prevention. If omitted, the defaults are used.
-        evpn_domain_id: < "nn:nn" | default -> "1:1" >
-        ipvpn_domain_id: < "nn:nn" | default -> "1:2" >
+        evpn_domain_id: < "nn:nn" | default -> "65535:1" >
+        ipvpn_domain_id: < "nn:nn" | default -> "65535:2" >
 
         # D-path can be turned off for the inter-vpn export if desired.
         enable_d_path: < true | false | default -> true >
