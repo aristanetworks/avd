@@ -226,6 +226,7 @@ jobs:
       matrix:
         avd_scenario:
           - 'eos_designs_unit_tests'
+          - 'eos_designs_negative_unit_tests'
           - 'eos_designs_unit_tests_v4.0'
           - 'evpn_underlay_ebgp_overlay_ebgp'
           - 'evpn_underlay_ospf_overlay_ebgp'
