@@ -204,18 +204,12 @@ classDiagram
     _hostvars: dict
     _hostvars["switch"]: self
   }
-  class MlagMixin{
-  }
-  class OverlayMixin{
-  }
-  class ShortEsiMixin{
-  }
-  class UplinksMixin{
-  }
-  class VlansMixin{
-  }
-  class SharedUtils{
-  }
+  class MlagMixin
+  class OverlayMixin
+  class ShortEsiMixin
+  class UplinksMixin
+  class VlansMixin
+  class SharedUtils
   AvdFacts <|-- EosDesignsFacts : extends
   MlagMixin <|-- EosDesignsFacts : extends
   OverlayMixin <|-- EosDesignsFacts : extends
@@ -236,6 +230,7 @@ classDiagram
   class InterfaceDescriptionsMixin
   class BgpPeerGroupsMixin
   class LinkTrackingGroupsMixin
+  class MgmtMixin
   class MlagMixin
   class MiscMixin
   class NodeTypeKeyMixin
@@ -244,13 +239,14 @@ classDiagram
   class PtpMixin
   class SwitchDataMixin
   class RoutingMixin
-  class TemplateMixin
   class UnderlayMixin
+  class UtilsMixin
   class IpAddressingMixin
   InterfaceDescriptionsMixin --* AvdInterfaceDescriptions
   InterfaceDescriptionsMixin <|-- SharedUtils : extends
   BgpPeerGroupsMixin <|-- SharedUtils : extends
   LinkTrackingGroupsMixin <|-- SharedUtils : extends
+  MgmtMixin <|-- SharedUtils : extends
   MlagMixin <|-- SharedUtils : extends
   MiscMixin <|-- SharedUtils : extends
   NodeTypeKeyMixin <|-- SharedUtils : extends
@@ -259,8 +255,8 @@ classDiagram
   PtpMixin <|-- SharedUtils : extends
   SwitchDataMixin <|-- SharedUtils : extends
   RoutingMixin <|-- SharedUtils : extends
-  TemplateMixin <|-- SharedUtils : extends
   UnderlayMixin <|-- SharedUtils : extends
+  UtilsMixin <|-- SharedUtils : extends
   IpAddressingMixin <|-- SharedUtils : extends
   IpAddressingMixin --* AvdIpAddressing
 ```
@@ -297,26 +293,16 @@ classDiagram
   class AvdFacts{
     render(): dict
   }
-  class AvdStructuredConfigBase["AvdStructuredConfig - base"]{
-  }
-  class AvdStructuredConfigConnectedEndpoints["AvdStructuredConfig - connected_endpoints"]{
-  }
-  class AvdStructuredConfigCoreInterfaces["AvdStructuredConfig - core_interfaces"]{
-  }
-  class AvdStructuredConfigCustomStructuredConfiguration["AvdStructuredConfig - custom_structured_configuration"]{
-  }
-  class AvdStructuredConfigInbandManagement["AvdStructuredConfig - inband_management"]{
-  }
-  class AvdStructuredConfigL3Edge["AvdStructuredConfig - l3_edge"]{
-  }
-  class AvdStructuredConfigMlag["AvdStructuredConfig - mlag"]{
-  }
-  class AvdStructuredConfigNetworkServices["AvdStructuredConfig - network_services"]{
-  }
-  class AvdStructuredConfigOverlay["AvdStructuredConfig - overlay"]{
-  }
-  class AvdStructuredConfigUnderlay["AvdStructuredConfig - underlay"]{
-  }
+  class AvdStructuredConfigBase["AvdStructuredConfig - base"]
+  class AvdStructuredConfigConnectedEndpoints["AvdStructuredConfig - connected_endpoints"]
+  class AvdStructuredConfigCoreInterfaces["AvdStructuredConfig - core_interfaces"]
+  class AvdStructuredConfigCustomStructuredConfiguration["AvdStructuredConfig - custom_structured_configuration"]
+  class AvdStructuredConfigInbandManagement["AvdStructuredConfig - inband_management"]
+  class AvdStructuredConfigL3Edge["AvdStructuredConfig - l3_edge"]
+  class AvdStructuredConfigMlag["AvdStructuredConfig - mlag"]
+  class AvdStructuredConfigNetworkServices["AvdStructuredConfig - network_services"]
+  class AvdStructuredConfigOverlay["AvdStructuredConfig - overlay"]
+  class AvdStructuredConfigUnderlay["AvdStructuredConfig - underlay"]
   AvdFacts <|-- AvdStructuredConfigBase : extends
   AvdFacts <|-- AvdStructuredConfigConnectedEndpoints : extends
   AvdFacts <|-- AvdStructuredConfigCoreInterfaces : extends
@@ -343,12 +329,8 @@ classDiagram
 
 ### avd_switch_facts
 
-The following `avd_switch_facts` model is the minimum required to be set in `eos_designs_facts`.
-The source of the requirement is in the sections below.
-
-There might be other vars in use internally within `eos_designs_facts` or by structured_config modules
-for the same host, but they don't *have* to be rendered to `avd_switch_facts`. They can likely be moved
-to shared_utils or just kept internal by adding a leading underscore on the method/property.
+The following model is set as `eos_designs_facts`. Most keys are optional depending on the
+usecase and configuration. The use of each key is tracked in the sections below.
 
 ```yaml
 avd_switch_facts:
@@ -429,6 +411,8 @@ so they must be available in the `avd_switch_facts` object.
 #### switch.* leveraged for Jinja2 templates
 
 These variables are historically used in *builtin* jinja2 templates so they **should not** be removed without warning.
+TODO: Only expose these in the Jinja2 templating environment used for custom templates. They would *not* be available
+outside of that, so any inline Jinja2 could not use these values.
 
 | Variable | Used in file |
 | -------- | ------------ |
