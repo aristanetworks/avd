@@ -639,14 +639,14 @@ $defs:
                   table: BGP & IP-VPN gateway
                 description: Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
                 type: str
-                default: "0:1"
+                default: "65535:1"
               ipvpn_domain_id:
                 documentation_options:
                   filename: Fabric Topology
                   table: BGP & IP-VPN gateway
                 description: Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
                 type: str
-                default: "0:2"
+                default: "65535:2"
               enable_d_path:
                 documentation_options:
                   filename: Fabric Topology
