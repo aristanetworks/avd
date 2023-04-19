@@ -13,7 +13,7 @@
 | Feature | Flow Direction | Address Type | Layer3 | VRF | Prefix | Units Packets |
 | ------- | -------------- | ------------ | ------ | --- | ------ | ------------- |
 {%         for feature in hardware_counters.features | arista.avd.natural_sort("name") %}
-{%             do feature.name is arista.avd.defined(fail_action="error", var_name="hardware_counters.features.name") %}
+{%             do feature.name is arista.avd.defined(fail_action="error", var_name="The data model 'hardware_counters' changed in AVD4.0.0. 'hardware_counters.features.name'") %}
 {%             set feature_direction = feature.direction | arista.avd.default("-") %}
 {%             set feature_address_type = feature.address_type | arista.avd.default("-") %}
 {%             set feature_vrf = feature.vrf | arista.avd.default("-") %}
