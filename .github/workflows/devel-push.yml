@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - devel
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref }}
@@ -21,6 +22,7 @@ jobs:
       plugins: ${{ steps.filter.outputs.plugins }}
       requirements: ${{ steps.filter.outputs.requirements }}
       docs: ${{ steps.filter.outputs.docs }}
+    if: github.event_name != 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v2
@@ -82,10 +84,12 @@ jobs:
     name: Webhook to Docker Hub to build image
     runs-on: ubuntu-20.04
     needs: file-changes
-    if: needs.file-changes.outputs.requirements == 'true'
+    if: |
+      needs.file-changes.outputs.requirements == 'true' ||
+      (github.ref == 'refs/heads/devel' && github.event_name == 'workflow_dispatch')
     steps:
       - uses: actions/checkout@v3
-      - name: 'Send Webhook to docker hub'
+      - name: 'Trigger avd-base refresh'
         run: |
           curl \
           -X POST \
