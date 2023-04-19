@@ -24,7 +24,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
         Only used with L1 network services
         """
 
-        if not self._network_services_l1:
+        if not self.shared_utils.network_services_l1:
             return None
 
         # Using temp variables to keep the order of interfaces from Jinja
@@ -39,10 +39,10 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 if subifs := point_to_point_service.get("subinterfaces", []):
                     subifs = [subif for subif in subifs if subif.get("number") is not None]
                 for endpoint in point_to_point_service.get("endpoints", []):
-                    if self._hostname not in endpoint.get("nodes", []):
+                    if self.shared_utils.hostname not in endpoint.get("nodes", []):
                         continue
 
-                    node_index = list(endpoint["nodes"]).index(self._hostname)
+                    node_index = list(endpoint["nodes"]).index(self.shared_utils.hostname)
                     interface_name = endpoint["interfaces"][node_index]
                     if (port_channel_mode := get(endpoint, "port_channel.mode")) not in ["active", "on"]:
                         continue
@@ -59,7 +59,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                         }
                         if (short_esi := get(endpoint, "port_channel.short_esi")) is not None:
                             if len(short_esi.split(":")) == 3:
-                                parent_interface["esi"] = generate_esi(short_esi, self._evpn_short_esi_prefix)
+                                parent_interface["esi"] = generate_esi(short_esi, self.shared_utils.evpn_short_esi_prefix)
                                 parent_interface["rt"] = generate_route_target(short_esi)
                                 if port_channel_mode == "active":
                                     parent_interface["lacp_id"] = generate_lacp_id(short_esi)
@@ -101,7 +101,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
 
                         if (short_esi := get(endpoint, "port_channel.short_esi")) is not None:
                             if len(short_esi.split(":")) == 3:
-                                interface["esi"] = generate_esi(short_esi, self._evpn_short_esi_prefix)
+                                interface["esi"] = generate_esi(short_esi, self.shared_utils.evpn_short_esi_prefix)
                                 interface["rt"] = generate_route_target(short_esi)
                                 if port_channel_mode == "active":
                                     interface["lacp_id"] = generate_lacp_id(short_esi)

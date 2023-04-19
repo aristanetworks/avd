@@ -48,7 +48,7 @@ class AvdStructuredConfig(AvdFacts):
         return struct_cfgs
 
     def _struct_cfg(self) -> list:
-        if (struct_cfg := self._hostvars.pop("struct_cfg", None)) is not None:
+        if (struct_cfg := get(self.shared_utils.switch_data_combined, "structured_config")) is not None:
             return [struct_cfg]
 
         return []

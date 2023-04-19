@@ -30,7 +30,7 @@ class RouterBgpMixin(UtilsMixin):
         TODO: Fix so this also works for L2LS with VRFs
         """
 
-        if not (self._bgp_as):
+        if not self.shared_utils.bgp:
             return None
 
         router_bgp = {
@@ -59,7 +59,7 @@ class RouterBgpMixin(UtilsMixin):
         - adding route-map to the underlay peer-group in case of services in vrf default
         """
 
-        if not self._network_services_l3:
+        if not self.shared_utils.network_services_l3:
             return None
 
         peer_groups = []
@@ -75,7 +75,7 @@ class RouterBgpMixin(UtilsMixin):
                     [
                         peer_group
                         for peer_group in vrf.get("bgp_peer_groups", [])
-                        if (self._hostname in peer_group.get("nodes", []) or peer_group["name"] in vrf_peer_peergroups)
+                        if (self.shared_utils.hostname in peer_group.get("nodes", []) or peer_group["name"] in vrf_peer_peergroups)
                     ]
                 )
                 peer_peergroups.update(vrf_peer_peergroups)
@@ -84,7 +84,7 @@ class RouterBgpMixin(UtilsMixin):
                 [
                     peer_group
                     for peer_group in tenant.get("bgp_peer_groups", [])
-                    if (self._hostname in peer_group.get("nodes", []) or peer_group["name"] in peer_peergroups)
+                    if (self.shared_utils.hostname in peer_group.get("nodes", []) or peer_group["name"] in peer_peergroups)
                 ]
             )
 
@@ -95,10 +95,14 @@ class RouterBgpMixin(UtilsMixin):
                 bgp_peer_groups.append(peer_group)
 
         # router bgp default vrf configuration for evpn
-        if (self._vrf_default_ipv4_subnets or self._vrf_default_ipv4_static_routes["static_routes"]) and self._overlay_vtep and self._overlay_evpn:
+        if (
+            (self._vrf_default_ipv4_subnets or self._vrf_default_ipv4_static_routes["static_routes"])
+            and self.shared_utils.overlay_vtep
+            and self.shared_utils.overlay_evpn
+        ):
             bgp_peer_groups.append(
                 {
-                    "name": self._peer_group_ipv4_underlay_peers_name,
+                    "name": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["name"],
                     "type": "ipv4",
                     "route_map_out": "RM-BGP-UNDERLAY-PEERS-OUT",
                 }
@@ -116,17 +120,17 @@ class RouterBgpMixin(UtilsMixin):
 
         TODO: Optimize this to allow bgp VRF config without overlays (vtep or mpls)
         """
-        if not (self._overlay_vtep or self._overlay_ler):
+        if not (self.shared_utils.overlay_vtep or self.shared_utils.overlay_ler):
             return None
 
-        if not self._network_services_l3:
+        if not self.shared_utils.network_services_l3:
             return None
 
         vrfs = []
 
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
-                vrf_address_families = [af for af in vrf.get("address_families", ["evpn"]) if af in self._overlay_address_families]
+                vrf_address_families = [af for af in vrf.get("address_families", ["evpn"]) if af in self.shared_utils.overlay_address_families]
                 if not vrf_address_families:
                     continue
 
@@ -156,7 +160,7 @@ class RouterBgpMixin(UtilsMixin):
                     else:
                         target["route_targets"].append(rt["route_target"])
 
-                if vrf_name == "default" and self._overlay_evpn and self._vrf_default_ipv4_subnets:
+                if vrf_name == "default" and self.shared_utils.overlay_evpn and self._vrf_default_ipv4_subnets:
                     # Special handling of vrf default.
 
                     if (target := get_item(route_targets["export"], "address_family", "evpn")) is None:
@@ -166,7 +170,7 @@ class RouterBgpMixin(UtilsMixin):
 
                     bgp_vrf = {
                         "name": vrf_name,
-                        "rd": f"{self._overlay_rd_type_admin_subfield}:{bgp_vrf_id}",
+                        "rd": f"{self.shared_utils.overlay_rd_type_admin_subfield}:{bgp_vrf_id}",
                         "route_targets": route_targets,
                         "eos_cli": get(vrf, "bgp.raw_eos_cli"),
                         "struct_cfg": get(vrf, "bgp.structured_config"),
@@ -178,8 +182,8 @@ class RouterBgpMixin(UtilsMixin):
 
                 bgp_vrf = {
                     "name": vrf_name,
-                    "router_id": self._router_id,
-                    "rd": f"{self._overlay_rd_type_admin_subfield}:{bgp_vrf_id}",
+                    "router_id": self.shared_utils.router_id,
+                    "rd": f"{self.shared_utils.overlay_rd_type_admin_subfield}:{bgp_vrf_id}",
                     "route_targets": route_targets,
                     "redistribute_routes": [{"source_protocol": "connected"}],
                     "eos_cli": get(vrf, "bgp.raw_eos_cli"),
@@ -188,26 +192,28 @@ class RouterBgpMixin(UtilsMixin):
                 }
                 # MLAG IBGP Peering VLANs per VRF
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is not None:
-                    if self._underlay_rfc5549 and self._overlay_mlag_rfc5549:
+                    if self.shared_utils.underlay_rfc5549 and self.shared_utils.overlay_mlag_rfc5549:
                         interface_name = f"Vlan{vlan_id}"
                         bgp_vrf.setdefault("neighbor_interfaces", []).append(
                             {
                                 "name": interface_name,
-                                "peer_group": self._peer_group_mlag_ipv4_underlay_peer_name,
-                                "remote_as": self._bgp_as,
-                                "description": self._mlag_peer,
+                                "peer_group": self.shared_utils.bgp_peer_groups["mlag_ipv4_underlay_peer"]["name"],
+                                "remote_as": self.shared_utils.bgp_as,
+                                "description": self.shared_utils.mlag_peer,
                             }
                         )
                     else:
                         if (mlag_ibgp_peering_ipv4_pool := vrf.get("mlag_ibgp_peering_ipv4_pool")) is not None:
-                            if self._mlag_role == "primary":
-                                ip_address = self._avd_ip_addressing.mlag_ibgp_peering_ip_secondary(mlag_ibgp_peering_ipv4_pool)
+                            if self.shared_utils.mlag_role == "primary":
+                                ip_address = self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_secondary(mlag_ibgp_peering_ipv4_pool)
                             else:
-                                ip_address = self._avd_ip_addressing.mlag_ibgp_peering_ip_primary(mlag_ibgp_peering_ipv4_pool)
+                                ip_address = self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_primary(mlag_ibgp_peering_ipv4_pool)
                         else:
-                            ip_address = self._mlag_peer_ibgp_ip
+                            ip_address = self.shared_utils.mlag_peer_ibgp_ip
 
-                        bgp_vrf.setdefault("neighbors", []).append({"ip_address": ip_address, "peer_group": self._peer_group_mlag_ipv4_underlay_peer_name})
+                        bgp_vrf.setdefault("neighbors", []).append(
+                            {"ip_address": ip_address, "peer_group": self.shared_utils.bgp_peer_groups["mlag_ipv4_underlay_peer"]["name"]}
+                        )
 
                 address_families = []
                 for bgp_peer in vrf["bgp_peers"]:
@@ -239,7 +245,7 @@ class RouterBgpMixin(UtilsMixin):
                 if (
                     get(vrf, "ospf.enabled") is True
                     and vrf.get("redistribute_ospf") is not False
-                    and self._hostname in get(vrf, "ospf.nodes", default=[self._hostname])
+                    and self.shared_utils.hostname in get(vrf, "ospf.nodes", default=[self.shared_utils.hostname])
                 ):
                     bgp_vrf["redistribute_routes"].append({"source_protocol": "ospf"})
 
@@ -264,11 +270,11 @@ class RouterBgpMixin(UtilsMixin):
         Return structured config for router_bgp.vlans
         """
         if not (
-            self._network_services_l2
-            and "evpn" in self._overlay_address_families
+            self.shared_utils.network_services_l2
+            and "evpn" in self.shared_utils.overlay_address_families
             and not self._evpn_vlan_aware_bundles
-            and (self._overlay_vtep or self._overlay_ler)
-            and (self._overlay_evpn)
+            and (self.shared_utils.overlay_vtep or self.shared_utils.overlay_ler)
+            and (self.shared_utils.overlay_evpn)
         ):
             return None
 
@@ -311,7 +317,7 @@ class RouterBgpMixin(UtilsMixin):
             )
 
         vlan_rt_id = default(rt_override, (tenant_mac_vrf_id_base + vlan_id))
-        vlan_rd = f"{self._overlay_rd_type_admin_subfield}:{vlan_rt_id}"
+        vlan_rd = f"{self.shared_utils.overlay_rd_type_admin_subfield}:{vlan_rt_id}"
         vlan_rt = f"{self._rt_admin_subfield or vlan_rt_id}:{vlan_rt_id}"
         bgp_vlan = {
             "tenant": tenant["name"],
@@ -322,7 +328,7 @@ class RouterBgpMixin(UtilsMixin):
             "struct_cfg": get(vlan, "bgp.structured_config"),
         }
         if (
-            self._evpn_gateway_vxlan_l2
+            self.shared_utils.evpn_gateway_vxlan_l2
             and default(vlan.get("evpn_l2_multi_domain"), vrf.get("evpn_l2_multi_domain"), tenant.get("evpn_l2_multi_domain"), True) is True
         ):
             bgp_vlan["rd_evpn_domain"] = {"domain": "remote", "rd": vlan_rd}
@@ -337,10 +343,6 @@ class RouterBgpMixin(UtilsMixin):
         return bgp_vlan
 
     @cached_property
-    def _evpn_gateway_vxlan_l2(self) -> bool:
-        return get(self._hostvars, "switch.evpn_gateway_vxlan_l2") is True
-
-    @cached_property
     def _evpn_vlan_aware_bundles(self) -> bool:
         return default(get(self._hostvars, "vxlan_vlan_aware_bundles"), get(self._hostvars, "evpn_vlan_aware_bundles"), False)
 
@@ -350,7 +352,7 @@ class RouterBgpMixin(UtilsMixin):
         Return structured config for router_bgp.vlan_aware_bundles
         """
 
-        if not (self._network_services_l2 and self._overlay_evpn):
+        if not (self.shared_utils.network_services_l2 and self.shared_utils.overlay_evpn):
             return None
 
         if not self._evpn_vlan_aware_bundles:
@@ -390,7 +392,7 @@ class RouterBgpMixin(UtilsMixin):
 
         bundle_number = int(bgp_vrf_id) + int(tenant.get("vlan_aware_bundle_number_base", 0))
 
-        bundle_rd = f"{self._overlay_rd_type_admin_subfield}:{bundle_number}"
+        bundle_rd = f"{self.shared_utils.overlay_rd_type_admin_subfield}:{bundle_number}"
         bundle_rt = f"{self._rt_admin_subfield or bundle_number}:{bundle_number}"
         bundle = {
             "name": vrf_name,
@@ -401,7 +403,7 @@ class RouterBgpMixin(UtilsMixin):
             "redistribute_routes": ["learned"],
             "vlan": list_compress([int(vlan["id"]) for vlan in vlans]),
         }
-        if self._evpn_gateway_vxlan_l2 and default(vrf.get("evpn_l2_multi_domain"), tenant.get("evpn_l2_multi_domain", True)) is True:
+        if self.shared_utils.evpn_gateway_vxlan_l2 and default(vrf.get("evpn_l2_multi_domain"), tenant.get("evpn_l2_multi_domain", True)) is True:
             bundle["rd_evpn_domain"] = {"domain": "remote", "rd": bundle_rd}
             bundle["route_targets"]["import_export_evpn_domains"] = [{"domain": "remote", "route_target": bundle_rt}]
 
@@ -423,7 +425,7 @@ class RouterBgpMixin(UtilsMixin):
             return None
 
         if admin_subfield == "bgp_as":
-            return self._bgp_as
+            return self.shared_utils.bgp_as
 
         if re_fullmatch(r"[0-9]+", str(admin_subfield)):
             return admin_subfield
@@ -439,7 +441,7 @@ class RouterBgpMixin(UtilsMixin):
         "redistribute_in_underlay" and underlay protocol is BGP.
         """
         if self._vrf_default_ipv4_static_routes["redistribute_in_overlay"] or (
-            self._vrf_default_ipv4_static_routes["redistribute_in_underlay"] and self._underlay_bgp
+            self._vrf_default_ipv4_static_routes["redistribute_in_underlay"] and self.shared_utils.underlay_bgp
         ):
             return [{"source_protocol": "static"}]
 
@@ -451,7 +453,7 @@ class RouterBgpMixin(UtilsMixin):
         Return structured config for router_bgp.vpws
         """
 
-        if not (self._network_services_l1 and self._overlay_ler and self._overlay_evpn_mpls):
+        if not (self.shared_utils.network_services_l1 and self.shared_utils.overlay_ler and self.shared_utils.overlay_evpn_mpls):
             return None
 
         vpws = []
@@ -469,7 +471,7 @@ class RouterBgpMixin(UtilsMixin):
 
                 endpoints = point_to_point_service.get("endpoints", [])
                 for local_index, endpoint in enumerate(endpoints):
-                    if not (self._hostname in endpoint.get("nodes", []) and endpoint.get("interfaces") is not None):
+                    if not (self.shared_utils.hostname in endpoint.get("nodes", []) and endpoint.get("interfaces") is not None):
                         continue
 
                     # Endpoints can only have two entries with index 0 and 1.
@@ -498,7 +500,7 @@ class RouterBgpMixin(UtilsMixin):
 
             if pseudowires:
                 rt_base = get(tenant, "pseudowire_rt_base", required=True, org_key=f"'pseudowire_rt_base' under Tenant '{tenant['name']}")
-                rd = f"{self._overlay_rd_type_admin_subfield}:{rt_base}"
+                rd = f"{self.shared_utils.overlay_rd_type_admin_subfield}:{rt_base}"
                 rt = f"{self._rt_admin_subfield or rt_base}:{rt_base}"
                 vpws.append(
                     {
@@ -521,26 +523,26 @@ class RouterBgpMixin(UtilsMixin):
 
         TODO: Partially duplicated from mlag. Should be moved to a common class
         """
-        peer_group_name = self._peer_group_mlag_ipv4_underlay_peer_name
+        peer_group_name = self.shared_utils.bgp_peer_groups["mlag_ipv4_underlay_peer"]["name"]
         router_bgp = {}
         peer_group = {
             "name": peer_group_name,
             "type": "ipv4",
-            "remote_as": self._bgp_as,
+            "remote_as": self.shared_utils.bgp_as,
             "next_hop_self": True,
-            "description": self._mlag_peer,
-            "password": get(self._hostvars, "switch.bgp_peer_groups.mlag_ipv4_underlay_peer.password"),
+            "description": self.shared_utils.mlag_peer,
+            "password": self.shared_utils.bgp_peer_groups["mlag_ipv4_underlay_peer"]["password"],
             "maximum_routes": 12000,
             "send_community": "all",
-            "struct_cfg": get(self._hostvars, "switch.bgp_peer_groups.mlag_ipv4_underlay_peer.structured_config"),
+            "struct_cfg": self.shared_utils.bgp_peer_groups["mlag_ipv4_underlay_peer"]["structured_config"],
         }
 
-        if self._mlag_ibgp_origin_incomplete is True:
+        if self.shared_utils.mlag_ibgp_origin_incomplete is True:
             peer_group["route_map_in"] = "RM-MLAG-PEER-IN"
 
         router_bgp["peer_groups"] = [peer_group]
 
-        if get(self._hostvars, "switch.underlay_ipv6") is True:
+        if self.shared_utils.underlay_ipv6:
             router_bgp["address_family_ipv6"] = {
                 "peer_groups": [
                     {
@@ -551,7 +553,7 @@ class RouterBgpMixin(UtilsMixin):
             }
 
         address_family_ipv4_peer_group = {"name": peer_group_name, "activate": True}
-        if self._underlay_rfc5549 is True:
+        if self.shared_utils.underlay_rfc5549:
             address_family_ipv4_peer_group["next_hop"] = {"address_family_ipv6_originate": True}
 
         router_bgp["address_family_ipv4"] = {"peer_groups": [address_family_ipv4_peer_group]}

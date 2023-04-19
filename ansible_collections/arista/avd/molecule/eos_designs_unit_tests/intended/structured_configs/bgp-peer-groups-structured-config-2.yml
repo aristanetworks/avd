@@ -158,7 +158,7 @@ route_maps:
     - extcommunity soo 192.168.254.111:1 additive
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: MPLS_Overlay_peering
   shutdown: false
   ip_address: 192.168.255.112/32
 - name: Loopback1

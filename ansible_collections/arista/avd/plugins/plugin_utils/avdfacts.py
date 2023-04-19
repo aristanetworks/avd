@@ -1,13 +1,16 @@
-from functools import cached_property
+from __future__ import annotations
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import template_var
+from functools import cached_property
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
 
 
 class AvdFacts:
-    def __init__(self, hostvars, templar):
+    def __init__(self, hostvars: dict, shared_utils: SharedUtils):
         self._hostvars = hostvars
-        self._templar = templar
+        self.shared_utils = shared_utils
 
     @classmethod
     def __keys(cls):  # pylint: disable=bad-option-value, unused-private-member # CH Sep-22: Some pylint bug.
@@ -59,12 +62,3 @@ class AvdFacts:
         Empty values are removed from the returned data.
         """
         return {key: getattr(self, key) for key in self.keys() if getattr(self, key) is not None}
-
-    def template_var(self, template_file, template_vars):
-        """
-        Run the simplified templater using the passed Ansible "templar" engine.
-        """
-        try:
-            return template_var(template_file, template_vars, self._templar)
-        except Exception as e:
-            raise AristaAvdError(f"Error during templating of template: {template_file}") from e

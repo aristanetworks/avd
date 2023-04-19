@@ -26,7 +26,7 @@ class EthernetInterfacesMixin(UtilsMixin):
         for connected_endpoint in self._filtered_connected_endpoints:
             for adapter in connected_endpoint["adapters"]:
                 for node_index, node_name in enumerate(adapter["switches"]):
-                    if node_name != self._hostname:
+                    if node_name != self.shared_utils.hostname:
                         continue
 
                     ethernet_interface_name = adapter["switch_ports"][node_index]
@@ -42,7 +42,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                 tmp_network_port = ChainMap(
                     {
                         "switch_ports": [ethernet_interface_name],
-                        "switches": [self._hostname],
+                        "switches": [self.shared_utils.hostname],
                     },
                     network_port,
                 )
@@ -75,7 +75,7 @@ class EthernetInterfacesMixin(UtilsMixin):
             "peer_interface": peer_interface,
             "peer_type": connected_endpoint["type"],
             "port_profile": adapter.get("profile"),
-            "description": self._avd_interface_descriptions.connected_endpoints_ethernet_interfaces(peer, peer_interface),
+            "description": self.shared_utils.interface_descriptions.connected_endpoints_ethernet_interfaces(peer, peer_interface),
             "speed": adapter.get("speed"),
             "mtu": adapter.get("mtu"),
             "l2_mtu": adapter.get("l2_mtu"),

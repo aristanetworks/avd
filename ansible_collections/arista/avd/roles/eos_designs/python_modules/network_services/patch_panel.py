@@ -21,7 +21,7 @@ class PatchPanelMixin(UtilsMixin):
         Return structured config for patch_panel
         """
 
-        if not self._network_services_l1:
+        if not self.shared_utils.network_services_l1:
             return None
 
         patches = []
@@ -33,10 +33,10 @@ class PatchPanelMixin(UtilsMixin):
                 if subifs := point_to_point_service.get("subinterfaces", []):
                     subifs = [subif for subif in subifs if subif.get("number") is not None]
                 for endpoint in point_to_point_service.get("endpoints", []):
-                    if self._hostname not in endpoint.get("nodes", []):
+                    if self.shared_utils.hostname not in endpoint.get("nodes", []):
                         continue
 
-                    node_index = list(endpoint["nodes"]).index(self._hostname)
+                    node_index = list(endpoint["nodes"]).index(self.shared_utils.hostname)
                     interface = endpoint["interfaces"][node_index]
                     if get(endpoint, "port_channel.mode") in ["active", "on"]:
                         channel_group_id = "".join(re.findall(r"\d", interface))
