@@ -23,42 +23,26 @@ class BgpPeerGroupsMixin:
 
         Supporting legacy uppercase keys as well.
         """
-        if self.underlay_router is True:
-            return {
-                "ipv4_underlay_peers": {
-                    "name": get(self.hostvars, "bgp_peer_groups.ipv4_underlay_peers.name", default="IPv4-UNDERLAY-PEERS"),
-                    "password": get(self.hostvars, "bgp_peer_groups.ipv4_underlay_peers.password"),
-                    "structured_config": get(self.hostvars, "bgp_peer_groups.ipv4_underlay_peers.structured_config"),
-                },
-                "mlag_ipv4_underlay_peer": {
-                    "name": get(self.hostvars, "bgp_peer_groups.mlag_ipv4_underlay_peer.name", default="MLAG-IPv4-UNDERLAY-PEER"),
-                    "password": get(self.hostvars, "bgp_peer_groups.mlag_ipv4_underlay_peer.password"),
-                    "structured_config": get(self.hostvars, "bgp_peer_groups.mlag_ipv4_underlay_peer.structured_config"),
-                },
-                "evpn_overlay_peers": {
-                    "name": get(self.hostvars, "bgp_peer_groups.evpn_overlay_peers.name", default="EVPN-OVERLAY-PEERS"),
-                    "password": get(self.hostvars, "bgp_peer_groups.evpn_overlay_peers.password"),
-                    "structured_config": get(self.hostvars, "bgp_peer_groups.evpn_overlay_peers.structured_config"),
-                },
-                "evpn_overlay_core": {
-                    "name": get(self.hostvars, "bgp_peer_groups.evpn_overlay_core.name", default="EVPN-OVERLAY-CORE"),
-                    "password": get(self.hostvars, "bgp_peer_groups.evpn_overlay_core.password"),
-                    "structured_config": get(self.hostvars, "bgp_peer_groups.evpn_overlay_core.structured_config"),
-                },
-                "mpls_overlay_peers": {
-                    "name": get(self.hostvars, "bgp_peer_groups.mpls_overlay_peers.name", default="MPLS-OVERLAY-PEERS"),
-                    "password": get(self.hostvars, "bgp_peer_groups.mpls_overlay_peers.password"),
-                    "structured_config": get(self.hostvars, "bgp_peer_groups.mpls_overlay_peers.structured_config"),
-                },
-                "rr_overlay_peers": {
-                    "name": get(self.hostvars, "bgp_peer_groups.rr_overlay_peers.name", default="RR-OVERLAY-PEERS"),
-                    "password": get(self.hostvars, "bgp_peer_groups.rr_overlay_peers.password"),
-                    "structured_config": get(self.hostvars, "bgp_peer_groups.rr_overlay_peers.structured_config"),
-                },
-                "ipvpn_gateway_peers": {
-                    "name": get(self.hostvars, "bgp_peer_groups.ipvpn_gateway_peers.name", default="IPVPN-GATEWAY-PEERS"),
-                    "password": get(self.hostvars, "bgp_peer_groups.ipvpn_gateway_peers.password"),
-                    "structured_config": get(self.hostvars, "bgp_peer_groups.ipvpn_gateway_peers.structured_config"),
-                },
+        if not self.underlay_router:
+            return None
+
+        BGP_PEER_GROUPS = [
+            # (key, default_name)
+            ("ipv4_underlay_peers", "IPv4-UNDERLAY-PEERS"),
+            ("mlag_ipv4_underlay_peer", "MLAG-IPv4-UNDERLAY-PEER"),
+            ("evpn_overlay_peers", "EVPN-OVERLAY-PEERS"),
+            ("evpn_overlay_core", "EVPN-OVERLAY-CORE"),
+            ("mpls_overlay_peers", "MPLS-OVERLAY-PEERS"),
+            ("rr_overlay_peers", "RR-OVERLAY-PEERS"),
+            ("ipvpn_gateway_peers", "IPVPN-GATEWAY-PEERS"),
+        ]
+
+        bgp_peer_groups = {}
+        for key, default_name in BGP_PEER_GROUPS:
+            bgp_peer_groups[key] = {
+                "name": get(self.hostvars, f"bgp_peer_groups.{key}.name", default=default_name),
+                "password": get(self.hostvars, f"bgp_peer_groups.{key}.password"),
+                "structured_config": get(self.hostvars, f"bgp_peer_groups.{key}.structured_config"),
             }
-        return None
+
+        return bgp_peer_groups
