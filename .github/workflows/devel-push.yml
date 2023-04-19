@@ -65,23 +65,32 @@ jobs:
 
   # ----------------------------------- #
   # Rebuild docker base image
+  #
+  # secrets.AVD_BUILDER_TOKEN needs to be a Personal Access Token to the remote
+  # repository which is https://github.com/arista-netdevops-community/docker-avd-base
+  #
+  # The PAT needs to have specific permissions as described here
+  # https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#create-a-repository-dispatch-event
+  #
+  # PAT on arista-netdevops-community are allowed and required to be approved by
+  # admins of the organization
+  #
+  # current PAT belongs to @gmuloc
+  #
   # ----------------------------------- #
   docker_build:
     name: Webhook to Docker Hub to build image
     runs-on: ubuntu-20.04
-    container: avdteam/base:3.8-v2.0
     needs: file-changes
     if: needs.file-changes.outputs.requirements == 'true'
     steps:
       - uses: actions/checkout@v3
       - name: 'Send Webhook to docker hub'
-        env:
-          AUTH_TOKEN: ${{secrets.AVD_BUILDER_TOKEN}}
-          AVD_BASE_DISPATCH: ${{secrets.AVD_BUILDER_WEBHOOK}}
         run: |
           curl \
           -X POST \
           -H "Accept: application/vnd.github.v3+json" \
-          -H "Authorization: token $AUTH_TOKEN" \
-          https://api.github.com/repos/$AVD_BASE_DISPATCH/dispatches \
-          -d '{"event_type":"refresh"}'
+          -H "Authorization: token ${{secrets.AVD_BUILDER_TOKEN}}" \
+          https://api.github.com/repos/arista-netdevops-community/docker-avd-bas/dispatches \
+          -d '{"event_type":"refresh"}' \
+          -f
