@@ -379,7 +379,10 @@ class AvdStructuredConfig(AvdFacts):
             }
             for name_server in get(self._hostvars, "name_servers", default=[])
         ]
-        return ip_name_servers or None
+        if ip_name_servers == []:
+            return None
+
+        return ip_name_servers
 
     @cached_property
     def redundancy(self) -> dict | None:
