@@ -9,12 +9,11 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-name_server:
-  source:
-    vrf: MGMT
-  nodes:
-  - 8.8.4.4
-  - 8.8.8.8
+ip_name_servers:
+- ip_address: 8.8.4.4
+  vrf: MGMT
+- ip_address: 8.8.8.8
+  vrf: MGMT
 spanning_tree:
   mode: mstp
   mst_instances:

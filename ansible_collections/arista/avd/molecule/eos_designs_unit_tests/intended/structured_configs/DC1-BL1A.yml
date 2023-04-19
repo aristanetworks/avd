@@ -298,13 +298,13 @@ event_handlers:
   regex: EVPN-3-BLACKLISTED_DUPLICATE_MAC
   asynchronous: true
   name: evpn-blacklist-recovery
-name_server:
-  source:
-    vrf: MGMT
-  nodes:
-  - 192.168.200.5
-  - 8.8.8.8
-  - 1.1.1.1
+ip_name_servers:
+- ip_address: 192.168.200.5
+  vrf: MGMT
+- ip_address: 8.8.8.8
+  vrf: MGMT
+- ip_address: 1.1.1.1
+  vrf: MGMT
 snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS DC1-BL1A
