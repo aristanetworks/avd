@@ -4558,6 +4558,88 @@
       },
       "title": "IP Name Servers"
     },
+    "ip_nat": {
+      "type": "object",
+      "properties": {
+        "pools": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name"
+              },
+              "prefix_length": {
+                "type": "integer",
+                "minimum": 16,
+                "maximum": 32,
+                "title": "Prefix Length"
+              },
+              "ranges": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "first_ip": {
+                      "type": "string",
+                      "description": "IPv4 address",
+                      "title": "First IP"
+                    },
+                    "last_ip": {
+                      "type": "string",
+                      "description": "IPv4 address",
+                      "title": "Last IP"
+                    },
+                    "first_port": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 65535,
+                      "title": "First Port"
+                    },
+                    "last_port": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 65535,
+                      "title": "Last Port"
+                    }
+                  },
+                  "required": [
+                    "first_ip",
+                    "last_ip"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Ranges"
+              },
+              "utilization_log_threshold": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 100,
+                "title": "Utilization Log Threshold"
+              }
+            },
+            "required": [
+              "prefix_length",
+              "name"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Pools"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "IP Nat"
+    },
     "ip_radius_source_interfaces": {
       "type": "array",
       "items": {

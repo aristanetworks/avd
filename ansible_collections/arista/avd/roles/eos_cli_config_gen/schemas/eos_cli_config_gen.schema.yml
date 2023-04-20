@@ -3115,6 +3115,59 @@ keys:
           - str
           min: 0
           max: 4
+  ip_nat:
+    documentation_options:
+      filename: data_model/IP NAT.md
+    type: dict
+    keys:
+      pools:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            prefix_length:
+              type: int
+              required: true
+              convert_types:
+              - str
+              min: 16
+              max: 32
+            ranges:
+              type: list
+              items:
+                type: dict
+                keys:
+                  first_ip:
+                    type: str
+                    required: true
+                    description: IPv4 address
+                  last_ip:
+                    type: str
+                    required: true
+                    description: IPv4 address
+                  first_port:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 65535
+                  last_port:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 65535
+            utilization_log_threshold:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 100
   ip_radius_source_interfaces:
     documentation_options:
       filename: data_model/Authentication

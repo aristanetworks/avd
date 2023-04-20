@@ -1,0 +1,28 @@
+### IP NAT ###
+ip_nat:
+  pools:
+    - name: prefix_16
+      prefix_length: 16
+      ranges:
+        - first_ip: 10.0.0.1
+          last_ip: 10.0.255.254
+        - first_ip: 10.1.0.0
+          last_ip: 10.1.255.255
+          first_port: 1024
+          last_port: 65535
+      utilization_log_threshold: 1
+    - name: prefix_32
+      prefix_length: 32
+      ranges:
+        - first_ip: 10.2.0.1
+          last_ip: 10.2.0.1
+    - name: prefix_24
+      prefix_length: 24
+      ranges:
+        - first_ip: 10.3.0.1
+          last_ip: 10.3.0.254
+        - first_ip: 10.3.1.0
+          last_ip: 10.3.1.255
+          first_port: 1024
+          last_port: 65535
+      utilization_log_threshold: 100

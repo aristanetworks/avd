@@ -1,0 +1,19 @@
+{# eos - ip nat #}
+{% if ip_nat is arista.avd.defined %}
+!
+{%     for pool in ip_nat.pools | arista.avd.default([]) %}
+{%         if pool.name is arista.avd.defined and pool.prefix_length is arista.avd.defined %}
+ip nat pool {{ pool.name }} prefix-length {{ pool.prefix_length }}
+{%             for range in pool.ranges | arista.avd.default([]) %}
+{%                 set range_cli = 'range ' ~ range.first_ip ~ ' ' ~ range.last_ip %}
+{%                 if range.first_port is arista.avd.defined and range.last_port is arista.avd.defined %}
+{%                     set range_cli = range_cli ~ ' ' ~ range.first_port ~ ' ' ~ range.last_port %}
+{%                 endif %}
+   {{ range_cli }}
+{%             endfor %}
+{%             if pool.utilization_log_threshold is arista.avd.defined %}
+   utilization threshold {{ pool.utilization_log_threshold }} action log
+{%             endif %}
+{%         endif %}
+{%     endfor %}
+{% endif %}

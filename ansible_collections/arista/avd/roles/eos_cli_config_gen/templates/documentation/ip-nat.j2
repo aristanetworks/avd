@@ -1,0 +1,27 @@
+{# doc - ip nat #}
+{% if ip_nat is arista.avd.defined %}
+
+## IP NAT
+
+{%     if ip_nat.pools is arista.avd.defined %}
+### NAT Pools
+{%         for pool in ip_nat.pools %}
+- Pool Name: **{{ pool.name }}**
+
+  Pool Prefix Length: {{ pool.prefix_length }}
+
+{%             if pool.utilization_log_threshold is arista.avd.defined %}
+  Pool Utilization Threshold: {{ pool.utilization_log_threshold }} (action: log)
+
+{%             endif %}
+  Pool Ranges:
+
+  | First IP Address  | Last IP Address | First Port | Last Port |
+  | ----------------- | --------------- | ---------- | --------- |
+{%             for range in pool.ranges | arista.avd.default([]) %}
+  | {{ range.first_ip }} | {{ range.last_ip }} | {{ range.first_port | arista.avd.default('n.a.') }} | {{ range.last_port | arista.avd.default('n.a.') }} |
+{%             endfor %}
+
+{%         endfor %}
+{%     endif %}
+{% endif %}
