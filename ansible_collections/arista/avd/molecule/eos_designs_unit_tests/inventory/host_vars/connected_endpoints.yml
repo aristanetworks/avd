@@ -1,22 +1,5 @@
 loopback_ipv4_pool: 192.168.0.0/24
 
-port_profiles:
-  common:
-    spanning_tree_portfast: edge
-    spanning_tree_bpduguard: true
-    storm_control:
-      all:
-        level: 1
-  desktop_phone-1234-2345:
-    parent_profile: common
-    mode: trunk phone
-    structured_config:
-      # profile: dot1x
-      phone:
-        trunk: tagged
-        vlan: "2345"
-      native_vlan: "1234"
-
 type: l2leaf
 l2leaf:
   defaults:
@@ -24,12 +7,27 @@ l2leaf:
     connected_endpoints:
 
 servers:
+  # single port override physical port description
   OLD_SW-1/4:
     adapters:
       - switches: [connected_endpoints]
         switch_ports: [Ethernet4]
-        profile: desktop_phone-1234-2345
-        description: VVxx:abcd123
-        native_vlan: 2020
-        raw_eos_cli: |-
-          !! VoIP/PC
+        description: "<physical_port_description>"
+  # port-channel provide port-channel description
+  OLD_SW-1/5:
+    adapters:
+      - switches: [connected_endpoints, connected_endpoints]
+        switch_ports: [Ethernet5, Ethernet6]
+        port_channel:
+          mode: "active"
+          description: "<port_channel_description>"
+  # port-channel provide physical and port-channel descriptions
+  OLD_SW-1/6:
+    adapters:
+      - switches: [connected_endpoints, connected_endpoints]
+        switch_ports: [Ethernet7, Ethernet8]
+        # TODO: support ["<physical_port_description7>", "<physical_port_description8>"]]
+        description: "<physical_port_description>"
+        port_channel:
+          mode: "active"
+          description: "<port_channel_description>"

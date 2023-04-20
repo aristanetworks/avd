@@ -16,19 +16,52 @@ ip_igmp_snooping:
 ethernet_interfaces:
 - peer: OLD_SW-1/4
   peer_type: server
-  port_profile: desktop_phone-1234-2345
-  description: VVxx:abcd123
+  description: <physical_port_description>
   type: switched
   shutdown: false
-  mode: trunk phone
-  native_vlan: 1234
-  spanning_tree_portfast: edge
-  spanning_tree_bpduguard: 'True'
-  storm_control:
-    all:
-      level: '1'
-  eos_cli: '!! VoIP/PC'
   name: Ethernet4
-  phone:
-    trunk: tagged
-    vlan: 2345
+- peer: OLD_SW-1/5
+  peer_type: server
+  description: OLD_SW-1/5
+  type: switched
+  shutdown: false
+  channel_group:
+    id: 5
+    mode: active
+  name: Ethernet5
+- peer: OLD_SW-1/5
+  peer_type: server
+  description: OLD_SW-1/5
+  type: switched
+  shutdown: false
+  channel_group:
+    id: 5
+    mode: active
+  name: Ethernet6
+- peer: OLD_SW-1/6
+  peer_type: server
+  description: <physical_port_description>
+  type: switched
+  shutdown: false
+  channel_group:
+    id: 7
+    mode: active
+  name: Ethernet7
+- peer: OLD_SW-1/6
+  peer_type: server
+  description: <physical_port_description>
+  type: switched
+  shutdown: false
+  channel_group:
+    id: 7
+    mode: active
+  name: Ethernet8
+port_channel_interfaces:
+- name: Port-Channel5
+  description: OLD_SW-1/5_<port_channel_description>
+  type: switched
+  shutdown: false
+- name: Port-Channel7
+  description: OLD_SW-1/6_<port_channel_description>
+  type: switched
+  shutdown: false

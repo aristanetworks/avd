@@ -75,7 +75,7 @@ class EthernetInterfacesMixin(UtilsMixin):
             "peer_interface": peer_interface,
             "peer_type": connected_endpoint["type"],
             "port_profile": adapter.get("profile"),
-            "description": adapter.get("description") or self.shared_utils.interface_descriptions.connected_endpoints_ethernet_interfaces(peer, peer_interface),
+            "description": default(adapter.get("description"), self.shared_utils.interface_descriptions.connected_endpoints_ethernet_interfaces(peer, peer_interface)),
             "speed": adapter.get("speed"),
             "mtu": adapter.get("mtu"),
             "l2_mtu": adapter.get("l2_mtu"),
