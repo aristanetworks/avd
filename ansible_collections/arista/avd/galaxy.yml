@@ -39,6 +39,7 @@ tags: ['arista', 'network', 'networking', 'eos', 'avd', 'cloudvision', 'cvp']
 dependencies:
     "arista.cvp": ">=3.2.0"
     "arista.eos": ">=3.1.0"
+    "ansible.utils": ">=2.9.0"
     "ansible.netcommon": ">=2.4.0,!=2.6.0"
 
 # The URL of the originating SCM repository
