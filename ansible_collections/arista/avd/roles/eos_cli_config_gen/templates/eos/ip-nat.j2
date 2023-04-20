@@ -1,6 +1,9 @@
 {# eos - ip nat #}
 {% if ip_nat is arista.avd.defined %}
 !
+{%     if ip_nat.kernel_buffer_size is arista.avd.defined %}
+ip nat kernel buffer size {{ ip_nat.kernel_buffer_size }}
+{%     endif %}
 {%     for pool in ip_nat.pools | arista.avd.default([]) %}
 {%         if pool.name is arista.avd.defined and pool.prefix_length is arista.avd.defined %}
 ip nat pool {{ pool.name }} prefix-length {{ pool.prefix_length }}

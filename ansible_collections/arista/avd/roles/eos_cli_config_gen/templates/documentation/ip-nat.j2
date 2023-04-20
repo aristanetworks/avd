@@ -2,6 +2,9 @@
 {% if ip_nat is arista.avd.defined %}
 
 ## IP NAT
+{%     if ip_nat.kernel_buffer_size is arista.avd.defined %}
+Kernel Buffer Size: {{ ip_nat.kernel_buffer_size }} MB
+{%     endif %}
 
 {%     if ip_nat.pools is arista.avd.defined %}
 ### NAT Pools

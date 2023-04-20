@@ -1,5 +1,6 @@
 ### IP NAT ###
 ip_nat:
+  kernel_buffer_size: 64
   pools:
     - name: prefix_16
       prefix_length: 16

@@ -36,6 +36,7 @@ interface Management1
 ```
 
 ## IP NAT
+Kernel Buffer Size: 64 MB
 
 ### NAT Pools
 - Pool Name: **prefix_16**

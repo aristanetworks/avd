@@ -4561,6 +4561,12 @@
     "ip_nat": {
       "type": "object",
       "properties": {
+        "kernel_buffer_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 64,
+          "title": "Kernel Buffer Size"
+        },
         "pools": {
           "type": "array",
           "items": {
