@@ -17,7 +17,7 @@ ethernet_interfaces:
 - peer: OLD_SW-1/4
   peer_type: server
   port_profile: desktop_phone-1234-2345
-  description: OLD_SW-1/4
+  description: VVxx:abcd123
   type: switched
   shutdown: false
   mode: trunk phone
