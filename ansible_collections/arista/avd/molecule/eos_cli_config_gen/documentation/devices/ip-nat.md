@@ -6,6 +6,7 @@
   - [Management Interfaces](#management-interfaces)
 - [IP NAT](#ip-nat)
   - [NAT Pools](#nat-pools)
+  - [NAT Synchronization](#nat-synchronization)
 
 ## Management
 
@@ -75,3 +76,11 @@ Kernel Buffer Size: 64 MB
   | 10.3.0.1 | 10.3.0.254 | n.a. | n.a. |
   | 10.3.1.0 | 10.3.1.255 | 1024 | 65535 |
 
+
+### NAT Synchronization
+> Synchronization is disabled!
+- Expiry Interval: 60 Seconds
+- Interface: Ethernet1
+- Peer IP Address: 1.1.1.1
+- Port Range: 1024 - 65535
+- Port Range Split: Disabled

@@ -27,3 +27,13 @@ ip_nat:
           first_port: 1024
           last_port: 65535
       utilization_log_threshold: 100
+  synchronization:
+    description: 'test sync config'
+    expiry_interval: 60
+    local_interface: Ethernet1
+    peer_address: 1.1.1.1
+    port_range:
+      first_port: 1024
+      last_port: 65535
+      split_disabled: true
+    shutdown: true

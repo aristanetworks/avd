@@ -19,4 +19,31 @@ ip nat pool {{ pool.name }} prefix-length {{ pool.prefix_length }}
 {%             endif %}
 {%         endif %}
 {%     endfor %}
+{%     if ip_nat.synchronization is arista.avd.defined %}
+ip nat synchronization
+{%         if ip_nat.synchronization.description is arista.avd.defined %}
+   description {{ ip_nat.synchronization.description }}
+{%         endif %}
+{%         if ip_nat.synchronization.expiry_interval is arista.avd.defined %}
+   expiry-interval {{ ip_nat.synchronization.expiry_interval }}
+{%         endif %}
+{%         if ip_nat.synchronization.shutdown | arista.avd.default(false) %}
+   shutdown
+{%         endif %}
+{%         if ip_nat.synchronization.peer_address is arista.avd.defined %}
+   peer-address {{ ip_nat.synchronization.peer_address }}
+{%         endif %}
+{%         if ip_nat.synchronization.local_interface is arista.avd.defined %}
+   local-interface {{ ip_nat.synchronization.local_interface }}
+{%         endif %}
+{%         if ip_nat.synchronization.port_range is arista.avd.defined %}
+{%             if ip_nat.synchronization.port_range.first_port is arista.avd.defined and
+                       ip_nat.synchronization.port_range.last_port is arista.avd.defined %}
+   port-range {{ ip_nat.synchronization.port_range.first_port }} {{ ip_nat.synchronization.port_range.last_port }}
+{%             endif %}
+{%             if ip_nat.synchronization.port_range.split_disabled | arista.avd.default(false)  %}
+   port-range split disabled
+{%             endif %}
+{%         endif %}
+{%     endif %}
 {% endif %}

@@ -4638,6 +4638,68 @@
             }
           },
           "title": "Pools"
+        },
+        "synchronization": {
+          "type": "object",
+          "properties": {
+            "description": {
+              "type": "string",
+              "title": "Description"
+            },
+            "expiry_interval": {
+              "type": "integer",
+              "minimum": 60,
+              "maximum": 3600,
+              "description": "in seconds",
+              "title": "Expiry Interval"
+            },
+            "local_interface": {
+              "type": "string",
+              "description": "EOS interface name",
+              "title": "Local Interface"
+            },
+            "peer_address": {
+              "type": "string",
+              "description": "IPv4 address",
+              "title": "Peer Address"
+            },
+            "port_range": {
+              "type": "object",
+              "properties": {
+                "first_port": {
+                  "type": "integer",
+                  "minimum": 1024,
+                  "maximum": 65535,
+                  "title": "First Port"
+                },
+                "last_port": {
+                  "type": "integer",
+                  "minimum": 1024,
+                  "maximum": 65535,
+                  "description": ">= first_port",
+                  "title": "Last Port"
+                },
+                "split_disabled": {
+                  "type": "boolean",
+                  "title": "Split Disabled"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Port Range"
+            },
+            "shutdown": {
+              "type": "boolean",
+              "title": "Shutdown"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Synchronization"
         }
       },
       "additionalProperties": false,

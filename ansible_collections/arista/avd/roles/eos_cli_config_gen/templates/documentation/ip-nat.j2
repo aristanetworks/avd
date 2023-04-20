@@ -5,8 +5,8 @@
 {%     if ip_nat.kernel_buffer_size is arista.avd.defined %}
 Kernel Buffer Size: {{ ip_nat.kernel_buffer_size }} MB
 {%     endif %}
-
 {%     if ip_nat.pools is arista.avd.defined %}
+
 ### NAT Pools
 {%         for pool in ip_nat.pools %}
 - Pool Name: **{{ pool.name }}**
@@ -26,5 +26,28 @@ Kernel Buffer Size: {{ ip_nat.kernel_buffer_size }} MB
 {%             endfor %}
 
 {%         endfor %}
+{%     endif %}
+{%     if ip_nat.synchronization is arista.avd.defined %}
+
+### NAT Synchronization
+{%         if ip_nat.synchronization.shutdown | arista.avd.default(false) %}
+> Synchronization is disabled!
+{%         endif %}
+{%         if ip_nat.synchronization.expiry_interval is arista.avd.defined %}
+- Expiry Interval: {{ ip_nat.synchronization.expiry_interval }} Seconds
+{%         endif %}
+{%         if ip_nat.synchronization.local_interface is arista.avd.defined %}
+- Interface: {{ ip_nat.synchronization.local_interface }}
+{%         endif %}
+{%         if ip_nat.synchronization.peer_address is arista.avd.defined %}
+- Peer IP Address: {{ ip_nat.synchronization.peer_address }}
+{%         endif %}
+{%         if ip_nat.synchronization.port_range.first_port is arista.avd.defined
+                    and ip_nat.synchronization.port_range.last_port is arista.avd.defined %}
+- Port Range: {{ ip_nat.synchronization.port_range.first_port }} - {{ ip_nat.synchronization.port_range.last_port }}
+{%         endif %}
+{%         if ip_nat.synchronization.port_range.split_disabled | arista.avd.default(false) %}
+- Port Range Split: Disabled
+{%         endif %}
 {%     endif %}
 {% endif %}

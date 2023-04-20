@@ -62,3 +62,41 @@ keys:
                 - str
               min: 1
               max: 100
+      synchronization:
+        type: dict
+        keys:
+          description:
+            type: str
+          expiry_interval:
+            type: int
+            convert_types:
+              - str
+            min: 60
+            max: 3600
+            description: in seconds
+          local_interface:
+            type: str
+            description: EOS interface name
+          peer_address:
+            type: str
+            description: IPv4 address
+          port_range:
+            type: dict
+            keys:
+              first_port:
+                type: int
+                convert_types:
+                  - str
+                min: 1024
+                max: 65535
+              last_port:
+                type: int
+                convert_types:
+                  - str
+                min: 1024
+                max: 65535
+                description: '>= first_port'
+              split_disabled:
+                type: bool
+          shutdown:
+            type: bool

@@ -22,6 +22,16 @@ search:
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;first_port</samp>](## "ip_nat.pools.[].ranges.[].first_port") | Integer |  |  | Min: 1<br>Max: 65535 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_port</samp>](## "ip_nat.pools.[].ranges.[].last_port") | Integer |  |  | Min: 1<br>Max: 65535 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;utilization_log_threshold</samp>](## "ip_nat.pools.[].utilization_log_threshold") | Integer |  |  | Min: 1<br>Max: 100 |  |
+    | [<samp>&nbsp;&nbsp;synchronization</samp>](## "ip_nat.synchronization") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "ip_nat.synchronization.description") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;expiry_interval</samp>](## "ip_nat.synchronization.expiry_interval") | Integer |  |  | Min: 60<br>Max: 3600 | in seconds |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "ip_nat.synchronization.local_interface") | String |  |  |  | EOS interface name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_address</samp>](## "ip_nat.synchronization.peer_address") | String |  |  |  | IPv4 address |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;port_range</samp>](## "ip_nat.synchronization.port_range") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;first_port</samp>](## "ip_nat.synchronization.port_range.first_port") | Integer |  |  | Min: 1024<br>Max: 65535 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_port</samp>](## "ip_nat.synchronization.port_range.last_port") | Integer |  |  | Min: 1024<br>Max: 65535 | >= first_port |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;split_disabled</samp>](## "ip_nat.synchronization.port_range.split_disabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "ip_nat.synchronization.shutdown") | Boolean |  |  |  |  |
 
 === "YAML"
 
@@ -37,4 +47,14 @@ search:
               first_port: <int>
               last_port: <int>
           utilization_log_threshold: <int>
+      synchronization:
+        description: <str>
+        expiry_interval: <int>
+        local_interface: <str>
+        peer_address: <str>
+        port_range:
+          first_port: <int>
+          last_port: <int>
+          split_disabled: <bool>
+        shutdown: <bool>
     ```
