@@ -22,6 +22,7 @@
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
+  - [VLAN Interfaces](#vlan-interfaces)
 - [Routing](#routing)
   - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
@@ -46,14 +47,12 @@
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management0 | oob_management | oob | MGMT | 172.100.100.110/24 | 172.100.100.1 |
-| Vlan10 | L2LEAF_INBAND_MGMT | inband | default | 10.10.10.13/24 | 10.10.10.1 |
 
 ##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management0 | oob_management | oob | MGMT | - | - |
-| Vlan10 | L2LEAF_INBAND_MGMT | inband | default | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -64,12 +63,6 @@ interface Management0
    no shutdown
    vrf MGMT
    ip address 172.100.100.110/24
-!
-interface Vlan10
-   description L2LEAF_INBAND_MGMT
-   no shutdown
-   mtu 1500
-   ip address 10.10.10.13/24
 ```
 
 ### IP Name Servers
@@ -208,7 +201,7 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 10 | L2LEAF_INBAND_MGMT | - |
+| 10 | INBAND_MGMT | - |
 | 310 | IDF3-Data | - |
 | 320 | IDF3-Voice | - |
 | 330 | IDF3-Guest | - |
@@ -218,7 +211,7 @@ vlan internal order ascending range 1006 1199
 ```eos
 !
 vlan 10
-   name L2LEAF_INBAND_MGMT
+   name INBAND_MGMT
 !
 vlan 310
    name IDF3-Data
@@ -2296,6 +2289,31 @@ interface Port-Channel971
    switchport
    switchport trunk allowed vlan 10,310,320,330
    switchport mode trunk
+```
+
+### VLAN Interfaces
+
+#### VLAN Interfaces Summary
+
+| Interface | Description | VRF |  MTU | Shutdown |
+| --------- | ----------- | --- | ---- | -------- |
+| Vlan10 | Inband Management | default | 1500 | False |
+
+##### IPv4
+
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
+| Vlan10 |  default  |  10.10.10.13/24  |  -  |  -  |  -  |  -  |  -  |
+
+#### VLAN Interfaces Device Configuration
+
+```eos
+!
+interface Vlan10
+   description Inband Management
+   no shutdown
+   mtu 1500
+   ip address 10.10.10.13/24
 ```
 
 ## Routing

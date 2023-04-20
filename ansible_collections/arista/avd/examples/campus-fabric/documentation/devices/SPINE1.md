@@ -233,7 +233,7 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 10 | L2LEAF_INBAND_MGMT | - |
+| 10 | INBAND_MGMT | - |
 | 110 | IDF1-Data | - |
 | 120 | IDF1-Voice | - |
 | 130 | IDF1-Guest | - |
@@ -251,7 +251,7 @@ vlan internal order ascending range 1006 1199
 ```eos
 !
 vlan 10
-   name L2LEAF_INBAND_MGMT
+   name INBAND_MGMT
 !
 vlan 110
    name IDF1-Data
@@ -443,7 +443,7 @@ interface Loopback0
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan10 | L2LEAF_INBAND_MGMT | default | 1500 | False |
+| Vlan10 | Inband Management | default | 1500 | False |
 | Vlan110 | IDF1-Data | default | - | False |
 | Vlan120 | IDF1-Voice | default | - | False |
 | Vlan130 | IDF1-Guest | default | - | False |
@@ -478,7 +478,7 @@ interface Loopback0
 ```eos
 !
 interface Vlan10
-   description L2LEAF_INBAND_MGMT
+   description Inband Management
    no shutdown
    mtu 1500
    ip address 10.10.10.2/24

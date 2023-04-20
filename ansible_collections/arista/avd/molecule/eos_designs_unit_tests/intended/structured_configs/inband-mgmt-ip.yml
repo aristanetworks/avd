@@ -1,0 +1,56 @@
+service_routing_protocols_model: multi-agent
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: INBANDMGMT
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+ethernet_interfaces:
+- peer: inband-mgmt-parent
+  peer_interface: Ethernet23
+  peer_type: l3leaf
+  description: INBAND-MGMT-PARENT_Ethernet23
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 1
+    mode: active
+  name: Ethernet1
+- peer: inband-mgmt-parent-vrf
+  peer_interface: Ethernet23
+  peer_type: l3leaf
+  description: INBAND-MGMT-PARENT-VRF_Ethernet23
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 1
+    mode: active
+  name: Ethernet2
+port_channel_interfaces:
+- name: Port-Channel1
+  description: INBAND-MGMT-PARENT_Po23
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: '103'
+ip_igmp_snooping:
+  globally_enabled: true
+vlans:
+- id: 103
+  tenant: system
+  name: MYVLANNAME
+vlan_interfaces:
+- name: Vlan103
+  description: My description
+  shutdown: false
+  mtu: 1500
+  vrf: INBANDMGMT
+  ip_address: 192.168.103.22/24
+  type: inband_mgmt

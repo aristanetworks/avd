@@ -80,7 +80,7 @@ vlans:
   tenant: MY_FABRIC
 - id: 10
   tenant: system
-  name: L2LEAF_INBAND_MGMT
+  name: INBAND_MGMT
 vlan_interfaces:
 - name: Vlan4093
   description: MLAG_PEER_L3_PEERING
@@ -177,7 +177,7 @@ vlan_interfaces:
   ip_virtual_router_addresses:
   - 10.3.30.1
 - name: Vlan10
-  description: L2LEAF_INBAND_MGMT
+  description: Inband Management
   shutdown: false
   mtu: 1500
   ip_address: 10.10.10.3/24

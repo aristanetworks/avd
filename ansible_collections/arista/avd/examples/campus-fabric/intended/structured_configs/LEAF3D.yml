@@ -36,13 +36,6 @@ management_interfaces:
   ip_address: 172.100.100.109/24
   gateway: 172.100.100.1
   type: oob
-- name: Vlan10
-  description: L2LEAF_INBAND_MGMT
-  shutdown: false
-  mtu: 1500
-  ip_address: 10.10.10.12/24
-  gateway: 10.10.10.1
-  type: inband
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -3063,6 +3056,13 @@ vlans:
   tenant: MY_FABRIC
 - id: 10
   tenant: system
-  name: L2LEAF_INBAND_MGMT
+  name: INBAND_MGMT
 ip_igmp_snooping:
   globally_enabled: true
+vlan_interfaces:
+- name: Vlan10
+  description: Inband Management
+  shutdown: false
+  mtu: 1500
+  ip_address: 10.10.10.12/24
+  type: inband_mgmt
