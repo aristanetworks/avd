@@ -8,7 +8,7 @@ from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_
 from ansible_collections.arista.avd.plugins.filter.esi_management import generate_esi, generate_route_target
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 
 
 class UtilsMixin:
@@ -45,7 +45,7 @@ class UtilsMixin:
 
                     # Verify that length of all lists are the same
                     nodes_length = len(adapter_settings["switches"])
-                    endpoint_ports = default(adapter_settings.get("endpoint_ports"), adapter_settings.get("server_ports"))
+                    endpoint_ports = adapter_settings.get("endpoint_ports")
                     if len(adapter_settings["switch_ports"]) != nodes_length or (endpoint_ports is not None and len(endpoint_ports) != nodes_length):
                         raise AristaAvdError(
                             f"Length of lists 'switches', 'switch_ports', 'endpoint_ports' (if used) did not match on adapter {adapter_index} on"
@@ -99,10 +99,7 @@ class UtilsMixin:
             if (short_esi := get(adapter, "ethernet_segment.short_esi", default=port_channel_short_esi)) is None:
                 return None
 
-        endpoint_ports: list = default(
-            adapter.get("endpoint_ports"),
-            adapter.get("server_ports"),
-        )
+        endpoint_ports: list = adapter.get("endpoint_ports")
         short_esi = str(short_esi)
         if short_esi.lower() == "auto":
             esi_hash = sha256(

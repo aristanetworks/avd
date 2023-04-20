@@ -567,7 +567,7 @@ As an example, here is the configuration for `dc1-leaf1-server1`:
   dc1-leaf1-server1:
     adapters: # (1)!
     - type: server
-      server_ports: [ PCI1, PCI2 ] # (2)!
+      endpoint_ports: [ PCI1, PCI2 ] # (2)!
       switch_ports: [ Ethernet5, Ethernet5 ] # (3)!
       switches: [ dc1-leaf1a, dc1-leaf1b ] # (4)!
       vlans: 11-12,21-22 # (5)!
@@ -579,7 +579,7 @@ As an example, here is the configuration for `dc1-leaf1-server1`:
         mode: active
 
     - type: ilo
-      server_ports: [ iLO ]
+      endpoint_ports: [ iLO ]
       switch_ports: [ Ethernet5 ]
       switches: [ dc1-leaf1c ]
       vlans: 11
@@ -588,9 +588,9 @@ As an example, here is the configuration for `dc1-leaf1-server1`:
 ```
 
 1. The relevant `adapters` are defined. The `type` set to `server` and `ilo` is purely for documentation and readability purposes. It has no operational significance.
-2. `server_ports` are defined for use in the interface descriptions on the switch. This does not configure anything on the server.
+2. `endpoint_ports` are defined for use in the interface descriptions on the switch. This does not configure anything on the server.
 3. `switch_ports` defines the interfaces used in the switches. In this example the server is dual-connected to Ethernet5 and Ethernet5. These two ports exist on switch dc1-leaf1a and dc1-leaf1b defined in the following line.
-4. `switches` defines the switches used, in this case dc1-leaf1a and dc1-leaf1b. Note that the `server_ports`, `switch_ports` and `switches` definitions are paired vertically.
+4. `switches` defines the switches used, in this case dc1-leaf1a and dc1-leaf1b. Note that the `endpoint_ports`, `switch_ports` and `switches` definitions are paired vertically.
 5. `vlans` defines which VLANs are allowed on the switch_ports, in this case it is two ranges, VLAN11-12 and VLAN21-22 for the dual-attached server ports and VLAN11 for the iLO port.
 6. `native_vlan` specifies the native VLAN when the switch port mode is set to trunk.
 7. `mode` is set to trunk for the dual-attached server ports and access for the iLO port.

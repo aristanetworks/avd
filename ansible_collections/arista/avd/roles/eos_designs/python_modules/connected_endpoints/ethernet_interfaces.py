@@ -60,7 +60,6 @@ class EthernetInterfacesMixin(UtilsMixin):
         peer = connected_endpoint["name"]
         endpoint_ports: list = default(
             adapter.get("endpoint_ports"),
-            adapter.get("server_ports"),
             [],
         )
         peer_interface = endpoint_ports[node_index] if node_index < len(endpoint_ports) else None

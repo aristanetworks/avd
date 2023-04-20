@@ -50,8 +50,7 @@ tenants:
 servers:
   bmca-endpoint:
     adapters:
-      - type: server
-        server_ports: [ eth1 ]
+      - endpoint_ports: [ eth1 ]
         switch_ports: [ Ethernet13 ]
         switches: [ ptp-tests-leaf1 ]
         vlans: 11
@@ -62,8 +61,7 @@ servers:
 
   video-endpoint:
     adapters:
-      - type: server
-        server_ports: [ PCI1, PCI2 ]
+      - endpoint_ports: [ PCI1, PCI2 ]
         switch_ports: [ Ethernet5, Ethernet5 ]
         switches: [ ptp-tests-leaf1, ptp-tests-leaf2 ]
         vlans: 11
@@ -75,8 +73,7 @@ servers:
 
   Endpoint-with-specific-PTP-profile:
     adapters:
-      - type: server
-        server_ports: [ eth3 ]
+      - endpoint_ports: [ eth3 ]
         switch_ports: [ Ethernet3 ]
         switches: [ ptp-tests-leaf1 ]
         vlans: 11
