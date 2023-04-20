@@ -7,6 +7,7 @@
 - [IP NAT](#ip-nat)
   - [NAT Pools](#nat-pools)
   - [NAT Synchronization](#nat-synchronization)
+  - [NAT Translation Settings](#nat-translation-settings)
 
 ## Management
 
@@ -84,3 +85,18 @@ Kernel Buffer Size: 64 MB
 - Peer IP Address: 1.1.1.1
 - Port Range: 1024 - 65535
 - Port Range Split: Disabled
+
+### NAT Translation Settings
+- Address Selection: Any
+- Address Selection: Hash Source IP Field
+- Counters enabled
+- Connection Limits:
+  - Global: max. 100000 Connections
+  - per Host: max. 1000 Connections
+  - IP Host 10.0.0.1: max. 100 Connections
+  - IP Host 10.0.0.2: max. 200 Connections
+- Connection Limit Low Mark:
+  - Global: 50 %
+  - per Host: 50 %
+- UDP Connection Timeout: 3600 Seconds
+- TCP Connection Timeout: 7200 Seconds

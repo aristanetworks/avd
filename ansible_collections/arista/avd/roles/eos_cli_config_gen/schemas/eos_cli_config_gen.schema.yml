@@ -3212,6 +3212,86 @@ keys:
                 type: bool
           shutdown:
             type: bool
+      translation:
+        type: dict
+        keys:
+          address_selection:
+            type: dict
+            keys:
+              any:
+                type: bool
+              hash_field_source_ip:
+                type: bool
+          counters:
+            type: bool
+          low_mark:
+            type: dict
+            keys:
+              percentage:
+                type: int
+                convert_types:
+                - str
+                min: 1
+                max: 99
+              host_percentage:
+                type: int
+                convert_types:
+                - str
+                min: 1
+                max: 99
+          max_entries:
+            type: dict
+            keys:
+              limit:
+                type: int
+                convert_types:
+                - str
+                min: 0
+                max: 4294967295
+              host_limit:
+                type: int
+                convert_types:
+                - str
+                min: 0
+                max: 4294967295
+              ip_limits:
+                type: list
+                primary_key: ip
+                convert_types:
+                - dict
+                items:
+                  type: dict
+                  keys:
+                    ip:
+                      type: str
+                      description: IPv4 address
+                    limit:
+                      type: int
+                      required: true
+                      convert_types:
+                      - str
+                      min: 0
+                      max: 4294967295
+          timeouts:
+            type: list
+            primary_key: protocol
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                protocol:
+                  type: str
+                  valid_values:
+                  - tcp
+                  - udp
+                timeout:
+                  type: int
+                  required: true
+                  convert_types:
+                  - str
+                  min: 0
+                  max: 4294967295
   ip_radius_source_interfaces:
     documentation_options:
       filename: data_model/Authentication

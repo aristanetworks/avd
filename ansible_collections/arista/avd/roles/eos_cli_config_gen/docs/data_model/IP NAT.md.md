@@ -32,6 +32,23 @@ search:
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;last_port</samp>](## "ip_nat.synchronization.port_range.last_port") | Integer |  |  | Min: 1024<br>Max: 65535 | >= first_port |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;split_disabled</samp>](## "ip_nat.synchronization.port_range.split_disabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "ip_nat.synchronization.shutdown") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;translation</samp>](## "ip_nat.translation") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;address_selection</samp>](## "ip_nat.translation.address_selection") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;any</samp>](## "ip_nat.translation.address_selection.any") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_field_source_ip</samp>](## "ip_nat.translation.address_selection.hash_field_source_ip") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counters</samp>](## "ip_nat.translation.counters") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;low_mark</samp>](## "ip_nat.translation.low_mark") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;percentage</samp>](## "ip_nat.translation.low_mark.percentage") | Integer |  |  | Min: 1<br>Max: 99 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;host_percentage</samp>](## "ip_nat.translation.low_mark.host_percentage") | Integer |  |  | Min: 1<br>Max: 99 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;max_entries</samp>](## "ip_nat.translation.max_entries") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "ip_nat.translation.max_entries.limit") | Integer |  |  | Min: 0<br>Max: 4294967295 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;host_limit</samp>](## "ip_nat.translation.max_entries.host_limit") | Integer |  |  | Min: 0<br>Max: 4294967295 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_limits</samp>](## "ip_nat.translation.max_entries.ip_limits") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- ip</samp>](## "ip_nat.translation.max_entries.ip_limits.[].ip") | String | Required, Unique |  |  | IPv4 address |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "ip_nat.translation.max_entries.ip_limits.[].limit") | Integer | Required |  | Min: 0<br>Max: 4294967295 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;timeouts</samp>](## "ip_nat.translation.timeouts") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- protocol</samp>](## "ip_nat.translation.timeouts.[].protocol") | String | Required, Unique |  | Valid Values:<br>- tcp<br>- udp |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout</samp>](## "ip_nat.translation.timeouts.[].timeout") | Integer | Required |  | Min: 0<br>Max: 4294967295 |  |
 
 === "YAML"
 
@@ -57,4 +74,21 @@ search:
           last_port: <int>
           split_disabled: <bool>
         shutdown: <bool>
+      translation:
+        address_selection:
+          any: <bool>
+          hash_field_source_ip: <bool>
+        counters: <bool>
+        low_mark:
+          percentage: <int>
+          host_percentage: <int>
+        max_entries:
+          limit: <int>
+          host_limit: <int>
+          ip_limits:
+            - ip: <str>
+              limit: <int>
+        timeouts:
+          - protocol: <str>
+            timeout: <int>
     ```

@@ -50,4 +50,41 @@ Kernel Buffer Size: {{ ip_nat.kernel_buffer_size }} MB
 - Port Range Split: Disabled
 {%         endif %}
 {%     endif %}
+{%     if ip_nat.translation is arista.avd.defined %}
+
+### NAT Translation Settings
+{%         if ip_nat.translation.address_selection.any | arista.avd.default(false) %}
+- Address Selection: Any
+{%         endif %}
+{%         if ip_nat.translation.address_selection.hash_field_source_ip | arista.avd.default(false) %}
+- Address Selection: Hash Source IP Field
+{%         endif %}
+{%         if ip_nat.translation.counters | arista.avd.default(false) %}
+- Counters enabled
+{%         endif %}
+{%         if ip_nat.translation.max_entries is arista.avd.defined %}
+- Connection Limits:
+{%             if ip_nat.translation.max_entries.limit is arista.avd.defined %}
+  - Global: max. {{ ip_nat.translation.max_entries.limit }} Connections
+{%             endif %}
+{%             if ip_nat.translation.max_entries.host_limit is arista.avd.defined %}
+  - per Host: max. {{ ip_nat.translation.max_entries.host_limit }} Connections
+{%             endif %}
+{%             for ip_limit in ip_nat.translation.max_entries.ip_limits | arista.avd.default([]) %}
+  - IP Host {{ ip_limit.ip }}: max. {{ ip_limit.limit }} Connections
+{%             endfor %}
+{%         endif %}
+{%         if ip_nat.translation.low_mark is arista.avd.defined %}
+- Connection Limit Low Mark:
+{%             if ip_nat.translation.low_mark.percentage is arista.avd.defined %}
+  - Global: {{ ip_nat.translation.low_mark.percentage }} %
+{%             endif %}
+{%             if ip_nat.translation.low_mark.host_percentage is arista.avd.defined %}
+  - per Host: {{ ip_nat.translation.low_mark.host_percentage }} %
+{%             endif %}
+{%         endif %}
+{%         for timeout in ip_nat.translation.timeouts | arista.avd.default([]) %}
+- {{ timeout.protocol | upper }} Connection Timeout: {{ timeout.timeout }} Seconds
+{%         endfor %}
+{%     endif %}
 {% endif %}

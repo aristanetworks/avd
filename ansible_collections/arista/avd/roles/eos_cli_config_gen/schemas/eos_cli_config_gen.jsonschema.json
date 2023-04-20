@@ -4700,6 +4700,141 @@
             "^_.+$": {}
           },
           "title": "Synchronization"
+        },
+        "translation": {
+          "type": "object",
+          "properties": {
+            "address_selection": {
+              "type": "object",
+              "properties": {
+                "any": {
+                  "type": "boolean",
+                  "title": "Any"
+                },
+                "hash_field_source_ip": {
+                  "type": "boolean",
+                  "title": "Hash Field Source IP"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Address Selection"
+            },
+            "counters": {
+              "type": "boolean",
+              "title": "Counters"
+            },
+            "low_mark": {
+              "type": "object",
+              "properties": {
+                "percentage": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 99,
+                  "title": "Percentage"
+                },
+                "host_percentage": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 99,
+                  "title": "Host Percentage"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Low Mark"
+            },
+            "max_entries": {
+              "type": "object",
+              "properties": {
+                "limit": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 4294967295,
+                  "title": "Limit"
+                },
+                "host_limit": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 4294967295,
+                  "title": "Host Limit"
+                },
+                "ip_limits": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "ip": {
+                        "type": "string",
+                        "description": "IPv4 address",
+                        "title": "IP"
+                      },
+                      "limit": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295,
+                        "title": "Limit"
+                      }
+                    },
+                    "required": [
+                      "limit",
+                      "ip"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    }
+                  },
+                  "title": "IP Limits"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Max Entries"
+            },
+            "timeouts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "protocol": {
+                    "type": "string",
+                    "enum": [
+                      "tcp",
+                      "udp"
+                    ],
+                    "title": "Protocol"
+                  },
+                  "timeout": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 4294967295,
+                    "title": "Timeout"
+                  }
+                },
+                "required": [
+                  "timeout",
+                  "protocol"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Timeouts"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Translation"
         }
       },
       "additionalProperties": false,
