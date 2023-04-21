@@ -166,6 +166,9 @@ interface {{ ethernet_interface.name }}
 {%         if ethernet_interface.l2_protocol.encapsulation_dot1q_vlan is arista.avd.defined %}
    l2-protocol encapsulation dot1q vlan {{ ethernet_interface.l2_protocol.encapsulation_dot1q_vlan }}
 {%         endif %}
+{%         if ethernet_interface.l2_protocol.forwarding_profile is arista.avd.defined %}
+   l2-protocol forwarding profile {{ ethernet_interface.l2_protocol.forwarding_profile }}
+{%         endif %}
 {%         if ethernet_interface.flow_tracker.sampled is arista.avd.defined %}
    flow tracker sampled {{ ethernet_interface.flow_tracker.sampled }}
 {%         endif %}
