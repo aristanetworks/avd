@@ -11377,8 +11377,6 @@ $defs:
   interface_ip_nat_static:
     type: list
     primary_key: original_ip
-    convert_types:
-    - dict
     items:
       type: dict
       keys:
@@ -11444,8 +11442,6 @@ $defs:
           dynamic:
             type: list
             primary_key: access_list
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
@@ -11470,8 +11466,6 @@ $defs:
           dynamic:
             type: list
             primary_key: access_list
-            convert_types:
-            - dict
             items:
               type: dict
               keys:
