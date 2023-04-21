@@ -4,7 +4,7 @@ __metaclass__ = type
 
 DOCUMENTATION = """
     name: global_vars
-    version_added: "4.0"
+    version_added: "4.0.0"
     short_description: Variable plugins to allow loading global_vars with less precedence than group_vars or host_vars
     requirements:
         - Should run at the 'inventory' stage (default) before all other
@@ -29,10 +29,10 @@ DOCUMENTATION = """
           - If the environment variable is set, it takes precedence over ansible.cfg.
       stage:
         default: inventory
+        choices: ["inventory"]
         description:
           - The stage during which executing the plugin. It could be 'inventory' or 'task'
           - Given the expected usage of this plugin at the beginning of the run. It is hardcoded to 'inventory'
-        type: constant
       _valid_extensions:
         default: [".yml", ".yaml", ".json"]
         description:
@@ -45,7 +45,7 @@ DOCUMENTATION = """
         elements: string
 """
 
-EXAMPLES = """
+OTHER = """
 # To enable the global_variable plugin in `ansible.cfg`
 [defaults]
 vars_plugins_enabled = arista.avd.global_vars, host_group_vars
@@ -111,7 +111,9 @@ class VarsModule(BaseVarsPlugin):
         variables = {}
         for entity in entities:
             if not isinstance(entity, (Host, Group)):
-                raise AnsibleParserError(f"Supplied entity must be Host or Group, got {type(entity)} instead")
+                # Changed the error message because the TYPE_REGEX of ansible was triggering
+                # unidiomatic-typecheck because of the `or` word before the type  call...
+                raise AnsibleParserError(f"Supplied entity is of type {type(entity)} but must be of type Host or Group instead")
             if entity.name != "all":
                 continue
 

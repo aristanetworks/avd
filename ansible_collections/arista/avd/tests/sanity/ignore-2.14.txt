@@ -6,3 +6,4 @@ plugins/modules/set_vars.py validate-modules:missing-gplv3-license
 plugins/modules/validate_and_template.py validate-modules:missing-gplv3-license
 plugins/modules/verify_requirements.py validate-modules:missing-gplv3-license
 plugins/modules/yaml_templates_to_facts.py validate-modules:missing-gplv3-license
+plugins/vars/global_vars.py validate-modules:missing-gplv3-license
