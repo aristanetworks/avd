@@ -3,7 +3,7 @@ search:
   boost: 2
 ---
 
-# IP NAT.md
+# IP NAT
 
 ## IP Nat
 

@@ -3117,7 +3117,7 @@ keys:
           max: 4
   ip_nat:
     documentation_options:
-      filename: data_model/IP NAT.md
+      filename: data_model/IP NAT
     type: dict
     keys:
       kernel_buffer_size:
