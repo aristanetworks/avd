@@ -76,8 +76,8 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
         return f"MLAG_PEER_{self._mlag_peer}_Po{self._mlag_port_channel_id}"
 
     def connected_endpoints_ethernet_interfaces(self, peer: str = None, peer_interface: str = None, adapter_description: str = None) -> str:
-        """If a jinja template is configured, use it. 
-        If not, use the adapter.description or default to PEER_PEER_INTERFACE"""
+        """If a jinja template is configured, use it.
+        If not, use the adapter.description or default to <PEER>_<PEER_INTERFACE>"""
 
         if template_path := self.shared_utils.interface_descriptions_templates.get("connected_endpoints_ethernet_interfaces"):
             return self._template(template_path, peer=peer, peer_interface=peer_interface, adapter_description=adapter_description)
@@ -91,8 +91,8 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
     def connected_endpoints_port_channel_interfaces(
         self, peer: str = None, adapter_description: str = None, adapter_port_channel_description: str = None
     ) -> str:
-        """If a jinja template is configured, use it. 
-        If not, return the <adapter.description_adapter>_<port_channel_description> or 
+        """If a jinja template is configured, use it.
+        If not, return the <adapter.description>_<port_channel_description> or
         default to <PEER>_<adapter_port_channel_description>
         """
 
