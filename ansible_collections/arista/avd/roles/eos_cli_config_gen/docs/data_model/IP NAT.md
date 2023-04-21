@@ -12,7 +12,7 @@ search:
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>ip_nat</samp>](## "ip_nat") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;kernel_buffer_size</samp>](## "ip_nat.kernel_buffer_size") | Integer |  |  | Min: 1<br>Max: 64 |  |
+    | [<samp>&nbsp;&nbsp;kernel_buffer_size</samp>](## "ip_nat.kernel_buffer_size") | Integer |  |  | Min: 1<br>Max: 64 | Buffer size in MB |
     | [<samp>&nbsp;&nbsp;pools</samp>](## "ip_nat.pools") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "ip_nat.pools.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_length</samp>](## "ip_nat.pools.[].prefix_length") | Integer | Required |  | Min: 16<br>Max: 32 |  |
@@ -48,7 +48,7 @@ search:
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "ip_nat.translation.max_entries.ip_limits.[].limit") | Integer | Required |  | Min: 0<br>Max: 4294967295 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;timeouts</samp>](## "ip_nat.translation.timeouts") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- protocol</samp>](## "ip_nat.translation.timeouts.[].protocol") | String | Required, Unique |  | Valid Values:<br>- tcp<br>- udp |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout</samp>](## "ip_nat.translation.timeouts.[].timeout") | Integer | Required |  | Min: 0<br>Max: 4294967295 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout</samp>](## "ip_nat.translation.timeouts.[].timeout") | Integer | Required |  | Min: 0<br>Max: 4294967295 | in seconds |
 
 === "YAML"
 

@@ -3126,6 +3126,7 @@ keys:
         - str
         min: 1
         max: 64
+        description: Buffer size in MB
       pools:
         type: list
         primary_key: name
@@ -3292,6 +3293,7 @@ keys:
                   - str
                   min: 0
                   max: 4294967295
+                  description: in seconds
   ip_radius_source_interfaces:
     documentation_options:
       filename: data_model/Authentication
