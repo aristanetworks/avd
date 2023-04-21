@@ -3,6 +3,61 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 $defs:
+  interface_ip_nat_static:
+    type: list
+    primary_key: original_ip
+    convert_types:
+      - dict
+    items:
+      type: dict
+      keys:
+        access_list:
+          type: str
+          description: "'access_list' and 'group' are mutual exclusive"
+        comment:
+          type: str
+        direction:
+          type: str
+          valid_values: [egress, ingress]
+          description: |-
+            Egress or ingress can be default. This depends on source/destination, EoS version and hardware platform.
+            EoS might remove this keyword in configuration. So, check configuration on targeted HW/SW .
+        group:
+          type: int
+          convert_types:
+            - str
+          min: 1
+          max: 65535
+          description: "'access_list' and 'group' are mutual exclusive"
+        original_ip:
+          type: str
+          description: IPv4 address
+        original_port:
+          type: int
+          convert_types:
+            - str
+          min: 1
+          max: 65535
+        priority:
+          type: int
+          convert_types:
+            - str
+          min: 0
+          max: 4294967295
+        protocol:
+          type: str
+          valid_values: [udp, tcp]
+        translated_ip:
+          type: str
+          required: true
+          description: IPv4 address
+        translated_port:
+          type: int
+          convert_types:
+            - str
+          min: 1
+          max: 65535
+          description: "requires 'original_port'"
   interface_ip_nat:
     type: dict
     keys:
@@ -30,6 +85,8 @@ $defs:
                     - str
                   min: 0
                   max: 4294967295
+          static:
+            $ref: "#/$defs/interface_ip_nat_static"
       source:
         type: dict
         keys:
@@ -64,3 +121,5 @@ $defs:
                     - str
                   min: 0
                   max: 4294967295
+          static:
+            $ref: "#/$defs/interface_ip_nat_static"

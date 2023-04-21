@@ -187,6 +187,19 @@ sFlow is disabled.
 | Ethernet18 | PBR Description | routed | - | 192.0.2.1/31 | default | 1500 | - | - | - |
 | Ethernet47 | IP Helper | routed | - | 172.31.255.1/31 | default | - | - | - | - |
 
+##### IP NAT: Source Static
+
+| Interface | Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
+| --------- | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
+| Ethernet60 |  | 3.0.0.1 |  |  | 4.0.0.1 |  |  |  | 0 |  |
+| Ethernet60 |  | 3.0.0.2 | 22 |  | 4.0.0.2 |  |  |  | 0 |  |
+| Ethernet60 |  | 3.0.0.3 | 22 |  | 4.0.0.3 | 23 |  |  | 0 |  |
+| Ethernet60 |  | 3.0.0.4 | 22 |  | 4.0.0.4 | 23 | UDP |  | 0 |  |
+| Ethernet60 |  | 3.0.0.5 | 22 |  | 4.0.0.5 | 23 | TCP | 1 | 0 |  |
+| Ethernet60 |  | 3.0.0.6 | 22 |  | 4.0.0.6 | 23 | TCP | 2 | 5 | Comment Test |
+| Ethernet60 |  | 3.0.0.7 |  | ACL21 | 4.0.0.7 |  |  |  | 0 |  |
+| Ethernet60 | ingress | 3.0.0.8 |  |  | 4.0.0.8 |  |  |  | 0 |  |
+
 ##### IP NAT: Source Dynamic
 
 | Interface | Access List | NAT Type | Pool Name | Priority | Comment |
@@ -200,6 +213,19 @@ sFlow is disabled.
 | Ethernet60 | ACL17 | overload | n.a. | 10 | Priority_10 |
 | Ethernet60 | ACL18 | pool-address-only | POOL18 | 10 | Priority_10 |
 | Ethernet60 | ACL19 | pool-full-cone | POOL19 | 10 | Priority_10 |
+
+##### IP NAT: Destination Static
+
+| Interface | Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
+| --------- | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
+| Ethernet60 |  | 1.0.0.1 |  |  | 2.0.0.1 |  |  |  | 0 |  |
+| Ethernet60 |  | 1.0.0.2 | 22 |  | 2.0.0.2 |  |  |  | 0 |  |
+| Ethernet60 |  | 1.0.0.3 | 22 |  | 2.0.0.3 | 23 |  |  | 0 |  |
+| Ethernet60 |  | 1.0.0.4 | 22 |  | 2.0.0.4 | 23 | udp |  | 0 |  |
+| Ethernet60 |  | 1.0.0.5 | 22 |  | 2.0.0.5 | 23 | tcp | 1 | 0 |  |
+| Ethernet60 |  | 1.0.0.6 | 22 |  | 2.0.0.6 | 23 | tcp | 2 | 5 | Comment Test |
+| Ethernet60 |  | 1.0.0.7 |  | ACL21 | 2.0.0.7 |  |  |  | 0 |  |
+| Ethernet60 | egress | 239.0.0.1 |  |  | 239.0.0.2 |  |  |  | 0 |  |
 
 ##### IP NAT: Destination Dynamic
 
@@ -766,6 +792,14 @@ interface Ethernet58
 interface Ethernet60
    description IP NAT Testing
    switchport
+   ip nat source static 3.0.0.1 4.0.0.1
+   ip nat source static 3.0.0.2 22 4.0.0.2
+   ip nat source static 3.0.0.3 22 4.0.0.3 23
+   ip nat source static 3.0.0.4 22 4.0.0.4 23 protocol udp
+   ip nat source static 3.0.0.5 22 4.0.0.5 23 protocol tcp group 1
+   ip nat source static 3.0.0.6 22 4.0.0.6 23 protocol tcp group 2 comment Comment Test
+   ip nat source static 3.0.0.7 access-list ACL21 4.0.0.7
+   ip nat source ingress static 3.0.0.8 4.0.0.8
    ip nat source dynamic access-list ACL11 pool POOL11
    ip nat source dynamic access-list ACL12 pool POOL11 comment POOL11 shared with ACL11/12
    ip nat source dynamic access-list ACL13 pool POOL13 priority 10
@@ -775,6 +809,14 @@ interface Ethernet60
    ip nat source dynamic access-list ACL17 overload priority 10 comment Priority_10
    ip nat source dynamic access-list ACL18 pool POOL18 address-only priority 10 comment Priority_10
    ip nat source dynamic access-list ACL19 pool POOL19 full-cone priority 10 comment Priority_10
+   ip nat destination static 1.0.0.1 2.0.0.1
+   ip nat destination static 1.0.0.2 22 2.0.0.2
+   ip nat destination static 1.0.0.3 22 2.0.0.3 23
+   ip nat destination static 1.0.0.4 22 2.0.0.4 23 protocol udp
+   ip nat destination static 1.0.0.5 22 2.0.0.5 23 protocol tcp group 1
+   ip nat destination static 1.0.0.6 22 2.0.0.6 23 protocol tcp group 2 comment Comment Test
+   ip nat destination static 1.0.0.7 access-list ACL21 2.0.0.7
+   ip nat destination egress static 239.0.0.1 239.0.0.2
    ip nat destination dynamic access-list ACL1 pool POOL1
    ip nat destination dynamic access-list ACL2 pool POOL1 comment POOL1 shared with ACL1/2
    ip nat destination dynamic access-list ACL3 pool POOL3 priority 10

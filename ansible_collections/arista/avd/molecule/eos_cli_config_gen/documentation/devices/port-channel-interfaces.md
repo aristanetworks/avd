@@ -298,11 +298,23 @@ interface Ethernet50
 | Port-Channel113 | interface_with_mpls_enabled | routed | - | 172.31.128.9/31 | default | - | - | - | - |
 | Port-Channel114 | interface_with_mpls_disabled | routed | - | 172.31.128.10/31 | default | - | - | - | - |
 
+##### IP NAT: Source Static
+
+| Interface | Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
+| --------- | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
+| Port-Channel130 |  | 3.0.0.1 |  |  | 4.0.0.1 |  |  |  | 0 |  |
+
 ##### IP NAT: Source Dynamic
 
 | Interface | Access List | NAT Type | Pool Name | Priority | Comment |
 | --------- | ----------- | -------- | --------- | -------- | ------- |
 | Port-Channel130 | ACL2 | pool | POOL2 | 0 |  |
+
+##### IP NAT: Destination Static
+
+| Interface | Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
+| --------- | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
+| Port-Channel130 |  | 1.0.0.1 |  |  | 2.0.0.1 |  |  |  | 0 |  |
 
 ##### IP NAT: Destination Dynamic
 
@@ -649,7 +661,9 @@ interface Port-Channel122
 interface Port-Channel130
    description IP NAT Testing
    switchport
+   ip nat source static 3.0.0.1 4.0.0.1
    ip nat source dynamic access-list ACL2 pool POOL2
+   ip nat destination static 1.0.0.1 2.0.0.1
    ip nat destination dynamic access-list ACL1 pool POOL1
 ```
 

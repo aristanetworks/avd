@@ -115,11 +115,23 @@ interface Management1
 | Vlan2002 |  Tenant_B  |  -  |  10.2.2.1/24  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  169.254.252.0/31  |  -  |  -  |  -  |  -  |  -  |
 
+##### IP NAT: Source Static
+
+| Interface | Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
+| --------- | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
+| Vlan50 |  | 3.0.0.1 |  |  | 4.0.0.1 |  |  |  | 0 |  |
+
 ##### IP NAT: Source Dynamic
 
 | Interface | Access List | NAT Type | Pool Name | Priority | Comment |
 | --------- | ----------- | -------- | --------- | -------- | ------- |
 | Vlan50 | ACL2 | pool | POOL2 | 0 |  |
+
+##### IP NAT: Destination Static
+
+| Interface | Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
+| --------- | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
+| Vlan50 |  | 1.0.0.1 |  |  | 2.0.0.1 |  |  |  | 0 |  |
 
 ##### IP NAT: Destination Dynamic
 
@@ -222,7 +234,9 @@ interface Vlan44
 !
 interface Vlan50
    description IP NAT Testing
+   ip nat source static 3.0.0.1 4.0.0.1
    ip nat source dynamic access-list ACL2 pool POOL2
+   ip nat destination static 1.0.0.1 2.0.0.1
    ip nat destination dynamic access-list ACL1 pool POOL1
 !
 interface Vlan75

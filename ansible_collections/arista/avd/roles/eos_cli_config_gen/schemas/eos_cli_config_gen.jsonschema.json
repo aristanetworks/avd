@@ -2194,6 +2194,85 @@
                       }
                     },
                     "title": "Dynamic"
+                  },
+                  "static": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "access_list": {
+                          "type": "string",
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Access List"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "title": "Comment"
+                        },
+                        "direction": {
+                          "type": "string",
+                          "enum": [
+                            "egress",
+                            "ingress"
+                          ],
+                          "description": "Egress or ingress can be default. This depends on source/destination, EoS version and hardware platform.\nEoS might remove this keyword in configuration. So, check configuration on targeted HW/SW .",
+                          "title": "Direction"
+                        },
+                        "group": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Group"
+                        },
+                        "original_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Original IP"
+                        },
+                        "original_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "title": "Original Port"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Priority"
+                        },
+                        "protocol": {
+                          "type": "string",
+                          "enum": [
+                            "udp",
+                            "tcp"
+                          ],
+                          "title": "Protocol"
+                        },
+                        "translated_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Translated IP"
+                        },
+                        "translated_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "requires 'original_port'",
+                          "title": "Translated Port"
+                        }
+                      },
+                      "required": [
+                        "translated_ip",
+                        "original_ip"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Static"
                   }
                 },
                 "additionalProperties": false,
@@ -2250,6 +2329,85 @@
                       }
                     },
                     "title": "Dynamic"
+                  },
+                  "static": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "access_list": {
+                          "type": "string",
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Access List"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "title": "Comment"
+                        },
+                        "direction": {
+                          "type": "string",
+                          "enum": [
+                            "egress",
+                            "ingress"
+                          ],
+                          "description": "Egress or ingress can be default. This depends on source/destination, EoS version and hardware platform.\nEoS might remove this keyword in configuration. So, check configuration on targeted HW/SW .",
+                          "title": "Direction"
+                        },
+                        "group": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Group"
+                        },
+                        "original_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Original IP"
+                        },
+                        "original_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "title": "Original Port"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Priority"
+                        },
+                        "protocol": {
+                          "type": "string",
+                          "enum": [
+                            "udp",
+                            "tcp"
+                          ],
+                          "title": "Protocol"
+                        },
+                        "translated_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Translated IP"
+                        },
+                        "translated_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "requires 'original_port'",
+                          "title": "Translated Port"
+                        }
+                      },
+                      "required": [
+                        "translated_ip",
+                        "original_ip"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Static"
                   }
                 },
                 "additionalProperties": false,
@@ -9178,6 +9336,85 @@
                       }
                     },
                     "title": "Dynamic"
+                  },
+                  "static": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "access_list": {
+                          "type": "string",
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Access List"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "title": "Comment"
+                        },
+                        "direction": {
+                          "type": "string",
+                          "enum": [
+                            "egress",
+                            "ingress"
+                          ],
+                          "description": "Egress or ingress can be default. This depends on source/destination, EoS version and hardware platform.\nEoS might remove this keyword in configuration. So, check configuration on targeted HW/SW .",
+                          "title": "Direction"
+                        },
+                        "group": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Group"
+                        },
+                        "original_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Original IP"
+                        },
+                        "original_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "title": "Original Port"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Priority"
+                        },
+                        "protocol": {
+                          "type": "string",
+                          "enum": [
+                            "udp",
+                            "tcp"
+                          ],
+                          "title": "Protocol"
+                        },
+                        "translated_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Translated IP"
+                        },
+                        "translated_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "requires 'original_port'",
+                          "title": "Translated Port"
+                        }
+                      },
+                      "required": [
+                        "translated_ip",
+                        "original_ip"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Static"
                   }
                 },
                 "additionalProperties": false,
@@ -9234,6 +9471,85 @@
                       }
                     },
                     "title": "Dynamic"
+                  },
+                  "static": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "access_list": {
+                          "type": "string",
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Access List"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "title": "Comment"
+                        },
+                        "direction": {
+                          "type": "string",
+                          "enum": [
+                            "egress",
+                            "ingress"
+                          ],
+                          "description": "Egress or ingress can be default. This depends on source/destination, EoS version and hardware platform.\nEoS might remove this keyword in configuration. So, check configuration on targeted HW/SW .",
+                          "title": "Direction"
+                        },
+                        "group": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Group"
+                        },
+                        "original_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Original IP"
+                        },
+                        "original_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "title": "Original Port"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Priority"
+                        },
+                        "protocol": {
+                          "type": "string",
+                          "enum": [
+                            "udp",
+                            "tcp"
+                          ],
+                          "title": "Protocol"
+                        },
+                        "translated_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Translated IP"
+                        },
+                        "translated_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "requires 'original_port'",
+                          "title": "Translated Port"
+                        }
+                      },
+                      "required": [
+                        "translated_ip",
+                        "original_ip"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Static"
                   }
                 },
                 "additionalProperties": false,
@@ -17342,6 +17658,85 @@
                       }
                     },
                     "title": "Dynamic"
+                  },
+                  "static": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "access_list": {
+                          "type": "string",
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Access List"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "title": "Comment"
+                        },
+                        "direction": {
+                          "type": "string",
+                          "enum": [
+                            "egress",
+                            "ingress"
+                          ],
+                          "description": "Egress or ingress can be default. This depends on source/destination, EoS version and hardware platform.\nEoS might remove this keyword in configuration. So, check configuration on targeted HW/SW .",
+                          "title": "Direction"
+                        },
+                        "group": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Group"
+                        },
+                        "original_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Original IP"
+                        },
+                        "original_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "title": "Original Port"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Priority"
+                        },
+                        "protocol": {
+                          "type": "string",
+                          "enum": [
+                            "udp",
+                            "tcp"
+                          ],
+                          "title": "Protocol"
+                        },
+                        "translated_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Translated IP"
+                        },
+                        "translated_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "requires 'original_port'",
+                          "title": "Translated Port"
+                        }
+                      },
+                      "required": [
+                        "translated_ip",
+                        "original_ip"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Static"
                   }
                 },
                 "additionalProperties": false,
@@ -17398,6 +17793,85 @@
                       }
                     },
                     "title": "Dynamic"
+                  },
+                  "static": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "access_list": {
+                          "type": "string",
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Access List"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "title": "Comment"
+                        },
+                        "direction": {
+                          "type": "string",
+                          "enum": [
+                            "egress",
+                            "ingress"
+                          ],
+                          "description": "Egress or ingress can be default. This depends on source/destination, EoS version and hardware platform.\nEoS might remove this keyword in configuration. So, check configuration on targeted HW/SW .",
+                          "title": "Direction"
+                        },
+                        "group": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Group"
+                        },
+                        "original_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Original IP"
+                        },
+                        "original_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "title": "Original Port"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Priority"
+                        },
+                        "protocol": {
+                          "type": "string",
+                          "enum": [
+                            "udp",
+                            "tcp"
+                          ],
+                          "title": "Protocol"
+                        },
+                        "translated_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Translated IP"
+                        },
+                        "translated_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "requires 'original_port'",
+                          "title": "Translated Port"
+                        }
+                      },
+                      "required": [
+                        "translated_ip",
+                        "original_ip"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Static"
                   }
                 },
                 "additionalProperties": false,
@@ -17694,6 +18168,85 @@
                       }
                     },
                     "title": "Dynamic"
+                  },
+                  "static": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "access_list": {
+                          "type": "string",
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Access List"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "title": "Comment"
+                        },
+                        "direction": {
+                          "type": "string",
+                          "enum": [
+                            "egress",
+                            "ingress"
+                          ],
+                          "description": "Egress or ingress can be default. This depends on source/destination, EoS version and hardware platform.\nEoS might remove this keyword in configuration. So, check configuration on targeted HW/SW .",
+                          "title": "Direction"
+                        },
+                        "group": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Group"
+                        },
+                        "original_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Original IP"
+                        },
+                        "original_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "title": "Original Port"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Priority"
+                        },
+                        "protocol": {
+                          "type": "string",
+                          "enum": [
+                            "udp",
+                            "tcp"
+                          ],
+                          "title": "Protocol"
+                        },
+                        "translated_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Translated IP"
+                        },
+                        "translated_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "requires 'original_port'",
+                          "title": "Translated Port"
+                        }
+                      },
+                      "required": [
+                        "translated_ip",
+                        "original_ip"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Static"
                   }
                 },
                 "additionalProperties": false,
@@ -17750,6 +18303,85 @@
                       }
                     },
                     "title": "Dynamic"
+                  },
+                  "static": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "access_list": {
+                          "type": "string",
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Access List"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "title": "Comment"
+                        },
+                        "direction": {
+                          "type": "string",
+                          "enum": [
+                            "egress",
+                            "ingress"
+                          ],
+                          "description": "Egress or ingress can be default. This depends on source/destination, EoS version and hardware platform.\nEoS might remove this keyword in configuration. So, check configuration on targeted HW/SW .",
+                          "title": "Direction"
+                        },
+                        "group": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Group"
+                        },
+                        "original_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Original IP"
+                        },
+                        "original_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "title": "Original Port"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Priority"
+                        },
+                        "protocol": {
+                          "type": "string",
+                          "enum": [
+                            "udp",
+                            "tcp"
+                          ],
+                          "title": "Protocol"
+                        },
+                        "translated_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Translated IP"
+                        },
+                        "translated_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "requires 'original_port'",
+                          "title": "Translated Port"
+                        }
+                      },
+                      "required": [
+                        "translated_ip",
+                        "original_ip"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Static"
                   }
                 },
                 "additionalProperties": false,

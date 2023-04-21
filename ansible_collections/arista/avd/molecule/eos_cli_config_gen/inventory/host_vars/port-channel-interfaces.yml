@@ -396,11 +396,17 @@ port_channel_interfaces:
         dynamic:
           - access_list: ACL1
             pool_name: POOL1
+        static:
+          - original_ip: 1.0.0.1
+            translated_ip: 2.0.0.1
       source:
         dynamic:
           - access_list: ACL2
             pool_name: POOL2
             nat_type: pool
+        static:
+          - original_ip: 3.0.0.1
+            translated_ip: 4.0.0.1
 
 # Children interfaces
 ethernet_interfaces:

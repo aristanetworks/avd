@@ -1,4 +1,36 @@
 {# eos - interface ip nat #}
+{# Static source nat entries #}
+{% for nat in interface_ip_nat.source.static | arista.avd.default([]) | arista.avd.natural_sort('original_ip') %}
+{%     if not (nat.access_list is arista.avd.defined and nat.group is arista.avd.defined) and
+          not (nat.original_port is not arista.avd.defined and nat.translated_port is arista.avd.defined) %}
+{%         set cli = namespace(words=['ip nat source']) %}
+{%         if nat.direction is arista.avd.defined %}
+{%             do cli.words.append(nat.direction) %}
+{%         endif %}
+{%         do cli.words.append('static ' ~ nat.original_ip) %}
+{%         if nat.original_port is arista.avd.defined %}
+{%             do cli.words.append(nat.original_port | string ) %}
+{%         endif %}
+{%         if nat.access_list is arista.avd.defined %}
+{%             do cli.words.append('access-list ' ~ nat.access_list) %}
+{%         endif %}
+{%         do cli.words.append(nat.translated_ip) %}
+{%         if nat.translated_port is arista.avd.defined %}
+{%             do cli.words.append(nat.translated_port | string) %}
+{%         endif %}
+{%         if nat.protocol is arista.avd.defined %}
+{%             do cli.words.append('protocol ' ~ nat.protocol) %}
+{%         endif %}
+{%         if nat.group is arista.avd.defined %}
+{%             do cli.words.append('group ' ~ nat.group ) %}
+{%         endif %}
+{%         if nat.comment is arista.avd.defined %}
+{%             do cli.words.append('comment ' ~ nat.comment) %}
+{%         endif %}
+   {{ ' '.join(cli.words) }}
+{%     endif %}
+{% endfor %}
+{# Dynamic source nat entries #}
 {% for nat in interface_ip_nat.source.dynamic | arista.avd.default([]) | arista.avd.natural_sort('access_list') %}
 {%     set valid = false %}
 {%     set nat_cli = 'ip nat source dynamic access-list ' ~ nat.access_list %}
@@ -24,6 +56,38 @@
    {{ nat_cli }}
 {%     endif %}
 {% endfor %}
+{# Static destination nat entries #}
+{% for nat in interface_ip_nat.destination.static | arista.avd.default([]) | arista.avd.natural_sort('original_ip') %}
+{%     if not (nat.access_list is arista.avd.defined and nat.group is arista.avd.defined) and
+          not (nat.original_port is not arista.avd.defined and nat.translated_port is arista.avd.defined) %}
+{%         set cli = namespace(words=['ip nat destination']) %}
+{%         if nat.direction is arista.avd.defined %}
+{%             do cli.words.append(nat.direction) %}
+{%         endif %}
+{%         do cli.words.append('static ' ~ nat.original_ip) %}
+{%         if nat.original_port is arista.avd.defined %}
+{%             do cli.words.append(nat.original_port | string ) %}
+{%         endif %}
+{%         if nat.access_list is arista.avd.defined %}
+{%             do cli.words.append('access-list ' ~ nat.access_list) %}
+{%         endif %}
+{%         do cli.words.append(nat.translated_ip) %}
+{%         if nat.translated_port is arista.avd.defined %}
+{%             do cli.words.append(nat.translated_port | string) %}
+{%         endif %}
+{%         if nat.protocol is arista.avd.defined %}
+{%             do cli.words.append('protocol ' ~ nat.protocol) %}
+{%         endif %}
+{%         if nat.group is arista.avd.defined %}
+{%             do cli.words.append('group ' ~ nat.group ) %}
+{%         endif %}
+{%         if nat.comment is arista.avd.defined %}
+{%             do cli.words.append('comment ' ~ nat.comment) %}
+{%         endif %}
+   {{ ' '.join(cli.words) }}
+{%     endif %}
+{% endfor %}
+{# Dynamic destination nat entries #}
 {% for nat in interface_ip_nat.destination.dynamic | arista.avd.default([]) | arista.avd.natural_sort('access_list') %}
 {%     set nat_cli = 'ip nat destination dynamic access-list ' ~ nat.access_list ~ ' pool ' ~ nat.pool_name %}
 {%     if nat.priority | arista.avd.default(0) > 0 %}
