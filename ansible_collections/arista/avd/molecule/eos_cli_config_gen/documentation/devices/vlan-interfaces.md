@@ -115,6 +115,12 @@ interface Management1
 | Vlan2002 |  Tenant_B  |  -  |  10.2.2.1/24  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  169.254.252.0/31  |  -  |  -  |  -  |  -  |  -  |
 
+##### IP NAT: Source Dynamic
+
+| Interface | Access List | NAT Type | Pool Name | Priority | Comment |
+| --------- | ----------- | -------- | --------- | -------- | ------- |
+| Vlan50 | ACL2 | pool | POOL2 | 0 |  |
+
 ##### IP NAT: Destination Dynamic
 
 | Interface | Access List | Pool Name | Priority | Comment |
@@ -216,6 +222,7 @@ interface Vlan44
 !
 interface Vlan50
    description IP NAT Testing
+   ip nat source dynamic access-list ACL2 pool POOL2
    ip nat destination dynamic access-list ACL1 pool POOL1
 !
 interface Vlan75

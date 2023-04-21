@@ -4,8 +4,6 @@
 type: dict
 $defs:
   interface_ip_nat:
-    documentation_options:
-      filename: Interface IP NAT
     type: dict
     keys:
       destination:
@@ -26,6 +24,40 @@ $defs:
                 pool_name:
                   type: str
                   required: true
+                priority:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 0
+                  max: 4294967295
+      source:
+        type: dict
+        keys:
+          dynamic:
+            type: list
+            primary_key: access_list
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                access_list:
+                  type: str
+                comment:
+                  type: str
+                nat_type:
+                  type: str
+                  required: true
+                  valid_values:
+                    - overload
+                    - pool
+                    - pool-address-only
+                    - pool-full-cone
+                pool_name:
+                  type: str
+                  description: |-
+                    required if 'nat_type' is pool, pool-address-only or pool-full-cone
+                    ignored if 'nat_type' is overload
                 priority:
                   type: int
                   convert_types:

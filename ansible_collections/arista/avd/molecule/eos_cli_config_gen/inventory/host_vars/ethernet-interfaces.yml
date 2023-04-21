@@ -701,3 +701,45 @@ ethernet_interfaces:
             pool_name: POOL5
             comment: Priority high end
             priority: 4294967295
+      source:
+        dynamic:
+          - access_list: ACL11
+            pool_name: POOL11
+            nat_type: pool
+          - access_list: ACL12
+            pool_name: POOL11
+            comment: POOL11 shared with ACL11/12
+            nat_type: pool
+          - access_list: ACL13
+            pool_name: POOL13
+            priority: 10
+            nat_type: pool
+          - access_list: ACL14
+            pool_name: POOL14
+            comment: Priority low end
+            priority: 1
+            nat_type: pool
+          - access_list: ACL16
+            pool_name: POOL16
+            comment: Priority default
+            priority: 0
+            nat_type: pool
+          - access_list: ACL15
+            pool_name: POOL15
+            comment: Priority high end
+            priority: 4294967295
+            nat_type: pool
+          - access_list: ACL17
+            comment: Priority_10
+            priority: 10
+            nat_type: overload
+          - access_list: ACL18
+            pool_name: POOL18
+            comment: Priority_10
+            priority: 10
+            nat_type: pool-address-only
+          - access_list: ACL19
+            pool_name: POOL19
+            comment: Priority_10
+            priority: 10
+            nat_type: pool-full-cone

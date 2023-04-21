@@ -298,6 +298,12 @@ interface Ethernet50
 | Port-Channel113 | interface_with_mpls_enabled | routed | - | 172.31.128.9/31 | default | - | - | - | - |
 | Port-Channel114 | interface_with_mpls_disabled | routed | - | 172.31.128.10/31 | default | - | - | - | - |
 
+##### IP NAT: Source Dynamic
+
+| Interface | Access List | NAT Type | Pool Name | Priority | Comment |
+| --------- | ----------- | -------- | --------- | -------- | ------- |
+| Port-Channel130 | ACL2 | pool | POOL2 | 0 |  |
+
 ##### IP NAT: Destination Dynamic
 
 | Interface | Access List | Pool Name | Priority | Comment |
@@ -643,6 +649,7 @@ interface Port-Channel122
 interface Port-Channel130
    description IP NAT Testing
    switchport
+   ip nat source dynamic access-list ACL2 pool POOL2
    ip nat destination dynamic access-list ACL1 pool POOL1
 ```
 

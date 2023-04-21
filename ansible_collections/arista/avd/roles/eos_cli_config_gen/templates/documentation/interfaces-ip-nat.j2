@@ -1,17 +1,51 @@
 {# doc - IP NAT interfaces #}
-{% set ip_nat = namespace(dst_dyn=[]) %}
-{% for _intf in ip_nat_interfaces %}
-{%     for dst_dyn in _intf.ip_nat.destination.dynamic | arista.avd.default([]) %}
-{%         do ip_nat.dst_dyn.append({'if_name': _intf.name, 'acl': dst_dyn.access_list, 'pool': dst_dyn.pool_name, 'comment': dst_dyn.comment | arista.avd.default(''), 'priority': dst_dyn.priority | arista.avd.default(0)}) %}
+{% set ip_nat = namespace(dst_dyn=[], src_dyn=[]) %}
+{% for _intf in ip_nat_interfaces | arista.avd.natural_sort('name') %}
+{%     for dst_dyn in _intf.ip_nat.destination.dynamic | arista.avd.default([]) | arista.avd.natural_sort('access_list') %}
+{%         do ip_nat.dst_dyn.append(
+               {'if_name': _intf.name,
+                'acl': dst_dyn.access_list,
+                'pool': dst_dyn.pool_name,
+                'comment': dst_dyn.comment | arista.avd.default(''),
+                'priority': dst_dyn.priority | arista.avd.default(0)}) %}
+{%     endfor %}
+{%     for src_dyn in _intf.ip_nat.source.dynamic | arista.avd.default([]) | arista.avd.natural_sort('access_list') %}
+{%         set valid = false %}
+{%         if src_dyn.nat_type == 'overload' %}
+{%             set pool = 'n.a.' %}
+{%             set valid = true %}
+{%         elif src_dyn.pool_name is arista.avd.defined %}
+{%             set pool = src_dyn.pool_name %}
+{%             set valid = true %}
+{%         endif %}
+{%         if valid %}
+{%             do ip_nat.src_dyn.append(
+                   {'if_name': _intf.name,
+                    'acl': src_dyn.access_list,
+                    'type': src_dyn.nat_type,
+                    'pool': pool,
+                    'comment': src_dyn.comment | arista.avd.default(''),
+                    'priority': src_dyn.priority | arista.avd.default(0)}) %}
+{%         endif %}
 {%     endfor %}
 {% endfor %}
+{% if ip_nat.src_dyn %}
+
+##### IP NAT: Source Dynamic
+
+| Interface | Access List | NAT Type | Pool Name | Priority | Comment |
+| --------- | ----------- | -------- | --------- | -------- | ------- |
+{%     for _nat in ip_nat.src_dyn %}
+| {{ _nat.if_name }} | {{ _nat.acl }} | {{ _nat.type }} | {{ _nat.pool }} | {{ _nat.priority }} | {{ _nat.comment }} |
+{%     endfor %}
+{% endif %}
 {% if ip_nat.dst_dyn %}
 
 ##### IP NAT: Destination Dynamic
 
 | Interface | Access List | Pool Name | Priority | Comment |
 | --------- | ----------- | --------- | -------- | ------- |
-{%     for _nat in ip_nat.dst_dyn | arista.avd.natural_sort('name') %}
+{%     for _nat in ip_nat.dst_dyn %}
 | {{ _nat.if_name }} | {{ _nat.acl }} | {{ _nat.pool }} | {{ _nat.priority }} | {{ _nat.comment }} |
 {%     endfor %}
 {% endif %}

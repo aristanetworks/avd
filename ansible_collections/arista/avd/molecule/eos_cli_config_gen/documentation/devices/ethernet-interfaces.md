@@ -187,6 +187,20 @@ sFlow is disabled.
 | Ethernet18 | PBR Description | routed | - | 192.0.2.1/31 | default | 1500 | - | - | - |
 | Ethernet47 | IP Helper | routed | - | 172.31.255.1/31 | default | - | - | - | - |
 
+##### IP NAT: Source Dynamic
+
+| Interface | Access List | NAT Type | Pool Name | Priority | Comment |
+| --------- | ----------- | -------- | --------- | -------- | ------- |
+| Ethernet60 | ACL11 | pool | POOL11 | 0 |  |
+| Ethernet60 | ACL12 | pool | POOL11 | 0 | POOL11 shared with ACL11/12 |
+| Ethernet60 | ACL13 | pool | POOL13 | 10 |  |
+| Ethernet60 | ACL14 | pool | POOL14 | 1 | Priority low end |
+| Ethernet60 | ACL15 | pool | POOL15 | 4294967295 | Priority high end |
+| Ethernet60 | ACL16 | pool | POOL16 | 0 | Priority default |
+| Ethernet60 | ACL17 | overload | n.a. | 10 | Priority_10 |
+| Ethernet60 | ACL18 | pool-address-only | POOL18 | 10 | Priority_10 |
+| Ethernet60 | ACL19 | pool-full-cone | POOL19 | 10 | Priority_10 |
+
 ##### IP NAT: Destination Dynamic
 
 | Interface | Access List | Pool Name | Priority | Comment |
@@ -752,6 +766,15 @@ interface Ethernet58
 interface Ethernet60
    description IP NAT Testing
    switchport
+   ip nat source dynamic access-list ACL11 pool POOL11
+   ip nat source dynamic access-list ACL12 pool POOL11 comment POOL11 shared with ACL11/12
+   ip nat source dynamic access-list ACL13 pool POOL13 priority 10
+   ip nat source dynamic access-list ACL14 pool POOL14 priority 1 comment Priority low end
+   ip nat source dynamic access-list ACL15 pool POOL15 priority 4294967295 comment Priority high end
+   ip nat source dynamic access-list ACL16 pool POOL16 comment Priority default
+   ip nat source dynamic access-list ACL17 overload priority 10 comment Priority_10
+   ip nat source dynamic access-list ACL18 pool POOL18 address-only priority 10 comment Priority_10
+   ip nat source dynamic access-list ACL19 pool POOL19 full-cone priority 10 comment Priority_10
    ip nat destination dynamic access-list ACL1 pool POOL1
    ip nat destination dynamic access-list ACL2 pool POOL1 comment POOL1 shared with ACL1/2
    ip nat destination dynamic access-list ACL3 pool POOL3 priority 10

@@ -57,6 +57,12 @@ interface Management1
 | Tunnel3 | default | 64.64.64.64/24 | 666 | - | - | - |
 | Tunnel4 | default | 64.64.64.64/24 | - | - | - | - |
 
+##### IP NAT: Source Dynamic
+
+| Interface | Access List | NAT Type | Pool Name | Priority | Comment |
+| --------- | ----------- | -------- | --------- | -------- | ------- |
+| Tunnel5 | ACL2 | pool | POOL2 | 0 |  |
+
 ##### IP NAT: Destination Dynamic
 
 | Interface | Access List | Pool Name | Priority | Comment |
@@ -124,5 +130,6 @@ interface Tunnel4
 !
 interface Tunnel5
    description IP NAT Testing
+   ip nat source dynamic access-list ACL2 pool POOL2
    ip nat destination dynamic access-list ACL1 pool POOL1
 ```
