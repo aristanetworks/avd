@@ -187,116 +187,116 @@ management_api_http:
   enable_https: true
   default_services: false
 ethernet_interfaces:
-  Ethernet1:
-    peer: DC1-LEAF1A
-    peer_interface: Ethernet2
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-LEAF1A_Ethernet2
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.2/31
-  Ethernet2:
-    peer: DC1-LEAF2A
-    peer_interface: Ethernet2
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-LEAF2A_Ethernet2
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.18/31
-  Ethernet3:
-    peer: DC1-LEAF2B
-    peer_interface: Ethernet2
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-LEAF2B_Ethernet2
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.34/31
-  Ethernet4:
-    peer: DC1-SVC3A
-    peer_interface: Ethernet2
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-SVC3A_Ethernet2
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.50/31
-  Ethernet5:
-    peer: DC1-SVC3B
-    peer_interface: Ethernet2
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-SVC3B_Ethernet2
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.66/31
-  Ethernet6:
-    peer: DC1-BL1A
-    peer_interface: Ethernet2
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-BL1A_Ethernet2
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.82/31
-  Ethernet7:
-    peer: DC1-BL1B
-    peer_interface: Ethernet2
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-BL1B_Ethernet2
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.98/31
-  Ethernet8:
-    peer: DC1-BL2A
-    peer_interface: Ethernet2
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-BL2A_Ethernet2
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.114/31
-  Ethernet9:
-    peer: DC1-BL2B
-    peer_interface: Ethernet2
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-BL2B_Ethernet2
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.130/31
-  Ethernet14:
-    peer: DC1-CL1A
-    peer_interface: Ethernet2
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-CL1A_Ethernet2
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.146/31
-  Ethernet15:
-    peer: DC1-CL1B
-    peer_interface: Ethernet2
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-CL1B_Ethernet2
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.162/31
+- name: Ethernet1
+  peer: DC1-LEAF1A
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  description: P2P_LINK_TO_DC1-LEAF1A_Ethernet2
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.2/31
+- name: Ethernet2
+  peer: DC1-LEAF2A
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  description: P2P_LINK_TO_DC1-LEAF2A_Ethernet2
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.18/31
+- name: Ethernet3
+  peer: DC1-LEAF2B
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  description: P2P_LINK_TO_DC1-LEAF2B_Ethernet2
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.34/31
+- name: Ethernet4
+  peer: DC1-SVC3A
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  description: P2P_LINK_TO_DC1-SVC3A_Ethernet2
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.50/31
+- name: Ethernet5
+  peer: DC1-SVC3B
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  description: P2P_LINK_TO_DC1-SVC3B_Ethernet2
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.66/31
+- name: Ethernet6
+  peer: DC1-BL1A
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  description: P2P_LINK_TO_DC1-BL1A_Ethernet2
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.82/31
+- name: Ethernet7
+  peer: DC1-BL1B
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  description: P2P_LINK_TO_DC1-BL1B_Ethernet2
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.98/31
+- name: Ethernet8
+  peer: DC1-BL2A
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  description: P2P_LINK_TO_DC1-BL2A_Ethernet2
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.114/31
+- name: Ethernet9
+  peer: DC1-BL2B
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  description: P2P_LINK_TO_DC1-BL2B_Ethernet2
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.130/31
+- name: Ethernet14
+  peer: DC1-CL1A
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  description: P2P_LINK_TO_DC1-CL1A_Ethernet2
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.146/31
+- name: Ethernet15
+  peer: DC1-CL1B
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  description: P2P_LINK_TO_DC1-CL1B_Ethernet2
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.162/31
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

@@ -237,7 +237,8 @@ ethernet_interfaces:
     id: 551
     mode: active
   name: Ethernet56/1
-- peer: LEAF1A
+- name: Ethernet1
+  peer: LEAF1A
   peer_interface: Ethernet51
   peer_type: leaf
   description: LEAF1A_Ethernet51
@@ -246,8 +247,8 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet1
-- peer: LEAF2A
+- name: Ethernet49/1
+  peer: LEAF2A
   peer_interface: Ethernet1/1
   peer_type: leaf
   description: LEAF2A_Ethernet1/1
@@ -256,8 +257,8 @@ ethernet_interfaces:
   channel_group:
     id: 491
     mode: active
-  name: Ethernet49/1
-- peer: LEAF3A
+- name: Ethernet50/1
+  peer: LEAF3A
   peer_interface: Ethernet97/1
   peer_type: leaf
   description: LEAF3A_Ethernet97/1
@@ -266,8 +267,8 @@ ethernet_interfaces:
   channel_group:
     id: 501
     mode: active
-  name: Ethernet50/1
-- peer: LEAF3B
+- name: Ethernet51/1
+  peer: LEAF3B
   peer_interface: Ethernet97/1
   peer_type: leaf
   description: LEAF3B_Ethernet97/1
@@ -276,7 +277,6 @@ ethernet_interfaces:
   channel_group:
     id: 501
     mode: active
-  name: Ethernet51/1
 - name: Ethernet52/1
   peer: WAN
   peer_interface: Ethernet1/1

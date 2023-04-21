@@ -367,7 +367,8 @@ management_api_http:
   enable_https: true
   default_services: false
 ethernet_interfaces:
-- peer: DC1-SPINE1
+- name: Ethernet1
+  peer: DC1-SPINE1
   peer_interface: Ethernet22
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet22
@@ -376,8 +377,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.161/31
-  name: Ethernet1
-- peer: DC1-SPINE2
+- name: Ethernet2
+  peer: DC1-SPINE2
   peer_interface: Ethernet22
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE2_Ethernet22
@@ -386,8 +387,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.163/31
-  name: Ethernet2
-- peer: DC1-SPINE3
+- name: Ethernet3
+  peer: DC1-SPINE3
   peer_interface: Ethernet22
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE3_Ethernet22
@@ -396,8 +397,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.165/31
-  name: Ethernet3
-- peer: DC1-SPINE4
+- name: Ethernet4
+  peer: DC1-SPINE4
   peer_interface: Ethernet22
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE4_Ethernet22
@@ -406,40 +407,40 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.167/31
-  name: Ethernet4
-- peer_type: l3_interface
+- name: Ethernet8
+  peer_type: l3_interface
   ip_address: 10.10.10.10/24
   mtu: 9000
   shutdown: false
   description: test
   type: routed
   vrf: Tenant_A_L3_VRF_Zone
-  name: Ethernet8
-- peer_type: l3_interface
+- name: Ethernet9
+  peer_type: l3_interface
   ip_address: 10.10.20.20/24
   mtu: 9000
   shutdown: false
   description: test
   type: routed
   vrf: Tenant_A_L3_VRF_Zone
-  name: Ethernet9
-- peer_type: l3_interface
+- name: Ethernet10
+  peer_type: l3_interface
   ip_address: 10.10.30.10/24
   mtu: 9000
   shutdown: false
   description: test-DC1-BL1A
   type: routed
   vrf: Tenant_A_L3_VRF_Zone
-  name: Ethernet10
-- peer_type: l3_interface
+- name: Ethernet11
+  peer_type: l3_interface
   ip_address: 10.10.30.10/24
   mtu: 9000
   shutdown: false
   description: DC1-BL1A descriptions preferred over single description
   type: routed
   vrf: Tenant_A_L3_VRF_Zone
-  name: Ethernet11
-- peer_type: l3_interface
+- name: Ethernet7
+  peer_type: l3_interface
   ip_address: 10.10.10.10/24
   mtu: 9000
   shutdown: false
@@ -451,13 +452,12 @@ ethernet_interfaces:
   ospf_cost: 100
   ospf_authentication: message-digest
   ospf_message_digest_keys:
-  - hash_algorithm: sha1
+  - id: 1
+    hash_algorithm: sha1
     key: AQQvKeimxJu+uGQ/yYvv9w==
-    id: 1
-  - hash_algorithm: sha512
+  - id: 2
+    hash_algorithm: sha512
     key: AQQvKeimxJu+uGQ/yYvv9w==
-    id: 2
-  name: Ethernet7
 - description: My test
   ip_address: 10.3.2.1/21
   shutdown: false

@@ -77,7 +77,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: AUTO_NODE_TYPE_LEAF01
+- name: Ethernet1
+  peer: AUTO_NODE_TYPE_LEAF01
   peer_interface: Ethernet2
   peer_type: l3leaf
   description: P2P_LINK_TO_AUTO_NODE_TYPE_LEAF01_Ethernet2
@@ -85,8 +86,8 @@ ethernet_interfaces:
   mtu: 9000
   type: routed
   ip_address: 172.31.255.2/31
-  name: Ethernet1
-- peer: AUTO_NODE_TYPE_UNGROUPED_LEAF02
+- name: Ethernet2
+  peer: AUTO_NODE_TYPE_UNGROUPED_LEAF02
   peer_interface: Ethernet2
   peer_type: l3leaf
   description: P2P_LINK_TO_AUTO_NODE_TYPE_UNGROUPED_LEAF02_Ethernet2
@@ -94,7 +95,6 @@ ethernet_interfaces:
   mtu: 9000
   type: routed
   ip_address: 172.31.255.6/31
-  name: Ethernet2
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

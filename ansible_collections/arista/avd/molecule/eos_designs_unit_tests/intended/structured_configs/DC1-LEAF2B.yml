@@ -417,7 +417,8 @@ management_api_http:
   enable_https: true
   default_services: false
 ethernet_interfaces:
-- peer: DC1-L2LEAF1A
+- name: Ethernet7
+  peer: DC1-L2LEAF1A
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: DC1-L2LEAF1A_Ethernet2
@@ -427,8 +428,8 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  name: Ethernet7
-- peer: DC1-L2LEAF1B
+- name: Ethernet8
+  peer: DC1-L2LEAF1B
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: DC1-L2LEAF1B_Ethernet2
@@ -438,8 +439,8 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  name: Ethernet8
-- peer: DC1-L2LEAF3A
+- name: Ethernet9
+  peer: DC1-L2LEAF3A
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: DC1-L2LEAF3A_Ethernet2
@@ -448,8 +449,8 @@ ethernet_interfaces:
   channel_group:
     id: 9
     mode: active
-  name: Ethernet9
-- peer: DC1-L2LEAF4A
+- name: Ethernet13
+  peer: DC1-L2LEAF4A
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: DC1-L2LEAF4A_Ethernet2
@@ -458,8 +459,8 @@ ethernet_interfaces:
   channel_group:
     id: 13
     mode: active
-  name: Ethernet13
-- peer: DC1.L2LEAF5A
+- name: Ethernet14/1
+  peer: DC1.L2LEAF5A
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: DC1.L2LEAF5A_Ethernet2
@@ -468,8 +469,8 @@ ethernet_interfaces:
   channel_group:
     id: 141
     mode: active
-  name: Ethernet14/1
-- peer: DC1.L2LEAF5B
+- name: Ethernet15/1
+  peer: DC1.L2LEAF5B
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: DC1.L2LEAF5B_Ethernet2
@@ -478,8 +479,8 @@ ethernet_interfaces:
   channel_group:
     id: 141
     mode: active
-  name: Ethernet15/1
-- peer: DC1-SPINE1
+- name: Ethernet49/1
+  peer: DC1-SPINE1
   peer_interface: Ethernet5/1
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet5/1
@@ -488,8 +489,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.65/31
-  name: Ethernet49/1
-- peer: DC1-SPINE2
+- name: Ethernet50/1
+  peer: DC1-SPINE2
   peer_interface: Ethernet1/5/1
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE2_Ethernet1/5/1
@@ -498,8 +499,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.67/31
-  name: Ethernet50/1
-- peer: DC1-SPINE2
+- name: Ethernet51/1
+  peer: DC1-SPINE2
   peer_interface: Ethernet1/6/1
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE2_Ethernet1/6/1
@@ -508,8 +509,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.69/31
-  name: Ethernet51/1
-- peer: DC1-SPINE1
+- name: Ethernet52/1
+  peer: DC1-SPINE1
   peer_interface: Ethernet6/1
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet6/1
@@ -518,8 +519,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.71/31
-  name: Ethernet52/1
-- peer: DC1-SPINE3
+- name: Ethernet53/1
+  peer: DC1-SPINE3
   peer_interface: Ethernet1/5/1
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE3_Ethernet1/5/1
@@ -528,8 +529,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.73/31
-  name: Ethernet53/1
-- peer: DC1-SPINE4
+- name: Ethernet54/1
+  peer: DC1-SPINE4
   peer_interface: Ethernet5/1
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE4_Ethernet5/1
@@ -538,8 +539,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.75/31
-  name: Ethernet54/1
-- peer: DC1-SPINE4
+- name: Ethernet55/1
+  peer: DC1-SPINE4
   peer_interface: Ethernet6/1
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE4_Ethernet6/1
@@ -548,8 +549,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.77/31
-  name: Ethernet55/1
-- peer: DC1-SPINE3
+- name: Ethernet56/1
+  peer: DC1-SPINE3
   peer_interface: Ethernet1/6/1
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE3_Ethernet1/6/1
@@ -558,16 +559,16 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.79/31
-  name: Ethernet56/1
-- peer_type: l3_interface
+- name: Ethernet24
+  peer_type: l3_interface
   ip_address: 10.0.0.5/30
   shutdown: false
   type: routed
   vrf: Tenant_A_OSPF
   ospf_area: '0'
   ospf_network_point_to_point: true
-  name: Ethernet24
-- peer: server01_MLAG
+- name: Ethernet10
+  peer: server01_MLAG
   peer_interface: Eth3
   peer_type: server
   port_profile: TENANT_B
@@ -581,8 +582,8 @@ ethernet_interfaces:
   channel_group:
     id: 10
     mode: active
-  name: Ethernet10
-- peer: server01_MTU_PROFILE_MLAG
+- name: Ethernet11
+  peer: server01_MTU_PROFILE_MLAG
   peer_interface: Eth5
   peer_type: server
   port_profile: TENANT_A_MTU
@@ -597,8 +598,8 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  name: Ethernet11
-- peer: server01_MTU_ADAPTOR_MLAG
+- name: Ethernet12
+  peer: server01_MTU_ADAPTOR_MLAG
   peer_interface: Eth7
   peer_type: server
   description: server01_MTU_ADAPTOR_MLAG_Eth7
@@ -610,8 +611,8 @@ ethernet_interfaces:
   channel_group:
     id: 12
     mode: active
-  name: Ethernet12
-- peer: FIREWALL01
+- name: Ethernet20
+  peer: FIREWALL01
   peer_interface: E1
   peer_type: firewall
   port_profile: TENANT_A_B
@@ -623,8 +624,8 @@ ethernet_interfaces:
   channel_group:
     id: 20
     mode: active
-  name: Ethernet20
-- peer: ROUTER01
+- name: Ethernet21
+  peer: ROUTER01
   peer_interface: Eth1
   peer_type: router
   port_profile: TENANT_A
@@ -633,7 +634,6 @@ ethernet_interfaces:
   shutdown: false
   mode: access
   vlans: '110'
-  name: Ethernet21
 port_channel_interfaces:
 - name: Port-Channel7
   description: DC1_L2LEAF1_Po1

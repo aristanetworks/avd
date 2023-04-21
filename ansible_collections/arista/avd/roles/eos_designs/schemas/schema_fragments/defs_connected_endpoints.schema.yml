@@ -1,0 +1,62 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+$defs:
+  connected_endpoints:
+    type: list
+    documentation_options:
+      filename: Connected Endpoints
+    primary_key: name
+    convert_types:
+      - dict
+    description: |
+      This should be applied to group_vars or host_vars where endpoints are connecting.
+      `connected_endpoints_keys.key` is one of the keys under "connected_endpoints_keys".
+      The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `storage_arrays`.
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Endpoint name will be used in the switchport description.
+          required: true
+        rack:
+          type: str
+          description: Rack is used for documentation purposes only.
+        adapters:
+          type: list
+          description: A list of adapters, group by adapters leveraging the same port-profile.
+          items:
+            $ref: "#/$defs/adapter_config"
+            type: dict
+            keys:
+              switch_ports:
+                type: list
+                required: true
+                description: |
+                  List of switch interfaces.
+                  The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.
+                items:
+                  type: str
+                  description: Switchport interface.
+              switches:
+                type: list
+                required: true
+                description: |
+                  List of switches.
+                  The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.
+                items:
+                  type: str
+                  description: Device
+              server_ports:
+                type: list
+                deprecation:
+                  warning: true
+                  removed: true
+                  new_key: endpoint_ports
+                  remove_in_version: "4.0.0"
+                items:
+                  type: str
+                  description: |
+                    Used for documentation purposes

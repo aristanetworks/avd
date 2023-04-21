@@ -236,7 +236,8 @@ ethernet_interfaces:
       interface: true
       igp_sync: true
   speed: forced 10000full
-- peer: CPE_TENANT_A_SITE1
+- name: Ethernet8
+  peer: CPE_TENANT_A_SITE1
   peer_interface: Ethernet1
   peer_type: cpe
   port_profile: TENANT_A_WAN_SERVICE_10
@@ -249,8 +250,8 @@ ethernet_interfaces:
   channel_group:
     id: 8
     mode: active
-  name: Ethernet8
-- peer_type: l3_interface
+- name: Ethernet6.10
+  peer_type: l3_interface
   ip_address: 123.1.1.0/31
   shutdown: false
   description: TENANT_B_SITE_3_INTRA_L3VPN
@@ -260,24 +261,23 @@ ethernet_interfaces:
   ospf_area: '0'
   ospf_network_point_to_point: true
   ospf_cost: 10
-  name: Ethernet6.10
-- type: routed
+- name: Ethernet6
+  type: routed
   peer_type: l3_interface
   shutdown: false
   lldp:
     transmit: false
     receive: false
-  name: Ethernet6
-- shutdown: false
+- name: Ethernet3
+  shutdown: false
   channel_group:
     id: 3
     mode: active
-  name: Ethernet3
-- shutdown: false
+- name: Ethernet4
+  shutdown: false
   channel_group:
     id: 3
     mode: active
-  name: Ethernet4
 port_channel_interfaces:
 - name: Port-Channel8
   description: CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel

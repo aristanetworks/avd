@@ -59,7 +59,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: DC1-LEAF2A
+- name: Ethernet1
+  peer: DC1-LEAF2A
   peer_interface: Ethernet9
   peer_type: l3leaf
   description: CUSTOM_DC1-LEAF2A_Ethernet9
@@ -68,8 +69,8 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet1
-- peer: DC1-LEAF2B
+- name: Ethernet2
+  peer: DC1-LEAF2B
   peer_interface: Ethernet9
   peer_type: l3leaf
   description: CUSTOM_DC1-LEAF2B_Ethernet9
@@ -78,7 +79,6 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet2
 port_channel_interfaces:
 - name: Port-Channel1
   description: CUSTOM_DC1_LEAF2_Po9

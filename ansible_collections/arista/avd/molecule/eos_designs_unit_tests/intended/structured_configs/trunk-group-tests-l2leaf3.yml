@@ -16,7 +16,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: trunk-group-tests-l3leaf1a
+- name: Ethernet1
+  peer: trunk-group-tests-l3leaf1a
   peer_interface: Ethernet5
   peer_type: l3leaf
   description: TRUNK-GROUP-TESTS-L3LEAF1A_Ethernet5
@@ -25,8 +26,8 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet1
-- peer: trunk-group-tests-l3leaf1b
+- name: Ethernet2
+  peer: trunk-group-tests-l3leaf1b
   peer_interface: Ethernet5
   peer_type: l3leaf
   description: TRUNK-GROUP-TESTS-L3LEAF1B_Ethernet5
@@ -35,8 +36,8 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet2
-- peer: server_with_tg_200
+- name: Ethernet12
+  peer: server_with_tg_200
   peer_interface: Nic2
   peer_type: server
   description: server_with_tg_200_Nic2
@@ -46,7 +47,6 @@ ethernet_interfaces:
   trunk_groups:
   - TG_NOT_MATCHING_ANY_VLANS
   - TG_200
-  name: Ethernet12
 port_channel_interfaces:
 - name: Port-Channel1
   description: TRUNK_GROUP_TESTS_L3LEAF1_Po5

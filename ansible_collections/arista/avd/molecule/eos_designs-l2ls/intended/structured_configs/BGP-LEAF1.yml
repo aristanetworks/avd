@@ -16,7 +16,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: BGP-SPINE1
+- name: Ethernet1
+  peer: BGP-SPINE1
   peer_interface: Ethernet1
   peer_type: l3spine
   description: BGP-SPINE1_Ethernet1
@@ -25,8 +26,8 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet1
-- peer: BGP-SPINE2
+- name: Ethernet2
+  peer: BGP-SPINE2
   peer_interface: Ethernet1
   peer_type: l3spine
   description: BGP-SPINE2_Ethernet1
@@ -35,23 +36,22 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet2
-- peer: Endpoint
+- name: Ethernet10
+  peer: Endpoint
   peer_type: network_port
   description: Endpoint
   type: switched
   shutdown: false
   mode: access
   vlans: '100'
-  name: Ethernet10
-- peer: Endpoint
+- name: Ethernet11
+  peer: Endpoint
   peer_type: network_port
   description: Endpoint
   type: switched
   shutdown: false
   mode: access
   vlans: '100'
-  name: Ethernet11
 port_channel_interfaces:
 - name: Port-Channel1
   description: BGP_SPINES_Po1

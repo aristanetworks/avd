@@ -1,0 +1,37 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  network_ports:
+    type: list
+    description: |
+      All switch_ports ranges are expanded into individual port configurations.
+    documentation_options:
+      filename: Connected Endpoints
+    items:
+      type: dict
+      $ref: "#/$defs/adapter_config"
+      # These keys will take precedence over $ref
+      keys:
+        switches:
+          type: list
+          description: |
+            Regex matching the full hostname of one or more switches.
+            The regular expression must match the full hostname.
+          items:
+            type: str
+        switch_ports:
+          type: list
+          description: |
+            List of ranges using AVD range_expand syntax.
+            For example:
+
+            switch_ports:
+              - Ethernet1
+              - Ethernet2-48
+          items:
+            type: str
+        description:
+          type: str
+          description: Description to be used on all ports.

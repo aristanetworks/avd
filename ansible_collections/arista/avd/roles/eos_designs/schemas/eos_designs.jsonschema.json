@@ -251,6 +251,37 @@
       },
       "title": "BGP Peer Groups"
     },
+    "connected_endpoints_keys": {
+      "type": "array",
+      "description": "Define connected endpoints keys to define the grouping of endpoints connecting to the fabric.\nThis lets you specify various keys to better organize/group your data.\nThe connected endpoints keys should be defined in the top level group_var for the fabric.\n",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type used for documentation.",
+            "title": "Type"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description used for documentation.",
+            "title": "Description"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "key"
+        ]
+      },
+      "title": "Connected Endpoints Keys"
+    },
     "cvp_ingestauth_key": {
       "type": "string",
       "description": "On-premise CVP ingest auth key. If set, TerminAttr will be configured with key-based authentication for on-premise CVP.\nIf not set, TerminAttr will be configured with certificate based authentication using token-secure onboarding.\nToken must be copied to the device first.",
@@ -648,6 +679,833 @@
         "^_.+$": {}
       },
       "title": "MLAG Ibgp Peering VRFs"
+    },
+    "network_ports": {
+      "type": "array",
+      "description": "All switch_ports ranges are expanded into individual port configurations.\n",
+      "items": {
+        "type": "object",
+        "properties": {
+          "endpoint_ports": {
+            "type": "array",
+            "description": "Endpoint ports is used for description, required unless description is set.\nThe lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.\nEach list item is one switchport.\n",
+            "items": {
+              "type": "string",
+              "description": "Interface name."
+            },
+            "title": "Endpoint Ports"
+          },
+          "speed": {
+            "type": "string",
+            "description": "Set adapter speed: `< interface_speed >`, `forced < interface_speed >`, `auto < interface_speed >`.\nIf not specified will be auto.\n",
+            "title": "Speed"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description to be used on all ports.",
+            "title": "Description"
+          },
+          "profile": {
+            "type": "string",
+            "description": "Port-profile name to inherit configuration.",
+            "title": "Profile"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Administrative state, setting to false will set the port to 'shutdown' in the intended configuration.\n",
+            "default": true,
+            "title": "Enabled"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "access",
+              "dot1q-tunnel",
+              "trunk"
+            ],
+            "description": "Interface mode.",
+            "title": "Mode"
+          },
+          "mtu": {
+            "type": "integer",
+            "minimum": 68,
+            "maximum": 65535,
+            "title": "MTU"
+          },
+          "l2_mtu": {
+            "type": "integer",
+            "minimum": 68,
+            "maximum": 9416,
+            "description": "This should only be defined for platforms supporting the \"l2 mtu\" CLI command.",
+            "title": "L2 MTU"
+          },
+          "native_vlan": {
+            "type": "integer",
+            "description": "Native VLAN for a trunk port.\nIf both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence.\n",
+            "minimum": 1,
+            "maximum": 4094,
+            "title": "Native VLAN"
+          },
+          "native_vlan_tag": {
+            "type": "boolean",
+            "default": false,
+            "description": "If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence.",
+            "title": "Native VLAN Tag"
+          },
+          "trunk_groups": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Required with `enable_trunk_groups: true`.\nTrunk Groups are used for limiting VLANs on trunk ports to VLANs with the same Trunk Group.\n",
+            "title": "Trunk Groups"
+          },
+          "vlans": {
+            "type": "string",
+            "description": "Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and VLAN 1 will be used for access ports.",
+            "title": "VLANs"
+          },
+          "spanning_tree_portfast": {
+            "type": "string",
+            "enum": [
+              "edge",
+              "network"
+            ],
+            "title": "Spanning Tree Portfast"
+          },
+          "spanning_tree_bpdufilter": {
+            "type": "string",
+            "enum": [
+              "enabled",
+              "disabled",
+              "True",
+              "False",
+              "true",
+              "false"
+            ],
+            "title": "Spanning Tree Bpdufilter"
+          },
+          "spanning_tree_bpduguard": {
+            "type": "string",
+            "enum": [
+              "enabled",
+              "disabled",
+              "True",
+              "False",
+              "true",
+              "false"
+            ],
+            "title": "Spanning Tree Bpduguard"
+          },
+          "flowcontrol": {
+            "type": "object",
+            "properties": {
+              "received": {
+                "type": "string",
+                "enum": [
+                  "received",
+                  "send",
+                  "on"
+                ],
+                "title": "Received"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Flowcontrol"
+          },
+          "qos_profile": {
+            "type": "string",
+            "description": "QOS profile name",
+            "title": "QOS Profile"
+          },
+          "ptp": {
+            "type": "object",
+            "description": "The global PTP profile parameters will be applied to all connected endpoints where `ptp` is manually enabled.\n`ptp role master` is set to ensure control over the PTP topology.\n",
+            "properties": {
+              "enable": {
+                "type": "boolean",
+                "default": false,
+                "title": "Enable"
+              },
+              "endpoint_role": {
+                "type": "string",
+                "default": "follower",
+                "enum": [
+                  "bmca",
+                  "default",
+                  "follower"
+                ],
+                "title": "Endpoint Role"
+              },
+              "profile": {
+                "type": "string",
+                "default": "aes67-r16-2016",
+                "enum": [
+                  "aes67",
+                  "aes67-r16-2016",
+                  "smpte2059-2"
+                ],
+                "title": "Profile"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "PTP"
+          },
+          "link_tracking": {
+            "type": "object",
+            "description": "Configure the downstream interfaces of a respective Link Tracking Group.\nIf `port_channel` is defined in an adapter, then the port-channel interface is configured to be the downstream.\nElse all the ethernet interfaces will be configured as downstream -> to configure single-active EVPN multihomed networks.\n",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "name": {
+                "type": "string",
+                "description": "Tracking group name.\nThe default group name is taken from fabric variable of the switch, `link_tracking.groups[0].name` with default value being \"LT_GROUP1\".\nOptional if default link_tracking settings are configured on the node.\n",
+                "title": "Name"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Link Tracking"
+          },
+          "dot1x": {
+            "type": "object",
+            "description": "802.1x",
+            "properties": {
+              "port_control": {
+                "type": "string",
+                "enum": [
+                  "auto",
+                  "force-authorized",
+                  "force-unauthorized"
+                ],
+                "title": "Port Control"
+              },
+              "port_control_force_authorized_phone": {
+                "type": "boolean",
+                "title": "Port Control Force Authorized Phone"
+              },
+              "reauthentication": {
+                "type": "boolean",
+                "title": "Reauthentication"
+              },
+              "pae": {
+                "type": "object",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "authenticator"
+                    ],
+                    "title": "Mode"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "PAE"
+              },
+              "authentication_failure": {
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "allow",
+                      "drop"
+                    ],
+                    "title": "Action"
+                  },
+                  "allow_vlan": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 4094,
+                    "title": "Allow VLAN"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Authentication Failure"
+              },
+              "host_mode": {
+                "type": "object",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "multi-host",
+                      "single-host"
+                    ],
+                    "title": "Mode"
+                  },
+                  "multi_host_authenticated": {
+                    "type": "boolean",
+                    "title": "Multi Host Authenticated"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Host Mode"
+              },
+              "mac_based_authentication": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "always": {
+                    "type": "boolean",
+                    "title": "Always"
+                  },
+                  "host_mode_common": {
+                    "type": "boolean",
+                    "title": "Host Mode Common"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "MAC Based Authentication"
+              },
+              "timeout": {
+                "type": "object",
+                "properties": {
+                  "idle_host": {
+                    "type": "integer",
+                    "minimum": 10,
+                    "maximum": 65535,
+                    "title": "Idle Host"
+                  },
+                  "quiet_period": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 65535,
+                    "title": "Quiet Period"
+                  },
+                  "reauth_period": {
+                    "type": "string",
+                    "description": "Range 60-4294967295 or \"server\".",
+                    "title": "Reauth Period"
+                  },
+                  "reauth_timeout_ignore": {
+                    "type": "boolean",
+                    "title": "Reauth Timeout Ignore"
+                  },
+                  "tx_period": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 65535,
+                    "title": "TX Period"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Timeout"
+              },
+              "reauthorization_request_limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 10,
+                "title": "Reauthorization Request Limit"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "dot1x"
+          },
+          "storm_control": {
+            "type": "object",
+            "description": "Storm control settings applied on port toward the endpoint.",
+            "properties": {
+              "all": {
+                "type": "object",
+                "properties": {
+                  "level": {
+                    "type": "integer",
+                    "description": "Configure maximum storm-control level.",
+                    "title": "Level"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "percent",
+                      "pps"
+                    ],
+                    "default": "percent",
+                    "description": "Optional variable and is hardware dependent.",
+                    "title": "Unit"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "All"
+              },
+              "broadcast": {
+                "type": "object",
+                "properties": {
+                  "level": {
+                    "type": "integer",
+                    "description": "Configure maximum storm-control level.",
+                    "title": "Level"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "percent",
+                      "pps"
+                    ],
+                    "default": "percent",
+                    "description": "Optional variable and is hardware dependent.",
+                    "title": "Unit"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Broadcast"
+              },
+              "multicast": {
+                "type": "object",
+                "properties": {
+                  "level": {
+                    "type": "integer",
+                    "description": "Configure maximum storm-control level.",
+                    "title": "Level"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "percent",
+                      "pps"
+                    ],
+                    "default": "percent",
+                    "description": "Optional variable and is hardware dependent.",
+                    "title": "Unit"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Multicast"
+              },
+              "unknown_unicast": {
+                "type": "object",
+                "properties": {
+                  "level": {
+                    "type": "integer",
+                    "description": "Configure maximum storm-control level.",
+                    "title": "Level"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "percent",
+                      "pps"
+                    ],
+                    "default": "percent",
+                    "description": "Optional variable and is hardware dependent.",
+                    "title": "Unit"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Unknown Unicast"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Storm Control"
+          },
+          "monitor_sessions": {
+            "type": "array",
+            "description": "Used to define switchports as source or destination for monitoring sessions.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Session name.",
+                  "title": "Name"
+                },
+                "role": {
+                  "type": "string",
+                  "enum": [
+                    "source",
+                    "destination"
+                  ],
+                  "title": "Role"
+                },
+                "source_settings": {
+                  "type": "object",
+                  "properties": {
+                    "direction": {
+                      "type": "string",
+                      "enum": [
+                        "rx",
+                        "tx",
+                        "both"
+                      ],
+                      "title": "Direction"
+                    },
+                    "access_group": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "ip",
+                            "ipv6",
+                            "mac"
+                          ],
+                          "title": "Type"
+                        },
+                        "name": {
+                          "description": "ACL name.",
+                          "type": "string",
+                          "title": "Name"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "title": "Priority"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Access Group"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Source Settings"
+                },
+                "session_settings": {
+                  "type": "object",
+                  "description": "Session settings are defined per session name.\nDifferent session_settings for the same session name will be combined/merged.\n",
+                  "properties": {
+                    "encapsulation_gre_metadata_tx": {
+                      "type": "boolean",
+                      "title": "Encapsulation Gre Metadata TX"
+                    },
+                    "header_remove_size": {
+                      "type": "integer",
+                      "description": "Number of bytes to remove from header.",
+                      "title": "Header Remove Size"
+                    },
+                    "access_group": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "ip",
+                            "ipv6",
+                            "mac"
+                          ],
+                          "title": "Type"
+                        },
+                        "name": {
+                          "description": "ACL name.",
+                          "type": "string",
+                          "title": "Name"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Access Group"
+                    },
+                    "rate_limit_per_ingress_chip": {
+                      "type": "string",
+                      "description": "Ratelimit and unit as string.\nExamples:\n  \"100000 bps\"\n  \"100 kbps\"\n  \"10 mbps\"\n",
+                      "title": "Rate Limit Per Ingress Chip"
+                    },
+                    "rate_limit_per_egress_chip": {
+                      "type": "string",
+                      "description": "Ratelimit and unit as string.\nExamples:\n  \"100000 bps\"\n  \"100 kbps\"\n  \"10 mbps\"\n",
+                      "title": "Rate Limit Per Egress Chip"
+                    },
+                    "sample": {
+                      "type": "integer",
+                      "title": "Sample"
+                    },
+                    "truncate": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean",
+                          "title": "Enabled"
+                        },
+                        "size": {
+                          "type": "integer",
+                          "description": "Size in bytes",
+                          "title": "Size"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Truncate"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Session Settings"
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "Monitor Sessions"
+          },
+          "ethernet_segment": {
+            "type": "object",
+            "description": "Settings for all or single-active EVPN multihoming.",
+            "properties": {
+              "short_esi": {
+                "type": "string",
+                "description": "In format xxxx:xxxx:xxxx or \"auto\".\nDefine a manual short-esi (be careful using this on profiles) or set the value to \"auto\" to automatically generate the value.\nPlease see the notes under \"EVPN A/A ESI dual and single-attached endpoint scenarios\" before setting `short_esi: auto`.\n",
+                "title": "Short Esi"
+              },
+              "redundancy": {
+                "type": "string",
+                "enum": [
+                  "all-active",
+                  "single-active"
+                ],
+                "description": "If omitted, Port-Channels use the EOS default of all-active.\nIf omitted, Ethernet interfaces are configured as single-active.\n",
+                "title": "Redundancy"
+              },
+              "designated_forwarder_algorithm": {
+                "type": "string",
+                "enum": [
+                  "auto",
+                  "modulus",
+                  "preference"
+                ],
+                "description": "Configure DF algorithm and preferences.\n- auto: Use preference-based algorithm and assign preference based on position of device in the 'switches' list,\n  e.g., assuming a list of three switches, this would assign a preference of 200 to the first switch, 100 to the 2nd, and 0 to the third.\n- preference: Set preference for each switch manually using designated_forwarder_preferences key.\n- modulus: Use the default modulus-based algorithm.\nIf omitted, Port-Channels use the EOS default of modulus.\nIf omitted, Ethernet interfaces default to the 'auto' mechanism detailed above.\n",
+                "title": "Designated Forwarder Algorithm"
+              },
+              "designated_forwarder_preferences": {
+                "type": "array",
+                "description": "Manual preference as described above, required only for preference algorithm.",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Designated Forwarder Preferences"
+              },
+              "dont_preempt": {
+                "type": "boolean",
+                "description": "Disable preemption for single-active forwarding when auto/manual DF preference is configured.",
+                "title": "Dont Preempt"
+              }
+            },
+            "required": [
+              "short_esi"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Ethernet Segment"
+          },
+          "port_channel": {
+            "type": "object",
+            "description": "Used for port-channel adapter.",
+            "properties": {
+              "mode": {
+                "type": "string",
+                "description": "Port-Channel Mode.",
+                "enum": [
+                  "active",
+                  "passive",
+                  "on"
+                ],
+                "title": "Mode"
+              },
+              "channel_id": {
+                "type": "integer",
+                "description": "Port-Channel ID, Optional.\nIf no channel_id is specified, an id is generated from the first switch port in the port channel.\n",
+                "title": "Channel ID"
+              },
+              "description": {
+                "type": "string",
+                "description": "Port-Channel Description - added after endpoint name in the description, Optional.",
+                "title": "Description"
+              },
+              "enabled": {
+                "type": "boolean",
+                "default": true,
+                "description": "Port-Channel administrative state, Optional.\nsetting to false will set port to 'shutdown' in intended configuration.\n",
+                "title": "Enabled"
+              },
+              "short_esi": {
+                "type": "string",
+                "description": "In format xxxx:xxxx:xxxx or \"auto\".",
+                "title": "Short Esi"
+              },
+              "lacp_fallback": {
+                "type": "object",
+                "description": "LACP fallback configuration.",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "static"
+                    ],
+                    "description": "Currently only static mode is supported.",
+                    "title": "Mode"
+                  },
+                  "timeout": {
+                    "type": "integer",
+                    "description": "Timeout in seconds, Optional - default is 90 seconds.",
+                    "title": "Timeout"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "LACP Fallback"
+              },
+              "subinterfaces": {
+                "type": "array",
+                "description": "Port-Channel L2 Subinterfaces\nSubinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.\nSetting short_esi: auto generates the short_esi automatically using a hash of configuration elements.\nPlease see the notes under \"EVPN A/A ESI dual-attached endpoint scenario\" before setting short_esi: auto.\n",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "number": {
+                      "type": "integer",
+                      "description": "Subinterface number",
+                      "title": "Number"
+                    },
+                    "short_esi": {
+                      "type": "string",
+                      "description": "In format xxxx:xxxx:xxxx or \"auto\"\nRequired for multihomed port-channels with subinterfaces\n",
+                      "title": "Short Esi"
+                    },
+                    "vlan_id": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 4094,
+                      "description": "VLAN ID to bridge.\nDefault is subinterface number.\n",
+                      "title": "VLAN ID"
+                    },
+                    "encapsulation_vlan": {
+                      "type": "object",
+                      "description": "Client VLAN ID encapsulation.\nDefault is subinterface number.\n",
+                      "properties": {
+                        "client_dot1q": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 4094,
+                          "title": "Client Dot1Q"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Encapsulation VLAN"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Subinterfaces"
+              },
+              "raw_eos_cli": {
+                "type": "string",
+                "description": "EOS CLI rendered directly on the port-channel interface in the final EOS configuration.",
+                "title": "Raw EOS CLI"
+              },
+              "structured_config": {
+                "type": "object",
+                "description": "Custom structured config added under port_channel_interfaces.<interface> for eos_cli_config_gen.",
+                "title": "Structured Config"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Port Channel"
+          },
+          "raw_eos_cli": {
+            "type": "string",
+            "description": "EOS CLI rendered directly on the ethernet interface in the final EOS configuration.",
+            "title": "Raw EOS CLI"
+          },
+          "structured_config": {
+            "type": "object",
+            "description": "Custom structured config added under ethernet_interfaces.<interface> for eos_cli_config_gen.",
+            "title": "Structured Config"
+          },
+          "switches": {
+            "type": "array",
+            "description": "Regex matching the full hostname of one or more switches.\nThe regular expression must match the full hostname.\n",
+            "items": {
+              "type": "string"
+            },
+            "title": "Switches"
+          },
+          "switch_ports": {
+            "type": "array",
+            "description": "List of ranges using AVD range_expand syntax.\nFor example:\n\nswitch_ports:\n  - Ethernet1\n  - Ethernet2-48\n",
+            "items": {
+              "type": "string"
+            },
+            "title": "Switch Ports"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "Network Ports"
     },
     "node_type_keys": {
       "type": "array",
@@ -1214,6 +2072,825 @@
       "description": "POD Name, only used in Fabric Documentation (Optional), fallback to dc_name and then to fabric_name.\nRecommended to be common between Spines and Leafs within a POD (One l3ls topology).\n",
       "type": "string",
       "title": "Pod Name"
+    },
+    "port_profiles": {
+      "type": "array",
+      "description": "Optional profiles to share common settings for connected_endpoints and/or network_ports.\nKeys are the same used under endpoints adapters. Keys defined under endpoints adapters take precedence.\n",
+      "items": {
+        "type": "object",
+        "properties": {
+          "endpoint_ports": {
+            "type": "array",
+            "description": "Endpoint ports is used for description, required unless description is set.\nThe lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.\nEach list item is one switchport.\n",
+            "items": {
+              "type": "string",
+              "description": "Interface name."
+            },
+            "title": "Endpoint Ports"
+          },
+          "speed": {
+            "type": "string",
+            "description": "Set adapter speed: `< interface_speed >`, `forced < interface_speed >`, `auto < interface_speed >`.\nIf not specified will be auto.\n",
+            "title": "Speed"
+          },
+          "description": {
+            "type": "string",
+            "description": "Interface descriptions Description.",
+            "title": "Description"
+          },
+          "profile": {
+            "type": "string",
+            "description": "Port profile name.",
+            "title": "Profile"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Administrative state, setting to false will set the port to 'shutdown' in the intended configuration.\n",
+            "default": true,
+            "title": "Enabled"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "access",
+              "dot1q-tunnel",
+              "trunk"
+            ],
+            "description": "Interface mode.",
+            "title": "Mode"
+          },
+          "mtu": {
+            "type": "integer",
+            "minimum": 68,
+            "maximum": 65535,
+            "title": "MTU"
+          },
+          "l2_mtu": {
+            "type": "integer",
+            "minimum": 68,
+            "maximum": 9416,
+            "description": "This should only be defined for platforms supporting the \"l2 mtu\" CLI command.",
+            "title": "L2 MTU"
+          },
+          "native_vlan": {
+            "type": "integer",
+            "description": "Native VLAN for a trunk port.\nIf both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence.\n",
+            "minimum": 1,
+            "maximum": 4094,
+            "title": "Native VLAN"
+          },
+          "native_vlan_tag": {
+            "type": "boolean",
+            "default": false,
+            "description": "If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence.",
+            "title": "Native VLAN Tag"
+          },
+          "trunk_groups": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Required with `enable_trunk_groups: true`.\nTrunk Groups are used for limiting VLANs on trunk ports to VLANs with the same Trunk Group.\n",
+            "title": "Trunk Groups"
+          },
+          "vlans": {
+            "type": "string",
+            "description": "Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and VLAN 1 will be used for access ports.",
+            "title": "VLANs"
+          },
+          "spanning_tree_portfast": {
+            "type": "string",
+            "enum": [
+              "edge",
+              "network"
+            ],
+            "title": "Spanning Tree Portfast"
+          },
+          "spanning_tree_bpdufilter": {
+            "type": "string",
+            "enum": [
+              "enabled",
+              "disabled",
+              "True",
+              "False",
+              "true",
+              "false"
+            ],
+            "title": "Spanning Tree Bpdufilter"
+          },
+          "spanning_tree_bpduguard": {
+            "type": "string",
+            "enum": [
+              "enabled",
+              "disabled",
+              "True",
+              "False",
+              "true",
+              "false"
+            ],
+            "title": "Spanning Tree Bpduguard"
+          },
+          "flowcontrol": {
+            "type": "object",
+            "properties": {
+              "received": {
+                "type": "string",
+                "enum": [
+                  "received",
+                  "send",
+                  "on"
+                ],
+                "title": "Received"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Flowcontrol"
+          },
+          "qos_profile": {
+            "type": "string",
+            "description": "QOS profile name",
+            "title": "QOS Profile"
+          },
+          "ptp": {
+            "type": "object",
+            "description": "The global PTP profile parameters will be applied to all connected endpoints where `ptp` is manually enabled.\n`ptp role master` is set to ensure control over the PTP topology.\n",
+            "properties": {
+              "enable": {
+                "type": "boolean",
+                "default": false,
+                "title": "Enable"
+              },
+              "endpoint_role": {
+                "type": "string",
+                "default": "follower",
+                "enum": [
+                  "bmca",
+                  "default",
+                  "follower"
+                ],
+                "title": "Endpoint Role"
+              },
+              "profile": {
+                "type": "string",
+                "default": "aes67-r16-2016",
+                "enum": [
+                  "aes67",
+                  "aes67-r16-2016",
+                  "smpte2059-2"
+                ],
+                "title": "Profile"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "PTP"
+          },
+          "link_tracking": {
+            "type": "object",
+            "description": "Configure the downstream interfaces of a respective Link Tracking Group.\nIf `port_channel` is defined in an adapter, then the port-channel interface is configured to be the downstream.\nElse all the ethernet interfaces will be configured as downstream -> to configure single-active EVPN multihomed networks.\n",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "name": {
+                "type": "string",
+                "description": "Tracking group name.\nThe default group name is taken from fabric variable of the switch, `link_tracking.groups[0].name` with default value being \"LT_GROUP1\".\nOptional if default link_tracking settings are configured on the node.\n",
+                "title": "Name"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Link Tracking"
+          },
+          "dot1x": {
+            "type": "object",
+            "description": "802.1x",
+            "properties": {
+              "port_control": {
+                "type": "string",
+                "enum": [
+                  "auto",
+                  "force-authorized",
+                  "force-unauthorized"
+                ],
+                "title": "Port Control"
+              },
+              "port_control_force_authorized_phone": {
+                "type": "boolean",
+                "title": "Port Control Force Authorized Phone"
+              },
+              "reauthentication": {
+                "type": "boolean",
+                "title": "Reauthentication"
+              },
+              "pae": {
+                "type": "object",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "authenticator"
+                    ],
+                    "title": "Mode"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "PAE"
+              },
+              "authentication_failure": {
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "allow",
+                      "drop"
+                    ],
+                    "title": "Action"
+                  },
+                  "allow_vlan": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 4094,
+                    "title": "Allow VLAN"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Authentication Failure"
+              },
+              "host_mode": {
+                "type": "object",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "multi-host",
+                      "single-host"
+                    ],
+                    "title": "Mode"
+                  },
+                  "multi_host_authenticated": {
+                    "type": "boolean",
+                    "title": "Multi Host Authenticated"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Host Mode"
+              },
+              "mac_based_authentication": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "always": {
+                    "type": "boolean",
+                    "title": "Always"
+                  },
+                  "host_mode_common": {
+                    "type": "boolean",
+                    "title": "Host Mode Common"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "MAC Based Authentication"
+              },
+              "timeout": {
+                "type": "object",
+                "properties": {
+                  "idle_host": {
+                    "type": "integer",
+                    "minimum": 10,
+                    "maximum": 65535,
+                    "title": "Idle Host"
+                  },
+                  "quiet_period": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 65535,
+                    "title": "Quiet Period"
+                  },
+                  "reauth_period": {
+                    "type": "string",
+                    "description": "Range 60-4294967295 or \"server\".",
+                    "title": "Reauth Period"
+                  },
+                  "reauth_timeout_ignore": {
+                    "type": "boolean",
+                    "title": "Reauth Timeout Ignore"
+                  },
+                  "tx_period": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 65535,
+                    "title": "TX Period"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Timeout"
+              },
+              "reauthorization_request_limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 10,
+                "title": "Reauthorization Request Limit"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "dot1x"
+          },
+          "storm_control": {
+            "type": "object",
+            "description": "Storm control settings applied on port toward the endpoint.",
+            "properties": {
+              "all": {
+                "type": "object",
+                "properties": {
+                  "level": {
+                    "type": "integer",
+                    "description": "Configure maximum storm-control level.",
+                    "title": "Level"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "percent",
+                      "pps"
+                    ],
+                    "default": "percent",
+                    "description": "Optional variable and is hardware dependent.",
+                    "title": "Unit"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "All"
+              },
+              "broadcast": {
+                "type": "object",
+                "properties": {
+                  "level": {
+                    "type": "integer",
+                    "description": "Configure maximum storm-control level.",
+                    "title": "Level"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "percent",
+                      "pps"
+                    ],
+                    "default": "percent",
+                    "description": "Optional variable and is hardware dependent.",
+                    "title": "Unit"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Broadcast"
+              },
+              "multicast": {
+                "type": "object",
+                "properties": {
+                  "level": {
+                    "type": "integer",
+                    "description": "Configure maximum storm-control level.",
+                    "title": "Level"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "percent",
+                      "pps"
+                    ],
+                    "default": "percent",
+                    "description": "Optional variable and is hardware dependent.",
+                    "title": "Unit"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Multicast"
+              },
+              "unknown_unicast": {
+                "type": "object",
+                "properties": {
+                  "level": {
+                    "type": "integer",
+                    "description": "Configure maximum storm-control level.",
+                    "title": "Level"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "percent",
+                      "pps"
+                    ],
+                    "default": "percent",
+                    "description": "Optional variable and is hardware dependent.",
+                    "title": "Unit"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Unknown Unicast"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Storm Control"
+          },
+          "monitor_sessions": {
+            "type": "array",
+            "description": "Used to define switchports as source or destination for monitoring sessions.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Session name.",
+                  "title": "Name"
+                },
+                "role": {
+                  "type": "string",
+                  "enum": [
+                    "source",
+                    "destination"
+                  ],
+                  "title": "Role"
+                },
+                "source_settings": {
+                  "type": "object",
+                  "properties": {
+                    "direction": {
+                      "type": "string",
+                      "enum": [
+                        "rx",
+                        "tx",
+                        "both"
+                      ],
+                      "title": "Direction"
+                    },
+                    "access_group": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "ip",
+                            "ipv6",
+                            "mac"
+                          ],
+                          "title": "Type"
+                        },
+                        "name": {
+                          "description": "ACL name.",
+                          "type": "string",
+                          "title": "Name"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "title": "Priority"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Access Group"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Source Settings"
+                },
+                "session_settings": {
+                  "type": "object",
+                  "description": "Session settings are defined per session name.\nDifferent session_settings for the same session name will be combined/merged.\n",
+                  "properties": {
+                    "encapsulation_gre_metadata_tx": {
+                      "type": "boolean",
+                      "title": "Encapsulation Gre Metadata TX"
+                    },
+                    "header_remove_size": {
+                      "type": "integer",
+                      "description": "Number of bytes to remove from header.",
+                      "title": "Header Remove Size"
+                    },
+                    "access_group": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "ip",
+                            "ipv6",
+                            "mac"
+                          ],
+                          "title": "Type"
+                        },
+                        "name": {
+                          "description": "ACL name.",
+                          "type": "string",
+                          "title": "Name"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Access Group"
+                    },
+                    "rate_limit_per_ingress_chip": {
+                      "type": "string",
+                      "description": "Ratelimit and unit as string.\nExamples:\n  \"100000 bps\"\n  \"100 kbps\"\n  \"10 mbps\"\n",
+                      "title": "Rate Limit Per Ingress Chip"
+                    },
+                    "rate_limit_per_egress_chip": {
+                      "type": "string",
+                      "description": "Ratelimit and unit as string.\nExamples:\n  \"100000 bps\"\n  \"100 kbps\"\n  \"10 mbps\"\n",
+                      "title": "Rate Limit Per Egress Chip"
+                    },
+                    "sample": {
+                      "type": "integer",
+                      "title": "Sample"
+                    },
+                    "truncate": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean",
+                          "title": "Enabled"
+                        },
+                        "size": {
+                          "type": "integer",
+                          "description": "Size in bytes",
+                          "title": "Size"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Truncate"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Session Settings"
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "Monitor Sessions"
+          },
+          "ethernet_segment": {
+            "type": "object",
+            "description": "Settings for all or single-active EVPN multihoming.",
+            "properties": {
+              "short_esi": {
+                "type": "string",
+                "description": "In format xxxx:xxxx:xxxx or \"auto\".\nDefine a manual short-esi (be careful using this on profiles) or set the value to \"auto\" to automatically generate the value.\nPlease see the notes under \"EVPN A/A ESI dual and single-attached endpoint scenarios\" before setting `short_esi: auto`.\n",
+                "title": "Short Esi"
+              },
+              "redundancy": {
+                "type": "string",
+                "enum": [
+                  "all-active",
+                  "single-active"
+                ],
+                "description": "If omitted, Port-Channels use the EOS default of all-active.\nIf omitted, Ethernet interfaces are configured as single-active.\n",
+                "title": "Redundancy"
+              },
+              "designated_forwarder_algorithm": {
+                "type": "string",
+                "enum": [
+                  "auto",
+                  "modulus",
+                  "preference"
+                ],
+                "description": "Configure DF algorithm and preferences.\n- auto: Use preference-based algorithm and assign preference based on position of device in the 'switches' list,\n  e.g., assuming a list of three switches, this would assign a preference of 200 to the first switch, 100 to the 2nd, and 0 to the third.\n- preference: Set preference for each switch manually using designated_forwarder_preferences key.\n- modulus: Use the default modulus-based algorithm.\nIf omitted, Port-Channels use the EOS default of modulus.\nIf omitted, Ethernet interfaces default to the 'auto' mechanism detailed above.\n",
+                "title": "Designated Forwarder Algorithm"
+              },
+              "designated_forwarder_preferences": {
+                "type": "array",
+                "description": "Manual preference as described above, required only for preference algorithm.",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Designated Forwarder Preferences"
+              },
+              "dont_preempt": {
+                "type": "boolean",
+                "description": "Disable preemption for single-active forwarding when auto/manual DF preference is configured.",
+                "title": "Dont Preempt"
+              }
+            },
+            "required": [
+              "short_esi"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Ethernet Segment"
+          },
+          "port_channel": {
+            "type": "object",
+            "description": "Used for port-channel adapter.",
+            "properties": {
+              "mode": {
+                "type": "string",
+                "description": "Port-Channel Mode.",
+                "enum": [
+                  "active",
+                  "passive",
+                  "on"
+                ],
+                "title": "Mode"
+              },
+              "channel_id": {
+                "type": "integer",
+                "description": "Port-Channel ID, Optional.\nIf no channel_id is specified, an id is generated from the first switch port in the port channel.\n",
+                "title": "Channel ID"
+              },
+              "description": {
+                "type": "string",
+                "description": "Port-Channel Description - added after endpoint name in the description, Optional.",
+                "title": "Description"
+              },
+              "enabled": {
+                "type": "boolean",
+                "default": true,
+                "description": "Port-Channel administrative state, Optional.\nsetting to false will set port to 'shutdown' in intended configuration.\n",
+                "title": "Enabled"
+              },
+              "short_esi": {
+                "type": "string",
+                "description": "In format xxxx:xxxx:xxxx or \"auto\".",
+                "title": "Short Esi"
+              },
+              "lacp_fallback": {
+                "type": "object",
+                "description": "LACP fallback configuration.",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "static"
+                    ],
+                    "description": "Currently only static mode is supported.",
+                    "title": "Mode"
+                  },
+                  "timeout": {
+                    "type": "integer",
+                    "description": "Timeout in seconds, Optional - default is 90 seconds.",
+                    "title": "Timeout"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "LACP Fallback"
+              },
+              "subinterfaces": {
+                "type": "array",
+                "description": "Port-Channel L2 Subinterfaces\nSubinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.\nSetting short_esi: auto generates the short_esi automatically using a hash of configuration elements.\nPlease see the notes under \"EVPN A/A ESI dual-attached endpoint scenario\" before setting short_esi: auto.\n",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "number": {
+                      "type": "integer",
+                      "description": "Subinterface number",
+                      "title": "Number"
+                    },
+                    "short_esi": {
+                      "type": "string",
+                      "description": "In format xxxx:xxxx:xxxx or \"auto\"\nRequired for multihomed port-channels with subinterfaces\n",
+                      "title": "Short Esi"
+                    },
+                    "vlan_id": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 4094,
+                      "description": "VLAN ID to bridge.\nDefault is subinterface number.\n",
+                      "title": "VLAN ID"
+                    },
+                    "encapsulation_vlan": {
+                      "type": "object",
+                      "description": "Client VLAN ID encapsulation.\nDefault is subinterface number.\n",
+                      "properties": {
+                        "client_dot1q": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 4094,
+                          "title": "Client Dot1Q"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Encapsulation VLAN"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Subinterfaces"
+              },
+              "raw_eos_cli": {
+                "type": "string",
+                "description": "EOS CLI rendered directly on the port-channel interface in the final EOS configuration.",
+                "title": "Raw EOS CLI"
+              },
+              "structured_config": {
+                "type": "object",
+                "description": "Custom structured config added under port_channel_interfaces.<interface> for eos_cli_config_gen.",
+                "title": "Structured Config"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Port Channel"
+          },
+          "raw_eos_cli": {
+            "type": "string",
+            "description": "EOS CLI rendered directly on the ethernet interface in the final EOS configuration.",
+            "title": "Raw EOS CLI"
+          },
+          "structured_config": {
+            "type": "object",
+            "description": "Custom structured config added under ethernet_interfaces.<interface> for eos_cli_config_gen.",
+            "title": "Structured Config"
+          },
+          "parent_profile": {
+            "type": "string",
+            "description": "Parent profile is optional.\nPort_profiles can refer to another port_profile to inherit settings in up to two levels (adapter->profile->parent_profile).",
+            "title": "Parent Profile"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "profile"
+        ]
+      },
+      "title": "Port Profiles"
     },
     "redundancy": {
       "type": "object",

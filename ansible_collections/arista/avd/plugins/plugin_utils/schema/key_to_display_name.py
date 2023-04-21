@@ -51,6 +51,7 @@ WORDLIST = {
     "pae": "PAE",
     "pbr": "PBR",
     "pim": "PIM",
+    "poe": "PoE",
     "ptp": "PTP",
     "pvlan": "PVLAN",
     "qos": "QOS",

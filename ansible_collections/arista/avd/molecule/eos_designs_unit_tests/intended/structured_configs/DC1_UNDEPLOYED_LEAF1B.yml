@@ -815,7 +815,8 @@ ethernet_interfaces:
     mode: active
   speed: 100g
   name: Ethernet58/1
-- peer: DC1-SPINE1
+- name: Ethernet49/1
+  peer: DC1-SPINE1
   peer_interface: Ethernet29
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet29
@@ -824,8 +825,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.161/31
-  name: Ethernet49/1
-- peer: DC1-SPINE2
+- name: Ethernet50/1
+  peer: DC1-SPINE2
   peer_interface: Ethernet29
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE2_Ethernet29
@@ -834,8 +835,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.163/31
-  name: Ethernet50/1
-- peer: DC1-SPINE3
+- name: Ethernet51/1
+  peer: DC1-SPINE3
   peer_interface: Ethernet29
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE3_Ethernet29
@@ -844,8 +845,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.165/31
-  name: Ethernet51/1
-- peer: DC1-SPINE4
+- name: Ethernet52/1
+  peer: DC1-SPINE4
   peer_interface: Ethernet29
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE4_Ethernet29
@@ -854,7 +855,6 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.167/31
-  name: Ethernet52/1
 mlag_configuration:
   domain_id: DC1_UNDEPLOYED_LEAF1
   local_interface: Vlan4092

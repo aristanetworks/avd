@@ -19,7 +19,8 @@ vlans:
   name: NETWORK_SERVICES_VLAN
   tenant: test
 ethernet_interfaces:
-- peer: uplink-native-vlan-grandparent
+- name: Ethernet1
+  peer: uplink-native-vlan-grandparent
   peer_interface: Ethernet1
   peer_type: l2leaf
   description: UPLINK-NATIVE-VLAN-GRANDPARENT_Ethernet1
@@ -28,8 +29,8 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet1
-- peer: uplink-native-vlan-child
+- name: Ethernet2
+  peer: uplink-native-vlan-child
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: UPLINK-NATIVE-VLAN-CHILD_Ethernet2
@@ -38,7 +39,6 @@ ethernet_interfaces:
   channel_group:
     id: 2
     mode: active
-  name: Ethernet2
 port_channel_interfaces:
 - name: Port-Channel1
   description: UPLINK-NATIVE-VLAN-GRANDPARENT_Po1

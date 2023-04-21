@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  connected_endpoints_keys:
+    type: list
+    documentation_options:
+      filename: Connected Endpoints
+    primary_key: key
+    convert_types:
+      - dict
+    description: |
+      Define connected endpoints keys to define the grouping of endpoints connecting to the fabric.
+      This lets you specify various keys to better organize/group your data.
+      The connected endpoints keys should be defined in the top level group_var for the fabric.
+    items:
+      type: dict
+      keys:
+        key:
+          type: str
+        type:
+          type: str
+          description: Type used for documentation.
+        description:
+          type: str
+          description: Description used for documentation.

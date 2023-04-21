@@ -28,7 +28,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: ISIS-LEAF1
+- name: Ethernet1
+  peer: ISIS-LEAF1
   peer_interface: Ethernet1
   peer_type: leaf
   description: ISIS-LEAF1_Ethernet1
@@ -37,15 +38,14 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet1
-- peer: Endpoint
+- name: Ethernet10
+  peer: Endpoint
   peer_type: network_port
   description: Endpoint
   type: switched
   shutdown: false
   mode: access
   vlans: '110'
-  name: Ethernet10
 port_channel_interfaces:
 - name: Port-Channel1
   description: ISIS-LEAF1_Po1

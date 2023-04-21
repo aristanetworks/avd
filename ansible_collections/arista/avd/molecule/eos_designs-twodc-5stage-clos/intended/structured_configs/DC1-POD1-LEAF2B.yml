@@ -542,7 +542,8 @@ ethernet_interfaces:
     id: 5
     mode: active
   name: Ethernet6
-- peer: DC1-POD1-SPINE1
+- name: Ethernet1
+  peer: DC1-POD1-SPINE1
   peer_interface: Ethernet5
   peer_type: spine
   description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet5
@@ -555,8 +556,8 @@ ethernet_interfaces:
   ptp:
     enable: true
   ip_address: 172.17.110.17/31
-  name: Ethernet1
-- peer: DC1-POD1-SPINE2
+- name: Ethernet2
+  peer: DC1-POD1-SPINE2
   peer_interface: Ethernet5
   peer_type: spine
   description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet5
@@ -569,8 +570,8 @@ ethernet_interfaces:
   ptp:
     enable: true
   ip_address: 172.17.110.19/31
-  name: Ethernet2
-- peer: DC1-POD1-L2LEAF2A
+- name: Ethernet3
+  peer: DC1-POD1-L2LEAF2A
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: DC1-POD1-L2LEAF2A_Ethernet2
@@ -579,8 +580,8 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  name: Ethernet3
-- peer: DC1-POD1-L2LEAF2B
+- name: Ethernet4
+  peer: DC1-POD1-L2LEAF2B
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: DC1-POD1-L2LEAF2B_Ethernet2
@@ -589,8 +590,8 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  name: Ethernet4
-- peer: DC1-POD1-SPINE1
+- name: Ethernet11
+  peer: DC1-POD1-SPINE1
   peer_interface: Ethernet8
   peer_type: spine
   description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet8
@@ -603,8 +604,8 @@ ethernet_interfaces:
   ptp:
     enable: true
   ip_address: 172.17.110.21/31
-  name: Ethernet11
-- peer: DC1-POD1-SPINE2
+- name: Ethernet12
+  peer: DC1-POD1-SPINE2
   peer_interface: Ethernet8
   peer_type: spine
   description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet8
@@ -617,7 +618,6 @@ ethernet_interfaces:
   ptp:
     enable: true
   ip_address: 172.17.110.23/31
-  name: Ethernet12
 - name: Ethernet7
   peer: DC2-POD1-LEAF1A
   peer_interface: Ethernet7
@@ -629,7 +629,8 @@ ethernet_interfaces:
   ip_address: 11.1.0.38/31
   ptp:
     enable: true
-- peer: server-1
+- name: Ethernet16
+  peer: server-1
   peer_interface: Eth2
   peer_type: server
   port_profile: TENANT_A
@@ -649,8 +650,8 @@ ethernet_interfaces:
   channel_group:
     id: 16
     mode: active
-  name: Ethernet16
-- peer: server-1
+- name: Ethernet17
+  peer: server-1
   peer_interface: Eth4
   peer_type: server
   port_profile: TENANT_A
@@ -670,8 +671,8 @@ ethernet_interfaces:
   channel_group:
     id: 17
     mode: active
-  name: Ethernet17
-- peer: server-1
+- name: Ethernet18
+  peer: server-1
   peer_interface: Eth6
   peer_type: server
   port_profile: NESTED_TENANT_A
@@ -691,8 +692,8 @@ ethernet_interfaces:
   channel_group:
     id: 18
     mode: active
-  name: Ethernet18
-- peer: server-1
+- name: Ethernet19
+  peer: server-1
   peer_interface: Eth8
   peer_type: server
   port_profile: NESTED_TENANT_A
@@ -712,7 +713,6 @@ ethernet_interfaces:
   channel_group:
     id: 19
     mode: active
-  name: Ethernet19
 mlag_configuration:
   domain_id: RACK2_MLAG
   local_interface: Vlan4094
