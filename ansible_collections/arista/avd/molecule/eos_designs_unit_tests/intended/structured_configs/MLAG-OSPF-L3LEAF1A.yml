@@ -132,7 +132,8 @@ ethernet_interfaces:
     id: 5
     mode: active
   name: Ethernet6
-- peer: DC1-SPINE1
+- name: Ethernet1
+  peer: DC1-SPINE1
   peer_interface: Ethernet18
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet18
@@ -142,7 +143,6 @@ ethernet_interfaces:
   ip_address: 10.10.101.7/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  name: Ethernet1
 mlag_configuration:
   domain_id: MLAG_OSPF_L3LEAF1
   local_interface: Vlan4094

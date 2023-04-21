@@ -982,7 +982,8 @@ ethernet_interfaces:
     mode: active
   speed: 100g
   name: Ethernet54/1
-- peer: DC1-L2LEAF2A
+- name: Ethernet7
+  peer: DC1-L2LEAF2A
   peer_interface: Ethernet1
   peer_type: l2leaf
   description: DC1-L2LEAF2A_Ethernet1
@@ -991,8 +992,8 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  name: Ethernet7
-- peer: DC1-L2LEAF2B
+- name: Ethernet8
+  peer: DC1-L2LEAF2B
   peer_interface: Ethernet1
   peer_type: l2leaf
   description: DC1-L2LEAF2B_Ethernet1
@@ -1001,8 +1002,8 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  name: Ethernet8
-- peer: DC1-SPINE1
+- name: Ethernet49/1
+  peer: DC1-SPINE1
   peer_interface: Ethernet7/1
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet7/1
@@ -1011,8 +1012,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.97/31
-  name: Ethernet49/1
-- peer: DC1-SPINE2
+- name: Ethernet50/1
+  peer: DC1-SPINE2
   peer_interface: Ethernet1/7/1
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE2_Ethernet1/7/1
@@ -1021,8 +1022,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.99/31
-  name: Ethernet50/1
-- peer: DC1-SPINE3
+- name: Ethernet51/1
+  peer: DC1-SPINE3
   peer_interface: Ethernet1/7/1
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE3_Ethernet1/7/1
@@ -1031,8 +1032,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.101/31
-  name: Ethernet51/1
-- peer: DC1-SPINE4
+- name: Ethernet52/1
+  peer: DC1-SPINE4
   peer_interface: Ethernet7/1
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE4_Ethernet7/1
@@ -1041,8 +1042,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.103/31
-  name: Ethernet52/1
-- peer: server03_ESI
+- name: Ethernet10
+  peer: server03_ESI
   peer_interface: Eth1
   peer_type: server
   port_profile: TENANT_A_B
@@ -1054,8 +1055,8 @@ ethernet_interfaces:
   channel_group:
     id: 10
     mode: active
-  name: Ethernet10
-- peer: server04_inherit_all_from_profile
+- name: Ethernet11
+  peer: server04_inherit_all_from_profile
   peer_interface: Eth1
   peer_type: server
   port_profile: ALL_WITH_SECURITY
@@ -1081,8 +1082,8 @@ ethernet_interfaces:
     unknown_unicast:
       level: '2'
       unit: percent
-  name: Ethernet11
-- peer: server05_no_profile
+- name: Ethernet12
+  peer: server05_no_profile
   peer_interface: Eth1
   peer_type: server
   description: server05_no_profile_Eth1
@@ -1106,8 +1107,8 @@ ethernet_interfaces:
     unknown_unicast:
       level: '2'
       unit: percent
-  name: Ethernet12
-- peer: server06_override_profile
+- name: Ethernet13
+  peer: server06_override_profile
   peer_interface: Eth1
   peer_type: server
   port_profile: ALL_WITH_SECURITY
@@ -1133,8 +1134,8 @@ ethernet_interfaces:
     unknown_unicast:
       level: '2'
       unit: percent
-  name: Ethernet13
-- peer: server07_inherit_all_from_profile_port_channel
+- name: Ethernet14
+  peer: server07_inherit_all_from_profile_port_channel
   peer_interface: Eth1
   peer_type: server
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
@@ -1163,8 +1164,8 @@ ethernet_interfaces:
   channel_group:
     id: 14
     mode: active
-  name: Ethernet14
-- peer: server08_no_profile_port_channel
+- name: Ethernet15
+  peer: server08_no_profile_port_channel
   peer_interface: Eth1
   peer_type: server
   description: server08_no_profile_port_channel_Eth1
@@ -1191,8 +1192,8 @@ ethernet_interfaces:
   channel_group:
     id: 15
     mode: 'on'
-  name: Ethernet15
-- peer: server09_override_profile_no_port_channel
+- name: Ethernet16
+  peer: server09_override_profile_no_port_channel
   peer_interface: Eth1
   peer_type: server
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
@@ -1218,8 +1219,8 @@ ethernet_interfaces:
     unknown_unicast:
       level: '2'
       unit: percent
-  name: Ethernet16
-- peer: server10_no_profile_port_channel_lacp_fallback
+- name: Ethernet17
+  peer: server10_no_profile_port_channel_lacp_fallback
   peer_interface: Eth1
   peer_type: server
   description: server10_no_profile_port_channel_lacp_fallback_Eth1
@@ -1247,8 +1248,8 @@ ethernet_interfaces:
     id: 17
     mode: passive
   lacp_port_priority: 8192
-  name: Ethernet17
-- peer: server11_inherit_profile_port_channel_lacp_fallback
+- name: Ethernet18
+  peer: server11_inherit_profile_port_channel_lacp_fallback
   peer_interface: Eth1
   peer_type: server
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
@@ -1278,8 +1279,8 @@ ethernet_interfaces:
     id: 18
     mode: active
   lacp_port_priority: 8192
-  name: Ethernet18
-- peer: server12_inherit_nested_profile_port_channel_lacp_fallback
+- name: Ethernet19
+  peer: server12_inherit_nested_profile_port_channel_lacp_fallback
   peer_interface: Eth1
   peer_type: server
   port_profile: NESTED_PORT_PROFILE
@@ -1309,8 +1310,8 @@ ethernet_interfaces:
     id: 19
     mode: active
   lacp_port_priority: 8192
-  name: Ethernet19
-- peer: server13_disabled_interfaces
+- name: Ethernet20
+  peer: server13_disabled_interfaces
   peer_interface: Eth1
   peer_type: server
   port_profile: TENANT_A
@@ -1319,8 +1320,8 @@ ethernet_interfaces:
   shutdown: true
   mode: access
   vlans: '110'
-  name: Ethernet20
-- peer: server14_explicitly_enabled_interfaces
+- name: Ethernet21
+  peer: server14_explicitly_enabled_interfaces
   peer_interface: Eth1
   peer_type: server
   port_profile: TENANT_A
@@ -1329,8 +1330,8 @@ ethernet_interfaces:
   shutdown: false
   mode: access
   vlans: '110'
-  name: Ethernet21
-- peer: server15_port_channel_with_disabled_phy_interfaces
+- name: Ethernet22
+  peer: server15_port_channel_with_disabled_phy_interfaces
   peer_interface: Eth1
   peer_type: server
   port_profile: TENANT_A
@@ -1342,8 +1343,8 @@ ethernet_interfaces:
   channel_group:
     id: 22
     mode: active
-  name: Ethernet22
-- peer: server16_port_channel_with_disabled_port_channel
+- name: Ethernet23
+  peer: server16_port_channel_with_disabled_port_channel
   peer_interface: Eth1
   peer_type: server
   port_profile: TENANT_A
@@ -1355,8 +1356,8 @@ ethernet_interfaces:
   channel_group:
     id: 23
     mode: active
-  name: Ethernet23
-- peer: server17_port_channel_with_disabled_phy_and_po_interfaces
+- name: Ethernet24
+  peer: server17_port_channel_with_disabled_phy_and_po_interfaces
   peer_interface: Eth1
   peer_type: server
   port_profile: TENANT_A
@@ -1368,8 +1369,8 @@ ethernet_interfaces:
   channel_group:
     id: 24
     mode: active
-  name: Ethernet24
-- peer: server18_monitoring_session_source_phys_interfaces
+- name: Ethernet25
+  peer: server18_monitoring_session_source_phys_interfaces
   peer_interface: Eth1
   peer_type: server
   port_profile: TENANT_A
@@ -1378,8 +1379,8 @@ ethernet_interfaces:
   shutdown: false
   mode: access
   vlans: '110'
-  name: Ethernet25
-- peer: server18_monitoring_session_source_po
+- name: Ethernet27
+  peer: server18_monitoring_session_source_po
   peer_interface: Eth3
   peer_type: server
   port_profile: TENANT_A
@@ -1391,8 +1392,8 @@ ethernet_interfaces:
   channel_group:
     id: 27
     mode: active
-  name: Ethernet27
-- peer: server18_monitoring_session_source_phys_interface
+- name: Ethernet28
+  peer: server18_monitoring_session_source_phys_interface
   peer_interface: Eth5
   peer_type: server
   port_profile: TENANT_A
@@ -1401,22 +1402,22 @@ ethernet_interfaces:
   shutdown: false
   mode: access
   vlans: '110'
-  name: Ethernet28
-- peer: server19_monitoring_session_destination_phys
+- name: Ethernet26
+  peer: server19_monitoring_session_destination_phys
   peer_interface: Eth1
   peer_type: server
   description: server19_monitoring_session_destination_phys_Eth1
   type: switched
   shutdown: false
-  name: Ethernet26
-- peer: server20_monitoring_session_destination_phys
+- name: Ethernet40
+  peer: server20_monitoring_session_destination_phys
   peer_interface: Eth1
   peer_type: server
   description: server20_monitoring_session_destination_phys_Eth1
   type: switched
   shutdown: false
-  name: Ethernet40
-- peer: server21_monitoring_session_destination_po
+- name: Ethernet42
+  peer: server21_monitoring_session_destination_po
   peer_interface: Eth1
   peer_type: server
   port_profile: TENANT_A
@@ -1428,8 +1429,8 @@ ethernet_interfaces:
   channel_group:
     id: 42
     mode: active
-  name: Ethernet42
-- peer: server22_port_channel_with_custom_id
+- name: Ethernet29
+  peer: server22_port_channel_with_custom_id
   peer_interface: Eth1
   peer_type: server
   port_profile: TENANT_A
@@ -1441,7 +1442,6 @@ ethernet_interfaces:
   channel_group:
     id: 1291
     mode: active
-  name: Ethernet29
 mlag_configuration:
   domain_id: DC1_SVC3
   local_interface: Vlan4092

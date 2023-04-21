@@ -209,7 +209,8 @@ management_api_http:
   enable_https: true
   default_services: false
 ethernet_interfaces:
-- peer: DC1-LEAF1A
+- name: Ethernet1/1/1
+  peer: DC1-LEAF1A
   peer_interface: Ethernet28
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-LEAF1A_Ethernet28
@@ -218,8 +219,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.2/31
-  name: Ethernet1/1/1
-- peer: DC1-LEAF2A
+- name: Ethernet1/3/1
+  peer: DC1-LEAF2A
   peer_interface: Ethernet50/1
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-LEAF2A_Ethernet50/1
@@ -228,8 +229,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.34/31
-  name: Ethernet1/3/1
-- peer: DC1-LEAF2A
+- name: Ethernet1/4/1
+  peer: DC1-LEAF2A
   peer_interface: Ethernet51/1
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-LEAF2A_Ethernet51/1
@@ -238,8 +239,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.36/31
-  name: Ethernet1/4/1
-- peer: DC1-LEAF2B
+- name: Ethernet1/5/1
+  peer: DC1-LEAF2B
   peer_interface: Ethernet50/1
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-LEAF2B_Ethernet50/1
@@ -248,8 +249,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.66/31
-  name: Ethernet1/5/1
-- peer: DC1-LEAF2B
+- name: Ethernet1/6/1
+  peer: DC1-LEAF2B
   peer_interface: Ethernet51/1
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-LEAF2B_Ethernet51/1
@@ -258,8 +259,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.68/31
-  name: Ethernet1/6/1
-- peer: DC1-SVC3A
+- name: Ethernet1/7/1
+  peer: DC1-SVC3A
   peer_interface: Ethernet50/1
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-SVC3A_Ethernet50/1
@@ -268,8 +269,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.98/31
-  name: Ethernet1/7/1
-- peer: DC1-SVC3B
+- name: Ethernet1/9/1
+  peer: DC1-SVC3B
   peer_interface: Ethernet50/1
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-SVC3B_Ethernet50/1
@@ -278,8 +279,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.130/31
-  name: Ethernet1/9/1
-- peer: DC1-BL1A
+- name: Ethernet22
+  peer: DC1-BL1A
   peer_interface: Ethernet2
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-BL1A_Ethernet2
@@ -288,8 +289,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.162/31
-  name: Ethernet22
-- peer: DC1-BL1B
+- name: Ethernet23
+  peer: DC1-BL1B
   peer_interface: Ethernet2
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-BL1B_Ethernet2
@@ -298,8 +299,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.194/31
-  name: Ethernet23
-- peer: DC1-BL2A
+- name: Ethernet24
+  peer: DC1-BL2A
   peer_interface: Ethernet2
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-BL2A_Ethernet2
@@ -308,8 +309,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.226/31
-  name: Ethernet24
-- peer: DC1-BL2B
+- name: Ethernet25
+  peer: DC1-BL2B
   peer_interface: Ethernet2
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-BL2B_Ethernet2
@@ -318,8 +319,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.2/31
-  name: Ethernet25
-- peer: DC1-CL1A
+- name: Ethernet26
+  peer: DC1-CL1A
   peer_interface: Ethernet2
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-CL1A_Ethernet2
@@ -328,8 +329,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.34/31
-  name: Ethernet26
-- peer: DC1-CL1B
+- name: Ethernet27
+  peer: DC1-CL1B
   peer_interface: Ethernet2
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-CL1B_Ethernet2
@@ -338,8 +339,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.66/31
-  name: Ethernet27
-- peer: DC1_UNDEPLOYED_LEAF1A
+- name: Ethernet28
+  peer: DC1_UNDEPLOYED_LEAF1A
   peer_interface: Ethernet50/1
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1_UNDEPLOYED_LEAF1A_Ethernet50/1
@@ -348,8 +349,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.130/31
-  name: Ethernet28
-- peer: DC1_UNDEPLOYED_LEAF1B
+- name: Ethernet29
+  peer: DC1_UNDEPLOYED_LEAF1B
   peer_interface: Ethernet50/1
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1_UNDEPLOYED_LEAF1B_Ethernet50/1
@@ -358,7 +359,6 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.162/31
-  name: Ethernet29
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

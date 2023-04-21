@@ -122,7 +122,8 @@ ethernet_interfaces:
     id: 3
     mode: active
   name: Ethernet4
-- peer: BGP-LEAF1
+- name: Ethernet1
+  peer: BGP-LEAF1
   peer_interface: Ethernet2
   peer_type: leaf
   description: BGP-LEAF1_Ethernet2
@@ -131,8 +132,8 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet1
-- peer: BGP-LEAF2
+- name: Ethernet2
+  peer: BGP-LEAF2
   peer_interface: Ethernet2
   peer_type: leaf
   description: BGP-LEAF2_Ethernet2
@@ -141,7 +142,6 @@ ethernet_interfaces:
   channel_group:
     id: 2
     mode: active
-  name: Ethernet2
 - name: Ethernet5
   peer: DUMMY-CORE
   peer_interface: Ethernet1/4

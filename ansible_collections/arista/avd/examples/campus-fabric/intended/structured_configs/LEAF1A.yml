@@ -110,7 +110,8 @@ ethernet_interfaces:
     id: 53
     mode: active
   name: Ethernet54
-- peer: SPINE1
+- name: Ethernet51
+  peer: SPINE1
   peer_interface: Ethernet1
   peer_type: l3spine
   description: SPINE1_Ethernet1
@@ -119,8 +120,8 @@ ethernet_interfaces:
   channel_group:
     id: 51
     mode: active
-  name: Ethernet51
-- peer: IDF1 Standard Port
+- name: Ethernet1
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -147,11 +148,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet1
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet2
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -178,11 +179,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet2
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet3
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -209,11 +210,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet3
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet4
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -240,11 +241,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet4
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet5
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -271,11 +272,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet5
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet6
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -302,11 +303,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet6
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet7
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -333,11 +334,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet7
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet8
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -364,11 +365,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet8
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet9
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -395,11 +396,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet9
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet10
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -426,11 +427,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet10
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet11
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -457,11 +458,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet11
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet12
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -488,11 +489,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet12
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet13
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -519,11 +520,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet13
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet14
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -550,11 +551,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet14
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet15
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -581,11 +582,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet15
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet16
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -612,11 +613,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet16
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet17
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -643,11 +644,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet17
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet18
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -674,11 +675,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet18
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet19
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -705,11 +706,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet19
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet20
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -736,11 +737,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet20
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet21
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -767,11 +768,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet21
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet22
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -798,11 +799,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet22
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet23
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -829,11 +830,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet23
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet24
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -860,11 +861,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet24
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet25
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -891,11 +892,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet25
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet26
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -922,11 +923,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet26
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet27
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -953,11 +954,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet27
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet28
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -984,11 +985,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet28
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet29
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -1015,11 +1016,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet29
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet30
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -1046,11 +1047,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet30
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet31
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -1077,11 +1078,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet31
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet32
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -1108,11 +1109,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet32
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet33
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -1139,11 +1140,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet33
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet34
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -1170,11 +1171,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet34
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet35
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -1201,11 +1202,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet35
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet36
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -1232,11 +1233,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet36
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet37
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -1263,11 +1264,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet37
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet38
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -1294,11 +1295,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet38
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet39
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -1325,11 +1326,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet39
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet40
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -1356,11 +1357,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet40
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet41
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -1387,11 +1388,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet41
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet42
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -1418,11 +1419,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet42
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet43
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -1449,11 +1450,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet43
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet44
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -1480,11 +1481,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet44
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet45
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -1511,11 +1512,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet45
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet46
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -1542,11 +1543,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet46
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet47
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -1573,11 +1574,11 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet47
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet48
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
@@ -1604,7 +1605,6 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet48
   phone:
     trunk: untagged
     vlan: 120

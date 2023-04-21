@@ -325,7 +325,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: DC1-SPINE1
+- name: Ethernet45
+  peer: DC1-SPINE1
   peer_interface: Ethernet7
   peer_type: spine
   description: CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet7
@@ -334,8 +335,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.97/31
-  name: Ethernet45
-- peer: DC1-SPINE2
+- name: Ethernet46
+  peer: DC1-SPINE2
   peer_interface: Ethernet7
   peer_type: spine
   description: CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet7
@@ -344,8 +345,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.99/31
-  name: Ethernet46
-- peer: DC1-SPINE3
+- name: Ethernet47
+  peer: DC1-SPINE3
   peer_interface: Ethernet7
   peer_type: spine
   description: CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet7
@@ -354,8 +355,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.101/31
-  name: Ethernet47
-- peer: DC1-SPINE4
+- name: Ethernet48
+  peer: DC1-SPINE4
   peer_interface: Ethernet7
   peer_type: spine
   description: CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet7
@@ -364,32 +365,32 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.103/31
-  name: Ethernet48
-- peer_type: l3_interface
+- name: Ethernet7
+  peer_type: l3_interface
   ip_address: 10.10.20.20/24
   mtu: 9000
   shutdown: false
   description: test
   type: routed
   vrf: Tenant_A_WAN_Zone
-  name: Ethernet7
-- peer_type: l3_interface
+- name: Ethernet8
+  peer_type: l3_interface
   ip_address: 10.10.30.10/24
   mtu: 9000
   shutdown: false
   description: test
   type: routed
   vrf: Tenant_L3_VRF_Zone
-  name: Ethernet8
-- peer_type: l3_interface
+- name: Ethernet9
+  peer_type: l3_interface
   ip_address: 10.10.40.20/24
   mtu: 9000
   shutdown: false
   description: test
   type: routed
   vrf: Tenant_L3_VRF_Zone
-  name: Ethernet9
-- peer_type: l3_interface
+- name: Ethernet10.100
+  peer_type: l3_interface
   ip_address: 10.10.31.10/24
   mtu: 9000
   shutdown: false
@@ -397,8 +398,8 @@ ethernet_interfaces:
   type: l3dot1q
   encapsulation_dot1q_vlan: 100
   vrf: Tenant_L3_VRF_Zone
-  name: Ethernet10.100
-- peer_type: l3_interface
+- name: Ethernet10.200
+  peer_type: l3_interface
   ip_address: 10.10.41.10/24
   mtu: 9000
   shutdown: false
@@ -406,11 +407,10 @@ ethernet_interfaces:
   type: l3dot1q
   encapsulation_dot1q_vlan: 141
   vrf: Tenant_L3_VRF_Zone
-  name: Ethernet10.200
-- type: routed
+- name: Ethernet10
+  type: routed
   peer_type: l3_interface
   shutdown: false
-  name: Ethernet10
 - description: My second test
   ip_address: 10.1.2.3/12
   shutdown: false

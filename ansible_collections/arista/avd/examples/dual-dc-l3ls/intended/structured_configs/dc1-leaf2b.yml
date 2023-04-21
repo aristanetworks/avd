@@ -394,7 +394,8 @@ ethernet_interfaces:
     id: 3
     mode: active
   name: Ethernet4
-- peer: dc1-spine1
+- name: Ethernet1
+  peer: dc1-spine1
   peer_interface: Ethernet4
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet4
@@ -402,8 +403,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.255.255.13/31
-  name: Ethernet1
-- peer: dc1-spine2
+- name: Ethernet2
+  peer: dc1-spine2
   peer_interface: Ethernet4
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE2_Ethernet4
@@ -411,8 +412,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.255.255.15/31
-  name: Ethernet2
-- peer: dc1-leaf2c
+- name: Ethernet8
+  peer: dc1-leaf2c
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: DC1-LEAF2C_Ethernet2
@@ -421,7 +422,6 @@ ethernet_interfaces:
   channel_group:
     id: 8
     mode: active
-  name: Ethernet8
 - name: Ethernet6
   peer: dc2-leaf2b
   peer_interface: Ethernet6
@@ -431,7 +431,8 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 172.100.100.2/31
-- peer: dc1-leaf2-server1
+- name: Ethernet5
+  peer: dc1-leaf2-server1
   peer_interface: PCI2
   peer_type: server
   description: dc1-leaf2-server1_PCI2
@@ -444,7 +445,6 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  name: Ethernet5
 mlag_configuration:
   domain_id: DC1_L3_LEAF2
   local_interface: Vlan4094

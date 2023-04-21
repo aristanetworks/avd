@@ -183,7 +183,7 @@ class UtilsMixin:
 
         return evpn_ethernet_segment
 
-    def _get_adapter_link_tracking_groups(self, adapter: dict) -> dict | None:
+    def _get_adapter_link_tracking_groups(self, adapter: dict) -> list | None:
         """
         Return link_tracking_groups for one adapter
         """

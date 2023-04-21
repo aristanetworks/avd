@@ -147,7 +147,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: DC1-LEAF1A
+- name: Ethernet1
+  peer: DC1-LEAF1A
   peer_interface: Ethernet3
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-LEAF1A_Ethernet3
@@ -155,8 +156,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ipv6_enable: true
-  name: Ethernet1
-- peer: DC1-LEAF2A
+- name: Ethernet2
+  peer: DC1-LEAF2A
   peer_interface: Ethernet3
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-LEAF2A_Ethernet3
@@ -164,8 +165,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ipv6_enable: true
-  name: Ethernet2
-- peer: DC1-LEAF2B
+- name: Ethernet3
+  peer: DC1-LEAF2B
   peer_interface: Ethernet3
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-LEAF2B_Ethernet3
@@ -173,8 +174,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ipv6_enable: true
-  name: Ethernet3
-- peer: DC1-SVC3A
+- name: Ethernet4
+  peer: DC1-SVC3A
   peer_interface: Ethernet3
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-SVC3A_Ethernet3
@@ -182,8 +183,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ipv6_enable: true
-  name: Ethernet4
-- peer: DC1-SVC3B
+- name: Ethernet5
+  peer: DC1-SVC3B
   peer_interface: Ethernet3
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-SVC3B_Ethernet3
@@ -191,8 +192,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ipv6_enable: true
-  name: Ethernet5
-- peer: DC1-BL1A
+- name: Ethernet6
+  peer: DC1-BL1A
   peer_interface: Ethernet3
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-BL1A_Ethernet3
@@ -200,8 +201,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ipv6_enable: true
-  name: Ethernet6
-- peer: DC1-BL1B
+- name: Ethernet7
+  peer: DC1-BL1B
   peer_interface: Ethernet3
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-BL1B_Ethernet3
@@ -209,7 +210,6 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ipv6_enable: true
-  name: Ethernet7
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

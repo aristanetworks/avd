@@ -159,7 +159,8 @@ lacp:
       begin: 257
       end: 768
 ethernet_interfaces:
-- peer: DC1-SPINE1
+- name: Ethernet1
+  peer: DC1-SPINE1
   peer_interface: Ethernet21
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet21
@@ -170,8 +171,8 @@ ethernet_interfaces:
   - name: Eth-conn-to-router
     direction: upstream
   ip_address: 10.10.101.5/31
-  name: Ethernet1
-- peer: MH-L2LEAF1A
+- name: Ethernet2
+  peer: MH-L2LEAF1A
   peer_interface: Ethernet1
   peer_type: l2leaf
   description: MH-L2LEAF1A_Ethernet1
@@ -180,8 +181,8 @@ ethernet_interfaces:
   channel_group:
     id: 2
     mode: active
-  name: Ethernet2
-- peer: ROUTER01
+- name: Ethernet10
+  peer: ROUTER01
   peer_interface: Eth1
   peer_type: router
   port_profile: Tenant_X_LT
@@ -193,7 +194,6 @@ ethernet_interfaces:
   link_tracking_groups:
   - name: Eth-conn-to-router
     direction: downstream
-  name: Ethernet10
 port_channel_interfaces:
 - name: Port-Channel2
   description: MH-L2LEAF1A_Po1

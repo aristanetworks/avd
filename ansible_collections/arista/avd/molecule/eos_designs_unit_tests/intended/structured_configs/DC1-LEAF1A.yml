@@ -244,7 +244,8 @@ management_api_http:
   enable_https: true
   default_services: false
 ethernet_interfaces:
-- peer: DC1-SPINE1
+- name: Ethernet27
+  peer: DC1-SPINE1
   peer_interface: Ethernet1/1
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet1/1
@@ -253,8 +254,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.1/31
-  name: Ethernet27
-- peer: DC1-SPINE2
+- name: Ethernet28
+  peer: DC1-SPINE2
   peer_interface: Ethernet1/1/1
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE2_Ethernet1/1/1
@@ -263,8 +264,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.3/31
-  name: Ethernet28
-- peer: DC1-SPINE3
+- name: Ethernet29
+  peer: DC1-SPINE3
   peer_interface: Ethernet1/1/1
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE3_Ethernet1/1/1
@@ -273,8 +274,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.5/31
-  name: Ethernet29
-- peer: DC1-SPINE4
+- name: Ethernet30
+  peer: DC1-SPINE4
   peer_interface: Ethernet1/1
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE4_Ethernet1/1
@@ -283,8 +284,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.7/31
-  name: Ethernet30
-- peer: server02_SINGLE_NODE_TRUNK
+- name: Ethernet6
+  peer: server02_SINGLE_NODE_TRUNK
   peer_interface: Eth1
   peer_type: server
   port_profile: ALL_WITH_SECURITY
@@ -297,8 +298,8 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: 'False'
   spanning_tree_bpduguard: 'False'
-  name: Ethernet6
-- peer: server02_SINGLE_NODE
+- name: Ethernet7
+  peer: server02_SINGLE_NODE
   peer_interface: Eth1
   peer_type: server
   port_profile: TENANT_A
@@ -307,7 +308,6 @@ ethernet_interfaces:
   shutdown: false
   mode: access
   vlans: '110'
-  name: Ethernet7
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

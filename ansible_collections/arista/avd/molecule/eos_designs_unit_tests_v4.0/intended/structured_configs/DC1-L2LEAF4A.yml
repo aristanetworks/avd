@@ -59,26 +59,26 @@ management_api_http:
   enable_https: true
   default_services: false
 ethernet_interfaces:
-  Ethernet1:
-    peer: DC1-LEAF2A
-    peer_interface: Ethernet13
-    peer_type: l3leaf
-    description: DC1-LEAF2A_Ethernet13
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 1
-      mode: active
-  Ethernet2:
-    peer: DC1-LEAF2B
-    peer_interface: Ethernet13
-    peer_type: l3leaf
-    description: DC1-LEAF2B_Ethernet13
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 1
-      mode: active
+- name: Ethernet1
+  peer: DC1-LEAF2A
+  peer_interface: Ethernet13
+  peer_type: l3leaf
+  description: DC1-LEAF2A_Ethernet13
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 1
+    mode: active
+- name: Ethernet2
+  peer: DC1-LEAF2B
+  peer_interface: Ethernet13
+  peer_type: l3leaf
+  description: DC1-LEAF2B_Ethernet13
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 1
+    mode: active
 port_channel_interfaces:
 - name: Port-Channel1
   description: DC1_LEAF2_Po13

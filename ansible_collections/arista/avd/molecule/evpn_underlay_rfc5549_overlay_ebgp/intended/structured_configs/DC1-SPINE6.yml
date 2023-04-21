@@ -111,7 +111,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: DC1-LEAF4A
+- name: Ethernet1
+  peer: DC1-LEAF4A
   peer_interface: Ethernet1
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-LEAF4A_Ethernet1
@@ -119,8 +120,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ipv6_enable: true
-  name: Ethernet1
-- peer: DC1-LEAF4B
+- name: Ethernet2
+  peer: DC1-LEAF4B
   peer_interface: Ethernet1
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-LEAF4B_Ethernet1
@@ -128,7 +129,6 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ipv6_enable: true
-  name: Ethernet2
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

@@ -129,7 +129,8 @@ ethernet_interfaces:
     id: 3
     mode: active
   name: Ethernet4
-- peer: trunk-group-tests-l3leaf1a
+- name: Ethernet1
+  peer: trunk-group-tests-l3leaf1a
   peer_interface: Ethernet2
   peer_type: l3leaf
   description: TRUNK-GROUP-TESTS-L3LEAF1A_Ethernet2
@@ -138,8 +139,8 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet1
-- peer: trunk-group-tests-l3leaf1b
+- name: Ethernet2
+  peer: trunk-group-tests-l3leaf1b
   peer_interface: Ethernet2
   peer_type: l3leaf
   description: TRUNK-GROUP-TESTS-L3LEAF1B_Ethernet2
@@ -148,8 +149,8 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet2
-- peer: server_with_tg_200
+- name: Ethernet12
+  peer: server_with_tg_200
   peer_interface: Nic1
   peer_type: server
   description: server_with_tg_200_Nic1
@@ -159,8 +160,8 @@ ethernet_interfaces:
   trunk_groups:
   - TG_NOT_MATCHING_ANY_VLANS
   - TG_200
-  name: Ethernet12
-- peer: server_with_tg_300
+- name: Ethernet13
+  peer: server_with_tg_300
   peer_interface: Nic4
   peer_type: server
   description: server_with_tg_300_Nic4
@@ -173,7 +174,6 @@ ethernet_interfaces:
   channel_group:
     id: 13
     mode: active
-  name: Ethernet13
 mlag_configuration:
   domain_id: TRUNK_GROUP_TESTS_L2LEAF1
   local_interface: Vlan4094

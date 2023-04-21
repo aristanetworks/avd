@@ -136,7 +136,8 @@ ethernet_interfaces:
     id: 3
     mode: active
   name: Ethernet4
-- peer: UNDERLAY-MULTICAST-SPINE1
+- name: Ethernet1
+  peer: UNDERLAY-MULTICAST-SPINE1
   peer_interface: Ethernet3
   peer_type: spine
   description: P2P_LINK_TO_UNDERLAY-MULTICAST-SPINE1_Ethernet3
@@ -147,8 +148,8 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  name: Ethernet1
-- peer: UNDERLAY-MULTICAST-SPINE2
+- name: Ethernet2
+  peer: UNDERLAY-MULTICAST-SPINE2
   peer_interface: Ethernet3
   peer_type: spine
   description: P2P_LINK_TO_UNDERLAY-MULTICAST-SPINE2_Ethernet3
@@ -156,7 +157,6 @@ ethernet_interfaces:
   mtu: 9000
   type: routed
   ip_address: 172.31.255.11/31
-  name: Ethernet2
 mlag_configuration:
   domain_id: DC1_LEAF2
   local_interface: Vlan4094

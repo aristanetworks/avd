@@ -328,7 +328,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: DC1-SPINE1
+- name: Ethernet1
+  peer: DC1-SPINE1
   peer_interface: Ethernet3
   peer_type: spine
   description: CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet3
@@ -337,8 +338,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.33/31
-  name: Ethernet1
-- peer: DC1-SPINE2
+- name: Ethernet2
+  peer: DC1-SPINE2
   peer_interface: Ethernet3
   peer_type: spine
   description: CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet3
@@ -347,8 +348,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.35/31
-  name: Ethernet2
-- peer: DC1-SPINE3
+- name: Ethernet3
+  peer: DC1-SPINE3
   peer_interface: Ethernet3
   peer_type: spine
   description: CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet3
@@ -357,8 +358,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.37/31
-  name: Ethernet3
-- peer: DC1-SPINE4
+- name: Ethernet4
+  peer: DC1-SPINE4
   peer_interface: Ethernet3
   peer_type: spine
   description: CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet3
@@ -367,8 +368,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.39/31
-  name: Ethernet4
-- peer: DC1-L2LEAF1A
+- name: Ethernet7
+  peer: DC1-L2LEAF1A
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: CUSTOM_DC1-L2LEAF1A_Ethernet2
@@ -377,8 +378,8 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  name: Ethernet7
-- peer: DC1-L2LEAF1B
+- name: Ethernet8
+  peer: DC1-L2LEAF1B
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: CUSTOM_DC1-L2LEAF1B_Ethernet2
@@ -387,8 +388,8 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  name: Ethernet8
-- peer: DC1-L2LEAF3A
+- name: Ethernet9
+  peer: DC1-L2LEAF3A
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: CUSTOM_DC1-L2LEAF3A_Ethernet2
@@ -397,8 +398,8 @@ ethernet_interfaces:
   channel_group:
     id: 9
     mode: active
-  name: Ethernet9
-- peer: server01_MLAG
+- name: Ethernet10
+  peer: server01_MLAG
   peer_interface: Eth3
   peer_type: server
   port_profile: TENANT_B
@@ -410,8 +411,8 @@ ethernet_interfaces:
   channel_group:
     id: 10
     mode: active
-  name: Ethernet10
-- peer: server01_MTU_PROFILE_MLAG
+- name: Ethernet11
+  peer: server01_MTU_PROFILE_MLAG
   peer_interface: Eth5
   peer_type: server
   port_profile: TENANT_A_MTU
@@ -424,8 +425,8 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  name: Ethernet11
-- peer: server01_MTU_ADAPTOR_MLAG
+- name: Ethernet12
+  peer: server01_MTU_ADAPTOR_MLAG
   peer_interface: Eth7
   peer_type: server
   description: CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth7
@@ -435,8 +436,8 @@ ethernet_interfaces:
   channel_group:
     id: 12
     mode: active
-  name: Ethernet12
-- peer: server01_MTU_ADAPTOR_MLAG
+- name: Ethernet13
+  peer: server01_MTU_ADAPTOR_MLAG
   peer_interface: Eth9
   peer_type: server
   description: CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth9
@@ -446,8 +447,8 @@ ethernet_interfaces:
   channel_group:
     id: 12
     mode: active
-  name: Ethernet13
-- peer: FIREWALL01
+- name: Ethernet20
+  peer: FIREWALL01
   peer_interface: E1
   peer_type: firewall
   port_profile: TENANT_A_B
@@ -459,8 +460,8 @@ ethernet_interfaces:
   channel_group:
     id: 20
     mode: active
-  name: Ethernet20
-- peer: ROUTER01
+- name: Ethernet21
+  peer: ROUTER01
   peer_interface: Eth1
   peer_type: router
   port_profile: TENANT_A
@@ -469,7 +470,6 @@ ethernet_interfaces:
   shutdown: false
   mode: access
   vlans: '110'
-  name: Ethernet21
 port_channel_interfaces:
 - name: Port-Channel7
   description: CUSTOM_DC1_L2LEAF1_Po1

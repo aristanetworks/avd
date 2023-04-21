@@ -118,7 +118,8 @@ ptp:
         follow_up: 3
         sync: 3
 ethernet_interfaces:
-- peer: ptp-tests-spine1
+- name: Ethernet1
+  peer: ptp-tests-spine1
   peer_interface: Ethernet1
   peer_type: spine
   description: P2P_LINK_TO_PTP-TESTS-SPINE1_Ethernet1
@@ -135,8 +136,8 @@ ethernet_interfaces:
     transport: ipv4
     enable: true
   ip_address: 10.254.2.1/31
-  name: Ethernet1
-- peer: ptp-tests-spine1
+- name: Ethernet2
+  peer: ptp-tests-spine1
   peer_interface: Ethernet2
   peer_type: spine
   description: P2P_LINK_TO_PTP-TESTS-SPINE1_Ethernet2
@@ -153,8 +154,8 @@ ethernet_interfaces:
     transport: ipv4
     enable: true
   ip_address: 10.254.2.3/31
-  name: Ethernet2
-- peer: bmca-endpoint
+- name: Ethernet13
+  peer: bmca-endpoint
   peer_interface: eth1
   peer_type: server
   description: bmca-endpoint_eth1
@@ -171,8 +172,8 @@ ethernet_interfaces:
       interval: -3
     transport: ipv4
     enable: true
-  name: Ethernet13
-- peer: video-endpoint
+- name: Ethernet5
+  peer: video-endpoint
   peer_interface: PCI1
   peer_type: server
   description: video-endpoint_PCI1
@@ -191,8 +192,8 @@ ethernet_interfaces:
     transport: ipv4
     enable: true
     role: master
-  name: Ethernet5
-- peer: Endpoint-with-specific-PTP-profile
+- name: Ethernet3
+  peer: Endpoint-with-specific-PTP-profile
   peer_interface: eth3
   peer_type: server
   description: Endpoint-with-specific-PTP-profile_eth3
@@ -210,7 +211,6 @@ ethernet_interfaces:
     transport: ipv4
     enable: true
     role: master
-  name: Ethernet3
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

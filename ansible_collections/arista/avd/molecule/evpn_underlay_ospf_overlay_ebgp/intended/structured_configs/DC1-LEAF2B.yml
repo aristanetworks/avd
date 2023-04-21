@@ -227,7 +227,8 @@ ethernet_interfaces:
     id: 5
     mode: active
   name: Ethernet6
-- peer: DC1-SPINE1
+- name: Ethernet1
+  peer: DC1-SPINE1
   peer_interface: Ethernet3
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet3
@@ -237,8 +238,8 @@ ethernet_interfaces:
   ip_address: 172.31.255.17/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  name: Ethernet1
-- peer: DC1-SPINE2
+- name: Ethernet2
+  peer: DC1-SPINE2
   peer_interface: Ethernet3
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE2_Ethernet3
@@ -248,8 +249,8 @@ ethernet_interfaces:
   ip_address: 172.31.255.19/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  name: Ethernet2
-- peer: DC1-SPINE3
+- name: Ethernet3
+  peer: DC1-SPINE3
   peer_interface: Ethernet3
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE3_Ethernet3
@@ -259,8 +260,8 @@ ethernet_interfaces:
   ip_address: 172.31.255.21/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  name: Ethernet3
-- peer: DC1-SPINE4
+- name: Ethernet4
+  peer: DC1-SPINE4
   peer_interface: Ethernet3
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE4_Ethernet3
@@ -270,8 +271,8 @@ ethernet_interfaces:
   ip_address: 172.31.255.23/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  name: Ethernet4
-- peer: DC1-L2LEAF1A
+- name: Ethernet7
+  peer: DC1-L2LEAF1A
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: DC1-L2LEAF1A_Ethernet2
@@ -280,7 +281,6 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  name: Ethernet7
 mlag_configuration:
   domain_id: DC1_LEAF2
   local_interface: Vlan4094

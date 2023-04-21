@@ -963,7 +963,8 @@ ethernet_interfaces:
     id: 5
     mode: active
   name: Ethernet6
-- peer: DC1-L2LEAF2A
+- name: Ethernet7
+  peer: DC1-L2LEAF2A
   peer_interface: Ethernet1
   peer_type: l2leaf
   description: CUSTOM_DC1-L2LEAF2A_Ethernet1
@@ -972,8 +973,8 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  name: Ethernet7
-- peer: DC1-L2LEAF2B
+- name: Ethernet8
+  peer: DC1-L2LEAF2B
   peer_interface: Ethernet1
   peer_type: l2leaf
   description: CUSTOM_DC1-L2LEAF2B_Ethernet1
@@ -982,8 +983,8 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  name: Ethernet8
-- peer: DC1-SPINE1
+- name: Ethernet41
+  peer: DC1-SPINE1
   peer_interface: Ethernet4
   peer_type: spine
   description: CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet4
@@ -992,8 +993,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.49/31
-  name: Ethernet41
-- peer: DC1-SPINE2
+- name: Ethernet42
+  peer: DC1-SPINE2
   peer_interface: Ethernet4
   peer_type: spine
   description: CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet4
@@ -1002,8 +1003,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.51/31
-  name: Ethernet42
-- peer: DC1-SPINE3
+- name: Ethernet43
+  peer: DC1-SPINE3
   peer_interface: Ethernet4
   peer_type: spine
   description: CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet4
@@ -1012,8 +1013,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.53/31
-  name: Ethernet43
-- peer: DC1-SPINE4
+- name: Ethernet44
+  peer: DC1-SPINE4
   peer_interface: Ethernet4
   peer_type: spine
   description: CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet4
@@ -1022,8 +1023,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.55/31
-  name: Ethernet44
-- peer: server03_ESI
+- name: Ethernet10
+  peer: server03_ESI
   peer_interface: Eth1
   peer_type: server
   port_profile: TENANT_A_B
@@ -1035,8 +1036,8 @@ ethernet_interfaces:
   channel_group:
     id: 10
     mode: active
-  name: Ethernet10
-- peer: server04_inherit_all_from_profile
+- name: Ethernet11
+  peer: server04_inherit_all_from_profile
   peer_interface: Eth1
   peer_type: server
   port_profile: ALL_WITH_SECURITY
@@ -1062,8 +1063,8 @@ ethernet_interfaces:
     unknown_unicast:
       level: '2'
       unit: percent
-  name: Ethernet11
-- peer: server05_no_profile
+- name: Ethernet12
+  peer: server05_no_profile
   peer_interface: Eth1
   peer_type: server
   description: CUSTOM_server05_no_profile_Eth1
@@ -1087,8 +1088,8 @@ ethernet_interfaces:
     unknown_unicast:
       level: '2'
       unit: percent
-  name: Ethernet12
-- peer: server06_override_profile
+- name: Ethernet13
+  peer: server06_override_profile
   peer_interface: Eth1
   peer_type: server
   port_profile: ALL_WITH_SECURITY
@@ -1114,8 +1115,8 @@ ethernet_interfaces:
     unknown_unicast:
       level: '2'
       unit: percent
-  name: Ethernet13
-- peer: server07_inherit_all_from_profile_port_channel
+- name: Ethernet14
+  peer: server07_inherit_all_from_profile_port_channel
   peer_interface: Eth1
   peer_type: server
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
@@ -1144,8 +1145,8 @@ ethernet_interfaces:
   channel_group:
     id: 14
     mode: active
-  name: Ethernet14
-- peer: server08_no_profile_port_channel
+- name: Ethernet15
+  peer: server08_no_profile_port_channel
   peer_interface: Eth1
   peer_type: server
   description: CUSTOM_server08_no_profile_port_channel_Eth1
@@ -1172,8 +1173,8 @@ ethernet_interfaces:
   channel_group:
     id: 15
     mode: 'on'
-  name: Ethernet15
-- peer: server09_override_profile_no_port_channel
+- name: Ethernet16
+  peer: server09_override_profile_no_port_channel
   peer_interface: Eth1
   peer_type: server
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
@@ -1199,8 +1200,8 @@ ethernet_interfaces:
     unknown_unicast:
       level: '2'
       unit: percent
-  name: Ethernet16
-- peer: server10_no_profile_port_channel_lacp_fallback
+- name: Ethernet17
+  peer: server10_no_profile_port_channel_lacp_fallback
   peer_interface: Eth1
   peer_type: server
   description: CUSTOM_server10_no_profile_port_channel_lacp_fallback_Eth1
@@ -1228,8 +1229,8 @@ ethernet_interfaces:
     id: 17
     mode: active
   lacp_port_priority: 8192
-  name: Ethernet17
-- peer: server11_inherit_profile_port_channel_lacp_fallback
+- name: Ethernet18
+  peer: server11_inherit_profile_port_channel_lacp_fallback
   peer_interface: Eth1
   peer_type: server
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
@@ -1259,8 +1260,8 @@ ethernet_interfaces:
     id: 18
     mode: active
   lacp_port_priority: 8192
-  name: Ethernet18
-- peer: server12_inherit_nested_profile_port_channel_lacp_fallback
+- name: Ethernet19
+  peer: server12_inherit_nested_profile_port_channel_lacp_fallback
   peer_interface: Eth1
   peer_type: server
   port_profile: NESTED_PORT_PROFILE
@@ -1290,8 +1291,8 @@ ethernet_interfaces:
     id: 19
     mode: active
   lacp_port_priority: 8192
-  name: Ethernet19
-- peer: server13_disabled_interfaces
+- name: Ethernet20
+  peer: server13_disabled_interfaces
   peer_interface: Eth1
   peer_type: server
   port_profile: TENANT_A
@@ -1300,8 +1301,8 @@ ethernet_interfaces:
   shutdown: true
   mode: access
   vlans: '110'
-  name: Ethernet20
-- peer: server14_explicitly_enabled_interfaces
+- name: Ethernet21
+  peer: server14_explicitly_enabled_interfaces
   peer_interface: Eth1
   peer_type: server
   port_profile: TENANT_A
@@ -1310,8 +1311,8 @@ ethernet_interfaces:
   shutdown: false
   mode: access
   vlans: '110'
-  name: Ethernet21
-- peer: server15_port_channel_disabled_interfaces
+- name: Ethernet22
+  peer: server15_port_channel_disabled_interfaces
   peer_interface: Eth1
   peer_type: server
   port_profile: TENANT_A
@@ -1323,7 +1324,6 @@ ethernet_interfaces:
   channel_group:
     id: 22
     mode: active
-  name: Ethernet22
 mlag_configuration:
   domain_id: DC1_SVC3
   local_interface: Vlan4092

@@ -616,7 +616,8 @@ ethernet_interfaces:
     id: 5
     mode: active
   name: Ethernet6
-- peer: DC1-SPINE6
+- name: Ethernet1
+  peer: DC1-SPINE6
   peer_interface: Ethernet2
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE6_Ethernet2
@@ -624,7 +625,6 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ipv6_enable: true
-  name: Ethernet1
 mlag_configuration:
   domain_id: DC1_LEAF4
   local_interface: Vlan4094

@@ -99,7 +99,8 @@ ethernet_interfaces:
     id: 47
     mode: active
   name: Ethernet48
-- peer: SPINE1
+- name: Ethernet1
+  peer: SPINE1
   peer_interface: Ethernet4
   peer_type: spine
   description: SPINE1_Ethernet4
@@ -108,8 +109,8 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet1
-- peer: SPINE2
+- name: Ethernet2
+  peer: SPINE2
   peer_interface: Ethernet4
   peer_type: spine
   description: SPINE2_Ethernet4
@@ -118,8 +119,8 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet2
-- peer: Host2
+- name: Ethernet3
+  peer: Host2
   peer_interface: Eth1
   peer_type: server
   port_profile: PP-ORANGE
@@ -129,7 +130,6 @@ ethernet_interfaces:
   mode: access
   vlans: '30'
   spanning_tree_portfast: edge
-  name: Ethernet3
 mlag_configuration:
   domain_id: RACK2
   local_interface: Vlan4094

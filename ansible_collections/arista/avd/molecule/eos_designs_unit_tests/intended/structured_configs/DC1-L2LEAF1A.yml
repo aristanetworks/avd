@@ -136,7 +136,8 @@ ethernet_interfaces:
     mode: active
   speed: forced 40gfull
   name: Ethernet4
-- peer: DC1-LEAF2A
+- name: Ethernet1
+  peer: DC1-LEAF2A
   peer_interface: Ethernet7
   peer_type: l3leaf
   description: DC1-LEAF2A_Ethernet7
@@ -146,8 +147,8 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet1
-- peer: DC1-LEAF2B
+- name: Ethernet2
+  peer: DC1-LEAF2B
   peer_interface: Ethernet7
   peer_type: l3leaf
   description: DC1-LEAF2B_Ethernet7
@@ -157,7 +158,6 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet2
 mlag_configuration:
   domain_id: DC1_L2LEAF1
   local_interface: Vlan4091

@@ -320,173 +320,173 @@ management_api_http:
   enable_https: true
   default_services: false
 ethernet_interfaces:
-  Ethernet1:
-    peer: DC1-SPINE1
-    peer_interface: Ethernet3
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE1_Ethernet3
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.33/31
-  Ethernet2:
-    peer: DC1-SPINE2
-    peer_interface: Ethernet3
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE2_Ethernet3
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.35/31
-  Ethernet3:
-    peer: DC1-SPINE3
-    peer_interface: Ethernet3
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE3_Ethernet3
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.37/31
-  Ethernet4:
-    peer: DC1-SPINE4
-    peer_interface: Ethernet3
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE4_Ethernet3
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.39/31
-  Ethernet7:
-    peer: DC1-L2LEAF1A
-    peer_interface: Ethernet2
-    peer_type: l2leaf
-    description: DC1-L2LEAF1A_Ethernet2
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 7
-      mode: active
-  Ethernet8:
-    peer: DC1-L2LEAF1B
-    peer_interface: Ethernet2
-    peer_type: l2leaf
-    description: DC1-L2LEAF1B_Ethernet2
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 7
-      mode: active
-  Ethernet9:
-    peer: DC1-L2LEAF3A
-    peer_interface: Ethernet2
-    peer_type: l2leaf
-    description: DC1-L2LEAF3A_Ethernet2
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 9
-      mode: active
-  Ethernet13:
-    peer: DC1-L2LEAF4A
-    peer_interface: Ethernet2
-    peer_type: l2leaf
-    description: DC1-L2LEAF4A_Ethernet2
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 13
-      mode: active
-  Ethernet14:
-    peer: DC1-L2LEAF5A
-    peer_interface: Ethernet2
-    peer_type: l2leaf
-    description: DC1-L2LEAF5A_Ethernet2
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 14
-      mode: active
-  Ethernet15:
-    peer: DC1-L2LEAF5B
-    peer_interface: Ethernet2
-    peer_type: l2leaf
-    description: DC1-L2LEAF5B_Ethernet2
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 14
-      mode: active
-  Ethernet10:
-    peer: server01_MLAG
-    peer_interface: Eth3
-    peer_type: server
-    port_profile: TENANT_B
-    description: server01_MLAG_Eth3
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 210-211
-    spanning_tree_bpdufilter: disabled
-    spanning_tree_bpduguard: disabled
-    channel_group:
-      id: 10
-      mode: active
-  Ethernet11:
-    peer: server01_MTU_PROFILE_MLAG
-    peer_interface: Eth5
-    peer_type: server
-    port_profile: TENANT_A_MTU
-    description: server01_MTU_PROFILE_MLAG_Eth5
-    mtu: 1600
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: '110'
-    spanning_tree_bpdufilter: enabled
-    spanning_tree_bpduguard: enabled
-    channel_group:
-      id: 11
-      mode: active
-  Ethernet12:
-    peer: server01_MTU_ADAPTOR_MLAG
-    peer_interface: Eth7
-    peer_type: server
-    description: server01_MTU_ADAPTOR_MLAG_Eth7
-    mtu: 1601
-    type: switched
-    shutdown: false
-    spanning_tree_bpdufilter: 'True'
-    spanning_tree_bpduguard: 'True'
-    channel_group:
-      id: 12
-      mode: active
-  Ethernet20:
-    peer: FIREWALL01
-    peer_interface: E1
-    peer_type: firewall
-    port_profile: TENANT_A_B
-    description: FIREWALL01_E1
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 110-111,210-211
-    channel_group:
-      id: 20
-      mode: active
-  Ethernet21:
-    peer: ROUTER01
-    peer_interface: Eth1
-    peer_type: router
-    port_profile: TENANT_A
-    description: ROUTER01_Eth1
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: '110'
+- name: Ethernet1
+  peer: DC1-SPINE1
+  peer_interface: Ethernet3
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE1_Ethernet3
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.33/31
+- name: Ethernet2
+  peer: DC1-SPINE2
+  peer_interface: Ethernet3
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE2_Ethernet3
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.35/31
+- name: Ethernet3
+  peer: DC1-SPINE3
+  peer_interface: Ethernet3
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE3_Ethernet3
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.37/31
+- name: Ethernet4
+  peer: DC1-SPINE4
+  peer_interface: Ethernet3
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE4_Ethernet3
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.39/31
+- name: Ethernet7
+  peer: DC1-L2LEAF1A
+  peer_interface: Ethernet2
+  peer_type: l2leaf
+  description: DC1-L2LEAF1A_Ethernet2
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 7
+    mode: active
+- name: Ethernet8
+  peer: DC1-L2LEAF1B
+  peer_interface: Ethernet2
+  peer_type: l2leaf
+  description: DC1-L2LEAF1B_Ethernet2
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 7
+    mode: active
+- name: Ethernet9
+  peer: DC1-L2LEAF3A
+  peer_interface: Ethernet2
+  peer_type: l2leaf
+  description: DC1-L2LEAF3A_Ethernet2
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 9
+    mode: active
+- name: Ethernet13
+  peer: DC1-L2LEAF4A
+  peer_interface: Ethernet2
+  peer_type: l2leaf
+  description: DC1-L2LEAF4A_Ethernet2
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 13
+    mode: active
+- name: Ethernet14
+  peer: DC1-L2LEAF5A
+  peer_interface: Ethernet2
+  peer_type: l2leaf
+  description: DC1-L2LEAF5A_Ethernet2
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 14
+    mode: active
+- name: Ethernet15
+  peer: DC1-L2LEAF5B
+  peer_interface: Ethernet2
+  peer_type: l2leaf
+  description: DC1-L2LEAF5B_Ethernet2
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 14
+    mode: active
+- name: Ethernet10
+  peer: server01_MLAG
+  peer_interface: Eth3
+  peer_type: server
+  port_profile: TENANT_B
+  description: server01_MLAG_Eth3
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 210-211
+  spanning_tree_bpdufilter: disabled
+  spanning_tree_bpduguard: disabled
+  channel_group:
+    id: 10
+    mode: active
+- name: Ethernet11
+  peer: server01_MTU_PROFILE_MLAG
+  peer_interface: Eth5
+  peer_type: server
+  port_profile: TENANT_A_MTU
+  description: server01_MTU_PROFILE_MLAG_Eth5
+  mtu: 1600
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '110'
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_bpduguard: enabled
+  channel_group:
+    id: 11
+    mode: active
+- name: Ethernet12
+  peer: server01_MTU_ADAPTOR_MLAG
+  peer_interface: Eth7
+  peer_type: server
+  description: server01_MTU_ADAPTOR_MLAG_Eth7
+  mtu: 1601
+  type: switched
+  shutdown: false
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_bpduguard: 'True'
+  channel_group:
+    id: 12
+    mode: active
+- name: Ethernet20
+  peer: FIREWALL01
+  peer_interface: E1
+  peer_type: firewall
+  port_profile: TENANT_A_B
+  description: FIREWALL01_E1
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 110-111,210-211
+  channel_group:
+    id: 20
+    mode: active
+- name: Ethernet21
+  peer: ROUTER01
+  peer_interface: Eth1
+  peer_type: router
+  port_profile: TENANT_A
+  description: ROUTER01_Eth1
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '110'
 port_channel_interfaces:
 - name: Port-Channel7
   description: DC1_L2LEAF1_Po1

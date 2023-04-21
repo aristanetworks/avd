@@ -29,5 +29,5 @@ l3leaf:
           id: 5
           bgp_as: 65161
           mgmt_ip: 192.168.201.115/24
-          uplink_switch_interfaces: [Ethernet18]
+          uplink_switch_interfaces: [Ethernet220]
           mlag_interfaces: [Ethernet5, Ethernet6]

@@ -89,7 +89,8 @@ management_api_http:
 eos_cli: "interface Loopback1010\n  description Loopback created from raw_eos_cli under l3leaf defaults in DC2 POD1\n\ninterface Loopback1111\n
   \ description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
 ethernet_interfaces:
-- peer: DC2-POD1-SPINE1
+- name: Ethernet1
+  peer: DC2-POD1-SPINE1
   peer_interface: Ethernet4
   peer_type: spine
   description: P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet4
@@ -100,8 +101,8 @@ ethernet_interfaces:
   ptp:
     enable: true
   ip_address: 172.17.210.5/31
-  name: Ethernet1
-- peer: DC2-POD1-SPINE2
+- name: Ethernet2
+  peer: DC2-POD1-SPINE2
   peer_interface: Ethernet4
   peer_type: spine
   description: P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet4
@@ -112,8 +113,8 @@ ethernet_interfaces:
   ptp:
     enable: true
   ip_address: 172.17.210.7/31
-  name: Ethernet2
-- peer: DC2-POD1-L2LEAF2A
+- name: Ethernet3
+  peer: DC2-POD1-L2LEAF2A
   peer_interface: Ethernet1
   peer_type: l2leaf
   description: DC2-POD1-L2LEAF2A_Ethernet1
@@ -122,7 +123,6 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  name: Ethernet3
 port_channel_interfaces:
 - name: Port-Channel3
   description: DC2-POD1-L2LEAF2A_Po1

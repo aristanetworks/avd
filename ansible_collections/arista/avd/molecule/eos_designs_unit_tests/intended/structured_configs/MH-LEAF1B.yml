@@ -134,7 +134,8 @@ lacp:
       begin: 129
       end: 256
 ethernet_interfaces:
-- peer: DC1-SPINE1
+- name: Ethernet1
+  peer: DC1-SPINE1
   peer_interface: Ethernet20
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet20
@@ -145,8 +146,8 @@ ethernet_interfaces:
   - name: LT_GROUP1
     direction: upstream
   ip_address: 10.10.101.3/31
-  name: Ethernet1
-- peer: server01_ES1
+- name: Ethernet10
+  peer: server01_ES1
   peer_interface: Eth2
   peer_type: server
   port_profile: Tenant_X
@@ -158,8 +159,8 @@ ethernet_interfaces:
   channel_group:
     id: 10
     mode: active
-  name: Ethernet10
-- peer: server03_AUTO_ESI
+- name: Ethernet12
+  peer: server03_AUTO_ESI
   peer_interface: Eth2
   peer_type: server
   port_profile: Tenant_X
@@ -171,8 +172,8 @@ ethernet_interfaces:
   channel_group:
     id: 12
     mode: active
-  name: Ethernet12
-- peer: server04_AUTO_ESI_Profile
+- name: Ethernet13
+  peer: server04_AUTO_ESI_Profile
   peer_interface: Eth2
   peer_type: server
   port_profile: Tenant_ESI_Auto
@@ -184,8 +185,8 @@ ethernet_interfaces:
   channel_group:
     id: 13
     mode: active
-  name: Ethernet13
-- peer: server05_AUTO_ESI_Profile_Override
+- name: Ethernet14
+  peer: server05_AUTO_ESI_Profile_Override
   peer_interface: Eth2
   peer_type: server
   port_profile: Tenant_ESI_Auto
@@ -197,8 +198,8 @@ ethernet_interfaces:
   channel_group:
     id: 14
     mode: active
-  name: Ethernet14
-- peer: server06_Single_Active_Port_Channel
+- name: Ethernet15
+  peer: server06_Single_Active_Port_Channel
   peer_interface: Eth2
   peer_type: server
   port_profile: Tenant_X_Trunk_Auto
@@ -210,8 +211,8 @@ ethernet_interfaces:
   channel_group:
     id: 15
     mode: active
-  name: Ethernet15
-- peer: server07_Single_Active_Port_Channel_Manual_DF
+- name: Ethernet16
+  peer: server07_Single_Active_Port_Channel_Manual_DF
   peer_interface: Eth2
   peer_type: server
   port_profile: Tenant_X_Trunk
@@ -223,8 +224,8 @@ ethernet_interfaces:
   channel_group:
     id: 16
     mode: active
-  name: Ethernet16
-- peer: server08_Single_Active_Ethernet
+- name: Ethernet17
+  peer: server08_Single_Active_Ethernet
   peer_interface: Eth2
   peer_type: server
   port_profile: Tenant_X_Trunk_Auto_Eth
@@ -240,8 +241,8 @@ ethernet_interfaces:
     designated_forwarder_election:
       algorithm: preference
       preference_value: 0
-  name: Ethernet17
-- peer: server09_All_Active_Ethernet
+- name: Ethernet18
+  peer: server09_All_Active_Ethernet
   peer_interface: Eth2
   peer_type: server
   port_profile: Tenant_X_Trunk
@@ -256,8 +257,8 @@ ethernet_interfaces:
     route_target: 00:dd:00:dd:00:dd
     designated_forwarder_election:
       algorithm: modulus
-  name: Ethernet18
-- peer: server10_Single_Active_Ethernet_Manual_DF
+- name: Ethernet19
+  peer: server10_Single_Active_Ethernet_Manual_DF
   peer_interface: Eth2
   peer_type: server
   port_profile: Tenant_X_Trunk
@@ -273,8 +274,8 @@ ethernet_interfaces:
     designated_forwarder_election:
       algorithm: preference
       preference_value: 250
-  name: Ethernet19
-- peer: server11_Single_Active_Port_Channel_Manual_DF_Dont_Preempt
+- name: Ethernet20
+  peer: server11_Single_Active_Port_Channel_Manual_DF_Dont_Preempt
   peer_interface: Eth2
   peer_type: server
   port_profile: Tenant_X_Trunk
@@ -286,8 +287,8 @@ ethernet_interfaces:
   channel_group:
     id: 20
     mode: active
-  name: Ethernet20
-- peer: server12_Single_Active_Ethernet_Manual_DF_Dont_Preempt
+- name: Ethernet21
+  peer: server12_Single_Active_Ethernet_Manual_DF_Dont_Preempt
   peer_interface: Eth2
   peer_type: server
   port_profile: Tenant_X_Trunk
@@ -304,8 +305,8 @@ ethernet_interfaces:
       algorithm: preference
       preference_value: 250
       dont_preempt: true
-  name: Ethernet21
-- peer: server13_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_modulus
+- name: Ethernet22
+  peer: server13_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_modulus
   peer_interface: Eth2
   peer_type: server
   port_profile: Tenant_X_Trunk
@@ -317,8 +318,8 @@ ethernet_interfaces:
   channel_group:
     id: 22
     mode: active
-  name: Ethernet22
-- peer: server14_Single_Active_Ethernet_Manual_DF_Dont_Preempt_modulus
+- name: Ethernet23
+  peer: server14_Single_Active_Ethernet_Manual_DF_Dont_Preempt_modulus
   peer_interface: Eth2
   peer_type: server
   port_profile: Tenant_X_Trunk
@@ -333,8 +334,8 @@ ethernet_interfaces:
     route_target: 26:2b:7d:f9:c9:8b
     designated_forwarder_election:
       algorithm: modulus
-  name: Ethernet23
-- peer: ROUTER02_WITH_SUBIF
+- name: Ethernet11
+  peer: ROUTER02_WITH_SUBIF
   peer_interface: Eth2
   peer_type: router
   description: ROUTER02_WITH_SUBIF_Eth2
@@ -343,7 +344,6 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  name: Ethernet11
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

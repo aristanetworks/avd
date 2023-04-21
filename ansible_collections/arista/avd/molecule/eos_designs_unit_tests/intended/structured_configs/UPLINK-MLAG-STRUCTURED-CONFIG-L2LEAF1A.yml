@@ -91,7 +91,8 @@ ethernet_interfaces:
     id: 3
     mode: active
   name: Ethernet4
-- peer: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A
+- name: Ethernet1
+  peer: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A
   peer_interface: Ethernet5
   peer_type: l3leaf
   description: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A_Ethernet5
@@ -100,8 +101,8 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet1
-- peer: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B
+- name: Ethernet2
+  peer: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B
   peer_interface: Ethernet5
   peer_type: l3leaf
   description: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B_Ethernet5
@@ -110,7 +111,6 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet2
 mlag_configuration:
   domain_id: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1
   local_interface: Vlan4094

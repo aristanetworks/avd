@@ -132,7 +132,8 @@ ethernet_interfaces:
     id: 3
     mode: active
   name: Ethernet4
-- peer: DC1.POD1.LEAF2A
+- name: Ethernet1
+  peer: DC1.POD1.LEAF2A
   peer_interface: Ethernet4
   peer_type: l3leaf
   description: DC1.POD1.LEAF2A_Ethernet4
@@ -141,8 +142,8 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet1
-- peer: DC1-POD1-LEAF2B
+- name: Ethernet2
+  peer: DC1-POD1-LEAF2B
   peer_interface: Ethernet4
   peer_type: l3leaf
   description: DC1-POD1-LEAF2B_Ethernet4
@@ -151,7 +152,6 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet2
 mlag_configuration:
   domain_id: RACK2_MLAG
   local_interface: Vlan4094

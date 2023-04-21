@@ -942,458 +942,436 @@ port_channel_interfaces:
   vlans: '110'
   mlag: 1291
 ethernet_interfaces:
-  Ethernet5:
-    peer: DC1-SVC3A
-    peer_interface: Ethernet5
-    peer_type: mlag_peer
-    description: MLAG_PEER_DC1-SVC3A_Ethernet5
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 5
-      mode: active
-    speed: 100g
-  Ethernet6:
-    peer: DC1-SVC3A
-    peer_interface: Ethernet6
-    peer_type: mlag_peer
-    description: MLAG_PEER_DC1-SVC3A_Ethernet6
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 5
-      mode: active
-    speed: 100g
-  Ethernet1:
-    peer: DC1-SPINE1
-    peer_interface: Ethernet5
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE1_Ethernet5
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.65/31
-  Ethernet2:
-    peer: DC1-SPINE2
-    peer_interface: Ethernet5
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE2_Ethernet5
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.67/31
-  Ethernet3:
-    peer: DC1-SPINE3
-    peer_interface: Ethernet5
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE3_Ethernet5
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.69/31
-  Ethernet4:
-    peer: DC1-SPINE4
-    peer_interface: Ethernet5
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE4_Ethernet5
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.71/31
-  Ethernet7:
-    peer: DC1-L2LEAF2A
-    peer_interface: Ethernet2
-    peer_type: l2leaf
-    description: DC1-L2LEAF2A_Ethernet2
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 7
-      mode: active
-  Ethernet8:
-    peer: DC1-L2LEAF2B
-    peer_interface: Ethernet2
-    peer_type: l2leaf
-    description: DC1-L2LEAF2B_Ethernet2
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 7
-      mode: active
-  Ethernet11:
-    peer: server04_inherit_all_from_profile
-    peer_interface: Eth2
-    peer_type: server
-    port_profile: ALL_WITH_SECURITY
-    description: server04_inherit_all_from_profile_Eth2
-    l2_mtu: 8000
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 1-4094
-    spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: disabled
-    spanning_tree_bpduguard: disabled
-    storm_control:
-      all:
-        level: 10
-        unit: percent
-      broadcast:
-        level: 100
-        unit: pps
-      multicast:
-        level: 1
-        unit: percent
-      unknown_unicast:
-        level: 2
-        unit: percent
-  Ethernet12:
-    peer: server05_no_profile
-    peer_interface: Eth2
-    peer_type: server
-    description: server05_no_profile_Eth2
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 1-4094
-    spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: 'True'
-    spanning_tree_bpduguard: disabled
-    storm_control:
-      all:
-        level: 10
-        unit: percent
-      broadcast:
-        level: 100
-        unit: pps
-      multicast:
-        level: 1
-        unit: percent
-      unknown_unicast:
-        level: 2
-        unit: percent
-  Ethernet13:
-    peer: server06_override_profile
-    peer_interface: Eth2
-    peer_type: server
-    port_profile: ALL_WITH_SECURITY
-    description: server06_override_profile_Eth2
-    l2_mtu: 8000
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: '210'
-    spanning_tree_portfast: network
-    spanning_tree_bpdufilter: disabled
-    spanning_tree_bpduguard: 'True'
-    storm_control:
-      all:
-        level: 20
-        unit: pps
-      broadcast:
-        level: 200
-        unit: percent
-      multicast:
-        level: 1
-        unit: percent
-      unknown_unicast:
-        level: 2
-        unit: percent
-  Ethernet14:
-    peer: server07_inherit_all_from_profile_port_channel
-    peer_interface: Eth2
-    peer_type: server
-    port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
-    description: server07_inherit_all_from_profile_port_channel_Eth2
-    l2_mtu: 8000
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 1-4094
-    spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: enabled
-    spanning_tree_bpduguard: enabled
-    storm_control:
-      all:
-        level: 10
-        unit: percent
-      broadcast:
-        level: 100
-        unit: pps
-      multicast:
-        level: 1
-        unit: percent
-      unknown_unicast:
-        level: 2
-        unit: percent
-    channel_group:
-      id: 14
-      mode: active
-  Ethernet15:
-    peer: server08_no_profile_port_channel
-    peer_interface: Eth2
-    peer_type: server
-    description: server08_no_profile_port_channel_Eth2
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 1-4094
-    spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: 'True'
-    spanning_tree_bpduguard: disabled
-    storm_control:
-      all:
-        level: 10
-        unit: percent
-      broadcast:
-        level: 100
-        unit: pps
-      multicast:
-        level: 1
-        unit: percent
-      unknown_unicast:
-        level: 2
-        unit: percent
-    channel_group:
-      id: 15
-      mode: 'on'
-  Ethernet16:
-    peer: server09_override_profile_no_port_channel
-    peer_interface: Eth2
-    peer_type: server
-    port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
-    description: server09_override_profile_no_port_channel_Eth2
-    l2_mtu: 8000
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: '210'
-    spanning_tree_portfast: network
-    spanning_tree_bpdufilter: disabled
-    spanning_tree_bpduguard: 'True'
-    storm_control:
-      all:
-        level: 20
-        unit: pps
-      broadcast:
-        level: 200
-        unit: percent
-      multicast:
-        level: 1
-        unit: percent
-      unknown_unicast:
-        level: 2
-        unit: percent
-  Ethernet17:
-    peer: server10_no_profile_port_channel_lacp_fallback
-    peer_interface: Eth2
-    peer_type: server
-    description: server10_no_profile_port_channel_lacp_fallback_Eth2
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 1-4094
-    spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: 'True'
-    spanning_tree_bpduguard: disabled
-    storm_control:
-      all:
-        level: 10
-        unit: percent
-      broadcast:
-        level: 100
-        unit: pps
-      multicast:
-        level: 1
-        unit: percent
-      unknown_unicast:
-        level: 2
-        unit: percent
-    channel_group:
-      id: 17
-      mode: active
-    lacp_port_priority: 32768
-  Ethernet18:
-    peer: server11_inherit_profile_port_channel_lacp_fallback
-    peer_interface: Eth2
-    peer_type: server
-    port_profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
-    description: server11_inherit_profile_port_channel_lacp_fallback_Eth2
-    l2_mtu: 8000
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 1-4094
-    spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: 'True'
-    spanning_tree_bpduguard: 'True'
-    storm_control:
-      all:
-        level: 10
-        unit: percent
-      broadcast:
-        level: 100
-        unit: pps
-      multicast:
-        level: 1
-        unit: percent
-      unknown_unicast:
-        level: 2
-        unit: percent
-    channel_group:
-      id: 18
-      mode: active
-    lacp_port_priority: 32768
-  Ethernet19:
-    peer: server12_inherit_nested_profile_port_channel_lacp_fallback
-    peer_interface: Eth2
-    peer_type: server
-    port_profile: NESTED_PORT_PROFILE
-    description: server12_inherit_nested_profile_port_channel_lacp_fallback_Eth2
-    l2_mtu: 8000
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 1-4094
-    spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: 'True'
-    spanning_tree_bpduguard: 'True'
-    storm_control:
-      all:
-        level: 10
-        unit: percent
-      broadcast:
-        level: 100
-        unit: pps
-      multicast:
-        level: 1
-        unit: percent
-      unknown_unicast:
-        level: 2
-        unit: percent
-    channel_group:
-      id: 19
-      mode: active
-    lacp_port_priority: 32768
-  Ethernet20:
-    peer: server13_disabled_interfaces
-    peer_interface: Eth2
-    peer_type: server
-    port_profile: TENANT_A
-    description: server13_disabled_interfaces_Eth2
-    type: switched
-    shutdown: true
-    mode: access
-    vlans: '110'
-  Ethernet21:
-    peer: server14_explicitly_enabled_interfaces
-    peer_interface: Eth2
-    peer_type: server
-    port_profile: TENANT_A
-    description: server14_explicitly_enabled_interfaces_Eth2
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: '110'
-  Ethernet22:
-    peer: server15_port_channel_with_disabled_phy_interfaces
-    peer_interface: Eth2
-    peer_type: server
-    port_profile: TENANT_A
-    description: server15_port_channel_with_disabled_phy_interfaces_Eth2
-    type: switched
-    shutdown: true
-    mode: access
-    vlans: '110'
-    channel_group:
-      id: 22
-      mode: active
-  Ethernet23:
-    peer: server16_port_channel_with_disabled_port_channel
-    peer_interface: Eth2
-    peer_type: server
-    port_profile: TENANT_A
-    description: server16_port_channel_with_disabled_port_channel_Eth2
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: '110'
-    channel_group:
-      id: 23
-      mode: active
-  Ethernet24:
-    peer: server17_port_channel_with_disabled_phy_and_po_interfaces
-    peer_interface: Eth2
-    peer_type: server
-    port_profile: TENANT_A
-    description: server17_port_channel_with_disabled_phy_and_po_interfaces_Eth2
-    type: switched
-    shutdown: true
-    mode: access
-    vlans: '110'
-    channel_group:
-      id: 24
-      mode: active
-  Ethernet25:
-    peer: server18_monitoring_session_source_phys_interfaces
-    peer_interface: Eth2
-    peer_type: server
-    port_profile: TENANT_A
-    description: server18_monitoring_session_source_phys_interfaces_Eth2
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: '110'
-  Ethernet27:
-    peer: server18_monitoring_session_source_po
-    peer_interface: Eth4
-    peer_type: server
-    port_profile: TENANT_A
-    description: server18_monitoring_session_source_po_Eth4
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: '110'
-    channel_group:
-      id: 27
-      mode: active
-  Ethernet26:
-    peer: server19_monitoring_session_destination_phys
-    peer_interface: Eth2
-    peer_type: server
-    description: server19_monitoring_session_destination_phys_Eth2
-    type: switched
-    shutdown: false
-  Ethernet42:
-    peer: server21_monitoring_session_destination_po
-    peer_interface: Eth2
-    peer_type: server
-    port_profile: TENANT_A
-    description: server21_monitoring_session_destination_po_Eth2
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: '110'
-    channel_group:
-      id: 42
-      mode: active
-  Ethernet29:
-    peer: server22_port_channel_with_custom_id
-    peer_interface: Eth2
-    peer_type: server
-    port_profile: TENANT_A
-    description: server22_port_channel_with_custom_id_Eth2
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: '110'
-    channel_group:
-      id: 1291
-      mode: active
+- name: Ethernet1
+  peer: DC1-SPINE1
+  peer_interface: Ethernet5
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE1_Ethernet5
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.65/31
+- name: Ethernet2
+  peer: DC1-SPINE2
+  peer_interface: Ethernet5
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE2_Ethernet5
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.67/31
+- name: Ethernet3
+  peer: DC1-SPINE3
+  peer_interface: Ethernet5
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE3_Ethernet5
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.69/31
+- name: Ethernet4
+  peer: DC1-SPINE4
+  peer_interface: Ethernet5
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE4_Ethernet5
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.71/31
+- name: Ethernet7
+  peer: DC1-L2LEAF2A
+  peer_interface: Ethernet2
+  peer_type: l2leaf
+  description: DC1-L2LEAF2A_Ethernet2
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 7
+    mode: active
+- name: Ethernet8
+  peer: DC1-L2LEAF2B
+  peer_interface: Ethernet2
+  peer_type: l2leaf
+  description: DC1-L2LEAF2B_Ethernet2
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 7
+    mode: active
+- name: Ethernet11
+  peer: server04_inherit_all_from_profile
+  peer_interface: Eth2
+  peer_type: server
+  port_profile: ALL_WITH_SECURITY
+  description: server04_inherit_all_from_profile_Eth2
+  l2_mtu: 8000
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 1-4094
+  spanning_tree_portfast: edge
+  spanning_tree_bpdufilter: disabled
+  spanning_tree_bpduguard: disabled
+  storm_control:
+    all:
+      level: '10'
+      unit: percent
+    broadcast:
+      level: '100'
+      unit: pps
+    multicast:
+      level: '1'
+      unit: percent
+    unknown_unicast:
+      level: '2'
+      unit: percent
+- name: Ethernet12
+  peer: server05_no_profile
+  peer_interface: Eth2
+  peer_type: server
+  description: server05_no_profile_Eth2
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 1-4094
+  spanning_tree_portfast: edge
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_bpduguard: disabled
+  storm_control:
+    all:
+      level: '10'
+      unit: percent
+    broadcast:
+      level: '100'
+      unit: pps
+    multicast:
+      level: '1'
+      unit: percent
+    unknown_unicast:
+      level: '2'
+      unit: percent
+- name: Ethernet13
+  peer: server06_override_profile
+  peer_interface: Eth2
+  peer_type: server
+  port_profile: ALL_WITH_SECURITY
+  description: server06_override_profile_Eth2
+  l2_mtu: 8000
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '210'
+  spanning_tree_portfast: network
+  spanning_tree_bpdufilter: disabled
+  spanning_tree_bpduguard: 'True'
+  storm_control:
+    all:
+      level: '20'
+      unit: pps
+    broadcast:
+      level: '200'
+      unit: percent
+    multicast:
+      level: '1'
+      unit: percent
+    unknown_unicast:
+      level: '2'
+      unit: percent
+- name: Ethernet14
+  peer: server07_inherit_all_from_profile_port_channel
+  peer_interface: Eth2
+  peer_type: server
+  port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
+  description: server07_inherit_all_from_profile_port_channel_Eth2
+  l2_mtu: 8000
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 1-4094
+  spanning_tree_portfast: edge
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_bpduguard: enabled
+  storm_control:
+    all:
+      level: '10'
+      unit: percent
+    broadcast:
+      level: '100'
+      unit: pps
+    multicast:
+      level: '1'
+      unit: percent
+    unknown_unicast:
+      level: '2'
+      unit: percent
+  channel_group:
+    id: 14
+    mode: active
+- name: Ethernet15
+  peer: server08_no_profile_port_channel
+  peer_interface: Eth2
+  peer_type: server
+  description: server08_no_profile_port_channel_Eth2
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 1-4094
+  spanning_tree_portfast: edge
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_bpduguard: disabled
+  storm_control:
+    all:
+      level: '10'
+      unit: percent
+    broadcast:
+      level: '100'
+      unit: pps
+    multicast:
+      level: '1'
+      unit: percent
+    unknown_unicast:
+      level: '2'
+      unit: percent
+  channel_group:
+    id: 15
+    mode: 'on'
+- name: Ethernet16
+  peer: server09_override_profile_no_port_channel
+  peer_interface: Eth2
+  peer_type: server
+  port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
+  description: server09_override_profile_no_port_channel_Eth2
+  l2_mtu: 8000
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '210'
+  spanning_tree_portfast: network
+  spanning_tree_bpdufilter: disabled
+  spanning_tree_bpduguard: 'True'
+  storm_control:
+    all:
+      level: '20'
+      unit: pps
+    broadcast:
+      level: '200'
+      unit: percent
+    multicast:
+      level: '1'
+      unit: percent
+    unknown_unicast:
+      level: '2'
+      unit: percent
+- name: Ethernet17
+  peer: server10_no_profile_port_channel_lacp_fallback
+  peer_interface: Eth2
+  peer_type: server
+  description: server10_no_profile_port_channel_lacp_fallback_Eth2
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 1-4094
+  spanning_tree_portfast: edge
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_bpduguard: disabled
+  storm_control:
+    all:
+      level: '10'
+      unit: percent
+    broadcast:
+      level: '100'
+      unit: pps
+    multicast:
+      level: '1'
+      unit: percent
+    unknown_unicast:
+      level: '2'
+      unit: percent
+  channel_group:
+    id: 17
+    mode: active
+  lacp_port_priority: 32768
+- name: Ethernet18
+  peer: server11_inherit_profile_port_channel_lacp_fallback
+  peer_interface: Eth2
+  peer_type: server
+  port_profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
+  description: server11_inherit_profile_port_channel_lacp_fallback_Eth2
+  l2_mtu: 8000
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 1-4094
+  spanning_tree_portfast: edge
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_bpduguard: 'True'
+  storm_control:
+    all:
+      level: '10'
+      unit: percent
+    broadcast:
+      level: '100'
+      unit: pps
+    multicast:
+      level: '1'
+      unit: percent
+    unknown_unicast:
+      level: '2'
+      unit: percent
+  channel_group:
+    id: 18
+    mode: active
+  lacp_port_priority: 32768
+- name: Ethernet19
+  peer: server12_inherit_nested_profile_port_channel_lacp_fallback
+  peer_interface: Eth2
+  peer_type: server
+  port_profile: NESTED_PORT_PROFILE
+  description: server12_inherit_nested_profile_port_channel_lacp_fallback_Eth2
+  l2_mtu: 8000
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 1-4094
+  spanning_tree_portfast: edge
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_bpduguard: 'True'
+  storm_control:
+    all:
+      level: '10'
+      unit: percent
+    broadcast:
+      level: '100'
+      unit: pps
+    multicast:
+      level: '1'
+      unit: percent
+    unknown_unicast:
+      level: '2'
+      unit: percent
+  channel_group:
+    id: 19
+    mode: active
+  lacp_port_priority: 32768
+- name: Ethernet20
+  peer: server13_disabled_interfaces
+  peer_interface: Eth2
+  peer_type: server
+  port_profile: TENANT_A
+  description: server13_disabled_interfaces_Eth2
+  type: switched
+  shutdown: true
+  mode: access
+  vlans: '110'
+- name: Ethernet21
+  peer: server14_explicitly_enabled_interfaces
+  peer_interface: Eth2
+  peer_type: server
+  port_profile: TENANT_A
+  description: server14_explicitly_enabled_interfaces_Eth2
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '110'
+- name: Ethernet22
+  peer: server15_port_channel_with_disabled_phy_interfaces
+  peer_interface: Eth2
+  peer_type: server
+  port_profile: TENANT_A
+  description: server15_port_channel_with_disabled_phy_interfaces_Eth2
+  type: switched
+  shutdown: true
+  mode: access
+  vlans: '110'
+  channel_group:
+    id: 22
+    mode: active
+- name: Ethernet23
+  peer: server16_port_channel_with_disabled_port_channel
+  peer_interface: Eth2
+  peer_type: server
+  port_profile: TENANT_A
+  description: server16_port_channel_with_disabled_port_channel_Eth2
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '110'
+  channel_group:
+    id: 23
+    mode: active
+- name: Ethernet24
+  peer: server17_port_channel_with_disabled_phy_and_po_interfaces
+  peer_interface: Eth2
+  peer_type: server
+  port_profile: TENANT_A
+  description: server17_port_channel_with_disabled_phy_and_po_interfaces_Eth2
+  type: switched
+  shutdown: true
+  mode: access
+  vlans: '110'
+  channel_group:
+    id: 24
+    mode: active
+- name: Ethernet25
+  peer: server18_monitoring_session_source_phys_interfaces
+  peer_interface: Eth2
+  peer_type: server
+  port_profile: TENANT_A
+  description: server18_monitoring_session_source_phys_interfaces_Eth2
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '110'
+- name: Ethernet27
+  peer: server18_monitoring_session_source_po
+  peer_interface: Eth4
+  peer_type: server
+  port_profile: TENANT_A
+  description: server18_monitoring_session_source_po_Eth4
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '110'
+  channel_group:
+    id: 27
+    mode: active
+- name: Ethernet26
+  peer: server19_monitoring_session_destination_phys
+  peer_interface: Eth2
+  peer_type: server
+  description: server19_monitoring_session_destination_phys_Eth2
+  type: switched
+  shutdown: false
+- name: Ethernet42
+  peer: server21_monitoring_session_destination_po
+  peer_interface: Eth2
+  peer_type: server
+  port_profile: TENANT_A
+  description: server21_monitoring_session_destination_po_Eth2
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '110'
+  channel_group:
+    id: 42
+    mode: active
+- name: Ethernet29
+  peer: server22_port_channel_with_custom_id
+  peer_interface: Eth2
+  peer_type: server
+  port_profile: TENANT_A
+  description: server22_port_channel_with_custom_id_Eth2
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '110'
+  channel_group:
+    id: 1291
+    mode: active
 mlag_configuration:
   domain_id: DC1_SVC3
   local_interface: Vlan4092

@@ -640,7 +640,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: EVPN-MULTICAST-SPINE1
+- name: Ethernet1
+  peer: EVPN-MULTICAST-SPINE1
   peer_interface: Ethernet3
   peer_type: spine
   description: P2P_LINK_TO_EVPN-MULTICAST-SPINE1_Ethernet3
@@ -651,7 +652,6 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  name: Ethernet1
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

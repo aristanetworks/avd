@@ -859,7 +859,8 @@ ethernet_interfaces:
     id: 5
     mode: active
   name: Ethernet6
-- peer: DC1-SPINE1
+- name: Ethernet1
+  peer: DC1-SPINE1
   peer_interface: Ethernet4
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet4
@@ -867,8 +868,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ipv6_enable: true
-  name: Ethernet1
-- peer: DC1-SPINE2
+- name: Ethernet2
+  peer: DC1-SPINE2
   peer_interface: Ethernet4
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE2_Ethernet4
@@ -876,8 +877,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ipv6_enable: true
-  name: Ethernet2
-- peer: DC1-SPINE3
+- name: Ethernet3
+  peer: DC1-SPINE3
   peer_interface: Ethernet4
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE3_Ethernet4
@@ -885,8 +886,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ipv6_enable: true
-  name: Ethernet3
-- peer: DC1-SPINE4
+- name: Ethernet4
+  peer: DC1-SPINE4
   peer_interface: Ethernet4
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE4_Ethernet4
@@ -894,8 +895,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ipv6_enable: true
-  name: Ethernet4
-- peer: DC1-L2LEAF2A
+- name: Ethernet7
+  peer: DC1-L2LEAF2A
   peer_interface: Ethernet1
   peer_type: l2leaf
   description: DC1-L2LEAF2A_Ethernet1
@@ -904,8 +905,8 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  name: Ethernet7
-- peer: DC1-L2LEAF2B
+- name: Ethernet8
+  peer: DC1-L2LEAF2B
   peer_interface: Ethernet1
   peer_type: l2leaf
   description: DC1-L2LEAF2B_Ethernet1
@@ -914,8 +915,8 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  name: Ethernet8
-- peer: server03_ESI
+- name: Ethernet10
+  peer: server03_ESI
   peer_interface: Eth1
   peer_type: server
   port_profile: TENANT_A_B
@@ -927,8 +928,8 @@ ethernet_interfaces:
   channel_group:
     id: 10
     mode: active
-  name: Ethernet10
-- peer: server04_inherit_all_from_profile
+- name: Ethernet11
+  peer: server04_inherit_all_from_profile
   peer_interface: Eth1
   peer_type: server
   port_profile: ALL_WITH_SECURITY
@@ -953,8 +954,8 @@ ethernet_interfaces:
     unknown_unicast:
       level: '2'
       unit: percent
-  name: Ethernet11
-- peer: server05_no_profile
+- name: Ethernet12
+  peer: server05_no_profile
   peer_interface: Eth1
   peer_type: server
   description: server05_no_profile_Eth1
@@ -978,8 +979,8 @@ ethernet_interfaces:
     unknown_unicast:
       level: '2'
       unit: percent
-  name: Ethernet12
-- peer: server06_override_profile
+- name: Ethernet13
+  peer: server06_override_profile
   peer_interface: Eth1
   peer_type: server
   port_profile: ALL_WITH_SECURITY
@@ -1004,8 +1005,8 @@ ethernet_interfaces:
     unknown_unicast:
       level: '2'
       unit: percent
-  name: Ethernet13
-- peer: server07_inherit_all_from_profile_port_channel
+- name: Ethernet14
+  peer: server07_inherit_all_from_profile_port_channel
   peer_interface: Eth1
   peer_type: server
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
@@ -1033,8 +1034,8 @@ ethernet_interfaces:
   channel_group:
     id: 14
     mode: active
-  name: Ethernet14
-- peer: server08_no_profile_port_channel
+- name: Ethernet15
+  peer: server08_no_profile_port_channel
   peer_interface: Eth1
   peer_type: server
   description: server08_no_profile_port_channel_Eth1
@@ -1061,8 +1062,8 @@ ethernet_interfaces:
   channel_group:
     id: 15
     mode: 'on'
-  name: Ethernet15
-- peer: server09_override_profile_no_port_channel
+- name: Ethernet16
+  peer: server09_override_profile_no_port_channel
   peer_interface: Eth1
   peer_type: server
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
@@ -1087,7 +1088,6 @@ ethernet_interfaces:
     unknown_unicast:
       level: '2'
       unit: percent
-  name: Ethernet16
 mlag_configuration:
   domain_id: DC1_SVC3
   local_interface: Vlan4094

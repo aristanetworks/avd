@@ -200,7 +200,8 @@ ethernet_interfaces:
     id: 3
     mode: active
   name: Ethernet4
-- peer: trunk-group-tests-l2leaf4
+- name: Ethernet1
+  peer: trunk-group-tests-l2leaf4
   peer_interface: Ethernet1
   peer_type: l2leaf
   description: TRUNK-GROUP-TESTS-L2LEAF4_Ethernet1
@@ -209,7 +210,6 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet1
 mlag_configuration:
   domain_id: TRUNK_GROUP_TESTS_L3LEAF2
   local_interface: Vlan4094

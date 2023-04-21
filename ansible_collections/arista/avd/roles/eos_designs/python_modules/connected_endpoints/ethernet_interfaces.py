@@ -5,8 +5,9 @@ from collections import ChainMap
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 
 from .utils import UtilsMixin
 
@@ -18,19 +19,31 @@ class EthernetInterfacesMixin(UtilsMixin):
     """
 
     @cached_property
-    def ethernet_interfaces(self) -> dict | None:
+    def ethernet_interfaces(self) -> list | None:
         """
         Return structured config for ethernet_interfaces
         """
-        ethernet_interfaces = {}
+
+        ethernet_interfaces = []
         for connected_endpoint in self._filtered_connected_endpoints:
             for adapter in connected_endpoint["adapters"]:
                 for node_index, node_name in enumerate(adapter["switches"]):
                     if node_name != self.shared_utils.hostname:
                         continue
 
-                    ethernet_interface_name = adapter["switch_ports"][node_index]
-                    ethernet_interfaces[ethernet_interface_name] = self._get_ethernet_interface_cfg(adapter, node_index, connected_endpoint)
+                    ethernet_interface = self._get_ethernet_interface_cfg(adapter, node_index, connected_endpoint)
+                    if (found_eth_interface := get_item(ethernet_interfaces, "name", ethernet_interface["name"])) is None:
+                        ethernet_interfaces.append(ethernet_interface)
+                    else:
+                        if found_eth_interface == ethernet_interface:
+                            # Same ethernet_interface information twice in the input data. So not duplicate interface name.
+                            continue
+
+                        raise AristaAvdError(
+                            f"Duplicate interface name {ethernet_interface['name']} found while generating ethernet_interfaces for connected_endpoints peer:"
+                            f" {ethernet_interface['peer']}, peer_interface: {ethernet_interface['peer_interface']}. Description on duplicate interface:"
+                            f" {found_eth_interface['description']}"
+                        )
 
         for network_port in self._filtered_network_ports:
             connected_endpoint = {
@@ -46,7 +59,19 @@ class EthernetInterfacesMixin(UtilsMixin):
                     },
                     network_port,
                 )
-                ethernet_interfaces[ethernet_interface_name] = self._get_ethernet_interface_cfg(tmp_network_port, 0, connected_endpoint)
+                ethernet_interface = self._get_ethernet_interface_cfg(tmp_network_port, 0, connected_endpoint)
+                if (found_eth_interface := get_item(ethernet_interfaces, "name", ethernet_interface["name"])) is None:
+                    ethernet_interfaces.append(ethernet_interface)
+                else:
+                    if found_eth_interface == ethernet_interface:
+                        # Same ethernet_interface information twice in the input data. So not duplicate interface name.
+                        continue
+
+                    raise AristaAvdError(
+                        f"Duplicate interface name {ethernet_interface['name']} found while generating ethernet_interfaces for connected_endpoints peer:"
+                        f" {ethernet_interface['peer']}, peer_interface: {ethernet_interface['peer_interface']}. Description on duplicate interface:"
+                        f" {found_eth_interface['description']}"
+                    )
 
         if ethernet_interfaces:
             return ethernet_interfaces
@@ -70,6 +95,7 @@ class EthernetInterfacesMixin(UtilsMixin):
         # Common ethernet_interface settings
         # TODO: avoid generating redundant structured config for port-channel members
         ethernet_interface = {
+            "name": adapter["switch_ports"][node_index],
             "peer": peer,
             "peer_interface": peer_interface,
             "peer_type": connected_endpoint["type"],

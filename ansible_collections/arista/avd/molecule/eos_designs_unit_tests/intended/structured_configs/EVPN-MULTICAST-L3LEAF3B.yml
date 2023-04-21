@@ -643,7 +643,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: EVPN-MULTICAST-SPINE1
+- name: Ethernet1
+  peer: EVPN-MULTICAST-SPINE1
   peer_interface: Ethernet5
   peer_type: spine
   description: P2P_LINK_TO_EVPN-MULTICAST-SPINE1_Ethernet5
@@ -654,8 +655,8 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  name: Ethernet1
-- peer_type: l3_interface
+- name: Ethernet9
+  peer_type: l3_interface
   ip_address: 10.2.52.2/31
   shutdown: false
   type: routed
@@ -663,15 +664,15 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  name: Ethernet9
-- peer_type: l3_interface
+- name: Ethernet7.10
+  peer_type: l3_interface
   ip_address: 10.1.51.6/31
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 10
   vrf: TEN_E_PEG_L3_MULTICAST_ENABLED
-  name: Ethernet7.10
-- peer_type: l3_interface
+- name: Ethernet8
+  peer_type: l3_interface
   ip_address: 10.1.51.6/31
   shutdown: false
   type: routed
@@ -679,11 +680,10 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  name: Ethernet8
-- type: routed
+- name: Ethernet7
+  type: routed
   peer_type: l3_interface
   shutdown: false
-  name: Ethernet7
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

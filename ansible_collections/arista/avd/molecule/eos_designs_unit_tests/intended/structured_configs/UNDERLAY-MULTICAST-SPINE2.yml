@@ -91,7 +91,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: UNDERLAY-MULTICAST-L3LEAF1A
+- name: Ethernet1
+  peer: UNDERLAY-MULTICAST-L3LEAF1A
   peer_interface: Ethernet2
   peer_type: l3leaf
   description: P2P_LINK_TO_UNDERLAY-MULTICAST-L3LEAF1A_Ethernet2
@@ -99,8 +100,8 @@ ethernet_interfaces:
   mtu: 9000
   type: routed
   ip_address: 172.31.255.2/31
-  name: Ethernet1
-- peer: UNDERLAY-MULTICAST-L3LEAF1B
+- name: Ethernet2
+  peer: UNDERLAY-MULTICAST-L3LEAF1B
   peer_interface: Ethernet2
   peer_type: l3leaf
   description: P2P_LINK_TO_UNDERLAY-MULTICAST-L3LEAF1B_Ethernet2
@@ -108,8 +109,8 @@ ethernet_interfaces:
   mtu: 9000
   type: routed
   ip_address: 172.31.255.6/31
-  name: Ethernet2
-- peer: UNDERLAY-MULTICAST-L3LEAF2A
+- name: Ethernet3
+  peer: UNDERLAY-MULTICAST-L3LEAF2A
   peer_interface: Ethernet2
   peer_type: l3leaf
   description: P2P_LINK_TO_UNDERLAY-MULTICAST-L3LEAF2A_Ethernet2
@@ -117,8 +118,8 @@ ethernet_interfaces:
   mtu: 9000
   type: routed
   ip_address: 172.31.255.10/31
-  name: Ethernet3
-- peer: UNDERLAY-MULTICAST-L3LEAF2B
+- name: Ethernet4
+  peer: UNDERLAY-MULTICAST-L3LEAF2B
   peer_interface: Ethernet2
   peer_type: l3leaf
   description: P2P_LINK_TO_UNDERLAY-MULTICAST-L3LEAF2B_Ethernet2
@@ -126,7 +127,6 @@ ethernet_interfaces:
   mtu: 9000
   type: routed
   ip_address: 172.31.255.14/31
-  name: Ethernet4
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

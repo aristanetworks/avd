@@ -60,7 +60,8 @@ link_tracking_groups:
 - name: l2leaf-server02
   recovery_delay: 300
 ethernet_interfaces:
-- peer: MH-LEAF2A
+- name: Ethernet1
+  peer: MH-LEAF2A
   peer_interface: Ethernet2
   peer_type: l3leaf
   description: MH-LEAF2A_Ethernet2
@@ -69,8 +70,8 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet1
-- peer: server02
+- name: Ethernet10
+  peer: server02
   peer_interface: Eth1
   peer_type: server
   description: server02_Eth1
@@ -79,7 +80,6 @@ ethernet_interfaces:
   link_tracking_groups:
   - name: l2leaf-server02
     direction: downstream
-  name: Ethernet10
 port_channel_interfaces:
 - name: Port-Channel1
   description: MH-LEAF2A_Po2
