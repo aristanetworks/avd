@@ -427,7 +427,6 @@ ethernet_interfaces:
   description: DC1-L2LEAF1A_Ethernet1
   speed: forced 10000
   shutdown: false
-  type: switched
   channel_group:
     id: 7
     mode: active
@@ -438,7 +437,6 @@ ethernet_interfaces:
   description: DC1-L2LEAF1B_Ethernet1
   speed: forced 10000
   shutdown: false
-  type: switched
   channel_group:
     id: 7
     mode: active
@@ -448,7 +446,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-L2LEAF3A_Ethernet1
   shutdown: false
-  type: switched
   channel_group:
     id: 9
     mode: active
@@ -458,7 +455,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-L2LEAF4A_Ethernet1
   shutdown: false
-  type: switched
   channel_group:
     id: 13
     mode: active
@@ -468,7 +464,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1.L2LEAF5A_Ethernet1
   shutdown: false
-  type: switched
   channel_group:
     id: 141
     mode: active
@@ -478,7 +473,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1.L2LEAF5B_Ethernet1
   shutdown: false
-  type: switched
   channel_group:
     id: 141
     mode: active
@@ -584,12 +578,7 @@ ethernet_interfaces:
   peer_type: server
   port_profile: TENANT_B
   description: server01_MLAG_Eth2
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: 210-211
-  spanning_tree_bpdufilter: disabled
-  spanning_tree_bpduguard: disabled
   channel_group:
     id: 10
     mode: active
@@ -599,13 +588,7 @@ ethernet_interfaces:
   peer_type: server
   port_profile: TENANT_A_MTU
   description: server01_MTU_PROFILE_MLAG_Eth4
-  mtu: 1600
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '110'
-  spanning_tree_bpdufilter: enabled
-  spanning_tree_bpduguard: enabled
   channel_group:
     id: 11
     mode: active
@@ -614,11 +597,7 @@ ethernet_interfaces:
   peer_interface: Eth6
   peer_type: server
   description: server01_MTU_ADAPTOR_MLAG_Eth6
-  mtu: 1601
-  type: switched
   shutdown: false
-  spanning_tree_bpdufilter: 'True'
-  spanning_tree_bpduguard: 'True'
   channel_group:
     id: 12
     mode: active
@@ -628,10 +607,7 @@ ethernet_interfaces:
   peer_type: firewall
   port_profile: TENANT_A_B
   description: FIREWALL01_E0
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: 110-111,210-211
   channel_group:
     id: 20
     mode: active
@@ -641,8 +617,8 @@ ethernet_interfaces:
   peer_type: router
   port_profile: TENANT_A
   description: ROUTER01_Eth0
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '110'
 - name: Ethernet24
@@ -650,8 +626,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: DOT1X_PORT_PROFILE
   description: PC
-  type: switched
   shutdown: false
+  type: switched
   dot1x:
     port_control: auto
     reauthentication: true
@@ -674,8 +650,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: DOT1X_PORT_PROFILE
   description: PC
-  type: switched
   shutdown: false
+  type: switched
   dot1x:
     port_control: auto
     reauthentication: true

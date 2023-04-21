@@ -374,7 +374,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: CUSTOM_DC1-L2LEAF1A_Ethernet2
   shutdown: false
-  type: switched
   channel_group:
     id: 7
     mode: active
@@ -384,7 +383,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: CUSTOM_DC1-L2LEAF1B_Ethernet2
   shutdown: false
-  type: switched
   channel_group:
     id: 7
     mode: active
@@ -394,7 +392,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: CUSTOM_DC1-L2LEAF3A_Ethernet2
   shutdown: false
-  type: switched
   channel_group:
     id: 9
     mode: active
@@ -404,10 +401,7 @@ ethernet_interfaces:
   peer_type: server
   port_profile: TENANT_B
   description: CUSTOM_server01_MLAG_Eth3
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: 210-211
   channel_group:
     id: 10
     mode: active
@@ -417,11 +411,7 @@ ethernet_interfaces:
   peer_type: server
   port_profile: TENANT_A_MTU
   description: CUSTOM_server01_MTU_PROFILE_MLAG_Eth5
-  mtu: 1600
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '110'
   channel_group:
     id: 11
     mode: active
@@ -430,8 +420,6 @@ ethernet_interfaces:
   peer_interface: Eth7
   peer_type: server
   description: CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth7
-  mtu: 1601
-  type: switched
   shutdown: false
   channel_group:
     id: 12
@@ -441,8 +429,6 @@ ethernet_interfaces:
   peer_interface: Eth9
   peer_type: server
   description: CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth9
-  mtu: 1601
-  type: switched
   shutdown: false
   channel_group:
     id: 12
@@ -453,10 +439,7 @@ ethernet_interfaces:
   peer_type: firewall
   port_profile: TENANT_A_B
   description: CUSTOM_FIREWALL01_E1
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: 110-111,210-211
   channel_group:
     id: 20
     mode: active
@@ -466,8 +449,8 @@ ethernet_interfaces:
   peer_type: router
   port_profile: TENANT_A
   description: CUSTOM_ROUTER01_Eth1
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '110'
 port_channel_interfaces:

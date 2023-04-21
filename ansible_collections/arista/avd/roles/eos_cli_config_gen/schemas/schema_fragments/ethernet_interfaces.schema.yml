@@ -89,8 +89,8 @@ keys:
           type: str
           valid_values: ["routed", "switched", "l3dot1q", "l2dot1q"]
           description: |
-            l3dot1q and l2dot1q are used for sub-interfaces
-            The parent interface should be defined as routed
+            l3dot1q and l2dot1q are used for sub-interfaces. The parent interface should be defined as routed.
+            Interface will not be listed in device documentation, unless "type" is set.
         snmp_trap_link_change:
           type: bool
         address_locking:

@@ -20,6 +20,7 @@ ethernet_interfaces:
       receive: false
 
   - name: Ethernet2
+    type: switched
     description: Switched port with no LLDP rx/tx
     mode: access
     vlans: 110
@@ -28,6 +29,7 @@ ethernet_interfaces:
       receive: true
 
   - name: Ethernet3
+    type: switched
     description: No special LLDP settings
     mode: access
     vlans: 110

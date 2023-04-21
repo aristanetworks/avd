@@ -44,7 +44,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: DC2-LEAF2A_Ethernet8
   shutdown: false
-  type: switched
   channel_group:
     id: 1
     mode: active
@@ -54,7 +53,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: DC2-LEAF2B_Ethernet8
   shutdown: false
-  type: switched
   channel_group:
     id: 1
     mode: active
@@ -63,8 +61,8 @@ ethernet_interfaces:
   peer_interface: iLO
   peer_type: server
   description: dc2-leaf2-server1_iLO
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '11'
   spanning_tree_portfast: edge

@@ -212,8 +212,6 @@ interface Ethernet50
 | Port-Channel20 | Po_in_mode_access_accepting_tagged_LACP_frames | switched | access | 200 | - | - | - | - | - | - |
 | Port-Channel50 | SRV-POD03_PortChanne1 | switched | trunk | 1-4000 | - | - | - | - | - | 0000:0000:0303:0202:0101 |
 | Port-Channel51 | ipv6_prefix | switched | trunk | 1-500 | - | - | - | - | - | - |
-| Port-Channel100.101 | IFL for TENANT01 | switched | access | - | - | - | - | - | - | - |
-| Port-Channel100.102 | IFL for TENANT02 | switched | access | - | - | - | - | - | - | - |
 | Port-Channel101 | PVLAN Promiscuous Access - only one secondary | switched | access | 110 | - | - | - | - | - | - |
 | Port-Channel102 | PVLAN Promiscuous Trunk - vlan translation out | switched | trunk | 110-112 | - | - | - | - | - | - |
 | Port-Channel103 | PVLAN Secondary Trunk | switched | trunk | 110-112 | - | - | - | - | - | - |
@@ -476,14 +474,12 @@ interface Port-Channel100.101
    description IFL for TENANT01
    logging event link-status
    mtu 1500
-   switchport
    ip address 10.1.1.3/31
 !
 interface Port-Channel100.102
    description IFL for TENANT02
    no logging event link-status
    mtu 1500
-   switchport
    vrf C2
    ip address 10.1.2.3/31
 !

@@ -739,7 +739,6 @@ ethernet_interfaces:
   peer_interface: Ethernet5
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-SVC3B_Ethernet5
-  type: switched
   shutdown: false
   channel_group:
     id: 5
@@ -749,7 +748,6 @@ ethernet_interfaces:
   peer_interface: Ethernet6
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-SVC3B_Ethernet6
-  type: switched
   shutdown: false
   channel_group:
     id: 5
@@ -796,7 +794,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-L2LEAF2A_Ethernet1
   shutdown: false
-  type: switched
   channel_group:
     id: 7
     mode: active
@@ -806,7 +803,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-L2LEAF2B_Ethernet1
   shutdown: false
-  type: switched
   channel_group:
     id: 7
     mode: active
@@ -816,10 +812,7 @@ ethernet_interfaces:
   peer_type: server
   port_profile: TENANT_A_B
   description: server03_ESI_Eth1
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: 110-111,210-211
   channel_group:
     id: 10
     mode: active

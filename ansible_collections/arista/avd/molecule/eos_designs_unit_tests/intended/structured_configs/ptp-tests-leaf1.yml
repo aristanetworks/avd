@@ -159,8 +159,8 @@ ethernet_interfaces:
   peer_interface: eth1
   peer_type: server
   description: bmca-endpoint_eth1
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '11'
   ptp:
@@ -177,8 +177,8 @@ ethernet_interfaces:
   peer_interface: PCI1
   peer_type: server
   description: video-endpoint_PCI1
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '11'
   spanning_tree_portfast: edge
@@ -197,8 +197,8 @@ ethernet_interfaces:
   peer_interface: eth3
   peer_type: server
   description: Endpoint-with-specific-PTP-profile_eth3
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '11'
   ptp:

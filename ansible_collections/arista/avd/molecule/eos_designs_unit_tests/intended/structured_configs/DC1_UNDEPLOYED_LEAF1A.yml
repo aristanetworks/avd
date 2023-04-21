@@ -801,7 +801,6 @@ ethernet_interfaces:
   peer_interface: Ethernet57/1
   peer_type: mlag_peer
   description: MLAG_PEER_DC1_UNDEPLOYED_LEAF1B_Ethernet57/1
-  type: switched
   shutdown: false
   channel_group:
     id: 571
@@ -812,7 +811,6 @@ ethernet_interfaces:
   peer_interface: Ethernet58/1
   peer_type: mlag_peer
   description: MLAG_PEER_DC1_UNDEPLOYED_LEAF1B_Ethernet58/1
-  type: switched
   shutdown: false
   channel_group:
     id: 571

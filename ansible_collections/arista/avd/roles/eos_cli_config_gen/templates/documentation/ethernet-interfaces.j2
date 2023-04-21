@@ -16,7 +16,7 @@
                                                                       arista.avd.convert_dicts('name') |
                                                                       selectattr('name', 'arista.avd.defined', port_channel_interface_name) |
                                                                       first %}
-{%             if port_channel_interface.type is not defined or port_channel_interface.type not in ['routed', 'l3dot1q', 'l2dot1q'] %}
+{%             if port_channel_interface.type is arista.avd.defined('switched') %}
 {%                 set description = ethernet_interface.description | arista.avd.default("-") %}
 {%                 set mode = port_channel_interface.mode | arista.avd.default("access") %}
 {%                 set vlans = port_channel_interface.vlans | arista.avd.default('-') %}
@@ -38,7 +38,7 @@
 {%                 endif %}
 | {{ ethernet_interface.name }} | {{ description }} | *{{ mode }} | *{{ vlans }} | *{{ native_vlan }} | *{{ l2.trunk_groups }} | {{ channel_group }} |
 {%             endif %}
-{%         elif ethernet_interface.type is not defined or ethernet_interface.type not in ['routed', 'l3dot1q', 'l2dot1q'] %}
+{%         elif ethernet_interface.type is arista.avd.defined('switched') %}
 {%             set description = ethernet_interface.description | arista.avd.default("-") %}
 {%             set mode = ethernet_interface.mode | arista.avd.default("access") %}
 {%             set vlans = ethernet_interface.vlans | arista.avd.default('-') %}
@@ -255,7 +255,7 @@
                                                                           first %}
 {%                 if port_channel_interface.ip_address is arista.avd.defined %}
 {%                     set description = ethernet_interface.description | arista.avd.default("-") %}
-{%                     set type = port_channel_interface.type | arista.avd.default("*switchport") %}
+{%                     set type = port_channel_interface.type | arista.avd.default("-") %}
 {%                     set channel_group = ethernet_interface.channel_group.id | arista.avd.default("-") %}
 {%                     set ip_address = port_channel_interface.ip_address | arista.avd.default("-") %}
 {%                     set vrf = port_channel_interface.vrf | arista.avd.default("*default") %}
@@ -268,7 +268,7 @@
 {%             else %}
 {%                 if ethernet_interface.ip_address is arista.avd.defined %}
 {%                     set description = ethernet_interface.description | arista.avd.default("-") %}
-{%                     set type = ethernet_interface.type | arista.avd.default("switchport") %}
+{%                     set type = ethernet_interface.type | arista.avd.default("-") %}
 {%                     set ip_address = ethernet_interface.ip_address | arista.avd.default("-") %}
 {%                     set vrf = ethernet_interface.vrf | arista.avd.default("default") %}
 {%                     set mtu = ethernet_interface.mtu | arista.avd.default("-") %}
@@ -322,7 +322,7 @@
                                                                           first %}
 {%                 if port_channel_interface.ipv6_address is arista.avd.defined or port_channel_interface.ipv6_enable is arista.avd.defined(true) %}
 {%                     set description = ethernet_interface.description | arista.avd.default("-") %}
-{%                     set type = port_channel_interface.type | arista.avd.default("switchport") %}
+{%                     set type = port_channel_interface.type | arista.avd.default("-") %}
 {%                     set channel_group = ethernet_interface.channel_group.id | arista.avd.default("-") %}
 {%                     set ipv6_address = port_channel_interface.ipv6_address | arista.avd.default("-") %}
 {%                     set vrf = port_channel_interface.vrf | arista.avd.default("default") %}
@@ -337,7 +337,7 @@
 {%             else %}
 {%                 if ethernet_interface.ipv6_address is arista.avd.defined or ethernet_interface.ipv6_enable is arista.avd.defined(true) %}
 {%                     set description = ethernet_interface.description | arista.avd.default("-") %}
-{%                     set type = ethernet_interface.type | arista.avd.default("switchport") %}
+{%                     set type = ethernet_interface.type | arista.avd.default("-") %}
 {%                     set ipv6_address = ethernet_interface.ipv6_address | arista.avd.default("-") %}
 {%                     set vrf = ethernet_interface.vrf | arista.avd.default("default") %}
 {%                     set mtu = ethernet_interface.mtu | arista.avd.default("-") %}

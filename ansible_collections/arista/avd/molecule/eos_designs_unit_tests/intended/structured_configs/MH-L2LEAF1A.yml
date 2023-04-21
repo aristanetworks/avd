@@ -69,7 +69,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: MH-LEAF2A_Ethernet2
   shutdown: false
-  type: switched
   channel_group:
     id: 1
     mode: active
@@ -78,8 +77,8 @@ ethernet_interfaces:
   peer_interface: Eth1
   peer_type: server
   description: server02_Eth1
-  type: switched
   shutdown: false
+  type: switched
   link_tracking_groups:
   - name: l2leaf-server02
     direction: downstream

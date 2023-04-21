@@ -101,8 +101,8 @@
 
 | Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Type | Mode | VLANs | Profile |
 | ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ---- | ----- | ------- |
-| FIREWALL | Eth1 | SPINE1 | Ethernet5 | FIREWALL_Eth1 | False | switched | trunk | 10,20,30 | PP-FIREWALL |
-| FIREWALL | Eth2 | SPINE2 | Ethernet5 | FIREWALL_Eth2 | False | switched | trunk | 10,20,30 | PP-FIREWALL |
+| FIREWALL | Eth1 | SPINE1 | Ethernet5 | FIREWALL_Eth1 | False | - | - | - | PP-FIREWALL |
+| FIREWALL | Eth2 | SPINE2 | Ethernet5 | FIREWALL_Eth2 | False | - | - | - | PP-FIREWALL |
 
 ### Servers
 

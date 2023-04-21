@@ -18,13 +18,12 @@ ethernet_interfaces:
   peer: OLD_SW-1/4
   peer_type: server
   description: PHYSICAL_PORT_DESCRIPTION
-  type: switched
   shutdown: false
+  type: switched
 - name: Ethernet5
   peer: OLD_SW-1/5
   peer_type: server
   description: OLD_SW-1/5
-  type: switched
   shutdown: false
   channel_group:
     id: 5
@@ -33,7 +32,6 @@ ethernet_interfaces:
   peer: OLD_SW-1/5
   peer_type: server
   description: OLD_SW-1/5
-  type: switched
   shutdown: false
   channel_group:
     id: 5
@@ -42,7 +40,6 @@ ethernet_interfaces:
   peer: OLD_SW-1/6
   peer_type: server
   description: PHYSICAL_PORT_DESCRIPTION
-  type: switched
   shutdown: false
   channel_group:
     id: 7
@@ -51,7 +48,6 @@ ethernet_interfaces:
   peer: OLD_SW-1/6
   peer_type: server
   description: PHYSICAL_PORT_DESCRIPTION
-  type: switched
   shutdown: false
   channel_group:
     id: 7

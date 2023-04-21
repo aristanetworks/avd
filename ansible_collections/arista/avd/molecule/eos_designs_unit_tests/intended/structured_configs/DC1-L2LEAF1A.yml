@@ -122,7 +122,6 @@ ethernet_interfaces:
   peer_interface: Ethernet3
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-L2LEAF1B_Ethernet3
-  type: switched
   shutdown: false
   channel_group:
     id: 3
@@ -133,7 +132,6 @@ ethernet_interfaces:
   peer_interface: Ethernet4
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-L2LEAF1B_Ethernet4
-  type: switched
   shutdown: false
   channel_group:
     id: 3
@@ -146,7 +144,6 @@ ethernet_interfaces:
   description: DC1-LEAF2A_Ethernet7
   speed: forced 10000
   shutdown: false
-  type: switched
   channel_group:
     id: 1
     mode: active
@@ -157,7 +154,6 @@ ethernet_interfaces:
   description: DC1-LEAF2B_Ethernet7
   speed: forced 10000
   shutdown: false
-  type: switched
   channel_group:
     id: 1
     mode: active

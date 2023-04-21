@@ -96,7 +96,6 @@ class EthernetInterfacesMixin(UtilsMixin):
         short_esi = self._get_short_esi(adapter, channel_group_id)
 
         # Common ethernet_interface settings
-        # TODO: avoid generating redundant structured config for port-channel members
         ethernet_interface = {
             "name": adapter["switch_ports"][node_index],
             "peer": peer,
@@ -105,22 +104,7 @@ class EthernetInterfacesMixin(UtilsMixin):
             "port_profile": adapter.get("profile"),
             "description": self.shared_utils.interface_descriptions.connected_endpoints_ethernet_interfaces(peer, peer_interface, adapter.get("description")),
             "speed": adapter.get("speed"),
-            "mtu": adapter.get("mtu"),
-            "l2_mtu": adapter.get("l2_mtu"),
-            "type": "switched",
             "shutdown": not adapter.get("enabled", True),
-            "mode": adapter.get("mode"),
-            "vlans": adapter.get("vlans"),
-            "trunk_groups": self._get_adapter_trunk_groups(adapter, connected_endpoint),
-            "native_vlan_tag": adapter.get("native_vlan_tag"),
-            "native_vlan": adapter.get("native_vlan"),
-            "spanning_tree_portfast": adapter.get("spanning_tree_portfast"),
-            "spanning_tree_bpdufilter": adapter.get("spanning_tree_bpdufilter"),
-            "spanning_tree_bpduguard": adapter.get("spanning_tree_bpduguard"),
-            "storm_control": self._get_adapter_storm_control(adapter),
-            "service_profile": adapter.get("qos_profile"),
-            "dot1x": adapter.get("dot1x"),
-            "ptp": self._get_adapter_ptp(adapter),
             "eos_cli": adapter.get("raw_eos_cli"),
             "struct_cfg": adapter.get("structured_config"),
         }
@@ -143,6 +127,21 @@ class EthernetInterfacesMixin(UtilsMixin):
         else:
             ethernet_interface.update(
                 {
+                    "type": "switched",
+                    "mtu": adapter.get("mtu"),
+                    "l2_mtu": adapter.get("l2_mtu"),
+                    "mode": adapter.get("mode"),
+                    "vlans": adapter.get("vlans"),
+                    "trunk_groups": self._get_adapter_trunk_groups(adapter, connected_endpoint),
+                    "native_vlan_tag": adapter.get("native_vlan_tag"),
+                    "native_vlan": adapter.get("native_vlan"),
+                    "spanning_tree_portfast": adapter.get("spanning_tree_portfast"),
+                    "spanning_tree_bpdufilter": adapter.get("spanning_tree_bpdufilter"),
+                    "spanning_tree_bpduguard": adapter.get("spanning_tree_bpduguard"),
+                    "storm_control": self._get_adapter_storm_control(adapter),
+                    "service_profile": adapter.get("qos_profile"),
+                    "dot1x": adapter.get("dot1x"),
+                    "ptp": self._get_adapter_ptp(adapter),
                     "evpn_ethernet_segment": self._get_adapter_evpn_ethernet_segment_cfg(
                         adapter, short_esi, node_index, connected_endpoint, "auto", "single-active"
                     ),

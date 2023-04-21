@@ -529,7 +529,6 @@ ethernet_interfaces:
   peer_interface: Ethernet5
   peer_type: mlag_peer
   description: MLAG_PEER_DC1.POD1.LEAF2A_Ethernet5
-  type: switched
   shutdown: false
   channel_group:
     id: 5
@@ -539,7 +538,6 @@ ethernet_interfaces:
   peer_interface: Ethernet6
   peer_type: mlag_peer
   description: MLAG_PEER_DC1.POD1.LEAF2A_Ethernet6
-  type: switched
   shutdown: false
   channel_group:
     id: 5
@@ -578,7 +576,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-POD1-L2LEAF2A_Ethernet2
   shutdown: false
-  type: switched
   channel_group:
     id: 3
     mode: active
@@ -588,7 +585,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-POD1-L2LEAF2B_Ethernet2
   shutdown: false
-  type: switched
   channel_group:
     id: 3
     mode: active
@@ -637,11 +633,7 @@ ethernet_interfaces:
   peer_type: server
   port_profile: TENANT_A
   description: server-1_Eth2
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '110'
-  service_profile: bar
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under profile TENANT_A
@@ -658,11 +650,7 @@ ethernet_interfaces:
   peer_type: server
   port_profile: TENANT_A
   description: Set using structured_config on server adapter
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '110'
-  service_profile: foo
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under adapter for switch Eth17
@@ -679,11 +667,7 @@ ethernet_interfaces:
   peer_type: server
   port_profile: NESTED_TENANT_A
   description: server-1_Eth6
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '110'
-  service_profile: foo
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under profile NESTED_TENANT_A
@@ -700,11 +684,7 @@ ethernet_interfaces:
   peer_type: server
   port_profile: NESTED_TENANT_A
   description: server-1_Eth8
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '110'
-  service_profile: foo
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under profile NESTED_TENANT_A

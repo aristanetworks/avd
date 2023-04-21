@@ -282,11 +282,7 @@ ethernet_interfaces:
   peer_type: cpe
   port_profile: TENANT_A_WAN_SERVICE_10
   description: CPE_TENANT_A_SITE1_Ethernet2
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: '10'
-  spanning_tree_portfast: edge
   channel_group:
     id: 8
     mode: active

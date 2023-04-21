@@ -601,7 +601,6 @@ ethernet_interfaces:
   peer_interface: Ethernet5
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-LEAF4B_Ethernet5
-  type: switched
   shutdown: false
   channel_group:
     id: 5
@@ -611,7 +610,6 @@ ethernet_interfaces:
   peer_interface: Ethernet6
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-LEAF4B_Ethernet6
-  type: switched
   shutdown: false
   channel_group:
     id: 5

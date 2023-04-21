@@ -172,8 +172,8 @@ ethernet_interfaces:
   peer_interface: PCI2
   peer_type: server
   description: video-endpoint_PCI2
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '11'
   spanning_tree_portfast: edge

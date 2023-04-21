@@ -25,7 +25,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: UPLINK-NATIVE-VLAN-GRANDPARENT_Ethernet1
   shutdown: false
-  type: switched
   channel_group:
     id: 1
     mode: active
@@ -35,7 +34,6 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: UPLINK-NATIVE-VLAN-CHILD_Ethernet2
   shutdown: false
-  type: switched
   channel_group:
     id: 2
     mode: active

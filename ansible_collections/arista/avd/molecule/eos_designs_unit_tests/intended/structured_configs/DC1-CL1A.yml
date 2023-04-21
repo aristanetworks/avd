@@ -331,7 +331,6 @@ ethernet_interfaces:
   peer_interface: Ethernet1/15/1
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-CL1B_Ethernet1/15/1
-  type: switched
   shutdown: false
   channel_group:
     id: 1151
@@ -342,7 +341,6 @@ ethernet_interfaces:
   peer_interface: Ethernet1/16/1
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-CL1B_Ethernet1/16/1
-  type: switched
   shutdown: false
   channel_group:
     id: 1151

@@ -32,6 +32,7 @@ port_channel_interfaces:
 
   Port-Channel51:
     description: ipv6_prefix
+    type: switched
     vlans: 1-500
     mode: trunk
     # Testing ipv6_nd_prefixes as dict of dict

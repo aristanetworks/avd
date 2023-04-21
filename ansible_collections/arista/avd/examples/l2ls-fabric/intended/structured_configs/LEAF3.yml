@@ -84,7 +84,6 @@ ethernet_interfaces:
   peer_interface: Ethernet47
   peer_type: mlag_peer
   description: MLAG_PEER_LEAF4_Ethernet47
-  type: switched
   shutdown: false
   channel_group:
     id: 47
@@ -94,7 +93,6 @@ ethernet_interfaces:
   peer_interface: Ethernet48
   peer_type: mlag_peer
   description: MLAG_PEER_LEAF4_Ethernet48
-  type: switched
   shutdown: false
   channel_group:
     id: 47
@@ -105,7 +103,6 @@ ethernet_interfaces:
   peer_type: spine
   description: SPINE1_Ethernet3
   shutdown: false
-  type: switched
   channel_group:
     id: 1
     mode: active
@@ -115,7 +112,6 @@ ethernet_interfaces:
   peer_type: spine
   description: SPINE2_Ethernet3
   shutdown: false
-  type: switched
   channel_group:
     id: 1
     mode: active
@@ -125,8 +121,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: PP-BLUE
   description: HostC_Eth1
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '10'
   spanning_tree_portfast: edge

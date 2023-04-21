@@ -71,7 +71,6 @@ ethernet_interfaces:
   peer_interface: Ethernet3
   peer_type: mlag_peer
   description: MLAG_PEER_OSPF-SPINE2_Ethernet3
-  type: switched
   shutdown: false
   channel_group:
     id: 3
@@ -81,7 +80,6 @@ ethernet_interfaces:
   peer_interface: Ethernet4
   peer_type: mlag_peer
   description: MLAG_PEER_OSPF-SPINE2_Ethernet4
-  type: switched
   shutdown: false
   channel_group:
     id: 3
@@ -92,7 +90,6 @@ ethernet_interfaces:
   peer_type: leaf
   description: OSPF-LEAF1_Ethernet1
   shutdown: false
-  type: switched
   channel_group:
     id: 1
     mode: active
@@ -102,7 +99,6 @@ ethernet_interfaces:
   peer_type: leaf
   description: OSPF-LEAF2_Ethernet1
   shutdown: false
-  type: switched
   channel_group:
     id: 2
     mode: active
