@@ -42,6 +42,7 @@
   - [IPv6 Routing](#ipv6-routing)
   - [Router General](#router-general)
   - [Router OSPF](#router-ospf)
+  - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
   - [PBR Policy Maps](#pbr-policy-maps)
 - [Multicast](#multicast)
@@ -902,6 +903,35 @@ router ospf 100
    area 0.0.0.2 filter 1.1.1.0/24
    area 0.0.0.2 filter 2.2.2.0/24
    area 3 filter prefix-list PL-OSPF-FILTERING
+```
+
+### Router ISIS
+
+#### Router ISIS Summary
+
+| Settings | Value |
+| -------- | ----- |
+| Instance | EVPN_UNDERLAY |
+| Address Family | ipv4 unicast, ipv6 unicast |
+
+#### ISIS Interfaces Summary
+
+| Interface | ISIS Instance | ISIS Metric | Interface Mode |
+| --------- | ------------- | ----------- | -------------- |
+
+#### Router ISIS Device Configuration
+
+```eos
+!
+router isis EVPN_UNDERLAY
+   !
+   address-family ipv4 unicast
+      maximum-paths 2
+      fast-reroute ti-lfa mode link-protection
+   address-family ipv6 unicast
+      maximum-paths 2
+      fast-reroute ti-lfa mode link-protection
+   !
 ```
 
 ### Router BGP
