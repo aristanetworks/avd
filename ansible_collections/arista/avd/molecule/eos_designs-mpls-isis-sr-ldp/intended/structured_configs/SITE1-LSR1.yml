@@ -49,6 +49,7 @@ router_isis:
   router_id: 100.70.0.1
   is_type: level-2
   address_family_ipv4:
+    enabled: true
     maximum_paths: 4
     fast_reroute_ti_lfa:
       mode: link-protection
@@ -60,6 +61,7 @@ router_isis:
   advertise:
     passive_only: true
   address_family_ipv6:
+    enabled: true
     maximum_paths: 4
     fast_reroute_ti_lfa:
       mode: link-protection

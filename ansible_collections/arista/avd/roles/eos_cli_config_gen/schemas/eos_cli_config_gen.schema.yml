@@ -8508,6 +8508,8 @@ keys:
       address_family_ipv4:
         type: dict
         keys:
+          enabled:
+            type: bool
           maximum_paths:
             type: int
             convert_types:
@@ -8546,6 +8548,8 @@ keys:
       address_family_ipv6:
         type: dict
         keys:
+          enabled:
+            type: bool
           maximum_paths:
             type: int
             convert_types:

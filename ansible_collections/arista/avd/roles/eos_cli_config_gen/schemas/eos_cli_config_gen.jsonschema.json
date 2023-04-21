@@ -13563,6 +13563,10 @@
         "address_family_ipv4": {
           "type": "object",
           "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
             "maximum_paths": {
               "type": "integer",
               "minimum": 1,
@@ -13643,6 +13647,10 @@
         "address_family_ipv6": {
           "type": "object",
           "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Enabled"
+            },
             "maximum_paths": {
               "type": "integer",
               "minimum": 1,
