@@ -302,25 +302,25 @@ interface Ethernet50
 
 | Interface | Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
 | --------- | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
-| Port-Channel130 |  | 3.0.0.1 |  |  | 4.0.0.1 |  |  |  | 0 |  |
+| Port-Channel130 | - | 3.0.0.1 | - | - | 4.0.0.1 | - | - | - | 0 | - |
 
 ##### IP NAT: Source Dynamic
 
 | Interface | Access List | NAT Type | Pool Name | Priority | Comment |
 | --------- | ----------- | -------- | --------- | -------- | ------- |
-| Port-Channel130 | ACL2 | pool | POOL2 | 0 |  |
+| Port-Channel130 | ACL2 | pool | POOL2 | 0 | - |
 
 ##### IP NAT: Destination Static
 
 | Interface | Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
 | --------- | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
-| Port-Channel130 |  | 1.0.0.1 |  |  | 2.0.0.1 |  |  |  | 0 |  |
+| Port-Channel130 | - | 1.0.0.1 | - | - | 2.0.0.1 | - | - | - | 0 | - |
 
 ##### IP NAT: Destination Dynamic
 
 | Interface | Access List | Pool Name | Priority | Comment |
 | --------- | ----------- | --------- | -------- | ------- |
-| Port-Channel130 | ACL1 | POOL1 | 0 |  |
+| Port-Channel130 | ACL1 | POOL1 | 0 | - |
 
 ##### ISIS
 

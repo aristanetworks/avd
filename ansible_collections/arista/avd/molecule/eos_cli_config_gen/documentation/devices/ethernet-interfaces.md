@@ -191,26 +191,26 @@ sFlow is disabled.
 
 | Interface | Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
 | --------- | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
-| Ethernet60 |  | 3.0.0.1 |  |  | 4.0.0.1 |  |  |  | 0 |  |
-| Ethernet60 |  | 3.0.0.2 | 22 |  | 4.0.0.2 |  |  |  | 0 |  |
-| Ethernet60 |  | 3.0.0.3 | 22 |  | 4.0.0.3 | 23 |  |  | 0 |  |
-| Ethernet60 |  | 3.0.0.4 | 22 |  | 4.0.0.4 | 23 | UDP |  | 0 |  |
-| Ethernet60 |  | 3.0.0.5 | 22 |  | 4.0.0.5 | 23 | TCP | 1 | 0 |  |
-| Ethernet60 |  | 3.0.0.6 | 22 |  | 4.0.0.6 | 23 | TCP | 2 | 5 | Comment Test |
-| Ethernet60 |  | 3.0.0.7 |  | ACL21 | 4.0.0.7 |  |  |  | 0 |  |
-| Ethernet60 | ingress | 3.0.0.8 |  |  | 4.0.0.8 |  |  |  | 0 |  |
+| Ethernet60 | - | 3.0.0.1 | - | - | 4.0.0.1 | - | - | - | 0 | - |
+| Ethernet60 | - | 3.0.0.2 | 22 | - | 4.0.0.2 | - | - | - | 0 | - |
+| Ethernet60 | - | 3.0.0.3 | 22 | - | 4.0.0.3 | 23 | - | - | 0 | - |
+| Ethernet60 | - | 3.0.0.4 | 22 | - | 4.0.0.4 | 23 | UDP | - | 0 | - |
+| Ethernet60 | - | 3.0.0.5 | 22 | - | 4.0.0.5 | 23 | TCP | 1 | 0 | - |
+| Ethernet60 | - | 3.0.0.6 | 22 | - | 4.0.0.6 | 23 | TCP | 2 | 5 | Comment Test |
+| Ethernet60 | - | 3.0.0.7 | - | ACL21 | 4.0.0.7 | - | - | - | 0 | - |
+| Ethernet60 | ingress | 3.0.0.8 | - | - | 4.0.0.8 | - | - | - | 0 | - |
 
 ##### IP NAT: Source Dynamic
 
 | Interface | Access List | NAT Type | Pool Name | Priority | Comment |
 | --------- | ----------- | -------- | --------- | -------- | ------- |
-| Ethernet60 | ACL11 | pool | POOL11 | 0 |  |
+| Ethernet60 | ACL11 | pool | POOL11 | 0 | - |
 | Ethernet60 | ACL12 | pool | POOL11 | 0 | POOL11 shared with ACL11/12 |
-| Ethernet60 | ACL13 | pool | POOL13 | 10 |  |
+| Ethernet60 | ACL13 | pool | POOL13 | 10 | - |
 | Ethernet60 | ACL14 | pool | POOL14 | 1 | Priority low end |
 | Ethernet60 | ACL15 | pool | POOL15 | 4294967295 | Priority high end |
 | Ethernet60 | ACL16 | pool | POOL16 | 0 | Priority default |
-| Ethernet60 | ACL17 | overload | n.a. | 10 | Priority_10 |
+| Ethernet60 | ACL17 | overload | - | 10 | Priority_10 |
 | Ethernet60 | ACL18 | pool-address-only | POOL18 | 10 | Priority_10 |
 | Ethernet60 | ACL19 | pool-full-cone | POOL19 | 10 | Priority_10 |
 
@@ -218,22 +218,22 @@ sFlow is disabled.
 
 | Interface | Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
 | --------- | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
-| Ethernet60 |  | 1.0.0.1 |  |  | 2.0.0.1 |  |  |  | 0 |  |
-| Ethernet60 |  | 1.0.0.2 | 22 |  | 2.0.0.2 |  |  |  | 0 |  |
-| Ethernet60 |  | 1.0.0.3 | 22 |  | 2.0.0.3 | 23 |  |  | 0 |  |
-| Ethernet60 |  | 1.0.0.4 | 22 |  | 2.0.0.4 | 23 | udp |  | 0 |  |
-| Ethernet60 |  | 1.0.0.5 | 22 |  | 2.0.0.5 | 23 | tcp | 1 | 0 |  |
-| Ethernet60 |  | 1.0.0.6 | 22 |  | 2.0.0.6 | 23 | tcp | 2 | 5 | Comment Test |
-| Ethernet60 |  | 1.0.0.7 |  | ACL21 | 2.0.0.7 |  |  |  | 0 |  |
-| Ethernet60 | egress | 239.0.0.1 |  |  | 239.0.0.2 |  |  |  | 0 |  |
+| Ethernet60 | - | 1.0.0.1 | - | - | 2.0.0.1 | - | - | - | 0 | - |
+| Ethernet60 | - | 1.0.0.2 | 22 | - | 2.0.0.2 | - | - | - | 0 | - |
+| Ethernet60 | - | 1.0.0.3 | 22 | - | 2.0.0.3 | 23 | - | - | 0 | - |
+| Ethernet60 | - | 1.0.0.4 | 22 | - | 2.0.0.4 | 23 | udp | - | 0 | - |
+| Ethernet60 | - | 1.0.0.5 | 22 | - | 2.0.0.5 | 23 | tcp | 1 | 0 | - |
+| Ethernet60 | - | 1.0.0.6 | 22 | - | 2.0.0.6 | 23 | tcp | 2 | 5 | Comment Test |
+| Ethernet60 | - | 1.0.0.7 | - | ACL21 | 2.0.0.7 | - | - | - | 0 | - |
+| Ethernet60 | egress | 239.0.0.1 | - | - | 239.0.0.2 | - | - | - | 0 | - |
 
 ##### IP NAT: Destination Dynamic
 
 | Interface | Access List | Pool Name | Priority | Comment |
 | --------- | ----------- | --------- | -------- | ------- |
-| Ethernet60 | ACL1 | POOL1 | 0 |  |
+| Ethernet60 | ACL1 | POOL1 | 0 | - |
 | Ethernet60 | ACL2 | POOL1 | 0 | POOL1 shared with ACL1/2 |
-| Ethernet60 | ACL3 | POOL3 | 10 |  |
+| Ethernet60 | ACL3 | POOL3 | 10 | - |
 | Ethernet60 | ACL4 | POOL4 | 1 | Priority low end |
 | Ethernet60 | ACL5 | POOL5 | 4294967295 | Priority high end |
 | Ethernet60 | ACL6 | POOL6 | 0 | Priority default |

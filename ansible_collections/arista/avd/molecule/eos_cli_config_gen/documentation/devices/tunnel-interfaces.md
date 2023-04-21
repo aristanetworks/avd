@@ -61,25 +61,25 @@ interface Management1
 
 | Interface | Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
 | --------- | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
-| Tunnel5 |  | 3.0.0.1 |  |  | 4.0.0.1 |  |  |  | 0 |  |
+| Tunnel5 | - | 3.0.0.1 | - | - | 4.0.0.1 | - | - | - | 0 | - |
 
 ##### IP NAT: Source Dynamic
 
 | Interface | Access List | NAT Type | Pool Name | Priority | Comment |
 | --------- | ----------- | -------- | --------- | -------- | ------- |
-| Tunnel5 | ACL2 | pool | POOL2 | 0 |  |
+| Tunnel5 | ACL2 | pool | POOL2 | 0 | - |
 
 ##### IP NAT: Destination Static
 
 | Interface | Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
 | --------- | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
-| Tunnel5 |  | 1.0.0.1 |  |  | 2.0.0.1 |  |  |  | 0 |  |
+| Tunnel5 | - | 1.0.0.1 | - | - | 2.0.0.1 | - | - | - | 0 | - |
 
 ##### IP NAT: Destination Dynamic
 
 | Interface | Access List | Pool Name | Priority | Comment |
 | --------- | ----------- | --------- | -------- | ------- |
-| Tunnel5 | ACL1 | POOL1 | 0 |  |
+| Tunnel5 | ACL1 | POOL1 | 0 | - |
 
 ##### IPv6
 
