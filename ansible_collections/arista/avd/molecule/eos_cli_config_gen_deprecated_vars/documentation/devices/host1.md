@@ -1109,6 +1109,18 @@ policy-map type pbr PM_PBR_BREAKOUT
 
 #### IP IGMP Snooping Summary
 
+| IGMP Snooping | Fast Leave | Interface Restart Query | Proxy | Restart Query Interval | Robustness Variable |
+| ------------- | ---------- | ----------------------- | ----- | ---------------------- | ------------------- |
+| Enabled | - | - | - | - | - |
+
+##### IP IGMP Snooping Vlan Summary
+
+| Vlan | IGMP Snooping | Fast Leave | Max Groups | Proxy |
+| ---- | ------------- | ---------- | ---------- | ----- |
+| 10 | True | - | - | - |
+| 20 | False | - | - | - |
+| 30 | False | - | - | - |
+
 #### IP IGMP Snooping Device Configuration
 
 ```eos
