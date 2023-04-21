@@ -8462,7 +8462,7 @@ keys:
           description: Address Family
           deprecation:
             warning: true
-            new_key: address_family_ipv4/address_family_ipv6
+            new_key: address_family_ipv4.enabled or address_family_ipv6.enabled
             remove_in_version: 5.0.0
       isis_af_defaults:
         type: list

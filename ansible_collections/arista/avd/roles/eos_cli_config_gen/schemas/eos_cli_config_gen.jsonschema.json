@@ -13499,7 +13499,7 @@
               "ipv4 unicast",
               "ipv6 unicast"
             ],
-            "description": "Address Family\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>address_family_ipv4/address_family_ipv6</samp> instead.",
+            "description": "Address Family\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>address_family_ipv4.enabled or address_family_ipv6.enabled</samp> instead.",
             "deprecated": true
           },
           "title": "Address Family"
