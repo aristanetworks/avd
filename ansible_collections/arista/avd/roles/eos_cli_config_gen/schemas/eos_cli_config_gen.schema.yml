@@ -3232,7 +3232,7 @@ keys:
                 - str
                 min: 1
                 max: 99
-                description: Used to render 'ip nat translation low-mark <percentage>
+                description: Used to render 'ip nat translation low-mark <percentage>'
               host_percentage:
                 type: int
                 convert_types:
@@ -3240,7 +3240,7 @@ keys:
                 min: 1
                 max: 99
                 description: Used to render 'ip nat translation low-mark <host_percentage>
-                  host
+                  host'
           max_entries:
             type: dict
             keys:

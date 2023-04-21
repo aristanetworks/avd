@@ -38,8 +38,8 @@ search:
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_field_source_ip</samp>](## "ip_nat.translation.address_selection.hash_field_source_ip") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counters</samp>](## "ip_nat.translation.counters") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;low_mark</samp>](## "ip_nat.translation.low_mark") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;percentage</samp>](## "ip_nat.translation.low_mark.percentage") | Integer |  |  | Min: 1<br>Max: 99 | Used to render 'ip nat translation low-mark <percentage> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;host_percentage</samp>](## "ip_nat.translation.low_mark.host_percentage") | Integer |  |  | Min: 1<br>Max: 99 | Used to render 'ip nat translation low-mark <host_percentage> host |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;percentage</samp>](## "ip_nat.translation.low_mark.percentage") | Integer |  |  | Min: 1<br>Max: 99 | Used to render 'ip nat translation low-mark <percentage>' |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;host_percentage</samp>](## "ip_nat.translation.low_mark.host_percentage") | Integer |  |  | Min: 1<br>Max: 99 | Used to render 'ip nat translation low-mark <host_percentage> host' |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;max_entries</samp>](## "ip_nat.translation.max_entries") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "ip_nat.translation.max_entries.limit") | Integer |  |  | Min: 0<br>Max: 4294967295 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;host_limit</samp>](## "ip_nat.translation.max_entries.host_limit") | Integer |  |  | Min: 0<br>Max: 4294967295 |  |
