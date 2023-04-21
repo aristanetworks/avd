@@ -1776,6 +1776,11 @@
                 "type": "integer",
                 "description": "Vlan tag to configure on sub-interface",
                 "title": "Encapsulation Dot1Q VLAN"
+              },
+              "forwarding_profile": {
+                "type": "string",
+                "description": "L2 protocol forwarding profile",
+                "title": "Forwarding Profile"
               }
             },
             "additionalProperties": false,
@@ -5035,6 +5040,78 @@
     "ipv6_unicast_routing": {
       "type": "boolean",
       "title": "IPv6 Unicast Routing"
+    },
+    "l2_protocol": {
+      "type": "object",
+      "properties": {
+        "forwarding_profiles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name"
+              },
+              "protocols": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": [
+                        "bfd per-link rfc-7130",
+                        "e-lmi",
+                        "isis",
+                        "lacp",
+                        "lldp",
+                        "macsec",
+                        "pause",
+                        "stp"
+                      ],
+                      "title": "Name"
+                    },
+                    "forward": {
+                      "type": "boolean",
+                      "title": "Forward"
+                    },
+                    "tagged_forward": {
+                      "type": "boolean",
+                      "title": "Tagged Forward"
+                    },
+                    "untagged_forward": {
+                      "type": "boolean",
+                      "title": "Untagged Forward"
+                    }
+                  },
+                  "required": [
+                    "name"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Protocols"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Forwarding Profiles"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "L2 Protocol"
     },
     "lacp": {
       "type": "object",
@@ -8317,6 +8394,11 @@
                 "type": "integer",
                 "description": "Vlan tag to configure on sub-interface",
                 "title": "Encapsulation Dot1Q VLAN"
+              },
+              "forwarding_profile": {
+                "type": "string",
+                "description": "L2 protocol forwarding profile",
+                "title": "Forwarding Profile"
               }
             },
             "additionalProperties": false,
