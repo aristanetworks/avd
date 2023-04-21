@@ -18,8 +18,6 @@ keys:
       pools:
         type: list
         primary_key: name
-        convert_types:
-          - dict
         items:
           type: dict
           keys:
@@ -122,12 +120,14 @@ keys:
                   - str
                 min: 1
                 max: 99
+                description: Used to render 'ip nat translation low-mark <percentage>
               host_percentage:
                 type: int
                 convert_types:
                   - str
                 min: 1
                 max: 99
+                description: Used to render 'ip nat translation low-mark <host_percentage> host
           max_entries:
             type: dict
             keys:
@@ -146,8 +146,6 @@ keys:
               ip_limits:
                 type: list
                 primary_key: ip
-                convert_types:
-                  - dict
                 items:
                   type: dict
                   keys:
@@ -164,8 +162,6 @@ keys:
           timeouts:
             type: list
             primary_key: protocol
-            convert_types:
-              - dict
             items:
               type: dict
               keys:

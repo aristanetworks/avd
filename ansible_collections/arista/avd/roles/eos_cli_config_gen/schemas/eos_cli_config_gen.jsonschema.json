@@ -4734,12 +4734,14 @@
                   "type": "integer",
                   "minimum": 1,
                   "maximum": 99,
+                  "description": "Used to render 'ip nat translation low-mark <percentage>",
                   "title": "Percentage"
                 },
                 "host_percentage": {
                   "type": "integer",
                   "minimum": 1,
                   "maximum": 99,
+                  "description": "Used to render 'ip nat translation low-mark <host_percentage> host",
                   "title": "Host Percentage"
                 }
               },
