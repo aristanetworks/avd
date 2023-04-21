@@ -53,6 +53,11 @@
 
 | POD | Type | Node | Management IP | Inband Interface |
 | --- | ---- | ---- | ------------- | ---------------- |
+| DC1_POD1 | l2leaf | DC1-POD1-L2LEAF1A | 172.21.110.4/24 | Vlan4085 |
+| DC1_POD1 | l2leaf | DC1-POD1-L2LEAF2A | 172.21.110.5/24 | Vlan4085 |
+| DC1_POD1 | l2leaf | DC1-POD1-L2LEAF2B | 172.21.110.6/24 | Vlan4085 |
+| DC2_POD1 | l2leaf | DC2-POD1-L2LEAF1A | 172.21.210.4/24 | Vlan4092 |
+| DC2_POD1 | l2leaf | DC2-POD1-L2LEAF2A | 172.21.210.5/24 | Vlan4092 |
 
 ## Fabric Topology
 
