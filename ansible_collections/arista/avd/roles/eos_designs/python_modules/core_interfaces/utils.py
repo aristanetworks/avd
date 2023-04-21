@@ -283,7 +283,7 @@ class UtilsMixin:
 
         return ethernet_cfg
 
-    def _get_port_channel_member_cfg(self, p2p_link: dict) -> dict:
+    def _get_port_channel_member_cfg(self, p2p_link: dict, interface_name: str) -> dict:
         """
         Return partial structured_config for one p2p_link.
         Covers config for ethernet interfaces that are port-channel members.
@@ -294,6 +294,7 @@ class UtilsMixin:
         peer_interface = p2p_link["data"]["peer_interface"]
         default_description = f"P2P_LINK_TO_{peer}_{peer_interface}"
         return {
+            "name": interface_name,
             "peer": peer,
             "peer_interface": peer_interface,
             "peer_type": p2p_link["data"]["peer_type"],

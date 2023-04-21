@@ -18,7 +18,7 @@ port_profiles:
 
   ALL_WITH_SECURITY:
     parent_profile: NON_EXISTING_PROFILE #Test that pointing to a nonexisting profile won't break templates.
-    server_ports: [ Eth1, Eth2 ]
+    endpoint_ports: [ Eth1, Eth2 ]
     mode: trunk
     vlans: "1-4094"
     spanning_tree_bpdufilter: disabled
@@ -119,7 +119,7 @@ servers:
   server01_MLAG:
     rack: RackB
     adapters:
-      - server_ports: [ Eth2, Eth3 ]
+      - endpoint_ports: [ Eth2, Eth3 ]
         switch_ports: [ Ethernet10, Ethernet10 ]
         switches: [ DC1-LEAF2A, DC1-LEAF2B ]
         profile: TENANT_B
@@ -132,7 +132,7 @@ servers:
   server01_MTU_PROFILE_MLAG:
     rack: RackB
     adapters:
-      - server_ports: [ Eth4, Eth5 ]
+      - endpoint_ports: [ Eth4, Eth5 ]
         switch_ports: [ Ethernet11, Ethernet11 ]
         switches: [ DC1-LEAF2A, DC1-LEAF2B ]
         profile: TENANT_A_MTU
@@ -145,7 +145,7 @@ servers:
   server01_MTU_ADAPTOR_MLAG:
     rack: RackB
     adapters:
-      - server_ports: [ Eth6, Eth7 ]
+      - endpoint_ports: [ Eth6, Eth7 ]
         switch_ports: [ Ethernet12, Ethernet12 ]
         switches: [ DC1-LEAF2A, DC1-LEAF2B ]
         mtu: 1601
@@ -158,7 +158,7 @@ servers:
   server02_SINGLE_NODE_TRUNK:
     rack: RackB
     adapters:
-      - server_ports: [ Eth1 ]
+      - endpoint_ports: [ Eth1 ]
         switch_ports: [ Ethernet6 ]
         switches: [ DC1-LEAF1A ]
         profile: ALL_WITH_SECURITY
@@ -168,7 +168,7 @@ servers:
   server02_SINGLE_NODE:
     rack: RackB
     adapters:
-      - server_ports: [ Eth1 ]
+      - endpoint_ports: [ Eth1 ]
         switch_ports: [ Ethernet7 ]
         switches: [ DC1-LEAF1A ]
         profile: TENANT_A
@@ -176,14 +176,14 @@ servers:
   server03_ESI:
     rack: RackC
     adapters:
-      - server_ports: [ Eth1, Eth2 ]
+      - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet10, Ethernet10 ]
         switches: [ DC1-SVC3A, DC1-SVC4A ]
         profile: TENANT_A_B
         port_channel:
           description: PortChanne1
           mode: active
-          esi: '0303:0202:0101'
+          short_esi: '0303:0202:0101'
 
   server04_inherit_all_from_profile:
     rack: RackC
@@ -195,7 +195,7 @@ servers:
   server05_no_profile:
     rack: RackC
     adapters:
-      - server_ports: [ Eth1, Eth2 ]
+      - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet12, Ethernet12 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         mode: trunk
@@ -220,7 +220,7 @@ servers:
   server06_override_profile:
     rack: RackC
     adapters:
-      - server_ports: [ Eth1, Eth2 ]
+      - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet13, Ethernet13 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: ALL_WITH_SECURITY
@@ -246,7 +246,7 @@ servers:
   server07_inherit_all_from_profile_port_channel:
     rack: RackC
     adapters:
-      - server_ports: [ Eth1, Eth2 ]
+      - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet14, Ethernet14 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: ALL_WITH_SECURITY_PORT_CHANNEL
@@ -254,7 +254,7 @@ servers:
   server08_no_profile_port_channel:
     rack: RackC
     adapters:
-      - server_ports: [ Eth1, Eth2 ]
+      - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet15, Ethernet15 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         mode: trunk
@@ -282,7 +282,7 @@ servers:
   server09_override_profile_no_port_channel:
     rack: RackC
     adapters:
-      - server_ports: [ Eth1, Eth2 ]
+      - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet16, Ethernet16 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: ALL_WITH_SECURITY_PORT_CHANNEL
@@ -309,7 +309,7 @@ servers:
   server10_no_profile_port_channel_lacp_fallback:
     rack: RackC
     adapters:
-      - server_ports: [ Eth1, Eth2 ]
+      - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet17, Ethernet17 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         mode: trunk
@@ -339,7 +339,7 @@ servers:
   server11_inherit_profile_port_channel_lacp_fallback:
     rack: RackC
     adapters:
-      - server_ports: [ Eth1, Eth2 ]
+      - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet18, Ethernet18 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
@@ -347,7 +347,7 @@ servers:
   server12_inherit_nested_profile_port_channel_lacp_fallback:
     rack: RackC
     adapters:
-      - server_ports: [ Eth1, Eth2 ]
+      - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet19, Ethernet19 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: NESTED_PORT_PROFILE
@@ -355,7 +355,7 @@ servers:
   server13_disabled_interfaces:
     rack: RackC
     adapters:
-      - server_ports: [ Eth1, Eth2 ]
+      - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet20, Ethernet20 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: TENANT_A
@@ -364,7 +364,7 @@ servers:
   server14_explicitly_enabled_interfaces:
     rack: RackC
     adapters:
-      - server_ports: [ Eth1, Eth2 ]
+      - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet21, Ethernet21 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: TENANT_A
@@ -373,7 +373,7 @@ servers:
   server15_port_channel_with_disabled_phy_interfaces:
     rack: RackC
     adapters:
-      - server_ports: [ Eth1, Eth2 ]
+      - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet22, Ethernet22 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: TENANT_A
@@ -386,7 +386,7 @@ servers:
   server16_port_channel_with_disabled_port_channel:
     rack: RackC
     adapters:
-      - server_ports: [ Eth1, Eth2 ]
+      - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet23, Ethernet23 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: TENANT_A
@@ -398,7 +398,7 @@ servers:
   server17_port_channel_with_disabled_phy_and_po_interfaces:
     rack: RackC
     adapters:
-      - server_ports: [ Eth1, Eth2 ]
+      - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet24, Ethernet24 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: TENANT_A
@@ -432,7 +432,7 @@ servers:
   server18_monitoring_session_source_po:
     rack: RackC
     adapters:
-      - server_ports: [ Eth3, Eth4 ]
+      - endpoint_ports: [ Eth3, Eth4 ]
         switch_ports: [ Ethernet27, Ethernet27 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: TENANT_A
@@ -454,7 +454,7 @@ servers:
   server18_monitoring_session_source_phys_interface:
     rack: RackC
     adapters:
-      - server_ports: [ Eth5 ]
+      - endpoint_ports: [ Eth5 ]
         switch_ports: [ Ethernet28 ]
         switches: [ DC1-SVC3A ]
         profile: TENANT_A
@@ -516,7 +516,7 @@ servers:
   server21_monitoring_session_destination_po:
     rack: RackC
     adapters:
-      - server_ports: [ Eth1, Eth2 ]
+      - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet42, Ethernet42 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: TENANT_A
@@ -532,7 +532,7 @@ servers:
   server22_port_channel_with_custom_id:
     rack: RackC
     adapters:
-      - server_ports: [ Eth1, Eth2 ]
+      - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet29, Ethernet29 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: TENANT_A

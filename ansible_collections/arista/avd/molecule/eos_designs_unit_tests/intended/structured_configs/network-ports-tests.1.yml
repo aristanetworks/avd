@@ -56,7 +56,8 @@ ethernet_interfaces:
     id: 101
     mode: active
   name: Ethernet10/1
-- peer: PCs
+- name: Ethernet1
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -66,8 +67,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet1
-- peer: PCs
+- name: Ethernet2
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -77,8 +78,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2
-- peer: PCs
+- name: Ethernet3
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -88,8 +89,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet3
-- peer: PCs
+- name: Ethernet4
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -99,8 +100,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet4
-- peer: PCs
+- name: Ethernet2/1
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -110,8 +111,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/1
-- peer: PCs
+- name: Ethernet2/2
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -121,8 +122,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/2
-- peer: PCs
+- name: Ethernet2/3
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -132,8 +133,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/3
-- peer: PCs
+- name: Ethernet2/4
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -143,8 +144,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/4
-- peer: PCs
+- name: Ethernet2/5
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -154,8 +155,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/5
-- peer: PCs
+- name: Ethernet2/6
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -165,8 +166,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/6
-- peer: PCs
+- name: Ethernet2/7
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -176,8 +177,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/7
-- peer: PCs
+- name: Ethernet2/8
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -187,8 +188,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/8
-- peer: PCs
+- name: Ethernet2/9
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -198,8 +199,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/9
-- peer: PCs
+- name: Ethernet2/10
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -209,8 +210,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/10
-- peer: PCs
+- name: Ethernet2/11
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -220,8 +221,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/11
-- peer: PCs
+- name: Ethernet2/12
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -231,8 +232,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/12
-- peer: PCs
+- name: Ethernet2/13
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -242,8 +243,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/13
-- peer: PCs
+- name: Ethernet2/14
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -253,8 +254,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/14
-- peer: PCs
+- name: Ethernet2/15
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -264,8 +265,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/15
-- peer: PCs
+- name: Ethernet2/16
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -275,8 +276,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/16
-- peer: PCs
+- name: Ethernet2/17
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -286,8 +287,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/17
-- peer: PCs
+- name: Ethernet2/18
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -297,8 +298,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/18
-- peer: PCs
+- name: Ethernet2/19
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -308,8 +309,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/19
-- peer: PCs
+- name: Ethernet2/20
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -319,8 +320,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/20
-- peer: PCs
+- name: Ethernet2/21
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -330,8 +331,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/21
-- peer: PCs
+- name: Ethernet2/22
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -341,8 +342,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/22
-- peer: PCs
+- name: Ethernet2/23
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -352,8 +353,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/23
-- peer: PCs
+- name: Ethernet2/24
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -363,8 +364,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/24
-- peer: PCs
+- name: Ethernet2/25
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -374,8 +375,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/25
-- peer: PCs
+- name: Ethernet2/26
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -385,8 +386,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/26
-- peer: PCs
+- name: Ethernet2/27
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -396,8 +397,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/27
-- peer: PCs
+- name: Ethernet2/28
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -407,8 +408,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/28
-- peer: PCs
+- name: Ethernet2/29
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -418,8 +419,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/29
-- peer: PCs
+- name: Ethernet2/30
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -429,8 +430,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/30
-- peer: PCs
+- name: Ethernet2/31
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -440,8 +441,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/31
-- peer: PCs
+- name: Ethernet2/32
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -451,8 +452,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/32
-- peer: PCs
+- name: Ethernet2/33
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -462,8 +463,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/33
-- peer: PCs
+- name: Ethernet2/34
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -473,8 +474,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/34
-- peer: PCs
+- name: Ethernet2/35
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -484,8 +485,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/35
-- peer: PCs
+- name: Ethernet2/36
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -495,8 +496,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/36
-- peer: PCs
+- name: Ethernet2/37
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -506,8 +507,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/37
-- peer: PCs
+- name: Ethernet2/38
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -517,8 +518,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/38
-- peer: PCs
+- name: Ethernet2/39
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -528,8 +529,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/39
-- peer: PCs
+- name: Ethernet2/40
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -539,8 +540,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/40
-- peer: PCs
+- name: Ethernet2/41
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -550,8 +551,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/41
-- peer: PCs
+- name: Ethernet2/42
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -561,8 +562,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/42
-- peer: PCs
+- name: Ethernet2/43
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -572,8 +573,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/43
-- peer: PCs
+- name: Ethernet2/44
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -583,8 +584,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/44
-- peer: PCs
+- name: Ethernet2/45
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -594,8 +595,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/45
-- peer: PCs
+- name: Ethernet2/46
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -605,8 +606,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/46
-- peer: PCs
+- name: Ethernet2/47
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -616,8 +617,8 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/47
-- peer: PCs
+- name: Ethernet2/48
+  peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
@@ -627,19 +628,18 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
-  name: Ethernet2/48
-- peer: 'N: blah'
+- name: Ethernet5
+  peer: 'N: blah'
   peer_type: network_port
   description: 'N: blah'
   type: switched
   shutdown: false
-  name: Ethernet5
-- peer: 'N: blah'
+- name: Ethernet6
+  peer: 'N: blah'
   peer_type: network_port
   description: 'N: blah'
   type: switched
   shutdown: false
-  name: Ethernet6
 mlag_configuration:
   domain_id: mlag
   local_interface: Vlan4094

@@ -24,7 +24,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: ISIS-SPINE1
+- name: Ethernet1
+  peer: ISIS-SPINE1
   peer_interface: Ethernet1
   peer_type: l3spine
   description: ISIS-SPINE1_Ethernet1
@@ -33,7 +34,6 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet1
 port_channel_interfaces:
 - name: Port-Channel1
   description: ISIS-SPINE1_Po1

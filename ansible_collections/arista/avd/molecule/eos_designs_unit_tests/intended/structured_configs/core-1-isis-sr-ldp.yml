@@ -212,7 +212,8 @@ ethernet_interfaces:
       interface: true
       igp_sync: true
   speed: forced 1000full
-- peer: core-2-ospf-ldp
+- name: Ethernet12
+  peer: core-2-ospf-ldp
   peer_interface: Port-Channel12
   peer_type: core_router
   description: P2P_LINK_TO_core-2-ospf-ldp_Port-Channel12
@@ -221,8 +222,8 @@ ethernet_interfaces:
     id: 12
     mode: active
   speed: forced 1000full
-  name: Ethernet12
-- peer: core-2-ospf-ldp
+- name: Ethernet13
+  peer: core-2-ospf-ldp
   peer_interface: Port-Channel12
   peer_type: core_router
   description: P2P_LINK_TO_core-2-ospf-ldp_Port-Channel12
@@ -231,7 +232,6 @@ ethernet_interfaces:
     id: 12
     mode: active
   speed: forced 1000full
-  name: Ethernet13
 - name: ethernet21
   peer: peer2
   peer_interface: ethernet21

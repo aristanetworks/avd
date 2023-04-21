@@ -173,7 +173,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: DC1-SPINE1
+- name: Ethernet1
+  peer: DC1-SPINE1
   peer_interface: Ethernet1
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet1
@@ -181,8 +182,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.1/31
-  name: Ethernet1
-- peer: DC1-SPINE2
+- name: Ethernet2
+  peer: DC1-SPINE2
   peer_interface: Ethernet1
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE2_Ethernet1
@@ -190,8 +191,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.3/31
-  name: Ethernet2
-- peer: DC1-SPINE3
+- name: Ethernet3
+  peer: DC1-SPINE3
   peer_interface: Ethernet1
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE3_Ethernet1
@@ -199,8 +200,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.5/31
-  name: Ethernet3
-- peer: DC1-SPINE4
+- name: Ethernet4
+  peer: DC1-SPINE4
   peer_interface: Ethernet1
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE4_Ethernet1
@@ -208,8 +209,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.7/31
-  name: Ethernet4
-- peer: server02_SINGLE_NODE_TRUNK
+- name: Ethernet6
+  peer: server02_SINGLE_NODE_TRUNK
   peer_interface: Eth1
   peer_type: server
   port_profile: TENANT_A_B
@@ -218,8 +219,8 @@ ethernet_interfaces:
   shutdown: false
   mode: trunk
   vlans: 110-111,210-211
-  name: Ethernet6
-- peer: server02_SINGLE_NODE
+- name: Ethernet7
+  peer: server02_SINGLE_NODE
   peer_interface: Eth1
   peer_type: server
   port_profile: TENANT_A
@@ -228,7 +229,6 @@ ethernet_interfaces:
   shutdown: false
   mode: access
   vlans: '110'
-  name: Ethernet7
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

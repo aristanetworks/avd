@@ -98,7 +98,8 @@ ethernet_interfaces:
       interface: true
       igp_sync: true
   speed: forced 40gfull
-- peer: SITE2-LER1
+- name: Ethernet12
+  peer: SITE2-LER1
   peer_interface: Port-Channel11
   peer_type: pe
   description: P2P_LINK_TO_SITE2-LER1_Port-Channel11
@@ -107,8 +108,8 @@ ethernet_interfaces:
     id: 12
     mode: active
   speed: forced 40gfull
-  name: Ethernet12
-- peer: SITE2-LER1
+- name: Ethernet13
+  peer: SITE2-LER1
   peer_interface: Port-Channel11
   peer_type: pe
   description: P2P_LINK_TO_SITE2-LER1_Port-Channel11
@@ -117,7 +118,6 @@ ethernet_interfaces:
     id: 12
     mode: active
   speed: forced 40gfull
-  name: Ethernet13
 port_channel_interfaces:
 - name: Port-Channel12
   peer: SITE2-LER1

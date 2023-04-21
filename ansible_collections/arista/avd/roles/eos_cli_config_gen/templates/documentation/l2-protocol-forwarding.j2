@@ -1,0 +1,26 @@
+{# doc - l2 protocol forwarding #}
+{% if l2_protocol.forwarding_profiles | arista.avd.default([]) | length > 0 %}
+
+## L2 Protocol Forwarding
+
+### Forwarding Profiles
+{%     for profile in l2_protocol.forwarding_profiles | arista.avd.natural_sort('name') %}
+
+#### {{ profile.name }}
+
+| Protocol | Forward | Tagged Forward | Untagged Forward |
+| -------- | ------- | -------------- | ---------------- |
+{%         for protocol in profile.protocols %}
+{%             set proto_forward =  protocol.forward | arista.avd.default("-") %}
+{%             set proto_tagged_forward =  protocol.tagged_forward | arista.avd.default("-") %}
+{%             set proto_untagged_forward =  protocol.untagged_forward | arista.avd.default("-") %}
+| {{ protocol.name }} | {{ proto_forward }} | {{ proto_tagged_forward }} | {{ proto_untagged_forward }} |
+{%         endfor %}
+{%     endfor %}
+
+### L2 Protocol Forwarding Configuration
+
+```eos
+{%     include 'eos/l2-protocol-forwarding.j2' %}
+```
+{% endif %}

@@ -116,7 +116,8 @@ ethernet_interfaces:
     id: 47
     mode: active
   name: Ethernet48
-- peer: LEAF1
+- name: Ethernet1
+  peer: LEAF1
   peer_interface: Ethernet1
   peer_type: leaf
   description: LEAF1_Ethernet1
@@ -125,8 +126,8 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet1
-- peer: LEAF2
+- name: Ethernet2
+  peer: LEAF2
   peer_interface: Ethernet1
   peer_type: leaf
   description: LEAF2_Ethernet1
@@ -135,8 +136,8 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet2
-- peer: LEAF3
+- name: Ethernet3
+  peer: LEAF3
   peer_interface: Ethernet1
   peer_type: leaf
   description: LEAF3_Ethernet1
@@ -145,8 +146,8 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  name: Ethernet3
-- peer: LEAF4
+- name: Ethernet4
+  peer: LEAF4
   peer_interface: Ethernet1
   peer_type: leaf
   description: LEAF4_Ethernet1
@@ -155,8 +156,8 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  name: Ethernet4
-- peer: FIREWALL
+- name: Ethernet5
+  peer: FIREWALL
   peer_interface: Eth1
   peer_type: firewall
   port_profile: PP-FIREWALL
@@ -168,7 +169,6 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  name: Ethernet5
 mlag_configuration:
   domain_id: SPINES
   local_interface: Vlan4094

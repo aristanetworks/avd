@@ -261,7 +261,8 @@ ethernet_interfaces:
       interface: true
       igp_sync: true
   speed: forced 40gfull
-- peer: SITE2-LSR2
+- name: Ethernet11
+  peer: SITE2-LSR2
   peer_interface: Port-Channel12
   peer_type: p
   description: P2P_LINK_TO_SITE2-LSR2_Port-Channel12
@@ -270,8 +271,8 @@ ethernet_interfaces:
     id: 11
     mode: active
   speed: forced 40gfull
-  name: Ethernet11
-- peer: CPE_TENANT_A_SITE2
+- name: Ethernet8
+  peer: CPE_TENANT_A_SITE2
   peer_interface: eth0
   peer_type: cpe
   port_profile: TENANT_A_WAN_SERVICE_10
@@ -281,16 +282,16 @@ ethernet_interfaces:
   mode: trunk
   vlans: '10'
   spanning_tree_portfast: edge
-  name: Ethernet8
-- peer_type: l3_interface
-  ip_address: 192.168.48.2/31
+- name: Ethernet6.10
+  peer_type: l3_interface
+  ip_address: 123.1.1.2/31
   shutdown: false
-  description: TENANT_B_SITE_5
+  description: TENANT_B_SITE_5_INTRA_L3VPN
   type: l3dot1q
   encapsulation_dot1q_vlan: 10
-  vrf: TENANT_B_WAN
-  name: Ethernet6.10
-- peer_type: l3_interface
+  vrf: TENANT_B_INTRA
+- name: Ethernet6.100
+  peer_type: l3_interface
   ip_address: 192.168.48.4/31
   shutdown: false
   description: TENANT_B_SITE_3_OSPF
@@ -300,31 +301,38 @@ ethernet_interfaces:
   ospf_area: '0'
   ospf_network_point_to_point: true
   ospf_cost: 10
-  name: Ethernet6.100
-- peer_type: l3_interface
+- name: Ethernet6.101
+  peer_type: l3_interface
+  ip_address: 192.168.48.2/31
+  shutdown: false
+  description: TENANT_B_SITE_5
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 101
+  vrf: TENANT_B_WAN
+- name: Ethernet6
+  peer_type: l3_interface
   ip_address: 123.10.10.2/31
   shutdown: false
   description: TENANT_B_SITE_5_WAN_TEST
   type: routed
   vrf: TENANT_B_WAN
-  name: Ethernet6
-- type: routed
+- name: Ethernet7
+  type: routed
   peer_type: l3_interface
   shutdown: false
   lldp:
     transmit: false
     receive: false
-  name: Ethernet7
-- shutdown: false
+- name: Ethernet4
+  shutdown: false
   channel_group:
     id: 4
     mode: active
-  name: Ethernet4
-- shutdown: false
+- name: Ethernet5
+  shutdown: false
   channel_group:
     id: 4
     mode: active
-  name: Ethernet5
 port_channel_interfaces:
 - name: Port-Channel11
   peer: SITE2-LSR2

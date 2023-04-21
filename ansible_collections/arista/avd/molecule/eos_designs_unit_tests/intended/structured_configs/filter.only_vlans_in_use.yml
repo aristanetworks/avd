@@ -25,7 +25,8 @@ vlans:
 ip_igmp_snooping:
   globally_enabled: true
 ethernet_interfaces:
-- peer: testserver
+- name: Ethernet1
+  peer: testserver
   peer_interface: Nic1
   peer_type: server
   description: testserver_Nic1
@@ -33,4 +34,3 @@ ethernet_interfaces:
   shutdown: false
   mode: trunk
   vlans: 1-2
-  name: Ethernet1

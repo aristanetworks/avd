@@ -31,7 +31,8 @@ management_api_http:
   enable_https: true
 eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
 ethernet_interfaces:
-- peer: DC1-POD1-LEAF1A
+- name: Ethernet1
+  peer: DC1-POD1-LEAF1A
   peer_interface: Ethernet3
   peer_type: l3leaf
   description: DC1-POD1-LEAF1A_Ethernet3
@@ -40,7 +41,6 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet1
 port_channel_interfaces:
 - name: Port-Channel1
   description: DC1-POD1-LEAF1A_Po3

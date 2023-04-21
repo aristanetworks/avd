@@ -111,46 +111,26 @@ port_channel_interfaces:
   vlans: 110-112,120-121,130-131,160-161
   mlag: 1
 ethernet_interfaces:
-  Ethernet3:
-    peer: DC1-L2LEAF5A
-    peer_interface: Ethernet3
-    peer_type: mlag_peer
-    description: MLAG_PEER_DC1-L2LEAF5A_Ethernet3
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 3
-      mode: active
-  Ethernet4:
-    peer: DC1-L2LEAF5A
-    peer_interface: Ethernet4
-    peer_type: mlag_peer
-    description: MLAG_PEER_DC1-L2LEAF5A_Ethernet4
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 3
-      mode: active
-  Ethernet1:
-    peer: DC1-LEAF2A
-    peer_interface: Ethernet15
-    peer_type: l3leaf
-    description: DC1-LEAF2A_Ethernet15
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 1
-      mode: active
-  Ethernet2:
-    peer: DC1-LEAF2B
-    peer_interface: Ethernet15
-    peer_type: l3leaf
-    description: DC1-LEAF2B_Ethernet15
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 1
-      mode: active
+- name: Ethernet1
+  peer: DC1-LEAF2A
+  peer_interface: Ethernet15
+  peer_type: l3leaf
+  description: DC1-LEAF2A_Ethernet15
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 1
+    mode: active
+- name: Ethernet2
+  peer: DC1-LEAF2B
+  peer_interface: Ethernet15
+  peer_type: l3leaf
+  description: DC1-LEAF2B_Ethernet15
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 1
+    mode: active
 mlag_configuration:
   domain_id: DC1_L2LEAF5
   local_interface: Vlan4091

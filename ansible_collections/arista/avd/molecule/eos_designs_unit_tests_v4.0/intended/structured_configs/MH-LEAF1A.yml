@@ -136,54 +136,54 @@ lacp:
       begin: 1
       end: 128
 ethernet_interfaces:
-  Ethernet1:
-    peer: DC1-SPINE1
-    peer_interface: Ethernet10
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE1_Ethernet10
-    shutdown: false
-    mtu: 1500
-    type: routed
-    link_tracking_groups:
-    - name: LT_GROUP1
-      direction: upstream
-    ip_address: 10.10.101.1/31
-  Ethernet10:
-    peer: server01_ES1
-    peer_interface: Eth1
-    peer_type: server
-    port_profile: Tenant_X
-    description: server01_ES1_Eth1
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: '310'
-    channel_group:
-      id: 10
-      mode: active
-  Ethernet12:
-    peer: server03_AUTO_ESI
-    peer_interface: Eth1
-    peer_type: server
-    port_profile: Tenant_X
-    description: server03_AUTO_ESI_Eth1
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: '310'
-    channel_group:
-      id: 12
-      mode: active
-  Ethernet11:
-    peer: ROUTER02_WITH_SUBIF
-    peer_interface: Eth1
-    peer_type: router
-    description: ROUTER02_WITH_SUBIF_Eth1
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 11
-      mode: active
+- name: Ethernet1
+  peer: DC1-SPINE1
+  peer_interface: Ethernet10
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE1_Ethernet10
+  shutdown: false
+  mtu: 1500
+  type: routed
+  link_tracking_groups:
+  - name: LT_GROUP1
+    direction: upstream
+  ip_address: 10.10.101.1/31
+- name: Ethernet10
+  peer: server01_ES1
+  peer_interface: Eth1
+  peer_type: server
+  port_profile: Tenant_X
+  description: server01_ES1_Eth1
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '310'
+  channel_group:
+    id: 10
+    mode: active
+- name: Ethernet12
+  peer: server03_AUTO_ESI
+  peer_interface: Eth1
+  peer_type: server
+  port_profile: Tenant_X
+  description: server03_AUTO_ESI_Eth1
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '310'
+  channel_group:
+    id: 12
+    mode: active
+- name: Ethernet11
+  peer: ROUTER02_WITH_SUBIF
+  peer_interface: Eth1
+  peer_type: router
+  description: ROUTER02_WITH_SUBIF_Eth1
+  type: switched
+  shutdown: false
+  channel_group:
+    id: 11
+    mode: active
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

@@ -142,7 +142,7 @@ tenants:
           - description: TENANT_B_SITE_5
             enabled: true
             interfaces:
-              - Ethernet6.10
+              - Ethernet6.101
             ip_addresses:
               - 192.168.48.2/31
             nodes:

@@ -38,7 +38,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: UNDERLAY_FILTER_PEER_AS_L3LEAF1
+- name: Ethernet1
+  peer: UNDERLAY_FILTER_PEER_AS_L3LEAF1
   peer_interface: Ethernet2
   peer_type: l3leaf
   description: P2P_LINK_TO_UNDERLAY_FILTER_PEER_AS_L3LEAF1_Ethernet2
@@ -46,7 +47,6 @@ ethernet_interfaces:
   mtu: 9000
   type: routed
   ip_address: 192.168.0.2/31
-  name: Ethernet1
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

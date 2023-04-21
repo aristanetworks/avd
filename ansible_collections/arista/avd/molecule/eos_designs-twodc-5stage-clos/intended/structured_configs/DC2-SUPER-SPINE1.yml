@@ -122,7 +122,8 @@ management_api_http:
   enable_https: true
 eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
 ethernet_interfaces:
-- peer: DC2-POD1-SPINE1
+- name: Ethernet1
+  peer: DC2-POD1-SPINE1
   peer_interface: Ethernet1
   peer_type: spine
   description: P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet1
@@ -133,8 +134,8 @@ ethernet_interfaces:
   ptp:
     enable: true
   ip_address: 172.16.21.0/31
-  name: Ethernet1
-- peer: DC2-POD1-SPINE2
+- name: Ethernet2
+  peer: DC2-POD1-SPINE2
   peer_interface: Ethernet1
   peer_type: spine
   description: P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet1
@@ -145,8 +146,8 @@ ethernet_interfaces:
   ptp:
     enable: true
   ip_address: 172.16.21.2/31
-  name: Ethernet2
-- peer: DC2-RS1
+- name: Ethernet3
+  peer: DC2-RS1
   peer_interface: Ethernet1
   peer_type: overlay-controller
   description: P2P_LINK_TO_DC2-RS1_Ethernet1
@@ -155,8 +156,8 @@ ethernet_interfaces:
   service_profile: QOS-PROFILE
   type: routed
   ip_address: 172.17.20.0/31
-  name: Ethernet3
-- peer: DC2-RS2
+- name: Ethernet5
+  peer: DC2-RS2
   peer_interface: Ethernet1
   peer_type: overlay-controller
   description: P2P_LINK_TO_DC2-RS2_Ethernet1
@@ -165,8 +166,8 @@ ethernet_interfaces:
   service_profile: QOS-PROFILE
   type: routed
   ip_address: 172.17.20.8/31
-  name: Ethernet5
-- peer: DC2-RS1
+- name: Ethernet6
+  peer: DC2-RS1
   peer_interface: Ethernet2
   peer_type: overlay-controller
   description: P2P_LINK_TO_DC2-RS1_Ethernet2
@@ -175,8 +176,8 @@ ethernet_interfaces:
   service_profile: QOS-PROFILE
   type: routed
   ip_address: 172.17.20.2/31
-  name: Ethernet6
-- peer: DC2-RS2
+- name: Ethernet7
+  peer: DC2-RS2
   peer_interface: Ethernet2
   peer_type: overlay-controller
   description: P2P_LINK_TO_DC2-RS2_Ethernet2
@@ -185,7 +186,6 @@ ethernet_interfaces:
   service_profile: QOS-PROFILE
   type: routed
   ip_address: 172.17.20.10/31
-  name: Ethernet7
 - name: Ethernet4
   peer: DC1-SUPER-SPINE1
   peer_interface: Ethernet6

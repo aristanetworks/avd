@@ -316,68 +316,46 @@ port_channel_interfaces:
   - LEAF_PEER_L3
   - MLAG
 ethernet_interfaces:
-  Ethernet5:
-    peer: DC1-CL1B
-    peer_interface: Ethernet5
-    peer_type: mlag_peer
-    description: MLAG_PEER_DC1-CL1B_Ethernet5
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 5
-      mode: active
-    speed: 100g
-  Ethernet6:
-    peer: DC1-CL1B
-    peer_interface: Ethernet6
-    peer_type: mlag_peer
-    description: MLAG_PEER_DC1-CL1B_Ethernet6
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 5
-      mode: active
-    speed: 100g
-  Ethernet1:
-    peer: DC1-SPINE1
-    peer_interface: Ethernet14
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE1_Ethernet14
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.145/31
-  Ethernet2:
-    peer: DC1-SPINE2
-    peer_interface: Ethernet14
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE2_Ethernet14
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.147/31
-  Ethernet3:
-    peer: DC1-SPINE3
-    peer_interface: Ethernet14
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE3_Ethernet14
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.149/31
-  Ethernet4:
-    peer: DC1-SPINE4
-    peer_interface: Ethernet14
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE4_Ethernet14
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.151/31
+- name: Ethernet1
+  peer: DC1-SPINE1
+  peer_interface: Ethernet14
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE1_Ethernet14
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.145/31
+- name: Ethernet2
+  peer: DC1-SPINE2
+  peer_interface: Ethernet14
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE2_Ethernet14
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.147/31
+- name: Ethernet3
+  peer: DC1-SPINE3
+  peer_interface: Ethernet14
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE3_Ethernet14
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.149/31
+- name: Ethernet4
+  peer: DC1-SPINE4
+  peer_interface: Ethernet14
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE4_Ethernet14
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.151/31
 mlag_configuration:
   domain_id: DC1_CL1
   local_interface: Vlan4092

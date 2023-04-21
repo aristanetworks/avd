@@ -116,7 +116,8 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9000
   ip_address: 192.168.0.6/31
-- peer: peer5
+- name: Ethernet5
+  peer: peer5
   peer_interface: Port-Channel5
   peer_type: other
   description: P2P_LINK_TO_peer5_Port-Channel5
@@ -124,8 +125,8 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  name: Ethernet5
-- peer: peer5
+- name: Ethernet6
+  peer: peer5
   peer_interface: Port-Channel5
   peer_type: other
   description: P2P_LINK_TO_peer5_Port-Channel5
@@ -133,8 +134,8 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  name: Ethernet6
-- peer: peer6
+- name: Ethernet7
+  peer: peer6
   peer_interface: Port-Channel7
   peer_type: other
   description: P2P_LINK_TO_peer6_Port-Channel7
@@ -142,8 +143,8 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  name: Ethernet7
-- peer: peer6
+- name: Ethernet8
+  peer: peer6
   peer_interface: Port-Channel7
   peer_type: other
   description: P2P_LINK_TO_peer6_Port-Channel7
@@ -151,7 +152,6 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  name: Ethernet8
 port_channel_interfaces:
 - name: Port-Channel5
   peer: peer5

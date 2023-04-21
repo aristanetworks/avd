@@ -152,7 +152,8 @@ ethernet_interfaces:
     id: 3
     mode: active
   name: Ethernet4
-- peer: UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1
+- name: Ethernet1
+  peer: UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1
   peer_interface: Ethernet2
   peer_type: spine
   description: P2P_LINK_TO_UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1_Ethernet2
@@ -160,11 +161,11 @@ ethernet_interfaces:
   mtu: 9000
   type: routed
   ip_address: 172.31.255.3/31
-  name: Ethernet1
   pim:
     ipv4:
       sparse_mode: true
-- peer: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1A
+- name: Ethernet5
+  peer: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1A
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1A_Ethernet2
@@ -173,8 +174,8 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  name: Ethernet5
-- peer: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1B
+- name: Ethernet6
+  peer: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1B
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1B_Ethernet2
@@ -183,7 +184,6 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  name: Ethernet6
 mlag_configuration:
   domain_id: DC1_LEAF1
   local_interface: Vlan4094

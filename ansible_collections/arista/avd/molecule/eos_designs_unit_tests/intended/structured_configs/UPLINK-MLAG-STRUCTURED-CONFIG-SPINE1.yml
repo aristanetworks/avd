@@ -75,7 +75,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A
+- name: Ethernet1
+  peer: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A
   peer_interface: Ethernet1
   peer_type: l3leaf
   description: P2P_LINK_TO_UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A_Ethernet1
@@ -83,11 +84,11 @@ ethernet_interfaces:
   mtu: 9000
   type: routed
   ip_address: 172.31.255.0/31
-  name: Ethernet1
   pim:
     ipv4:
       sparse_mode: true
-- peer: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B
+- name: Ethernet2
+  peer: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B
   peer_interface: Ethernet1
   peer_type: l3leaf
   description: P2P_LINK_TO_UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B_Ethernet1
@@ -95,7 +96,6 @@ ethernet_interfaces:
   mtu: 9000
   type: routed
   ip_address: 172.31.255.2/31
-  name: Ethernet2
   pim:
     ipv4:
       sparse_mode: true
