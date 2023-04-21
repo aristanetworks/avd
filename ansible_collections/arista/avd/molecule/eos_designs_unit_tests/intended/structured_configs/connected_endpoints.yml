@@ -16,7 +16,7 @@ ip_igmp_snooping:
 ethernet_interfaces:
 - peer: OLD_SW-1/4
   peer_type: server
-  description: <physical_port_description>
+  description: PHYSICAL_PORT_DESCRIPTION
   type: switched
   shutdown: false
   name: Ethernet4
@@ -40,7 +40,7 @@ ethernet_interfaces:
   name: Ethernet6
 - peer: OLD_SW-1/6
   peer_type: server
-  description: <physical_port_description>
+  description: PHYSICAL_PORT_DESCRIPTION
   type: switched
   shutdown: false
   channel_group:
@@ -49,7 +49,7 @@ ethernet_interfaces:
   name: Ethernet7
 - peer: OLD_SW-1/6
   peer_type: server
-  description: <physical_port_description>
+  description: PHYSICAL_PORT_DESCRIPTION
   type: switched
   shutdown: false
   channel_group:
@@ -58,10 +58,10 @@ ethernet_interfaces:
   name: Ethernet8
 port_channel_interfaces:
 - name: Port-Channel5
-  description: OLD_SW-1/5_<port_channel_description>
+  description: OLD_SW-1/5_PORT_CHANNEL_DESCRIPTION
   type: switched
   shutdown: false
 - name: Port-Channel7
-  description: OLD_SW-1/6_<port_channel_description>
+  description: PHYSICAL_PORT_DESCRIPTION_PORT_CHANNEL_DESCRIPTION
   type: switched
   shutdown: false

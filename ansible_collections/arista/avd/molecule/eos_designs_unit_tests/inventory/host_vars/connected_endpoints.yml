@@ -12,7 +12,7 @@ servers:
     adapters:
       - switches: [connected_endpoints]
         switch_ports: [Ethernet4]
-        description: "<physical_port_description>"
+        description: "PHYSICAL_PORT_DESCRIPTION"
   # port-channel provide port-channel description
   OLD_SW-1/5:
     adapters:
@@ -20,14 +20,13 @@ servers:
         switch_ports: [Ethernet5, Ethernet6]
         port_channel:
           mode: "active"
-          description: "<port_channel_description>"
+          description: "PORT_CHANNEL_DESCRIPTION"
   # port-channel provide physical and port-channel descriptions
   OLD_SW-1/6:
     adapters:
       - switches: [connected_endpoints, connected_endpoints]
         switch_ports: [Ethernet7, Ethernet8]
-        # TODO: support ["<physical_port_description7>", "<physical_port_description8>"]]
-        description: "<physical_port_description>"
+        description: "PHYSICAL_PORT_DESCRIPTION"
         port_channel:
           mode: "active"
-          description: "<port_channel_description>"
+          description: "PORT_CHANNEL_DESCRIPTION"

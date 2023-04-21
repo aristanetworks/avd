@@ -89,6 +89,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
         """
 
         peer = connected_endpoint["name"]
+        adapter_description = get(adapter, "description")
         adapter_port_channel_description = get(adapter, "port_channel.description")
         port_channel_type = "routed" if get(adapter, "port_channel.subinterfaces") else "switched"
         port_channel_mode = get(adapter, "port_channel.mode")
@@ -97,7 +98,9 @@ class PortChannelInterfacesMixin(UtilsMixin):
         # Common port_channel_interface settings
         port_channel_interface = {
             "name": port_channel_interface_name,
-            "description": self.shared_utils.interface_descriptions.connected_endpoints_port_channel_interfaces(peer, adapter_port_channel_description),
+            "description": self.shared_utils.interface_descriptions.connected_endpoints_port_channel_interfaces(
+                peer, adapter_description, adapter_port_channel_description
+            ),
             "type": port_channel_type,
             "shutdown": not get(adapter, "port_channel.enabled", default=True),
             "mtu": adapter.get("mtu"),
