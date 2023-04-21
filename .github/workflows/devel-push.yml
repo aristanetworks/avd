@@ -81,7 +81,7 @@ jobs:
   #
   # ----------------------------------- #
   docker_build:
-    name: Webhook to Docker Hub to build image
+    name: Webhook to 'arista-netdevops-community/docker-avd-base' to build image
     runs-on: ubuntu-20.04
     needs: file-changes
     if: |
@@ -95,6 +95,6 @@ jobs:
           -X POST \
           -H "Accept: application/vnd.github.v3+json" \
           -H "Authorization: token ${{secrets.AVD_BUILDER_TOKEN}}" \
-          https://api.github.com/repos/arista-netdevops-community/docker-avd-bas/dispatches \
+          https://api.github.com/repos/arista-netdevops-community/docker-avd-base/dispatches \
           -d '{"event_type":"refresh"}' \
           -f
