@@ -40,7 +40,7 @@ interface Management1
 
 ## IP NAT
 
-| Settings | Value |
+| Setting | Value |
 | -------- | ----- |
 | Kernel Buffer Size | 64 MB |
 
@@ -48,7 +48,7 @@ interface Management1
 
 #### Pool: prefix_16
 
-| Settings | Value |
+| Setting | Value |
 | -------- | ----- |
 | Pool Prefix Length | 16 |
 | Pool Utilization Threshold | 1 % (action: log) |
@@ -57,12 +57,12 @@ interface Management1
 
 | First IP Address  | Last IP Address | First Port | Last Port |
 | ----------------- | --------------- | ---------- | --------- |
-| 10.0.0.1 | 10.0.255.254 | n.a. | n.a. |
+| 10.0.0.1 | 10.0.255.254 | - | - |
 | 10.1.0.0 | 10.1.255.255 | 1024 | 65535 |
 
 #### Pool: prefix_32
 
-| Settings | Value |
+| Setting | Value |
 | -------- | ----- |
 | Pool Prefix Length | 32 |
 
@@ -70,11 +70,11 @@ interface Management1
 
 | First IP Address  | Last IP Address | First Port | Last Port |
 | ----------------- | --------------- | ---------- | --------- |
-| 10.2.0.1 | 10.2.0.1 | n.a. | n.a. |
+| 10.2.0.1 | 10.2.0.1 | - | - |
 
 #### Pool: prefix_24
 
-| Settings | Value |
+| Setting | Value |
 | -------- | ----- |
 | Pool Prefix Length | 24 |
 | Pool Utilization Threshold | 100 % (action: log) |
@@ -83,12 +83,12 @@ interface Management1
 
 | First IP Address  | Last IP Address | First Port | Last Port |
 | ----------------- | --------------- | ---------- | --------- |
-| 10.3.0.1 | 10.3.0.254 | n.a. | n.a. |
+| 10.3.0.1 | 10.3.0.254 | - | - |
 | 10.3.1.0 | 10.3.1.255 | 1024 | 65535 |
 
 ### NAT Synchronization
 
-| Settings | Value |
+| Setting | Value |
 | -------- | ----- |
 | State | Disabled !
 | Expiry Interval | 60 Seconds |
@@ -99,7 +99,7 @@ interface Management1
 
 ### NAT Translation Settings
 
-| Settings | Value |
+| Setting | Value |
 | -------- | ----- |
 | Address Selection | Any |
 | Address Selection | Hash Source IP Field |
