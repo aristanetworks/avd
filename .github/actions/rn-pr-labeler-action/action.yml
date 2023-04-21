@@ -20,7 +20,7 @@ runs:
     - name: Set Label
       # Using toJSON to support ' and " in commit messages
       # https://stackoverflow.com/questions/73363167/github-actions-how-to-escape-characters-in-commit-message
-      run: echo "LABEL=$(echo ${{ toJSON(github.event.pull_request.title) }} | cut -d ':' -f 1 | tr -d ' ')" >> $GITHUB_ENV
+      run: echo "LABEL=$(echo ${{ toJSON(github.event.pull_request.title) }} | cut -d ':' -f 1 | tr -d ' ' | tr ',' '|')" >> $GITHUB_ENV
       shell: bash
       # an alternative to verifying if the target label already exist is to
       # create the label with --force in the next step, it will keep on changing

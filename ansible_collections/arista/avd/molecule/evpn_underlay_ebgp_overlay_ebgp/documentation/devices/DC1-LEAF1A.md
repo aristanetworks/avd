@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [Name Servers](#name-servers)
+  - [IP Name Servers](#ip-name-servers)
   - [NTP](#ntp)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
@@ -73,16 +73,16 @@ interface Management1
    ip address 192.168.200.105/24
 ```
 
-### Name Servers
+### IP Name Servers
 
-#### Name Servers Summary
+#### IP Name Servers Summary
 
-| Name Server | Source VRF |
-| ----------- | ---------- |
-| 192.168.200.5 | MGMT |
-| 8.8.8.8 | MGMT |
+| Name Server | VRF | Priority |
+| ----------- | --- | -------- |
+| 192.168.200.5 | MGMT | - |
+| 8.8.8.8 | MGMT | - |
 
-#### Name Servers Device Configuration
+#### IP Name Servers Device Configuration
 
 ```eos
 ip name-server vrf MGMT 8.8.8.8
@@ -290,17 +290,17 @@ vlan 131
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet1 no-monitor | routed | - | 172.31.255.1/31 | default | 1500 | False | - | - |
-| Ethernet2 | CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet1 no-monitor | routed | - | 172.31.255.3/31 | default | 1500 | False | - | - |
-| Ethernet3 | CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet1 no-monitor | routed | - | 172.31.255.5/31 | default | 1500 | False | - | - |
-| Ethernet4 | CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet1 no-monitor | routed | - | 172.31.255.7/31 | default | 1500 | False | - | - |
+| Ethernet1 | CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet1 | routed | - | 172.31.255.1/31 | default | 1500 | False | - | - |
+| Ethernet2 | CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet1 | routed | - | 172.31.255.3/31 | default | 1500 | False | - | - |
+| Ethernet3 | CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet1 | routed | - | 172.31.255.5/31 | default | 1500 | False | - | - |
+| Ethernet4 | CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet1 | routed | - | 172.31.255.7/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet1 no-monitor
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet1
    no shutdown
    mtu 1500
    speed forced 100gfull
@@ -308,7 +308,7 @@ interface Ethernet1
    ip address 172.31.255.1/31
 !
 interface Ethernet2
-   description CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet1 no-monitor
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet1
    no shutdown
    mtu 1500
    speed forced 100gfull
@@ -316,7 +316,7 @@ interface Ethernet2
    ip address 172.31.255.3/31
 !
 interface Ethernet3
-   description CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet1 no-monitor
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet1
    no shutdown
    mtu 1500
    speed forced 100gfull
@@ -324,7 +324,7 @@ interface Ethernet3
    ip address 172.31.255.5/31
 !
 interface Ethernet4
-   description CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet1 no-monitor
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet1
    no shutdown
    mtu 1500
    speed forced 100gfull

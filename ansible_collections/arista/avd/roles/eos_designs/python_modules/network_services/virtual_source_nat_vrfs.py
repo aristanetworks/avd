@@ -22,7 +22,7 @@ class VirtualSourceNatVrfsMixin(UtilsMixin):
         Only used by VTEPs with L2 and L3 services
         Using data from _loopback_interfaces to avoid duplicating logic
         """
-        if not (self._overlay_vtep and self._network_services_l2 and self._network_services_l3):
+        if not (self.shared_utils.overlay_vtep and self.shared_utils.network_services_l2 and self.shared_utils.network_services_l3):
             return None
 
         if (loopback_interfaces := self.loopback_interfaces) is None:

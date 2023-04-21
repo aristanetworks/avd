@@ -29,17 +29,17 @@ class EthernetInterfacesMixin(UtilsMixin):
                 "peer": link["peer"],
                 "peer_interface": link["peer_interface"],
                 "peer_type": link["peer_type"],
-                "description": self._avd_interface_descriptions.underlay_ethernet_interfaces(link["type"], link["peer"], link["peer_interface"]),
+                "description": self.shared_utils.interface_descriptions.underlay_ethernet_interfaces(link["type"], link["peer"], link["peer_interface"]),
                 "speed": link.get("speed"),
-                "shutdown": self._shutdown_interfaces_towards_undeployed_peers and not link["peer_is_deployed"],
+                "shutdown": self.shared_utils.shutdown_interfaces_towards_undeployed_peers and not link["peer_is_deployed"],
             }
 
             # L3 interface
             if link["type"] == "underlay_p2p":
                 ethernet_interface.update(
                     {
-                        "mtu": self._p2p_uplinks_mtu,
-                        "service_profile": get(self._hostvars, "p2p_uplinks_qos_profile"),
+                        "mtu": self.shared_utils.p2p_uplinks_mtu,
+                        "service_profile": self.shared_utils.p2p_uplinks_qos_profile,
                         "mac_security": link.get("mac_security"),
                         "type": "routed",
                         "ipv6_enable": link.get("ipv6_enable"),
@@ -51,8 +51,9 @@ class EthernetInterfacesMixin(UtilsMixin):
                 if get(link, "ptp.enable") is True:
                     ptp_config = {}
 
-                    # Apply PTP profile config
-                    ptp_config.update(self._ptp_profile)
+                    # Apply PTP profile config if using the new ptp config style
+                    if self.shared_utils.ptp_enabled:
+                        ptp_config.update(self.shared_utils.ptp_profile)
 
                     ptp_config["enable"] = True
                     ptp_config.pop("profile", None)
@@ -60,9 +61,9 @@ class EthernetInterfacesMixin(UtilsMixin):
                     ethernet_interface["ptp"] = ptp_config
 
                 # MPLS
-                if self._underlay_mpls is True:
+                if self.shared_utils.underlay_mpls is True:
                     mpls_dict = {"ip": True}
-                    if self._underlay_ldp is True:
+                    if self.shared_utils.underlay_ldp is True:
                         mpls_dict["ldp"] = {
                             "interface": True,
                             "igp_sync": True,
@@ -77,17 +78,17 @@ class EthernetInterfacesMixin(UtilsMixin):
                     else:
                         ethernet_interface["ip_address"] = f"{link['ip_address']}/31"
 
-                if self._underlay_ospf is True:
+                if self.shared_utils.underlay_ospf is True:
                     ethernet_interface["ospf_network_point_to_point"] = True
-                    ethernet_interface["ospf_area"] = self._underlay_ospf_area
+                    ethernet_interface["ospf_area"] = self.shared_utils.underlay_ospf_area
 
-                if self._underlay_isis is True:
+                if self.shared_utils.underlay_isis is True:
                     ethernet_interface.update(
                         {
-                            "isis_enable": self._isis_instance_name,
-                            "isis_metric": get(self._hostvars, "isis_default_metric", default=50),
+                            "isis_enable": self.shared_utils.isis_instance_name,
+                            "isis_metric": self.shared_utils.isis_default_metric,
                             "isis_network_point_to_point": True,
-                            "isis_circuit_type": get(self._hostvars, "isis_default_circuit_type"),
+                            "isis_circuit_type": self.shared_utils.isis_default_circuit_type,
                         }
                     )
 
@@ -112,7 +113,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                         {
                             "vlans": list_compress(vlans),
                             "native_vlan": link.get("native_vlan"),
-                            "service_profile": get(self._hostvars, "p2p_uplinks_qos_profile"),
+                            "service_profile": self.shared_utils.p2p_uplinks_qos_profile,
                             "link_tracking_groups": link.get("link_tracking_groups"),
                         }
                     )

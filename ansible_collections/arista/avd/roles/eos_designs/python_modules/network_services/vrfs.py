@@ -26,7 +26,7 @@ class VrfsMixin(UtilsMixin):
         all Tenants deployed on this device.
         """
 
-        if not self._network_services_l3:
+        if not self.shared_utils.network_services_l3:
             return None
 
         vrfs = []
@@ -48,7 +48,7 @@ class VrfsMixin(UtilsMixin):
                 }
 
                 # MLAG IBGP Peering VLANs per VRF
-                if self._overlay_mlag_rfc5549 and self._mlag_ibgp_peering_enabled(vrf, tenant):
+                if self.shared_utils.overlay_mlag_rfc5549 and self._mlag_ibgp_peering_enabled(vrf, tenant):
                     new_vrf["ip_routing_ipv6_interfaces"] = True
                 else:
                     new_vrf["ip_routing"] = True

@@ -19,7 +19,7 @@ class EosCliMixin(UtilsMixin):
         Return existing eos_cli plus any eos_cli from VRFs
         """
 
-        if not self._network_services_l3:
+        if not self.shared_utils.network_services_l3:
             return None
 
         eos_clis = []

@@ -20,7 +20,7 @@ def default(primary_value, *default_values):
 
     Example
     -------
-    priority: {{ switch.spanning_tree_priority | arista.avd.default("32768") }}
+    priority: {{ spanning_tree_priority | arista.avd.default("32768") }}
 
     Parameters
     ----------

@@ -19,19 +19,19 @@ class CvxMixin(UtilsMixin):
         """
         Detect if this is a CVX server for overlay and configure service & peer hosts accordingly.
         """
-        if not (self._overlay_cvx):
+        if not (self.shared_utils.overlay_cvx):
             return None
 
         overlay_cvx_servers = get(self._hostvars, "overlay_cvx_servers", default=[])
-        if self._hostname not in overlay_cvx_servers:
+        if self.shared_utils.hostname not in overlay_cvx_servers:
             return None
 
         peer_hosts = []
         for overlay_cvx_server in overlay_cvx_servers:
-            if overlay_cvx_server == self._hostname:
+            if overlay_cvx_server == self.shared_utils.hostname:
                 continue
 
-            peer_switch_facts = self._get_peer_facts(overlay_cvx_server, True)
+            peer_switch_facts = self.shared_utils.get_peer_facts(overlay_cvx_server, required=True)
             cvx_server_ip = get(peer_switch_facts, "mgmt_ip", required=True, org_key=f"'mgmt_ip' for CVX Server {overlay_cvx_server}")
             peer_hosts.append(str(ip_interface(cvx_server_ip).ip))
 

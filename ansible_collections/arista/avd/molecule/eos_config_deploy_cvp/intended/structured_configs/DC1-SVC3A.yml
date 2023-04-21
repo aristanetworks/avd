@@ -327,12 +327,11 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-name_server:
-  source:
-    vrf: MGMT
-  nodes:
-  - 192.168.200.5
-  - 8.8.8.8
+ip_name_servers:
+- ip_address: 192.168.200.5
+  vrf: MGMT
+- ip_address: 8.8.8.8
+  vrf: MGMT
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -730,7 +729,10 @@ port_channel_interfaces:
   shutdown: false
   mode: trunk
   vlans: 110-111,210-211
-  mlag: 10
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0303:0202:0101
+    route_target: 03:03:02:02:01:01
+  lacp_id: 0303.0202.0101
 ethernet_interfaces:
 - peer: DC1-SVC3B
   peer_interface: Ethernet5

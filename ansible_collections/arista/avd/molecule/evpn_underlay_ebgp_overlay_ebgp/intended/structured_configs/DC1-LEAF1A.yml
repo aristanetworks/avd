@@ -139,12 +139,11 @@ vlan_internal_order:
 queue_monitor_length:
   enabled: true
   log: 5
-name_server:
-  source:
-    vrf: MGMT
-  nodes:
-  - 192.168.200.5
-  - 8.8.8.8
+ip_name_servers:
+- ip_address: 192.168.200.5
+  vrf: MGMT
+- ip_address: 8.8.8.8
+  vrf: MGMT
 snmp_server:
   contact: example@example.com
   location: DC1_FABRIC rackA DC1-LEAF1A
@@ -189,7 +188,7 @@ ethernet_interfaces:
   peer: DC1-SPINE1
   peer_interface: Ethernet1
   peer_type: spine
-  description: CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet1 no-monitor
+  description: CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet1
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
@@ -199,7 +198,7 @@ ethernet_interfaces:
   peer: DC1-SPINE2
   peer_interface: Ethernet1
   peer_type: spine
-  description: CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet1 no-monitor
+  description: CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet1
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
@@ -209,7 +208,7 @@ ethernet_interfaces:
   peer: DC1-SPINE3
   peer_interface: Ethernet1
   peer_type: spine
-  description: CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet1 no-monitor
+  description: CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet1
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
@@ -219,7 +218,7 @@ ethernet_interfaces:
   peer: DC1-SPINE4
   peer_interface: Ethernet1
   peer_type: spine
-  description: CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet1 no-monitor
+  description: CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet1
   speed: forced 100gfull
   shutdown: false
   mtu: 1500

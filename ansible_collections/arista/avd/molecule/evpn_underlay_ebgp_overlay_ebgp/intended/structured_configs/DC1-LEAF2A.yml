@@ -265,12 +265,11 @@ queue_monitor_length:
   enabled: true
   notifying: true
   log: 5
-name_server:
-  source:
-    vrf: MGMT
-  nodes:
-  - 192.168.200.5
-  - 8.8.8.8
+ip_name_servers:
+- ip_address: 192.168.200.5
+  vrf: MGMT
+- ip_address: 8.8.8.8
+  vrf: MGMT
 snmp_server:
   contact: example@example.com
   location: DC1_FABRIC rackC DC1-LEAF2A

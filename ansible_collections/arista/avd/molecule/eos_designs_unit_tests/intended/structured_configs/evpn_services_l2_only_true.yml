@@ -59,7 +59,7 @@ router_bgp:
       - '9:9'
     redistribute_routes:
     - learned
-    vlan: 110-112
+    vlan: 110-113
   - name: Tenant_A_WAN_Zone
     rd: 192.168.255.109:14
     route_targets:
@@ -181,12 +181,11 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-name_server:
-  source:
-    vrf: MGMT
-  nodes:
-  - 192.168.200.5
-  - 8.8.8.8
+ip_name_servers:
+- ip_address: 192.168.200.5
+  vrf: MGMT
+- ip_address: 8.8.8.8
+  vrf: MGMT
 snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS evpn_services_l2_only_true
@@ -259,6 +258,9 @@ vlans:
   tenant: Tenant_A
 - id: 112
   name: Tenant_A_OP_Zone_3
+  tenant: Tenant_A
+- id: 113
+  name: Tenant_A_OP_Zone_4
   tenant: Tenant_A
 - id: 150
   name: Tenant_A_WAN_Zone_1
@@ -357,6 +359,8 @@ vxlan_interface:
         vni: 50111
       - id: 112
         vni: 10112
+      - id: 113
+        vni: 10113
       - id: 150
         vni: 10150
       - id: 151

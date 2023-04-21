@@ -1148,7 +1148,8 @@
                     "enum": [
                       "token",
                       "token-secure",
-                      "key"
+                      "key",
+                      "certs"
                     ],
                     "title": "Method"
                   },
@@ -1160,6 +1161,21 @@
                     "type": "string",
                     "description": "Token file path\ne.g. \"/tmp/token\"\n",
                     "title": "Token File"
+                  },
+                  "cert_file": {
+                    "type": "string",
+                    "description": "Client certificate file path\ne.g. \"/persist/secure/ssl/terminattr/primary/certs/client.crt\"\n",
+                    "title": "Cert File"
+                  },
+                  "ca_file": {
+                    "type": "string",
+                    "description": "CA certificate file path (on-prem only)\ne.g. \"/persist/secure/ssl/terminattr/primary/certs/ca.crt\"\n",
+                    "title": "Ca File"
+                  },
+                  "key_file": {
+                    "type": "string",
+                    "description": "Client certificate key file path\ne.g. \"/persist/secure/ssl/terminattr/primary/keys/client.key\"\n",
+                    "title": "Key File"
                   }
                 },
                 "additionalProperties": false,
@@ -1213,7 +1229,8 @@
               "enum": [
                 "token",
                 "token-secure",
-                "key"
+                "key",
+                "certs"
               ],
               "title": "Method"
             },
@@ -1225,6 +1242,21 @@
               "type": "string",
               "description": "Token file path\ne.g. \"/tmp/token\"\n",
               "title": "Token File"
+            },
+            "cert_file": {
+              "type": "string",
+              "description": "Client certificate file path\ne.g. \"/persist/secure/ssl/terminattr/primary/certs/client.crt\"\n",
+              "title": "Cert File"
+            },
+            "ca_file": {
+              "type": "string",
+              "description": "CA certificate file path (on-prem only)\ne.g. \"/persist/secure/ssl/terminattr/primary/certs/ca.crt\"\n",
+              "title": "Ca File"
+            },
+            "key_file": {
+              "type": "string",
+              "description": "Client certificate key file path\ne.g. \"/persist/secure/ssl/terminattr/primary/keys/client.key\"\n",
+              "title": "Key File"
             }
           },
           "additionalProperties": false,
@@ -2493,6 +2525,136 @@
             "description": "Type-7 encrypted password",
             "title": "ISIS Authentication Key"
           },
+          "poe": {
+            "type": "object",
+            "properties": {
+              "disabled": {
+                "type": "boolean",
+                "description": "Disable PoE on a POE capable port. PoE is enabled on all ports that support it by default in EOS.",
+                "default": false,
+                "title": "Disabled"
+              },
+              "priority": {
+                "type": "string",
+                "enum": [
+                  "critical",
+                  "high",
+                  "medium",
+                  "low"
+                ],
+                "description": "Prioritize a port's power in the event that one of the switch's power supplies loses power",
+                "title": "Priority"
+              },
+              "reboot": {
+                "description": "Set the PoE power behavior for a PoE port when the system is rebooted",
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "maintain",
+                      "power-off"
+                    ],
+                    "description": "PoE action for interface",
+                    "title": "Action"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Reboot"
+              },
+              "link_down": {
+                "description": "Set the PoE power behavior for a PoE port when the port goes down",
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "maintain",
+                      "power-off"
+                    ],
+                    "description": "PoE action for interface",
+                    "title": "Action"
+                  },
+                  "power_off_delay": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 86400,
+                    "description": "Number of seconds to delay shutting the power off after a link down event occurs. Default value is 5 seconds in EOS.",
+                    "title": "Power Off Delay"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Link Down"
+              },
+              "shutdown": {
+                "description": "Set the PoE power behavior for a PoE port when the port is admin down",
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "maintain",
+                      "power-off"
+                    ],
+                    "description": "PoE action for interface",
+                    "title": "Action"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Shutdown"
+              },
+              "limit": {
+                "type": "object",
+                "description": "Override the hardware-negotiated power limit using either wattage or a power class. Note that if using a power class, AVD will automatically convert the class value to the wattage value corresponding to that power class.",
+                "properties": {
+                  "class": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 8,
+                    "title": "Class"
+                  },
+                  "watts": {
+                    "type": "string",
+                    "title": "Watts"
+                  },
+                  "fixed": {
+                    "type": "boolean",
+                    "description": "Set to ignore hardware classification",
+                    "title": "Fixed"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Limit"
+              },
+              "negotiation_lldp": {
+                "type": "boolean",
+                "description": "Disable to prevent port from negotiating power with powered devices over LLDP. Enabled by default in EOS.",
+                "title": "Negotiation LLDP"
+              },
+              "legacy_detect": {
+                "type": "boolean",
+                "description": "Allow a subset of legacy devices to work with the PoE switch. Disabled by default in EOS because it can cause false positive detections.",
+                "title": "Legacy Detect"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "PoE"
+          },
           "ptp": {
             "type": "object",
             "properties": {
@@ -3651,8 +3813,89 @@
       "properties": {
         "features": {
           "type": "array",
+          "description": "This data model allows to configure the list of hardware counters feature\navailable on Arista platforms.\n\nThe `name` key accepts a list of valid_values which MUST be updated to support\nnew feature as they are released in EOS.\n\nThe available values of the different keys like 'direction' or 'address_type'\nare feature and hardware dependent and this model DOES NOT validate that the\ncombinations are valid. It is the responsability of the user of this data model\nto make sure that the rendered CLI is accepted by the targeted device.\n\nExamples:\n\n  * Use:\n    ```yaml\n    hardware_counters:\n      features:\n        - name: ip\n          direction: out\n          layer3: true\n          units_packets: true\n    ```\n\n    to render:\n    ```eos\n    hardware counter feature ip out layer3 units packets\n    ```\n  * Use:\n    ```yaml\n    hardware_counters:\n      features:\n        - name: route\n          address_type: ipv4\n          vrf: test\n          prefix: 192.168.0.0/24\n    ```\n\n    to render:\n    ```eos\n    hardware counter feature route ipv4 vrf test 192.168.0.0/24\n    ```\n",
           "items": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "enum": [
+                  "acl",
+                  "decap-group",
+                  "directflow",
+                  "ecn",
+                  "flow-spec",
+                  "gre tunnel interface",
+                  "ip",
+                  "mpls interface",
+                  "mpls lfib",
+                  "mpls tunnel",
+                  "multicast",
+                  "nexthop",
+                  "pbr",
+                  "pdp",
+                  "policing interface",
+                  "qos",
+                  "qos dual-rate-policer",
+                  "route",
+                  "routed-port",
+                  "subinterface",
+                  "tapagg",
+                  "traffic-class",
+                  "traffic-policy",
+                  "vlan",
+                  "vlan-interface",
+                  "vni decap",
+                  "vni encap",
+                  "vtep decap",
+                  "vtep encap"
+                ],
+                "title": "Name"
+              },
+              "direction": {
+                "type": "string",
+                "enum": [
+                  "in",
+                  "out",
+                  "cpu"
+                ],
+                "description": "Most features support only 'in' and 'out'. Some like traffic-policy support 'cpu'.\nSome features DO NOT have any direction.\nThis validation IS NOT made by the schemas.\n",
+                "title": "Direction"
+              },
+              "address_type": {
+                "type": "string",
+                "enum": [
+                  "ipv4",
+                  "ipv6",
+                  "mac"
+                ],
+                "description": "Supported only for the following features:\n- acl: [ipv4, ipv6, mac] if direction is 'out'\n- multicast: [ipv4, ipv6]\n- route: [ipv4, ipv6]\nThis validation IS NOT made by the schemas.\n",
+                "title": "Address Type"
+              },
+              "layer3": {
+                "type": "boolean",
+                "description": "Supported only for the 'ip' feature\n",
+                "title": "Layer3"
+              },
+              "vrf": {
+                "type": "string",
+                "description": "Supported only for the 'route' feature.\nThis validation IS NOT made by the schemas.\n",
+                "title": "VRF"
+              },
+              "prefix": {
+                "type": "string",
+                "description": "Supported only for the 'route' feature.\nMandatory for the 'route' feature.\nThis validation IS NOT made by the schemas.\n",
+                "title": "Prefix"
+              },
+              "units_packets": {
+                "type": "boolean",
+                "title": "Units Packets"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
           },
           "title": "Features"
         }
@@ -4414,6 +4657,36 @@
         "^_.+$": {}
       },
       "title": "IP IGMP Snooping"
+    },
+    "ip_name_servers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ip_address": {
+            "type": "string",
+            "description": "IPv4 or IPv6 address for DNS server",
+            "title": "IP Address"
+          },
+          "vrf": {
+            "description": "VRF Name",
+            "type": "string",
+            "title": "VRF"
+          },
+          "priority": {
+            "description": "Priority value (lower is first)",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 4,
+            "title": "Priority"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "IP Name Servers"
     },
     "ip_radius_source_interfaces": {
       "type": "array",
@@ -7580,6 +7853,56 @@
         "^_.+$": {}
       },
       "title": "Platform"
+    },
+    "poe": {
+      "type": "object",
+      "properties": {
+        "reboot": {
+          "type": "object",
+          "description": "Set the global PoE power behavior for PoE ports when the system is rebooted.",
+          "properties": {
+            "action": {
+              "type": "string",
+              "enum": [
+                "power-off",
+                "maintain"
+              ],
+              "description": "PoE action for interface. By default in EOS, reboot action is set to power-off.",
+              "title": "Action"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Reboot"
+        },
+        "interface_shutdown": {
+          "type": "object",
+          "description": "Set the global PoE power behavior for PoE ports when ports are admin down",
+          "properties": {
+            "action": {
+              "type": "string",
+              "enum": [
+                "power-off",
+                "maintain"
+              ],
+              "description": "PoE action for interface. By default in EOS, interface shutdown action is set to maintain.",
+              "title": "Action"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Interface Shutdown"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "PoE"
     },
     "policy_maps": {
       "type": "object",
@@ -17661,16 +17984,16 @@
           "properties": {
             "beginning": {
               "type": "integer",
-              "minimum": 1,
+              "minimum": 2,
               "maximum": 4094,
-              "description": "Vlan ID",
+              "description": "First VLAN ID.",
               "title": "Beginning"
             },
             "ending": {
               "type": "integer",
-              "minimum": 1,
+              "minimum": 2,
               "maximum": 4094,
-              "description": "Vlan ID",
+              "description": "Last VLAN ID.",
               "title": "Ending"
             }
           },

@@ -12,6 +12,11 @@ daemon TerminAttr
 {%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster.name ~ ".auth=token," ~ cluster.cvauth.token_file %}
 {%         elif cluster.cvauth.method is arista.avd.defined('token-secure') and cluster.cvauth.token_file is arista.avd.defined %}
 {%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster.name ~ ".auth=token-secure," ~ cluster.cvauth.token_file %}
+{%         elif cluster.cvauth.method is arista.avd.defined('certs') and cluster.cvauth.cert_file is arista.avd.defined and cluster.cvauth.key_file is arista.avd.defined %}
+{%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster.name ~ ".auth=certs," ~ cluster.cvauth.cert_file ~ "," ~ cluster.cvauth.key_file %}
+{%             if  cluster.cvauth.ca_file is arista.avd.defined %}
+{%                 set cvp_config.cli = cvp_config.cli ~ "," ~ cluster.cvauth.ca_file %}
+{%             endif %}
 {%         endif %}
 {%         if cluster.cvvrf is arista.avd.defined %}
 {%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster.name ~ ".vrf=" ~ cluster.cvvrf %}
@@ -37,6 +42,11 @@ daemon TerminAttr
 {%             set cvp_config.cli = cvp_config.cli ~ " -cvauth=token," ~ daemon_terminattr.cvauth.token_file %}
 {%         elif daemon_terminattr.cvauth.method is arista.avd.defined('token-secure') and daemon_terminattr.cvauth.token_file is arista.avd.defined %}
 {%             set cvp_config.cli = cvp_config.cli ~ " -cvauth=token-secure," ~ daemon_terminattr.cvauth.token_file %}
+{%         elif daemon_terminattr.cvauth.method is arista.avd.defined('certs') and daemon_terminattr.cvauth.cert_file is arista.avd.defined and daemon_terminattr.cvauth.key_file is arista.avd.defined %}
+{%             set cvp_config.cli = cvp_config.cli ~ " -cvauth=certs," ~ daemon_terminattr.cvauth.cert_file ~ "," ~ daemon_terminattr.cvauth.key_file %}
+{%             if  daemon_terminattr.cvauth.ca_file is arista.avd.defined %}
+{%                 set cvp_config.cli = cvp_config.cli ~ "," ~ daemon_terminattr.cvauth.ca_file %}
+{%             endif %}
 {%         endif %}
 {%     endif %}
 {%     if daemon_terminattr.cvvrf is arista.avd.defined %}

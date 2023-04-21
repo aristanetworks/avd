@@ -43,17 +43,27 @@ interface Management1
 
 ##### Hardware Counter Features
 
-| Feature | Flow Direction |
-| ------- | -------------- |
-| ip | in |
-| ip | out |
-| gre | out |
+**NOTE:** Not all options (columns) in the table below are compatible with every available feature, it is the user responsability to configure valid options for each feature.
+
+| Feature | Flow Direction | Address Type | Layer3 | VRF | Prefix | Units Packets |
+| ------- | -------------- | ------------ | ------ | --- | ------ | ------------- |
+| acl | out | mac | - | - | - | - |
+| gre tunnel interface | out | - | - | - | - | - |
+| ip | in | - | - | False | - | False |
+| ip | out | - | - | True | - | True |
+| mpls lfib | - | - | - | - | - | True |
+| route | - | ipv4 | test | - | 192.168.0.0/24 | - |
+| route | - | ipv6 | - | - | 2001:db8:cafe::/64 | - |
 
 #### Hardware Counters Configuration
 
 ```eos
 !
+hardware counter feature acl out mac
+hardware counter feature gre tunnel interface out
 hardware counter feature ip in
-hardware counter feature ip out
-hardware counter feature gre out
+hardware counter feature ip out layer3 units packets
+hardware counter feature mpls lfib units packets
+hardware counter feature route ipv4 vrf test 192.168.0.0/24
+hardware counter feature route ipv6 2001:db8:cafe::/64
 ```

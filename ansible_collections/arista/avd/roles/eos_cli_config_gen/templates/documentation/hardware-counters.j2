@@ -4,27 +4,23 @@
 ### Hardware Counters
 
 #### Hardware Counters Summary
+{%     if hardware_counters.features is arista.avd.defined %}
 
 ##### Hardware Counter Features
 
-| Feature | Flow Direction |
-| ------- | -------------- |
-{%     if hardware_counters is arista.avd.defined %}
-{%         if hardware_counters.features is arista.avd.defined %}
-{%             for feature in hardware_counters.features %}
-{%                 if 'name' in feature %}
-| {{ feature.name }} | {{ feature.direction }} |
-{%                 else %}
-{%                     for feat in feature %}
-{%                         if 'name' in feat %}
-| {{ feat.name }} | {{ feat.direction }} |
-{%                         else %}
-| {{ feat }} | {{ feature[feat] }} |
-{%                         endif %}
-{%                     endfor %}
-{%                 endif %}
-{%             endfor %}
-{%         endif %}
+**NOTE:** Not all options (columns) in the table below are compatible with every available feature, it is the user responsability to configure valid options for each feature.
+
+| Feature | Flow Direction | Address Type | Layer3 | VRF | Prefix | Units Packets |
+| ------- | -------------- | ------------ | ------ | --- | ------ | ------------- |
+{%         for feature in hardware_counters.features | arista.avd.natural_sort("name") %}
+{%             set feature_direction = feature.direction | arista.avd.default("-") %}
+{%             set feature_address_type = feature.address_type | arista.avd.default("-") %}
+{%             set feature_vrf = feature.vrf | arista.avd.default("-") %}
+{%             set feature_layer3 = feature.layer3 | arista.avd.default("-") %}
+{%             set feature_prefix = feature.prefix | arista.avd.default("-") %}
+{%             set feature_units_packets = feature.units_packets | arista.avd.default("-") %}
+| {{ feature.name }} | {{ feature_direction }} | {{ feature_address_type }} | {{ feature_vrf }} | {{ feature_layer3 }} | {{ feature_prefix }} | {{ feature_units_packets }} |
+{%         endfor %}
 {%     endif %}
 
 #### Hardware Counters Configuration

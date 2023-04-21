@@ -1,0 +1,506 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+$defs:
+  adapter_config:
+    type: dict
+    keys:
+      endpoint_ports:
+        type: list
+        description: |
+          Endpoint ports is used for description, required unless description is set.
+          The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.
+          Each list item is one switchport.
+        items:
+          type: str
+          description: Interface name.
+      speed:
+        type: str
+        description: |
+          Set adapter speed: `< interface_speed >`, `forced < interface_speed >`, `auto < interface_speed >`.
+          If not specified will be auto.
+      description:
+        type: str
+        description: Interface descriptions Description.
+      profile:
+        type: str
+        description: Port-profile name to inherit configuration.
+      enabled:
+        type: bool
+        description: |
+          Administrative state, setting to false will set the port to 'shutdown' in the intended configuration.
+        default: true
+      mode:
+        type: str
+        valid_values:
+          - "access"
+          - "dot1q-tunnel"
+          - "trunk"
+        description: Interface mode.
+      mtu:
+        type: int
+        convert_types:
+          - str
+        min: 68
+        max: 65535
+      l2_mtu:
+        type: int
+        convert_types:
+          - str
+        min: 68
+        max: 9416
+        description: This should only be defined for platforms supporting the "l2 mtu" CLI command.
+      native_vlan:
+        type: int
+        convert_types:
+          - str
+        description: |
+          Native VLAN for a trunk port.
+          If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence.
+        min: 1
+        max: 4094
+      native_vlan_tag:
+        type: bool
+        default: false
+        description: If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence.
+      trunk_groups:
+        type: list
+        items:
+          type: str
+        description: |
+          Required with `enable_trunk_groups: true`.
+          Trunk Groups are used for limiting VLANs on trunk ports to VLANs with the same Trunk Group.
+      vlans:
+        type: str
+        description: Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and VLAN 1 will be used for access ports.
+        convert_types:
+          - int
+      spanning_tree_portfast:
+        type: str
+        valid_values:
+          - "edge"
+          - "network"
+      spanning_tree_bpdufilter:
+        type: str
+        convert_types:
+          - bool
+        valid_values: ["enabled", "disabled", "True", "False", "true", "false"]
+      spanning_tree_bpduguard:
+        type: str
+        convert_types:
+          - bool
+        valid_values: ["enabled", "disabled", "True", "False", "true", "false"]
+      flowcontrol:
+        type: dict
+        keys:
+          received:
+            type: str
+            valid_values:
+              - "received"
+              - "send"
+              - "on"
+      qos_profile:
+        type: str
+        description: QOS profile name
+      ptp:
+        type: dict
+        description: |
+          The global PTP profile parameters will be applied to all connected endpoints where `ptp` is manually enabled.
+          `ptp role master` is set to ensure control over the PTP topology.
+        keys:
+          enable:
+            type: bool
+            default: false
+          endpoint_role:
+            type: str
+            default: "follower"
+            valid_values:
+              - "bmca"
+              - "default"
+              - "follower"
+          profile:
+            type: str
+            default: "aes67-r16-2016"
+            valid_values:
+              - "aes67"
+              - "aes67-r16-2016"
+              - "smpte2059-2"
+      link_tracking:
+        type: dict
+        description: |
+          Configure the downstream interfaces of a respective Link Tracking Group.
+          If `port_channel` is defined in an adapter, then the port-channel interface is configured to be the downstream.
+          Else all the ethernet interfaces will be configured as downstream -> to configure single-active EVPN multihomed networks.
+        keys:
+          enabled:
+            type: bool
+          name:
+            type: str
+            description: |
+              Tracking group name.
+              The default group name is taken from fabric variable of the switch, `link_tracking.groups[0].name` with default value being "LT_GROUP1".
+              Optional if default link_tracking settings are configured on the node.
+      dot1x:
+        type: dict
+        description: 802.1x
+        keys:
+          port_control:
+            type: str
+            valid_values:
+              - "auto"
+              - "force-authorized"
+              - "force-unauthorized"
+          port_control_force_authorized_phone:
+            type: bool
+          reauthentication:
+            type: bool
+          pae:
+            type: dict
+            keys:
+              mode:
+                type: str
+                valid_values:
+                  - "authenticator"
+          authentication_failure:
+            type: dict
+            keys:
+              action:
+                type: str
+                valid_values:
+                  - "allow"
+                  - "drop"
+              allow_vlan:
+                type: int
+                convert_types:
+                  - str
+                min: 1
+                max: 4094
+          host_mode:
+            type: dict
+            keys:
+              mode:
+                type: str
+                valid_values:
+                  - "multi-host"
+                  - "single-host"
+              multi_host_authenticated:
+                type: bool
+          mac_based_authentication:
+            type: dict
+            keys:
+              enabled:
+                type: bool
+              always:
+                type: bool
+              host_mode_common:
+                type: bool
+          timeout:
+            type: dict
+            keys:
+              idle_host:
+                type: int
+                convert_types:
+                  - str
+                min: 10
+                max: 65535
+              quiet_period:
+                type: int
+                convert_types:
+                  - str
+                min: 1
+                max: 65535
+              reauth_period:
+                type: str
+                convert_types:
+                  - int
+                description: Range 60-4294967295 or "server".
+              reauth_timeout_ignore:
+                type: bool
+              tx_period:
+                type: int
+                convert_types:
+                  - str
+                min: 1
+                max: 65535
+          reauthorization_request_limit:
+            type: int
+            convert_types:
+              - str
+            min: 1
+            max: 10
+      storm_control:
+        type: dict
+        description: Storm control settings applied on port toward the endpoint.
+        keys:
+          all:
+            type: dict
+            keys:
+              level:
+                type: int
+                convert_types:
+                  - str
+                description: Configure maximum storm-control level.
+              unit:
+                type: str
+                valid_values:
+                  - "percent"
+                  - "pps"
+                default: "percent"
+                description: Optional variable and is hardware dependent.
+          broadcast:
+            $ref: "#/$defs/adapter_config/keys/storm_control/keys/all"
+          multicast:
+            $ref: "#/$defs/adapter_config/keys/storm_control/keys/all"
+          unknown_unicast:
+            $ref: "#/$defs/adapter_config/keys/storm_control/keys/all"
+      monitor_sessions:
+        type: list
+        description: Used to define switchports as source or destination for monitoring sessions.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              description: Session name.
+            role:
+              type: str
+              valid_values:
+                - "source"
+                - "destination"
+            source_settings:
+              type: dict
+              keys:
+                direction:
+                  type: str
+                  valid_values:
+                    - "rx"
+                    - "tx"
+                    - "both"
+                access_group:
+                  type: dict
+                  keys:
+                    type:
+                      type: str
+                      valid_values:
+                        - "ip"
+                        - "ipv6"
+                        - "mac"
+                    name:
+                      description: ACL name.
+                      type: str
+                    priority:
+                      type: int
+                      convert_types:
+                        - str
+            session_settings:
+              type: dict
+              description: |
+                Session settings are defined per session name.
+                Different session_settings for the same session name will be combined/merged.
+              keys:
+                encapsulation_gre_metadata_tx:
+                  type: bool
+                header_remove_size:
+                  type: int
+                  description: Number of bytes to remove from header.
+                  convert_types:
+                    - str
+                access_group:
+                  type: dict
+                  keys:
+                    type:
+                      type: str
+                      valid_values:
+                        - "ip"
+                        - "ipv6"
+                        - "mac"
+                    name:
+                      description: ACL name.
+                      type: str
+                rate_limit_per_ingress_chip:
+                  type: str
+                  description: |
+                    Ratelimit and unit as string.
+                    Examples:
+                      "100000 bps"
+                      "100 kbps"
+                      "10 mbps"
+                rate_limit_per_egress_chip:
+                  type: str
+                  description: |
+                    Ratelimit and unit as string.
+                    Examples:
+                      "100000 bps"
+                      "100 kbps"
+                      "10 mbps"
+                sample:
+                  type: int
+                  convert_types:
+                    - str
+                truncate:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                    size:
+                      type: int
+                      description: Size in bytes
+                      convert_types:
+                        - str
+      ethernet_segment:
+        type: dict
+        description: Settings for all or single-active EVPN multihoming.
+        keys:
+          short_esi:
+            type: str
+            required: true
+            description: |
+              In format xxxx:xxxx:xxxx or "auto".
+              Define a manual short-esi (be careful using this on profiles) or set the value to "auto" to automatically generate the value.
+              Please see the notes under "EVPN A/A ESI dual and single-attached endpoint scenarios" before setting `short_esi: auto`.
+          redundancy:
+            type: str
+            valid_values:
+              - "all-active"
+              - "single-active"
+            description: |
+              If omitted, Port-Channels use the EOS default of all-active.
+              If omitted, Ethernet interfaces are configured as single-active.
+          designated_forwarder_algorithm:
+            type: str
+            valid_values:
+              - "auto"
+              - "modulus"
+              - "preference"
+            description: |
+              Configure DF algorithm and preferences.
+              - auto: Use preference-based algorithm and assign preference based on position of device in the 'switches' list,
+                e.g., assuming a list of three switches, this would assign a preference of 200 to the first switch, 100 to the 2nd, and 0 to the third.
+              - preference: Set preference for each switch manually using designated_forwarder_preferences key.
+              - modulus: Use the default modulus-based algorithm.
+              If omitted, Port-Channels use the EOS default of modulus.
+              If omitted, Ethernet interfaces default to the 'auto' mechanism detailed above.
+          designated_forwarder_preferences:
+            type: list
+            description: Manual preference as described above, required only for preference algorithm.
+            items:
+              type: str
+              convert_types:
+                - int
+          dont_preempt:
+            type: bool
+            description: Disable preemption for single-active forwarding when auto/manual DF preference is configured.
+      # short_esi:
+      #   type: str
+      #   description: |
+      #     Allocates an automatic short_esi to all ports using this profile.
+      #     Please see the notes under "EVPN A/A ESI dual-attached endpoint examples" in this document before setting `short_esi: auto`.
+      #   valid_values:
+      #     - "auto"
+      port_channel:
+        type: dict
+        description: Used for port-channel adapter.
+        keys:
+          mode:
+            type: str
+            description: Port-Channel Mode.
+            valid_values:
+              - "active"
+              - "passive"
+              - "on"
+          channel_id:
+            type: int
+            convert_types:
+              - str
+            description: |
+              Port-Channel ID, Optional.
+              If no channel_id is specified, an id is generated from the first switch port in the port channel.
+          description:
+            type: str
+            description: Port-Channel Description - added after endpoint name in the description, Optional.
+          enabled:
+            type: bool
+            default: true
+            description: |
+              Port-Channel administrative state, Optional.
+              setting to false will set port to 'shutdown' in intended configuration.
+          esi:
+            type: str
+            description: Format xxxx:xxxx:xxxx.
+            deprecation:
+              warning: true
+              removed: true
+              remove_in_version: "4.0.0"
+              new_key: short_esi
+          short_esi:
+            type: str
+            description: In format xxxx:xxxx:xxxx or "auto".
+          lacp_fallback:
+            type: dict
+            description: LACP fallback configuration.
+            keys:
+              mode:
+                type: str
+                valid_values:
+                  - static
+                description: Currently only static mode is supported.
+              timeout:
+                type: int
+                convert_types:
+                  - str
+                description: Timeout in seconds, Optional - default is 90 seconds.
+          subinterfaces:
+            type: list
+            description: |
+              Port-Channel L2 Subinterfaces
+              Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.
+              Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.
+              Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
+            items:
+              type: dict
+              keys:
+                number:
+                  type: int
+                  convert_types:
+                    - str
+                  description: Subinterface number
+                short_esi:
+                  type: str
+                  description: |
+                    In format xxxx:xxxx:xxxx or "auto"
+                    Required for multihomed port-channels with subinterfaces
+                vlan_id:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 1
+                  max: 4094
+                  description: |
+                    VLAN ID to bridge.
+                    Default is subinterface number.
+                encapsulation_vlan:
+                  type: dict
+                  description: |
+                    Client VLAN ID encapsulation.
+                    Default is subinterface number.
+                  keys:
+                    client_dot1q:
+                      type: int
+                      convert_types:
+                        - str
+                      min: 1
+                      max: 4094
+          raw_eos_cli:
+            type: str
+            description: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
+          structured_config:
+            type: dict
+            description: Custom structured config added under port_channel_interfaces.<interface> for eos_cli_config_gen.
+      raw_eos_cli:
+        type: str
+        description: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
+      structured_config:
+        type: dict
+        description: Custom structured config added under ethernet_interfaces.<interface> for eos_cli_config_gen.

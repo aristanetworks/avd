@@ -1,4 +1,5 @@
 {# eos - ethernet interfaces #}
+{% set POE_CLASS_MAP = {0: "15.40", 1: "4.00", 2: "7.00", 3: "15.40", 4: "30.00", 5: "45.00", 6: "60.00", 7: "75.00", 8: "90.00"} %}
 {% for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
 {%     if ethernet_interface.channel_group.id is arista.avd.defined and ethernet_interface.channel_group.mode is arista.avd.defined %}
 {%         set port_channel_interface_name = 'Port-Channel' ~ ethernet_interface.channel_group.id %}
@@ -486,6 +487,42 @@ interface {{ ethernet_interface.name }}
 {%         endif %}
 {%         if ethernet_interface.pim.ipv4.dr_priority is arista.avd.defined %}
    pim ipv4 dr-priority {{ ethernet_interface.pim.ipv4.dr_priority }}
+{%         endif %}
+{%         if ethernet_interface.poe.priority is arista.avd.defined %}
+   poe priority {{ ethernet_interface.poe.priority }}
+{%         endif %}
+{%         if ethernet_interface.poe.reboot.action is arista.avd.defined %}
+   poe reboot action {{ ethernet_interface.poe.reboot.action }}
+{%         endif %}
+{%         if ethernet_interface.poe.link_down.action is arista.avd.defined %}
+{%             set poe_link_down_action_cli = 'poe link down action ' ~ ethernet_interface.poe.link_down.action %}
+{%             if ethernet_interface.poe.link_down.power_off_delay is arista.avd.defined %}
+{%                 set poe_link_down_action_cli = poe_link_down_action_cli ~ ' ' ~ ethernet_interface.poe.link_down.power_off_delay %}
+{%             endif %}
+   {{ poe_link_down_action_cli }}
+{%         endif %}
+{%         if ethernet_interface.poe.shutdown.action is arista.avd.defined %}
+   poe shutdown action {{ ethernet_interface.poe.shutdown.action }}
+{%         endif %}
+{%         if ethernet_interface.poe.disabled is arista.avd.defined(true) %}
+   poe disabled
+{%         endif %}
+{%         if ethernet_interface.poe.limit is arista.avd.defined %}
+{%             if ethernet_interface.poe.limit.class is arista.avd.defined %}
+{%                 set poe_limit_cli = 'poe limit ' ~ POE_CLASS_MAP[ethernet_interface.poe.limit.class] ~ ' watts' %}
+{%             elif ethernet_interface.poe.limit.watts is arista.avd.defined %}
+{%                 set poe_limit_cli = 'poe limit ' ~ "%.2f" | format(ethernet_interface.poe.limit.watts | float) ~ ' watts' %}
+{%             endif %}
+{%             if poe_limit_cli is arista.avd.defined and ethernet_interface.poe.limit.fixed is arista.avd.defined(true) %}
+{%                 set poe_limit_cli = poe_limit_cli ~ ' fixed' %}
+{%             endif %}
+   {{ poe_limit_cli }}
+{%         endif %}
+{%         if ethernet_interface.poe.negotiation_lldp is arista.avd.defined(false) %}
+   poe negotiation lldp disabled
+{%         endif %}
+{%         if ethernet_interface.poe.legacy_detect is arista.avd.defined(true) %}
+   poe legacy detect
 {%         endif %}
 {%         if ethernet_interface.qos.trust is arista.avd.defined %}
 {%             if ethernet_interface.qos.trust == 'disabled' %}

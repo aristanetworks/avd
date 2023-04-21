@@ -761,6 +761,7 @@ keys:
                   - token
                   - token-secure
                   - key
+                  - certs
                 key:
                   type: str
                 token_file:
@@ -768,6 +769,27 @@ keys:
                   description: 'Token file path
 
                     e.g. "/tmp/token"
+
+                    '
+                cert_file:
+                  type: str
+                  description: 'Client certificate file path
+
+                    e.g. "/persist/secure/ssl/terminattr/primary/certs/client.crt"
+
+                    '
+                ca_file:
+                  type: str
+                  description: 'CA certificate file path (on-prem only)
+
+                    e.g. "/persist/secure/ssl/terminattr/primary/certs/ca.crt"
+
+                    '
+                key_file:
+                  type: str
+                  description: 'Client certificate key file path
+
+                    e.g. "/persist/secure/ssl/terminattr/primary/keys/client.key"
 
                     '
             cvobscurekeyfile:
@@ -812,6 +834,7 @@ keys:
             - token
             - token-secure
             - key
+            - certs
           key:
             type: str
           token_file:
@@ -819,6 +842,27 @@ keys:
             description: 'Token file path
 
               e.g. "/tmp/token"
+
+              '
+          cert_file:
+            type: str
+            description: 'Client certificate file path
+
+              e.g. "/persist/secure/ssl/terminattr/primary/certs/client.crt"
+
+              '
+          ca_file:
+            type: str
+            description: 'CA certificate file path (on-prem only)
+
+              e.g. "/persist/secure/ssl/terminattr/primary/certs/ca.crt"
+
+              '
+          key_file:
+            type: str
+            description: 'Client certificate key file path
+
+              e.g. "/persist/secure/ssl/terminattr/primary/keys/client.key"
 
               '
       cvobscurekeyfile:
@@ -1661,6 +1705,93 @@ keys:
         isis_authentication_key:
           type: str
           description: Type-7 encrypted password
+        poe:
+          type: dict
+          keys:
+            disabled:
+              type: bool
+              description: Disable PoE on a POE capable port. PoE is enabled on all
+                ports that support it by default in EOS.
+              default: false
+            priority:
+              type: str
+              valid_values:
+              - critical
+              - high
+              - medium
+              - low
+              description: Prioritize a port's power in the event that one of the
+                switch's power supplies loses power
+            reboot:
+              description: Set the PoE power behavior for a PoE port when the system
+                is rebooted
+              type: dict
+              keys:
+                action:
+                  type: str
+                  valid_values:
+                  - maintain
+                  - power-off
+                  description: PoE action for interface
+            link_down:
+              description: Set the PoE power behavior for a PoE port when the port
+                goes down
+              type: dict
+              keys:
+                action:
+                  type: str
+                  valid_values:
+                  - maintain
+                  - power-off
+                  description: PoE action for interface
+                power_off_delay:
+                  type: int
+                  min: 1
+                  max: 86400
+                  convert_types:
+                  - str
+                  description: Number of seconds to delay shutting the power off after
+                    a link down event occurs. Default value is 5 seconds in EOS.
+            shutdown:
+              description: Set the PoE power behavior for a PoE port when the port
+                is admin down
+              type: dict
+              keys:
+                action:
+                  type: str
+                  valid_values:
+                  - maintain
+                  - power-off
+                  description: PoE action for interface
+            limit:
+              type: dict
+              description: Override the hardware-negotiated power limit using either
+                wattage or a power class. Note that if using a power class, AVD will
+                automatically convert the class value to the wattage value corresponding
+                to that power class.
+              keys:
+                class:
+                  type: int
+                  min: 0
+                  max: 8
+                  convert_types:
+                  - str
+                watts:
+                  type: str
+                  convert_types:
+                  - int
+                  - float
+                fixed:
+                  type: bool
+                  description: Set to ignore hardware classification
+            negotiation_lldp:
+              type: bool
+              description: Disable to prevent port from negotiating power with powered
+                devices over LLDP. Enabled by default in EOS.
+            legacy_detect:
+              type: bool
+              description: Allow a subset of legacy devices to work with the PoE switch.
+                Disabled by default in EOS because it can cause false positive detections.
         ptp:
           type: dict
           keys:
@@ -2357,8 +2488,110 @@ keys:
     keys:
       features:
         type: list
+        description: "This data model allows to configure the list of hardware counters
+          feature\navailable on Arista platforms.\n\nThe `name` key accepts a list
+          of valid_values which MUST be updated to support\nnew feature as they are
+          released in EOS.\n\nThe available values of the different keys like 'direction'
+          or 'address_type'\nare feature and hardware dependent and this model DOES
+          NOT validate that the\ncombinations are valid. It is the responsability
+          of the user of this data model\nto make sure that the rendered CLI is accepted
+          by the targeted device.\n\nExamples:\n\n  * Use:\n    ```yaml\n    hardware_counters:\n
+          \     features:\n        - name: ip\n          direction: out\n          layer3:
+          true\n          units_packets: true\n    ```\n\n    to render:\n    ```eos\n
+          \   hardware counter feature ip out layer3 units packets\n    ```\n  * Use:\n
+          \   ```yaml\n    hardware_counters:\n      features:\n        - name: route\n
+          \         address_type: ipv4\n          vrf: test\n          prefix: 192.168.0.0/24\n
+          \   ```\n\n    to render:\n    ```eos\n    hardware counter feature route
+          ipv4 vrf test 192.168.0.0/24\n    ```\n"
         items:
           type: dict
+          keys:
+            name:
+              type: str
+              valid_values:
+              - acl
+              - decap-group
+              - directflow
+              - ecn
+              - flow-spec
+              - gre tunnel interface
+              - ip
+              - mpls interface
+              - mpls lfib
+              - mpls tunnel
+              - multicast
+              - nexthop
+              - pbr
+              - pdp
+              - policing interface
+              - qos
+              - qos dual-rate-policer
+              - route
+              - routed-port
+              - subinterface
+              - tapagg
+              - traffic-class
+              - traffic-policy
+              - vlan
+              - vlan-interface
+              - vni decap
+              - vni encap
+              - vtep decap
+              - vtep encap
+            direction:
+              type: str
+              valid_values:
+              - in
+              - out
+              - cpu
+              description: 'Most features support only ''in'' and ''out''. Some like
+                traffic-policy support ''cpu''.
+
+                Some features DO NOT have any direction.
+
+                This validation IS NOT made by the schemas.
+
+                '
+            address_type:
+              type: str
+              valid_values:
+              - ipv4
+              - ipv6
+              - mac
+              description: 'Supported only for the following features:
+
+                - acl: [ipv4, ipv6, mac] if direction is ''out''
+
+                - multicast: [ipv4, ipv6]
+
+                - route: [ipv4, ipv6]
+
+                This validation IS NOT made by the schemas.
+
+                '
+            layer3:
+              type: bool
+              description: 'Supported only for the ''ip'' feature
+
+                '
+            vrf:
+              type: str
+              description: 'Supported only for the ''route'' feature.
+
+                This validation IS NOT made by the schemas.
+
+                '
+            prefix:
+              type: str
+              description: 'Supported only for the ''route'' feature.
+
+                Mandatory for the ''route'' feature.
+
+                This validation IS NOT made by the schemas.
+
+                '
+            units_packets:
+              type: bool
   interface_defaults:
     documentation_options:
       filename: data_model/Interfaces
@@ -2949,6 +3182,26 @@ keys:
               type: bool
               description: Global proxy settings should be enabled before enabling
                 per-vlan
+  ip_name_servers:
+    documentation_options:
+      filename: data_model/Management
+    type: list
+    items:
+      type: dict
+      keys:
+        ip_address:
+          type: str
+          description: IPv4 or IPv6 address for DNS server
+        vrf:
+          description: VRF Name
+          type: str
+        priority:
+          description: Priority value (lower is first)
+          type: int
+          convert_types:
+          - str
+          min: 0
+          max: 4
   ip_radius_source_interfaces:
     documentation_options:
       filename: data_model/Authentication
@@ -4632,6 +4885,10 @@ keys:
             description: Interface Name
             type: str
   name_server:
+    deprecation:
+      warning: true
+      new_key: ip_name_servers
+      remove_in_version: v5.0.0
     documentation_options:
       filename: data_model/Management
     type: dict
@@ -4887,6 +5144,35 @@ keys:
                 valid_values:
                 - ingress
                 - egress
+  poe:
+    documentation_options:
+      filename: data_model/Power over Ethernet
+    type: dict
+    keys:
+      reboot:
+        type: dict
+        description: Set the global PoE power behavior for PoE ports when the system
+          is rebooted.
+        keys:
+          action:
+            type: str
+            valid_values:
+            - power-off
+            - maintain
+            description: PoE action for interface. By default in EOS, reboot action
+              is set to power-off.
+      interface_shutdown:
+        type: dict
+        description: Set the global PoE power behavior for PoE ports when ports are
+          admin down
+        keys:
+          action:
+            type: str
+            valid_values:
+            - power-off
+            - maintain
+            description: PoE action for interface. By default in EOS, interface shutdown
+              action is set to maintain.
   policy_maps:
     documentation_options:
       filename: data_model/Quality of Service
@@ -10802,18 +11088,18 @@ keys:
         keys:
           beginning:
             type: int
-            min: 1
+            min: 2
             max: 4094
             required: true
-            description: Vlan ID
+            description: First VLAN ID.
             convert_types:
             - str
           ending:
             type: int
-            min: 1
+            min: 2
             max: 4094
             required: true
-            description: Vlan ID
+            description: Last VLAN ID.
             convert_types:
             - str
   vlans:

@@ -5,17 +5,65 @@ search:
 
 # Fabric Variables
 
+## Bfd Settings
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>bfd_multihop</samp>](## "bfd_multihop") | Dictionary |  |  |  | BFD Multihop tuning |
+
+=== "YAML"
+
+    ```yaml
+    bfd_multihop:
+    ```
+
+## Bgp Multi-Path Settings
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>bgp_ecmp</samp>](## "bgp_ecmp") | Integer |  | 4 |  | Maximum ECMP for BGP multi-path |
+    | [<samp>bgp_maximum_paths</samp>](## "bgp_maximum_paths") | Integer |  | 4 | Min: 1<br>Max: 512 | Maximum Paths for BGP multi-path |
+
+=== "YAML"
+
+    ```yaml
+    bgp_ecmp: <int>
+    bgp_maximum_paths: <int>
+    ```
+
+## Bgp Peer Groups
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>bgp_peer_groups</samp>](## "bgp_peer_groups") | Dictionary |  |  |  | Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.<br>Note that the name of the peer groups use '-' instead of '_' in EOS configuration.<br> |
+
+=== "YAML"
+
+    ```yaml
+    bgp_peer_groups:
+    ```
+
 ## Bgp Settings
 
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>bgp_as</samp>](## "bgp_as") | String |  |  |  | AS number to use to configure overlay when "overlay_routing_protocol" == ibgp |
+    | [<samp>bgp_mesh_pes</samp>](## "bgp_mesh_pes") | Boolean |  | False |  | Whether to configure an iBGP full mesh between PEs, either because there is no RR used or other reasons. |
     | [<samp>underlay_filter_peer_as</samp>](## "underlay_filter_peer_as") | Boolean |  | False |  | Configure route-map on eBGP sessions towards underlay peers, where prefixes with the peer's ASN in the AS Path are filtered away.<br>This is very useful in very large scale networks not using EVPN overlays, where convergence will be quicker by not having to return<br>all updates received from Spine-1 to Spine-2 just for Spine-2 to throw them away because of AS Path loop detection.<br>Note this key is ignored when EVPN is configured.<br> |
 
 === "YAML"
 
     ```yaml
+    bgp_as: <str>
+    bgp_mesh_pes: <bool>
     underlay_filter_peer_as: <bool>
     ```
 
@@ -81,6 +129,9 @@ search:
     | [<samp>isis_default_is_type</samp>](## "isis_default_is_type") | String |  | level-2 | Valid Values:<br>- level-1-2<br>- level-1<br>- level-2 |  |
     | [<samp>isis_default_metric</samp>](## "isis_default_metric") | Integer |  | 50 |  | These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden at link profile or link level. |
     | [<samp>isis_ti_lfa</samp>](## "isis_ti_lfa") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;enabled</samp>](## "isis_ti_lfa.enabled") | Boolean |  | False |  |  |
+    | [<samp>&nbsp;&nbsp;protection</samp>](## "isis_ti_lfa.protection") | String |  |  | Valid Values:<br>- link<br>- node |  |
+    | [<samp>&nbsp;&nbsp;local_convergence_delay</samp>](## "isis_ti_lfa.local_convergence_delay") | Integer |  | 10000 |  | Local convergence delay in milliseconds |
     | [<samp>underlay_isis_instance_name</samp>](## "underlay_isis_instance_name") | String |  |  |  | Default -> "EVPN_UNDERLAY" for l3ls, "CORE" for mpls |
 
 === "YAML"
@@ -92,7 +143,42 @@ search:
     isis_default_is_type: <str>
     isis_default_metric: <int>
     isis_ti_lfa:
+      enabled: <bool>
+      protection: <str>
+      local_convergence_delay: <int>
     underlay_isis_instance_name: <str>
+    ```
+
+## Mac Address Table Settings
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>mac_address_table</samp>](## "mac_address_table") | Dictionary |  |  |  | MAC address-table aging time<br>Use to change the EOS default of 300.<br> |
+    | [<samp>&nbsp;&nbsp;aging_time</samp>](## "mac_address_table.aging_time") | Integer |  |  | Min: 0<br>Max: 1000000 | Aging time in seconds 10-1000000.<br>Enter 0 to disable aging.<br> |
+
+=== "YAML"
+
+    ```yaml
+    mac_address_table:
+      aging_time: <int>
+    ```
+
+## Mlag Settings
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>mlag_ibgp_peering_vrfs</samp>](## "mlag_ibgp_peering_vrfs") | Dictionary |  |  |  | On mlag leafs, an SVI interface is defined per vrf, to establish iBGP peering (required when there are MLAG leafs in topology)<br>The SVI id will be derived from the base vlan defined: mlag_ibgp_peering_vrfs.base_vlan + (vrf_id or vrf_vni) - 1<br>Depending on the values of vrf_id / vrf_vni it may be required to adjust the base_vlan to avoid overlaps or invalid vlan ids.<br>The SVI ip address derived from mlag_l3_peer_ipv4_pool is re-used across all iBGP peerings.<br> |
+    | [<samp>&nbsp;&nbsp;base_vlan</samp>](## "mlag_ibgp_peering_vrfs.base_vlan") | Integer |  | 3000 | Min: 1<br>Max: 4093 |  |
+
+=== "YAML"
+
+    ```yaml
+    mlag_ibgp_peering_vrfs:
+      base_vlan: <int>
     ```
 
 ## Multicast Settings
@@ -101,11 +187,13 @@ search:
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>default_igmp_snooping_enabled</samp>](## "default_igmp_snooping_enabled") | Boolean |  | True |  | When set to false, disables IGMP snooping at fabric level and overrides per vlan settings.<br> |
     | [<samp>underlay_multicast</samp>](## "underlay_multicast") | Boolean |  | False |  | Enable Multicast in the underlay on all p2p uplink interfaces and mlag l3 peer interface.<br>Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.<br>No other configuration is added, so the underlay will only support Source-Specific Multicast (SSM)<br>The configuration is intended to be used as multicast underlay for EVPN OISM overlay<br> |
 
 === "YAML"
 
     ```yaml
+    default_igmp_snooping_enabled: <bool>
     underlay_multicast: <bool>
     ```
 
@@ -165,6 +253,20 @@ search:
     underlay_routing_protocol: <str>
     ```
 
+## Uplink Settings
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>shutdown_interfaces_towards_undeployed_peers</samp>](## "shutdown_interfaces_towards_undeployed_peers") | Boolean |  | False |  | - It is possible to provision configurations for a complete topology but flag devices as undeployed using the host level variable `is_deployed: false`.<br><br>```yaml<br># Use at the host level<br>is_deployed: < true or false or default -> true ><br>```<br><br>- By default, this will have no impact within the `eos_designs` role. Configs will still be generated by the `eos_cli_config_gen` role and will still be pushed by the `eos_config_deploy_eapi` directly to devices if used.<br>- However, if the `eos_config_deploy_cvp` role is used to push configurations, CloudVision will ignore the devices flagged  as `is_deployed: false` and not attempt to configure them.<br>- If the device is not present in the network due to CloudVision not configuring the device, `eos_validate_state` role will fail tests on peers of the undeployed device trying to verify that interfaces are up.<br>- To overcome this and shutdown interfaces towards undeployed peers, the variable `shutdown_interfaces_towards_undeployed_peers` can be used, satisfying the `eos_validate_state` role interface tests.<br>- Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices are not present in the network. |
+
+=== "YAML"
+
+    ```yaml
+    shutdown_interfaces_towards_undeployed_peers: <bool>
+    ```
+
 ## Uplinks Settings
 
 === "Table"
@@ -174,6 +276,7 @@ search:
     | [<samp>p2p_uplinks_mtu</samp>](## "p2p_uplinks_mtu") | Integer |  | 9000 | Min: 68<br>Max: 65535 | Point to Point Links MTU |
     | [<samp>p2p_uplinks_qos_profile</samp>](## "p2p_uplinks_qos_profile") | String |  |  |  | QOS Profile assigned on all infrastructure links |
     | [<samp>uplink_ptp</samp>](## "uplink_ptp") | Dictionary |  |  |  | Enable PTP on all infrastructure links |
+    | [<samp>&nbsp;&nbsp;enable</samp>](## "uplink_ptp.enable") | Boolean |  | False |  |  |
 
 === "YAML"
 
@@ -181,4 +284,45 @@ search:
     p2p_uplinks_mtu: <int>
     p2p_uplinks_qos_profile: <str>
     uplink_ptp:
+      enable: <bool>
+    ```
+
+## Vlan Settings
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>enable_trunk_groups</samp>](## "enable_trunk_groups") | Boolean |  | False |  | Enable Trunk Group support across eos_designs<br>Warning: Because of the nature of the EOS Trunk Group feature, enabling this is "all or nothing".<br>*All* vlans and *all* trunks towards connected endpoints must be using trunk groups as well.<br>If trunk groups are not assigned to a trunk, no vlans will be enabled on that trunk.<br>See "Details on enable_trunk_groups" below before enabling this feature.<br> |
+    | [<samp>internal_vlan_order</samp>](## "internal_vlan_order") | Dictionary | Required |  |  | Internal vlan allocation order and range. |
+    | [<samp>&nbsp;&nbsp;allocation</samp>](## "internal_vlan_order.allocation") | String | Required | ascending | Valid Values:<br>- ascending<br>- descending |  |
+    | [<samp>&nbsp;&nbsp;range</samp>](## "internal_vlan_order.range") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;beginning</samp>](## "internal_vlan_order.range.beginning") | Integer | Required | 1006 | Min: 2<br>Max: 4094 | First VLAN ID. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ending</samp>](## "internal_vlan_order.range.ending") | Integer | Required | 1199 | Min: 2<br>Max: 4094 | Last VLAN ID. |
+    | [<samp>only_local_vlan_trunk_groups</samp>](## "only_local_vlan_trunk_groups") | Boolean |  | False |  | A vlan can have many trunk_groups assigned. To avoid unneeded configuration changes on all leaf<br>switches when a new trunk group is added, this feature will only configure the vlan trunk groups<br>matched with local connected_endpoints.<br>See "Details on only_local_vlan_trunk_groups" below.<br>Requires "enable_trunk_groups: true"<br> |
+    | [<samp>trunk_groups</samp>](## "trunk_groups") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;mlag</samp>](## "trunk_groups.mlag") | Dictionary |  |  |  | Trunk Group used for MLAG VLAN (Typically VLAN 4094)<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "trunk_groups.mlag.name") | String |  | MLAG |  |  |
+    | [<samp>&nbsp;&nbsp;mlag_l3</samp>](## "trunk_groups.mlag_l3") | Dictionary |  |  |  | Trunk Group used for MLAG L3 peering VLAN and for VRF L3 peering VLANs (Typically VLAN 4093)<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "trunk_groups.mlag_l3.name") | String |  | LEAF_PEER_L3 |  |  |
+    | [<samp>&nbsp;&nbsp;uplink</samp>](## "trunk_groups.uplink") | Dictionary |  |  |  | Trunk Group used on L2 Leaf switches when "enable_trunk_groups" is set<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "trunk_groups.uplink.name") | String |  | UPLINK |  |  |
+
+=== "YAML"
+
+    ```yaml
+    enable_trunk_groups: <bool>
+    internal_vlan_order:
+      allocation: <str>
+      range:
+        beginning: <int>
+        ending: <int>
+    only_local_vlan_trunk_groups: <bool>
+    trunk_groups:
+      mlag:
+        name: <str>
+      mlag_l3:
+        name: <str>
+      uplink:
+        name: <str>
     ```
