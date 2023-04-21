@@ -463,6 +463,72 @@ keys:
         isis_authentication_key:
           type: str
           description: Type-7 encrypted password
+        poe:
+          type: dict
+          keys:
+            disabled:
+              type: bool
+              description: Disable PoE on a POE capable port. PoE is enabled on all ports that support it by default in EOS.
+              default: false
+            priority:
+              type: str
+              valid_values: ["critical", "high", "medium", "low"]
+              description: Prioritize a port's power in the event that one of the switch's power supplies loses power
+            reboot:
+              description: Set the PoE power behavior for a PoE port when the system is rebooted
+              type: dict
+              keys:
+                action:
+                  type: str
+                  valid_values: ["maintain", "power-off"]
+                  description: PoE action for interface
+            link_down:
+              description: Set the PoE power behavior for a PoE port when the port goes down
+              type: dict
+              keys:
+                action:
+                  type: str
+                  valid_values: ["maintain", "power-off"]
+                  description: PoE action for interface
+                power_off_delay:
+                  type: int
+                  min: 1
+                  max: 86400
+                  convert_types:
+                  - str
+                  description: Number of seconds to delay shutting the power off after a link down event occurs. Default value is 5 seconds in EOS.
+            shutdown:
+              description: Set the PoE power behavior for a PoE port when the port is admin down
+              type: dict
+              keys:
+                action:
+                  type: str
+                  valid_values: ["maintain", "power-off"]
+                  description: PoE action for interface
+            limit:
+              type: dict
+              description: Override the hardware-negotiated power limit using either wattage or a power class. Note that if using a power class, AVD will automatically convert the class value to the wattage value corresponding to that power class.
+              keys:
+                class:
+                  type: int
+                  min: 0
+                  max: 8
+                  convert_types:
+                  - str
+                watts:
+                  type: str
+                  convert_types:
+                  - int
+                  - float
+                fixed:
+                  type: bool
+                  description: Set to ignore hardware classification
+            negotiation_lldp:
+              type: bool
+              description: Disable to prevent port from negotiating power with powered devices over LLDP. Enabled by default in EOS.
+            legacy_detect:
+              type: bool
+              description: Allow a subset of legacy devices to work with the PoE switch. Disabled by default in EOS because it can cause false positive detections.
         ptp:
           type: dict
           keys:

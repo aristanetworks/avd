@@ -2525,6 +2525,136 @@
             "description": "Type-7 encrypted password",
             "title": "ISIS Authentication Key"
           },
+          "poe": {
+            "type": "object",
+            "properties": {
+              "disabled": {
+                "type": "boolean",
+                "description": "Disable PoE on a POE capable port. PoE is enabled on all ports that support it by default in EOS.",
+                "default": false,
+                "title": "Disabled"
+              },
+              "priority": {
+                "type": "string",
+                "enum": [
+                  "critical",
+                  "high",
+                  "medium",
+                  "low"
+                ],
+                "description": "Prioritize a port's power in the event that one of the switch's power supplies loses power",
+                "title": "Priority"
+              },
+              "reboot": {
+                "description": "Set the PoE power behavior for a PoE port when the system is rebooted",
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "maintain",
+                      "power-off"
+                    ],
+                    "description": "PoE action for interface",
+                    "title": "Action"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Reboot"
+              },
+              "link_down": {
+                "description": "Set the PoE power behavior for a PoE port when the port goes down",
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "maintain",
+                      "power-off"
+                    ],
+                    "description": "PoE action for interface",
+                    "title": "Action"
+                  },
+                  "power_off_delay": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 86400,
+                    "description": "Number of seconds to delay shutting the power off after a link down event occurs. Default value is 5 seconds in EOS.",
+                    "title": "Power Off Delay"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Link Down"
+              },
+              "shutdown": {
+                "description": "Set the PoE power behavior for a PoE port when the port is admin down",
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "maintain",
+                      "power-off"
+                    ],
+                    "description": "PoE action for interface",
+                    "title": "Action"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Shutdown"
+              },
+              "limit": {
+                "type": "object",
+                "description": "Override the hardware-negotiated power limit using either wattage or a power class. Note that if using a power class, AVD will automatically convert the class value to the wattage value corresponding to that power class.",
+                "properties": {
+                  "class": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 8,
+                    "title": "Class"
+                  },
+                  "watts": {
+                    "type": "string",
+                    "title": "Watts"
+                  },
+                  "fixed": {
+                    "type": "boolean",
+                    "description": "Set to ignore hardware classification",
+                    "title": "Fixed"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Limit"
+              },
+              "negotiation_lldp": {
+                "type": "boolean",
+                "description": "Disable to prevent port from negotiating power with powered devices over LLDP. Enabled by default in EOS.",
+                "title": "Negotiation LLDP"
+              },
+              "legacy_detect": {
+                "type": "boolean",
+                "description": "Allow a subset of legacy devices to work with the PoE switch. Disabled by default in EOS because it can cause false positive detections.",
+                "title": "Legacy Detect"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "PoE"
+          },
           "ptp": {
             "type": "object",
             "properties": {
@@ -7723,6 +7853,56 @@
         "^_.+$": {}
       },
       "title": "Platform"
+    },
+    "poe": {
+      "type": "object",
+      "properties": {
+        "reboot": {
+          "type": "object",
+          "description": "Set the global PoE power behavior for PoE ports when the system is rebooted.",
+          "properties": {
+            "action": {
+              "type": "string",
+              "enum": [
+                "power-off",
+                "maintain"
+              ],
+              "description": "PoE action for interface. By default in EOS, reboot action is set to power-off.",
+              "title": "Action"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Reboot"
+        },
+        "interface_shutdown": {
+          "type": "object",
+          "description": "Set the global PoE power behavior for PoE ports when ports are admin down",
+          "properties": {
+            "action": {
+              "type": "string",
+              "enum": [
+                "power-off",
+                "maintain"
+              ],
+              "description": "PoE action for interface. By default in EOS, interface shutdown action is set to maintain.",
+              "title": "Action"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Interface Shutdown"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "PoE"
     },
     "policy_maps": {
       "type": "object",
