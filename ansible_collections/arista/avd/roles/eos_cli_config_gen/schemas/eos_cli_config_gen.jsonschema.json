@@ -2154,6 +2154,61 @@
             },
             "title": "IP Helpers"
           },
+          "ip_nat": {
+            "type": "object",
+            "properties": {
+              "destination": {
+                "type": "object",
+                "properties": {
+                  "dynamic": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "access_list": {
+                          "type": "string",
+                          "title": "Access List"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "title": "Comment"
+                        },
+                        "pool_name": {
+                          "type": "string",
+                          "title": "Pool Name"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Priority"
+                        }
+                      },
+                      "required": [
+                        "pool_name",
+                        "access_list"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Dynamic"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Destination"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "IP Nat"
+          },
           "ipv6_enable": {
             "type": "boolean",
             "title": "IPv6 Enable"
@@ -9026,6 +9081,61 @@
             "type": "string",
             "description": "IPv4 address/mask",
             "title": "IP Address"
+          },
+          "ip_nat": {
+            "type": "object",
+            "properties": {
+              "destination": {
+                "type": "object",
+                "properties": {
+                  "dynamic": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "access_list": {
+                          "type": "string",
+                          "title": "Access List"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "title": "Comment"
+                        },
+                        "pool_name": {
+                          "type": "string",
+                          "title": "Pool Name"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Priority"
+                        }
+                      },
+                      "required": [
+                        "pool_name",
+                        "access_list"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Dynamic"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Destination"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "IP Nat"
           },
           "ipv6_enable": {
             "type": "boolean",
@@ -17080,6 +17190,61 @@
             "description": "IPv4_address/Mask",
             "title": "IP Address"
           },
+          "ip_nat": {
+            "type": "object",
+            "properties": {
+              "destination": {
+                "type": "object",
+                "properties": {
+                  "dynamic": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "access_list": {
+                          "type": "string",
+                          "title": "Access List"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "title": "Comment"
+                        },
+                        "pool_name": {
+                          "type": "string",
+                          "title": "Pool Name"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Priority"
+                        }
+                      },
+                      "required": [
+                        "pool_name",
+                        "access_list"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Dynamic"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Destination"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "IP Nat"
+          },
           "ipv6_enable": {
             "type": "boolean",
             "title": "IPv6 Enable"
@@ -17320,6 +17485,61 @@
               ]
             },
             "title": "IP Helpers"
+          },
+          "ip_nat": {
+            "type": "object",
+            "properties": {
+              "destination": {
+                "type": "object",
+                "properties": {
+                  "dynamic": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "access_list": {
+                          "type": "string",
+                          "title": "Access List"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "title": "Comment"
+                        },
+                        "pool_name": {
+                          "type": "string",
+                          "title": "Pool Name"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Priority"
+                        }
+                      },
+                      "required": [
+                        "pool_name",
+                        "access_list"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Dynamic"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Destination"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "IP Nat"
           },
           "ipv6_enable": {
             "type": "boolean",

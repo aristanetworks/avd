@@ -34,6 +34,8 @@ keys:
           type: str
           format: ipv4_cidr
           description: IPv4_address/Mask
+        ip_nat:
+          $ref: "#/$defs/interface_ip_nat"
         ipv6_enable:
           type: bool
         ipv6_address:

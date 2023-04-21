@@ -56,3 +56,11 @@ tunnel_interfaces:
     # no tcp_mss_ceiling
     source_interface: Ethernet42
     destination: 1.1.1.1
+
+  - name: Tunnel5
+    description: IP NAT Testing
+    ip_nat:
+      destination:
+        dynamic:
+          - access_list: ACL1
+            pool_name: POOL1

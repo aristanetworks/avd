@@ -1,0 +1,11 @@
+{# eos - interface ip nat #}
+{% for nat in interface_ip_nat.destination.dynamic | arista.avd.default([]) | arista.avd.natural_sort('access_list') %}
+{%     set nat_cli = 'ip nat destination dynamic access-list ' ~ nat.access_list ~ ' pool ' ~ nat.pool_name %}
+{%     if nat.priority | arista.avd.default(0) > 0 %}
+{%         set nat_cli = nat_cli ~ ' priority ' ~ nat.priority %}
+{%     endif %}
+{%     if nat.comment is arista.avd.defined %}
+{%         set nat_cli = nat_cli ~ ' comment ' ~ nat.comment %}
+{%     endif %}
+   {{ nat_cli }}
+{% endfor %}

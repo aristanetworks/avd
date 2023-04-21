@@ -243,6 +243,9 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{# IP NAT Documentation #}
+{%     set ip_nat_interfaces = port_channel_interfaces | arista.avd.default({}) %}
+{%     include 'documentation/interfaces-ip-nat.j2' %}
 {# IPv6 #}
 {%     set port_channel_interface_ipv6 = namespace() %}
 {%     set port_channel_interface_ipv6.configured = false %}

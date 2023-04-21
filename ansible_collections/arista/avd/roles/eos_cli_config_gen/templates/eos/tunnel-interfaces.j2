@@ -50,6 +50,8 @@ interface {{ tunnel_interface.name }}
 {%         endif %}
    {{ tcp_mss_ceiling_cli }}
 {%     endif %}
+{%     set interface_ip_nat = tunnel_interface.ip_nat | arista.avd.default({}) %}
+{%     include 'eos/interface-ip-nat.j2' %}
 {%     if tunnel_interface.source_interface is arista.avd.defined %}
    tunnel source interface {{ tunnel_interface.source_interface }}
 {%     endif %}

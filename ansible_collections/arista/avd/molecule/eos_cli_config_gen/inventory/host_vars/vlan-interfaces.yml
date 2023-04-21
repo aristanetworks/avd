@@ -149,6 +149,14 @@ vlan_interfaces:
         link_address: a0::7
       - address: a0::8
 
+  - name: Vlan50
+    description: IP NAT Testing
+    ip_nat:
+      destination:
+        dynamic:
+          - access_list: ACL1
+            pool_name: POOL1
+
 # IPv6 SVI configuration
 
   - name: Vlan501

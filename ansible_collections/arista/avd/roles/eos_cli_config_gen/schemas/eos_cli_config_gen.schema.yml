@@ -1497,6 +1497,8 @@ keys:
               vrf:
                 type: str
                 description: VRF name
+        ip_nat:
+          $ref: '#/$defs/interface_ip_nat'
         ipv6_enable:
           type: bool
         ipv6_address:
@@ -5894,6 +5896,8 @@ keys:
         ip_address:
           type: str
           description: IPv4 address/mask
+        ip_nat:
+          $ref: '#/$defs/interface_ip_nat'
         ipv6_enable:
           type: bool
         ipv6_address:
@@ -10534,6 +10538,8 @@ keys:
           type: str
           format: ipv4_cidr
           description: IPv4_address/Mask
+        ip_nat:
+          $ref: '#/$defs/interface_ip_nat'
         ipv6_enable:
           type: bool
         ipv6_address:
@@ -10690,6 +10696,8 @@ keys:
               vrf:
                 type: str
                 description: VRF where DHCP server can be reached
+        ip_nat:
+          $ref: '#/$defs/interface_ip_nat'
         ipv6_enable:
           type: bool
         ipv6_address:
@@ -11365,3 +11373,33 @@ keys:
             type: str
             description: Multiline String with EOS CLI rendered directly on the Vxlan
               interface in the final EOS configuration.
+$defs:
+  interface_ip_nat:
+    documentation_options:
+      filename: Interface IP NAT
+    type: dict
+    keys:
+      destination:
+        type: dict
+        keys:
+          dynamic:
+            type: list
+            primary_key: access_list
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                access_list:
+                  type: str
+                comment:
+                  type: str
+                pool_name:
+                  type: str
+                  required: true
+                priority:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 0
+                  max: 4294967295

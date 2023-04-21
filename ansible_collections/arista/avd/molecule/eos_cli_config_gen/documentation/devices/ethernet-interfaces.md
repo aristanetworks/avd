@@ -123,6 +123,7 @@ sFlow is disabled.
 | Ethernet56 |  Interface with poe commands and limit in class | access | - | - | - | - |
 | Ethernet57 |  Interface with poe commands and limit in watts | access | - | - | - | - |
 | Ethernet58 |  Interface with poe disabled and no other poe keys | access | - | - | - | - |
+| Ethernet60 |  IP NAT Testing | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -185,6 +186,17 @@ sFlow is disabled.
 | Ethernet10 | interface_with_mpls_disabled | routed | - | 172.31.128.10/31 | default | - | - | - | - |
 | Ethernet18 | PBR Description | routed | - | 192.0.2.1/31 | default | 1500 | - | - | - |
 | Ethernet47 | IP Helper | routed | - | 172.31.255.1/31 | default | - | - | - | - |
+
+##### IP NAT: Destination Dynamic
+
+| Interface | Access List | Pool Name | Priority | Comment |
+| --------- | ----------- | --------- | -------- | ------- |
+| Ethernet60 | ACL1 | POOL1 | 0 |  |
+| Ethernet60 | ACL2 | POOL1 | 0 | POOL1 shared with ACL1/2 |
+| Ethernet60 | ACL3 | POOL3 | 10 |  |
+| Ethernet60 | ACL4 | POOL4 | 1 | Priority low end |
+| Ethernet60 | ACL5 | POOL5 | 4294967295 | Priority high end |
+| Ethernet60 | ACL6 | POOL6 | 0 | Priority default |
 
 ##### IPv6
 
@@ -736,6 +748,16 @@ interface Ethernet58
    description Interface with poe disabled and no other poe keys
    switchport
    poe disabled
+!
+interface Ethernet60
+   description IP NAT Testing
+   switchport
+   ip nat destination dynamic access-list ACL1 pool POOL1
+   ip nat destination dynamic access-list ACL2 pool POOL1 comment POOL1 shared with ACL1/2
+   ip nat destination dynamic access-list ACL3 pool POOL3 priority 10
+   ip nat destination dynamic access-list ACL4 pool POOL4 priority 1 comment Priority low end
+   ip nat destination dynamic access-list ACL5 pool POOL5 priority 4294967295 comment Priority high end
+   ip nat destination dynamic access-list ACL6 pool POOL6 comment Priority default
 ```
 
 ## BFD

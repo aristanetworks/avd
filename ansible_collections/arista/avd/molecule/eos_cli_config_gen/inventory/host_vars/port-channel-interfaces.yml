@@ -389,6 +389,14 @@ port_channel_interfaces:
     type: switched
     mode: trunk
 
+  - name: Port-Channel130
+    description: IP NAT Testing
+    ip_nat:
+      destination:
+        dynamic:
+          - access_list: ACL1
+            pool_name: POOL1
+
 # Children interfaces
 ethernet_interfaces:
   - name: Ethernet5

@@ -675,3 +675,29 @@ ethernet_interfaces:
     description: Interface with poe disabled and no other poe keys
     poe:
       disabled: true
+
+  - name: Ethernet60
+    description: IP NAT Testing
+    ip_nat:
+      destination:
+        dynamic:
+          - access_list: ACL1
+            pool_name: POOL1
+          - access_list: ACL2
+            pool_name: POOL1
+            comment: POOL1 shared with ACL1/2
+          - access_list: ACL3
+            pool_name: POOL3
+            priority: 10
+          - access_list: ACL4
+            pool_name: POOL4
+            comment: Priority low end
+            priority: 1
+          - access_list: ACL6
+            pool_name: POOL6
+            comment: Priority default
+            priority: 0
+          - access_list: ACL5
+            pool_name: POOL5
+            comment: Priority high end
+            priority: 4294967295

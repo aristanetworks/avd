@@ -53,6 +53,7 @@ interface Management1
 | Vlan42 | SVI Description | default | - | False |
 | Vlan43 | SVI Description | default | - | False |
 | Vlan44 | SVI Description | default | - | False |
+| Vlan50 | IP NAT Testing | default | - | - |
 | Vlan75 | SVI Description | default | - | False |
 | Vlan81 | IPv6 Virtual Address | Tenant_C | - | - |
 | Vlan83 | SVI Description | default | - | False |
@@ -91,6 +92,7 @@ interface Management1
 | Vlan42 |  default  |  -  |  10.10.42.1/24  |  -  |  -  |  -  |  -  |
 | Vlan43 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan44 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan50 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan75 |  default  |  -  |  10.10.75.1/24  |  -  |  -  |  -  |  -  |
 | Vlan81 |  Tenant_C  |  -  |  10.10.81.1/24  |  -  |  -  |  -  |  -  |
 | Vlan83 |  default  |  -  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |
@@ -112,6 +114,12 @@ interface Management1
 | Vlan2001 |  Tenant_B  |  -  |  10.2.1.1/24  |  -  |  -  |  -  |  -  |
 | Vlan2002 |  Tenant_B  |  -  |  10.2.2.1/24  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  169.254.252.0/31  |  -  |  -  |  -  |  -  |  -  |
+
+##### IP NAT: Destination Dynamic
+
+| Interface | Access List | Pool Name | Priority | Comment |
+| --------- | ----------- | --------- | -------- | ------- |
+| Vlan50 | ACL1 | POOL1 | 0 |  |
 
 ##### IPv6
 
@@ -205,6 +213,10 @@ interface Vlan44
    ipv6 dhcp relay destination a0::5 vrf TEST source-address a0::6 link-address a0::7
    ipv6 dhcp relay destination a0::8
    ipv6 address a0::4/64
+!
+interface Vlan50
+   description IP NAT Testing
+   ip nat destination dynamic access-list ACL1 pool POOL1
 !
 interface Vlan75
    description SVI Description
