@@ -30,7 +30,7 @@ class RouterOspfMixin(UtilsMixin):
                         "id": self.shared_utils.underlay_ospf_process_id,
                         "no_passive_interfaces": no_passive_interfaces,
                     }
-                ],
+                ]
             }
 
         return None
