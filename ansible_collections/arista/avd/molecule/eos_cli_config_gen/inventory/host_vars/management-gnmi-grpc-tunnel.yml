@@ -15,7 +15,8 @@ management_api_gnmi:
         port: 10001
       target:
         use_serial_number: false
-        target_id: testid1
+        target_ids:
+        - testid100
     - name: multipletargets
       shutdown: false
       tunnel_ssl_profile: ssl_profile
@@ -29,7 +30,11 @@ management_api_gnmi:
         port: 10001
       target:
         use_serial_number: false
-        target_id: testid1 testid2 testid3
+        target_ids:
+        - testid1
+        - testid2
+        - testid3
+        - testid4
     - name: serialandtargets
       shutdown: false
       tunnel_ssl_profile: ssl_profile
@@ -43,4 +48,6 @@ management_api_gnmi:
         port: 10001
       target:
         use_serial_number: true
-        target_id: testid1 testid2
+        target_ids:
+        - testid10
+        - testid20

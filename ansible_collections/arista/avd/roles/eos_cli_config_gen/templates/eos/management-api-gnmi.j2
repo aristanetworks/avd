@@ -60,13 +60,13 @@ management api gnmi
       local interface {{ transport.local_interface.name }} port {{ transport.local_interface.port }}
 {%                 endif %}
 {%                 if transport.target.use_serial_number is arista.avd.defined(true) %}
-{%                     if transport.target.target_id is arista.avd.defined %}
-      target serial-number {{ transport.target.target_id }}
+{%                     if transport.target.target_ids is arista.avd.defined %}
+      target serial-number {{ transport.target.target_ids | join(' ') }}
 {%                     else %}
       target serial-number
 {%                     endif %}
-{%                 elif transport.target.target_id is arista.avd.defined %}
-      target {{ transport.target.target_id }}
+{%                 elif transport.target.target_ids is arista.avd.defined %}
+      target {{ transport.target.target_ids | join(' ') }}
 {%                 endif %}
 {%             endfor %}
 {%         endif %}

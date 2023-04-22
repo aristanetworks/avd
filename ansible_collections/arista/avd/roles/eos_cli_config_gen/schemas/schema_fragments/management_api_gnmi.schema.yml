@@ -99,10 +99,7 @@ keys:
                     target_ids:
                       type: list
                       description: |
-                        Target IDs as a string. More than one Target ID can be specified.
-                        Examples:
-                        - "id1 id2 id3"
-                        - "id1"
+                        Target IDs as a list.
       enable_vrfs:
         type: list
         primary_key: name

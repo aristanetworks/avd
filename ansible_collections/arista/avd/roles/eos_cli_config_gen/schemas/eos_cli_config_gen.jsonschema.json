@@ -6430,10 +6430,10 @@
                         "description": "Use serial number as the Target ID",
                         "title": "Use Serial Number"
                       },
-                      "target_id": {
-                        "type": "string",
-                        "description": "Target IDs as a string. More than one Target ID can be specified.\nExamples:\n- \"id1 id2 id3\"\n- \"id1\"\n",
-                        "title": "Target ID"
+                      "target_ids": {
+                        "type": "array",
+                        "description": "Target IDs as a list.\n",
+                        "title": "Target IDs"
                       }
                     },
                     "additionalProperties": false,

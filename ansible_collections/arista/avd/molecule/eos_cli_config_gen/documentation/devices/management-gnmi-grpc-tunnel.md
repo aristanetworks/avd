@@ -40,9 +40,9 @@ interface Management1
 
 | Transport | Destination | Destination Port | gNMI SSL Profile | Tunnel SSL Profile | VRF | Local Interface | Local Port | Target ID |
 | --------- | ----------- | ---------------- | ---------------- | ------------------ | --- | --------------- | ---------- | --------- |
-| onetarget | 10.1.1.100 | 10000 | ssl_profile | ssl_profile | management | Management1 | 10001 | testid1 |
-| multipletargets | 10.1.1.100 | 10000 | ssl_profile | ssl_profile | management | Management1 | 10001 | testid1 testid2 testid3 |
-| serialandtargets | 10.1.1.100 | 10000 | ssl_profile | ssl_profile | management | Management1 | 10001 | Serial Number testid1 testid2 |
+| onetarget | 10.1.1.100 | 10000 | ssl_profile | ssl_profile | management | Management1 | 10001 | testid100 |
+| multipletargets | 10.1.1.100 | 10000 | ssl_profile | ssl_profile | management | Management1 | 10001 | testid1 testid2 testid3 testid4 |
+| serialandtargets | 10.1.1.100 | 10000 | ssl_profile | ssl_profile | management | Management1 | 10001 | Serial Number testid10 testid20 |
 
 Provider eos-native is configured.
 
@@ -58,7 +58,7 @@ management api gnmi
       gnmi ssl profile ssl_profile
       destination 10.1.1.100 port 10000
       local interface Management1 port 10001
-      target testid1
+      target testid100
    transport grpc-tunnel multipletargets
       no shutdown
       vrf management
@@ -66,7 +66,7 @@ management api gnmi
       gnmi ssl profile ssl_profile
       destination 10.1.1.100 port 10000
       local interface Management1 port 10001
-      target testid1 testid2 testid3
+      target testid1 testid2 testid3 testid4
    transport grpc-tunnel serialandtargets
       no shutdown
       vrf management
@@ -74,6 +74,6 @@ management api gnmi
       gnmi ssl profile ssl_profile
       destination 10.1.1.100 port 10000
       local interface Management1 port 10001
-      target serial-number testid1 testid2
+      target serial-number testid10 testid20
    provider eos-native
 ```
