@@ -96,7 +96,7 @@ keys:
                     use_serial_number:
                       type: bool
                       description: Use serial number as the Target ID
-                    target_id:
+                    target_ids:
                       type: str
                       description: |
                         Target IDs as a string. More than one Target ID can be specified.
