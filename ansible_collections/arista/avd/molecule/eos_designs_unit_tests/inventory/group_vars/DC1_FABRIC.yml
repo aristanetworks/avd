@@ -14,12 +14,12 @@ evpn_hostflap_detection:
 
 # bgp peer groups passwords
 bgp_peer_groups:
-  IPv4_UNDERLAY_PEERS: # Using legacy upper-case keys to test backwards-compatibility
+  ipv4_underlay_peers:
     name: UNDERLAY-PEERS
     password: "0nsCUm70mvSTxVO0ldytrg=="
-  EVPN_OVERLAY_PEERS: # Using legacy upper-case keys to test backwards-compatibility
+  evpn_overlay_peers:
     password: "q+VNViP5i4rVjW1cxFv2wA=="
-  MLAG_IPv4_UNDERLAY_PEER: # Using legacy upper-case keys to test backwards-compatibility
+  mlag_ipv4_underlay_peer:
     name: MLAG-PEERS
     password: "15AwQNBEJ1nyF/kBEtoAGw=="
   ipvpn_gateway_peers:
@@ -248,6 +248,7 @@ l3leaf:
           bgp_as: 65108
           mgmt_ip: 192.168.200.119/24
           uplink_switch_interfaces: [ Ethernet26, Ethernet26, Ethernet26, Ethernet26 ]
+          mlag_ibgp_origin_incomplete: false
         DC1-CL1B:
           platform: 7300X3
           id: 11

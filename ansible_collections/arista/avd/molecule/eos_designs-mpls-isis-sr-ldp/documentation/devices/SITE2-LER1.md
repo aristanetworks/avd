@@ -175,8 +175,9 @@ vlan 2020
 
 | Interface | Description | Type | Vlan ID | Dot1q VLAN Tag |
 | --------- | ----------- | -----| ------- | -------------- |
-| Ethernet6.10 | TENANT_B_SITE_5 | l3dot1q | - | 10 |
+| Ethernet6.10 | TENANT_B_SITE_5_INTRA_L3VPN | l3dot1q | - | 10 |
 | Ethernet6.100 | TENANT_B_SITE_3_OSPF | l3dot1q | - | 100 |
+| Ethernet6.101 | TENANT_B_SITE_5 | l3dot1q | - | 101 |
 
 ##### IPv4
 
@@ -184,8 +185,9 @@ vlan 2020
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet1 | P2P_LINK_TO_SITE2-LSR1_Ethernet1 | routed | - | 100.64.48.15/31 | default | 9178 | False | - | - |
 | Ethernet6 | TENANT_B_SITE_5_WAN_TEST | routed | - | 123.10.10.2/31 | TENANT_B_WAN | - | False | - | - |
-| Ethernet6.10 | TENANT_B_SITE_5 | l3dot1q | - | 192.168.48.2/31 | TENANT_B_WAN | - | False | - | - |
+| Ethernet6.10 | TENANT_B_SITE_5_INTRA_L3VPN | l3dot1q | - | 123.1.1.2/31 | TENANT_B_INTRA | - | False | - | - |
 | Ethernet6.100 | TENANT_B_SITE_3_OSPF | l3dot1q | - | 192.168.48.4/31 | TENANT_B_WAN | - | False | - | - |
+| Ethernet6.101 | TENANT_B_SITE_5 | l3dot1q | - | 192.168.48.2/31 | TENANT_B_WAN | - | False | - | - |
 | Ethernet11 | P2P_LINK_TO_SITE2-LSR2_Port-Channel12 | *routed | 11 | *100.64.49.2/30 | **default | *9178 | *False | **- | **- |
 *Inherited from Port-Channel Interface
 
@@ -246,11 +248,11 @@ interface Ethernet6
    ip address 123.10.10.2/31
 !
 interface Ethernet6.10
-   description TENANT_B_SITE_5
+   description TENANT_B_SITE_5_INTRA_L3VPN
    no shutdown
    encapsulation dot1q vlan 10
-   vrf TENANT_B_WAN
-   ip address 192.168.48.2/31
+   vrf TENANT_B_INTRA
+   ip address 123.1.1.2/31
 !
 interface Ethernet6.100
    description TENANT_B_SITE_3_OSPF
@@ -261,6 +263,13 @@ interface Ethernet6.100
    ip ospf cost 10
    ip ospf network point-to-point
    ip ospf area 0
+!
+interface Ethernet6.101
+   description TENANT_B_SITE_5
+   no shutdown
+   encapsulation dot1q vlan 101
+   vrf TENANT_B_WAN
+   ip address 192.168.48.2/31
 !
 interface Ethernet7
    no shutdown

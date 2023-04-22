@@ -25,6 +25,7 @@ pe,SITE2-LER1,Ethernet5,,,,True
 pe,SITE2-LER1,Ethernet6,l3_interface,,,True
 pe,SITE2-LER1,Ethernet6.10,l3_interface,,,True
 pe,SITE2-LER1,Ethernet6.100,l3_interface,,,True
+pe,SITE2-LER1,Ethernet6.101,l3_interface,,,True
 pe,SITE2-LER1,Ethernet7,l3_interface,,,True
 pe,SITE2-LER1,Ethernet8,cpe,CPE_TENANT_A_SITE2,eth0,True
 pe,SITE2-LER1,Ethernet11,p,SITE2-LSR2,Port-Channel12,True

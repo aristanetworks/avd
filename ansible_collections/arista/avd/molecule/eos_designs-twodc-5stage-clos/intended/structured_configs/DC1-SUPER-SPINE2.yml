@@ -8,44 +8,44 @@ router_bgp:
   - graceful-restart
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
     password: AQQvKeimxJu+uGQ/yYvv9w==
     maximum_routes: 12000
     send_community: all
-    name: IPv4-UNDERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: IPv4-UNDERLAY-PEERS
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   neighbors:
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.16.11.65
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65110.100'
     description: DC1-POD1-SPINE1_Ethernet2
-    ip_address: 172.16.11.65
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.16.11.67
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65110.100'
     description: DC1-POD1-SPINE2_Ethernet2
-    ip_address: 172.16.11.67
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.16.12.65
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65120'
     description: DC1-POD2-SPINE1_Ethernet2
-    ip_address: 172.16.12.65
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.16.12.67
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65120'
     description: DC1-POD2-SPINE2_Ethernet2
-    ip_address: 172.16.12.67
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.17.10.9
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65102'
     description: DC1-RS2_Ethernet1
     bfd: true
-    ip_address: 172.17.10.9
-  - remote_as: '65200'
+  - ip_address: 11.1.2.3
+    remote_as: '65200'
     description: DC2-SUPER-SPINE2
     peer_group: IPv4-UNDERLAY-PEERS
-    ip_address: 11.1.2.3
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -83,7 +83,8 @@ management_api_http:
   enable_https: true
 eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
 ethernet_interfaces:
-- peer: DC1-POD1-SPINE1
+- name: Ethernet1
+  peer: DC1-POD1-SPINE1
   peer_interface: Ethernet2
   peer_type: spine
   description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet2
@@ -96,8 +97,8 @@ ethernet_interfaces:
   ptp:
     enable: true
   ip_address: 172.16.11.64/31
-  name: Ethernet1
-- peer: DC1-POD1-SPINE2
+- name: Ethernet2
+  peer: DC1-POD1-SPINE2
   peer_interface: Ethernet2
   peer_type: spine
   description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet2
@@ -110,8 +111,8 @@ ethernet_interfaces:
   ptp:
     enable: true
   ip_address: 172.16.11.66/31
-  name: Ethernet2
-- peer: DC1-POD2-SPINE1
+- name: Ethernet3
+  peer: DC1-POD2-SPINE1
   peer_interface: Ethernet2
   peer_type: spine
   description: P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet2
@@ -124,8 +125,8 @@ ethernet_interfaces:
   ptp:
     enable: true
   ip_address: 172.16.12.64/31
-  name: Ethernet3
-- peer: DC1-POD2-SPINE2
+- name: Ethernet4
+  peer: DC1-POD2-SPINE2
   peer_interface: Ethernet2
   peer_type: spine
   description: P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet2
@@ -138,8 +139,8 @@ ethernet_interfaces:
   ptp:
     enable: true
   ip_address: 172.16.12.66/31
-  name: Ethernet4
-- peer: DC1-RS2
+- name: Ethernet5
+  peer: DC1-RS2
   peer_interface: Ethernet1
   peer_type: overlay-controller
   description: P2P_LINK_TO_DC1-RS2_Ethernet1
@@ -148,7 +149,6 @@ ethernet_interfaces:
   service_profile: QOS-PROFILE
   type: routed
   ip_address: 172.17.10.8/31
-  name: Ethernet5
 - name: Ethernet6
   peer: DC2-SUPER-SPINE2
   peer_interface: Ethernet4

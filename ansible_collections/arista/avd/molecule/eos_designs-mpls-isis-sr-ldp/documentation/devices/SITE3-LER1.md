@@ -130,13 +130,13 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | MPLS_Overlay_peering | default | 100.70.0.10/32 |
+| Loopback0 | LSR_Router_ID | default | 100.70.0.10/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | MPLS_Overlay_peering | default | 2000:1234:ffff:ffff::a/128 |
+| Loopback0 | LSR_Router_ID | default | 2000:1234:ffff:ffff::a/128 |
 
 ##### ISIS
 
@@ -149,7 +149,7 @@ vlan internal order ascending range 1006 1199
 ```eos
 !
 interface Loopback0
-   description MPLS_Overlay_peering
+   description LSR_Router_ID
    no shutdown
    ip address 100.70.0.10/32
    ipv6 address 2000:1234:ffff:ffff::a/128

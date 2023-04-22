@@ -22,7 +22,7 @@ class StaticRoutesMixin(UtilsMixin):
         - static routes added automatically for VARP with prefixes
         """
 
-        if not self._network_services_l3:
+        if not self.shared_utils.network_services_l3:
             return None
 
         static_routes = []

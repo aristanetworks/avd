@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [DNS Domain](#dns-domain)
-  - [Name Servers](#name-servers)
+  - [IP Name Servers](#ip-name-servers)
   - [Domain Lookup](#domain-lookup)
   - [NTP](#ntp)
 
@@ -48,20 +48,24 @@ dns domain test.local
 !
 ```
 
-### Name Servers
+### IP Name Servers
 
-#### Name Servers Summary
+#### IP Name Servers Summary
 
-| Name Server | Source VRF |
-| ----------- | ---------- |
-| 10.10.128.10 | mgt |
-| 10.10.129.10 | mgt |
+| Name Server | VRF | Priority |
+| ----------- | --- | -------- |
+| 10.10.128.10 | - | - |
+| 10.10.129.10 | - | 0 |
+| 10.10.128.10 | mgmt | - |
+| 10.10.128.10 | TEST | 3 |
 
-#### Name Servers Device Configuration
+#### IP Name Servers Device Configuration
 
 ```eos
-ip name-server vrf mgt 10.10.128.10
-ip name-server vrf mgt 10.10.129.10
+ip name-server 10.10.128.10
+ip name-server vrf mgmt 10.10.128.10
+ip name-server vrf TEST 10.10.128.10 priority 3
+ip name-server 10.10.129.10 priority 0
 ```
 
 ### Domain Lookup

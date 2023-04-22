@@ -4,48 +4,49 @@ router_bgp:
   bgp_defaults:
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
+  - name: UNDERLAY-PEERS
+    type: ipv4
     password: 0nsCUm70mvSTxVO0ldytrg==
     maximum_routes: 12000
     send_community: all
-    name: UNDERLAY-PEERS
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     password: q+VNViP5i4rVjW1cxFv2wA==
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 3
-    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: UNDERLAY-PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   neighbors:
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 10.10.101.2
+    peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     description: DC1-SPINE1_Ethernet20
-    ip_address: 10.10.101.2
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.1
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE1
     remote_as: '65001'
-    ip_address: 192.168.255.1
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
     evpn_hostflap_detection:
       window: 180
       threshold: 5
       enabled: true
       expiry_timeout: 10
   vrfs:
-  - router_id: 192.168.255.34
+  - name: Tenant_X_OP_Zone
+    router_id: 192.168.255.34
     rd: 192.168.255.34:20
     route_targets:
       import:
@@ -58,16 +59,15 @@ router_bgp:
         - '20:20'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_X_OP_Zone
   vlan_aware_bundles:
-  - rd: 192.168.255.34:20
+  - name: Tenant_X_OP_Zone
+    rd: 192.168.255.34:20
     route_targets:
       both:
       - '20:20'
     redistribute_routes:
     - learned
     vlan: '310'
-    name: Tenant_X_OP_Zone
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -89,12 +89,11 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-name_server:
-  source:
-    vrf: MGMT
-  nodes:
-  - 192.168.200.5
-  - 8.8.8.8
+ip_name_servers:
+- ip_address: 192.168.200.5
+  vrf: MGMT
+- ip_address: 8.8.8.8
+  vrf: MGMT
 snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS MH-LEAF1B
@@ -135,7 +134,8 @@ lacp:
       begin: 129
       end: 256
 ethernet_interfaces:
-- peer: DC1-SPINE1
+- name: Ethernet1
+  peer: DC1-SPINE1
   peer_interface: Ethernet20
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet20
@@ -146,8 +146,8 @@ ethernet_interfaces:
   - name: LT_GROUP1
     direction: upstream
   ip_address: 10.10.101.3/31
-  name: Ethernet1
-- peer: server01_ES1
+- name: Ethernet10
+  peer: server01_ES1
   peer_interface: Eth2
   peer_type: server
   port_profile: Tenant_X
@@ -159,8 +159,8 @@ ethernet_interfaces:
   channel_group:
     id: 10
     mode: active
-  name: Ethernet10
-- peer: server03_AUTO_ESI
+- name: Ethernet12
+  peer: server03_AUTO_ESI
   peer_interface: Eth2
   peer_type: server
   port_profile: Tenant_X
@@ -172,8 +172,8 @@ ethernet_interfaces:
   channel_group:
     id: 12
     mode: active
-  name: Ethernet12
-- peer: server04_AUTO_ESI_Profile
+- name: Ethernet13
+  peer: server04_AUTO_ESI_Profile
   peer_interface: Eth2
   peer_type: server
   port_profile: Tenant_ESI_Auto
@@ -185,8 +185,8 @@ ethernet_interfaces:
   channel_group:
     id: 13
     mode: active
-  name: Ethernet13
-- peer: server05_AUTO_ESI_Profile_Override
+- name: Ethernet14
+  peer: server05_AUTO_ESI_Profile_Override
   peer_interface: Eth2
   peer_type: server
   port_profile: Tenant_ESI_Auto
@@ -198,8 +198,8 @@ ethernet_interfaces:
   channel_group:
     id: 14
     mode: active
-  name: Ethernet14
-- peer: server06_Single_Active_Port_Channel
+- name: Ethernet15
+  peer: server06_Single_Active_Port_Channel
   peer_interface: Eth2
   peer_type: server
   port_profile: Tenant_X_Trunk_Auto
@@ -211,8 +211,8 @@ ethernet_interfaces:
   channel_group:
     id: 15
     mode: active
-  name: Ethernet15
-- peer: server07_Single_Active_Port_Channel_Manual_DF
+- name: Ethernet16
+  peer: server07_Single_Active_Port_Channel_Manual_DF
   peer_interface: Eth2
   peer_type: server
   port_profile: Tenant_X_Trunk
@@ -224,8 +224,8 @@ ethernet_interfaces:
   channel_group:
     id: 16
     mode: active
-  name: Ethernet16
-- peer: server08_Single_Active_Ethernet
+- name: Ethernet17
+  peer: server08_Single_Active_Ethernet
   peer_interface: Eth2
   peer_type: server
   port_profile: Tenant_X_Trunk_Auto_Eth
@@ -241,8 +241,8 @@ ethernet_interfaces:
     designated_forwarder_election:
       algorithm: preference
       preference_value: 0
-  name: Ethernet17
-- peer: server09_All_Active_Ethernet
+- name: Ethernet18
+  peer: server09_All_Active_Ethernet
   peer_interface: Eth2
   peer_type: server
   port_profile: Tenant_X_Trunk
@@ -257,8 +257,8 @@ ethernet_interfaces:
     route_target: 00:dd:00:dd:00:dd
     designated_forwarder_election:
       algorithm: modulus
-  name: Ethernet18
-- peer: server10_Single_Active_Ethernet_Manual_DF
+- name: Ethernet19
+  peer: server10_Single_Active_Ethernet_Manual_DF
   peer_interface: Eth2
   peer_type: server
   port_profile: Tenant_X_Trunk
@@ -274,8 +274,8 @@ ethernet_interfaces:
     designated_forwarder_election:
       algorithm: preference
       preference_value: 250
-  name: Ethernet19
-- peer: server11_Single_Active_Port_Channel_Manual_DF_Dont_Preempt
+- name: Ethernet20
+  peer: server11_Single_Active_Port_Channel_Manual_DF_Dont_Preempt
   peer_interface: Eth2
   peer_type: server
   port_profile: Tenant_X_Trunk
@@ -287,8 +287,8 @@ ethernet_interfaces:
   channel_group:
     id: 20
     mode: active
-  name: Ethernet20
-- peer: server12_Single_Active_Ethernet_Manual_DF_Dont_Preempt
+- name: Ethernet21
+  peer: server12_Single_Active_Ethernet_Manual_DF_Dont_Preempt
   peer_interface: Eth2
   peer_type: server
   port_profile: Tenant_X_Trunk
@@ -305,8 +305,8 @@ ethernet_interfaces:
       algorithm: preference
       preference_value: 250
       dont_preempt: true
-  name: Ethernet21
-- peer: server13_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_modulus
+- name: Ethernet22
+  peer: server13_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_modulus
   peer_interface: Eth2
   peer_type: server
   port_profile: Tenant_X_Trunk
@@ -318,8 +318,8 @@ ethernet_interfaces:
   channel_group:
     id: 22
     mode: active
-  name: Ethernet22
-- peer: server14_Single_Active_Ethernet_Manual_DF_Dont_Preempt_modulus
+- name: Ethernet23
+  peer: server14_Single_Active_Ethernet_Manual_DF_Dont_Preempt_modulus
   peer_interface: Eth2
   peer_type: server
   port_profile: Tenant_X_Trunk
@@ -334,8 +334,8 @@ ethernet_interfaces:
     route_target: 26:2b:7d:f9:c9:8b
     designated_forwarder_election:
       algorithm: modulus
-  name: Ethernet23
-- peer: ROUTER02_WITH_SUBIF
+- name: Ethernet11
+  peer: ROUTER02_WITH_SUBIF
   peer_interface: Eth2
   peer_type: router
   description: ROUTER02_WITH_SUBIF_Eth2
@@ -344,7 +344,6 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  name: Ethernet11
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

@@ -4,87 +4,91 @@ router_bgp:
   bgp_defaults:
   - maximum-paths 4 ecmp 4
   peer_groups:
-    UNDERLAY-PEERS:
-      type: ipv4
-      password: 0nsCUm70mvSTxVO0ldytrg==
-      maximum_routes: 12000
-      send_community: all
-      route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
-    EVPN-OVERLAY-PEERS:
-      type: evpn
-      update_source: Loopback0
-      bfd: true
-      password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: all
-      maximum_routes: 0
-      ebgp_multihop: 3
+  - name: UNDERLAY-PEERS
+    type: ipv4
+    password: 0nsCUm70mvSTxVO0ldytrg==
+    maximum_routes: 12000
+    send_community: all
+    route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    update_source: Loopback0
+    bfd: true
+    password: q+VNViP5i4rVjW1cxFv2wA==
+    send_community: all
+    maximum_routes: 0
+    ebgp_multihop: 3
   address_family_ipv4:
     peer_groups:
-      UNDERLAY-PEERS:
-        activate: true
-      EVPN-OVERLAY-PEERS:
-        activate: false
+    - name: UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   redistribute_routes:
-    connected:
-      route_map: RM-CONN-2-BGP
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   neighbors:
-    10.10.101.4:
-      peer_group: UNDERLAY-PEERS
-      remote_as: '65001'
-      description: DC1-SPINE1_Ethernet12
-    192.168.255.1:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-SPINE1
-      remote_as: '65001'
+  - ip_address: 10.10.101.4
+    peer_group: UNDERLAY-PEERS
+    remote_as: '65001'
+    description: DC1-SPINE1_Ethernet12
+  - ip_address: 192.168.255.1
+    peer_group: EVPN-OVERLAY-PEERS
+    description: DC1-SPINE1
+    remote_as: '65001'
   address_family_evpn:
     peer_groups:
-      EVPN-OVERLAY-PEERS:
-        activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
     evpn_hostflap_detection:
       window: 180
       threshold: 5
       enabled: true
       expiry_timeout: 10
   vrfs:
-    default:
-      rd: 192.168.255.35:21
-      route_targets:
-        import:
-          evpn:
-          - '21:21'
-        export:
-          evpn:
-          - '21:21'
-          - route-map RM-EVPN-EXPORT-VRF-DEFAULT
-    Tenant_X_OP_Zone:
-      router_id: 192.168.255.35
-      rd: 192.168.255.35:20
-      route_targets:
-        import:
-          evpn:
-          - '20:20'
-        export:
-          evpn:
-          - '20:20'
-      redistribute_routes:
-      - connected
-  vlan_aware_bundles:
-    default:
-      rd: 192.168.255.35:21
-      route_targets:
-        both:
+  - name: default
+    rd: 192.168.255.35:21
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
         - '21:21'
-      redistribute_routes:
-      - learned
-      vlan: '311'
-    Tenant_X_OP_Zone:
-      rd: 192.168.255.35:20
-      route_targets:
-        both:
+      export:
+      - address_family: evpn
+        route_targets:
+        - '21:21'
+        - route-map RM-EVPN-EXPORT-VRF-DEFAULT
+  - name: Tenant_X_OP_Zone
+    router_id: 192.168.255.35
+    rd: 192.168.255.35:20
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
         - '20:20'
-      redistribute_routes:
-      - learned
-      vlan: '310'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '20:20'
+    redistribute_routes:
+    - source_protocol: connected
+  vlan_aware_bundles:
+  - name: default
+    rd: 192.168.255.35:21
+    route_targets:
+      both:
+      - '21:21'
+    redistribute_routes:
+    - learned
+    vlan: '311'
+  - name: Tenant_X_OP_Zone
+    rd: 192.168.255.35:20
+    route_targets:
+      both:
+      - '20:20'
+    redistribute_routes:
+    - learned
+    vlan: '310'
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -106,12 +110,11 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-name_server:
-  source:
-    vrf: MGMT
-  nodes:
-  - 192.168.200.5
-  - 8.8.8.8
+ip_name_servers:
+- ip_address: 192.168.200.5
+  vrf: MGMT
+- ip_address: 8.8.8.8
+  vrf: MGMT
 snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS MH-LEAF2A
@@ -154,41 +157,41 @@ lacp:
       begin: 257
       end: 768
 ethernet_interfaces:
-  Ethernet1:
-    peer: DC1-SPINE1
-    peer_interface: Ethernet12
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE1_Ethernet12
-    shutdown: false
-    mtu: 1500
-    type: routed
-    link_tracking_groups:
-    - name: Eth-conn-to-router
-      direction: upstream
-    ip_address: 10.10.101.5/31
-  Ethernet2:
-    peer: MH-L2LEAF1A
-    peer_interface: Ethernet1
-    peer_type: l2leaf
-    description: MH-L2LEAF1A_Ethernet1
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 2
-      mode: active
-  Ethernet10:
-    peer: ROUTER01
-    peer_interface: Eth1
-    peer_type: router
-    port_profile: Tenant_X_LT
-    description: ROUTER01_Eth1
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: '310'
-    link_tracking_groups:
-    - name: Eth-conn-to-router
-      direction: downstream
+- name: Ethernet1
+  peer: DC1-SPINE1
+  peer_interface: Ethernet12
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE1_Ethernet12
+  shutdown: false
+  mtu: 1500
+  type: routed
+  link_tracking_groups:
+  - name: Eth-conn-to-router
+    direction: upstream
+  ip_address: 10.10.101.5/31
+- name: Ethernet2
+  peer: MH-L2LEAF1A
+  peer_interface: Ethernet1
+  peer_type: l2leaf
+  description: MH-L2LEAF1A_Ethernet1
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 2
+    mode: active
+- name: Ethernet10
+  peer: ROUTER01
+  peer_interface: Eth1
+  peer_type: router
+  port_profile: Tenant_X_LT
+  description: ROUTER01_Eth1
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '310'
+  link_tracking_groups:
+  - name: Eth-conn-to-router
+    direction: downstream
 port_channel_interfaces:
 - name: Port-Channel2
   description: MH-L2LEAF1A_Po1

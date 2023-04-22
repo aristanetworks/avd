@@ -304,7 +304,7 @@ servers:
   <server-name>:
     adapters:
     - type: <type>
-      server_ports: [ <server-ports> ]
+      endpoint_ports: [ <server-ports> ]
       switch_ports: [ <switchports> ]
       switches: [ <switches> ]
       ptp:
@@ -322,7 +322,7 @@ servers:
   Blue-Grandmaster:
     adapters:
     - type: server
-      server_ports: [ eth1 ]
+      endpoint_ports: [ eth1 ]
       switch_ports: [ Ethernet5 ]
       switches: [ blue-spine1 ]
       structured_config:
@@ -339,7 +339,7 @@ servers:
   Endpoint-with-specific-PTP-profile:
     adapters:
     - type: server
-      server_ports: [ eth3 ]
+      endpoint_ports: [ eth3 ]
       switch_ports: [ Ethernet7 ]
       switches: [ blue-leaf1 ]
       ptp:

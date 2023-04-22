@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [Name Servers](#name-servers)
+  - [IP Name Servers](#ip-name-servers)
   - [NTP](#ntp)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
@@ -77,16 +77,16 @@ interface Management1
    ip address 192.168.200.111/24
 ```
 
-### Name Servers
+### IP Name Servers
 
-#### Name Servers Summary
+#### IP Name Servers Summary
 
-| Name Server | Source VRF |
-| ----------- | ---------- |
-| 192.168.200.5 | MGMT |
-| 8.8.8.8 | MGMT |
+| Name Server | VRF | Priority |
+| ----------- | --- | -------- |
+| 192.168.200.5 | MGMT | - |
+| 8.8.8.8 | MGMT | - |
 
-#### Name Servers Device Configuration
+#### IP Name Servers Device Configuration
 
 ```eos
 ip name-server vrf MGMT 8.8.8.8

@@ -93,6 +93,26 @@ Search list of DNS domains
         vrf: <str>
     ```
 
+## IP Name Servers
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>ip_name_servers</samp>](## "ip_name_servers") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;- ip_address</samp>](## "ip_name_servers.[].ip_address") | String |  |  |  | IPv4 or IPv6 address for DNS server |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "ip_name_servers.[].vrf") | String |  |  |  | VRF Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "ip_name_servers.[].priority") | Integer |  |  | Min: 0<br>Max: 4 | Priority value (lower is first) |
+
+=== "YAML"
+
+    ```yaml
+    ip_name_servers:
+      - ip_address: <str>
+        vrf: <str>
+        priority: <int>
+    ```
+
 ## IP SSH Client Source Interfaces
 
 === "Table"
@@ -439,7 +459,7 @@ Search list of DNS domains
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>name_server</samp>](## "name_server") | Dictionary |  |  |  |  |
+    | [<samp>name_server</samp>](## "name_server") <span style="color:red">deprecated</span> | Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version v5.0.0. Use <samp>ip_name_servers</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;source</samp>](## "name_server.source") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "name_server.source.vrf") | String |  |  |  | VRF Name |
     | [<samp>&nbsp;&nbsp;nodes</samp>](## "name_server.nodes") | List, items: String |  |  |  |  |

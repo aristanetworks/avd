@@ -33,6 +33,26 @@ tenant_a:
           profile: DERIVED_DHCP
           tags: ['opzone']
           enabled: True
+        #test ospf authentication on vlan interface
+        113:
+          name: Tenant_A_OP_Zone_4
+          tags: [ DC1_LEAF1 ]
+          enabled: True
+          ospf:
+            enabled: true
+            area: 0
+            authentication: message-digest
+            point_to_point: true
+            message_digest_keys:
+              - id: 1
+                hash_algorithm: sha1
+                key: "AQQvKeimxJu+uGQ/yYvv9w=="
+              - id: 2
+                key: "AQQvKeimxJu+uGQ/yYvv9w=="
+      ospf:
+        enabled: true
+        nodes:
+          - DC1-LEAF1A
     Tenant_A_WEB_Zone:
       vrf_vni: 11
       mlag_ibgp_peering_ipv4_pool: 172.31.11.0/24

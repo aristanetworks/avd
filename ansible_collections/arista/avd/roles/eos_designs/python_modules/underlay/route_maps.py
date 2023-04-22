@@ -20,12 +20,12 @@ class RouteMapsMixin(UtilsMixin):
         - Route map for connected routes redistribution in BGP
         - Route map to filter peer AS in underlay
         """
-        if self._underlay_bgp is not True:
+        if self.shared_utils.underlay_bgp is not True:
             return None
 
         route_maps = []
 
-        if self._overlay_routing_protocol != "none" and self._underlay_filter_redistribute_connected:
+        if self.shared_utils.overlay_routing_protocol != "none" and self.shared_utils.underlay_filter_redistribute_connected:
             # RM-CONN-2-BGP
             sequence_numbers = []
             sequence_numbers.append(
@@ -38,7 +38,7 @@ class RouteMapsMixin(UtilsMixin):
 
             # SEQ 20 is set by inband management if applicable, so avoid setting that here
 
-            if self._underlay_ipv6 is True:
+            if self.shared_utils.underlay_ipv6 is True:
                 sequence_numbers.append(
                     {
                         "sequence": 30,

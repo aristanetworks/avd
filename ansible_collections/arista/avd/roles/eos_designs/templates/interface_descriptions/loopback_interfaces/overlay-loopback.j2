@@ -1,5 +1,5 @@
 {% if overlay_loopback_description is not arista.avd.defined %}
-{%     if switch.default_mpls_overlay_role in ["server", "client"] %}
+{%     if switch.mpls_overlay_role in ["server", "client"] %}
 {%         set overlay_loopback_description = "MPLS_Overlay_peering" %}
 {%     elif switch.mpls_lsr is arista.avd.defined(true) %}
 {%         set overlay_loopback_description = "LSR_Router_ID" %}

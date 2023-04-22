@@ -8,7 +8,8 @@ router_bgp:
   - graceful-restart
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
+  - name: MLAG-IPv4-UNDERLAY-PEER
+    type: ipv4
     remote_as: '65102'
     next_hop_self: true
     description: dc1-leaf2b
@@ -16,81 +17,81 @@ router_bgp:
     maximum_routes: 12000
     send_community: all
     route_map_in: RM-MLAG-PEER-IN
-    name: MLAG-IPv4-UNDERLAY-PEER
-  - type: ipv4
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
     password: 7x4B4rnJhZB438m9+BrBfQ==
     maximum_routes: 12000
     send_community: all
-    name: IPv4-UNDERLAY-PEERS
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     password: Q4fqtbqcZ7oQuKfuWtNGRQ==
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 3
-    name: EVPN-OVERLAY-PEERS
-  - type: evpn
+  - name: EVPN-OVERLAY-CORE
+    type: evpn
     update_source: Loopback0
     bfd: true
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 15
-    name: EVPN-OVERLAY-CORE
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: MLAG-IPv4-UNDERLAY-PEER
-    - activate: true
-      name: IPv4-UNDERLAY-PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
-    - activate: false
-      name: EVPN-OVERLAY-CORE
+    - name: MLAG-IPv4-UNDERLAY-PEER
+      activate: true
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+    - name: EVPN-OVERLAY-CORE
+      activate: false
   neighbors:
-  - peer_group: MLAG-IPv4-UNDERLAY-PEER
+  - ip_address: 10.255.1.101
+    peer_group: MLAG-IPv4-UNDERLAY-PEER
     description: dc1-leaf2b
-    ip_address: 10.255.1.101
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 10.255.255.8
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
     description: dc1-spine1_Ethernet3
-    ip_address: 10.255.255.8
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 10.255.255.10
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
     description: dc1-spine2_Ethernet3
-    ip_address: 10.255.255.10
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 10.255.0.1
+    peer_group: EVPN-OVERLAY-PEERS
     description: dc1-spine1
     remote_as: '65100'
-    ip_address: 10.255.0.1
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 10.255.0.2
+    peer_group: EVPN-OVERLAY-PEERS
     description: dc1-spine2
     remote_as: '65100'
-    ip_address: 10.255.0.2
-  - peer_group: EVPN-OVERLAY-CORE
+  - ip_address: 10.255.128.15
+    peer_group: EVPN-OVERLAY-CORE
     description: dc2-leaf2a
     remote_as: '65202'
-    ip_address: 10.255.128.15
-  - remote_as: '65202'
+  - ip_address: 172.100.100.1
+    remote_as: '65202'
     description: dc2-leaf2a
     peer_group: IPv4-UNDERLAY-PEERS
-    ip_address: 172.100.100.1
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   address_family_evpn:
     neighbor_default:
       next_hop_self_received_evpn_routes:
         enable: true
         inter_domain: true
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
-    - domain_remote: true
+    - name: EVPN-OVERLAY-PEERS
       activate: true
-      name: EVPN-OVERLAY-CORE
+    - name: EVPN-OVERLAY-CORE
+      domain_remote: true
+      activate: true
   vrfs:
-  - router_id: 10.255.0.5
+  - name: VRF10
+    router_id: 10.255.0.5
     rd: 10.255.0.5:10
     route_targets:
       import:
@@ -104,10 +105,10 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: MLAG-IPv4-UNDERLAY-PEER
-      ip_address: 10.255.1.101
-    name: VRF10
-  - router_id: 10.255.0.5
+    - ip_address: 10.255.1.101
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+  - name: VRF11
+    router_id: 10.255.0.5
     rd: 10.255.0.5:11
     route_targets:
       import:
@@ -121,11 +122,11 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: MLAG-IPv4-UNDERLAY-PEER
-      ip_address: 10.255.1.101
-    name: VRF11
+    - ip_address: 10.255.1.101
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
   vlans:
-  - tenant: TENANT1
+  - id: 11
+    tenant: TENANT1
     rd: 10.255.0.5:10011
     route_targets:
       both:
@@ -138,8 +139,8 @@ router_bgp:
     rd_evpn_domain:
       domain: remote
       rd: 10.255.0.5:10011
-    id: 11
-  - tenant: TENANT1
+  - id: 12
+    tenant: TENANT1
     rd: 10.255.0.5:10012
     route_targets:
       both:
@@ -152,8 +153,8 @@ router_bgp:
     rd_evpn_domain:
       domain: remote
       rd: 10.255.0.5:10012
-    id: 12
-  - tenant: TENANT1
+  - id: 21
+    tenant: TENANT1
     rd: 10.255.0.5:10021
     route_targets:
       both:
@@ -166,8 +167,8 @@ router_bgp:
     rd_evpn_domain:
       domain: remote
       rd: 10.255.0.5:10021
-    id: 21
-  - tenant: TENANT1
+  - id: 22
+    tenant: TENANT1
     rd: 10.255.0.5:10022
     route_targets:
       both:
@@ -180,8 +181,8 @@ router_bgp:
     rd_evpn_domain:
       domain: remote
       rd: 10.255.0.5:10022
-    id: 22
-  - tenant: TENANT1
+  - id: 3401
+    tenant: TENANT1
     rd: 10.255.0.5:13401
     route_targets:
       both:
@@ -194,8 +195,8 @@ router_bgp:
     rd_evpn_domain:
       domain: remote
       rd: 10.255.0.5:13401
-    id: 3401
-  - tenant: TENANT1
+  - id: 3402
+    tenant: TENANT1
     rd: 10.255.0.5:13402
     route_targets:
       both:
@@ -208,7 +209,6 @@ router_bgp:
     rd_evpn_domain:
       domain: remote
       rd: 10.255.0.5:13402
-    id: 3402
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -394,7 +394,8 @@ ethernet_interfaces:
     id: 3
     mode: active
   name: Ethernet4
-- peer: dc1-spine1
+- name: Ethernet1
+  peer: dc1-spine1
   peer_interface: Ethernet3
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet3
@@ -402,8 +403,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.255.255.9/31
-  name: Ethernet1
-- peer: dc1-spine2
+- name: Ethernet2
+  peer: dc1-spine2
   peer_interface: Ethernet3
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE2_Ethernet3
@@ -411,8 +412,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.255.255.11/31
-  name: Ethernet2
-- peer: dc1-leaf2c
+- name: Ethernet8
+  peer: dc1-leaf2c
   peer_interface: Ethernet1
   peer_type: l2leaf
   description: DC1-LEAF2C_Ethernet1
@@ -421,7 +422,6 @@ ethernet_interfaces:
   channel_group:
     id: 8
     mode: active
-  name: Ethernet8
 - name: Ethernet6
   peer: dc2-leaf2a
   peer_interface: Ethernet6
@@ -431,7 +431,8 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ip_address: 172.100.100.0/31
-- peer: dc1-leaf2-server1
+- name: Ethernet5
+  peer: dc1-leaf2-server1
   peer_interface: PCI1
   peer_type: server
   description: dc1-leaf2-server1_PCI1
@@ -444,7 +445,6 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  name: Ethernet5
 mlag_configuration:
   domain_id: DC1_L3_LEAF2
   local_interface: Vlan4094

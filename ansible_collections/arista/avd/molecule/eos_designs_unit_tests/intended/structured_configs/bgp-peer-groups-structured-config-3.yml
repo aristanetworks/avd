@@ -4,35 +4,35 @@ router_bgp:
   bgp_defaults:
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: mpls
+  - name: MPLS-OVERLAY-PEERS
+    type: mpls
     update_source: Loopback0
     bfd: true
     send_community: all
     maximum_routes: 0
     remote_as: '65001'
-    name: MPLS-OVERLAY-PEERS
     description: Description for mpls_overlay_peers via structured_config
-  - type: mpls
+  - name: IPVPN-GATEWAY-PEERS
+    type: mpls
     update_source: Loopback0
     bfd: true
     send_community: all
     maximum_routes: 0
-    name: IPVPN-GATEWAY-PEERS
     description: Description for ipvpn_gateway_peers via structured_config
   address_family_ipv4:
     peer_groups:
-    - activate: false
-      name: MPLS-OVERLAY-PEERS
-    - activate: false
-      name: IPVPN-GATEWAY-PEERS
+    - name: MPLS-OVERLAY-PEERS
+      activate: false
+    - name: IPVPN-GATEWAY-PEERS
+      activate: false
   address_family_evpn:
     neighbor_default:
       encapsulation: mpls
       next_hop_self_source_interface: Loopback0
     peer_groups:
-    - activate: true
-      name: MPLS-OVERLAY-PEERS
-    domain_identifier: 0:1
+    - name: MPLS-OVERLAY-PEERS
+      activate: true
+    domain_identifier: '65535:1'
   bgp:
     bestpath:
       d_path: true
@@ -40,11 +40,11 @@ router_bgp:
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: Loopback0
     peer_groups:
-    - activate: true
-      name: IPVPN-GATEWAY-PEERS
-    - activate: true
-      name: MPLS-OVERLAY-PEERS
-    domain_identifier: 0:2
+    - name: IPVPN-GATEWAY-PEERS
+      activate: true
+    - name: MPLS-OVERLAY-PEERS
+      activate: true
+    domain_identifier: '65535:2'
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

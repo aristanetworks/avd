@@ -6,7 +6,8 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
+  - name: MLAG-PEERS
+    type: ipv4
     remote_as: '65103'
     next_hop_self: true
     description: DC1-SVC3A
@@ -14,78 +15,78 @@ router_bgp:
     maximum_routes: 12000
     send_community: all
     route_map_in: RM-MLAG-PEER-IN
-    name: MLAG-PEERS
-  - type: ipv4
+  - name: UNDERLAY-PEERS
+    type: ipv4
     password: 0nsCUm70mvSTxVO0ldytrg==
     maximum_routes: 12000
     send_community: all
-    name: UNDERLAY-PEERS
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     password: q+VNViP5i4rVjW1cxFv2wA==
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 3
-    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: MLAG-PEERS
-    - activate: true
-      name: UNDERLAY-PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: MLAG-PEERS
+      activate: true
+    - name: UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   neighbors:
-  - peer_group: MLAG-PEERS
+  - ip_address: 10.255.251.6
+    peer_group: MLAG-PEERS
     description: DC1-SVC3A
-    ip_address: 10.255.251.6
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.254.128
+    peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     description: DC1-SPINE1_Ethernet9/1
-    ip_address: 172.31.254.128
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.254.130
+    peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     description: DC1-SPINE2_Ethernet1/9/1
-    ip_address: 172.31.254.130
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.254.132
+    peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     description: DC1-SPINE3_Ethernet1/9/1
-    ip_address: 172.31.254.132
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.254.134
+    peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     description: DC1-SPINE4_Ethernet9/1
-    ip_address: 172.31.254.134
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.1
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE1
     remote_as: '65001'
-    ip_address: 192.168.255.1
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.2
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE2
     remote_as: '65001'
-    ip_address: 192.168.255.2
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.3
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE3
     remote_as: '65001'
-    ip_address: 192.168.255.3
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.4
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE4
     remote_as: '65001'
-    ip_address: 192.168.255.4
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
     evpn_hostflap_detection:
       window: 180
       threshold: 5
       enabled: true
       expiry_timeout: 10
   vrfs:
-  - router_id: 192.168.255.13
+  - name: Tenant_A_APP_Zone
+    router_id: 192.168.255.13
     rd: '65103:12'
     route_targets:
       import:
@@ -99,10 +100,10 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: MLAG-PEERS
-      ip_address: 10.255.251.6
-    name: Tenant_A_APP_Zone
-  - router_id: 192.168.255.13
+    - ip_address: 10.255.251.6
+      peer_group: MLAG-PEERS
+  - name: Tenant_A_DB_Zone
+    router_id: 192.168.255.13
     rd: '65103:13'
     route_targets:
       import:
@@ -116,10 +117,10 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: MLAG-PEERS
-      ip_address: 10.255.251.6
-    name: Tenant_A_DB_Zone
-  - router_id: 192.168.255.13
+    - ip_address: 10.255.251.6
+      peer_group: MLAG-PEERS
+  - name: Tenant_A_OP_Zone
+    router_id: 192.168.255.13
     rd: '65103:9'
     route_targets:
       import:
@@ -133,10 +134,10 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: MLAG-PEERS
-      ip_address: 10.255.251.6
-    name: Tenant_A_OP_Zone
-  - router_id: 192.168.255.13
+    - ip_address: 10.255.251.6
+      peer_group: MLAG-PEERS
+  - name: Tenant_A_WAN_Zone
+    router_id: 192.168.255.13
     rd: '65103:14'
     route_targets:
       import:
@@ -152,10 +153,10 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: MLAG-PEERS
-      ip_address: 10.255.251.6
-    name: Tenant_A_WAN_Zone
-  - router_id: 192.168.255.13
+    - ip_address: 10.255.251.6
+      peer_group: MLAG-PEERS
+  - name: Tenant_A_WEB_Zone
+    router_id: 192.168.255.13
     rd: '65103:11'
     route_targets:
       import:
@@ -169,10 +170,10 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: MLAG-PEERS
-      ip_address: 172.31.11.6
-    name: Tenant_A_WEB_Zone
-  - router_id: 192.168.255.13
+    - ip_address: 172.31.11.6
+      peer_group: MLAG-PEERS
+  - name: Tenant_B_OP_Zone
+    router_id: 192.168.255.13
     rd: '65103:20'
     route_targets:
       import:
@@ -186,10 +187,10 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: MLAG-PEERS
-      ip_address: 10.255.251.6
-    name: Tenant_B_OP_Zone
-  - router_id: 192.168.255.13
+    - ip_address: 10.255.251.6
+      peer_group: MLAG-PEERS
+  - name: Tenant_B_WAN_Zone
+    router_id: 192.168.255.13
     rd: '65103:21'
     route_targets:
       import:
@@ -203,10 +204,10 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: MLAG-PEERS
-      ip_address: 10.255.251.6
-    name: Tenant_B_WAN_Zone
-  - router_id: 192.168.255.13
+    - ip_address: 10.255.251.6
+      peer_group: MLAG-PEERS
+  - name: Tenant_C_OP_Zone
+    router_id: 192.168.255.13
     rd: '65103:30'
     route_targets:
       import:
@@ -220,10 +221,10 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: MLAG-PEERS
-      ip_address: 10.255.251.6
-    name: Tenant_C_OP_Zone
-  - router_id: 192.168.255.13
+    - ip_address: 10.255.251.6
+      peer_group: MLAG-PEERS
+  - name: Tenant_C_WAN_Zone
+    router_id: 192.168.255.13
     rd: '65103:31'
     route_targets:
       import:
@@ -237,51 +238,51 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: MLAG-PEERS
-      ip_address: 10.255.251.6
-    name: Tenant_C_WAN_Zone
+    - ip_address: 10.255.251.6
+      peer_group: MLAG-PEERS
   vlan_aware_bundles:
-  - rd: '65103:12'
+  - name: Tenant_A_APP_Zone
+    rd: '65103:12'
     route_targets:
       both:
       - '12:12'
     redistribute_routes:
     - learned
     vlan: 130-131
-    name: Tenant_A_APP_Zone
-  - rd: '65103:13'
+  - name: Tenant_A_DB_Zone
+    rd: '65103:13'
     route_targets:
       both:
       - '13:13'
     redistribute_routes:
     - learned
     vlan: 140-141
-    name: Tenant_A_DB_Zone
-  - rd: '65103:9'
+  - name: Tenant_A_OP_Zone
+    rd: '65103:9'
     route_targets:
       both:
       - '9:9'
     redistribute_routes:
     - learned
     vlan: 110-112
-    name: Tenant_A_OP_Zone
-  - rd: '65103:14'
+  - name: Tenant_A_WAN_Zone
+    rd: '65103:14'
     route_targets:
       both:
       - '14:14'
     redistribute_routes:
     - learned
     vlan: '150'
-    name: Tenant_A_WAN_Zone
-  - rd: '65103:11'
+  - name: Tenant_A_WEB_Zone
+    rd: '65103:11'
     route_targets:
       both:
       - '11:11'
     redistribute_routes:
     - learned
     vlan: 120-121
-    name: Tenant_A_WEB_Zone
-  - tenant: Tenant_A
+  - name: Tenant_A_NFS
+    tenant: Tenant_A
     rd: 65103:20161
     route_targets:
       both:
@@ -289,8 +290,8 @@ router_bgp:
     redistribute_routes:
     - learned
     vlan: '161'
-    name: Tenant_A_NFS
-  - tenant: Tenant_A
+  - name: Tenant_A_VMOTION
+    tenant: Tenant_A
     rd: 65103:20160
     route_targets:
       both:
@@ -298,39 +299,38 @@ router_bgp:
     redistribute_routes:
     - learned
     vlan: '160'
-    name: Tenant_A_VMOTION
-  - rd: '65103:20'
+  - name: Tenant_B_OP_Zone
+    rd: '65103:20'
     route_targets:
       both:
       - '20:20'
     redistribute_routes:
     - learned
     vlan: 210-211
-    name: Tenant_B_OP_Zone
-  - rd: '65103:21'
+  - name: Tenant_B_WAN_Zone
+    rd: '65103:21'
     route_targets:
       both:
       - '21:21'
     redistribute_routes:
     - learned
     vlan: '250'
-    name: Tenant_B_WAN_Zone
-  - rd: '65103:30'
+  - name: Tenant_C_OP_Zone
+    rd: '65103:30'
     route_targets:
       both:
       - '30:30'
     redistribute_routes:
     - learned
     vlan: 310-311
-    name: Tenant_C_OP_Zone
-  - rd: '65103:31'
+  - name: Tenant_C_WAN_Zone
+    rd: '65103:31'
     route_targets:
       both:
       - '31:31'
     redistribute_routes:
     - learned
     vlan: '350'
-    name: Tenant_C_WAN_Zone
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -352,12 +352,11 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-name_server:
-  source:
-    vrf: MGMT
-  nodes:
-  - 192.168.200.5
-  - 8.8.8.8
+ip_name_servers:
+- ip_address: 192.168.200.5
+  vrf: MGMT
+- ip_address: 8.8.8.8
+  vrf: MGMT
 snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS DC1-SVC3B
@@ -973,7 +972,8 @@ ethernet_interfaces:
     mode: active
   speed: 100g
   name: Ethernet54/1
-- peer: DC1-L2LEAF2A
+- name: Ethernet7
+  peer: DC1-L2LEAF2A
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: DC1-L2LEAF2A_Ethernet2
@@ -982,8 +982,8 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  name: Ethernet7
-- peer: DC1-L2LEAF2B
+- name: Ethernet8
+  peer: DC1-L2LEAF2B
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: DC1-L2LEAF2B_Ethernet2
@@ -992,8 +992,8 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  name: Ethernet8
-- peer: DC1-SPINE1
+- name: Ethernet49/1
+  peer: DC1-SPINE1
   peer_interface: Ethernet9/1
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet9/1
@@ -1002,8 +1002,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.129/31
-  name: Ethernet49/1
-- peer: DC1-SPINE2
+- name: Ethernet50/1
+  peer: DC1-SPINE2
   peer_interface: Ethernet1/9/1
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE2_Ethernet1/9/1
@@ -1012,8 +1012,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.131/31
-  name: Ethernet50/1
-- peer: DC1-SPINE3
+- name: Ethernet51/1
+  peer: DC1-SPINE3
   peer_interface: Ethernet1/9/1
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE3_Ethernet1/9/1
@@ -1022,8 +1022,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.133/31
-  name: Ethernet51/1
-- peer: DC1-SPINE4
+- name: Ethernet52/1
+  peer: DC1-SPINE4
   peer_interface: Ethernet9/1
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE4_Ethernet9/1
@@ -1032,8 +1032,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.135/31
-  name: Ethernet52/1
-- peer: server04_inherit_all_from_profile
+- name: Ethernet11
+  peer: server04_inherit_all_from_profile
   peer_interface: Eth2
   peer_type: server
   port_profile: ALL_WITH_SECURITY
@@ -1059,8 +1059,8 @@ ethernet_interfaces:
     unknown_unicast:
       level: '2'
       unit: percent
-  name: Ethernet11
-- peer: server05_no_profile
+- name: Ethernet12
+  peer: server05_no_profile
   peer_interface: Eth2
   peer_type: server
   description: server05_no_profile_Eth2
@@ -1084,8 +1084,8 @@ ethernet_interfaces:
     unknown_unicast:
       level: '2'
       unit: percent
-  name: Ethernet12
-- peer: server06_override_profile
+- name: Ethernet13
+  peer: server06_override_profile
   peer_interface: Eth2
   peer_type: server
   port_profile: ALL_WITH_SECURITY
@@ -1111,8 +1111,8 @@ ethernet_interfaces:
     unknown_unicast:
       level: '2'
       unit: percent
-  name: Ethernet13
-- peer: server07_inherit_all_from_profile_port_channel
+- name: Ethernet14
+  peer: server07_inherit_all_from_profile_port_channel
   peer_interface: Eth2
   peer_type: server
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
@@ -1141,8 +1141,8 @@ ethernet_interfaces:
   channel_group:
     id: 14
     mode: active
-  name: Ethernet14
-- peer: server08_no_profile_port_channel
+- name: Ethernet15
+  peer: server08_no_profile_port_channel
   peer_interface: Eth2
   peer_type: server
   description: server08_no_profile_port_channel_Eth2
@@ -1169,8 +1169,8 @@ ethernet_interfaces:
   channel_group:
     id: 15
     mode: 'on'
-  name: Ethernet15
-- peer: server09_override_profile_no_port_channel
+- name: Ethernet16
+  peer: server09_override_profile_no_port_channel
   peer_interface: Eth2
   peer_type: server
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
@@ -1196,8 +1196,8 @@ ethernet_interfaces:
     unknown_unicast:
       level: '2'
       unit: percent
-  name: Ethernet16
-- peer: server10_no_profile_port_channel_lacp_fallback
+- name: Ethernet17
+  peer: server10_no_profile_port_channel_lacp_fallback
   peer_interface: Eth2
   peer_type: server
   description: server10_no_profile_port_channel_lacp_fallback_Eth2
@@ -1225,8 +1225,8 @@ ethernet_interfaces:
     id: 17
     mode: passive
   lacp_port_priority: 32768
-  name: Ethernet17
-- peer: server11_inherit_profile_port_channel_lacp_fallback
+- name: Ethernet18
+  peer: server11_inherit_profile_port_channel_lacp_fallback
   peer_interface: Eth2
   peer_type: server
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
@@ -1256,8 +1256,8 @@ ethernet_interfaces:
     id: 18
     mode: active
   lacp_port_priority: 32768
-  name: Ethernet18
-- peer: server12_inherit_nested_profile_port_channel_lacp_fallback
+- name: Ethernet19
+  peer: server12_inherit_nested_profile_port_channel_lacp_fallback
   peer_interface: Eth2
   peer_type: server
   port_profile: NESTED_PORT_PROFILE
@@ -1287,8 +1287,8 @@ ethernet_interfaces:
     id: 19
     mode: active
   lacp_port_priority: 32768
-  name: Ethernet19
-- peer: server13_disabled_interfaces
+- name: Ethernet20
+  peer: server13_disabled_interfaces
   peer_interface: Eth2
   peer_type: server
   port_profile: TENANT_A
@@ -1297,8 +1297,8 @@ ethernet_interfaces:
   shutdown: true
   mode: access
   vlans: '110'
-  name: Ethernet20
-- peer: server14_explicitly_enabled_interfaces
+- name: Ethernet21
+  peer: server14_explicitly_enabled_interfaces
   peer_interface: Eth2
   peer_type: server
   port_profile: TENANT_A
@@ -1307,8 +1307,8 @@ ethernet_interfaces:
   shutdown: false
   mode: access
   vlans: '110'
-  name: Ethernet21
-- peer: server15_port_channel_with_disabled_phy_interfaces
+- name: Ethernet22
+  peer: server15_port_channel_with_disabled_phy_interfaces
   peer_interface: Eth2
   peer_type: server
   port_profile: TENANT_A
@@ -1320,8 +1320,8 @@ ethernet_interfaces:
   channel_group:
     id: 22
     mode: active
-  name: Ethernet22
-- peer: server16_port_channel_with_disabled_port_channel
+- name: Ethernet23
+  peer: server16_port_channel_with_disabled_port_channel
   peer_interface: Eth2
   peer_type: server
   port_profile: TENANT_A
@@ -1333,8 +1333,8 @@ ethernet_interfaces:
   channel_group:
     id: 23
     mode: active
-  name: Ethernet23
-- peer: server17_port_channel_with_disabled_phy_and_po_interfaces
+- name: Ethernet24
+  peer: server17_port_channel_with_disabled_phy_and_po_interfaces
   peer_interface: Eth2
   peer_type: server
   port_profile: TENANT_A
@@ -1346,8 +1346,8 @@ ethernet_interfaces:
   channel_group:
     id: 24
     mode: active
-  name: Ethernet24
-- peer: server18_monitoring_session_source_phys_interfaces
+- name: Ethernet25
+  peer: server18_monitoring_session_source_phys_interfaces
   peer_interface: Eth2
   peer_type: server
   port_profile: TENANT_A
@@ -1356,8 +1356,8 @@ ethernet_interfaces:
   shutdown: false
   mode: access
   vlans: '110'
-  name: Ethernet25
-- peer: server18_monitoring_session_source_po
+- name: Ethernet27
+  peer: server18_monitoring_session_source_po
   peer_interface: Eth4
   peer_type: server
   port_profile: TENANT_A
@@ -1369,15 +1369,15 @@ ethernet_interfaces:
   channel_group:
     id: 27
     mode: active
-  name: Ethernet27
-- peer: server19_monitoring_session_destination_phys
+- name: Ethernet26
+  peer: server19_monitoring_session_destination_phys
   peer_interface: Eth2
   peer_type: server
   description: server19_monitoring_session_destination_phys_Eth2
   type: switched
   shutdown: false
-  name: Ethernet26
-- peer: server21_monitoring_session_destination_po
+- name: Ethernet42
+  peer: server21_monitoring_session_destination_po
   peer_interface: Eth2
   peer_type: server
   port_profile: TENANT_A
@@ -1389,8 +1389,8 @@ ethernet_interfaces:
   channel_group:
     id: 42
     mode: active
-  name: Ethernet42
-- peer: server22_port_channel_with_custom_id
+- name: Ethernet29
+  peer: server22_port_channel_with_custom_id
   peer_interface: Eth2
   peer_type: server
   port_profile: TENANT_A
@@ -1402,7 +1402,6 @@ ethernet_interfaces:
   channel_group:
     id: 1291
     mode: active
-  name: Ethernet29
 mlag_configuration:
   domain_id: DC1_SVC3
   local_interface: Vlan4092

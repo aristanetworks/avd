@@ -87,7 +87,7 @@ class AvdToDocumentationSchemaConverter:
     def __init__(self, avdschema: AvdSchema):
         self._avdschema = avdschema
         meta_schema = self._avdschema._validator.META_SCHEMA
-        documentation_options_schema = meta_schema["$def"]["documentation_options"]
+        documentation_options_schema = meta_schema["$defs"]["documentation_options"]
         self._default_filename = documentation_options_schema["properties"]["filename"]["default"]
 
     def convert_schema(self):
@@ -359,6 +359,8 @@ class AvdToDocumentationSchemaConverter:
 
     def restrictions(self, schema: dict):
         restrictions = []
+        if schema.get("convert_to_lower_case"):
+            restrictions.append("Value is converted to lower case")
         if schema.get("min") is not None:
             restrictions.append(f"Min: {schema['min']}")
         if schema.get("max") is not None:

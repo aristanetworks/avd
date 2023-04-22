@@ -8,7 +8,8 @@ router_bgp:
   - graceful-restart
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
+  - name: MLAG-IPv4-UNDERLAY-PEER
+    type: ipv4
     remote_as: '65112.100'
     next_hop_self: true
     description: DC1.POD1.LEAF2A
@@ -16,82 +17,81 @@ router_bgp:
     maximum_routes: 12000
     send_community: all
     route_map_in: RM-MLAG-PEER-IN
-    name: MLAG-IPv4-UNDERLAY-PEER
-  - type: ipv4
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
     password: AQQvKeimxJu+uGQ/yYvv9w==
     maximum_routes: 12000
     send_community: all
-    name: IPv4-UNDERLAY-PEERS
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     password: q+VNViP5i4rVjW1cxFv2wA==
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 5
-    name: EVPN-OVERLAY-PEERS
-  - type: evpn
+  - name: EVPN-OVERLAY-CORE
+    type: evpn
     update_source: Loopback0
     bfd: true
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 15
-    name: EVPN-OVERLAY-CORE
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: MLAG-IPv4-UNDERLAY-PEER
-    - activate: true
-      name: IPv4-UNDERLAY-PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
-    - activate: false
-      name: EVPN-OVERLAY-CORE
+    - name: MLAG-IPv4-UNDERLAY-PEER
+      activate: true
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+    - name: EVPN-OVERLAY-CORE
+      activate: false
   neighbors:
-  - peer_group: MLAG-IPv4-UNDERLAY-PEER
+  - ip_address: 172.20.110.2
+    peer_group: MLAG-IPv4-UNDERLAY-PEER
     description: DC1.POD1.LEAF2A
-    ip_address: 172.20.110.2
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.17.110.16
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65110.100'
     description: DC1-POD1-SPINE1_Ethernet5
-    ip_address: 172.17.110.16
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.17.110.18
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65110.100'
     description: DC1-POD1-SPINE2_Ethernet5
-    ip_address: 172.17.110.18
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.17.110.20
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65110.100'
     description: DC1-POD1-SPINE1_Ethernet8
-    ip_address: 172.17.110.20
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.17.110.22
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65110.100'
     description: DC1-POD1-SPINE2_Ethernet8
-    ip_address: 172.17.110.22
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 172.16.110.3
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-POD1-LEAF1A
     remote_as: '65111.100'
     route_map_out: RM-EVPN-FILTER-AS65111.100
-    ip_address: 172.16.110.3
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 172.16.110.1
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-POD1-SPINE1
     remote_as: '65110.100'
     route_map_out: RM-EVPN-FILTER-AS65110.100
-    ip_address: 172.16.110.1
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 172.16.10.1
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-RS1
     remote_as: '65101'
     route_map_out: RM-EVPN-FILTER-AS65101
-    ip_address: 172.16.10.1
-  - peer_group: EVPN-OVERLAY-CORE
+  - ip_address: 1.1.1.1
+    peer_group: EVPN-OVERLAY-CORE
     description: HOSTNAME_NOT_IN_ANSIBLE
     remote_as: '1111'
-    ip_address: 1.1.1.1
-  - remote_as: '65211'
+  - ip_address: 11.1.0.39
+    remote_as: '65211'
     description: DC2-POD1-LEAF1A
     peer_group: IPv4-UNDERLAY-PEERS
     bfd: true
     local_as: '65120'
-    ip_address: 11.1.0.39
   redistribute_routes:
   - source_protocol: connected
   - source_protocol: attached-host
@@ -101,21 +101,22 @@ router_bgp:
         enable: true
         inter_domain: false
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
-    - domain_remote: true
+    - name: EVPN-OVERLAY-PEERS
       activate: true
-      name: EVPN-OVERLAY-CORE
+    - name: EVPN-OVERLAY-CORE
+      domain_remote: true
+      activate: true
     route:
       import_match_failure_action: discard
   address_family_rtc:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
-    - activate: true
-      name: EVPN-OVERLAY-CORE
+    - name: EVPN-OVERLAY-CORE
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
   vrfs:
-  - router_id: 172.16.110.5
+  - name: Common_VRF
+    router_id: 172.16.110.5
     rd: 172.16.110.5:1025
     route_targets:
       import:
@@ -135,8 +136,8 @@ router_bgp:
       EOF
 
       '
-    name: Common_VRF
-  - router_id: 172.16.110.5
+  - name: vrf_with_loopbacks_dc1_pod1_only
+    router_id: 172.16.110.5
     rd: 172.16.110.5:1102
     route_targets:
       import:
@@ -149,8 +150,8 @@ router_bgp:
         - 1102:1102
     redistribute_routes:
     - source_protocol: connected
-    name: vrf_with_loopbacks_dc1_pod1_only
-  - router_id: 172.16.110.5
+  - name: vrf_with_loopbacks_from_overlapping_pool
+    router_id: 172.16.110.5
     rd: 172.16.110.5:1100
     route_targets:
       import:
@@ -163,8 +164,8 @@ router_bgp:
         - 1100:1100
     redistribute_routes:
     - source_protocol: connected
-    name: vrf_with_loopbacks_from_overlapping_pool
-  - router_id: 172.16.110.5
+  - name: vrf_with_loopbacks_from_pod_pools
+    router_id: 172.16.110.5
     rd: 172.16.110.5:1101
     route_targets:
       import:
@@ -177,9 +178,9 @@ router_bgp:
         - 1101:1101
     redistribute_routes:
     - source_protocol: connected
-    name: vrf_with_loopbacks_from_pod_pools
   vlans:
-  - tenant: Tenant_A
+  - id: 110
+    tenant: Tenant_A
     rd: 172.16.110.5:99110
     route_targets:
       both:
@@ -200,8 +201,8 @@ router_bgp:
     rd_evpn_domain:
       domain: remote
       rd: 172.16.110.5:99110
-    id: 110
-  - tenant: Tenant_A
+  - id: 111
+    tenant: Tenant_A
     rd: 172.16.110.5:50111
     route_targets:
       both:
@@ -222,8 +223,8 @@ router_bgp:
     rd_evpn_domain:
       domain: remote
       rd: 172.16.110.5:50111
-    id: 111
-  - tenant: Tenant_A
+  - id: 112
+    tenant: Tenant_A
     rd: 172.16.110.5:20112
     route_targets:
       both:
@@ -244,8 +245,8 @@ router_bgp:
     rd_evpn_domain:
       domain: remote
       rd: 172.16.110.5:20112
-    id: 112
-  - tenant: Tenant_A
+  - id: 2500
+    tenant: Tenant_A
     rd: 172.16.110.5:2500
     route_targets:
       both:
@@ -258,8 +259,8 @@ router_bgp:
     rd_evpn_domain:
       domain: remote
       rd: 172.16.110.5:2500
-    id: 2500
-  - tenant: Tenant_A
+  - id: 2600
+    tenant: Tenant_A
     rd: 172.16.110.5:32600
     route_targets:
       both:
@@ -280,7 +281,6 @@ router_bgp:
     rd_evpn_domain:
       domain: remote
       rd: 172.16.110.5:32600
-    id: 2600
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -542,7 +542,8 @@ ethernet_interfaces:
     id: 5
     mode: active
   name: Ethernet6
-- peer: DC1-POD1-SPINE1
+- name: Ethernet1
+  peer: DC1-POD1-SPINE1
   peer_interface: Ethernet5
   peer_type: spine
   description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet5
@@ -555,8 +556,8 @@ ethernet_interfaces:
   ptp:
     enable: true
   ip_address: 172.17.110.17/31
-  name: Ethernet1
-- peer: DC1-POD1-SPINE2
+- name: Ethernet2
+  peer: DC1-POD1-SPINE2
   peer_interface: Ethernet5
   peer_type: spine
   description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet5
@@ -569,8 +570,8 @@ ethernet_interfaces:
   ptp:
     enable: true
   ip_address: 172.17.110.19/31
-  name: Ethernet2
-- peer: DC1-POD1-L2LEAF2A
+- name: Ethernet3
+  peer: DC1-POD1-L2LEAF2A
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: DC1-POD1-L2LEAF2A_Ethernet2
@@ -579,8 +580,8 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  name: Ethernet3
-- peer: DC1-POD1-L2LEAF2B
+- name: Ethernet4
+  peer: DC1-POD1-L2LEAF2B
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: DC1-POD1-L2LEAF2B_Ethernet2
@@ -589,8 +590,8 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  name: Ethernet4
-- peer: DC1-POD1-SPINE1
+- name: Ethernet11
+  peer: DC1-POD1-SPINE1
   peer_interface: Ethernet8
   peer_type: spine
   description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet8
@@ -603,8 +604,8 @@ ethernet_interfaces:
   ptp:
     enable: true
   ip_address: 172.17.110.21/31
-  name: Ethernet11
-- peer: DC1-POD1-SPINE2
+- name: Ethernet12
+  peer: DC1-POD1-SPINE2
   peer_interface: Ethernet8
   peer_type: spine
   description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet8
@@ -617,7 +618,6 @@ ethernet_interfaces:
   ptp:
     enable: true
   ip_address: 172.17.110.23/31
-  name: Ethernet12
 - name: Ethernet7
   peer: DC2-POD1-LEAF1A
   peer_interface: Ethernet7
@@ -629,7 +629,8 @@ ethernet_interfaces:
   ip_address: 11.1.0.38/31
   ptp:
     enable: true
-- peer: server-1
+- name: Ethernet16
+  peer: server-1
   peer_interface: Eth2
   peer_type: server
   port_profile: TENANT_A
@@ -649,8 +650,8 @@ ethernet_interfaces:
   channel_group:
     id: 16
     mode: active
-  name: Ethernet16
-- peer: server-1
+- name: Ethernet17
+  peer: server-1
   peer_interface: Eth4
   peer_type: server
   port_profile: TENANT_A
@@ -670,8 +671,8 @@ ethernet_interfaces:
   channel_group:
     id: 17
     mode: active
-  name: Ethernet17
-- peer: server-1
+- name: Ethernet18
+  peer: server-1
   peer_interface: Eth6
   peer_type: server
   port_profile: NESTED_TENANT_A
@@ -691,8 +692,8 @@ ethernet_interfaces:
   channel_group:
     id: 18
     mode: active
-  name: Ethernet18
-- peer: server-1
+- name: Ethernet19
+  peer: server-1
   peer_interface: Eth8
   peer_type: server
   port_profile: NESTED_TENANT_A
@@ -712,7 +713,6 @@ ethernet_interfaces:
   channel_group:
     id: 19
     mode: active
-  name: Ethernet19
 mlag_configuration:
   domain_id: RACK2_MLAG
   local_interface: Vlan4094

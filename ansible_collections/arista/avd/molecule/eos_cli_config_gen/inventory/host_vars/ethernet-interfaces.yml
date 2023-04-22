@@ -637,3 +637,41 @@ ethernet_interfaces:
         link_address: a0::5
         vrf: TEST
         local_interface: Loopback55
+
+  - name: Ethernet56
+    description: Interface with poe commands and limit in class
+    poe:
+      priority: low
+      reboot:
+        action: power-off
+      link_down:
+        action: power-off
+        power_off_delay: 10
+      shutdown:
+        action: maintain
+      limit:
+        class: 4
+        fixed: false
+      negotiation_lldp: false
+
+  - name: Ethernet57
+    description: Interface with poe commands and limit in watts
+    poe:
+      disabled: false
+      priority: critical
+      reboot:
+        action: maintain
+      link_down:
+        action: maintain
+      shutdown:
+        action: power-off
+      limit:
+        watts: 45
+        fixed: true
+      legacy_detect: true
+      negotiation_lldp: true
+
+  - name: Ethernet58
+    description: Interface with poe disabled and no other poe keys
+    poe:
+      disabled: true

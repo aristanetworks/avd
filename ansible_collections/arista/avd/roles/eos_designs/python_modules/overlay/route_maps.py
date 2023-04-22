@@ -21,20 +21,20 @@ class RouteMapsMixin(UtilsMixin):
         TODO
         """
 
-        if self._overlay_cvx:
+        if self.shared_utils.overlay_cvx:
             return None
 
-        if self._overlay_mpls is True:
+        if self.shared_utils.overlay_mpls is True:
             # some logic
             pass
-        if self._overlay_evpn is True:
+        if self.shared_utils.overlay_evpn is True:
             # some logic
             pass
 
         route_maps = []
 
-        if self._overlay_routing_protocol == "ebgp":
-            if self._evpn_prevent_readvertise_to_server is True:
+        if self.shared_utils.overlay_routing_protocol == "ebgp":
+            if self.shared_utils.evpn_prevent_readvertise_to_server is True:
                 remote_asns = natural_sort(set(rs_dict.get("bgp_as") for route_server, rs_dict in self._evpn_route_servers.items()))
                 for remote_asn in remote_asns:
                     route_map_name = f"RM-EVPN-FILTER-AS{remote_asn}"
@@ -55,8 +55,8 @@ class RouteMapsMixin(UtilsMixin):
                         }
                     )
 
-        elif self._overlay_routing_protocol == "ibgp":
-            if self._vtep_ip is not None:
+        elif self.shared_utils.overlay_routing_protocol == "ibgp":
+            if self.shared_utils.overlay_vtep:
                 # Route-map IN and OUT for SOO
                 route_maps.append(
                     {
@@ -81,7 +81,7 @@ class RouteMapsMixin(UtilsMixin):
                             {
                                 "sequence": 10,
                                 "type": "permit",
-                                "set": [f"extcommunity soo {self._vtep_ip}:1 additive"],
+                                "set": [f"extcommunity soo {self.shared_utils.vtep_ip}:1 additive"],
                             },
                         ],
                     }

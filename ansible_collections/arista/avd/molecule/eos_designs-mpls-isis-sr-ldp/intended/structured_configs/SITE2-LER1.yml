@@ -8,46 +8,47 @@ router_bgp:
   - graceful-restart
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: mpls
+  - name: MPLS-OVERLAY-PEERS
+    type: mpls
     update_source: Loopback0
     bfd: true
     password: SHsTgDgjVUU5a9blyxSt3Q==
     send_community: all
     maximum_routes: 0
     remote_as: '65000'
-    name: MPLS-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: false
-      name: MPLS-OVERLAY-PEERS
+    - name: MPLS-OVERLAY-PEERS
+      activate: false
   address_family_evpn:
     neighbor_default:
       encapsulation: mpls
       next_hop_self_source_interface: Loopback0
     peer_groups:
-    - activate: true
-      name: MPLS-OVERLAY-PEERS
+    - name: MPLS-OVERLAY-PEERS
+      activate: true
   address_family_vpn_ipv4:
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: Loopback0
     peer_groups:
-    - activate: true
-      name: MPLS-OVERLAY-PEERS
+    - name: MPLS-OVERLAY-PEERS
+      activate: true
   address_family_vpn_ipv6:
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: Loopback0
     peer_groups:
-    - activate: true
-      name: MPLS-OVERLAY-PEERS
+    - name: MPLS-OVERLAY-PEERS
+      activate: true
   neighbors:
-  - peer_group: MPLS-OVERLAY-PEERS
+  - ip_address: 100.70.0.8
+    peer_group: MPLS-OVERLAY-PEERS
     description: SITE1-RR1
-    ip_address: 100.70.0.8
-  - peer_group: MPLS-OVERLAY-PEERS
+  - ip_address: 100.70.0.9
+    peer_group: MPLS-OVERLAY-PEERS
     description: SITE2-RR1
-    ip_address: 100.70.0.9
   vrfs:
-  - router_id: 100.70.0.7
+  - name: TENANT_B_INTRA
+    router_id: 100.70.0.7
     rd: 100.70.0.7:19
     route_targets:
       import:
@@ -61,8 +62,8 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     - source_protocol: static
-    name: TENANT_B_INTRA
-  - router_id: 100.70.0.7
+  - name: TENANT_B_WAN
+    router_id: 100.70.0.7
     rd: 100.70.0.7:20
     route_targets:
       import:
@@ -83,41 +84,40 @@ router_bgp:
     - source_protocol: connected
     - source_protocol: ospf
     neighbors:
-    - description: TENANT_B_CPE_SITE5
+    - ip_address: 192.168.48.3
+      description: TENANT_B_CPE_SITE5
       password: OajzUG59/YF0NkgvOQyRnQ==
       remote_as: '65202'
-      ip_address: 192.168.48.3
     address_families:
-    - neighbors:
-      - activate: true
-        ip_address: 192.168.48.3
-      address_family: ipv4
-    name: TENANT_B_WAN
+    - address_family: ipv4
+      neighbors:
+      - ip_address: 192.168.48.3
+        activate: true
   vlans:
-  - tenant: TENANT_A
+  - id: 10
+    tenant: TENANT_A
     rd: 100.70.0.7:10010
     route_targets:
       both:
       - 65000:10010
     redistribute_routes:
     - learned
-    id: 10
-  - tenant: TENANT_A
+  - id: 20
+    tenant: TENANT_A
     rd: 100.70.0.7:123456
     route_targets:
       both:
       - 65000:123456
     redistribute_routes:
     - learned
-    id: 20
-  - tenant: TENANT_B
+  - id: 2020
+    tenant: TENANT_B
     rd: 100.70.0.7:22020
     route_targets:
       both:
       - 65000:22020
     redistribute_routes:
     - learned
-    id: 2020
   vpws:
   - name: TENANT_A
     rd: 100.70.0.7:1000
@@ -261,7 +261,8 @@ ethernet_interfaces:
       interface: true
       igp_sync: true
   speed: forced 40gfull
-- peer: SITE2-LSR2
+- name: Ethernet11
+  peer: SITE2-LSR2
   peer_interface: Port-Channel12
   peer_type: p
   description: P2P_LINK_TO_SITE2-LSR2_Port-Channel12
@@ -270,8 +271,8 @@ ethernet_interfaces:
     id: 11
     mode: active
   speed: forced 40gfull
-  name: Ethernet11
-- peer: CPE_TENANT_A_SITE2
+- name: Ethernet8
+  peer: CPE_TENANT_A_SITE2
   peer_interface: eth0
   peer_type: cpe
   port_profile: TENANT_A_WAN_SERVICE_10
@@ -281,16 +282,16 @@ ethernet_interfaces:
   mode: trunk
   vlans: '10'
   spanning_tree_portfast: edge
-  name: Ethernet8
-- peer_type: l3_interface
-  ip_address: 192.168.48.2/31
+- name: Ethernet6.10
+  peer_type: l3_interface
+  ip_address: 123.1.1.2/31
   shutdown: false
-  description: TENANT_B_SITE_5
+  description: TENANT_B_SITE_5_INTRA_L3VPN
   type: l3dot1q
   encapsulation_dot1q_vlan: 10
-  vrf: TENANT_B_WAN
-  name: Ethernet6.10
-- peer_type: l3_interface
+  vrf: TENANT_B_INTRA
+- name: Ethernet6.100
+  peer_type: l3_interface
   ip_address: 192.168.48.4/31
   shutdown: false
   description: TENANT_B_SITE_3_OSPF
@@ -300,31 +301,38 @@ ethernet_interfaces:
   ospf_area: '0'
   ospf_network_point_to_point: true
   ospf_cost: 10
-  name: Ethernet6.100
-- peer_type: l3_interface
+- name: Ethernet6.101
+  peer_type: l3_interface
+  ip_address: 192.168.48.2/31
+  shutdown: false
+  description: TENANT_B_SITE_5
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 101
+  vrf: TENANT_B_WAN
+- name: Ethernet6
+  peer_type: l3_interface
   ip_address: 123.10.10.2/31
   shutdown: false
   description: TENANT_B_SITE_5_WAN_TEST
   type: routed
   vrf: TENANT_B_WAN
-  name: Ethernet6
-- type: routed
+- name: Ethernet7
+  type: routed
   peer_type: l3_interface
   shutdown: false
   lldp:
     transmit: false
     receive: false
-  name: Ethernet7
-- shutdown: false
+- name: Ethernet4
+  shutdown: false
   channel_group:
     id: 4
     mode: active
-  name: Ethernet4
-- shutdown: false
+- name: Ethernet5
+  shutdown: false
   channel_group:
     id: 4
     mode: active
-  name: Ethernet5
 port_channel_interfaces:
 - name: Port-Channel11
   peer: SITE2-LSR2

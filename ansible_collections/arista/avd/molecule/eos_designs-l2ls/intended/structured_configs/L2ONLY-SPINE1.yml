@@ -78,7 +78,8 @@ ethernet_interfaces:
     id: 3
     mode: active
   name: Ethernet4
-- peer: L2ONLY-LEAF1
+- name: Ethernet1
+  peer: L2ONLY-LEAF1
   peer_interface: Ethernet1
   peer_type: leaf
   description: L2ONLY-LEAF1_Ethernet1
@@ -87,8 +88,8 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet1
-- peer: L2ONLY-LEAF2
+- name: Ethernet2
+  peer: L2ONLY-LEAF2
   peer_interface: Ethernet1
   peer_type: leaf
   description: L2ONLY-LEAF2_Ethernet1
@@ -97,7 +98,6 @@ ethernet_interfaces:
   channel_group:
     id: 2
     mode: active
-  name: Ethernet2
 mlag_configuration:
   domain_id: L2ONLY_SPINES
   local_interface: Vlan4094

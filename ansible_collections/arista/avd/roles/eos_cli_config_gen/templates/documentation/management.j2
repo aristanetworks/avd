@@ -1,6 +1,8 @@
+{# Remove name_server from the list below in AVD v5.0.0 #}
 {% if management_interfaces is arista.avd.defined
        or dns_domain is arista.avd.defined
        or domain_list is arista.avd.defined
+       or ip_name_servers is arista.avd.defined
        or name_server is arista.avd.defined
        or ip_domain_lookup is arista.avd.defined
        or clock is arista.avd.defined
@@ -24,8 +26,8 @@
 {%     include 'documentation/dns-domain.j2' %}
 {## Domain-list #}
 {%     include 'documentation/domain-list.j2' %}
-{## Name Servers #}
-{%     include 'documentation/name-server.j2' %}
+{## IP Name Servers #}
+{%     include 'documentation/ip-name-servers.j2' %}
 {## Domain Lookup #}
 {%     include 'documentation/ip-domain-lookup.j2' %}
 {## Clock #}

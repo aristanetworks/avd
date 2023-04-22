@@ -8,6 +8,7 @@ keys:
       filename: Fabric Variables
       table: Routing Protocol Selection
     type: str
+    convert_to_lower_case: true
     description: |
       - The following underlay routing protocols are supported:
         - EBGP (default for l3ls-evpn)

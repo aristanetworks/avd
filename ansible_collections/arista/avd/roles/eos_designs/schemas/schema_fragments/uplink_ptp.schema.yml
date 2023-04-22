@@ -11,5 +11,8 @@ keys:
     type: dict
     keys:
       enable:
+        documentation_options:
+          filename: Fabric Variables
+          table: Uplinks Settings
         type: bool
         default: false

@@ -6,210 +6,222 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
   peer_groups:
-    UNDERLAY-PEERS:
-      type: ipv4
-      password: 0nsCUm70mvSTxVO0ldytrg==
-      maximum_routes: 12000
-      send_community: all
-    EVPN-OVERLAY-PEERS:
-      type: evpn
-      update_source: Loopback0
-      bfd: true
-      password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: all
-      maximum_routes: 0
-      ebgp_multihop: 3
+  - name: UNDERLAY-PEERS
+    type: ipv4
+    password: 0nsCUm70mvSTxVO0ldytrg==
+    maximum_routes: 12000
+    send_community: all
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    update_source: Loopback0
+    bfd: true
+    password: q+VNViP5i4rVjW1cxFv2wA==
+    send_community: all
+    maximum_routes: 0
+    ebgp_multihop: 3
   address_family_ipv4:
     peer_groups:
-      UNDERLAY-PEERS:
-        activate: true
-      EVPN-OVERLAY-PEERS:
-        activate: false
+    - name: UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   redistribute_routes:
-    connected:
-      route_map: RM-CONN-2-BGP
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   neighbors:
-    172.31.255.32:
-      peer_group: UNDERLAY-PEERS
-      remote_as: '65001'
-      description: DC1-SPINE1_Ethernet3
-    172.31.255.34:
-      peer_group: UNDERLAY-PEERS
-      remote_as: '65001'
-      description: DC1-SPINE2_Ethernet3
-    172.31.255.36:
-      peer_group: UNDERLAY-PEERS
-      remote_as: '65001'
-      description: DC1-SPINE3_Ethernet3
-    172.31.255.38:
-      peer_group: UNDERLAY-PEERS
-      remote_as: '65001'
-      description: DC1-SPINE4_Ethernet3
-    192.168.255.1:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-SPINE1
-      remote_as: '65001'
-    192.168.255.2:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-SPINE2
-      remote_as: '65001'
-    192.168.255.3:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-SPINE3
-      remote_as: '65001'
-    192.168.255.4:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-SPINE4
-      remote_as: '65001'
+  - ip_address: 172.31.255.32
+    peer_group: UNDERLAY-PEERS
+    remote_as: '65001'
+    description: DC1-SPINE1_Ethernet3
+  - ip_address: 172.31.255.34
+    peer_group: UNDERLAY-PEERS
+    remote_as: '65001'
+    description: DC1-SPINE2_Ethernet3
+  - ip_address: 172.31.255.36
+    peer_group: UNDERLAY-PEERS
+    remote_as: '65001'
+    description: DC1-SPINE3_Ethernet3
+  - ip_address: 172.31.255.38
+    peer_group: UNDERLAY-PEERS
+    remote_as: '65001'
+    description: DC1-SPINE4_Ethernet3
+  - ip_address: 192.168.255.1
+    peer_group: EVPN-OVERLAY-PEERS
+    description: DC1-SPINE1
+    remote_as: '65001'
+  - ip_address: 192.168.255.2
+    peer_group: EVPN-OVERLAY-PEERS
+    description: DC1-SPINE2
+    remote_as: '65001'
+  - ip_address: 192.168.255.3
+    peer_group: EVPN-OVERLAY-PEERS
+    description: DC1-SPINE3
+    remote_as: '65001'
+  - ip_address: 192.168.255.4
+    peer_group: EVPN-OVERLAY-PEERS
+    description: DC1-SPINE4
+    remote_as: '65001'
   address_family_evpn:
     peer_groups:
-      EVPN-OVERLAY-PEERS:
-        activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
     evpn_hostflap_detection:
       window: 180
       threshold: 5
       enabled: true
       expiry_timeout: 10
   vrfs:
-    Tenant_A_APP_Zone:
-      router_id: 192.168.255.11
-      rd: '65001:12'
-      route_targets:
-        import:
-          evpn:
-          - '100000:12'
-        export:
-          evpn:
-          - '100000:12'
-      redistribute_routes:
-      - connected
-    Tenant_A_DB_Zone:
-      router_id: 192.168.255.11
-      rd: '65001:13'
-      route_targets:
-        import:
-          evpn:
-          - '100000:13'
-        export:
-          evpn:
-          - '100000:13'
-      redistribute_routes:
-      - connected
-    Tenant_A_OP_Zone:
-      router_id: 192.168.255.11
-      rd: '65001:9'
-      route_targets:
-        import:
-          evpn:
-          - '100000:9'
-        export:
-          evpn:
-          - '100000:9'
-      redistribute_routes:
-      - connected
-    Tenant_A_WEB_Zone:
-      router_id: 192.168.255.11
-      rd: '65001:11'
-      route_targets:
-        import:
-          evpn:
-          - '100000:11'
-        export:
-          evpn:
-          - '100000:11'
-      redistribute_routes:
-      - connected
-    Tenant_B_OP_Zone:
-      router_id: 192.168.255.11
-      rd: '65001:20'
-      route_targets:
-        import:
-          evpn:
-          - '100000:20'
-        export:
-          evpn:
-          - '100000:20'
-      redistribute_routes:
-      - connected
-    Tenant_C_OP_Zone:
-      router_id: 192.168.255.11
-      rd: '65001:30'
-      route_targets:
-        import:
-          evpn:
-          - '100000:30'
-        export:
-          evpn:
-          - '100000:30'
-      redistribute_routes:
-      - connected
-  vlan_aware_bundles:
-    Tenant_A_APP_Zone:
-      rd: '65001:12'
-      route_targets:
-        both:
+  - name: Tenant_A_APP_Zone
+    router_id: 192.168.255.11
+    rd: '65001:12'
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
         - '100000:12'
-      redistribute_routes:
-      - learned
-      vlan: 130-131
-    Tenant_A_DB_Zone:
-      rd: '65001:13'
-      route_targets:
-        both:
+      export:
+      - address_family: evpn
+        route_targets:
+        - '100000:12'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: Tenant_A_DB_Zone
+    router_id: 192.168.255.11
+    rd: '65001:13'
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
         - '100000:13'
-      redistribute_routes:
-      - learned
-      vlan: 140-141
-    Tenant_A_OP_Zone:
-      rd: '65001:9'
-      route_targets:
-        both:
+      export:
+      - address_family: evpn
+        route_targets:
+        - '100000:13'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: Tenant_A_OP_Zone
+    router_id: 192.168.255.11
+    rd: '65001:9'
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
         - '100000:9'
-      redistribute_routes:
-      - learned
-      vlan: 110-112
-    Tenant_A_WEB_Zone:
-      rd: '65001:11'
-      route_targets:
-        both:
+      export:
+      - address_family: evpn
+        route_targets:
+        - '100000:9'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: Tenant_A_WEB_Zone
+    router_id: 192.168.255.11
+    rd: '65001:11'
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
         - '100000:11'
-      redistribute_routes:
-      - learned
-      vlan: 120-121
-    Tenant_A_NFS:
-      tenant: Tenant_A
-      rd: 65001:20161
-      route_targets:
-        both:
-        - 100000:20161
-      redistribute_routes:
-      - learned
-      vlan: '161'
-    Tenant_A_VMOTION:
-      tenant: Tenant_A
-      rd: 65001:20160
-      route_targets:
-        both:
-        - 100000:20160
-      redistribute_routes:
-      - learned
-      vlan: '160'
-    Tenant_B_OP_Zone:
-      rd: '65001:20'
-      route_targets:
-        both:
+      export:
+      - address_family: evpn
+        route_targets:
+        - '100000:11'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: Tenant_B_OP_Zone
+    router_id: 192.168.255.11
+    rd: '65001:20'
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
         - '100000:20'
-      redistribute_routes:
-      - learned
-      vlan: 210-211
-    Tenant_C_OP_Zone:
-      rd: '65001:30'
-      route_targets:
-        both:
+      export:
+      - address_family: evpn
+        route_targets:
+        - '100000:20'
+    redistribute_routes:
+    - source_protocol: connected
+  - name: Tenant_C_OP_Zone
+    router_id: 192.168.255.11
+    rd: '65001:30'
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
         - '100000:30'
-      redistribute_routes:
-      - learned
-      vlan: 310-311
+      export:
+      - address_family: evpn
+        route_targets:
+        - '100000:30'
+    redistribute_routes:
+    - source_protocol: connected
+  vlan_aware_bundles:
+  - name: Tenant_A_APP_Zone
+    rd: '65001:12'
+    route_targets:
+      both:
+      - '100000:12'
+    redistribute_routes:
+    - learned
+    vlan: 130-131
+  - name: Tenant_A_DB_Zone
+    rd: '65001:13'
+    route_targets:
+      both:
+      - '100000:13'
+    redistribute_routes:
+    - learned
+    vlan: 140-141
+  - name: Tenant_A_OP_Zone
+    rd: '65001:9'
+    route_targets:
+      both:
+      - '100000:9'
+    redistribute_routes:
+    - learned
+    vlan: 110-112
+  - name: Tenant_A_WEB_Zone
+    rd: '65001:11'
+    route_targets:
+      both:
+      - '100000:11'
+    redistribute_routes:
+    - learned
+    vlan: 120-121
+  - name: Tenant_A_NFS
+    tenant: Tenant_A
+    rd: 65001:20161
+    route_targets:
+      both:
+      - 100000:20161
+    redistribute_routes:
+    - learned
+    vlan: '161'
+  - name: Tenant_A_VMOTION
+    tenant: Tenant_A
+    rd: 65001:20160
+    route_targets:
+      both:
+      - 100000:20160
+    redistribute_routes:
+    - learned
+    vlan: '160'
+  - name: Tenant_B_OP_Zone
+    rd: '65001:20'
+    route_targets:
+      both:
+      - '100000:20'
+    redistribute_routes:
+    - learned
+    vlan: 210-211
+  - name: Tenant_C_OP_Zone
+    rd: '65001:30'
+    route_targets:
+      both:
+      - '100000:30'
+    redistribute_routes:
+    - learned
+    vlan: 310-311
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -241,12 +253,11 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-name_server:
-  source:
-    vrf: MGMT
-  nodes:
-  - 192.168.200.5
-  - 8.8.8.8
+ip_name_servers:
+- ip_address: 192.168.200.5
+  vrf: MGMT
+- ip_address: 8.8.8.8
+  vrf: MGMT
 snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS rackD DC1-LEAF2B
@@ -309,173 +320,173 @@ management_api_http:
   enable_https: true
   default_services: false
 ethernet_interfaces:
-  Ethernet1:
-    peer: DC1-SPINE1
-    peer_interface: Ethernet3
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE1_Ethernet3
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.33/31
-  Ethernet2:
-    peer: DC1-SPINE2
-    peer_interface: Ethernet3
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE2_Ethernet3
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.35/31
-  Ethernet3:
-    peer: DC1-SPINE3
-    peer_interface: Ethernet3
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE3_Ethernet3
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.37/31
-  Ethernet4:
-    peer: DC1-SPINE4
-    peer_interface: Ethernet3
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE4_Ethernet3
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.39/31
-  Ethernet7:
-    peer: DC1-L2LEAF1A
-    peer_interface: Ethernet2
-    peer_type: l2leaf
-    description: DC1-L2LEAF1A_Ethernet2
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 7
-      mode: active
-  Ethernet8:
-    peer: DC1-L2LEAF1B
-    peer_interface: Ethernet2
-    peer_type: l2leaf
-    description: DC1-L2LEAF1B_Ethernet2
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 7
-      mode: active
-  Ethernet9:
-    peer: DC1-L2LEAF3A
-    peer_interface: Ethernet2
-    peer_type: l2leaf
-    description: DC1-L2LEAF3A_Ethernet2
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 9
-      mode: active
-  Ethernet13:
-    peer: DC1-L2LEAF4A
-    peer_interface: Ethernet2
-    peer_type: l2leaf
-    description: DC1-L2LEAF4A_Ethernet2
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 13
-      mode: active
-  Ethernet14:
-    peer: DC1-L2LEAF5A
-    peer_interface: Ethernet2
-    peer_type: l2leaf
-    description: DC1-L2LEAF5A_Ethernet2
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 14
-      mode: active
-  Ethernet15:
-    peer: DC1-L2LEAF5B
-    peer_interface: Ethernet2
-    peer_type: l2leaf
-    description: DC1-L2LEAF5B_Ethernet2
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 14
-      mode: active
-  Ethernet10:
-    peer: server01_MLAG
-    peer_interface: Eth3
-    peer_type: server
-    port_profile: TENANT_B
-    description: server01_MLAG_Eth3
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 210-211
-    spanning_tree_bpdufilter: disabled
-    spanning_tree_bpduguard: disabled
-    channel_group:
-      id: 10
-      mode: active
-  Ethernet11:
-    peer: server01_MTU_PROFILE_MLAG
-    peer_interface: Eth5
-    peer_type: server
-    port_profile: TENANT_A_MTU
-    description: server01_MTU_PROFILE_MLAG_Eth5
-    mtu: 1600
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: '110'
-    spanning_tree_bpdufilter: enabled
-    spanning_tree_bpduguard: enabled
-    channel_group:
-      id: 11
-      mode: active
-  Ethernet12:
-    peer: server01_MTU_ADAPTOR_MLAG
-    peer_interface: Eth7
-    peer_type: server
-    description: server01_MTU_ADAPTOR_MLAG_Eth7
-    mtu: 1601
-    type: switched
-    shutdown: false
-    spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: true
-    channel_group:
-      id: 12
-      mode: active
-  Ethernet20:
-    peer: FIREWALL01
-    peer_interface: E1
-    peer_type: firewall
-    port_profile: TENANT_A_B
-    description: FIREWALL01_E1
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 110-111,210-211
-    channel_group:
-      id: 20
-      mode: active
-  Ethernet21:
-    peer: ROUTER01
-    peer_interface: Eth1
-    peer_type: router
-    port_profile: TENANT_A
-    description: ROUTER01_Eth1
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: '110'
+- name: Ethernet1
+  peer: DC1-SPINE1
+  peer_interface: Ethernet3
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE1_Ethernet3
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.33/31
+- name: Ethernet2
+  peer: DC1-SPINE2
+  peer_interface: Ethernet3
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE2_Ethernet3
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.35/31
+- name: Ethernet3
+  peer: DC1-SPINE3
+  peer_interface: Ethernet3
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE3_Ethernet3
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.37/31
+- name: Ethernet4
+  peer: DC1-SPINE4
+  peer_interface: Ethernet3
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE4_Ethernet3
+  speed: forced 100gfull
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 172.31.255.39/31
+- name: Ethernet7
+  peer: DC1-L2LEAF1A
+  peer_interface: Ethernet2
+  peer_type: l2leaf
+  description: DC1-L2LEAF1A_Ethernet2
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 7
+    mode: active
+- name: Ethernet8
+  peer: DC1-L2LEAF1B
+  peer_interface: Ethernet2
+  peer_type: l2leaf
+  description: DC1-L2LEAF1B_Ethernet2
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 7
+    mode: active
+- name: Ethernet9
+  peer: DC1-L2LEAF3A
+  peer_interface: Ethernet2
+  peer_type: l2leaf
+  description: DC1-L2LEAF3A_Ethernet2
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 9
+    mode: active
+- name: Ethernet13
+  peer: DC1-L2LEAF4A
+  peer_interface: Ethernet2
+  peer_type: l2leaf
+  description: DC1-L2LEAF4A_Ethernet2
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 13
+    mode: active
+- name: Ethernet14
+  peer: DC1-L2LEAF5A
+  peer_interface: Ethernet2
+  peer_type: l2leaf
+  description: DC1-L2LEAF5A_Ethernet2
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 14
+    mode: active
+- name: Ethernet15
+  peer: DC1-L2LEAF5B
+  peer_interface: Ethernet2
+  peer_type: l2leaf
+  description: DC1-L2LEAF5B_Ethernet2
+  shutdown: false
+  type: switched
+  channel_group:
+    id: 14
+    mode: active
+- name: Ethernet10
+  peer: server01_MLAG
+  peer_interface: Eth3
+  peer_type: server
+  port_profile: TENANT_B
+  description: server01_MLAG_Eth3
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 210-211
+  spanning_tree_bpdufilter: disabled
+  spanning_tree_bpduguard: disabled
+  channel_group:
+    id: 10
+    mode: active
+- name: Ethernet11
+  peer: server01_MTU_PROFILE_MLAG
+  peer_interface: Eth5
+  peer_type: server
+  port_profile: TENANT_A_MTU
+  description: server01_MTU_PROFILE_MLAG_Eth5
+  mtu: 1600
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '110'
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_bpduguard: enabled
+  channel_group:
+    id: 11
+    mode: active
+- name: Ethernet12
+  peer: server01_MTU_ADAPTOR_MLAG
+  peer_interface: Eth7
+  peer_type: server
+  description: server01_MTU_ADAPTOR_MLAG_Eth7
+  mtu: 1601
+  type: switched
+  shutdown: false
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_bpduguard: 'True'
+  channel_group:
+    id: 12
+    mode: active
+- name: Ethernet20
+  peer: FIREWALL01
+  peer_interface: E1
+  peer_type: firewall
+  port_profile: TENANT_A_B
+  description: FIREWALL01_E1
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 110-111,210-211
+  channel_group:
+    id: 20
+    mode: active
+- name: Ethernet21
+  peer: ROUTER01
+  peer_interface: Eth1
+  peer_type: router
+  port_profile: TENANT_A
+  description: ROUTER01_Eth1
+  type: switched
+  shutdown: false
+  mode: access
+  vlans: '110'
 port_channel_interfaces:
 - name: Port-Channel7
   description: DC1_L2LEAF1_Po1

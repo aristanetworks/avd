@@ -8,12 +8,11 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-name_server:
-  source:
-    vrf: MGMT
-  nodes:
-  - 8.8.4.4
-  - 8.8.8.8
+ip_name_servers:
+- ip_address: 8.8.4.4
+  vrf: MGMT
+- ip_address: 8.8.8.8
+  vrf: MGMT
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -100,7 +99,8 @@ ethernet_interfaces:
     id: 47
     mode: active
   name: Ethernet48
-- peer: SPINE1
+- name: Ethernet1
+  peer: SPINE1
   peer_interface: Ethernet1
   peer_type: spine
   description: SPINE1_Ethernet1
@@ -109,8 +109,8 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet1
-- peer: SPINE2
+- name: Ethernet2
+  peer: SPINE2
   peer_interface: Ethernet1
   peer_type: spine
   description: SPINE2_Ethernet1
@@ -119,8 +119,8 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet2
-- peer: HostA
+- name: Ethernet3
+  peer: HostA
   peer_interface: Eth1
   peer_type: server
   port_profile: PP-BLUE
@@ -130,7 +130,6 @@ ethernet_interfaces:
   mode: access
   vlans: '10'
   spanning_tree_portfast: edge
-  name: Ethernet3
 mlag_configuration:
   domain_id: RACK1
   local_interface: Vlan4094

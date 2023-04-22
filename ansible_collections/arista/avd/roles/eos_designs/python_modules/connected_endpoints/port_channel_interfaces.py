@@ -66,7 +66,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 tmp_network_port = ChainMap(
                     {
                         "switch_ports": [ethernet_interface_name, ""],
-                        "switches": [self._hostname, ""],
+                        "switches": [self.shared_utils.hostname, ""],
                     },
                     network_port,
                 )
@@ -92,12 +92,12 @@ class PortChannelInterfacesMixin(UtilsMixin):
         adapter_port_channel_description = get(adapter, "port_channel.description")
         port_channel_type = "routed" if get(adapter, "port_channel.subinterfaces") else "switched"
         port_channel_mode = get(adapter, "port_channel.mode")
-        node_index = adapter["switches"].index(self._hostname)
+        node_index = adapter["switches"].index(self.shared_utils.hostname)
 
         # Common port_channel_interface settings
         port_channel_interface = {
             "name": port_channel_interface_name,
-            "description": self._avd_interface_descriptions.connected_endpoints_port_channel_interfaces(peer, adapter_port_channel_description),
+            "description": self.shared_utils.interface_descriptions.connected_endpoints_port_channel_interfaces(peer, adapter_port_channel_description),
             "type": port_channel_type,
             "shutdown": not get(adapter, "port_channel.enabled", default=True),
             "mtu": adapter.get("mtu"),
@@ -131,7 +131,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 port_channel_interface["lacp_id"] = generate_lacp_id(short_esi)
 
         # Set MLAG ID on port-channel if connection is multi-homed and this switch is running MLAG
-        elif self._mlag and len(set(adapter["switches"])) > 1:
+        elif self.shared_utils.mlag and len(set(adapter["switches"])) > 1:
             port_channel_interface["mlag"] = channel_group_id
 
         # LACP Fallback
@@ -171,7 +171,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
             short_esi := self._get_short_esi(adapter, channel_group_id, short_esi=subinterface.get("short_esi"), hash_extra_value=str(subinterface["number"]))
         ) is not None:
             port_channel_interface["evpn_ethernet_segment"] = {
-                "identifier": generate_esi(short_esi, self._evpn_short_esi_prefix),
+                "identifier": generate_esi(short_esi, self.shared_utils.evpn_short_esi_prefix),
                 "route_target": generate_route_target(short_esi),
             }
 

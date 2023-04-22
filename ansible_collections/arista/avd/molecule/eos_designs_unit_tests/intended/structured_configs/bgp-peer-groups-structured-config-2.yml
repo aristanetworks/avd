@@ -4,69 +4,69 @@ router_bgp:
   bgp_defaults:
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
+  - name: MLAG-IPv4-UNDERLAY-PEER
+    type: ipv4
     remote_as: '65001'
     next_hop_self: true
     description: Description for mlag_ipv4_underlay_peer via structured_config
     maximum_routes: 12000
     send_community: all
     route_map_in: RM-MLAG-PEER-IN
-    name: MLAG-IPv4-UNDERLAY-PEER
-  - type: ipv4
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
     maximum_routes: 12000
     send_community: all
-    name: IPv4-UNDERLAY-PEERS
     description: Description for ipv4_underlay_peers via structured_config
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     send_community: all
     maximum_routes: 0
     remote_as: '65001'
     route_reflector_client: true
-    name: EVPN-OVERLAY-PEERS
     description: Description for evpn_overlay_peers via structured_config
-  - type: mpls
+  - name: RR-OVERLAY-PEERS
+    type: mpls
     update_source: Loopback0
     bfd: true
     send_community: all
     maximum_routes: 0
     remote_as: '65001'
-    name: RR-OVERLAY-PEERS
     description: Description for rr_overlay_peers via structured_config
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: MLAG-IPv4-UNDERLAY-PEER
-    - activate: true
-      name: IPv4-UNDERLAY-PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
-    - activate: false
-      name: RR-OVERLAY-PEERS
+    - name: MLAG-IPv4-UNDERLAY-PEER
+      activate: true
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+    - name: RR-OVERLAY-PEERS
+      activate: false
   neighbors:
-  - peer_group: MLAG-IPv4-UNDERLAY-PEER
+  - ip_address: 192.168.253.204
+    peer_group: MLAG-IPv4-UNDERLAY-PEER
     description: bgp-peer-groups-structured-config-1
-    ip_address: 192.168.253.204
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.111
+    peer_group: EVPN-OVERLAY-PEERS
     description: bgp-peer-groups-structured-config-1
-    ip_address: 192.168.255.111
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   bgp_cluster_id: 192.168.255.112
   address_family_evpn:
     peer_groups:
-    - activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
-      name: EVPN-OVERLAY-PEERS
-    - activate: true
-      name: RR-OVERLAY-PEERS
+    - name: RR-OVERLAY-PEERS
+      activate: true
   address_family_vpn_ipv4:
     peer_groups:
-    - activate: true
-      name: RR-OVERLAY-PEERS
+    - name: RR-OVERLAY-PEERS
+      activate: true
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -158,7 +158,7 @@ route_maps:
     - extcommunity soo 192.168.254.111:1 additive
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: MPLS_Overlay_peering
   shutdown: false
   ip_address: 192.168.255.112/32
 - name: Loopback1

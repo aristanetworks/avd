@@ -4,54 +4,55 @@ router_bgp:
   bgp_defaults:
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
+  - name: MLAG-IPv4-UNDERLAY-PEER
+    type: ipv4
     remote_as: '65101'
     next_hop_self: true
     description: EVPN-MULTICAST-L3LEAF1A
     maximum_routes: 12000
     send_community: all
     route_map_in: RM-MLAG-PEER-IN
-    name: MLAG-IPv4-UNDERLAY-PEER
-  - type: ipv4
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
     maximum_routes: 12000
     send_community: all
-    name: IPv4-UNDERLAY-PEERS
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 3
-    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: MLAG-IPv4-UNDERLAY-PEER
-    - activate: true
-      name: IPv4-UNDERLAY-PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: MLAG-IPv4-UNDERLAY-PEER
+      activate: true
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   neighbors:
-  - peer_group: MLAG-IPv4-UNDERLAY-PEER
+  - ip_address: 10.255.251.0
+    peer_group: MLAG-IPv4-UNDERLAY-PEER
     description: EVPN-MULTICAST-L3LEAF1A
-    ip_address: 10.255.251.0
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.31.255.2
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
     description: EVPN-MULTICAST-SPINE1_Ethernet2
-    ip_address: 172.31.255.2
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.1
+    peer_group: EVPN-OVERLAY-PEERS
     description: EVPN-MULTICAST-SPINE1
     remote_as: '65001'
-    ip_address: 192.168.255.1
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
   vrfs:
-  - router_id: 192.168.255.4
+  - name: MULTICAST_DISABLED_310_311
+    router_id: 192.168.255.4
     rd: 192.168.255.4:13
     route_targets:
       import:
@@ -65,10 +66,10 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: MLAG-IPv4-UNDERLAY-PEER
-      ip_address: 10.255.251.0
-    name: MULTICAST_DISABLED_310_311
-  - router_id: 192.168.255.4
+    - ip_address: 10.255.251.0
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+  - name: MULTICAST_ENABLED_110_111
+    router_id: 192.168.255.4
     rd: 192.168.255.4:11
     route_targets:
       import:
@@ -82,10 +83,10 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: MLAG-IPv4-UNDERLAY-PEER
-      ip_address: 10.255.251.0
-    name: MULTICAST_ENABLED_110_111
-  - router_id: 192.168.255.4
+    - ip_address: 10.255.251.0
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+  - name: MULTICAST_ENABLED_210_DISABLED_211
+    router_id: 192.168.255.4
     rd: 192.168.255.4:12
     route_targets:
       import:
@@ -99,10 +100,10 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: MLAG-IPv4-UNDERLAY-PEER
-      ip_address: 10.255.251.0
-    name: MULTICAST_ENABLED_210_DISABLED_211
-  - router_id: 192.168.255.4
+    - ip_address: 10.255.251.0
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+  - name: MULTICAST_DISABLED_5_6
+    router_id: 192.168.255.4
     rd: 192.168.255.4:23
     route_targets:
       import:
@@ -116,10 +117,10 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: MLAG-IPv4-UNDERLAY-PEER
-      ip_address: 10.255.251.0
-    name: MULTICAST_DISABLED_5_6
-  - router_id: 192.168.255.4
+    - ip_address: 10.255.251.0
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+  - name: MULTICAST_ENABLED_1_2
+    router_id: 192.168.255.4
     rd: 192.168.255.4:21
     route_targets:
       import:
@@ -133,10 +134,10 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: MLAG-IPv4-UNDERLAY-PEER
-      ip_address: 10.255.251.0
-    name: MULTICAST_ENABLED_1_2
-  - router_id: 192.168.255.4
+    - ip_address: 10.255.251.0
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+  - name: MULTICAST_ENABLED_3_DISABLED_4
+    router_id: 192.168.255.4
     rd: 192.168.255.4:22
     route_targets:
       import:
@@ -150,10 +151,10 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - peer_group: MLAG-IPv4-UNDERLAY-PEER
-      ip_address: 10.255.251.0
-    name: MULTICAST_ENABLED_3_DISABLED_4
-  - router_id: 192.168.255.4
+    - ip_address: 10.255.251.0
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+  - name: TEN_C_L3_MULTICAST_DISABLED_330_331
+    router_id: 192.168.255.4
     rd: 192.168.255.4:33
     route_targets:
       import:
@@ -168,10 +169,10 @@ router_bgp:
     - source_protocol: connected
     evpn_multicast: false
     neighbors:
-    - peer_group: MLAG-IPv4-UNDERLAY-PEER
-      ip_address: 10.255.251.0
-    name: TEN_C_L3_MULTICAST_DISABLED_330_331
-  - router_id: 192.168.255.4
+    - ip_address: 10.255.251.0
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+  - name: TEN_C_L3_MULTICAST_ENABLED_130_131
+    router_id: 192.168.255.4
     rd: 192.168.255.4:31
     route_targets:
       import:
@@ -186,10 +187,10 @@ router_bgp:
     - source_protocol: connected
     evpn_multicast: true
     neighbors:
-    - peer_group: MLAG-IPv4-UNDERLAY-PEER
-      ip_address: 10.255.251.0
-    name: TEN_C_L3_MULTICAST_ENABLED_130_131
-  - router_id: 192.168.255.4
+    - ip_address: 10.255.251.0
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+  - name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
+    router_id: 192.168.255.4
     rd: 192.168.255.4:32
     route_targets:
       import:
@@ -204,10 +205,10 @@ router_bgp:
     - source_protocol: connected
     evpn_multicast: true
     neighbors:
-    - peer_group: MLAG-IPv4-UNDERLAY-PEER
-      ip_address: 10.255.251.0
-    name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
-  - router_id: 192.168.255.4
+    - ip_address: 10.255.251.0
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+  - name: TEN_D_L3_MULTICAST_DISABLED_240_241
+    router_id: 192.168.255.4
     rd: 192.168.255.4:42
     route_targets:
       import:
@@ -222,10 +223,10 @@ router_bgp:
     - source_protocol: connected
     evpn_multicast: false
     neighbors:
-    - peer_group: MLAG-IPv4-UNDERLAY-PEER
-      ip_address: 10.255.251.0
-    name: TEN_D_L3_MULTICAST_DISABLED_240_241
-  - router_id: 192.168.255.4
+    - ip_address: 10.255.251.0
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+  - name: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
+    router_id: 192.168.255.4
     rd: 192.168.255.4:41
     route_targets:
       import:
@@ -240,10 +241,10 @@ router_bgp:
     - source_protocol: connected
     evpn_multicast: true
     neighbors:
-    - peer_group: MLAG-IPv4-UNDERLAY-PEER
-      ip_address: 10.255.251.0
-    name: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
-  - router_id: 192.168.255.4
+    - ip_address: 10.255.251.0
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+  - name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
+    router_id: 192.168.255.4
     rd: 192.168.255.4:55
     route_targets:
       import:
@@ -258,10 +259,10 @@ router_bgp:
     - source_protocol: connected
     evpn_multicast: true
     neighbors:
-    - peer_group: MLAG-IPv4-UNDERLAY-PEER
-      ip_address: 10.255.251.0
-    name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
-  - router_id: 192.168.255.4
+    - ip_address: 10.255.251.0
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+  - name: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
+    router_id: 192.168.255.4
     rd: 192.168.255.4:60
     route_targets:
       import:
@@ -276,13 +277,13 @@ router_bgp:
     - source_protocol: connected
     evpn_multicast: true
     neighbors:
-    - peer_group: MLAG-IPv4-UNDERLAY-PEER
-      ip_address: 10.255.251.0
+    - ip_address: 10.255.251.0
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
     evpn_multicast_address_family:
       ipv4:
         transit: true
-    name: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
-  - router_id: 192.168.255.4
+  - name: TEN_E_L3_MULTICAST_TRANSIT
+    router_id: 192.168.255.4
     rd: 192.168.255.4:52
     route_targets:
       import:
@@ -297,13 +298,13 @@ router_bgp:
     - source_protocol: connected
     evpn_multicast: true
     neighbors:
-    - peer_group: MLAG-IPv4-UNDERLAY-PEER
-      ip_address: 10.255.251.0
+    - ip_address: 10.255.251.0
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
     evpn_multicast_address_family:
       ipv4:
         transit: true
-    name: TEN_E_L3_MULTICAST_TRANSIT
-  - router_id: 192.168.255.4
+  - name: TEN_E_PEG_L3_MULTICAST_ENABLED
+    router_id: 192.168.255.4
     rd: 192.168.255.4:51
     route_targets:
       import:
@@ -318,19 +319,19 @@ router_bgp:
     - source_protocol: connected
     evpn_multicast: true
     neighbors:
-    - peer_group: MLAG-IPv4-UNDERLAY-PEER
-      ip_address: 10.255.251.0
-    name: TEN_E_PEG_L3_MULTICAST_ENABLED
+    - ip_address: 10.255.251.0
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
   vlan_aware_bundles:
-  - rd: 192.168.255.4:13
+  - name: MULTICAST_DISABLED_310_311
+    rd: 192.168.255.4:13
     route_targets:
       both:
       - '13:13'
     redistribute_routes:
     - learned
     vlan: 310-311
-    name: MULTICAST_DISABLED_310_311
-  - rd: 192.168.255.4:11
+  - name: MULTICAST_ENABLED_110_111
+    rd: 192.168.255.4:11
     route_targets:
       both:
       - '11:11'
@@ -338,8 +339,8 @@ router_bgp:
     - learned
     - igmp
     vlan: 110-111
-    name: MULTICAST_ENABLED_110_111
-  - rd: 192.168.255.4:12
+  - name: MULTICAST_ENABLED_210_DISABLED_211
+    rd: 192.168.255.4:12
     route_targets:
       both:
       - '12:12'
@@ -347,8 +348,8 @@ router_bgp:
     - learned
     - igmp
     vlan: 210-211
-    name: MULTICAST_ENABLED_210_DISABLED_211
-  - tenant: Tenant_A
+  - name: MULTICAST_DISABLED_256
+    tenant: Tenant_A
     rd: 192.168.255.4:10256
     route_targets:
       both:
@@ -356,8 +357,8 @@ router_bgp:
     redistribute_routes:
     - learned
     vlan: '256'
-    name: MULTICAST_DISABLED_256
-  - tenant: Tenant_A
+  - name: MULTICAST_ENABLED_257
+    tenant: Tenant_A
     rd: 192.168.255.4:10257
     route_targets:
       both:
@@ -366,8 +367,8 @@ router_bgp:
     - learned
     - igmp
     vlan: '257'
-    name: MULTICAST_ENABLED_257
-  - tenant: Tenant_A
+  - name: MULTICAST_ENABLED_4092
+    tenant: Tenant_A
     rd: 192.168.255.4:14092
     route_targets:
       both:
@@ -376,16 +377,16 @@ router_bgp:
     - learned
     - igmp
     vlan: '4092'
-    name: MULTICAST_ENABLED_4092
-  - rd: 192.168.255.4:23
+  - name: MULTICAST_DISABLED_5_6
+    rd: 192.168.255.4:23
     route_targets:
       both:
       - '23:23'
     redistribute_routes:
     - learned
     vlan: 5-6
-    name: MULTICAST_DISABLED_5_6
-  - rd: 192.168.255.4:21
+  - name: MULTICAST_ENABLED_1_2
+    rd: 192.168.255.4:21
     route_targets:
       both:
       - '21:21'
@@ -393,8 +394,8 @@ router_bgp:
     - learned
     - igmp
     vlan: 1-2
-    name: MULTICAST_ENABLED_1_2
-  - rd: 192.168.255.4:22
+  - name: MULTICAST_ENABLED_3_DISABLED_4
+    rd: 192.168.255.4:22
     route_targets:
       both:
       - '22:22'
@@ -402,8 +403,8 @@ router_bgp:
     - learned
     - igmp
     vlan: 3-4
-    name: MULTICAST_ENABLED_3_DISABLED_4
-  - tenant: Tenant_B
+  - name: MULTICAST_DISABLED_7
+    tenant: Tenant_B
     rd: 192.168.255.4:10007
     route_targets:
       both:
@@ -411,8 +412,8 @@ router_bgp:
     redistribute_routes:
     - learned
     vlan: '7'
-    name: MULTICAST_DISABLED_7
-  - tenant: Tenant_B
+  - name: MULTICAST_ENABLED_8
+    tenant: Tenant_B
     rd: 192.168.255.4:10008
     route_targets:
       both:
@@ -421,8 +422,8 @@ router_bgp:
     - learned
     - igmp
     vlan: '8'
-    name: MULTICAST_ENABLED_8
-  - tenant: Tenant_B
+  - name: MULTICAST_ENABLED_9
+    tenant: Tenant_B
     rd: 192.168.255.4:10009
     route_targets:
       both:
@@ -431,79 +432,78 @@ router_bgp:
     - learned
     - igmp
     vlan: '9'
-    name: MULTICAST_ENABLED_9
-  - rd: 192.168.255.4:33
+  - name: TEN_C_L3_MULTICAST_DISABLED_330_331
+    rd: 192.168.255.4:33
     route_targets:
       both:
       - '33:33'
     redistribute_routes:
     - learned
     vlan: 330-331
-    name: TEN_C_L3_MULTICAST_DISABLED_330_331
-  - rd: 192.168.255.4:31
+  - name: TEN_C_L3_MULTICAST_ENABLED_130_131
+    rd: 192.168.255.4:31
     route_targets:
       both:
       - '31:31'
     redistribute_routes:
     - learned
     vlan: 130-131
-    name: TEN_C_L3_MULTICAST_ENABLED_130_131
-  - rd: 192.168.255.4:32
+  - name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
+    rd: 192.168.255.4:32
     route_targets:
       both:
       - '32:32'
     redistribute_routes:
     - learned
     vlan: 230-231
-    name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
-  - rd: 192.168.255.4:42
+  - name: TEN_D_L3_MULTICAST_DISABLED_240_241
+    rd: 192.168.255.4:42
     route_targets:
       both:
       - '42:42'
     redistribute_routes:
     - learned
     vlan: 240-241
-    name: TEN_D_L3_MULTICAST_DISABLED_240_241
-  - rd: 192.168.255.4:41
+  - name: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
+    rd: 192.168.255.4:41
     route_targets:
       both:
       - '41:41'
     redistribute_routes:
     - learned
     vlan: 140-141
-    name: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
-  - rd: 192.168.255.4:55
+  - name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
+    rd: 192.168.255.4:55
     route_targets:
       both:
       - '55:55'
     redistribute_routes:
     - learned
     vlan: '550'
-    name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
-  - rd: 192.168.255.4:60
+  - name: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
+    rd: 192.168.255.4:60
     route_targets:
       both:
       - 60:60
     redistribute_routes:
     - learned
     vlan: '260'
-    name: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
-  - rd: 192.168.255.4:52
+  - name: TEN_E_L3_MULTICAST_TRANSIT
+    rd: 192.168.255.4:52
     route_targets:
       both:
       - '52:52'
     redistribute_routes:
     - learned
     vlan: '250'
-    name: TEN_E_L3_MULTICAST_TRANSIT
-  - rd: 192.168.255.4:51
+  - name: TEN_E_PEG_L3_MULTICAST_ENABLED
+    rd: 192.168.255.4:51
     route_targets:
       both:
       - '51:51'
     redistribute_routes:
     - learned
     vlan: '150'
-    name: TEN_E_PEG_L3_MULTICAST_ENABLED
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -1214,7 +1214,8 @@ ethernet_interfaces:
     id: 3
     mode: active
   name: Ethernet4
-- peer: EVPN-MULTICAST-SPINE1
+- name: Ethernet1
+  peer: EVPN-MULTICAST-SPINE1
   peer_interface: Ethernet2
   peer_type: spine
   description: P2P_LINK_TO_EVPN-MULTICAST-SPINE1_Ethernet2
@@ -1225,8 +1226,8 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  name: Ethernet1
-- peer: EVPN-MULTICAST-L2LEAF1A
+- name: Ethernet6
+  peer: EVPN-MULTICAST-L2LEAF1A
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: EVPN-MULTICAST-L2LEAF1A_Ethernet2
@@ -1235,8 +1236,8 @@ ethernet_interfaces:
   channel_group:
     id: 6
     mode: active
-  name: Ethernet6
-- peer_type: l3_interface
+- name: Ethernet8
+  peer_type: l3_interface
   ip_address: 10.1.55.2/31
   shutdown: false
   type: routed
@@ -1244,8 +1245,8 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  name: Ethernet8
-- peer_type: l3_interface
+- name: Ethernet10
+  peer_type: l3_interface
   ip_address: 10.1.60.2/31
   shutdown: false
   type: routed
@@ -1253,8 +1254,8 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  name: Ethernet10
-- peer_type: l3_interface
+- name: Ethernet9
+  peer_type: l3_interface
   ip_address: 10.1.52.2/31
   shutdown: false
   type: routed
@@ -1262,8 +1263,8 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  name: Ethernet9
-- peer_type: l3_interface
+- name: Ethernet7
+  peer_type: l3_interface
   ip_address: 10.1.51.2/31
   shutdown: false
   type: routed
@@ -1271,7 +1272,6 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  name: Ethernet7
 mlag_configuration:
   domain_id: EVPN_MULTICAST_L3LEAF1
   local_interface: Vlan4094

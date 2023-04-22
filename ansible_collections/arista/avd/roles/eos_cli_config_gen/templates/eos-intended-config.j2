@@ -46,6 +46,8 @@
 {% include 'eos/queue-monitor-length.j2' %}
 {# lldp #}
 {% include 'eos/lldp.j2' %}
+{# l2 protocol forwarding #}
+{% include 'eos/l2-protocol-forwarding.j2' %}
 {# lacp #}
 {% include 'eos/lacp.j2' %}
 {# logging #}
@@ -62,8 +64,8 @@
 {% include 'eos/hostname.j2' %}
 {# domain lookup #}
 {% include 'eos/ip-domain-lookup.j2' %}
-{# name servers #}
-{% include 'eos/name-server.j2' %}
+{# ip name servers #}
+{% include 'eos/ip-name-servers.j2' %}
 {# dns domain #}
 {% include 'eos/dns-domain.j2' %}
 {# domain-list #}
@@ -72,6 +74,8 @@
 {% include 'eos/trackers.j2' %}
 {# ntp #}
 {% include 'eos/ntp.j2' %}
+{# poe #}
+{% include 'eos/poe.j2' %}
 {# ptp #}
 {% include 'eos/ptp.j2' %}
 {# radius servers #}

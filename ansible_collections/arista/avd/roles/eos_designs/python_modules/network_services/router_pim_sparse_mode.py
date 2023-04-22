@@ -20,7 +20,7 @@ class RouterPimSparseModeMixin(UtilsMixin):
         Used for to configure RPs on the VRF
         """
 
-        if not self._network_services_l3:
+        if not self.shared_utils.network_services_l3:
             return None
 
         vrfs = []

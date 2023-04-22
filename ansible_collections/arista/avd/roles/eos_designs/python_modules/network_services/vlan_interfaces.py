@@ -23,7 +23,7 @@ class VlanInterfacesMixin(UtilsMixin):
         Consist of svis and mlag peering vlans from filtered tenants
         """
 
-        if not (self._network_services_l2 and self._network_services_l3):
+        if not (self.shared_utils.network_services_l2 and self.shared_utils.network_services_l3):
             return None
 
         vlan_interfaces = []
@@ -51,10 +51,10 @@ class VlanInterfacesMixin(UtilsMixin):
             Check if any variable in the list of variables is not None in vlan_interface_config
             and if it is the case, raise an Exception if virtual_router_mac_address is None
             """
-            if any(vlan_interface_config.get(var) for var in variables) and self._virtual_router_mac_address is None:
+            if any(vlan_interface_config.get(var) for var in variables) and self.shared_utils.virtual_router_mac_address is None:
                 quoted_vars = [f"'{var}'" for var in variables]
                 raise AristaAvdMissingVariableError(
-                    f"'virtual_router_mac_address' must be set for node '{self._hostname}' when using {' or '.join(quoted_vars)} under 'svi'"
+                    f"'virtual_router_mac_address' must be set for node '{self.shared_utils.hostname}' when using {' or '.join(quoted_vars)} under 'svi'"
                 )
 
         vlan_interface_config = {
@@ -81,7 +81,7 @@ class VlanInterfacesMixin(UtilsMixin):
 
         pim_config_ipv4 = {}
         if default(get(svi, "evpn_l3_multicast.enabled"), get(vrf, "_evpn_l3_multicast_enabled")) is True:
-            if self._mlag:
+            if self.shared_utils.mlag:
                 pim_config_ipv4["sparse_mode"] = True
             else:
                 vlan_interface_config["ip_igmp"] = True
@@ -145,6 +145,7 @@ class VlanInterfacesMixin(UtilsMixin):
 
                     ospf_keys.append({"id": ospf_key["id"], "hash_algorithm": ospf_key.get("hash_algorithm", "sha512"), "key": ospf_key["key"]})
                 if ospf_keys:
+                    vlan_interface_config["ospf_authentication"] = ospf_authentication
                     vlan_interface_config["ospf_message_digest_keys"] = ospf_keys
 
         # Strip None values from vlan_interface_config before adding to list
@@ -159,16 +160,16 @@ class VlanInterfacesMixin(UtilsMixin):
             "shutdown": False,
             "description": f"MLAG_PEER_L3_iBGP: vrf {vrf['name']}",
             "vrf": vrf["name"],
-            "mtu": self._p2p_uplinks_mtu,
+            "mtu": self.shared_utils.p2p_uplinks_mtu,
         }
-        if self._underlay_rfc5549 and self._overlay_mlag_rfc5549:
+        if self.shared_utils.underlay_rfc5549 and self.shared_utils.overlay_mlag_rfc5549:
             vlan_interface_config["ipv6_enable"] = True
         elif (mlag_ibgp_peering_ipv4_pool := vrf.get("mlag_ibgp_peering_ipv4_pool")) is not None:
-            if self._mlag_role == "primary":
-                vlan_interface_config["ip_address"] = f"{self._avd_ip_addressing.mlag_ibgp_peering_ip_primary(mlag_ibgp_peering_ipv4_pool)}/31"
+            if self.shared_utils.mlag_role == "primary":
+                vlan_interface_config["ip_address"] = f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_primary(mlag_ibgp_peering_ipv4_pool)}/31"
             else:
-                vlan_interface_config["ip_address"] = f"{self._avd_ip_addressing.mlag_ibgp_peering_ip_secondary(mlag_ibgp_peering_ipv4_pool)}/31"
+                vlan_interface_config["ip_address"] = f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_secondary(mlag_ibgp_peering_ipv4_pool)}/31"
         else:
-            vlan_interface_config["ip_address"] = f"{self._mlag_ibgp_ip}/31"
+            vlan_interface_config["ip_address"] = f"{self.shared_utils.mlag_ibgp_ip}/31"
 
         return vlan_interface_config

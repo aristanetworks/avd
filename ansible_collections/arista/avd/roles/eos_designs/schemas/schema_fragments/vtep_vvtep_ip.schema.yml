@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  vtep_vvtep_ip:
+    documentation_options:
+      filename: Fabric Variables
+      table: Overlay General Settings
+    description: |
+      IP Address used as Virtual VTEP. Will be configured as secondary IP on Loopback1.
+      This is only needed for centralized routing designs.
+    type: str

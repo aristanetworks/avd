@@ -268,6 +268,8 @@ def _get_running_collection_version(running_collection_name: str, result: dict) 
         with Popen(["git", "describe", "--tags"], stdout=PIPE, stderr=PIPE, cwd=collection_path) as process:
             output, err = process.communicate()
             if err:
+                # Not that when molecule runs, it runs in a copy of the directory that is not a git repo
+                # so only the latest tag is being returned
                 display.vvv("Not a git repository")
             else:
                 display.vvv("This is a git repository, overwriting version with 'git describe --tags output'")

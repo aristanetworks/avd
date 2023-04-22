@@ -44,7 +44,6 @@ mlag_ibgp_peering_vrfs:
 # RD is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
 # For loopback or 32-bit ASN/number the VNI can only be a 16-bit number.
 # For 16-bit ASN/number the VNI can be a 32-bit number.
-# Old variable name "evpn_rd_type", supported for backward-compatibility.
 overlay_rd_type:
   admin_subfield: < "vtep_loopback" | "bgp_as" | "switch_id" | < IPv4_address > | <0-65535> | <0-4294967295> | default -> <overlay_loopback_ip> >
   # Offset can only be used if admin_subfield is an interger between <0-4294967295> or "switch_id".
@@ -59,7 +58,6 @@ overlay_rd_type:
 # RT is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
 # For 32-bit ASN/number the VNI can only be a 16-bit number.
 # For 16-bit ASN/number the VNI can be a 32-bit number.
-# Old variable name "evpn_rt_type", supported for backward-compatibility.
 overlay_rt_type:
   admin_subfield: < "bgp_as" | <0-65535> | <0-4294967295> | default -> <mac_vrf_id> >
 

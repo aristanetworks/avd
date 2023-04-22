@@ -18,12 +18,11 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-name_server:
-  source:
-    vrf: MGMT
-  nodes:
-  - 192.168.200.5
-  - 8.8.8.8
+ip_name_servers:
+- ip_address: 192.168.200.5
+  vrf: MGMT
+- ip_address: 8.8.8.8
+  vrf: MGMT
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -155,7 +154,8 @@ ethernet_interfaces:
     id: 3
     mode: active
   name: Ethernet4
-- peer: DC1-SVC3A
+- name: Ethernet1
+  peer: DC1-SVC3A
   peer_interface: Ethernet7
   peer_type: l3leaf
   description: DC1-SVC3A_Ethernet7
@@ -164,8 +164,8 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet1
-- peer: DC1-SVC3B
+- name: Ethernet2
+  peer: DC1-SVC3B
   peer_interface: Ethernet7
   peer_type: l3leaf
   description: DC1-SVC3B_Ethernet7
@@ -174,7 +174,6 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet2
 mlag_configuration:
   domain_id: DC1_L2LEAF2
   local_interface: Vlan4094

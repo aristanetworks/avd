@@ -14,6 +14,7 @@ from ansible.plugins.action import ActionBase, display
 from ansible.utils.vars import isidentifier
 
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
+from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
@@ -126,6 +127,9 @@ class ActionModule(ActionBase):
         else:
             template_vars = ChainMap(output, task_vars)
 
+        # Initialize SharedUtils class to be passed to each python_module below.
+        shared_utils = SharedUtils(hostvars=template_vars, templar=self.templar)
+
         # If the argument 'debug' is set, a 'avd_yaml_templates_to_facts_debug' list will be added to the output.
         # This list contains timestamps from every step for every template. This is useful for identifying slow templates.
         # Here we pull in the list from any previous tasks, so we can just add to the list.
@@ -173,7 +177,7 @@ class ActionModule(ActionBase):
                 except AristaAvdMissingVariableError as exc:
                     raise AnsibleActionFail(f"Missing module_path or class_name in {template_item}") from exc
 
-                cls_instance = cls(hostvars=template_vars, templar=self.templar)
+                cls_instance = cls(hostvars=template_vars, shared_utils=shared_utils)
 
                 if debug:
                     debug_item["timestamps"]["render_python_class"] = datetime.now()

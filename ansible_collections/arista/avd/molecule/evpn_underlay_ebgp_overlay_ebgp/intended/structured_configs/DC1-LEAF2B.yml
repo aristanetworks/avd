@@ -6,71 +6,72 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
   peer_groups:
-  - type: ipv4
+  - name: UNDERLAY-PEERS
+    type: ipv4
     password: 0nsCUm70mvSTxVO0ldytrg==
     maximum_routes: 12000
     send_community: all
-    name: UNDERLAY-PEERS
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     password: q+VNViP5i4rVjW1cxFv2wA==
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 3
-    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: UNDERLAY-PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   neighbors:
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.255.32
+    peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     description: DC1-SPINE1_Ethernet3
-    ip_address: 172.31.255.32
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.255.34
+    peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     description: DC1-SPINE2_Ethernet3
-    ip_address: 172.31.255.34
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.255.36
+    peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     description: DC1-SPINE3_Ethernet3
-    ip_address: 172.31.255.36
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.255.38
+    peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     description: DC1-SPINE4_Ethernet3
-    ip_address: 172.31.255.38
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.1
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE1
     remote_as: '65001'
-    ip_address: 192.168.255.1
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.2
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE2
     remote_as: '65001'
-    ip_address: 192.168.255.2
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.3
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE3
     remote_as: '65001'
-    ip_address: 192.168.255.3
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.4
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE4
     remote_as: '65001'
-    ip_address: 192.168.255.4
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
     evpn_hostflap_detection:
       window: 180
       threshold: 30
       enabled: false
   vrfs:
-  - router_id: 192.168.255.11
+  - name: Tenant_A_APP_Zone
+    router_id: 192.168.255.11
     rd: 192.168.255.11:12
     route_targets:
       import:
@@ -83,8 +84,8 @@ router_bgp:
         - '12:12'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_A_APP_Zone
-  - router_id: 192.168.255.11
+  - name: Tenant_A_DB_Zone
+    router_id: 192.168.255.11
     rd: 192.168.255.11:13
     route_targets:
       import:
@@ -97,8 +98,8 @@ router_bgp:
         - '13:13'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_A_DB_Zone
-  - router_id: 192.168.255.11
+  - name: Tenant_A_OP_Zone
+    router_id: 192.168.255.11
     rd: 192.168.255.11:10
     route_targets:
       import:
@@ -111,8 +112,8 @@ router_bgp:
         - '10:10'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_A_OP_Zone
-  - router_id: 192.168.255.11
+  - name: Tenant_A_WEB_Zone
+    router_id: 192.168.255.11
     rd: 192.168.255.11:11
     route_targets:
       import:
@@ -125,8 +126,8 @@ router_bgp:
         - '11:11'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_A_WEB_Zone
-  - router_id: 192.168.255.11
+  - name: Tenant_B_OP_Zone
+    router_id: 192.168.255.11
     rd: 192.168.255.11:20
     route_targets:
       import:
@@ -139,8 +140,8 @@ router_bgp:
         - '20:20'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_B_OP_Zone
-  - router_id: 192.168.255.11
+  - name: Tenant_C_OP_Zone
+    router_id: 192.168.255.11
     rd: 192.168.255.11:30
     route_targets:
       import:
@@ -153,41 +154,41 @@ router_bgp:
         - '30:30'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_C_OP_Zone
   vlan_aware_bundles:
-  - rd: 192.168.255.11:12
+  - name: Tenant_A_APP_Zone
+    rd: 192.168.255.11:12
     route_targets:
       both:
       - '12:12'
     redistribute_routes:
     - learned
     vlan: '130'
-    name: Tenant_A_APP_Zone
-  - rd: 192.168.255.11:13
+  - name: Tenant_A_DB_Zone
+    rd: 192.168.255.11:13
     route_targets:
       both:
       - '13:13'
     redistribute_routes:
     - learned
     vlan: 140-141
-    name: Tenant_A_DB_Zone
-  - rd: 192.168.255.11:10
+  - name: Tenant_A_OP_Zone
+    rd: 192.168.255.11:10
     route_targets:
       both:
       - '10:10'
     redistribute_routes:
     - learned
     vlan: 110-111
-    name: Tenant_A_OP_Zone
-  - rd: 192.168.255.11:11
+  - name: Tenant_A_WEB_Zone
+    rd: 192.168.255.11:11
     route_targets:
       both:
       - '11:11'
     redistribute_routes:
     - learned
     vlan: 120-124
-    name: Tenant_A_WEB_Zone
-  - tenant: Tenant_A
+  - name: Tenant_A_FTP
+    tenant: Tenant_A
     rd: 192.168.255.11:10162
     route_targets:
       both:
@@ -195,8 +196,8 @@ router_bgp:
     redistribute_routes:
     - learned
     vlan: '162'
-    name: Tenant_A_FTP
-  - tenant: Tenant_A
+  - name: Tenant_A_NFS
+    tenant: Tenant_A
     rd: 192.168.255.11:10161
     route_targets:
       both:
@@ -204,8 +205,8 @@ router_bgp:
     redistribute_routes:
     - learned
     vlan: '161'
-    name: Tenant_A_NFS
-  - tenant: Tenant_A
+  - name: Tenant_A_VMOTION
+    tenant: Tenant_A
     rd: 192.168.255.11:10160
     route_targets:
       both:
@@ -213,23 +214,22 @@ router_bgp:
     redistribute_routes:
     - learned
     vlan: '160'
-    name: Tenant_A_VMOTION
-  - rd: 192.168.255.11:20
+  - name: Tenant_B_OP_Zone
+    rd: 192.168.255.11:20
     route_targets:
       both:
       - '20:20'
     redistribute_routes:
     - learned
     vlan: 210-211
-    name: Tenant_B_OP_Zone
-  - rd: 192.168.255.11:30030
+  - name: Tenant_C_OP_Zone
+    rd: 192.168.255.11:30030
     route_targets:
       both:
       - 30030:30030
     redistribute_routes:
     - learned
     vlan: 310-311
-    name: Tenant_C_OP_Zone
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -265,12 +265,11 @@ queue_monitor_length:
   enabled: true
   notifying: true
   log: 5
-name_server:
-  source:
-    vrf: MGMT
-  nodes:
-  - 192.168.200.5
-  - 8.8.8.8
+ip_name_servers:
+- ip_address: 192.168.200.5
+  vrf: MGMT
+- ip_address: 8.8.8.8
+  vrf: MGMT
 snmp_server:
   contact: example@example.com
   location: DC1_FABRIC rackD DC1-LEAF2B
@@ -329,7 +328,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: DC1-SPINE1
+- name: Ethernet1
+  peer: DC1-SPINE1
   peer_interface: Ethernet3
   peer_type: spine
   description: CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet3
@@ -338,8 +338,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.33/31
-  name: Ethernet1
-- peer: DC1-SPINE2
+- name: Ethernet2
+  peer: DC1-SPINE2
   peer_interface: Ethernet3
   peer_type: spine
   description: CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet3
@@ -348,8 +348,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.35/31
-  name: Ethernet2
-- peer: DC1-SPINE3
+- name: Ethernet3
+  peer: DC1-SPINE3
   peer_interface: Ethernet3
   peer_type: spine
   description: CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet3
@@ -358,8 +358,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.37/31
-  name: Ethernet3
-- peer: DC1-SPINE4
+- name: Ethernet4
+  peer: DC1-SPINE4
   peer_interface: Ethernet3
   peer_type: spine
   description: CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet3
@@ -368,8 +368,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.39/31
-  name: Ethernet4
-- peer: DC1-L2LEAF1A
+- name: Ethernet7
+  peer: DC1-L2LEAF1A
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: CUSTOM_DC1-L2LEAF1A_Ethernet2
@@ -378,8 +378,8 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  name: Ethernet7
-- peer: DC1-L2LEAF1B
+- name: Ethernet8
+  peer: DC1-L2LEAF1B
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: CUSTOM_DC1-L2LEAF1B_Ethernet2
@@ -388,8 +388,8 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  name: Ethernet8
-- peer: DC1-L2LEAF3A
+- name: Ethernet9
+  peer: DC1-L2LEAF3A
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: CUSTOM_DC1-L2LEAF3A_Ethernet2
@@ -398,8 +398,8 @@ ethernet_interfaces:
   channel_group:
     id: 9
     mode: active
-  name: Ethernet9
-- peer: server01_MLAG
+- name: Ethernet10
+  peer: server01_MLAG
   peer_interface: Eth3
   peer_type: server
   port_profile: TENANT_B
@@ -411,8 +411,8 @@ ethernet_interfaces:
   channel_group:
     id: 10
     mode: active
-  name: Ethernet10
-- peer: server01_MTU_PROFILE_MLAG
+- name: Ethernet11
+  peer: server01_MTU_PROFILE_MLAG
   peer_interface: Eth5
   peer_type: server
   port_profile: TENANT_A_MTU
@@ -425,8 +425,8 @@ ethernet_interfaces:
   channel_group:
     id: 11
     mode: active
-  name: Ethernet11
-- peer: server01_MTU_ADAPTOR_MLAG
+- name: Ethernet12
+  peer: server01_MTU_ADAPTOR_MLAG
   peer_interface: Eth7
   peer_type: server
   description: CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth7
@@ -436,8 +436,8 @@ ethernet_interfaces:
   channel_group:
     id: 12
     mode: active
-  name: Ethernet12
-- peer: server01_MTU_ADAPTOR_MLAG
+- name: Ethernet13
+  peer: server01_MTU_ADAPTOR_MLAG
   peer_interface: Eth9
   peer_type: server
   description: CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth9
@@ -447,8 +447,8 @@ ethernet_interfaces:
   channel_group:
     id: 12
     mode: active
-  name: Ethernet13
-- peer: FIREWALL01
+- name: Ethernet20
+  peer: FIREWALL01
   peer_interface: E1
   peer_type: firewall
   port_profile: TENANT_A_B
@@ -460,8 +460,8 @@ ethernet_interfaces:
   channel_group:
     id: 20
     mode: active
-  name: Ethernet20
-- peer: ROUTER01
+- name: Ethernet21
+  peer: ROUTER01
   peer_interface: Eth1
   peer_type: router
   port_profile: TENANT_A
@@ -470,7 +470,6 @@ ethernet_interfaces:
   shutdown: false
   mode: access
   vlans: '110'
-  name: Ethernet21
 port_channel_interfaces:
 - name: Port-Channel7
   description: CUSTOM_DC1_L2LEAF1_Po1

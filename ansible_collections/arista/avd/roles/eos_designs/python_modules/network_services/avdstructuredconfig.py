@@ -1,6 +1,4 @@
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
-from ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions import load_interfacedescriptions
-from ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing import load_ip_addressing
 
 from .eos_cli import EosCliMixin
 from .ethernet_interfaces import EthernetInterfacesMixin
@@ -64,18 +62,13 @@ class AvdStructuredConfig(
     The order of the @cached_properties methods imported from Mixins will also control the order in the output.
     """
 
-    def __init__(self, hostvars, templar):
-        super().__init__(hostvars, templar)
-        self._avd_ip_addressing = load_ip_addressing(hostvars, templar)
-        self._avd_interface_descriptions = load_interfacedescriptions(hostvars, templar)
-
     def render(self) -> dict:
         """
         Wrap class render function with a check if one of the following vars are True
-        - switch.network_services_l2
-        - switch.network_services_l3
-        - switch.network_services_l1
+        - node_type_keys.[].network_services_l2
+        - node_type_keys.[].network_services_l3
+        - node_type_keys.[].network_services_l1
         """
-        if self._any_network_services:
+        if self.shared_utils.any_network_services:
             return super().render()
         return {}

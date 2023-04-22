@@ -18,12 +18,11 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-name_server:
-  source:
-    vrf: MGMT
-  nodes:
-  - 192.168.200.5
-  - 8.8.8.8
+ip_name_servers:
+- ip_address: 192.168.200.5
+  vrf: MGMT
+- ip_address: 8.8.8.8
+  vrf: MGMT
 snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS rackE DC1-L2LEAF1B
@@ -137,7 +136,8 @@ ethernet_interfaces:
     mode: active
   speed: forced 40gfull
   name: Ethernet4
-- peer: DC1-LEAF2A
+- name: Ethernet1
+  peer: DC1-LEAF2A
   peer_interface: Ethernet8
   peer_type: l3leaf
   description: DC1-LEAF2A_Ethernet8
@@ -147,8 +147,8 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet1
-- peer: DC1-LEAF2B
+- name: Ethernet2
+  peer: DC1-LEAF2B
   peer_interface: Ethernet8
   peer_type: l3leaf
   description: DC1-LEAF2B_Ethernet8
@@ -158,7 +158,6 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet2
 mlag_configuration:
   domain_id: DC1_L2LEAF1
   local_interface: Vlan4091

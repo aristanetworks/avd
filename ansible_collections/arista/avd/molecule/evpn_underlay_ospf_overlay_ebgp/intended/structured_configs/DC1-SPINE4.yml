@@ -6,7 +6,8 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 10 ecmp 10
   peer_groups:
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     password: q+VNViP5i4rVjW1cxFv2wA==
@@ -14,44 +15,43 @@ router_bgp:
     maximum_routes: 0
     ebgp_multihop: 3
     next_hop_unchanged: true
-    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
   neighbors:
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.10
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-BL1A
     remote_as: '65104'
-    ip_address: 192.168.255.10
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.11
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-BL1B
     remote_as: '65104'
-    ip_address: 192.168.255.11
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.5
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-LEAF1A
     remote_as: '65101'
-    ip_address: 192.168.255.5
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.6
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-LEAF2A
     remote_as: '65102'
-    ip_address: 192.168.255.6
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.7
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-LEAF2B
     remote_as: '65102'
-    ip_address: 192.168.255.7
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.8
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SVC3A
     remote_as: '65103'
-    ip_address: 192.168.255.8
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.9
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SVC3B
     remote_as: '65103'
-    ip_address: 192.168.255.9
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -73,12 +73,11 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-name_server:
-  source:
-    vrf: MGMT
-  nodes:
-  - 192.168.200.5
-  - 8.8.8.8
+ip_name_servers:
+- ip_address: 192.168.200.5
+  vrf: MGMT
+- ip_address: 8.8.8.8
+  vrf: MGMT
 spanning_tree:
   mode: none
 local_users:
@@ -106,7 +105,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: DC1-LEAF1A
+- name: Ethernet1
+  peer: DC1-LEAF1A
   peer_interface: Ethernet4
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-LEAF1A_Ethernet4
@@ -116,8 +116,8 @@ ethernet_interfaces:
   ip_address: 172.31.255.6/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  name: Ethernet1
-- peer: DC1-LEAF2A
+- name: Ethernet2
+  peer: DC1-LEAF2A
   peer_interface: Ethernet4
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-LEAF2A_Ethernet4
@@ -127,8 +127,8 @@ ethernet_interfaces:
   ip_address: 172.31.255.14/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  name: Ethernet2
-- peer: DC1-LEAF2B
+- name: Ethernet3
+  peer: DC1-LEAF2B
   peer_interface: Ethernet4
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-LEAF2B_Ethernet4
@@ -138,8 +138,8 @@ ethernet_interfaces:
   ip_address: 172.31.255.22/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  name: Ethernet3
-- peer: DC1-SVC3A
+- name: Ethernet4
+  peer: DC1-SVC3A
   peer_interface: Ethernet4
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-SVC3A_Ethernet4
@@ -149,8 +149,8 @@ ethernet_interfaces:
   ip_address: 172.31.255.30/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  name: Ethernet4
-- peer: DC1-SVC3B
+- name: Ethernet5
+  peer: DC1-SVC3B
   peer_interface: Ethernet4
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-SVC3B_Ethernet4
@@ -160,8 +160,8 @@ ethernet_interfaces:
   ip_address: 172.31.255.38/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  name: Ethernet5
-- peer: DC1-BL1A
+- name: Ethernet6
+  peer: DC1-BL1A
   peer_interface: Ethernet4
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-BL1A_Ethernet4
@@ -171,8 +171,8 @@ ethernet_interfaces:
   ip_address: 172.31.255.46/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  name: Ethernet6
-- peer: DC1-BL1B
+- name: Ethernet7
+  peer: DC1-BL1B
   peer_interface: Ethernet4
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-BL1B_Ethernet4
@@ -182,7 +182,6 @@ ethernet_interfaces:
   ip_address: 172.31.255.54/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  name: Ethernet7
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
