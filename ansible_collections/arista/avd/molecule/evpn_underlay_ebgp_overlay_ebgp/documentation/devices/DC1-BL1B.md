@@ -625,6 +625,8 @@ ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 | 192.168.255.4 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
 | 123.1.1.10 | 1234 | Tenant_A_WAN_Zone | - | standard extended | 0 (no limit) | - | - | - | - | - |
 | 123.1.1.11 | 1234 | Tenant_A_WAN_Zone | - | standard extended | 0 (no limit) | - | - | - | - | - |
+| 123.1.1.12 | 1234 | Tenant_A_WAN_Zone | - | standard extended | 0 (no limit) | - | False | - | - | - |
+| 123.1.1.13 | 1234 | Tenant_A_WAN_Zone | - | standard extended | 0 (no limit) | - | True | - | - | - |
 | fd5a:fe45:8831:06c5::a | 12345 | Tenant_A_WAN_Zone | - | all | - | - | - | - | - | - |
 | fd5a:fe45:8831:06c5::b | 12345 | Tenant_A_WAN_Zone | - | - | - | - | - | - | - | - |
 
@@ -756,6 +758,30 @@ router bgp 65105
       neighbor 123.1.1.11 update-source Loopback123
       neighbor 123.1.1.11 route-map RM-123-1-1-11-OUT out
       neighbor 123.1.1.11 route-map RM-123-1-1-11-IN in
+      neighbor 123.1.1.12 remote-as 1234
+      neighbor 123.1.1.12 password 7 oBztv71m2uhR7hh58/OCNA==
+      neighbor 123.1.1.12 local-as 123 no-prepend replace-as
+      neighbor 123.1.1.12 description External IPv4 BGP peer with BFD disabled
+      neighbor 123.1.1.12 ebgp-multihop 3
+      no neighbor 123.1.1.12 bfd
+      neighbor 123.1.1.12 send-community standard extended
+      neighbor 123.1.1.12 maximum-routes 0
+      neighbor 123.1.1.12 default-originate route-map RM-Tenant_A_WAN_Zone-123.1.1.12-SET-NEXT-HOP-OUT
+      neighbor 123.1.1.12 update-source Loopback123
+      neighbor 123.1.1.12 route-map RM-Tenant_A_WAN_Zone-123.1.1.12-SET-NEXT-HOP-OUT out
+      neighbor 123.1.1.12 route-map RM-123-1-1-10-IN in
+      neighbor 123.1.1.13 remote-as 1234
+      neighbor 123.1.1.13 password 7 oBztv71m2uhR7hh58/OCNA==
+      neighbor 123.1.1.13 local-as 123 no-prepend replace-as
+      neighbor 123.1.1.13 description External IPv4 BGP peer with BFD enabled
+      neighbor 123.1.1.13 ebgp-multihop 3
+      neighbor 123.1.1.13 bfd
+      neighbor 123.1.1.13 send-community standard extended
+      neighbor 123.1.1.13 maximum-routes 0
+      neighbor 123.1.1.13 default-originate route-map RM-Tenant_A_WAN_Zone-123.1.1.13-SET-NEXT-HOP-OUT
+      neighbor 123.1.1.13 update-source Loopback123
+      neighbor 123.1.1.13 route-map RM-Tenant_A_WAN_Zone-123.1.1.13-SET-NEXT-HOP-OUT out
+      neighbor 123.1.1.13 route-map RM-123-1-1-10-IN in
       neighbor fd5a:fe45:8831:06c5::a remote-as 12345
       neighbor fd5a:fe45:8831:06c5::a send-community
       neighbor fd5a:fe45:8831:06c5::a route-map RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT out
@@ -766,6 +792,8 @@ router bgp 65105
       address-family ipv4
          neighbor 123.1.1.10 activate
          neighbor 123.1.1.11 activate
+         neighbor 123.1.1.12 activate
+         neighbor 123.1.1.13 activate
       !
       address-family ipv6
          neighbor fd5a:fe45:8831:06c5::a activate
@@ -871,6 +899,18 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 | -------- | ---- | ----- | --- | ------------- | -------- |
 | 10 | permit | - | ip next-hop 123.1.1.1 | - | - |
 
+##### RM-Tenant_A_WAN_Zone-123.1.1.12-SET-NEXT-HOP-OUT
+
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | permit | - | ip next-hop 123.1.1.1 | - | - |
+
+##### RM-Tenant_A_WAN_Zone-123.1.1.13-SET-NEXT-HOP-OUT
+
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | permit | - | ip next-hop 123.1.1.1 | - | - |
+
 ##### RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
@@ -885,6 +925,12 @@ route-map RM-CONN-2-BGP permit 10
    match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 !
 route-map RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT permit 10
+   set ip next-hop 123.1.1.1
+!
+route-map RM-Tenant_A_WAN_Zone-123.1.1.12-SET-NEXT-HOP-OUT permit 10
+   set ip next-hop 123.1.1.1
+!
+route-map RM-Tenant_A_WAN_Zone-123.1.1.13-SET-NEXT-HOP-OUT permit 10
    set ip next-hop 123.1.1.1
 !
 route-map RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT permit 10
