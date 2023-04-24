@@ -67,11 +67,14 @@ class EthernetInterfacesMixin(UtilsMixin):
                         # Same ethernet_interface information twice in the input data. So not duplicate interface name.
                         continue
 
-                    raise AristaAvdError(
-                        f"Duplicate interface name {ethernet_interface['name']} found while generating ethernet_interfaces for connected_endpoints peer:"
-                        f" {ethernet_interface['peer']}, peer_interface: {ethernet_interface['peer_interface']}. Description on duplicate interface:"
-                        f" {found_eth_interface['description']}"
+                    error_message = (
+                        f"Duplicate interface name {ethernet_interface['name']} found while generating ethernet_interfaces for network_ports"
+                        f" applied to: {network_port.get('switches')}."
                     )
+                    if duplicate_description := found_eth_interface.get("description"):
+                        error_message += f" Description on duplicate interface: {duplicate_description}"
+
+                    raise AristaAvdError(error_message)
 
         if ethernet_interfaces:
             return ethernet_interfaces

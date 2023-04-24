@@ -1,0 +1,27 @@
+---
+# Minimum config to only test the specific feature.
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.42.0.0/24
+    bgp_as: 42
+    vtep_loopback_ipv4_pool: 10.43.0.0/24
+  nodes:
+    duplicate-network-port:
+      id: 42
+
+type: l3leaf
+
+network_ports:
+  - switches:
+      - duplicate-network-port
+    switch_ports:
+      - Ethernet1
+    description: ORIGINAL
+  - switches:
+      - duplicate-network-.*
+    switch_ports:
+      - Ethernet1
+    description: DUPLICATE
+
+
+expected_error_message: "Duplicate interface name Ethernet1 found while generating ethernet_interfaces for network_ports applied to: ['duplicate-network-.*']. Description on duplicate interface: ORIGINAL"
