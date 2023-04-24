@@ -468,7 +468,6 @@ keys:
           type: str
           description: |
             EVPN Ethernet Segment Identifier (Type 1 format)
-            Will be deprecated in AVD 4.0 in favor of "evpn_ethernet_segment.identifier"
             If both "esi" and "evpn_ethernet_segment.identifier" are defined, the new variable takes precedence
           deprecation:
             warning: true
