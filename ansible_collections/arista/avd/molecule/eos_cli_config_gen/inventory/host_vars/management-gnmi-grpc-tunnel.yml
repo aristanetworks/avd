@@ -51,3 +51,7 @@ management_api_gnmi:
         target_ids:
         - testid10
         - testid20
+    - name: noserialnotargets
+    - name: serialonly
+      target:
+        use_serial_number: true

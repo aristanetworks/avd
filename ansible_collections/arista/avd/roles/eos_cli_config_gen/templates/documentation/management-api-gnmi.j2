@@ -40,22 +40,19 @@
 | --------- | ----------- | ---------------- | ---------------- | ------------------ | --- | --------------- | ---------- | --------- |
 {%         for transport in management_api_gnmi.transport.grpc_tunnels %}
 {%             set transport_name = transport.name %}
-{%             set destination = transport.destination.address %}
-{%             set port = transport.destination.port %}
+{%             set destination = transport.destination.address | arista.avd.default('-') %}
+{%             set port = transport.destination.port | arista.avd.default('-') %}
 {%             set gnmi_ssl_profile = transport.gnmi_ssl_profile | arista.avd.default('-') %}
 {%             set tunnel_ssl_profile = transport.tunnel_ssl_profile | arista.avd.default('-') %}
 {%             set vrf = transport.vrf | arista.avd.default('-') %}
 {%             set local_interface = transport.local_interface.name | arista.avd.default('-') %}
 {%             set local_port = transport.local_interface.port | arista.avd.default('-') %}
+{%             set target_ids = [] %}
 {%             if transport.target.use_serial_number is arista.avd.defined(true) %}
-{%                 if transport.target.target_ids is arista.avd.defined %}
-{%                     set target_id = 'Serial Number' ~ ' ' ~ transport.target.target_ids | join(' ') %}
-{%                 else %}
-{%                     set target_id = arista.avd.default('Serial Number') %}
-{%                 endif %}
-{%             elif transport.target.target_ids is arista.avd.defined %}
-{%                 set target_id = transport.target.target_ids | join(' ') | arista.avd.default('-') %}
+{%                 do target_ids.append("Serial-Number") %}
 {%             endif %}
+{%             do target_ids.extend(transport.target.target_ids | arista.avd.default([])) %}
+{%             set target_id = target_ids | join(' ') | arista.avd.default('-') %}
 | {{ transport_name }} | {{ destination }} | {{ port }} | {{ gnmi_ssl_profile }} | {{ tunnel_ssl_profile }} | {{ vrf }} | {{ local_interface }} | {{ local_port }} | {{ target_id }} |
 {%         endfor %}
 {%     endif %}

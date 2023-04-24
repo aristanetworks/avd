@@ -42,7 +42,9 @@ interface Management1
 | --------- | ----------- | ---------------- | ---------------- | ------------------ | --- | --------------- | ---------- | --------- |
 | onetarget | 10.1.1.100 | 10000 | ssl_profile | ssl_profile | management | Management1 | 10001 | testid100 |
 | multipletargets | 10.1.1.100 | 10000 | ssl_profile | ssl_profile | management | Management1 | 10001 | testid1 testid2 testid3 testid4 |
-| serialandtargets | 10.1.1.100 | 10000 | ssl_profile | ssl_profile | management | Management1 | 10001 | Serial Number testid10 testid20 |
+| serialandtargets | 10.1.1.100 | 10000 | ssl_profile | ssl_profile | management | Management1 | 10001 | Serial-Number testid10 testid20 |
+| noserialnotargets | - | - | - | - | - | - | - |  |
+| serialonly | - | - | - | - | - | - | - | Serial-Number |
 
 Provider eos-native is configured.
 
@@ -75,5 +77,8 @@ management api gnmi
       destination 10.1.1.100 port 10000
       local interface Management1 port 10001
       target serial-number testid10 testid20
+   transport grpc-tunnel noserialnotargets
+   transport grpc-tunnel serialonly
+      target serial-number
    provider eos-native
 ```
