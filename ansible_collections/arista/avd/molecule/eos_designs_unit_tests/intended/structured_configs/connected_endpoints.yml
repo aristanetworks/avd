@@ -14,13 +14,14 @@ management_api_http:
 ip_igmp_snooping:
   globally_enabled: true
 ethernet_interfaces:
-- peer: OLD_SW-1/4
+- name: Ethernet4
+  peer: OLD_SW-1/4
   peer_type: server
   description: PHYSICAL_PORT_DESCRIPTION
   type: switched
   shutdown: false
-  name: Ethernet4
-- peer: OLD_SW-1/5
+- name: Ethernet5
+  peer: OLD_SW-1/5
   peer_type: server
   description: OLD_SW-1/5
   type: switched
@@ -28,8 +29,8 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  name: Ethernet5
-- peer: OLD_SW-1/5
+- name: Ethernet6
+  peer: OLD_SW-1/5
   peer_type: server
   description: OLD_SW-1/5
   type: switched
@@ -37,8 +38,8 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  name: Ethernet6
-- peer: OLD_SW-1/6
+- name: Ethernet7
+  peer: OLD_SW-1/6
   peer_type: server
   description: PHYSICAL_PORT_DESCRIPTION
   type: switched
@@ -46,8 +47,8 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  name: Ethernet7
-- peer: OLD_SW-1/6
+- name: Ethernet8
+  peer: OLD_SW-1/6
   peer_type: server
   description: PHYSICAL_PORT_DESCRIPTION
   type: switched
@@ -55,7 +56,6 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  name: Ethernet8
 port_channel_interfaces:
 - name: Port-Channel5
   description: OLD_SW-1/5_PORT_CHANNEL_DESCRIPTION
