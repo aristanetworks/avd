@@ -6433,6 +6433,9 @@
                       "target_ids": {
                         "type": "array",
                         "description": "Target IDs as a list.\n",
+                        "items": {
+                          "type": "string"
+                        },
                         "title": "Target IDs"
                       }
                     },
