@@ -128,6 +128,7 @@ ip nat translation low-mark 50 host
 ip nat translation max-entries 100 10.0.0.1
 ip nat translation max-entries 200 10.0.0.2
 ip nat kernel buffer size 64
+!
 ip nat pool prefix_16 prefix-length 16
    range 10.0.0.1 10.0.255.254
    range 10.1.0.0 10.1.255.255 1024 65535

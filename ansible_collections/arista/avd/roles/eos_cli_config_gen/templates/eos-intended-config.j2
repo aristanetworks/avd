@@ -58,6 +58,8 @@
 {% include 'eos/as-path.j2' %}
 {# macsec #}
 {% include 'eos/mac-security.j2' %}
+{# IP NAT - Part 1#}
+{% include 'eos/ip-nat-part1.j2' %}
 {# hostname #}
 {% include 'eos/hostname.j2' %}
 {# domain lookup #}
@@ -210,8 +212,8 @@
 {% include 'eos/static-routes.j2' %}
 {# IPv6 Static Route #}
 {% include 'eos/ipv6-static-routes.j2' %}
-{# IP NAT #}
-{% include 'eos/ip-nat.j2' %}
+{# IP NAT - Part 2#}
+{% include 'eos/ip-nat-part2.j2' %}
 {# QOS class-map #}
 {% include 'eos/class-maps.j2' %}
 {# PBR policy-map #}

@@ -1,0 +1,31 @@
+{# eos - ip nat part 1 (translation, kernel_buffer_size) #}
+{% if ip_nat is arista.avd.defined %}
+!
+{%     if ip_nat.translation.address_selection.any | arista.avd.default(false) %}
+ip nat translation address selection any
+{%     endif %}
+{%     if ip_nat.translation.address_selection.hash_field_source_ip | arista.avd.default(false) %}
+ip nat translation address selection hash field source-ip
+{%     endif %}
+{%     for timeout in ip_nat.translation.timeouts | arista.avd.default([]) %}
+ip nat translation {{ timeout.protocol }}-timeout {{ timeout.timeout }}
+{%     endfor %}
+{%     if ip_nat.translation.max_entries.limit is arista.avd.defined %}
+ip nat translation max-entries {{ ip_nat.translation.max_entries.limit }}
+{%     endif %}
+{%     if ip_nat.translation.low_mark.percentage is arista.avd.defined %}
+ip nat translation low-mark {{ ip_nat.translation.low_mark.percentage }}
+{%     endif %}
+{%     if ip_nat.translation.max_entries.host_limit is arista.avd.defined %}
+ip nat translation max-entries {{ ip_nat.translation.max_entries.host_limit }} host
+{%     endif %}
+{%     if ip_nat.translation.low_mark.host_percentage is arista.avd.defined %}
+ip nat translation low-mark {{ ip_nat.translation.low_mark.host_percentage }} host
+{%     endif %}
+{%     for ip_limit in ip_nat.translation.max_entries.ip_limits | arista.avd.default([]) %}
+ip nat translation max-entries {{ ip_limit.limit }} {{ ip_limit.ip }}
+{%     endfor %}
+{%     if ip_nat.kernel_buffer_size is arista.avd.defined %}
+ip nat kernel buffer size {{ ip_nat.kernel_buffer_size }}
+{%     endif %}
+{% endif %}
