@@ -121,36 +121,6 @@ router_bgp:
       route_map_in: RM-123-1-1-11-IN
       route_map_out: RM-123-1-1-11-OUT
       local_as: '123'
-    - ip_address: 123.1.1.12
-      remote_as: '1234'
-      password: oBztv71m2uhR7hh58/OCNA==
-      description: External IPv4 BGP peer with BFD disabled
-      send_community: standard extended
-      maximum_routes: 0
-      default_originate:
-        always: false
-        route_map: RM-Tenant_A_WAN_Zone-123.1.1.12-SET-NEXT-HOP-OUT
-      update_source: Loopback123
-      ebgp_multihop: 3
-      bfd: false
-      route_map_in: RM-123-1-1-10-IN
-      route_map_out: RM-Tenant_A_WAN_Zone-123.1.1.12-SET-NEXT-HOP-OUT
-      local_as: '123'
-    - ip_address: 123.1.1.13
-      remote_as: '1234'
-      password: oBztv71m2uhR7hh58/OCNA==
-      description: External IPv4 BGP peer with BFD enabled
-      send_community: standard extended
-      maximum_routes: 0
-      default_originate:
-        always: false
-        route_map: RM-Tenant_A_WAN_Zone-123.1.1.13-SET-NEXT-HOP-OUT
-      update_source: Loopback123
-      ebgp_multihop: 3
-      bfd: true
-      route_map_in: RM-123-1-1-10-IN
-      route_map_out: RM-Tenant_A_WAN_Zone-123.1.1.13-SET-NEXT-HOP-OUT
-      local_as: '123'
     - ip_address: fd5a:fe45:8831:06c5::a
       remote_as: '12345'
       send_community: all
@@ -163,10 +133,6 @@ router_bgp:
       - ip_address: 123.1.1.10
         activate: true
       - ip_address: 123.1.1.11
-        activate: true
-      - ip_address: 123.1.1.12
-        activate: true
-      - ip_address: 123.1.1.13
         activate: true
     - address_family: ipv6
       neighbors:
@@ -478,18 +444,6 @@ route_maps:
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 - name: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    set:
-    - ip next-hop 123.1.1.1
-- name: RM-Tenant_A_WAN_Zone-123.1.1.12-SET-NEXT-HOP-OUT
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    set:
-    - ip next-hop 123.1.1.1
-- name: RM-Tenant_A_WAN_Zone-123.1.1.13-SET-NEXT-HOP-OUT
   sequence_numbers:
   - sequence: 10
     type: permit

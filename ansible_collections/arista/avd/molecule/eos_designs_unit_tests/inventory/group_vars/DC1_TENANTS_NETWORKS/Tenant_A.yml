@@ -180,7 +180,7 @@ tenant_a:
         123.1.1.12:
           remote_as: 1234
           password: "oBztv71m2uhR7hh58/OCNA=="
-          description: External IPv4 BGP peer
+          description: External IPv4 BGP peer with BFD disabled
           send_community: standard extended
           maximum_routes: 0
           default_originate:

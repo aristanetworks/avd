@@ -190,40 +190,6 @@ tenants:
             route_map_in: RM-123-1-1-11-IN
             route_map_out: RM-123-1-1-11-OUT
             local_as: 123
-          123.1.1.12:
-            remote_as: 1234
-            password: "oBztv71m2uhR7hh58/OCNA=="
-            description: External IPv4 BGP peer with BFD disabled
-            send_community: standard extended
-            maximum_routes: 0
-            default_originate:
-              always: false
-            update_source: Loopback123
-            ebgp_multihop: 3
-            bfd: false
-            nodes: [DC1-BL1A, DC1-BL1B]
-            set_ipv4_next_hop: 123.1.1.1
-            route_map_in: RM-123-1-1-10-IN
-            # we don't expect this in the output, next_hop takes precedence
-            route_map_out: RM-123-1-1-10-OUT
-            local_as: 123
-          123.1.1.13:
-            remote_as: 1234
-            password: "oBztv71m2uhR7hh58/OCNA=="
-            description: External IPv4 BGP peer with BFD enabled
-            send_community: standard extended
-            maximum_routes: 0
-            default_originate:
-              always: false
-            update_source: Loopback123
-            ebgp_multihop: 3
-            bfd: true
-            nodes: [DC1-BL1A, DC1-BL1B]
-            set_ipv4_next_hop: 123.1.1.1
-            route_map_in: RM-123-1-1-10-IN
-            # we don't expect this in the output, next_hop takes precedence
-            route_map_out: RM-123-1-1-10-OUT
-            local_as: 123
           fd5a:fe45:8831:06c5::a:
             remote_as: 12345
             send_community: all
