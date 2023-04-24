@@ -164,6 +164,20 @@ router_bgp:
       route_map_out: RM-123-1-1-11-OUT
       local_as: '123'
       bfd: true
+    - ip_address: 123.1.1.12
+      remote_as: '1234'
+      password: oBztv71m2uhR7hh58/OCNA==
+      description: External IPv4 BGP peer
+      send_community: standard extended
+      maximum_routes: 0
+      default_originate:
+        always: false
+      update_source: Loopback123
+      ebgp_multihop: 3
+      route_map_in: RM-123-1-1-11-IN
+      route_map_out: RM-123-1-1-11-OUT
+      local_as: '123'
+      bfd: false
     - ip_address: fd5a:fe45:8831:06c5::a
       remote_as: '12345'
       send_community: all
@@ -176,6 +190,8 @@ router_bgp:
       - ip_address: 123.1.1.10
         activate: true
       - ip_address: 123.1.1.11
+        activate: true
+      - ip_address: 123.1.1.12
         activate: true
     - address_family: ipv6
       neighbors:
