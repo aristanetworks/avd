@@ -25,9 +25,11 @@ l3_edge:
     - nodes: [ ptp-tests-spine1, ptp-tests-spine2 ]
       interfaces: [ Ethernet8, Ethernet8 ]
       ptp_enable: true
+      include_in_underlay_protocol: false
     - nodes: [ ptp-tests-spine1, ptp-tests-spine2 ]
       interfaces: [ Ethernet9, Ethernet9 ]
       ptp_enable: true
+      include_in_underlay_protocol: false
 
 tenants:
   PTP:
