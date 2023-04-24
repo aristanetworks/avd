@@ -478,7 +478,6 @@ keys:
           type: str
           description: |
             EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx
-            Will be deprecated in AVD 4.0 in favor of "evpn_ethernet_segment.route_target"
             If both "rt" and "evpn_ethernet_segment.route_target" are defined, the new variable takes precedence
           deprecation:
             warning: true
