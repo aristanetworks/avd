@@ -1442,6 +1442,16 @@ ethernet_interfaces:
   channel_group:
     id: 1291
     mode: active
+- name: Ethernet30
+  peer: server23_phone
+  peer_interface: int_1
+  peer_type: server
+  port_profile: TENANT_A
+  description: server23_phone_int_1
+  type: switched
+  shutdown: false
+  mode: trunk phone
+  vlans: '110'
 mlag_configuration:
   domain_id: DC1_SVC3
   local_interface: Vlan4092

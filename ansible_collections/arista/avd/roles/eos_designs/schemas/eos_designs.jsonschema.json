@@ -721,7 +721,8 @@
             "enum": [
               "access",
               "dot1q-tunnel",
-              "trunk"
+              "trunk",
+              "trunk phone"
             ],
             "description": "Interface mode.",
             "title": "Mode"
@@ -2114,7 +2115,8 @@
             "enum": [
               "access",
               "dot1q-tunnel",
-              "trunk"
+              "trunk",
+              "trunk phone"
             ],
             "description": "Interface mode.",
             "title": "Mode"
