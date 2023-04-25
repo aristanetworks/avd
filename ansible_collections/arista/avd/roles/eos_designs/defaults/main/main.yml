@@ -24,14 +24,6 @@ structured_dir: '{{ output_dir }}/{{ structured_dir_name }}'
 design:
   type: "l3ls-evpn"
 
-# Infrastructure Elements Keys
-# connected_endpoints_keys: "{{ default_connected_endpoints_keys[design.type] }}"
-
-# network_services_keys:
-#   - name: tenants
-
-# node_type_keys: "{{ default_node_type_keys[design.type] }}"
-
 templates: "{{ default_templates[design.type] }}"
 
 avd_structured_config_file_format: "yml"
