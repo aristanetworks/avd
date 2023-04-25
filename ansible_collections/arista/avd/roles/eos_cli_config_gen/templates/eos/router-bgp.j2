@@ -269,6 +269,8 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%         if neighbor.bfd is arista.avd.defined(true) %}
    neighbor {{ neighbor.ip_address }} bfd
+{%         elif neighbor.bfd is arista.avd.defined(false) and neighbor.peer_group is arista.avd.defined %}
+   no neighbor {{ neighbor.ip_address }} bfd
 {%         endif %}
 {%         if neighbor.allowas_in.enabled is arista.avd.defined(true) %}
 {%             set allowas_in_cli = "neighbor " ~ neighbor.ip_address ~ " allowas-in" %}
@@ -939,8 +941,8 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if neighbor.bfd is arista.avd.defined(true) %}
       neighbor {{ neighbor.ip_address }} bfd
-{%             elif neighbor.bfd is arista.avd.defined(false) %}
-      no neighbor {{ neighbo.ip_address }} bfd
+{%             elif neighbor.bfd is arista.avd.defined(false) and neighbor.peer_group is arista.avd.defined %}
+      no neighbor {{ neighbor.ip_address }} bfd
 {%             endif %}
 {%             if neighbor.allowas_in.enabled is arista.avd.defined(true) %}
 {%                 set allowas_in_cli = "neighbor " ~ neighbor.ip_address ~ " allowas-in" %}
