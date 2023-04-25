@@ -325,15 +325,122 @@
           "items": {
             "type": "object",
             "properties": {
-              "name": {
-                "type": "string",
-                "description": "P2P profile name. Any variable supported under p2p_links can be inherited from a profile.",
-                "title": "Name"
+              "id": {
+                "type": "integer",
+                "description": "Unique id per subnet_summary. Used to calculate ip addresses or Required with ip_pool.\nID starting from 1\n",
+                "title": "ID"
               },
               "speed": {
                 "type": "string",
                 "description": "The values can be speed or auto speed or forced speed.",
                 "title": "Speed"
+              },
+              "ip_pool": {
+                "type": "string",
+                "description": "P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link",
+                "title": "IP Pool"
+              },
+              "subnet": {
+                "type": "string",
+                "description": "IPv4 address/Mask. Subnet used on this P2P link (Optional).",
+                "title": "Subnet"
+              },
+              "ip": {
+                "type": "array",
+                "description": "Specific IP addresses used on this P2P link.",
+                "items": {
+                  "type": "string",
+                  "description": "Node IPv4 address/Mask."
+                },
+                "title": "IP"
+              },
+              "ipv6_enable": {
+                "type": "boolean",
+                "default": false,
+                "description": "Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol).",
+                "title": "IPv6 Enable"
+              },
+              "nodes": {
+                "type": "array",
+                "description": "Nodes where this link should be configured.",
+                "items": {
+                  "type": "string",
+                  "description": "The values can be < node_a >, < node_b >.\nex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].\n"
+                },
+                "title": "Nodes"
+              },
+              "interfaces": {
+                "type": "array",
+                "description": "Interfaces where this link should be configured and Required unless using port-channels.",
+                "items": {
+                  "type": "string",
+                  "description": "The value can be like < node_a_interface >, < node_b_interface >.\nex. - [ Ethernet2, Ethernet2 ].\n"
+                },
+                "title": "Interfaces"
+              },
+              "as": {
+                "type": "array",
+                "description": "AS Numbers for BGP or Required with bgp peering.",
+                "items": {
+                  "type": "string",
+                  "description": "The values can be like [\"node_a_as\", \"node_b_as\"]."
+                },
+                "title": "As"
+              },
+              "descriptions": {
+                "type": "array",
+                "description": "Interface description.",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Descriptions"
+              },
+              "include_in_underlay_protocol": {
+                "type": "boolean",
+                "default": true,
+                "description": "Add this interface to underlay routing protocol.",
+                "title": "Include In Underlay Protocol"
+              },
+              "isis_hello_padding": {
+                "type": "boolean",
+                "default": false,
+                "title": "ISIS Hello Padding"
+              },
+              "isis_metric": {
+                "type": "integer",
+                "title": "ISIS Metric"
+              },
+              "isis_circuit_type": {
+                "type": "string",
+                "enum": [
+                  "level-1",
+                  "level-2",
+                  "level-1-2"
+                ],
+                "title": "ISIS Circuit Type"
+              },
+              "isis_authentication_mode": {
+                "type": "string",
+                "enum": [
+                  "md5",
+                  "text"
+                ],
+                "title": "ISIS Authentication Mode"
+              },
+              "isis_authentication_key": {
+                "type": "string",
+                "description": "Type-7 encrypted password.",
+                "title": "ISIS Authentication Key"
+              },
+              "mpls_ip": {
+                "type": "boolean",
+                "description": "MPLS parameters. Default value is true if switch.mpls_lsr is true.",
+                "title": "MPLS IP"
+              },
+              "mpls_ldp": {
+                "type": "boolean",
+                "description": "MPLS parameters. Default value is true for ldp underlay variants, otherwise false.",
+                "title": "MPLS LDP"
               },
               "mtu": {
                 "type": "integer",
@@ -367,48 +474,63 @@
                 "description": "P2P profile name. Profile defined under p2p_profiles.",
                 "title": "Profile"
               },
-              "ip_pool": {
-                "type": "string",
-                "description": "P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link.",
-                "title": "IP Pool"
-              },
-              "isis_hello_padding": {
-                "type": "boolean",
-                "default": false,
-                "title": "ISIS Hello Padding"
-              },
-              "isis_metric": {
-                "type": "integer",
-                "title": "ISIS Metric"
-              },
-              "isis_circuit_type": {
-                "type": "string",
-                "default": "level-2",
-                "title": "ISIS Circuit Type"
-              },
-              "isis_authentication_mode": {
-                "type": "string",
-                "default": "md5",
-                "title": "ISIS Authentication Mode"
-              },
-              "isis_authentication_key": {
-                "type": "string",
-                "default": "$1c$sTNAlR6rKSw=",
-                "title": "ISIS Authentication Key"
-              },
-              "ipv6_enable": {
-                "type": "boolean",
-                "default": false,
-                "description": "Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol).",
-                "title": "IPv6 Enable"
+              "port_channel": {
+                "description": "Port-channel parameters.",
+                "type": "object",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "default": "active",
+                    "title": "Mode"
+                  },
+                  "nodes_child_interfaces": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "node": {
+                          "type": "string",
+                          "title": "Node"
+                        },
+                        "interfaces": {
+                          "type": "array",
+                          "description": "List of node interfaces. Ex.- [ 'node1 interface1', 'node1 interface2' ].",
+                          "items": {
+                            "type": "string"
+                          },
+                          "title": "Interfaces"
+                        }
+                      },
+                      "required": [
+                        "node"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Nodes Child Interfaces"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Port Channel"
               },
               "raw_eos_cli": {
                 "type": "string",
                 "description": "EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.",
                 "title": "Raw EOS CLI"
+              },
+              "name": {
+                "type": "string",
+                "description": "P2P profile name. Any variable supported under p2p_links can be inherited from a profile.",
+                "title": "Name"
               }
             },
             "required": [
+              "nodes",
               "name"
             ],
             "additionalProperties": false,
@@ -1044,15 +1166,122 @@
           "items": {
             "type": "object",
             "properties": {
-              "name": {
-                "type": "string",
-                "description": "P2P profile name. Any variable supported under p2p_links can be inherited from a profile.",
-                "title": "Name"
+              "id": {
+                "type": "integer",
+                "description": "Unique id per subnet_summary. Used to calculate ip addresses or Required with ip_pool.\nID starting from 1\n",
+                "title": "ID"
               },
               "speed": {
                 "type": "string",
                 "description": "The values can be speed or auto speed or forced speed.",
                 "title": "Speed"
+              },
+              "ip_pool": {
+                "type": "string",
+                "description": "P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link",
+                "title": "IP Pool"
+              },
+              "subnet": {
+                "type": "string",
+                "description": "IPv4 address/Mask. Subnet used on this P2P link (Optional).",
+                "title": "Subnet"
+              },
+              "ip": {
+                "type": "array",
+                "description": "Specific IP addresses used on this P2P link.",
+                "items": {
+                  "type": "string",
+                  "description": "Node IPv4 address/Mask."
+                },
+                "title": "IP"
+              },
+              "ipv6_enable": {
+                "type": "boolean",
+                "default": false,
+                "description": "Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol).",
+                "title": "IPv6 Enable"
+              },
+              "nodes": {
+                "type": "array",
+                "description": "Nodes where this link should be configured.",
+                "items": {
+                  "type": "string",
+                  "description": "The values can be < node_a >, < node_b >.\nex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].\n"
+                },
+                "title": "Nodes"
+              },
+              "interfaces": {
+                "type": "array",
+                "description": "Interfaces where this link should be configured and Required unless using port-channels.",
+                "items": {
+                  "type": "string",
+                  "description": "The value can be like < node_a_interface >, < node_b_interface >.\nex. - [ Ethernet2, Ethernet2 ].\n"
+                },
+                "title": "Interfaces"
+              },
+              "as": {
+                "type": "array",
+                "description": "AS Numbers for BGP or Required with bgp peering.",
+                "items": {
+                  "type": "string",
+                  "description": "The values can be like [\"node_a_as\", \"node_b_as\"]."
+                },
+                "title": "As"
+              },
+              "descriptions": {
+                "type": "array",
+                "description": "Interface description.",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Descriptions"
+              },
+              "include_in_underlay_protocol": {
+                "type": "boolean",
+                "default": true,
+                "description": "Add this interface to underlay routing protocol.",
+                "title": "Include In Underlay Protocol"
+              },
+              "isis_hello_padding": {
+                "type": "boolean",
+                "default": false,
+                "title": "ISIS Hello Padding"
+              },
+              "isis_metric": {
+                "type": "integer",
+                "title": "ISIS Metric"
+              },
+              "isis_circuit_type": {
+                "type": "string",
+                "enum": [
+                  "level-1",
+                  "level-2",
+                  "level-1-2"
+                ],
+                "title": "ISIS Circuit Type"
+              },
+              "isis_authentication_mode": {
+                "type": "string",
+                "enum": [
+                  "md5",
+                  "text"
+                ],
+                "title": "ISIS Authentication Mode"
+              },
+              "isis_authentication_key": {
+                "type": "string",
+                "description": "Type-7 encrypted password.",
+                "title": "ISIS Authentication Key"
+              },
+              "mpls_ip": {
+                "type": "boolean",
+                "description": "MPLS parameters. Default value is true if switch.mpls_lsr is true.",
+                "title": "MPLS IP"
+              },
+              "mpls_ldp": {
+                "type": "boolean",
+                "description": "MPLS parameters. Default value is true for ldp underlay variants, otherwise false.",
+                "title": "MPLS LDP"
               },
               "mtu": {
                 "type": "integer",
@@ -1086,48 +1315,63 @@
                 "description": "P2P profile name. Profile defined under p2p_profiles.",
                 "title": "Profile"
               },
-              "ip_pool": {
-                "type": "string",
-                "description": "P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link.",
-                "title": "IP Pool"
-              },
-              "isis_hello_padding": {
-                "type": "boolean",
-                "default": false,
-                "title": "ISIS Hello Padding"
-              },
-              "isis_metric": {
-                "type": "integer",
-                "title": "ISIS Metric"
-              },
-              "isis_circuit_type": {
-                "type": "string",
-                "default": "level-2",
-                "title": "ISIS Circuit Type"
-              },
-              "isis_authentication_mode": {
-                "type": "string",
-                "default": "md5",
-                "title": "ISIS Authentication Mode"
-              },
-              "isis_authentication_key": {
-                "type": "string",
-                "default": "$1c$sTNAlR6rKSw=",
-                "title": "ISIS Authentication Key"
-              },
-              "ipv6_enable": {
-                "type": "boolean",
-                "default": false,
-                "description": "Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol).",
-                "title": "IPv6 Enable"
+              "port_channel": {
+                "description": "Port-channel parameters.",
+                "type": "object",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "default": "active",
+                    "title": "Mode"
+                  },
+                  "nodes_child_interfaces": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "node": {
+                          "type": "string",
+                          "title": "Node"
+                        },
+                        "interfaces": {
+                          "type": "array",
+                          "description": "List of node interfaces. Ex.- [ 'node1 interface1', 'node1 interface2' ].",
+                          "items": {
+                            "type": "string"
+                          },
+                          "title": "Interfaces"
+                        }
+                      },
+                      "required": [
+                        "node"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Nodes Child Interfaces"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Port Channel"
               },
               "raw_eos_cli": {
                 "type": "string",
                 "description": "EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.",
                 "title": "Raw EOS CLI"
+              },
+              "name": {
+                "type": "string",
+                "description": "P2P profile name. Any variable supported under p2p_links can be inherited from a profile.",
+                "title": "Name"
               }
             },
             "required": [
+              "nodes",
               "name"
             ],
             "additionalProperties": false,

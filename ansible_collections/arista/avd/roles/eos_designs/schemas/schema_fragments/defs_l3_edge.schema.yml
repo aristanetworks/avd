@@ -35,6 +35,7 @@ $defs:
         convert_types:
           - dict
         primary_key: name
+        $ref: '#/$defs/l3_edge/keys/p2p_links'
         items:
           type: dict
           keys:
@@ -42,57 +43,6 @@ $defs:
               type: str
               required: true
               description: P2P profile name. Any variable supported under p2p_links can be inherited from a profile.
-            speed:
-              type: str
-              description: The values can be speed or auto speed or forced speed.
-            mtu:
-              type: int
-              convert_types:
-                - str
-              description: MTU for this P2P link. Default value same as p2p_uplinks_mtu.
-            bfd:
-              type: bool
-              default: false
-              description: Enable BFD (only considered for BGP).
-            ptp_enable:
-              type: bool
-              default: false
-              description: Enable PTP
-            qos_profile:
-              type: str
-              description: QOS service profile.
-            macsec_profile:
-              type: str
-              description: MAC security profile.
-            profile:
-              type: str
-              description: P2P profile name. Profile defined under p2p_profiles.
-            ip_pool:
-              type: str
-              description: P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link.
-            isis_hello_padding:
-              type: bool
-              default: false
-            isis_metric:
-              type: int
-              convert_types:
-                - str
-            isis_circuit_type:
-              type: str
-              default: level-2
-            isis_authentication_mode:
-              type: str
-              default: md5
-            isis_authentication_key:
-              type: str
-              default: $1c$sTNAlR6rKSw=
-            ipv6_enable:
-              type: bool
-              default: false
-              description: Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol).
-            raw_eos_cli:
-              type: str
-              description: EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.
       p2p_links:
         type: list
         items:
