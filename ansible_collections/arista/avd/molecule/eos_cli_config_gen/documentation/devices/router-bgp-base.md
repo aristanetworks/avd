@@ -127,12 +127,14 @@ interface Management1
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- |
 | 192.0.3.1 | 65432 | default | - | all | - | - | - | True | - |
-| 192.0.3.2 | 65433 | default | - | extended | 10000 | - | - | True (All) | - |
-| 192.0.3.3 | 65434 | default | - | standard | - | - | - | True | - |
+| 192.0.3.2 | 65433 | default | - | extended | 10000 | - | True | True (All) | - |
+| 192.0.3.3 | 65434 | default | - | standard | - | - | False | True | - |
 | 192.0.3.4 | 65435 | default | - | large | - | - | - | False | - |
 | 192.0.3.5 | 65436 | default | - | standard | 12000 | - | - | - | - |
 | 192.0.3.6 | 65437 | default | - | - | - | - | - | - | False |
 | 192.0.3.7 | 65438 | default | - | - | - | - | - | - | True |
+| 192.0.3.8 | 65438 | default | - | - | - | - | True | - | - |
+| 192.0.3.9 | 65438 | default | - | - | - | - | False | - | - |
 
 ### BGP Neighbor Interfaces
 
@@ -180,6 +182,7 @@ router bgp 65101
    neighbor 192.0.3.1 send-community
    neighbor 192.0.3.1 link-bandwidth default 100G
    neighbor 192.0.3.2 remote-as 65433
+   neighbor 192.0.3.2 bfd
    neighbor 192.0.3.2 rib-in pre-policy retain all
    neighbor 192.0.3.2 default-originate route-map RM-FOO-MATCH3
    neighbor 192.0.3.2 send-community extended
@@ -206,6 +209,12 @@ router bgp 65101
    neighbor 192.0.3.7 remove-private-as ingress replace-as
    neighbor 192.0.3.7 description test_remove_private_as_all
    neighbor 192.0.3.7 route-reflector-client
+   neighbor 192.0.3.8 peer group TEST
+   neighbor 192.0.3.8 remote-as 65438
+   neighbor 192.0.3.8 bfd
+   neighbor 192.0.3.9 peer group TEST
+   neighbor 192.0.3.9 remote-as 65438
+   no neighbor 192.0.3.9 bfd
    aggregate-address 1.1.1.0/24 advertise-only
    aggregate-address 1.12.1.0/24 as-set summary-only attribute-map RM-ATTRIBUTE match-map RM-MATCH advertise-only
    aggregate-address 2.2.1.0/24

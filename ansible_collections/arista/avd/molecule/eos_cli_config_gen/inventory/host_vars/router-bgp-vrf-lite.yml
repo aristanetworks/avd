@@ -43,6 +43,7 @@ router_bgp:
       description: 'BGP Connection to OBS WAN CPE'
       remote_as: 65000
     WELCOME_ROUTERS:
+      bfd: true
       type: ipv4
       description: 'BGP Connection to WELCOME ROUTER 02'
       remote_as: 65001
@@ -53,6 +54,7 @@ router_bgp:
       update_source: Loopback101
       ebgp_multihop: 10
     SEDI-shut:
+      bfd: false
       type: ipv4
       description: 'BGP Peer Shutdown'
       shutdown: true
@@ -92,6 +94,22 @@ router_bgp:
           allowas_in:
             enabled: true
             times: 5
+        101.0.3.4:
+          peer_group: TEST-PASSIVE
+        # Testing bfd false IN a peer group that should render
+        101.0.3.5:
+          peer_group: WELCOME_ROUTERS
+          bfd: false
+        # Testing bfd true IN a peer group that should render
+        101.0.3.6:
+          peer_group: WELCOME_ROUTERS
+          bfd: true
+        # Testing bfd true OUTSIDE a peer group that should render
+        101.0.3.7:
+          bfd: true
+        # Testing bfd false OUTSIDE a peer group that should NOT render
+        101.0.3.8:
+          bfd: false
       redistribute_routes:
         - static
       aggregate_addresses:
