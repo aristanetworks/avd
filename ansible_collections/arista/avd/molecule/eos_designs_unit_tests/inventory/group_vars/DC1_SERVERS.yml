@@ -542,6 +542,16 @@ servers:
           enabled: true
           channel_id: 1291
 
+  server23_phone:
+    rack: RackC
+    adapters:
+      - endpoint_ports: [ int_1 ]
+        switch_ports: [ Ethernet30 ]
+        switches: [ DC1-SVC3A ]
+        profile: TENANT_A
+        mode: trunk phone
+        enabled: true
+
 firewalls:
   FIREWALL01:
     rack: RackB
