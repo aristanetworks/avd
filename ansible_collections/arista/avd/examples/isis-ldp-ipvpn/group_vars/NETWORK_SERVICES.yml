@@ -7,8 +7,10 @@ tenants:
       C1_VRF1:
         # VRF ID definition.
         vrf_id: 10
+        # Select address families for the VRF.
         address_families:
           - vpn-ipv4
+        # Enable OSPF on selected PEs in the VRF.
         ospf:
           enabled: true
           nodes:
@@ -22,6 +24,7 @@ tenants:
             description: C1_VLAN10
             enabled: true
             ip_addresses: [ 10.0.1.1/29, 10.0.1.2/29, 10.0.1.9/30 ]
+            # Enable OSPF on the interfaces.
             ospf:
               enabled: true
 
@@ -38,6 +41,7 @@ tenants:
             description: C2_VLAN20
             enabled: true
             ip_addresses: [ 10.1.1.1/29, 10.1.1.2/29, 10.1.1.9/30 ]
+        # Define BGP peers inside the VRF.
         bgp_peers:
           10.1.1.3:
             remote_as: 65123
