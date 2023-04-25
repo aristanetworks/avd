@@ -28,6 +28,7 @@ class MgmtMixin:
             get(self.switch_data_combined, "mgmt_interface"),
             self.platform_settings.get("management_interface"),
             get(self.hostvars, "mgmt_interface"),
+            "Management1"
         )
 
     @cached_property
@@ -39,8 +40,8 @@ class MgmtMixin:
         return get(self.switch_data_combined, "mgmt_ip")
 
     @cached_property
-    def mgmt_interface_vrf(self: SharedUtils) -> str | None:
-        return get(self.hostvars, "mgmt_interface_vrf")
+    def mgmt_interface_vrf(self: SharedUtils) -> str:
+        return get(self.hostvars, "mgmt_interface_vrf", default="MGMT")
 
     @cached_property
     def mgmt_gateway(self: SharedUtils) -> str | None:

@@ -5190,8 +5190,7 @@
     }
   },
   "required": [
-    "fabric_name",
-    "internal_vlan_order"
+    "fabric_name"
   ],
   "additionalProperties": true
 }

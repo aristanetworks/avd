@@ -28,7 +28,7 @@ class RouterIsisMixin(UtilsMixin):
             "net": self._isis_net,
             "router_id": self.shared_utils.router_id,
             "is_type": self._is_type,
-            "address_family_ipv4": {"enabled": True, "maximum_paths": get(self._hostvars, "isis_maximum_paths")},
+            "address_family_ipv4": {"enabled": True, "maximum_paths": get(self._hostvars, "isis_maximum_paths", default=4)},
         }
 
         # no passive interfaces
@@ -85,7 +85,7 @@ class RouterIsisMixin(UtilsMixin):
     def _isis_net(self) -> str | None:
         isis_system_id_prefix = get(self.shared_utils.switch_data_combined, "isis_system_id_prefix")
         if isis_system_id_prefix is not None:
-            isis_area_id = get(self._hostvars, "isis_area_id", required=True)
+            isis_area_id = get(self._hostvars, "isis_area_id", default="49.0001")
             if self.shared_utils.id is None:
                 raise AristaAvdMissingVariableError(f"'id' is not set on '{self.shared_utils.hostname}' and is required to set ISIS NET address using prefix")
 

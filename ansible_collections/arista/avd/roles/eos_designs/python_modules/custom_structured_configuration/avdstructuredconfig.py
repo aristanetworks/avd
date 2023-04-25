@@ -22,7 +22,7 @@ class AvdStructuredConfig(AvdFacts):
         """
         Reads custom_structured_configuration_prefix from hostvars and converts to list if necessary
         """
-        custom_structured_configuration_prefix = get(self._hostvars, "custom_structured_configuration_prefix", default=[])
+        custom_structured_configuration_prefix = get(self._hostvars, "custom_structured_configuration_prefix", default=["custom_structured_configuration_"])
         if not isinstance(custom_structured_configuration_prefix, list):
             return [custom_structured_configuration_prefix]
 

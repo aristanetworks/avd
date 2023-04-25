@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from .shared_utils import SharedUtils
 
 
-class NodeTypeKeyMixin:
+class NodeTypeMixin:
     """
     Mixin Class providing a subset of SharedUtils
     Class should only be used as Mixin to the SharedUtils class
@@ -45,21 +45,6 @@ class NodeTypeKeyMixin:
                     return default_node_type["node_type"]
 
         return None
-
-    @cached_property
-    def node_type_key_data(self: SharedUtils) -> dict:
-        """
-        node_type_key_data containing settings for this node_type.
-        """
-
-        node_type_keys = get(self.hostvars, "node_type_keys", required=True)
-        node_type_keys = convert_dicts(node_type_keys, "key")
-        for node_type_key in node_type_keys:
-            if node_type_key["type"] == self.type:
-                return node_type_key
-
-        # Not found
-        raise AristaAvdMissingVariableError(f"node_type_keys.<>.type=={self.type}")
 
     @cached_property
     def connected_endpoints(self: SharedUtils) -> bool:

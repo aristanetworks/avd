@@ -9,6 +9,101 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, g
 if TYPE_CHECKING:
     from .shared_utils import SharedUtils
 
+DEFAULT_PLATFORM_SETTINGS = [
+    {
+        "platforms": ["default"],
+        "reload_delay": {"mlag": 300, "non_mlag": 330},
+        "feature_support": {
+            "queue_monitor_length_notify": False,
+        },
+    },
+    {
+        "platforms": ["7050X3", "720XP", "722XP"],
+        "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072",
+        "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330,
+        },
+        "feature_support": {
+            "queue_monitor_length_notify": False,
+        },
+    },
+    {
+        "platforms": ["7280R", "7280R2", "7020R"],
+        "tcam_profile": "vxlan-routing",
+        "lag_hardware_only": True,
+        "reload_delay": {
+            "mlag": 900,
+            "non_mlag": 1020,
+        },
+    },
+    {
+        "platforms": ["7280R3"],
+        "reload_delay": {
+            "mlag": 900,
+            "non_mlag": 1020,
+        },
+    },
+    {
+        "platforms": ["7500R", "7500R2"],
+        "tcam_profile": "vxlan-routing",
+        "lag_hardware_only": True,
+        "management_interface": "Management0",
+        "reload_delay": {
+            "mlag": 900,
+            "non_mlag": 1020,
+        },
+    },
+    {
+        "platforms": ["7500R3", "7800R3"],
+        "management_interface": "Management0",
+        "reload_delay": {
+            "mlag": 900,
+            "non_mlag": 1020,
+        },
+    },
+    {
+        "platforms": ["7368X4"],
+        "management_interface": "Management0",
+        "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330,
+        },
+    },
+    {
+        "platforms": ["7300X3"],
+        "management_interface": "Management0",
+        "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072",
+        "reload_delay": {
+            "mlag": 1200,
+            "non_mlag": 1320,
+        },
+    },
+    {
+        "platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"],
+        "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330,
+        },
+        "feature_support": {
+            "queue_monitor_length_notify": False,
+            "interface_storm_control": False,
+        },
+    },
+    {
+        "platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"],
+        "management_interface": "Management0",
+        "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330,
+        },
+        "feature_support": {
+            "queue_monitor_length_notify": False,
+            "interface_storm_control": False,
+        },
+    },
+]
+
 
 class PlatformMixin:
     """
@@ -23,7 +118,7 @@ class PlatformMixin:
 
     @cached_property
     def platform_settings(self: SharedUtils) -> dict:
-        platform_settings = get(self.hostvars, "platform_settings", default=[])
+        platform_settings = get(self.hostvars, "platform_settings", default=DEFAULT_PLATFORM_SETTINGS)
 
         # First look for a matching platform setting specifying our platform
         for platform_setting in platform_settings:

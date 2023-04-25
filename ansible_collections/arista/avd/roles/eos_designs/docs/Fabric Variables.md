@@ -302,7 +302,7 @@ search:
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>enable_trunk_groups</samp>](## "enable_trunk_groups") | Boolean |  | False |  | Enable Trunk Group support across eos_designs<br>Warning: Because of the nature of the EOS Trunk Group feature, enabling this is "all or nothing".<br>*All* vlans and *all* trunks towards connected endpoints must be using trunk groups as well.<br>If trunk groups are not assigned to a trunk, no vlans will be enabled on that trunk.<br>See "Details on enable_trunk_groups" below before enabling this feature.<br> |
-    | [<samp>internal_vlan_order</samp>](## "internal_vlan_order") | Dictionary | Required |  |  | Internal vlan allocation order and range. |
+    | [<samp>internal_vlan_order</samp>](## "internal_vlan_order") | Dictionary |  |  |  | Internal vlan allocation order and range. |
     | [<samp>&nbsp;&nbsp;allocation</samp>](## "internal_vlan_order.allocation") | String | Required | ascending | Valid Values:<br>- ascending<br>- descending |  |
     | [<samp>&nbsp;&nbsp;range</samp>](## "internal_vlan_order.range") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;beginning</samp>](## "internal_vlan_order.range.beginning") | Integer | Required | 1006 | Min: 2<br>Max: 4094 | First VLAN ID. |
