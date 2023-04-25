@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from functools import cached_property
-from re import search
 from typing import TYPE_CHECKING
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
