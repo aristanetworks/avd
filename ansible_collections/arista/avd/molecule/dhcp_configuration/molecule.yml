@@ -11,7 +11,6 @@ scenario:
     - converge
   test_sequence:
     - dependency
-    - lint
     - cleanup
     - destroy
     - syntax
@@ -39,7 +38,7 @@ platforms:
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
   - name: centos8-systemd
-    image: centos:8
+    image: quay.io/centos/centos:stream8
     command: /sbin/init
     tmpfs:
       - /run
