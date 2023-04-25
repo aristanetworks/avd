@@ -37,6 +37,7 @@ $defs:
           - "access"
           - "dot1q-tunnel"
           - "trunk"
+          - "trunk phone"
         description: Interface mode.
       mtu:
         type: int
