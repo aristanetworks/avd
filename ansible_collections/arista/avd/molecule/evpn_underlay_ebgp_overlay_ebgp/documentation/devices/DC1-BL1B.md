@@ -33,6 +33,7 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
+  - [Router OSPF](#router-ospf)
   - [Router BGP](#router-bgp)
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
@@ -576,6 +577,33 @@ ip route vrf Tenant_A_WAN_Zone 1.1.2.0/24 Vlan101 10.1.1.1 200 tag 666 name RT-T
 ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 ```
 
+### Router OSPF
+
+#### Router OSPF Summary
+
+| Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
+| ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
+| 5 | 192.168.255.15 | enabled | | disabled | 15000 | disabled | disabled | - | - | - | - |
+
+#### Router OSPF Router Redistribution
+
+| Process ID | Source Protocol | Include Leaked | Route Map |
+| ---------- | --------------- | -------------- | --------- |
+| 5 | connected | disabled | RM_TEST |
+| 5 | bgp | disabled | - |
+
+#### Router OSPF Device Configuration
+
+```eos
+!
+router ospf 5 vrf Tenant_B_WAN_Zone
+   router-id 192.168.255.15
+   passive-interface default
+   max-lsa 15000
+   redistribute connected route-map RM_TEST
+   redistribute bgp
+```
+
 ### Router BGP
 
 #### Router BGP Summary
@@ -655,7 +683,7 @@ ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 | --- | ------------------- | ------------ |
 | Tenant_A_WAN_Zone | 192.168.255.15:14 | connected<br>static |
 | Tenant_B_OP_Zone | 192.168.255.15:20 | connected |
-| Tenant_B_WAN_Zone | 192.168.255.15:21 | connected |
+| Tenant_B_WAN_Zone | 192.168.255.15:21 | connected<br>ospf |
 | Tenant_C_WAN_Zone | 192.168.255.15:31 | connected |
 | Tenant_L3_VRF_Zone | 192.168.255.15:15 | connected |
 
@@ -784,6 +812,7 @@ router bgp 65105
       route-target export evpn 21:21
       router-id 192.168.255.15
       redistribute connected
+      redistribute ospf
    !
    vrf Tenant_C_WAN_Zone
       rd 192.168.255.15:31
