@@ -469,11 +469,6 @@
                 "description": "MAC security profile.",
                 "title": "Macsec Profile"
               },
-              "profile": {
-                "type": "string",
-                "description": "P2P profile name. Profile defined under p2p_profiles.",
-                "title": "Profile"
-              },
               "port_channel": {
                 "description": "Port-channel parameters.",
                 "type": "object",
@@ -530,7 +525,6 @@
               }
             },
             "required": [
-              "nodes",
               "name"
             ],
             "additionalProperties": false,
@@ -689,11 +683,6 @@
                 "description": "MAC security profile.",
                 "title": "Macsec Profile"
               },
-              "profile": {
-                "type": "string",
-                "description": "P2P profile name. Profile defined under p2p_profiles.",
-                "title": "Profile"
-              },
               "port_channel": {
                 "description": "Port-channel parameters.",
                 "type": "object",
@@ -742,6 +731,11 @@
                 "type": "string",
                 "description": "EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.",
                 "title": "Raw EOS CLI"
+              },
+              "profile": {
+                "type": "string",
+                "description": "P2P profile name. Profile defined under p2p_profiles.",
+                "title": "Profile"
               }
             },
             "required": [
@@ -1310,11 +1304,6 @@
                 "description": "MAC security profile.",
                 "title": "Macsec Profile"
               },
-              "profile": {
-                "type": "string",
-                "description": "P2P profile name. Profile defined under p2p_profiles.",
-                "title": "Profile"
-              },
               "port_channel": {
                 "description": "Port-channel parameters.",
                 "type": "object",
@@ -1371,7 +1360,6 @@
               }
             },
             "required": [
-              "nodes",
               "name"
             ],
             "additionalProperties": false,
@@ -1530,11 +1518,6 @@
                 "description": "MAC security profile.",
                 "title": "Macsec Profile"
               },
-              "profile": {
-                "type": "string",
-                "description": "P2P profile name. Profile defined under p2p_profiles.",
-                "title": "Profile"
-              },
               "port_channel": {
                 "description": "Port-channel parameters.",
                 "type": "object",
@@ -1583,6 +1566,11 @@
                 "type": "string",
                 "description": "EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.",
                 "title": "Raw EOS CLI"
+              },
+              "profile": {
+                "type": "string",
+                "description": "P2P profile name. Profile defined under p2p_profiles.",
+                "title": "Profile"
               }
             },
             "required": [
