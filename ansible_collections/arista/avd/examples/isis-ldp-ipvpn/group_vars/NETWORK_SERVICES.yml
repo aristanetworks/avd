@@ -21,7 +21,7 @@ tenants:
           # L3 interfaces
           - interfaces: [ Ethernet3.10, Ethernet4.10, Ethernet2 ]
             nodes: [ pe1, pe2, pe3 ]
-            description: C1_VLAN10
+            description: C1_L3_SERVICE
             enabled: true
             ip_addresses: [ 10.0.1.1/29, 10.0.1.2/29, 10.0.1.9/30 ]
             # Enable OSPF on the interfaces.
@@ -38,7 +38,7 @@ tenants:
           # L3 interfaces
           - interfaces: [ Ethernet3.20, Ethernet4.20, Ethernet4 ]
             nodes: [ pe1, pe2, pe3 ]
-            description: C2_VLAN20
+            description: C2_L3_SERVICE
             enabled: true
             ip_addresses: [ 10.1.1.1/29, 10.1.1.2/29, 10.1.1.9/30 ]
         # Define BGP peers inside the VRF.

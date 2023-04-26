@@ -61,7 +61,7 @@ ansible-avd-examples/ (or wherever the playbook was run)
 
 The drawing below shows the physical topology used in this example. The interface assignment shown here are referenced across the entire example, so keep that in mind if this example must be adapted to a different topology. Finally, the Ansible host is connected to the dedicated out-of-band management port (Ethernet0 when using vEOS-lab):
 
-![Figure: Arista Leaf Spine physical topology](images/avd-isis-ldp-ipvpn-example.svg)
+![Figure: Arista MPLS-VPN physical topology](images/avd-isis-ldp-ipvpn-example.svg)
 
 ### IP ranges used
 
@@ -77,14 +77,14 @@ The drawing below shows the physical topology used in this example. The interfac
 | pe3                                                 | 172.16.1.103                |
 | rr1                                                 | 172.16.1.151                |
 | rr2                                                 | 172.16.1.152                |
-| **Point-to-point links between leaf and spine**     | **(Underlay)**              |
+| **Point-to-point links between network nodes**      | **(Underlay)**              |
 | WAN1                                                | 100.64.48.0/24              |
 | **Loopback0 interfaces for router ID (p)**          | 10.255.0.0/27               |
 | **Loopback0 interfaces for overlay peering (pe)**   | 10.255.1.0/27               |
 | **Loopback0 interfaces for overlay peering (rr)**   | 10.255.2.0/27               |
 | **L3 Interfaces**                                   | **10.0-1.1.0/24**           |
-| For example pe1 `Ethernet3.10` has the IP address:  | 10.0.1.0                    |
-| For example pe3 `Ethernet4` has the IP address:     | 10.1.1.4                    |
+| For example pe1 `Ethernet3.10` has the IP address:  | 10.0.1.1                    |
+| For example pe3 `Ethernet4` has the IP address:     | 10.1.1.9                    |
 
 ### ISIS-LDP design
 
@@ -124,7 +124,7 @@ The following drawing shows a graphic overview of the Ansible inventory, group v
 ![Figure: Ansible inventory and vars](images/ansible-groups.svg)
 
 !!! note
-    The CPE's and aggregation nodes are **not** configured by AVD, but the switch ports used to connect to the servers are.
+    The CPE's and aggregation nodes are **not** configured by AVD, but the ports used to connect to them are.
 
 Group names use uppercase and underscore syntax:
 
@@ -223,7 +223,7 @@ all:
                 rr1:
                 rr2:
 
-        NETWORK_SERVICES: # (1)!
+        NETWORK_SERVICES:
           children:
             WAN1_PE_ROUTERS:
 ```
@@ -344,119 +344,124 @@ p:
 1. The default gateway for the management interface of all devices in WAN1 is defined.
 2. `platform` references default settings defined in AVD specific to certain switch platforms.
 3. `loopback_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for Loopback0.
-4. `nodes` defines the actual spine switches, using the hostnames defined in the inventory.
-5. `id` is used to calculate the various IP addresses, for example, the IPv4 address for the Loopback0 interface. In this case, dc1-spine1 will get the IPv4 address 10.255.0.1/27 assigned to the Loopback0 interface.
+4. `nodes` defines the actual p routers, using the hostnames defined in the inventory.
+5. `id` is used to calculate the various IP addresses, for example, the IPv4 address for the Loopback0 interface. In this case, p1 will get the IPv4 address 10.255.0.1/27 assigned to the Loopback0 interface.
 6. `mgmt_ip` defines the IPv4 address of the management interface. As stated earlier, Ansible will perform name lookups using the hostnames specified in the inventory unless using the `ansible_host` option. However, there is no automatic mechanism to grab the result of the name lookup and use that to generate the management interface configuration.
 
-The following section covers the L3 leaf switches. Significantly more settings need to be set compared to the spine switches:
+The following section covers the pe routers. Significantly more settings need to be set compared to the p routers:
 
 ```yaml title="WAN1.yml"
-l3leaf:
+# PE router group
+pe:
   defaults:
     platform: vEOS-lab # (1)!
-    loopback_ipv4_pool: 10.255.0.0/27 # (2)!
-    loopback_ipv4_offset: 2 # (3)!
-    vtep_loopback_ipv4_pool: 10.255.1.0/27 # (4)!
-    uplink_interfaces: ['Ethernet1', 'Ethernet2'] # (5)!
-    uplink_switches: ['dc1-spine1', 'dc1-spine2'] # (6)!
-    uplink_ipv4_pool: 10.255.255.0/26 # (7)!
-    mlag_interfaces: ['Ethernet3', 'Ethernet4'] # (8)!
-    mlag_peer_ipv4_pool: 10.255.1.64/27 # (9)!
-    mlag_peer_l3_ipv4_pool: 10.255.1.96/27 # (10)!
+    loopback_ipv4_pool: 10.255.1.0/27 # (2)!
+    virtual_router_mac_address: 00:1c:73:00:dc:00 # (3)!
+    mpls_route_reflectors: [ rr1, rr2 ] # (4)!
+    isis_system_id_prefix: '0000.0001' # (5)!
     bgp_defaults:
       - no bgp default ipv4-unicast
       - distance bgp 20 200 200
       - graceful-restart restart-time 300
       - graceful-restart
-    virtual_router_mac_address: 00:1c:73:00:00:99 # (11)!
-    spanning_tree_priority: 4096 # (12)!
-    spanning_tree_mode: mstp # (13)!
+    spanning_tree_mode: none # (6)!
 
-  node_groups: # (14)!
-    DC1_L3_LEAF1:
-      bgp_as: 65101 # (15)!
+  node_groups: # (7)!
+    WAN1-PE1-2:
       nodes:
-        dc1-leaf1a:
+        pe1:
           id: 1
           mgmt_ip: 172.16.1.101/24
-          uplink_switch_interfaces: # (16)!
-            - Ethernet1
-            - Ethernet1
-        dc1-leaf1b:
+        pe2:
           id: 2
           mgmt_ip: 172.16.1.102/24
-          uplink_switch_interfaces:
-            - Ethernet2
-            - Ethernet2
 
-    DC1_L3_LEAF2:
-      bgp_as: 65102
+    WAN1-PE3:
       nodes:
-        dc1-leaf2a:
+        pe3:
           id: 3
           mgmt_ip: 172.16.1.103/24
-          uplink_switch_interfaces:
-            - Ethernet3
-            - Ethernet3
-        dc1-leaf2b:
-          id: 4
-          mgmt_ip: 172.16.1.104/24
-          uplink_switch_interfaces:
-            - Ethernet4
-            - Ethernet4
 ```
 
 1. `platform` references default settings defined in AVD specific to certain switch platforms.
-2. `loopback_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for Loopback0. Please note that this IP pool is identical to the one used for the spine switches in this example. To avoid setting the same IP addresses for several devices, we define the option `loopback_ipv4_offset`.
-3. `loopback_ipv4_offset` offsets all assigned loopback IP addresses counting from the beginning of the IP scope. This is required when the same IP pool is used for two different node_types (like spine and l3leaf in this example) to avoid overlapping IPs. The offset is "2" in this case because each spine switch uses one loopback address.
-4. `vtep_loopback_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the VTEP (Loopback1).
-5. `uplink_interfaces` defines the interfaces used locally on the leaf switches.
-6. `uplink_switches` defines the uplink switches, which are dc1-spine1 and dc1-spine2. Note that the `uplink_interfaces` and `uplink_switches` are paired vertically.
-7. `uplink_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the uplink interfaces that were just defined.
-8. `mlag_interfaces` defines the MLAG interfaces used on each leaf switch, in this case, Ethernet3 and Ethernet4. These two interfaces will form PortChannel3 used for the MLAG peer link. Note that PortChannel3 is selected since the first interface is Ethernet3.
-9. `mlag_peer_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the MLAG peer link interface VLAN4094.
-10. `mlag_peer_l3_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the iBGP peering established between the two leaf switches via the SVI/IRB interface VLAN4093.
-11. `virtual_router_mac_address` defines the MAC address used for the anycast gateway on the various subnets. This is the MAC address connected endpoints will learn when ARPing for their default gateway.
-12. `spanning_tree_priority` sets the spanning tree priority. Since spanning tree in an L3LS network is effectively only running locally on the switch, the same priority across all L3 leaf switches can be re-used.
-13. `spanning_tree_mode` defines the spanning tree mode. In this case, we are using MSTP, which is the default. However, other modes are supported should they be required, for example, for connectivity to legacy or third-party vendor environments.
-14. `node_groups` defines settings common to more than one node. For example, for leaf switches, when exactly two nodes are part of a node group, AVD will, by default, automatically generate MLAG configuration.
-15. `bgp_as` is defined once since an MLAG pair shares a single BGP AS number.
-16. `uplink_switch_interfaces` defines the interfaces used on the uplink switches (Ethernet1 on dc1-spine1 and dc1-spine2 in this example). Defining which spine interfaces the leaf is connected to under the leaf switch settings makes adding and removing leaf switches much easier. There is no need to add/remove any settings under the spine switch section; AVD takes care of that for you. This child device/parent device hierarchy also applies to L2 and L3 leaves.
+2. `loopback_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for Loopback0. Please note that this IP pool is different to the one used for the p routers in this example. If you want to reuse the same IP pool for multiple node types, to avoid setting the same IP addresses for several devices, we can define the option `loopback_ipv4_offset`.
+3. `virtual_router_mac_address` defines the MAC address used for the anycast gateway on the various subnets. This is the MAC address connected endpoints will learn when ARPing for their default gateway. It is not really relevant for the vpn-ipv4/6 services used in this example but it is still mandatory to set.
+4. `mpls_route_reflectors` defines which route reflectors that the pe nodes peer with for overlay route distribution.
+5. `isis_system_id_prefix` is mandatory to set when using ISIS for underlay routing protocol. It is used to calculate the ISIS NET ID.
+6. `spanning_tree_mode` defines the spanning tree mode. In this case, we are not using spanning tree since we have only routed interfaces on our pe routers.
+7. `node_groups` defines settings common to more than one node. In the l3ls-evpn design this has more utility than here, where it is used to define MLAG pairs. In the mpls design it is mostly used as a way to logically group devices for organizational purposes.
 
-Finally, more of the same, but this time for the L2 leaf switches:
+Finally, more of the same, but this time for the rr routers:
 
 ```yaml title="WAN1.yml"
-l2leaf:
+rr:
   defaults:
     platform: vEOS-lab
-    uplink_interfaces: ['Ethernet1', 'Ethernet2']
-    spanning_tree_mode: mstp
+    loopback_ipv4_pool: 10.255.2.0/27
+    mpls_route_reflectors: [ rr1, rr2 ] # (1)!
+    isis_system_id_prefix: '0000.0002'
+    bgp_defaults:
+      - no bgp default ipv4-unicast
+      - distance bgp 20 200 200
+      - graceful-restart restart-time 300
+      - graceful-restart
+    spanning_tree_mode: none
 
   node_groups:
-    DC1_L2_LEAF1:
-      uplink_switches: ['dc1-leaf1a', 'dc1-leaf1b']
+    WAN1_RR1-2:
+      bgp_cluster_id: 1.2.1.2 # (2)!
       nodes:
-        dc1-leaf1c:
+        rr1:
           id: 1
           mgmt_ip: 172.16.1.151/24
-          uplink_switch_interfaces:
-            - Ethernet8
-            - Ethernet8
-
-    DC1_L2_LEAF2:
-      uplink_switches: ['dc1-leaf2a', 'dc1-leaf2b']
-      nodes:
-        dc1-leaf2c:
+        rr2:
           id: 2
           mgmt_ip: 172.16.1.152/24
-          uplink_switch_interfaces:
-            - Ethernet8
-            - Ethernet8
 ```
 
-As should be clear, an L2 leaf switch is much simpler than an L3 switch. Hence there are fewer settings to define.
+1. `mpls_route_reflectors` is used here to make the rr nodes peer with each other.
+2. `bgp_cluster_id` can be used to set a route reflector cluster ID for the rr nodes to use.
 
-## Specifying network services (VRFs and VLANs) in the EVPN/VXLAN fabric
+## Defining underlay connectivity between network nodes
+
+A free-standing list of `core_interfaces` dictionaries and their associated profiles and ip pools is used to define the underlay connectivity between nodes.
+
+```yaml title="WAN1.yml"
+
+core_interfaces:
+  p2p_links_ip_pools:
+    - name: core_pool # (1)!
+      ipv4_pool: 100.64.48.0/24
+
+  p2p_links_profiles:
+    - name: core_profile # (2)!
+      mtu: 1500
+      isis_metric: 50
+      ip_pool: core_pool
+      isis_circuit_type: level-2
+      isis_authentication_mode: md5
+      isis_authentication_key: $1c$sTNAlR6rKSw=
+
+  p2p_links: # (3)!
+    - nodes: [ pe1, p1 ] # (4)!
+      interfaces: [ Ethernet1, Ethernet1 ]
+      profile: core_profile # (5)!
+      id: 1 # (6)!
+
+    - nodes: [ pe1, p2 ]
+      interfaces: [ Ethernet2, Ethernet2 ]
+      profile: core_profile
+      id: 2
+```
+
+1. The IP pool `name` is used to assign a name to the IP pool, this is later called in the profile to associate the pool to the profile.
+2. The profile `name` is used to assign a name to the link profile which is later called under the p2p link definitions to inherit settings from the profile.
+3. Each list item in `p2p_links` is a dictionary which defines one routed point-to-point underlay link and its associated parameters.
+4. `nodes` is used to identify which nodes are connecting to each other.
+5. `profile` is used here to inherit common settings for the link from the profile.
+6. `id` is used to extract a single /31 subnet for the link from the IP pool mentioned by the profile. Each link that shares an IP pool must have a unique ID in order to prevent overlapping ip addressing.
+
+## Specifying network services (VRFs and routed interfaces) and endpoint connectivity in the VPN-IPv4 fabric
 
 ```yaml title="NETWORK_SERVICES.yml"
 --8<--
@@ -464,110 +469,34 @@ examples/isis-ldp-ipvpn/group_vars/NETWORK_SERVICES.yml
 --8<--
 ```
 
-All VRF and VLANs are defined here. This means that regardless of where a given VRF or VLAN must exist, its existence is defined in this file, but it does not indicate ***where*** in the fabric it exists. That was done at the bottom of the inventory file previously described in the [Inventory](#content-of-the-inventoryyml-file) section.
+All tenant VRFs and routed interfaces for endpoint connectivity in the network are defined here.
 
-AVD offers granular control of where Tenants and VLANs are configured using `tags` and `filter`. Those areas are not covered in this basic example.
-
-A single tenant called `TENANT1` is specified. The first setting is the base number (`10000`) used to generate the L2VNI numbers automatically, `L2VNI = base number + VLAN-id`. For example, L2VNI for VLAN11 = 10000 + 11 = 10011.
-
-Next, two VRFs are defined, each with two VLANs. For example:
+Two tenants called `CUSTOMER1` and `CUSTOMER2` are specified. Each of these tenants have a single VRF defined, and under those VRFs we define the routed interfaces, tenant (PE-CE) routing protocols and address families in use:
 
 ```yaml title="NETWORK_SERVICES.yml"
-      VRF10:
-        vrf_vni: 10
-        vtep_diagnostic:
-          loopback: 10
-          loopback_ip_range: 10.255.10.0/27
-        svis:
-          "11":
-            name: VRF10_VLAN11
+      C1_VRF1:
+        vrf_id: 10
+        address_families:
+          - vpn-ipv4
+        ospf:
+          enabled: true
+          nodes:
+            - pe1
+            - pe2
+            - pe3
+        l3_interfaces:
+          - interfaces: [ Ethernet3.10, Ethernet4.10, Ethernet2 ]
+            nodes: [ pe1, pe2, pe3 ]
+            description: C1_L3_SERVICE
             enabled: true
-            ip_address_virtual: 10.10.11.1/24
-          "12":
-            name: VRF10_VLAN12
-            enabled: true
-            ip_address_virtual: 10.10.12.1/24
+            ip_addresses: [ 10.0.1.1/29, 10.0.1.2/29, 10.0.1.9/30 ]
+            ospf:
+              enabled: true
 ```
 
-This defines `VRF10`, with an L3VNI of `10` and two VLANs (`VLAN11` and `VLAN12`). Each VLAN has a name and a virtual IP address, which will be used as the default gateway for that particular VLAN on all leaf switches where the VLAN is created.
+This defines `C1_VRF1`, with a VRF ID of `10`, enables OSPF routing for PE-CE connections inside the VRF on selected pe routers and defines routed interfaces that are used to connect to the CE devices/aggregation nodes. Each interface has an IP address assigned, a description and has ospf routing enabled.
 
-The following configuration is also defined under `VRF10`:
-
-```yaml title="NETWORK_SERVICES.yml"
-        vtep_diagnostic:
-          loopback: 10
-          loopback_ip_range: 10.255.10.0/27
-```
-
-This enables more user-friendly diagnostics for troubleshooting purposes by defining a specific loopback per VRF. This will create the following Arista EOS config. For example, on dc1-leaf1a:
-
-```eos
-interface Loopback10
-   description VRF10_VTEP_DIAGNOSTICS
-   no shutdown
-   vrf VRF10
-   ip address 10.255.10.3/32
-!
-ip address virtual source-nat vrf VRF10 address 10.255.10.3
-```
-
-At the bottom of the `NETWORK_SERVICES.yml` file, two layer2-only VLANs (`VLAN3401` and `VLAN3402`) are defined. These VLANs are only bridged across the fabric but never routed anywhere:
-
-```yaml title="NETWORK_SERVICES.yml"
-    l2vlans:
-      "3401":
-        name: L2_VLAN3401
-      "3402":
-        name: L2_VLAN3402
-```
-
-## Specifying endpoint connectivity in the EVPN/VXLAN fabric
-
-After the previous section, all VRFs and VLANs across the fabric are now defined. The `ansible-avd-examples/isis-ldp-ipvpn/group_vars/CONNECTED_ENDPOINTS.yml` file specifies the connectivity for all endpoints in the fabric (typically servers):
-
-```yaml title="CONNECTED_ENDPOINTS.yml"
---8<--
-examples/isis-ldp-ipvpn/group_vars/CONNECTED_ENDPOINTS.yml
---8<--
-```
-
-This defines the settings for the relevant switch ports to which the endpoints connect, in this case the two servers `dc1-leaf1-server1` and `dc1-leaf2-server1`.
-
-As an example, here is the configuration for `dc1-leaf1-server1`:
-
-```yaml title="CONNECTED_ENDPOINTS.yml"
-  dc1-leaf1-server1:
-    adapters: # (1)!
-    - type: server
-      server_ports: [ PCI1, PCI2 ] # (2)!
-      switch_ports: [ Ethernet5, Ethernet5 ] # (3)!
-      switches: [ dc1-leaf1a, dc1-leaf1b ] # (4)!
-      vlans: 11-12,21-22 # (5)!
-      native_vlan: 4092 # (6)!
-      mode: trunk # (7)!
-      spanning_tree_portfast: edge # (8)!
-      port_channel: # (9)!
-        description: PortChannel dc1-leaf1-server1
-        mode: active
-
-    - type: ilo
-      server_ports: [ iLO ]
-      switch_ports: [ Ethernet5 ]
-      switches: [ dc1-leaf1c ]
-      vlans: 11
-      mode: access
-      spanning_tree_portfast: edge
-```
-
-1. The relevant `adapters` are defined. The `type` set to `server` and `ilo` is purely for documentation and readability purposes. It has no operational significance.
-2. `server_ports` are defined for use in the interface descriptions on the switch. This does not configure anything on the server.
-3. `switch_ports` defines the interfaces used in the switches. In this example the server is dual-connected to Ethernet5 and Ethernet5. These two ports exist on switch dc1-leaf1a and dc1-leaf1b defined in the following line.
-4. `switches` defines the switches used, in this case dc1-leaf1a and dc1-leaf1b. Note that the `server_ports`, `switch_ports` and `switches` definitions are paired vertically.
-5. `vlans` defines which VLANs are allowed on the switch_ports, in this case it is two ranges, VLAN11-12 and VLAN21-22 for the dual-attached server ports and VLAN11 for the iLO port.
-6. `native_vlan` specifies the native VLAN when the switch port mode is set to trunk.
-7. `mode` is set to trunk for the dual-attached server ports and access for the iLO port.
-8. `spanning_tree_portfast` defines whether the switch port should be a spanning tree edge port or a network port.
-9. `port-channel` defines the description and mode for the port-channel.
+The lists of interfaces, nodes and ip_addresses used in the above definition of the l3 interface is read by the ansible logic as follows: interface `Ethernet3.10` belongs to the node `pe1` and has the ip address of `10.0.1.1/29`. In other words, the list indices are used to form the basic parameters for one interface.
 
 ## The playbook
 
@@ -618,11 +547,11 @@ user@ubuntu:~/Documents/git_projects/ansible-avd-examples/isis-ldp-ipvpn$ ansibl
 PLAY [Run AVD] *****************************************************************************************************************************************************************************
 
 TASK [arista.avd.eos_designs : Collection arista.avd version 3.5.0 loaded from /home/user/.ansible/collections/ansible_collections] ******************************************************
-ok: [dc1-leaf1a]
+ok: [p1]
 
 TASK [arista.avd.eos_designs : Create required output directories if not present] **********************************************************************************************************
-ok: [dc1-leaf1a -> localhost] => (item=/home/user/Documents/git_projects/ansible-avd-examples/isis-ldp-ipvpn/intended/structured_configs)
-ok: [dc1-leaf1a -> localhost] => (item=/home/user/Documents/git_projects/ansible-avd-examples/isis-ldp-ipvpn/documentation/fabric)
+ok: [p1 -> localhost] => (item=/home/user/Documents/git_projects/ansible-avd-examples/isis-ldp-ipvpn/intended/structured_configs)
+ok: [p1 -> localhost] => (item=/home/user/Documents/git_projects/ansible-avd-examples/isis-ldp-ipvpn/documentation/fabric)
 (...)
 ```
 
@@ -633,20 +562,39 @@ If similar output is not shown, make sure:
 
 ## Troubleshooting
 
-### EVPN not working
+### VPN-IPv4 Overlay not working
 
 If after doing the following steps:
 
 1. Manually copy/paste the switch-basic-configuration to the devices.
 2. Run the playbook and push the generated configuration to the fabric.
-3. Login to a leaf device, for example, dc1-leaf1a and run the command `show bgp evpn summary` to view EVPN routes.
+3. Login to a pe or rr device, for example, pe1 and run the command `show bgp vpn-ipv4 summary` to view VPN routes.
 
 The following error message is shown:
 
 ```eos
-dc1-leaf1a#show bgp evpn summ
+pe1#show bgp vpn-ipv4 summary
 % Not supported
-dc1-leaf1a#
+pe1#
 ```
 
-This is caused by AVD pushing the configuration line `service routing protocols model multi-agent`, which enables the multi-agent routing process supporting EVPN. This change *requires* a reboot of the device.
+This is caused by AVD pushing the configuration line `service routing protocols model multi-agent`, which enables the multi-agent routing process supporting VPN-IPv4 and EVPN. This change *requires* a reboot of the device.
+
+### VPN-IPv4 Overlay in Arista Cloud Test (ACT)
+
+If you are running this lab in the Arista Cloud Test service and the overlay services are not working (no connectivity from CPE to CPE) after performing the steps outlined above, you may need to change the default forwarding engine of the vEOS nodes.
+
+Add the following line to the starting configurations for each node:
+
+```eos
+platform tfa personality arfa
+```
+
+Currently, this command **must** be manually entered into the device configurations **before** trying to push the command with AVD. After you have entered it manually on each node, add the following yaml to group_vars/WAN1.yml and run the deployment playbook:
+
+```yaml
+eos_cli: |
+  platform tfa personality arfa
+```
+
+Retest the services, they should now be working provided the CPEs and aggregation node are properly configured.
