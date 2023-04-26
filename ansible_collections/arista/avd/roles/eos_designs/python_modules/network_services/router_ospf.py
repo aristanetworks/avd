@@ -70,6 +70,15 @@ class RouterOspfMixin(UtilsMixin):
                     if (route_map := get(vrf, "ospf.redistribute_bgp.route_map")) is not None:
                         process["redistribute"]["bgp"]["route_map"] = route_map
 
+                if get(vrf, "ospf.redistribute_connected.enabled", default=False) is True:
+                    if process["redistribute"]:
+                        process["redistribute"]["connected"] = {}
+                    else:
+                        process["redistribute"] = {
+                            "connected": {},
+                        }
+                    if (route_map := get(vrf, "ospf.redistribute_connected.route_map")) is not None:
+                        process["redistribute"]["connected"]["route_map"] = route_map
                 # Strip None values from process before adding to list
                 process = {key: value for key, value in process.items() if value is not None}
 
