@@ -17750,6 +17750,40 @@
                 "^_.+$": {}
               },
               "title": "Disable"
+            },
+            "egress": {
+              "type": "object",
+              "properties": {
+                "unmodified": {
+                  "type": "object",
+                  "properties": {
+                    "enable": {
+                      "type": "object",
+                      "properties": {
+                        "default": {
+                          "type": "boolean",
+                          "title": "Default"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Enable"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Unmodified"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Egress"
             }
           },
           "additionalProperties": false,

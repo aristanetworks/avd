@@ -99,6 +99,17 @@ keys:
             keys:
               default:
                 type: bool
+          egress:
+            type: dict
+            keys:
+              unmodified:
+                type: dict
+                keys:
+                  enable:
+                    type: dict
+                    keys:
+                      default:
+                        type: bool
       run:
         type: bool
       hardware_acceleration:
