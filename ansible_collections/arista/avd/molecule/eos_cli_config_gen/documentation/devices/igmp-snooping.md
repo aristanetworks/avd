@@ -83,11 +83,24 @@ vlan 3010
 
 #### IP IGMP Snooping Summary
 
-IGMP snooping is globally disabled
+| IGMP Snooping | Fast Leave | Interface Restart Query | Proxy | Restart Query Interval | Robustness Variable |
+| ------------- | ---------- | ----------------------- | ----- | ---------------------- | ------------------- |
+| Disabled | - | - | - | - | - |
+
+##### IP IGMP Snooping Vlan Summary
+
+| Vlan | IGMP Snooping | Fast Leave | Max Groups | Proxy |
+| ---- | ------------- | ---------- | ---------- | ----- |
+| 10 | True | - | - | - |
+| 20 | False | - | - | - |
+| 30 | False | - | - | - |
 
 #### IP IGMP Snooping Device Configuration
 
 ```eos
 !
 no ip igmp snooping
+ip igmp snooping vlan 10
+no ip igmp snooping vlan 20
+no ip igmp snooping vlan 30
 ```
