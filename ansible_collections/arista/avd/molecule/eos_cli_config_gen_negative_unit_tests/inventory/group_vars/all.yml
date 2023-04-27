@@ -1,0 +1,5 @@
+---
+root_dir: '{{ playbook_dir }}'
+
+# Only warning for validation (default) to trigger the errors
+avd_data_validation_mode: "warning"
