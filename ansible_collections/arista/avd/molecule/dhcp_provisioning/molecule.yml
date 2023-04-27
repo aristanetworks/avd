@@ -12,7 +12,6 @@ scenario:
     - converge
   test_sequence:
     - dependency
-    - lint
     - cleanup
     - destroy
     - syntax
