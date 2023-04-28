@@ -1664,7 +1664,11 @@ $defs:
           '
       description:
         type: str
-        description: Interface descriptions Description.
+        description: 'By default the description is built leveraging `<peer>_<peer_interface>`.
+
+          When set this key will overide the default value on the physical ports.
+
+          '
       profile:
         type: str
         description: Port-profile name to inherit configuration.
@@ -2098,8 +2102,13 @@ $defs:
               '
           description:
             type: str
-            description: Port-Channel Description - added after endpoint name in the
-              description, Optional.
+            description: 'By default the description is built leveraging `<peer>`
+              name or `adapter.description` when defined.
+
+              When this key is defined, it will append its content to the physical
+              port description.
+
+              '
           enabled:
             type: bool
             default: true
