@@ -234,10 +234,10 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
 | --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
-| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
-| Ethernet3 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
-| Ethernet4 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
+| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point | level-2 | - | - |
+| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point | level-2 | - | - |
+| Ethernet3 | - | EVPN_UNDERLAY | 50 | point-to-point | level-2 | - | - |
+| Ethernet4 | - | EVPN_UNDERLAY | 50 | point-to-point | level-2 | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -250,6 +250,7 @@ interface Ethernet1
    no switchport
    ip address 172.31.255.1/31
    isis enable EVPN_UNDERLAY
+   isis circuit-type level-2
    isis metric 50
    isis network point-to-point
 !
@@ -260,6 +261,7 @@ interface Ethernet2
    no switchport
    ip address 172.31.255.3/31
    isis enable EVPN_UNDERLAY
+   isis circuit-type level-2
    isis metric 50
    isis network point-to-point
 !
@@ -270,6 +272,7 @@ interface Ethernet3
    no switchport
    ip address 172.31.255.5/31
    isis enable EVPN_UNDERLAY
+   isis circuit-type level-2
    isis metric 50
    isis network point-to-point
 !
@@ -280,6 +283,7 @@ interface Ethernet4
    no switchport
    ip address 172.31.255.7/31
    isis enable EVPN_UNDERLAY
+   isis circuit-type level-2
    isis metric 50
    isis network point-to-point
 ```

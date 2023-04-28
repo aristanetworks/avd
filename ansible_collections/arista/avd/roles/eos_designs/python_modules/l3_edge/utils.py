@@ -216,15 +216,13 @@ class UtilsMixin:
             "type": "routed",
             "shutdown": False,
             "mtu": p2p_link.get("mtu", self.shared_utils.p2p_uplinks_mtu),
-            # TODO: Set p2p_uplinks_qos_profile as default like it is in core_interfaces.
-            # "service_profile": p2p_link.get("qos_profile", self.shared_utils.p2p_uplinks_qos_profile),
-            "service_profile": p2p_link.get("qos_profile"),
+            "service_profile": p2p_link.get("qos_profile", self.shared_utils.p2p_uplinks_qos_profile),
             "eos_cli": p2p_link.get("raw_eos_cli"),
         }
         if (ip := get(p2p_link, "ip")) is not None:
             interface_cfg["ip_address"] = ip[index]
 
-        if p2p_link.get("include_in_underlay_protocol") is True:
+        if p2p_link.get("include_in_underlay_protocol", True) is True:
             if self.shared_utils.underlay_rfc5549 or p2p_link.get("ipv6_enable") is True:
                 interface_cfg["ipv6_enable"] = True
 
@@ -242,8 +240,7 @@ class UtilsMixin:
                         "isis_enable": self.shared_utils.isis_instance_name,
                         "isis_metric": default(p2p_link.get("isis_metric"), self.shared_utils.isis_default_metric),
                         "isis_network_point_to_point": (p2p_link.get("isis_network_type", "point-to-point") == "point-to-point"),
-                        # TODO: Update defaults below to have same as core_interfaces - or vice versa
-                        "isis_hello_padding": p2p_link.get("isis_hello_padding"),
+                        "isis_hello_padding": p2p_link.get("isis_hello_padding", True),
                         "isis_circuit_type": default(p2p_link.get("isis_circuit_type"), self.shared_utils.isis_default_circuit_type),
                         "isis_authentication_mode": p2p_link.get("isis_authentication_mode"),
                         "isis_authentication_key": p2p_link.get("isis_authentication_key"),
@@ -257,7 +254,7 @@ class UtilsMixin:
 
         if self.shared_utils.mpls_lsr and p2p_link.get("mpls_ip", True) is True:
             interface_cfg["mpls"] = {"ip": True}
-            if p2p_link.get("include_in_underlay_protocol") is True and self.shared_utils.underlay_ldp and p2p_link.get("mpls_ldp", True) is True:
+            if p2p_link.get("include_in_underlay_protocol", True) is True and self.shared_utils.underlay_ldp and p2p_link.get("mpls_ldp", True) is True:
                 interface_cfg["mpls"].update(
                     {
                         "ldp": {

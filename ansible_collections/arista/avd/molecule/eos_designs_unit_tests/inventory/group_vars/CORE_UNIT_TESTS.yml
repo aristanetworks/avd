@@ -153,22 +153,25 @@ l3_edge:
     - nodes: [core-1-isis-sr-ldp, peer2]
       interfaces: [ethernet21, ethernet21]
       ip: [192.168.0.2/31, 192.168.0.3/31]
-      include_in_underlay_protocol: true
       mpls_ip: false
       mpls_ldp: false
     - nodes: [core-1-isis-sr-ldp, peer3]
       interfaces: [ethernet22, ethernet22]
+      include_in_underlay_protocol: false
       ip_pool: pool_default_mask
       id: 1
     - nodes: [core-1-isis-sr-ldp, peer4]
       interfaces: [ethernet23, ethernet23]
+      include_in_underlay_protocol: false
       ip_pool: pool_default_mask
       id: 2
     - nodes: [core-1-isis-sr-ldp, peer5]
       interfaces: [ethernet24, ethernet22]
+      include_in_underlay_protocol: false
       ip_pool: pool_29_mask
       id: 1
     - nodes: [core-1-isis-sr-ldp, peer6]
       interfaces: [ethernet25, ethernet23]
+      include_in_underlay_protocol: false
       ip_pool: pool_29_mask
       id: 2

@@ -244,6 +244,7 @@ ethernet_interfaces:
   isis_enable: CORE
   isis_metric: 50
   isis_network_point_to_point: true
+  isis_hello_padding: true
   isis_circuit_type: level-2
 - name: ethernet22
   peer: peer3
