@@ -3504,6 +3504,98 @@
             "description": "Key only used for documentation or validation purposes",
             "title": "Port Profile"
           },
+          "uc_tx_queues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "TX-Queue ID",
+                  "title": "ID"
+                },
+                "random_detect": {
+                  "type": "object",
+                  "properties": {
+                    "ecn": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "boolean",
+                          "description": "Turn on random-detect ecn count\n",
+                          "title": "Count"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Ecn"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Random Detect"
+                }
+              },
+              "required": [
+                "id"
+              ],
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "Uc TX Queues"
+          },
+          "tx_queues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "TX-Queue ID",
+                  "title": "ID"
+                },
+                "random_detect": {
+                  "type": "object",
+                  "properties": {
+                    "ecn": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "boolean",
+                          "description": "Turn on random-detect ecn count\n",
+                          "title": "Count"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Ecn"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Random Detect"
+                }
+              },
+              "required": [
+                "id"
+              ],
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "TX Queues"
+          },
           "eos_cli": {
             "type": "string",
             "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
@@ -9750,6 +9842,69 @@
                     "^_.+$": {}
                   },
                   "title": "Shape"
+                },
+                "random_detect": {
+                  "type": "object",
+                  "properties": {
+                    "ecn": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "boolean",
+                          "description": "Turn on random-detect ecn count\n",
+                          "title": "Count"
+                        },
+                        "threshold": {
+                          "type": "object",
+                          "properties": {
+                            "metric": {
+                              "type": "string",
+                              "enum": [
+                                "kbytes",
+                                "segments"
+                              ],
+                              "title": "Metric"
+                            },
+                            "min": {
+                              "type": "integer",
+                              "description": "Set the random-detect ecn minimum-threshold\n",
+                              "title": "Min"
+                            },
+                            "max": {
+                              "type": "integer",
+                              "description": "Set the random-detect ecn maximum-threshold\n",
+                              "title": "Max"
+                            },
+                            "max_probability": {
+                              "type": "integer",
+                              "description": "Set the random-detect ecn max-mark-probability\n",
+                              "title": "Max Probability"
+                            },
+                            "weight": {
+                              "type": "integer",
+                              "description": "Set the random-detect ecn weight\n",
+                              "title": "Weight"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Threshold"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Ecn"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Random Detect"
                 }
               },
               "required": [
@@ -9802,6 +9957,73 @@
                     "^_.+$": {}
                   },
                   "title": "Shape"
+                },
+                "random_detect": {
+                  "type": "object",
+                  "properties": {
+                    "ecn": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "boolean",
+                          "description": "Turn on random-detect ecn count\n",
+                          "title": "Count"
+                        },
+                        "threshold": {
+                          "type": "object",
+                          "properties": {
+                            "metric": {
+                              "type": "string",
+                              "enum": [
+                                "kbytes",
+                                "segments"
+                              ],
+                              "description": "Indicate whether values are in kbytes or segments\n",
+                              "title": "Metric"
+                            },
+                            "min": {
+                              "type": "integer",
+                              "description": "Set the random-detect ecn minimum-threshold\n",
+                              "title": "Min"
+                            },
+                            "max": {
+                              "type": "integer",
+                              "description": "Set the random-detect ecn maximum-threshold\n",
+                              "title": "Max"
+                            },
+                            "max_probability": {
+                              "type": "integer",
+                              "description": "Set the random-detect ecn max-mark-probability\n",
+                              "title": "Max Probability"
+                            },
+                            "weight": {
+                              "type": "integer",
+                              "description": "Set the random-detect ecn weight\n",
+                              "title": "Weight"
+                            }
+                          },
+                          "required": [
+                            "metric"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Threshold"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Ecn"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Random Detect"
                 }
               },
               "required": [

@@ -78,6 +78,39 @@ keys:
                     description: |
                       Supported options are platform dependent
                       Example: "< rate > kbps", "1-100 percent", "< rate > pps"
+              random_detect:
+                type: dict
+                keys:
+                  ecn:
+                    type: dict
+                    keys:
+                      count:
+                        type: bool
+                        description: |
+                          Turn on random-detect ecn count
+                      threshold:
+                        type: dict
+                        keys:
+                          metric:
+                            type: str
+                            valid_values: ["kbytes", "segments"]
+                          min:
+                            type: int
+                            description: |
+                              Set the random-detect ecn minimum-threshold
+                          max:
+                            type: int
+                            description: |
+                              Set the random-detect ecn maximum-threshold
+                          max_probability:
+                            type: int
+                            description: |
+                              Set the random-detect ecn max-mark-probability
+                          weight:
+                            type: int
+                            description: |
+                              Set the random-detect ecn weight
+
         uc_tx_queues:
           type: list
           primary_key: id
@@ -111,6 +144,41 @@ keys:
                     description: |
                       Supported options are platform dependent
                       Example: "< rate > kbps", "1-100 percent", "< rate > pps"
+              random_detect:
+                type: dict
+                keys:
+                  ecn:
+                    type: dict
+                    keys:
+                      count:
+                        type: bool
+                        description: |
+                          Turn on random-detect ecn count
+                      threshold:
+                        type: dict
+                        keys:
+                          metric:
+                            type: str
+                            valid_values: ["kbytes", "segments"]
+                            required: true
+                            description: |
+                              Indicate whether values are in kbytes or segments
+                          min:
+                            type: int
+                            description: |
+                              Set the random-detect ecn minimum-threshold
+                          max:
+                            type: int
+                            description: |
+                              Set the random-detect ecn maximum-threshold
+                          max_probability:
+                            type: int
+                            description: |
+                              Set the random-detect ecn max-mark-probability
+                          weight:
+                            type: int
+                            description: |
+                              Set the random-detect ecn weight
         mc_tx_queues:
           type: list
           primary_key: id

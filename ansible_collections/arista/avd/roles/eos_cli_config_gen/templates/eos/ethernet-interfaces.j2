@@ -683,6 +683,16 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.traffic_policy.output is arista.avd.defined %}
    traffic-policy output {{ ethernet_interface.traffic_policy.output }}
 {%     endif %}
+{%     if ethernet_interface.tx_queues is arista.avd.defined %}
+{%         for tx_queue in ethernet_interface.tx_queues | arista.avd.natural_sort('id') %}
+{%             include 'eos/tx-queues.j2' %}
+{%         endfor %}
+{%     endif %}
+{%     if ethernet_interface.uc_tx_queues is arista.avd.defined %}
+{%         for uc_tx_queue in ethernet_interface.uc_tx_queues | arista.avd.natural_sort('id') %}
+{%             include 'eos/uc-tx-queues.j2' %}
+{%         endfor %}
+{%     endif %}
 {%     if ethernet_interface.eos_cli is arista.avd.defined %}
    {{ ethernet_interface.eos_cli | indent(3, false) }}
 {%     endif %}

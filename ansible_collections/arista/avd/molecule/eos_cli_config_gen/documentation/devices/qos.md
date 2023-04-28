@@ -96,6 +96,9 @@ interface Ethernet6
    qos trust cos
    qos cos 2
    service-profile experiment
+   !
+   tx-queue 2
+      random-detect ecn count
 !
 interface Ethernet7
    description Test-with-policymap
@@ -103,6 +106,9 @@ interface Ethernet7
    switchport mode trunk
    switchport
    service-profile qprof_testwithpolicy
+   !
+   uc-tx-queue 4
+      random-detect ecn count
 ```
 
 ### Port-Channel Interfaces
@@ -429,9 +435,11 @@ qos profile test
    tx-queue 2
       bandwidth percent 10
       priority strict
+      random-detect ecn minimum-threshold 320 kbytes maximum-threshold 320 kbytes max-mark-probability 90
    !
    tx-queue 4
       bandwidth guaranteed percent 10
+      random-detect ecn minimum-threshold 320 segments maximum-threshold 320 segments weight 10
 !
 qos profile uc_mc_queues_test
    !
@@ -442,9 +450,11 @@ qos profile uc_mc_queues_test
    uc-tx-queue 2
       bandwidth percent 10
       priority strict
+      random-detect ecn minimum-threshold 320 kbytes maximum-threshold 320 kbytes max-mark-probability 90
    !
    uc-tx-queue 4
       bandwidth guaranteed percent 10
+      random-detect ecn minimum-threshold 320 segments maximum-threshold 320 segments weight 10
    !
    mc-tx-queue 1
       bandwidth percent 50

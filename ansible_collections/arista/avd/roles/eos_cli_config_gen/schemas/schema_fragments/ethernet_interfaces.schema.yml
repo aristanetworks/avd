@@ -956,6 +956,54 @@ keys:
         port_profile:
           type: str
           description: Key only used for documentation or validation purposes
+        uc_tx_queues:
+          type: list
+          primary_key: id
+          convert_types:
+          - dict
+          items:
+            type: dict
+            keys:
+              id:
+                type: int
+                convert_types:
+                - str
+                required: true
+                description: TX-Queue ID
+              random_detect:
+                type: dict
+                keys:
+                  ecn:
+                    type: dict
+                    keys:
+                      count:
+                        type: bool
+                        description: |
+                          Turn on random-detect ecn count
+        tx_queues:
+          type: list
+          primary_key: id
+          convert_types:
+          - dict
+          items:
+            type: dict
+            keys:
+              id:
+                type: int
+                convert_types:
+                - str
+                required: true
+                description: TX-Queue ID
+              random_detect:
+                type: dict
+                keys:
+                  ecn:
+                    type: dict
+                    keys:
+                      count:
+                        type: bool
+                        description: |
+                          Turn on random-detect ecn count
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration

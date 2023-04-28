@@ -278,6 +278,16 @@ search:
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "ethernet_interfaces.[].sflow.egress.enable") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unmodified_enable</samp>](## "ethernet_interfaces.[].sflow.egress.unmodified_enable") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;port_profile</samp>](## "ethernet_interfaces.[].port_profile") | String |  |  |  | Key only used for documentation or validation purposes |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uc_tx_queues</samp>](## "ethernet_interfaces.[].uc_tx_queues") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- id</samp>](## "ethernet_interfaces.[].uc_tx_queues.[].id") | Integer | Required, Unique |  |  | TX-Queue ID |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;random_detect</samp>](## "ethernet_interfaces.[].uc_tx_queues.[].random_detect") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecn</samp>](## "ethernet_interfaces.[].uc_tx_queues.[].random_detect.ecn") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "ethernet_interfaces.[].uc_tx_queues.[].random_detect.ecn.count") | Boolean |  |  |  | Turn on random-detect ecn count<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tx_queues</samp>](## "ethernet_interfaces.[].tx_queues") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- id</samp>](## "ethernet_interfaces.[].tx_queues.[].id") | Integer | Required, Unique |  |  | TX-Queue ID |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;random_detect</samp>](## "ethernet_interfaces.[].tx_queues.[].random_detect") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecn</samp>](## "ethernet_interfaces.[].tx_queues.[].random_detect.ecn") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "ethernet_interfaces.[].tx_queues.[].random_detect.ecn.count") | Boolean |  |  |  | Turn on random-detect ecn count<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "ethernet_interfaces.[].eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration |
 
 === "YAML"
@@ -550,6 +560,16 @@ search:
             enable: <bool>
             unmodified_enable: <bool>
         port_profile: <str>
+        uc_tx_queues:
+          - id: <int>
+            random_detect:
+              ecn:
+                count: <bool>
+        tx_queues:
+          - id: <int>
+            random_detect:
+              ecn:
+                count: <bool>
         eos_cli: <str>
     ```
 

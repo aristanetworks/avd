@@ -27,8 +27,23 @@ qos_profiles:
       - id: 2
         bandwidth_percent: 10
         priority: 'priority strict'
+        random_detect:
+          ecn:
+            threshold:
+              metric: kbytes
+              min: 320
+              max: 320
+              max_probability: 90
+              # weight: 0
       - id: 4
         bandwidth_guaranteed_percent: 10
+        random_detect:
+          ecn:
+            threshold:
+              metric: segments
+              min: 320
+              max: 320
+              weight: 10
   - name: experiment
     trust: cos
     cos: 2
@@ -71,8 +86,23 @@ qos_profiles:
       - id: 2
         bandwidth_percent: 10
         priority: 'priority strict'
+        random_detect:
+          ecn:
+            threshold:
+              metric: kbytes
+              min: 320
+              max: 320
+              max_probability: 90
+              # weight: 0
       - id: 4
         bandwidth_guaranteed_percent: 10
+        random_detect:
+          ecn:
+            threshold:
+              metric: segments
+              min: 320
+              max: 320
+              weight: 10
     mc_tx_queues:
       - id: 1
         bandwidth_percent: 50
@@ -129,6 +159,11 @@ ethernet_interfaces:
     qos:
       trust: cos
       cos: 2
+    tx_queues:
+      - id: 2
+        random_detect:
+          ecn:
+            count: true
 
   - name: Ethernet3
     peer: DC1-LEAF1B
@@ -156,6 +191,11 @@ ethernet_interfaces:
     mode: trunk
     vlans: 110-111,210-211
     service_profile: qprof_testwithpolicy
+    uc_tx_queues:
+      - id: 4
+        random_detect:
+          ecn:
+            count: true
 
 ### Port-Channel Interfaces ###
 port_channel_interfaces:
