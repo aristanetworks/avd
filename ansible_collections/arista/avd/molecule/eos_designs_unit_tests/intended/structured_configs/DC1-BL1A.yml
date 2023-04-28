@@ -566,6 +566,8 @@ router_ospf:
     max_lsa: 15000
     redistribute:
       bgp: {}
+      connected:
+        route_map: RM_TEST
 vxlan_interface:
   Vxlan1:
     description: DC1-BL1A_VTEP
