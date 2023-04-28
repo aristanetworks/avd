@@ -236,10 +236,9 @@ router_isis:
   net: 49.0001.0001.0001.0006.00
   router_id: 192.168.255.10
   is_type: level-2
-  address_family:
-  - ipv4 unicast
-  isis_af_defaults:
-  - maximum-paths 4
+  address_family_ipv4:
+    enabled: true
+    maximum_paths: 4
   no_passive_interfaces:
   - Ethernet1
   - Ethernet2

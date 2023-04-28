@@ -28,8 +28,7 @@ class RouterIsisMixin(UtilsMixin):
             "net": self._isis_net,
             "router_id": self.shared_utils.router_id,
             "is_type": self._is_type,
-            "address_family": ["ipv4 unicast"],
-            "isis_af_defaults": [f"maximum-paths {get(self._hostvars, 'isis_maximum_paths')}"],
+            "address_family_ipv4": {"enabled": True, "maximum_paths": get(self._hostvars, "isis_maximum_paths")},
         }
 
         # no passive interfaces
@@ -58,9 +57,9 @@ class RouterIsisMixin(UtilsMixin):
             }
         ti_lfa_protection = get(self._hostvars, "isis_ti_lfa.protection")
         if ti_lfa_protection == "link":
-            router_isis["isis_af_defaults"].append("fast-reroute ti-lfa mode link-protection")
+            router_isis["address_family_ipv4"]["fast_reroute_ti_lfa"] = {"mode": "link-protection"}
         elif ti_lfa_protection == "node":
-            router_isis["isis_af_defaults"].append("fast-reroute ti-lfa mode node-protection")
+            router_isis["address_family_ipv4"]["fast_reroute_ti_lfa"] = {"mode": "node-protection"}
 
         # Overlay protocol
         if self.shared_utils.overlay_routing_protocol == "none":
@@ -73,7 +72,11 @@ class RouterIsisMixin(UtilsMixin):
             # TODO - enabling IPv6 only in SR cases as per existing behavior
             # but this could probably be taken out
             if self.shared_utils.underlay_ipv6 is True:
-                router_isis["address_family"].append("ipv6 unicast")
+                router_isis["address_family_ipv6"] = {"enabled": True, "maximum_paths": get(self._hostvars, "isis_maximum_paths")}
+                if ti_lfa_protection == "link":
+                    router_isis["address_family_ipv6"]["fast_reroute_ti_lfa"] = {"mode": "link-protection"}
+                elif ti_lfa_protection == "node":
+                    router_isis["address_family_ipv6"]["fast_reroute_ti_lfa"] = {"mode": "node-protection"}
             router_isis["segment_routing_mpls"] = {"router_id": self.shared_utils.router_id, "enabled": True}
 
         return router_isis

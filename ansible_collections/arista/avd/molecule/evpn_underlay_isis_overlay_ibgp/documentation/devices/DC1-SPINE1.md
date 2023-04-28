@@ -408,7 +408,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Instance | EVPN_UNDERLAY |
 | Net-ID | 49.0001.0001.0000.0001.00 |
 | Type | level-2 |
-| Address Family | ipv4 unicast |
 | Router-ID | 192.168.255.1 |
 | Log Adjacency Changes | True |
 
@@ -424,6 +423,13 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Ethernet6 | EVPN_UNDERLAY | 50 | point-to-point |
 | Ethernet7 | EVPN_UNDERLAY | 50 | point-to-point |
 | Loopback0 | EVPN_UNDERLAY | - | passive |
+
+#### ISIS IPv4 Address Family Summary
+
+| Settings | Value |
+| -------- | ----- |
+| IPv4 Address-family Enabled | True |
+| Maximum-paths | 4 |
 
 #### Router ISIS Device Configuration
 

@@ -45,6 +45,8 @@ core_router:
       id: 1
     core-2-ospf-ldp:
       id: 2
+    core-3-isis-sr-ldp:
+      id: 3
 
 core_interfaces:
   p2p_links_ip_pools:

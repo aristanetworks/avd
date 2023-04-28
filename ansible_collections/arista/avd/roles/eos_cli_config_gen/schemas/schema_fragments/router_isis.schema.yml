@@ -56,6 +56,10 @@ keys:
             - "ipv4 unicast"
             - "ipv6 unicast"
           description: Address Family
+          deprecation:
+            warning: true
+            new_key: address_family_ipv4.enabled or address_family_ipv6.enabled
+            remove_in_version: "5.0.0"
       isis_af_defaults:
         type: list
         items:
@@ -63,6 +67,10 @@ keys:
           description: |
             EOS CLI rendered under the address families
             Example "maximum-paths 64"
+          deprecation:
+            warning: true
+            new_key: address_family_ipv4/address_family_ipv6
+            remove_in_version: "5.0.0"
       redistribute_routes:
         type: list
         items:
@@ -93,6 +101,8 @@ keys:
       address_family_ipv4:
         type: dict
         keys:
+          enabled:
+            type: bool
           maximum_paths:
             type: int
             convert_types:
@@ -131,6 +141,8 @@ keys:
       address_family_ipv6:
         type: dict
         keys:
+          enabled:
+            type: bool
           maximum_paths:
             type: int
             convert_types:
