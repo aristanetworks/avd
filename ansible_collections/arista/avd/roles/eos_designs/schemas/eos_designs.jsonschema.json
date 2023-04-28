@@ -327,7 +327,7 @@
             "properties": {
               "id": {
                 "type": "integer",
-                "description": "Unique id per subnet_summary. Used to calculate ip addresses or Required with ip_pool.\nID starting from 1\n",
+                "description": "Unique id per subnet_summary. Used to calculate ip addresses.\nRequired with ip_pool. ID starting from 1.\n",
                 "title": "ID"
               },
               "speed": {
@@ -342,7 +342,7 @@
               },
               "subnet": {
                 "type": "string",
-                "description": "IPv4 address/Mask. Subnet used on this P2P link (Optional).",
+                "description": "IPv4 address/Mask. Subnet used on this P2P link.",
                 "title": "Subnet"
               },
               "ip": {
@@ -380,7 +380,7 @@
               },
               "as": {
                 "type": "array",
-                "description": "AS Numbers for BGP or Required with bgp peering.",
+                "description": "AS numbers for BGP.\nRequired with bgp peering.\n",
                 "items": {
                   "type": "string",
                   "description": "The values can be like [\"node_a_as\", \"node_b_as\"]."
@@ -541,7 +541,7 @@
             "properties": {
               "id": {
                 "type": "integer",
-                "description": "Unique id per subnet_summary. Used to calculate ip addresses or Required with ip_pool.\nID starting from 1\n",
+                "description": "Unique id per subnet_summary. Used to calculate ip addresses.\nRequired with ip_pool. ID starting from 1.\n",
                 "title": "ID"
               },
               "speed": {
@@ -556,7 +556,7 @@
               },
               "subnet": {
                 "type": "string",
-                "description": "IPv4 address/Mask. Subnet used on this P2P link (Optional).",
+                "description": "IPv4 address/Mask. Subnet used on this P2P link.",
                 "title": "Subnet"
               },
               "ip": {
@@ -594,7 +594,7 @@
               },
               "as": {
                 "type": "array",
-                "description": "AS Numbers for BGP or Required with bgp peering.",
+                "description": "AS numbers for BGP.\nRequired with bgp peering.\n",
                 "items": {
                   "type": "string",
                   "description": "The values can be like [\"node_a_as\", \"node_b_as\"]."
@@ -1162,7 +1162,7 @@
             "properties": {
               "id": {
                 "type": "integer",
-                "description": "Unique id per subnet_summary. Used to calculate ip addresses or Required with ip_pool.\nID starting from 1\n",
+                "description": "Unique id per subnet_summary. Used to calculate ip addresses.\nRequired with ip_pool. ID starting from 1.\n",
                 "title": "ID"
               },
               "speed": {
@@ -1177,7 +1177,7 @@
               },
               "subnet": {
                 "type": "string",
-                "description": "IPv4 address/Mask. Subnet used on this P2P link (Optional).",
+                "description": "IPv4 address/Mask. Subnet used on this P2P link.",
                 "title": "Subnet"
               },
               "ip": {
@@ -1215,7 +1215,7 @@
               },
               "as": {
                 "type": "array",
-                "description": "AS Numbers for BGP or Required with bgp peering.",
+                "description": "AS numbers for BGP.\nRequired with bgp peering.\n",
                 "items": {
                   "type": "string",
                   "description": "The values can be like [\"node_a_as\", \"node_b_as\"]."
@@ -1376,7 +1376,7 @@
             "properties": {
               "id": {
                 "type": "integer",
-                "description": "Unique id per subnet_summary. Used to calculate ip addresses or Required with ip_pool.\nID starting from 1\n",
+                "description": "Unique id per subnet_summary. Used to calculate ip addresses.\nRequired with ip_pool. ID starting from 1.\n",
                 "title": "ID"
               },
               "speed": {
@@ -1391,7 +1391,7 @@
               },
               "subnet": {
                 "type": "string",
-                "description": "IPv4 address/Mask. Subnet used on this P2P link (Optional).",
+                "description": "IPv4 address/Mask. Subnet used on this P2P link.",
                 "title": "Subnet"
               },
               "ip": {
@@ -1429,7 +1429,7 @@
               },
               "as": {
                 "type": "array",
-                "description": "AS Numbers for BGP or Required with bgp peering.",
+                "description": "AS numbers for BGP.\nRequired with bgp peering.\n",
                 "items": {
                   "type": "string",
                   "description": "The values can be like [\"node_a_as\", \"node_b_as\"]."

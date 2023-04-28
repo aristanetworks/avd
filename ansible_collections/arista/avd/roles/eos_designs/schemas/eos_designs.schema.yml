@@ -3782,10 +3782,9 @@ $defs:
           type: int
           convert_types:
           - str
-          description: 'Unique id per subnet_summary. Used to calculate ip addresses
-            or Required with ip_pool.
+          description: 'Unique id per subnet_summary. Used to calculate ip addresses.
 
-            ID starting from 1
+            Required with ip_pool. ID starting from 1.
 
             '
         speed:
@@ -3797,7 +3796,7 @@ $defs:
             /31 will be taken from the pool per P2P link
         subnet:
           type: str
-          description: IPv4 address/Mask. Subnet used on this P2P link (Optional).
+          description: IPv4 address/Mask. Subnet used on this P2P link.
         ip:
           type: list
           description: Specific IP addresses used on this P2P link.
@@ -3833,7 +3832,11 @@ $defs:
               '
         as:
           type: list
-          description: AS Numbers for BGP or Required with bgp peering.
+          description: 'AS numbers for BGP.
+
+            Required with bgp peering.
+
+            '
           items:
             type: str
             convert_types:
