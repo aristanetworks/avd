@@ -4257,6 +4257,70 @@ keys:
                 ip_access_group:
                   type: str
                   description: ACL name
+          grpc_tunnels:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Transport name
+                shutdown:
+                  type: bool
+                  description: Operational status of the gRPC tunnel
+                tunnel_ssl_profile:
+                  type: str
+                  description: Tunnel SSL profile name
+                gnmi_ssl_profile:
+                  type: str
+                  description: gNMI SSL profile name
+                vrf:
+                  type: str
+                  description: VRF name
+                destination:
+                  type: dict
+                  keys:
+                    address:
+                      type: str
+                      required: true
+                      description: IP address or hostname
+                    port:
+                      type: int
+                      min: 1
+                      max: 65535
+                      required: true
+                      convert_types:
+                      - str
+                      description: TCP Port
+                local_interface:
+                  type: dict
+                  keys:
+                    name:
+                      type: str
+                      required: true
+                      description: Interface name
+                    port:
+                      type: int
+                      min: 1
+                      max: 65535
+                      required: true
+                      convert_types:
+                      - str
+                      description: TCP Port
+                target:
+                  type: dict
+                  keys:
+                    use_serial_number:
+                      type: bool
+                      description: Use serial number as the Target ID
+                    target_ids:
+                      type: list
+                      description: 'Target IDs as a list.
+
+                        '
+                      items:
+                        type: str
       enable_vrfs:
         type: list
         primary_key: name
