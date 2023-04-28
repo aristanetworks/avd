@@ -182,7 +182,6 @@ router_bgp:
         - '21:21'
     redistribute_routes:
     - source_protocol: connected
-    - source_protocol: ospf
   - name: Tenant_C_WAN_Zone
     router_id: 192.168.255.15
     rd: 192.168.255.15:31
@@ -499,18 +498,6 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.3.50.1/24
   vrf: Tenant_C_WAN_Zone
-router_ospf:
-  process_ids:
-  - id: 5
-    vrf: Tenant_B_WAN_Zone
-    passive_interface_default: true
-    router_id: 192.168.255.15
-    no_passive_interfaces: []
-    max_lsa: 15000
-    redistribute:
-      bgp: {}
-      connected:
-        route_map: RM_TEST
 vxlan_interface:
   Vxlan1:
     description: DC1-BL1B_VTEP

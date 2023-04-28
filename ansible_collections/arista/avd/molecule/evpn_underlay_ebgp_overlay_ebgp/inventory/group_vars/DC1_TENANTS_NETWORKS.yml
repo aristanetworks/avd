@@ -276,18 +276,6 @@ tenants:
             ip_address_virtual: 10.2.11.1/24
       Tenant_B_WAN_Zone:
         vrf_vni: 21
-        ospf:
-          enabled: true
-          process_id: 5
-          max_lsa: 15000
-          redistribute_bgp:
-            enabled: true
-          redistribute_connected:
-            enabled: true
-            route_map: RM_TEST
-          nodes:
-            - DC1-BL1A
-            - DC1-BL1B
         svis:
           250:
             name: Tenant_B_WAN_Zone_1
