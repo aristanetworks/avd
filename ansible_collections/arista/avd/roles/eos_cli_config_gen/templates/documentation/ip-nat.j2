@@ -1,0 +1,109 @@
+{# doc - ip nat #}
+{% if ip_nat is arista.avd.defined %}
+
+## IP NAT
+{%     if ip_nat.kernel_buffer_size is arista.avd.defined %}
+
+| Setting | Value |
+| -------- | ----- |
+| Kernel Buffer Size | {{ ip_nat.kernel_buffer_size }} MB |
+{%     endif %}
+{%     if ip_nat.pools is arista.avd.defined %}
+
+### NAT Pools
+{%         for pool in ip_nat.pools %}
+
+#### Pool: {{ pool.name }}
+
+| Setting | Value |
+| -------- | ----- |
+| Pool Prefix Length | {{ pool.prefix_length }} |
+{%             if pool.utilization_log_threshold is arista.avd.defined %}
+| Pool Utilization Threshold | {{ pool.utilization_log_threshold }} % (action: log) |
+{%             endif %}
+
+##### Pool Ranges
+
+| First IP Address  | Last IP Address | First Port | Last Port |
+| ----------------- | --------------- | ---------- | --------- |
+{%             for range in pool.ranges | arista.avd.default([]) %}
+| {{ range.first_ip }} | {{ range.last_ip }} | {{ range.first_port | arista.avd.default('-') }} | {{ range.last_port | arista.avd.default('-') }} |
+{%             endfor %}
+{%         endfor %}
+{%     endif %}
+{%     if ip_nat.synchronization is arista.avd.defined %}
+
+### NAT Synchronization
+
+| Setting | Value |
+| -------- | ----- |
+{%         if ip_nat.synchronization.shutdown | arista.avd.default(false) %}
+| State | Disabled !
+{%         else %}
+| State | Enabled !
+{%         endif %}
+{%         if ip_nat.synchronization.expiry_interval is arista.avd.defined %}
+| Expiry Interval | {{ ip_nat.synchronization.expiry_interval }} Seconds |
+{%         endif %}
+{%         if ip_nat.synchronization.local_interface is arista.avd.defined %}
+| Interface | {{ ip_nat.synchronization.local_interface }} |
+{%         endif %}
+{%         if ip_nat.synchronization.peer_address is arista.avd.defined %}
+| Peer IP Address | {{ ip_nat.synchronization.peer_address }} |
+{%         endif %}
+{%         if ip_nat.synchronization.port_range.first_port is arista.avd.defined
+                    and ip_nat.synchronization.port_range.last_port is arista.avd.defined %}
+| Port Range | {{ ip_nat.synchronization.port_range.first_port }} - {{ ip_nat.synchronization.port_range.last_port }} |
+{%         endif %}
+{%         if ip_nat.synchronization.port_range.split_disabled | arista.avd.default(false) %}
+| Port Range Split | Disabled |
+{%         else %}
+| Port Range Split | Enabled |
+{%         endif %}
+{%     endif %}
+{%     if ip_nat.translation is arista.avd.defined %}
+
+### NAT Translation Settings
+
+| Setting | Value |
+| -------- | ----- |
+{%         if ip_nat.translation.address_selection.any | arista.avd.default(false) %}
+| Address Selection | Any |
+{%         endif %}
+{%         if ip_nat.translation.address_selection.hash_field_source_ip | arista.avd.default(false) %}
+| Address Selection | Hash Source IP Field |
+{%         endif %}
+{%         if ip_nat.translation.counters | arista.avd.default(false) %}
+| Counters | Enabled |
+{%         endif %}
+{%         if ip_nat.translation.max_entries is arista.avd.defined %}
+{%             if ip_nat.translation.max_entries.limit is arista.avd.defined %}
+| Global Connection Limit | max. {{ ip_nat.translation.max_entries.limit }} Connections |
+{%             endif %}
+{%             if ip_nat.translation.max_entries.host_limit is arista.avd.defined %}
+| per Host Connection Limit | max. {{ ip_nat.translation.max_entries.host_limit }} Connections |
+{%             endif %}
+{%             for ip_limit in ip_nat.translation.max_entries.ip_limits | arista.avd.default([]) %}
+| IP Host {{ ip_limit.ip }} Connection Limit | max. {{ ip_limit.limit }} Connections |
+{%             endfor %}
+{%         endif %}
+{%         if ip_nat.translation.low_mark is arista.avd.defined %}
+{%             if ip_nat.translation.low_mark.percentage is arista.avd.defined %}
+| Global Connection Limit Low Mark | {{ ip_nat.translation.low_mark.percentage }} % |
+{%             endif %}
+{%             if ip_nat.translation.low_mark.host_percentage is arista.avd.defined %}
+| per Host Connection Limit Low Mark | {{ ip_nat.translation.low_mark.host_percentage }} % |
+{%             endif %}
+{%         endif %}
+{%         for timeout in ip_nat.translation.timeouts | arista.avd.default([]) %}
+| {{ timeout.protocol | upper }} Connection Timeout | {{ timeout.timeout }} Seconds |
+{%         endfor %}
+{%     endif %}
+
+### IP NAT Device Configuration
+
+```eos
+{%     include 'eos/ip-nat-part1.j2' %}
+{%     include 'eos/ip-nat-part2.j2' %}
+```
+{% endif %}

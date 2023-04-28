@@ -4693,6 +4693,295 @@
       },
       "title": "IP Name Servers"
     },
+    "ip_nat": {
+      "type": "object",
+      "properties": {
+        "kernel_buffer_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 64,
+          "description": "Buffer size in MB",
+          "title": "Kernel Buffer Size"
+        },
+        "pools": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name"
+              },
+              "prefix_length": {
+                "type": "integer",
+                "minimum": 16,
+                "maximum": 32,
+                "title": "Prefix Length"
+              },
+              "ranges": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "first_ip": {
+                      "type": "string",
+                      "description": "IPv4 address",
+                      "title": "First IP"
+                    },
+                    "last_ip": {
+                      "type": "string",
+                      "description": "IPv4 address",
+                      "title": "Last IP"
+                    },
+                    "first_port": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 65535,
+                      "title": "First Port"
+                    },
+                    "last_port": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 65535,
+                      "title": "Last Port"
+                    }
+                  },
+                  "required": [
+                    "first_ip",
+                    "last_ip"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Ranges"
+              },
+              "utilization_log_threshold": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 100,
+                "title": "Utilization Log Threshold"
+              }
+            },
+            "required": [
+              "prefix_length",
+              "name"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Pools"
+        },
+        "synchronization": {
+          "type": "object",
+          "properties": {
+            "description": {
+              "type": "string",
+              "title": "Description"
+            },
+            "expiry_interval": {
+              "type": "integer",
+              "minimum": 60,
+              "maximum": 3600,
+              "description": "in seconds",
+              "title": "Expiry Interval"
+            },
+            "local_interface": {
+              "type": "string",
+              "description": "EOS interface name",
+              "title": "Local Interface"
+            },
+            "peer_address": {
+              "type": "string",
+              "description": "IPv4 address",
+              "title": "Peer Address"
+            },
+            "port_range": {
+              "type": "object",
+              "properties": {
+                "first_port": {
+                  "type": "integer",
+                  "minimum": 1024,
+                  "maximum": 65535,
+                  "title": "First Port"
+                },
+                "last_port": {
+                  "type": "integer",
+                  "minimum": 1024,
+                  "maximum": 65535,
+                  "description": ">= first_port",
+                  "title": "Last Port"
+                },
+                "split_disabled": {
+                  "type": "boolean",
+                  "title": "Split Disabled"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Port Range"
+            },
+            "shutdown": {
+              "type": "boolean",
+              "title": "Shutdown"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Synchronization"
+        },
+        "translation": {
+          "type": "object",
+          "properties": {
+            "address_selection": {
+              "type": "object",
+              "properties": {
+                "any": {
+                  "type": "boolean",
+                  "title": "Any"
+                },
+                "hash_field_source_ip": {
+                  "type": "boolean",
+                  "title": "Hash Field Source IP"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Address Selection"
+            },
+            "counters": {
+              "type": "boolean",
+              "title": "Counters"
+            },
+            "low_mark": {
+              "type": "object",
+              "properties": {
+                "percentage": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 99,
+                  "description": "Used to render 'ip nat translation low-mark <percentage>'",
+                  "title": "Percentage"
+                },
+                "host_percentage": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 99,
+                  "description": "Used to render 'ip nat translation low-mark <host_percentage> host'",
+                  "title": "Host Percentage"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Low Mark"
+            },
+            "max_entries": {
+              "type": "object",
+              "properties": {
+                "limit": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 4294967295,
+                  "title": "Limit"
+                },
+                "host_limit": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 4294967295,
+                  "title": "Host Limit"
+                },
+                "ip_limits": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "ip": {
+                        "type": "string",
+                        "description": "IPv4 address",
+                        "title": "IP"
+                      },
+                      "limit": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4294967295,
+                        "title": "Limit"
+                      }
+                    },
+                    "required": [
+                      "limit",
+                      "ip"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    }
+                  },
+                  "title": "IP Limits"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Max Entries"
+            },
+            "timeouts": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "protocol": {
+                    "type": "string",
+                    "enum": [
+                      "tcp",
+                      "udp"
+                    ],
+                    "title": "Protocol"
+                  },
+                  "timeout": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 4294967295,
+                    "description": "in seconds",
+                    "title": "Timeout"
+                  }
+                },
+                "required": [
+                  "timeout",
+                  "protocol"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Timeouts"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Translation"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "IP Nat"
+    },
     "ip_radius_source_interfaces": {
       "type": "array",
       "items": {
