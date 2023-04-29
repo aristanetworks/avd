@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  fabric_sflow:
+    documentation_options:
+      filename: Fabric Variables
+      table: Fabric-wide sFlow Settings
+    type: dict
+    description: Fabric-wide sFlow settings.
+    required: false
+    keys:
+      uplinks:
+        description: If set to true it will enable sFlow on all fabric uplinks.
+        type: bool
+        default: false
+      downlinks:
+        description: If set to true it will enable sFlow on all fabric downlinks.
+        type: bool
+        default: false
+      endpoints:
+        description: If set to true it will enable sFlow on all endpoints ports.
+        type: bool
+        default: false
+      l3_edge:
+        description: If set to true it will enable sFlow on all edge links.
+        type: bool
+        default: false
+      core_interfaces:
+        description: If set to true it will enable sFlow on all edge links.
+        type: bool
+        default: false
