@@ -255,6 +255,31 @@ class UtilsMixin:
                 "profile": p2p_link["macsec_profile"],
             }
 
+        if self.shared_utils.sflow_interface_disable_default is not True:
+            if p2p_link.get("sflow") is not None:
+                if p2p_link.get("sflow", False):
+                    interface_cfg["sflow"] = {
+                        "enable": False,
+                    }
+            else:
+                if self.shared_utils.fabric_sflow["l3_edge"] is not None:
+                    if self.shared_utils.fabric_sflow["l3_edge"] is False:
+                        interface_cfg["sflow"] = {
+                            "enable": False,
+                        }
+        else:
+            if p2p_link.get("sflow") is not None:
+                if p2p_link.get("sflow", True):
+                    interface_cfg["sflow"] = {
+                        "enable": True,
+                    }
+            else:
+                if self.shared_utils.fabric_sflow["l3_edge"] is not None:
+                    if self.shared_utils.fabric_sflow["l3_edge"] is True:
+                        interface_cfg["sflow"] = {
+                            "enable": True,
+                        }
+
         if self.shared_utils.mpls_lsr and p2p_link.get("mpls_ip", True) is True:
             interface_cfg["mpls"] = {"ip": True}
             if p2p_link.get("include_in_underlay_protocol") is True and self.shared_utils.underlay_ldp and p2p_link.get("mpls_ldp", True) is True:

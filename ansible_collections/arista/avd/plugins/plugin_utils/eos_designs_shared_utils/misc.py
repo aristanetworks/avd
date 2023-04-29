@@ -210,3 +210,11 @@ class MiscMixin:
     @cached_property
     def pod_name(self: SharedUtils) -> str | None:
         return get(self.hostvars, "pod_name")
+
+    @cached_property
+    def fabric_sflow(self: SharedUtils) -> dict | None:
+        return get(self.hostvars, "fabric_sflow")
+
+    @cached_property
+    def sflow_interface_disable_default(self: SharedUtils) -> bool | False:
+        return get(self.hostvars, "sflow.interface.disable.default")

@@ -121,6 +121,7 @@ class EthernetInterfacesMixin(UtilsMixin):
             "service_profile": adapter.get("qos_profile"),
             "dot1x": adapter.get("dot1x"),
             "ptp": self._get_adapter_ptp(adapter),
+            "sflow": self._get_adapter_sflow(adapter),
             "eos_cli": adapter.get("raw_eos_cli"),
             "struct_cfg": adapter.get("structured_config"),
         }
