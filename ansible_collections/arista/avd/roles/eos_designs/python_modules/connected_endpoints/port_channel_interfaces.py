@@ -111,6 +111,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
             "service_profile": adapter.get("qos_profile"),
             "link_tracking_groups": self._get_adapter_link_tracking_groups(adapter),
             "ptp": self._get_adapter_ptp(adapter),
+            "sflow": self._get_adapter_sflow(adapter),
             "eos_cli": get(adapter, "port_channel.raw_eos_cli"),
             "struct_cfg": get(adapter, "port_channel.structured_config"),
         }

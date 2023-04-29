@@ -32,6 +32,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                 "description": self.shared_utils.interface_descriptions.underlay_ethernet_interfaces(link["type"], link["peer"], link["peer_interface"]),
                 "speed": link.get("speed"),
                 "shutdown": self.shared_utils.shutdown_interfaces_towards_undeployed_peers and not link["peer_is_deployed"],
+                "sflow": link.get("sflow"),
             }
 
             # L3 interface

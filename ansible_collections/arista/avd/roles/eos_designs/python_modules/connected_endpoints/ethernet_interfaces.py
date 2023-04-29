@@ -98,6 +98,7 @@ class EthernetInterfacesMixin(UtilsMixin):
             "description": self.shared_utils.interface_descriptions.connected_endpoints_ethernet_interfaces(peer, peer_interface, adapter.get("description")),
             "speed": adapter.get("speed"),
             "shutdown": not adapter.get("enabled", True),
+            "sflow": self._get_adapter_sflow(adapter),
             "eos_cli": adapter.get("raw_eos_cli"),
             "struct_cfg": adapter.get("structured_config"),
         }

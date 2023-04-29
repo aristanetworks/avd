@@ -46,6 +46,23 @@ class UtilsMixin:
         """
         underlay_links = []
         underlay_links.extend(self._uplinks)
+        for uplink in underlay_links:
+            if self.shared_utils.sflow_interface_disable_default is not True:
+                if get(uplink, "fabric_sflow.uplinks") is not None:
+                    if get(uplink, "fabric_sflow.uplinks") is False:
+                        uplink.update({"sflow": {"enable": False}})
+                else:
+                    if self.shared_utils.fabric_sflow["uplinks"] is not None:
+                        if self.shared_utils.fabric_sflow["uplinks"] is False:
+                            uplink.update({"sflow": {"enable": False}})
+            else:
+                if get(uplink, "fabric_sflow.uplinks") is not None:
+                    if get(uplink, "fabric_sflow.uplinks") is True:
+                        uplink.update({"sflow": {"enable": True}})
+                else:
+                    if self.shared_utils.fabric_sflow["uplinks"] is not None:
+                        if self.shared_utils.fabric_sflow["uplinks"] is True:
+                            uplink.update({"sflow": {"enable": True}})
 
         for peer in self._avd_peers:
             peer_facts = self.shared_utils.get_peer_facts(peer, required=True)
@@ -76,6 +93,22 @@ class UtilsMixin:
                         "ipv6_enable": get(uplink, "ipv6_enable"),
                         "structured_config": get(uplink, "structured_config"),
                     }
+                    if self.shared_utils.sflow_interface_disable_default is not True:
+                        if get(uplink, "fabric_sflow.downlinks") is not None:
+                            if get(uplink, "fabric_sflow.downlinks") is False:
+                                link.update({"sflow": {"enable": False}})
+                        else:
+                            if self.shared_utils.fabric_sflow["downlinks"] is not None:
+                                if self.shared_utils.fabric_sflow["downlinks"] is False:
+                                    link.update({"sflow": {"enable": False}})
+                    else:
+                        if get(uplink, "fabric_sflow.downlinks") is not None:
+                            if get(uplink, "fabric_sflow.downlinks") is True:
+                                link.update({"sflow": {"enable": True}})
+                        else:
+                            if self.shared_utils.fabric_sflow["downlinks"] is not None:
+                                if self.shared_utils.fabric_sflow["downlinks"] is True:
+                                    link.update({"sflow": {"enable": True}})
                     underlay_links.append(strip_empties_from_dict(link))
 
         return natural_sort(underlay_links, "interface")
