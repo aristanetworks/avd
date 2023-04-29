@@ -153,4 +153,12 @@ p2p_uplinks_qos_profile: < qos_profile_name >
 # Enable PTP on all infrastructure links | Optional
 uplink_ptp:
   enable: < boolean | default -> false >
+
+# Enable sFlow on infrastructure links | Optional
+fabric_sflow:
+  uplinks: < boolean | default -> false >
+  downlinks: < boolean | default -> false >
+  endpoints: < boolean | default -> false >
+  l3_edge: < boolean | default -> false >
+  core_interfaces: < boolean | default -> false >
 ```
