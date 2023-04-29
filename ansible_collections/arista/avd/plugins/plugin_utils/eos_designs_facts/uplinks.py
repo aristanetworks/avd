@@ -120,6 +120,8 @@ class UplinksMixin:
                     uplink["ptp"] = {"enable": True}
                 if self.shared_utils.uplink_macsec is not None:
                     uplink["mac_security"] = self.shared_utils.uplink_macsec
+                if self.shared_utils.fabric_sflow is not None:
+                    uplink["fabric_sflow"] = {"uplinks": self.shared_utils.fabric_sflow["uplinks"], "downlinks": self.shared_utils.fabric_sflow["downlinks"]}
                 if self.shared_utils.underlay_multicast is True and uplink_switch_facts.shared_utils.underlay_multicast is True:
                     uplink["underlay_multicast"] = True
                 if self.shared_utils.underlay_rfc5549:
@@ -211,6 +213,9 @@ class UplinksMixin:
                     uplink["link_tracking_groups"] = []
                     for lt_group in self.shared_utils.link_tracking_groups:
                         uplink["link_tracking_groups"].append({"name": lt_group["name"], "direction": "upstream"})
+
+                if self.shared_utils.fabric_sflow is not None:
+                    uplink["fabric_sflow"] = {"uplinks": self.shared_utils.fabric_sflow["uplinks"], "downlinks": self.shared_utils.fabric_sflow["downlinks"]}
 
                 if self.shared_utils.uplink_structured_config is not None:
                     uplink["structured_config"] = self.shared_utils.uplink_structured_config

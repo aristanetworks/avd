@@ -80,6 +80,22 @@ class UtilsMixin:
                         "sflow": {"enable": self.shared_utils.fabric_sflow_downlinks},
                         "structured_config": get(uplink, "structured_config"),
                     }
+                    if self.shared_utils.sflow_interface_disable_default is not True:
+                        if get(uplink, "fabric_sflow.downlinks") is not None:
+                            if get(uplink, "fabric_sflow.downlinks") is False:
+                                link.update({"sflow": {"enable": False}})
+                        else:
+                            if self.shared_utils.fabric_sflow["downlinks"] is not None:
+                                if self.shared_utils.fabric_sflow["downlinks"] is False:
+                                    link.update({"sflow": {"enable": False}})
+                    else:
+                        if get(uplink, "fabric_sflow.downlinks") is not None:
+                            if get(uplink, "fabric_sflow.downlinks") is True:
+                                link.update({"sflow": {"enable": True}})
+                        else:
+                            if self.shared_utils.fabric_sflow["downlinks"] is not None:
+                                if self.shared_utils.fabric_sflow["downlinks"] is True:
+                                    link.update({"sflow": {"enable": True}})
                     underlay_links.append(strip_empties_from_dict(link))
 
         return natural_sort(underlay_links, "interface")
