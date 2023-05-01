@@ -116,11 +116,6 @@ class RoutingMixin:
                         f"Unable to allocate BGP AS: bgp_as range is too small ({len(bgp_as_range_expanded)}) for the id of the device"
                     ) from exc
 
-        # Hack to make mpls PR non-breaking, adds empty bgp to igp topology spines
-        # TODO: Remove this as part of AVD4.0
-        elif self.underlay_routing_protocol in ["isis", "ospf"] and self.evpn_role == "none" and get(self.hostvars, "bgp_as") is not None:
-            return str(get(self.hostvars, "bgp_as"))
-
     @cached_property
     def always_configure_ip_routing(self: SharedUtils) -> bool:
         return get(self.switch_data_combined, "always_configure_ip_routing")
