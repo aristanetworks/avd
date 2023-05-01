@@ -2781,6 +2781,14 @@ $defs:
             - aes67
             - aes67-r16-2016
             - smpte2059-2
+      sflow:
+        type: bool
+        description: 'Configures sFlow on the interface. This variable is the most
+          specific in the device, so it takes precedence over any other sFlow port
+          definition.
+
+          '
+        default: false
       link_tracking:
         type: dict
         description: 'Configure the downstream interfaces of a respective Link Tracking

@@ -2513,6 +2513,12 @@
             },
             "title": "PTP"
           },
+          "sflow": {
+            "type": "boolean",
+            "description": "Configures sFlow on the interface. This variable is the most specific in the device, so it takes precedence over any other sFlow port definition.\n",
+            "default": false,
+            "title": "Sflow"
+          },
           "link_tracking": {
             "type": "object",
             "description": "Configure the downstream interfaces of a respective Link Tracking Group.\nIf `port_channel` is defined in an adapter, then the port-channel interface is configured to be the downstream.\nElse all the ethernet interfaces will be configured as downstream -> to configure single-active EVPN multihomed networks.\n",
@@ -4265,6 +4271,12 @@
               "^_.+$": {}
             },
             "title": "PTP"
+          },
+          "sflow": {
+            "type": "boolean",
+            "description": "Configures sFlow on the interface. This variable is the most specific in the device, so it takes precedence over any other sFlow port definition.\n",
+            "default": false,
+            "title": "Sflow"
           },
           "link_tracking": {
             "type": "object",
