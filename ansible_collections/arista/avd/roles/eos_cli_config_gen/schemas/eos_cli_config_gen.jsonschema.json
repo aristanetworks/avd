@@ -17754,29 +17754,13 @@
             "egress": {
               "type": "object",
               "properties": {
-                "unmodified": {
-                  "type": "object",
-                  "properties": {
-                    "enable": {
-                      "type": "object",
-                      "properties": {
-                        "default": {
-                          "type": "boolean",
-                          "title": "Default"
-                        }
-                      },
-                      "additionalProperties": false,
-                      "patternProperties": {
-                        "^_.+$": {}
-                      },
-                      "title": "Enable"
-                    }
-                  },
-                  "additionalProperties": false,
-                  "patternProperties": {
-                    "^_.+$": {}
-                  },
-                  "title": "Unmodified"
+                "unmodified_enable_default": {
+                  "type": "boolean",
+                  "title": "Unmodified Enable Default"
+                },
+                "enable_default": {
+                  "type": "boolean",
+                  "title": "Enable Default"
                 }
               },
               "additionalProperties": false,
