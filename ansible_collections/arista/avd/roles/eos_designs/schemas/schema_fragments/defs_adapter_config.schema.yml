@@ -112,7 +112,7 @@ $defs:
           The global PTP profile parameters will be applied to all connected endpoints where `ptp` is manually enabled.
           `ptp role master` is set to ensure control over the PTP topology.
         keys:
-          enable:
+          enabled:
             type: bool
             default: false
           endpoint_role:

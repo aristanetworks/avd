@@ -102,11 +102,11 @@ management_api_http:
 ptp:
   mode: boundary
   forward_unicast: true
-  clock_identity: 00:1C:73:01:00:02
+  clock_identity: 00:1C:73:28:00:01
   source:
     ip: 10.254.1.2
-  priority1: 1
-  priority2: 2
+  priority1: 40
+  priority2: 1
   ttl: 16
   domain: 127
   message_type:

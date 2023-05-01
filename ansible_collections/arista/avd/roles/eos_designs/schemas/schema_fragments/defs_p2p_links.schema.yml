@@ -105,10 +105,13 @@ $defs:
           type: bool
           default: false
           description: Enable BFD (only considered for BGP).
-        ptp_enable:
-          type: bool
-          default: false
-          description: Enable PTP
+        ptp:
+          description: PTP parameters.
+          type: dict
+          enabled:
+            type: bool
+            default: false
+            description: Enable PTP
         qos_profile:
           type: str
           description: QOS service profile.

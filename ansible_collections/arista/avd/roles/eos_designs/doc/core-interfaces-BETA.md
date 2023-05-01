@@ -72,7 +72,8 @@ core_interfaces:
       bfd: < true | false | default -> false >
 
       # Enable PTP | Optional
-      ptp_enable: < true | false | default -> false >
+      ptp:
+        enabled: < true | false | default -> false >
 
       # QOS Service Profile | Optional
       qos_profile: < qos_profile_name >
