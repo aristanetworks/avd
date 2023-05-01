@@ -24,3 +24,9 @@ snmp_server:
     Loopback0:
     Loopback12:
       vrf: Tenant_A_APP_Zone
+  views:
+    - name: VW-WRITE
+      # Testing deprecated upper-case key name
+      # Deprecated in 4.0.0 in favor of lower case variant. To be removed in 5.0.0
+      MIB_family_name: iso
+      included: true
