@@ -97,7 +97,7 @@ The drawing below shows the physical topology used in this example. The interfac
 | DC1                                                 | 10.255.1.64/27              |
 | **MLAG iBGP Peering (interface vlan 4093)**         | **(Leaf switches)**         |
 | DC1                                                 | 10.255.1.96/27              |
-| **CloudVision**                                     |                             |
+| **CloudVision Portal**                              |                             |
 | cvp                                                 | 192.168.1.12                |
 
 ### BGP design
@@ -280,8 +280,11 @@ all:
 1. `CLOUDVISION`
 
    - Defines the relevant values required to enable communication with CloudVision.
-   - Specifically the hostname of the CloudVision Portal server used, the username and password, connection method, SSL and certificate settings.
-   - Please note that the username and password defined here must exist in CloudVision.
+
+   - Specifically the hostname (`cvp`) of the CloudVision Portal server used, the username (`ansible`) and password (`ansible`), connection method (`httpapi`), SSL and certificate settings.
+
+   - Please note that the username (`ansible`) and password (`ansible`) defined here must exist in CloudVision.
+
    - More information is available [here](https://avd.sh/en/stable/roles/eos_config_deploy_cvp/index.html?h=is_deployed#inputs)
 
 2. `NETWORK_SERVICES`
@@ -421,7 +424,7 @@ custom_structured_configuration_ntp: # (8)!
    1. `uplink_interfaces` specify which local interfaces connect to an upstream device.
    2. `mlag_interfaces` specify which local interfaces connect to an MLAG peer.
    3. `downlink_interfaces` specify which local interfaces connect to a downstream device.
-6. Relevant settings for the software agent on EOS, responsible for streaming telemetry back to CloudVision Portal.
+6. Relevant settings for the `TerminAttr` software agent on EOS, responsible for streaming telemetry back to CloudVision Portal.
 7. DNS Server specification. Used in this example primarily to resolve the IP address of the NTP server.
 8. NTP server settings. Correct and synchronized time on EOS is required for proper connectivity to CloudVision Portal.
 
@@ -550,48 +553,54 @@ As should be clear, a L2 leaf switch is much simpler than a L3 switch. Hence the
 
 ## Specifying network services (VRFs and VLANs) in the EVPN/VXLAN fabric
 
-```yaml title="NETWORK_SERVICES.yml"
---8<--
-examples/single-dc-l3ls/group_vars/NETWORK_SERVICES.yml
---8<--
-```
-
-All VRF and VLANs are defined here. This means that regardless of where a given VRF or VLAN must exist, its existence is defined in this file, but it does not indicate ***where*** in the fabric it exists. That was done at the bottom of the inventory file previously described in the [Inventory](#content-of-the-inventoryyml-file) section.
-
-AVD offers granular control of where Tenants and VLANs are configured using `tags` and `filter`. Those areas are not covered in this basic example.
-
-A single tenant called `TENANT1` is specified. The first setting is the base number (`10000`) used to generate the L2VNI numbers automatically, `L2VNI = base number + VLAN-id`. For example, L2VNI for VLAN11 = 10000 + 11 = 10011.
-
-Next, two VRFs are defined, each with two VLANs. For example:
+The `ansible-avd-examples/single-dc-l3ls/group_vars/NETWORK_SERVICES.yml` file defines All VRF and VLANs. This means that regardless of where a given VRF or VLAN must exist, its existence is defined in this file, but it does not indicate ***where*** in the fabric it exists. That was done at the bottom of the inventory file previously described in the [Inventory](#content-of-the-inventoryyml-file) section.
 
 ```yaml title="NETWORK_SERVICES.yml"
+tenants: # (1)!
+  TENANT1:
+    mac_vrf_vni_base: 10000 # (2)!
+    vrfs: # (3)!
       VRF10:
-        vrf_vni: 10
-        vtep_diagnostic:
-          loopback: 10
-          loopback_ip_range: 10.255.10.0/27
-        svis:
+        vrf_vni: 10 # (4)!
+        vtep_diagnostic: # (5)!
+          loopback: 10 # (6)!
+          loopback_ip_range: 10.255.10.0/27 # (7)!
+        svis: # (8)!
           "11":
-            name: VRF10_VLAN11
+            name: VRF10_VLAN11 # (9)!
             enabled: true
-            ip_address_virtual: 10.10.11.1/24
+            ip_address_virtual: 10.10.11.1/24 # (10)!
           "12":
             name: VRF10_VLAN12
             enabled: true
             ip_address_virtual: 10.10.12.1/24
-```
-
-This defines `VRF10`, with an L3VNI of `10` and two VLANs (`VLAN11` and `VLAN12`). Each VLAN has a name and a virtual IP address, which will be used as the default gateway for that particular VLAN on all leaf switches where the VLAN is created.
-
-The following configuration is also defined under `VRF10`:
-
-```yaml title="NETWORK_SERVICES.yml"
+      VRF11:
+        vrf_vni: 11
         vtep_diagnostic:
-          loopback: 10
-          loopback_ip_range: 10.255.10.0/27
+          loopback: 11
+          loopback_ip_range: 10.255.11.0/27
+        svis:
+          "21":
+            name: VRF11_VLAN21
+            enabled: true
+            ip_address_virtual: 10.10.21.1/24
+          "22":
+            name: VRF11_VLAN22
+            enabled: true
+            ip_address_virtual: 10.10.22.1/24
+
+    l2vlans: # (11)!
+      "3401":
+        name: L2_VLAN3401
+      "3402":
+        name: L2_VLAN3402
 ```
 
-This enables more user-friendly diagnostics for troubleshooting purposes by defining a specific loopback per VRF. This will create the following Arista EOS config. For example, on dc1-leaf1a:
+1. Definition of tenants. Additional level of abstraction in addition to VRFs. In this example just one tenant named `TENANT1` is specified.
+2. The base number (`10000`) used to generate the L2VNI numbers automatically, `L2VNI = base number + VLAN-id`. For example, L2VNI for VLAN11 = 10000 + 11 = 10011.
+3. VRF definitions inside the tenant.
+4. VRF VNI definition.
+5. Enable VTEP Network diagnostics. This will create a loopback with virtual source-nat enable to perform diagnostics from the switch:
 
 ```eos
 interface Loopback10
@@ -603,15 +612,14 @@ interface Loopback10
 ip address virtual source-nat vrf VRF10 address 10.255.10.3
 ```
 
-At the bottom of the `NETWORK_SERVICES.yml` file, two layer2-only VLANs (`VLAN3401` and `VLAN3402`) are defined. These VLANs are only bridged across the fabric but never routed anywhere:
+1. Loopback interface number.
+2. Loopback ip range, a unique ip is derived from this ranged and assigned to each l3 leaf based on it's unique id.
+3. SVI Definitions for all SVIs within this tenant.
+4. SVI Description.
+5. IP anycast gateway to be used in the SVI in every leaf across the fabric.
+6. These are pure L2 vlans. They do not have a SVI defined in the l3leafs and they will be bridged inside the VXLAN fabric.
 
-```yaml title="NETWORK_SERVICES.yml"
-    l2vlans:
-      "3401":
-        name: L2_VLAN3401
-      "3402":
-        name: L2_VLAN3402
-```
+AVD offers granular control of where Tenants and VLANs are configured using `tags` and `filter`. Those areas are not covered in this basic example.
 
 ## Specifying endpoint connectivity in the EVPN/VXLAN fabric
 
@@ -720,26 +728,6 @@ It is possible to use the `build.yml` playbook without any actual devices. The p
 
 Please look through the folders and files described above to learn more about the output generated by AVD.
 
-## The Playbooks
-
-Now that we have defined all of our Ansible variables (AVD inputs), it is time to generate some configs. To make things simple, we provide two playbooks. One playbook will allow you to build and view EOS CLI intended configurations per device. The second playbook has an additional task to deploy the configurations to your switches. The playbooks are provided in the tabs below. The playbook is straightforward as it imports two AVD roles: eos_designs and eos_cli_config_gen, which do all the heavy lifting. The combination of these two roles produces recommended configurations that follow Arista Design Guides.
-
-=== "build.yml"
-
-    ``` yaml
-    --8<--
-    examples/l2ls-fabric/build.yml
-    --8<--
-    ```
-
-=== "deploy.yml"
-
-    ``` yaml
-    --8<--
-    examples/l2ls-fabric/deploy.yml
-    --8<--
-    ```
-
 ### Playbook Run
 
 To build the configurations files, run the playbook called `build.yml`.
@@ -751,7 +739,7 @@ ansible-playbook playbooks/build.yml
 
 After the playbook run finishes, EOS CLI intended configuration files were written to `intended/configs`.
 
-To build and deploy the configurations to your switches, run the playbook called `deploy.yml`. This assumes that your Ansible host has access and authentication rights to the switches. Those auth variables were defined in DC1_FABRIC.yml.
+To build and deploy the configurations to your switches, run the playbook called `deploy.yml`. This assumes that your Ansible host has access and authentication rights to the switches. Those auth variables are defined in FABRIC.yml.
 
 ``` bash
 ### Build configurations & Push Configs to switches
@@ -762,51 +750,67 @@ ansible-playbook playbooks/deploy.yml
 
 Your configuration files should be similar to these.
 
-=== "SPINE1"
+=== "dc1-spine1"
 
     ``` shell
     --8<--
-    examples/l2ls-fabric/intended/configs/SPINE1.cfg
+    examples/single-dc-l3ls/intended/configs/dc1-spine1.cfg
     --8<--
     ```
 
-=== "SPINE2"
+=== "dc1-spine2"
 
     ``` shell
     --8<--
-    examples/l2ls-fabric/intended/configs/SPINE2.cfg
+    examples/single-dc-l3ls/intended/configs/dc1-spine2.cfg
     --8<--
     ```
 
-=== "LEAF1"
+=== "dc1-leaf1a"
 
     ``` shell
     --8<--
-    examples/l2ls-fabric/intended/configs/LEAF1.cfg
+    examples/single-dc-l3ls/intended/configs/dc1-leaf1a.cfg
     --8<--
     ```
 
-=== "LEAF2"
+=== "dc1-leaf1b"
 
     ``` shell
     --8<--
-    examples/l2ls-fabric/intended/configs/LEAF2.cfg
+    examples/single-dc-l3ls/intended/configs/dc1-leaf1b.cfg
     --8<--
     ```
 
-=== "LEAF3"
+=== "dc1-leaf1c"
 
     ``` shell
     --8<--
-    examples/l2ls-fabric/intended/configs/LEAF3.cfg
+    examples/single-dc-l3ls/intended/configs/dc1-leaf1c.cfg
     --8<--
     ```
 
-=== "LEAF4"
+=== "dc1-leaf2a"
 
     ``` shell
     --8<--
-    examples/l2ls-fabric/intended/configs/LEAF4.cfg
+    examples/single-dc-l3ls/intended/configs/dc1-leaf2a.cfg
+    --8<--
+    ```
+
+=== "dc1-leaf2b"
+
+    ``` shell
+    --8<--
+    examples/single-dc-l3ls/intended/configs/dc1-leaf2b.cfg
+    --8<--
+    ```
+
+=== "dc1-leaf2c"
+
+    ``` shell
+    --8<--
+    examples/single-dc-l3ls/intended/configs/dc1-leaf2c.cfg
     --8<--
     ```
 
