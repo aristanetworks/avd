@@ -113,6 +113,9 @@ tenant_a:
         max_lsa: 15000
         redistribute_bgp:
           enabled: true
+        redistribute_connected:
+          enabled: true
+          route_map: RM_TEST
         nodes:
           - DC1-BL1A
           - DC1-BL1B

@@ -236,7 +236,7 @@ class UtilsMixin:
                         "isis_metric": default(p2p_link.get("isis_metric"), self.shared_utils.isis_default_metric),
                         "isis_network_point_to_point": (p2p_link.get("isis_network_type", "point-to-point") == "point-to-point"),
                         "isis_hello_padding": p2p_link.get("isis_hello_padding", True),
-                        "isis_circuit_type": default(p2p_link.get("isis_circuit_type"), self.shared_utils.isis_default_circuit_type, "level-2"),
+                        "isis_circuit_type": default(p2p_link.get("isis_circuit_type"), self.shared_utils.isis_default_circuit_type),
                         "isis_authentication_mode": p2p_link.get("isis_authentication_mode"),
                         "isis_authentication_key": p2p_link.get("isis_authentication_key"),
                     }
@@ -292,6 +292,7 @@ class UtilsMixin:
         Covers config that is only applicable to ethernet interfaces.
         This config will only be used on both main interfaces and port-channel members.
         """
+
         ethernet_cfg = {"speed": p2p_link.get("speed")}
 
         if p2p_link.get("ptp_enable") is not True:
@@ -300,7 +301,8 @@ class UtilsMixin:
         ptp_config = {}
 
         # Apply PTP profile config
-        ptp_config.update(self.shared_utils.ptp_profile)
+        if self.shared_utils.ptp_enabled:
+            ptp_config.update(self.shared_utils.ptp_profile)
 
         ptp_config["enable"] = True
         ptp_config.pop("profile", None)

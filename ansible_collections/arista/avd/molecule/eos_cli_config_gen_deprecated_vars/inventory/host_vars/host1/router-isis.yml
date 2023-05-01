@@ -1,0 +1,9 @@
+---
+### Routing - ISIS deprecated variables ###
+router_isis:
+  instance: EVPN_UNDERLAY
+  # deprecated variables
+  address_family: ['ipv4 unicast', 'ipv6 unicast']
+  isis_af_defaults:
+    - maximum-paths 2
+    - fast-reroute ti-lfa mode link-protection

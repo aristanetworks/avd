@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  l3_edge:
+    documentation_options:
+      filename: L3 Edge
+    type: dict
+    $ref: "#/$defs/l3_edge"
+    description: |
+      The `l3_edge` data model can be used to configure extra L3 P2P links anywhere in the fabric.
+      It can be between two switches that are already part of the fabric inventory, or it can be towards another device, where only one end of the link is on a switch in the fabric.
+      Fabric switches can be types `l3leaf`, `spine` or `super-spine`.
+
+      The data model supports using IP pools, Subnet per link or specifying the IP addresses manually.
+      For BGP peerings the AS number must be specified.
+      If the AS number is different than the AS number configured for the node, the local-as will be replaced on this BGP peering (`neighbor <ip> local-as <as> no-prepend replace-as`).
+
+      Make sure to configure the variables in a group_vars file covering all devices mentioned in the data model.
