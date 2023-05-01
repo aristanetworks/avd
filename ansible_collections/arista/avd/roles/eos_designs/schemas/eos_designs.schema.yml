@@ -6084,6 +6084,10 @@ $defs:
               type: bool
               default: false
               description: Enable PTP.
+        sflow:
+          type: bool
+          default: false
+          description: Enable sFlow
         qos_profile:
           type: str
           description: QOS service profile.

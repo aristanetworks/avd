@@ -682,6 +682,12 @@
                 },
                 "title": "PTP"
               },
+              "sflow": {
+                "type": "boolean",
+                "default": false,
+                "description": "Enable sFlow",
+                "title": "Sflow"
+              },
               "qos_profile": {
                 "type": "string",
                 "description": "QOS service profile.",
@@ -906,6 +912,12 @@
                   "^_.+$": {}
                 },
                 "title": "PTP"
+              },
+              "sflow": {
+                "type": "boolean",
+                "default": false,
+                "description": "Enable sFlow",
+                "title": "Sflow"
               },
               "qos_profile": {
                 "type": "string",
@@ -1857,6 +1869,12 @@
                 },
                 "title": "PTP"
               },
+              "sflow": {
+                "type": "boolean",
+                "default": false,
+                "description": "Enable sFlow",
+                "title": "Sflow"
+              },
               "qos_profile": {
                 "type": "string",
                 "description": "QOS service profile.",
@@ -2081,6 +2099,12 @@
                   "^_.+$": {}
                 },
                 "title": "PTP"
+              },
+              "sflow": {
+                "type": "boolean",
+                "default": false,
+                "description": "Enable sFlow",
+                "title": "Sflow"
               },
               "qos_profile": {
                 "type": "string",
