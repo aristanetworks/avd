@@ -15,4 +15,3 @@ spine:
     sflow-tests-default-disable-spine2:
       id: 2
       mgmt_ip: 192.168.0.21/24
-
