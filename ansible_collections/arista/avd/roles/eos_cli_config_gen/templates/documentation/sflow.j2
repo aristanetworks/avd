@@ -54,7 +54,11 @@ sFlow is disabled.
 
 sFlow is disabled on all interfaces by default.
 {%     endif %}
-{%     if sflow.interface.egress.unmodified.enable.default is arista.avd.defined(true) %}
+{%     if sflow.interface.egress.enable_default is arista.avd.defined(true) %}
+
+Egress sFlow is enabled on all interfaces by default.
+{%     endif %}
+{%     if sflow.interface.egress.unmodified_enable_default is arista.avd.defined(true) %}
 
 Unmodified egress sFlow is enabled on all interfaces by default.
 {%     endif %}
