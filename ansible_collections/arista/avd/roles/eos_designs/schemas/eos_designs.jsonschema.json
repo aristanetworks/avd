@@ -459,6 +459,12 @@
                 "description": "Enable PTP",
                 "title": "PTP Enable"
               },
+              "sflow": {
+                "type": "boolean",
+                "default": false,
+                "description": "Enable sFlow",
+                "title": "Sflow"
+              },
               "qos_profile": {
                 "type": "string",
                 "description": "QOS service profile.",
@@ -672,6 +678,12 @@
                 "default": false,
                 "description": "Enable PTP",
                 "title": "PTP Enable"
+              },
+              "sflow": {
+                "type": "boolean",
+                "default": false,
+                "description": "Enable sFlow",
+                "title": "Sflow"
               },
               "qos_profile": {
                 "type": "string",
@@ -1294,6 +1306,12 @@
                 "description": "Enable PTP",
                 "title": "PTP Enable"
               },
+              "sflow": {
+                "type": "boolean",
+                "default": false,
+                "description": "Enable sFlow",
+                "title": "Sflow"
+              },
               "qos_profile": {
                 "type": "string",
                 "description": "QOS service profile.",
@@ -1507,6 +1525,12 @@
                 "default": false,
                 "description": "Enable PTP",
                 "title": "PTP Enable"
+              },
+              "sflow": {
+                "type": "boolean",
+                "default": false,
+                "description": "Enable sFlow",
+                "title": "Sflow"
               },
               "qos_profile": {
                 "type": "string",
