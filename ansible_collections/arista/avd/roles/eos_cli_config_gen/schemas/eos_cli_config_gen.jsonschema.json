@@ -10262,13 +10262,15 @@
                         "threshold": {
                           "type": "object",
                           "properties": {
-                            "metric": {
+                            "units": {
                               "type": "string",
                               "enum": [
+                                "segments",
+                                "bytes",
                                 "kbytes",
-                                "segments"
+                                "mbytes"
                               ],
-                              "title": "Metric"
+                              "title": "Units"
                             },
                             "min": {
                               "type": "integer",
@@ -10377,14 +10379,16 @@
                         "threshold": {
                           "type": "object",
                           "properties": {
-                            "metric": {
+                            "units": {
                               "type": "string",
                               "enum": [
+                                "segments",
+                                "bytes",
                                 "kbytes",
-                                "segments"
+                                "mbytes"
                               ],
                               "description": "Indicate whether values are in kbytes or segments\n",
-                              "title": "Metric"
+                              "title": "Units"
                             },
                             "min": {
                               "type": "integer",
@@ -10408,7 +10412,7 @@
                             }
                           },
                           "required": [
-                            "metric"
+                            "units"
                           ],
                           "additionalProperties": false,
                           "patternProperties": {

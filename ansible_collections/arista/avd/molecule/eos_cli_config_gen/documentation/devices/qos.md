@@ -318,10 +318,10 @@ QOS Profile: **experiment**
 
 | TX queue | Type | Bandwidth | Priority | Shape Rate | ECN |
 | -------- | ---- | --------- | -------- | ---------- | --- |
-| 3 | All | 30 | no priority | - |
-| 4 | All | 10 | - | - |
-| 5 | All | 40 | - | - |
-| 7 | All | 30 | - | 40 percent |
+| 3 | All | 30 | no priority | - | Not Enabled |
+| 4 | All | 10 | - | - | Not Enabled |
+| 5 | All | 40 | - | - | Not Enabled |
+| 7 | All | 30 | - | 40 percent | Not Enabled |
 
 **ECN Configuration**
 
@@ -357,9 +357,9 @@ QOS Profile: **qprof_testwithpolicy**
 
 | TX queue | Type | Bandwidth | Priority | Shape Rate | ECN |
 | -------- | ---- | --------- | -------- | ---------- | --- |
-| 0 | All | 1 | - | - |
-| 1 | All | 80 | - | - |
-| 5 | All | 19 | no priority | - |
+| 0 | All | 1 | - | - | Not Enabled |
+| 1 | All | 80 | - | - | Not Enabled |
+| 5 | All | 19 | no priority | - | Not Enabled |
 
 **ECN Configuration**
 
@@ -381,9 +381,9 @@ QOS Profile: **test**
 
 | TX queue | Type | Bandwidth | Priority | Shape Rate | ECN |
 | -------- | ---- | --------- | -------- | ---------- | --- |
-| 1 | All | 50 | no priority | - |
-| 2 | All | 10 | priority strict | - |
-| 4 | All | 10 | - | - |
+| 1 | All | 50 | no priority | - | Not Enabled |
+| 2 | All | 10 | priority strict | - | Enabled |
+| 4 | All | 10 | - | - | Enabled |
 
 **ECN Configuration**
 
@@ -405,12 +405,12 @@ QOS Profile: **uc_mc_queues_test**
 
 | TX queue | Type | Bandwidth | Priority | Shape Rate | ECN |
 | -------- | ---- | --------- | -------- | ---------- | --- |
-| 1 | Unicast | 50 | no priority | - |
-| 2 | Unicast | 10 | priority strict | - |
-| 4 | Unicast | 10 | - | - |
-| 1 | Multicast | 50 | no priority | - |
-| 2 | Multicast | 10 | priority strict | - |
-| 4 | Multicast | 10 | - | - |
+| 1 | Unicast | 50 | no priority | - | Not Enabled |
+| 2 | Unicast | 10 | priority strict | - | Enabled |
+| 4 | Unicast | 10 | - | - | Enabled |
+| 1 | Multicast | 50 | no priority | - | Not Enabled |
+| 2 | Multicast | 10 | priority strict | - | Not Enabled |
+| 4 | Multicast | 10 | - | - | Not Enabled |
 
 **ECN Configuration**
 

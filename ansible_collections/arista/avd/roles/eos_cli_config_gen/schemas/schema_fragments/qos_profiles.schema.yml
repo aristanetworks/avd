@@ -91,9 +91,9 @@ keys:
                       threshold:
                         type: dict
                         keys:
-                          metric:
+                          units:
                             type: str
-                            valid_values: ["kbytes", "segments"]
+                            valid_values: ["segments", "bytes", "kbytes", "mbytes"]
                           min:
                             type: int
                             description: |
@@ -157,9 +157,9 @@ keys:
                       threshold:
                         type: dict
                         keys:
-                          metric:
+                          units:
                             type: str
-                            valid_values: ["kbytes", "segments"]
+                            valid_values: ["segments", "bytes", "kbytes", "mbytes"]
                             required: true
                             description: |
                               Indicate whether values are in kbytes or segments

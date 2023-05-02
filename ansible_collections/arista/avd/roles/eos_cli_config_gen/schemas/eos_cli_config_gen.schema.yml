@@ -6653,11 +6653,13 @@ keys:
                       threshold:
                         type: dict
                         keys:
-                          metric:
+                          units:
                             type: str
                             valid_values:
-                            - kbytes
                             - segments
+                            - bytes
+                            - kbytes
+                            - mbytes
                           min:
                             type: int
                             description: 'Set the random-detect ecn minimum-threshold
@@ -6729,11 +6731,13 @@ keys:
                       threshold:
                         type: dict
                         keys:
-                          metric:
+                          units:
                             type: str
                             valid_values:
-                            - kbytes
                             - segments
+                            - bytes
+                            - kbytes
+                            - mbytes
                             required: true
                             description: 'Indicate whether values are in kbytes or
                               segments

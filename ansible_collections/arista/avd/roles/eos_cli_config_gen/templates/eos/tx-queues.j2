@@ -17,14 +17,14 @@
       random-detect ecn count
 {%     endif %}
 {%     if tx_queue.random_detect.ecn.threshold is arista.avd.defined %}
-{%         set metric = tx_queue.random_detect.ecn.threshold.metric %}
+{%         set units = tx_queue.random_detect.ecn.threshold.units %}
 {%         if tx_queue.random_detect.ecn.threshold.min is arista.avd.defined %}
-{%             set min_threshold = " minimum-threshold " ~ tx_queue.random_detect.ecn.threshold.min ~ " " ~ metric  %}
+{%             set min_threshold = " minimum-threshold " ~ tx_queue.random_detect.ecn.threshold.min ~ " " ~ units  %}
 {%         else %}
 {%             set min_threshold = "" %}
 {%         endif %}
 {%         if tx_queue.random_detect.ecn.threshold.max is arista.avd.defined %}
-{%             set max_threshold = " maximum-threshold " ~ tx_queue.random_detect.ecn.threshold.max ~ " " ~ metric %}
+{%             set max_threshold = " maximum-threshold " ~ tx_queue.random_detect.ecn.threshold.max ~ " " ~ units %}
 {%         else %}
 {%             set max_threshold = "" %}
 {%         endif %}

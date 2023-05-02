@@ -30,7 +30,7 @@ qos_profiles:
         random_detect:
           ecn:
             threshold:
-              metric: kbytes
+              units: kbytes
               min: 320
               max: 320
               max_probability: 90
@@ -40,7 +40,7 @@ qos_profiles:
         random_detect:
           ecn:
             threshold:
-              metric: segments
+              units: segments
               min: 320
               max: 320
               weight: 10
@@ -89,7 +89,7 @@ qos_profiles:
         random_detect:
           ecn:
             threshold:
-              metric: kbytes
+              units: kbytes
               min: 320
               max: 320
               max_probability: 90
@@ -99,7 +99,7 @@ qos_profiles:
         random_detect:
           ecn:
             threshold:
-              metric: segments
+              units: segments
               min: 320
               max: 320
               weight: 10

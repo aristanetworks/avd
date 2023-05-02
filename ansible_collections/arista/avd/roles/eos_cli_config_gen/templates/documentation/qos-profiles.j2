@@ -87,8 +87,8 @@ QOS Profile: **{{ profile.name }}**
 {%                 set min = tx_queue.random_detect.ecn.threshold.min | arista.avd.default("-") %}
 {%                 set max = tx_queue.random_detect.ecn.threshold.max | arista.avd.default("-") %}
 {%                 set prob = tx_queue.random_detect.ecn.threshold.max_probability | arista.avd.default("-") %}
-{%                 set metric = tx_queue.random_detect.ecn.threshold.metric | arista.avd.default("") %}
-| {{ tx_queue.id }} | {{ type }} | {{ ecn }} | {{ min }}  {{ metric }} | {{ max }} {{ metric }} | {{ prob }} |
+{%                 set units = tx_queue.random_detect.ecn.threshold.units | arista.avd.default("") %}
+| {{ tx_queue.id }} | {{ type }} | {{ ecn }} | {{ min }}  {{ units }} | {{ max }} {{ units }} | {{ prob }} |
 {%             endfor %}
 {%         endif %}
 {%         if profile.uc_tx_queues is arista.avd.defined %}
@@ -102,8 +102,8 @@ QOS Profile: **{{ profile.name }}**
 {%                 set min = uc_tx_queue.random_detect.ecn.threshold.min | arista.avd.default("-") %}
 {%                 set max = uc_tx_queue.random_detect.ecn.threshold.max | arista.avd.default("-") %}
 {%                 set prob = uc_tx_queue.random_detect.ecn.threshold.max_probability | arista.avd.default("-") %}
-{%                 set metric = uc_tx_queue.random_detect.ecn.threshold.metric | arista.avd.default("") %}
-| {{ uc_tx_queue.id }} | {{ type }} | {{ ecn }} | {{ min }} {{ metric }} | {{ max }} {{ metric }} | {{ prob }} |
+{%                 set units = uc_tx_queue.random_detect.ecn.threshold.units | arista.avd.default("") %}
+| {{ uc_tx_queue.id }} | {{ type }} | {{ ecn }} | {{ min }} {{ units }} | {{ max }} {{ units }} | {{ prob }} |
 {%             endfor %}
 {%         endif %}
 {%         if profile.mc_tx_queues is arista.avd.defined %}
