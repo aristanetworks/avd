@@ -12,7 +12,7 @@ keys:
     required: false
     keys:
       uplinks:
-        description: If set to true it will enable sFlow on all fabric uplinks.
+        description: Enable sFlow on all fabric uplinks.
         type: bool
         default: false
       downlinks:
