@@ -316,12 +316,12 @@ QOS Profile: **experiment**
 
 **TX Queues**
 
-| TX queue | Type | Bandwidth | Priority | Shape Rate |
-| -------- | ---- | --------- | -------- | ---------- |
-| 3 | All | 30 | no priority | - |
-| 4 | All | 10 | - | - |
-| 5 | All | 40 | - | - |
-| 7 | All | 30 | - | 40 percent |
+| TX queue | Type | Bandwidth | Priority | Shape Rate | ECN |
+| -------- | ---- | --------- | -------- | ---------- | --- |
+| 3 | All | 30 | no priority | - | Not Enabled |
+| 4 | All | 10 | - | - | Not Enabled |
+| 5 | All | 40 | - | - | Not Enabled |
+| 7 | All | 30 | - | 40 percent | Not Enabled |
 
 QOS Profile: **no_qos_trust**
 
@@ -341,11 +341,11 @@ QOS Profile: **qprof_testwithpolicy**
 
 **TX Queues**
 
-| TX queue | Type | Bandwidth | Priority | Shape Rate |
-| -------- | ---- | --------- | -------- | ---------- |
-| 0 | All | 1 | - | - |
-| 1 | All | 80 | - | - |
-| 5 | All | 19 | no priority | - |
+| TX queue | Type | Bandwidth | Priority | Shape Rate | ECN |
+| -------- | ---- | --------- | -------- | ---------- | --- |
+| 0 | All | 1 | - | - | Not Enabled |
+| 1 | All | 80 | - | - | Not Enabled |
+| 5 | All | 19 | no priority | - | Not Enabled |
 
 QOS Profile: **test**
 
@@ -357,11 +357,11 @@ QOS Profile: **test**
 
 **TX Queues**
 
-| TX queue | Type | Bandwidth | Priority | Shape Rate |
-| -------- | ---- | --------- | -------- | ---------- |
-| 1 | All | 50 | no priority | - |
-| 2 | All | 10 | priority strict | - |
-| 4 | All | 10 | - | - |
+| TX queue | Type | Bandwidth | Priority | Shape Rate | ECN |
+| -------- | ---- | --------- | -------- | ---------- | --- |
+| 1 | All | 50 | no priority | - | Not Enabled |
+| 2 | All | 10 | priority strict | - | Enabled |
+| 4 | All | 10 | - | - | Enabled |
 
 QOS Profile: **uc_mc_queues_test**
 
@@ -373,14 +373,14 @@ QOS Profile: **uc_mc_queues_test**
 
 **TX Queues**
 
-| TX queue | Type | Bandwidth | Priority | Shape Rate |
-| -------- | ---- | --------- | -------- | ---------- |
-| 1 | Unicast | 50 | no priority | - |
-| 2 | Unicast | 10 | priority strict | - |
-| 4 | Unicast | 10 | - | - |
-| 1 | Multicast | 50 | no priority | - |
-| 2 | Multicast | 10 | priority strict | - |
-| 4 | Multicast | 10 | - | - |
+| TX queue | Type | Bandwidth | Priority | Shape Rate | ECN |
+| -------- | ---- | --------- | -------- | ---------- | --- |
+| 1 | Unicast | 50 | no priority | - | Not Enabled |
+| 2 | Unicast | 10 | priority strict | - | Enabled |
+| 4 | Unicast | 10 | - | - | Enabled |
+| 1 | Multicast | 50 | no priority | - | Not Enabled |
+| 2 | Multicast | 10 | priority strict | - | Not Enabled |
+| 4 | Multicast | 10 | - | - | Not Enabled |
 
 #### QOS Profile Device Configuration
 
