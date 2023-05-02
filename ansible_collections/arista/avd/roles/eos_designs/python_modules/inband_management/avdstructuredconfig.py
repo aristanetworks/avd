@@ -111,6 +111,7 @@ class AvdStructuredConfig(AvdFacts):
             "ip_address": ip_address,
             "ip_virtual_router_addresses": [str(hosts[0])],
             "ip_attached_host_route_export": {
+                "enabled": True,
                 "distance": 19,
             },
         }

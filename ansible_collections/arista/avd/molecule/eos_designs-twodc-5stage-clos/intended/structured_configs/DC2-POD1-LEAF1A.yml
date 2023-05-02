@@ -338,6 +338,7 @@ vlan_interfaces:
   ip_virtual_router_addresses:
   - 172.21.210.1
   ip_attached_host_route_export:
+    enabled: true
     distance: 19
 domain_list:
 - structured-config.set.under.vrf.common-vrf
