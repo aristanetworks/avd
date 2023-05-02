@@ -27,10 +27,9 @@ router_isis:
   net: 49.0001.0001.0001.0001.00
   router_id: 1.2.3.1
   is_type: level-2
-  address_family:
-  - ipv4 unicast
-  isis_af_defaults:
-  - maximum-paths 4
+  address_family_ipv4:
+    enabled: true
+    maximum_paths: 4
 ethernet_interfaces:
 - name: ethernet1
   peer: peer1
@@ -75,6 +74,8 @@ ethernet_interfaces:
   isis_enable: EVPN_UNDERLAY
   isis_metric: 50
   isis_network_point_to_point: true
+  isis_hello_padding: true
+  isis_circuit_type: level-2
 - name: ethernet4
   peer: peer4
   peer_interface: ethernet4
@@ -87,3 +88,5 @@ ethernet_interfaces:
   isis_enable: EVPN_UNDERLAY
   isis_metric: 50
   isis_network_point_to_point: true
+  isis_hello_padding: true
+  isis_circuit_type: level-2

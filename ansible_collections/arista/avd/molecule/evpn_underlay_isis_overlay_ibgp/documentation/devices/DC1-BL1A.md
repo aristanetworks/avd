@@ -295,10 +295,10 @@ vlan 4094
 
 | Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
 | --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
-| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
-| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
-| Ethernet3 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
-| Ethernet4 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
+| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point | level-2 | - | - |
+| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point | level-2 | - | - |
+| Ethernet3 | - | EVPN_UNDERLAY | 50 | point-to-point | level-2 | - | - |
+| Ethernet4 | - | EVPN_UNDERLAY | 50 | point-to-point | level-2 | - | - |
 | Ethernet8 | - | EVPN_UNDERLAY | 50 | point-to-point | level-2 | True | - |
 
 #### Ethernet Interfaces Device Configuration
@@ -312,6 +312,7 @@ interface Ethernet1
    no switchport
    ip address 172.31.255.41/31
    isis enable EVPN_UNDERLAY
+   isis circuit-type level-2
    isis metric 50
    isis network point-to-point
 !
@@ -322,6 +323,7 @@ interface Ethernet2
    no switchport
    ip address 172.31.255.43/31
    isis enable EVPN_UNDERLAY
+   isis circuit-type level-2
    isis metric 50
    isis network point-to-point
 !
@@ -332,6 +334,7 @@ interface Ethernet3
    no switchport
    ip address 172.31.255.45/31
    isis enable EVPN_UNDERLAY
+   isis circuit-type level-2
    isis metric 50
    isis network point-to-point
 !
@@ -342,6 +345,7 @@ interface Ethernet4
    no switchport
    ip address 172.31.255.47/31
    isis enable EVPN_UNDERLAY
+   isis circuit-type level-2
    isis metric 50
    isis network point-to-point
 !
@@ -574,7 +578,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Instance | EVPN_UNDERLAY |
 | Net-ID | 49.0001.0001.0001.0006.00 |
 | Type | level-2 |
-| Address Family | ipv4 unicast |
 | Router-ID | 192.168.255.10 |
 | Log Adjacency Changes | True |
 
@@ -590,6 +593,13 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Vlan4093 | EVPN_UNDERLAY | 50 | point-to-point |
 | Loopback0 | EVPN_UNDERLAY | - | passive |
 | Loopback1 | EVPN_UNDERLAY | - | passive |
+
+#### ISIS IPv4 Address Family Summary
+
+| Settings | Value |
+| -------- | ----- |
+| IPv4 Address-family Enabled | True |
+| Maximum-paths | 4 |
 
 #### Router ISIS Device Configuration
 

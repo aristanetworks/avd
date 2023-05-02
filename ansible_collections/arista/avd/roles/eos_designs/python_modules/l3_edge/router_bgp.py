@@ -25,7 +25,7 @@ class RouterBgpMixin(UtilsMixin):
         neighbors = []
         neighbor_interfaces = []
         for p2p_link in self._filtered_p2p_links:
-            if not (p2p_link.get("include_in_underlay_protocol") is True):
+            if not (p2p_link.get("include_in_underlay_protocol", True) is True):
                 continue
 
             if p2p_link["data"]["bgp_as"] is None or p2p_link["data"]["peer_bgp_as"] is None:

@@ -253,6 +253,9 @@ mac_address_table:
           redistribute_bgp:
             enabled: < true | false, Default -> true >
             route_map: < route-map name >
+          redistribute_connected:
+            enabled: < true | false, Default -> false >
+            route_map: < route-map name >
           nodes:
             - < hostname1 >
             - < hostname2 >
