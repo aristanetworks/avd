@@ -35,7 +35,12 @@ QOS Profile: **{{ profile.name }}**
                                     '-') %}
 {%                     set priority = tx_queue.priority | arista.avd.default('-') %}
 {%                     set shape_rate = tx_queue.shape.rate | arista.avd.default('-') %}
-| {{ tx_queue.id }} | {{ type }} | {{ bw_percent }} | {{ priority }} | {{ shape_rate }} |
+{%                     if tx_queue.random_detect.ecn.threshold is arista.avd.defined %}
+{%                         set ecn = "Enabled" %}
+{%                     else %}
+{%                         set ecn = "Not Enabled" %}
+{%                     endif %}
+| {{ tx_queue.id }} | {{ type }} | {{ bw_percent }} | {{ priority }} | {{ shape_rate }} | {{ ecn }} |
 {%                 endfor %}
 {%             endif %}
 {%             if profile.uc_tx_queues is arista.avd.defined %}
@@ -46,7 +51,12 @@ QOS Profile: **{{ profile.name }}**
                                         '-') %}
 {%                     set priority = uc_tx_queue.priority | arista.avd.default('-') %}
 {%                     set shape_rate = uc_tx_queue.shape.rate | arista.avd.default('-') %}
-| {{ uc_tx_queue.id }} | {{ type }} | {{ bw_percent }} | {{ priority }} | {{ shape_rate }} |
+{%                     if uc_tx_queue.random_detect.ecn.threshold is arista.avd.defined %}
+{%                         set ecn = "Enabled" %}
+{%                     else %}
+{%                         set ecn = "Not Enabled" %}
+{%                     endif %}
+| {{ uc_tx_queue.id }} | {{ type }} | {{ bw_percent }} | {{ priority }} | {{ shape_rate }} | {{ ecn }} |
 {%                 endfor %}
 {%             endif %}
 {%             if profile.mc_tx_queues is arista.avd.defined %}
@@ -57,7 +67,7 @@ QOS Profile: **{{ profile.name }}**
                                         '-') %}
 {%                     set priority = mc_tx_queue.priority | arista.avd.default('-') %}
 {%                     set shape_rate = mc_tx_queue.shape.rate | arista.avd.default('-') %}
-| {{ mc_tx_queue.id }} | {{ type }} | {{ bw_percent }} | {{ priority }} | {{ shape_rate }} |
+| {{ mc_tx_queue.id }} | {{ type }} | {{ bw_percent }} | {{ priority }} | {{ shape_rate }} | Not Enabled |
 {%                 endfor %}
 {%             endif %}
 {%         endif %}
