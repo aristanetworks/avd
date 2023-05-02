@@ -5,7 +5,7 @@ search:
 
 # Fabric Variables
 
-## Bfd Settings
+## BFD Settings
 
 === "Table"
 
@@ -19,7 +19,7 @@ search:
     bfd_multihop:
     ```
 
-## Bgp Multi-Path Settings
+## BGP multi-path Settings
 
 === "Table"
 
@@ -35,7 +35,7 @@ search:
     bgp_maximum_paths: <int>
     ```
 
-## Bgp Peer Groups
+## BGP Peer Groups
 
 === "Table"
 
@@ -49,7 +49,7 @@ search:
     bgp_peer_groups:
     ```
 
-## Bgp Settings
+## BGP Settings
 
 === "Table"
 
@@ -67,7 +67,7 @@ search:
     underlay_filter_peer_as: <bool>
     ```
 
-## Evpn Settings
+## EVPN Settings
 
 === "Table"
 
@@ -97,7 +97,7 @@ search:
     evpn_vlan_aware_bundles: <bool>
     ```
 
-## Ipv6 Underlay Settings
+## IPv6 Underlay Settings
 
 === "Table"
 
@@ -117,7 +117,7 @@ search:
     underlay_rfc5549: <bool>
     ```
 
-## Isis Settings
+## ISIS Settings
 
 === "Table"
 
@@ -149,7 +149,7 @@ search:
     underlay_isis_instance_name: <str>
     ```
 
-## Mac Address Table Settings
+## MAC Address Table Settings
 
 === "Table"
 
@@ -165,7 +165,7 @@ search:
       aging_time: <int>
     ```
 
-## Mlag Settings
+## MLAG Settings
 
 === "Table"
 
@@ -197,7 +197,7 @@ search:
     underlay_multicast: <bool>
     ```
 
-## Ospf Settings
+## OSPF Settings
 
 === "Table"
 
@@ -287,7 +287,7 @@ search:
       enable: <bool>
     ```
 
-## Vlan Settings
+## VLAN Settings
 
 === "Table"
 
