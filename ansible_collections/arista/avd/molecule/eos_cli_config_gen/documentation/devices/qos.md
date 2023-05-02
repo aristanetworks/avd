@@ -316,12 +316,21 @@ QOS Profile: **experiment**
 
 **TX Queues**
 
-| TX queue | Type | Bandwidth | Priority | Shape Rate |
-| -------- | ---- | --------- | -------- | ---------- |
+| TX queue | Type | Bandwidth | Priority | Shape Rate | ECN |
+| -------- | ---- | --------- | -------- | ---------- | --- |
 | 3 | All | 30 | no priority | - |
 | 4 | All | 10 | - | - |
 | 5 | All | 40 | - | - |
 | 7 | All | 30 | - | 40 percent |
+
+**ECN Configuration**
+
+| TX queue | Type | ECN Enabled | Min Threshol | Max Threshold | Max Mark Probability |
+| -------- | ---- | ----------- | ------------ | ------------- | -------------------- |
+| 3 | All | False | -   | -  | - |
+| 4 | All | False | -   | -  | - |
+| 5 | All | False | -   | -  | - |
+| 7 | All | False | -   | -  | - |
 
 QOS Profile: **no_qos_trust**
 
@@ -330,6 +339,11 @@ QOS Profile: **no_qos_trust**
 | Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
 | ----------- | ------------ | ----- | ---------- | ------------------ |
 | 3 | 4 | disabled | - | - |
+
+**ECN Configuration**
+
+| TX queue | Type | ECN Enabled | Min Threshol | Max Threshold | Max Mark Probability |
+| -------- | ---- | ----------- | ------------ | ------------- | -------------------- |
 
 QOS Profile: **qprof_testwithpolicy**
 
@@ -341,11 +355,19 @@ QOS Profile: **qprof_testwithpolicy**
 
 **TX Queues**
 
-| TX queue | Type | Bandwidth | Priority | Shape Rate |
-| -------- | ---- | --------- | -------- | ---------- |
+| TX queue | Type | Bandwidth | Priority | Shape Rate | ECN |
+| -------- | ---- | --------- | -------- | ---------- | --- |
 | 0 | All | 1 | - | - |
 | 1 | All | 80 | - | - |
 | 5 | All | 19 | no priority | - |
+
+**ECN Configuration**
+
+| TX queue | Type | ECN Enabled | Min Threshol | Max Threshold | Max Mark Probability |
+| -------- | ---- | ----------- | ------------ | ------------- | -------------------- |
+| 0 | All | False | -   | -  | - |
+| 1 | All | False | -   | -  | - |
+| 5 | All | False | -   | -  | - |
 
 QOS Profile: **test**
 
@@ -357,11 +379,19 @@ QOS Profile: **test**
 
 **TX Queues**
 
-| TX queue | Type | Bandwidth | Priority | Shape Rate |
-| -------- | ---- | --------- | -------- | ---------- |
+| TX queue | Type | Bandwidth | Priority | Shape Rate | ECN |
+| -------- | ---- | --------- | -------- | ---------- | --- |
 | 1 | All | 50 | no priority | - |
 | 2 | All | 10 | priority strict | - |
 | 4 | All | 10 | - | - |
+
+**ECN Configuration**
+
+| TX queue | Type | ECN Enabled | Min Threshol | Max Threshold | Max Mark Probability |
+| -------- | ---- | ----------- | ------------ | ------------- | -------------------- |
+| 1 | All | False | -   | -  | - |
+| 2 | All | True | 320  kbytes | 320 kbytes | 90 |
+| 4 | All | True | 320  segments | 320 segments | - |
 
 QOS Profile: **uc_mc_queues_test**
 
@@ -373,14 +403,25 @@ QOS Profile: **uc_mc_queues_test**
 
 **TX Queues**
 
-| TX queue | Type | Bandwidth | Priority | Shape Rate |
-| -------- | ---- | --------- | -------- | ---------- |
+| TX queue | Type | Bandwidth | Priority | Shape Rate | ECN |
+| -------- | ---- | --------- | -------- | ---------- | --- |
 | 1 | Unicast | 50 | no priority | - |
 | 2 | Unicast | 10 | priority strict | - |
 | 4 | Unicast | 10 | - | - |
 | 1 | Multicast | 50 | no priority | - |
 | 2 | Multicast | 10 | priority strict | - |
 | 4 | Multicast | 10 | - | - |
+
+**ECN Configuration**
+
+| TX queue | Type | ECN Enabled | Min Threshol | Max Threshold | Max Mark Probability |
+| -------- | ---- | ----------- | ------------ | ------------- | -------------------- |
+| 1 | Unicast | False | -  | -  | - |
+| 2 | Unicast | True | 320 kbytes | 320 kbytes | 90 |
+| 4 | Unicast | True | 320 segments | 320 segments | - |
+| 1 | Multicast | False | - | - | - |
+| 2 | Multicast | False | - | - | - |
+| 4 | Multicast | False | - | - | - |
 
 #### QOS Profile Device Configuration
 

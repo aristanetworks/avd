@@ -25,8 +25,8 @@ QOS Profile: **{{ profile.name }}**
 
 **TX Queues**
 
-| TX queue | Type | Bandwidth | Priority | Shape Rate |
-| -------- | ---- | --------- | -------- | ---------- |
+| TX queue | Type | Bandwidth | Priority | Shape Rate | ECN |
+| -------- | ---- | --------- | -------- | ---------- | --- |
 {%             if profile.tx_queues is arista.avd.defined %}
 {%                 for tx_queue in profile.tx_queues | arista.avd.natural_sort('id') %}
 {%                     set type = "All" %}
@@ -60,6 +60,47 @@ QOS Profile: **{{ profile.name }}**
 | {{ mc_tx_queue.id }} | {{ type }} | {{ bw_percent }} | {{ priority }} | {{ shape_rate }} |
 {%                 endfor %}
 {%             endif %}
+{%         endif %}
+
+**ECN Configuration**
+
+| TX queue | Type | ECN Enabled | Min Threshol | Max Threshold | Max Mark Probability |
+| -------- | ---- | ----------- | ------------ | ------------- | -------------------- |
+{%         if profile.tx_queues is arista.avd.defined %}
+{%             for tx_queue in profile.tx_queues | arista.avd.natural_sort('id') %}
+{%                 set type = "All" %}
+{%                 if tx_queue.random_detect.ecn.threshold is arista.avd.defined %}
+{%                     set ecn = "True" %}
+{%                 else %}
+{%                     set ecn = "False" %}
+{%                 endif %}
+{%                 set min = tx_queue.random_detect.ecn.threshold.min | arista.avd.default("-") %}
+{%                 set max = tx_queue.random_detect.ecn.threshold.max | arista.avd.default("-") %}
+{%                 set prob = tx_queue.random_detect.ecn.threshold.max_probability | arista.avd.default("-") %}
+{%                 set metric = tx_queue.random_detect.ecn.threshold.metric | arista.avd.default("") %}
+| {{ tx_queue.id }} | {{ type }} | {{ ecn }} | {{ min }}  {{ metric }} | {{ max }} {{ metric }} | {{ prob }} |
+{%             endfor %}
+{%         endif %}
+{%         if profile.uc_tx_queues is arista.avd.defined %}
+{%             for uc_tx_queue in profile.uc_tx_queues | arista.avd.natural_sort('id') %}
+{%                 set type = "Unicast" %}
+{%                 if uc_tx_queue.random_detect.ecn.threshold is arista.avd.defined %}
+{%                     set ecn = "True" %}
+{%                 else %}
+{%                     set ecn = "False" %}
+{%                 endif %}
+{%                 set min = uc_tx_queue.random_detect.ecn.threshold.min | arista.avd.default("-") %}
+{%                 set max = uc_tx_queue.random_detect.ecn.threshold.max | arista.avd.default("-") %}
+{%                 set prob = uc_tx_queue.random_detect.ecn.threshold.max_probability | arista.avd.default("-") %}
+{%                 set metric = uc_tx_queue.random_detect.ecn.threshold.metric | arista.avd.default("") %}
+| {{ uc_tx_queue.id }} | {{ type }} | {{ ecn }} | {{ min }} {{ metric }} | {{ max }} {{ metric }} | {{ prob }} |
+{%             endfor %}
+{%         endif %}
+{%         if profile.mc_tx_queues is arista.avd.defined %}
+{%             for mc_tx_queue in profile.mc_tx_queues | arista.avd.natural_sort('id') %}
+{%                 set type = "Multicast" %}
+| {{ mc_tx_queue.id }} | {{ type }} | False | - | - | - |
+{%             endfor %}
 {%         endif %}
 {%     endfor %}
 
