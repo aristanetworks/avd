@@ -134,7 +134,10 @@ class EthernetInterfacesMixin(UtilsMixin):
                             # Strip None values from vlan before adding to list
                             interface = {key: value for key, value in interface.items() if value is not None}
 
-                            error_message = f"Duplicate interface_name {interface['name']} found while generating l3_interfaces under network_services vrf: {interface['vrf']}."
+                            error_message = (
+                                f"Duplicate interface_name {interface['name']} found while generating l3_interfaces under network_services vrf:"
+                                f" {interface['vrf']}."
+                            )
                             ethernet_interfaces = self.shared_utils.duplicate_detection(ethernet_interfaces, "name", interface, error_message)
 
         if self.shared_utils.network_services_l1:
@@ -164,7 +167,10 @@ class EthernetInterfacesMixin(UtilsMixin):
                                         "mode": port_channel_mode,
                                     },
                                 }
-                                error_message = f"Duplicate interface_name {ethernet_interface['name']} found while generating ethernet_interfaces for point_to_point_services channel group id: {channel_group_id}."
+                                error_message = (
+                                    f"Duplicate interface_name {ethernet_interface['name']} found while generating ethernet_interfaces for"
+                                    f" point_to_point_services channel group id: {channel_group_id}."
+                                )
                                 ethernet_interfaces = self.shared_utils.duplicate_detection(ethernet_interfaces, "name", ethernet_interface, error_message)
 
                                 continue
@@ -191,7 +197,9 @@ class EthernetInterfacesMixin(UtilsMixin):
                                         "shutdown": False,
                                     }
 
-                                error_message = f"Duplicate interface_name {ethernet_interface['name']} found while generating subinterfaces under port_to_point_services"
+                                error_message = (
+                                    f"Duplicate interface_name {ethernet_interface['name']} found while generating subinterfaces under port_to_point_services"
+                                )
                                 ethernet_interfaces = self.shared_utils.duplicate_detection(ethernet_interfaces, "name", ethernet_interface, error_message)
                             else:
                                 interface = {
@@ -206,7 +214,9 @@ class EthernetInterfacesMixin(UtilsMixin):
                                         "receive": False,
                                     }
 
-                                error_message = f"Duplicate interface_name {interface['name']} found while generating ethernet_interfaces for point_to_point_services."
+                                error_message = (
+                                    f"Duplicate interface_name {interface['name']} found while generating ethernet_interfaces for point_to_point_services."
+                                )
                                 ethernet_interfaces = self.shared_utils.duplicate_detection(ethernet_interfaces, "name", interface, error_message)
 
         subif_parent_interface_names = subif_parent_interface_names.difference([eth_int["name"] for eth_int in ethernet_interfaces])

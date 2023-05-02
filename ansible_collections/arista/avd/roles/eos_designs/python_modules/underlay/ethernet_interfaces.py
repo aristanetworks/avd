@@ -120,7 +120,10 @@ class EthernetInterfacesMixin(UtilsMixin):
             # Remove None values
             ethernet_interface = {key: value for key, value in ethernet_interface.items() if value is not None}
 
-            error_message = f"Duplicate interface name {ethernet_interface['name']} found while generating ethernet_interfaces for underlay peer: {ethernet_interface['peer']}, peer_interface: {ethernet_interface['peer_interface']}."
+            error_message = (
+                f"Duplicate interface name {ethernet_interface['name']} found while generating ethernet_interfaces for underlay peer:"
+                f" {ethernet_interface['peer']}, peer_interface: {ethernet_interface['peer_interface']}."
+            )
             ethernet_interfaces = self.shared_utils.duplicate_detection(ethernet_interfaces, "name", ethernet_interface, error_message)
 
         if ethernet_interfaces:

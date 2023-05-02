@@ -5,7 +5,6 @@ from collections import ChainMap
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
 
@@ -32,7 +31,10 @@ class EthernetInterfacesMixin(UtilsMixin):
                         continue
 
                     ethernet_interface = self._get_ethernet_interface_cfg(adapter, node_index, connected_endpoint)
-                    error_message = f"Duplicate interface name {ethernet_interface['name']} found while generating ethernet_interfaces for connected_endpoints peer:" f" {ethernet_interface['peer']}, peer_interface: {ethernet_interface['peer_interface']}."
+                    error_message = (
+                        f"Duplicate interface name {ethernet_interface['name']} found while generating ethernet_interfaces for connected_endpoints peer:"
+                        f" {ethernet_interface['peer']}, peer_interface: {ethernet_interface['peer_interface']}."
+                    )
                     ethernet_interfaces = self.shared_utils.duplicate_detection(ethernet_interfaces, "name", ethernet_interface, error_message)
 
         for network_port in self._filtered_network_ports:
@@ -50,7 +52,10 @@ class EthernetInterfacesMixin(UtilsMixin):
                     network_port,
                 )
                 ethernet_interface = self._get_ethernet_interface_cfg(tmp_network_port, 0, connected_endpoint)
-                error_message = f"Duplicate interface name {ethernet_interface['name']} found while generating ethernet_interfaces for network_ports" f" applied to: {network_port.get('switches')}."
+                error_message = (
+                    f"Duplicate interface name {ethernet_interface['name']} found while generating ethernet_interfaces for network_ports"
+                    f" applied to: {network_port.get('switches')}."
+                )
                 ethernet_interfaces = self.shared_utils.duplicate_detection(ethernet_interfaces, "name", ethernet_interface, error_message)
 
         if ethernet_interfaces:
