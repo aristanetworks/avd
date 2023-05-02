@@ -25,8 +25,8 @@ QOS Profile: **{{ profile.name }}**
 
 **TX Queues**
 
-| TX queue | Type | Bandwidth | Priority | Shape Rate | ECN |
-| -------- | ---- | --------- | -------- | ---------- | --- |
+| TX queue | Type | Bandwidth | Priority | Shape Rate |
+| -------- | ---- | --------- | -------- | ---------- |
 {%             if profile.tx_queues is arista.avd.defined %}
 {%                 for tx_queue in profile.tx_queues | arista.avd.natural_sort('id') %}
 {%                     set type = "All" %}
@@ -35,12 +35,7 @@ QOS Profile: **{{ profile.name }}**
                                     '-') %}
 {%                     set priority = tx_queue.priority | arista.avd.default('-') %}
 {%                     set shape_rate = tx_queue.shape.rate | arista.avd.default('-') %}
-{%                     if tx_queue.random_detect.ecn.threshold is arista.avd.defined %}
-{%                         set ecn = "Enabled" %}
-{%                     else %}
-{%                         set ecn = "Not Enabled" %}
-{%                     endif %}
-| {{ tx_queue.id }} | {{ type }} | {{ bw_percent }} | {{ priority }} | {{ shape_rate }} | {{ ecn }} |
+| {{ tx_queue.id }} | {{ type }} | {{ bw_percent }} | {{ priority }} | {{ shape_rate }} |
 {%                 endfor %}
 {%             endif %}
 {%             if profile.uc_tx_queues is arista.avd.defined %}
@@ -51,12 +46,7 @@ QOS Profile: **{{ profile.name }}**
                                         '-') %}
 {%                     set priority = uc_tx_queue.priority | arista.avd.default('-') %}
 {%                     set shape_rate = uc_tx_queue.shape.rate | arista.avd.default('-') %}
-{%                     if uc_tx_queue.random_detect.ecn.threshold is arista.avd.defined %}
-{%                         set ecn = "Enabled" %}
-{%                     else %}
-{%                         set ecn = "Not Enabled" %}
-{%                     endif %}
-| {{ uc_tx_queue.id }} | {{ type }} | {{ bw_percent }} | {{ priority }} | {{ shape_rate }} | {{ ecn }} |
+| {{ uc_tx_queue.id }} | {{ type }} | {{ bw_percent }} | {{ priority }} | {{ shape_rate }} |
 {%                 endfor %}
 {%             endif %}
 {%             if profile.mc_tx_queues is arista.avd.defined %}
@@ -67,7 +57,7 @@ QOS Profile: **{{ profile.name }}**
                                         '-') %}
 {%                     set priority = mc_tx_queue.priority | arista.avd.default('-') %}
 {%                     set shape_rate = mc_tx_queue.shape.rate | arista.avd.default('-') %}
-| {{ mc_tx_queue.id }} | {{ type }} | {{ bw_percent }} | {{ priority }} | {{ shape_rate }} | Not Enabled |
+| {{ mc_tx_queue.id }} | {{ type }} | {{ bw_percent }} | {{ priority }} | {{ shape_rate }} |
 {%                 endfor %}
 {%             endif %}
 {%         endif %}
