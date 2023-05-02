@@ -5,7 +5,7 @@ from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 from .utils import UtilsMixin
 
@@ -134,17 +134,8 @@ class EthernetInterfacesMixin(UtilsMixin):
                             # Strip None values from vlan before adding to list
                             interface = {key: value for key, value in interface.items() if value is not None}
 
-                            if (found_eth_interface := get_item(ethernet_interfaces, "name", interface["name"])) is None:
-                                ethernet_interfaces.append(interface)
-                            else:
-                                if found_eth_interface == interface:
-                                    # Same ethernet_interface information twice in the input data. So not duplicate interface name.
-                                    continue
-
-                                raise AristaAvdError(
-                                    f"Duplicate interface_name {interface['name']} found while generating l3_interfaces under network_services vrf:"
-                                    f" {interface['vrf']}. Description on duplicate interface: {found_eth_interface['description']}"
-                                )
+                            error_message = f"Duplicate interface_name {interface['name']} found while generating l3_interfaces under network_services vrf: {interface['vrf']}."
+                            ethernet_interfaces = self.shared_utils.duplicate_detection(ethernet_interfaces, "name", interface, error_message)
 
         if self.shared_utils.network_services_l1:
             for tenant in self._filtered_tenants:
@@ -173,19 +164,8 @@ class EthernetInterfacesMixin(UtilsMixin):
                                         "mode": port_channel_mode,
                                     },
                                 }
-
-                                if (found_eth_interface := get_item(ethernet_interfaces, "name", ethernet_interface["name"])) is None:
-                                    ethernet_interfaces.append(ethernet_interface)
-                                else:
-                                    if found_eth_interface == ethernet_interface:
-                                        # Same ethernet_interface information twice in the input data. So not duplicate interface name.
-                                        continue
-
-                                    raise AristaAvdError(
-                                        f"Duplicate interface_name {ethernet_interface['name']} found while generating ethernet_interfaces for"
-                                        f" point_to_point_services channel group id: {channel_group_id}. Channel group id on duplicate"
-                                        f" interface: {found_eth_interface['channel_group']['id']}"
-                                    )
+                                error_message = f"Duplicate interface_name {ethernet_interface['name']} found while generating ethernet_interfaces for point_to_point_services channel group id: {channel_group_id}."
+                                ethernet_interfaces = self.shared_utils.duplicate_detection(ethernet_interfaces, "name", ethernet_interface, error_message)
 
                                 continue
 
@@ -211,17 +191,8 @@ class EthernetInterfacesMixin(UtilsMixin):
                                         "shutdown": False,
                                     }
 
-                                if (found_eth_interface := get_item(ethernet_interfaces, "name", ethernet_interface["name"])) is None:
-                                    ethernet_interfaces.append(ethernet_interface)
-                                else:
-                                    if found_eth_interface == ethernet_interface:
-                                        # Same ethernet_interface information twice in the input data. So not duplicate interface name.
-                                        continue
-
-                                    raise AristaAvdError(
-                                        f"Duplicate interface_name {ethernet_interface['name']} found while generating subinterfaces under"
-                                        " port_to_point_services"
-                                    )
+                                error_message = f"Duplicate interface_name {ethernet_interface['name']} found while generating subinterfaces under port_to_point_services"
+                                ethernet_interfaces = self.shared_utils.duplicate_detection(ethernet_interfaces, "name", ethernet_interface, error_message)
                             else:
                                 interface = {
                                     "name": interface_name,
@@ -235,16 +206,8 @@ class EthernetInterfacesMixin(UtilsMixin):
                                         "receive": False,
                                     }
 
-                                if (found_eth_interface := get_item(ethernet_interfaces, "name", interface["name"])) is None:
-                                    ethernet_interfaces.append(interface)
-                                else:
-                                    if found_eth_interface == interface:
-                                        # Same ethernet_interface information twice in the input data. So not duplicate interface name.
-                                        continue
-
-                                    raise AristaAvdError(
-                                        f"Duplicate interface_name {interface['name']} found while generating ethernet_interfaces for point_to_point_services"
-                                    )
+                                error_message = f"Duplicate interface_name {interface['name']} found while generating ethernet_interfaces for point_to_point_services."
+                                ethernet_interfaces = self.shared_utils.duplicate_detection(ethernet_interfaces, "name", interface, error_message)
 
         subif_parent_interface_names = subif_parent_interface_names.difference([eth_int["name"] for eth_int in ethernet_interfaces])
         if subif_parent_interface_names:

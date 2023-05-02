@@ -68,3 +68,22 @@ class UtilsMixin:
         profile_name = adapter_or_network_port_settings.get("profile")
         adapter_profile = self.get_merged_port_profile(profile_name)
         return merge(adapter_profile, adapter_or_network_port_settings, list_merge="replace", destructive_merge=False)
+
+    def duplicate_detection(self: SharedUtils, data_model_list: list[dict], duplicate_key: str, dict_to_check: dict, error_message: str) -> list | None:
+        """
+        Method to detect duplicate entries in configurations.
+        If duplicate entries are found it will raise an error, else will return list of dicts.
+        """
+
+        if (found_data_model := get_item(data_model_list, duplicate_key, dict_to_check[duplicate_key])) is None:
+            data_model_list.append(dict_to_check)
+            return data_model_list
+        else:
+            if found_data_model == dict_to_check:
+                # Same data_model information twice in the input data. So not duplicate entry.
+                return data_model_list
+
+            if duplicate_description := found_data_model.get("description"):
+                error_message += f" Description on duplicate entry: {duplicate_description}"
+
+            raise AristaAvdError(error_message)
