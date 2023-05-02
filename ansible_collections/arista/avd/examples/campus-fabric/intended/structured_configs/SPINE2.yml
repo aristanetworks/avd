@@ -184,6 +184,7 @@ vlan_interfaces:
   ip_virtual_router_addresses:
   - 10.10.10.1
   ip_attached_host_route_export:
+    enabled: true
     distance: 19
 port_channel_interfaces:
 - name: Port-Channel551

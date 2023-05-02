@@ -18362,6 +18362,10 @@
           "ip_attached_host_route_export": {
             "type": "object",
             "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
               "distance": {
                 "type": "integer",
                 "minimum": 1,
@@ -18369,6 +18373,9 @@
                 "title": "Distance"
               }
             },
+            "required": [
+              "enabled"
+            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}

@@ -11319,6 +11319,9 @@ keys:
         ip_attached_host_route_export:
           type: dict
           keys:
+            enabled:
+              type: bool
+              required: true
             distance:
               type: int
               convert_types:
