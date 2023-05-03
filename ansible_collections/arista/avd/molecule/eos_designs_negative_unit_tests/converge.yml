@@ -1,6 +1,6 @@
 ---
 - name: Converge Negative tests
-  hosts: all
+  hosts: EOS_DESIGNS_FAILURES
   gather_facts: false
   connection: local
   tasks:
