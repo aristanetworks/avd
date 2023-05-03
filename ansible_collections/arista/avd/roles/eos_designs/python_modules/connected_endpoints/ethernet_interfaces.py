@@ -99,6 +99,18 @@ class EthernetInterfacesMixin(UtilsMixin):
             "speed": adapter.get("speed"),
             "shutdown": not adapter.get("enabled", True),
             "sflow": self._get_adapter_sflow(adapter),
+            "mode": adapter.get("mode"),
+            "vlans": adapter.get("vlans"),
+            "trunk_groups": self._get_adapter_trunk_groups(adapter, connected_endpoint),
+            "native_vlan_tag": adapter.get("native_vlan_tag"),
+            "native_vlan": adapter.get("native_vlan"),
+            "spanning_tree_portfast": adapter.get("spanning_tree_portfast"),
+            "spanning_tree_bpdufilter": adapter.get("spanning_tree_bpdufilter"),
+            "spanning_tree_bpduguard": adapter.get("spanning_tree_bpduguard"),
+            "storm_control": self._get_adapter_storm_control(adapter),
+            "service_profile": adapter.get("qos_profile"),
+            "dot1x": adapter.get("dot1x"),
+            "ptp": self._get_adapter_ptp(adapter),
             "eos_cli": adapter.get("raw_eos_cli"),
             "struct_cfg": adapter.get("structured_config"),
         }
@@ -152,5 +164,8 @@ class EthernetInterfacesMixin(UtilsMixin):
         # More common ethernet_interface settings
         if (flowcontrol_received := get(adapter, "flowcontrol.received")) is not None:
             ethernet_interface["flowcontrol"] = {"received": flowcontrol_received}
+
+        if default(adapter.get("sflow"), self.shared_utils.fabric_sflow_endpoints) is not None:
+            ethernet_interface["sflow"] = {"enable": default(adapter.get("sflow"), self.shared_utils.fabric_sflow_endpoints)}
 
         return strip_null_from_data(ethernet_interface)
