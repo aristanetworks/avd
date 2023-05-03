@@ -8,10 +8,10 @@ spine:
     bgp_as: 65200
 
   nodes:
-    sflow-tests-default-disable-spine1:
+    sflow-tests-spine1:
       id: 1
       mgmt_ip: 192.168.0.11/24
 
-    sflow-tests-default-disable-spine2:
+    sflow-tests-spine2:
       id: 2
       mgmt_ip: 192.168.0.21/24
