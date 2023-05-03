@@ -97,8 +97,8 @@ jobs:
       - uses: actions/checkout@v3
       - name: 'Start docker-compose stack'
         run: |
-          docker-compose -f docker-compose.yml up -d webdoc_avd
-          docker-compose -f docker-compose.yml ps
+          docker-compose -f development/docker-compose.yml up -d webdoc_avd
+          docker-compose -f development/docker-compose.yml ps
       - name: 'Test connectivity to mkdoc server'
         run: |
           bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' 127.0.0.1:8000)" != "200" ]]; do sleep 5; done'
