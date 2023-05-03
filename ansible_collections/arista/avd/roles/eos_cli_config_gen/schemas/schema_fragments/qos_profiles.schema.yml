@@ -82,6 +82,7 @@ keys:
                 type: dict
                 keys:
                   ecn:
+                    description: Explicit Congestion Notification
                     type: dict
                     keys:
                       count:
