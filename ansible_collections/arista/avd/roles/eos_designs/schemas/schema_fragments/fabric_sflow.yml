@@ -9,25 +9,19 @@ keys:
       table: Fabric-wide sFlow Settings
     type: dict
     description: Fabric-wide sFlow settings.
-    required: false
     keys:
       uplinks:
-        description: If set to true it will enable sFlow on all fabric uplinks.
+        description: Enable sFlow on all fabric uplinks.
         type: bool
-        default: false
       downlinks:
-        description: If set to true it will enable sFlow on all fabric downlinks.
+        description: Enable sFlow on all fabric downlinks.
         type: bool
-        default: false
       endpoints:
-        description: If set to true it will enable sFlow on all endpoints ports.
+        description: Enable sFlow on all endpoints ports.
         type: bool
-        default: false
       l3_edge:
-        description: If set to true it will enable sFlow on all edge links.
+        description: Enable sFlow on all edge links.
         type: bool
-        default: false
       core_interfaces:
-        description: If set to true it will enable sFlow on all edge links.
+        description: Enable sFlow on all edge links.
         type: bool
-        default: false

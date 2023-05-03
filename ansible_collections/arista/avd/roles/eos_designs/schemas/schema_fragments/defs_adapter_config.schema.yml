@@ -132,8 +132,7 @@ $defs:
       sflow:
         type: bool
         description: |
-          Configures sFlow on the interface. This variable is the most specific in the device, so it takes precedence over any other sFlow port definition.
-        default: false
+          Configures sFlow on the interface. Overrides `fabric_sflow` setting.
       link_tracking:
         type: dict
         description: |

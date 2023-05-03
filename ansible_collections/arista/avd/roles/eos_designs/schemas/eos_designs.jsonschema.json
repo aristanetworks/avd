@@ -461,8 +461,7 @@
               },
               "sflow": {
                 "type": "boolean",
-                "default": false,
-                "description": "Enable sFlow",
+                "description": "Enable sFlow. Overrides `fabric_sflow` setting.",
                 "title": "Sflow"
               },
               "qos_profile": {
@@ -681,8 +680,7 @@
               },
               "sflow": {
                 "type": "boolean",
-                "default": false,
-                "description": "Enable sFlow",
+                "description": "Enable sFlow. Overrides `fabric_sflow` setting.",
                 "title": "Sflow"
               },
               "qos_profile": {
@@ -1308,8 +1306,7 @@
               },
               "sflow": {
                 "type": "boolean",
-                "default": false,
-                "description": "Enable sFlow",
+                "description": "Enable sFlow. Overrides `fabric_sflow` setting.",
                 "title": "Sflow"
               },
               "qos_profile": {
@@ -1528,8 +1525,7 @@
               },
               "sflow": {
                 "type": "boolean",
-                "default": false,
-                "description": "Enable sFlow",
+                "description": "Enable sFlow. Overrides `fabric_sflow` setting.",
                 "title": "Sflow"
               },
               "qos_profile": {
@@ -1830,8 +1826,7 @@
           },
           "sflow": {
             "type": "boolean",
-            "description": "Configures sFlow on the interface. This variable is the most specific in the device, so it takes precedence over any other sFlow port definition.\n",
-            "default": false,
+            "description": "Configures sFlow on the interface. Overrides `fabric_sflow` setting.\n",
             "title": "Sflow"
           },
           "link_tracking": {
@@ -3230,8 +3225,7 @@
           },
           "sflow": {
             "type": "boolean",
-            "description": "Configures sFlow on the interface. This variable is the most specific in the device, so it takes precedence over any other sFlow port definition.\n",
-            "default": false,
+            "description": "Configures sFlow on the interface. Overrides `fabric_sflow` setting.\n",
             "title": "Sflow"
           },
           "link_tracking": {
