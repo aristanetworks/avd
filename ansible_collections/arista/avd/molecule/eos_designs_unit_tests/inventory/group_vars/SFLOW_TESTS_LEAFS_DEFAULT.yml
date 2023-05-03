@@ -1,12 +1,19 @@
 ---
 type: l3leaf
 
+fabric_sflow:
+  uplinks: false
+  downlinks: false
+  endpoints: false
+  l3_edge: false
+  core_interfaces: false
+
 l3leaf:
   defaults:
     platform: vEOS-lab
     loopback_ipv4_pool: 10.254.1.0/27
     uplink_interfaces: ['Ethernet1', 'Ethernet2']
-    uplink_switches: ['sflow-tests-default-enable-spine1', 'sflow-tests-default-enable-spine1']
+    uplink_switches: ['sflow-tests-spine3', 'sflow-tests-spine3']
     uplink_ipv4_pool: 10.254.2.0/24
     vtep_loopback_ipv4_pool: 10.254.11.0/27
     mlag_interfaces: ['Ethernet11', 'Ethernet12']
@@ -17,19 +24,19 @@ l3leaf:
 
 
   nodes:
-    sflow-tests-default-enable-leaf1:
-      id: 1
-      bgp_as: 65101
-      mgmt_ip: 192.168.0.101/24
+    sflow-tests-leaf3:
+      id: 3
+      bgp_as: 65103
+      mgmt_ip: 192.168.0.103/24
       uplink_switch_interfaces:
         - Ethernet1
         - Ethernet2
 
 
-    sflow-tests-default-enable-leaf2:
-      id: 2
-      bgp_as: 65102
-      mgmt_ip: 192.168.0.102/24
+    sflow-tests-leaf4:
+      id: 4
+      bgp_as: 65104
+      mgmt_ip: 192.168.0.104/24
       uplink_switch_interfaces:
         - Ethernet3
         - Ethernet4
