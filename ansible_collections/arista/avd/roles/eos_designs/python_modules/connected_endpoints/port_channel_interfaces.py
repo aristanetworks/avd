@@ -8,7 +8,7 @@ from ansible_collections.arista.avd.plugins.filter.esi_management import generat
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 
 from .utils import UtilsMixin
 
@@ -106,10 +106,11 @@ class PortChannelInterfacesMixin(UtilsMixin):
             "mtu": adapter.get("mtu"),
             "service_profile": adapter.get("qos_profile"),
             "link_tracking_groups": self._get_adapter_link_tracking_groups(adapter),
-            "sflow": self._get_adapter_sflow(adapter),
             "eos_cli": get(adapter, "port_channel.raw_eos_cli"),
             "struct_cfg": get(adapter, "port_channel.structured_config"),
         }
+        if default(adapter.get("sflow"), self.shared_utils.fabric_sflow_endpoints) is not None:
+            port_channel_interface["sflow"] = {"enable": default(adapter.get("sflow"), self.shared_utils.fabric_sflow_endpoints)}
 
         # Only switches interfaces
         if port_channel_type == "switched":

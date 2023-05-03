@@ -218,25 +218,3 @@ class UtilsMixin:
         ptp_config.pop("profile", None)
 
         return ptp_config
-
-    def _get_adapter_sflow(self, adapter: dict) -> dict | None:
-        """
-        Return sflow configuration for one adapter evaluating interface disable default sflow configuration
-        Adapter definition takes precedence over fabric configuration
-        """
-        if self.shared_utils.sflow_interface_disable_default is not True:
-            if get(adapter, "sflow") is not None:
-                if get(adapter, "sflow") is False:
-                    return {"enable": False}
-            else:
-                if self.shared_utils.fabric_sflow["endpoints"] is not None:
-                    if self.shared_utils.fabric_sflow["endpoints"] is False:
-                        return {"enable": False}
-        else:
-            if get(adapter, "sflow") is not None:
-                if get(adapter, "sflow") is True:
-                    return {"enable": True}
-            else:
-                if self.shared_utils.fabric_sflow["endpoints"] is not None:
-                    if self.shared_utils.fabric_sflow["endpoints"] is True:
-                        return {"enable": True}

@@ -212,9 +212,21 @@ class MiscMixin:
         return get(self.hostvars, "pod_name")
 
     @cached_property
-    def fabric_sflow(self: SharedUtils) -> dict | None:
-        return get(self.hostvars, "fabric_sflow")
+    def fabric_sflow_uplinks(self: SharedUtils) -> bool | None:
+        return get(self.hostvars, "fabric_sflow.uplinks")
 
     @cached_property
-    def sflow_interface_disable_default(self: SharedUtils) -> bool | False:
-        return get(self.hostvars, "sflow.interface.disable.default")
+    def fabric_sflow_downlinks(self: SharedUtils) -> bool | None:
+        return get(self.hostvars, "fabric_sflow.downlinks")
+
+    @cached_property
+    def fabric_sflow_endpoints(self: SharedUtils) -> bool | None:
+        return get(self.hostvars, "fabric_sflow.endpoints")
+
+    @cached_property
+    def fabric_sflow_l3_edge(self: SharedUtils) -> bool | None:
+        return get(self.hostvars, "fabric_sflow.l3_edge")
+
+    @cached_property
+    def fabric_sflow_core_interfaces(self: SharedUtils) -> bool | None:
+        return get(self.hostvars, "fabric_sflow.core_interfaces")
