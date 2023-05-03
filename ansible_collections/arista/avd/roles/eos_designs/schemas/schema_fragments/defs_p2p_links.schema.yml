@@ -115,8 +115,7 @@ $defs:
               description: Enable PTP.
         sflow:
           type: bool
-          default: false
-          description: Enable sFlow
+          description: Enable sFlow. Overrides `fabric_sflow` setting.
         qos_profile:
           type: str
           description: QOS service profile.
