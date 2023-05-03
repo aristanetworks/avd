@@ -4,101 +4,30 @@
 type: dict
 keys:
   svi_profiles:
+    documentation_options:
+      filename: Network Services
+    $ref: "#/$defs/svis"
     type: list
     primary_key: profile
     convert_types:
       - dict
     description: |
-      Optional profiles to apply on SVI interfaces
-      Each profile can support all or some of the following keys according to your own needs.
-      Keys are the same used under SVI.
-      Svi_profiles can refer to another svi_profiles to inherit settings in up to two levels (svi->profile->parent_profile).
+      Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.
+      Keys are the same used under SVIs. Keys defined under SVIs take precedence.
+      Note: structured configuration is not merged recursively and will be taken directly from the most specific level in the following order:
+      1. svi.nodes[inventory_hostname].structured_config
+      2. svi_profile.nodes[inventory_hostname].structured_config
+      3. svi_parent_profile.nodes[inventory_hostname].structured_config
+      4. svi.structured_config
+      5. svi_profile.structured_config
+      6. svi_parent_profile.structured_config
     items:
       type: dict
       keys:
         profile:
           type: str
           description: Profile name
+          required: true
         parent_profile:
           type: str
           description: SVI profile name
-        name:
-          type: str
-          description: VLAN name
-        mtu:
-          type: int
-          convert_types:
-            - str
-        enabled:
-          type: bool
-        ip_virtual_router_addresses:
-          type: list
-          items:
-            type: str
-            description: IPv4_address/Mask or IPv4_address
-        ip_address_virtual:
-          type: str
-          description: IPv4_address/Mask
-        ip_address_virtual_secondaries:
-          type: list
-          items:
-            type: str
-            description: IPv4_address/Mask
-        igmp_snooping_enabled:
-          type: bool
-          default: true
-        ip_helpers:
-          type: list
-          items:
-            type: dict
-            keys:
-              ip_helper:
-                type: str
-                description: IPv4 DHCP server IP
-              source_interface:
-                type: str
-                description: Interface name
-              source_vrf:
-                type: str
-                description: VRF to originate DHCP relay packets to DHCP server
-        nodes:
-          type: list
-          primary_key: name
-          convert_types:
-            - dict
-          items:
-            type: dict
-            keys:
-              name:
-                type: str
-              ip_address:
-                type: str
-              ipv6_address:
-                type: str
-              ip_address_virtual_secondaries:
-                type: list
-                description: Should take config from svis[svi].nodes[node]
-                items:
-                  type: str
-              ip_virtual_router_addresses:
-                type: list
-                items:
-                  type: str
-              ipv6_virtual_router_addresses:
-                type: list
-                items:
-                  type: str
-              ip_helpers:
-                type: list
-                items:
-                  type: dict
-                  keys:
-                    ip_helper:
-                      type: str
-                      description: IPv4 DHCP server IP
-                    source_interface:
-                      type: str
-                      description: Interface name
-                    source_vrf:
-                      type: str
-                      description: VRF to originate DHCP relay packets to DHCP server
