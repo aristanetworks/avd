@@ -87,7 +87,7 @@ keys:
                       count:
                         type: bool
                         description: |
-                          Turn on random-detect ecn count
+                          Enable counter for random-detect ECNs
                       threshold:
                         type: dict
                         keys:
