@@ -11390,11 +11390,13 @@ $defs:
           valid_values:
           - egress
           - ingress
-          description: 'Egress or ingress can be default. This depends on source/destination,
-            EoS version and hardware platform.
+          description: 'Egress or ingress can be the default. This depends on source/destination,
+            EOS version, and hardware platform.
 
-            EoS might remove this keyword in configuration. So, check configuration
-            on targeted HW/SW .'
+            EOS might remove this keyword in the configuration. So, check the configuration
+            on targeted HW/SW.
+
+            '
         group:
           type: int
           convert_types:
@@ -11486,7 +11488,9 @@ $defs:
                   description: 'required if ''nat_type'' is pool, pool-address-only
                     or pool-full-cone
 
-                    ignored if ''nat_type'' is overload'
+                    ignored if ''nat_type'' is overload
+
+                    '
                 priority:
                   type: int
                   convert_types:

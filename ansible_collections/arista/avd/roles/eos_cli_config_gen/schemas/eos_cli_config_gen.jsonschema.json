@@ -2215,7 +2215,7 @@
                             "egress",
                             "ingress"
                           ],
-                          "description": "Egress or ingress can be default. This depends on source/destination, EoS version and hardware platform.\nEoS might remove this keyword in configuration. So, check configuration on targeted HW/SW .",
+                          "description": "Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware platform.\nEOS might remove this keyword in the configuration. So, check the configuration on targeted HW/SW.\n",
                           "title": "Direction"
                         },
                         "group": {
@@ -2309,7 +2309,7 @@
                         },
                         "pool_name": {
                           "type": "string",
-                          "description": "required if 'nat_type' is pool, pool-address-only or pool-full-cone\nignored if 'nat_type' is overload",
+                          "description": "required if 'nat_type' is pool, pool-address-only or pool-full-cone\nignored if 'nat_type' is overload\n",
                           "title": "Pool Name"
                         },
                         "priority": {
@@ -2350,7 +2350,7 @@
                             "egress",
                             "ingress"
                           ],
-                          "description": "Egress or ingress can be default. This depends on source/destination, EoS version and hardware platform.\nEoS might remove this keyword in configuration. So, check configuration on targeted HW/SW .",
+                          "description": "Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware platform.\nEOS might remove this keyword in the configuration. So, check the configuration on targeted HW/SW.\n",
                           "title": "Direction"
                         },
                         "group": {
@@ -9357,7 +9357,7 @@
                             "egress",
                             "ingress"
                           ],
-                          "description": "Egress or ingress can be default. This depends on source/destination, EoS version and hardware platform.\nEoS might remove this keyword in configuration. So, check configuration on targeted HW/SW .",
+                          "description": "Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware platform.\nEOS might remove this keyword in the configuration. So, check the configuration on targeted HW/SW.\n",
                           "title": "Direction"
                         },
                         "group": {
@@ -9451,7 +9451,7 @@
                         },
                         "pool_name": {
                           "type": "string",
-                          "description": "required if 'nat_type' is pool, pool-address-only or pool-full-cone\nignored if 'nat_type' is overload",
+                          "description": "required if 'nat_type' is pool, pool-address-only or pool-full-cone\nignored if 'nat_type' is overload\n",
                           "title": "Pool Name"
                         },
                         "priority": {
@@ -9492,7 +9492,7 @@
                             "egress",
                             "ingress"
                           ],
-                          "description": "Egress or ingress can be default. This depends on source/destination, EoS version and hardware platform.\nEoS might remove this keyword in configuration. So, check configuration on targeted HW/SW .",
+                          "description": "Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware platform.\nEOS might remove this keyword in the configuration. So, check the configuration on targeted HW/SW.\n",
                           "title": "Direction"
                         },
                         "group": {
@@ -17679,7 +17679,7 @@
                             "egress",
                             "ingress"
                           ],
-                          "description": "Egress or ingress can be default. This depends on source/destination, EoS version and hardware platform.\nEoS might remove this keyword in configuration. So, check configuration on targeted HW/SW .",
+                          "description": "Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware platform.\nEOS might remove this keyword in the configuration. So, check the configuration on targeted HW/SW.\n",
                           "title": "Direction"
                         },
                         "group": {
@@ -17773,7 +17773,7 @@
                         },
                         "pool_name": {
                           "type": "string",
-                          "description": "required if 'nat_type' is pool, pool-address-only or pool-full-cone\nignored if 'nat_type' is overload",
+                          "description": "required if 'nat_type' is pool, pool-address-only or pool-full-cone\nignored if 'nat_type' is overload\n",
                           "title": "Pool Name"
                         },
                         "priority": {
@@ -17814,7 +17814,7 @@
                             "egress",
                             "ingress"
                           ],
-                          "description": "Egress or ingress can be default. This depends on source/destination, EoS version and hardware platform.\nEoS might remove this keyword in configuration. So, check configuration on targeted HW/SW .",
+                          "description": "Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware platform.\nEOS might remove this keyword in the configuration. So, check the configuration on targeted HW/SW.\n",
                           "title": "Direction"
                         },
                         "group": {
@@ -18189,7 +18189,7 @@
                             "egress",
                             "ingress"
                           ],
-                          "description": "Egress or ingress can be default. This depends on source/destination, EoS version and hardware platform.\nEoS might remove this keyword in configuration. So, check configuration on targeted HW/SW .",
+                          "description": "Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware platform.\nEOS might remove this keyword in the configuration. So, check the configuration on targeted HW/SW.\n",
                           "title": "Direction"
                         },
                         "group": {
@@ -18283,7 +18283,7 @@
                         },
                         "pool_name": {
                           "type": "string",
-                          "description": "required if 'nat_type' is pool, pool-address-only or pool-full-cone\nignored if 'nat_type' is overload",
+                          "description": "required if 'nat_type' is pool, pool-address-only or pool-full-cone\nignored if 'nat_type' is overload\n",
                           "title": "Pool Name"
                         },
                         "priority": {
@@ -18324,7 +18324,7 @@
                             "egress",
                             "ingress"
                           ],
-                          "description": "Egress or ingress can be default. This depends on source/destination, EoS version and hardware platform.\nEoS might remove this keyword in configuration. So, check configuration on targeted HW/SW .",
+                          "description": "Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware platform.\nEOS might remove this keyword in the configuration. So, check the configuration on targeted HW/SW.\n",
                           "title": "Direction"
                         },
                         "group": {
