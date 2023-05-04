@@ -33,7 +33,7 @@ search:
         - name: <str>
     ```
 
-## Bgp & Evpn Control Plane
+## BGP & EVPN control plane
 
 === "Table"
 
@@ -103,7 +103,7 @@ search:
             - <str>
     ```
 
-## Bgp & Evpn Multi-Domain Gateway
+## BGP & EVPN multi-domain gateway
 
 === "Table"
 
@@ -205,7 +205,7 @@ search:
               inter_domain: <bool>
     ```
 
-## Bgp & Ip-Vpn Gateway
+## BGP & IP-VPN gateway
 
 === "Table"
 
@@ -406,7 +406,7 @@ default_interfaces:
       type: <str>
     ```
 
-## Evpn Services Management
+## EVPN services management
 
 === "Table"
 
@@ -508,7 +508,7 @@ default_interfaces:
           igmp_snooping_enabled: <bool>
     ```
 
-## Generic Configuration Management
+## Generic configuration management
 
 === "Table"
 
@@ -706,7 +706,7 @@ default_interfaces:
           structured_config:
     ```
 
-## Inband Management Vlan
+## Inband management VLAN
 
 === "Table"
 
@@ -744,7 +744,7 @@ default_interfaces:
           inband_management_vlan: <int>
     ```
 
-## Isis Underlay Protocol Management
+## ISIS underlay protocol management
 
 === "Table"
 
@@ -798,7 +798,7 @@ default_interfaces:
           node_sid_base: <int>
     ```
 
-## Loopback And Vtep Management
+## Loopback and VTEP management
 
 === "Table"
 
@@ -868,7 +868,7 @@ default_interfaces:
           vtep_loopback: <str>
     ```
 
-## Mlag Configuration Management
+## MLAG configuration management
 
 === "Table"
 
@@ -1018,7 +1018,7 @@ default_interfaces:
           virtual_router_mac_address: <str>
     ```
 
-## Mpls Settings Management
+## MPLS settings management
 
 === "Table"
 
@@ -1088,7 +1088,7 @@ default_interfaces:
           bgp_cluster_id: <str>
     ```
 
-## Ptp Settings Management
+## PTP settings management
 
 === "Table"
 
@@ -1417,7 +1417,7 @@ This is leveraged to load the appropriate template to generate the configuration
     type: <str>
     ```
 
-## Uplink Management
+## Uplink management
 
 === "Table"
 

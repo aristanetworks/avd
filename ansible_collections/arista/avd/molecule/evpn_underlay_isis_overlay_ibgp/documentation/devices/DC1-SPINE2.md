@@ -26,7 +26,6 @@
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
   - [Router ISIS](#router-isis)
-  - [Router BGP](#router-bgp)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
@@ -442,31 +441,6 @@ router isis EVPN_UNDERLAY
    address-family ipv4 unicast
       maximum-paths 4
    !
-```
-
-### Router BGP
-
-#### Router BGP Summary
-
-| BGP AS | Router ID |
-| ------ | --------- |
-| 65000|  192.168.255.2 |
-
-| BGP Tuning |
-| ---------- |
-| no bgp default ipv4-unicast |
-| distance bgp 20 200 200 |
-| maximum-paths 4 ecmp 4 |
-
-#### Router BGP Device Configuration
-
-```eos
-!
-router bgp 65000
-   router-id 192.168.255.2
-   no bgp default ipv4-unicast
-   distance bgp 20 200 200
-   maximum-paths 4 ecmp 4
 ```
 
 ## VRF Instances

@@ -16078,13 +16078,17 @@
                 "description": "SNMP view name",
                 "title": "Name"
               },
-              "MIB_family_name": {
+              "mib_family_name": {
                 "type": "string",
                 "title": "MIB Family Name"
               },
               "included": {
                 "type": "boolean",
                 "title": "Included"
+              },
+              "MIB_family_name": {
+                "type": "string",
+                "title": "MIB Family Name"
               }
             },
             "additionalProperties": false,
@@ -18358,6 +18362,10 @@
           "ip_attached_host_route_export": {
             "type": "object",
             "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
               "distance": {
                 "type": "integer",
                 "minimum": 1,
@@ -18365,6 +18373,9 @@
                 "title": "Distance"
               }
             },
+            "required": [
+              "enabled"
+            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}

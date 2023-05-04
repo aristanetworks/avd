@@ -41,10 +41,10 @@ snmp_server:
     - name: onur_v6
   views:
     - name: VW-WRITE
-      MIB_family_name: iso
+      mib_family_name: iso
       included: true
     - name: VW-READ
-      MIB_family_name: iso
+      mib_family_name: iso
       included: true
   groups:
     - name: GRP-READ-ONLY
