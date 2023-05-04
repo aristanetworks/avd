@@ -16,7 +16,6 @@ keys:
       default_thresholds:
         type: dict
         description: |
-          Set the default high and low thresholds for Etherent Interfaces
         keys:
           high:
             type: int
