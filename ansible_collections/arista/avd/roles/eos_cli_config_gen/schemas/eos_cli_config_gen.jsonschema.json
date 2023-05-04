@@ -17728,6 +17728,12 @@
             "type": "boolean",
             "title": "IP IGMP"
           },
+          "ip_igmp_version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 3,
+            "title": "IP IGMP Version"
+          },
           "ip_helpers": {
             "type": "array",
             "description": "List of DHCP servers",
