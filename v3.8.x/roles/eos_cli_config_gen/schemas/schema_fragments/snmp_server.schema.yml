@@ -1,0 +1,248 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  snmp_server:
+    type: dict
+    description: SNMP settings
+    keys:
+      engine_ids:
+        type: dict
+        keys:
+          local:
+            type: str
+            convert_types:
+            - int
+            description: |
+              Engine ID in hexadecimal
+          remotes:
+            type: list
+            items:
+              type: dict
+              keys:
+                id:
+                  type: str
+                  convert_types:
+                  - int
+                  description: |
+                    Remote engine ID in hexadecimal
+                address:
+                  type: str
+                  description: |
+                    Hostname or IP of remote engine
+                udp_port:
+                  type: int
+                  convert_types:
+                  - str
+      contact:
+        type: str
+        description: SNMP contact
+      location:
+        type: str
+        description: SNMP location
+      communities:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Community name
+            access:
+              type: str
+              valid_values: ["ro", "rw"]
+            access_list_ipv4:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: IPv4 access list name
+            access_list_ipv6:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: IPv6 access list name
+            view:
+              type: str
+      ipv4_acls:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: IPv4 access list name
+            vrf:
+              type: str
+      ipv6_acls:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: IPv6 access list name
+            vrf:
+              type: str
+      local_interfaces:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              description: Interface name
+            vrf:
+              type: str
+      views:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: SNMP view name
+            MIB_family_name:
+              type: str
+            included:
+              type: bool
+      groups:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Group name
+            version:
+              type: str
+              valid_values: ["v1", "v2c", "v3"]
+            authentication:
+              type: str
+              valid_values: ["auth", "noauth", "priv"]
+            read:
+              type: str
+              description: Read view
+            write:
+              type: str
+              description: Write view
+            notify:
+              type: str
+              description: Notify view
+      users:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Username
+            group:
+              type: str
+              description: Group name
+            remote_address:
+              type: str
+              description: |
+                Hostname or ip of remote engine
+                The remote_address and udp_port are used for remote users
+            udp_port:
+              type: int
+              convert_types:
+              - str
+              description: |
+                udp_port will not be used if no remote_address is configured
+            version:
+              type: str
+              valid_values: ["v1", "v2c", "v3"]
+            localized:
+              type: str
+              convert_types:
+              - int
+              description: |
+                Engine ID in hexadecimal for localizing auth and/or priv
+            auth:
+              type: str
+              description: |
+                Hash algorithm
+            auth_passphrase:
+              type: str
+              description: |
+                Hashed authentication passphrase if localized is used else cleartext authentication passphrase
+            priv:
+              type: str
+              description: |
+                Encryption algorithm
+            priv_passphrase:
+              type: str
+              description: |
+                Hashed privacy passphrase if localized is used else cleartext privacy passphrase
+      hosts:
+        type: list
+        items:
+          type: dict
+          keys:
+            host:
+              type: str
+              description: Host IP address or name
+            vrf:
+              type: str
+            version:
+              type: str
+              convert_types:
+              - int
+              valid_values: ["1", "2c", "3"]
+            community:
+              type: str
+              description: Community name
+            users:
+              type: list
+              items:
+                type: dict
+                keys:
+                  username:
+                    type: str
+                  authentication_level:
+                    type: str
+                    valid_values: ["auth", "noauth", "priv"]
+      traps:
+        type: dict
+        keys:
+          enable:
+            type: bool
+            default: false
+            description: |
+              Enable or disable all snmp-traps
+          snmp_traps:
+            type: list
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: |
+                    Enable or disable specific snmp-traps and their sub_traps
+                    Examples:
+                    - "bgp"
+                    - "bgp established"
+                enabled:
+                  type: bool
+                  default: true
+      vrfs:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: VRF name
+            enable:
+              type: bool

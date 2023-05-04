@@ -1,0 +1,28 @@
+!!! warning
+    This document describes the data model for AVD 4.x. It may or may not work in previous versions.
+{% for table in documentation_file.tables %}
+
+## {{ table.display_name }}
+{%     if table.description is arista.avd.defined %}
+
+### Description
+
+{{ table.description -}}
+{%     endif %}
+
+### Variables
+
+| Variable | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+{%     for row in table.table %}
+| [<samp>{{ row.variable | e | regex_replace('  ','&nbsp;&nbsp;') }}</samp>](## "{{ row.var_path | e }}") | {{ row.type }} | {{ row.required | arista.avd.default }} | {{ row.default | arista.avd.default }} | {{ row.restrictions | arista.avd.default }} | {{ row.description | arista.avd.default }} |
+{%     endfor %}
+
+### YAML
+
+```yaml
+{%     for row in table.yaml %}
+{{ row }}
+{%     endfor %}
+```
+{% endfor %}

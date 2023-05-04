@@ -1,0 +1,31 @@
+---
+- name: Recreate required output directories
+  tags: [eos_designs]
+  block:
+    - name: "Cleanup {{ role_documentation_dir }}"
+      ansible.builtin.file:
+        path: "{{ role_documentation_dir }}"
+        state: absent
+    - name: "Create {{ role_documentation_dir }}"
+      ansible.builtin.file:
+        path: "{{ role_documentation_dir }}"
+        state: directory
+        mode: 0775
+  delegate_to: localhost
+  run_once: true
+
+- name: Import and Convert eos_designs schema
+  tags: [eos_designs]
+  ansible.builtin.set_fact:
+    role_documentation_schema: "{{ lookup('ansible.builtin.file', role_schema_path) | from_yaml | arista.avd.convert_schema(type='documentation') }}"
+
+- name: Output eos_designs Documentation
+  tags: [eos_designs]
+  template:
+    src: avd_schema_documentation.j2
+    dest: "{{ role_documentation_dir ~ '/' ~ documentation_file.filename ~ '.md'  }}"
+    mode: 0664
+  loop: "{{ role_documentation_schema }}"
+  loop_control:
+    loop_var: documentation_file
+    label: "{{ documentation_file.filename }}"

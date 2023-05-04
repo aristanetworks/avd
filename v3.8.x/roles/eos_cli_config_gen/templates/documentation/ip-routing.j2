@@ -1,0 +1,30 @@
+{# doc - ip routing #}
+
+## IP Routing
+
+### IP Routing Summary
+
+| VRF | Routing Enabled |
+| --- | --------------- |
+{# TODO - this currently does not handle when vrf default enables ip routing #}
+{% set default_ip_routing = ip_routing | arista.avd.default(false) %}
+{% if ip_routing_ipv6_interfaces | arista.avd.default(false) %}
+{%     set default_ip_routing = "True (ipv6 interfaces)" %}
+{% endif %}
+| default | {{ default_ip_routing }} |
+{% for vrf in vrfs | arista.avd.default([]) | rejectattr("name", "arista.avd.defined", "default") | arista.avd.natural_sort('name') %}
+{%     set ip_routing = vrf.ip_routing | arista.avd.default("-") %}
+{%     if vrf.ip_routing_ipv6_interfaces | arista.avd.default(false) %}
+{%         set ip_routing = "True (ipv6 interfaces)" %}
+{%     endif %}
+| {{ vrf.name }} | {{ ip_routing }} |
+{% endfor %}
+
+### IP Routing Device Configuration
+
+```eos
+{% include 'eos/ip-routing.j2' %}
+{% include 'eos/ip-icmp-redirect.j2' %}
+{% include 'eos/ip-hardware.j2' %}
+{% include 'eos/ip-routing-vrfs.j2' %}
+```

@@ -1,0 +1,2492 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Arista Validated Design collection's documentation">
+      
+      
+        <meta name="author" content="Arista Ansible Team">
+      
+      
+      
+        <link rel="prev" href="../../index.html">
+      
+      
+        <link rel="next" href="../../examples/single-dc-l3ls/index.html">
+      
+      <link rel="icon" href="../_media/favicon.ico">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.0.15">
+    
+    
+      
+        <title>Introduction to Ansible and AVD - Arista AVD collection</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.113286f1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.a0c5b2b5.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CFira+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Fira Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.material.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#avd-and-ansible-overview" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Arista AVD collection" class="md-header__button md-logo" aria-label="Arista AVD collection" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M96 0C43 0 0 43 0 96v320c0 53 43 96 96 96h320c17.7 0 32-14.3 32-32s-14.3-32-32-32v-64c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H96zm0 384h256v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Arista AVD collection
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Introduction to Ansible and AVD
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+            </label>
+          
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/aristanetworks/ansible-avd" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AVD on Github
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Arista AVD collection" class="md-nav__button md-logo" aria-label="Arista AVD collection" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M96 0C43 0 0 43 0 96v320c0 53 43 96 96 96h320c17.7 0 32-14.3 32-32s-14.3-32-32-32v-64c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H96zm0 384h256v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></svg>
+
+    </a>
+    Arista AVD collection
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/aristanetworks/ansible-avd" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AVD on Github
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Getting Started
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Getting Started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Introduction to Ansible and AVD
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="intro-to-ansible-and-avd.html" class="md-nav__link md-nav__link--active">
+        Introduction to Ansible and AVD
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#day-1-operation-ie-provisioning-a-network-from-scratch" class="md-nav__link">
+    Day 1 Operation (i.e. provisioning a network from scratch)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-ansible" class="md-nav__link">
+    What is Ansible?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-are-the-requirements-to-run-ansible" class="md-nav__link">
+    What are the requirements to run Ansible?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-the-aristaavd-collection" class="md-nav__link">
+    What is the arista.avd collection?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-and-when-not-to-use-avd" class="md-nav__link">
+    When and when not to use AVD
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#change-your-mindset-and-culture" class="md-nav__link">
+    Change your mindset and culture
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-does-ansible-work" class="md-nav__link">
+    How does Ansible work?
+  </a>
+  
+    <nav class="md-nav" aria-label="How does Ansible work?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inventories" class="md-nav__link">
+    Inventories
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#organizing-host-and-group-variables" class="md-nav__link">
+    Organizing host and group variables
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#group-variables" class="md-nav__link">
+    Group Variables
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#playbooks" class="md-nav__link">
+    Playbooks
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#source-of-truth" class="md-nav__link">
+    Source of Truth
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-do-i-use-avd" class="md-nav__link">
+    How do I use AVD?
+  </a>
+  
+    <nav class="md-nav" aria-label="How do I use AVD?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-ansible-avd-with-direct-eapi-connectivity-to-the-switches" class="md-nav__link">
+    Using Ansible AVD with direct eAPI connectivity to the switches
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-ansible-avd-in-conjunction-with-cloudvision" class="md-nav__link">
+    Using Ansible AVD in conjunction with CloudVision
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-2-operations" class="md-nav__link">
+    Day 2 Operations
+  </a>
+  
+    <nav class="md-nav" aria-label="Day 2 Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#day-2-operations-example" class="md-nav__link">
+    Day 2 Operations Example
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    References
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    Next steps
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/single-dc-l3ls/index.html" class="md-nav__link">
+        Example for Single DC L3LS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/l2ls-fabric/index.html" class="md-nav__link">
+        Example for L2LS Fabric
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/campus-fabric/index.html" class="md-nav__link">
+        Example for Campus Fabric
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          Installation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Installation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/collection-installation.html" class="md-nav__link">
+        Collection Installation
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          How-To
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          How-To
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how-to/first-project.html" class="md-nav__link">
+        Build Your First AVD Project
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how-to/first-cvp-avd-project.html" class="md-nav__link">
+        Build Your First AVD & CVP Project
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how-to/lab-with-nat.html" class="md-nav__link">
+        Use NAT Gateway With eAPI
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how-to/tower-integration.html" class="md-nav__link">
+        AWX & Tower Integration
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how-to/ztp.html" class="md-nav__link">
+        Configure ZTP Server With CVP Collection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how-to/vscode-container.html" class="md-nav__link">
+        Setup Ansible AVD With VS Code Container
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../input-variable-validation-BETA.html" class="md-nav__link">
+        Validation of Input Variables (BETA)
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          Roles Documentation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Roles Documentation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+          eos_designs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6_1">
+          <span class="md-nav__icon md-icon"></span>
+          eos_designs
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/index.html" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/doc/connected-endpoints.html" class="md-nav__link">
+        Connected Endpoints
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/doc/l3-edge.html" class="md-nav__link">
+        DCI & L3 Edge
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/doc/fabric-topology.html" class="md-nav__link">
+        Fabric Topology
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/doc/fabric-variables.html" class="md-nav__link">
+        Fabric Variables
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/doc/management-settings.html" class="md-nav__link">
+        Management Settings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/doc/network-services.html" class="md-nav__link">
+        Network Services
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/doc/ptp.html" class="md-nav__link">
+        PTP
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/doc/node-types.html" class="md-nav__link">
+        Node Types
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/doc/platform-settings.html" class="md-nav__link">
+        Platform Specific Settings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/doc/custom-structured-configuration.html" class="md-nav__link">
+        Custom Structured Configuration
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1_12" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_1_12" id="__nav_6_1_12_label" tabindex="0">
+          MPLS Design (BETA)
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_1_12_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6_1_12">
+          <span class="md-nav__icon md-icon"></span>
+          MPLS Design (BETA)
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/doc/fabric-topology-mpls-BETA.html" class="md-nav__link">
+        Fabric Topology MPLS (BETA)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/doc/fabric-variables-mpls-BETA.html" class="md-nav__link">
+        Fabric Variables MPLS (BETA)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/doc/core-interfaces-BETA.html" class="md-nav__link">
+        Core Interfaces (BETA)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/doc/network-services-mpls-BETA.html" class="md-nav__link">
+        Network Services MPLS (BETA)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/doc/connected-endpoints-mpls-BETA.html" class="md-nav__link">
+        Connected Endpoints MPLS (BETA)
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_cli_config_gen/index.html" class="md-nav__link">
+        eos_cli_config_gen
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/cvp_configlet_upload/index.html" class="md-nav__link">
+        cvp_configlet_upload
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_config_deploy_cvp/index.html" class="md-nav__link">
+        eos_config_deploy_cvp
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_config_deploy_eapi/index.html" class="md-nav__link">
+        eos_config_deploy_eapi
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_validate_state/index.html" class="md-nav__link">
+        eos_validate_state
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_snapshot/index.html" class="md-nav__link">
+        eos_snapshot
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/dhcp_provisioner/index.html" class="md-nav__link">
+        dhcp_provisioner
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/build_output_folders/index.html" class="md-nav__link">
+        build_output_folders
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          Modules Documentation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Modules Documentation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/inventory_to_container.rst.html" class="md-nav__link">
+        Module Inventory to Containers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/configlet_build_config.rst.html" class="md-nav__link">
+        Module Configlet Build Configuration
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../plugins/index.html" class="md-nav__link">
+        AVD Plugins & Filters
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://cvp.avd.sh/" class="md-nav__link">
+        CloudVision Module Documentation
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+          Contributing to AVD
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          Contributing to AVD
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribution/overview.html" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribution/setup-environment.html" class="md-nav__link">
+        Setup Environment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribution/setup-git.html" class="md-nav__link">
+        Git Installation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribution/getting-started.html" class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribution/style-guide.html" class="md-nav__link">
+        Code Style
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribution/development.html" class="md-nav__link">
+        Development Tips & Tricks
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+          External Resources
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          External Resources
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://docs.ansible.com/ansible/latest/user_guide/collections_using.html" class="md-nav__link">
+        Ansible Collection User Guide
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://docs.ansible.com/ansible/latest/user_guide/index.html" class="md-nav__link">
+        Ansible User Guide
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+          Release Notes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_10">
+          <span class="md-nav__icon md-icon"></span>
+          Release Notes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../release-notes/3.x.x.html" class="md-nav__link">
+        3.x.x
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../release-notes/2.x.x.html" class="md-nav__link">
+        2.x.x
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../release-notes/1.1.x.html" class="md-nav__link">
+        1.1.x
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../release-notes/1.0.x.html" class="md-nav__link">
+        1.0.x
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_11" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_11" id="__nav_11_label" tabindex="0">
+          About
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_11_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_11">
+          <span class="md-nav__icon md-icon"></span>
+          About
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://galaxy.ansible.com/arista/avd" class="md-nav__link">
+        AVD on Ansible Galaxy
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://cvp.avd.sh/en/latest/" class="md-nav__link">
+        Arista CVP Collection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/arista-netdevops-community/avd-install" class="md-nav__link">
+        Arista Installation Script
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://aristanetworks.github.io/netdevops-examples/" class="md-nav__link">
+        Arista NetDevOps Community
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#day-1-operation-ie-provisioning-a-network-from-scratch" class="md-nav__link">
+    Day 1 Operation (i.e. provisioning a network from scratch)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-ansible" class="md-nav__link">
+    What is Ansible?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-are-the-requirements-to-run-ansible" class="md-nav__link">
+    What are the requirements to run Ansible?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-the-aristaavd-collection" class="md-nav__link">
+    What is the arista.avd collection?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-and-when-not-to-use-avd" class="md-nav__link">
+    When and when not to use AVD
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#change-your-mindset-and-culture" class="md-nav__link">
+    Change your mindset and culture
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-does-ansible-work" class="md-nav__link">
+    How does Ansible work?
+  </a>
+  
+    <nav class="md-nav" aria-label="How does Ansible work?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inventories" class="md-nav__link">
+    Inventories
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#organizing-host-and-group-variables" class="md-nav__link">
+    Organizing host and group variables
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#group-variables" class="md-nav__link">
+    Group Variables
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#playbooks" class="md-nav__link">
+    Playbooks
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#source-of-truth" class="md-nav__link">
+    Source of Truth
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-do-i-use-avd" class="md-nav__link">
+    How do I use AVD?
+  </a>
+  
+    <nav class="md-nav" aria-label="How do I use AVD?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-ansible-avd-with-direct-eapi-connectivity-to-the-switches" class="md-nav__link">
+    Using Ansible AVD with direct eAPI connectivity to the switches
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-ansible-avd-in-conjunction-with-cloudvision" class="md-nav__link">
+    Using Ansible AVD in conjunction with CloudVision
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-2-operations" class="md-nav__link">
+    Day 2 Operations
+  </a>
+  
+    <nav class="md-nav" aria-label="Day 2 Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#day-2-operations-example" class="md-nav__link">
+    Day 2 Operations Example
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    References
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    Next steps
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="avd-and-ansible-overview">AVD and Ansible Overview<a class="headerlink" href="#avd-and-ansible-overview" title="Permanent link">&para;</a></h1>
+<h2 id="day-1-operation-ie-provisioning-a-network-from-scratch">Day 1 Operation (i.e. provisioning a network from scratch)<a class="headerlink" href="#day-1-operation-ie-provisioning-a-network-from-scratch" title="Permanent link">&para;</a></h2>
+<p>Imagine being asked to configure a <strong>layer 3 leaf spine (L3LS)</strong> network from scratch:</p>
+<p><img alt="Figure: Arista Leaf Spine topology" src="../_media/getting-started/single-dc-topology-physical.png" /></p>
+<p>Traditionally one would configure the switches manually using a laptop, console cable, and USB key to load the correct EOS software
+image and configuration. Of course, the configuration would be manually generated, using snippets from the relevant Arista design guides, or copying/pasting from existing devices. Configurations would have to be manually adapted to each and every device, which is time-consuming and prone to errors. Consider what would happen if a new pair of leaf switches or new VRFs/VLANs are added to the network - changes would need to be made to most of the devices.</p>
+<p>Using Arista Validated Designs (AVD), this task is automated, greatly simplified, and made considerably faster. All the basic network configuration is guaranteed to be identical across the entire fabric from day one. No longer do you have to manually inspect each device for errors or differences. AVD will ensure the consistency and accuracy of your configuration not only for initial deployment but for all subsequent network changes.</p>
+<p>AVD is also based on best practice from <a href="https://www.arista.com/en/solutions/design-guides">Arista Design and Deployment Guides</a>, meaning you get the full benefit of Arista&rsquo;s experience in deploying large scale leaf spine fabrics. AVD fully integrates with Arista CloudVision, which adds a change control workflow, continuous compliance check, and network topology overview as well as real-time streaming telemetry including flow-based data and more.</p>
+<h2 id="what-is-ansible">What is Ansible?<a class="headerlink" href="#what-is-ansible" title="Permanent link">&para;</a></h2>
+<p>The Red Hat® Ansible® Automation Platform is an open source tool, released in 2012 and acquired by Red Hat in 2015. Ansible
+is an automation engine that can be used for many purposes including:</p>
+<ul>
+<li>Server software provisioning</li>
+<li>Configuration management</li>
+<li>Application deployment</li>
+</ul>
+<p>It&rsquo;s easily extended through the use of Ansible Collections - essentially prepackaged groups of Ansible components such as playbooks, roles, modules and plugins - that are distributed through <a href="https://galaxy.ansible.com/home">Ansible Galaxy</a>.</p>
+<p>Between the core Ansible software and third-party-contributed collections, we can use Ansible to carry out almost any
+automated task on a network, server, or cloud platform in a consistent, secure, and distributed way.</p>
+<p>Consistency of tasks carried out is assured through idempotency - that the outcome of an operation is only performed once and only if necessary, no matter how many times that process is carried out. A simple example of idempotency would be a pair of on/off buttons for a machine - no matter how many times you push &lsquo;on,&rsquo; the device will only turn on once.</p>
+<p>Unlike other tools, Ansible doesn&rsquo;t use a proprietary communications mechanism or agent on the device being managed. Instead, it leverages industry-standard protocols for device access, including SSH and REST APIs. This also means that Ansible doesn&rsquo;t require the setup of any unique infrastructure - it&rsquo;s entirely possible to automate tasks using nothing but your laptop or desktop computer (but a central deployment server is recommended).</p>
+<p>Ansible describes tasks in a structured language called <a href="https://yaml.org">YAML</a>. Unlike other languages such as
+JSON and XML, YAML was designed to be human-readable. YAML will be covered further later on in the section
+<a href="#how-does-ansible-work">How does Ansible work</a>.</p>
+<p>By now, you can probably appreciate that we can use Ansible to automate many things. This document will focus only on using Ansible to provision Arista EOS devices with or without Arista CloudVision.</p>
+<h2 id="what-are-the-requirements-to-run-ansible">What are the requirements to run Ansible?<a class="headerlink" href="#what-are-the-requirements-to-run-ansible" title="Permanent link">&para;</a></h2>
+<p>Ansible can run on almost anything, but in production scenarios, Ansible is typically deployed on a virtual Linux server, running on the customer&rsquo;s preferred hypervisor. This Ansible server then communicates directly with the Arista network devices via eAPI or Arista CloudVision Portal, which in turn communicates with the Arista network devices. Controlling what Ansible does is typically done using an SSH terminal session to the Ansible server from the Operator&rsquo;s computer.</p>
+<p><img alt="Figure: Ansible and CVP" src="../_media/getting-started/ansible-and-cvp-httpapi.png" /></p>
+<h2 id="what-is-the-aristaavd-collection">What is the arista.avd collection?<a class="headerlink" href="#what-is-the-aristaavd-collection" title="Permanent link">&para;</a></h2>
+<p><a href="https://galaxy.ansible.com/arista/avd">Arista.avd</a> is an Ansible collection for Arista Validated Designs. It&rsquo;s maintained by
+Arista and accepts third-party contributions on GitHub at <a href="https://github.com/aristanetworks/ansible-avd">aristanetworks/ansible-avd</a>.</p>
+<p>While Ansible is the core automation engine, AVD is an Ansible Collection described above. It provides roles, modules, and plugins
+that allows the user to generate and deploy best-practice configurations to a layer three leaf-spine network.</p>
+<p><img alt="Figure: Arista Leaf Spine topology" src="../_media/getting-started/ansible-avd.png" /></p>
+<p>The illustration above shows the AVD collection as a box with a red background on the right-hand side.</p>
+<p>When designing an EVPN/VXLAN L3LS fabric, you don&rsquo;t need to spend hours reading through the <a href="https://www.arista.com/en/solutions/design-guides">Arista Design and Deployment Guides</a>. Instead, the AVD collection will implement those rules and guidelines.</p>
+<p>AVD is an opinionated collection, meaning field experiences and best practices from actual deployments at Arista customers are included. With AVD, users get up and running quickly without inventing every part of the network configuration from scratch. This means the user must provide only the most basic information to get a new fabric up and running.</p>
+<p>Parameters which need to be defined by the user include (but aren&rsquo;t limited to):</p>
+<ul>
+<li>Username/password for network devices and CloudVision</li>
+<li>OOB management IP range</li>
+<li>IP scope for link addresses</li>
+<li>IP scope for loopback interfaces</li>
+<li>VLAN and VNI ranges</li>
+<li>Device hostnames</li>
+<li>Autonomous System numbers</li>
+<li>Interface connections between devices</li>
+<li>Which devices are acting in each role, such as spine or leaf.</li>
+</ul>
+<p>From the details above, AVD will generate complete EOS configuration files that we can deploy to the devices. AVD also uses the information provided to produce full documentation of the current intended state of the network.</p>
+<h2 id="when-and-when-not-to-use-avd">When and when not to use AVD<a class="headerlink" href="#when-and-when-not-to-use-avd" title="Permanent link">&para;</a></h2>
+<p>It&rsquo;s important to note when and perhaps more importantly, when not to use AVD.</p>
+<p>AVD is designed to generate and deploy complete configuration files where the network device&rsquo;s running configuration is entirely replaced. As such, caution should be exercised when running AVD against an existing manually configured network. We can take various approaches under such circumstances:</p>
+<ul>
+<li>Compare AVD-generated configurations against device running configurations; make changes to the AVD input data and iterate until the configurations are functionally equivalent.</li>
+<li>Use AVD to generate partial configurations that we can be apply to devices in such a way that won&rsquo;t destroy existing manual configuration.</li>
+<li>Use AVD to generate configurations part-based on automation, part-based on manual configuration included into AVD using AVD&rsquo;s <code>structured_configuration</code>, <code>raw_eos_cli</code> or <code>custom_template</code> facilities.</li>
+</ul>
+<p>Automating the provisioning of network infrastructure makes the most sense when the network is built from repeatable building blocks. These allow for code reuse and the abstraction of data. For example, point-to-point links are allocated IP subnets from a much larger pool in most leaf-spine networks. This is a tedious job for a human to design and configure but is an ideal candidate to be automated. However, automation may take longer to achieve in a network that has evolved rather than been designed from the ground up.</p>
+<h2 id="change-your-mindset-and-culture">Change your mindset and culture<a class="headerlink" href="#change-your-mindset-and-culture" title="Permanent link">&para;</a></h2>
+<p>Many network engineers prefer to use the CLI for all things networking, like troubleshooting, ad-hoc operational configuration changes, and full-blown greenfield provisioning tasks.</p>
+<p>To harvest the full benefit of Ansible and Ansible AVD, you must learn to think differently and change your working methods.</p>
+<p>Ansible should be your first choice when changing your network configuration, whether small or big. The CLI should only be used for troubleshooting, i.e., viewing the state of your network or those urgent scenarios at 2 AM where you need to change something particular on just one or two devices, followed by proper configuration cleanup later.</p>
+<h2 id="how-does-ansible-work">How does Ansible work?<a class="headerlink" href="#how-does-ansible-work" title="Permanent link">&para;</a></h2>
+<p>Before we can tell Ansible to do anything, Ansible needs to know about your network&rsquo;s devices (or hosts).</p>
+<p>This is defined in the Ansible <strong><em>inventory</em></strong>. Per the official Ansible documentation, the <a href="https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#inventory-basics-formats-hosts-and-groups">inventory</a> is a file type in either INI or YAML format, but other inventory sources can be used. In Ansible AVD, we use YAML format by default; hence the file is called inventory.yml, located in the Ansible AVD project folder (in this case, <code>single-dc-l3ls</code>):</p>
+<p><img alt="Figure: Ansible Inventory Folder Structure" src="../_media/getting-started/inventory-folder-structure.png" /></p>
+<p>Please note that the example above is taken from the Ansible AVD Examples repository, specifically the <code>Single-DC-L3LS</code>.</p>
+<p>The exact name of the inventory file isn&rsquo;t important, but is provided to Ansible in the <code>ansible.cfg</code> file for the project or as <code>ansible-playbook -i ./inventory.yml</code> when later running Ansible.</p>
+<h3 id="inventories">Inventories<a class="headerlink" href="#inventories" title="Permanent link">&para;</a></h3>
+<p>An example of a snippet of the inventory.yml file is shown below (a subset of an actual file for clarity).</p>
+<p>As stated earlier, this file is in <a href="https://yaml.org">YAML</a> format.</p>
+<p>The hostnames specified in the inventory must exist either in DNS or in the hosts file on your Ansible host to allow successful name lookup and be able to reach the switches directly. To test this, you must be able to successfully ping the host, for example, <code>ping dc1-spine1</code> from your Ansible host. Alternatively, if there is no DNS available, or if devices need to be reached using a fully qualified domain name (FQDN), define <code>ansible_host</code> to be an IP address or FQDN for each device - see dc1-spine1/2 below for an example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nn">---</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">all</span><span class="p">:</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">children</span><span class="p">:</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">FABRIC</span><span class="p">:</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">      </span><span class="nt">children</span><span class="p">:</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">        </span><span class="nt">DC1</span><span class="p">:</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">          </span><span class="nt">children</span><span class="p">:</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">            </span><span class="nt">DC1_SPINES</span><span class="p">:</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">              </span><span class="nt">hosts</span><span class="p">:</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">                </span><span class="nt">dc1-spine1</span><span class="p">:</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">                  </span><span class="nt">ansible_host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">172.16.1.11</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">                </span><span class="nt">dc1-spine2</span><span class="p">:</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">                  </span><span class="nt">ansible_host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">172.16.1.12</span>
+</code></pre></div>
+<p>However, going forward, we expect that all hostnames specified are resolvable hence the entire inventory file looks as follows:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nn">---</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">all</span><span class="p">:</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">children</span><span class="p">:</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nt">FABRIC</span><span class="p">:</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">      </span><span class="nt">children</span><span class="p">:</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">        </span><span class="nt">DC1</span><span class="p">:</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">          </span><span class="nt">children</span><span class="p">:</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">            </span><span class="nt">DC1_SPINES</span><span class="p">:</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">              </span><span class="nt">hosts</span><span class="p">:</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">                </span><span class="nt">dc1-spine1</span><span class="p">:</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">                </span><span class="nt">dc1-spine2</span><span class="p">:</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">            </span><span class="nt">DC1_L3_LEAVES</span><span class="p">:</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">              </span><span class="nt">hosts</span><span class="p">:</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">                </span><span class="nt">dc1-leaf1a</span><span class="p">:</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">                </span><span class="nt">dc1-leaf1b</span><span class="p">:</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">                </span><span class="nt">dc1-leaf2a</span><span class="p">:</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">                </span><span class="nt">dc1-leaf2b</span><span class="p">:</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">            </span><span class="nt">DC1_L2_LEAVES</span><span class="p">:</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">              </span><span class="nt">hosts</span><span class="p">:</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">                </span><span class="nt">dc1-leaf1c</span><span class="p">:</span>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">                </span><span class="nt">dc1-leaf2c</span><span class="p">:</span>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="w">        </span><span class="nt">NETWORK_SERVICES</span><span class="p">:</span>
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="w">          </span><span class="nt">children</span><span class="p">:</span>
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="w">            </span><span class="nt">DC1_L3_LEAVES</span><span class="p">:</span>
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="w">            </span><span class="nt">DC1_L2_LEAVES</span><span class="p">:</span>
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="w">        </span><span class="nt">CONNECTED_ENDPOINTS</span><span class="p">:</span>
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="w">          </span><span class="nt">children</span><span class="p">:</span>
+<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="w">            </span><span class="nt">DC1_L3_LEAVES</span><span class="p">:</span>
+<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a><span class="w">            </span><span class="nt">DC1_L2_LEAVES</span><span class="p">:</span>
+</code></pre></div>
+<p>Don&rsquo;t confuse <strong><em>hosts</em></strong> with servers or similar. A host can be anything that can be accessed via SSH or an API, to be managed by Ansible, including Arista switches.</p>
+<p>The settings inside the inventory.yml file are defined in a tree-like structure using <strong><em>groups</em></strong>. Groups can contain hosts or other groups - making it easier to apply a common configuration to a group of devices.</p>
+<p>The <strong><em>all</em></strong> line at the top is a default group that contains all <strong><em>hosts</em></strong>, i.e., all switches. So don&rsquo;t worry too much about that for now.</p>
+<p>The <strong><em>children:</em></strong> keyword is used to define &ldquo;groups of groups,&rdquo; i.e., just an internal keyword to differentiate between hosts and groups.</p>
+<p>The figure below is just a visualization of the same text file, showing the different grouping and parent/child relationships:</p>
+<p><img alt="Figure: Ansible Inventory" src="../_media/getting-started/single-dc-inventory-and-vars.png" /></p>
+<p>The key takeaway is that configuration defined at a higher (parent) level will be inherited by the children, but if needed, this can be
+overridden by specifying it again, i.e., most specific wins.</p>
+<p>More information about Ansible inventories can be found <a href="https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#">here</a>.</p>
+<h3 id="organizing-host-and-group-variables">Organizing host and group variables<a class="headerlink" href="#organizing-host-and-group-variables" title="Permanent link">&para;</a></h3>
+<p>AVD makes use of variables defined in the inventory to generate the EOS configuration files necessary to configure the devices. While these
+variables can be stored in the main inventory file described earlier, it&rsquo;s highly recommended to use separate files for host and group
+variables. Like the inventory.yml file, the host and group variables are also stored in dedicated folders named accordingly in YAML files.</p>
+<h3 id="group-variables">Group Variables<a class="headerlink" href="#group-variables" title="Permanent link">&para;</a></h3>
+<p>Group variables are defined in YAML files inside the <code>group_vars</code> folder:</p>
+<p><img alt="Figure: Ansible Group Variables" src="../_media/getting-started/group-vars-folder-structure.png" /></p>
+<p>Each file in the <code>group_vars</code> folder controls the variables for one of the groups defined in the <code>inventory.yml</code> file. So, for example, settings for the whole network can be specified in <code>DC1.yml</code> and later overridden in <code>DC1_SPINES.yml</code> for just the hosts inside that group (DC1 spine switches in this case).</p>
+<p>A subset of DC1.yml is shown below:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nn">---</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># Default gateway used for the management interface</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nt">mgmt_gateway</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">172.16.1.1</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="c1"># Spine switch group</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="nt">spine</span><span class="p">:</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span><span class="c1"># Definition of default values that will be configured to all nodes defined in this group</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">  </span><span class="nt">defaults</span><span class="p">:</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="c1"># Set the relevant platform as each platform has different default values in Ansible AVD</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vEOS-lab</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="c1"># Pool of IPv4 addresses to configure interface Loopback0 used for BGP EVPN sessions</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span><span class="nt">loopback_ipv4_pool</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.255.1.0/27</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="c1"># ASN to be used by BGP</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">    </span><span class="nt">bgp_as</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">65100</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">    </span><span class="c1"># BGP configuration for fine tuning</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">    </span><span class="nt">bgp_defaults</span><span class="p">:</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">      </span><span class="c1"># The two following commands must not be enabled when using vEOS-lab</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">      </span><span class="c1"># - update wait-for-convergence</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">      </span><span class="c1"># - update wait-install</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no bgp default ipv4-unicast</span>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">distance bgp 20 200 200</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">graceful-restart restart-time 300</span>
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">graceful-restart</span>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="w">  </span><span class="c1"># Definition of nodes contained in this group.</span>
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="w">  </span><span class="c1"># Specific configuration of device must take place under the node definition. Each node inherites all values defined under &#39;defaults&#39;</span>
+<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="w">  </span><span class="nt">nodes</span><span class="p">:</span>
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a><span class="w">    </span><span class="c1"># Name of the node to be defined (must be consistent with definition in inventory)</span>
+<a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="w">    </span><span class="nt">dc1-spine1</span><span class="p">:</span>
+<a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a><span class="w">      </span><span class="c1"># Device ID definition. An integer number used for internal calculations (ie. IPv4 address of the loopback_ipv4_pool among others)</span>
+<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="w">      </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a><span class="w">      </span><span class="c1"># Management IP to be assigned to the management interface</span>
+<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a><span class="w">      </span><span class="nt">mgmt_ip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">172.16.1.11/24</span>
+<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a>
+<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a><span class="w">    </span><span class="nt">dc1-spine2</span><span class="p">:</span>
+<a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a><span class="w">      </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a><span class="w">      </span><span class="nt">mgmt_ip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">172.16.1.12/24</span>
+</code></pre></div>
+<p>Below is a subset of the FABRIC.yml file:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nn">---</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1"># Ansible connectivity definitions</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># eAPI connectivity via HTTPS is specified (as opposed to CLI via SSH)</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="nt">ansible_connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ansible.netcommon.httpapi</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="c1"># Specifies that we are indeed using Arista EOS</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="nt">ansible_network_os</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">arista.eos.eos</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># This user/password must exist on the switches to enable Ansible access</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="nt">ansible_user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ansible</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="nt">ansible_password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ansible</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="c1"># User escalation (to enter enable mode)</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="nt">ansible_become</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="nt">ansible_become_method</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">enable</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="c1"># Use SSL (HTTPS)</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="nt">ansible_httpapi_use_ssl</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="c1"># Do not try to validate certs</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="nt">ansible_httpapi_validate_certs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="c1"># Common AVD group variables</span>
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="nt">fabric_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FABRIC</span>
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="c1"># Local users</span>
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="nt">local_users</span><span class="p">:</span>
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="w">  </span><span class="c1"># Define a new user, which is called &quot;ansible&quot;</span>
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="w">  </span><span class="nt">ansible</span><span class="p">:</span>
+<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="w">    </span><span class="nt">privilege</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15</span>
+<a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a><span class="w">    </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">network-admin</span>
+<a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a><span class="w">    </span><span class="c1"># Password set to &quot;ansible&quot;. Same string as the device generates when configuring a username.</span>
+<a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a><span class="w">    </span><span class="nt">sha512_password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920</span>
+<a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a><span class="w">  </span><span class="nt">admin</span><span class="p">:</span>
+<a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a><span class="w">    </span><span class="nt">privilege</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15</span>
+<a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a><span class="w">    </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">network-admin</span>
+<a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a><span class="w">    </span><span class="nt">no_password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+<p>The above snippet defines a number of defaults that apply to all children of FABRIC along with configuration specific to each leaf pair and finally each individual leaf switch.</p>
+<p>We can override group variables by specifying host variables for specific devices. (see <a href="https://docs.ansible.com/ansible/latest/reference_appendices/config.html#default-hash-behaviour">DEFAULT_HASH_BEHAVIOUR</a>). The order of precedence is (from lowest to highest):</p>
+<ul>
+<li>&lsquo;All&rsquo; group (because it&rsquo;s the &lsquo;parent&rsquo; of all other groups).</li>
+<li>Parent group</li>
+<li>Child group</li>
+<li>Host</li>
+</ul>
+<p>You can read more about group and host variables <a href="https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#id14">here</a>.</p>
+<h3 id="playbooks">Playbooks<a class="headerlink" href="#playbooks" title="Permanent link">&para;</a></h3>
+<p>Now that the Ansible inventory is defined, we can tell Ansible what to do on the switches. This is defined in one or more Ansible <strong><em>playbooks</em></strong>.</p>
+<p>Like an inventory file, a playbook is a text file written using YAML format containing one or more <strong><em>plays</em></strong>.</p>
+<p>Each play is configured to run on a particular host or group of hosts and contains one or more <strong><em>tasks</em></strong>.</p>
+<p>Each task calls an Ansible <strong><em>role</em></strong> or <strong><em>module</em></strong>, such as <strong><em>ansible.avd.eos_cli_config_gen</em></strong>. The tasks in conjunction with the roles or modules they&rsquo;re calling are responsible for performing a particular task or set of tasks.</p>
+<p>A playbook runs in order from top to bottom. Within each play, tasks also run in order from top to bottom.</p>
+<p>Playbooks with multiple plays can orchestrate multi-machine deployments, running one play on your Ansible development machine, another on your CloudVision instance, and another on each EOS device you look to configure.</p>
+<p>At a minimum, each play defines two things:</p>
+<ol>
+<li>The managed devices (<strong><em>hosts</em></strong>) to target, referenced from the <strong><em>inventory</em></strong> we defined earlier.</li>
+<li>One or more <strong><em>tasks</em></strong> to execute on defined targets.</li>
+</ol>
+<p>The hosts specified in a playbook typically reference groups defined in the inventory. You can select large or small groups of the inventory from a playbook, right down to individual hosts, to be as specific as possible with any configuration changes.</p>
+<p>A simple example of a play defined in a playbook is shown below:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nn">---</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run AVD</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FABRIC</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nt">gather_facts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">generate intended variables</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">      </span><span class="nt">import_role</span><span class="p">:</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">arista.avd.eos_designs</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">generate device intended config and documentation</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">      </span><span class="nt">import_role</span><span class="p">:</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">arista.avd.eos_cli_config_gen</span>
+</code></pre></div>
+<p>At the top of the file, the <strong><em>hosts</em></strong> keyword references the inventory group <strong><em>FABRIC</em></strong>.</p>
+<p>Recall that the group variables are defined in the inventory.yml file and in the group_vars directory. Effectively this means that the <strong><em>hosts</em></strong> keyword establishes the scope of devices on which to execute the play.</p>
+<p>Following the scope definition, the <strong><em>tasks</em></strong> are then defined.</p>
+<p>In this example, the play executes two tasks:</p>
+<ol>
+<li>Import a <strong><em>role</em></strong> called <a href="../../roles/eos_designs/index.html"><strong><em>arista.avd.eos_designs</em></strong></a>.</li>
+<li>Import a <strong><em>role</em></strong> called <a href="../../roles/eos_cli_config_gen/index.html"><strong><em>arista.avd.eos_cli_config_gen</em></strong></a>.</li>
+</ol>
+<p>The <strong><em>arista.avd.eos_designs</em></strong> role takes inputs from a number of <a href="../../roles/eos_designs/index.html#role-inputs-and-outputs">places</a>:</p>
+<ul>
+<li>role/defaults definitions</li>
+<li>group_vars</li>
+<li>host_vars</li>
+</ul>
+<p>Based on some or all of these inputs, it generates the following output:</p>
+<ul>
+<li>A structured EOS configuration in YAML format.</li>
+<li>Fabric Documentation in Markdown format.</li>
+<li>Leaf and Spine Topology summary in CSV format.</li>
+</ul>
+<p>The second role, <strong><em>arista.avd.eos_cli_config_gen</em></strong> uses the structured EOS configuration in YAML format as its <a href="../../roles/eos_cli_config_gen/index.html#role-inputs-and-outputs">input</a>
+(generated by arista.avd.eos_designs) and outputs the following:</p>
+<ul>
+<li>EOS configuration in CLI format.</li>
+<li>Device Documentation in Markdown format.</li>
+</ul>
+<p>Running the play described above would result in several files containing the configuration and documentation for the devices in scope - in this case, DC1_FABRIC. Then, to apply the configuration to the actual devices, you would run additional roles such as:</p>
+<ul>
+<li><a href="../../roles/eos_config_deploy_cvp/index.html">eos_config_deploy_cvp</a>, which deploys the EOS configuration via the CloudVision Management platform, including change control with RBAC and full rollback capability.</li>
+<li><a href="../../roles/eos_config_deploy_eapi/index.html">eos_config_deploy_eapi</a>, which deploys the EOS configuration directly to Arista devices using config replace. This option provides no change control and no rollback capability.</li>
+</ul>
+<p>While this play shows both the <code>eos_designs</code> and <code>eos_cli_config_gen</code> roles used together, it&rsquo;s entirely possible to make use of just <code>eos_cli_config_gen</code> by itself - this would allow (for example) generation of management configuration that could potentially be merged into an existing network as discussed earlier.</p>
+<h2 id="source-of-truth">Source of Truth<a class="headerlink" href="#source-of-truth" title="Permanent link">&para;</a></h2>
+<p>In a legacy network where configuration isn&rsquo;t administered centrally, you have very little control of the relationship between the configuration you <em>intend</em> to be applied to the network and the configuration <em>running</em> on the network. You might have centralized low-level design documents describing how the network should function in great detail, but you don&rsquo;t have much but the best intentions to ensure that your <strong>entire</strong> network is working as you intended. As a result, it takes only a single configuration mistake on a single device to create havoc.</p>
+<p>Since operating many networking devices also typically results in having many networking engineers, there is even more room for error. Different people do things differently, and repetitive tasks aren&rsquo;t always executed in the same manner.</p>
+<p>With AVD, you define not only the topology of your network centrally but also which services are used where in a central repository of text files. Furthermore, because this data is stored in text files, it&rsquo;s possible to apply version control (for example, using tools like git, subversion, or mercurial) to this source of truth, giving you visibility of when the intended configuration was changed and by who.</p>
+<p>This source of truth means you have a complete overview of your entire designed network configuration without having to look at individual network devices. An additional benefit of AVD is that by design, you always have a backup of your network configuration. Including automated documentation in markdown format, you no longer have to remember to update documentation about which interface is connected to which device, etc., whenever you change something on a device. Instead, it&rsquo;s all done automatically based on the configuration built and applied to the network devices by Ansible every time you execute the playbooks.</p>
+<p>Below you will find two examples of documentation automatically created by Ansible AVD:</p>
+<ul>
+<li><a href="../../examples/single-dc-l3ls/documentation/fabric/FABRIC-documentation.html">Documentation for L3LS fabric</a></li>
+<li><a href="../../examples/single-dc-l3ls/documentation/devices/dc1-leaf1a.html">A single leaf inside the fabric above</a></li>
+</ul>
+<h2 id="how-do-i-use-avd">How do I use AVD?<a class="headerlink" href="#how-do-i-use-avd" title="Permanent link">&para;</a></h2>
+<p>AVD comes with pre-built templates that you can either use as-is or adapt to your liking.</p>
+<p>Once the templates reflect your desired network configuration, you deploy the configuration either directly to the Arista EOS devices or to
+Configlets within CloudVision. This is typically executed from the CLI - for example, from your Ansible AVD Examples directory.</p>
+<h3 id="using-ansible-avd-with-direct-eapi-connectivity-to-the-switches">Using Ansible AVD with direct eAPI connectivity to the switches<a class="headerlink" href="#using-ansible-avd-with-direct-eapi-connectivity-to-the-switches" title="Permanent link">&para;</a></h3>
+<p>If you want to push to switches in the entire fabric using eAPI and your playbook looks as follows:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nn">---</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run AVD</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FABRIC</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span><span class="nt">gather_facts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">generate intended variables</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">      </span><span class="nt">import_role</span><span class="p">:</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">arista.avd.eos_designs</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">generate device intended config and documentation</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">      </span><span class="nt">import_role</span><span class="p">:</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">arista.avd.eos_cli_config_gen</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deploy configuration to device</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">      </span><span class="nt">import_role</span><span class="p">:</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">         </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">arista.avd.eos_config_deploy_eapi</span>
+</code></pre></div>
+<p>You would execute it using the following command if your playbook is called <code>playbook.yml</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>ansible-playbook<span class="w"> </span>playbook.yml
+</code></pre></div>
+<p>This will:</p>
+<ul>
+<li>Create a text file containing the device&rsquo;s entire configuration.</li>
+<li>Create device-specific and fabric-wide documentation.</li>
+<li>Push the relevant configuration to each device using eAPI.</li>
+</ul>
+<h3 id="using-ansible-avd-in-conjunction-with-cloudvision">Using Ansible AVD in conjunction with CloudVision<a class="headerlink" href="#using-ansible-avd-in-conjunction-with-cloudvision" title="Permanent link">&para;</a></h3>
+<p>If you want to push to switches in the entire fabric using CloudVision and your playbook looks as follows:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nn">---</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run AVD</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FABRIC</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">  </span><span class="nt">gather_facts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">generate intended variables</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">      </span><span class="nt">import_role</span><span class="p">:</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">arista.avd.eos_designs</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">generate device intended config and documentation</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">      </span><span class="nt">import_role</span><span class="p">:</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">arista.avd.eos_cli_config_gen</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deploy configuration to device</span>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">      </span><span class="nt">import_role</span><span class="p">:</span>
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="w">         </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">arista.avd.eos_config_deploy_eapi</span>
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Push to CVP</span>
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CVP</span>
+<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a><span class="w">  </span><span class="nt">gather_facts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="w">  </span><span class="nt">connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local</span>
+<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>
+<a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a><span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+<a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">run CVP provisioning</span>
+<a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a><span class="w">      </span><span class="nt">import_role</span><span class="p">:</span>
+<a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">arista.avd.eos_config_deploy_cvp</span>
+<a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a><span class="w">      </span><span class="nt">vars</span><span class="p">:</span>
+<a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a><span class="w">        </span><span class="nt">container_root</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;DC1&#39;</span>
+<a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a><span class="w">        </span><span class="nt">configlets_prefix</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;AVD&#39;</span>
+<a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a><span class="w">        </span><span class="nt">execute_tasks</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a><span class="w">        </span><span class="nt">apply_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">strict</span>
+<a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a><span class="w">        </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span>
+<a id="__codelineno-7-31" name="__codelineno-7-31" href="#__codelineno-7-31"></a><span class="w">        </span><span class="nt">cv_collection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v3</span>
+</code></pre></div>
+<p>You would execute it using the same command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>ansible-playbook<span class="w"> </span>playbook.yml
+</code></pre></div>
+<p>This will:</p>
+<ul>
+<li>Create a CloudVision Configlet for each device in the inventory, containing the device&rsquo;s entire configuration.</li>
+<li>Build out containers within CloudVision that represent the hierarchy of groups in the inventory.</li>
+<li>Create tasks to apply the new configuration to each device within the inventory.</li>
+</ul>
+<p>At this point, the changes can be reviewed, approved, and executed following existing company requirements through CloudVision.</p>
+<p>Once the configuration has been deployed, automated validation of the designed configuration versus the running configuration can be executed using the included <code>eos_validate_state</code> role to ensure that:</p>
+<ul>
+<li>All links are operational and cabled as desired.</li>
+<li>BGP adjacencies are operational.</li>
+<li>There are no device hardware issues (for example, PSU or fan).</li>
+<li>That VTEPs can all reach each other using their loopback IPs.</li>
+</ul>
+<p>This quickly identifies any issues that we could otherwise overlook. For example, a redundant link could sit non-operational for months unless cumbersome manual testing is executed per device throughout the fabric.</p>
+<h2 id="day-2-operations">Day 2 Operations<a class="headerlink" href="#day-2-operations" title="Permanent link">&para;</a></h2>
+<p>Day 2 operations describe most, if not all, network configuration changes that occur after the initial configuration.</p>
+<p>These tasks, while relatively simple, can be time-consuming simply because they involve changes to multiple devices:</p>
+<ul>
+<li>Adding/removing new leaf switches.</li>
+<li>Adding/removing new VLANs.</li>
+<li>Creating/modifying/deleting port profiles.</li>
+<li>Configuring/modifying ports towards end systems.</li>
+</ul>
+<p>Making these changes could involve many hours of planning to generate configuration snippets to apply during a change window.</p>
+<p>Alternatively, we can easily apply a configuration change to the YAML inventory/group_vars files - for example, this change could
+create a new VLAN and deploy this VLAN to a subset of switches.</p>
+<p>Once the inventory files have been updated, we can rerun the playbooks to generate new configuration files that will replace the
+configuration files running on the devices in the same way as the initial configuration.</p>
+<h3 id="day-2-operations-example">Day 2 Operations Example<a class="headerlink" href="#day-2-operations-example" title="Permanent link">&para;</a></h3>
+<p>Let&rsquo;s imagine that you want to create a new tenant in your existing fabric. This would require at least the following configuration:</p>
+<ul>
+<li>VRFs</li>
+<li>VLANs</li>
+<li>SVIs</li>
+</ul>
+<p>You could create a YAML file, in this example called NETWORK_SERVICES.yml, describing the fabric-wide generic configuration for the tenant:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nn">---</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nt">tenants</span><span class="p">:</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="c1"># Definition of tenants. Additional level of abstraction to VRFs</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">  </span><span class="nt">TENANT1</span><span class="p">:</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">    </span><span class="c1"># Number used to generate the VNI of each VLAN by adding the VLAN number in this tenant.</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">    </span><span class="nt">mac_vrf_vni_base</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10000</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">    </span><span class="nt">vrfs</span><span class="p">:</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">      </span><span class="c1"># VRF definitions inside the tenant.</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">      </span><span class="nt">VRF1</span><span class="p">:</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">        </span><span class="c1"># VRF VNI definition.</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">        </span><span class="nt">vrf_vni</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">        </span><span class="nt">svis</span><span class="p">:</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="w">          </span><span class="c1"># SVI definitions.</span>
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="w">          </span><span class="s">&quot;11&quot;</span><span class="p p-Indicator">:</span>
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="w">            </span><span class="c1"># SVI Description</span>
+<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VRF1_VLAN11</span>
+<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="w">            </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="w">            </span><span class="c1"># IP anycast gateway to be used in the SVI in every leaf.</span>
+<a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a><span class="w">            </span><span class="nt">ip_address_virtual</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.10.11.1/24</span>
+<a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="w">          </span><span class="s">&quot;12&quot;</span><span class="p p-Indicator">:</span>
+<a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VRF1_VLAN12</span>
+<a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a><span class="w">            </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a><span class="w">            </span><span class="nt">ip_address_virtual</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.10.12.1/24</span>
+<a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a><span class="w">      </span><span class="nt">VRF2</span><span class="p">:</span>
+<a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a><span class="w">        </span><span class="nt">vrf_vni</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a><span class="w">        </span><span class="nt">svis</span><span class="p">:</span>
+<a id="__codelineno-9-27" name="__codelineno-9-27" href="#__codelineno-9-27"></a><span class="w">          </span><span class="s">&quot;21&quot;</span><span class="p p-Indicator">:</span>
+<a id="__codelineno-9-28" name="__codelineno-9-28" href="#__codelineno-9-28"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VRF2_VLAN21</span>
+<a id="__codelineno-9-29" name="__codelineno-9-29" href="#__codelineno-9-29"></a><span class="w">            </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-9-30" name="__codelineno-9-30" href="#__codelineno-9-30"></a><span class="w">            </span><span class="nt">ip_address_virtual</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.10.21.1/24</span>
+<a id="__codelineno-9-31" name="__codelineno-9-31" href="#__codelineno-9-31"></a><span class="w">          </span><span class="s">&quot;22&quot;</span><span class="p p-Indicator">:</span>
+<a id="__codelineno-9-32" name="__codelineno-9-32" href="#__codelineno-9-32"></a><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VRF2_VLAN22</span>
+<a id="__codelineno-9-33" name="__codelineno-9-33" href="#__codelineno-9-33"></a><span class="w">            </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-9-34" name="__codelineno-9-34" href="#__codelineno-9-34"></a><span class="w">            </span><span class="nt">ip_address_virtual</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.10.22.1/24</span>
+<a id="__codelineno-9-35" name="__codelineno-9-35" href="#__codelineno-9-35"></a>
+<a id="__codelineno-9-36" name="__codelineno-9-36" href="#__codelineno-9-36"></a><span class="w">    </span><span class="nt">l2vlans</span><span class="p">:</span>
+<a id="__codelineno-9-37" name="__codelineno-9-37" href="#__codelineno-9-37"></a><span class="w">      </span><span class="c1"># These are pure L2 vlans. They do not have a SVI defined in the l3leafs and they will be bridged inside the VXLAN fabric</span>
+<a id="__codelineno-9-38" name="__codelineno-9-38" href="#__codelineno-9-38"></a><span class="w">      </span><span class="s">&quot;3401&quot;</span><span class="p p-Indicator">:</span>
+<a id="__codelineno-9-39" name="__codelineno-9-39" href="#__codelineno-9-39"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">L2_VLAN3401</span>
+<a id="__codelineno-9-40" name="__codelineno-9-40" href="#__codelineno-9-40"></a><span class="w">      </span><span class="s">&quot;3402&quot;</span><span class="p p-Indicator">:</span>
+<a id="__codelineno-9-41" name="__codelineno-9-41" href="#__codelineno-9-41"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">L2_VLAN3402</span>
+</code></pre></div>
+<p>You would then describe the scope for where these network services should exist in the inventory.yml file:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nt">NETWORK_SERVICES</span><span class="p">:</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="nt">children</span><span class="p">:</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="nt">DC1_L3_LEAVES</span><span class="p">:</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">    </span><span class="nt">DC1_L2_LEAVES</span><span class="p">:</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">    </span><span class="nt">DC2_L3_LEAVES</span><span class="p">:</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">    </span><span class="nt">DC2_L2_LEAVES</span><span class="p">:</span>
+</code></pre></div>
+<p>This specifies all switches in the fabric will be able to serve the new tenant.</p>
+<p>For the sake of simplicity, let&rsquo;s say you defined just one pair of leaf switches that would serve this tenant.</p>
+<p>After running the relevant playbook, their tenant-related configuration would end up looking like this:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>vlan<span class="w"> </span><span class="m">11</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">   </span>name<span class="w"> </span>VRF1_VLAN11
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>!
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>vlan<span class="w"> </span><span class="m">12</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">   </span>name<span class="w"> </span>VRF1_VLAN12
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>!
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>vlan<span class="w"> </span><span class="m">21</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="w">   </span>name<span class="w"> </span>VRF2_VLAN21
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>!
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>vlan<span class="w"> </span><span class="m">22</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="w">   </span>name<span class="w"> </span>VRF2_VLAN22
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>!
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>&lt;removed<span class="w"> </span><span class="k">for</span><span class="w"> </span>brevity&gt;
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>!
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>vlan<span class="w"> </span><span class="m">3401</span>
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a><span class="w">   </span>name<span class="w"> </span>L2_VLAN3401
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>!
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>vlan<span class="w"> </span><span class="m">3402</span>
+<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a><span class="w">   </span>name<span class="w"> </span>L2_VLAN3402
+<a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a>!
+<a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a>&lt;removed<span class="w"> </span><span class="k">for</span><span class="w"> </span>brevity&gt;
+<a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a>!
+<a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a>vrf<span class="w"> </span>instance<span class="w"> </span>VRF1
+<a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a>!
+<a id="__codelineno-11-25" name="__codelineno-11-25" href="#__codelineno-11-25"></a>vrf<span class="w"> </span>instance<span class="w"> </span>VRF2
+<a id="__codelineno-11-26" name="__codelineno-11-26" href="#__codelineno-11-26"></a>!
+<a id="__codelineno-11-27" name="__codelineno-11-27" href="#__codelineno-11-27"></a>&lt;removed<span class="w"> </span><span class="k">for</span><span class="w"> </span>brevity&gt;
+<a id="__codelineno-11-28" name="__codelineno-11-28" href="#__codelineno-11-28"></a>!
+<a id="__codelineno-11-29" name="__codelineno-11-29" href="#__codelineno-11-29"></a>interface<span class="w"> </span>Vlan11
+<a id="__codelineno-11-30" name="__codelineno-11-30" href="#__codelineno-11-30"></a><span class="w">   </span>description<span class="w"> </span>VRF1_VLAN11
+<a id="__codelineno-11-31" name="__codelineno-11-31" href="#__codelineno-11-31"></a><span class="w">   </span>no<span class="w"> </span>shutdown
+<a id="__codelineno-11-32" name="__codelineno-11-32" href="#__codelineno-11-32"></a><span class="w">   </span>vrf<span class="w"> </span>VRF1
+<a id="__codelineno-11-33" name="__codelineno-11-33" href="#__codelineno-11-33"></a><span class="w">   </span>ip<span class="w"> </span>address<span class="w"> </span>virtual<span class="w"> </span><span class="m">10</span>.10.11.1/24
+<a id="__codelineno-11-34" name="__codelineno-11-34" href="#__codelineno-11-34"></a>!
+<a id="__codelineno-11-35" name="__codelineno-11-35" href="#__codelineno-11-35"></a>interface<span class="w"> </span>Vlan12
+<a id="__codelineno-11-36" name="__codelineno-11-36" href="#__codelineno-11-36"></a><span class="w">   </span>description<span class="w"> </span>VRF1_VLAN12
+<a id="__codelineno-11-37" name="__codelineno-11-37" href="#__codelineno-11-37"></a><span class="w">   </span>no<span class="w"> </span>shutdown
+<a id="__codelineno-11-38" name="__codelineno-11-38" href="#__codelineno-11-38"></a><span class="w">   </span>vrf<span class="w"> </span>VRF1
+<a id="__codelineno-11-39" name="__codelineno-11-39" href="#__codelineno-11-39"></a><span class="w">   </span>ip<span class="w"> </span>address<span class="w"> </span>virtual<span class="w"> </span><span class="m">10</span>.10.12.1/24
+<a id="__codelineno-11-40" name="__codelineno-11-40" href="#__codelineno-11-40"></a>!
+<a id="__codelineno-11-41" name="__codelineno-11-41" href="#__codelineno-11-41"></a>interface<span class="w"> </span>Vlan21
+<a id="__codelineno-11-42" name="__codelineno-11-42" href="#__codelineno-11-42"></a><span class="w">   </span>description<span class="w"> </span>VRF2_VLAN21
+<a id="__codelineno-11-43" name="__codelineno-11-43" href="#__codelineno-11-43"></a><span class="w">   </span>no<span class="w"> </span>shutdown
+<a id="__codelineno-11-44" name="__codelineno-11-44" href="#__codelineno-11-44"></a><span class="w">   </span>vrf<span class="w"> </span>VRF2
+<a id="__codelineno-11-45" name="__codelineno-11-45" href="#__codelineno-11-45"></a><span class="w">   </span>ip<span class="w"> </span>address<span class="w"> </span>virtual<span class="w"> </span><span class="m">10</span>.10.21.1/24
+<a id="__codelineno-11-46" name="__codelineno-11-46" href="#__codelineno-11-46"></a>!
+<a id="__codelineno-11-47" name="__codelineno-11-47" href="#__codelineno-11-47"></a>interface<span class="w"> </span>Vlan22
+<a id="__codelineno-11-48" name="__codelineno-11-48" href="#__codelineno-11-48"></a><span class="w">   </span>description<span class="w"> </span>VRF2_VLAN22
+<a id="__codelineno-11-49" name="__codelineno-11-49" href="#__codelineno-11-49"></a><span class="w">   </span>no<span class="w"> </span>shutdown
+<a id="__codelineno-11-50" name="__codelineno-11-50" href="#__codelineno-11-50"></a><span class="w">   </span>vrf<span class="w"> </span>VRF2
+<a id="__codelineno-11-51" name="__codelineno-11-51" href="#__codelineno-11-51"></a><span class="w">   </span>ip<span class="w"> </span>address<span class="w"> </span>virtual<span class="w"> </span><span class="m">10</span>.10.22.1/24
+<a id="__codelineno-11-52" name="__codelineno-11-52" href="#__codelineno-11-52"></a>!
+<a id="__codelineno-11-53" name="__codelineno-11-53" href="#__codelineno-11-53"></a>&lt;removed<span class="w"> </span><span class="k">for</span><span class="w"> </span>brevity&gt;
+<a id="__codelineno-11-54" name="__codelineno-11-54" href="#__codelineno-11-54"></a>!
+<a id="__codelineno-11-55" name="__codelineno-11-55" href="#__codelineno-11-55"></a>interface<span class="w"> </span>Vxlan1
+<a id="__codelineno-11-56" name="__codelineno-11-56" href="#__codelineno-11-56"></a><span class="w">   </span>description<span class="w"> </span>dc1-leaf1a_VTEP
+<a id="__codelineno-11-57" name="__codelineno-11-57" href="#__codelineno-11-57"></a><span class="w">   </span>vxlan<span class="w"> </span>source-interface<span class="w"> </span>Loopback1
+<a id="__codelineno-11-58" name="__codelineno-11-58" href="#__codelineno-11-58"></a><span class="w">   </span>vxlan<span class="w"> </span>virtual-router<span class="w"> </span>encapsulation<span class="w"> </span>mac-address<span class="w"> </span>mlag-system-id
+<a id="__codelineno-11-59" name="__codelineno-11-59" href="#__codelineno-11-59"></a><span class="w">   </span>vxlan<span class="w"> </span>udp-port<span class="w"> </span><span class="m">4789</span>
+<a id="__codelineno-11-60" name="__codelineno-11-60" href="#__codelineno-11-60"></a><span class="w">   </span>vxlan<span class="w"> </span>vlan<span class="w"> </span><span class="m">11</span><span class="w"> </span>vni<span class="w"> </span><span class="m">10011</span>
+<a id="__codelineno-11-61" name="__codelineno-11-61" href="#__codelineno-11-61"></a><span class="w">   </span>vxlan<span class="w"> </span>vlan<span class="w"> </span><span class="m">12</span><span class="w"> </span>vni<span class="w"> </span><span class="m">10012</span>
+<a id="__codelineno-11-62" name="__codelineno-11-62" href="#__codelineno-11-62"></a><span class="w">   </span>vxlan<span class="w"> </span>vlan<span class="w"> </span><span class="m">21</span><span class="w"> </span>vni<span class="w"> </span><span class="m">10021</span>
+<a id="__codelineno-11-63" name="__codelineno-11-63" href="#__codelineno-11-63"></a><span class="w">   </span>vxlan<span class="w"> </span>vlan<span class="w"> </span><span class="m">22</span><span class="w"> </span>vni<span class="w"> </span><span class="m">10022</span>
+<a id="__codelineno-11-64" name="__codelineno-11-64" href="#__codelineno-11-64"></a><span class="w">   </span>vxlan<span class="w"> </span>vlan<span class="w"> </span><span class="m">3401</span><span class="w"> </span>vni<span class="w"> </span><span class="m">13401</span>
+<a id="__codelineno-11-65" name="__codelineno-11-65" href="#__codelineno-11-65"></a><span class="w">   </span>vxlan<span class="w"> </span>vlan<span class="w"> </span><span class="m">3402</span><span class="w"> </span>vni<span class="w"> </span><span class="m">13402</span>
+<a id="__codelineno-11-66" name="__codelineno-11-66" href="#__codelineno-11-66"></a><span class="w">   </span>vxlan<span class="w"> </span>vrf<span class="w"> </span>VRF1<span class="w"> </span>vni<span class="w"> </span><span class="m">1</span>
+<a id="__codelineno-11-67" name="__codelineno-11-67" href="#__codelineno-11-67"></a><span class="w">   </span>vxlan<span class="w"> </span>vrf<span class="w"> </span>VRF2<span class="w"> </span>vni<span class="w"> </span><span class="m">2</span>
+<a id="__codelineno-11-68" name="__codelineno-11-68" href="#__codelineno-11-68"></a>!
+<a id="__codelineno-11-69" name="__codelineno-11-69" href="#__codelineno-11-69"></a>&lt;removed<span class="w"> </span><span class="k">for</span><span class="w"> </span>brevity&gt;
+<a id="__codelineno-11-70" name="__codelineno-11-70" href="#__codelineno-11-70"></a>!
+<a id="__codelineno-11-71" name="__codelineno-11-71" href="#__codelineno-11-71"></a>ip<span class="w"> </span>routing<span class="w"> </span>vrf<span class="w"> </span>VRF1
+<a id="__codelineno-11-72" name="__codelineno-11-72" href="#__codelineno-11-72"></a>ip<span class="w"> </span>routing<span class="w"> </span>vrf<span class="w"> </span>VRF2
+<a id="__codelineno-11-73" name="__codelineno-11-73" href="#__codelineno-11-73"></a>!
+<a id="__codelineno-11-74" name="__codelineno-11-74" href="#__codelineno-11-74"></a>&lt;removed<span class="w"> </span><span class="k">for</span><span class="w"> </span>brevity&gt;
+<a id="__codelineno-11-75" name="__codelineno-11-75" href="#__codelineno-11-75"></a>!
+<a id="__codelineno-11-76" name="__codelineno-11-76" href="#__codelineno-11-76"></a>router<span class="w"> </span>bgp<span class="w"> </span><span class="m">65101</span>
+<a id="__codelineno-11-77" name="__codelineno-11-77" href="#__codelineno-11-77"></a><span class="w">   </span>!
+<a id="__codelineno-11-78" name="__codelineno-11-78" href="#__codelineno-11-78"></a><span class="w">   </span>&lt;removed<span class="w"> </span><span class="k">for</span><span class="w"> </span>brevity&gt;
+<a id="__codelineno-11-79" name="__codelineno-11-79" href="#__codelineno-11-79"></a><span class="w">   </span>!
+<a id="__codelineno-11-80" name="__codelineno-11-80" href="#__codelineno-11-80"></a><span class="w">   </span>vlan<span class="w"> </span><span class="m">11</span>
+<a id="__codelineno-11-81" name="__codelineno-11-81" href="#__codelineno-11-81"></a><span class="w">      </span>rd<span class="w"> </span><span class="m">10</span>.255.1.33:10011
+<a id="__codelineno-11-82" name="__codelineno-11-82" href="#__codelineno-11-82"></a><span class="w">      </span>route-target<span class="w"> </span>both<span class="w"> </span><span class="m">10011</span>:10011
+<a id="__codelineno-11-83" name="__codelineno-11-83" href="#__codelineno-11-83"></a><span class="w">      </span>redistribute<span class="w"> </span>learned
+<a id="__codelineno-11-84" name="__codelineno-11-84" href="#__codelineno-11-84"></a><span class="w">   </span>!
+<a id="__codelineno-11-85" name="__codelineno-11-85" href="#__codelineno-11-85"></a><span class="w">   </span>vlan<span class="w"> </span><span class="m">12</span>
+<a id="__codelineno-11-86" name="__codelineno-11-86" href="#__codelineno-11-86"></a><span class="w">      </span>rd<span class="w"> </span><span class="m">10</span>.255.1.33:10012
+<a id="__codelineno-11-87" name="__codelineno-11-87" href="#__codelineno-11-87"></a><span class="w">      </span>route-target<span class="w"> </span>both<span class="w"> </span><span class="m">10012</span>:10012
+<a id="__codelineno-11-88" name="__codelineno-11-88" href="#__codelineno-11-88"></a><span class="w">      </span>redistribute<span class="w"> </span>learned
+<a id="__codelineno-11-89" name="__codelineno-11-89" href="#__codelineno-11-89"></a><span class="w">   </span>!
+<a id="__codelineno-11-90" name="__codelineno-11-90" href="#__codelineno-11-90"></a><span class="w">   </span>vlan<span class="w"> </span><span class="m">21</span>
+<a id="__codelineno-11-91" name="__codelineno-11-91" href="#__codelineno-11-91"></a><span class="w">      </span>rd<span class="w"> </span><span class="m">10</span>.255.1.33:10021
+<a id="__codelineno-11-92" name="__codelineno-11-92" href="#__codelineno-11-92"></a><span class="w">      </span>route-target<span class="w"> </span>both<span class="w"> </span><span class="m">10021</span>:10021
+<a id="__codelineno-11-93" name="__codelineno-11-93" href="#__codelineno-11-93"></a><span class="w">      </span>redistribute<span class="w"> </span>learned
+<a id="__codelineno-11-94" name="__codelineno-11-94" href="#__codelineno-11-94"></a><span class="w">   </span>!
+<a id="__codelineno-11-95" name="__codelineno-11-95" href="#__codelineno-11-95"></a><span class="w">   </span>vlan<span class="w"> </span><span class="m">22</span>
+<a id="__codelineno-11-96" name="__codelineno-11-96" href="#__codelineno-11-96"></a><span class="w">      </span>rd<span class="w"> </span><span class="m">10</span>.255.1.33:10022
+<a id="__codelineno-11-97" name="__codelineno-11-97" href="#__codelineno-11-97"></a><span class="w">      </span>route-target<span class="w"> </span>both<span class="w"> </span><span class="m">10022</span>:10022
+<a id="__codelineno-11-98" name="__codelineno-11-98" href="#__codelineno-11-98"></a><span class="w">      </span>redistribute<span class="w"> </span>learned
+<a id="__codelineno-11-99" name="__codelineno-11-99" href="#__codelineno-11-99"></a><span class="w">   </span>!
+<a id="__codelineno-11-100" name="__codelineno-11-100" href="#__codelineno-11-100"></a><span class="w">   </span>vlan<span class="w"> </span><span class="m">3401</span>
+<a id="__codelineno-11-101" name="__codelineno-11-101" href="#__codelineno-11-101"></a><span class="w">      </span>rd<span class="w"> </span><span class="m">10</span>.255.1.33:13401
+<a id="__codelineno-11-102" name="__codelineno-11-102" href="#__codelineno-11-102"></a><span class="w">      </span>route-target<span class="w"> </span>both<span class="w"> </span><span class="m">13401</span>:13401
+<a id="__codelineno-11-103" name="__codelineno-11-103" href="#__codelineno-11-103"></a><span class="w">      </span>redistribute<span class="w"> </span>learned
+<a id="__codelineno-11-104" name="__codelineno-11-104" href="#__codelineno-11-104"></a><span class="w">   </span>!
+<a id="__codelineno-11-105" name="__codelineno-11-105" href="#__codelineno-11-105"></a><span class="w">   </span>vlan<span class="w"> </span><span class="m">3402</span>
+<a id="__codelineno-11-106" name="__codelineno-11-106" href="#__codelineno-11-106"></a><span class="w">      </span>rd<span class="w"> </span><span class="m">10</span>.255.1.33:13402
+<a id="__codelineno-11-107" name="__codelineno-11-107" href="#__codelineno-11-107"></a><span class="w">      </span>route-target<span class="w"> </span>both<span class="w"> </span><span class="m">13402</span>:13402
+<a id="__codelineno-11-108" name="__codelineno-11-108" href="#__codelineno-11-108"></a><span class="w">      </span>redistribute<span class="w"> </span>learned
+<a id="__codelineno-11-109" name="__codelineno-11-109" href="#__codelineno-11-109"></a><span class="w">   </span>!
+<a id="__codelineno-11-110" name="__codelineno-11-110" href="#__codelineno-11-110"></a><span class="w">   </span>&lt;removed<span class="w"> </span><span class="k">for</span><span class="w"> </span>brevity&gt;
+<a id="__codelineno-11-111" name="__codelineno-11-111" href="#__codelineno-11-111"></a><span class="w">   </span>!
+<a id="__codelineno-11-112" name="__codelineno-11-112" href="#__codelineno-11-112"></a><span class="w">   </span>vrf<span class="w"> </span>VRF1
+<a id="__codelineno-11-113" name="__codelineno-11-113" href="#__codelineno-11-113"></a><span class="w">      </span>rd<span class="w"> </span><span class="m">10</span>.255.1.33:1
+<a id="__codelineno-11-114" name="__codelineno-11-114" href="#__codelineno-11-114"></a><span class="w">      </span>route-target<span class="w"> </span>import<span class="w"> </span>evpn<span class="w"> </span><span class="m">1</span>:1
+<a id="__codelineno-11-115" name="__codelineno-11-115" href="#__codelineno-11-115"></a><span class="w">      </span>route-target<span class="w"> </span><span class="nb">export</span><span class="w"> </span>evpn<span class="w"> </span><span class="m">1</span>:1
+<a id="__codelineno-11-116" name="__codelineno-11-116" href="#__codelineno-11-116"></a><span class="w">      </span>router-id<span class="w"> </span><span class="m">10</span>.255.1.33
+<a id="__codelineno-11-117" name="__codelineno-11-117" href="#__codelineno-11-117"></a><span class="w">      </span>neighbor<span class="w"> </span><span class="m">10</span>.255.1.97<span class="w"> </span>peer<span class="w"> </span>group<span class="w"> </span>MLAG-IPv4-UNDERLAY-PEER
+<a id="__codelineno-11-118" name="__codelineno-11-118" href="#__codelineno-11-118"></a><span class="w">      </span>redistribute<span class="w"> </span>connected
+<a id="__codelineno-11-119" name="__codelineno-11-119" href="#__codelineno-11-119"></a><span class="w">   </span>!
+<a id="__codelineno-11-120" name="__codelineno-11-120" href="#__codelineno-11-120"></a><span class="w">   </span>vrf<span class="w"> </span>VRF2
+<a id="__codelineno-11-121" name="__codelineno-11-121" href="#__codelineno-11-121"></a><span class="w">      </span>rd<span class="w"> </span><span class="m">10</span>.255.1.33:2
+<a id="__codelineno-11-122" name="__codelineno-11-122" href="#__codelineno-11-122"></a><span class="w">      </span>route-target<span class="w"> </span>import<span class="w"> </span>evpn<span class="w"> </span><span class="m">2</span>:2
+<a id="__codelineno-11-123" name="__codelineno-11-123" href="#__codelineno-11-123"></a><span class="w">      </span>route-target<span class="w"> </span><span class="nb">export</span><span class="w"> </span>evpn<span class="w"> </span><span class="m">2</span>:2
+<a id="__codelineno-11-124" name="__codelineno-11-124" href="#__codelineno-11-124"></a><span class="w">      </span>router-id<span class="w"> </span><span class="m">10</span>.255.1.33
+<a id="__codelineno-11-125" name="__codelineno-11-125" href="#__codelineno-11-125"></a><span class="w">      </span>neighbor<span class="w"> </span><span class="m">10</span>.255.1.97<span class="w"> </span>peer<span class="w"> </span>group<span class="w"> </span>MLAG-IPv4-UNDERLAY-PEER
+<a id="__codelineno-11-126" name="__codelineno-11-126" href="#__codelineno-11-126"></a><span class="w">      </span>redistribute<span class="w"> </span>connected
+</code></pre></div>
+<p>This takes place without manual intervention and with very little chance for human error.</p>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<p>Below are a number of links to additional documentation about Ansible AVD and Ansible in general:</p>
+<ul>
+<li><a href="../../roles/eos_designs">Role documentation for eos_design</a></li>
+<li><a href="../../roles/eos_cli_config_gen">Role documentation for eos_cli_config_gen</a></li>
+<li><a href="https://docs.ansible.com/ansible/latest/reference_appendices/tower.html">RedHat Ansible Tower Documentation</a></li>
+<li><a href="../../roles/eos_config_deploy_cvp">Role documentation for eos_config_deploy_cvp</a> / <a href="../../roles/eos_config_deploy_eapi">eos_config_deploy_eapi</a></li>
+</ul>
+<h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
+<p>If you want to try out a complete Ansible AVD example, complete with all group variable files, inventory, playbook etc., please look in the Examples section.</p>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      Last update:
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">November 2, 2022</span>
+      
+    
+  </small>
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var tab,labels=set.querySelector(".tabbed-labels");for(tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2019 - 2022 Arista Networks
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/aristanetworks/ansible-avd" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/AristaNetworks" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.arista.com" target="_blank" rel="noopener" title="www.arista.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M352 256c0 22.2-1.2 43.6-3.3 64H163.3c-2.2-20.4-3.3-41.8-3.3-64s1.2-43.6 3.3-64h185.4c2.2 20.4 3.3 41.8 3.3 64zm28.8-64h123.1c5.3 20.5 8.1 41.9 8.1 64s-2.8 43.5-8.1 64H380.8c2.1-20.6 3.2-42 3.2-64s-1.1-43.4-3.2-64zm112.6-32H376.7c-10-63.9-29.8-117.4-55.3-151.6 78.3 20.7 142 77.5 171.9 151.6zm-149.1 0H167.7c6.1-36.4 15.5-68.6 27-94.7 10.5-23.6 22.2-40.7 33.5-51.5C239.4 3.2 248.7 0 256 0s16.6 3.2 27.8 13.8c11.3 10.8 23 27.9 33.5 51.5 11.6 26 21 58.2 27 94.7zm-209 0H18.6c30-74.1 93.6-130.9 172-151.6-25.5 34.2-45.3 87.7-55.3 151.6zM8.1 192h123.1c-2.1 20.6-3.2 42-3.2 64s1.1 43.4 3.2 64H8.1C2.8 299.5 0 278.1 0 256s2.8-43.5 8.1-64zm186.6 254.6c-11.6-26-20.9-58.2-27-94.6h176.6c-6.1 36.4-15.5 68.6-27 94.6-10.5 23.6-22.2 40.7-33.5 51.5-11.2 10.7-20.5 13.9-27.8 13.9s-16.6-3.2-27.8-13.8c-11.3-10.8-23-27.9-33.5-51.5zM135.3 352c10 63.9 29.8 117.4 55.3 151.6-78.4-20.7-142-77.5-172-151.6h116.7zm358.1 0c-30 74.1-93.6 130.9-171.9 151.6 25.5-34.2 45.2-87.7 55.3-151.6h116.6z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.top", "search.highlight", "header.autohide", "content.code.annotate", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.2a6f1dda.min.js"></script>
+      
+        <script src="https://unpkg.com/tablesort@5.3.0/dist/tablesort.min.js"></script>
+      
+        <script src="../stylesheets/tables.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  dot1x:
+    type: dict
+    display_name: Global 802.1x Authentication
+    keys:
+      system_auth_control:
+        type: bool
+      protocol_lldp_bypass:
+        type: bool
+      dynamic_authorization:
+        type: bool

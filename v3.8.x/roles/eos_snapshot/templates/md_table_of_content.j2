@@ -1,0 +1,7 @@
+# {{ inventory_hostname }} Commands Output
+
+## Table of Contents
+
+{% for command in commands_list %}
+- [{{ command }}](#{{ command | replace(" ","-") }})
+{% endfor %}

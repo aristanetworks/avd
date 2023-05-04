@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  mpls:
+    type: dict
+    keys:
+      ip:
+        type: bool
+      ldp:
+        type: dict
+        keys:
+          interface_disabled_default:
+            type: bool
+          router_id:
+            type: str
+          shutdown:
+            type: bool
+          transport_address_interface:
+            description: Interface Name
+            type: str

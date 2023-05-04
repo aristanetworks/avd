@@ -1,0 +1,48 @@
+{% set local_var = namespace() %}
+{% set local_var.device_filter = [] %}
+{% if device_filter is string %}
+{%     do local_var.device_filter.append(device_filter) %}
+{% else %}
+{%     set local_var.device_filter = device_filter %}
+{% endif %}
+{% set dev_cntr = namespace(value=0) %}
+---
+CVP_DEVICES:
+{% for device in groups[container_root] | arista.avd.natural_sort %}
+{%     if device | arista.avd.is_in_filter(local_var.device_filter) %}
+{%         if hostvars[device]['is_deployed'] is arista.avd.defined(true) or hostvars[device]['is_deployed'] is not arista.avd.defined %}
+  - fqdn: {{ device }}
+{%             set dev_cntr.value = dev_cntr.value + 1 %}
+{%             for container_name, container in CVP_VARS.CVP_TOPOLOGY.items() | arista.avd.natural_sort %}
+{%                 if 'devices' in container %}
+{%                     for device_container in container['devices'] %}
+{%                         if device == device_container %}
+    parentContainerName: {{ container_name }}
+{%                         endif %}
+{%                     endfor %}
+{%                 endif %}
+{%             endfor %}
+    configlets:
+{%             if hostvars[groups[container_root][0]]['cv_configlets']['devices'][device] is arista.avd.defined %}
+{%                 for configlet in hostvars[groups[container_root][0]]['cv_configlets']['devices'][device] | arista.avd.natural_sort %}
+      - {{ configlet }}
+{%                 endfor %}
+{%             endif %}
+      - {{ configlets_prefix }}_{{ device }}
+{%         endif %}
+{%     endif %}
+{% endfor %}
+{% if dev_cntr.value == 0 %}
+  []
+{% endif %}
+CVP_CONTAINERS:
+{% for container_name, container in CVP_VARS.CVP_TOPOLOGY.items() | arista.avd.natural_sort %}
+  {{ container_name }}:
+    parentContainerName: {{ container['parent_container'] }}
+{%     if hostvars[groups[container_root][0]]['cv_configlets']['containers'][container_name] is defined and hostvars[groups[container_root][0]]['cv_configlets']['containers'][container_name] is iterable %}
+    configlets:
+{%         for configlet in hostvars[groups[container_root][0]]['cv_configlets']['containers'][container_name] | arista.avd.natural_sort %}
+      - {{ configlet }}
+{%         endfor %}
+{%     endif %}
+{% endfor %}

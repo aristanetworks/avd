@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  vlans:
+    type: list
+    primary_key: id
+    convert_types:
+      - dict
+    items:
+      type: dict
+      keys:
+        id:
+          type: int
+          convert_types:
+            - str
+          description: VLAN ID
+        name:
+          type: str
+          description: VLAN Name
+        state:
+          type: str
+          valid_values: ["active", "suspend"]
+        trunk_groups:
+          type: list
+          items:
+            type: str
+            description: Trunk Group Name
+        private_vlan:
+          type: dict
+          keys:
+            type:
+              type: str
+              valid_values: ["community", "isolated"]
+            primary_vlan:
+              type: int
+              convert_types:
+                - str
+              description: Primary VLAN ID
+        tenant:
+          type: str
+          description: Key only used for documentation or validation purposes

@@ -1,0 +1,35 @@
+{
+  "properties": {
+    "default_node_types": {
+      "description": "Uses hostname matches against a regular expression to determine the node type.",
+      "items": {
+        "properties": {
+          "match_hostnames": {
+            "description": "Regular expressions to match against hostnames",
+            "items": {
+              "description": "Regex needs to match full hostname (i.e. is bounded by ^ and $ elements)",
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Match Hostnames"
+          },
+          "node_type": {
+            "description": "Resulting node type when regex matches",
+            "type": "string",
+            "title": "Node Type"
+          }
+        },
+        "required": [
+          "match_hostnames",
+          "node_type"
+        ],
+        "additionalProperties": false,
+        "type": "object"
+      },
+      "type": "array",
+      "title": "Default Node Types"
+    }
+  },
+  "additionalProperties": true,
+  "type": "object"
+}

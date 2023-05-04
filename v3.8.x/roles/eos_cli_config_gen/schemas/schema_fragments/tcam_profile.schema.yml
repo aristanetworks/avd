@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  tcam_profile:
+    type: dict
+    display_name: Hardware TCAM Profiles
+    keys:
+      system:
+        type: str
+        description: |
+          TCAM profile name to activate
+      profiles:
+        type: list
+        secondary_key: config
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              description: Tcam-Profile Name
+            config:
+              type: str
+              required: true
+              description: |
+                TCAM Profile Config. Since these can be very long, it is often a good idea to import the config from a file.
+                Example: "{{lookup('file', '{{ root_dir }}/inventory/TCAM_TRAFFIC_POLICY.conf')}}"

@@ -1,0 +1,97 @@
+---
+- name: "Collection {{ ansible_collection_name }} version {{ version }}{{ ('(git ' ~ git_tag ~ ')') if git_tag }} loaded from {{ collection_path }}"
+  tags: [always, avd_version]
+  ansible.builtin.set_fact:
+    avd_collection_version: version
+  vars:
+    versions: "{{ lookup('pipe', 'ansible-galaxy collection list -p ' ~ collection_path ~ ' --format yaml ' ~ ansible_collection_name) | from_yaml }}"
+    collection_path: "{{ (role_path | split('/'))[0:-4] | join('/') }}"
+    version: "{{ versions[collection_path][ansible_collection_name].version | default('Unknown') }}"
+    git_tag: "{{ lookup('pipe', 'git -C ' ~ collection_path ~ ' describe --tags --always 2>/dev/null', errors='ignore') }}"
+  run_once: true
+  failed_when: false
+
+- name: Create required output directories if not present
+  tags: [build, provision]
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+  loop:
+    - "{{ structured_dir }}"
+    - "{{ fabric_dir }}"
+  delegate_to: localhost
+  run_once: true
+
+- name: Set eos_designs facts
+  tags: [build, provision, facts]
+  arista.avd.eos_designs_facts:
+    avd_switch_facts: true
+    #cprofile_file: "eos_designs_facts.prof"
+    template_output: true
+  check_mode: false
+  run_once: true
+
+- name: Set eos_designs facts per device
+  tags: [build, provision, facts]
+  ansible.builtin.set_fact:
+    switch: "{{ avd_switch_facts[inventory_hostname].switch }}"
+  delegate_to: localhost
+  changed_when: false
+
+- name: Generate YAML file with hostvars (only for debugging)
+  tags: [debug, never]
+  ansible.builtin.template:
+    src: debug/generate-debug-vars.j2
+    dest: "{{ structured_dir }}/{{ inventory_hostname }}-debug-vars.yml"
+    mode: 0664
+  delegate_to: localhost
+  changed_when: false
+
+- name: Generate device configuration in structured format
+  tags: [build, provision]
+  arista.avd.yaml_templates_to_facts:
+    templates: "{{ templates.structured_config }}"
+    dest: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
+    #cprofile_file: "structured-{{inventory_hostname}}.prof"
+    template_output: true
+  delegate_to: localhost
+  check_mode: false
+  register: structured_config
+
+- name: Generate fabric documentation
+  tags: [build, provision, documentation]
+  run_once: true
+  delegate_to: localhost
+  check_mode: false
+  ansible.builtin.copy:
+    content: "{{ lookup('template','documentation/fabric-documentation.j2') | arista.avd.add_md_toc(skip_lines=3) }}"
+    dest: "{{ fabric_dir }}/{{ fabric_name }}-documentation.md"
+    mode: 0664
+
+- name: Generate fabric point-to-point links summary in csv format.
+  tags: [build, provision, documentation]
+  ansible.builtin.template:
+    src: documentation/fabric-p2p-links.j2
+    dest: "{{ fabric_dir }}/{{ fabric_name }}-p2p-links.csv"
+    mode: 0664
+  delegate_to: localhost
+  run_once: true
+  check_mode: false
+
+- name: Generate fabric topology in csv format.
+  tags: [build, provision, documentation]
+  ansible.builtin.template:
+    src: documentation/fabric-topology.j2
+    dest: "{{ fabric_dir }}/{{ fabric_name }}-topology.csv"
+    mode: 0664
+  delegate_to: localhost
+  run_once: true
+  check_mode: false
+
+- name: Remove avd_switch_facts
+  tags: [build, provision, facts, remove_avd_switch_facts]
+  ansible.builtin.set_fact:
+    avd_switch_facts: null
+  run_once: true
+  check_mode: false

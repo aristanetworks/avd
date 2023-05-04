@@ -1,0 +1,26 @@
+{# doc - route maps #}
+{% if route_maps is defined and route_maps is not none %}
+
+## Route-maps
+
+### Route-maps Summary
+
+{%     for route_map in route_maps | arista.avd.natural_sort('name') %}
+#### {{ route_map.name }}
+
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+{%         for sequence in route_map.sequence_numbers | arista.avd.natural_sort('sequence') %}
+{%             if sequence.continue.enabled is arista.avd.defined(true) %}
+{%                 set row_continue = sequence.continue.sequence_number | arista.avd.default("Next Sequence") %}
+{%             endif %}
+| {{ sequence.sequence }} | {{ sequence.type }} | {{ sequence.match | arista.avd.default(['-']) | join('<br>') }} | {{ sequence.set | arista.avd.default(['-']) | join('<br>') }} | {{ sequence.sub_route_map | arista.avd.default('-') }} | {{ row_continue | arista.avd.default('-') }} |
+{%         endfor %}
+
+{%     endfor %}
+### Route-maps Device Configuration
+
+```eos
+{%     include 'eos/route-maps.j2' %}
+```
+{% endif %}

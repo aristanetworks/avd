@@ -1,0 +1,193 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  daemon_terminattr:
+    type: dict
+    description: |
+      You can either provide a list of IPs/FQDNs to target on-premise Cloudvision cluster or use DNS name for your Cloudvision as a Service instance.
+      Streaming to multiple clusters both on-prem and cloud service is supported.
+      > Note For TerminAttr version recommendation and EOS compatibility matrix, please refer to the latest TerminAttr Release Notes
+        which always contain the latest recommended versions and minimum required versions per EOS release.
+    keys:
+      cvaddrs:
+        type: list
+        description: |
+          Streaming address(es) for CloudVision single cluster
+          - TCP 9910 is used for CV on-prem
+          - TCP 443 is used for CV as a Service
+        items:
+          type: str
+          description: "Server address in the format `<ip/fqdn>:<port>`"
+      clusters:
+        type: list
+        description: |
+          Multiple CloudVision clusters
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              description: Cluster Name
+            cvaddrs:
+              type: list
+              description: |
+                Streaming address(es) for CloudVision cluster
+                - TCP 9910 is used for CV on-prem
+                - TCP 443 is used for CV as a Service
+              items:
+                type: str
+                description: "Server address in the format `<ip/fqdn>:<port>`"
+            cvauth:
+              type: dict
+              description: |
+                Authentication scheme used to connect to CloudVision
+              keys:
+                method:
+                  type: str
+                  valid_values: ["token", "token-secure", "key"]
+                key:
+                  type: str
+                token_file:
+                  type: str
+                  description: |
+                    Token file path
+                    e.g. "/tmp/token"
+            cvobscurekeyfile:
+              type: bool
+              description: |
+                Encrypt the private key used for authentication to CloudVision
+            cvproxy:
+              type: str
+              description: |
+                Proxy server through which CloudVision is reachable. Useful when the CloudVision server is hosted in the cloud.
+                The expected form is http://[user:password@]ip:port, e.g.: 'http://arista:arista@10.83.12.78:3128'. Available as of TerminAttr v1.13.0
+            cvsourceip:
+              type: str
+              description: |
+                Set source IP address in case of in-band managament
+            cvvrf:
+              type: str
+              description: |
+                The VRF to use to connect to CloudVision
+      cvauth:
+        type: dict
+        description: |
+          Authentication scheme used to connect to CloudVision
+        keys:
+          method:
+            type: str
+            valid_values: ["token", "token-secure", "key"]
+          key:
+            type: str
+          token_file:
+            type: str
+            description: |
+              Token file path
+              e.g. "/tmp/token"
+      cvobscurekeyfile:
+        type: bool
+        description: |
+          Encrypt the private key used for authentication to CloudVision
+      cvproxy:
+        type: str
+        description: |
+          Proxy server through which CloudVision is reachable. Useful when the CloudVision server is hosted in the cloud.
+          The expected form is http://[user:password@]ip:port, e.g.: 'http://arista:arista@10.83.12.78:3128'. Available as of TerminAttr v1.13.0
+      cvsourceip:
+        type: str
+        description: |
+          Set source IP address in case of in-band managament
+      cvvrf:
+        type: str
+        description: |
+          The VRF to use to connect to CloudVision
+      cvgnmi:
+        type: bool
+        description: |
+          Stream states from EOS GNMI servers (Openconfig) to CloudVision. Available as of TerminAttr v1.13.1
+      disable_aaa:
+        type: bool
+        description: |
+          Disable AAA authorization and accounting.
+          When setting this flag, all commands pushed from CloudVision are applied directly to the CLI without authorization
+      grpcaddr:
+        type: str
+        description: |
+          Set the gRPC server address, the default is 127.0.0.1:6042
+          e.g. "MGMT/0.0.0.0:6042"
+      grpcreadonly:
+        type: bool
+        description: |
+          gNMI read-only mode - Disable gnmi.Set()
+      ingestexclude:
+        type: str
+        description: |
+          Exclude paths from Sysdb on the ingest side.
+          e.g. "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
+      smashexcludes:
+        type: str
+        description: |
+          Exclude paths from the shared memory table.
+          e.g. "ale,flexCounter,hardware,kni,pulse,strata"
+      taillogs:
+        type: str
+        description: |
+          Enable log file collection; /var/log/messages is streamed by default if no path is set.
+          e.g. "/var/log/messages"
+      ecodhcpaddr:
+        type: str
+        description: |
+          ECO DHCP Collector address or ECO DHCP Fingerprint listening address in standalone mode (default "127.0.0.1:67")
+      ipfix:
+        type: bool
+        description: |
+          Enable IPFIX provider (TerminAttr default is true).
+          This flag is enabled by default and does not have to be added to the daemon configuration.
+      ipfixaddr:
+        type: str
+        description: |
+          ECO IPFIX Collector address to listen on to receive IPFIX packets (TerminAttr default "127.0.0.1:4739").
+      sflow:
+        type: bool
+        description: |
+          Enable sFlow provider (TerminAttr default is true).
+      sflowaddr:
+        type: str
+        description: |
+          ECO sFlow Collector address to listen on to receive sFlow packets (TerminAttr default "127.0.0.1:6343").
+      cvconfig:
+        type: bool
+        description: |
+          Subscribe to dynamic device configuration from CloudVision (TerminAttr default is false).
+      cvcompression:
+        type: str
+        description: |
+          The default compression scheme when streaming to CloudVision is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.
+          There is no need to change the compression scheme.
+      ingestauth_key:
+        type: str
+        description: |
+          Deprecated key. Use `cvauth` instead.
+      ingestgrpcurl:
+        type: dict
+        description: |
+          Deprecated key. Use `cvaddrs` instead.
+        keys:
+          ips:
+            type: list
+            items:
+              type: str
+          port:
+            type: int
+            convert_types:
+            - str
+      ingestvrf:
+        description: |
+          Deprecated key. Use `cvvrf` instead.
+        type: str

@@ -1,0 +1,45 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  management_api_http:
+    type: dict
+    keys:
+      enable_http:
+        type: bool
+      enable_https:
+        type: bool
+      https_ssl_profile:
+        description: SSL Profile Name
+        type: str
+      default_services:
+        type: bool
+        description: "Enable default services: capi-doc and tapagg"
+      enable_vrfs:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              description: VRF Name
+              type: str
+              required: true
+            access_group:
+              description: Standard IPv4 ACL name
+              type: str
+            ipv6_access_group:
+              description: Standard IPv6 ACL name
+              type: str
+      protocol_https_certificate:
+        type: dict
+        keys:
+          certificate:
+            type: str
+            description: Name of certificate; private key must also be specified
+          private_key:
+            type: str
+            description: Name of private key; certificate must also be specified

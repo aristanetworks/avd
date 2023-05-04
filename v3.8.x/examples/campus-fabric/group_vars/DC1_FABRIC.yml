@@ -1,0 +1,146 @@
+---
+### group_vars/DC1_FABRIC.yml
+
+fabric_name: DC1_FABRIC
+
+# Set Design Type to L2ls
+design:
+  type: l2ls
+
+# Ansible connectivity definitions
+# eAPI connectivity via HTTPS is specified (as opposed to network_cli via SSH)
+ansible_connection: ansible.netcommon.httpapi
+# Specifies that we are indeed using Arista EOS
+ansible_network_os: arista.eos.eos
+# This user/password must exist on the switches to enable Ansible access
+ansible_user: admin
+ansible_password: admin
+# User escalation (to enter enable mode)
+ansible_become: true
+ansible_become_method: enable
+# Use SSL (HTTPS)
+ansible_httpapi_use_ssl: true
+# Do not try to validate certs
+ansible_httpapi_validate_certs: false
+
+# Spine Switches
+l3spine:
+  defaults:
+    platform: cEOSLab
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 4096
+    loopback_ipv4_pool: 172.16.1.0/24
+    mlag_peer_ipv4_pool: 192.168.0.0/24
+    mlag_peer_l3_ipv4_pool: 10.1.1.0/24
+    virtual_router_mac_address: 00:1c:73:00:dc:01
+    mlag_interfaces: [Ethernet55/1, Ethernet56/1]
+  node_groups:
+    SPINES:
+      nodes:
+        SPINE1:
+          id: 1
+          mgmt_ip: 172.100.100.101/24
+        SPINE2:
+          id: 2
+          mgmt_ip: 172.100.100.102/24
+
+# IDF - Leaf Switches
+leaf:
+  defaults:
+    platform: cEOSLab
+    mlag_peer_ipv4_pool: 192.168.0.0/24
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 16384
+    inband_management_subnet: 10.10.10.0/24
+    inband_management_vlan: 10
+  node_groups:
+    IDF1:
+      mlag: true
+      uplink_interfaces: [Ethernet51]
+      mlag_interfaces: [Ethernet53, Ethernet54]
+      filter:
+        tags: [ "110", "120", "130" ]
+      nodes:
+        LEAF1A:
+          id: 3
+          mgmt_ip: 172.100.100.103/24
+          uplink_switches: [SPINE1]
+          uplink_switch_interfaces: [Ethernet1]
+        LEAF1B:
+          id: 4
+          mgmt_ip: 172.100.100.104/24
+          uplink_switches: [SPINE2]
+          uplink_switch_interfaces: [Ethernet1]
+    IDF2:
+      mlag: false
+      filter:
+        tags: [ "210", "220", "230" ]
+      nodes:
+        LEAF2A:
+          id: 5
+          mgmt_ip: 172.100.100.105/24
+          uplink_interfaces: [Ethernet1/1, Ethernet1/3]
+          uplink_switches: [SPINE1, SPINE2]
+          uplink_switch_interfaces: [Ethernet49/1, Ethernet49/1]
+    IDF3_AGG:
+      mlag: true
+      mlag_interfaces: [Ethernet98/3, Ethernet98/4]
+      uplink_switches: [SPINE1, SPINE2]
+      uplink_interfaces: [Ethernet97/1, Ethernet97/2]
+      filter:
+        tags: [ "310", "320", "330" ]
+      nodes:
+        LEAF3A:
+          id: 6
+          mgmt_ip: 172.100.100.106/24
+          uplink_switch_interfaces: [Ethernet50/1, Ethernet50/1]
+        LEAF3B:
+          id: 7
+          mgmt_ip: 172.100.100.107/24
+          uplink_switch_interfaces: [Ethernet51/1, Ethernet51/1]
+    IDF3_3C:
+      mlag: false
+      uplink_switches: [LEAF3A, LEAF3B]
+      uplink_interfaces: [Ethernet97/1, Ethernet97/2]
+      nodes:
+        LEAF3C:
+          id: 8
+          mgmt_ip: 172.100.100.108/24
+          uplink_switch_interfaces: [Ethernet97/3, Ethernet97/3]
+    IDF3_3D:
+      mlag: false
+      uplink_switches: [LEAF3A, LEAF3B]
+      uplink_interfaces: [Ethernet97/1, Ethernet97/2]
+      nodes:
+        LEAF3D:
+          id: 9
+          mgmt_ip: 172.100.100.109/24
+          uplink_switch_interfaces: [Ethernet97/4, Ethernet97/4]
+    IDF3_3E:
+      mlag: false
+      uplink_switches: [LEAF3A, LEAF3B]
+      uplink_interfaces: [Ethernet97/1, Ethernet97/2]
+      nodes:
+        LEAF3E:
+          id: 10
+          mgmt_ip: 172.100.100.110/24
+          uplink_switch_interfaces: [Ethernet98/1, Ethernet98/1]
+
+
+#### Override for vEOS/cEOS Lab Caveats ####
+p2p_uplinks_mtu: 1500
+
+# Underlay Routing Protocol
+underlay_routing_protocol: OSPF
+
+#### WAN/Core Edge Links ####
+core_interfaces:
+  p2p_links:
+    - ip: [ 10.0.0.3/31, 10.0.0.2/31 ]
+      nodes: [ SPINE1, WAN ]
+      interfaces: [ Ethernet52/1, Ethernet1/1 ]
+      include_in_underlay_protocol: true
+    - ip: [ 10.0.0.5/31, 10.0.0.4/31 ]
+      nodes: [ SPINE2, WAN ]
+      interfaces: [ Ethernet52/1, Ethernet1/1 ]
+      include_in_underlay_protocol: true

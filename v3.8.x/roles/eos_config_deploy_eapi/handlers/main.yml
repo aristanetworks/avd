@@ -1,0 +1,10 @@
+---
+  # handlers file for eos_config_deploy_eapi
+
+- name: backup running config
+  eos_config:
+    backup: yes
+    backup_options:
+      filename: "{{ post_running_config_backup_filename }}"
+      dir_path: "{{ post_running_config_backup_dir }}"
+  listen: "backup config"

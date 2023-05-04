@@ -1,0 +1,24 @@
+allow_other_keys: true
+keys:
+  default_node_types:
+    description: Uses hostname matches against a regular expression to determine the
+      node type.
+    items:
+      keys:
+        match_hostnames:
+          description: Regular expressions to match against hostnames
+          items:
+            description: Regex needs to match full hostname (i.e. is bounded by ^
+              and $ elements)
+            required: true
+            type: str
+          required: true
+          type: list
+        node_type:
+          description: Resulting node type when regex matches
+          required: true
+          type: str
+      type: dict
+    primary_key: node_type
+    type: list
+type: dict

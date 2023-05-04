@@ -1,0 +1,40 @@
+default_connected_endpoints_keys:
+  "l3ls-evpn":
+    servers:
+      type: server
+    firewalls:
+      type: firewall
+    routers:
+      type: router
+    load_balancers:
+      type: load_balancer
+    storage_arrays:
+      type: storage_array
+  "mpls":
+    routers:
+      type: router
+    cpes:
+      type: cpe
+  "l2ls":
+    servers:
+      type: server
+    firewalls:
+      type: firewall
+    routers:
+      type: router
+    load_balancers:
+      type: load_balancer
+    storage_arrays:
+      type: storage_array
+    workstations:
+      type: workstation
+    access_points:
+      type: access_point
+    phones:
+      type: phone
+    printers:
+      type: printer
+    cameras:
+      type: camera
+    generic_devices:
+      type: generic_device

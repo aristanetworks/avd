@@ -1,0 +1,44 @@
+{# doc - cvx #}
+{% if cvx is arista.avd.defined %}
+
+# CVX
+{%     if cvx.peer_hosts is arista.avd.defined %}
+
+| Peer Hosts |
+| ---------- |
+{%         set peer_hosts = cvx.peer_hosts | arista.avd.natural_sort | join(', ') %}
+{%     endif %}
+| {{ peer_hosts }} |
+{%     if cvx.shutdown is arista.avd.defined(true) %}
+
+CVX is disabled
+{%     elif cvx.shutdown is arista.avd.defined(false) %}
+
+CVX is enabled
+{%         if cvx.services is arista.avd.defined %}
+
+## CVX services
+
+| Service | Enabled | Settings |
+| ------- | ------- | -------- |
+{%             if cvx.services.mcs is arista.avd.defined %}
+{%                 if cvx.services.mcs.shutdown is arista.avd.defined %}
+{%                     set enabled = not cvx.services.mcs.shutdown %}
+{%                 else %}
+{%                     set enabled = '-' %}
+{%                 endif %}
+{%                 set settings = [] %}
+{%                 if cvx.services.mcs.redis.password is arista.avd.defined %}
+{%                     do settings.append("Redis Password Set") %}
+{%                 endif %}
+| MCS | {{ enabled }} | {{ settings | join("<br>") }} |
+{%             endif %}
+{%         endif %}
+{%     endif %}
+
+## CVX configuration
+
+```eos
+{%     include 'eos/cvx.j2' %}
+```
+{% endif %}

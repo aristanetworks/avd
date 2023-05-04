@@ -1,0 +1,16 @@
+{# eos - qos #}
+{% if qos is arista.avd.defined %}
+!
+{%     if qos.rewrite_dscp is arista.avd.defined(true) %}
+qos rewrite dscp
+{%     endif %}
+{%     for cos_map in qos.map.cos | arista.avd.natural_sort %}
+qos map cos {{ cos_map }}
+{%     endfor %}
+{%     for dscp_map in qos.map.dscp | arista.avd.natural_sort %}
+qos map dscp {{ dscp_map }}
+{%     endfor %}
+{%     for tc_map in qos.map.traffic_class | arista.avd.natural_sort %}
+qos map traffic-class {{ tc_map }}
+{%     endfor %}
+{% endif %}

@@ -1,0 +1,66 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  route_maps:
+    type: list
+    primary_key: name
+    convert_types:
+      - dict
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          description: Route-map Name
+        sequence_numbers:
+          type: list
+          required: true
+          primary_key: sequence
+          convert_types:
+            - dict
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                required: true
+                description: Sequence ID
+                convert_types:
+                  - str
+              type:
+                type: str
+                required: true
+                valid_values: [ "permit", "deny" ]
+              description:
+                type: str
+              match:
+                type: list
+                description: List of "match" statements
+                items:
+                  type: str
+                  description: |
+                    Match as string
+                    Example: "ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"
+              set:
+                type: list
+                description: List of "set" statements
+                items:
+                  type: str
+                  description: |
+                    Set as string
+                    Example: "origin incomplete"
+              sub_route_map:
+                type: str
+                description: Name of Sub-Route-map
+              continue:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                  sequence_number:
+                    type: int
+                    convert_types:
+                      - str

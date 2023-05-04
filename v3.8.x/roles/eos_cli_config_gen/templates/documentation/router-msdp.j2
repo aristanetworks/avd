@@ -1,0 +1,37 @@
+{% if router_msdp is arista.avd.defined %}
+
+## Router MSDP
+{%     set msdp_info = namespace(peers = []) %}
+{%     for peer in router_msdp.peers | arista.avd.default([]) %}
+{%         do msdp_info.peers.append(peer) %}
+{%     endfor %}
+{%     for vrf in router_msdp.vrfs | arista.avd.default([]) %}
+{%         for peer in vrf.peers | arista.avd.default([]) %}
+{%             do peer.update({"vrf": vrf.name}) %}
+{%             do msdp_info.peers.append(peer) %}
+{%         endfor %}
+{%     endfor %}
+{%     if msdp_info.peers | length > 0 %}
+
+### Router MSDP Peers
+
+| Peer Address | Disabled | VRF | Default-peer | Default-peer Prefix List | Mesh Groups | Local Interface | Description | Inbound SA Filter | Outbound SA Filter |
+| ------------ | -------- | --- | ------------ | ------------------------ | ----------- | --------------- | ----------- | ----------------- | ------------------ |
+{%         for peer in msdp_info.peers %}
+{%             if peer.mesh_groups | arista.avd.default([]) | length > 0 %}
+{%                 set row_mesh_groups = [] %}
+{%                 for mesh_group in peer.mesh_groups %}
+{%                     do row_mesh_groups.append(mesh_group.name) %}
+{%                 endfor %}
+{%                 set row_mesh_groups = row_mesh_groups | join(", ") %}
+{%             endif %}
+| {{ peer.ipv4_address }} | {{ peer.disabled | arista.avd.default(false) }} | {{ peer.vrf | arista.avd.default("default") }} | {{ peer.default_peer.enabled | arista.avd.default(false) }} | {{ peer.default_peer.prefix_list | arista.avd.default("-") }} | {{ row_mesh_groups | arista.avd.default("-") }} | {{ peer.local_interface | arista.avd.default("-") }} | {{ peer.description | arista.avd.default("-") }} | {{ peer.sa_filter.in_list | arista.avd.default("-") }} | {{ peer.sa_filter.out_list | arista.avd.default("-") }} |
+{%         endfor %}
+{%     endif %}
+
+### Router MSDP Device Configuration
+
+```eos
+{%     include 'eos/router-msdp.j2' %}
+```
+{% endif %}

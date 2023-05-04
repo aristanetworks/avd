@@ -1,0 +1,31 @@
+{# doc - mcs client #}
+{% if mcs_client is arista.avd.defined %}
+
+## MCS client Summary
+{%     if mcs_client.shutdown is arista.avd.defined(true) %}
+
+MCS client is shutdown
+{%     elif mcs_client.shutdown is arista.avd.defined(false) %}
+
+MCS client is enabled
+{%     endif %}
+{%     if mcs_client.cvx_secondary is arista.avd.defined %}
+
+| Secondary CVX cluster | Server Hosts | Enabled |
+| --------------------- | ------------ | ------- |
+{%         set secondary = mcs_client.cvx_secondary.name %}
+{%         set servers = mcs_client.cvx_secondary.server_hosts | arista.avd.default('-') | join(', ') %}
+{%         if mcs_client.cvx_secondary.shutdown is arista.avd.defined %}
+{%             set enabled = not mcs_client.cvx_secondary.shutdown %}
+{%         else %}
+{%             set enabled = '-' %}
+{%         endif %}
+| {{ secondary }} | {{ servers }} | {{ enabled }} |
+{%     endif %}
+
+### MCS client configuration
+
+```eos
+{%     include 'eos/mcs-client.j2' %}
+```
+{% endif %}

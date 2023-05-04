@@ -1,0 +1,34 @@
+---
+- name: Create required output directories
+  tags: [eos_designs]
+  block:
+    - name: "Create {{ role_schema_dir }}"
+      ansible.builtin.file:
+        path: "{{ role_schema_dir }}"
+        state: directory
+        mode: 0775
+    - name: "Create {{ role_schema_fragments_dir }}"
+      ansible.builtin.file:
+        path: "{{ role_schema_fragments_dir }}"
+        state: directory
+        mode: 0775
+  delegate_to: localhost
+  run_once: true
+
+- name: Gather AVD Schema Fragments for eos_designs
+  tags: [eos_designs]
+  run_once: true
+  ansible.builtin.copy:
+    content: "{{ query('ansible.builtin.file', *schema_files) | map('from_yaml') | ansible.builtin.combine(recursive=True) | to_nice_yaml(indent=2) }}"
+    dest: "{{ role_schema_path }}"
+    mode: 0664
+  vars:
+    schema_files: "{{ query('ansible.builtin.fileglob', role_schema_fragments_glob) | arista.avd.natural_sort }}"
+
+- name: Convert AVD Schema to JSON Schema
+  tags: [eos_designs]
+  run_once: true
+  ansible.builtin.copy:
+    content: "{{ lookup('ansible.builtin.file', role_schema_path) | from_yaml | arista.avd.convert_schema(type='jsonschema') | to_nice_json(indent=2, sort_keys=false) }}"
+    dest: "{{ role_schema_json_schema_path }}"
+    mode: 0664

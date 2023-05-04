@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  match_list_input:
+    type: dict
+    display_name: Match Lists
+    keys:
+      string:
+        type: list
+        primary_key: name
+        convert_types:
+          - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              description: Match-list Name
+            sequence_numbers:
+              type: list
+              required: true
+              primary_key: sequence
+              convert_types:
+                - dict
+              items:
+                type: dict
+                keys:
+                  sequence:
+                    type: int
+                    required: true
+                    description: Sequence ID
+                    convert_types:
+                      - str
+                  match_regex:
+                    type: str
+                    required: true
+                    description: Regular Expression

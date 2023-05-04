@@ -1,0 +1,68 @@
+{# doc - mac security #}
+{% if mac_security is arista.avd.defined %}
+
+# MACsec
+
+## MACsec Summary
+
+{%     if mac_security.license is arista.avd.defined %}
+License is installed.
+{%     else %}
+License is not installed.
+{%     endif %}
+
+{%     if mac_security.fips_restrictions is arista.avd.defined(true) %}
+FIPS restrictions enabled.
+{%     endif %}
+
+### MACsec Profiles Summary
+{%     if mac_security.profiles is arista.avd.defined %}
+{%         for profile in mac_security.profiles | arista.avd.natural_sort('name') %}
+
+**Profile {{ profile.name }}:**
+
+Settings:
+
+| Cipher | Key-Server Priority | Rekey-Period | SCI |
+| ------ | ------------------- | ------------ | --- |
+{%             set cipher = profile.cipher | arista.avd.default('-') %}
+{%             set key_server_priority = profile.mka.key_server_priority | arista.avd.default('-') %}
+{%             set rekey_period = profile.mka.session.rekey_period | arista.avd.default('-') %}
+{%             set sci = profile.sci | arista.avd.default('-') %}
+| {{ cipher }} | {{ key_server_priority }} | {{ rekey_period }} | {{ sci }} |
+
+Keys:
+
+{%             if profile.connection_keys is arista.avd.defined %}
+| Key ID | Encrypted (Type 7) Key | Fallback |
+| ------ | ---------------------- | -------- |
+{%                 for connection_key in profile.connection_keys | arista.avd.natural_sort('id') %}
+{%                     if connection_key.encrypted_key is arista.avd.defined %}
+{%                         set encrypted_key = connection_key.encrypted_key %}
+{%                         set fallback = connection_key.fallback | arista.avd.default('-') %}
+| {{ connection_key.id }} | {{ encrypted_key }} | {{ fallback }} |
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%             if profile.l2_protocols | arista.avd.default([]) | length > 0 %}
+
+L2 Protocols:
+
+| L2 Protocol | Mode |
+| ----------- | ---- |
+{%                 if profile.l2_protocols.ethernet_flow_control is arista.avd.defined %}
+| ethernet-flow-control | {{ profile.l2_protocols.ethernet_flow_control.mode }} |
+{%                 endif %}
+{%                 if profile.l2_protocols.lldp is arista.avd.defined %}
+| lldp | {{ profile.l2_protocols.lldp.mode }} |
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+
+## MACsec Device Configuration
+
+```eos
+{%     include 'eos/mac-security.j2' %}
+```
+{% endif %}

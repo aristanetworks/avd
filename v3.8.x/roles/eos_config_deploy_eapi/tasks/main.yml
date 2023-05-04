@@ -1,0 +1,35 @@
+---
+- name: "Collection {{ ansible_collection_name }} version {{ version }}{{ ('(git ' ~ git_tag ~ ')') if git_tag }} loaded from {{ collection_path }}"
+  tags: [always, avd_version]
+  set_fact:
+    avd_collection_version: version
+  vars:
+    versions: "{{ lookup('pipe', 'ansible-galaxy collection list -p ' ~ collection_path ~ ' --format yaml ' ~ ansible_collection_name) | from_yaml }}"
+    collection_path: "{{ (role_path | split('/'))[0:-4] | join('/') }}"
+    version: "{{ versions[collection_path][ansible_collection_name].version | default('Unknown') }}"
+    git_tag: "{{ lookup('pipe', 'git -C ' ~ collection_path ~ ' describe --tags --always 2>/dev/null', errors='ignore') }}"
+  run_once: true
+  failed_when: false
+
+- name: Create required output directories if not present
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+  loop:
+    - "{{ post_running_config_backup_dir }}"
+    - "{{ pre_running_config_backup_dir }}"
+  delegate_to: localhost
+  run_once: true
+
+- name: replace configuration with intended configuration
+  eos_config:
+    src: "{{ eos_config_dir }}/{{ inventory_hostname }}.cfg"
+    replace: config
+    save_when: modified
+    backup: "{{ eos_config_deploy_eapi_pre_running_config_backup }}"
+    backup_options:
+      filename: "{{ pre_running_config_backup_filename }}"
+      dir_path: "{{ pre_running_config_backup_dir }}"
+  notify: "backup config"
+  tags: [provision]

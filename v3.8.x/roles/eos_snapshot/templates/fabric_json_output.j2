@@ -1,0 +1,23 @@
+{# j2lint: disable=jinja-statements-delimiter #}
+{
+    "devices": {
+{% for node in ansible_play_hosts | arista.avd.natural_sort %}
+        "{{ node }}": {
+{%     for command in commands_list %}
+            "{{ command | replace(" ","_") }}":
+                {{ hostvars[node].cli_output_json.results[loop.index0].stdout[0] | to_nice_json | indent(12) }}
+{%-        if not loop.last %}
+,
+{%         else %}
+
+        }
+{%-        endif %}
+{%-    endfor %}
+{%-    if not loop.last %}
+,
+{%     else %}
+
+    }
+{%     endif %}
+{% endfor %}
+}

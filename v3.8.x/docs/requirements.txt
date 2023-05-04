@@ -1,0 +1,10 @@
+mkdocs
+mkdocs-bootswatch
+mkdocs-material==8.5.7
+mkdocs-material-extensions
+fontawesome-markdown
+pymdown-extensions
+mdx_truly_sane_lists
+mkdocs-git-revision-date-localized-plugin
+mkdocs-git-revision-date-plugin
+mkdocs-exclude

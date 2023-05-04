@@ -1,0 +1,59 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  ip_community_lists:
+    type: list
+    secondary_key: entries
+    primary_key: name
+    convert_types:
+      - dict
+    display_name: IP Community Lists
+    description: |
+      AVD supports 2 different data models for community lists:
+
+      - The legacy `community_lists` data model that can be used for compatibility with the existing deployments.
+      - The improved `ip_community_lists` data model.
+
+      Both data models can coexist without conflicts, as different keys are used: `community_lists` vs `ip_community_lists`.
+      Community list names must be unique.
+
+      The improved data model has a better design documented below:
+
+      communities and regexp MUST not be configured together in the same entry
+      possible community strings are (case insensitive):
+       - GSHUT
+       - internet
+       - local-as
+       - no-advertise
+       - no-export
+       - <1-4294967040>
+       - aa:nn
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          description: IP Community-list Name
+        entries:
+          type: list
+          required: true
+          items:
+            type: dict
+            keys:
+              action:
+                type: str
+                required: true
+                valid_values: ["permit", "deny"]
+              communities:
+                type: list
+                items:
+                  type: str
+                description: "If defined, a standard community-list will be configured"
+              regexp:
+                type: str
+                description: |
+                  Regular Expression
+                  If defined, a regex community-list will be configured

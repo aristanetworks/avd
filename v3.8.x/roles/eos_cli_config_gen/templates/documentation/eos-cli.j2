@@ -1,0 +1,9 @@
+{# doc - eos cli #}
+{% if eos_cli is arista.avd.defined %}
+
+# EOS CLI
+
+```eos
+{%     include 'eos/eos-cli.j2' %}
+```
+{% endif %}

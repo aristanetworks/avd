@@ -1,0 +1,20 @@
+{# eos - queue monitor lenght #}
+{% if queue_monitor_length is arista.avd.defined and queue_monitor_length.enabled is not arista.avd.defined(false) %}
+!
+queue-monitor length
+{%     if queue_monitor_length.log is arista.avd.defined %}
+queue-monitor length log {{ queue_monitor_length.log }}
+{%     endif %}
+{%     if queue_monitor_length.notifying is arista.avd.defined(true) %}
+queue-monitor length notifying
+{%     elif queue_monitor_length.notifying is arista.avd.defined(false) %}
+no queue-monitor length notifying
+{%     endif %}
+{%     if queue_monitor_length.cpu.thresholds.high is arista.avd.defined %}
+{%         if queue_monitor_length.cpu.thresholds.low is arista.avd.defined %}
+queue-monitor length cpu thresholds {{ queue_monitor_length.cpu.thresholds.high }} {{ queue_monitor_length.cpu.thresholds.low }}
+{%         else %}
+queue-monitor length cpu threshold {{ queue_monitor_length.cpu.thresholds.high }}
+{%         endif %}
+{%     endif %}
+{% endif %}

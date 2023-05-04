@@ -1,0 +1,6 @@
+{# eos - management defaults #}
+{% if management_defaults.secret.hash is arista.avd.defined %}
+!
+management defaults
+  secret hash {{ management_defaults.secret.hash }}
+{% endif %}

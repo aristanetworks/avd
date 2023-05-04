@@ -1,0 +1,9 @@
+release_summary: |
+  Release 3.8.4 - See documentation on avd.sh for details.
+bugfixes:
+- Fix(eos_cli_config_gen) - Min value on local_users privilege (#2617) (https://github.com/aristanetworks/ansible-avd/pull/2618)
+- Fix(eos_cli_config_gen) - Fix documentation template for flow tracking (#2636) (https://github.com/aristanetworks/ansible-avd/pull/2642)
+- Fix(eos_cli_config_gen) - Update radius-server and radius-servers to match EOS behavior (#2615) (https://github.com/aristanetworks/ansible-avd/pull/2644)
+- Fix(eos_designs) - Duplicate route-maps generated when using underlay_filter_peer_as true (#2612) (https://github.com/aristanetworks/ansible-avd/pull/2640)
+- Fix(eos_designs) - Handle overlapping vlan numbers with filter.only_in_use and trunkgroups (#2628) (https://github.com/aristanetworks/ansible-avd/pull/2641)
+- Fix(eos_designs) - Configure ptp to use the system mac (#2647) (https://github.com/aristanetworks/ansible-avd/pull/2648)

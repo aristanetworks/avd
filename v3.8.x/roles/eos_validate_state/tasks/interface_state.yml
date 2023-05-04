@@ -1,0 +1,115 @@
+---
+
+# Interface State Tests
+
+- name: Gather interfaces state
+  eos_command:
+    commands: "show interfaces description | json"
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  register: interfaces_state
+  tags:
+    - interfaces_state
+
+- name: Validate Ethernet interfaces state
+  delegate_to: localhost
+  assert:
+    that:
+      ( interfaces_state.stdout[0].interfaceDescriptions[ethernet_interface.name].interfaceStatus | arista.avd.default('Not present') == 'up' and
+      interfaces_state.stdout[0].interfaceDescriptions[ethernet_interface.name].lineProtocolStatus | arista.avd.default('Not present') == 'up' and
+      not ethernet_interface.shutdown
+      ) or
+      ( interfaces_state.stdout[0].interfaceDescriptions[ethernet_interface.name].interfaceStatus | arista.avd.default('Not present') == 'adminDown' and
+      interfaces_state.stdout[0].interfaceDescriptions[ethernet_interface.name].lineProtocolStatus | arista.avd.default('Not present') != 'up' and
+      ethernet_interface.shutdown
+      )
+    fail_msg: "Interface shutdown: {{ ethernet_interface.shutdown | replace('\"','') }} -
+      interface status: {{ interfaces_state.stdout[0].interfaceDescriptions[ethernet_interface.name].interfaceStatus | arista.avd.default('Not present') | replace('\"','') }} -
+      line protocol status: {{ interfaces_state.stdout[0].interfaceDescriptions[ethernet_interface.name].lineProtocolStatus | arista.avd.default('Not present') | replace('\"','') }}"
+    quiet: true
+  loop: "{{ ethernet_interfaces | arista.avd.default({}) | arista.avd.convert_dicts('name') }}"
+  loop_control:
+    loop_var: ethernet_interface
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  register: ethernet_interface_state_results
+  tags:
+    - interfaces_state
+
+- name: Validate Port-Channel interfaces state
+  delegate_to: localhost
+  assert:
+    that:
+      ( interfaces_state.stdout[0].interfaceDescriptions[port_channel_interface.name].interfaceStatus | arista.avd.default('Not configured') == 'up' and
+      interfaces_state.stdout[0].interfaceDescriptions[port_channel_interface.name].lineProtocolStatus | arista.avd.default('Not configured') == 'up' and
+      not port_channel_interface.shutdown
+      ) or
+      ( interfaces_state.stdout[0].interfaceDescriptions[port_channel_interface.name].interfaceStatus | arista.avd.default('Not configured') == 'adminDown' and
+      interfaces_state.stdout[0].interfaceDescriptions[port_channel_interface.name].lineProtocolStatus | arista.avd.default('Not configured') != 'up' and
+      port_channel_interface.shutdown
+      )
+    fail_msg: "Interface shutdown: {{ port_channel_interface.shutdown | replace('\"','') }} -
+      interface status: {{ interfaces_state.stdout[0].interfaceDescriptions[port_channel_interface.name].interfaceStatus | arista.avd.default('Not configured') | replace('\"','') }} -
+      line protocol status: {{ interfaces_state.stdout[0].interfaceDescriptions[port_channel_interface.name].lineProtocolStatus | arista.avd.default('Not configured') | replace('\"','') }}"
+    quiet: true
+  loop: "{{ port_channel_interfaces | arista.avd.default({}) | arista.avd.convert_dicts('name') }}"
+  loop_control:
+    loop_var: port_channel_interface
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  register: port_channel_interface_state_results
+  tags:
+    - interfaces_state
+
+- name: Validate Vlan interfaces state
+  delegate_to: localhost
+  assert:
+    that:
+      ( interfaces_state.stdout[0].interfaceDescriptions[vlan_interface.name].interfaceStatus | arista.avd.default('Not configured') == 'up' and
+      interfaces_state.stdout[0].interfaceDescriptions[vlan_interface.name].lineProtocolStatus | arista.avd.default('Not configured') == 'up' and
+      not vlan_interface.shutdown
+      ) or
+      ( interfaces_state.stdout[0].interfaceDescriptions[vlan_interface.name].interfaceStatus | arista.avd.default('Not configured') == 'adminDown' and
+      interfaces_state.stdout[0].interfaceDescriptions[vlan_interface.name].lineProtocolStatus | arista.avd.default('Not configured') != 'up' and
+      vlan_interface.shutdown
+      )
+    fail_msg: "Interface shutdown: {{ vlan_interface.shutdown | replace('\"','') }} -
+      interface status: {{ interfaces_state.stdout[0].interfaceDescriptions[vlan_interface.name].interfaceStatus | arista.avd.default('Not configured') | replace('\"','') }} -
+      line protocol status: {{ interfaces_state.stdout[0].interfaceDescriptions[vlan_interface.name].lineProtocolStatus | arista.avd.default('Not configured') | replace('\"','') }}"
+    quiet: true
+  loop: "{{ vlan_interfaces| arista.avd.default({}) | arista.avd.convert_dicts('name') }}"
+  loop_control:
+    loop_var: vlan_interface
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  register: vlan_interface_state_results
+  tags:
+    - interfaces_state
+
+- name: Validate Vxlan interfaces state
+  delegate_to: localhost
+  assert:
+    that:
+      - interfaces_state.stdout[0].interfaceDescriptions.Vxlan1.interfaceStatus | arista.avd.default('Not configured') == 'up'
+      - interfaces_state.stdout[0].interfaceDescriptions.Vxlan1.lineProtocolStatus | arista.avd.default('Not configured') == 'up'
+    fail_msg: "Interface status: {{ interfaces_state.stdout[0].interfaceDescriptions.Vxlan1.interfaceStatus | arista.avd.default('Not configured') | replace('\"','') }} -
+      line protocol status: {{ interfaces_state.stdout[0].interfaceDescriptions.Vxlan1.lineProtocolStatus | arista.avd.default('Not configured') | replace('\"','') }}"
+    quiet: true
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  when: (vxlan_interface.Vxlan1 is arista.avd.defined)
+  register: vxlan_interface_state_results
+  tags:
+    - interfaces_state
+
+- name: Validate Loopback interfaces state
+  delegate_to: localhost
+  assert:
+    that:
+      - interfaces_state.stdout[0].interfaceDescriptions[loopback_interface.name].interfaceStatus | arista.avd.default('Not configured') == 'up'
+      - interfaces_state.stdout[0].interfaceDescriptions[loopback_interface.name].lineProtocolStatus | arista.avd.default('Not configured') == 'up'
+    fail_msg: "Interface status: {{ interfaces_state.stdout[0].interfaceDescriptions[loopback_interface.name].interfaceStatus | arista.avd.default('Not configured') | replace('\"','') }} -
+      line protocol status: {{ interfaces_state.stdout[0].interfaceDescriptions[loopback_interface.name].lineProtocolStatus | arista.avd.default('Not configured') | replace('\"','') }}"
+    quiet: true
+  loop: "{{ loopback_interfaces | arista.avd.default({}) | arista.avd.convert_dicts('name') }}"
+  loop_control:
+    loop_var: loopback_interface
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  register: loopback_interface_state_results
+  tags:
+    - interfaces_state

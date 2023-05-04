@@ -1,0 +1,22 @@
+{# doc - local users #}
+{% if local_users is arista.avd.defined %}
+
+## Local Users
+
+### Local Users Summary
+
+| User | Privilege | Role | Disabled |
+| ---- | --------- | ---- | -------- |
+{%     for local_user in local_users | arista.avd.natural_sort('name') %}
+{%         set role = local_user.role | arista.avd.default('-') %}
+{%         set privilege = local_user.privilege | arista.avd.default('-') %}
+{%         set disabled = local_user.disabled | arista.avd.default(false) %}
+| {{ local_user.name }} | {{ privilege }} | {{ role }} | {{ disabled }} |
+{%     endfor %}
+
+### Local Users Device Configuration
+
+```eos
+{%     include 'eos/local-users.j2' %}
+```
+{% endif %}
