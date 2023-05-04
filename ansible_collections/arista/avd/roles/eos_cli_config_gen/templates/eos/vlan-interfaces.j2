@@ -280,10 +280,12 @@ interface {{ vlan_interface.name }}
 {%             endfor %}
 {%         endfor %}
 {%     endif %}
-{%     if vlan_interface.ip_attached_host_route_export.distance is arista.avd.defined %}
-   ip attached-host route export {{ vlan_interface.ip_attached_host_route_export.distance }}
-{%     elif vlan_interface.ip_attached_host_route_export is arista.avd.defined %}
-   ip attached-host route export
+{%     if vlan_interface.ip_attached_host_route_export.enabled is arista.avd.defined(true) %}
+{%         set ip_attached_host_route_export_cli = "ip attached-host route export" %}
+{%         if vlan_interface.ip_attached_host_route_export.distance is arista.avd.defined %}
+{%             set ip_attached_host_route_export_cli = ip_attached_host_route_export_cli ~ " " ~ vlan_interface.ip_attached_host_route_export.distance %}
+{%         endif %}
+   {{ ip_attached_host_route_export_cli }}
 {%     endif %}
 {%     if vlan_interface.bfd.interval is arista.avd.defined and
           vlan_interface.bfd.min_rx is arista.avd.defined and

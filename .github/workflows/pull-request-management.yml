@@ -97,10 +97,8 @@ jobs:
       - uses: actions/checkout@v3
       - name: 'Start docker-compose stack'
         run: |
-          cp development/docker-compose.yml .
-          sed -i 's/cd\sansible-avd\/\s\&\&//g' docker-compose.yml
-          docker-compose -f docker-compose.yml up -d webdoc_avd
-          docker-compose -f docker-compose.yml ps
+          docker-compose -f development/docker-compose.yml up -d webdoc_avd
+          docker-compose -f development/docker-compose.yml ps
       - name: 'Test connectivity to mkdoc server'
         run: |
           bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' 127.0.0.1:8000)" != "200" ]]; do sleep 5; done'
@@ -109,7 +107,7 @@ jobs:
           docker run --network container:webdoc_avd raviqqe/muffet:2.6.1 http://127.0.0.1:8000/ -e ".*fonts.googleapis.com.*" -e ".*fonts.gstatic.com.*" -e ".*tools.ietf.org.*" -e ".*edit.*" -e ".*docs.github.com.*" -e "twitter.com" -f --max-redirections=3 --timeout=30 --rate-limit=1
       - name: 'Stop docker-compose stack'
         run: |
-          docker-compose -f docker-compose.yml down
+          docker-compose -f development/docker-compose.yml down
 
   # ----------------------------------- #
   # Test Requirements
@@ -150,6 +148,7 @@ jobs:
         avd_scenario:
           - 'eos_cli_config_gen'
           - 'eos_cli_config_gen_deprecated_vars'
+          - 'eos_cli_config_gen_negative_unit_tests'
         ansible_version:
           - 'ansible-core>=2.12.6,<2.15.0,!=2.13.0'
         # Also test minimum ansible version for one scenario.
@@ -165,7 +164,7 @@ jobs:
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.3
+        uses: arista-netdevops-community/action-molecule-avd@v1.6
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
@@ -200,7 +199,7 @@ jobs:
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.3
+        uses: arista-netdevops-community/action-molecule-avd@v1.6
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
@@ -256,7 +255,7 @@ jobs:
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.3
+        uses: arista-netdevops-community/action-molecule-avd@v1.6
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
@@ -290,7 +289,7 @@ jobs:
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.3
+        uses: arista-netdevops-community/action-molecule-avd@v1.6
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'

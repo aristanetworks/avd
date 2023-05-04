@@ -303,7 +303,6 @@ ip route 10.1.0.0/16 10.1.100.100
 | Instance | EVPN_UNDERLAY |
 | Net-ID | 49.0001.0001.0000.0001.00 |
 | Type | level-2 |
-| Address Family | ipv4 unicast |
 | Router-ID | 192.168.255.1 |
 | Log Adjacency Changes | True |
 
@@ -319,6 +318,13 @@ ip route 10.1.0.0/16 10.1.100.100
 | Interface | ISIS Instance | ISIS Metric | Interface Mode |
 | --------- | ------------- | ----------- | -------------- |
 | Loopback0 | EVPN_UNDERLAY | - | passive |
+
+#### ISIS IPv4 Address Family Summary
+
+| Settings | Value |
+| -------- | ----- |
+| IPv4 Address-family Enabled | True |
+| Maximum-paths | 4 |
 
 #### Router ISIS Device Configuration
 

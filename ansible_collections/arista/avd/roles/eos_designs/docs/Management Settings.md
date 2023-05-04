@@ -5,7 +5,7 @@ search:
 
 # Management Settings
 
-## Cloudvision Settings
+## CloudVision Settings
 
 === "Table"
 

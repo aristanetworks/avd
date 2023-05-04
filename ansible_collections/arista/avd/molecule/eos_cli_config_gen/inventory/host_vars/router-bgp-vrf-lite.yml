@@ -45,6 +45,7 @@ router_bgp:
       as_path:
         remote_as_replace_out: true
         prepend_own_disabled: true
+      bfd: true
     - name: WELCOME_ROUTERS
       type: ipv4
       description: 'BGP Connection to WELCOME ROUTER 02'
@@ -55,6 +56,7 @@ router_bgp:
       remote_as: 65003
       update_source: Loopback101
       ebgp_multihop: 10
+      bfd: false
     - name: SEDI-shut
       type: ipv4
       description: 'BGP Peer Shutdown'
@@ -105,9 +107,21 @@ router_bgp:
             times: 5
         - ip_address: 101.0.3.4
           peer_group: TEST-PASSIVE
+        # Testing bfd false IN a peer group that should render
         - ip_address: 101.0.3.5
           peer_group: WELCOME_ROUTERS
           passive: true
+          bfd: false
+        # Testing bfd true IN a peer group that should render
+        - ip_address: 101.0.3.6
+          peer_group: WELCOME_ROUTERS
+          bfd: true
+        # Testing bfd true OUTSIDE a peer group that should render
+        - ip_address: 101.0.3.7
+          bfd: true
+        # Testing bfd false OUTSIDE a peer group that should NOT render
+        - ip_address: 101.0.3.8
+          bfd: false
       redistribute_routes:
         - source_protocol: static
       aggregate_addresses:

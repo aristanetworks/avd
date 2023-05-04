@@ -1,0 +1,178 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  ip_nat:
+    documentation_options:
+      filename: data_model/IP NAT
+    type: dict
+    keys:
+      kernel_buffer_size:
+        type: int
+        convert_types:
+          - str
+        min: 1
+        max: 64
+        description: Buffer size in MB
+      pools:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            prefix_length:
+              type: int
+              required: true
+              convert_types:
+                - str
+              min: 16
+              max: 32
+            ranges:
+              type: list
+              items:
+                type: dict
+                keys:
+                  first_ip:
+                    type: str
+                    required: true
+                    description: IPv4 address
+                  last_ip:
+                    type: str
+                    required: true
+                    description: IPv4 address
+                  first_port:
+                    type: int
+                    convert_types:
+                      - str
+                    min: 1
+                    max: 65535
+                  last_port:
+                    type: int
+                    convert_types:
+                      - str
+                    min: 1
+                    max: 65535
+            utilization_log_threshold:
+              type: int
+              convert_types:
+                - str
+              min: 1
+              max: 100
+      synchronization:
+        type: dict
+        keys:
+          description:
+            type: str
+          expiry_interval:
+            type: int
+            convert_types:
+              - str
+            min: 60
+            max: 3600
+            description: in seconds
+          local_interface:
+            type: str
+            description: EOS interface name
+          peer_address:
+            type: str
+            description: IPv4 address
+          port_range:
+            type: dict
+            keys:
+              first_port:
+                type: int
+                convert_types:
+                  - str
+                min: 1024
+                max: 65535
+              last_port:
+                type: int
+                convert_types:
+                  - str
+                min: 1024
+                max: 65535
+                description: '>= first_port'
+              split_disabled:
+                type: bool
+          shutdown:
+            type: bool
+      translation:
+        type: dict
+        keys:
+          address_selection:
+            type: dict
+            keys:
+              any:
+                type: bool
+              hash_field_source_ip:
+                type: bool
+          counters:
+            type: bool
+          low_mark:
+            type: dict
+            keys:
+              percentage:
+                type: int
+                convert_types:
+                  - str
+                min: 1
+                max: 99
+                description: "Used to render 'ip nat translation low-mark <percentage>'"
+              host_percentage:
+                type: int
+                convert_types:
+                  - str
+                min: 1
+                max: 99
+                description: "Used to render 'ip nat translation low-mark <host_percentage> host'"
+          max_entries:
+            type: dict
+            keys:
+              limit:
+                type: int
+                convert_types:
+                  - str
+                min: 0
+                max: 4294967295
+              host_limit:
+                type: int
+                convert_types:
+                  - str
+                min: 0
+                max: 4294967295
+              ip_limits:
+                type: list
+                primary_key: ip
+                items:
+                  type: dict
+                  keys:
+                    ip:
+                      type: str
+                      description: IPv4 address
+                    limit:
+                      type: int
+                      required: true
+                      convert_types:
+                        - str
+                      min: 0
+                      max: 4294967295
+          timeouts:
+            type: list
+            primary_key: protocol
+            items:
+              type: dict
+              keys:
+                protocol:
+                  type: str
+                  valid_values: ["tcp", "udp"]
+                timeout:
+                  type: int
+                  required: true
+                  convert_types:
+                    - str
+                  min: 0
+                  max: 4294967295
+                  description: in seconds

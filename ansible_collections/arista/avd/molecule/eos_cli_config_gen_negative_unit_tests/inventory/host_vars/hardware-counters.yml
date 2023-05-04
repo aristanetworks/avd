@@ -1,0 +1,8 @@
+---
+# Negative test to catch legacy syntax for hardware counter and make sure the
+# error message makes sense to the user
+hardware_counters:
+  features:
+    - qos: in
+
+expected_error_message: "The data model 'hardware_counters' changed in AVD4.0.0. 'hardware_counters.features.name' was expected but not set!"

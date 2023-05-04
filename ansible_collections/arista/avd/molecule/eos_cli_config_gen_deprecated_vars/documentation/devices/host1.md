@@ -42,6 +42,7 @@
   - [IPv6 Routing](#ipv6-routing)
   - [Router General](#router-general)
   - [Router OSPF](#router-ospf)
+  - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
   - [PBR Policy Maps](#pbr-policy-maps)
 - [Multicast](#multicast)
@@ -342,6 +343,12 @@ logging policy match match-list molecule discard
 | Loopback0 | default |
 | Loopback12 | Tenant_A_APP_Zone |
 
+#### SNMP Views Configuration
+
+| View | MIB Family Name | Status |
+| ---- | --------------- | ------ |
+| VW-WRITE | iso | Included |
+
 #### SNMP Communities
 
 | Community | Access | Access List IPv4 | Access List IPv6 | View |
@@ -357,6 +364,7 @@ logging policy match match-list molecule discard
 snmp-server vrf MGMT local-interface Management1
 snmp-server local-interface Loopback0
 snmp-server vrf Tenant_A_APP_Zone local-interface Loopback12
+snmp-server view VW-WRITE iso included
 snmp-server community SNMP-COMMUNITY-1 ro onur
 snmp-server community SNMP-COMMUNITY-2 view VW-READ rw ipv6 SNMP-MGMT SNMP-MGMT
 snmp-server community SNMP-COMMUNITY-3 ro
@@ -904,6 +912,35 @@ router ospf 100
    area 3 filter prefix-list PL-OSPF-FILTERING
 ```
 
+### Router ISIS
+
+#### Router ISIS Summary
+
+| Settings | Value |
+| -------- | ----- |
+| Instance | EVPN_UNDERLAY |
+| Address Family | ipv4 unicast, ipv6 unicast |
+
+#### ISIS Interfaces Summary
+
+| Interface | ISIS Instance | ISIS Metric | Interface Mode |
+| --------- | ------------- | ----------- | -------------- |
+
+#### Router ISIS Device Configuration
+
+```eos
+!
+router isis EVPN_UNDERLAY
+   !
+   address-family ipv4 unicast
+      maximum-paths 2
+      fast-reroute ti-lfa mode link-protection
+   address-family ipv6 unicast
+      maximum-paths 2
+      fast-reroute ti-lfa mode link-protection
+   !
+```
+
 ### Router BGP
 
 #### Router BGP Summary
@@ -1108,6 +1145,18 @@ policy-map type pbr PM_PBR_BREAKOUT
 ### IP IGMP Snooping
 
 #### IP IGMP Snooping Summary
+
+| IGMP Snooping | Fast Leave | Interface Restart Query | Proxy | Restart Query Interval | Robustness Variable |
+| ------------- | ---------- | ----------------------- | ----- | ---------------------- | ------------------- |
+| Enabled | - | - | - | - | - |
+
+##### IP IGMP Snooping Vlan Summary
+
+| Vlan | IGMP Snooping | Fast Leave | Max Groups | Proxy |
+| ---- | ------------- | ---------- | ---------- | ----- |
+| 10 | True | - | - | - |
+| 20 | False | - | - | - |
+| 30 | False | - | - | - |
 
 #### IP IGMP Snooping Device Configuration
 

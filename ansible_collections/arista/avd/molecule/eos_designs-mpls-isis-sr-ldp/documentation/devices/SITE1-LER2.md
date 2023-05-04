@@ -521,7 +521,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Instance | CORE |
 | Net-ID | 49.0001.0000.0001.0006.00 |
 | Type | level-1-2 |
-| Address Family | ipv4 unicast, ipv6 unicast |
 | Router-ID | 100.70.0.6 |
 | Log Adjacency Changes | True |
 | MPLS LDP Sync Default | True |
@@ -543,6 +542,22 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | -------- | ---------- | ---------- |
 | Loopback0 | 206 | 206 |
 
+#### ISIS IPv4 Address Family Summary
+
+| Settings | Value |
+| -------- | ----- |
+| IPv4 Address-family Enabled | True |
+| Maximum-paths | 4 |
+| TI-LFA Mode | link-protection |
+
+#### ISIS IPv6 Address Family Summary
+
+| Settings | Value |
+| -------- | ----- |
+| IPv6 Address-family Enabled | True |
+| Maximum-paths | 4 |
+| TI-LFA Mode | link-protection |
+
 #### Router ISIS Device Configuration
 
 ```eos
@@ -559,6 +574,7 @@ router isis CORE
    address-family ipv4 unicast
       maximum-paths 4
       fast-reroute ti-lfa mode link-protection
+   !
    address-family ipv6 unicast
       maximum-paths 4
       fast-reroute ti-lfa mode link-protection

@@ -29,18 +29,17 @@ l3_edge:
       interfaces: [ethernet1, ethernet1]
       id: 1
       profile: profile1
+      include_in_underlay_protocol: false
 
       # P2P link with underlay routing and IP set manually.
     - nodes: [l3_edge_ospf, peer2]
       interfaces: [ethernet2, ethernet2]
       ip: [192.168.0.2/31, 192.168.0.3/31]
-      include_in_underlay_protocol: true
 
       # P2P link with underlay routing and IP set as subnet.
     - nodes: [l3_edge_ospf, peer3]
       interfaces: [ethernet3, ethernet3]
       subnet: 192.168.0.4/31
-      include_in_underlay_protocol: true
 
       # P2P link with underlay routing and IP set via ip_pool and id.
     - nodes: [l3_edge_ospf, peer4]

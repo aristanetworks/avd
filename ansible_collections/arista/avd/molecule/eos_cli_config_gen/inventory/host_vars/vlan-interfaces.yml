@@ -58,6 +58,7 @@ vlan_interfaces:
     description: SVI Description
     ip_address: 10.10.83.1/24
     ip_attached_host_route_export:
+      enabled: true
       distance: 10
 
   - name: Vlan87
@@ -82,7 +83,8 @@ vlan_interfaces:
   - name: Vlan90
     description: SVI Description
     ip_address: 10.10.83.1/24
-    ip_attached_host_route_export: {}
+    ip_attached_host_route_export:
+      enabled: true
 
   - name: Vlan92
     description: SVI Description

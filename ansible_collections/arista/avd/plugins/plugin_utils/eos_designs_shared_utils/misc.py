@@ -205,7 +205,7 @@ class MiscMixin:
 
     @cached_property
     def isis_default_circuit_type(self: SharedUtils) -> str | None:
-        return get(self.hostvars, "isis_default_circuit_type")
+        return get(self.hostvars, "isis_default_circuit_type", default="level-2")
 
     @cached_property
     def pod_name(self: SharedUtils) -> str | None:
