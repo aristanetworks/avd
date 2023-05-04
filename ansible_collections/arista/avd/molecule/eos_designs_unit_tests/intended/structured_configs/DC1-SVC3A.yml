@@ -1453,7 +1453,7 @@ ethernet_interfaces:
   mode: trunk phone
   vlans: '110'
 mlag_configuration:
-  domain_id: DC1_SVC3
+  domain_id: custom_mlag_domain_id
   local_interface: Vlan4092
   peer_address: 10.255.252.7
   peer_link: Port-Channel2000
