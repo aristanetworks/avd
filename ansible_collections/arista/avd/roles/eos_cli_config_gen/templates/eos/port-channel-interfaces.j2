@@ -346,6 +346,9 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.service_policy.pbr.input is arista.avd.defined %}
    service-policy type pbr input {{ port_channel_interface.service_policy.pbr.input }}
 {%     endif %}
+{%     if port_channel_interface.service_policy.qos.input is arista.avd.defined %}
+   service-policy type qos input {{ port_channel_interface.service_policy.qos.input }}
+{%     endif %}
 {%     if port_channel_interface.mpls.ip is arista.avd.defined(true) %}
    mpls ip
 {%     elif port_channel_interface.mpls.ip is arista.avd.defined(false) %}

@@ -596,6 +596,9 @@ interface {{ ethernet_interface.name }}
 {%         if ethernet_interface.service_policy.pbr.input is arista.avd.defined %}
    service-policy type pbr input {{ ethernet_interface.service_policy.pbr.input }}
 {%         endif %}
+{%         if ethernet_interface.service_policy.qos.input is arista.avd.defined %}
+   service-policy type qos input {{ ethernet_interface.service_policy.qos.input }}
+{%         endif %}
 {%         if ethernet_interface.service_profile is arista.avd.defined %}
    service-profile {{ ethernet_interface.service_profile }}
 {%         endif %}
