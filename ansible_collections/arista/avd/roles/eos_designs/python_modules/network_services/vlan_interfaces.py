@@ -64,6 +64,7 @@ class VlanInterfacesMixin(UtilsMixin):
             "shutdown": not (svi.get("enabled", False)),
             "ip_address": svi.get("ip_address"),
             "ipv6_address": svi.get("ipv6_address"),
+            "ipv6_enable": svi.get("ipv6_enable"),
             "mtu": svi.get("mtu"),
             "eos_cli": svi.get("raw_eos_cli"),
             "struct_cfg": svi.get("structured_config"),
@@ -112,6 +113,10 @@ class VlanInterfacesMixin(UtilsMixin):
                 vlan_interface_config.setdefault("ipv6_address_virtuals", []).extend(ipv6_address_virtuals)
 
             _check_virtual_router_mac_address(vlan_interface_config, ["ipv6_address_virtuals"])
+
+            if vlan_interface_config.get("ipv6_address_virtuals"):
+                # If any anycast IPs are set, we also enable link-local IPv6 per best practice, unless specifically disabled with 'ipv6_enable: false'
+                vlan_interface_config["ipv6_enable"] = default(vlan_interface_config["ipv6_enable"], True)
 
         if vrf["name"] != "default":
             vlan_interface_config["vrf"] = vrf["name"]
