@@ -319,7 +319,6 @@ QOS Profile: **experiment**
 | 5 | All | 40 | - | - | - |
 | 7 | All | 30 | - | 40 percent | - |
 
-
 QOS Profile: **no_qos_trust**
 
 **Settings**
@@ -327,7 +326,6 @@ QOS Profile: **no_qos_trust**
 | Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
 | ----------- | ------------ | ----- | ---------- | ------------------ |
 | 3 | 4 | disabled | - | - |
-
 
 QOS Profile: **qprof_testwithpolicy**
 
@@ -345,7 +343,6 @@ QOS Profile: **qprof_testwithpolicy**
 | 1 | All | 80 | - | - | - |
 | 5 | All | 19 | no priority | - | Multi-line comment<br>here. |
 
-
 QOS Profile: **test**
 
 **Settings**
@@ -361,7 +358,6 @@ QOS Profile: **test**
 | 1 | All | 50 | no priority | - | - |
 | 2 | All | 10 | priority strict | - | - |
 | 4 | All | 10 | - | - | - |
-
 
 QOS Profile: **test_with_pfc**
 
@@ -412,7 +408,6 @@ QOS Profile: **uc_mc_queues_test**
 | 1 | Multicast | 50 | no priority | - | - |
 | 2 | Multicast | 10 | priority strict | - | Test strict priority |
 | 4 | Multicast | 10 | - | - | Test guaranteed percent |
-
 
 #### QOS Profile Device Configuration
 

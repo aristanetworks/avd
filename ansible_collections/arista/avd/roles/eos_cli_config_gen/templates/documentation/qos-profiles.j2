@@ -64,8 +64,8 @@ QOS Profile: **{{ profile.name }}**
 {%                 endfor %}
 {%             endif %}
 {%         endif %}
-
 {%         if profile.priority_flow_control.enabled is arista.avd.defined(true) %}
+
 **Priority Flow Control**
 
 Priority Flow Control is **enabled**.
