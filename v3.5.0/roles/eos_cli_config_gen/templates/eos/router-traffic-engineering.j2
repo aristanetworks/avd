@@ -1,0 +1,56 @@
+{# eos - Router Traffic Engineering #}
+{% if router_traffic_engineering is arista.avd.defined %}
+!
+router traffic-engineering
+{%     if router_traffic_engineering.segment_routing is arista.avd.defined %}
+{%         set ns = namespace(delimiter=false) %}
+   segment-routing
+{%         if router_traffic_engineering.segment_routing.colored_tunnel_rib is arista.avd.defined(true) %}
+{%             set ns.delimiter = true %}
+      rib system-colored-tunnel-rib
+{%         endif %}
+{%         if router_traffic_engineering.segment_routing.policy_endpoints is arista.avd.defined %}
+{%             for endpoint in router_traffic_engineering.segment_routing.policy_endpoints | arista.avd.natural_sort('address') %}
+{%                 for color in endpoint.colors | arista.avd.natural_sort('value') %}
+{%                     if ns.delimiter is arista.avd.defined(true) %}
+      !
+{%                     endif %}
+{%                     set ns.delimiter = true %}
+      policy endpoint {{ endpoint.address }} color {{ color.value }}
+{%                     if color.binding_sid is arista.avd.defined %}
+         binding-sid {{ color.binding_sid }}
+{%                     endif %}
+{%                     if color.name is arista.avd.defined %}
+         name {{ color.name }}
+{%                     endif %}
+{%                     if color.description is arista.avd.defined %}
+         description {{ color.description }}
+{%                     endif %}
+{%                     for pathgroup in color.path_group | arista.avd.natural_sort('preference') %}
+         !
+         path-group preference {{ pathgroup.preference }}
+{%                         if pathgroup.explicit_null is arista.avd.defined %}
+            explicit-null {{ pathgroup.explicit_null }}
+{%                         endif %}
+{%                         for labelstack in pathgroup.segment_list | arista.avd.natural_sort('label_stack') %}
+{%                             set stack = labelstack.label_stack %}
+{%                             if labelstack.weight is arista.avd.defined %}
+{%                                 set stack = stack ~ " weight " ~ labelstack.weight %}
+{%                             endif %}
+{%                             if labelstack.index is arista.avd.defined %}
+{%                                 set stack = stack ~ " index " ~ labelstack.index %}
+{%                             endif %}
+            segment-list label-stack {{ stack }}
+{%                         endfor %}
+{%                     endfor %}
+{%                 endfor %}
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+{%     if router_traffic_engineering.router_id.ipv4 is arista.avd.defined %}
+   router-id ipv4 {{ router_traffic_engineering.router_id.ipv4 }}
+{%     endif %}
+{%     if router_traffic_engineering.router_id.ipv6 is arista.avd.defined %}
+   router-id ipv6 {{ router_traffic_engineering.router_id.ipv6 }}
+{%     endif %}
+{% endif %}

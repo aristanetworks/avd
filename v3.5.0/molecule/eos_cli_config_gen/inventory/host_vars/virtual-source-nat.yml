@@ -1,0 +1,6 @@
+---
+virtual_source_nat_vrfs:
+  TEST_01:
+    ip_address: 1.1.1.1
+  TEST_02:
+    ip_address: 1.1.1.2

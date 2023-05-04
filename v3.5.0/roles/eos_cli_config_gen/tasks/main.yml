@@ -1,0 +1,53 @@
+---
+- name: "Collection {{ ansible_collection_name }} version {{ version }}{{ ('(git ' ~ git_tag ~ ')') if git_tag }} loaded from {{ collection_path }}"
+  tags: [always, avd_version]
+  set_fact:
+    avd_collection_version: version
+  vars:
+    versions: "{{ lookup('pipe', 'ansible-galaxy collection list --format yaml ' ~ ansible_collection_name) | from_yaml }}"
+    collection_path: "{{ (role_path | split('/'))[0:-4] | join('/') }}"
+    version: "{{ versions[collection_path][ansible_collection_name].version | default('Unknown') }}"
+    git_tag: "{{ lookup('pipe', 'git -C ' ~ collection_path ~ ' describe --tags --always 2>/dev/null', errors='ignore') }}"
+  run_once: true
+  failed_when: false
+
+- name: Create required output directories if not present
+  tags: [build, provision]
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+  loop:
+    - "{{ structured_dir }}"
+    - "{{ documentation_dir }}"
+    - "{{ eos_config_dir }}"
+    - "{{ devices_dir }}"
+  delegate_to: localhost
+  run_once: true
+
+- name: Include device intended structure configuration variables
+  tags: [build, provision]
+  include_vars: "{{ filename }}"
+  delegate_to: localhost
+  # errors='ignore' is needed for compatibility with ansible-core < 2.12
+  when: structured_config is not defined and lookup('first_found', filename, skip=True, errors='ignore')
+  vars:
+    filename: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
+
+- name: Generate eos intended configuration
+  tags: [build, provision]
+  template:
+    src: eos-intended-config.j2
+    dest: "{{ eos_config_dir }}/{{ inventory_hostname }}.cfg"
+    mode: 0664
+  delegate_to: localhost
+  register: eosconfig
+
+- name: Generate device documentation
+  tags: [build, provision, documentation]
+  delegate_to: localhost
+  when: generate_device_documentation | arista.avd.default(true)
+  copy:
+    content: "{{ lookup('template','eos-device-documentation.j2') | arista.avd.add_md_toc(skip_lines=3) }}"
+    dest: "{{ devices_dir }}/{{ inventory_hostname }}.md"
+    mode: 0664

@@ -1,0 +1,50 @@
+---
+# Common action for all states.
+
+- name: "Collection {{ ansible_collection_name }} version {{ version }}{{ ('(git ' ~ git_tag ~ ')') if git_tag }} loaded from {{ collection_path }}"
+  tags: [always, avd_version]
+  set_fact:
+    avd_collection_version: version
+  vars:
+    versions: "{{ lookup('pipe', 'ansible-galaxy collection list --format yaml ' ~ ansible_collection_name) | from_yaml }}"
+    collection_path: "{{ (role_path | split('/'))[0:-4] | join('/') }}"
+    version: "{{ versions[collection_path][ansible_collection_name].version | default('Unknown') }}"
+    git_tag: "{{ lookup('pipe', 'git -C ' ~ collection_path ~ ' describe --tags --always 2>/dev/null', errors='ignore') }}"
+  run_once: true
+  failed_when: false
+
+# Load tasks when device_filter is string
+- name: Generate CVP information using device_filter as string.
+  tags: [always]
+  include_tasks: "{{ cv_collection }}/main-filter-string.yml"
+  when: "device_filter is string"
+
+# Load tasks when device_filter is list
+- name: Generate CVP information using device_filter as list.
+  tags: [always]
+  include_tasks: "{{ cv_collection }}/main-filter-list.yml"
+  when: "device_filter is not string"
+
+- name: "Build DEVICES and CONTAINER definition for {{ inventory_hostname }}"
+  tags: [generate, build, provision]
+  template:
+    src: "cvp-devices.j2"
+    dest: "{{ structured_cvp_dir }}/{{ inventory_hostname }}.yml"
+    mode: 0664
+  delegate_to: localhost
+  run_once: true
+
+- name: "Load CVP device information for {{ inventory_hostname }}"
+  tags: [build, provision, online]
+  include_vars: "{{ structured_cvp_dir }}/{{ inventory_hostname }}.yml"
+  # delegate_to: localhost
+
+#################################################
+
+# If state=present launch creation/update process
+# If state=absent launch deletion process
+- name: Start creation/update process.
+  tags: [provision, online]
+  include_tasks: "{{ cv_collection }}/{{ state }}.yml"
+
+#################################################

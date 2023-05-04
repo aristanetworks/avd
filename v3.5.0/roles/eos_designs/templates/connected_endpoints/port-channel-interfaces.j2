@@ -1,0 +1,152 @@
+{# Leaf server port-channels #}
+port_channel_interfaces:
+{% for endpoint_key in connected_endpoints | arista.avd.natural_sort %}
+{%     for connected_endpoint in connected_endpoints[endpoint_key] | arista.avd.natural_sort %}
+{%         for adapter in connected_endpoints[endpoint_key][connected_endpoint].adapters %}
+{%             if adapter.profile is arista.avd.defined %}
+{%                 set adapter_profile = port_profiles | arista.avd.default({}) |
+                                                                      arista.avd.convert_dicts('profile') |
+                                                                      selectattr('profile', 'arista.avd.defined', adapter.profile) |
+                                                                      first %}
+{%                 if adapter_profile.parent_profile is arista.avd.defined %}
+{%                     set parent_profile = port_profiles | arista.avd.default({}) |
+                                                                      arista.avd.convert_dicts('profile') |
+                                                                      selectattr('profile', 'arista.avd.defined', adapter_profile.parent_profile) |
+                                                                      first %}
+{%                 endif %}
+{%             endif %}
+{%             set adapter_settings = {} | ansible.builtin.combine(parent_profile | arista.avd.default({}),
+                                                   adapter_profile | arista.avd.default({}),
+                                                   adapter, recursive=true, list_merge='replace') %}
+{%             if adapter_settings.port_channel.mode is arista.avd.defined %}
+{%                 set channel_group_id = (adapter_settings.switch_ports[0] | regex_findall("\d") | join) %}
+{%                 set adapter_port_channel_description = adapter_settings.port_channel.description | arista.avd.default('') %}
+{%                 for adapter_switch in adapter_settings.switches | arista.avd.natural_sort %}
+{%                     if adapter_switch == inventory_hostname %}
+{%                         if adapter_settings.monitor_sessions is arista.avd.defined %}
+{%                             for monitor_session in adapter_settings.monitor_sessions %}
+{%                                 do monitor_session.update({'interface': 'Port-Channel' ~ channel_group_id }) %}
+{%                                 do monitor_sessions_data.append(monitor_session) %}
+{%                             endfor %}
+{%                         endif %}
+  Port-Channel{{ channel_group_id }}:
+{%                         set peer = connected_endpoint %}
+    description: "{% include switch.interface_descriptions.connected_endpoints_port_channel_interfaces %}"
+{%                         if adapter_settings.port_channel.subinterfaces is arista.avd.defined %}
+{%                             set po_type = "routed" %}
+{%                         else %}
+{%                             set po_type = "switched" %}
+{%                         endif %}
+    type: {{ po_type }}
+{%                         if adapter_settings.port_channel.enabled is arista.avd.defined(false) %}
+    shutdown: true
+{%                         else %}
+    shutdown: false
+{%                         endif %}
+{%                         if po_type == "switched" %}
+    mode: {{ adapter_settings.mode | arista.avd.default }}
+{%                             if adapter_settings.l2_mtu is arista.avd.defined %}
+    l2_mtu: {{ adapter_settings.l2_mtu }}
+{%                             endif %}
+    vlans: {{ adapter_settings.vlans | arista.avd.default }}
+{%                             if adapter_settings.native_vlan is arista.avd.defined %}
+    native_vlan: {{ adapter_settings.native_vlan }}
+{%                             endif %}
+{%                             if adapter_settings.spanning_tree_portfast is arista.avd.defined %}
+    spanning_tree_portfast: {{ adapter_settings.spanning_tree_portfast }}
+{%                             endif %}
+{%                             if adapter_settings.spanning_tree_bpdufilter is arista.avd.defined %}
+    spanning_tree_bpdufilter: {{ adapter_settings.spanning_tree_bpdufilter }}
+{%                             endif %}
+{%                             if adapter_settings.spanning_tree_bpduguard is arista.avd.defined %}
+    spanning_tree_bpduguard: {{ adapter_settings.spanning_tree_bpduguard }}
+{%                             endif %}
+{%                             if adapter_settings.storm_control is arista.avd.defined and switch.platform_settings.feature_support.interface_storm_control is not arista.avd.defined(false) %}
+    storm_control:
+{%                                 for section in adapter_settings.storm_control %}
+      {{ section }}:
+        level: {{ adapter_settings.storm_control[section].level }}
+{%                                     if adapter_settings.storm_control[section].unit is arista.avd.defined %}
+        unit: {{ adapter_settings.storm_control[section].unit }}
+{%                                     endif %}
+{%                                 endfor %}
+{%                             endif %}
+{%                         endif %}
+{%                         if adapter_settings.mtu is arista.avd.defined %}
+    mtu: {{ adapter_settings.mtu }}
+{%                         endif %}
+{%                         if adapter_settings.switches | unique | list | length > 1 %}
+{%                             if adapter.port_channel.short_esi is arista.avd.defined %}
+{%                                 if adapter.port_channel.short_esi | lower == 'auto' %}
+{%                                     set esi_hash_switches = adapter_settings.switches[:2] | join %}
+{%                                     set esi_hash_switch_ports = adapter_settings.switch_ports[:2] | join %}
+{%                                     set esi_hash_endpoint_ports = adapter_settings.endpoint_ports[:2] | join %}
+{%                                     set esi_hash = (esi_hash_switches ~ esi_hash_switch_ports ~ esi_hash_endpoint_ports ~ channel_group_id) | hash('sha256') %}
+{%                                     set short_esi_hash = (esi_hash | regex_replace("([0-9a-f]{4})","\\1:"))[:14] %}
+{%                                     do adapter.update({ 'port_channel': { 'short_esi': short_esi_hash }}) %}
+{%                                 endif %}
+{%                                 if adapter.port_channel.short_esi.split(':') | length == 3 %}
+    esi: {{ adapter.port_channel.short_esi | arista.avd.generate_esi(evpn_short_esi_prefix) }}
+    rt: {{ adapter.port_channel.short_esi | arista.avd.generate_route_target }}
+{%                                     if adapter_settings.port_channel.mode == 'active' %}
+    lacp_id: {{ adapter.port_channel.short_esi | arista.avd.generate_lacp_id }}
+{%                                     endif %}
+{%                                 endif %}
+{%                             elif switch.mlag is arista.avd.defined(true) %}
+    mlag: {{ channel_group_id }}
+{%                             endif %}
+{%                         endif %}
+{%                         if adapter_settings.port_channel.lacp_fallback.mode is arista.avd.defined('static') %}
+    lacp_fallback_mode: {{ adapter_settings.port_channel.lacp_fallback.mode }}
+    lacp_fallback_timeout: {{ adapter_settings.port_channel.lacp_fallback.timeout | arista.avd.default('90') }}
+{%                         endif %}
+{%                         if adapter_settings.qos_profile is arista.avd.defined %}
+    service_profile: {{ adapter_settings.qos_profile }}
+{%                         endif %}
+{%                         if adapter_settings.link_tracking.enabled is arista.avd.defined(true) and switch.link_tracking_groups is arista.avd.defined %}
+    link_tracking_groups:
+      - name: {{ adapter_settings.link_tracking.name | arista.avd.default(switch.link_tracking_groups[0].name) }}
+        direction: downstream
+{%                         endif %}
+{%                         if adapter_settings.port_channel.raw_eos_cli is arista.avd.defined %}
+    eos_cli: |
+      {{ adapter_settings.port_channel.raw_eos_cli | indent(6,false) }}
+{%                         endif %}
+{%                         if adapter_settings.port_channel.structured_config is arista.avd.defined %}
+    struct_cfg: {{ adapter_settings.port_channel.structured_config }}
+{%                         endif %}
+{# Render Port-Channel subinterfaces #}
+{%                         for subinterface in adapter_settings.port_channel.subinterfaces | arista.avd.natural_sort %}
+{%                             if subinterface.number is arista.avd.defined %}
+  Port-Channel{{ channel_group_id }}.{{ subinterface.number }}:
+    type: l2dot1q
+{%                                 if subinterface.short_esi is arista.avd.defined %}
+{%                                     if subinterface.short_esi | lower == 'auto' %}
+{%                                         set esi_hash_switches = adapter_settings.switches[:2] | join %}
+{%                                         set esi_hash_switch_ports = adapter_settings.switch_ports[:2] | join %}
+{%                                         set esi_hash_endpoint_ports = adapter_settings.endpoint_ports[:2] | join %}
+{%                                         set esi_hash = (subinterface.number ~ esi_hash_switches ~ esi_hash_switch_ports ~ esi_hash_endpoint_ports ~ channel_group_id) | hash('sha256') %}
+{%                                         set short_esi_hash = (esi_hash | regex_replace("([0-9a-f]{4})","\\1:"))[:14] %}
+{%                                         do subinterface.update({ 'short_esi': short_esi_hash }) %}
+{%                                     endif %}
+{%                                     if subinterface.short_esi.split(':') | length == 3 %}
+    esi: {{ subinterface.short_esi | arista.avd.generate_esi(evpn_short_esi_prefix) }}
+    rt: {{ subinterface.short_esi | arista.avd.generate_route_target }}
+{%                                     endif %}
+{%                                 endif %}
+    vlan_id: {{ subinterface.vlan_id | arista.avd.default(subinterface.number) }}
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: {{ subinterface.encapsulation_vlan.client_dot1q | arista.avd.default(subinterface.number) }}
+      network:
+        client: true
+{%                             endif %}
+{%                         endfor %}
+{%                         break %}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{% endfor %}

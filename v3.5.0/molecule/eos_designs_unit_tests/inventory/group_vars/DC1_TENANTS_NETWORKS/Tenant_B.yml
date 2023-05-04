@@ -1,0 +1,24 @@
+Tenant_B:
+  mac_vrf_vni_base: 20000
+  vrfs:
+    Tenant_B_OP_Zone:
+      vrf_vni: 20
+      svis:
+        210:
+          name: Tenant_B_OP_Zone_1
+          tags: ['opzone']
+          enabled: True
+          ip_address_virtual: 10.2.10.1/24
+        211:
+          name: Tenant_B_OP_Zone_2
+          tags: ['opzone']
+          enabled: True
+          ip_address_virtual: 10.2.11.1/24
+    Tenant_B_WAN_Zone:
+      vrf_vni: 21
+      svis:
+        250:
+          name: Tenant_B_WAN_Zone_1
+          tags: ['wan']
+          enabled: True
+          ip_address_virtual: 10.2.50.1/24

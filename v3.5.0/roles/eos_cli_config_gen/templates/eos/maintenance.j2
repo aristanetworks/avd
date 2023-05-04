@@ -1,0 +1,75 @@
+{# maintenance #}
+{% set first_line = {'flag': True} %}
+{% if maintenance is arista.avd.defined %}
+!
+maintenance
+{%     for bgp_profile in maintenance.bgp_profiles | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if loop.index0 > 0 %}
+   !
+{%         endif %}
+{%         set first_line = {'flag': False} %}
+   profile bgp {{ bgp_profile.name }}
+{%         if bgp_profile.initiator.route_map_inout is arista.avd.defined %}
+      initiator route-map {{ bgp_profile.initiator.route_map_inout }} inout
+{%         endif %}
+{%     endfor %}
+{%     if maintenance.default_bgp_profile is arista.avd.defined %}
+{%         set first_line = {'flag': False} %}
+   profile bgp {{ maintenance.default_bgp_profile }} default
+{%     endif %}
+{%     if maintenance.default_interface_profile is arista.avd.defined %}
+{%         set first_line = {'flag': False} %}
+   profile interface {{ maintenance.default_interface_profile }} default
+{%     endif %}
+{%     if maintenance.default_unit_profile is arista.avd.defined %}
+{%         set first_line = {'flag': False} %}
+   profile unit {{ maintenance.default_unit_profile }} default
+{%     endif %}
+{%     for interface_profile in maintenance.interface_profiles | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if not first_line.flag %}
+   !
+{%         endif %}
+{%         set first_line = {'flag': False} %}
+   profile interface {{ interface_profile.name }}
+{%         if interface_profile.rate_monitoring.load_interval is arista.avd.defined %}
+      rate-monitoring load-interval {{ interface_profile.rate_monitoring.load_interval }}
+{%         endif %}
+{%         if interface_profile.rate_monitoring.threshold is arista.avd.defined %}
+      rate-monitoring threshold {{ interface_profile.rate_monitoring.threshold }}
+{%         endif %}
+{%         if interface_profile.shutdown.max_delay is arista.avd.defined %}
+      shutdown max-delay {{ interface_profile.shutdown.max_delay }}
+{%         endif %}
+{%     endfor %}
+{%     for unit_profile in maintenance.unit_profiles | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if not first_line.flag %}
+   !
+{%         endif %}
+{%         set first_line = {'flag': False} %}
+   profile unit {{ unit_profile.name }}
+{%         if unit_profile.on_boot.duration is arista.avd.defined %}
+      on-boot duration {{ unit_profile.on_boot.duration }}
+{%         endif %}
+{%     endfor %}
+{%     for unit in maintenance.units | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if not first_line.flag %}
+   !
+{%         endif %}
+{%         set first_line = {'flag': False} %}
+   unit {{ unit.name }}
+{%         for bgp_group in unit.groups.bgp_groups | arista.avd.natural_sort %}
+      group bgp {{ bgp_group }}
+{%         endfor %}
+{%         for interface_group in unit.groups.interface_groups | arista.avd.natural_sort %}
+      group interface {{ interface_group }}
+{%         endfor %}
+{%         if unit.profile is arista.avd.defined %}
+      profile unit {{ unit.profile }}
+{%         endif %}
+{%         if unit.quiesce is arista.avd.defined(true) %}
+      quiesce
+{%         elif unit.quiesce is arista.avd.defined(false) %}
+      no quiesce
+{%         endif %}
+{%     endfor %}
+{% endif %}

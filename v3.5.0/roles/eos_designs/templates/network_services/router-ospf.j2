@@ -1,0 +1,55 @@
+{# Rendering tenant OSPF #}
+{% for tenant in network_services_data.tenants %}
+{%     for vrf in tenant.vrfs %}
+{%         if vrf.ospf.enabled is arista.avd.defined(true) and inventory_hostname in vrf.ospf.nodes | arista.avd.default([inventory_hostname]) %}
+{%             set network_services_data.ospf_configured = true %}
+{%             break %}
+{%         endif %}
+{%     endfor %}
+{% endfor %}
+{% if network_services_data.ospf_configured is arista.avd.defined(true) %}
+router_ospf:
+  process_ids:
+{%     for tenant in network_services_data.tenants %}
+{%         for vrf in tenant.vrfs %}
+{%             if vrf.ospf.enabled is arista.avd.defined(true) and inventory_hostname in vrf.ospf.nodes | arista.avd.default([inventory_hostname]) %}
+{%                 set vrf_ospf_interfaces = [] %}
+{%                 set ospf_process_id = vrf.ospf.process_id | arista.avd.default(vrf.vrf_id) %}
+{%                 set ospf_router_id = vrf.ospf.router_id | arista.avd.default(switch.router_id) %}
+{%                 for l3_interface in vrf.l3_interfaces | arista.avd.natural_sort %}
+{%                     if inventory_hostname in l3_interface.nodes | arista.avd.default([inventory_hostname]) and l3_interface.interfaces is arista.avd.defined and l3_interface.ospf.enabled is arista.avd.defined(true) %}
+{%                         for node in l3_interface.nodes | arista.avd.natural_sort %}
+{%                             if node == inventory_hostname %}
+{%                                 do vrf_ospf_interfaces.append(l3_interface.interfaces[loop.index0]) %}
+{%                             endif %}
+{%                         endfor %}
+{%                     endif %}
+{%                 endfor %}
+{%                 for svi in vrf.svis %}
+{%                     if svi.ospf.enabled is arista.avd.defined(true) %}
+{%                         do vrf_ospf_interfaces.append("Vlan" ~ svi.id) %}
+{%                     endif %}
+{%                 endfor %}
+    {{ ospf_process_id }}:
+      vrf: {{ vrf.name }}
+      passive_interface_default: true
+      router_id: {{ ospf_router_id }}
+      no_passive_interfaces: {{ vrf_ospf_interfaces | arista.avd.natural_sort }}
+{%                 if vrf.ospf.bfd is arista.avd.defined(true) %}
+      bfd_enable: true
+{%                 endif %}
+{%                 if vrf.ospf.max_lsa is arista.avd.defined %}
+      max_lsa: {{ vrf.ospf.max_lsa }}
+{%                 endif %}
+      redistribute:
+{%                 if vrf.ospf.redistribute_bgp.enabled | arista.avd.default(true) %}
+        bgp:
+          enabled: true
+{%                     if vrf.ospf.redistribute_bgp.route_map is arista.avd.defined %}
+          route_map: {{ vrf.ospf.redistribute_bgp.route_map }}
+{%                     endif %}
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{% endif %}

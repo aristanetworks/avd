@@ -1,0 +1,30 @@
+  address_family_evpn:
+{% if switch.mpls_overlay_role in ["server", "client"] %}
+    neighbor_default:
+      encapsulation: mpls
+{%     if switch.mpls_overlay_role == "client" %}
+      next_hop_self_source_interface: Loopback0
+{%     endif %}
+{% endif %}
+    peer_groups:
+      {{ overlay_data.overlay_peer_group_name }}:
+        activate: true
+{% if switch.vtep_ip is arista.avd.defined %}
+        route_map_in: RM-EVPN-SOO-IN
+        route_map_out: RM-EVPN-SOO-OUT
+{% endif %}
+{% if switch.mpls_overlay_role == "server" and overlay_data.mpls_rr_peers is arista.avd.defined %}
+      {{ overlay_data.rr_peers_peer_group_name }}:
+        activate: true
+{% endif %}
+{% if switch.vtep_ip is arista.avd.defined and evpn_hostflap_detection is arista.avd.defined %}
+    evpn_hostflap_detection:
+      window: {{ evpn_hostflap_detection.window | arista.avd.default(180) }}
+      threshold: {{ evpn_hostflap_detection.threshold | arista.avd.default(5) }}
+      enabled: {{ evpn_hostflap_detection.enabled | arista.avd.default(true) }}
+      expiry_timeout: {{ evpn_hostflap_detection.expiry_timeout | arista.avd.default }}
+{% endif %}
+{% if switch.vtep_ip is arista.avd.defined and evpn_import_pruning is arista.avd.defined(true) %}
+    route:
+      import_match_failure_action: discard
+{% endif %}

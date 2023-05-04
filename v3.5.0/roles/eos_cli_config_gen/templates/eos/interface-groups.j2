@@ -1,0 +1,13 @@
+{% for interface_group in interface_groups | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+!
+group interface {{ interface_group.name }}
+{%     for interface in interface_group.interfaces | arista.avd.natural_sort %}
+   interface {{ interface }}
+{%     endfor %}
+{%     for interface_profile in interface_group.interface_maintenance_profiles | arista.avd.natural_sort %}
+   maintenance profile interface {{ interface_profile }}
+{%     endfor %}
+{%     for bgp_profile in interface_group.bgp_maintenance_profiles | arista.avd.natural_sort %}
+   maintenance profile bgp {{ bgp_profile }}
+{%     endfor %}
+{% endfor %}

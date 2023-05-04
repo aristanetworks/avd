@@ -1,0 +1,9 @@
+{% if core_interfaces_data.ospf_interfaces | length > 0 %}
+router_ospf:
+  process_ids:
+    {{ underlay_ospf_process_id }}:
+      no_passive_interfaces:
+{%     for ospf_interface in core_interfaces_data.ospf_interfaces | arista.avd.natural_sort %}
+        - {{ ospf_interface }}
+{%     endfor %}
+{% endif %}

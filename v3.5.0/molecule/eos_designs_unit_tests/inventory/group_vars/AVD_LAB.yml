@@ -1,0 +1,48 @@
+# Nashua EVE-NG LAB shared attributes
+
+# local users
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    no_password: true
+
+  cvpadmin:
+    privilege: 15
+    role: network-admin
+    sha512_password: "$6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj."
+    ssh_key: "ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU= cvpadmin@hostmachine.local"
+
+# Cloud Vision server
+cvp_instance_ips:
+  - 192.168.200.11
+
+cvp_ingestauth_key: telarista
+terminattr_disable_aaa: false
+
+snmp_settings:
+  contact: example@example.com
+  location: true
+
+# OOB Management network default gateway.
+mgmt_gateway: 192.168.200.5
+
+# dns servers.
+name_servers:
+  - 192.168.200.5
+  - 8.8.8.8
+
+# Management api-http
+management_eapi:
+  enable_https: true
+  default_services: false
+
+# NTP Servers IP or DNS name, first NTP server will be prefered, and sourced from Managment
+ntp:
+  local_interface:
+    name: "{{ mgmt_interface | arista.avd.default('Management1') }}"
+    vrf: "{{ mgmt_interface_vrf | arista.avd.default('MGMT') }}"
+  servers:
+    - name: 192.168.200.5
+      preferred: True
+      vrf: "{{ mgmt_interface_vrf | arista.avd.default('MGMT') }}"

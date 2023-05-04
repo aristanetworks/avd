@@ -1,0 +1,13 @@
+{# Management defaults #}
+{% if management_defaults.secret.hash is arista.avd.defined %}
+
+## Management defaults
+
+Default secret hash is set to {{ management_defaults.secret.hash }}
+
+### Management defaults Configuration
+
+```eos
+{%     include 'eos/management-defaults.j2' %}
+```
+{% endif %}

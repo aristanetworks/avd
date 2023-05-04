@@ -1,0 +1,57 @@
+---
+
+- name: Gather ip reachability state between devices (loopback0 <-> loopback0)
+  eos_command:
+    commands: "ping {{ loopback0_address | ansible.netcommon.ipaddr('address') }} source {{ loopback_interfaces.Loopback0.ip_address | ansible.netcommon.ipaddr('address') }} repeat 1"
+  loop: "{{ loopback0_reachability.loopback0_range }}"
+  loop_control:
+    loop_var: loopback0_address
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  when: |
+    (loopback0_reachability.loopback0_range is arista.avd.defined) and
+    (loopback_interfaces.Loopback0.ip_address is arista.avd.defined) and
+    (type is arista.avd.defined('l3leaf'))
+  register: loopback0_reachability_state
+  tags:
+    - loopback0_reachability
+
+- name: Validate ip reachability between devices (loopback0 <-> loopback0)
+  assert:
+    that:
+      - loopback0_reachability_test.stdout[0] | regex_search("1 received")
+    fail_msg: "100% packet loss"
+    quiet: true
+  loop: "{{ loopback0_reachability_state.results }}"
+  loop_control:
+    loop_var: loopback0_reachability_test
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  when: (loopback0_reachability_test.skipped is not defined)
+  register: loopback0_reachability_results
+  tags:
+    - loopback0_reachability
+
+- include_tasks: ping_inband.yml
+  loop: "{{ management_interfaces | default({}, true) | dict2items }}"
+  loop_control:
+    loop_var: management_interface
+  when: |
+    (management_interfaces is arista.avd.defined)
+  tags:
+    - loopback0_reachability
+    - optional
+
+- name: Validate ip reachability from Inband Management to loopback0 in fabric
+  assert:
+    that:
+      - inb_mgmt_loopback0_reachability_test.stdout[0] | regex_search('1 received')
+    fail_msg: "100% packet loss"
+    quiet: true
+  loop: "{{ inb_mgmt_loopback0_reachability_state.results }}"
+  loop_control:
+    loop_var: inb_mgmt_loopback0_reachability_test
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  when: (inb_mgmt_loopback0_reachability_test.skipped is not defined)
+  register: inb_mgmt_loopback0_reachability_results
+  tags:
+    - loopback0_reachability
+    - optional

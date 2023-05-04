@@ -1,0 +1,14 @@
+### IP routing ###
+
+ip_routing: true
+ipv6_routing: true
+ip_hardware:
+  fib:
+    optimize:
+      prefixes:
+        profile: urpf-internet
+ipv6_hardware:
+  fib:
+    optimize:
+      prefixes:
+        profile: internet

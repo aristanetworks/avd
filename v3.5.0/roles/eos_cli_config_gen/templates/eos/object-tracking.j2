@@ -1,0 +1,10 @@
+{# eos - object-tracking #}
+{% if trackers is arista.avd.defined %}
+!
+{%     for tracked_obj in trackers | arista.avd.natural_sort('name') %}
+{%         if tracked_obj.name is arista.avd.defined and tracked_obj.interface is arista.avd.defined %}
+{%             set tracked_obj_cli = "track " ~ tracked_obj.name ~ " interface " ~ tracked_obj.interface ~ " " ~ tracked_obj.tracked_property | arista.avd.default("line-protocol") %}
+{{ tracked_obj_cli }}
+{%         endif %}
+{%     endfor %}
+{% endif %}

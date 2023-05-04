@@ -1,0 +1,64 @@
+{# tenant router bgp evpn configuration- MAC-VRF VLAN-Based #}
+  vlans:
+{% set evpn_vlan_aware_bundles = vxlan_vlan_aware_bundles | arista.avd.default(evpn_vlan_aware_bundles, false) %}
+{% if evpn_vlan_aware_bundles != true %}
+{%     for tenant in network_services_data.tenants %}
+{%         set tenant_mac_vrf_id_base = tenant.mac_vrf_id_base | arista.avd.default(tenant.mac_vrf_vni_base) %}
+{%         for vrf in tenant.vrfs %}
+{%             for svi in vrf.svis %}
+{%                 if svi.vxlan is arista.avd.defined(false) %}
+{%                     continue %}
+{%                 endif %}
+{%                 set svi_int = svi.id | int %}
+{%                 set vlan_rt = svi.rt_override | arista.avd.default(
+                                 svi.vni_override,
+                                 tenant_mac_vrf_id_base + svi_int) %}
+    {{ svi.id }}:
+      tenant: {{ tenant.name }}
+      rd: "{{ network_services_data.rd_admin_subfield }}:{{ vlan_rt }}"
+{%                 if switch.evpn_gateway_vxlan_l2 is arista.avd.defined(true) %}
+      rd_evpn_domain:
+        domain: "remote"
+        rd: "{{ network_services_data.rd_admin_subfield }}:{{ vlan_rt }}"
+{%                 endif %}
+      route_targets:
+        both:
+          - "{{ network_services_data.rt_admin_subfield or vlan_rt }}:{{ vlan_rt }}"
+{%                 if switch.evpn_gateway_vxlan_l2 is arista.avd.defined(true) %}
+        import_export_evpn_domains:
+          - domain: "remote"
+            route_target: "{{ network_services_data.rt_admin_subfield or vlan_rt }}:{{ vlan_rt }}"
+{%                 endif %}
+      redistribute_routes:
+        - learned
+{%             endfor %}
+{%         endfor %}
+{%         for l2vlan in tenant.l2vlans %}
+{%             if l2vlan.vxlan is arista.avd.defined(false) %}
+{%                 continue %}
+{%             endif %}
+{%             set l2vlan_int = l2vlan.id | int %}
+{%             set vlan_rt = l2vlan.rt_override | arista.avd.default(
+                             l2vlan.vni_override,
+                             tenant_mac_vrf_id_base + l2vlan_int) %}
+    {{ l2vlan.id }}:
+      tenant: {{ tenant.name }}
+      rd: "{{ network_services_data.rd_admin_subfield }}:{{ vlan_rt }}"
+{%             if switch.evpn_gateway_vxlan_l2 is arista.avd.defined(true) %}
+      rd_evpn_domain:
+        domain: "remote"
+        rd: "{{ network_services_data.rd_admin_subfield }}:{{ vlan_rt }}"
+{%             endif %}
+      route_targets:
+        both:
+          - "{{ network_services_data.rt_admin_subfield or vlan_rt }}:{{ vlan_rt }}"
+{%             if switch.evpn_gateway_vxlan_l2 is arista.avd.defined(true) %}
+        import_export_evpn_domains:
+          - domain: "remote"
+            route_target: "{{ network_services_data.rt_admin_subfield or vlan_rt }}:{{ vlan_rt }}"
+{%             endif %}
+      redistribute_routes:
+        - learned
+{%         endfor %}
+{%     endfor %}
+{% endif %}

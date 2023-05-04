@@ -1,0 +1,388 @@
+{# eos- Port-Channel Interfaces #}
+{% for port_channel_interface in port_channel_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+!
+interface {{ port_channel_interface.name }}
+{%     if port_channel_interface.description is arista.avd.defined %}
+   description {{ port_channel_interface.description }}
+{%     endif %}
+{%     if port_channel_interface.logging.event.link_status is arista.avd.defined(true) %}
+   logging event link-status
+{%     elif port_channel_interface.logging.event.link_status is arista.avd.defined(false) %}
+   no logging event link-status
+{%     endif %}
+{%     if port_channel_interface.shutdown is arista.avd.defined(true) %}
+   shutdown
+{%     elif port_channel_interface.shutdown is arista.avd.defined(false) %}
+   no shutdown
+{%     endif %}
+{%     if port_channel_interface.mtu is arista.avd.defined %}
+   mtu {{ port_channel_interface.mtu }}
+{%     endif %}
+{%     if port_channel_interface.type is arista.avd.defined("routed") %}
+   no switchport
+{%     elif port_channel_interface.type | arista.avd.default in ['l3dot1q', 'l2dot1q'] %}
+{%         if port_channel_interface.vlan_id is arista.avd.defined and
+              port_channel_interface.type == 'l2dot1q' %}
+   vlan id {{ port_channel_interface.vlan_id }}
+{%         endif %}
+{%         if port_channel_interface.encapsulation_dot1q_vlan is arista.avd.defined %}
+   encapsulation dot1q vlan {{ port_channel_interface.encapsulation_dot1q_vlan }}
+{%         elif port_channel_interface.encapsulation_vlan.client.dot1q.vlan is arista.avd.defined() %}
+{%             set encapsulation_cli = "client dot1q " ~ port_channel_interface.encapsulation_vlan.client.dot1q.vlan %}
+{%             if port_channel_interface.encapsulation_vlan.network.dot1q.vlan is arista.avd.defined() %}
+{%                 set encapsulation_cli = encapsulation_cli ~ " network dot1q " ~ port_channel_interface.encapsulation_vlan.network.dot1q.vlan %}
+{%             elif port_channel_interface.encapsulation_vlan.network.client is arista.avd.defined(true) %}
+{%                 set encapsulation_cli = encapsulation_cli ~ " network client" %}
+{%             endif %}
+{%         elif port_channel_interface.encapsulation_vlan.client.dot1q.inner is arista.avd.defined and port_channel_interface.encapsulation_vlan.client.dot1q.outer is arista.avd.defined %}
+{%             set encapsulation_cli = "client dot1q outer " ~ port_channel_interface.encapsulation_vlan.client.dot1q.outer ~ " inner " ~ port_channel_interface.encapsulation_vlan.client.dot1q.inner %}
+{%             if port_channel_interface.encapsulation_vlan.network.dot1q.inner is arista.avd.defined and port_channel_interface.encapsulation_vlan.network.dot1q.outer is arista.avd.defined %}
+{%                 set encapsulation_cli = encapsulation_cli ~ " network dot1q outer " ~ port_channel_interface.encapsulation_vlan.network.dot1q.inner ~ " inner " ~ port_channel_interface.encapsulation_vlan.network.dot1q.outer %}
+{%             elif port_channel_interface.encapsulation_vlan.network.dot1q.client is arista.avd.defined(true) %}
+{%                 set encapsulation_cli = encapsulation_cli ~ " network client" %}
+{%             endif %}
+{%         elif port_channel_interface.encapsulation_vlan.client.unmatched is arista.avd.defined(true) %}
+{%             set encapsulation_cli = "client unmatched" %}
+{%         endif %}
+{%         if encapsulation_cli is arista.avd.defined %}
+   encapsulation vlan
+      {{ encapsulation_cli }}
+{%         endif %}
+{%     else %}
+   switchport
+{%     endif %}
+{%     if port_channel_interface.mode is arista.avd.defined("access") %}
+   switchport access vlan {{ port_channel_interface.vlans }}
+{%     endif %}
+{%     if port_channel_interface.vlans is arista.avd.defined and port_channel_interface.mode is arista.avd.defined("trunk") %}
+   switchport trunk allowed vlan {{ port_channel_interface.vlans }}
+{%     endif %}
+{%     if port_channel_interface.native_vlan is arista.avd.defined and port_channel_interface.mode is arista.avd.defined("trunk") %}
+   switchport trunk native vlan {{ port_channel_interface.native_vlan }}
+{%     endif %}
+{%     if port_channel_interface.mode is arista.avd.defined("trunk phone") and port_channel_interface.native_vlan %}
+   switchport trunk native vlan {{ port_channel_interface.native_vlan }}
+{%     endif %}
+{%     if port_channel_interface.phone.vlan is arista.avd.defined %}
+   switchport phone vlan {{ port_channel_interface.phone.vlan }}
+{%     endif %}
+{%     if port_channel_interface.phone.trunk is arista.avd.defined %}
+   switchport phone trunk {{ port_channel_interface.phone.trunk }}
+{%     endif %}
+{%     if port_channel_interface.mode is arista.avd.defined("trunk") %}
+   switchport mode {{ port_channel_interface.mode }}
+{%     endif %}
+{%     for  trunk_group in port_channel_interface.trunk_groups | arista.avd.natural_sort %}
+   switchport trunk group {{ trunk_group }}
+{%     endfor %}
+{%     if port_channel_interface.trunk_private_vlan_secondary is arista.avd.defined(true) %}
+   switchport trunk private-vlan secondary
+{%     elif port_channel_interface.trunk_private_vlan_secondary is arista.avd.defined(false) %}
+   no switchport trunk private-vlan secondary
+{%     endif %}
+{%     if port_channel_interface.pvlan_mapping is arista.avd.defined %}
+   switchport pvlan mapping {{ port_channel_interface.pvlan_mapping }}
+{%     endif %}
+{%     for vlan_translation in port_channel_interface.vlan_translations | arista.avd.natural_sort %}
+{%         if vlan_translation.from is arista.avd.defined and vlan_translation.to is arista.avd.defined %}
+{%             set vlan_translation_cli = 'switchport vlan translation' %}
+{%             if vlan_translation.direction | arista.avd.default in ['in', 'out'] %}
+{%                 set vlan_translation_cli = vlan_translation_cli ~ ' ' ~ vlan_translation.direction %}
+{%             endif %}
+{%             set vlan_translation_cli = vlan_translation_cli ~ ' ' ~ vlan_translation.from %}
+{%             set vlan_translation_cli = vlan_translation_cli ~ ' ' ~ vlan_translation.to %}
+   {{ vlan_translation_cli }}
+{%         endif %}
+{%     endfor %}
+{%     if port_channel_interface.l2_protocol.encapsulation_dot1q_vlan is arista.avd.defined %}
+   l2-protocol encapsulation dot1q vlan {{ port_channel_interface.l2_protocol.encapsulation_dot1q_vlan }}
+{%     endif %}
+{%     if port_channel_interface.evpn_ethernet_segment.identifier | arista.avd.default(port_channel_interface.esi) is arista.avd.defined or port_channel_interface.evpn_ethernet_segment is arista.avd.defined %}
+   evpn ethernet-segment
+{%         if port_channel_interface.evpn_ethernet_segment.identifier | arista.avd.default(port_channel_interface.esi) is arista.avd.defined %}
+      identifier {{ port_channel_interface.evpn_ethernet_segment.identifier | arista.avd.default(port_channel_interface.esi) }}
+{%         endif %}
+{%         if port_channel_interface.evpn_ethernet_segment.redundancy is arista.avd.defined %}
+      redundancy {{ port_channel_interface.evpn_ethernet_segment.redundancy }}
+{%         endif %}
+{%         if port_channel_interface.evpn_ethernet_segment.designated_forwarder_election is arista.avd.defined %}
+{%             if port_channel_interface.evpn_ethernet_segment.designated_forwarder_election.algorithm is arista.avd.defined("modulus") %}
+      designated-forwarder election algorithm modulus
+{%             elif port_channel_interface.evpn_ethernet_segment.designated_forwarder_election.algorithm is arista.avd.defined("preference") and port_channel_interface.evpn_ethernet_segment.designated_forwarder_election.preference_value is arista.avd.defined %}
+{%                 set dfe_algo_cli = "designated-forwarder election algorithm preference " ~ port_channel_interface.evpn_ethernet_segment.designated_forwarder_election.preference_value %}
+{%                 if port_channel_interface.evpn_ethernet_segment.designated_forwarder_election.dont_preempt is arista.avd.defined(true) %}
+{%                     set dfe_algo_cli = dfe_algo_cli ~ " dont-preempt" %}
+{%                 endif %}
+      {{ dfe_algo_cli }}
+{%             endif %}
+{%             if port_channel_interface.evpn_ethernet_segment.designated_forwarder_election.hold_time is arista.avd.defined %}
+{%                 set dfe_hold_time_cli = "designated-forwarder election hold-time " ~ port_channel_interface.evpn_ethernet_segment.designated_forwarder_election.hold_time %}
+{%                 if port_channel_interface.evpn_ethernet_segment.designated_forwarder_election.subsequent_hold_time is arista.avd.defined %}
+{%                     set dfe_hold_time_cli = dfe_hold_time_cli ~ " subsequent-hold-time " ~ port_channel_interface.evpn_ethernet_segment.designated_forwarder_election.subsequent_hold_time %}
+{%                 endif %}
+      {{ dfe_hold_time_cli }}
+{%             endif %}
+{%             if port_channel_interface.evpn_ethernet_segment.designated_forwarder_election.candidate_reachability_required is arista.avd.defined(true) %}
+      designated-forwarder election candidate reachability required
+{%             elif port_channel_interface.evpn_ethernet_segment.designated_forwarder_election.candidate_reachability_required is arista.avd.defined(false) %}
+      no designated-forwarder election candidate reachability required
+{%             endif %}
+{%         endif %}
+{%         if port_channel_interface.evpn_ethernet_segment.mpls.tunnel_flood_filter_time is arista.avd.defined %}
+      mpls tunnel flood filter time {{ port_channel_interface.evpn_ethernet_segment.mpls.tunnel_flood_filter_time }}
+{%         endif %}
+{%         if port_channel_interface.evpn_ethernet_segment.mpls.shared_index is arista.avd.defined %}
+      mpls shared index {{ port_channel_interface.evpn_ethernet_segment.mpls.shared_index }}
+{%         endif %}
+{%         if port_channel_interface.evpn_ethernet_segment.route_target | arista.avd.default(port_channel_interface.rt) is arista.avd.defined %}
+      route-target import {{ port_channel_interface.evpn_ethernet_segment.route_target | arista.avd.default(port_channel_interface.rt) }}
+{%         endif %}
+{%     endif %}
+{%     if port_channel_interface.snmp_trap_link_change is arista.avd.defined(false) %}
+   no snmp trap link-change
+{%     elif port_channel_interface.snmp_trap_link_change is arista.avd.defined(true) %}
+   snmp trap link-change
+{%     endif %}
+{%     if port_channel_interface.lacp_id is arista.avd.defined %}
+   lacp system-id {{ port_channel_interface.lacp_id }}
+{%     endif %}
+{%     if port_channel_interface.lacp_fallback_timeout is arista.avd.defined %}
+   port-channel lacp fallback timeout {{ port_channel_interface.lacp_fallback_timeout }}
+{%     endif %}
+{%     if port_channel_interface.lacp_fallback_mode is arista.avd.defined %}
+   port-channel lacp fallback {{ port_channel_interface.lacp_fallback_mode }}
+{%     endif %}
+{%     if port_channel_interface.mlag is arista.avd.defined %}
+   mlag {{ port_channel_interface.mlag }}
+{%     endif %}
+{%     if port_channel_interface.qos.trust is arista.avd.defined %}
+{%         if port_channel_interface.qos.trust == 'disabled' %}
+   no qos trust
+{%         else %}
+   qos trust {{ port_channel_interface.qos.trust }}
+{%         endif %}
+{%     endif %}
+{%     if port_channel_interface.qos.dscp is arista.avd.defined %}
+   qos dscp {{ port_channel_interface.qos.dscp }}
+{%     endif %}
+{%     if port_channel_interface.qos.cos is arista.avd.defined %}
+   qos cos {{ port_channel_interface.qos.cos }}
+{%     endif %}
+{%     if port_channel_interface.shape.rate is arista.avd.defined %}
+   shape rate {{ port_channel_interface.shape.rate }}
+{%     endif %}
+{%     if port_channel_interface.spanning_tree_portfast is arista.avd.defined("edge") %}
+   spanning-tree portfast
+{%     elif port_channel_interface.spanning_tree_portfast is arista.avd.defined("network") %}
+   spanning-tree portfast network
+{%     endif %}
+{%     if port_channel_interface.spanning_tree_bpduguard is arista.avd.defined(true) or port_channel_interface.spanning_tree_bpduguard is arista.avd.defined("enabled") %}
+   spanning-tree bpduguard enable
+{%     elif port_channel_interface.spanning_tree_bpduguard is arista.avd.defined("disabled") %}
+   spanning-tree bpduguard disable
+{%     endif %}
+{%     if port_channel_interface.spanning_tree_bpdufilter is arista.avd.defined(true) or port_channel_interface.spanning_tree_bpdufilter is arista.avd.defined("enabled") %}
+   spanning-tree bpdufilter enable
+{%     elif port_channel_interface.spanning_tree_bpdufilter is arista.avd.defined("disabled") %}
+   spanning-tree bpdufilter disable
+{%     endif %}
+{%     if port_channel_interface.spanning_tree_guard is arista.avd.defined %}
+{%         if port_channel_interface.spanning_tree_guard == 'disabled' %}
+   spanning-tree guard none
+{%         else %}
+   spanning-tree guard {{ port_channel_interface.spanning_tree_guard }}
+{%         endif %}
+{%     endif %}
+{%     if port_channel_interface.vrf is arista.avd.defined %}
+   vrf {{ port_channel_interface.vrf }}
+{%     endif %}
+{%     if port_channel_interface.ip_proxy_arp is arista.avd.defined(true) %}
+   ip proxy-arp
+{%     endif %}
+{%     if port_channel_interface.ip_address is arista.avd.defined %}
+   ip address {{ port_channel_interface.ip_address }}
+{%     endif %}
+{%     if port_channel_interface.ipv6_enable is arista.avd.defined(true) %}
+   ipv6 enable
+{%     endif %}
+{%     if port_channel_interface.ipv6_address is arista.avd.defined %}
+   ipv6 address {{ port_channel_interface.ipv6_address }}
+{%     endif %}
+{%     if port_channel_interface.ipv6_address_link_local is arista.avd.defined %}
+   ipv6 address {{ port_channel_interface.ipv6_address_link_local }} link-local
+{%     endif %}
+{%     if port_channel_interface.ipv6_nd_ra_disabled is arista.avd.defined(true) %}
+   ipv6 nd ra disabled
+{%     endif %}
+{%     if port_channel_interface.ipv6_nd_managed_config_flag is arista.avd.defined(true) %}
+   ipv6 nd managed-config-flag
+{%     endif %}
+{%     if port_channel_interface.ipv6_nd_prefixes is arista.avd.defined %}
+{%         for ipv6_nd_prefix in port_channel_interface.ipv6_nd_prefixes | arista.avd.convert_dicts('ipv6_prefix') %}
+{%             set ipv6_nd_prefix_cli = "ipv6 nd prefix " ~ ipv6_nd_prefix.ipv6_prefix %}
+{%             if ipv6_nd_prefix.valid_lifetime is arista.avd.defined %}
+{%                 set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " " ~ ipv6_nd_prefix.valid_lifetime %}
+{%             endif %}
+{%             if ipv6_nd_prefix.preferred_lifetime is arista.avd.defined %}
+{%                 set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " " ~ ipv6_nd_prefix.preferred_lifetime  %}
+{%             endif %}
+{%             if ipv6_nd_prefix.no_autoconfig_flag is arista.avd.defined(true) %}
+{%                 set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " no-autoconfig" %}
+{%             endif %}
+   {{ ipv6_nd_prefix_cli }}
+{%         endfor %}
+{%     endif %}
+{%     if port_channel_interface.access_group_in is arista.avd.defined %}
+   ip access-group {{ port_channel_interface.access_group_in }} in
+{%     endif %}
+{%     if port_channel_interface.access_group_out is arista.avd.defined %}
+   ip access-group {{ port_channel_interface.access_group_out }} out
+{%     endif %}
+{%     if port_channel_interface.ipv6_access_group_in is arista.avd.defined %}
+   ipv6 access-group {{ port_channel_interface.ipv6_access_group_in }} in
+{%     endif %}
+{%     if port_channel_interface.ipv6_access_group_out is arista.avd.defined %}
+   ipv6 access-group {{ port_channel_interface.ipv6_access_group_out }} out
+{%     endif %}
+{%     if port_channel_interface.mac_access_group_in is arista.avd.defined %}
+   mac access-group {{ port_channel_interface.mac_access_group_in }} in
+{%     endif %}
+{%     if port_channel_interface.mac_access_group_out is arista.avd.defined %}
+   mac access-group {{ port_channel_interface.mac_access_group_out }} out
+{%     endif %}
+{%     if port_channel_interface.ospf_network_point_to_point is arista.avd.defined(true) %}
+   ip ospf network point-to-point
+{%     endif %}
+{%     if port_channel_interface.ospf_area is arista.avd.defined %}
+   ip ospf area {{ port_channel_interface.ospf_area }}
+{%     endif %}
+{%     if port_channel_interface.ospf_cost is arista.avd.defined %}
+   ip ospf cost {{ port_channel_interface.ospf_cost }}
+{%     endif %}
+{%     if port_channel_interface.ospf_authentication is arista.avd.defined('simple') %}
+   ip ospf authentication
+{%     elif port_channel_interface.ospf_authentication is arista.avd.defined('message-digest') %}
+   ip ospf authentication message-digest
+{%     endif %}
+{%     if port_channel_interface.ospf_authentication_key is arista.avd.defined %}
+   ip ospf authentication-key 7 {{ port_channel_interface.ospf_authentication_key }}
+{%     endif %}
+{%     for ospf_message_digest_key in port_channel_interface.ospf_message_digest_keys | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%         if ospf_message_digest_key.hash_algorithm is arista.avd.defined and ospf_message_digest_key.key is arista.avd.defined %}
+   ip ospf message-digest-key {{ ospf_message_digest_key.id }} {{ ospf_message_digest_key.hash_algorithm }} 7 {{ ospf_message_digest_key.key }}
+{%         endif %}
+{%     endfor %}
+{%     if port_channel_interface.pim.ipv4.sparse_mode is arista.avd.defined(true) %}
+   pim ipv4 sparse-mode
+{%     endif %}
+{%     if port_channel_interface.pim.ipv4.dr_priority is arista.avd.defined %}
+   pim ipv4 dr-priority {{ port_channel_interface.pim.ipv4.dr_priority }}
+{%     endif %}
+{%     if port_channel_interface.vmtracer is arista.avd.defined(true) %}
+   vmtracer vmware-esx
+{%     endif %}
+{%     if port_channel_interface.ptp.enable is arista.avd.defined(true) %}
+   ptp enable
+{%     endif %}
+{%     if port_channel_interface.ptp.announce.interval is arista.avd.defined %}
+   ptp announce interval {{ port_channel_interface.ptp.announce.interval }}
+{%     endif %}
+{%     if port_channel_interface.ptp.announce.timeout is arista.avd.defined %}
+   ptp announce timeout {{ port_channel_interface.ptp.announce.timeout }}
+{%     endif %}
+{%     if port_channel_interface.ptp.delay_req is arista.avd.defined %}
+   ptp delay-req interval {{ port_channel_interface.ptp.delay_req }}
+{%     endif %}
+{%     if port_channel_interface.ptp.delay_mechanism is arista.avd.defined %}
+   ptp delay-mechanism {{ port_channel_interface.ptp.delay_mechanism }}
+{%     endif %}
+{%     if port_channel_interface.ptp.sync_message.interval is arista.avd.defined %}
+   ptp sync-message interval {{ port_channel_interface.ptp.sync_message.interval }}
+{%     endif %}
+{%     if port_channel_interface.ptp.role is arista.avd.defined %}
+   ptp role {{ port_channel_interface.ptp.role }}
+{%     endif %}
+{%     if port_channel_interface.ptp.vlan is arista.avd.defined %}
+   ptp vlan {{ port_channel_interface.ptp.vlan }}
+{%     endif %}
+{%     if port_channel_interface.ptp.transport is arista.avd.defined %}
+   ptp transport {{ port_channel_interface.ptp.transport }}
+{%     endif %}
+{%     if port_channel_interface.service_profile is arista.avd.defined %}
+   service-profile {{ port_channel_interface.service_profile }}
+{%     endif %}
+{%     for section in port_channel_interface.storm_control | arista.avd.natural_sort %}
+{%         if port_channel_interface.storm_control[section].unit is arista.avd.defined("pps") %}
+   storm-control {{ section | replace("_", "-") }} level pps {{ port_channel_interface.storm_control[section].level }}
+{%         else %}
+   storm-control {{ section | replace("_", "-") }} level {{ port_channel_interface.storm_control[section].level }}
+{%         endif %}
+{%     endfor %}
+{%     if port_channel_interface.bfd.interval is arista.avd.defined and
+          port_channel_interface.bfd.min_rx is arista.avd.defined and
+          port_channel_interface.bfd.multiplier is arista.avd.defined %}
+   bfd interval {{ port_channel_interface.bfd.interval }} min-rx {{ port_channel_interface.bfd.min_rx }} multiplier {{ port_channel_interface.bfd.multiplier }}
+{%     endif %}
+{%     if port_channel_interface.bfd.echo is arista.avd.defined(true) %}
+   bfd echo
+{%     elif port_channel_interface.bfd.echo is arista.avd.defined(false) %}
+   no bfd echo
+{%     endif %}
+{%     for link_tracking_group in port_channel_interface.link_tracking_groups | arista.avd.natural_sort('name') %}
+{%         if link_tracking_group.name is arista.avd.defined and link_tracking_group.direction is arista.avd.defined %}
+   link tracking group {{ link_tracking_group.name }} {{ link_tracking_group.direction }}
+{%         endif %}
+{%     endfor %}
+{%     if port_channel_interface.service_policy.pbr.input is arista.avd.defined %}
+   service-policy type pbr input {{ port_channel_interface.service_policy.pbr.input }}
+{%     endif %}
+{%     if port_channel_interface.mpls.ip is arista.avd.defined(true) %}
+   mpls ip
+{%     elif port_channel_interface.mpls.ip is arista.avd.defined(false) %}
+   no mpls ip
+{%     endif %}
+{%     if port_channel_interface.mpls.ldp.interface is arista.avd.defined(true) %}
+   mpls ldp interface
+{%     elif port_channel_interface.mpls.ldp.interface is arista.avd.defined(false) %}
+   no mpls ldp interface
+{%     endif %}
+{%     if port_channel_interface.mpls.ldp.igp_sync is arista.avd.defined(true) %}
+   mpls ldp igp sync
+{%     endif %}
+{%     if port_channel_interface.isis_enable is arista.avd.defined %}
+   isis enable {{ port_channel_interface.isis_enable }}
+{%     endif %}
+{%     if port_channel_interface.isis_circuit_type is arista.avd.defined %}
+   isis circuit-type {{ port_channel_interface.isis_circuit_type }}
+{%     endif %}
+{%     if port_channel_interface.isis_metric is arista.avd.defined %}
+   isis metric {{ port_channel_interface.isis_metric }}
+{%     endif %}
+{%     if port_channel_interface.isis_passive is arista.avd.defined(true) %}
+   isis passive
+{%     endif %}
+{%     if port_channel_interface.isis_network_point_to_point is arista.avd.defined(true) %}
+   isis network point-to-point
+{%     endif %}
+{%     if port_channel_interface.isis_hello_padding is arista.avd.defined(false) %}
+   no isis hello padding
+{%     elif port_channel_interface.isis_hello_padding is arista.avd.defined(true) %}
+   isis hello padding
+{%     endif %}
+{%     if port_channel_interface.isis_authentication_mode is arista.avd.defined and
+          port_channel_interface.isis_authentication_mode in ["text", "md5"] %}
+   isis authentication mode {{ port_channel_interface.isis_authentication_mode }}
+{%     endif %}
+{%     if port_channel_interface.isis_authentication_key is arista.avd.defined %}
+   isis authentication key 7 {{ port_channel_interface.isis_authentication_key }}
+{%     endif %}
+{%     if port_channel_interface.traffic_policy.input is arista.avd.defined %}
+   traffic-policy input {{ port_channel_interface.traffic_policy.input }}
+{%     endif %}
+{%     if port_channel_interface.traffic_policy.output is arista.avd.defined %}
+   traffic-policy output {{ port_channel_interface.traffic_policy.output }}
+{%     endif %}
+{%     if port_channel_interface.eos_cli is arista.avd.defined %}
+   {{ port_channel_interface.eos_cli | indent(3, false) }}
+{%     endif %}
+{% endfor %}

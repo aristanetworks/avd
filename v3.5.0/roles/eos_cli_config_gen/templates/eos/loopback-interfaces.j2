@@ -1,0 +1,60 @@
+{# eos- Loopback Interfaces #}
+{% for loopback_interface in loopback_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+!
+interface {{ loopback_interface.name }}
+{%     if loopback_interface.description is arista.avd.defined %}
+   description {{ loopback_interface.description }}
+{%     endif %}
+{%     if loopback_interface.shutdown is arista.avd.defined(true) %}
+   shutdown
+{%     elif loopback_interface.shutdown is arista.avd.defined(false) %}
+   no shutdown
+{%     endif %}
+{%     if loopback_interface.vrf is arista.avd.defined %}
+   vrf {{ loopback_interface.vrf }}
+{%     endif %}
+{%     if loopback_interface.ip_proxy_arp is arista.avd.defined(true) %}
+   ip proxy-arp
+{%     endif %}
+{%     if loopback_interface.ip_address is arista.avd.defined %}
+   ip address {{ loopback_interface.ip_address }}
+{%         for ip_address_secondary in loopback_interface.ip_address_secondaries | arista.avd.natural_sort %}
+   ip address {{ ip_address_secondary }} secondary
+{%         endfor %}
+{%     endif %}
+{%     if loopback_interface.ipv6_enable is arista.avd.defined(true) %}
+   ipv6 enable
+{%     endif %}
+{%     if loopback_interface.ipv6_address is arista.avd.defined %}
+   ipv6 address {{ loopback_interface.ipv6_address }}
+{%     endif %}
+{%     if loopback_interface.ospf_area is arista.avd.defined %}
+   ip ospf area {{ loopback_interface.ospf_area }}
+{%     endif %}
+{%     if loopback_interface.isis_enable is arista.avd.defined %}
+   isis enable {{ loopback_interface.isis_enable }}
+{%     endif %}
+{%     if loopback_interface.isis_passive is arista.avd.defined(true) %}
+   isis passive
+{%     endif %}
+{%     if loopback_interface.isis_metric is arista.avd.defined %}
+   isis metric {{ loopback_interface.isis_metric }}
+{%     endif %}
+{%     if loopback_interface.isis_network_point_to_point is arista.avd.defined(true) %}
+   isis network point-to-point
+{%     endif %}
+{%     if loopback_interface.mpls.ldp.interface is arista.avd.defined(true) %}
+   mpls ldp interface
+{%     elif loopback_interface.mpls.ldp.interface is arista.avd.defined(false) %}
+   no mpls ldp interface
+{%     endif %}
+{%     if loopback_interface.node_segment.ipv4_index is arista.avd.defined %}
+   node-segment ipv4 index {{ loopback_interface.node_segment.ipv4_index }}
+{%     endif %}
+{%     if loopback_interface.node_segment.ipv6_index is arista.avd.defined %}
+   node-segment ipv6 index {{ loopback_interface.node_segment.ipv6_index }}
+{%     endif %}
+{%     if loopback_interface.eos_cli is arista.avd.defined %}
+   {{ loopback_interface.eos_cli | indent(3, false) }}
+{%     endif %}
+{% endfor %}

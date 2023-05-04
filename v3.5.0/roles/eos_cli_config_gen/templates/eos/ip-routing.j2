@@ -1,0 +1,21 @@
+{# eos - IP Routing #}
+{% if ip_routing is arista.avd.defined(true) %}
+!
+ip routing
+{% elif ip_routing is arista.avd.defined(false) %}
+!
+no ip routing
+{% endif %}
+{% if ip_icmp_redirect is arista.avd.defined(false) %}
+no ip icmp redirect
+{% endif %}
+{% if ip_hardware.fib.optimize.prefixes.profile is arista.avd.defined %}
+ip hardware fib optimize prefixes profile {{ ip_hardware.fib.optimize.prefixes.profile }}
+{% endif %}
+{% for vrf in vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     if vrf.ip_routing is arista.avd.defined(true) and vrf.name != 'default' %}
+ip routing vrf {{ vrf.name }}
+{%     elif vrf.ip_routing is arista.avd.defined(false) and vrf.name != 'default' %}
+no ip routing vrf {{ vrf.name }}
+{%     endif %}
+{% endfor %}

@@ -1,0 +1,24 @@
+- name: Test with strip_empty invalid
+  ignore_errors: no
+  register: result
+  vars:
+    timezone: "test"
+    hours:
+  yaml_templates_to_facts:
+    templates:
+      - template: "templates/template.j2"
+        options:
+          strip_empty_keys: "test"
+
+- assert:
+    that:
+      - result is success
+      - result.changed == true
+      - result.ansible_facts is defined
+      - result.ansible_facts.clock is defined
+      - result.ansible_facts.clock.timezone is defined
+      - result.ansible_facts.clock.timezone == 'test'
+      - result.ansible_facts.clock.hours is not defined
+      - result.ansible_facts.clock.minutes is not defined
+      - result.ansible_facts.clock.seconds is defined
+      - result.ansible_facts.clock.seconds == [1, 1, 2, 3]

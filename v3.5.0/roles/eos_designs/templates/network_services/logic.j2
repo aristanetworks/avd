@@ -1,0 +1,80 @@
+{% set tmp_tenants = [] %}
+{% set match_tags = switch.filter_tags %}
+{% if switch.group is arista.avd.defined %}
+{%     do match_tags.append(switch.group) %}
+{% endif %}
+{% set whitelist = namespace(vlans=switch.vlans | arista.avd.default([]) | arista.avd.range_expand | map('int')) %}
+{% if switch.uplink_type is arista.avd.defined('port-channel') %}
+{#     Remove vlans from whitelist, if they are not defined on uplink_switch #}
+{%     for uplink_interface in switch.uplink_interfaces | arista.avd.default([]) %}
+{%         set uplink_switch = switch.uplink_switches[loop.index0] | arista.avd.default %}
+{%         if uplink_switch is arista.avd.defined and uplink_switch in groups[fabric_name] %}
+{%             set uplink_switch_vlans = avd_switch_facts[uplink_switch].switch.vlans | arista.avd.default([]) | arista.avd.range_expand | map('int') %}
+{%             set whitelist.vlans = whitelist.vlans | select('in', uplink_switch_vlans) %}
+{%         endif %}
+{%     endfor %}
+{% endif %}
+{% set tmp_hostvars = hostvars[inventory_hostname] %}
+{% for network_services_key in network_services_keys | arista.avd.natural_sort('name') %}
+{%     if network_services_key.name is arista.avd.defined and tmp_hostvars[network_services_key.name] is arista.avd.defined %}
+{#         tenants #}
+{%         for tenant in tmp_hostvars[network_services_key.name] | arista.avd.convert_dicts | arista.avd.natural_sort('name') %}
+{%             if switch.filter_tenants is arista.avd.contains([tenant.name, "all"]) %}
+{#                 vrfs #}
+{%                 set tmp_vrfs = [] %}
+{%                 for vrf in tenant.vrfs | arista.avd.convert_dicts | arista.avd.natural_sort('name') %}
+{%                     do vrf.update({'bgp_peers': vrf.bgp_peers | arista.avd.convert_dicts('ip_address') | arista.avd.natural_sort('ip_address')}) %}
+{#                     svis & bgp_peers #}
+{%                     set tmp_svis = [] %}
+{%                     for svi in vrf.svis | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%                         if svi.id | int in whitelist.vlans %}
+{%                             if "all" in match_tags or svi.tags | arista.avd.default(['all']) is arista.avd.contains(match_tags) %}
+{%                                 do tmp_svis.append(svi) %}
+{%                             endif %}
+{%                         endif %}
+{%                     endfor %}
+{%                     if tmp_svis | length > 0 %}
+{#                         Append VRF if we found SVIs #}
+{%                         do vrf.update({'svis': tmp_svis}) %}
+{%                         do tmp_vrfs.append(vrf) %}
+{%                     elif switch.always_include_vrfs_in_tenants is arista.avd.contains([tenant.name, 'all']) %}
+{#                         Or Append VRF for tenants set in "always_include_vrfs_in_tenants" is set #}
+{%                         do vrf.update({'svis': tmp_svis}) %}
+{%                         do tmp_vrfs.append(vrf) %}
+{%                     else %}
+{#                         Or Append VRF if there is a L3 Interface defined under tenants for this switch #}
+{%                         for l3_interface in vrf.l3_interfaces | arista.avd.natural_sort %}
+{%                             if l3_interface.nodes is arista.avd.defined and l3_interface.ip_addresses is arista.avd.defined and l3_interface.interfaces is arista.avd.defined and inventory_hostname in l3_interface.nodes %}
+{%                                 do vrf.update({'svis': tmp_svis}) %}
+{%                                 do tmp_vrfs.append(vrf) %}
+{%                                 break %}
+{%                             endif %}
+{%                         endfor %}
+{%                     endif %}
+{%                 endfor %}
+{#                 l2vlans #}
+{%                 set tmp_l2vlans = [] %}
+{%                 for l2vlan in tenant.l2vlans | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%                     if l2vlan.id | int in whitelist.vlans %}
+{%                         if "all" in match_tags or l2vlan.tags | arista.avd.default(['all']) is arista.avd.contains(match_tags) %}
+{%                             do tmp_l2vlans.append(l2vlan) %}
+{%                         endif %}
+{%                     endif %}
+{%                 endfor %}
+{#                 point_to_point_services #}
+{%                 set tmp_point_to_point_services = [] %}
+{%                 for point_to_point_service in tenant.point_to_point_services | arista.avd.natural_sort('name') %}
+{%                     for endpoint in point_to_point_service.endpoints | arista.avd.default([]) %}
+{%                         if inventory_hostname in endpoint.nodes | arista.avd.default([]) %}
+{%                             do tmp_point_to_point_services.append(point_to_point_service) %}
+{%                             break %}
+{%                         endif %}
+{%                     endfor %}
+{%                 endfor %}
+{%                 do tenant.update({'vrfs': tmp_vrfs, 'l2vlans': tmp_l2vlans, 'point_to_point_services': tmp_point_to_point_services}) %}
+{%                 do tmp_tenants.append(tenant) %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}
+{% set network_services_data.tenants = tmp_tenants %}

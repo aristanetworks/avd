@@ -1,0 +1,13 @@
+{% if core_interfaces is arista.avd.defined %}
+{%     set core_interfaces_data = namespace() %}
+{%     include 'core_interfaces/logic.j2' %}
+
+{%     include 'core_interfaces/ethernet-interfaces.j2' %}
+
+{%     include 'core_interfaces/port-channel-interfaces.j2' %}
+
+{%     include 'core_interfaces/router-bgp-neighbors.j2' %}
+
+{%     include 'core_interfaces/router-ospf.j2' %}
+
+{% endif %}

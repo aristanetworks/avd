@@ -1,0 +1,25 @@
+{# MPLS #}
+{% set mpls_configured = namespace(ethernet_interfaces=false, loopback_interfaces=false, port_channel_interfaces=false) %}
+{% for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     if ethernet_interface.mpls is arista.avd.defined %}
+{%         set mpls_configured.ethernet_interfaces = true %}
+{%     endif %}
+{% endfor %}
+{% for loopback_interface in loopback_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     if loopback_interface.mpls is arista.avd.defined %}
+{%         set mpls_configured.loopback_interfaces = true %}
+{%     endif %}
+{% endfor %}
+{% for port_channel_interface in port_channel_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     if port_channel_interface.mpls is arista.avd.defined %}
+{%         set mpls_configured.port_channel_interfaces = true %}
+{%     endif %}
+{% endfor %}
+{% if mpls is arista.avd.defined or mpls_configured.ethernet_interfaces or mpls_configured.loopback_interfaces or mpls_configured.port_channel_interfaces %}
+
+# MPLS
+{## MPLS and LDP #}
+{%     include 'documentation/mpls-and-ldp.j2' %}
+{## MPLS Interfaces #}
+{%     include 'documentation/mpls-interfaces.j2' %}
+{% endif %}

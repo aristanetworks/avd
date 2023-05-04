@@ -1,0 +1,150 @@
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.200.5
+service_routing_protocols_model: multi-agent
+ip_routing: true
+daemon_terminattr:
+  cvaddrs:
+  - 192.168.200.11:9910
+  cvauth:
+    method: key
+    key: telarista
+  cvvrf: MGMT
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+  disable_aaa: false
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+name_server:
+  source:
+    vrf: MGMT
+  nodes:
+  - 192.168.200.5
+  - 8.8.8.8
+snmp_server:
+  contact: example@example.com
+  location: EOS_DESIGNS_UNIT_TESTS mgmt_interface_platform
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    no_password: true
+  cvpadmin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+    ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
+      cvpadmin@hostmachine.local
+vrfs:
+  MGMT:
+    ip_routing: false
+management_interfaces:
+  Management0:
+    description: oob_management
+    shutdown: false
+    vrf: MGMT
+    ip_address: 1.1.1.2
+    gateway: 192.168.200.5
+    type: oob
+tcam_profile:
+  system: vxlan-routing
+platform:
+  sand:
+    lag:
+      hardware_only: true
+management_api_http:
+  enable_vrfs:
+    MGMT: {}
+  enable_https: true
+  default_services: false
+vlans:
+  130:
+    tenant: Tenant_A
+    name: Tenant_A_APP_Zone_1
+  131:
+    tenant: Tenant_A
+    name: Tenant_A_APP_Zone_2
+  132:
+    tenant: Tenant_A
+    name: Tenant_A_APP_Zone_3
+  140:
+    tenant: Tenant_A
+    name: Tenant_A_DB_BZone_1
+  141:
+    tenant: Tenant_A
+    name: Tenant_A_DB_Zone_2
+  110:
+    tenant: Tenant_A
+    name: Tenant_A_OP_Zone_1
+  111:
+    tenant: Tenant_A
+    name: Tenant_A_OP_Zone_2
+  112:
+    tenant: Tenant_A
+    name: Tenant_A_OP_Zone_3
+  150:
+    tenant: Tenant_A
+    name: Tenant_A_WAN_Zone_1
+  151:
+    tenant: Tenant_A
+    name: svi_with_no_tags
+  120:
+    tenant: Tenant_A
+    name: Tenant_A_WEB_Zone_1
+  121:
+    tenant: Tenant_A
+    name: Tenant_A_WEBZone_2
+  160:
+    tenant: Tenant_A
+    name: Tenant_A_VMOTION
+  161:
+    tenant: Tenant_A
+    name: Tenant_A_NFS
+  162:
+    tenant: Tenant_A
+    name: l2vlan_with_no_tags
+  210:
+    tenant: Tenant_B
+    name: Tenant_B_OP_Zone_1
+  211:
+    tenant: Tenant_B
+    name: Tenant_B_OP_Zone_2
+  250:
+    tenant: Tenant_B
+    name: Tenant_B_WAN_Zone_1
+  310:
+    tenant: Tenant_C
+    name: Tenant_C_OP_Zone_1
+  311:
+    tenant: Tenant_C
+    name: Tenant_C_OP_Zone_2
+  350:
+    tenant: Tenant_C
+    name: Tenant_C_WAN_Zone_1
+  410:
+    tenant: Tenant_D
+    name: Tenant_D_v6_OP_Zone_1
+  411:
+    tenant: Tenant_D
+    name: Tenant_D_v6_OP_Zone_2
+  412:
+    tenant: Tenant_D
+    name: Tenant_D_v6_OP_Zone_1
+  450:
+    tenant: Tenant_D
+    name: Tenant_D_v6_WAN_Zone_1
+  451:
+    tenant: Tenant_D
+    name: Tenant_D_v6_WAN_Zone_2
+  452:
+    tenant: Tenant_D
+    name: Tenant_D_v6_WAN_Zone_3
+ip_igmp_snooping:
+  globally_enabled: true
+  vlans:
+    120:
+      enabled: false

@@ -1,0 +1,88 @@
+router_bgp:
+  as: 65101
+  router_id: 192.168.255.3
+  updates:
+    wait_for_convergence: true
+    wait_install: true
+  distance:
+    external_routes: 20
+    internal_routes: 200
+    local_routes: 200
+  maximum_paths:
+    paths: 32
+    ecmp: 32
+  bgp_defaults:
+    - no bgp default ipv4-unicast
+    - graceful-restart restart-time 300
+    - graceful-restart
+  bgp:
+    bestpath:
+      d_path: true
+  aggregate_addresses:
+    - prefix: 1.1.1.0/24
+      advertise_only: true
+    - prefix: 2.2.1.0/24
+    - prefix: 1.12.1.0/24
+      as_set: true
+      summary_only: true
+      attribute_map: RM-ATTRIBUTE
+      match_map: RM-MATCH
+      advertise_only: true
+  address_family_ipv4:
+    networks:
+      - prefix: 10.0.0.0/8
+      - prefix: 172.16.0.0/12
+      - prefix: 192.168.0.0/16
+        route_map: RM-FOO-MATCH
+    peer_groups:
+      - name: foo
+        prefix_list_in: PL-BAR-v4-IN
+        prefix_list_out: PL-BAR-v4-OUT
+        default_originate:
+          always: true
+          route_map: RM-FOO-MATCH
+    neighbors:
+      - ip_address: 192.0.2.1
+        prefix_list_in: PL-FOO-v4-IN
+        prefix_list_out: PL-FOO-v4-OUT
+  address_family_ipv6:
+    networks:
+      - prefix: 2001:db8:100::/40
+      - prefix: 2001:db8:200::/40
+        route_map: RM-BAR-MATCH
+    peer_groups:
+      - name: baz
+        prefix_list_in: PL-BAR-v6-IN
+        prefix_list_out: PL-BAR-v6-OUT
+    neighbors:
+      - ip_address: 2001:db8::1
+        prefix_list_in: PL-FOO-v6-IN
+        prefix_list_out: PL-FOO-v6-OUT
+    redistribute_routes:
+      - source_protocol: static
+        route_map: RM-IPV6-STATIC-TO-BGP
+  neighbors:
+    - ip_address: 192.0.3.1
+      remote_as: 65432
+      send_community: all
+      default_originate:
+        enabled: true
+        always: true
+    - ip_address: 192.0.3.2
+      remote_as: 65433
+      send_community: extended
+      maximum_routes: 10000
+      default_originate:
+        enabled: true
+        route_map: RM-FOO-MATCH3
+        always: false
+    - ip_address: 192.0.3.3
+      remote_as: 65434
+      send_community: standard
+      # Test no config generation
+      default_originate:
+    - ip_address: 192.0.3.4
+      remote_as: 65435
+      send_community: large
+      default_originate:
+        enabled: false

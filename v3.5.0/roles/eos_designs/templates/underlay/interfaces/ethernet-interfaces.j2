@@ -1,0 +1,82 @@
+{# Underlay P2P interfaces #}
+ethernet_interfaces:
+{% for link in underlay_data.links | arista.avd.natural_sort('interface') %}
+{# L3 P2P interfaces #}
+{%     if link.type is arista.avd.defined('underlay_p2p') %}
+  {{ link.interface }}:
+    peer: {{ link.peer }}
+    peer_interface: {{ link.peer_interface }}
+    peer_type: {{ link.peer_type }}
+    description: "{% include switch.interface_descriptions.underlay_ethernet_interfaces %}"
+{%         if link.speed is arista.avd.defined %}
+    speed: {{ link.speed }}
+{%         endif %}
+    mtu: {{ p2p_uplinks_mtu }}
+{%         if p2p_uplinks_qos_profile is arista.avd.defined %}
+    service_profile: {{ p2p_uplinks_qos_profile }}
+{%         endif %}
+{%         if link.ptp is arista.avd.defined %}
+    ptp: {{ link.ptp }}
+{%         endif %}
+{%         if link.mac_security is arista.avd.defined %}
+    mac_security: {{ link.mac_security }}
+{%         endif %}
+{%         if switch.mpls_lsr is arista.avd.defined(true) or link.mpls_ip is arista.avd.defined(true) %}
+    mpls:
+      ip: true
+{%             if switch.underlay_routing_protocol in ["isis-ldp", "isis-sr-ldp", "ospf-ldp"] %}
+      ldp:
+        interface: true
+        igp_sync: true
+{%             endif %}
+{%         endif %}
+    type: routed
+    shutdown: {{ shutdown_interfaces_towards_undeployed_peers is arista.avd.defined(true) and not link.peer_is_deployed }}
+{%         if link.ipv6_enable is arista.avd.defined(true) %}
+    ipv6_enable: true
+{%         endif %}
+{%         if link.ip_address is arista.avd.defined and "unnumbered" in link.ip_address | lower %}
+    ip_address: {{ link.ip_address }}
+{%         elif link.ip_address is arista.avd.defined %}
+    ip_address: {{ link.ip_address }}/31
+{%         endif %}
+{%         if switch.underlay_routing_protocol == "ospf" %}
+    ospf_network_point_to_point: true
+    ospf_area: {{ underlay_ospf_area }}
+{%         endif %}
+{%         if switch.underlay_routing_protocol == "isis" %}
+    isis_enable: {{ switch.isis_instance_name }}
+    isis_metric: {{ isis_default_metric | arista.avd.default(50) }}
+    isis_network_point_to_point: true
+    isis_circuit_type: {{ isis_default_circuit_type | arista.avd.default(none) }}
+{%         endif %}
+{%         if link.link_tracking_groups is arista.avd.defined %}
+    link_tracking_groups: {{ link.link_tracking_groups }}
+{%         endif %}
+{# L2 interfaces #}
+{%     elif link.type is arista.avd.defined('underlay_l2') %}
+  {{ link.interface }}:
+    peer: {{ link.peer }}
+    peer_interface: {{ link.peer_interface }}
+    peer_type: {{ link.peer_type }}
+    description: "{% include switch.interface_descriptions.underlay_ethernet_interfaces %}"
+{%         if link.speed is arista.avd.defined %}
+    speed: {{ link.speed }}
+{%         endif %}
+    type: switched
+    shutdown: {{ shutdown_interfaces_towards_undeployed_peers is arista.avd.defined(true) and not link.peer_is_deployed }}
+{%         if link.channel_group_id is arista.avd.defined %}
+    channel_group:
+      id: {{ link.channel_group_id }}
+      mode: active
+{%         else %}
+    vlans: {{ link.vlans | arista.avd.list_compress }}
+{%             if p2p_uplinks_qos_profile is arista.avd.defined %}
+    service_profile: {{ p2p_uplinks_qos_profile }}
+{%             endif %}
+{%             if link.link_tracking_groups is arista.avd.defined %}
+    link_tracking_groups: {{ link.link_tracking_groups }}
+{%             endif %}
+{%         endif %}
+{%     endif %}
+{% endfor %}

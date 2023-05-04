@@ -1,0 +1,42 @@
+{# VLANs Summary #}
+{% if vlans is arista.avd.defined %}
+{%     set ns = namespace(show_private_vlan_table = false) %}
+
+# VLANs
+
+## VLANs Summary
+
+| VLAN ID | Name | Trunk Groups |
+| ------- | ---- | ------------ |
+{%     for vlan in vlans | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%         if vlan.private_vlan is arista.avd.defined %}
+{%             set ns.show_private_vlan_table = true %}
+{%         endif %}
+{%         set row_name = vlan.name | arista.avd.default('-') %}
+{%         if vlan.trunk_groups is arista.avd.defined %}
+{%             set row_trunk_groups = vlan.trunk_groups | join(' ') %}
+{%         else %}
+{%             set row_trunk_groups = '-' %}
+{%         endif %}
+| {{ vlan.id }} | {{ row_name }} | {{ row_trunk_groups }} |
+{%     endfor %}
+{%     if ns.show_private_vlan_table %}
+
+### Private VLANs
+
+| Primary Vlan ID | Secondary VLAN ID | Private Vlan Type |
+| --------------- | ----------------- | ----------------- |
+{%         for vlan in vlans | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%             if vlan.private_vlan.type is arista.avd.defined and
+                  vlan.private_vlan.primary_vlan is arista.avd.defined %}
+| {{ vlan.private_vlan.type }} | {{ vlan.id }} | {{ vlan.private_vlan.primary_vlan }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+
+## VLANs Device Configuration
+
+```eos
+{%     include 'eos/vlans.j2' %}
+```
+{% endif %}

@@ -1,0 +1,18 @@
+{# Tenant vrf loopback interfaces for VTEP diagnostic #}
+loopback_interfaces:
+{% for tenant in network_services_data.tenants %}
+{%     for vrf in tenant.vrfs %}
+{%         if vrf.vtep_diagnostic.loopback is arista.avd.defined %}
+{%             set loopback_description = vrf.vtep_diagnostic.loopback_description | arista.avd.default(vrf.name ~ '_VTEP_DIAGNOSTICS') %}
+{%             set loopback_ipv4_pool = vrf.vtep_diagnostic.loopback_ip_range | arista.avd.default(
+                   vrf.vtep_diagnostic.loopback_ip_pools | arista.avd.default([]) | selectattr('pod', 'arista.avd.defined', pod_name) | map(attribute='ipv4_pool') | first) %}
+{%             if loopback_ipv4_pool is arista.avd.defined %}
+  Loopback{{ vrf.vtep_diagnostic.loopback }}:
+    description: {{ loopback_description }}
+    shutdown: false
+    vrf: {{ vrf.name }}
+    ip_address: {{ loopback_ipv4_pool | ansible.netcommon.ipaddr('network') | ansible.netcommon.ipmath(switch.id + switch.loopback_ipv4_offset) }}/32
+{%             endif %}
+{%         endif %}
+{%     endfor %}
+{% endfor %}

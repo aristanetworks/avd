@@ -1,0 +1,50 @@
+{% if daemon_terminattr.ingestgrpcurl.ips is arista.avd.defined %}
+{# Create list of non CVaaS server #}
+{%     set cvp_on_prem = namespace() %}
+{%     set cvp_on_prem.ips = [] %}
+{%     set cvaas = namespace() %}
+{%     set cvaas.ips = [] %}
+{%     for cvp_ip in daemon_terminattr.ingestgrpcurl.ips %}
+{%         if "arista.io" not in cvp_ip %}
+{%             do cvp_on_prem.ips.append(cvp_ip) %}
+{%         elif "arista.io" in cvp_ip %}
+{%             do cvaas.ips.append(cvp_ip) %}
+{%         endif %}
+{%     endfor %}
+{%     if cvp_on_prem.ips | length > 0 %}
+# Change from daemon_terminattr.ingestgrpcurl to daemon_terminattr.cvaddrs
+daemon_terminattr:
+  cvaddrs:
+{%         for cvp_ip in cvp_on_prem.ips %}
+  - {{ cvp_ip }}:{{ daemon_terminattr.ingestgrpcurl.port }}
+{%         endfor %}
+# New key cvcompression
+  cvcompression: "gzip"
+{%         set key = daemon_terminattr.ingestauth_key | arista.avd.default("") %}
+# Change from daemon_terminattr.ingestauth_key to daemon_terminattr.cvauth
+  cvauth:
+    method: "key"
+    key: "{{ key }}"
+{%         if daemon_terminattr.ingestvrf is arista.avd.defined %}
+# Change from daemon_terminattr.ingestvrf to daemon_terminattr.cvvrf
+  cvvrf: {{ daemon_terminattr.ingestvrf }}
+{%         endif %}
+{%     elif cvaas.ips | length > 0 %}
+# Change from daemon_terminattr.ingestgrpcurl to daemon_terminattr.cvaddrs
+daemon_terminattr:
+  cvaddrs:
+{%         for cvp_ip in cvaas.ips %}
+  - {{ cvp_ip }}:443
+{%         endfor %}
+# New key cvcompression
+  cvcompression: "gzip"
+# Change from daemon_terminattr.ingestauth_key to daemon_terminattr.cvauth
+  cvauth:
+    method: "token-secure"
+    token_file: "/tmp/cv-onboarding-token"
+{%         if daemon_terminattr.ingestvrf is arista.avd.defined %}
+# Change from daemon_terminattr.ingestvrf to daemon_terminattr.cvvrf
+  cvvrf: {{ daemon_terminattr.ingestvrf }}
+{%         endif %}
+{%     endif %}
+{% endif %}

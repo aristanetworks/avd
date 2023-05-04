@@ -1,0 +1,155 @@
+---
+- name: "Collection {{ ansible_collection_name }} version {{ version }}{{ ('(git ' ~ git_tag ~ ')') if git_tag }} loaded from {{ collection_path }}"
+  tags: [always, avd_version]
+  set_fact:
+    avd_collection_version: version
+  vars:
+    versions: "{{ lookup('pipe', 'ansible-galaxy collection list --format yaml ' ~ ansible_collection_name) | from_yaml }}"
+    collection_path: "{{ (role_path | split('/'))[0:-4] | join('/') }}"
+    version: "{{ versions[collection_path][ansible_collection_name].version | default('Unknown') }}"
+    git_tag: "{{ lookup('pipe', 'git -C ' ~ collection_path ~ ' describe --tags --always 2>/dev/null', errors='ignore') }}"
+  run_once: true
+  failed_when: false
+
+- name: Create required output directories if not present
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+  loop:
+    - "{{ eos_validate_state_dir }}"
+  delegate_to: localhost
+  run_once: true
+
+- name: Include device intended structure configuration variables
+  include_vars: "{{ filename }}"
+  delegate_to: localhost
+  # errors='ignore' is needed for compatibility with ansible-core < 2.12
+  when: structured_config is not defined and lookup('first_found', filename, skip=True, errors='ignore')
+  vars:
+    filename: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
+  tags:
+    - always
+
+- name: Generate variables for testing
+  template:
+    src: generate_vars_for_testing.j2
+    dest: "{{ eos_validate_state_dir }}/validate_state_vars.yml"
+    mode: 0664
+  delegate_to: localhost
+  run_once: true
+  tags:
+    - always
+
+- name: Include vars from validate_state_vars.yml
+  include_vars:
+    file: "{{ eos_validate_state_dir }}/validate_state_vars.yml"
+  delegate_to: localhost
+  run_once: true
+  tags:
+    - always
+
+- name: Gather EOS platform and version details
+  eos_command:
+    commands: "show version | json"
+  register: eos_version
+  tags:
+    - platform_information
+    - hardware
+
+- name: Display device platform and release information
+  debug:
+    msg: "The device {{ inventory_hostname }} is a {{ eos_version.stdout_lines.0.modelName }} model running EOS version {{ eos_version.stdout_lines.0.version }}"
+  tags:
+    - platform_information
+    - hardware
+
+  #####################################
+  ## Load tasks for validaiton tests ##
+  #####################################
+
+- name: Load Hardware validation tasks
+  include_tasks: "hardware.yml"
+  when:
+    - eos_version.stdout_lines.0.modelName != 'vEOS'
+    - eos_version.stdout_lines.0.modelName != 'vEOS-lab'
+    - eos_version.stdout_lines.0.modelName != 'cEOSLab'
+  tags:
+    - hardware
+
+- name: Load ntp tasks
+  include_tasks: "ntp.yml"
+  tags:
+    - ntp
+
+- name: Load interface state tasks
+  include_tasks: "interface_state.yml"
+  tags:
+    - interfaces_state
+
+- name: Load LLDP Topology tasks when dns domain is defined
+  include_tasks: "lldp_topology_fqdn.yml"
+  tags:
+    - lldp_topology
+  when: dns_domain is defined
+
+- name: Load LLDP Topology tasks when dns domain is not defined
+  include_tasks: "lldp_topology_no_fqdn.yml"
+  tags:
+    - lldp_topology
+  when: dns_domain is not defined
+
+- name: Load mlag tasks
+  include_tasks: "mlag.yml"
+  when: |
+    (mlag_configuration is defined and mlag_configuration is not none)
+  tags:
+    - mlag
+
+- name: Load IP Reachability tasks
+  include_tasks: "ip_reachability.yml"
+  tags:
+    - ip_reachability
+
+- name: Load BGP tasks
+  include_tasks: "bgp_check.yml"
+  when: |
+    (router_bgp is defined and router_bgp is not none)
+  tags:
+    - bgp_check
+
+- name: Validate reload cause
+  include_tasks: "reload_cause.yml"
+  tags:
+    - reload_cause
+    - optional
+    - never
+
+- name: Validate routing table
+  include_tasks: "routing_table.yml"
+  tags:
+    - routing_table
+
+- name: Validate loopback reachability
+  include_tasks: "loopback_reachability.yml"
+  tags:
+    - loopback_reachability
+
+- name: Remove generated vars for testing
+  file:
+    path: "{{ eos_validate_state_dir }}/validate_state_vars.yml"
+    state: absent
+  delegate_to: localhost
+  run_once: true
+  tags:
+    - always
+
+  ####################################
+  ##       Validation Reports       ##
+  ####################################
+
+- name: Create reports
+  include_tasks: "reports.yml"
+  tags:
+    - always
+    - reports

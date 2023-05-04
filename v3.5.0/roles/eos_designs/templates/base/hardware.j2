@@ -1,0 +1,30 @@
+{# platform-speed-groups #}
+{% if platform_speed_groups is arista.avd.defined %}
+{# Using tmp variable to be able to sort final output and handle duplicate assignments gracefully #}
+{%     set tmp_speed_groups = {} %}
+{%     if switch.platform is arista.avd.defined %}
+{%         for platform_item in platform_speed_groups %}
+{# changing for avd_v4.0 #}
+{%             if "platform" in platform_item and "speeds" in platform_item %}
+{%                 set platform = platform_item %}
+{%             else %}
+{%                 set platform = {"platform": platform_item, "speeds": platform_speed_groups[platform_item]} %}
+{%             endif %}
+{%             if platform.platform == switch.platform %}
+{%                 for speed in platform.speeds | arista.avd.convert_dicts('speed', 'speed_groups') | arista.avd.natural_sort('speed') %}
+{%                     for speed_group in speed.speed_groups %}
+{%                         do tmp_speed_groups.update({speed_group: speed.speed}) %}
+{%                     endfor %}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     if tmp_speed_groups | arista.avd.natural_sort | length > 0 %}
+hardware:
+  speed_groups:
+{%         for speed_group in tmp_speed_groups | arista.avd.natural_sort %}
+    {{ speed_group }}:
+      serdes: {{ tmp_speed_groups[speed_group] }}
+{%         endfor %}
+{%     endif %}
+{% endif %}

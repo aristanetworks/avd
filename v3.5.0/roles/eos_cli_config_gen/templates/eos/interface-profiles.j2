@@ -1,0 +1,12 @@
+{# eos - interface profiles #}
+{% if interface_profiles is arista.avd.defined %}
+{%     for interface_profile in interface_profiles | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+!
+interface profile {{ interface_profile.name }}
+{%         if interface_profile.commands is arista.avd.defined %}
+{%             for command in interface_profile.commands %}
+   command {{ command }}
+{%             endfor %}
+{%         endif %}
+{%     endfor %}
+{% endif %}

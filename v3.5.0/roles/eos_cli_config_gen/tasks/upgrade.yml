@@ -1,0 +1,4 @@
+- name: Upgrade eos_cli_config_gen data model
+  tags: [always]
+  include_tasks: "upgrade-2.x-to-3.0.yml"
+  when: avd_eos_cli_config_gen_upgrade | arista.avd.default('2.x-to-3.0') == '2.x-to-3.0'

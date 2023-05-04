@@ -1,0 +1,55 @@
+{% if platform is arista.avd.defined %}
+
+# Platform
+{%     if platform.trident is arista.avd.defined or platform.sand is arista.avd.defined %}
+
+## Platform Summary
+{%         if platform.trident is arista.avd.defined %}
+
+### Platform Trident Summary
+
+| Settings | Value |
+| -------- | ----- |
+{%             for tridentsetting in platform.trident | arista.avd.natural_sort %}
+| {{ tridentsetting }} | {{ platform.trident[tridentsetting] }} |
+{%             endfor %}
+{%         endif %}
+{%         if platform.sand is arista.avd.defined %}
+
+### Platform Sand Summary
+
+| Settings | Value |
+| -------- | ----- |
+{%             if platform.sand.forwarding_mode is arista.avd.defined %}
+| Forwarding Mode | {{ platform.sand.forwarding_mode }} |
+{%             endif %}
+{%             if platform.sand.lag.hardware_only is arista.avd.defined %}
+| Hardware Only Lag | {{ platform.sand.lag.hardware_only }} |
+{%             endif %}
+{%             if platform.sand.lag.mode is arista.avd.defined %}
+| Lag Mode | {{ platform.sand.lag.mode }} |
+{%             endif %}
+{%             if platform.sand.multicast_replication.default is arista.avd.defined %}
+| Default Multicast Replication | {{ platform.sand.multicast_replication.default }} |
+{%             endif %}
+{%             if platform.sand.qos_maps is arista.avd.defined %}
+
+#### Internal Network QOS Mapping
+
+| Traffic Class | To Network QOS |
+| ------------- | -------------- |
+{%                 for qos_map in platform.sand.qos_maps | arista.avd.natural_sort('traffic_class') %}
+{%                     if qos_map.traffic_class is arista.avd.defined and qos_map.to_network_qos is arista.avd.defined %}
+| {{ qos_map.traffic_class }} | {{ qos_map.to_network_qos }} |
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%         endif %}
+{%     endif %}
+
+## Platform Configuration
+
+```eos
+{%     include 'eos/platform.j2' %}
+```
+{% endif %}

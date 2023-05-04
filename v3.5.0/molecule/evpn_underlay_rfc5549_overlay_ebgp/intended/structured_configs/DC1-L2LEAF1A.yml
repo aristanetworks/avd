@@ -1,0 +1,116 @@
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.200.5
+service_routing_protocols_model: multi-agent
+ip_routing: true
+ipv6_unicast_routing: true
+ip_routing_ipv6_interfaces: true
+daemon_terminattr:
+  cvaddrs:
+  - 192.168.200.11:9910
+  cvauth:
+    method: key
+    key: telarista
+  cvvrf: MGMT
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+  disable_aaa: false
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+name_server:
+  source:
+    vrf: MGMT
+  nodes:
+  - 192.168.200.5
+  - 8.8.8.8
+spanning_tree:
+  mode: mstp
+  mst_instances:
+    '0':
+      priority: 16384
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    no_password: true
+  cvpadmin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+vrfs:
+  MGMT:
+    ip_routing: false
+management_interfaces:
+  Management1:
+    description: oob_management
+    shutdown: false
+    vrf: MGMT
+    ip_address: 192.168.200.112/24
+    gateway: 192.168.200.5
+    type: oob
+management_api_http:
+  enable_vrfs:
+    MGMT: {}
+  enable_https: true
+ethernet_interfaces:
+  Ethernet1:
+    peer: DC1-LEAF2A
+    peer_interface: Ethernet7
+    peer_type: l3leaf
+    description: DC1-LEAF2A_Ethernet7
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 1
+      mode: active
+  Ethernet2:
+    peer: DC1-LEAF2B
+    peer_interface: Ethernet7
+    peer_type: l3leaf
+    description: DC1-LEAF2B_Ethernet7
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 1
+      mode: active
+port_channel_interfaces:
+  Port-Channel1:
+    description: DC1_LEAF2_Po7
+    type: switched
+    shutdown: false
+    vlans: 110-111,120-121,130-131,160-161
+    mode: trunk
+vlans:
+  130:
+    tenant: Tenant_A
+    name: Tenant_A_APP_Zone_1
+  131:
+    tenant: Tenant_A
+    name: Tenant_A_APP_Zone_2
+  110:
+    tenant: Tenant_A
+    name: Tenant_A_OP_Zone_1
+  111:
+    tenant: Tenant_A
+    name: Tenant_A_OP_Zone_2
+  120:
+    tenant: Tenant_A
+    name: Tenant_A_WEB_Zone_1
+  121:
+    tenant: Tenant_A
+    name: Tenant_A_WEBZone_2
+  160:
+    tenant: Tenant_A
+    name: Tenant_A_VMOTION
+  161:
+    tenant: Tenant_A
+    name: Tenant_A_NFS
+ip_igmp_snooping:
+  globally_enabled: true
+  vlans:
+    120:
+      enabled: false

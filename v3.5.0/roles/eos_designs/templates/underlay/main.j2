@@ -1,0 +1,43 @@
+{# Add one blank line after each included template #}
+{% set underlay_data = namespace() %}
+{% include 'underlay/logic.j2' %}
+
+{% include 'underlay/interfaces/ethernet-interfaces.j2' %}
+
+{% include 'underlay/interfaces/port-channel-interfaces.j2' %}
+
+{# EBGP #}
+{% if switch.underlay_router is arista.avd.defined(true) %}
+{%     include 'underlay/interfaces/loopback-interfaces.j2' %}
+
+{%     if switch.underlay_routing_protocol == "ebgp" %}
+{%         include 'underlay/ebgp/router-bgp.j2' %}
+
+{%         include 'underlay/ebgp/prefix-lists.j2' %}
+
+{%         if switch.underlay_ipv6 is arista.avd.defined(true) %}
+{%             include 'underlay/ebgp/ipv6-prefix-lists.j2' %}
+
+{%         endif %}
+{%         include 'underlay/ebgp/route-maps.j2' %}
+
+{%     elif switch.underlay_routing_protocol in  ["isis", "isis-ldp"] %}
+{%         include 'underlay/isis/router-isis.j2' %}
+
+{%     elif switch.underlay_routing_protocol in ["ospf", "ospf-ldp"] %}
+{%         include 'underlay/ospf/router-ospf.j2' %}
+
+{%     elif switch.underlay_routing_protocol in ["isis-sr", "isis-sr-ldp"] %}
+{%         include 'underlay/isis-sr/router-isis.j2' %}
+
+{%     endif %}
+{%     if switch.mpls_lsr is arista.avd.defined(true) %}
+{%         include 'underlay/mpls/mpls-ip.j2' %}
+
+{%     endif %}
+{%     if switch.underlay_routing_protocol in ["isis-ldp", "isis-sr-ldp", "ospf-ldp"] %}
+{%         include 'underlay/mpls/mpls-ldp.j2' %}
+
+{%     endif %}
+
+{% endif %}

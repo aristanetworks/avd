@@ -1,0 +1,56 @@
+# DC1 Tenants Networks
+# Documentation of Tenant specific information - Vlans/VRFs
+# SVI Profile
+svi_profiles:
+  GENERIC:
+    mtu: 1560
+    enabled: true
+  GENERIC_FULL:
+    name: GENERIC Name
+    mtu: 1560
+    enabled: false
+    ip_address_virtual: 10.1.10.254/24
+  GENERIC_FULL_V6:
+    name: GENERIC Name V6
+    mtu: 1560
+    enabled: false
+    ipv6_address_virtual: 2001:db8:451::1/64
+  GENERIC_DUAL_STACK:
+    name: GENERIC DUAL STACK v4 and v6
+    mtu: 1560
+    enabled: false
+    ip_address_virtual: 10.4.12.254/24
+    ipv6_address_virtual: 2001:db8:412::1/64
+  GENERIC_DHCP:
+    mtu: 1560
+    enabled: false
+    ip_helpers:
+      2.2.2.2:
+        source_interface: lo101
+        source_vrf: MGMT
+  WITH_NO_MTU:
+    enabled: true
+  WITH_DHCP_AND_SNOOPING:
+    enabled: true
+    ip_address_virtual: 10.1.11.254/24
+    igmp_snooping_enabled: false
+    ip_helpers:
+      1.1.1.1:
+        source_interface: lo100
+        source_vrf: TEST
+  WITH_DHCP:
+    enabled: true
+    ip_helpers:
+      1.1.1.1:
+        source_interface: lo100
+        source_vrf: MGMT
+  DERIVED_DHCP:
+    parent_profile: GENERIC_DHCP
+    enabled: true
+
+tenants:
+  # Tenant_A Specific Information - VRFs / VLANs
+  Tenant_A: "{{ Tenant_A }}"
+  Tenant_B: "{{ Tenant_B }}"
+  Tenant_C: "{{ Tenant_C }}"
+  Tenant_D: "{{ Tenant_D }}"

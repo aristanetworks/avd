@@ -1,0 +1,19 @@
+router_ospf:
+  process_ids:
+    {{ underlay_ospf_process_id }}:
+      passive_interface_default: true
+      router_id: {{ switch.router_id }}
+      no_passive_interfaces:
+{% for link in underlay_data.links | arista.avd.natural_sort('interface') %}
+{# L3 P2P interfaces #}
+{%     if link.type is arista.avd.defined('underlay_p2p') %}
+        - {{ link.interface }}
+{%     endif %}
+{% endfor %}
+{% if switch.mlag_l3 is arista.avd.defined(true) %}
+        - Vlan{{ switch.mlag_peer_l3_vlan }}
+{% endif %}
+{% if underlay_ospf_bfd_enable is arista.avd.defined(true) %}
+      bfd_enable: true
+{% endif %}
+      max_lsa: {{ underlay_ospf_max_lsa }}

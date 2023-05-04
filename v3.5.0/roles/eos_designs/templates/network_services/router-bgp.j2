@@ -1,0 +1,20 @@
+{# Add one blank line after each included template #}
+{% if network_services_data.tenants | arista.avd.default([]) | length > 0 %}
+router_bgp:
+{%     include 'network_services/router-bgp-vrfs.j2' %}
+
+{%     if "evpn" in switch.overlay_address_families %}
+{%         include 'network_services/router-bgp-vlans.j2' %}
+
+{%         include 'network_services/router-bgp-vlan-aware-bundles.j2' %}
+
+{%     endif %}
+{%     if default_vrf.svi_subnets %}
+{%         include 'network_services/router-bgp-default-vrf.j2' %}
+
+{%     endif %}
+{%     if switch.mpls_overlay_role in  ["server", "client"] and switch.network_services_l1 is arista.avd.defined(true) %}
+{%         include 'network_services/router-bgp-vpws.j2' %}
+
+{%     endif %}
+{% endif %}

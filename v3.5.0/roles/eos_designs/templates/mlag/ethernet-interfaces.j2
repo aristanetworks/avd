@@ -1,0 +1,19 @@
+{# Leaf mlag interfaces #}
+{% if switch.mlag_interfaces is arista.avd.defined and switch.mlag_interfaces | length > 0 %}
+ethernet_interfaces:
+{%     for mlag_interface in switch.mlag_interfaces %}
+  {{ mlag_interface }}:
+    peer: {{ switch.mlag_peer }}
+    peer_interface: {{ mlag_interface }}
+    peer_type: mlag_peer
+    description: "{% include switch.interface_descriptions.mlag_ethernet_interfaces %}"
+    type: switched
+    shutdown: false
+    channel_group:
+      id: {{ switch.mlag_port_channel_id }}
+      mode: active
+{%         if switch.mlag_interfaces_speed is arista.avd.defined %}
+    speed: {{ switch.mlag_interfaces_speed }}
+{%         endif %}
+{%     endfor %}
+{% endif %}

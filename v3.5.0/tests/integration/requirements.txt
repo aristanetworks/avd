@@ -1,0 +1,17 @@
+ansible-core>=2.11.3,<2.13.0
+ansible-lint<6.0.0
+galaxy-importer>=0.3.1
+pycodestyle
+flake8
+pylint>=2.4.4
+twine
+pre-commit>=2.9.2
+pre-commit-hooks>=3.3.0
+identify>=1.4.20
+docker
+molecule>=3.2.0,<3.5.0
+molecule-docker>=0.2.4
+yamllint
+treelib
+md_toc
+natsort

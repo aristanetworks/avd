@@ -1,0 +1,8 @@
+{# eos - Redundancy #}
+{% if redundancy is arista.avd.defined %}
+!
+redundancy
+{%     if redundancy.protocol is arista.avd.defined %}
+   protocol {{ redundancy.protocol }}
+{%     endif %}
+{% endif %}

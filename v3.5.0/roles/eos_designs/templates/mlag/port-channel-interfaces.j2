@@ -1,0 +1,18 @@
+{# Leaf mlag peer-link #}
+port_channel_interfaces:
+  Port-Channel{{ switch.mlag_port_channel_id }}:
+    description: "{% include switch.interface_descriptions.mlag_port_channel_interfaces %}"
+    type: switched
+    shutdown: false
+    vlans: {{ switch.mlag_peer_link_allowed_vlans }}
+    mode: trunk
+{% if p2p_uplinks_qos_profile is arista.avd.defined %}
+    service_profile: {{ p2p_uplinks_qos_profile }}
+{% endif %}
+    trunk_groups:
+{% if switch.mlag_l3 is arista.avd.defined %}
+{#     Add LEAF_PEER_L3 even if we reuse the MLAG trunk group for underlay peering #}
+{#     since this trunk group is also used for overlay iBGP peerings #}
+      - LEAF_PEER_L3
+{% endif %}
+      - MLAG

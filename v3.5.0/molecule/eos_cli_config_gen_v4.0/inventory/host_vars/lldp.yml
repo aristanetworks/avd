@@ -1,0 +1,40 @@
+### LLDP ###
+lldp:
+  run: false
+  timer: 30
+  holdtime: 90
+  management_address: 192.168.1.1/24
+  vrf: Management
+  tlvs:
+    - name: system-capabilities
+      transmit: false
+    - name: system-description
+      transmit: true
+
+ethernet_interfaces:
+  - name: Ethernet1
+    description: to WAN-ISP1-01 Ethernet2
+    type: routed
+    lldp:
+      transmit: false
+      receive: false
+
+  - name: Ethernet2
+    description: Switched port with no LLDP rx/tx
+    mode: access
+    vlans: 110
+    lldp:
+      transmit: false
+      receive: true
+
+  - name: Ethernet3
+    description: No special LLDP settings
+    mode: access
+    vlans: 110
+
+  - name: Ethernet4
+    description: test
+    type: routed
+    lldp:
+      transmit: true
+      receive: false

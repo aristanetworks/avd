@@ -1,0 +1,32 @@
+{% if super_spine is arista.avd.defined %}
+{####### super-spine #######}
+# Node type definitions
+node_type_keys:
+  spine:
+    type: spine
+    default_evpn_role: server
+    ip_addressing:
+      p2p_uplinks_ip: 'ip_addressing/avd-v2-spine-p2p-uplinks-ip.j2'
+      p2p_uplinks_peer_ip: 'ip_addressing/avd-v2-spine-p2p-uplinks-peer-ip.j2'
+  l3leaf:
+    type: l3leaf
+    connected_endpoints: true
+    default_evpn_role: client
+    mlag_support: true
+    network_services:
+      l2: true
+      l3: true
+    vtep: true
+  l2leaf:
+    type: l2leaf
+    connected_endpoints: true
+    mlag_support: true
+    network_services:
+      l2: true
+    underlay_router: false
+    uplink_type: port-channel
+  super_spine:
+    type: super-spine
+  overlay_controller:
+    type: overlay-controller
+{% endif %}

@@ -1,0 +1,20 @@
+{# eos - vmtracer sessions #}
+{% for session in vmtracer_sessions | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+!
+vmtracer session {{ session.name }}
+{%     if session.url is arista.avd.defined %}
+   url {{ session.url }}
+{%     endif %}
+{%     if session.username is arista.avd.defined %}
+   username {{ session.username }}
+{%     endif %}
+{%     if session.password is arista.avd.defined %}
+   password 7 {{ session.password }}
+{%     endif %}
+{%     if session.autovlan_disable is arista.avd.defined(true) %}
+   autovlan disable
+{%     endif %}
+{%     if session.source_interface is arista.avd.defined %}
+   source-interface {{ session.source_interface }}
+{%     endif %}
+{% endfor %}

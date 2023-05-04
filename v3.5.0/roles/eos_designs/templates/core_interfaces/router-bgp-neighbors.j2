@@ -1,0 +1,31 @@
+{% if core_interfaces_data.bgp_neighbors | length > 0 or core_interfaces_data.bgp_neighbors_rfc5549 | length > 0 %}
+router_bgp:
+{%     if underlay_rfc5549 is arista.avd.defined(true) %}
+{# RFC5549 EBGP peerings #}
+  neighbor_interfaces:
+{%         for p2p_interface_key in core_interfaces_data.bgp_neighbors_rfc5549 | arista.avd.natural_sort %}
+{%             set bgp_neighbor = core_interfaces_data.bgp_neighbors_rfc5549[p2p_interface_key] %}
+    {{ p2p_interface_key }}:
+      peer_group: {{ switch.bgp_peer_groups.ipv4_underlay_peers.name }}
+      remote_as: "{{ bgp_neighbor.remote_as }}"
+      description: {{ bgp_neighbor.description }}
+{%         endfor %}
+
+{%     else %}
+{# Regular EBGP peerings #}
+  neighbors:
+{%         for bgp_neighbor_key in core_interfaces_data.bgp_neighbors | arista.avd.natural_sort %}
+{%             set bgp_neighbor = core_interfaces_data.bgp_neighbors[bgp_neighbor_key] %}
+    {{ bgp_neighbor_key }}:
+      remote_as: "{{ bgp_neighbor.remote_as }}"
+      description: {{ bgp_neighbor.description }}
+      peer_group: {{ bgp_neighbor.peer_group }}
+{%             if bgp_neighbor.bfd is arista.avd.defined(true) %}
+      bfd: true
+{%             endif %}
+{%             if bgp_neighbor.local_as is arista.avd.defined %}
+      local_as: "{{ bgp_neighbor.local_as }}"
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endif %}

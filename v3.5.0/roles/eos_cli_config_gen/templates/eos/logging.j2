@@ -1,0 +1,80 @@
+{# eos - logging #}
+{% if logging is arista.avd.defined %}
+!
+{%     if logging.buffered.level is arista.avd.defined('disabled') %}
+no logging buffered
+{%     elif logging.buffered.level is arista.avd.defined %}
+{%         set logging_buffered_cli = "logging buffered" %}
+{%         if logging.buffered.size is arista.avd.defined %}
+{%             set logging_buffered_cli = logging_buffered_cli ~ " " ~ logging.buffered.size %}
+{%         endif %}
+{%         set logging_buffered_cli = logging_buffered_cli ~ " " ~ logging.buffered.level %}
+{{ logging_buffered_cli }}
+{%     endif %}
+{%     if logging.trap is arista.avd.defined('disabled') %}
+no logging trap
+{%     elif logging.trap is arista.avd.defined %}
+logging trap {{ logging.trap }}
+{%     endif %}
+{%     if logging.console is arista.avd.defined('disabled') %}
+no logging console
+{%     elif logging.console is arista.avd.defined %}
+logging console {{ logging.console }}
+{%     endif %}
+{%     if logging.monitor is arista.avd.defined('disabled') %}
+no logging monitor
+{%     elif logging.monitor is arista.avd.defined %}
+logging monitor {{ logging.monitor }}
+{%     endif %}
+{%     if logging.synchronous.level is arista.avd.defined('disabled') %}
+no logging synchronous
+{%     elif logging.synchronous is arista.avd.defined %}
+logging synchronous level {{ logging.synchronous.level | arista.avd.default("critical") }}
+{%     endif %}
+{%     for vrf in logging.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         for host in vrf.hosts | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%             set logging_host_cli = "logging" %}
+{%             if vrf.name != "default" %}
+{%                 set logging_host_cli = logging_host_cli ~ " vrf " ~ vrf.name %}
+{%             endif %}
+{%             set logging_host_cli = logging_host_cli ~ " host " ~ host.name %}
+{%             if host.ports is arista.avd.defined() %}
+{%                 set logging_host_cli = logging_host_cli ~ ' ' ~ host.ports | join(' ') %}
+{%             endif %}
+{%             if host.protocol is arista.avd.defined() and host.protocol is not arista.avd.defined("udp") %}
+{%                 set logging_host_cli = logging_host_cli ~ " protocol " ~ host.protocol | lower %}
+{%             endif %}
+{{ logging_host_cli }}
+{%         endfor %}
+{%     endfor %}
+{%     if logging.format.timestamp is arista.avd.defined %}
+logging format timestamp {{ logging.format.timestamp }}
+{%     endif %}
+{%     if logging.format.hostname is arista.avd.defined('fqdn') %}
+logging format hostname fqdn
+{%     elif logging.format.hostname is arista.avd.defined('ipv4') %}
+logging format hostname ipv4
+{%     endif %}
+{%     if logging.format.sequence_numbers is arista.avd.defined(true) %}
+logging format sequence-numbers
+{%     endif %}
+{%     if logging.facility is arista.avd.defined %}
+logging facility {{ logging.facility }}
+{%     endif %}
+{%     if logging.source_interface is arista.avd.defined %}
+logging source-interface {{ logging.source_interface }}
+{%     endif %}
+{%     for vrf in logging.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         set logging_cli = "logging" %}
+{%         if vrf.source_interface is arista.avd.defined %}
+{%             if vrf.name != "default" %}
+{%                 set logging_cli = logging_cli ~ " vrf " ~ vrf.name %}
+{%             endif %}
+{%             set logging_cli = logging_cli ~ " source-interface " ~ vrf.source_interface %}
+{{ logging_cli }}
+{%         endif %}
+{%     endfor %}
+{%     for match_list in logging.policy.match.match_lists | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+logging policy match match-list {{ match_list.name }} {{ match_list.action }}
+{%     endfor %}
+{% endif %}

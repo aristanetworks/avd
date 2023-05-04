@@ -1,0 +1,320 @@
+router_bgp:
+  as: '65152'
+  router_id: 192.168.255.34
+  bgp_defaults:
+  - maximum-paths 4 ecmp 4
+  peer_groups:
+    UNDERLAY-PEERS:
+      type: ipv4
+      password: AQQvKeimxJu+uGQ/yYvv9w==
+      maximum_routes: 12000
+      send_community: all
+    EVPN-OVERLAY-PEERS:
+      type: evpn
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: '3'
+      password: q+VNViP5i4rVjW1cxFv2wA==
+      send_community: all
+      maximum_routes: 0
+  address_family_ipv4:
+    peer_groups:
+      UNDERLAY-PEERS:
+        activate: true
+      EVPN-OVERLAY-PEERS:
+        activate: false
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP
+  neighbors:
+    10.10.101.2:
+      peer_group: UNDERLAY-PEERS
+      remote_as: '65001'
+      description: DC1-SPINE1_Ethernet11
+    192.168.255.1:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-SPINE1
+      remote_as: '65001'
+  address_family_evpn:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+    evpn_hostflap_detection:
+      window: 180
+      threshold: 5
+      enabled: true
+      expiry_timeout: 10
+  vrfs:
+    Tenant_X_OP_Zone:
+      router_id: 192.168.255.34
+      rd: 192.168.255.34:20
+      route_targets:
+        import:
+          evpn:
+          - '20:20'
+        export:
+          evpn:
+          - '20:20'
+      redistribute_routes:
+      - connected
+  vlan_aware_bundles:
+    Tenant_X_OP_Zone:
+      rd: 192.168.255.34:20
+      route_targets:
+        both:
+        - '20:20'
+      redistribute_routes:
+      - learned
+      vlan: 310
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.200.5
+service_routing_protocols_model: multi-agent
+ip_routing: true
+daemon_terminattr:
+  cvaddrs:
+  - 192.168.200.11:9910
+  cvauth:
+    method: key
+    key: telarista
+  cvvrf: MGMT
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+  disable_aaa: false
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+name_server:
+  source:
+    vrf: MGMT
+  nodes:
+  - 192.168.200.5
+  - 8.8.8.8
+snmp_server:
+  contact: example@example.com
+  location: EOS_DESIGNS_UNIT_TESTS MH-LEAF1B
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    no_password: true
+  cvpadmin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+    ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
+      cvpadmin@hostmachine.local
+vrfs:
+  MGMT:
+    ip_routing: false
+  Tenant_X_OP_Zone:
+    tenant: Tenant_X
+    ip_routing: true
+management_interfaces:
+  Management1:
+    description: oob_management
+    shutdown: false
+    vrf: MGMT
+    ip_address: 192.168.201.105/24
+    gateway: 192.168.200.5
+    type: oob
+management_api_http:
+  enable_vrfs:
+    MGMT: {}
+  enable_https: true
+  default_services: false
+link_tracking_groups:
+- name: LT_GROUP1
+  recovery_delay: 300
+lacp:
+  port_id:
+    range:
+      begin: 129
+      end: 256
+ethernet_interfaces:
+  Ethernet1:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet11
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE1_Ethernet11
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 10.10.101.3/31
+    link_tracking_groups:
+    - name: LT_GROUP1
+      direction: upstream
+  Ethernet11:
+    peer: ROUTER02_WITH_SUBIF
+    peer_interface: Eth2
+    peer_type: router
+    description: ROUTER02_WITH_SUBIF_Eth2
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 11
+      mode: active
+  Ethernet10:
+    peer: server01_ES1
+    peer_interface: Eth2
+    peer_type: server
+    description: server01_ES1_Eth2
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 310
+    channel_group:
+      id: 10
+      mode: active
+  Ethernet12:
+    peer: server03_AUTO_ESI
+    peer_interface: Eth2
+    peer_type: server
+    description: server03_AUTO_ESI_Eth2
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 310
+    channel_group:
+      id: 12
+      mode: active
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    shutdown: false
+    ip_address: 192.168.255.34/32
+  Loopback1:
+    description: VTEP_VXLAN_Tunnel_Source
+    shutdown: false
+    ip_address: 192.168.254.34/32
+  Loopback100:
+    description: Tenant_X_OP_Zone_VTEP_DIAGNOSTICS
+    shutdown: false
+    vrf: Tenant_X_OP_Zone
+    ip_address: 10.255.1.34/32
+prefix_lists:
+  PL-LOOPBACKS-EVPN-OVERLAY:
+    sequence_numbers:
+      10:
+        action: permit 192.168.255.0/24 eq 32
+      20:
+        action: permit 192.168.254.0/24 eq 32
+route_maps:
+  RM-CONN-2-BGP:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
+vlans:
+  310:
+    tenant: Tenant_X
+    name: Tenant_X_OP_Zone_1
+ip_igmp_snooping:
+  globally_enabled: true
+ip_virtual_router_mac_address: 00:1c:73:00:dc:01
+vlan_interfaces:
+  Vlan310:
+    tenant: Tenant_X
+    tags:
+    - opzone
+    description: Tenant_X_OP_Zone_1
+    shutdown: false
+    vrf: Tenant_X_OP_Zone
+    ip_address_virtual: 10.1.10.1/24
+vxlan_interface:
+  Vxlan1:
+    description: MH-LEAF1B_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vlans:
+        310:
+          vni: 11310
+      vrfs:
+        Tenant_X_OP_Zone:
+          vni: 20
+virtual_source_nat_vrfs:
+  Tenant_X_OP_Zone:
+    ip_address: 10.255.1.34
+port_channel_interfaces:
+  Port-Channel11:
+    description: ROUTER02_WITH_SUBIF_Testing L2 subinterfaces
+    type: routed
+    shutdown: false
+  Port-Channel11.101:
+    type: l2dot1q
+    esi: 0000:0000:0000:0000:0101
+    rt: 00:00:00:00:01:01
+    vlan_id: 101
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: 101
+      network:
+        client: true
+  Port-Channel11.102:
+    type: l2dot1q
+    esi: 0000:0000:0000:0000:0102
+    rt: 00:00:00:00:01:02
+    vlan_id: 1102
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: 2102
+      network:
+        client: true
+  Port-Channel11.103:
+    type: l2dot1q
+    esi: 0000:0000:c2c9:c85a:ed92
+    rt: c2:c9:c8:5a:ed:92
+    vlan_id: 1103
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: 2103
+      network:
+        client: true
+  Port-Channel11.104:
+    type: l2dot1q
+    esi: 0000:0000:5c8e:1f50:9fc4
+    rt: 5c:8e:1f:50:9f:c4
+    vlan_id: 1104
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: 2104
+      network:
+        client: true
+  Port-Channel10:
+    description: server01_ES1_PortChanne1
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 310
+    esi: 0000:0000:0001:1010:1010
+    rt: 00:01:10:10:10:10
+    lacp_id: 0001.1010.1010
+    link_tracking_groups:
+    - name: LT_GROUP1
+      direction: downstream
+  Port-Channel12:
+    description: server03_AUTO_ESI_Auto-ESI PortChannel
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 310
+    esi: 0000:0000:fc87:ae24:2cb3
+    rt: fc:87:ae:24:2c:b3
+    lacp_id: fc87.ae24.2cb3
+    link_tracking_groups:
+    - name: LT_GROUP1
+      direction: downstream

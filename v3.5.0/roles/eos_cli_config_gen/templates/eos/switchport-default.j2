@@ -1,0 +1,21 @@
+{# switchport default mode #}
+{% if switchport_default.mode is arista.avd.defined('routed') %}
+!
+switchport default mode routed
+{% elif switchport_default.mode is arista.avd.defined('access') %}
+!
+switchport default mode access
+{% endif %}
+{# switchport default phone #}
+{% if switchport_default.phone.cos is arista.avd.defined %}
+!
+switchport default phone cos {{ switchport_default.phone.cos }}
+{% endif %}
+{% if switchport_default.phone.trunk is arista.avd.defined and switchport_default.phone.trunk == 'untagged' %}
+!
+switchport default phone trunk untagged
+{% endif %}
+{% if switchport_default.phone.vlan is arista.avd.defined and switchport_default.phone.vlan %}
+!
+switchport default phone vlan {{ switchport_default.phone.vlan }}
+{% endif %}

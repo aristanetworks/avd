@@ -1,0 +1,67 @@
+---
+# tasks file for eos_snapshot
+- name: "Collection {{ ansible_collection_name }} version {{ version }}{{ ('(git ' ~ git_tag ~ ')') if git_tag }} loaded from {{ collection_path }}"
+  tags: [always, avd_version]
+  set_fact:
+    avd_collection_version: version
+  vars:
+    versions: "{{ lookup('pipe', 'ansible-galaxy collection list --format yaml ' ~ ansible_collection_name) | from_yaml }}"
+    collection_path: "{{ (role_path | split('/'))[0:-4] | join('/') }}"
+    version: "{{ versions[collection_path][ansible_collection_name].version | default('Unknown') }}"
+    git_tag: "{{ lookup('pipe', 'git -C ' ~ collection_path ~ ' describe --tags --always 2>/dev/null', errors='ignore') }}"
+  run_once: true
+  failed_when: false
+
+- name: Create required output directories if not present
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+  loop:
+    - "{{ snapshots_backup_dir }}"
+  delegate_to: localhost
+  run_once: true
+
+- name: Create output directory for each EOS device
+  file:
+    path: "{{ snapshots_backup_dir }}/{{ inventory_hostname }}"
+    state: directory
+    mode: 0775
+  when: ("text" in output_format or "markdown" in output_format)
+
+- name: run show commands on remote EOS devices
+  eos_command:
+    commands: "{{ item }}"
+  with_items: "{{ commands_list }}"
+  failed_when: false
+  register: cli_output
+
+- name: save collected commands in text files
+  template:
+    src: device_text_command.j2
+    dest: "{{ snapshots_backup_dir }}/{{ inventory_hostname }}/{{ item.item }}.txt"
+    mode: 0664
+  loop: "{{ cli_output.results }}"
+  when: "'text' in output_format"
+
+- name: Generate json report for fabric
+  template:
+    src: fabric_json_output.j2
+    dest: "{{ snapshots_backup_dir }}/report.json"
+    mode: 0664
+  delegate_to: localhost
+  run_once: true
+  when: "'json' in output_format"
+
+- name: Generate yaml report for fabric
+  template:
+    src: fabric_yaml_output.j2
+    dest: "{{ snapshots_backup_dir }}/report.yaml"
+    mode: 0664
+  delegate_to: localhost
+  run_once: true
+  when: "'yaml' in output_format"
+
+- name: Generate markdown report for fabric
+  include_tasks: "markdown.yml"
+  when: "'markdown' in output_format"

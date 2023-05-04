@@ -1,0 +1,533 @@
+---
+### Ethernet Interfaces ###
+ethernet_interfaces:
+  Ethernet1:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet1
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE1_Ethernet1
+    mtu: 1500
+    type: routed
+    ip_address: 172.31.255.1/31
+    link_tracking_groups:
+      - name: EVPN_MH_ES1
+        direction: upstream
+    priority_flow_control:
+      enabled: true
+      priorities:
+        - priority: 5
+          # drop
+          no_drop: false
+    bfd:
+      echo: true
+      interval: 500
+      min_rx: 500
+      multiplier: 5
+    eos_cli: |
+      comment
+      Comment created from eos_cli under ethernet_interfaces.Ethernet1
+      EOF
+
+  Ethernet2:
+    peer: SRV-POD03
+    peer_interface: Eth1
+    peer_type: server
+    description: SRV-POD02_Eth1
+    mode: trunk
+    vlans: 110-111,210-211
+    storm_control:
+      all:
+        level: 10
+      broadcast:
+        level: 500
+        unit: pps
+      unknown_unicast:
+        level: 1
+        unit: percent
+    priority_flow_control:
+      enabled: true
+      priorities:
+        - priority: 5
+          # no-drop
+          no_drop: true
+    spanning_tree_bpduguard: disabled
+    spanning_tree_bpdufilter: disabled
+
+  Ethernet3:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet2
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE2_Ethernet2
+    mtu: 1500
+    type: routed
+    ip_address: 172.31.128.1/31
+    snmp_trap_link_change: false
+    link_tracking_groups:
+      - name: EVPN_MH_ES2
+        direction: downstream
+    ipv6_enable: true
+    ipv6_address: 2002:ABDC::1/64
+    ipv6_nd_prefixes:
+      2345:ABCD:3FE0::1/96:
+        valid_lifetime: infinite
+        preferred_lifetime: 50
+        no_autoconfig_flag: true
+      2345:ABCD:3FE0::2/96:
+        valid_lifetime: 50
+        preferred_lifetime: infinite
+        no_autoconfig_flag: false
+      2345:ABCD:3FE0::3/96:
+        valid_lifetime: 100000
+        no_autoconfig_flag: true
+    priority_flow_control:
+      enabled: false
+    spanning_tree_guard: root
+
+  Ethernet4:
+    description: Molecule IPv6
+    shutdown: true
+    mtu: 9100
+    ipv6_enable: true
+    ipv6_address: 2020::2020/64
+    ipv6_address_link_local: FE80:FEA::AB65/64
+    ipv6_nd_ra_disabled: true
+    ipv6_nd_managed_config_flag: true
+    ipv6_access_group_in: IPv6_ACL_IN
+    ipv6_access_group_out: IPv6_ACL_OUT
+    snmp_trap_link_change: true
+    priority_flow_control:
+      enabled: true
+    spanning_tree_guard: disabled
+
+  Ethernet5:
+    description: Molecule Routing
+    shutdown: false
+    mtu: 9100
+    type: routed
+    ospf_network_point_to_point: true
+    ospf_area: 100
+    ospf_cost: 99
+    ospf_authentication: message-digest
+    ospf_authentication_key: "asfddja23452"
+    ospf_message_digest_keys:
+      1:
+        hash_algorithm: sha512
+        key: "asfddja23452"
+    pim:
+      ipv4:
+        dr_priority: 200
+        sparse_mode: true
+    isis_enable: ISIS_TEST
+    isis_passive: false
+    isis_metric: 99
+    isis_network_point_to_point: true
+    isis_circuit_type: level-2
+    isis_hello_padding: false
+    isis_authentication_mode: md5
+    isis_authentication_key: "asfddja23452"
+    spanning_tree_guard: loop
+
+  Ethernet6:
+    logging:
+      event:
+        link_status: true
+    peer: SRV-POD02
+    peer_interface: Eth1
+    peer_type: server
+    description: SRV-POD02_Eth1
+    mode: trunk
+    vlans: 110-111,210-211
+    spanning_tree_bpduguard: enabled
+    spanning_tree_bpdufilter: enabled
+
+  Ethernet7:
+    description: Molecule L2
+    shutdown: false
+    type: switched
+    mtu: 7000
+    ptp:
+      enable: true
+      announce:
+        interval: 10
+        timeout: 30
+      delay_req: 20
+      delay_mechanism: p2p
+      sync_message:
+        interval: 5
+      role: master
+      vlan: all
+      transport: layer2
+    service_profile: QoS
+    qos:
+      trust: cos
+      cos: 5
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: true
+    spanning_tree_portfast: edge
+    vmtracer: true
+    storm_control:
+      all:
+        level: 75
+        unit: percent
+      broadcast:
+        level: 10
+        unit: pps
+      multicast:
+        level: 50
+        unit:
+      unknown_unicast:
+        level: 10
+        unit: percent
+    transceiver:
+      media:
+        override: 100gbase-ar4
+
+  Ethernet8:
+    description: to WAN-ISP1-01 Ethernet2
+    type: routed
+    lldp:
+      transmit: false
+      receive: false
+  Ethernet8.101:
+    description: to WAN-ISP-01 Ethernet2.101 - VRF-C1
+    type: l3dot1q
+    encapsulation_dot1q_vlan: 101
+    ip_address: 172.31.128.1/31
+    ipv6_enable: true
+    ipv6_address: 2002:ABDC::1/64
+
+  Ethernet9:
+    description: interface_with_mpls_enabled
+    type: routed
+    ip_address: 172.31.128.9/31
+    mpls:
+      ip: true
+      ldp:
+        interface: true
+
+  Ethernet10:
+    description: interface_with_mpls_disabled
+    type: routed
+    ip_address: 172.31.128.10/31
+    mpls:
+      ip: false
+      ldp:
+        interface: false
+
+  Ethernet11:
+    description: interface_in_mode_access_accepting_tagged_LACP
+    type: switched
+    mode: access
+    vlans: 200
+    l2_protocol:
+      encapsulation_dot1q_vlan: 200
+    spanning_tree_bpduguard: false # No config should be rendered for this case
+    spanning_tree_bpdufilter: false # No config should be rendered for this case
+
+  Ethernet12:
+    description: interface_with_dot1q_tunnel
+    type: switched
+    mode: dot1q-tunnel
+    vlans: 300
+
+  Ethernet13:
+    logging:
+      event:
+        link_status: false
+    description: interface_in_mode_access_with_voice
+    type: switched
+    native_vlan: 100
+    mode: "trunk phone"
+    phone:
+      trunk: untagged
+      vlan: 70
+
+  Ethernet14:
+    logging:
+      event:
+        link_status: true
+    peer: SRV-POD02
+    peer_interface: Eth1
+    peer_type: server
+    description: SRV-POD02_Eth1
+    mode: trunk
+    vlans: 110-111,210-211
+
+  Ethernet15:
+    description: PVLAN Promiscuous Access - only one secondary
+    mode: access
+    vlans: 110
+    pvlan_mapping: 111
+
+  Ethernet16:
+    description: PVLAN Promiscuous Trunk - vlan translation out
+    mode: trunk
+    vlans: 110-112
+    vlan_translations:
+      - direction: out
+        from: 111-112
+        to: 110
+
+  Ethernet17:
+    description: PVLAN Secondary Trunk
+    mode: trunk
+    vlans: 110-112
+    trunk_private_vlan_secondary: true
+
+  Ethernet18:
+    description: PBR Description
+    mtu: 1500
+    type: routed
+    ip_address: 192.0.2.1/31
+    service_policy:
+      pbr:
+        input: MyLANServicePolicy
+
+  Ethernet19:
+    description: Switched port with no LLDP rx/tx
+    mode: access
+    vlans: 110
+    lldp:
+      transmit: false
+      receive: false
+
+  Ethernet20:
+    description: Port patched through patch-panel to pseudowire
+    type: routed
+    lldp:
+      transmit: false
+      receive: false
+
+  Ethernet21:
+    description: 200MBit/s shape
+    qos:
+      trust: disabled
+    shape:
+      rate: "200000 kbps"
+
+  Ethernet22:
+    description: 10% shape
+    shape:
+      rate: "10 percent"
+
+  Ethernet23:
+    description: Error-correction encoding
+    error_correction_encoding:
+      fire_code: true
+      reed_solomon: true
+
+  Ethernet24:
+    description: Disable error-correction encoding
+    error_correction_encoding:
+      enabled: false
+
+  Ethernet25:
+    description: Molecule MAC
+    mac_access_group_in: MAC_ACL_IN
+    mac_access_group_out: MAC_ACL_OUT
+
+  Ethernet26:
+    type: routed
+  Ethernet26.1:
+    type: l2dot1q
+    description: TENANT_A pseudowire 1 interface
+    encapsulation_vlan:
+      client:
+        unmatched: true
+  Ethernet26.100:
+    type: l2dot1q
+    description: TENANT_A pseudowire 1 interface
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: 100
+      network:
+        client: true
+  Ethernet26.200:
+    type: l2dot1q
+    description: TENANT_A pseudowire 2 interface
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: 200
+  Ethernet26.300:
+    type: l2dot1q
+    description: TENANT_A pseudowire 3 interface
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: 300
+      network:
+        dot1q:
+          vlan: 400
+  Ethernet26.400:
+    type: l2dot1q
+    description: TENANT_A pseudowire 3 interface
+    encapsulation_vlan:
+      client:
+        dot1q:
+          outer: 400
+          inner: 20
+      network:
+        dot1q:
+          outer: 401
+          inner: 21
+  Ethernet26.500:
+    type: l2dot1q
+    description: TENANT_A pseudowire 3 interface
+    encapsulation_vlan:
+      client:
+        dot1q:
+          outer: 500
+          inner: 50
+      network:
+        client: true
+
+  Ethernet27:
+    description: EVPN-Vxlan single-active redundancy
+    evpn_ethernet_segment:
+      identifier: "0000:0000:0000:0102:0304"
+      route_target: "00:00:01:02:03:04"
+      redundancy: single-active
+      designated_forwarder_election:
+        algorithm: preference
+        preference_value: 100
+        dont_preempt: true
+        hold_time: 10
+        candidate_reachability_required: true
+
+  Ethernet28:
+    description: EVPN-MPLS multihoming
+    evpn_ethernet_segment:
+      identifier: "0000:0000:0000:0102:0305"
+      route_target: "00:00:01:02:03:05"
+      mpls:
+        shared_index: 100
+        tunnel_flood_filter_time: 100
+
+  Ethernet29:
+    description: DOT1X Testing - auto phone true
+    dot1x:
+      port_control: auto
+      port_control_force_authorized_phone: true
+
+  Ethernet30:
+    description: DOT1X Testing - force-authorized phone false
+    dot1x:
+      port_control: force-authorized
+      port_control_force_authorized_phone: false
+
+  Ethernet31:
+    description: DOT1X Testing - force-unauthorized - no phone
+    dot1x:
+      port_control: force-unauthorized
+
+  Ethernet32:
+    description: DOT1X Testing - auto reauthentication
+    dot1x:
+      port_control: auto
+      reauthentication: true
+
+  Ethernet33:
+    description: DOT1X Testing - pae mode authenticator
+    dot1x:
+      pae:
+        mode: authenticator
+
+  Ethernet34:
+    description: DOT1X Testing - authentication_failure allow
+    dot1x:
+      authentication_failure:
+        action: allow
+        allow_vlan: 800
+
+  Ethernet35:
+    description: DOT1X Testing - authentication_failure drop
+    dot1x:
+      authentication_failure:
+        action: drop
+
+  Ethernet36:
+    description: DOT1X Testing - host-mode single-host
+    dot1x:
+      host_mode:
+        mode: single-host
+
+  Ethernet37:
+    description: DOT1X Testing - host-mode multi-host
+    dot1x:
+      host_mode:
+        mode: multi-host
+
+  Ethernet38:
+    description: DOT1X Testing - host-mode multi-host authenticated
+    dot1x:
+      host_mode:
+        mode: multi-host
+        multi_host_authenticated: true
+
+  Ethernet39:
+    description: DOT1X Testing - mac_based_authentication host-mode common true
+    dot1x:
+      mac_based_authentication:
+        enabled: true
+        host_mode_common: true
+
+  Ethernet40:
+    description: DOT1X Testing - mac_based_authentication always
+    dot1x:
+      mac_based_authentication:
+        enabled: true
+        always: true
+
+  Ethernet41:
+    description: DOT1X Testing - mac_based_authentication always and host-mode common
+    dot1x:
+      mac_based_authentication:
+        enabled: true
+        always: true
+        host_mode_common: true
+
+  Ethernet42:
+    description: DOT1X Testing - mac_based_authentication
+    dot1x:
+      mac_based_authentication:
+        enabled: true
+
+  Ethernet43:
+    description: DOT1X Testing - timeout values
+    dot1x:
+      timeout:
+        idle_host: 15
+        quiet_period: 10
+        reauth_period: server
+        reauth_timeout_ignore: true
+        tx_period: 6
+
+  Ethernet44:
+    description: DOT1X Testing - reauthorization_request_limit
+    dot1x:
+      reauthorization_request_limit: 3
+
+  Ethernet45:
+    description: DOT1X Testing - all features
+    dot1x:
+      port_control: auto
+      reauthentication: true
+      pae:
+        mode: authenticator
+      authentication_failure:
+        action: allow
+        allow_vlan: 800
+      host_mode:
+        mode: multi-host
+        multi_host_authenticated: true
+      mac_based_authentication:
+        enabled: true
+      timeout:
+        idle_host: 10
+        quiet_period: 10
+        reauth_period: server
+        reauth_timeout_ignore: true
+        tx_period: 10
+      reauthorization_request_limit: 2

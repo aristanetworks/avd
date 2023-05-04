@@ -1,0 +1,42 @@
+{# Management API HTTP #}
+{% if management_api_http is arista.avd.defined %}
+!
+management api http-commands
+{%     if management_api_http.enable_https is arista.avd.defined(true) %}
+   protocol https
+{%         if management_api_http.https_ssl_profile is arista.avd.defined %}
+   protocol https ssl profile {{ management_api_http.https_ssl_profile }}
+{%         endif %}
+{%     elif management_api_http.enable_https is arista.avd.defined(false) %}
+   no protocol https
+{%     endif %}
+{%     if management_api_http.enable_http is arista.avd.defined(true) %}
+   protocol http
+{%     elif management_api_http.enable_http is arista.avd.defined(false) %}
+   no protocol http
+{%     endif %}
+{%     if management_api_http.default_services is arista.avd.defined(true) %}
+   default-services
+{%     elif management_api_http.default_services is arista.avd.defined(false) %}
+   no default-services
+{%     endif %}
+   no shutdown
+{%     for vrf in management_api_http.enable_vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+   !
+   vrf {{ vrf.name }}
+      no shutdown
+{%         if vrf.access_group is arista.avd.defined %}
+      ip access-group {{ vrf.access_group }}
+{%         endif %}
+{%         if vrf.ipv6_access_group is arista.avd.defined %}
+      ipv6 access-group {{ vrf.ipv6_access_group }}
+{%         endif %}
+{%     endfor %}
+{%     if management_api_http.protocol_https_certificate.certificate is arista.avd.defined and management_api_http.protocol_https_certificate.private_key is arista.avd.defined %}
+   protocol_https_certificate
+   {{ management_api_http.protocol_https_certificate.certificate }}
+   EOF
+   {{ management_api_http.protocol_https_certificate.private_key }}
+   EOF
+{%     endif %}
+{% endif %}

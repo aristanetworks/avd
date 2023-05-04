@@ -1,0 +1,25 @@
+{# eos - Management Interfaces #}
+{% for management_interface in management_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+!
+interface {{ management_interface.name }}
+{%     if management_interface.description is arista.avd.defined %}
+   description {{ management_interface.description }}
+{%     endif %}
+{%     if management_interface.shutdown is arista.avd.defined(true) %}
+   shutdown
+{%     elif management_interface.shutdown is arista.avd.defined(false) %}
+   no shutdown
+{%     endif %}
+{%     if management_interface.vrf is arista.avd.defined and management_interface.vrf is ne 'default' %}
+   vrf {{ management_interface.vrf }}
+{%     endif %}
+{%     if management_interface.ip_address is arista.avd.defined %}
+   ip address {{ management_interface.ip_address }}
+{%     endif %}
+{%     if management_interface.ipv6_enable is arista.avd.defined(true) %}
+   ipv6 enable
+{%     endif %}
+{%     if management_interface.ipv6_address is arista.avd.defined %}
+   ipv6 address {{ management_interface.ipv6_address }}
+{%     endif %}
+{% endfor %}

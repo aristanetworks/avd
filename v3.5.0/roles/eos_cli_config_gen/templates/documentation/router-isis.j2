@@ -1,0 +1,165 @@
+{% if router_isis is arista.avd.defined %}
+
+## Router ISIS
+
+### Router ISIS Summary
+
+| Settings | Value |
+| -------- | ----- |
+{%     if router_isis.instance is arista.avd.defined %}
+| Instance | {{ router_isis.instance }} |
+{%     endif %}
+{%     if router_isis.net is arista.avd.defined %}
+| Net-ID | {{ router_isis.net }} |
+{%     endif %}
+{%     if router_isis.is_type is arista.avd.defined %}
+| Type | {{ router_isis.is_type }} |
+{%     endif %}
+{%     if router_isis.address_family is arista.avd.defined %}
+| Address Family | {{ router_isis.address_family | join(", ") }} |
+{%     endif %}
+{%     if router_isis.router_id is arista.avd.defined %}
+| Router-ID | {{ router_isis.router_id }} |
+{%     endif %}
+{%     if router_isis.log_adjacency_changes is arista.avd.defined %}
+| Log Adjacency Changes | {{ router_isis.log_adjacency_changes }} |
+{%     endif %}
+{%     if router_isis.mpls_ldp_sync_default is arista.avd.defined(true) %}
+| MPLS LDP Sync Default | {{ router_isis.mpls_ldp_sync_default }} |
+{%     endif %}
+{%     if router_isis.timers.local_convergence.protected_prefixes is arista.avd.defined(true) %}
+| Local Convergence Delay (ms) | {{ router_isis.timers.local_convergence.delay | arista.avd.default(10000) }} |
+{%     endif %}
+{%     if router_isis.advertise.passive_only is arista.avd.defined(true) %}
+| Advertise Passive-only | {{ router_isis.advertise.passive_only }} |
+{%     endif %}
+{%     if router_isis.segment_routing_mpls.enabled is arista.avd.defined %}
+| SR MPLS Enabled | {{ router_isis.segment_routing_mpls.enabled }} |
+{%     endif %}
+
+### ISIS Interfaces Summary
+
+| Interface | ISIS Instance | ISIS Metric | Interface Mode |
+| --------- | ------------- | ----------- | -------------- |
+{# ethernet interfaces #}
+{# ------- #}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if ethernet_interface.isis_enable is arista.avd.defined %}
+{%             set row_isis_instance = ethernet_interface.isis_enable %}
+{%             set row_isis_metric = ethernet_interface.isis_metric | arista.avd.default('-') %}
+{%             if ethernet_interface.isis_network_point_to_point is arista.avd.defined(true) %}
+{%                 set row_intf_mode = "point-to-point" %}
+{%             elif ethernet_interface.isis_passive is arista.avd.defined(true) %}
+{%                 set row_intf_mode = "passive" %}
+{%             else %}
+{%                 set row_intf_mode = "-" %}
+{%             endif %}
+| {{ ethernet_interface.name }} | {{ row_isis_instance }} | {{ row_isis_metric }} | {{ row_intf_mode }} |
+{%         endif %}
+{%     endfor %}
+{# ------- #}
+{# vlan interfaces #}
+{# ------- #}
+{%     for vlan_interface in vlan_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if vlan_interface.isis_enable is arista.avd.defined %}
+{%             set row_isis_instance = vlan_interface.isis_enable %}
+{%             set row_isis_metric = vlan_interface.isis_metric | arista.avd.default('-') %}
+{%             if vlan_interface.isis_network_point_to_point is arista.avd.defined(true) %}
+{%                 set row_intf_mode = "point-to-point" %}
+{%             elif vlan_interface.isis_passive is arista.avd.defined(true) %}
+{%                 set row_intf_mode = "passive" %}
+{%             else %}
+{%                 set row_intf_mode = "-" %}
+{%             endif %}
+| {{ vlan_interface.name }} | {{ row_isis_instance }} | {{ row_isis_metric }} | {{ row_intf_mode }} |
+{%         endif %}
+{%     endfor %}
+{# ------- #}
+{# loopback interfaces #}
+{# ------- #}
+{%     for loopback_interface in loopback_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if loopback_interface.isis_enable is arista.avd.defined %}
+{%             set row_isis_instance = loopback_interface.isis_enable %}
+{%             set row_isis_metric = loopback_interface.isis_metric | arista.avd.default('-') %}
+{%             if loopback_interface.isis_network_point_to_point is arista.avd.defined(true) %}
+{%                 set row_intf_mode = "point-to-point" %}
+{%             elif loopback_interface.isis_passive is arista.avd.defined(true) %}
+{%                 set row_intf_mode = "passive" %}
+{%             else %}
+{%                 set row_intf_mode = "-" %}
+{%             endif %}
+| {{ loopback_interface.name }} | {{ row_isis_instance }} | {{ row_isis_metric }} | {{ row_intf_mode }} |
+{%         endif %}
+{%     endfor %}
+{# ISIS Node-SID #}
+{%     set node_sid_loopbacks = [] %}
+{%     for loopback_interface in loopback_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if loopback_interface.node_segment.ipv4_index is arista.avd.defined or loopback_interface.node_segment.ipv6_index is arista.avd.defined %}
+{%             do node_sid_loopbacks.append(loopback_interface) %}
+{%         endif %}
+{%     endfor %}
+{%     if node_sid_loopbacks | length > 0 %}
+
+### ISIS Segment-routing Node-SID
+
+| Loopback | IPv4 Index | IPv6 Index |
+| -------- | ---------- | ---------- |
+{%         for loopback_interface in node_sid_loopbacks | arista.avd.natural_sort %}
+{%             set row_ipv4_index = loopback_interface.node_segment.ipv4_index | arista.avd.default("-") %}
+{%             set row_ipv6_index = loopback_interface.node_segment.ipv6_index | arista.avd.default("-") %}
+| {{ loopback_interface.name }} | {{ row_ipv4_index }} | {{ row_ipv6_index }} |
+{%         endfor %}
+{%     endif %}
+{%     if router_isis.address_family_ipv4 is arista.avd.defined %}
+
+### ISIS IPv4 Address Family Summary
+
+| Settings | Value |
+| -------- | ----- |
+| IPv4 Address-family Enabled | True |
+{%         if router_isis.address_family_ipv4.maximum_paths is arista.avd.defined %}
+| Maximum-paths | {{ router_isis.address_family_ipv4.maximum_paths }} |
+{%         endif %}
+{%         if router_isis.address_family_ipv4.fast_reroute_ti_lfa.mode is arista.avd.defined %}
+| TI-LFA Mode | {{ router_isis.address_family_ipv4.fast_reroute_ti_lfa.mode }} |
+{%             if router_isis.address_family_ipv4.fast_reroute_ti_lfa.level is arista.avd.defined %}
+| TI-LFA Level | {{ router_isis.address_family_ipv4.fast_reroute_ti_lfa.level }} |
+{%             endif %}
+{%         endif %}
+{%         if router_isis.address_family_ipv4.fast_reroute_ti_lfa.srlg.enable is arista.avd.defined(true) %}
+| TI-LFA SRLG Enabled | {{ router_isis.address_family_ipv4.fast_reroute_ti_lfa.srlg.enable }} |
+{%             if router_isis.address_family_ipv4.fast_reroute_ti_lfa.srlg.strict is arista.avd.defined(true) %}
+| TI-LFA SRLG Strict Mode | {{ router_isis.address_family_ipv4.fast_reroute_ti_lfa.srlg.strict }} |
+{%             endif %}
+{%         endif %}
+{%     endif %}
+{%     if router_isis.address_family_ipv6 is arista.avd.defined %}
+
+### ISIS IPv6 Address Family Summary
+
+| Settings | Value |
+| -------- | ----- |
+| IPv6 Address-family Enabled | True |
+{%         if router_isis.address_family_ipv6.maximum_paths is arista.avd.defined %}
+| Maximum-paths | {{ router_isis.address_family_ipv6.maximum_paths }} |
+{%         endif %}
+{%         if router_isis.address_family_ipv6.fast_reroute_ti_lfa.mode is arista.avd.defined %}
+| TI-LFA Mode | {{ router_isis.address_family_ipv6.fast_reroute_ti_lfa.mode }} |
+{%             if router_isis.address_family_ipv6.fast_reroute_ti_lfa.level is arista.avd.defined %}
+| TI-LFA Level | {{ router_isis.address_family_ipv6.fast_reroute_ti_lfa.level }} |
+{%             endif %}
+{%         endif %}
+{%         if router_isis.address_family_ipv6.fast_reroute_ti_lfa.srlg.enable is arista.avd.defined(true) %}
+| TI-LFA SRLG Enabled | {{ router_isis.address_family_ipv6.fast_reroute_ti_lfa.srlg.enable }} |
+{%             if router_isis.address_family_ipv6.fast_reroute_ti_lfa.srlg.strict is arista.avd.defined(true) %}
+| TI-LFA SRLG Strict Mode | {{ router_isis.address_family_ipv6.fast_reroute_ti_lfa.srlg.strict }} |
+{%             endif %}
+{%         endif %}
+{%     endif %}
+
+### Router ISIS Device Configuration
+
+```eos
+{%     include 'eos/router-isis.j2' %}
+```
+{% endif %}

@@ -1,0 +1,32 @@
+{# Underlay Port Channel interfaces #}
+{% set port_channel_list = [] %}
+port_channel_interfaces:
+{% for link in underlay_data.links | arista.avd.natural_sort('interface') %}
+{%     if link.type is arista.avd.defined('underlay_l2') and
+          link.channel_group_id is arista.avd.defined and
+          link.channel_group_id not in port_channel_list %}
+{%         do port_channel_list.append(link.channel_group_id) %}
+  Port-Channel{{ link.channel_group_id }}:
+    description: "{% include switch.interface_descriptions.underlay_port_channel_interfaces %}"
+{%         if link.speed is arista.avd.defined %}
+    speed: {{ link.speed }}
+{%         endif %}
+    type: switched
+    shutdown: false
+    vlans: {{ link.vlans }}
+    mode: trunk
+{%         if p2p_uplinks_qos_profile is arista.avd.defined %}
+    service_profile: {{ p2p_uplinks_qos_profile }}
+{%         endif %}
+{%         if switch.mlag is arista.avd.defined(true) %}
+    mlag: {{ link.channel_group_id }}
+{%         elif link.short_esi is arista.avd.defined %}
+    esi: {{ link.short_esi | arista.avd.generate_esi(evpn_short_esi_prefix) }}
+    rt: {{ link.short_esi | arista.avd.generate_route_target }}
+    lacp_id: {{ link.short_esi | arista.avd.generate_lacp_id }}
+{%         endif %}
+{%         if link.link_tracking_groups is arista.avd.defined %}
+    link_tracking_groups: {{ link.link_tracking_groups }}
+{%         endif %}
+{%     endif %}
+{% endfor %}

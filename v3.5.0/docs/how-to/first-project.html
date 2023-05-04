@@ -1,0 +1,2347 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Arista Validated Design collection's documentation">
+      
+      
+        <meta name="author" content="Arista Ansible Team">
+      
+      
+      
+        <link rel="prev" href="../installation/requirements.html">
+      
+      
+        <link rel="next" href="first-cvp-avd-project.html">
+      
+      <link rel="icon" href="../_media/favicon.ico">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.0.15">
+    
+    
+      
+        <title>Build your first AVD project - Arista AVD collection</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.113286f1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.a0c5b2b5.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CFira+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Fira Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.material.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#how-to-build-your-first-avd-project" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="Arista AVD collection" class="md-header__button md-logo" aria-label="Arista AVD collection" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M96 0C43 0 0 43 0 96v320c0 53 43 96 96 96h320c17.7 0 32-14.3 32-32s-14.3-32-32-32v-64c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H96zm0 384h256v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Arista AVD collection
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Build your first AVD project
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+            </label>
+          
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/aristanetworks/ansible-avd" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AVD on Github
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="Arista AVD collection" class="md-nav__button md-logo" aria-label="Arista AVD collection" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M96 0C43 0 0 43 0 96v320c0 53 43 96 96 96h320c17.7 0 32-14.3 32-32s-14.3-32-32-32v-64c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H96zm0 384h256v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></svg>
+
+    </a>
+    Arista AVD collection
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/aristanetworks/ansible-avd" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AVD on Github
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Release Notes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Release Notes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../release-notes/3.x.x.html" class="md-nav__link">
+        3.x.x
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../release-notes/2.x.x.html" class="md-nav__link">
+        2.x.x
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../release-notes/1.1.x.html" class="md-nav__link">
+        1.1.x
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../release-notes/1.0.x.html" class="md-nav__link">
+        1.0.x
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          Getting Started
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Getting Started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/intro-to-ansible-and-avd.html" class="md-nav__link">
+        Introduction to Ansible and AVD
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started.html" class="md-nav__link">
+        First steps with AVD
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          Installation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Installation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/collection-installation.html" class="md-nav__link">
+        Collection Installation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/requirements.html" class="md-nav__link">
+        Requirements
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          How-To
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          How-To
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Build your first AVD project
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="first-project.html" class="md-nav__link md-nav__link--active">
+        Build your first AVD project
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-build-your-first-avd-project" class="md-nav__link">
+    How-To build your first AVD project
+  </a>
+  
+    <nav class="md-nav" aria-label="How-To build your first AVD project">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#abstract" class="md-nav__link">
+    Abstract
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    Requirements
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#topology" class="md-nav__link">
+    Topology
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configure-variables" class="md-nav__link">
+    Configure Variables
+  </a>
+  
+    <nav class="md-nav" aria-label="Configure Variables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inventory-file" class="md-nav__link">
+    Inventory file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#avd-variables" class="md-nav__link">
+    AVD Variables
+  </a>
+  
+    <nav class="md-nav" aria-label="AVD Variables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#generic-fabric-information" class="md-nav__link">
+    Generic Fabric Information
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configure-fabric-topology" class="md-nav__link">
+    Configure Fabric topology
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configure-device-type" class="md-nav__link">
+    Configure device type
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configure-vnivlan-across-the-fabric" class="md-nav__link">
+    Configure VNI/VLAN across the Fabric
+  </a>
+  
+    <nav class="md-nav" aria-label="Configure VNI/VLAN across the Fabric">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#l2-services" class="md-nav__link">
+    L2 Services
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#symmetric-irb-model" class="md-nav__link">
+    Symmetric IRB model
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configure-downlinks" class="md-nav__link">
+    Configure downlinks
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#single-homed-server" class="md-nav__link">
+    Single homed server
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#server-connected-to-mlag" class="md-nav__link">
+    Server connected to MLAG
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-your-avd-playbook" class="md-nav__link">
+    Create your AVD Playbook
+  </a>
+  
+    <nav class="md-nav" aria-label="Create your AVD Playbook">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-directory-structure" class="md-nav__link">
+    Create directory structure
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transform-evpn-data-model-to-device-data-model" class="md-nav__link">
+    Transform EVPN data model to device data model
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generate-device-configuration-and-documentation" class="md-nav__link">
+    Generate device configuration and documentation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploy-your-configuration-to-eos-devices" class="md-nav__link">
+    Deploy your configuration to EOS devices
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#complete-avd-eapi-playbook" class="md-nav__link">
+    Complete AVD eAPI playbook
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="first-cvp-avd-project.html" class="md-nav__link">
+        Build your first AVD & CVP project
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="lab-with-nat.html" class="md-nav__link">
+        Use NAT to access eAPI
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="tower-integration.html" class="md-nav__link">
+        AWX & Tower Integration
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ztp.html" class="md-nav__link">
+        Configure ZTP server with CV collection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="vscode-container.html" class="md-nav__link">
+        VScode Container
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          Roles documentation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Roles documentation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+          eos_designs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6_1">
+          <span class="md-nav__icon md-icon"></span>
+          eos_designs
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/index.html" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/doc/connected-endpoints.html" class="md-nav__link">
+        Connected Endpoints
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/doc/l3-edge.html" class="md-nav__link">
+        DCI & L3 Edge
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/doc/fabric-topology.html" class="md-nav__link">
+        Fabric Topology
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/doc/fabric-variables.html" class="md-nav__link">
+        Fabric Variables
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/doc/management-settings.html" class="md-nav__link">
+        Management Settings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/doc/network-services.html" class="md-nav__link">
+        Network Services
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/doc/node-types.html" class="md-nav__link">
+        Node types
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/doc/platform-settings.html" class="md-nav__link">
+        Platform Settings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/doc/custom-structured-configuration.html" class="md-nav__link">
+        Custom Structured Configuration
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1_11" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_1_11" id="__nav_6_1_11_label" tabindex="0">
+          MPLS Design (BETA)
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_1_11_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6_1_11">
+          <span class="md-nav__icon md-icon"></span>
+          MPLS Design (BETA)
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/doc/fabric-topology-mpls-BETA.html" class="md-nav__link">
+        Fabric Topology MPLS (BETA)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/doc/fabric-variables-mpls-BETA.html" class="md-nav__link">
+        Fabric Variables MPLS (BETA)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/doc/core-interfaces-BETA.html" class="md-nav__link">
+        Core Interfaces (BETA)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/doc/network-services-mpls-BETA.html" class="md-nav__link">
+        Network Services MPLS (BETA)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_designs/doc/connected-endpoints-mpls-BETA.html" class="md-nav__link">
+        Connected Endpoints MPLS (BETA)
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_cli_config_gen/index.html" class="md-nav__link">
+        eos_cli_config_gen
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/cvp_configlet_upload/index.html" class="md-nav__link">
+        cvp_configlet_upload
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_config_deploy_cvp/index.html" class="md-nav__link">
+        eos_config_deploy_cvp
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_config_deploy_eapi/index.html" class="md-nav__link">
+        eos_config_deploy_eapi
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_validate_state/index.html" class="md-nav__link">
+        eos_validate_state
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/eos_snapshot/index.html" class="md-nav__link">
+        eos_snapshot
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/dhcp_provisioner/index.html" class="md-nav__link">
+        dhcp_provisioner
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roles/build_output_folders/index.html" class="md-nav__link">
+        build_output_folders
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          Modules documentation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Modules documentation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/inventory_to_container.rst.html" class="md-nav__link">
+        Module Inventory to containers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules/configlet_build_config.rst.html" class="md-nav__link">
+        Module Configlet Build configuration
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../plugins/index.html" class="md-nav__link">
+        AVD Plugins & Filters
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://cvp.avd.sh/" class="md-nav__link">
+        Cloudvision Module documentation
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+          Contributing to AVD
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          Contributing to AVD
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribution/overview.html" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribution/setup-environment.html" class="md-nav__link">
+        Setup environment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribution/setup-git.html" class="md-nav__link">
+        Git installation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribution/getting-started.html" class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribution/style-guide.html" class="md-nav__link">
+        Code Style
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribution/development.html" class="md-nav__link">
+        Development tips & tricks
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+          External resources
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          External resources
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://docs.ansible.com/ansible/latest/user_guide/collections_using.html" class="md-nav__link">
+        Ansible collection user guide
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://docs.ansible.com/ansible/latest/user_guide/index.html" class="md-nav__link">
+        Ansible User guide
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+          About
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_10">
+          <span class="md-nav__icon md-icon"></span>
+          About
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://galaxy.ansible.com/arista/avd" class="md-nav__link">
+        Ansible Galaxy page
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://cvp.avd.sh/en/latest/" class="md-nav__link">
+        Arista CVP Collection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/arista-netdevops-community/avd-install" class="md-nav__link">
+        Arista Installation Script
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://aristanetworks.github.io/netdevops-examples/" class="md-nav__link">
+        Arista Netdevops Community
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-build-your-first-avd-project" class="md-nav__link">
+    How-To build your first AVD project
+  </a>
+  
+    <nav class="md-nav" aria-label="How-To build your first AVD project">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#abstract" class="md-nav__link">
+    Abstract
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    Requirements
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#topology" class="md-nav__link">
+    Topology
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configure-variables" class="md-nav__link">
+    Configure Variables
+  </a>
+  
+    <nav class="md-nav" aria-label="Configure Variables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inventory-file" class="md-nav__link">
+    Inventory file
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#avd-variables" class="md-nav__link">
+    AVD Variables
+  </a>
+  
+    <nav class="md-nav" aria-label="AVD Variables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#generic-fabric-information" class="md-nav__link">
+    Generic Fabric Information
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configure-fabric-topology" class="md-nav__link">
+    Configure Fabric topology
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configure-device-type" class="md-nav__link">
+    Configure device type
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configure-vnivlan-across-the-fabric" class="md-nav__link">
+    Configure VNI/VLAN across the Fabric
+  </a>
+  
+    <nav class="md-nav" aria-label="Configure VNI/VLAN across the Fabric">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#l2-services" class="md-nav__link">
+    L2 Services
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#symmetric-irb-model" class="md-nav__link">
+    Symmetric IRB model
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configure-downlinks" class="md-nav__link">
+    Configure downlinks
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#single-homed-server" class="md-nav__link">
+    Single homed server
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#server-connected-to-mlag" class="md-nav__link">
+    Server connected to MLAG
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-your-avd-playbook" class="md-nav__link">
+    Create your AVD Playbook
+  </a>
+  
+    <nav class="md-nav" aria-label="Create your AVD Playbook">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-directory-structure" class="md-nav__link">
+    Create directory structure
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transform-evpn-data-model-to-device-data-model" class="md-nav__link">
+    Transform EVPN data model to device data model
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generate-device-configuration-and-documentation" class="md-nav__link">
+    Generate device configuration and documentation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploy-your-configuration-to-eos-devices" class="md-nav__link">
+    Deploy your configuration to EOS devices
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#complete-avd-eapi-playbook" class="md-nav__link">
+    Complete AVD eAPI playbook
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+  <h1>Build your first AVD project</h1>
+
+<h3 id="how-to-build-your-first-avd-project">How-To build your first AVD project<a class="headerlink" href="#how-to-build-your-first-avd-project" title="Permanent link">&para;</a></h3>
+<h4 id="abstract">Abstract<a class="headerlink" href="#abstract" title="Permanent link">&para;</a></h4>
+<p>This page explains how to build your first Ansible project leveraging ansible-avd collection. In this tutorial, we will configure an EVPN fabric using Arista eAPI method.</p>
+<p><img alt="Example Playbook EAPI Deployment" src="../../media/example-playbook-deploy-eapi.gif" /></p>
+<p>In this post, we will go through all configuration steps to generate <a href="https://www.arista.com/custom_data/downloads/?f=/support/download/DesignGuides/EVPN_Deployment_Guide.pdf">EVPN/VXLAN configuration</a> for EOS devices.</p>
+<p>You can organize your work in many different ways, but a structure we find useful is something like this:</p>
+<ul>
+<li>A folder for all your inventories with one sub-folder per inventory. An inventory folder contains all your variables for a given environment like <code>host_vars</code>, <code>group_vars</code>, <code>inventory.yml</code></li>
+<li>A folder to store all playbooks. So it is easy to reuse playbooks whatever the inventory is (if you use a coherent syntax)</li>
+<li>ansible.cfg at the root of this repository</li>
+</ul>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>tree<span class="w"> </span>-L<span class="w"> </span><span class="m">3</span><span class="w"> </span>-d
+.
+├──<span class="w"> </span>inventories
+│<span class="w">   </span>└──<span class="w"> </span>eapi-example
+│<span class="w">       </span>├──<span class="w"> </span>group_vars
+│<span class="w">       </span>├──<span class="w"> </span>host_vars
+│<span class="w">       </span>└──<span class="w"> </span>inventory.yml
+└──<span class="w"> </span>playbooks
+</code></pre></div>
+<h4 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Ansible runner configured as described in <a href="../installation/collection-installation.html">this section</a></li>
+<li>A set of devices configured with their respective management IP address and username.</li>
+<li>Access to eAPI service for all devices.</li>
+</ul>
+<h4 id="topology">Topology<a class="headerlink" href="#topology" title="Permanent link">&para;</a></h4>
+<p>Here is a high-level overview of the topology</p>
+<p><img alt="AVD EOS lab topology overview" src="../_media/avd-eos-lab-topology-overview.gif" /></p>
+<h4 id="configure-variables">Configure Variables<a class="headerlink" href="#configure-variables" title="Permanent link">&para;</a></h4>
+<h5 id="inventory-file">Inventory file<a class="headerlink" href="#inventory-file" title="Permanent link">&para;</a></h5>
+<p>Let&rsquo;s list our devices in the inventory:</p>
+<ul>
+<li><code>AVD_FABRIC</code> represents complete fabric topology that we are going to configure with AVD.</li>
+<li><code>AVD_SPINES</code> is a group where all spine devices belong to.</li>
+<li><code>AVD_L3LEAFS</code>: is a group to locate all VTEP devices (LEAFs running EVPN/VXLAN). As part of this group, we create one sub-group for every LEAF (single or MLAG) as highlighted below.<ul>
+<li><code>AVD_LEAF1</code> represent LEAF for POD01 and it is for an MLAG pair.</li>
+<li><code>AVD_LEAF3</code> represent a single LEAF outside of MLAG.</li>
+</ul>
+</li>
+<li><code>AVD_L2LEAFS</code> represent the Aggregation layer in our current design. This layer is optional, but in our design, it is in place. It works like <code>AVD_L3LEAFS</code> group but for all layer2 leafs.</li>
+<li><code>AVD_TENANTS_NETWORKS</code> is a special group hosting 2 groups already configured: <code>AVD_L{2|3}LEAFS</code>. This group will configure VNI/VLAN across the fabric, so we want to make leafs part of the configuration.</li>
+<li><code>AVD_SERVERS</code> has similar behavior to the previous group. Its goal is to configure downlinks to compute nodes.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1"># vim inventories/eapi-example/inventory.yml</span>
+<span class="nn">---</span>
+<span class="nt">AVD</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">children</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">AVD_FABRIC</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">children</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">AVD_SPINES</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">hosts</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">AVD-SPINE1</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">ansible_host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.73.254.1</span>
+<span class="p p-Indicator">[</span><span class="nv">... output truncated ...</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">AVD_L3LEAFS</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">children</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">AVD_LEAF1</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">hosts</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">AVD-LEAF1A</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">ansible_host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.73.254.11</span>
+<span class="w">                </span><span class="nt">AVD-LEAF1B</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">ansible_host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.73.254.12</span>
+<span class="w">            </span><span class="nt">AVD_LEAF3</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">hosts</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">AVD-LEAF3A</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">ansible_host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.73.254.17</span>
+<span class="p p-Indicator">[</span><span class="nv">... output truncated ...</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">AVD_L2LEAFS</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">children</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">AVD_L2LEAF1</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">hosts</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">AVD-AGG01</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">ansible_host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.73.254.21</span>
+<span class="p p-Indicator">[</span><span class="nv">... output truncated ...</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">AVD_TENANTS_NETWORKS</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">children</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">AVD_L3LEAFS</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">AVD_L2LEAFS</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">AVD_SERVERS</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">children</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">AVD_L3LEAFS</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">AVD_L2LEAFS</span><span class="p">:</span>
+</code></pre></div>
+<p>The management address of all devices can be defined in the inventory.yml file with the knob <code>ansible_host</code> as shown above. This is completely optional unless if we wanted to make an ssh connection to these hosts from our local device or a Jump-host. In this lab, as we are going to use eAPI to configure the hosts, the ansible_host must be defined.</p>
+<p>Because a Jump-host will be used in this lab, we will need to configure the <code>ansible_port</code> variable to set the port number for eAPI connection. To establish ssh connection from Jump-host to all switches we need to set the ssh login credentials by setting <code>ansible_user</code> and <code>ansible_ssh_pass</code>. The Ansible learns the Network platform of the hosts through <code>ansible_network_os</code>.</p>
+<p>Because of the Ansible&rsquo;s flexibility, there are a number of ways to define the connection parameters of the hosts. One of the simplest and recommended method is shown below:</p>
+<div class="highlight"><pre><span></span><code><span class="nn">---</span>
+<span class="nt">AVD</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">children</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">AVD_FABRIC</span><span class="p">:</span>
+<span class="p p-Indicator">[</span><span class="nv">... output truncated ...</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">ansible_user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt; your username &gt;</span>
+<span class="w">    </span><span class="nt">ansible_ssh_pass</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt; password &gt;</span>
+<span class="w">    </span><span class="nt">ansible_network_os</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eos</span>
+<span class="w">    </span><span class="c1"># Configure privilege escalation</span>
+<span class="w">    </span><span class="nt">ansible_become</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">ansible_become_method</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">enable</span>
+<span class="w">    </span><span class="c1"># HTTPAPI configuration</span>
+<span class="w">    </span><span class="nt">ansible_connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">httpapi</span>
+<span class="w">    </span><span class="nt">ansible_httpapi_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">443</span>
+<span class="w">    </span><span class="nt">ansible_httpapi_use_ssl</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">ansible_httpapi_validate_certs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</code></pre></div>
+<h5 id="avd-variables">AVD Variables<a class="headerlink" href="#avd-variables" title="Permanent link">&para;</a></h5>
+<p>Based on the inventory we created in the previous section, it is time to create <code>group_vars</code>.</p>
+<h6 id="generic-fabric-information">Generic Fabric Information<a class="headerlink" href="#generic-fabric-information" title="Permanent link">&para;</a></h6>
+<p>All the documentation is available here, but below is a short example. All this configuration will be configured on all devices.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># vim inventories/eapi-example/group_vars/AVD.yml</span>
+<span class="nn">---</span>
+<span class="c1"># local users</span>
+<span class="nt">local_users</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># Username with no password configured</span>
+<span class="w">  </span><span class="nt">admin</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">privilege</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15</span>
+<span class="w">    </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">network-admin</span>
+<span class="w">    </span><span class="nt">no_password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="w">  </span><span class="c1"># Username with a password</span>
+<span class="w">  </span><span class="nt">demo</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">privilege</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15</span>
+<span class="w">    </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">network-admin</span>
+<span class="w">    </span><span class="nt">sha512_password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;</span><span class="nv"> </span><span class="s">Provide</span><span class="nv"> </span><span class="s">SHA512</span><span class="nv"> </span><span class="s">HASH</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">password</span><span class="nv"> </span><span class="s">&gt;&quot;</span>
+
+<span class="c1"># OOB Management network default gateway.</span>
+<span class="nt">mgmt_interface</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Management1</span>
+<span class="nt">mgmt_gateway</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.73.254.253</span>
+<span class="nt">mgmt_destination_networks</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.255.2.0/24</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.255.3.0/24</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0.0.0/0</span>
+
+<span class="c1"># dns servers.</span>
+<span class="nt">name_servers</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.1.1.1</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8.8.8.8</span>
+
+<span class="c1"># NTP Servers IP or DNS name, first NTP server will be preferred, and sourced from Management VRF</span>
+<span class="nt">ntp</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">servers</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">uk.pool.ntp.org</span>
+<span class="w">    </span><span class="nt">preferred</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">vrf</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MGMT</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fr.pool.ntp.org</span>
+<span class="w">    </span><span class="nt">vrf</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MGMT</span>
+</code></pre></div>
+<h6 id="configure-fabric-topology">Configure Fabric topology<a class="headerlink" href="#configure-fabric-topology" title="Permanent link">&para;</a></h6>
+<p>Fabric topology is configured under <code>inventories/eapi-example/group_vars/AVD_FABRIC.yml</code>, which is a file that covers <code>AVD_FABRIC</code> group we defined in the <a href="#inventory-file">inventory</a>. This file contains all the base information to create the initial configuration:</p>
+<p>You can also refer to the <a href="https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/roles/eos_designs/README.md#fabric-topology-variables"><strong>Arista Validated Design</strong> documentation</a> to get a description of every single option available.</p>
+<p>Then, you have to describe devices for each role. Don&rsquo;t forget to set management IP here.</p>
+<ul>
+<li>Spine devices</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1"># Spine Switches</span>
+<span class="nt">spine</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">defaults</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VEOS-LAB</span>
+<span class="w">    </span><span class="nt">bgp_as</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">65001</span>
+<span class="w">    </span><span class="c1"># Overlay loopback IP and same pool can be assigned to both spine and l3leaf switches</span>
+<span class="w">    </span><span class="c1"># If same loopback pool is defined for both spine and l3leaf,</span>
+<span class="w">    </span><span class="c1"># &lt; loopback_ipv4_offset &gt; must be set in either one of the node_types</span>
+<span class="w">    </span><span class="nt">loopback_ipv4_pool</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">192.168.255.0/24</span>
+<span class="w">    </span><span class="c1"># Recommended for vEOS</span>
+<span class="w">    </span><span class="nt">bgp_defaults</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;no</span><span class="nv"> </span><span class="s">bgp</span><span class="nv"> </span><span class="s">default</span><span class="nv"> </span><span class="s">ipv4-unicast&#39;</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;distance</span><span class="nv"> </span><span class="s">bgp</span><span class="nv"> </span><span class="s">20</span><span class="nv"> </span><span class="s">200</span><span class="nv"> </span><span class="s">200&#39;</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;graceful-restart</span><span class="nv"> </span><span class="s">restart-time</span><span class="nv"> </span><span class="s">300&#39;</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;graceful-restart&#39;</span>
+<span class="w">  </span><span class="nt">nodes</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">AVD-SPINE1</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">      </span><span class="nt">mgmt_ip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.255.0.11/24</span>
+<span class="w">    </span><span class="nt">AVD-SPINE2</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">      </span><span class="nt">mgmt_ip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.255.0.12/24</span>
+</code></pre></div>
+<ul>
+<li>VTEP or L3LEAF devices</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nt">l3leaf</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">defaults</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VEOS-LAB</span>
+<span class="w">    </span><span class="nt">virtual_router_mac_address</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">00:1c:73:00:dc:01</span>
+<span class="w">    </span><span class="c1"># VTEP VXLAN Tunnel source loopback IP for leaf switches, assigned in /32s</span>
+<span class="w">    </span><span class="c1"># Assign range larger than total leaf switches</span>
+<span class="w">    </span><span class="nt">vtep_loopback_ipv4_pool</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">192.168.254.0/24</span>
+<span class="w">    </span><span class="nt">loopback_ipv4_pool</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">192.168.255.0/24</span>
+<span class="w">    </span><span class="c1"># Offset must be &gt;= number of spines</span>
+<span class="w">    </span><span class="nt">loopback_ipv4_offset</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">    </span><span class="c1"># Point to Point Network Summary range, assigned as /31 for each</span>
+<span class="w">    </span><span class="c1"># uplink interfaces</span>
+<span class="w">    </span><span class="c1"># Assign range larger than total [spines * total potential leafs * 2]</span>
+<span class="w">    </span><span class="nt">uplink_ipv4_pool</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">172.31.255.0/24</span>
+<span class="w">    </span><span class="nt">uplink_switches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">AVD-SPINE1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">AVD-SPINE2</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">uplink_interfaces</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Ethernet1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">Ethernet2</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">mlag_interfaces</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Ethernet3</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">Ethernet4</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="c1"># mlag pair IP assignment - assign blocks - Assign range larger than</span>
+<span class="w">    </span><span class="c1"># total spines + total leafs switches</span>
+<span class="w">    </span><span class="nt">mlag_peer_ipv4_pool</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.255.252.0/24</span>
+<span class="w">    </span><span class="nt">mlag_peer_l3_ipv4_pool</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.255.251.0/24</span>
+<span class="p p-Indicator">[</span><span class="nv">... output truncated ...</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">node_groups</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">AVD_LEAF1</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">bgp_as</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">65101</span>
+<span class="w">      </span><span class="nt">nodes</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">AVD-LEAF1A</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">          </span><span class="nt">mgmt_ip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.255.0.13/24</span>
+<span class="w">          </span><span class="c1"># Interface configured on SPINES to connect to this leaf</span>
+<span class="w">          </span><span class="nt">uplink_switch_interfaces</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Ethernet1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">Ethernet1</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">AVD-LEAF1B</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">          </span><span class="nt">mgmt_ip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.255.0.14/24</span>
+<span class="w">          </span><span class="c1"># Interface configured on SPINES to connect to this leaf</span>
+<span class="w">          </span><span class="nt">uplink_switch_interfaces</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Ethernet2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">Ethernet2</span><span class="p p-Indicator">]</span>
+<span class="p p-Indicator">[</span><span class="nv">... output truncated ...</span><span class="p p-Indicator">]</span>
+</code></pre></div>
+<p>Complete documentation of all available variables is available in the <a href="../../roles/eos_designs/index.html"><strong>Arista Validated Design documentation</strong></a>. You can also look at the <a href="https://github.com/arista-netdevops-community/ansible-avd-cloudvision-demo/blob/master/inventory/group_vars/DC1_FABRIC.yml">variables part of the demo repo</a>.</p>
+<h6 id="configure-device-type">Configure device type<a class="headerlink" href="#configure-device-type" title="Permanent link">&para;</a></h6>
+<p>In each variable file, related to a type of device, we have to instruct AVD what is the role of that device(s).</p>
+<div class="highlight"><pre><span></span><code><span class="nn">---</span>
+<span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">spine</span><span class="w">     </span><span class="c1"># Must be either spine | l3leaf | l2leaf</span>
+</code></pre></div>
+<h5 id="configure-vnivlan-across-the-fabric">Configure VNI/VLAN across the Fabric<a class="headerlink" href="#configure-vnivlan-across-the-fabric" title="Permanent link">&para;</a></h5>
+<p>AVD supports a mechanism to create VLANs and VNIs and enable traffic forwarding in your overlay. In the current version, only the following designs are supported:</p>
+<ul>
+<li>L2 VLANs</li>
+<li>Symmetric IRB model</li>
+</ul>
+<p>The model defines a set of tenants (user-defined) where you can configure VRF or <code>l2vlans</code> or a mix of them. Let&rsquo;s take a look at how we configure such services.</p>
+<p>All these configurations shall be configured in a file <code>AVD_TENANTS_NETWORKS.yml</code></p>
+<h6 id="l2-services">L2 Services<a class="headerlink" href="#l2-services" title="Permanent link">&para;</a></h6>
+<p>Configure a pure L2 service using <code>EVPN route type 2</code> only:</p>
+<div class="highlight"><pre><span></span><code><span class="nn">---</span>
+<span class="nt">tenants</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># Tenant B Specific Information - Pure L2 tenant</span>
+<span class="w">  </span><span class="nt">Tenant_B</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">mac_vrf_vni_base</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20000</span>
+<span class="w">    </span><span class="nt">l2vlans</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">201</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;B-ELAN-201&#39;</span>
+<span class="w">        </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">DC1</span><span class="p p-Indicator">]</span>
+</code></pre></div>
+<p>Tag option allows to configure VLAN only on a subset of the fabric: all devices with this tag will be configured with this VLAN. To configure device <code>TAGS</code> and <code>TENANTS</code> options, go to <a href="../../roles/eos_designs/index.html#fabric-topology-variables"><strong>Arista Validated Design</strong> documentation</a></p>
+<p>In this configuration, VLAN will be created with a tag of <code>201</code> and its attached VNI will be configured with <code>20201</code></p>
+<div class="highlight"><pre><span></span><code>AVD-LEAF1A#show vlan 201
+VLAN  Name                             Status    Ports
+----- -------------------------------- --------- -------------------------------
+201   B-ELAN-201                       active    Po3, Po5, Vx1
+
+
+AVD-LEAF1A#show bgp evpn vni 20201
+BGP routing table information for VRF default
+Router identifier 192.168.255.3, local AS number 65101
+Route status codes: s - suppressed, * - valid, &gt; - active, # - not installed, E - ECMP head, e - ECMP
+                    S - Stale, c - Contributing to ECMP, b - backup
+                    % - Pending BGP convergence
+Origin codes: i - IGP, e - EGP, ? - incomplete
+AS Path Attributes: Or-ID - Originator ID, C-LST - Cluster List, LL Nexthop - Link Local Nexthop
+
+         Network                Next Hop              Metric  LocPref Weight  Path
+ * &gt;     RD: 192.168.255.3:20201 mac-ip 20201 5001.0011.0000
+                                -                     -       -       0       i
+ * &gt;     RD: 192.168.255.3:20201 imet 20201 192.168.254.3
+                                -                     -       -       0       i
+ * &gt;Ec   RD: 192.168.255.5:20201 imet 20201 192.168.254.5
+                                192.168.254.5         -       100     0       65001 65102 i
+[... output truncated ...]
+</code></pre></div>
+<h6 id="symmetric-irb-model">Symmetric IRB model<a class="headerlink" href="#symmetric-irb-model" title="Permanent link">&para;</a></h6>
+<p>To configure symmetric IRB model, use the following structure:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">tenants</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># Tenant A Specific Information - VRFs / VLANs</span>
+<span class="w">  </span><span class="nt">Tenant_A</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">mac_vrf_vni_base</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10000</span>
+<span class="w">    </span><span class="nt">vrfs</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">TENANT_A_PROJECT01</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">vrf_vni</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">11</span>
+<span class="w">        </span><span class="nt">svis</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">110</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;PR01-DMZ&#39;</span>
+<span class="w">            </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">DC1</span><span class="p p-Indicator">]</span>
+<span class="w">            </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">            </span><span class="nt">ip_address_virtual</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.1.10.254/24</span>
+<span class="w">          </span><span class="nt">111</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;PR01-TRUST&#39;</span>
+<span class="w">            </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">POD02</span><span class="p p-Indicator">]</span>
+<span class="w">            </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">            </span><span class="nt">ip_address_virtual</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.1.11.254/24</span>
+<span class="w">      </span><span class="nt">TENANT_A_PROJECT02</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">vrf_vni</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">12</span>
+<span class="w">        </span><span class="nt">vtep_diagnostic</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">loopback</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
+<span class="w">          </span><span class="nt">loopback_ip_range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.1.255.0/24</span>
+<span class="w">        </span><span class="nt">svis</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">112</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;PR02-DMZ-GREEN&#39;</span>
+<span class="w">            </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">POD01</span><span class="p p-Indicator">]</span>
+<span class="w">            </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">            </span><span class="nt">ip_address_virtual</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.1.12.254/24</span>
+</code></pre></div>
+<p>The above example will create 2 VRFs :</p>
+<ul>
+<li><code>TENANT_A_PROJECT01</code></li>
+<li><code>TENANT_A_PROJECT02</code></li>
+</ul>
+<p>In <code>TENANT_A_PROJECT01</code>, 2 subnets are created and deployed on devices matching TAGS <code>DC1</code> or <code>POD02</code>:</p>
+<ul>
+<li><code>10.1.10.0/24</code> with vlan <code>110</code> and vni <code>10110</code></li>
+<li><code>10.1.11.0/24</code> with vlan <code>111</code> and vni <code>10111</code></li>
+</ul>
+<p>In case you deployed this VRF on an MLAG VTEP, an additional VLAN is created to allow L3 synchronization within VRF. This VLAN is automatically generated with this algorithm:</p>
+<div class="highlight"><pre><span></span><code>{{ mlag_ibgp_peering_vrfs.base_vlan + (tenants[tenant].vrfs[vrf].vrf_vni - 1) }}
+</code></pre></div>
+<p>In addition to that, each EOS device will allocate a dynamic VLAN per VRF to support <strong>L3 VNI</strong></p>
+<div class="highlight"><pre><span></span><code>AVD-LEAF1A#show vlan
+VLAN  Name                             Status    Ports
+----- -------------------------------- --------- -------------------------------
+1     default                          active    Et6, Et7, Et8, PEt6, PEt7, PEt8
+110   PR01-DMZ                         active    Cpu, Po3, Po5, Vx1
+112   PR02-DMZ-ORANGE                  active    Cpu, Po3, Vx1
+201   B-ELAN-201                       active    Po3, Po5, Vx1
+1008* VLAN1008                         active    Cpu, Po3, Vx1
+1009* VLAN1009                         active    Cpu, Po3, Vx1
+3010  MLAG_iBGP_TENANT_A_PROJECT01     active    Cpu, Po3
+3011  MLAG_iBGP_TENANT_A_PROJECT02     active    Cpu, Po3
+4093  LEAF_PEER_L3                     active    Cpu, Po3
+4094  MLAG_PEER                        active    Cpu, Po3
+
+* indicates a Dynamic VLAN
+
+
+AVD-LEAF1A#show vxlan vni
+VNI to VLAN Mapping for Vxlan1
+VNI         VLAN        Source       Interface           802.1Q Tag
+----------- ----------- ------------ ------------------- ----------
+11          1008*       evpn         Vxlan1              1008
+12          1009*       evpn         Vxlan1              1009
+10110       110         static       Port-Channel5       110
+                                     Vxlan1              110
+10112       112         static       Vxlan1              112
+20201       201         static       Port-Channel5       201
+                                     Vxlan1              201
+</code></pre></div>
+<p>In <code>TENANT_A_PROJECT02</code>, we can also see an optional feature named <strong><code>vtep_diagnostic</code></strong>. This option allows you to create a loopback in this VRF and do some connectivity tests.</p>
+<h6 id="configure-downlinks">Configure downlinks<a class="headerlink" href="#configure-downlinks" title="Permanent link">&para;</a></h6>
+<p>As we have configured L3LS fabric, EVPN/VXLAN overlay, services, it is now time to configure ports to connect servers. Ports should be configured in <code>AVD_SERVERS.yml</code>.</p>
+<p>You first have to configure a port profile. it is basically a description of how the port will be configured (<code>access</code> or <code>trunk</code>) and which set of vlan(s) will be configured</p>
+<div class="highlight"><pre><span></span><code><span class="nn">---</span>
+<span class="nt">port_profiles</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">TENANT_A_B</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trunk</span>
+<span class="w">    </span><span class="nt">vlans</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;110-111,201&quot;</span>
+<span class="w">  </span><span class="nt">A-PR01-DMZ</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">access</span>
+<span class="w">    </span><span class="nt">vlans</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;110&quot;</span>
+</code></pre></div>
+<blockquote>
+<p>This section uses vlan-id so all of these entries must be configured in the <em>TENANTS</em> file</p>
+</blockquote>
+<p>Then, create port mapping on a per server.</p>
+<h6 id="single-homed-server">Single homed server<a class="headerlink" href="#single-homed-server" title="Permanent link">&para;</a></h6>
+<p>If the server is connected to only one leaf of the fabric, the following template can be used</p>
+<div class="highlight"><pre><span></span><code><span class="nt">servers</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">A-PR01-DMZ-POD01</span><span class="p">:</span><span class="w">                 </span><span class="c1"># Server name</span>
+<span class="w">    </span><span class="nt">rack</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">POD01</span><span class="w">                     </span><span class="c1"># Informational RACK</span>
+<span class="w">    </span><span class="nt">adapters</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nic</span>
+<span class="w">        </span><span class="nt">endpoint_ports</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Eth0</span><span class="p p-Indicator">]</span><span class="w">      </span><span class="c1"># Port on server/endpoint</span>
+<span class="w">        </span><span class="nt">switch_ports</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Ethernet3</span><span class="p p-Indicator">]</span><span class="w">   </span><span class="c1"># Port on switch connected to the server/endpoint port</span>
+<span class="w">        </span><span class="nt">switches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">DC1-AGG01</span><span class="p p-Indicator">]</span><span class="w">       </span><span class="c1"># Switch connected to the server/endpoint</span>
+<span class="w">        </span><span class="nt">profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A-PR01-DMZ</span><span class="w">         </span><span class="c1"># Port profile to apply</span>
+</code></pre></div>
+<p>Whereas most of the information is purely optional, the below entries are required:</p>
+<ul>
+<li><code>endpoint_ports</code>: Used in the switch_port description.</li>
+<li><code>switch_ports</code>: Will be used to configure the correct port on the switch.</li>
+<li><code>switches</code>: Must be switch name defined in your inventory.</li>
+<li><code>profile</code>: Profile created previously.</li>
+</ul>
+<h6 id="server-connected-to-mlag">Server connected to MLAG<a class="headerlink" href="#server-connected-to-mlag" title="Permanent link">&para;</a></h6>
+<p>In the case of an MLAG connection, the data structure is the same and the only difference is we need to add information about Port-Channel to be configured.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">servers</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">DCI_RTR01</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">rack</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DCI</span>
+<span class="w">    </span><span class="nt">adapters</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">endpoint_ports</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Eth1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">Eth2</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">switch_ports</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">Ethernet5</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">Ethernet5</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">switches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">SITE01-BL01A</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">SITE01-BL01B</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">A-PR01-DMZ</span>
+<span class="w">        </span><span class="nt">port_channel</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span>
+<span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PortChannel5</span>
+<span class="w">          </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">active</span>
+</code></pre></div>
+<h4 id="create-your-avd-playbook">Create your AVD Playbook<a class="headerlink" href="#create-your-avd-playbook" title="Permanent link">&para;</a></h4>
+<h5 id="create-directory-structure">Create directory structure<a class="headerlink" href="#create-directory-structure" title="Permanent link">&para;</a></h5>
+<p>AVD comes with a role to <a href="https://github.com/aristanetworks/ansible-avd/tree/devel/ansible_collections/arista/avd/roles/build_output_folders">generate your folder structure</a>.</p>
+<div class="highlight"><pre><span></span><code><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">build local folders</span>
+<span class="w">      </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">build</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">import_role</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">arista.avd.build_output_folders</span>
+<span class="w">      </span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">fabric_dir_name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">fabric_name</span><span class="nv"> </span><span class="s">}}&#39;</span>
+</code></pre></div>
+<h5 id="transform-evpn-data-model-to-device-data-model">Transform EVPN data model to device data model<a class="headerlink" href="#transform-evpn-data-model-to-device-data-model" title="Permanent link">&para;</a></h5>
+<p>AVD provides the <a href="https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/roles/eos_designs/README.md"><strong><code>eos_designs</code></strong></a> role to generate intended YAML device configuration:</p>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">generate intended variables</span>
+<span class="w">      </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">build</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">import_role</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">arista.avd.eos_designs</span>
+</code></pre></div>
+<h5 id="generate-device-configuration-and-documentation">Generate device configuration and documentation<a class="headerlink" href="#generate-device-configuration-and-documentation" title="Permanent link">&para;</a></h5>
+<p>After device data have been generated, AVD can build EOS configuration as well as documentation in markdown format.</p>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">generate device intended config and documentation</span>
+<span class="w">      </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">build</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">import_role</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">arista.avd.eos_cli_config_gen</span>
+</code></pre></div>
+<p>The topology and device documentation can be accessed under <code>documentation</code> in the inventory folder.</p>
+<p><img alt="AVD device configuration documentation" src="../_media/avd-eos-cli-config-gen-doc-overview.png" /></p>
+<h5 id="deploy-your-configuration-to-eos-devices">Deploy your configuration to EOS devices<a class="headerlink" href="#deploy-your-configuration-to-eos-devices" title="Permanent link">&para;</a></h5>
+<p>Once your configuration files have been generated, you can use <a href="../../roles/eos_config_deploy_eapi/index.html"><code>arista.avd.eos_config_deploy_eapi</code></a> to deploy your configuration in replace mode. Because we want to make this deployment explicit, we position tags <code>deploy</code> and <code>never</code> meaning you <strong>must</strong> set this tag in your CLI</p>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deploy configuration to device</span>
+<span class="w">      </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">deploy</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">never</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">import_role</span><span class="p">:</span>
+<span class="w">         </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">arista.avd.eos_config_deploy_eapi</span>
+</code></pre></div>
+<h5 id="complete-avd-eapi-playbook">Complete AVD eAPI playbook<a class="headerlink" href="#complete-avd-eapi-playbook" title="Permanent link">&para;</a></h5>
+<p>The overall playbook is given for information below and you can update it to create your own workflow</p>
+<div class="highlight"><pre><span></span><code><span class="nn">---</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Build Switch configuration</span>
+<span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">all</span>
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">generate intended variables</span>
+<span class="w">      </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">build</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">import_role</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">arista.avd.eos_designs</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">generate device intended config and documentation</span>
+<span class="w">      </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">build</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">import_role</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">arista.avd.eos_cli_config_gen</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deploy configuration to device</span>
+<span class="w">      </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">deploy</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">never</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">import_role</span><span class="p">:</span>
+<span class="w">         </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">arista.avd.eos_config_deploy_eapi</span>
+</code></pre></div>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      Last update:
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">April 28, 2022</span>
+      
+    
+  </small>
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2019 - 2021 Arista Networks
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.top"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.2a6f1dda.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tablesort/5.2.1/tablesort.min.js"></script>
+      
+        <script src="../stylesheets/tables.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
+      
+        <script src="../stylesheets/highlight.js"></script>
+      
+    
+  </body>
+</html>

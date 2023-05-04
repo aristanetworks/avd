@@ -1,0 +1,82 @@
+{# Tenant l3 interfaces #}
+{% set l3_interface_subif_parents = [] %}
+{% set switch_l3_port_channels = [] %}
+port_channel_interfaces:
+{% set point_to_point_service_subif_parents = [] %}
+{# pseudowire interfaces #}
+{% for tenant in network_services_data.tenants | arista.avd.natural_sort('name') %}
+{%     for point_to_point_service in tenant.point_to_point_services | arista.avd.default([]) %}
+{%         for endpoint in point_to_point_service.endpoints %}
+{%             if inventory_hostname in endpoint.nodes | arista.avd.default([]) %}
+{%                 set pw_interface = namespace() %}
+{%                 for node in endpoint.nodes %}
+{%                     if node == inventory_hostname %}
+{%                         set pw_interface.node_index = loop.index0 %}
+{%                         break %}
+{%                     endif %}
+{%                 endfor %}
+{%                 set pw_interface.interface = endpoint.interfaces[pw_interface.node_index] %}
+{%                 if endpoint.port_channel.mode is arista.avd.defined %}
+{%                     set channel_group_id = (pw_interface.interface | regex_findall("\d") | join) %}
+{%                     set channel_group_mode = endpoint.port_channel.mode %}
+{%                     set pw_interface.interface = "Port-Channel" ~ channel_group_id %}
+{%                     if point_to_point_service.subinterfaces is arista.avd.defined %}
+{%                         do point_to_point_service_subif_parents.append({"interface": pw_interface.interface, "port_channel": {"mode": endpoint.port_channel.mode | arista.avd.default(none), "short_esi": endpoint.port_channel.short_esi | arista.avd.default(none) }}) %}
+{%                         for subif in point_to_point_service.subinterfaces %}
+{%                             if subif.number is arista.avd.defined and subif.number is number %}
+{# Need logic to customize flexencap on the subif in future #}
+  {{ pw_interface.interface ~ "." ~ subif.number }}:
+    type: l2dot1q
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: {{ subif.number }}
+      network:
+        client: true
+    peer_type: l3_interface
+    shutdown: false
+{%                             endif %}
+{%                         endfor %}
+{%                     else %}
+{%                         do switch_l3_port_channels.append(pw_interface.interface) %}
+  {{ pw_interface.interface }}:
+    type: routed
+{%                         if point_to_point_service.lldp_disable is arista.avd.defined(true) %}
+    lldp:
+      transmit: false
+      receive: false
+{%                         endif %}
+    peer_type: l3_interface
+    shutdown: false
+{%                         if endpoint.port_channel.short_esi is arista.avd.defined %}
+{%                             if endpoint.port_channel.short_esi.split(':') | length == 3 %}
+    esi: {{ endpoint.port_channel.short_esi | arista.avd.generate_esi(evpn_short_esi_prefix) }}
+    rt: {{ endpoint.port_channel.short_esi | arista.avd.generate_route_target }}
+{%                                 if endpoint.port_channel.mode == 'active' %}
+    lacp_id: {{ endpoint.port_channel.short_esi | arista.avd.generate_lacp_id }}
+{%                                 endif %}
+{%                             endif %}
+{%                         endif %}
+{%                     endif %}
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{% endfor %}
+{# Create parent / base interfaces as routed. Will be merged onto structured config, #}
+{# so even if the same interfaces are created elsewhere, it will still work. #}
+{% for parent in point_to_point_service_subif_parents %}
+{%     if parent.interface not in switch_l3_port_channels and parent.interface not in port_channel_interfaces | arista.avd.default([]) %}
+  {{ parent.interface }}:
+    type: routed
+    peer_type: l3_interface
+    shutdown: false
+{%         if parent.port_channel.short_esi is arista.avd.defined %}
+    esi: {{ parent.port_channel.short_esi | arista.avd.generate_esi(evpn_short_esi_prefix) }}
+    rt: {{ parent.port_channel.short_esi | arista.avd.generate_route_target }}
+{%             if parent.port_channel.mode is arista.avd.defined("active") %}
+    lacp_id: {{ parent.port_channel.short_esi | arista.avd.generate_lacp_id }}
+{%             endif %}
+{%         endif %}
+{%     endif %}
+{% endfor %}

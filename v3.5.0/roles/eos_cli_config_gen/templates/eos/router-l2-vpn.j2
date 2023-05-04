@@ -1,0 +1,17 @@
+{# eos - Router L2 VPN #}
+{% if router_l2_vpn is arista.avd.defined %}
+!
+router l2-vpn
+{%     if router_l2_vpn.nd_rs_flooding_disabled is arista.avd.defined(true) %}
+   nd rs flooding disabled
+{%     endif %}
+{%     if router_l2_vpn.virtual_router_nd_ra_flooding_disabled is arista.avd.defined(true) %}
+   virtual-router neighbor advertisement flooding disabled
+{%     endif %}
+{%     if router_l2_vpn.arp_selective_install is arista.avd.defined(true) %}
+   arp selective-install
+{%     endif %}
+{%     if router_l2_vpn.arp_proxy.prefix_list is arista.avd.defined %}
+   arp proxy prefix-list {{ router_l2_vpn.arp_proxy.prefix_list }}
+{%     endif %}
+{% endif %}

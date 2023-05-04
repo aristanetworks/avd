@@ -1,0 +1,24 @@
+{# eos - local users #}
+{% if local_users is arista.avd.defined %}
+!
+{%     for local_user in local_users | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         set local_user_cli = "username " ~ local_user.name %}
+{%         if local_user.privilege is arista.avd.defined %}
+{%             set local_user_cli = local_user_cli ~ " privilege " ~ local_user.privilege %}
+{%         endif %}
+{%         if local_user.role is arista.avd.defined %}
+{%             set local_user_cli = local_user_cli ~ " role " ~ local_user.role %}
+{%         endif %}
+{%         if local_user.sha512_password is arista.avd.defined %}
+{%             set local_user_cli = local_user_cli ~ " secret sha512 " ~ local_user.sha512_password %}
+{%         elif local_user.no_password is arista.avd.defined(true) %}
+{%             set local_user_cli = local_user_cli ~ " nopassword" %}
+{%         endif %}
+{{ local_user_cli }}
+{%         if local_user.ssh_key is arista.avd.defined %}
+{%             set local_ssh_key_cli = "username " ~ local_user.name %}
+{%             set local_ssh_key_cli = local_ssh_key_cli ~ " ssh-key " ~ local_user.ssh_key %}
+{{ local_ssh_key_cli }}
+{%         endif %}
+{%     endfor %}
+{% endif %}

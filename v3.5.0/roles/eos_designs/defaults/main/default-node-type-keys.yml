@@ -1,0 +1,55 @@
+default_node_type_keys:
+  "l3ls-evpn":
+    spine:
+      type: spine
+      default_evpn_role: server
+    l3leaf:
+      type: l3leaf
+      connected_endpoints: true
+      default_evpn_role: client
+      mlag_support: true
+      network_services:
+        l2: true
+        l3: true
+      vtep: true
+    l2leaf:
+      type: l2leaf
+      connected_endpoints: true
+      mlag_support: true
+      network_services:
+        l2: true
+      underlay_router: false
+      uplink_type: port-channel
+    super_spine:
+      type: super-spine
+    overlay_controller:
+      type: overlay-controller
+      default_evpn_role: server
+
+  "mpls":
+    p:
+      type: p
+      mpls_lsr: true
+      default_mpls_overlay_role: none
+      default_overlay_routing_protocol: ibgp
+      default_underlay_routing_protocol: isis-sr
+    pe:
+      type: pe
+      mpls_lsr: true
+      connected_endpoints: true
+      default_mpls_overlay_role: client
+      network_services:
+        l1: true
+        l2: true
+        l3: true
+      mpls_ler: true
+      default_overlay_routing_protocol: ibgp
+      default_underlay_routing_protocol: isis-sr
+      default_overlay_address_families: [ vpn-ipv4 ]
+    rr:
+      type: rr
+      mpls_lsr: true
+      default_mpls_overlay_role: server
+      default_overlay_routing_protocol: ibgp
+      default_underlay_routing_protocol: isis-sr
+      default_overlay_address_families: [ vpn-ipv4 ]

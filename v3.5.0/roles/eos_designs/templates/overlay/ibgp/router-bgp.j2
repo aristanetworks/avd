@@ -1,0 +1,28 @@
+router_bgp:
+
+{% if switch.evpn_role == "server" or switch.mpls_overlay_role == "server" %}
+  bgp_cluster_id: {{ switch.bgp_cluster_id | arista.avd.default(switch.router_id) }}
+{% endif %}
+
+{% include 'overlay/ibgp/peer-groups.j2' %}
+
+{% include 'overlay/ibgp/address-family-ipv4.j2' %}
+
+{% if "evpn" in switch.overlay_address_families %}
+{%     include 'overlay/ibgp/address-family-evpn.j2' %}
+
+{% endif %}
+{% if evpn_overlay_bgp_rtc is arista.avd.defined(true) %}
+{%     include 'overlay/ibgp/address-family-rtc.j2' %}
+
+{% endif %}
+{% if "vpn-ipv4" in switch.overlay_address_families %}
+{%     include 'overlay/ibgp/address-family-vpn-ipv4.j2' %}
+
+{% endif %}
+{% if "vpn-ipv6" in switch.overlay_address_families %}
+{%     include 'overlay/ibgp/address-family-vpn-ipv6.j2' %}
+
+{% endif %}
+
+{% include 'overlay/ibgp/neighbors.j2' %}

@@ -1,0 +1,10 @@
+- name: Test without 'templates' parameter
+  ignore_errors: yes
+  register: result
+  yaml_templates_to_facts:
+
+- assert:
+    that:
+      - result is failed
+      - result.changed == false
+      - result.msg == "The argument 'templates' must be set"

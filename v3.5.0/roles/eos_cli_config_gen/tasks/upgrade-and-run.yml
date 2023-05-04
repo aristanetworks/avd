@@ -1,0 +1,7 @@
+- name: Upgrade eos_cli_config_gen data model
+  tags: [always]
+  include_tasks: "upgrade.yml"
+
+- name: Run eos_cli_config_gen
+  tags: [always]
+  include_tasks: "main.yml"

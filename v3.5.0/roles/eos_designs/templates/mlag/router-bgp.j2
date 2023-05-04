@@ -1,0 +1,42 @@
+{# MLAG iBGP peering #}
+{% if switch.mlag_l3 is arista.avd.defined(true) and switch.underlay_routing_protocol == "ebgp" %}
+router_bgp:
+  peer_groups:
+    {{ switch.bgp_peer_groups.mlag_ipv4_underlay_peer.name }}:
+      type: ipv4
+      remote_as: "{{ switch.bgp_as }}"
+      next_hop_self: true
+      description: {{ switch.mlag_peer }}
+{%     if switch.bgp_peer_groups.mlag_ipv4_underlay_peer.password is arista.avd.defined() %}
+      password: "{{ switch.bgp_peer_groups.mlag_ipv4_underlay_peer.password }}"
+{%     endif %}
+      maximum_routes: 12000
+      send_community: all
+{%     if switch.mlag_ibgp_origin_incomplete == true %}
+      route_map_in: RM-MLAG-PEER-IN
+{%     endif %}
+{%     if switch.underlay_ipv6 is arista.avd.defined(true) %}
+  address_family_ipv6:
+    peer_groups:
+      {{ switch.bgp_peer_groups.mlag_ipv4_underlay_peer.name }}:
+        activate: true
+{%     endif %}
+  address_family_ipv4:
+    peer_groups:
+      {{ switch.bgp_peer_groups.mlag_ipv4_underlay_peer.name }}:
+        activate: true
+{%     if underlay_rfc5549 is arista.avd.defined(true) %}
+        next_hop:
+          address_family_ipv6_originate: true
+  neighbor_interfaces:
+    Vlan{{ switch.mlag_peer_l3_vlan | arista.avd.default(switch.mlag_peer_vlan) }}:
+      peer_group: {{ switch.bgp_peer_groups.mlag_ipv4_underlay_peer.name }}
+      remote_as: "{{ switch.bgp_as }}"
+      description: {{ switch.mlag_peer }}
+{%     else %}
+  neighbors:
+    {{ switch.mlag_peer_l3_ip | arista.avd.default(switch.mlag_peer_ip) }}:
+      peer_group: {{ switch.bgp_peer_groups.mlag_ipv4_underlay_peer.name }}
+      description: {{ switch.mlag_peer }}
+{%     endif %}
+{% endif %}

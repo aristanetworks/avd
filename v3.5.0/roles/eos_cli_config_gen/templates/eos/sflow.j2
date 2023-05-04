@@ -1,0 +1,56 @@
+{# eos - SFlow #}
+{% if sflow is arista.avd.defined %}
+!
+{%     if sflow.sample is arista.avd.defined %}
+{%         set sample_cli = "sflow sample " %}
+{%         if sflow.dangerous is arista.avd.defined(true) %}
+{%             set sample_cli = sample_cli ~ "dangerous " %}
+{%         endif %}
+{%         set sample_cli = sample_cli ~ sflow.sample %}
+{{ sample_cli }}
+{%     endif %}
+{%     for vrf in sflow.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         for destination in vrf.destinations | arista.avd.convert_dicts('destination') | arista.avd.natural_sort('destination') %}
+{%             set vrf_cli = "sflow vrf " ~ vrf.name ~ " destination " ~ destination.destination %}
+{%             if destination.port is arista.avd.defined %}
+{%                 set vrf_cli = vrf_cli ~ " " ~ destination.port %}
+{%             endif %}
+{{ vrf_cli }}
+{%         endfor %}
+{%         if vrf.source_interface is arista.avd.defined %}
+sflow vrf {{ vrf.name }} source-interface {{ vrf.source_interface }}
+{%         endif %}
+{%     endfor %}
+{%     for destination in sflow.destinations | arista.avd.convert_dicts('destination') | arista.avd.natural_sort('destination') %}
+{%         set destination_cli = "sflow destination " ~ destination.destination %}
+{%         if destination.port is arista.avd.defined %}
+{%             set destination_cli = destination_cli ~ " " ~ destination.port %}
+{%         endif %}
+{{ destination_cli }}
+{%     endfor %}
+{%     if sflow.source_interface is arista.avd.defined %}
+sflow source-interface {{ sflow.source_interface }}
+{%     endif %}
+{%     if sflow.run is arista.avd.defined(true) %}
+sflow run
+{%     endif %}
+{%     if sflow.interface.disable.default is arista.avd.defined(true) %}
+sflow interface disable default
+{%     endif %}
+{%     if sflow.hardware_acceleration.enabled is arista.avd.defined(true) %}
+sflow hardware acceleration
+{%     endif %}
+{%     if sflow.hardware_acceleration.sample is arista.avd.defined %}
+sflow hardware acceleration sample {{ sflow.hardware_acceleration.sample }}
+{%     endif %}
+{%     for module in sflow.hardware_acceleration.modules | arista.avd.natural_sort('name') %}
+{%         if module.name is arista.avd.defined %}
+{%             if module.enabled is arista.avd.defined(false) %}
+{%                 set module_cli = "no sflow hardware acceleration module " ~ module.name %}
+{%             else %}
+{%                 set module_cli = "sflow hardware acceleration module " ~ module.name %}
+{%             endif %}
+{{ module_cli }}
+{%         endif %}
+{%     endfor %}
+{% endif %}

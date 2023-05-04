@@ -1,0 +1,22 @@
+  neighbors:
+{% for evpn_route_server in overlay_data.evpn_route_servers | arista.avd.natural_sort %}
+    {{ overlay_data.evpn_route_servers[evpn_route_server].ip_address }}:
+      peer_group: {{ switch.bgp_peer_groups.evpn_overlay_peers.name }}
+      description: {{ evpn_route_server }}
+      remote_as: "{{ overlay_data.evpn_route_servers[evpn_route_server].bgp_as }}"
+{%     if evpn_prevent_readvertise_to_server is arista.avd.defined(true) %}
+      route_map_out: RM-EVPN-FILTER-AS{{ overlay_data.evpn_route_servers[evpn_route_server].bgp_as }}
+{%     endif %}
+{% endfor %}
+{% for evpn_route_client in overlay_data.evpn_route_clients | arista.avd.natural_sort %}
+    {{ overlay_data.evpn_route_clients[evpn_route_client].ip_address }}:
+      peer_group: {{ switch.bgp_peer_groups.evpn_overlay_peers.name }}
+      description: {{ evpn_route_client }}
+      remote_as: "{{ overlay_data.evpn_route_clients[evpn_route_client].bgp_as }}"
+{% endfor %}
+{% for evpn_gw_remote_peer in overlay_data.evpn_gateway_remote_peers | arista.avd.natural_sort %}
+    {{ overlay_data.evpn_gateway_remote_peers[evpn_gw_remote_peer].ip_address }}:
+      peer_group: {{ switch.bgp_peer_groups.evpn_overlay_core.name }}
+      description: {{ evpn_gw_remote_peer }}
+      remote_as: "{{ overlay_data.evpn_gateway_remote_peers[evpn_gw_remote_peer].bgp_as }}"
+{% endfor %}

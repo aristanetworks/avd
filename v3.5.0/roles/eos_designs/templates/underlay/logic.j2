@@ -1,0 +1,36 @@
+{# Add underlay uplinks defined on this device #}
+{% set underlay_data.links = switch.uplinks | arista.avd.default([]) %}
+
+{% set avd_topology_peers = avd_topology_peers[inventory_hostname] | arista.avd.default([]) %}
+
+{# Add underlay downlinks defined on other devices as uplinks pointing to this device #}
+{% for peer in avd_topology_peers %}
+{%     set peer_facts = avd_switch_facts[peer] %}
+{%     if peer_facts.switch is arista.avd.defined(fail_action='warning',var_name='avd_switch_facts[' ~ peer ~ '].switch') %}
+{%         for peer_uplink in peer_facts.switch.uplinks | arista.avd.default([]) %}
+{%             if peer_uplink.peer is arista.avd.defined(inventory_hostname) %}
+{%                 do underlay_data.links.append({
+                       "interface": peer_uplink.peer_interface,
+                       "peer": peer,
+                       "peer_interface": peer_uplink.interface,
+                       "peer_type": peer_facts.switch.type,
+                       "peer_is_deployed": peer_facts.switch.is_deployed,
+                       "peer_bgp_as": peer_facts.switch.bgp_as | arista.avd.default,
+                       "type": peer_uplink.type | arista.avd.default,
+                       "speed": peer_uplink.speed | arista.avd.default,
+                       "ip_address": peer_uplink.peer_ip_address | arista.avd.default,
+                       "peer_ip_address": peer_uplink.ip_address | arista.avd.default,
+                       "channel_group_id": peer_uplink.peer_channel_group_id | arista.avd.default,
+                       "peer_channel_group_id": peer_uplink.channel_group_id | arista.avd.default,
+                       "channel_description": peer_uplink.peer_channel_description | arista.avd.default,
+                       "vlans": peer_uplink.vlans | arista.avd.default,
+                       "bfd": peer_uplink.bfd | arista.avd.default,
+                       "ptp": peer_uplink.ptp | arista.avd.default,
+                       "mac_security": peer_uplink.mac_security | arista.avd.default,
+                       "short_esi": peer_uplink.peer_short_esi | arista.avd.default,
+                       "ipv6_enable": peer_uplink.ipv6_enable | arista.avd.default,
+                   }) %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}

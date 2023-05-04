@@ -1,0 +1,15 @@
+vlan_interfaces:
+{% for subnet in inband_management_data.subnets %}
+  Vlan{{ inband_management_data.vlans[loop.index0] }}:
+    description: L2LEAF_INBAND_MGMT
+    shutdown: false
+    mtu: {{ p2p_uplinks_mtu }}
+{%     if switch.mlag is arista.avd.defined(true) and switch.mlag_role is arista.avd.defined('secondary') %}
+    ip_address: {{ subnet | ansible.netcommon.ipaddr('network') | ansible.netcommon.ipmath(3) }}/{{ subnet | ansible.netcommon.ipaddr('prefix') }}
+{%     else %}
+    ip_address: {{ subnet | ansible.netcommon.ipaddr('network') | ansible.netcommon.ipmath(2) }}/{{ subnet | ansible.netcommon.ipaddr('prefix') }}
+{%     endif %}
+    ip_virtual_router_addresses: [ {{ subnet | ansible.netcommon.ipaddr(1) | ansible.netcommon.ipaddr('address') }} ]
+    ip_attached_host_route_export:
+      distance: 19
+{% endfor %}

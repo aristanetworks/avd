@@ -1,0 +1,5 @@
+{# tcam-profile #}
+{% if switch.platform_settings.tcam_profile is arista.avd.defined %}
+tcam_profile:
+  system: {{ switch.platform_settings.tcam_profile }}
+{% endif %}

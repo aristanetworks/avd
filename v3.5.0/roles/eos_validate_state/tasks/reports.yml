@@ -1,0 +1,37 @@
+---
+
+# Validation reports
+
+- name: Generate Results (Set eos_validate_state_report)
+  yaml_templates_to_facts:
+    templates:
+      - template: generate_state_report_results.j2
+  delegate_to: localhost
+  run_once: true
+  tags:
+    - always
+    - report
+
+- name: Create Validation report - CSV
+  template:
+    src: validate_state_report-csv.j2
+    dest: "{{ eos_validate_state_csv_report_path }}"
+    mode: 0664
+  delegate_to: localhost
+  run_once: true
+  when: "validation_role.validation_report_csv | arista.avd.default(true)"
+  tags:
+    - always
+    - report
+
+- name: Create Validation report - Markdown
+  template:
+    src: validate_state_report-md.j2
+    dest: "{{ eos_validate_state_md_report_path }}"
+    mode: 0664
+  delegate_to: localhost
+  run_once: true
+  when: "validation_role.validation_report_md | arista.avd.default(true)"
+  tags:
+    - always
+    - report

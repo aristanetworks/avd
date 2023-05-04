@@ -1,0 +1,153 @@
+# Roles Defaults
+# Root directory where to build output structure
+root_dir: '{{ inventory_dir }}'
+
+# Documentation folders
+# Main documentation folder
+documentation_dir_name: 'documentation'
+documentation_dir: '{{ root_dir }}/{{ documentation_dir_name }}'
+
+# Fabric documentation
+fabric_dir_name: 'fabric'
+fabric_dir: '{{ documentation_dir }}/{{ fabric_dir_name }}'
+
+# AVD configurations output
+# Main output directory
+output_dir_name: 'intended'
+output_dir: '{{ root_dir }}/{{ output_dir_name }}'
+
+# Output for structured YAML files:
+structured_dir_name: 'structured_configs'
+structured_dir: '{{ output_dir }}/{{ structured_dir_name }}'
+
+# Design variables
+design:
+  type: "l3ls-evpn"
+
+mgmt_vrf_routing: false
+
+mgmt_interface: Management1
+mgmt_interface_vrf: MGMT
+
+# eAPI
+management_eapi:
+  enable_https: true
+
+internal_vlan_order:
+  allocation: "ascending"
+  range:
+    beginning: 1006
+    ending: 1199
+
+terminattr_ingestgrpcurl_port: 9910
+terminattr_smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
+terminattr_ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
+
+p2p_uplinks_mtu: 9000
+
+underlay_routing_protocol: BGP
+overlay_routing_protocol: BGP
+underlay_ipv6: false
+
+evpn_ebgp_multihop: 3
+evpn_ebgp_gateway_multihop: 15
+evpn_ebgp_gateway_inter_domain: true
+
+evpn_short_esi_prefix: "0000:0000:"
+
+# Underlay OSPF Defaults
+underlay_ospf_process_id: 100
+underlay_ospf_area: 0.0.0.0
+underlay_ospf_max_lsa: 12000
+underlay_ospf_bfd_enable: false
+
+# Underlay ISIS Defaults
+isis_area_id: "49.0001"
+isis_maximum_paths: 4
+
+bgp_maximum_paths: 4
+bgp_ecmp: 4
+
+evpn_vlan_aware_bundles: false
+
+default_igmp_snooping_enabled: true
+
+bfd_multihop:
+  interval: 300
+  min_rx: 300
+  multiplier: 3
+
+mlag_ibgp_peering_vrfs:
+  base_vlan: 3000
+
+# Set platform specific settings, TCAM profile and reload delay.
+# The reload delay values should be reviewed and tuned to the specific environment.
+# Recommended default values for Jericho based platform, VEOS and all other platforms default tag.
+
+platform_settings:
+  - platforms: [ 'default' ]
+    reload_delay:
+      mlag: 300
+      non_mlag: 330
+    feature_support:
+      # "queue-monitor length notify" is only valid for R-Series so should be disabled on default platform.
+      queue_monitor_length_notify: false
+  - platforms: [ '7280R', '7280R2' ]
+    tcam_profile: vxlan-routing
+    lag_hardware_only: true
+    reload_delay:
+      mlag: 900
+      non_mlag: 1020
+  - platforms: [ '7280R3' ]
+    reload_delay:
+      mlag: 900
+      non_mlag: 1020
+  - platforms: [ '7500R', '7500R2' ]
+    tcam_profile: vxlan-routing
+    lag_hardware_only: true
+    management_interface: Management0
+    reload_delay:
+      mlag: 900
+      non_mlag: 1020
+  - platforms: [ '7500R3', '7800R3' ]
+    management_interface: Management0
+    reload_delay:
+      mlag: 900
+      non_mlag: 1020
+  - platforms: [ '7368X4' ]
+    management_interface: Management0
+    reload_delay:
+      mlag: 300
+      non_mlag: 330
+  - platforms: [ 'VEOS', 'VEOS-LAB', 'vEOS', 'vEOS-lab' ]
+    reload_delay:
+      mlag: 300
+      non_mlag: 330
+    feature_support:
+      queue_monitor_length_notify: false
+      interface_storm_control: false
+  - platforms: [ 'CEOS', 'cEOS', 'ceos', 'cEOSLab' ]
+    management_interface: Management0
+    reload_delay:
+      mlag: 300
+      non_mlag: 330
+    feature_support:
+      queue_monitor_length_notify: false
+      interface_storm_control: false
+
+# Infrastructure Elements Keys
+
+connected_endpoints_keys: "{{ default_connected_endpoints_keys[design.type] }}"
+
+network_services_keys:
+  - name: tenants
+
+#custom_structured_configuration_prefix allows the user to customize the prefix for Custom Structured Configuration variables.
+custom_structured_configuration_prefix: custom_structured_configuration_
+custom_structured_configuration_list_merge: 'replace'
+
+node_type_keys: "{{ default_node_type_keys[design.type] }}"
+
+templates: "{{ default_templates[design.type] }}"
+
+avd_structured_config_file_format: "yml"

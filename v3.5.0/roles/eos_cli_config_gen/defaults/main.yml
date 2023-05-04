@@ -1,0 +1,26 @@
+# Root directory where to build output structure
+root_dir: '{{ inventory_dir }}'
+
+# Documentation folders
+# Main documentation folder
+documentation_dir_name: 'documentation'
+documentation_dir: '{{ root_dir }}/{{ documentation_dir_name }}'
+
+# Device documentation
+devices_dir_name: 'devices'
+devices_dir: '{{ documentation_dir }}/{{ devices_dir_name }}'
+
+# AVD configurations output
+# Main output directory
+output_dir_name: 'intended'
+output_dir: '{{ root_dir }}/{{ output_dir_name }}'
+
+# Output for structured YAML files:
+structured_dir_name: 'structured_configs'
+structured_dir: '{{ output_dir }}/{{ structured_dir_name }}'
+
+# EOS Configuration Directory name
+eos_config_dir_name: 'configs'
+eos_config_dir: '{{ output_dir }}/{{ eos_config_dir_name }}'
+
+avd_structured_config_file_format: "yml"

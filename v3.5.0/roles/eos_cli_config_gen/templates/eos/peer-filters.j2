@@ -1,0 +1,10 @@
+{# eos - peer-filters #}
+{% for peer_filter in peer_filters | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+!
+peer-filter {{ peer_filter.name }}
+{%     for sequence in peer_filter.sequence_numbers | arista.avd.convert_dicts('sequence') | arista.avd.natural_sort('sequence') %}
+{%         if sequence.match is arista.avd.defined %}
+   {{ sequence.sequence }} match {{ sequence.match }}
+{%         endif %}
+{%     endfor %}
+{% endfor %}

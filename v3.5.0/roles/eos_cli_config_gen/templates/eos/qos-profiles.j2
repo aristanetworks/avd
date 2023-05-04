@@ -1,0 +1,69 @@
+{# eos - qos profiles #}
+{% for profile in qos_profiles | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+!
+qos profile {{ profile.name }}
+{%     if profile.trust is arista.avd.defined %}
+{%         if profile.trust == 'disabled' %}
+   no qos trust
+{%         else %}
+   qos trust {{ profile.trust }}
+{%         endif %}
+{%     endif %}
+{%     if profile.cos is arista.avd.defined %}
+   qos cos {{ profile.cos }}
+{%     endif %}
+{%     if profile.dscp is arista.avd.defined %}
+   qos dscp {{ profile.dscp }}
+{%     endif %}
+{%     if profile.shape.rate is arista.avd.defined %}
+   shape rate {{ profile.shape.rate }}
+{%     endif %}
+{%     if profile.service_policy.type.qos_input is arista.avd.defined %}
+   service-policy type qos input {{ profile.service_policy.type.qos_input }}
+{%     endif %}
+{%     for tx_queue in profile.tx_queues | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+   !
+   tx-queue {{ tx_queue.id }}
+{%         if tx_queue.bandwidth_percent is arista.avd.defined %}
+      bandwidth percent {{ tx_queue.bandwidth_percent }}
+{%         elif tx_queue.bandwidth_guaranteed_percent is arista.avd.defined %}
+      bandwidth guaranteed percent {{ tx_queue.bandwidth_guaranteed_percent }}
+{%         endif %}
+{%         if tx_queue.priority is arista.avd.defined %}
+      {{ tx_queue.priority }}
+{%         endif %}
+{%         if tx_queue.shape.rate is arista.avd.defined %}
+      shape rate {{ tx_queue.shape.rate }}
+{%         endif %}
+{%     endfor %}
+{%     for uc_tx_queue in profile.uc_tx_queues | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+   !
+   uc-tx-queue {{ uc_tx_queue.id }}
+{%         if uc_tx_queue.bandwidth_percent is arista.avd.defined %}
+      bandwidth percent {{ uc_tx_queue.bandwidth_percent }}
+{%         elif uc_tx_queue.bandwidth_guaranteed_percent is arista.avd.defined %}
+      bandwidth guaranteed percent {{ uc_tx_queue.bandwidth_guaranteed_percent }}
+{%         endif %}
+{%         if uc_tx_queue.priority is arista.avd.defined %}
+      {{ uc_tx_queue.priority }}
+{%         endif %}
+{%         if uc_tx_queue.shape.rate is arista.avd.defined %}
+      shape rate {{ uc_tx_queue.shape.rate }}
+{%         endif %}
+{%     endfor %}
+{%     for mc_tx_queue in profile.mc_tx_queues | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+   !
+   mc-tx-queue {{ mc_tx_queue.id }}
+{%         if mc_tx_queue.bandwidth_percent is arista.avd.defined %}
+      bandwidth percent {{ mc_tx_queue.bandwidth_percent }}
+{%         elif mc_tx_queue.bandwidth_guaranteed_percent is arista.avd.defined %}
+      bandwidth guaranteed percent {{ mc_tx_queue.bandwidth_guaranteed_percent }}
+{%         endif %}
+{%         if mc_tx_queue.priority is arista.avd.defined %}
+      {{ mc_tx_queue.priority }}
+{%         endif %}
+{%         if mc_tx_queue.shape.rate is arista.avd.defined %}
+      shape rate {{ mc_tx_queue.shape.rate }}
+{%         endif %}
+{%     endfor %}
+{% endfor %}

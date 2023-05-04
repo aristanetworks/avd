@@ -1,0 +1,3 @@
+---
+overlay_routing_protocol_address_family: ipv6
+underlay_ipv6: true

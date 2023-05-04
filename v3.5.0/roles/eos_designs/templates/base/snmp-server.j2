@@ -1,0 +1,21 @@
+{# snmp settings #}
+snmp_server:
+{% if snmp_settings is arista.avd.defined %}
+{%     if snmp_settings.contact is arista.avd.defined %}
+    contact: {{ snmp_settings.contact }}
+{%     endif %}
+{%     if snmp_settings.location is arista.avd.defined(true) %}
+{%         set snmp_location = fabric_name %}
+{%         if dc_name is arista.avd.defined %}
+{%             set snmp_location = snmp_location ~ " " ~ dc_name %}
+{%         endif %}
+{%         if pod_name is arista.avd.defined %}
+{%             set snmp_location = snmp_location ~ " " ~ pod_name %}
+{%         endif %}
+{%         if switch.rack is arista.avd.defined %}
+{%             set snmp_location = snmp_location ~ " " ~ switch.rack %}
+{%         endif %}
+{%         set snmp_location = snmp_location ~ " " ~ inventory_hostname %}
+    location: {{ snmp_location }}
+{%     endif %}
+{% endif %}

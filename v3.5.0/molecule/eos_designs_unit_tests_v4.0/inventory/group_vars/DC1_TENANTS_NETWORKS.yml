@@ -1,0 +1,314 @@
+# DC1 Tenants Networks
+# Documentation of Tenant specific information - Vlans/VRFs
+# SVI Profile
+svi_profiles:
+  - profile: GENERIC
+    mtu: 1560
+    enabled: true
+  - profile: GENERIC_FULL
+    name: GENERIC Name
+    mtu: 1560
+    enabled: false
+    ip_address_virtual: 10.1.10.254/24
+  - profile: GENERIC_DHCP
+    mtu: 1560
+    enabled: false
+    ip_helpers:
+      - ip_helper: 2.2.2.2
+        source_interface: lo101
+        source_vrf: MGMT
+  - profile: WITH_NO_MTU
+    enabled: true
+  - profile: WITH_DHCP_AND_SNOOPING
+    enabled: true
+    ip_address_virtual: 10.1.11.254/24
+    igmp_snooping_enabled: false
+    ip_helpers:
+      - ip_helper: 1.1.1.1
+        source_interface: lo100
+        source_vrf: TEST
+  - profile: WITH_DHCP
+    enabled: true
+    ip_helpers:
+      - ip_helper: 1.1.1.1
+        source_interface: lo100
+        source_vrf: MGMT
+  - profile: DERIVED_DHCP
+    parent_profile: GENERIC_DHCP
+    enabled: true
+
+tenants:
+  # Tenant_A Specific Information - VRFs / VLANs
+  - name: Tenant_A
+    mac_vrf_vni_base: 10000
+    mac_vrf_id_base: 20000
+    vrfs:
+      - name: Tenant_A_OP_Zone
+        description: "Tenant_A_OP_Zone"
+        vrf_vni: 10
+        vrf_id: 9 # Check that RD and RT will use this number for this VRF. VNI should still respect vrf_vni
+        vtep_diagnostic:
+          loopback: 100
+          loopback_ip_range: 10.255.1.0/24
+        svis:
+          # SVI as string
+          - id: '110'
+            name: Tenant_A_OP_Zone_1
+            tags: ['opzone']
+            enabled: True
+            ip_address_virtual: 10.1.10.1/24
+          # SVI as integer
+          - id: 111
+            vni_override: 50111 #10111 would be the calculated value.
+            name: Tenant_A_OP_Zone_2
+            tags: ['opzone']
+            enabled: True
+            ip_address_virtual: 10.1.11.1/24
+            ip_helpers:
+              - ip_helper: 1.1.1.1
+                source_interface: lo100
+                source_vrf: MGMT
+          # SVI using a nested svi_profile
+          - id: 112
+            name: Tenant_A_OP_Zone_3
+            profile: DERIVED_DHCP
+            tags: ['opzone']
+            enabled: True
+      - name: Tenant_A_WEB_Zone
+        vrf_vni: 11
+        svis:
+          - id: 120
+            name: Tenant_A_WEB_Zone_1
+            tags: ['web', 'erp1']
+            profile: WITH_DHCP_AND_SNOOPING
+            ip_address_virtual: 10.1.20.1/24
+            ip_address_virtual_secondaries:
+              - 10.2.20.1/24
+              - 10.2.21.1/24
+          - id: 121
+            name: Tenant_A_WEBZone_2
+            tags: ['web']
+            profile: GENERIC_FULL
+      - name: Tenant_A_APP_Zone
+        vrf_vni: 12
+        svis:
+          - id: 130
+            name: Tenant_A_APP_Zone_1
+            tags: ['app', 'erp1']
+            profile: WITH_NO_MTU
+            ip_address_virtual: 10.1.30.1/24
+          - id: 131
+            name: Tenant_A_APP_Zone_2
+            tags: ['app']
+            enabled: True
+            ip_address_virtual: 10.1.31.1/24
+          - id: 132
+            name: Tenant_A_APP_Zone_3
+            tags: ['erp2']
+            enabled: True
+            nodes:
+              DC1-LEAF1A:
+                ip_address: 10.1.32.1/24
+            ip_virtual_router_addresses:
+              - 10.1.32.254
+              - 10.2.32.254/24
+              - 10.3.32.254/24
+      - name: Tenant_A_DB_Zone
+        vrf_vni: 13
+        svis:
+          - id: 140
+            name: Tenant_A_DB_BZone_1
+            tags: ['db', 'erp1']
+            enabled: True
+            ip_address_virtual: 10.1.40.1/24
+          - id: 141
+            name: Tenant_A_DB_Zone_2
+            tags: ['db']
+            enabled: True
+            ip_address_virtual: 10.1.41.1/24
+      - name: Tenant_A_WAN_Zone
+        vrf_id: 14
+        ospf:
+          enabled: true
+          max_lsa: 15000
+          redistribute_bgp:
+            enabled: true
+          nodes:
+            - DC1-BL1A
+            - DC1-BL1B
+        l3_interfaces:
+          - interfaces: [Ethernet7]
+            ip_addresses: [10.10.10.10/24]
+            nodes: [DC1-BL1A]
+            mtu: 9000
+            enabled: True
+            description: "test"
+            ospf:
+              enabled: true
+              area: 0
+              cost: 100
+              authentication: message-digest
+              point_to_point: true
+              message_digest_keys:
+                - id: 1
+                  hash_algorithm: sha1
+                  key: "AQQvKeimxJu+uGQ/yYvv9w=="
+                - id: 2
+                  key: "AQQvKeimxJu+uGQ/yYvv9w=="
+          - interfaces: [Ethernet7]
+            ip_addresses: [10.10.20.20/24]
+            nodes: [DC1-BL1B]
+            mtu: 9000
+            enabled: True
+            description: "test"
+        static_routes:
+          - destination_address_prefix: 10.3.4.0/24
+            gateway: 1.2.3.4
+            nodes: [DC1-BL1A, DC1-BL1B]
+        bgp_peers:
+          - ip_address: 123.1.1.10
+            remote_as: 1234
+            password: "AQQvKeimxJu+uGQ/yYvv9w=="
+            description: External IPv4 BGP peer
+            send_community: standard extended
+            maximum_routes: 0
+            default_originate:
+              always: false
+            update_source: Loopback123
+            ebgp_multihop: 3
+            nodes: [DC1-BL1A, DC1-BL1B]
+            set_ipv4_next_hop: 123.1.1.1
+            route_map_in: RM-123-1-1-10-IN
+            # we don't expect this in the output, next_hop takes precedence
+            route_map_out: RM-123-1-1-10-OUT
+            local_as: 123
+          - ip_address: 123.1.1.11
+            remote_as: 1234
+            password: "AQQvKeimxJu+uGQ/yYvv9w=="
+            description: External IPv4 BGP peer
+            send_community: standard extended
+            maximum_routes: 0
+            default_originate:
+              always: false
+            update_source: Loopback123
+            ebgp_multihop: 3
+            nodes: [DC1-BL1A, DC1-BL1B]
+            route_map_in: RM-123-1-1-11-IN
+            route_map_out: RM-123-1-1-11-OUT
+            local_as: 123
+            bfd: true
+          - ip_address: fd5a:fe45:8831:06c5::a
+            remote_as: 12345
+            send_community: all
+            nodes: [DC1-BL1A, DC1-BL1B]
+            set_ipv6_next_hop: fd5a:fe45:8831:06c5::1
+          - ip_address: fd5a:fe45:8831:06c5::b
+            remote_as: 12345
+            nodes: [DC1-BL1A, DC1-BL1B]
+        svis:
+          - id: 150
+            name: Tenant_A_WAN_Zone_1
+            tags: ['wan']
+            enabled: True
+            ip_address_virtual: 10.1.40.1/24
+            ospf:
+              enabled: true
+              area: 1
+              cost: 100
+              authentication: simple
+              simple_auth_key: "AQQvKeimxJu+uGQ/yYvv9w=="
+          - id: 151
+            name: svi_with_no_tags
+            enabled: True
+            ip_address_virtual: 10.1.51.1/24
+            # No "tags" defined - should render on switches with tag "all" or no tags
+        additional_route_targets:
+          - type: import
+            address_family: vpn-ipv4
+            route_target: '65000:123'
+            nodes: [ DC1-BL1A, DC1-BL1B ]
+          - type: export
+            address_family: vpn-ipv4
+            route_target: '65000:123'
+            nodes: [ DC1-BL1A, DC1-BL1B ]
+          - type: import
+            address_family: evpn
+            route_target: '65000:456'
+            # nodes not set - so all devices should get this additional route target
+          - type: export
+            address_family: evpn
+            route_target: '65000:789'
+            # nodes not set - so all devices should get this additional route target
+      - name: Tenant_L3_VRF_Zone
+        vrf_vni: 15
+        l3_interfaces:
+          - interfaces: [ Ethernet8, Ethernet9, Ethernet8, Ethernet9 ]
+            ip_addresses: [10.10.10.10/24, 10.10.20.20/24, 10.10.30.10/24, 10.10.40.20/24]
+            nodes: [DC1-BL1A, DC1-BL1A, DC1-BL1B, DC1-BL1B]
+            mtu: 9000
+            enabled: True
+            description: "test"
+    l2vlans:
+      # L2 vlan as string
+      - id: '160'
+        name: Tenant_A_VMOTION
+        tags: ['opzone']
+      # L2 vlan as integer
+      - id: 161
+        name: Tenant_A_NFS
+        tags: ['opzone']
+      - id: 162
+        name: l2vlan_with_no_tags
+        # No "tags" defined - should render on switches with tag "all" or no tags
+  # Tenant_B Specific Information - VRFs / VLANs
+  - name: Tenant_B
+    mac_vrf_vni_base: 20000
+    vrfs:
+      - name: Tenant_B_OP_Zone
+        vrf_vni: 20
+        svis:
+          - id: 210
+            name: Tenant_B_OP_Zone_1
+            tags: ['opzone']
+            enabled: True
+            ip_address_virtual: 10.2.10.1/24
+          - id: 211
+            name: Tenant_B_OP_Zone_2
+            tags: ['opzone']
+            enabled: True
+            ip_address_virtual: 10.2.11.1/24
+      - name: Tenant_B_WAN_Zone
+        vrf_vni: 21
+        svis:
+          - id: 250
+            name: Tenant_B_WAN_Zone_1
+            tags: ['wan']
+            enabled: True
+            ip_address_virtual: 10.2.50.1/24
+  # Tenant_C Specific Information - VRFs / VLANs
+  - name: Tenant_C
+    mac_vrf_vni_base: 30000
+    vrfs:
+      - name: Tenant_C_OP_Zone
+        vrf_vni: 30
+        enable_mlag_ibgp_peering_vrfs: true
+        mlag_ibgp_peering_vlan: 2
+        svis:
+          - id: 310
+            name: Tenant_C_OP_Zone_1
+            tags: ['opzone']
+            enabled: True
+            ip_address_virtual: 10.3.10.1/24
+          - id: 311
+            name: Tenant_C_OP_Zone_2
+            tags: ['opzone']
+            enabled: True
+            ip_address_virtual: 10.3.11.1/24
+      - name: Tenant_C_WAN_Zone
+        vrf_vni: 31
+        svis:
+          - id: 350
+            name: Tenant_C_WAN_Zone_1
+            tags: ['wan']
+            enabled: True
+            ip_address_virtual: 10.3.50.1/24

@@ -1,0 +1,378 @@
+router_bgp:
+  as: '101'
+  router_id: 192.168.255.109
+  bgp_defaults:
+  - maximum-paths 4 ecmp 4
+  peer_groups:
+    UNDERLAY-PEERS:
+      type: ipv4
+      password: AQQvKeimxJu+uGQ/yYvv9w==
+      maximum_routes: 12000
+      send_community: all
+    EVPN-OVERLAY-PEERS:
+      type: evpn
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: '3'
+      password: q+VNViP5i4rVjW1cxFv2wA==
+      send_community: all
+      maximum_routes: 0
+  address_family_ipv4:
+    peer_groups:
+      UNDERLAY-PEERS:
+        activate: true
+      EVPN-OVERLAY-PEERS:
+        activate: false
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+    evpn_hostflap_detection:
+      window: 180
+      threshold: 5
+      enabled: true
+      expiry_timeout: 10
+  vlan_aware_bundles:
+    Tenant_A_APP_Zone:
+      rd: 192.168.255.109:12
+      route_targets:
+        both:
+        - '12:12'
+      redistribute_routes:
+      - learned
+      vlan: 130-132
+    Tenant_A_DB_Zone:
+      rd: 192.168.255.109:13
+      route_targets:
+        both:
+        - '13:13'
+      redistribute_routes:
+      - learned
+      vlan: 140-141
+    Tenant_A_OP_Zone:
+      rd: 192.168.255.109:9
+      route_targets:
+        both:
+        - '9:9'
+      redistribute_routes:
+      - learned
+      vlan: 110-112
+    Tenant_A_WAN_Zone:
+      rd: 192.168.255.109:14
+      route_targets:
+        both:
+        - '14:14'
+      redistribute_routes:
+      - learned
+      vlan: 150-151
+    Tenant_A_WEB_Zone:
+      rd: 192.168.255.109:11
+      route_targets:
+        both:
+        - '11:11'
+      redistribute_routes:
+      - learned
+      vlan: 120-121
+    Tenant_A_VMOTION:
+      tenant: Tenant_A
+      rd: 192.168.255.109:20160
+      route_targets:
+        both:
+        - 20160:20160
+      redistribute_routes:
+      - learned
+      vlan: 160
+    Tenant_A_NFS:
+      tenant: Tenant_A
+      rd: 192.168.255.109:20161
+      route_targets:
+        both:
+        - 20161:20161
+      redistribute_routes:
+      - learned
+      vlan: 161
+    l2vlan_with_no_tags:
+      tenant: Tenant_A
+      rd: 192.168.255.109:20162
+      route_targets:
+        both:
+        - 20162:20162
+      redistribute_routes:
+      - learned
+      vlan: 162
+    Tenant_B_OP_Zone:
+      rd: 192.168.255.109:20
+      route_targets:
+        both:
+        - '20:20'
+      redistribute_routes:
+      - learned
+      vlan: 210-211
+    Tenant_B_WAN_Zone:
+      rd: 192.168.255.109:21
+      route_targets:
+        both:
+        - '21:21'
+      redistribute_routes:
+      - learned
+      vlan: 250
+    Tenant_C_OP_Zone:
+      rd: 192.168.255.109:30
+      route_targets:
+        both:
+        - '30:30'
+      redistribute_routes:
+      - learned
+      vlan: 310-311
+    Tenant_C_WAN_Zone:
+      rd: 192.168.255.109:31
+      route_targets:
+        both:
+        - '31:31'
+      redistribute_routes:
+      - learned
+      vlan: 350
+    Tenant_D_OP_Zone:
+      rd: 192.168.255.109:40
+      route_targets:
+        both:
+        - '40:40'
+      redistribute_routes:
+      - learned
+      vlan: 410-412
+    Tenant_D_WAN_Zone:
+      rd: 192.168.255.109:41
+      route_targets:
+        both:
+        - '41:41'
+      redistribute_routes:
+      - learned
+      vlan: 450-452
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.200.5
+service_routing_protocols_model: multi-agent
+ip_routing: true
+daemon_terminattr:
+  cvaddrs:
+  - 192.168.200.11:9910
+  cvauth:
+    method: key
+    key: telarista
+  cvvrf: MGMT
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+  disable_aaa: false
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+name_server:
+  source:
+    vrf: MGMT
+  nodes:
+  - 192.168.200.5
+  - 8.8.8.8
+snmp_server:
+  contact: example@example.com
+  location: EOS_DESIGNS_UNIT_TESTS evpn_services_l2_only_true
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    no_password: true
+  cvpadmin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+    ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
+      cvpadmin@hostmachine.local
+vrfs:
+  MGMT:
+    ip_routing: false
+management_api_http:
+  enable_vrfs:
+    MGMT: {}
+  enable_https: true
+  default_services: false
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    shutdown: false
+    ip_address: 192.168.255.109/32
+  Loopback1:
+    description: VTEP_VXLAN_Tunnel_Source
+    shutdown: false
+    ip_address: 192.168.254.109/32
+prefix_lists:
+  PL-LOOPBACKS-EVPN-OVERLAY:
+    sequence_numbers:
+      10:
+        action: permit 192.168.255.0/24 eq 32
+      20:
+        action: permit 192.168.254.0/24 eq 32
+route_maps:
+  RM-CONN-2-BGP:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
+vlans:
+  130:
+    tenant: Tenant_A
+    name: Tenant_A_APP_Zone_1
+  131:
+    tenant: Tenant_A
+    name: Tenant_A_APP_Zone_2
+  132:
+    tenant: Tenant_A
+    name: Tenant_A_APP_Zone_3
+  140:
+    tenant: Tenant_A
+    name: Tenant_A_DB_BZone_1
+  141:
+    tenant: Tenant_A
+    name: Tenant_A_DB_Zone_2
+  110:
+    tenant: Tenant_A
+    name: Tenant_A_OP_Zone_1
+  111:
+    tenant: Tenant_A
+    name: Tenant_A_OP_Zone_2
+  112:
+    tenant: Tenant_A
+    name: Tenant_A_OP_Zone_3
+  150:
+    tenant: Tenant_A
+    name: Tenant_A_WAN_Zone_1
+  151:
+    tenant: Tenant_A
+    name: svi_with_no_tags
+  120:
+    tenant: Tenant_A
+    name: Tenant_A_WEB_Zone_1
+  121:
+    tenant: Tenant_A
+    name: Tenant_A_WEBZone_2
+  160:
+    tenant: Tenant_A
+    name: Tenant_A_VMOTION
+  161:
+    tenant: Tenant_A
+    name: Tenant_A_NFS
+  162:
+    tenant: Tenant_A
+    name: l2vlan_with_no_tags
+  210:
+    tenant: Tenant_B
+    name: Tenant_B_OP_Zone_1
+  211:
+    tenant: Tenant_B
+    name: Tenant_B_OP_Zone_2
+  250:
+    tenant: Tenant_B
+    name: Tenant_B_WAN_Zone_1
+  310:
+    tenant: Tenant_C
+    name: Tenant_C_OP_Zone_1
+  311:
+    tenant: Tenant_C
+    name: Tenant_C_OP_Zone_2
+  350:
+    tenant: Tenant_C
+    name: Tenant_C_WAN_Zone_1
+  410:
+    tenant: Tenant_D
+    name: Tenant_D_v6_OP_Zone_1
+  411:
+    tenant: Tenant_D
+    name: Tenant_D_v6_OP_Zone_2
+  412:
+    tenant: Tenant_D
+    name: Tenant_D_v6_OP_Zone_1
+  450:
+    tenant: Tenant_D
+    name: Tenant_D_v6_WAN_Zone_1
+  451:
+    tenant: Tenant_D
+    name: Tenant_D_v6_WAN_Zone_2
+  452:
+    tenant: Tenant_D
+    name: Tenant_D_v6_WAN_Zone_3
+ip_igmp_snooping:
+  globally_enabled: true
+  vlans:
+    120:
+      enabled: false
+vxlan_interface:
+  Vxlan1:
+    description: evpn_services_l2_only_true_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vlans:
+        130:
+          vni: 10130
+        131:
+          vni: 10131
+        132:
+          vni: 10132
+        140:
+          vni: 10140
+        141:
+          vni: 10141
+        110:
+          vni: 10110
+        111:
+          vni: 50111
+        112:
+          vni: 10112
+        150:
+          vni: 10150
+        151:
+          vni: 10151
+        120:
+          vni: 10120
+        121:
+          vni: 10121
+        160:
+          vni: 10160
+        161:
+          vni: 10161
+        162:
+          vni: 10162
+        210:
+          vni: 20210
+        211:
+          vni: 20211
+        250:
+          vni: 20250
+        310:
+          vni: 30310
+        311:
+          vni: 30311
+        350:
+          vni: 30350
+        410:
+          vni: 40410
+        411:
+          vni: 40411
+        412:
+          vni: 40412
+        450:
+          vni: 40450
+        451:
+          vni: 40451
+        452:
+          vni: 40452

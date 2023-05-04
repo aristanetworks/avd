@@ -1,0 +1,43 @@
+{# tenant IGMP snooping #}
+ip_igmp_snooping:
+  globally_enabled: {{ switch.igmp_snooping_enabled }}
+{% if switch.igmp_snooping_enabled is arista.avd.defined(true) %}
+  vlans:
+{# ---------------------------- #}
+{# SVI & L3VLANs services       #}
+{# ---------------------------- #}
+{%     for tenant in network_services_data.tenants %}
+{%         for vrf in tenant.vrfs %}
+{# Tenant VLANs w/SVIs #}
+{%             for svi in vrf.svis %}
+{# Detect if a svi_profile exists #}
+{# If exists, create a shortpath to access profile data #}
+{%                 if svi.profile is arista.avd.defined %}
+{%                     set svi_profile = svi_profiles | arista.avd.default([]) |
+                                                                      arista.avd.convert_dicts('profile') |
+                                                                      selectattr('profile', 'arista.avd.defined', svi.profile) |
+                                                                      first %}
+{%                 endif %}
+{%                 if svi_profile.parent_profile is arista.avd.defined %}
+{%                     set parent_profile = svi_profile.parent_profile | arista.avd.default({}) %}
+{%                 endif %}
+{%                 set svi_igmp_snooping_enabled = svi.igmp_snooping_enabled | arista.avd.default(
+                                                   svi_profile.igmp_snooping_enabled,
+                                                   parent_profile.igmp_snooping_enabled) %}
+{%                 if svi_igmp_snooping_enabled is arista.avd.defined %}
+    {{ svi.id | int }}:
+      enabled: {{ svi_igmp_snooping_enabled }}
+{%                 endif %}
+{%             endfor %}
+{%         endfor %}
+{# ---------------------------- #}
+{# L2VLANs services             #}
+{# ---------------------------- #}
+{%         for l2vlan in tenant.l2vlans %}
+{%             if l2vlan.igmp_snooping_enabled is arista.avd.defined %}
+    {{ l2vlan.id | int }}:
+      enabled: {{ l2vlan.igmp_snooping_enabled }}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{% endif %}

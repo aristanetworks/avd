@@ -1,0 +1,8 @@
+{# In AVD v2.x the spine to super-spine links used this special IP addressing scheme #}
+{# This file is still used when using the upgrade role from 2.x to 3.0 #}
+{% set ip_pool = switch.uplink_ipv4_pool %}
+{# max number of hosts in subnet will be divided by max super-spine number to avoid address changes when provisioning new spines #}
+{% set ip_pool_max_hosts_in_subnet = ip_pool | ansible.netcommon.ipaddr('size') %}
+{% set offset = (switch.id - 1) % switch.max_parallel_uplinks %}
+{{ ip_pool | ansible.netcommon.ipaddr('network') | ansible.netcommon.ipmath(
+    (ip_pool_max_hosts_in_subnet / switch.max_uplink_switches) | int * (uplink_switch_index) + ((switch.id - 1) * switch.max_parallel_uplinks + offset) * 2 + 1) }}

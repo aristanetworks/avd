@@ -1,0 +1,32 @@
+{# DOT1X Interfaces #}
+{% set ethernet_interfaces_dot1x = [] %}
+{% for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     if ethernet_interface.dot1x is arista.avd.defined %}
+{%         do ethernet_interfaces_dot1x.append(ethernet_interface) %}
+{%     endif %}
+{% endfor %}
+{% if ethernet_interfaces_dot1x | length > 0 %}
+
+# 802.1X Port Security
+
+## 802.1X Summary
+
+### 802.1X Interfaces
+
+| Interface | PAE Mode | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth |
+| --------- | -------- | ------| ---------------------- | ---------------- | ------------------- | --------- | -------------- |
+{%     for ethernet_interface in ethernet_interfaces_dot1x %}
+{%         set pae_mode = ethernet_interface.dot1x.pae.mode | arista.avd.default('-') %}
+{%         set auth_failure_action = ethernet_interface.dot1x.authentication_failure.action | arista.avd.default('-') %}
+{%         if auth_failure_action == 'allow' and
+              ethernet_interface.dot1x.authentication_failure.allow_vlan is arista.avd.defined %}
+{%             set auth_failure_action = auth_failure_action ~ " vlan " ~ ethernet_interface.dot1x.authentication_failure.allow_vlan %}
+{%         endif %}
+{%         set state = ethernet_interface.dot1x.port_control | arista.avd.default('-') %}
+{%         set phone_state = ethernet_interface.dot1x.port_control_force_authorized_phone | arista.avd.default('-') %}
+{%         set reauthentication = ethernet_interface.dot1x.reauthentication | arista.avd.default('-') %}
+{%         set host_mode = ethernet_interface.dot1x.host_mode.mode | arista.avd.default('-') %}
+{%         set mac_based_authentication_enabled = ethernet_interface.dot1x.mac_based_authentication.enabled | arista.avd.default('-') %}
+| {{ ethernet_interface.name }} | {{ pae_mode }} | {{ state }} | {{ phone_state }} | {{ reauthentication }} | {{ auth_failure_action }} | {{ host_mode }} | {{ mac_based_authentication_enabled }} |
+{%     endfor %}
+{% endif %}

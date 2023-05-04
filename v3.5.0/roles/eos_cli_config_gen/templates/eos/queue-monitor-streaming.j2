@@ -1,0 +1,21 @@
+{% if queue_monitor_streaming is arista.avd.defined %}
+!
+queue-monitor streaming
+{%     if queue_monitor_streaming.max_connections is arista.avd.defined %}
+   max-connections {{ queue_monitor_streaming.max_connections }}
+{%     endif %}
+{%     if queue_monitor_streaming.ip_access_group is arista.avd.defined %}
+   ip access-group {{ queue_monitor_streaming.ip_access_group }}
+{%     endif %}
+{%     if queue_monitor_streaming.ipv6_access_group is arista.avd.defined %}
+   ipv6 access-group {{ queue_monitor_streaming.ip_access_group }}
+{%     endif %}
+{%     if queue_monitor_streaming.vrf is arista.avd.defined %}
+   vrf {{ queue_monitor_streaming.vrf }}
+{%     endif %}
+{%     if queue_monitor_streaming.enable is arista.avd.defined(true) %}
+   no shutdown
+{%     elif queue_monitor_streaming.enable is arista.avd.defined(false) %}
+   shutdown
+{%     endif %}
+{% endif %}

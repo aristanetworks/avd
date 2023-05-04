@@ -1,0 +1,30 @@
+{% if ip_community_lists is arista.avd.defined %}
+
+## IP Community-lists
+
+### IP Community-lists Summary
+
+| Name | Action | Communities / Regexp |
+| ---- | ------ | -------------------- |
+{%     for community_list in ip_community_lists %}
+{%         if community_list.name is arista.avd.defined %}
+{%             for entry in community_list.entries | arista.avd.default([]) %}
+{%                 if entry.action is arista.avd.defined %}
+{%                     if entry.regexp is arista.avd.defined %}
+| {{ community_list.name }} | {{ entry.action }} | {{ entry.regexp }} |
+{%                     elif entry.communities is arista.avd.defined %}
+{%                         if entry.communities | length > 0 %}
+| {{ community_list.name }} | {{ entry.action }} | {{ entry.communities | join(', ') }} |
+{%                         endif %}
+{%                     endif %}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%     endfor %}
+
+### IP Community-lists Device Configuration
+
+```eos
+{%     include 'eos/ip-community-lists.j2' %}
+```
+{% endif %}

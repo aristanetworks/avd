@@ -1,0 +1,18 @@
+{% if dynamic_prefix_lists is arista.avd.defined %}
+
+## Dynamic Prefix-lists
+
+### Dynamic Prefix-lists Summary
+
+| Dynamic Prefix-List Name | Match Map | IPv4 Prefix-list | IPv6 Prefix-list |
+| ------------------------ | --------- | ---------------- | ---------------- |
+{%     for dynamic_prefix_list in dynamic_prefix_lists | arista.avd.natural_sort('name') if dynamic_prefix_list.name is arista.avd.defined and dynamic_prefix_list.match_map is arista.avd.defined %}
+| {{ dynamic_prefix_list.name }} | {{ dynamic_prefix_list.match_map }} | {{ dynamic_prefix_list.prefix_list.ipv4 | arista.avd.default('-') }} | {{ dynamic_prefix_list.prefix_list.ipv6 | arista.avd.default('-') }} |
+{%     endfor %}
+
+### Dynamic Prefix-lists Device Configuration
+
+```eos
+{%     include 'eos/dynamic-prefix-lists.j2' %}
+```
+{% endif %}

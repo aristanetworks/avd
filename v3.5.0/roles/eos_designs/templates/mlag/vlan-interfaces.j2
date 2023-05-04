@@ -1,0 +1,43 @@
+{# leaf mlag vlan interfaces #}
+vlan_interfaces:
+{% if switch.mlag_peer_l3_vlan is arista.avd.defined %}
+{#     Use seperate VLAN for L3 peering #}
+  Vlan{{ switch.mlag_peer_l3_vlan }}:
+    description: MLAG_PEER_L3_PEERING
+    shutdown: false
+{%     if underlay_rfc5549 is arista.avd.defined(true) %}
+    ipv6_enable: true
+{%     else %}
+    ip_address: {{ switch.mlag_l3_ip }}/31
+{%     endif %}
+    mtu: {{ p2p_uplinks_mtu }}
+{%     if switch.underlay_routing_protocol == "ospf" %}
+    ospf_network_point_to_point: true
+    ospf_area: {{ underlay_ospf_area }}
+{%     elif switch.underlay_routing_protocol == "isis" %}
+    isis_enable: {{ switch.isis_instance_name }}
+    isis_metric: 50
+    isis_network_point_to_point: true
+{%     endif %}
+{% endif %}
+  Vlan{{ switch.mlag_peer_vlan }}:
+    description: MLAG_PEER
+    shutdown: false
+    ip_address: {{ switch.mlag_ip }}/31
+    no_autostate: true
+    mtu: {{ p2p_uplinks_mtu }}
+{% if switch.mlag_l3 is arista.avd.defined(true)
+      and switch.mlag_peer_l3_vlan is not arista.avd.defined %}
+{#     Reuse MLAG vlan for L3 peering #}
+{%     if underlay_rfc5549 is arista.avd.defined(true) %}
+    ipv6_enable: true
+{%     endif %}
+{%     if switch.underlay_routing_protocol == "ospf" %}
+    ospf_network_point_to_point: true
+    ospf_area: {{ underlay_ospf_area }}
+{%     elif switch.underlay_routing_protocol == "isis" %}
+    isis_enable: {{ switch.isis_instance_name }}
+    isis_metric: 50
+    isis_network_point_to_point: true
+{%     endif %}
+{% endif %}

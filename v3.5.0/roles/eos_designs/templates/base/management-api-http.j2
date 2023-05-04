@@ -1,0 +1,15 @@
+{% if management_eapi is arista.avd.defined %}
+management_api_http:
+  enable_vrfs:
+{# Since empty keys will be removed by the merging of structured configs we must set VRF as empty dict #}
+    {{ mgmt_interface_vrf }}: {}
+{%     if management_eapi.enable_http is arista.avd.defined %}
+  enable_http: {{ management_eapi.enable_http }}
+{%     endif %}
+{%     if management_eapi.enable_https is arista.avd.defined %}
+  enable_https: {{ management_eapi.enable_https }}
+{%     endif %}
+{%     if management_eapi.default_services is arista.avd.defined %}
+  default_services: {{ management_eapi.default_services }}
+{%     endif %}
+{% endif %}

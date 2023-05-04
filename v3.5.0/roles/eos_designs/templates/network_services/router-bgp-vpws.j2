@@ -1,0 +1,44 @@
+  vpws:
+{% for tenant in network_services_data.tenants  %}
+{%     set tenant_vpws = namespace(render = false) %}
+{%     for point_to_point_service in tenant.point_to_point_services %}
+{%         for endpoint in point_to_point_service.endpoints | arista.avd.default([]) %}
+{%             if inventory_hostname in endpoint.nodes | arista.avd.default([]) %}
+{%                 set tenant_vpws.render = true %}
+{%                 break %}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{%     if tenant_vpws.render %}
+{%         if tenant.point_to_point_services is arista.avd.defined and tenant.pseudowire_rt_base is arista.avd.defined %}
+    - name: {{ tenant.name }}
+{%             set rt = tenant.pseudowire_rt_base %}
+      rd: "{{ network_services_data.rd_admin_subfield }}:{{ rt }}"
+      route_targets:
+        import_export: "{{ network_services_data.rt_admin_subfield or rt }}:{{ rt }}"
+      pseudowires:
+{%             for point_to_point_service in tenant.point_to_point_services | arista.avd.default([]) %}
+{%                 set p2p_service = namespace() %}
+{%                 for endpoint in point_to_point_service.endpoints | arista.avd.default([]) %}
+{%                     if inventory_hostname in endpoint.nodes | arista.avd.default([]) and endpoint.interfaces is arista.avd.defined %}
+{%                         set p2p_service.endpoint_index = loop.index0 %}
+{%                         set p2p_service.remote_index = p2p_service.endpoint_index-1 %}
+{%                         if point_to_point_service.subinterfaces is arista.avd.defined() %}
+{%                             for subif in point_to_point_service.subinterfaces %}
+{%                                 if subif.number is arista.avd.defined %}
+        - name: {{ point_to_point_service.name ~ "_" ~ subif.number }}
+          id_local: {{ point_to_point_service.endpoints[p2p_service.endpoint_index].id + subif.number }}
+          id_remote: {{ point_to_point_service.endpoints[p2p_service.remote_index].id + subif.number }}
+{%                                 endif %}
+{%                             endfor %}
+{%                         else %}
+        - name: {{ point_to_point_service.name }}
+          id_local: {{ point_to_point_service.endpoints[p2p_service.endpoint_index].id }}
+          id_remote: {{ point_to_point_service.endpoints[p2p_service.remote_index].id }}
+{%                         endif %}
+{%                     endif %}
+{%                 endfor %}
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+{% endfor %}

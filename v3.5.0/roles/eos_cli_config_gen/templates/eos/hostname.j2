@@ -1,0 +1,5 @@
+{# hostname #}
+{% if not generate_default_config is arista.avd.defined(false) %}
+!
+hostname {{ inventory_hostname }}
+{% endif %}

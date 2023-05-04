@@ -1,0 +1,487 @@
+router_bgp:
+  as: '65000'
+  router_id: 100.70.0.7
+  bgp_defaults:
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+  - maximum-paths 4 ecmp 4
+  peer_groups:
+    MPLS-OVERLAY-PEERS:
+      type: mpls
+      update_source: Loopback0
+      remote_as: '65000'
+      bfd: true
+      password: $1c$U4tL2vQP9QwZlxIV1K3/pw==
+      send_community: all
+      maximum_routes: 0
+  address_family_ipv4:
+    peer_groups:
+      MPLS-OVERLAY-PEERS:
+        activate: false
+  address_family_evpn:
+    neighbor_default:
+      encapsulation: mpls
+      next_hop_self_source_interface: Loopback0
+    peer_groups:
+      MPLS-OVERLAY-PEERS:
+        activate: true
+  address_family_vpn_ipv4:
+    neighbor_default_encapsulation_mpls_next_hop_self:
+      source_interface: Loopback0
+    peer_groups:
+      MPLS-OVERLAY-PEERS:
+        activate: true
+  address_family_vpn_ipv6:
+    neighbor_default_encapsulation_mpls_next_hop_self:
+      source_interface: Loopback0
+    peer_groups:
+      MPLS-OVERLAY-PEERS:
+        activate: true
+  neighbors:
+    100.70.0.8:
+      peer_group: MPLS-OVERLAY-PEERS
+      description: SITE1-RR1
+    100.70.0.9:
+      peer_group: MPLS-OVERLAY-PEERS
+      description: SITE2-RR1
+  vrfs:
+    TENANT_B_INTRA:
+      router_id: 100.70.0.7
+      rd: 100.70.0.7:19
+      route_targets:
+        import:
+          evpn:
+          - '65000:19'
+        export:
+          evpn:
+          - '65000:19'
+      redistribute_routes:
+      - connected
+      - static
+    TENANT_B_WAN:
+      router_id: 100.70.0.7
+      rd: 100.70.0.7:20
+      route_targets:
+        import:
+          vpn-ipv4:
+          - '65000:20'
+          vpn-ipv6:
+          - '65000:20'
+        export:
+          vpn-ipv4:
+          - '65000:20'
+          vpn-ipv6:
+          - '65000:20'
+      neighbors:
+        192.168.48.3:
+          description: TENANT_B_CPE_SITE5
+          password: $1c$U4tL2vQP9QwZlxIV1K3/pw==
+          remote_as: '65202'
+      redistribute_routes:
+      - connected
+      - ospf
+      address_families:
+        ipv4:
+          neighbors:
+            192.168.48.3:
+              activate: true
+  vlans:
+    10:
+      tenant: TENANT_A
+      rd: 100.70.0.7:10010
+      route_targets:
+        both:
+        - 65000:10010
+      redistribute_routes:
+      - learned
+    20:
+      tenant: TENANT_A
+      rd: 100.70.0.7:123456
+      route_targets:
+        both:
+        - 65000:123456
+      redistribute_routes:
+      - learned
+    2020:
+      tenant: TENANT_B
+      rd: 100.70.0.7:22020
+      route_targets:
+        both:
+        - 65000:22020
+      redistribute_routes:
+      - learned
+  vpws:
+  - name: TENANT_A
+    rd: 100.70.0.7:1000
+    route_targets:
+      import_export: 65000:1000
+    pseudowires:
+    - name: TEN_A_site2_site5_eline_port_based
+      id_local: 57
+      id_remote: 26
+  - name: TENANT_B
+    rd: 100.70.0.7:2000
+    route_targets:
+      import_export: 65000:2000
+    pseudowires:
+    - name: TEN_B_site3_site5_eline_vlan_based_1000
+      id_local: 51000
+      id_remote: 31000
+    - name: TEN_B_site3_site5_eline_vlan_based_1001
+      id_local: 51001
+      id_remote: 31001
+    - name: TEN_B_site3_site5_eline_vlan_based_1002
+      id_local: 51002
+      id_remote: 31002
+    - name: TEN_B_site3_site5_eline_vlan_based_1003
+      id_local: 51003
+      id_remote: 31003
+    - name: TEN_B_site3_site5_eline_vlan_based_1004
+      id_local: 51004
+      id_remote: 31004
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.200.5
+- destination_address_prefix: 123.0.10.0/24
+  vrf: TENANT_B_INTRA
+  gateway: 123.1.1.3
+  name: TENANT_B_SITE_5_SUBNET
+  interface: Ethernet6.10
+service_routing_protocols_model: multi-agent
+ip_routing: true
+ipv6_unicast_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+spanning_tree:
+  mode: mstp
+  mst_instances:
+    '0':
+      priority: 4096
+vrfs:
+  MGMT:
+    ip_routing: false
+  TENANT_B_INTRA:
+    tenant: TENANT_B
+    ip_routing: true
+  TENANT_B_WAN:
+    tenant: TENANT_B
+    ip_routing: true
+management_interfaces:
+  Management1:
+    description: oob_management
+    shutdown: false
+    vrf: MGMT
+    ip_address: 192.168.200.107/24
+    gateway: 192.168.200.5
+    type: oob
+management_api_http:
+  enable_vrfs:
+    MGMT: {}
+  enable_https: true
+eos_cli: "management security\n   password encryption-key common\n"
+loopback_interfaces:
+  Loopback0:
+    description: MPLS_Overlay_peering
+    shutdown: false
+    ip_address: 100.70.0.7/32
+    ipv6_address: 2000:1234:ffff:ffff::7/128
+    mpls:
+      ip: true
+      ldp:
+        interface: true
+    isis_enable: CORE
+    isis_passive: true
+    node_segment:
+      ipv4_index: 207
+      ipv6_index: 207
+router_isis:
+  instance: CORE
+  log_adjacency_changes: true
+  net: 49.0001.0000.0001.0007.00
+  router_id: 100.70.0.7
+  is_type: level-1-2
+  advertise:
+    passive_only: true
+  mpls_ldp_sync_default: true
+  timers:
+    local_convergence:
+      delay: 15000
+      protected_prefixes: true
+  address_family:
+  - ipv4 unicast
+  - ipv6 unicast
+  isis_af_defaults:
+  - maximum-paths 4
+  - fast-reroute ti-lfa mode link-protection
+  segment_routing_mpls:
+    router_id: 100.70.0.7
+    enabled: true
+mpls:
+  ip: true
+  ldp:
+    interface_disabled_default: true
+    router_id: 100.70.0.7
+    shutdown: false
+    transport_address_interface: Loopback0
+ethernet_interfaces:
+  Ethernet1:
+    peer: SITE2-LSR1
+    peer_interface: Ethernet1
+    peer_type: p
+    description: P2P_LINK_TO_SITE2-LSR1_Ethernet1
+    type: routed
+    shutdown: false
+    mtu: 9178
+    ip_address: 100.64.48.15/31
+    speed: forced 40gfull
+    ipv6_enable: true
+    isis_enable: CORE
+    isis_metric: 60
+    isis_network_point_to_point: true
+    isis_hello_padding: false
+    isis_circuit_type: level-2
+    isis_authentication_mode: md5
+    isis_authentication_key: asdadjiwtelogkkdng
+    mpls:
+      ip: true
+      ldp:
+        interface: true
+        igp_sync: true
+  Ethernet11:
+    type: routed
+    description: P2P_LINK_TO_SITE2-LSR2_Port-Channel12
+    shutdown: false
+    channel_group:
+      id: 11
+      mode: active
+  Ethernet8:
+    peer: CPE_TENANT_A_SITE2
+    peer_interface: eth0
+    peer_type: cpe
+    description: CPE_TENANT_A_SITE2_eth0
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 10
+    spanning_tree_portfast: edge
+  Ethernet6.10:
+    type: l3dot1q
+    encapsulation_dot1q_vlan: 10
+    peer_type: l3_interface
+    vrf: TENANT_B_WAN
+    ip_address: 192.168.48.2/31
+    shutdown: false
+    description: TENANT_B_SITE_5
+  Ethernet6.100:
+    type: l3dot1q
+    encapsulation_dot1q_vlan: 100
+    peer_type: l3_interface
+    vrf: TENANT_B_WAN
+    ip_address: 192.168.48.4/31
+    shutdown: false
+    description: TENANT_B_SITE_3_OSPF
+    ospf_area: 0
+    ospf_network_point_to_point: true
+    ospf_cost: 10
+  Ethernet6:
+    type: routed
+    peer_type: l3_interface
+    vrf: TENANT_B_WAN
+    ip_address: 123.10.10.2/31
+    shutdown: false
+    description: TENANT_B_SITE_5_WAN_TEST
+  Ethernet7:
+    type: routed
+    lldp:
+      transmit: false
+      receive: false
+    peer_type: l3_interface
+    shutdown: false
+  Ethernet4:
+    shutdown: false
+    channel_group:
+      id: 4
+      mode: active
+  Ethernet5:
+    shutdown: false
+    channel_group:
+      id: 4
+      mode: active
+port_channel_interfaces:
+  Port-Channel11:
+    peer: SITE2-LSR2
+    peer_interface: Port-Channel12
+    peer_type: p
+    description: P2P_LINK_TO_SITE2-LSR2_Port-Channel12
+    type: routed
+    shutdown: false
+    mtu: 9178
+    ip_address: 100.64.48.17/31
+    speed: forced 40gfull
+    ipv6_enable: true
+    isis_enable: CORE
+    isis_metric: 60
+    isis_network_point_to_point: true
+    isis_hello_padding: false
+    isis_circuit_type: level-2
+    isis_authentication_mode: md5
+    isis_authentication_key: asdadjiwtelogkkdng
+    mpls:
+      ip: true
+      ldp:
+        interface: true
+        igp_sync: true
+  Port-Channel4.1000:
+    type: l2dot1q
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: 1000
+      network:
+        client: true
+    peer_type: l3_interface
+    shutdown: false
+  Port-Channel4.1001:
+    type: l2dot1q
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: 1001
+      network:
+        client: true
+    peer_type: l3_interface
+    shutdown: false
+  Port-Channel4.1002:
+    type: l2dot1q
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: 1002
+      network:
+        client: true
+    peer_type: l3_interface
+    shutdown: false
+  Port-Channel4.1003:
+    type: l2dot1q
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: 1003
+      network:
+        client: true
+    peer_type: l3_interface
+    shutdown: false
+  Port-Channel4.1004:
+    type: l2dot1q
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: 1004
+      network:
+        client: true
+    peer_type: l3_interface
+    shutdown: false
+  Port-Channel4:
+    type: routed
+    peer_type: l3_interface
+    shutdown: false
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+patch_panel:
+  patches:
+  - name: TEN_A_site2_site5_eline_port_based
+    enabled: true
+    connectors:
+    - id: 1
+      type: interface
+      endpoint: Ethernet7
+    - id: 2
+      type: pseudowire
+      endpoint: bgp vpws TENANT_A pseudowire TEN_A_site2_site5_eline_port_based
+  - name: TEN_B_site3_site5_eline_vlan_based_1000
+    enabled: true
+    connectors:
+    - id: 1
+      type: interface
+      endpoint: Port-Channel4.1000
+    - id: 2
+      type: pseudowire
+      endpoint: bgp vpws TENANT_B pseudowire TEN_B_site3_site5_eline_vlan_based_1000
+  - name: TEN_B_site3_site5_eline_vlan_based_1001
+    enabled: true
+    connectors:
+    - id: 1
+      type: interface
+      endpoint: Port-Channel4.1001
+    - id: 2
+      type: pseudowire
+      endpoint: bgp vpws TENANT_B pseudowire TEN_B_site3_site5_eline_vlan_based_1001
+  - name: TEN_B_site3_site5_eline_vlan_based_1002
+    enabled: true
+    connectors:
+    - id: 1
+      type: interface
+      endpoint: Port-Channel4.1002
+    - id: 2
+      type: pseudowire
+      endpoint: bgp vpws TENANT_B pseudowire TEN_B_site3_site5_eline_vlan_based_1002
+  - name: TEN_B_site3_site5_eline_vlan_based_1003
+    enabled: true
+    connectors:
+    - id: 1
+      type: interface
+      endpoint: Port-Channel4.1003
+    - id: 2
+      type: pseudowire
+      endpoint: bgp vpws TENANT_B pseudowire TEN_B_site3_site5_eline_vlan_based_1003
+  - name: TEN_B_site3_site5_eline_vlan_based_1004
+    enabled: true
+    connectors:
+    - id: 1
+      type: interface
+      endpoint: Port-Channel4.1004
+    - id: 2
+      type: pseudowire
+      endpoint: bgp vpws TENANT_B pseudowire TEN_B_site3_site5_eline_vlan_based_1004
+vlans:
+  10:
+    tenant: TENANT_A
+    name: TENANT_A_L2_SERVICE
+  20:
+    tenant: TENANT_A
+    name: TENANT_A_L2_SERVICE
+  2020:
+    tenant: TENANT_B
+    name: TENANT_B_INSIDE_FW
+ip_igmp_snooping:
+  globally_enabled: true
+ip_virtual_router_mac_address: 00:1c:73:00:dc:00
+vlan_interfaces:
+  Vlan2020:
+    tenant: TENANT_B
+    tags:
+    - tag1
+    description: TENANT_B_INSIDE_FW
+    shutdown: false
+    vrf: TENANT_B_INTRA
+router_ospf:
+  process_ids:
+    99:
+      vrf: TENANT_B_WAN
+      passive_interface_default: true
+      router_id: 192.168.48.4
+      no_passive_interfaces:
+      - Ethernet6.100
+      max_lsa: 10000
+      redistribute:
+        bgp:
+          enabled: true

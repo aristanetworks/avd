@@ -1,0 +1,61 @@
+{% if overlay_controller is arista.avd.defined %}
+{####### overlay-controller #######}
+overlay_controller:
+  defaults:
+{%     for var in ['platform','bgp_as'] %}
+{%         if overlay_controller[var] is arista.avd.defined %}
+# Change from overlay_controller.{{ var }} to overlay_controller.defaults.{{ var }}
+    {{ var }}: {{ overlay_controller[var] }}
+{%         endif %}
+{%     endfor %}
+{%     if overlay_controller_loopback_network_summary is arista.avd.defined %}
+# Change from overlay_controller_loopback_network_summary to overlay_controller.defaults.loopback_ipv4_pool
+    loopback_ipv4_pool: {{ overlay_controller_loopback_network_summary }}
+{%     endif %}
+{%     if overlay_controller_p2p_bfd is arista.avd.defined %}
+# Change from overlay_controller_p2p_bfd to overlay_controller.defaults.uplink_bfd
+    uplink_bfd: {{ overlay_controller_p2p_bfd }}
+{%     endif %}
+{%     if overlay_controller.defaults.uplink_to_remote_switches is arista.avd.defined %}
+# Change from overlay_controller.defaults.uplink_to_remote_switches to overlay_controller.defaults.uplink_interfaces
+    uplink_interfaces: {{ overlay_controller.defaults.uplink_to_remote_switches }}
+{%     endif %}
+{%     if overlay_controller.defaults.remote_switches is arista.avd.defined %}
+# Change from overlay_controller.defaults.remote_switches to overlay_controller.defaults.uplink_switches
+    uplink_switches: {{ overlay_controller.defaults.remote_switches }}
+{%     endif %}
+# Change from max_overlay_controller_to_switch_links (default=2) to overlay_controller.defaults.max_uplink_switches
+# (old algorithm expected max_overlay_controller_to_switch_links to be the sum of links to all uplink switches)
+    max_uplink_switches: {{ max_overlay_controller_to_switch_links | arista.avd.default(2) }}
+{%     if overlay_controller_p2p_network_summary is arista.avd.defined %}
+# Change from overlay_controller_p2p_network_summary to overlay_controller.defaults.uplink_ipv4_pool
+    uplink_ipv4_pool: {{ overlay_controller_p2p_network_summary }}
+{%     endif %}
+{%     if overlay_controller_bgp_defaults is arista.avd.defined %}
+# Change from overlay_controller_bgp_defaults to overlay_controller.defaults.bgp_defaults
+    bgp_defaults: {{ overlay_controller_bgp_defaults }}
+{%     elif overlay_controller.defaults.bgp_defaults is not arista.avd.defined %}
+# Change from old default value of overlay_controller_bgp_defaults to overlay_controller.defaults.bgp_defaults
+    bgp_defaults:
+      - no bgp default ipv4-unicast
+      - distance bgp 20 200 200
+      - graceful-restart restart-time 300
+      - graceful-restart
+{%     endif %}
+  nodes:
+{%     for node in overlay_controller.nodes | arista.avd.default([]) %}
+    {{ node }}:
+{%         if overlay_controller.nodes[node].remote_switches_interfaces is arista.avd.defined %}
+# Change from overlay_controller.nodes.{{ node }}.remote_switches_interfaces to overlay_controller.nodes.{{ node }}.uplink_switch_interfaces
+      uplink_switch_interfaces: {{ overlay_controller.nodes[node].remote_switches_interfaces }}
+{%         endif %}
+{%         if overlay_controller.nodes[node].uplink_to_remote_switches is arista.avd.defined %}
+# Change from overlay_controller.nodes.{{ node }}.uplink_to_remote_switches to overlay_controller.defaults.uplink_interfaces
+      uplink_interfaces: {{ overlay_controller.nodes[node].uplink_to_remote_switches }}
+{%         endif %}
+{%         if overlay_controller.nodes[node].remote_switches is arista.avd.defined %}
+# Change from overlay_controller.nodes.{{ node }}.remote_switches to overlay_controller.defaults.uplink_switches
+      uplink_switches: {{ overlay_controller.nodes[node].remote_switches }}
+{%         endif %}
+{%     endfor %}
+{% endif %}
