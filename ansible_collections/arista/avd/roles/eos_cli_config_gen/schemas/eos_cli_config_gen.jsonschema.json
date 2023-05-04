@@ -10959,6 +10959,26 @@
         "bgp": {
           "type": "object",
           "properties": {
+            "default": {
+              "type": "object",
+              "properties": {
+                "ipv4_unicast": {
+                  "type": "boolean",
+                  "description": "Default activation of IPv4 unicast address-family on all IPv4 neighbors (EOS default = True).",
+                  "title": "IPv4 Unicast"
+                },
+                "ipv4_unicast_transport_ipv6": {
+                  "type": "boolean",
+                  "description": "Default activation of IPv4 unicast address-family on all IPv6 neighbors (EOS default == False).",
+                  "title": "IPv4 Unicast Transport IPv6"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Default"
+            },
             "bestpath": {
               "type": "object",
               "properties": {
@@ -17731,6 +17751,12 @@
           "ip_igmp": {
             "type": "boolean",
             "title": "IP IGMP"
+          },
+          "ip_igmp_version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 3,
+            "title": "IP IGMP Version"
           },
           "ip_helpers": {
             "type": "array",

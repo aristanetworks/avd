@@ -68,6 +68,12 @@ keys:
             description: IPv4_address/Mask
         ip_igmp:
           type: bool
+        ip_igmp_version:
+          type: int
+          convert_types:
+          - str
+          min: 1
+          max: 3
         ip_helpers:
           type: list
           description: List of DHCP servers
