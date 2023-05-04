@@ -10292,16 +10292,16 @@
         },
         "default_thresholds": {
           "type": "object",
-          "description": "Set the default high and low thresholds for Etherent Interfaces\n",
+          "description": "",
           "properties": {
             "high": {
               "type": "integer",
-              "description": "Set the default high threshold for Ethernet Interfaces\n",
+              "description": "Default high threshold for Ethernet Interfaces.\n",
               "title": "High"
             },
             "low": {
               "type": "integer",
-              "description": "Set the default low threshold for Etherenet Interfaces\n",
+              "description": "Default low threshold for Ethernet Interfaces\n",
               "title": "Low"
             }
           },

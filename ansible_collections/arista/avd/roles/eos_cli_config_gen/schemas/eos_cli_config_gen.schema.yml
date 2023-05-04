@@ -6676,23 +6676,21 @@ keys:
           '
       default_thresholds:
         type: dict
-        description: 'Set the default high and low thresholds for Etherent Interfaces
-
-          '
+        description: ''
         keys:
           high:
             type: int
             required: true
             convert_types:
             - str
-            description: 'Set the default high threshold for Ethernet Interfaces
+            description: 'Default high threshold for Ethernet Interfaces.
 
               '
           low:
             type: int
             convert_types:
             - str
-            description: 'Set the default low threshold for Etherenet Interfaces
+            description: 'Default low threshold for Ethernet Interfaces
 
               '
       log:
