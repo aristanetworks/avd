@@ -276,6 +276,7 @@ interface Vlan89
    ip helper-address 10.10.96.150 source-interface Loopback0
    ip helper-address 10.10.96.151 source-interface Loopback0
    ip igmp
+   ip igmp version 2
    ipv6 address 1b11:3a00:22b0:5200::15/64
    ipv6 nd managed-config-flag
    ipv6 nd prefix 1b11:3a00:22b0:5200::/64 infinite infinite no-autoconfig

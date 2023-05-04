@@ -73,6 +73,9 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.ip_igmp is arista.avd.defined(true) %}
    ip igmp
 {%     endif %}
+{%     if vlan_interface.ip_igmp_version is arista.avd.defined %}
+   ip igmp version {{ vlan_interface.ip_igmp_version }}
+{%     endif %}
 {%     if vlan_interface.ipv6_enable is arista.avd.defined(true) %}
    ipv6 enable
 {%     endif %}
