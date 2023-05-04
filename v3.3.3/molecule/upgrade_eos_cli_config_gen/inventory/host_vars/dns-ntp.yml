@@ -1,0 +1,25 @@
+### Domain Lookup ###
+ip_domain_lookup:
+  source_interfaces:
+    Management0:
+      vrf: mgt
+
+### Name Servers ###
+name_server:
+  source:
+    vrf: mgt
+  nodes:
+    - 10.10.128.10
+    - 10.10.129.10
+
+### DNS Domain ###
+dns_domain: test.local
+
+### NTP Servers ###
+ntp_server:
+  local_interface:
+    vrf: mgt
+    interface: Management0
+  nodes:
+    - 10.10.111.1
+    - 10.10.111.2

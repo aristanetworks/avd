@@ -1,0 +1,34 @@
+{# Add underlay links defined on this device #}
+{% set underlay_data.links = topology.links | arista.avd.default({}) %}
+
+{# Add underlay links defined on other devices pointing to this device #}
+{% for fabric_switch in groups[fabric_name] | arista.avd.natural_sort %}
+{%     set fabric_switch_topology_facts = hostvars[fabric_switch].topology | arista.avd.default %}
+{%     if inventory_hostname in fabric_switch_topology_facts.peers | arista.avd.default([]) %}
+{%         set fabric_switch_switch_facts = hostvars[fabric_switch].switch | arista.avd.default %}
+{%         for fabric_switch_interface in fabric_switch_topology_facts.links | arista.avd.natural_sort %}
+{%             set fabric_switch_link = fabric_switch_topology_facts.links[fabric_switch_interface] %}
+{%             if fabric_switch_link.peer is arista.avd.defined(inventory_hostname) %}
+{%                 set link = namespace() %}
+{%                 set link.peer = fabric_switch %}
+{%                 set link.peer_interface = fabric_switch_interface %}
+{%                 set link.peer_type = fabric_switch_switch_facts.type %}
+{%                 set link.peer_bgp_as = fabric_switch_switch_facts.bgp_as | arista.avd.default() %}
+{%                 set link.type = fabric_switch_link.type | arista.avd.default() %}
+{%                 set link.speed = fabric_switch_link.speed | arista.avd.default() %}
+{%                 set link.ip_address = fabric_switch_link.peer_ip_address | arista.avd.default() %}
+{%                 set link.peer_ip_address = fabric_switch_link.ip_address | arista.avd.default() %}
+{%                 set link.channel_group_id = fabric_switch_link.peer_channel_group_id | arista.avd.default() %}
+{%                 set link.peer_channel_group_id = fabric_switch_link.channel_group_id | arista.avd.default() %}
+{%                 set link.channel_description = fabric_switch_link.peer_channel_description | arista.avd.default() %}
+{%                 set link.vlans = fabric_switch_link.vlans | arista.avd.default() %}
+{%                 set link.bfd = fabric_switch_link.bfd | arista.avd.default() %}
+{%                 set link.ptp = fabric_switch_link.ptp | arista.avd.default() %}
+{%                 set link.short_esi = fabric_switch_link.peer_short_esi | arista.avd.default() %}
+{%                 set link.ipv6_enable = fabric_switch_link.ipv6_enable | arista.avd.default() %}
+{%                 set interface = fabric_switch_link.peer_interface %}
+{%                 do underlay_data.links.update({interface: link}) %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}

@@ -1,0 +1,10 @@
+{% if queue_monitor_length is arista.avd.defined %}
+!
+queue-monitor length
+{%     if queue_monitor_length.log is arista.avd.defined %}
+queue-monitor length log {{ queue_monitor_length.log }}
+{%     endif %}
+{%     if queue_monitor_length.notifying is arista.avd.defined(true) %}
+queue-monitor length notifying
+{%     endif %}
+{% endif %}

@@ -1,0 +1,77 @@
+---
+- name: Create required output directories if not present
+  tags: [build, provision]
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+  loop:
+    - "{{ structured_dir }}"
+    - "{{ fabric_dir }}"
+  delegate_to: localhost
+  run_once: true
+
+- name: Set AVD facts
+  tags: [build, provision]
+  yaml_templates_to_facts:
+    templates: "{{ templates.facts }}"
+  delegate_to: localhost
+  check_mode: no
+  changed_when: False
+
+- name: Set AVD topology facts
+  tags: [build, provision]
+  yaml_templates_to_facts:
+    templates: "{{ templates.topology_facts }}"
+  delegate_to: localhost
+  check_mode: no
+  changed_when: False
+
+- name: Generate YAML file with hostvars (only for debugging)
+  tags: [debug, never]
+  template:
+    src: debug/generate-debug-vars.j2
+    dest: "{{ structured_dir }}/{{ inventory_hostname }}-debug-vars.yml"
+    mode: 0664
+  delegate_to: localhost
+  changed_when: False
+
+- name: Generate device configuration in structured format
+  tags: [build, provision]
+  yaml_templates_to_facts:
+    templates: "{{ templates.structured_config }}"
+    dest: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
+    template_output: True
+  delegate_to: localhost
+  check_mode: no
+  register: structured_config
+
+- name: Generate fabric documentation
+  tags: [build, provision, documentation]
+  run_once: true
+  delegate_to: localhost
+  check_mode: no
+  copy:
+    content: "{{ lookup('template','documentation/fabric-documentation.j2') | arista.avd.add_md_toc(skip_lines=3) }}"
+    dest: "{{ fabric_dir }}/{{ fabric_name }}-documentation.md"
+    mode: 0664
+
+- name: Generate fabric point-to-point links summary in csv format.
+  tags: [build, provision, documentation]
+  template:
+    src: documentation/fabric-p2p-links.j2
+    dest: "{{ fabric_dir }}/{{ fabric_name }}-p2p-links.csv"
+    mode: 0664
+  delegate_to: localhost
+  run_once: true
+  check_mode: no
+
+- name: Generate fabric topology in csv format.
+  tags: [build, provision, documentation]
+  template:
+    src: documentation/fabric-topology.j2
+    dest: "{{ fabric_dir }}/{{ fabric_name }}-topology.csv"
+    mode: 0664
+  delegate_to: localhost
+  run_once: true
+  check_mode: no

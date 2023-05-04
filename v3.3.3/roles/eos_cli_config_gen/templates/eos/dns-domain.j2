@@ -1,0 +1,5 @@
+{# eos - dns domain #}
+{% if dns_domain is arista.avd.defined %}
+!
+dns domain {{ dns_domain }}
+{% endif %}

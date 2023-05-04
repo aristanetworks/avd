@@ -1,0 +1,11 @@
+# Change from ntp_server to ntp data model
+ntp:
+  local_interface:
+    name: lo1
+    vrf: default
+  servers:
+  - name: 10.1.1.1
+    preferred: True
+    vrf: default
+  - name: 10.1.1.2
+    vrf: default

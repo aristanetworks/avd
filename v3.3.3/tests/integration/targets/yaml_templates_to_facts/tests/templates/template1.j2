@@ -1,0 +1,7 @@
+{% set mylist = [3, 4, 5, 5] %}
+{% if timezone is defined %}
+clock:
+  timezone: "test1"
+  minutes: 30
+  seconds: {{ mylist }}
+{% endif %}

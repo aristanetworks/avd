@@ -1,0 +1,23 @@
+---
+- name: Create required output directories if not present
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+  loop:
+    - "{{ post_running_config_backup_dir }}"
+    - "{{ pre_running_config_backup_dir }}"
+  delegate_to: localhost
+  run_once: true
+
+- name: replace configuration with intended configuration
+  eos_config:
+    src: "{{ eos_config_dir }}/{{ inventory_hostname }}.cfg"
+    replace: config
+    save_when: modified
+    backup: "{{ eos_config_deploy_eapi_pre_running_config_backup }}"
+    backup_options:
+      filename: "{{ pre_running_config_backup_filename }}"
+      dir_path: "{{ pre_running_config_backup_dir }}"
+  notify: "backup config"
+  tags: [provision]

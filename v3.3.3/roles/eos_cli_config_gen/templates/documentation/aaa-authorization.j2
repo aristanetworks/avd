@@ -1,0 +1,45 @@
+{% if aaa_authorization is arista.avd.defined %}
+
+## AAA Authorization
+
+### AAA Authorization Summary
+
+| Type | User Stores |
+| ---- | ----------- |
+{%     if aaa_authorization.exec.default is arista.avd.defined %}
+| Exec | {{ aaa_authorization.exec.default }} |
+{%     endif %}
+{%     if aaa_authorization.config_commands is arista.avd.defined(true) %}
+
+Authorization for configuration commands is enabled.
+{%     else %}
+
+Authorization for configuration commands is disabled.
+{%     endif %}
+{%     if aaa_authorization.serial_console is arista.avd.defined(true) %}
+
+Authorization for serial console is enabled.
+{%     endif %}
+{%     if aaa_authorization.commands.privilege is arista.avd.defined or aaa_authorization.commands.all_default is arista.avd.defined %}
+
+### AAA Authorization Privilege Levels Summary
+
+| Privilege Level | User Stores |
+| --------------- | ----------- |
+{%         if aaa_authorization.commands.all_default is arista.avd.defined %}
+| all | {{ aaa_authorization.commands.all_default }} |
+{%         endif %}
+{%         for command_level in aaa_authorization.commands.privilege | arista.avd.natural_sort %}
+{%             if command_level.level is arista.avd.defined and command_level.default is arista.avd.defined %}
+| {{ command_level.level }} | {{ command_level.default }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+
+### AAA Authorization Device Configuration
+
+```eos
+{%     include 'eos/aaa-authorization.j2' %}
+!
+```
+{% endif %}

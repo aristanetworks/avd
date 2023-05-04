@@ -1,0 +1,19 @@
+{# eos - event-handler #}
+{% if event_handlers is defined and event_handlers is iterable %}
+
+## Event Handler
+
+### Event Handler Summary
+
+| Handler | Action Type | Action | Trigger |
+| ------- | ----------- | ------ | ------- |
+{%     for handler in event_handlers | arista.avd.natural_sort %}
+| {{ handler }} | {{ event_handlers[handler].action_type }} | {{ event_handlers[handler].action }} | {{ event_handlers[handler].trigger }} |
+{%     endfor %}
+
+### Event Handler Device Configuration
+
+```eos
+{%     include 'eos/event-handler.j2' %}
+```
+{% endif %}

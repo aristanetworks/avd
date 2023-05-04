@@ -1,0 +1,34 @@
+---
+# defaults file for dhcp_provisioner
+
+# Root directory where to build output structure
+root_dir: '{{ inventory_dir }}'
+
+# AVD configurations output
+# Main output directory
+output_dir_name: 'intended'
+output_dir: '{{ root_dir }}/{{ output_dir_name }}'
+
+# Output for structured YAML files:
+structured_dir_name: 'structured_configs'
+structured_dir: '{{ output_dir }}/{{ structured_dir_name }}'
+
+# Output for structured YAML files for CVP:
+structured_cvp_dir_name: 'cvp'
+structured_cvp_dir: '{{ structured_dir }}/{{ structured_cvp_dir_name }}'
+
+# EOS Configuration Directory name
+eos_config_dir_name: 'configs'
+eos_config_dir: '{{ output_dir }}/{{ eos_config_dir_name }}'
+
+# Default inventory group with Fabric definition
+fabric_group: DC1_FABRIC
+
+# Default DHCP Lease time
+ztp_lease_time: 300
+
+# Default MAC address used for DHCP
+ztp_mac_source: system
+
+# Default value to build config or deploy config
+ztp_mode: offline

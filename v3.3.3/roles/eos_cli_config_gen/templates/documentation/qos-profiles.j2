@@ -1,0 +1,44 @@
+{% if qos_profiles is arista.avd.defined %}
+
+## QOS Profiles
+
+### QOS Profiles Summary
+
+{%     for profile in qos_profiles | arista.avd.natural_sort %}
+
+QOS Profile: **{{ profile }}**
+
+**Settings**
+
+| Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
+| ----------- | ------------ | ----- | ---------- | ------------------ |
+{%         set cos = qos_profiles[profile].cos | arista.avd.default('-') %}
+{%         set dscp = qos_profiles[profile].dscp | arista.avd.default('-') %}
+{%         set trust = qos_profiles[profile].trust | arista.avd.default('-') %}
+{%         set shape_rate = qos_profiles[profile].shape.rate | arista.avd.default('-') %}
+{%         set qos_sp = qos_profiles[profile].service_policy.type.qos_input | arista.avd.default('-') %}
+| {{ cos }} | {{ dscp }} | {{ trust }} | {{ shape_rate }} | {{ qos_sp }} |
+{%         if qos_profiles[profile].tx_queues is arista.avd.defined %}
+
+**Tx-queues**
+
+| Tx-queue | Bandwidth | Priority | Shape Rate |
+| -------- | --------- | -------- | ---------- |
+{%             for tx_queue in qos_profiles[profile].tx_queues | arista.avd.natural_sort %}
+{%                 set queue = qos_profiles[profile].tx_queues[tx_queue] | arista.avd.default('-') %}
+{%                 set bw_percent = qos_profiles[profile].tx_queues[tx_queue].bandwidth_percent | arista.avd.default(
+                                    qos_profiles[profile].tx_queues[tx_queue].bandwidth_guaranteed_percent,
+                                    '-') %}
+{%                 set priority = qos_profiles[profile].tx_queues[tx_queue].priority | arista.avd.default('-') %}
+{%                 set shape_rate = qos_profiles[profile].tx_queues[tx_queue].shape.rate | arista.avd.default('-') %}
+| {{ tx_queue }} | {{ bw_percent }} | {{ priority }} | {{ shape_rate }} |
+{%             endfor %}
+{%         endif %}
+{%     endfor %}
+
+### QOS Profile Device Configuration
+
+```eos
+{%     include 'eos/qos-profiles.j2' %}
+```
+{% endif %}

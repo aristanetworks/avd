@@ -1,0 +1,94 @@
+{# eos - Router ISIS #}
+{% if router_isis.instance is arista.avd.defined %}
+!
+router isis {{ router_isis.instance }}
+{%     if router_isis.net is arista.avd.defined %}
+   net {{ router_isis.net }}
+{%     endif %}
+{%     if router_isis.is_type is arista.avd.defined %}
+   is-type {{ router_isis.is_type }}
+{%     endif %}
+{%     if router_isis.router_id is arista.avd.defined %}
+   router-id ipv4 {{ router_isis.router_id }}
+{%     endif %}
+{%     if router_isis.log_adjacency_changes is arista.avd.defined(true) %}
+   log-adjacency-changes
+{%     elif router_isis.log_adjacency_changes is arista.avd.defined(false) %}
+   no log-adjacency-changes
+{%     endif %}
+{%     if router_isis.mpls_ldp_sync_default is arista.avd.defined(true) %}
+   mpls ldp sync default
+{%     endif %}
+{%     if router_isis.timers.local_convergence.protected_prefixes is arista.avd.defined(true) %}
+{%         if router_isis.timers.local_convergence.delay is arista.avd.defined %}
+   timers local-convergence-delay {{ router_isis.timers.local_convergence.delay }} protected-prefixes
+{%         else %}
+   timers local-convergence-delay protected-prefixes
+{%         endif %}
+{%     endif %}
+{%     if router_isis.advertise.passive_only is arista.avd.defined(true) %}
+   advertise passive-only
+{%     endif %}
+   !
+{%     if router_isis.address_family is arista.avd.defined %}
+{%         for address_family in router_isis.address_family %}
+   address-family {{ address_family }}
+{%             if router_isis.isis_af_defaults is arista.avd.defined %}
+{%                 for af_default in router_isis.isis_af_defaults %}
+      {{ af_default }}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+   !
+{%     endif %}
+{%     if router_isis.address_family_ipv4 is arista.avd.defined %}
+   address-family ipv4 unicast
+{%         if router_isis.address_family_ipv4.maximum_paths is arista.avd.defined %}
+      maximum-paths {{ router_isis.address_family_ipv4.maximum_paths }}
+{%         endif %}
+{%         if router_isis.address_family_ipv4.fast_reroute_ti_lfa.mode is arista.avd.defined %}
+{%             set ti_lfa_cli = "fast-reroute ti-lfa mode " ~ router_isis.address_family_ipv4.fast_reroute_ti_lfa.mode %}
+{%             if router_isis.address_family_ipv4.fast_reroute_ti_lfa.level is arista.avd.defined %}
+{%                 set ti_lfa_cli = ti_lfa_cli ~ " " ~ router_isis.address_family_ipv4.fast_reroute_ti_lfa.level %}
+{%             endif %}
+      {{ ti_lfa_cli }}
+{%         endif %}
+{%         if router_isis.address_family_ipv4.fast_reroute_ti_lfa.srlg.enable is arista.avd.defined(true) %}
+{%             set ti_lfa_srlg_cli = "fast-reroute ti-lfa srlg" %}
+{%             if router_isis.address_family_ipv4.fast_reroute_ti_lfa.srlg.strict is arista.avd.defined(true) %}
+{%                 set ti_lfa_srlg_cli = ti_lfa_srlg_cli ~ " strict" %}
+{%             endif %}
+      {{ ti_lfa_srlg_cli }}
+{%         endif %}
+   !
+{%     endif %}
+{%     if router_isis.address_family_ipv6 is arista.avd.defined %}
+   address-family ipv6 unicast
+{%         if router_isis.address_family_ipv6.maximum_paths is arista.avd.defined %}
+      maximum-paths {{ router_isis.address_family_ipv6.maximum_paths }}
+{%         endif %}
+{%         if router_isis.address_family_ipv6.fast_reroute_ti_lfa.mode is arista.avd.defined %}
+{%             set ti_lfa_cli = "fast-reroute ti-lfa mode " ~ router_isis.address_family_ipv6.fast_reroute_ti_lfa.mode %}
+{%             if router_isis.address_family_ipv6.fast_reroute_ti_lfa.level is arista.avd.defined %}
+{%                 set ti_lfa_cli = ti_lfa_cli ~ " " ~ router_isis.address_family_ipv6.fast_reroute_ti_lfa.level %}
+{%             endif %}
+      {{ ti_lfa_cli }}
+{%         endif %}
+{%         if router_isis.address_family_ipv6.fast_reroute_ti_lfa.srlg.enable is arista.avd.defined(true) %}
+{%             set ti_lfa_srlg_cli = "fast-reroute ti-lfa srlg" %}
+{%             if router_isis.address_family_ipv6.fast_reroute_ti_lfa.srlg.strict is arista.avd.defined(true) %}
+{%                 set ti_lfa_srlg_cli = ti_lfa_srlg_cli ~ " strict" %}
+{%             endif %}
+      {{ ti_lfa_srlg_cli }}
+{%         endif %}
+   !
+{%     endif %}
+{%     if router_isis.segment_routing_mpls is arista.avd.defined %}
+   segment-routing mpls
+{%         if router_isis.segment_routing_mpls.enabled is arista.avd.defined(true) %}
+      no shutdown
+{%         elif router_isis.segment_routing_mpls.enabled is arista.avd.defined(false) %}
+      shutdown
+{%         endif %}
+{%     endif %}
+{% endif %}

@@ -1,0 +1,69 @@
+{# j2lint: disable=V1 #}
+router_bgp:
+
+{% if switch.evpn_role == "server" %}
+  bgp_cluster_id: {{ switch.router_id }}
+{% endif %}
+
+  peer_groups:
+    {{ bgp_peer_groups.EVPN_OVERLAY_PEERS.name | arista.avd.default("EVPN-OVERLAY-PEERS") }}:
+      type: evpn
+      update_source: Loopback0
+      remote_as: "{{ switch.bgp_as }}"
+      bfd: true
+{% if bgp_peer_groups.EVPN_OVERLAY_PEERS.password is arista.avd.defined() %}
+      password: "{{ bgp_peer_groups.EVPN_OVERLAY_PEERS.password }}"
+{% endif %}
+      send_community: all
+      maximum_routes: 0
+{% if switch.evpn_role == "server" %}
+      route_reflector_client: true
+{% endif %}
+
+  address_family_ipv4:
+    peer_groups:
+      {{ bgp_peer_groups.EVPN_OVERLAY_PEERS.name | arista.avd.default("EVPN-OVERLAY-PEERS") }}:
+        activate: false
+
+  address_family_evpn:
+    peer_groups:
+      {{ bgp_peer_groups.EVPN_OVERLAY_PEERS.name | arista.avd.default("EVPN-OVERLAY-PEERS") }}:
+        activate: true
+{% if switch.vtep_ip is arista.avd.defined %}
+        route_map_in: RM-EVPN-SOO-IN
+        route_map_out: RM-EVPN-SOO-OUT
+{% endif %}
+{% if switch.vtep_ip is arista.avd.defined and evpn_hostflap_detection is arista.avd.defined %}
+    evpn_hostflap_detection:
+      window: {{ evpn_hostflap_detection.window | arista.avd.default(180) }}
+      threshold: {{ evpn_hostflap_detection.threshold | arista.avd.default(5) }}
+      enabled: {{ evpn_hostflap_detection.enabled | arista.avd.default(true) }}
+{% endif %}
+{% if switch.vtep_ip is arista.avd.defined and evpn_import_pruning is arista.avd.defined(true) %}
+    route:
+      import_match_failure_action: discard
+{% endif %}
+
+{% if evpn_overlay_bgp_rtc is arista.avd.defined(true) %}
+  address_family_rtc:
+    peer_groups:
+      {{ bgp_peer_groups.EVPN_OVERLAY_PEERS.name | arista.avd.default("EVPN-OVERLAY-PEERS") }}:
+        activate: true
+{%     if switch.evpn_role == "server" %}
+        default_route_target:
+          only: true
+{%     endif %}
+{% endif %}
+
+{# Overlay network peering #}
+  neighbors:
+{% for evpn_route_server in overlay_data.evpn_route_servers | arista.avd.natural_sort %}
+    {{ overlay_data.evpn_route_servers[evpn_route_server].ip_address }}:
+      peer_group: {{ bgp_peer_groups.EVPN_OVERLAY_PEERS.name | arista.avd.default("EVPN-OVERLAY-PEERS") }}
+      description: {{ evpn_route_server }}
+{% endfor %}
+{% for evpn_route_client in overlay_data.evpn_route_clients | arista.avd.natural_sort %}
+    {{ overlay_data.evpn_route_clients[evpn_route_client].ip_address }}:
+      peer_group: {{ bgp_peer_groups.EVPN_OVERLAY_PEERS.name | arista.avd.default("EVPN-OVERLAY-PEERS") }}
+      description: {{ evpn_route_client }}
+{% endfor %}

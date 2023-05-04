@@ -1,0 +1,46 @@
+{% if platform is arista.avd.defined %}
+
+# Platform
+{%     if platform.trident is arista.avd.defined or platform.sand is arista.avd.defined %}
+
+## Platform Summary
+{%         if platform.trident is arista.avd.defined %}
+
+### Platform Trident Summary
+
+| Settings | Value |
+| -------- | ----- |
+{%             for tridentsetting in platform.trident | arista.avd.natural_sort %}
+| {{ tridentsetting }} | {{ platform.trident[tridentsetting] }} |
+{%             endfor %}
+{%         endif %}
+{%         if platform.sand is arista.avd.defined %}
+
+### Platform Sand Summary
+
+| Settings | Value |
+| -------- | ----- |
+{%             for sandsetting in platform.sand | arista.avd.natural_sort %}
+{%                 if sandsetting == 'lag' %}
+{%                     for lag_sandsetting in platform.sand.lag | arista.avd.natural_sort %}
+{%                         set lag_sandsettingmod = "lag." ~ lag_sandsetting %}
+| {{ lag_sandsettingmod }} | {{ platform.sand.lag[lag_sandsetting] }} |
+{%                     endfor %}
+{%                 elif sandsetting == 'multicast_replication' %}
+{%                     for multicast_replication_sandsetting in platform.sand.multicast_replication | arista.avd.natural_sort %}
+{%                         set multicast_replication_sandsettingmod = "multicast_replication." ~ multicast_replication_sandsetting %}
+| {{ multicast_replication_sandsettingmod }} | {{ platform.sand.multicast_replication[multicast_replication_sandsetting] }} |
+{%                     endfor %}
+{%                 else %}
+| {{ sandsetting }} | {{ platform.sand[sandsetting] }} |
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+
+## Platform Configuration
+
+```eos
+{%     include 'eos/platform.j2' %}
+```
+{% endif %}

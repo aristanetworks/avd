@@ -1,0 +1,5 @@
+{# eos- Mac address table aging time #}
+{% if mac_address_table.aging_time is arista.avd.defined %}
+!
+mac address-table aging-time {{ mac_address_table.aging_time }}
+{% endif %}

@@ -1,0 +1,32 @@
+loopback_interfaces:
+{% if switch.router_id is arista.avd.defined %}
+{# BGP Loopback #}
+  Loopback0:
+    description: "{% include switch.interface_descriptions.overlay_loopback_interface %}"
+    shutdown: false
+    ip_address: {{ switch.router_id }}/32
+{%     if switch.underlay_routing_protocol == "ospf" %}
+    ospf_area: {{ underlay_ospf_area }}
+{%     endif %}
+{%     if switch.underlay_routing_protocol == "isis" %}
+    isis_enable: EVPN_UNDERLAY
+    isis_passive: true
+{%     endif %}
+{% endif %}
+{% if switch.vtep is arista.avd.defined(true) and switch.vtep_loopback | lower != 'loopback0' %}
+{# Leaf VTEP vxlan tunnel loopback source interface #}
+  {{ switch.vtep_loopback }}:
+    description: "{% include switch.interface_descriptions.vtep_loopback_interface %}"
+    shutdown: false
+    ip_address: {{ switch.vtep_ip }}/32
+{%     if vtep_vvtep_ip is arista.avd.defined and switch.network_services_l3 is arista.avd.defined(true) %}
+    ip_address_secondaries: [{{ vtep_vvtep_ip }}]
+{%     endif %}
+{%     if switch.underlay_routing_protocol == "ospf" %}
+    ospf_area: {{ underlay_ospf_area }}
+{%     endif %}
+{%     if switch.underlay_routing_protocol == "isis" %}
+    isis_enable: EVPN_UNDERLAY
+    isis_passive: true
+{%     endif %}
+{% endif %}

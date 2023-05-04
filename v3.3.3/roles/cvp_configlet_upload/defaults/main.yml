@@ -1,0 +1,20 @@
+---
+# defaults file for cvp_configlet_upload
+
+# Root directory where to build output structure
+root_dir: '{{ inventory_dir }}'
+
+# Directory where configlets are stored.
+configlet_directory: 'configlets/'
+
+# File extension to look for configlets
+file_extension: 'conf'
+
+# Prefix to add to configlets name on Cloudvision
+configlets_cvp_prefix: ''
+
+# CVP Deployment methodology, whether to exectute or stage tasks
+execute_tasks: false
+
+# Version of the Cloudvision collection to use for upload
+cv_collection: v1

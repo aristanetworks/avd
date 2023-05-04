@@ -1,0 +1,18 @@
+{% if router_igmp is arista.avd.defined %}
+
+## Router IGMP
+
+### Router IGMP Summary
+
+| Settings | Value |
+| -------- | ----- |
+{%     if router_igmp.ssm_aware is arista.avd.defined %}
+| SSM Aware | {{ router_igmp.ssm_aware }} |
+{%     endif %}
+
+### Router IGMP Device Configuration
+
+```eos
+{%     include 'eos/router-igmp.j2' %}
+```
+{% endif %}

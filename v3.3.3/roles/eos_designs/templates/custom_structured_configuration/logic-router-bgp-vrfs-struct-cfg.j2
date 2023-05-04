@@ -1,0 +1,12 @@
+{% for vrf in router_bgp.vrfs | arista.avd.natural_sort %}
+{%     if router_bgp.vrfs[vrf].struct_cfg is arista.avd.defined %}
+{%         set tmp_custom_structured_configuration = {
+               "router_bgp" : {
+                   "vrfs": {
+                       vrf: router_bgp.vrfs[vrf].struct_cfg
+                   }
+               }
+           } %}
+{%         do custom_structured_configuration_data.append(tmp_custom_structured_configuration) %}
+{%     endif %}
+{% endfor %}

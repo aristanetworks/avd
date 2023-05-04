@@ -1,0 +1,8 @@
+{% if prompt is arista.avd.defined %}
+
+# Prompt
+
+```eos
+{%     include 'eos/prompt.j2' %}
+```
+{% endif %}

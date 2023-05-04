@@ -1,0 +1,30 @@
+{# eos - router general #}
+{% if router_general is arista.avd.defined %}
+!
+router general
+{%     set delimiter = false %}
+{%     if router_general.router_id.ipv4 is arista.avd.defined %}
+   router-id ipv4 {{ router_general.router_id.ipv4 }}
+{%         set delimiter = true %}
+{%     endif %}
+{%     if router_general.router_id.ipv6 is arista.avd.defined %}
+   router-id ipv6 {{ router_general.router_id.ipv6 }}
+{%         set delimiter = true %}
+{%     endif %}
+{%     if router_general.nexthop_fast_failover is arista.avd.defined(true) %}
+   hardware next-hop fast-failover
+{%         set delimiter = true %}
+{%     endif %}
+{%     if delimiter is arista.avd.defined(true) and router_general.vrfs is arista.avd.defined %}
+   !
+{%     endif %}
+{%     for vrf in router_general.vrfs | arista.avd.natural_sort %}
+   vrf {{ vrf }}
+{%         for leak_route in router_general.vrfs[vrf].leak_routes | arista.avd.natural_sort %}
+{%             if leak_route.source_vrf is arista.avd.defined and leak_route.subscribe_policy is arista.avd.defined %}
+      leak routes source-vrf {{ leak_route.source_vrf }} subscribe-policy {{ leak_route.subscribe_policy }}
+{%             endif %}
+{%         endfor %}
+   !
+{%     endfor %}
+{% endif %}

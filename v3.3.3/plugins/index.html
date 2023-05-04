@@ -1,0 +1,2163 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Arista Validated Design collection's documentation">
+      
+      
+        <meta name="author" content="Arista Ansible Team">
+      
+      
+      
+        <link rel="prev" href="../docs/modules/configlet_build_config.rst.html">
+      
+      
+        <link rel="next" href="../docs/contribution/overview.html">
+      
+      <link rel="icon" href="../docs/_media/favicon.ico">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.0.15">
+    
+    
+      
+        <title>AVD Plugins & Filters - Arista AVD collection</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.113286f1.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.a0c5b2b5.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CFira+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Fira Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../docs/stylesheets/extra.material.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#arista-avd-plugins" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="Arista AVD collection" class="md-header__button md-logo" aria-label="Arista AVD collection" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M96 0C43 0 0 43 0 96v320c0 53 43 96 96 96h320c17.7 0 32-14.3 32-32s-14.3-32-32-32v-64c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H96zm0 384h256v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Arista AVD collection
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              AVD Plugins & Filters
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+            </label>
+          
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/aristanetworks/ansible-avd" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AVD on Github
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Arista AVD collection" class="md-nav__button md-logo" aria-label="Arista AVD collection" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M96 0C43 0 0 43 0 96v320c0 53 43 96 96 96h320c17.7 0 32-14.3 32-32s-14.3-32-32-32v-64c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H96zm0 384h256v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></svg>
+
+    </a>
+    Arista AVD collection
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/aristanetworks/ansible-avd" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AVD on Github
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Release Notes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Release Notes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/release-notes/3.x.x.html" class="md-nav__link">
+        3.x.x
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/release-notes/2.x.x.html" class="md-nav__link">
+        2.x.x
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/release-notes/1.1.x.html" class="md-nav__link">
+        1.1.x
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/release-notes/1.0.x.html" class="md-nav__link">
+        1.0.x
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          Getting Started
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Getting Started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/getting-started/intro-to-ansible-and-avd.html" class="md-nav__link">
+        Introduction to Ansible and AVD
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/getting-started.html" class="md-nav__link">
+        First steps with AVD
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          Installation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Installation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/installation/collection-installation.html" class="md-nav__link">
+        Collection Installation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/installation/requirements.html" class="md-nav__link">
+        Requirements
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          How-To
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          How-To
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/how-to/first-project.html" class="md-nav__link">
+        Build your first AVD project
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/how-to/first-cvp-avd-project.html" class="md-nav__link">
+        Build your first AVD & CVP project
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/how-to/lab-with-nat.html" class="md-nav__link">
+        Use NAT to access eAPI
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/how-to/tower-integration.html" class="md-nav__link">
+        AWX & Tower Integration
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/how-to/ztp.html" class="md-nav__link">
+        Configure ZTP server with CV collection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/how-to/vscode-container.html" class="md-nav__link">
+        VScode Container
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          Roles documentation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Roles documentation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+          eos_designs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6_1">
+          <span class="md-nav__icon md-icon"></span>
+          eos_designs
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roles/eos_designs/index.html" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roles/eos_designs/doc/connected-endpoints.html" class="md-nav__link">
+        Connected Endpoints
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roles/eos_designs/doc/l3-edge.html" class="md-nav__link">
+        DCI & L3 Edge
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roles/eos_designs/doc/fabric-topology.html" class="md-nav__link">
+        Fabric Topology
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roles/eos_designs/doc/fabric-variables.html" class="md-nav__link">
+        Fabric Variables
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roles/eos_designs/doc/management-settings.html" class="md-nav__link">
+        Management Settings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roles/eos_designs/doc/network-services.html" class="md-nav__link">
+        Network Services
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roles/eos_designs/doc/node-types.html" class="md-nav__link">
+        Node types
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roles/eos_designs/doc/platform-settings.html" class="md-nav__link">
+        Platform Settings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roles/eos_designs/doc/custom-structured-configuration.html" class="md-nav__link">
+        Custom Structured Configuration
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roles/eos_cli_config_gen/index.html" class="md-nav__link">
+        eos_cli_config_gen
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roles/cvp_configlet_upload/index.html" class="md-nav__link">
+        cvp_configlet_upload
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roles/eos_config_deploy_cvp/index.html" class="md-nav__link">
+        eos_config_deploy_cvp
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roles/eos_config_deploy_eapi/index.html" class="md-nav__link">
+        eos_config_deploy_eapi
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roles/eos_validate_state/index.html" class="md-nav__link">
+        eos_validate_state
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roles/eos_snapshot/index.html" class="md-nav__link">
+        eos_snapshot
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roles/dhcp_provisioner/index.html" class="md-nav__link">
+        dhcp_provisioner
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roles/build_output_folders/index.html" class="md-nav__link">
+        build_output_folders
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          Modules documentation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Modules documentation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/modules/inventory_to_container.rst.html" class="md-nav__link">
+        Module Inventory to containers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/modules/configlet_build_config.rst.html" class="md-nav__link">
+        Module Configlet Build configuration
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          AVD Plugins & Filters
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="index.html" class="md-nav__link md-nav__link--active">
+        AVD Plugins & Filters
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#arista-avd-plugins" class="md-nav__link">
+    Arista AVD Plugins
+  </a>
+  
+    <nav class="md-nav" aria-label="Arista AVD Plugins">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plugin-filters" class="md-nav__link">
+    Plugin Filters
+  </a>
+  
+    <nav class="md-nav" aria-label="Plugin Filters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#list_compress-filter" class="md-nav__link">
+    list_compress filter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#natural_sort-filter" class="md-nav__link">
+    natural_sort filter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default-filter" class="md-nav__link">
+    default filter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#convert_dicts-filter" class="md-nav__link">
+    convert_dicts filter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethernet-segment-identifiers-management-filter" class="md-nav__link">
+    ethernet segment identifiers management filter
+  </a>
+  
+    <nav class="md-nav" aria-label="ethernet segment identifiers management filter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#generate_esi-filter" class="md-nav__link">
+    generate_esi filter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generate_lacp_id-filter" class="md-nav__link">
+    generate_lacp_id filter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generate_route_target-filter" class="md-nav__link">
+    generate_route_target filter
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add_md_toc-filter" class="md-nav__link">
+    add_md_toc filter
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#plugin-tests" class="md-nav__link">
+    Plugin Tests
+  </a>
+  
+    <nav class="md-nav" aria-label="Plugin Tests">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#defined-test" class="md-nav__link">
+    defined test
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contains-test" class="md-nav__link">
+    contains test
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modules" class="md-nav__link">
+    Modules
+  </a>
+  
+    <nav class="md-nav" aria-label="Modules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inventory-to-cloudvision-containers" class="md-nav__link">
+    Inventory to CloudVision Containers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-configuration-to-publish-configlets-to-cloudvision" class="md-nav__link">
+    Build Configuration to publish configlets to CloudVision
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#yaml-templates-to-facts" class="md-nav__link">
+    YAML Templates to Facts
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://cvp.avd.sh/" class="md-nav__link">
+        Cloudvision Module documentation
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+          Contributing to AVD
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          Contributing to AVD
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/contribution/overview.html" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/contribution/setup-environment.html" class="md-nav__link">
+        Setup environment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/contribution/setup-git.html" class="md-nav__link">
+        Git installation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/contribution/getting-started.html" class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/contribution/style-guide.html" class="md-nav__link">
+        Code Style
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../docs/contribution/development.html" class="md-nav__link">
+        Development tips & tricks
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+          External resources
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          External resources
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://docs.ansible.com/ansible/latest/user_guide/collections_using.html" class="md-nav__link">
+        Ansible collection user guide
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://docs.ansible.com/ansible/latest/user_guide/index.html" class="md-nav__link">
+        Ansible User guide
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+          About
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_10">
+          <span class="md-nav__icon md-icon"></span>
+          About
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://galaxy.ansible.com/arista/avd" class="md-nav__link">
+        Ansible Galaxy page
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://cvp.avd.sh/en/latest/" class="md-nav__link">
+        Arista CVP Collection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/arista-netdevops-community/avd-install" class="md-nav__link">
+        Arista Installation Script
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://aristanetworks.github.io/netdevops-examples/" class="md-nav__link">
+        Arista Netdevops Community
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#arista-avd-plugins" class="md-nav__link">
+    Arista AVD Plugins
+  </a>
+  
+    <nav class="md-nav" aria-label="Arista AVD Plugins">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plugin-filters" class="md-nav__link">
+    Plugin Filters
+  </a>
+  
+    <nav class="md-nav" aria-label="Plugin Filters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#list_compress-filter" class="md-nav__link">
+    list_compress filter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#natural_sort-filter" class="md-nav__link">
+    natural_sort filter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default-filter" class="md-nav__link">
+    default filter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#convert_dicts-filter" class="md-nav__link">
+    convert_dicts filter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethernet-segment-identifiers-management-filter" class="md-nav__link">
+    ethernet segment identifiers management filter
+  </a>
+  
+    <nav class="md-nav" aria-label="ethernet segment identifiers management filter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#generate_esi-filter" class="md-nav__link">
+    generate_esi filter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generate_lacp_id-filter" class="md-nav__link">
+    generate_lacp_id filter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#generate_route_target-filter" class="md-nav__link">
+    generate_route_target filter
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add_md_toc-filter" class="md-nav__link">
+    add_md_toc filter
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#plugin-tests" class="md-nav__link">
+    Plugin Tests
+  </a>
+  
+    <nav class="md-nav" aria-label="Plugin Tests">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#defined-test" class="md-nav__link">
+    defined test
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contains-test" class="md-nav__link">
+    contains test
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modules" class="md-nav__link">
+    Modules
+  </a>
+  
+    <nav class="md-nav" aria-label="Modules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inventory-to-cloudvision-containers" class="md-nav__link">
+    Inventory to CloudVision Containers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-configuration-to-publish-configlets-to-cloudvision" class="md-nav__link">
+    Build Configuration to publish configlets to CloudVision
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#yaml-templates-to-facts" class="md-nav__link">
+    YAML Templates to Facts
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+  <h1>AVD Plugins & Filters</h1>
+
+<h3 id="arista-avd-plugins">Arista AVD Plugins<a class="headerlink" href="#arista-avd-plugins" title="Permanent link">&para;</a></h3>
+<p><strong>Table of Contents:</strong></p>
+<ul>
+<li><a href="#arista-avd-plugins">Arista AVD Plugins</a><ul>
+<li><a href="#plugin-filters">Plugin Filters</a><ul>
+<li><a href="#list_compress-filter">list_compress filter</a></li>
+<li><a href="#natural_sort-filter">natural_sort filter</a></li>
+<li><a href="#default-filter">default filter</a></li>
+<li><a href="#convert_dicts-filter">convert_dicts filter</a></li>
+<li><a href="#ethernet-segment-identifiers-management-filter">ethernet segment identifiers management filter</a><ul>
+<li><a href="#generate_esi-filter">generate_esi filter</a></li>
+<li><a href="#generate_lacp_id-filter">generate_lacp_id filter</a></li>
+<li><a href="#generate_route_target-filter">generate_route_target filter</a></li>
+</ul>
+</li>
+<li><a href="#add_md_toc-filter">add_md_toc filter</a></li>
+</ul>
+</li>
+<li><a href="#plugin-tests">Plugin Tests</a><ul>
+<li><a href="#defined-test">defined test</a></li>
+<li><a href="#contains-test">contains test</a></li>
+</ul>
+</li>
+<li><a href="#modules">Modules</a><ul>
+<li><a href="#inventory-to-cloudvision-containers">Inventory to CloudVision Containers</a></li>
+<li><a href="#build-configuration-to-publish-configlets-to-cloudvision">Build Configuration to publish configlets to CloudVision</a></li>
+<li><a href="#yaml-templates-to-facts">YAML Templates to Facts</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="plugin-filters">Plugin Filters<a class="headerlink" href="#plugin-filters" title="Permanent link">&para;</a></h4>
+<p>Arista AVD provides built-in filters to help extend jinja2 templates with functionality and improve code readability.</p>
+<h5 id="list_compress-filter">list_compress filter<a class="headerlink" href="#list_compress-filter" title="Permanent link">&para;</a></h5>
+<p>The <code>arista.avd.list_compress</code> filter provides the capabilities to compress a list of integers and return as a string for example:</p>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="nv">2</span><span class="p p-Indicator">,</span><span class="nv">3</span><span class="p p-Indicator">,</span><span class="nv">4</span><span class="p p-Indicator">,</span><span class="nv">5</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-&gt; &quot;1-5&quot;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="nv">2</span><span class="p p-Indicator">,</span><span class="nv">3</span><span class="p p-Indicator">,</span><span class="nv">7</span><span class="p p-Indicator">,</span><span class="nv">8</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-&gt; &quot;1-3,7-8&quot;</span>
+</code></pre></div>
+<p>To use this filter:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">{{</span> <span class="nv">list_to_compress</span> <span class="o">|</span> <span class="nf">arista</span><span class="nv">.avd.list_compress</span> <span class="cp">}}</span>
+</code></pre></div>
+<h5 id="natural_sort-filter">natural_sort filter<a class="headerlink" href="#natural_sort-filter" title="Permanent link">&para;</a></h5>
+<p>The <code>arista.avd.natural_sort</code> filter provides the capabilities to sort a list or a dictionary of integers and/or strings that contain alphanumeric characters naturally. When leveraged on a dictionary, only the key value will be returned.
+An optional <code>sort_key</code> can be specified, to sort on content of certain key if the items are dictionaries.</p>
+<p>The filter will return an empty list if the value parsed to <code>arista.avd.natural_sort</code> is <code>None</code> or <code>undefined</code>.</p>
+<p>To use this filter:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">{%</span> <span class="k">for</span> <span class="nv">item</span> <span class="k">in</span> <span class="nv">dictionary_to_natural_sort</span> <span class="o">|</span> <span class="nf">arista</span><span class="nv">.avd.natural_sort</span> <span class="cp">%}</span>
+<span class="cp">{{</span> <span class="nv">natural_sorted_item</span> <span class="cp">}}</span>
+<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+
+<span class="cp">{%</span> <span class="k">for</span> <span class="nv">item</span> <span class="k">in</span> <span class="nv">list_of_dicts_to_natural_sort</span> <span class="o">|</span> <span class="nf">arista</span><span class="nv">.avd.natural_sort</span><span class="o">(</span><span class="s1">&#39;name&#39;</span><span class="o">)</span> <span class="cp">%}</span>
+<span class="cp">{{</span> <span class="nv">dict_sorted_on_name</span> <span class="cp">}}</span>
+<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+</code></pre></div>
+<h5 id="default-filter">default filter<a class="headerlink" href="#default-filter" title="Permanent link">&para;</a></h5>
+<p>The <code>arista.avd.default</code> filter can provide the same basic capability as the builtin <code>default</code> filter. It will return the input value only if it is valid and if not, provide a default value instead. Our custom filter requires a value to be <code>not undefined</code> and <code>not None</code> to pass through.
+Furthermore, the filter allows multiple default values as arguments, which will undergo the same validation one after one until we find a valid default value.
+As a last resort the filter will return None.</p>
+<p>To use this filter:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">{{</span> <span class="nv">variable</span> <span class="o">|</span> <span class="nf">arista</span><span class="nv">.avd.default</span><span class="o">(</span> <span class="nv">default_value_1</span> <span class="o">,</span> <span class="nv">default_value_2</span> <span class="err">...</span> <span class="o">)</span> <span class="cp">}}</span>
+</code></pre></div>
+<h5 id="convert_dicts-filter">convert_dicts filter<a class="headerlink" href="#convert_dicts-filter" title="Permanent link">&para;</a></h5>
+<p>The <code>arista.avd.convert_dicts</code> filter will convert a dictionary containing nested dictionaries to a list of dictionaries
+and insert the outer dictionary keys into each list item using the primary_key <code>name</code> (key name is configurable).</p>
+<p>This filter is intended for:</p>
+<ul>
+<li>Seemless data model migration from dictionaries to lists.</li>
+<li>Improve Ansible&rsquo;s processing performance when dealing with large dictionaries by converting them to lists of dictionaries.</li>
+</ul>
+<p>Note: If the variable is already a list, it will pass through untouched</p>
+<p>To use this filter:</p>
+<div class="highlight"><pre><span></span><code><span class="c">{# convert list of dictionary with default `name:` as the primary key #}</span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">example_list</span> <span class="o">=</span> <span class="nv">example_dictionary</span> <span class="o">|</span> <span class="nf">arista</span><span class="nv">.avd.convert_dicts</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">for</span> <span class="nv">example_item</span> <span class="k">in</span> <span class="nv">example_list</span> <span class="cp">%}</span>
+<span class="x">item primary key is </span><span class="cp">{{</span> <span class="nv">example_item.name</span> <span class="cp">}}</span>
+<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+
+<span class="c">{# convert list of dictionary with `id:` set as the primary key #}</span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">example_list</span> <span class="o">=</span> <span class="nv">example_dictionary</span> <span class="o">|</span> <span class="nf">arista</span><span class="nv">.avd.convert_dicts</span><span class="o">(</span><span class="s1">&#39;id&#39;</span><span class="o">)</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">for</span> <span class="nv">example_item</span> <span class="k">in</span> <span class="nv">example_list</span> <span class="cp">%}</span>
+<span class="x">item primary key is </span><span class="cp">{{</span> <span class="nv">example_item.id</span> <span class="cp">}}</span>
+<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+</code></pre></div>
+<h5 id="ethernet-segment-identifiers-management-filter">ethernet segment identifiers management filter<a class="headerlink" href="#ethernet-segment-identifiers-management-filter" title="Permanent link">&para;</a></h5>
+<p>To help provide consistency when configuring EVPN A/A ESI values, the <code>esi_management</code> filter plugin provides an abstraction in the form of a <code>short_esi</code> key. <code>short_esi</code> is an abbreviated 3 octets value to encode Ethernet Segment ID, LACP ID and route target. Transformation from abstraction to network values is managed the following jinja2 filters:</p>
+<h6 id="generate_esi-filter">generate_esi filter<a class="headerlink" href="#generate_esi-filter" title="Permanent link">&para;</a></h6>
+<p>The <code>arista.avd.generate_esi</code> filter transforms short_esi: <code>0303:0202:0101</code> with prefix <code>0000:0000</code> to EVPN ESI: <code>0000:0000:0303:0202:0101</code></p>
+<p><strong>example:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="x">esi: </span><span class="cp">{{</span> <span class="nv">l2leaf.node_groups</span><span class="o">[</span><span class="nv">l2leaf_node_group</span><span class="o">]</span><span class="nv">.short_esi</span> <span class="o">|</span> <span class="nf">arista</span><span class="nv">.avd.generate_esi</span> <span class="cp">}}</span>
+</code></pre></div>
+<h6 id="generate_lacp_id-filter">generate_lacp_id filter<a class="headerlink" href="#generate_lacp_id-filter" title="Permanent link">&para;</a></h6>
+<p>The <code>arista.avd.generate_lacp_id</code> filter transforms short_esi: <code>0303:0202:0101</code> to LACP ID format format: <code>0303.0202.0101</code></p>
+<p><strong>example:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="x">lacp_id: </span><span class="cp">{{</span> <span class="nv">l2leaf.node_groups</span><span class="o">[</span><span class="nv">l2leaf_node_group</span><span class="o">]</span><span class="nv">.short_esi</span> <span class="o">|</span> <span class="nf">arista</span><span class="nv">.avd.generate_lacp_id</span> <span class="cp">}}</span>
+</code></pre></div>
+<h6 id="generate_route_target-filter">generate_route_target filter<a class="headerlink" href="#generate_route_target-filter" title="Permanent link">&para;</a></h6>
+<p>The <code>arista.avd.generate_route_target</code> filter transforms short_esi: <code>0303:0202:0101</code> to route-target format: <code>03:03:02:02:01:01</code></p>
+<p><strong>example:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="x">rt: </span><span class="cp">{{</span> <span class="nv">l2leaf.node_groups</span><span class="o">[</span><span class="nv">l2leaf_node_group</span><span class="o">]</span><span class="nv">.short_esi</span> <span class="o">|</span> <span class="nf">arista</span><span class="nv">.avd.generate_route_target</span> <span class="cp">}}</span>
+</code></pre></div>
+<h5 id="add_md_toc-filter">add_md_toc filter<a class="headerlink" href="#add_md_toc-filter" title="Permanent link">&para;</a></h5>
+<p>The <code>arista.avd.add_md_toc</code> filter will parse the input MarkDown and add a TOC between the <code>toc_markers</code>.</p>
+<p>The module is used in <code>eos_designs</code> to create Table Of Contents for Fabric Documentation.
+The module is used in <code>eos_cli_config_gen</code> to create Table Of Contents for Device Documentation.</p>
+<p>To use this filter:
+<div class="highlight"><pre><span></span><code>{{ markdown string | arista.avd.add_md_toc(skip_lines=0, toc_levels=2, toc_marker=&#39;&lt;!-- toc --&gt;&#39;) }}
+</code></pre></div></p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>description</th>
+<th>type</th>
+<th>optional</th>
+<th>default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>skip_lines</td>
+<td>Skip first x lines when parsing MD file</td>
+<td>Integer</td>
+<td>True</td>
+<td>0</td>
+</tr>
+<tr>
+<td>toc_levels</td>
+<td>How many levels of headings will be included in the TOC</td>
+<td>Integer</td>
+<td>True</td>
+<td>2</td>
+</tr>
+<tr>
+<td>toc_marker</td>
+<td>TOC will be inserted or updated between two of these markers in the MD file</td>
+<td>String</td>
+<td>True</td>
+<td><code>"&lt;!-- toc --&gt;"</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>example:</strong></p>
+<p>To use this module:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">tasks</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Generate fabric documentation</span>
+<span class="w">  </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">build</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">provision</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">documentation</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">run_once</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">delegate_to</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
+<span class="w">  </span><span class="nt">check_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no</span>
+<span class="w">  </span><span class="nt">copy</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">lookup(&#39;template&#39;,&#39;documentation/fabric-documentation.j2&#39;)</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">arista.avd.add_md_toc(skip_lines=3)</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">    </span><span class="nt">dest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">fabric_dir</span><span class="nv"> </span><span class="s">}}/{{</span><span class="nv"> </span><span class="s">fabric_name</span><span class="nv"> </span><span class="s">}}-documentation.md&quot;</span>
+<span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0664</span>
+</code></pre></div>
+<h4 id="plugin-tests">Plugin Tests<a class="headerlink" href="#plugin-tests" title="Permanent link">&para;</a></h4>
+<p>Arista AVD provides built-in test plugins to help verify data efficiently in jinja2 templates</p>
+<h5 id="defined-test">defined test<a class="headerlink" href="#defined-test" title="Permanent link">&para;</a></h5>
+<p>The <code>arista.avd.defined</code> test will return <code>False</code> if the passed value is <code>Undefined</code> or <code>None</code>. Else it will return <code>True</code>.
+<code>arista.avd.defined</code> test also accepts an optional <code>test_value</code> argument to test if the value equals this.
+The optional <code>var_type</code> argument can be used to also test if the variable is of the expected type.</p>
+<p>Optionally the test can emit warnings or errors if the test fails.</p>
+<p>Compared to the builtin <code>is defined</code> test, this test will also test for <code>None</code> and can even test for a specific value and/or class.</p>
+<p>Syntax:</p>
+<div class="highlight"><pre><span></span><code><span class="x">{% &lt;value&gt; is arista.avd.defined(test_value=&lt;test_value&gt;,</span>
+<span class="x">                                 var_type=[&#39;float&#39;, &#39;int&#39;, &#39;str&#39;, &#39;list&#39;, &#39;dict&#39;, &#39;tuple&#39;, &#39;bool&#39;],</span>
+<span class="x">                                 fail_action=[&#39;warning&#39;,&#39;error&#39;],</span>
+<span class="x">                                 var_name=&lt;string representing name of value&gt;) %}</span>
+</code></pre></div>
+<p>To use this test:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">{%</span> <span class="k">if</span> <span class="nv">extremely_long_variable_name</span> <span class="k">is</span> <span class="nf">arista</span><span class="nv">.avd.defined</span> <span class="cp">%}</span>
+<span class="x">text : </span><span class="cp">{{</span> <span class="nv">extremely_long_variable_name</span> <span class="cp">}}</span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">if</span> <span class="nv">extremely_long_variable_name</span> <span class="k">is</span> <span class="nf">arista</span><span class="nv">.avd.defined</span><span class="o">(</span><span class="s2">&quot;something&quot;</span><span class="o">)</span> <span class="cp">%}</span>
+<span class="x">text : </span><span class="cp">{{</span> <span class="nv">extremely_long_variable_name</span> <span class="cp">}}</span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+<span class="x">Feature is </span><span class="cp">{{</span> <span class="s2">&quot;not &quot;</span> <span class="k">if</span> <span class="nv">extremely_long_variable_name</span> <span class="k">is</span> <span class="k">not</span> <span class="nf">arista</span><span class="nv">.avd.defined</span> <span class="cp">}}</span><span class="x">configured</span>
+</code></pre></div>
+<p>The <code>arista.avd.defined</code> test can be useful as an alternative to:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">{%</span> <span class="k">if</span> <span class="nv">extremely_long_variable_name</span> <span class="k">is</span> <span class="nf">defined</span> <span class="k">and</span> <span class="nv">extremely_long_variable_name</span> <span class="k">is</span> <span class="k">not</span> <span class="nf">none</span> <span class="cp">%}</span>
+<span class="x">text : </span><span class="cp">{{</span> <span class="nv">extremely_long_variable_name</span> <span class="cp">}}</span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">if</span> <span class="nv">extremely_long_variable_name</span> <span class="k">is</span> <span class="nf">defined</span> <span class="k">and</span> <span class="nv">extremely_long_variable_name</span> <span class="o">==</span> <span class="s2">&quot;something&quot;</span> <span class="cp">%}</span>
+<span class="x">text : </span><span class="cp">{{</span> <span class="nv">extremely_long_variable_name</span> <span class="cp">}}</span>
+<span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+<span class="x">Feature is </span><span class="cp">{{</span> <span class="s2">&quot;not &quot;</span> <span class="k">if</span> <span class="nv">extremely_long_variable_name</span> <span class="k">is</span> <span class="nf">defined</span> <span class="k">and</span> <span class="nv">extremely_long_variable_name</span> <span class="k">is</span> <span class="k">not</span> <span class="nf">none</span> <span class="cp">}}</span><span class="x">configured</span>
+</code></pre></div>
+<p>Warnings or Errors can be emitted with the optional arguments <code>fail_action</code> and <code>var_name</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">{%</span> <span class="k">if</span> <span class="nv">my_dict.my_list</span><span class="o">[</span><span class="m">12</span><span class="o">]</span><span class="nv">.my_var</span> <span class="k">is</span> <span class="nf">arista</span><span class="nv">.avd.defined</span><span class="o">(</span><span class="nv">fail_action</span><span class="o">=</span><span class="s1">&#39;warning&#39;</span><span class="o">,</span> <span class="nv">var_name</span><span class="o">=</span><span class="s1">&#39;my_dict.my_list[12].my_var&#39;</span><span class="o">)</span> <span class="cp">%}</span>
+<span class="x">&gt;&gt;&gt; [WARNING]: my_dict.my_list[12].my_var was expected but not set. Output may be incorrect or incomplete!</span>
+
+<span class="cp">{%</span> <span class="k">if</span> <span class="nv">my_dict.my_list</span><span class="o">[</span><span class="m">12</span><span class="o">]</span><span class="nv">.my_var</span> <span class="k">is</span> <span class="nf">arista</span><span class="nv">.avd.defined</span><span class="o">(</span><span class="nv">fail_action</span><span class="o">=</span><span class="s1">&#39;error&#39;</span><span class="o">,</span> <span class="nv">var_name</span><span class="o">=</span><span class="s1">&#39;my_dict.my_list[12].my_var&#39;</span><span class="o">)</span> <span class="cp">%}</span>
+<span class="x">&gt;&gt;&gt; fatal: [DC2-RS1]: FAILED! =&gt; {&quot;msg&quot;: &quot;my_dict.my_list[12].my_var was expected but not set!&quot;}</span>
+
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">my_dict.my_list</span><span class="o">[</span><span class="m">12</span><span class="o">]</span><span class="nv">.my_var</span> <span class="o">=</span> <span class="s1">&#39;not_my_value&#39;</span> <span class="cp">%}</span>
+
+<span class="cp">{%</span> <span class="k">if</span> <span class="nv">my_dict.my_list</span><span class="o">[</span><span class="m">12</span><span class="o">]</span><span class="nv">.my_var</span> <span class="k">is</span> <span class="nf">arista</span><span class="nv">.avd.defined</span><span class="o">(</span><span class="s1">&#39;my_value&#39;</span><span class="o">,</span> <span class="nv">fail_action</span><span class="o">=</span><span class="s1">&#39;warning&#39;</span><span class="o">,</span> <span class="nv">var_name</span><span class="o">=</span><span class="s1">&#39;my_dict.my_list[12].my_var&#39;</span><span class="o">)</span> <span class="cp">%}</span>
+<span class="x">&gt;&gt;&gt; [WARNING]: my_dict.my_list[12].my_var was set to not_my_value but we expected my_value. Output may be incorrect or incomplete!</span>
+
+<span class="cp">{%</span> <span class="k">if</span> <span class="nv">my_dict.my_list</span><span class="o">[</span><span class="m">12</span><span class="o">]</span><span class="nv">.my_var</span> <span class="k">is</span> <span class="nf">arista</span><span class="nv">.avd.defined</span><span class="o">(</span><span class="s1">&#39;my_value&#39;</span><span class="o">,</span> <span class="nv">fail_action</span><span class="o">=</span><span class="s1">&#39;error&#39;</span><span class="o">,</span> <span class="nv">var_name</span><span class="o">=</span><span class="s1">&#39;my_dict.my_list[12].my_var&#39;</span><span class="o">)</span> <span class="cp">%}</span>
+<span class="x">&gt;&gt;&gt; fatal: [DC2-RS1]: FAILED! =&gt; {&quot;msg&quot;: &quot;my_dict.my_list[12].my_var was set to not_my_value but we expected my_value!&quot;}</span>
+</code></pre></div>
+<h5 id="contains-test">contains test<a class="headerlink" href="#contains-test" title="Permanent link">&para;</a></h5>
+<p>The <code>arista.avd.contains</code> test will test if a list contains one or more of the supplied value(s).
+The test will return <code>False</code> if either the passed value or the test_values are <code>Undefined</code> or <code>none</code>.</p>
+<p>The test accepts either a single test_value or a list of test_values.
+To use this test:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">{%</span> <span class="k">if</span> <span class="nv">my_list</span> <span class="k">is</span> <span class="nf">arista</span><span class="nv">.avd.contains</span><span class="o">(</span><span class="nv">item</span><span class="o">)</span> <span class="cp">%}</span><span class="x">Match</span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+
+<span class="c">{# or #}</span>
+
+<span class="cp">{%</span> <span class="k">if</span> <span class="nv">my_list</span> <span class="k">is</span> <span class="nf">arista</span><span class="nv">.avd.contains</span><span class="o">(</span><span class="nv">item_list</span><span class="o">)</span> <span class="cp">%}</span><span class="x">Match</span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+</code></pre></div>
+<p><strong>example</strong>
+The <code>arista.avd.contains</code> is used in the role <code>eos_designs</code> in combination with <code>selectattr</code> to parse the <code>platform_settings</code> list
+for an element where <code>switch_platform</code> is contained in the <code>platforms</code> attribute.</p>
+<p>Data model:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">platform_settings</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">platforms</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">default</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">reload_delay</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">mlag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">300</span>
+<span class="w">      </span><span class="nt">non_mlag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">330</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">platforms</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="nv">7280R</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">7280R2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">7500R</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">7500R2</span><span class="w"> </span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">tcam_profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vxlan-routing</span>
+<span class="w">    </span><span class="nt">lag_hardware_only</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">reload_delay</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">mlag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">900</span>
+<span class="w">      </span><span class="nt">non_mlag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1020</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">platforms</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="nv">7280R3</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">7500R3</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">7800R3</span><span class="w"> </span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">reload_delay</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">mlag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">900</span>
+<span class="w">      </span><span class="nt">non_mlag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1020</span>
+</code></pre></div>
+<p>Jinja template without the <code>selectattr</code> and <code>arista.avd.contains</code> test:</p>
+<div class="highlight"><pre><span></span><code><span class="x">switch:</span>
+<span class="cp">{%</span> <span class="k">set</span> <span class="nv">ns</span> <span class="o">=</span> <span class="nv">namespace</span><span class="o">()</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">for</span> <span class="nv">platform_setting</span> <span class="k">in</span> <span class="nv">platform_settings</span> <span class="cp">%}</span>
+<span class="cp">{%</span>     <span class="k">set</span> <span class="nv">ns.platform_defined</span> <span class="o">=</span> <span class="kp">false</span> <span class="cp">%}</span>
+<span class="cp">{%</span>     <span class="k">if</span> <span class="nv">switch_platform</span> <span class="k">in</span> <span class="nv">platform_setting.platforms</span> <span class="cp">%}</span>
+<span class="cp">{%</span>         <span class="k">set</span> <span class="nv">ns.platform_defined</span> <span class="o">=</span> <span class="kp">true</span> <span class="o">]}</span>
+  <span class="nv">platform_settings</span><span class="o">:</span> <span class="o">{{</span> <span class="nv">platform_setting</span> <span class="o">}}</span>
+<span class="o">{%</span>         <span class="nv">break</span><span class="p">;</span> <span class="cp">%}</span>
+<span class="cp">{%</span>     <span class="k">endif</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">for</span> <span class="nv">platform_setting</span> <span class="k">in</span> <span class="nv">platform_settings</span> <span class="k">if</span> <span class="nv">ns.platform_defined</span> <span class="o">==</span> <span class="kp">false</span> <span class="cp">%}</span>
+<span class="cp">{%</span>     <span class="k">if</span> <span class="s1">&#39;default&#39;</span> <span class="k">in</span> <span class="nv">platform_setting.platforms</span> <span class="cp">%}</span>
+<span class="x">  platform_settings: </span><span class="cp">{{</span> <span class="nv">platform_setting</span> <span class="cp">}}</span>
+<span class="cp">{%</span>         <span class="k">break</span><span class="p">;</span> <span class="cp">%}</span>
+<span class="cp">{%</span>     <span class="k">endif</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+</code></pre></div>
+<p>Jinja template with the <code>selectattr</code> and <code>arista.avd.contains</code> test:</p>
+<div class="highlight"><pre><span></span><code><span class="x">switch:</span>
+<span class="x">  platform_settings: </span><span class="cp">{{</span> <span class="nv">platform_settings</span> <span class="o">|</span> <span class="nf">selectattr</span><span class="o">(</span><span class="s2">&quot;platforms&quot;</span><span class="o">,</span> <span class="s2">&quot;arista.avd.contains&quot;</span><span class="o">,</span> <span class="nv">switch_platform</span><span class="o">)</span> <span class="o">|</span> <span class="nf">first</span> <span class="o">|</span> <span class="nf">arista</span><span class="nv">.avd.default</span><span class="o">(</span>
+                        <span class="nv">platform_settings</span> <span class="o">|</span> <span class="nf">selectattr</span><span class="o">(</span><span class="s2">&quot;platforms&quot;</span><span class="o">,</span> <span class="s2">&quot;arista.avd.contains&quot;</span><span class="o">,</span> <span class="s2">&quot;default&quot;</span><span class="o">)</span> <span class="o">|</span> <span class="nf">first</span><span class="o">)</span> <span class="cp">}}</span>
+</code></pre></div>
+<h4 id="modules">Modules<a class="headerlink" href="#modules" title="Permanent link">&para;</a></h4>
+<h5 id="inventory-to-cloudvision-containers">Inventory to CloudVision Containers<a class="headerlink" href="#inventory-to-cloudvision-containers" title="Permanent link">&para;</a></h5>
+<p>The <code>arista.avd.inventory_to_container</code> module provides following capabilities:</p>
+<ul>
+<li>Transform inventory groups into CloudVision containers topology.</li>
+<li>Create list of configlets definition.</li>
+</ul>
+<p>It saves everything in a <code>YAML</code> file using <strong><code>destination</code></strong> keyword.</p>
+<p>It is a module to build a structure of data to configure a CloudVision server. Output is ready to be passed to <a href="https://github.com/aristanetworks/ansible-cvp/"><code>arista.cvp</code></a> to configure <strong>CloudVision</strong>.</p>
+<p><strong>example:</strong></p>
+<p>To use this module:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">tasks</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">generate intended variables</span>
+<span class="w">    </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">always</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">inventory_to_container</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">inventory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">inventory_file</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">      </span><span class="nt">container_root</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">container_root</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">      </span><span class="nt">configlet_dir</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;intended/configs&quot;</span>
+<span class="w">      </span><span class="nt">configlet_prefix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">configlets_prefix</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">      </span><span class="nt">destination</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{playbook_dir}}/intended/structured_configs/{{inventory_hostname}}.yml&quot;</span>
+</code></pre></div>
+<p>Inventory example applied to this example:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">all</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">children</span><span class="p">:</span>
+<span class="c1"># DC1_Fabric - EVPN Fabric running in home lab</span>
+<span class="w">    </span><span class="nt">DC1</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">children</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">DC1_FABRIC</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">children</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">DC1_SPINES</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">hosts</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">DC1-SPINE1</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">DC1-SPINE2</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">DC1_L3LEAFS</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">children</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">DC1_LEAF1</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">hosts</span><span class="p">:</span>
+<span class="w">                    </span><span class="nt">DC1-LEAF1A</span><span class="p">:</span>
+<span class="w">                    </span><span class="nt">DC1-LEAF1B</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">DC1_LEAF2</span><span class="p">:</span>
+<span class="w">                  </span><span class="nt">hosts</span><span class="p">:</span>
+<span class="w">                    </span><span class="nt">DC1-LEAF2A</span><span class="p">:</span>
+<span class="w">                    </span><span class="nt">DC1-LEAF2B</span><span class="p">:</span>
+</code></pre></div>
+<p>Generated output ready to be used by <a href="https://github.com/aristanetworks/ansible-cvp/"><code>arista.cvp</code></a> collection:</p>
+<div class="highlight"><pre><span></span><code><span class="nn">---</span>
+<span class="nt">CVP_DEVICES</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">DC1-SPINE1</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DC1-SPINE1</span>
+<span class="w">    </span><span class="nt">parentContainerName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DC1_SPINES</span>
+<span class="w">    </span><span class="nt">configlets</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DC1-AVD_DC1-SPINE1</span>
+<span class="w">    </span><span class="nt">imageBundle</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
+
+<span class="nt">CVP_CONTAINERS</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">DC1_LEAF1</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">parent_container</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DC1_L3LEAFS</span>
+<span class="w">  </span><span class="nt">DC1_FABRIC</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">parent_container</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Tenant</span>
+<span class="w">  </span><span class="nt">DC1_L3LEAFS</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">parent_container</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DC1_FABRIC</span>
+<span class="w">  </span><span class="nt">DC1_LEAF2</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">parent_container</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DC1_L3LEAFS</span>
+<span class="w">  </span><span class="nt">DC1_SPINES</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">parent_container</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DC1_FABRIC</span>
+</code></pre></div>
+<h5 id="build-configuration-to-publish-configlets-to-cloudvision">Build Configuration to publish configlets to CloudVision<a class="headerlink" href="#build-configuration-to-publish-configlets-to-cloudvision" title="Permanent link">&para;</a></h5>
+<p>The <code>arista.avd.configlet_build_config</code> module provides the following capabilities:</p>
+<ul>
+<li>Build arista.cvp.configlet configuration.</li>
+<li>Build configuration to publish configlets to Cloudvision.</li>
+</ul>
+<p><strong>options:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">configlet_build_config</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">configlet_dir</span><span class="p">:</span><span class="w">  </span><span class="s">&quot;&lt;</span><span class="nv"> </span><span class="s">Directory</span><span class="nv"> </span><span class="s">where</span><span class="nv"> </span><span class="s">configlets</span><span class="nv"> </span><span class="s">are</span><span class="nv"> </span><span class="s">located</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">Required</span><span class="nv"> </span><span class="s">&gt;&quot;</span>
+<span class="w">    </span><span class="nt">configlet_prefix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;</span><span class="nv"> </span><span class="s">Prefix</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">append</span><span class="nv"> </span><span class="s">on</span><span class="nv"> </span><span class="s">configlet</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">Required</span><span class="nv"> </span><span class="s">&gt;&quot;</span>
+<span class="w">    </span><span class="nt">destination</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;</span><span class="nv"> </span><span class="s">File</span><span class="nv"> </span><span class="s">where</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">save</span><span class="nv"> </span><span class="s">information</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">Optional</span><span class="nv"> </span><span class="s">&gt;&quot;</span>
+<span class="w">    </span><span class="nt">configlet_extension</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;</span><span class="nv"> </span><span class="s">File</span><span class="nv"> </span><span class="s">extension</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">look</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">Default</span><span class="nv"> </span><span class="s">&#39;conf&#39;</span><span class="nv"> </span><span class="s">&gt;&quot;</span>
+</code></pre></div>
+<p><strong>example:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># tasks file for configlet_build_config</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">generate intended variables</span>
+<span class="w">  </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">build</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">provision</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">configlet_build_config</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">configlet_dir</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/path/to/configlets/folder/&quot;</span>
+<span class="w">    </span><span class="nt">configlet_prefix</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;AVD_&quot;</span>
+<span class="w">    </span><span class="nt">configlet_extension</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;cfg&quot;</span>
+</code></pre></div>
+<h5 id="yaml-templates-to-facts">YAML Templates to Facts<a class="headerlink" href="#yaml-templates-to-facts" title="Permanent link">&para;</a></h5>
+<p>The <code>arista.avd.yaml_templates_to_facts</code> module is an Ansible Action Plugin providing the following capabilities:</p>
+<ul>
+<li>Set Facts based on one or more Jinja2 templates producing YAML output.</li>
+<li>Recursively combining output of templates to allow templates to update overlapping parts of the data models.</li>
+<li>Facts set by one template will be accessible by the next templates</li>
+<li>Returned Facts can be set below a specific <code>root_key</code></li>
+<li>Facts returned templates can be stripped for <code>null</code> values to avoid them overwriting previous set facts</li>
+</ul>
+<p>The module is used in <code>eos_designs</code> first to set facts for devices and then to set the <code>structured_configuration</code> variable based on all the <code>eos_designs</code> templates.</p>
+<p>The module arguments are:</p>
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">yaml_templates_to_facts</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">root_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt; optional root_key name &gt;</span>
+<span class="w">    </span><span class="nt">templates</span><span class="p">:</span>
+<span class="w">        </span><span class="c1"># Path to template file</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;</span><span class="nv"> </span><span class="s">template</span><span class="nv"> </span><span class="s">file</span><span class="nv"> </span><span class="s">&gt;&quot;</span>
+<span class="w">        </span><span class="nt">options</span><span class="p">:</span>
+<span class="w">          </span><span class="c1"># Merge strategy for lists for Ansible Combine filter. See Ansible Combine filter for details.</span>
+<span class="w">          </span><span class="nt">list_merge</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt; append (default) | replace | keep | prepend | append_rp | prepend_rp &gt;</span>
+<span class="w">          </span><span class="c1"># Filter out keys from the generated output if value is null/none/undefined</span>
+<span class="w">          </span><span class="nt">strip_empty_keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt; true (default) | false &gt;</span>
+<span class="w">    </span><span class="c1"># Output list &#39;avd_yaml_templates_to_facts_debug&#39; with timestamps of each performed action.</span>
+<span class="w">    </span><span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt; true | false (default) &gt;</span>
+<span class="w">    </span><span class="c1"># Destination path. If set, the output facts will also be written to this path.</span>
+<span class="w">    </span><span class="c1"># Autodetects data format based on file suffix. &#39;.yml&#39;, &#39;.yaml&#39; -&gt; YAML, default -&gt; JSON</span>
+<span class="w">    </span><span class="nt">dest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt; path &gt;</span>
+<span class="w">    </span><span class="c1"># If true the output data will be run through another jinja2 rendering before returning.</span>
+<span class="w">    </span><span class="c1"># This is to resolve any input values with inline jinja using variables/facts set by the input templates.</span>
+<span class="w">    </span><span class="nt">template_output</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt; true | false (default) &gt;</span>
+</code></pre></div>
+<p><strong>example:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Set AVD facts</span>
+<span class="w">  </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">build</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">provision</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">yaml_templates_to_facts</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">templates</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">templates.facts</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">  </span><span class="nt">delegate_to</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
+<span class="w">  </span><span class="nt">check_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no</span>
+<span class="w">  </span><span class="nt">changed_when</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Generate device configuration in structured format</span>
+<span class="w">  </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">build</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">provision</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">yaml_templates_to_facts</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">templates</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">templates.structured_config</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">    </span><span class="nt">dest</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">structured_dir</span><span class="nv"> </span><span class="s">}}/{{</span><span class="nv"> </span><span class="s">inventory_hostname</span><span class="nv"> </span><span class="s">}}.{{</span><span class="nv"> </span><span class="s">avd_structured_config_file_format</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">    </span><span class="nt">template_output</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="w">  </span><span class="nt">delegate_to</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
+<span class="w">  </span><span class="nt">check_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no</span>
+<span class="w">  </span><span class="nt">register</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">structured_config</span>
+</code></pre></div>
+<p>Role default variables applied to this example:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Design variables</span>
+<span class="nt">design</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;l3ls-evpn&quot;</span>
+
+<span class="nt">templates</span><span class="p">:</span>
+<span class="w">  </span><span class="c1"># Templates defined per design</span>
+<span class="w">  </span><span class="nt">l3ls-evpn</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">facts</span><span class="p">:</span>
+<span class="w">      </span><span class="c1"># Set general &quot;switch.*&quot; variables</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;facts/main.j2&quot;</span>
+<span class="w">      </span><span class="c1"># Set design specific &quot;switch.*&quot; variables</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;facts/main.j2&quot;</span>
+<span class="w">    </span><span class="nt">structured_config</span><span class="p">:</span>
+<span class="w">      </span><span class="c1"># Render Structured Configuration</span>
+<span class="w">      </span><span class="c1"># Base features</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;base/main.j2&quot;</span>
+<span class="w">      </span><span class="c1"># MLAG feature</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;mlag/main.j2&quot;</span>
+<span class="w">      </span><span class="c1"># Underlay feature</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;underlay/main.j2&quot;</span>
+<span class="w">      </span><span class="c1"># Overlay feature</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;overlay/main.j2&quot;</span>
+<span class="w">      </span><span class="c1"># L3 Edge feature</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;l3_edge/main.j2&quot;</span>
+<span class="w">      </span><span class="c1"># Tenants feature</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;network_services/main.j2&quot;</span>
+<span class="w">      </span><span class="c1"># Connected Endpoints feature</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;connected_endpoints/main.j2&quot;</span>
+<span class="w">      </span><span class="c1"># Merge custom_structured_configuration last</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;custom-structured-configuration-from-var.j2&quot;</span>
+<span class="w">        </span><span class="nt">options</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">list_merge</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">custom_structured_configuration_list_merge</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="w">          </span><span class="nt">strip_empty_keys</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</code></pre></div>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      Last update:
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">February 4, 2022</span>
+      
+    
+  </small>
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2019 - 2021 Arista Networks
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.top"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.2a6f1dda.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tablesort/5.2.1/tablesort.min.js"></script>
+      
+        <script src="../docs/stylesheets/tables.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
+      
+        <script src="../docs/stylesheets/highlight.js"></script>
+      
+    
+  </body>
+</html>

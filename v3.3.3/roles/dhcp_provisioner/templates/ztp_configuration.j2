@@ -1,0 +1,82 @@
+{# HEADER -- LOGIC implementation #}
+{% set cvp_instance_ip = 'cvp_instance_ip is unset - please set' %}
+{% if hostvars[groups[fabric_group][0]]['cvp_instance_ips'] is arista.avd.defined %}
+{%     set cvp_instance_ip = hostvars[groups[fabric_group][0]]['cvp_instance_ips'][0] %}
+{% elif hostvars[groups[fabric_group][0]]['cvp_instance_ip'] is arista.avd.defined %}
+{%     set cvp_instance_ip = hostvars[groups[fabric_group][0]]['cvp_instance_ip'] %}
+{% endif %}
+{% set node_types = dict() %}
+{% set node_type_keys = hostvars[groups[fabric_group][0]]['node_type_keys'] |
+        arista.avd.default(['spine', 'l3leaf', 'l2leaf', 'super_spine', 'overlay_controller']) %}
+{% for node_type_key in node_type_keys | arista.avd.natural_sort %}
+{%     for host in hostvars | arista.avd.natural_sort %}
+{%         if host in groups[fabric_group] %}
+{%             if hostvars[host][node_type_key] is arista.avd.defined %}
+{%                 do node_types.update({node_type_key: hostvars[host][node_type_key]}) %}
+{%             endif %}
+{%         endif %}
+{%     endfor %}
+{% endfor %}
+{# DHCP YAML configuration rendering #}
+---
+ztp:
+  default:
+    registration: http://{{ cvp_instance_ip }}/ztp/bootstrap
+{% if hostvars[groups[fabric_group][0]]['mgmt_gateway'] is arista.avd.defined %}
+    gateway: {{ hostvars[groups[fabric_group][0]]['mgmt_gateway'] }}
+{% endif %}
+{% if hostvars[groups[fabric_group][0]]['name_servers'] is arista.avd.defined %}
+    nameservers:
+{%     for name_server in hostvars[groups[fabric_group][0]]['name_servers'] | arista.avd.natural_sort %}
+      - {{ name_server }}
+{%     endfor %}
+{% endif %}
+{% if ztp_mac_source == 'system' %}
+    use_system_mac: true
+{% else %}
+    use_system_mac: false
+{% endif %}
+  general:
+    subnets:
+{% if ztp_network_summary is arista.avd.defined %}
+      - network: {{ ztp_network_summary | ansible.netcommon.ipaddr('network') }}
+        netmask: {{ ztp_network_summary | ansible.netcommon.ipaddr('netmask') }}
+{% endif %}
+{% if hostvars[groups[fabric_group][0]]['mgmt_gateway'] is arista.avd.defined %}
+        gateway: {{ hostvars[groups[fabric_group][0]]['mgmt_gateway'] }}
+{% endif %}
+{% if hostvars[groups[fabric_group][0]]['name_servers'] is arista.avd.defined %}
+        nameservers:
+{%     for name_server in hostvars[groups[fabric_group][0]]['name_servers'] | arista.avd.natural_sort %}
+          - {{ name_server }}
+{%     endfor %}
+{% endif %}
+{% if ztp_pool_start is arista.avd.defined %}
+        start: {{ ztp_pool_start }}
+{% endif %}
+{% if ztp_pool_end is arista.avd.defined %}
+        end: {{ ztp_pool_end }}
+{% endif %}
+        lease_time: {{ ztp_lease_time }}
+  clients:
+{% for node_type in node_types | arista.avd.natural_sort %}
+    # {{ node_type }}
+{# For NODE GROUPS entries #}
+{%     for node_group in node_types[node_type]['node_groups'] | arista.avd.natural_sort %}
+{%         for node in node_types[node_type]['node_groups'][node_group]['nodes'] | arista.avd.natural_sort %}
+{%             if node_types[node_type]['node_groups'][node_group]['nodes'][node].mac_address is arista.avd.defined %}
+    - name: {{ node }}
+      mac: '{{ node_types[node_type]['node_groups'][node_group]['nodes'][node].mac_address }}'
+      ip4: {{ node_types[node_type]['node_groups'][node_group]['nodes'][node].mgmt_ip | ansible.netcommon.ipaddr('address') }}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{# For NODES List #}
+{%     for node in node_types[node_type]['nodes'] | arista.avd.natural_sort %}
+{%         if node_types[node_type]['nodes'][node].mac_address is arista.avd.defined %}
+    - name: {{ node }}
+      mac: '{{ node_types[node_type]['nodes'][node].mac_address }}'
+      ip4: {{ node_types[node_type]['nodes'][node].mgmt_ip | ansible.netcommon.ipaddr('address') }}
+{%         endif %}
+{%     endfor %}
+{% endfor %}

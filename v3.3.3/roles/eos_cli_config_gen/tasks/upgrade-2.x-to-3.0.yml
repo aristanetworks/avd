@@ -1,0 +1,56 @@
+---
+- name: "Create directory for updated data model {{ root_dir }}/upgrade_2.x_to_3.0/"
+  tags: [build, provision, upgrade]
+  file:
+    path: "{{ root_dir }}/eos_cli_config_gen_upgrade_2.x_to_3.0/"
+    state: directory
+    mode: 0775
+  delegate_to: localhost
+  run_once: true
+
+- name: Upgrade AVD data model from AVD version 2.x to 3.0 (Set eos_cli_config_gen_upgraded_data_model)
+  tags: [build, provision, upgrade]
+  yaml_templates_to_facts:
+    root_key: eos_cli_config_gen_upgraded_data_model
+    templates:
+      - template: "upgrade/upgrade-2.x-to-3.0/main.j2"
+  delegate_to: localhost
+  check_mode: no
+  changed_when: False
+
+- name: Write upgraded data model To file
+  tags: [build, provision, upgrade]
+  template:
+    src: "upgrade/upgrade-2.x-to-3.0/main.j2"
+    dest: "{{ root_dir }}/eos_cli_config_gen_upgrade_2.x_to_3.0/{{ inventory_hostname }}.yml"
+    mode: 0664
+  delegate_to: localhost
+  check_mode: no
+  when: eos_cli_config_gen_upgraded_data_model
+
+- name: "Remove upgrade file for device with no upgrades"
+  file:
+    path: "{{ root_dir }}/eos_cli_config_gen_upgrade_2.x_to_3.0/{{ inventory_hostname }}.yml"
+    state: absent
+  delegate_to: localhost
+  when: not eos_cli_config_gen_upgraded_data_model
+
+- name: Write upgraded and merged data model To file (debug)
+  # tags: [debug, never]
+  template:
+    src: "upgrade/overload-upgraded-data-model.j2"
+    dest: "{{ root_dir }}/eos_cli_config_gen_upgrade_2.x_to_3.0/{{ inventory_hostname }}-upgrade-debug.yml"
+    mode: 0664
+  delegate_to: localhost
+  check_mode: no
+  when: eos_cli_config_gen_upgraded_data_model
+
+- name: Load upgraded data model
+  tags: [build, provision, upgrade]
+  yaml_templates_to_facts:
+    templates:
+      - template: "upgrade/overload-upgraded-data-model.j2"
+  delegate_to: localhost
+  check_mode: no
+  changed_when: False
+  when: eos_cli_config_gen_upgraded_data_model

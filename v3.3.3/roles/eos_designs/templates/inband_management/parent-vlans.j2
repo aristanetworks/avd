@@ -1,0 +1,6 @@
+vlans:
+{% for vlan in inband_management_data.vlans %}
+  {{ vlan }}:
+    tenant: system
+    name: L2LEAF_INBAND_MGMT
+{% endfor %}

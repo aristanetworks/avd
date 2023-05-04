@@ -1,0 +1,16 @@
+{# eos - Route Maps #}
+{% for route_map in route_maps | arista.avd.natural_sort %}
+{%     for sequence in route_maps[route_map].sequence_numbers | arista.avd.natural_sort if route_maps[route_map].sequence_numbers[sequence].type is arista.avd.defined %}
+!
+route-map {{ route_map }} {{ route_maps[route_map].sequence_numbers[sequence].type }} {{ sequence }}
+{%         if route_maps[route_map].sequence_numbers[sequence].description is arista.avd.defined %}
+   description {{ route_maps[route_map].sequence_numbers[sequence].description }}
+{%         endif %}
+{%         for match_rule in route_maps[route_map].sequence_numbers[sequence].match | arista.avd.natural_sort %}
+   match {{ match_rule }}
+{%         endfor %}
+{%         for set_rule in route_maps[route_map].sequence_numbers[sequence].set | arista.avd.natural_sort %}
+   set {{ set_rule }}
+{%         endfor %}
+{%     endfor %}
+{% endfor %}

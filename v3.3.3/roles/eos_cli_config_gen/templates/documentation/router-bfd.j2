@@ -1,0 +1,32 @@
+{% if router_bfd is arista.avd.defined %}
+
+## Router BFD
+{%     if router_bfd.interval is arista.avd.defined and router_bfd.min_rx is arista.avd.defined and router_bfd.multiplier is arista.avd.defined  %}
+
+### Router BFD Singlehop Summary
+
+| Interval | Minimum RX | Multiplier |
+| -------- | ---------- | ---------- |
+{%         set interval = router_bfd.interval | arista.avd.default('-') %}
+{%         set min_rx = router_bfd.min_rx | arista.avd.default('-') %}
+{%         set multiplier = router_bfd.multiplier | arista.avd.default('-') %}
+| {{ interval }} | {{ min_rx }} | {{ multiplier }} |
+{%     endif %}
+{%     if router_bfd.multihop is arista.avd.defined %}
+
+### Router BFD Multihop Summary
+
+| Interval | Minimum RX | Multiplier |
+| -------- | ---------- | ---------- |
+{%         set interval = router_bfd.multihop.interval | arista.avd.default('-') %}
+{%         set min_rx = router_bfd.multihop.min_rx | arista.avd.default('-') %}
+{%         set multiplier = router_bfd.multihop.multiplier | arista.avd.default('-') %}
+| {{ interval }} | {{ min_rx }} | {{ multiplier }} |
+{%     endif %}
+
+### Router BFD Device Configuration
+
+```eos
+{%     include 'eos/router-bfd.j2' %}
+```
+{% endif %}

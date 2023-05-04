@@ -1,0 +1,52 @@
+---
+dc_name: DC1
+
+super_spine_loopback_network_summary: 172.16.100.0/24
+
+max_super_spines: 4
+
+super_spine:
+  platform: vEOS-LAB
+  bgp_as: 65100
+  nodes:
+    DC1-SUPER-SPINE1:
+      id: 1
+      # mgmt_ip: 192.168.1.1/24 Test without management IP
+      # evpn_role: none
+      # evpn_route_servers: []
+    DC1-SUPER-SPINE2:
+      id: 2
+      mgmt_ip: 192.168.1.2/24
+      # evpn_role: none
+      # evpn_route_servers: []
+
+overlay_controller_loopback_network_summary: 172.16.10.0/24
+overlay_controller_p2p_network_summary: 172.17.10.0/24
+overlay_controller_p2p_bfd: true
+
+max_overlay_controller_to_switch_links: 4
+
+# In DC1 we define all variables on specific node
+overlay_controller:
+  platform: vEOS-LAB
+  nodes:
+    DC1-RS1:
+      id: 1
+      # mgmt_ip: 192.168.1.3/24 Test without management IP
+      bgp_as: 65101
+      evpn_role: server
+      evpn_route_servers: [ DC2-RS1, DC2-SUPER-SPINE1, DC2-POD1-SPINE1, DC2-POD1-LEAF1A ]
+      remote_switches_interfaces: [ Ethernet5, Ethernet6, Ethernet4 ]
+      remote_switches: [ DC1-SUPER-SPINE1, DC1-POD1-SPINE1, DC1-POD1-LEAF1A ]
+      uplink_to_remote_switches: [ Ethernet1, Ethernet2, Ethernet3 ]
+    DC1-RS2:
+      id: 2
+      mgmt_ip: 192.168.1.4/24
+      bgp_as: 65102
+      evpn_role: server
+      evpn_route_servers: [ DC2-RS1, DC2-SUPER-SPINE1, DC2-POD1-SPINE1, DC2-POD1-LEAF1A ]
+      remote_switches_interfaces: [ Ethernet5, Ethernet4, Ethernet3 ]
+      remote_switches: [ DC1-SUPER-SPINE2, DC1-POD2-SPINE1, DC1-POD2-LEAF1A ]
+      uplink_to_remote_switches: [ Ethernet1, Ethernet2, Ethernet3 ]
+
+evpn_prevent_readvertise_to_server: true

@@ -1,0 +1,22 @@
+{# eos - Event handlers #}
+{% if event_handlers is arista.avd.defined %}
+{%     for handler in event_handlers %}
+!
+event-handler {{ handler }}
+{%         if event_handlers[handler].trigger is arista.avd.defined %}
+   trigger {{ event_handlers[handler].trigger }}
+{%             if event_handlers[handler].regex is arista.avd.defined %}
+      regex {{ event_handlers[handler].regex }}
+{%             endif %}
+{%         endif %}
+{%         if event_handlers[handler].action is arista.avd.defined and event_handlers[handler].action_type is arista.avd.defined %}
+   action {{ event_handlers[handler].action_type }} {{ event_handlers[handler].action }}
+{%         endif %}
+{%         if event_handlers[handler].delay is arista.avd.defined %}
+   delay {{ event_handlers[handler].delay }}
+{%         endif %}
+{%         if event_handlers[handler].asynchronous is arista.avd.defined(true) %}
+   asynchronous
+{%         endif %}
+{%     endfor %}
+{% endif %}

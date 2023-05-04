@@ -1,0 +1,27 @@
+{# j2lint: disable=V1 #}
+{% if vxlan_tunnel_interface.Vxlan1 is arista.avd.defined %}
+# Change from vxlan_tunnel_interface to vxlan_interface data model
+vxlan_interface:
+  Vxlan1:
+{%     if vxlan_tunnel_interface.Vxlan1.description is arista.avd.defined %}
+    description: {{ vxlan_tunnel_interface.Vxlan1.description }}
+{%     endif %}
+    vxlan:
+{%     if vxlan_tunnel_interface.Vxlan1.source_interface is arista.avd.defined %}
+      source_interface: {{ vxlan_tunnel_interface.Vxlan1.source_interface }}
+{%     endif %}
+{%     if vxlan_tunnel_interface.Vxlan1.vxlan_udp_port is arista.avd.defined %}
+      udp_port: {{ vxlan_tunnel_interface.Vxlan1.vxlan_udp_port }}
+{%     endif %}
+{%     if vxlan_tunnel_interface.Vxlan1.virtual_router.encapsulation_mac_address is arista.avd.defined %}
+      virtual_router_encapsulation_mac_address: {{ vxlan_tunnel_interface.Vxlan1.virtual_router.encapsulation_mac_address }}
+{%     endif %}
+{%     if vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vlans is arista.avd.defined %}
+      vlans:
+        {{ vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vlans | to_nice_yaml(indent=2) | indent(8, false) -}}
+{%     endif %}
+{%     if vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs is arista.avd.defined %}
+      vrfs:
+        {{ vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs | to_nice_yaml(indent=2) | indent(8, false) -}}
+{%     endif %}
+{% endif %}

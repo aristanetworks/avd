@@ -1,0 +1,21 @@
+- name: Test without extension
+  configlet_build_config:
+    configlet_dir: '{{ configlet_path }}'
+    configlet_prefix: 'Prefix'
+    destination: "{{ actual_output }}"
+  register: result
+
+- local_action: shell diff "{{ expected_output }}/expected_without_extension.yml" "{{ actual_output }}"
+  failed_when: "diff_output.rc > 1"
+  register: diff_output
+
+- name: Validate output
+  assert:
+    that:
+      - result is success
+      - result.changed == false
+      - result.CVP_CONFIGLETS != {}
+      - item is defined
+      - "'Prefix' in item[0:6]"
+      - diff_output.stdout == ""
+  with_items: "{{ result.CVP_CONFIGLETS }}"

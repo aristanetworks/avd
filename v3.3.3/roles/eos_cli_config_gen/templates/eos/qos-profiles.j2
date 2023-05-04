@@ -1,0 +1,39 @@
+{# eos - qos profiles #}
+{% for profile in qos_profiles | arista.avd.natural_sort %}
+!
+qos profile {{ profile }}
+{%     if qos_profiles[profile].trust is arista.avd.defined %}
+{%         if qos_profiles[profile].trust == 'disabled' %}
+   no qos trust
+{%         else %}
+   qos trust {{ qos_profiles[profile].trust }}
+{%         endif %}
+{%     endif %}
+{%     if qos_profiles[profile].cos is arista.avd.defined %}
+   qos cos {{ qos_profiles[profile].cos }}
+{%     endif %}
+{%     if qos_profiles[profile].dscp is arista.avd.defined %}
+   qos dscp {{ qos_profiles[profile].dscp }}
+{%     endif %}
+{%     if qos_profiles[profile].shape.rate is arista.avd.defined %}
+   shape rate {{ qos_profiles[profile].shape.rate }}
+{%     endif %}
+{%     if qos_profiles[profile].service_policy.type.qos_input is arista.avd.defined %}
+   service-policy type qos input {{ qos_profiles[profile].service_policy.type.qos_input }}
+{%     endif %}
+{%     for tx_queue in qos_profiles[profile].tx_queues | arista.avd.natural_sort %}
+   !
+   tx-queue {{ tx_queue }}
+{%         if qos_profiles[profile].tx_queues[tx_queue].bandwidth_percent is arista.avd.defined %}
+      bandwidth percent {{ qos_profiles[profile].tx_queues[tx_queue].bandwidth_percent }}
+{%         elif qos_profiles[profile].tx_queues[tx_queue].bandwidth_guaranteed_percent is arista.avd.defined %}
+      bandwidth guaranteed percent {{ qos_profiles[profile].tx_queues[tx_queue].bandwidth_guaranteed_percent }}
+{%         endif %}
+{%         if qos_profiles[profile].tx_queues[tx_queue].priority is arista.avd.defined %}
+      {{ qos_profiles[profile].tx_queues[tx_queue].priority }}
+{%         endif %}
+{%         if qos_profiles[profile].tx_queues[tx_queue].shape.rate is arista.avd.defined %}
+      shape rate {{ qos_profiles[profile].tx_queues[tx_queue].shape.rate }}
+{%         endif %}
+{%     endfor %}
+{% endfor %}

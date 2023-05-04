@@ -1,0 +1,37 @@
+{# eos - SFlow #}
+{% if sflow is arista.avd.defined %}
+!
+{%     if sflow.sample is arista.avd.defined %}
+{%         set sample_cli = "sflow sample " %}
+{%         if sflow.dangerous is arista.avd.defined(true) %}
+{%             set sample_cli = sample_cli ~ "dangerous " %}
+{%         endif %}
+{%         set sample_cli = sample_cli ~ sflow.sample %}
+{{ sample_cli }}
+{%     endif %}
+{%     for vrf in sflow.vrfs | arista.avd.natural_sort %}
+{%         for destination in sflow.vrfs[vrf].destinations | arista.avd.natural_sort %}
+{%             set vrf_cli = "sflow vrf " ~ vrf ~ " destination " ~ destination %}
+{%             if sflow.vrfs[vrf].destinations[destination].port is arista.avd.defined %}
+{%                 set vrf_cli = vrf_cli ~ " " ~ sflow.vrfs[vrf].destinations[destination].port %}
+{%             endif %}
+{{ vrf_cli }}
+{%         endfor %}
+{%         if sflow.vrfs[vrf].source_interface is arista.avd.defined %}
+sflow vrf {{ vrf }} source-interface {{ sflow.vrfs[vrf].source_interface }}
+{%         endif %}
+{%     endfor %}
+{%     for destination in sflow.destinations | arista.avd.natural_sort %}
+{%         set destination_cli = "sflow destination " ~ destination %}
+{%         if sflow.destinations[destination].port is arista.avd.defined %}
+{%             set destination_cli = destination_cli ~ " " ~ sflow.destinations[destination].port %}
+{%         endif %}
+{{ destination_cli }}
+{%     endfor %}
+{%     if sflow.source_interface is arista.avd.defined %}
+sflow source-interface {{ sflow.source_interface }}
+{%     endif %}
+{%     if sflow.run is arista.avd.defined(true) %}
+sflow run
+{%     endif %}
+{% endif %}

@@ -1,0 +1,9 @@
+{# Leaf and Spine route-maps for the underlay#}
+route_maps:
+  RM-CONN-2-BGP:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+          - "ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"
+{# SEQ 20 is set by inband management if applicable, so avoid setting that here #}

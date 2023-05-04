@@ -1,0 +1,12 @@
+{# eos - IP TACACS+ Source interfaces#}
+{% for ip_tacacs_source_interface in ip_tacacs_source_interfaces | arista.avd.natural_sort %}
+!
+{%     set ip_tacacs_cli = "ip tacacs" %}
+{%     if ip_tacacs_source_interface.vrf is arista.avd.defined %}
+{%         set ip_tacacs_cli = ip_tacacs_cli ~ " vrf " ~ ip_tacacs_source_interface.vrf %}
+{%     endif %}
+{%     if ip_tacacs_source_interface.name is arista.avd.defined %}
+{%         set ip_tacacs_cli = ip_tacacs_cli ~ " source-interface " ~ ip_tacacs_source_interface.name %}
+{%     endif %}
+{{ ip_tacacs_cli }}
+{% endfor %}

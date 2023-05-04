@@ -1,0 +1,34 @@
+
+{% set tmp_tenants = [] %}
+{# tenants #}
+{% for tenant in tenants | arista.avd.convert_dicts | arista.avd.natural_sort('name') %}
+{%     if tenant.name in switch.tenants | arista.avd.default([]) %}
+{%         set switch_tenant = switch.tenants[tenant.name] %}
+{#         vrfs #}
+{%         set tmp_vrfs = [] %}
+{%         for vrf in tenant.vrfs | arista.avd.convert_dicts | arista.avd.natural_sort('name') %}
+{%             if vrf.name in switch_tenant.vrfs | arista.avd.default([]) %}
+{%                 set switch_vrf = switch_tenant.vrfs[vrf.name] %}
+{#                 svis & bgp_peers #}
+{%                 set tmp_svis = [] %}
+{%                 for svi in vrf.svis | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%                     if svi.id in switch_vrf.svis | arista.avd.default([]) %}
+{%                         do tmp_svis.append(svi) %}
+{%                     endif %}
+{%                 endfor %}
+{%                 do vrf.update({'svis': tmp_svis, 'bgp_peers': vrf.bgp_peers | arista.avd.convert_dicts | arista.avd.natural_sort('name')}) %}
+{%                 do tmp_vrfs.append(vrf) %}
+{%             endif %}
+{%         endfor %}
+{#         l2vlans #}
+{%         set tmp_l2vlans = [] %}
+{%         for l2vlan in tenant.l2vlans | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%             if l2vlan.id in switch_tenant.l2vlans | arista.avd.default([]) %}
+{%                 do tmp_l2vlans.append(l2vlan) %}
+{%             endif %}
+{%         endfor %}
+{%         do tenant.update({'vrfs': tmp_vrfs, 'l2vlans': tmp_l2vlans}) %}
+{%         do tmp_tenants.append(tenant) %}
+{%     endif %}
+{% endfor %}
+{% set network_services_data.tenants = tmp_tenants %}

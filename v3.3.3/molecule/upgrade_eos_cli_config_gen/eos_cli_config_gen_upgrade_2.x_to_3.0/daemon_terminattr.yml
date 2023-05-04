@@ -1,0 +1,12 @@
+# Change from daemon_terminattr.ingestgrpcurl to daemon_terminattr.cvaddrs
+daemon_terminattr:
+  cvaddrs:
+  - 10.10.10.10:9910
+# New key cvcompression
+  cvcompression: "gzip"
+# Change from daemon_terminattr.ingestauth_key to daemon_terminattr.cvauth
+  cvauth:
+    method: "key"
+    key: "key"
+# Change from daemon_terminattr.ingestvrf to daemon_terminattr.cvvrf
+  cvvrf: default

@@ -1,0 +1,18 @@
+{% if vrfs is defined and vrfs is not none %}
+
+# VRF Instances
+
+## VRF Instances Summary
+
+| VRF Name | IP Routing |
+| -------- | ---------- |
+{%     for vrf in vrfs | arista.avd.natural_sort %}
+| {{ vrf }} |{% if vrfs[vrf].ip_routing == true %} enabled {% else %} disabled {% endif %}|
+{%     endfor %}
+
+## VRF Instances Device Configuration
+
+```eos
+{%     include 'eos/vrf-instances.j2' %}
+```
+{% endif %}

@@ -1,0 +1,7 @@
+{# Internal VLAN allocation policy  #}
+{% if  vlan_internal_order.allocation is arista.avd.defined
+   and vlan_internal_order.range.beginning is arista.avd.defined
+   and vlan_internal_order.range.ending is arista.avd.defined %}
+!
+vlan internal order {{ vlan_internal_order.allocation }} range {{ vlan_internal_order.range.beginning }} {{ vlan_internal_order.range.ending }}
+{% endif %}

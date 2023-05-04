@@ -1,0 +1,4899 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Arista Validated Design collection's documentation">
+      
+      
+        <meta name="author" content="Arista Ansible Team">
+      
+      
+      
+      
+      <link rel="icon" href="../../../../docs/_media/favicon.ico">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.0.15">
+    
+    
+      
+        <title>DC1-LEAF2A - Arista AVD collection</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.113286f1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.a0c5b2b5.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CFira+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Fira Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../docs/stylesheets/extra.material.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#dc1-leaf2a" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../index.html" title="Arista AVD collection" class="md-header__button md-logo" aria-label="Arista AVD collection" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M96 0C43 0 0 43 0 96v320c0 53 43 96 96 96h320c17.7 0 32-14.3 32-32s-14.3-32-32-32v-64c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H96zm0 384h256v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Arista AVD collection
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              DC1-LEAF2A
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+            </label>
+          
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/aristanetworks/ansible-avd" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AVD on Github
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../index.html" title="Arista AVD collection" class="md-nav__button md-logo" aria-label="Arista AVD collection" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M96 0C43 0 0 43 0 96v320c0 53 43 96 96 96h320c17.7 0 32-14.3 32-32s-14.3-32-32-32v-64c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H96zm0 384h256v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></svg>
+
+    </a>
+    Arista AVD collection
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/aristanetworks/ansible-avd" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AVD on Github
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Release Notes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Release Notes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/release-notes/3.x.x.html" class="md-nav__link">
+        3.x.x
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/release-notes/2.x.x.html" class="md-nav__link">
+        2.x.x
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/release-notes/1.1.x.html" class="md-nav__link">
+        1.1.x
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/release-notes/1.0.x.html" class="md-nav__link">
+        1.0.x
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          Getting Started
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Getting Started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/getting-started/intro-to-ansible-and-avd.html" class="md-nav__link">
+        Introduction to Ansible and AVD
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/getting-started.html" class="md-nav__link">
+        First steps with AVD
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          Installation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Installation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/installation/collection-installation.html" class="md-nav__link">
+        Collection Installation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/installation/requirements.html" class="md-nav__link">
+        Requirements
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          How-To
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          How-To
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/how-to/first-project.html" class="md-nav__link">
+        Build your first AVD project
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/how-to/first-cvp-avd-project.html" class="md-nav__link">
+        Build your first AVD & CVP project
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/how-to/lab-with-nat.html" class="md-nav__link">
+        Use NAT to access eAPI
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/how-to/tower-integration.html" class="md-nav__link">
+        AWX & Tower Integration
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/how-to/ztp.html" class="md-nav__link">
+        Configure ZTP server with CV collection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/how-to/vscode-container.html" class="md-nav__link">
+        VScode Container
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          Roles documentation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Roles documentation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+          eos_designs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6_1">
+          <span class="md-nav__icon md-icon"></span>
+          eos_designs
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/index.html" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/connected-endpoints.html" class="md-nav__link">
+        Connected Endpoints
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/l3-edge.html" class="md-nav__link">
+        DCI & L3 Edge
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/fabric-topology.html" class="md-nav__link">
+        Fabric Topology
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/fabric-variables.html" class="md-nav__link">
+        Fabric Variables
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/management-settings.html" class="md-nav__link">
+        Management Settings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/network-services.html" class="md-nav__link">
+        Network Services
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/node-types.html" class="md-nav__link">
+        Node types
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/platform-settings.html" class="md-nav__link">
+        Platform Settings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/custom-structured-configuration.html" class="md-nav__link">
+        Custom Structured Configuration
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_cli_config_gen/index.html" class="md-nav__link">
+        eos_cli_config_gen
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/cvp_configlet_upload/index.html" class="md-nav__link">
+        cvp_configlet_upload
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_config_deploy_cvp/index.html" class="md-nav__link">
+        eos_config_deploy_cvp
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_config_deploy_eapi/index.html" class="md-nav__link">
+        eos_config_deploy_eapi
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_validate_state/index.html" class="md-nav__link">
+        eos_validate_state
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_snapshot/index.html" class="md-nav__link">
+        eos_snapshot
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/dhcp_provisioner/index.html" class="md-nav__link">
+        dhcp_provisioner
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/build_output_folders/index.html" class="md-nav__link">
+        build_output_folders
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          Modules documentation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Modules documentation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/modules/inventory_to_container.rst.html" class="md-nav__link">
+        Module Inventory to containers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/modules/configlet_build_config.rst.html" class="md-nav__link">
+        Module Configlet Build configuration
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../plugins/index.html" class="md-nav__link">
+        AVD Plugins & Filters
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://cvp.avd.sh/" class="md-nav__link">
+        Cloudvision Module documentation
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+          Contributing to AVD
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          Contributing to AVD
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/contribution/overview.html" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/contribution/setup-environment.html" class="md-nav__link">
+        Setup environment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/contribution/setup-git.html" class="md-nav__link">
+        Git installation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/contribution/getting-started.html" class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/contribution/style-guide.html" class="md-nav__link">
+        Code Style
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/contribution/development.html" class="md-nav__link">
+        Development tips & tricks
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+          External resources
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          External resources
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://docs.ansible.com/ansible/latest/user_guide/collections_using.html" class="md-nav__link">
+        Ansible collection user guide
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://docs.ansible.com/ansible/latest/user_guide/index.html" class="md-nav__link">
+        Ansible User guide
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+          About
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_10">
+          <span class="md-nav__icon md-icon"></span>
+          About
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://galaxy.ansible.com/arista/avd" class="md-nav__link">
+        Ansible Galaxy page
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://cvp.avd.sh/en/latest/" class="md-nav__link">
+        Arista CVP Collection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/arista-netdevops-community/avd-install" class="md-nav__link">
+        Arista Installation Script
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://aristanetworks.github.io/netdevops-examples/" class="md-nav__link">
+        Arista Netdevops Community
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#dc1-leaf2a" class="md-nav__link">
+    DC1-LEAF2A
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    Table of Contents
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#management" class="md-nav__link">
+    Management
+  </a>
+  
+    <nav class="md-nav" aria-label="Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#management-interfaces" class="md-nav__link">
+    Management Interfaces
+  </a>
+  
+    <nav class="md-nav" aria-label="Management Interfaces">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#management-interfaces-summary" class="md-nav__link">
+    Management Interfaces Summary
+  </a>
+  
+    <nav class="md-nav" aria-label="Management Interfaces Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ipv4" class="md-nav__link">
+    IPv4
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ipv6" class="md-nav__link">
+    IPv6
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#management-interfaces-device-configuration" class="md-nav__link">
+    Management Interfaces Device Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#name-servers" class="md-nav__link">
+    Name Servers
+  </a>
+  
+    <nav class="md-nav" aria-label="Name Servers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#name-servers-summary" class="md-nav__link">
+    Name Servers Summary
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#name-servers-device-configuration" class="md-nav__link">
+    Name Servers Device Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ntp" class="md-nav__link">
+    NTP
+  </a>
+  
+    <nav class="md-nav" aria-label="NTP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ntp-summary" class="md-nav__link">
+    NTP Summary
+  </a>
+  
+    <nav class="md-nav" aria-label="NTP Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ntp-local-interface" class="md-nav__link">
+    NTP Local Interface
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ntp-servers" class="md-nav__link">
+    NTP Servers
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ntp-device-configuration" class="md-nav__link">
+    NTP Device Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#management-api-http" class="md-nav__link">
+    Management API HTTP
+  </a>
+  
+    <nav class="md-nav" aria-label="Management API HTTP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#management-api-http-summary" class="md-nav__link">
+    Management API HTTP Summary
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#management-api-vrf-access" class="md-nav__link">
+    Management API VRF Access
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#management-api-http-configuration" class="md-nav__link">
+    Management API HTTP Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authentication" class="md-nav__link">
+    Authentication
+  </a>
+  
+    <nav class="md-nav" aria-label="Authentication">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#local-users" class="md-nav__link">
+    Local Users
+  </a>
+  
+    <nav class="md-nav" aria-label="Local Users">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#local-users-summary" class="md-nav__link">
+    Local Users Summary
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#local-users-device-configuration" class="md-nav__link">
+    Local Users Device Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#monitoring" class="md-nav__link">
+    Monitoring
+  </a>
+  
+    <nav class="md-nav" aria-label="Monitoring">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#terminattr-daemon" class="md-nav__link">
+    TerminAttr Daemon
+  </a>
+  
+    <nav class="md-nav" aria-label="TerminAttr Daemon">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#terminattr-daemon-summary" class="md-nav__link">
+    TerminAttr Daemon Summary
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#terminattr-daemon-device-configuration" class="md-nav__link">
+    TerminAttr Daemon Device Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#snmp" class="md-nav__link">
+    SNMP
+  </a>
+  
+    <nav class="md-nav" aria-label="SNMP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#snmp-configuration-summary" class="md-nav__link">
+    SNMP Configuration Summary
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#snmp-device-configuration" class="md-nav__link">
+    SNMP Device Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hardware-tcam-profile" class="md-nav__link">
+    Hardware TCAM Profile
+  </a>
+  
+    <nav class="md-nav" aria-label="Hardware TCAM Profile">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hardware-tcam-configuration" class="md-nav__link">
+    Hardware TCAM configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spanning-tree" class="md-nav__link">
+    Spanning Tree
+  </a>
+  
+    <nav class="md-nav" aria-label="Spanning Tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spanning-tree-summary" class="md-nav__link">
+    Spanning Tree Summary
+  </a>
+  
+    <nav class="md-nav" aria-label="Spanning Tree Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mstp-instance-and-priority" class="md-nav__link">
+    MSTP Instance and Priority
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spanning-tree-device-configuration" class="md-nav__link">
+    Spanning Tree Device Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#internal-vlan-allocation-policy" class="md-nav__link">
+    Internal VLAN Allocation Policy
+  </a>
+  
+    <nav class="md-nav" aria-label="Internal VLAN Allocation Policy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#internal-vlan-allocation-policy-summary" class="md-nav__link">
+    Internal VLAN Allocation Policy Summary
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#internal-vlan-allocation-policy-configuration" class="md-nav__link">
+    Internal VLAN Allocation Policy Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vlans" class="md-nav__link">
+    VLANs
+  </a>
+  
+    <nav class="md-nav" aria-label="VLANs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vlans-summary" class="md-nav__link">
+    VLANs Summary
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vlans-device-configuration" class="md-nav__link">
+    VLANs Device Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interfaces" class="md-nav__link">
+    Interfaces
+  </a>
+  
+    <nav class="md-nav" aria-label="Interfaces">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ethernet-interfaces" class="md-nav__link">
+    Ethernet Interfaces
+  </a>
+  
+    <nav class="md-nav" aria-label="Ethernet Interfaces">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ethernet-interfaces-summary" class="md-nav__link">
+    Ethernet Interfaces Summary
+  </a>
+  
+    <nav class="md-nav" aria-label="Ethernet Interfaces Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#l2" class="md-nav__link">
+    L2
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ipv4_1" class="md-nav__link">
+    IPv4
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethernet-interfaces-device-configuration" class="md-nav__link">
+    Ethernet Interfaces Device Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#port-channel-interfaces" class="md-nav__link">
+    Port-Channel Interfaces
+  </a>
+  
+    <nav class="md-nav" aria-label="Port-Channel Interfaces">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#port-channel-interfaces-summary" class="md-nav__link">
+    Port-Channel Interfaces Summary
+  </a>
+  
+    <nav class="md-nav" aria-label="Port-Channel Interfaces Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#l2_1" class="md-nav__link">
+    L2
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#port-channel-interfaces-device-configuration" class="md-nav__link">
+    Port-Channel Interfaces Device Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loopback-interfaces" class="md-nav__link">
+    Loopback Interfaces
+  </a>
+  
+    <nav class="md-nav" aria-label="Loopback Interfaces">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#loopback-interfaces-summary" class="md-nav__link">
+    Loopback Interfaces Summary
+  </a>
+  
+    <nav class="md-nav" aria-label="Loopback Interfaces Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ipv4_2" class="md-nav__link">
+    IPv4
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ipv6_1" class="md-nav__link">
+    IPv6
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loopback-interfaces-device-configuration" class="md-nav__link">
+    Loopback Interfaces Device Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vlan-interfaces" class="md-nav__link">
+    VLAN Interfaces
+  </a>
+  
+    <nav class="md-nav" aria-label="VLAN Interfaces">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vlan-interfaces-summary" class="md-nav__link">
+    VLAN Interfaces Summary
+  </a>
+  
+    <nav class="md-nav" aria-label="VLAN Interfaces Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ipv4_3" class="md-nav__link">
+    IPv4
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vlan-interfaces-device-configuration" class="md-nav__link">
+    VLAN Interfaces Device Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vxlan-interface" class="md-nav__link">
+    VXLAN Interface
+  </a>
+  
+    <nav class="md-nav" aria-label="VXLAN Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vxlan-interface-summary" class="md-nav__link">
+    VXLAN Interface Summary
+  </a>
+  
+    <nav class="md-nav" aria-label="VXLAN Interface Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vlan-to-vni-flood-list-and-multicast-group-mappings" class="md-nav__link">
+    VLAN to VNI, Flood List and Multicast Group Mappings
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vrf-to-vni-and-multicast-group-mappings" class="md-nav__link">
+    VRF to VNI and Multicast Group Mappings
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vxlan-interface-device-configuration" class="md-nav__link">
+    VXLAN Interface Device Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#routing" class="md-nav__link">
+    Routing
+  </a>
+  
+    <nav class="md-nav" aria-label="Routing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#service-routing-protocols-model" class="md-nav__link">
+    Service Routing Protocols Model
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#virtual-router-mac-address" class="md-nav__link">
+    Virtual Router MAC Address
+  </a>
+  
+    <nav class="md-nav" aria-label="Virtual Router MAC Address">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#virtual-router-mac-address-summary" class="md-nav__link">
+    Virtual Router MAC Address Summary
+  </a>
+  
+    <nav class="md-nav" aria-label="Virtual Router MAC Address Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#virtual-router-mac-address-00dc0000000a" class="md-nav__link">
+    Virtual Router MAC Address: 00:dc:00:00:00:0a
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#virtual-router-mac-address-configuration" class="md-nav__link">
+    Virtual Router MAC Address Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ip-routing" class="md-nav__link">
+    IP Routing
+  </a>
+  
+    <nav class="md-nav" aria-label="IP Routing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ip-routing-summary" class="md-nav__link">
+    IP Routing Summary
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ip-routing-device-configuration" class="md-nav__link">
+    IP Routing Device Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ipv6-routing" class="md-nav__link">
+    IPv6 Routing
+  </a>
+  
+    <nav class="md-nav" aria-label="IPv6 Routing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ipv6-routing-summary" class="md-nav__link">
+    IPv6 Routing Summary
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#static-routes" class="md-nav__link">
+    Static Routes
+  </a>
+  
+    <nav class="md-nav" aria-label="Static Routes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#static-routes-summary" class="md-nav__link">
+    Static Routes Summary
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#static-routes-device-configuration" class="md-nav__link">
+    Static Routes Device Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#router-bgp" class="md-nav__link">
+    Router BGP
+  </a>
+  
+    <nav class="md-nav" aria-label="Router BGP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#router-bgp-summary" class="md-nav__link">
+    Router BGP Summary
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#router-bgp-peer-groups" class="md-nav__link">
+    Router BGP Peer Groups
+  </a>
+  
+    <nav class="md-nav" aria-label="Router BGP Peer Groups">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evpn-overlay-peers" class="md-nav__link">
+    EVPN-OVERLAY-PEERS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#underlay-peers" class="md-nav__link">
+    UNDERLAY-PEERS
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bgp-neighbors" class="md-nav__link">
+    BGP Neighbors
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#router-bgp-evpn-address-family" class="md-nav__link">
+    Router BGP EVPN Address Family
+  </a>
+  
+    <nav class="md-nav" aria-label="Router BGP EVPN Address Family">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#evpn-peer-groups" class="md-nav__link">
+    EVPN Peer Groups
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#router-bgp-vlan-aware-bundles" class="md-nav__link">
+    Router BGP VLAN Aware Bundles
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#router-bgp-vrfs" class="md-nav__link">
+    Router BGP VRFs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#router-bgp-device-configuration" class="md-nav__link">
+    Router BGP Device Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bfd" class="md-nav__link">
+    BFD
+  </a>
+  
+    <nav class="md-nav" aria-label="BFD">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#router-bfd" class="md-nav__link">
+    Router BFD
+  </a>
+  
+    <nav class="md-nav" aria-label="Router BFD">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#router-bfd-multihop-summary" class="md-nav__link">
+    Router BFD Multihop Summary
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#router-bfd-device-configuration" class="md-nav__link">
+    Router BFD Device Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multicast" class="md-nav__link">
+    Multicast
+  </a>
+  
+    <nav class="md-nav" aria-label="Multicast">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ip-igmp-snooping" class="md-nav__link">
+    IP IGMP Snooping
+  </a>
+  
+    <nav class="md-nav" aria-label="IP IGMP Snooping">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ip-igmp-snooping-summary" class="md-nav__link">
+    IP IGMP Snooping Summary
+  </a>
+  
+    <nav class="md-nav" aria-label="IP IGMP Snooping Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ip-igmp-snooping-vlan-summary" class="md-nav__link">
+    IP IGMP Snooping Vlan Summary
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ip-igmp-snooping-device-configuration" class="md-nav__link">
+    IP IGMP Snooping Device Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filters" class="md-nav__link">
+    Filters
+  </a>
+  
+    <nav class="md-nav" aria-label="Filters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prefix-lists" class="md-nav__link">
+    Prefix-lists
+  </a>
+  
+    <nav class="md-nav" aria-label="Prefix-lists">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prefix-lists-summary" class="md-nav__link">
+    Prefix-lists Summary
+  </a>
+  
+    <nav class="md-nav" aria-label="Prefix-lists Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pl-loopbacks-evpn-overlay" class="md-nav__link">
+    PL-LOOPBACKS-EVPN-OVERLAY
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prefix-lists-device-configuration" class="md-nav__link">
+    Prefix-lists Device Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#route-maps" class="md-nav__link">
+    Route-maps
+  </a>
+  
+    <nav class="md-nav" aria-label="Route-maps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#route-maps-summary" class="md-nav__link">
+    Route-maps Summary
+  </a>
+  
+    <nav class="md-nav" aria-label="Route-maps Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rm-conn-2-bgp" class="md-nav__link">
+    RM-CONN-2-BGP
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#route-maps-device-configuration" class="md-nav__link">
+    Route-maps Device Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#acl" class="md-nav__link">
+    ACL
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vrf-instances" class="md-nav__link">
+    VRF Instances
+  </a>
+  
+    <nav class="md-nav" aria-label="VRF Instances">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vrf-instances-summary" class="md-nav__link">
+    VRF Instances Summary
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vrf-instances-device-configuration" class="md-nav__link">
+    VRF Instances Device Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#virtual-source-nat" class="md-nav__link">
+    Virtual Source NAT
+  </a>
+  
+    <nav class="md-nav" aria-label="Virtual Source NAT">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#virtual-source-nat-summary" class="md-nav__link">
+    Virtual Source NAT Summary
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#virtual-source-nat-configuration" class="md-nav__link">
+    Virtual Source NAT Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#platform" class="md-nav__link">
+    Platform
+  </a>
+  
+    <nav class="md-nav" aria-label="Platform">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#platform-summary" class="md-nav__link">
+    Platform Summary
+  </a>
+  
+    <nav class="md-nav" aria-label="Platform Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#platform-sand-summary" class="md-nav__link">
+    Platform Sand Summary
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#platform-configuration" class="md-nav__link">
+    Platform Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quality-of-service" class="md-nav__link">
+    Quality Of Service
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+  <h1>DC1-LEAF2A</h1>
+
+<h3 id="dc1-leaf2a">DC1-LEAF2A<a class="headerlink" href="#dc1-leaf2a" title="Permanent link">&para;</a></h3>
+<h3 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="#management">Management</a><ul>
+<li><a href="#management-interfaces">Management Interfaces</a></li>
+<li><a href="#name-servers">Name Servers</a></li>
+<li><a href="#ntp">NTP</a></li>
+<li><a href="#management-api-http">Management API HTTP</a></li>
+</ul>
+</li>
+<li><a href="#authentication">Authentication</a><ul>
+<li><a href="#local-users">Local Users</a></li>
+</ul>
+</li>
+<li><a href="#monitoring">Monitoring</a><ul>
+<li><a href="#terminattr-daemon">TerminAttr Daemon</a></li>
+<li><a href="#snmp">SNMP</a></li>
+</ul>
+</li>
+<li><a href="#hardware-tcam-profile">Hardware TCAM Profile</a><ul>
+<li><a href="#hardware-tcam-configuration">Hardware TCAM configuration</a></li>
+</ul>
+</li>
+<li><a href="#spanning-tree">Spanning Tree</a><ul>
+<li><a href="#spanning-tree-summary">Spanning Tree Summary</a></li>
+<li><a href="#spanning-tree-device-configuration">Spanning Tree Device Configuration</a></li>
+</ul>
+</li>
+<li><a href="#internal-vlan-allocation-policy">Internal VLAN Allocation Policy</a><ul>
+<li><a href="#internal-vlan-allocation-policy-summary">Internal VLAN Allocation Policy Summary</a></li>
+<li><a href="#internal-vlan-allocation-policy-configuration">Internal VLAN Allocation Policy Configuration</a></li>
+</ul>
+</li>
+<li><a href="#vlans">VLANs</a><ul>
+<li><a href="#vlans-summary">VLANs Summary</a></li>
+<li><a href="#vlans-device-configuration">VLANs Device Configuration</a></li>
+</ul>
+</li>
+<li><a href="#interfaces">Interfaces</a><ul>
+<li><a href="#ethernet-interfaces">Ethernet Interfaces</a></li>
+<li><a href="#port-channel-interfaces">Port-Channel Interfaces</a></li>
+<li><a href="#loopback-interfaces">Loopback Interfaces</a></li>
+<li><a href="#vlan-interfaces">VLAN Interfaces</a></li>
+<li><a href="#vxlan-interface">VXLAN Interface</a></li>
+</ul>
+</li>
+<li><a href="#routing">Routing</a><ul>
+<li><a href="#service-routing-protocols-model">Service Routing Protocols Model</a></li>
+<li><a href="#virtual-router-mac-address">Virtual Router MAC Address</a></li>
+<li><a href="#ip-routing">IP Routing</a></li>
+<li><a href="#ipv6-routing">IPv6 Routing</a></li>
+<li><a href="#static-routes">Static Routes</a></li>
+<li><a href="#router-bgp">Router BGP</a></li>
+</ul>
+</li>
+<li><a href="#bfd">BFD</a><ul>
+<li><a href="#router-bfd">Router BFD</a></li>
+</ul>
+</li>
+<li><a href="#multicast">Multicast</a><ul>
+<li><a href="#ip-igmp-snooping">IP IGMP Snooping</a></li>
+</ul>
+</li>
+<li><a href="#filters">Filters</a><ul>
+<li><a href="#prefix-lists">Prefix-lists</a></li>
+<li><a href="#route-maps">Route-maps</a></li>
+</ul>
+</li>
+<li><a href="#acl">ACL</a></li>
+<li><a href="#vrf-instances">VRF Instances</a><ul>
+<li><a href="#vrf-instances-summary">VRF Instances Summary</a></li>
+<li><a href="#vrf-instances-device-configuration">VRF Instances Device Configuration</a></li>
+</ul>
+</li>
+<li><a href="#virtual-source-nat">Virtual Source NAT</a><ul>
+<li><a href="#virtual-source-nat-summary">Virtual Source NAT Summary</a></li>
+<li><a href="#virtual-source-nat-configuration">Virtual Source NAT Configuration</a></li>
+</ul>
+</li>
+<li><a href="#platform">Platform</a><ul>
+<li><a href="#platform-summary">Platform Summary</a></li>
+<li><a href="#platform-configuration">Platform Configuration</a></li>
+</ul>
+</li>
+<li><a href="#quality-of-service">Quality Of Service</a></li>
+</ul>
+<h3 id="management">Management<a class="headerlink" href="#management" title="Permanent link">&para;</a></h3>
+<h4 id="management-interfaces">Management Interfaces<a class="headerlink" href="#management-interfaces" title="Permanent link">&para;</a></h4>
+<h5 id="management-interfaces-summary">Management Interfaces Summary<a class="headerlink" href="#management-interfaces-summary" title="Permanent link">&para;</a></h5>
+<h6 id="ipv4">IPv4<a class="headerlink" href="#ipv4" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Management Interface</th>
+<th>description</th>
+<th>Type</th>
+<th>VRF</th>
+<th>IP Address</th>
+<th>Gateway</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Management1</td>
+<td>oob_management</td>
+<td>oob</td>
+<td>MGMT</td>
+<td>192.168.200.106/24</td>
+<td>192.168.200.5</td>
+</tr>
+</tbody>
+</table>
+<h6 id="ipv6">IPv6<a class="headerlink" href="#ipv6" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Management Interface</th>
+<th>description</th>
+<th>Type</th>
+<th>VRF</th>
+<th>IPv6 Address</th>
+<th>IPv6 Gateway</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Management1</td>
+<td>oob_management</td>
+<td>oob</td>
+<td>MGMT</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h5 id="management-interfaces-device-configuration">Management Interfaces Device Configuration<a class="headerlink" href="#management-interfaces-device-configuration" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code>!
+interface Management1
+   description oob_management
+   no shutdown
+   vrf MGMT
+   ip address 192.168.200.106/24
+</code></pre></div>
+<h4 id="name-servers">Name Servers<a class="headerlink" href="#name-servers" title="Permanent link">&para;</a></h4>
+<h5 id="name-servers-summary">Name Servers Summary<a class="headerlink" href="#name-servers-summary" title="Permanent link">&para;</a></h5>
+<table>
+<thead>
+<tr>
+<th>Name Server</th>
+<th>Source VRF</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>192.168.200.5</td>
+<td>MGMT</td>
+</tr>
+<tr>
+<td>8.8.8.8</td>
+<td>MGMT</td>
+</tr>
+</tbody>
+</table>
+<h5 id="name-servers-device-configuration">Name Servers Device Configuration<a class="headerlink" href="#name-servers-device-configuration" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code>ip name-server vrf MGMT 8.8.8.8
+ip name-server vrf MGMT 192.168.200.5
+</code></pre></div>
+<h4 id="ntp">NTP<a class="headerlink" href="#ntp" title="Permanent link">&para;</a></h4>
+<h5 id="ntp-summary">NTP Summary<a class="headerlink" href="#ntp-summary" title="Permanent link">&para;</a></h5>
+<h6 id="ntp-local-interface">NTP Local Interface<a class="headerlink" href="#ntp-local-interface" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>VRF</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Management1</td>
+<td>MGMT</td>
+</tr>
+</tbody>
+</table>
+<h6 id="ntp-servers">NTP Servers<a class="headerlink" href="#ntp-servers" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Server</th>
+<th>VRF</th>
+<th>Preferred</th>
+<th>Burst</th>
+<th>iBurst</th>
+<th>Version</th>
+<th>Min Poll</th>
+<th>Max Poll</th>
+<th>Local-interface</th>
+<th>Key</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>192.168.200.5</td>
+<td>MGMT</td>
+<td>True</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h5 id="ntp-device-configuration">NTP Device Configuration<a class="headerlink" href="#ntp-device-configuration" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code>!
+ntp local-interface vrf MGMT Management1
+ntp server vrf MGMT 192.168.200.5 prefer
+</code></pre></div>
+<h4 id="management-api-http">Management API HTTP<a class="headerlink" href="#management-api-http" title="Permanent link">&para;</a></h4>
+<h5 id="management-api-http-summary">Management API HTTP Summary<a class="headerlink" href="#management-api-http-summary" title="Permanent link">&para;</a></h5>
+<table>
+<thead>
+<tr>
+<th>HTTP</th>
+<th>HTTPS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>False</td>
+<td>True</td>
+</tr>
+</tbody>
+</table>
+<h5 id="management-api-vrf-access">Management API VRF Access<a class="headerlink" href="#management-api-vrf-access" title="Permanent link">&para;</a></h5>
+<table>
+<thead>
+<tr>
+<th>VRF Name</th>
+<th>IPv4 ACL</th>
+<th>IPv6 ACL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MGMT</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h5 id="management-api-http-configuration">Management API HTTP Configuration<a class="headerlink" href="#management-api-http-configuration" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code>!
+management api http-commands
+   protocol https
+   no shutdown
+   !
+   vrf MGMT
+      no shutdown
+</code></pre></div>
+<h3 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">&para;</a></h3>
+<h4 id="local-users">Local Users<a class="headerlink" href="#local-users" title="Permanent link">&para;</a></h4>
+<h5 id="local-users-summary">Local Users Summary<a class="headerlink" href="#local-users-summary" title="Permanent link">&para;</a></h5>
+<table>
+<thead>
+<tr>
+<th>User</th>
+<th>Privilege</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>admin</td>
+<td>15</td>
+<td>network-admin</td>
+</tr>
+<tr>
+<td>cvpadmin</td>
+<td>15</td>
+<td>network-admin</td>
+</tr>
+</tbody>
+</table>
+<h5 id="local-users-device-configuration">Local Users Device Configuration<a class="headerlink" href="#local-users-device-configuration" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code>!
+username admin privilege 15 role network-admin nopassword
+username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+username cvpadmin ssh-key ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU= cvpadmin@hostmachine.local
+</code></pre></div>
+<h3 id="monitoring">Monitoring<a class="headerlink" href="#monitoring" title="Permanent link">&para;</a></h3>
+<h4 id="terminattr-daemon">TerminAttr Daemon<a class="headerlink" href="#terminattr-daemon" title="Permanent link">&para;</a></h4>
+<h5 id="terminattr-daemon-summary">TerminAttr Daemon Summary<a class="headerlink" href="#terminattr-daemon-summary" title="Permanent link">&para;</a></h5>
+<table>
+<thead>
+<tr>
+<th>CV Compression</th>
+<th>CloudVision Servers</th>
+<th>VRF</th>
+<th>Authentication</th>
+<th>Smash Excludes</th>
+<th>Ingest Exclude</th>
+<th>Bypass AAA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>gzip</td>
+<td>192.168.200.11:9910</td>
+<td>MGMT</td>
+<td>key,telarista</td>
+<td>ale,flexCounter,hardware,kni,pulse,strata</td>
+<td>/Sysdb/cell/1/agent,/Sysdb/cell/2/agent</td>
+<td>False</td>
+</tr>
+</tbody>
+</table>
+<h5 id="terminattr-daemon-device-configuration">TerminAttr Daemon Device Configuration<a class="headerlink" href="#terminattr-daemon-device-configuration" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code>!
+daemon TerminAttr
+   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
+   no shutdown
+</code></pre></div>
+<h4 id="snmp">SNMP<a class="headerlink" href="#snmp" title="Permanent link">&para;</a></h4>
+<h5 id="snmp-configuration-summary">SNMP Configuration Summary<a class="headerlink" href="#snmp-configuration-summary" title="Permanent link">&para;</a></h5>
+<table>
+<thead>
+<tr>
+<th>Contact</th>
+<th>Location</th>
+<th>SNMP Traps</th>
+<th>State</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;">&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;</a></td>
+<td>DC1_FABRIC rackC DC1-LEAF2A</td>
+<td>All</td>
+<td>Disabled</td>
+</tr>
+</tbody>
+</table>
+<h5 id="snmp-device-configuration">SNMP Device Configuration<a class="headerlink" href="#snmp-device-configuration" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code>!
+snmp-server contact example@example.com
+snmp-server location DC1_FABRIC rackC DC1-LEAF2A
+</code></pre></div>
+<h3 id="hardware-tcam-profile">Hardware TCAM Profile<a class="headerlink" href="#hardware-tcam-profile" title="Permanent link">&para;</a></h3>
+<p>TCAM profile <strong><code>vxlan-routing</code></strong> is active</p>
+<h4 id="hardware-tcam-configuration">Hardware TCAM configuration<a class="headerlink" href="#hardware-tcam-configuration" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>!
+hardware tcam
+   system profile vxlan-routing
+</code></pre></div>
+<h3 id="spanning-tree">Spanning Tree<a class="headerlink" href="#spanning-tree" title="Permanent link">&para;</a></h3>
+<h4 id="spanning-tree-summary">Spanning Tree Summary<a class="headerlink" href="#spanning-tree-summary" title="Permanent link">&para;</a></h4>
+<p>STP mode: <strong>mstp</strong></p>
+<p>STP Root Super: <strong>True</strong></p>
+<h5 id="mstp-instance-and-priority">MSTP Instance and Priority<a class="headerlink" href="#mstp-instance-and-priority" title="Permanent link">&para;</a></h5>
+<table>
+<thead>
+<tr>
+<th>Instance(s)</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>4096</td>
+</tr>
+</tbody>
+</table>
+<h4 id="spanning-tree-device-configuration">Spanning Tree Device Configuration<a class="headerlink" href="#spanning-tree-device-configuration" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>!
+spanning-tree root super
+spanning-tree mode mstp
+spanning-tree mst 0 priority 4096
+</code></pre></div>
+<h3 id="internal-vlan-allocation-policy">Internal VLAN Allocation Policy<a class="headerlink" href="#internal-vlan-allocation-policy" title="Permanent link">&para;</a></h3>
+<h4 id="internal-vlan-allocation-policy-summary">Internal VLAN Allocation Policy Summary<a class="headerlink" href="#internal-vlan-allocation-policy-summary" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Policy Allocation</th>
+<th>Range Beginning</th>
+<th>Range Ending</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ascending</td>
+<td>1006</td>
+<td>1199</td>
+</tr>
+</tbody>
+</table>
+<h4 id="internal-vlan-allocation-policy-configuration">Internal VLAN Allocation Policy Configuration<a class="headerlink" href="#internal-vlan-allocation-policy-configuration" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>!
+vlan internal order ascending range 1006 1199
+</code></pre></div>
+<h3 id="vlans">VLANs<a class="headerlink" href="#vlans" title="Permanent link">&para;</a></h3>
+<h4 id="vlans-summary">VLANs Summary<a class="headerlink" href="#vlans-summary" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>VLAN ID</th>
+<th>Name</th>
+<th>Trunk Groups</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>110</td>
+<td>Tenant_A_OP_Zone_1</td>
+<td>-</td>
+</tr>
+<tr>
+<td>111</td>
+<td>Tenant_A_OP_Zone_2</td>
+<td>-</td>
+</tr>
+<tr>
+<td>120</td>
+<td>Tenant_A_WEB_Zone_1</td>
+<td>-</td>
+</tr>
+<tr>
+<td>121</td>
+<td>Tenant_A_WEBZone_2</td>
+<td>-</td>
+</tr>
+<tr>
+<td>130</td>
+<td>Tenant_A_APP_Zone_1</td>
+<td>-</td>
+</tr>
+<tr>
+<td>131</td>
+<td>Tenant_A_APP_Zone_2</td>
+<td>-</td>
+</tr>
+<tr>
+<td>140</td>
+<td>Tenant_A_DB_BZone_1</td>
+<td>-</td>
+</tr>
+<tr>
+<td>141</td>
+<td>Tenant_A_DB_Zone_2</td>
+<td>-</td>
+</tr>
+<tr>
+<td>160</td>
+<td>Tenant_A_VMOTION</td>
+<td>-</td>
+</tr>
+<tr>
+<td>161</td>
+<td>Tenant_A_NFS</td>
+<td>-</td>
+</tr>
+<tr>
+<td>210</td>
+<td>Tenant_B_OP_Zone_1</td>
+<td>-</td>
+</tr>
+<tr>
+<td>211</td>
+<td>Tenant_B_OP_Zone_2</td>
+<td>-</td>
+</tr>
+<tr>
+<td>310</td>
+<td>Tenant_C_OP_Zone_1</td>
+<td>-</td>
+</tr>
+<tr>
+<td>311</td>
+<td>Tenant_C_OP_Zone_2</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h4 id="vlans-device-configuration">VLANs Device Configuration<a class="headerlink" href="#vlans-device-configuration" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>!
+vlan 110
+   name Tenant_A_OP_Zone_1
+!
+vlan 111
+   name Tenant_A_OP_Zone_2
+!
+vlan 120
+   name Tenant_A_WEB_Zone_1
+!
+vlan 121
+   name Tenant_A_WEBZone_2
+!
+vlan 130
+   name Tenant_A_APP_Zone_1
+!
+vlan 131
+   name Tenant_A_APP_Zone_2
+!
+vlan 140
+   name Tenant_A_DB_BZone_1
+!
+vlan 141
+   name Tenant_A_DB_Zone_2
+!
+vlan 160
+   name Tenant_A_VMOTION
+!
+vlan 161
+   name Tenant_A_NFS
+!
+vlan 210
+   name Tenant_B_OP_Zone_1
+!
+vlan 211
+   name Tenant_B_OP_Zone_2
+!
+vlan 310
+   name Tenant_C_OP_Zone_1
+!
+vlan 311
+   name Tenant_C_OP_Zone_2
+</code></pre></div>
+<h3 id="interfaces">Interfaces<a class="headerlink" href="#interfaces" title="Permanent link">&para;</a></h3>
+<h4 id="ethernet-interfaces">Ethernet Interfaces<a class="headerlink" href="#ethernet-interfaces" title="Permanent link">&para;</a></h4>
+<h5 id="ethernet-interfaces-summary">Ethernet Interfaces Summary<a class="headerlink" href="#ethernet-interfaces-summary" title="Permanent link">&para;</a></h5>
+<h6 id="l2">L2<a class="headerlink" href="#l2" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Description</th>
+<th>Mode</th>
+<th>VLANs</th>
+<th>Native VLAN</th>
+<th>Trunk Group</th>
+<th>Channel-Group</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ethernet7</td>
+<td>DC1-L2LEAF1A_Ethernet1</td>
+<td>*trunk</td>
+<td>*110-111,120-121,130-131,160-161</td>
+<td>*-</td>
+<td>*-</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Ethernet8</td>
+<td>DC1-L2LEAF1B_Ethernet1</td>
+<td>*trunk</td>
+<td>*110-111,120-121,130-131,160-161</td>
+<td>*-</td>
+<td>*-</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Ethernet9</td>
+<td>DC1-L2LEAF3A_Ethernet1</td>
+<td>*trunk</td>
+<td>*110-111,120-121,130-131,160-161</td>
+<td>*-</td>
+<td>*-</td>
+<td>9</td>
+</tr>
+<tr>
+<td>Ethernet10</td>
+<td>server01_MLAG_Eth2</td>
+<td>*trunk</td>
+<td>*210-211</td>
+<td>*-</td>
+<td>*-</td>
+<td>10</td>
+</tr>
+<tr>
+<td>Ethernet11</td>
+<td>server01_MTU_PROFILE_MLAG_Eth4</td>
+<td>*access</td>
+<td>*110</td>
+<td>*-</td>
+<td>*-</td>
+<td>11</td>
+</tr>
+<tr>
+<td>Ethernet12</td>
+<td>server01_MTU_ADAPTOR_MLAG_Eth6</td>
+<td>*access</td>
+<td>*-</td>
+<td>*-</td>
+<td>*-</td>
+<td>12</td>
+</tr>
+<tr>
+<td>Ethernet20</td>
+<td>FIREWALL01_E0</td>
+<td>*trunk</td>
+<td>*110-111,210-211</td>
+<td>*-</td>
+<td>*-</td>
+<td>20</td>
+</tr>
+<tr>
+<td>Ethernet21</td>
+<td>ROUTER01_Eth0</td>
+<td>access</td>
+<td>110</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<p>*Inherited from Port-Channel Interface</p>
+<h6 id="ipv4_1">IPv4<a class="headerlink" href="#ipv4_1" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Description</th>
+<th>Type</th>
+<th>Channel Group</th>
+<th>IP Address</th>
+<th>VRF</th>
+<th>MTU</th>
+<th>Shutdown</th>
+<th>ACL In</th>
+<th>ACL Out</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ethernet1</td>
+<td>P2P_LINK_TO_DC1-SPINE1_Ethernet2</td>
+<td>routed</td>
+<td>-</td>
+<td>172.31.255.17/31</td>
+<td>default</td>
+<td>1500</td>
+<td>false</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Ethernet2</td>
+<td>P2P_LINK_TO_DC1-SPINE2_Ethernet2</td>
+<td>routed</td>
+<td>-</td>
+<td>172.31.255.19/31</td>
+<td>default</td>
+<td>1500</td>
+<td>false</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Ethernet3</td>
+<td>P2P_LINK_TO_DC1-SPINE3_Ethernet2</td>
+<td>routed</td>
+<td>-</td>
+<td>172.31.255.21/31</td>
+<td>default</td>
+<td>1500</td>
+<td>false</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Ethernet4</td>
+<td>P2P_LINK_TO_DC1-SPINE4_Ethernet2</td>
+<td>routed</td>
+<td>-</td>
+<td>172.31.255.23/31</td>
+<td>default</td>
+<td>1500</td>
+<td>false</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h5 id="ethernet-interfaces-device-configuration">Ethernet Interfaces Device Configuration<a class="headerlink" href="#ethernet-interfaces-device-configuration" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code>!
+interface Ethernet1
+   description P2P_LINK_TO_DC1-SPINE1_Ethernet2
+   no shutdown
+   speed forced 100gfull
+   mtu 1500
+   no switchport
+   ip address 172.31.255.17/31
+!
+interface Ethernet2
+   description P2P_LINK_TO_DC1-SPINE2_Ethernet2
+   no shutdown
+   speed forced 100gfull
+   mtu 1500
+   no switchport
+   ip address 172.31.255.19/31
+!
+interface Ethernet3
+   description P2P_LINK_TO_DC1-SPINE3_Ethernet2
+   no shutdown
+   speed forced 100gfull
+   mtu 1500
+   no switchport
+   ip address 172.31.255.21/31
+!
+interface Ethernet4
+   description P2P_LINK_TO_DC1-SPINE4_Ethernet2
+   no shutdown
+   speed forced 100gfull
+   mtu 1500
+   no switchport
+   ip address 172.31.255.23/31
+!
+interface Ethernet7
+   description DC1-L2LEAF1A_Ethernet1
+   no shutdown
+   channel-group 7 mode active
+!
+interface Ethernet8
+   description DC1-L2LEAF1B_Ethernet1
+   no shutdown
+   channel-group 7 mode active
+!
+interface Ethernet9
+   description DC1-L2LEAF3A_Ethernet1
+   no shutdown
+   channel-group 9 mode active
+!
+interface Ethernet10
+   description server01_MLAG_Eth2
+   no shutdown
+   channel-group 10 mode active
+!
+interface Ethernet11
+   description server01_MTU_PROFILE_MLAG_Eth4
+   no shutdown
+   channel-group 11 mode active
+!
+interface Ethernet12
+   description server01_MTU_ADAPTOR_MLAG_Eth6
+   no shutdown
+   channel-group 12 mode active
+!
+interface Ethernet20
+   description FIREWALL01_E0
+   no shutdown
+   channel-group 20 mode active
+!
+interface Ethernet21
+   description ROUTER01_Eth0
+   no shutdown
+   switchport
+   switchport access vlan 110
+   switchport mode access
+</code></pre></div>
+<h4 id="port-channel-interfaces">Port-Channel Interfaces<a class="headerlink" href="#port-channel-interfaces" title="Permanent link">&para;</a></h4>
+<h5 id="port-channel-interfaces-summary">Port-Channel Interfaces Summary<a class="headerlink" href="#port-channel-interfaces-summary" title="Permanent link">&para;</a></h5>
+<h6 id="l2_1">L2<a class="headerlink" href="#l2_1" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Description</th>
+<th>Type</th>
+<th>Mode</th>
+<th>VLANs</th>
+<th>Native VLAN</th>
+<th>Trunk Group</th>
+<th>LACP Fallback Timeout</th>
+<th>LACP Fallback Mode</th>
+<th>MLAG ID</th>
+<th>EVPN ESI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Port-Channel7</td>
+<td>DC1_L2LEAF1_Po1</td>
+<td>switched</td>
+<td>trunk</td>
+<td>110-111,120-121,130-131,160-161</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0000:0000:0808:0707:0606</td>
+</tr>
+<tr>
+<td>Port-Channel9</td>
+<td>DC1-L2LEAF3A_Po1</td>
+<td>switched</td>
+<td>trunk</td>
+<td>110-111,120-121,130-131,160-161</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0000:0000:0606:0707:0808</td>
+</tr>
+<tr>
+<td>Port-Channel10</td>
+<td>server01_MLAG_PortChanne1</td>
+<td>switched</td>
+<td>trunk</td>
+<td>210-211</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel11</td>
+<td>server01_MTU_PROFILE_MLAG_PortChanne1</td>
+<td>switched</td>
+<td>access</td>
+<td>110</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel12</td>
+<td>server01_MTU_ADAPTOR_MLAG_PortChanne1</td>
+<td>switched</td>
+<td>access</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel20</td>
+<td>FIREWALL01_PortChanne1</td>
+<td>switched</td>
+<td>trunk</td>
+<td>110-111,210-211</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h5 id="port-channel-interfaces-device-configuration">Port-Channel Interfaces Device Configuration<a class="headerlink" href="#port-channel-interfaces-device-configuration" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code>!
+interface Port-Channel7
+   description DC1_L2LEAF1_Po1
+   no shutdown
+   switchport
+   switchport trunk allowed vlan 110-111,120-121,130-131,160-161
+   switchport mode trunk
+   evpn ethernet-segment
+      identifier 0000:0000:0808:0707:0606
+      route-target import 08:08:07:07:06:06
+   lacp system-id 0808.0707.0606
+!
+interface Port-Channel9
+   description DC1-L2LEAF3A_Po1
+   no shutdown
+   switchport
+   switchport trunk allowed vlan 110-111,120-121,130-131,160-161
+   switchport mode trunk
+   evpn ethernet-segment
+      identifier 0000:0000:0606:0707:0808
+      route-target import 06:06:07:07:08:08
+   lacp system-id 0606.0707.0808
+!
+interface Port-Channel10
+   description server01_MLAG_PortChanne1
+   no shutdown
+   switchport
+   switchport trunk allowed vlan 210-211
+   switchport mode trunk
+   spanning-tree bpduguard disable
+   spanning-tree bpdufilter disable
+!
+interface Port-Channel11
+   description server01_MTU_PROFILE_MLAG_PortChanne1
+   no shutdown
+   mtu 1600
+   switchport
+   switchport access vlan 110
+   spanning-tree bpduguard enable
+   spanning-tree bpdufilter enable
+!
+interface Port-Channel12
+   description server01_MTU_ADAPTOR_MLAG_PortChanne1
+   no shutdown
+   mtu 1601
+   switchport
+   spanning-tree bpduguard enable
+   spanning-tree bpdufilter enable
+!
+interface Port-Channel20
+   description FIREWALL01_PortChanne1
+   no shutdown
+   switchport
+   switchport trunk allowed vlan 110-111,210-211
+   switchport mode trunk
+</code></pre></div>
+<h4 id="loopback-interfaces">Loopback Interfaces<a class="headerlink" href="#loopback-interfaces" title="Permanent link">&para;</a></h4>
+<h5 id="loopback-interfaces-summary">Loopback Interfaces Summary<a class="headerlink" href="#loopback-interfaces-summary" title="Permanent link">&para;</a></h5>
+<h6 id="ipv4_2">IPv4<a class="headerlink" href="#ipv4_2" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Description</th>
+<th>VRF</th>
+<th>IP Address</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Loopback0</td>
+<td>EVPN_Overlay_Peering</td>
+<td>default</td>
+<td>192.168.255.10/32</td>
+</tr>
+<tr>
+<td>Loopback1</td>
+<td>VTEP_VXLAN_Tunnel_Source</td>
+<td>default</td>
+<td>192.168.254.10/32</td>
+</tr>
+<tr>
+<td>Loopback100</td>
+<td>Tenant_A_OP_Zone_VTEP_DIAGNOSTICS</td>
+<td>Tenant_A_OP_Zone</td>
+<td>10.255.1.10/32</td>
+</tr>
+</tbody>
+</table>
+<h6 id="ipv6_1">IPv6<a class="headerlink" href="#ipv6_1" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Description</th>
+<th>VRF</th>
+<th>IPv6 Address</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Loopback0</td>
+<td>EVPN_Overlay_Peering</td>
+<td>default</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Loopback1</td>
+<td>VTEP_VXLAN_Tunnel_Source</td>
+<td>default</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Loopback100</td>
+<td>Tenant_A_OP_Zone_VTEP_DIAGNOSTICS</td>
+<td>Tenant_A_OP_Zone</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h5 id="loopback-interfaces-device-configuration">Loopback Interfaces Device Configuration<a class="headerlink" href="#loopback-interfaces-device-configuration" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code>!
+interface Loopback0
+   description EVPN_Overlay_Peering
+   no shutdown
+   ip address 192.168.255.10/32
+!
+interface Loopback1
+   description VTEP_VXLAN_Tunnel_Source
+   no shutdown
+   ip address 192.168.254.10/32
+!
+interface Loopback100
+   description Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
+   no shutdown
+   vrf Tenant_A_OP_Zone
+   ip address 10.255.1.10/32
+</code></pre></div>
+<h4 id="vlan-interfaces">VLAN Interfaces<a class="headerlink" href="#vlan-interfaces" title="Permanent link">&para;</a></h4>
+<h5 id="vlan-interfaces-summary">VLAN Interfaces Summary<a class="headerlink" href="#vlan-interfaces-summary" title="Permanent link">&para;</a></h5>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Description</th>
+<th>VRF</th>
+<th>MTU</th>
+<th>Shutdown</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vlan110</td>
+<td>Tenant_A_OP_Zone_1</td>
+<td>Tenant_A_OP_Zone</td>
+<td>-</td>
+<td>false</td>
+</tr>
+<tr>
+<td>Vlan111</td>
+<td>Tenant_A_OP_Zone_2</td>
+<td>Tenant_A_OP_Zone</td>
+<td>-</td>
+<td>false</td>
+</tr>
+<tr>
+<td>Vlan120</td>
+<td>Tenant_A_WEB_Zone_1</td>
+<td>Tenant_A_WEB_Zone</td>
+<td>-</td>
+<td>false</td>
+</tr>
+<tr>
+<td>Vlan121</td>
+<td>Tenant_A_WEBZone_2</td>
+<td>Tenant_A_WEB_Zone</td>
+<td>1560</td>
+<td>true</td>
+</tr>
+<tr>
+<td>Vlan130</td>
+<td>Tenant_A_APP_Zone_1</td>
+<td>Tenant_A_APP_Zone</td>
+<td>-</td>
+<td>false</td>
+</tr>
+<tr>
+<td>Vlan131</td>
+<td>Tenant_A_APP_Zone_2</td>
+<td>Tenant_A_APP_Zone</td>
+<td>-</td>
+<td>false</td>
+</tr>
+<tr>
+<td>Vlan140</td>
+<td>Tenant_A_DB_BZone_1</td>
+<td>Tenant_A_DB_Zone</td>
+<td>-</td>
+<td>false</td>
+</tr>
+<tr>
+<td>Vlan141</td>
+<td>Tenant_A_DB_Zone_2</td>
+<td>Tenant_A_DB_Zone</td>
+<td>-</td>
+<td>false</td>
+</tr>
+<tr>
+<td>Vlan210</td>
+<td>Tenant_B_OP_Zone_1</td>
+<td>Tenant_B_OP_Zone</td>
+<td>-</td>
+<td>false</td>
+</tr>
+<tr>
+<td>Vlan211</td>
+<td>Tenant_B_OP_Zone_2</td>
+<td>Tenant_B_OP_Zone</td>
+<td>-</td>
+<td>false</td>
+</tr>
+<tr>
+<td>Vlan310</td>
+<td>Tenant_C_OP_Zone_1</td>
+<td>Tenant_C_OP_Zone</td>
+<td>-</td>
+<td>false</td>
+</tr>
+<tr>
+<td>Vlan311</td>
+<td>Tenant_C_OP_Zone_2</td>
+<td>Tenant_C_OP_Zone</td>
+<td>-</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+<h6 id="ipv4_3">IPv4<a class="headerlink" href="#ipv4_3" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>VRF</th>
+<th>IP Address</th>
+<th>IP Address Virtual</th>
+<th>IP Router Virtual Address</th>
+<th>VRRP</th>
+<th>ACL In</th>
+<th>ACL Out</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vlan110</td>
+<td>Tenant_A_OP_Zone</td>
+<td>-</td>
+<td>10.1.10.1/24</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Vlan111</td>
+<td>Tenant_A_OP_Zone</td>
+<td>-</td>
+<td>10.1.11.1/24</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Vlan120</td>
+<td>Tenant_A_WEB_Zone</td>
+<td>-</td>
+<td>10.1.20.1/24</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Vlan121</td>
+<td>Tenant_A_WEB_Zone</td>
+<td>-</td>
+<td>10.1.10.254/24</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Vlan130</td>
+<td>Tenant_A_APP_Zone</td>
+<td>-</td>
+<td>10.1.30.1/24</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Vlan131</td>
+<td>Tenant_A_APP_Zone</td>
+<td>-</td>
+<td>10.1.31.1/24</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Vlan140</td>
+<td>Tenant_A_DB_Zone</td>
+<td>-</td>
+<td>10.1.40.1/24</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Vlan141</td>
+<td>Tenant_A_DB_Zone</td>
+<td>-</td>
+<td>10.1.41.1/24</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Vlan210</td>
+<td>Tenant_B_OP_Zone</td>
+<td>-</td>
+<td>10.2.10.1/24</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Vlan211</td>
+<td>Tenant_B_OP_Zone</td>
+<td>-</td>
+<td>10.2.11.1/24</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Vlan310</td>
+<td>Tenant_C_OP_Zone</td>
+<td>-</td>
+<td>10.3.10.1/24</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Vlan311</td>
+<td>Tenant_C_OP_Zone</td>
+<td>-</td>
+<td>10.3.11.1/24</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h5 id="vlan-interfaces-device-configuration">VLAN Interfaces Device Configuration<a class="headerlink" href="#vlan-interfaces-device-configuration" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code>!
+interface Vlan110
+   description Tenant_A_OP_Zone_1
+   no shutdown
+   vrf Tenant_A_OP_Zone
+   ip address virtual 10.1.10.1/24
+!
+interface Vlan111
+   description Tenant_A_OP_Zone_2
+   no shutdown
+   vrf Tenant_A_OP_Zone
+   ip address virtual 10.1.11.1/24
+   ip helper-address 1.1.1.1 vrf MGMT source-interface lo100
+!
+interface Vlan120
+   description Tenant_A_WEB_Zone_1
+   no shutdown
+   vrf Tenant_A_WEB_Zone
+   ip address virtual 10.1.20.1/24
+   ip address virtual 10.2.20.1/24 secondary
+   ip address virtual 10.2.21.1/24 secondary
+   ip helper-address 1.1.1.1 vrf TEST source-interface lo100
+!
+interface Vlan121
+   description Tenant_A_WEBZone_2
+   shutdown
+   mtu 1560
+   vrf Tenant_A_WEB_Zone
+   ip address virtual 10.1.10.254/24
+!
+interface Vlan130
+   description Tenant_A_APP_Zone_1
+   no shutdown
+   vrf Tenant_A_APP_Zone
+   ip address virtual 10.1.30.1/24
+!
+interface Vlan131
+   description Tenant_A_APP_Zone_2
+   no shutdown
+   vrf Tenant_A_APP_Zone
+   ip address virtual 10.1.31.1/24
+!
+interface Vlan140
+   description Tenant_A_DB_BZone_1
+   no shutdown
+   vrf Tenant_A_DB_Zone
+   ip address virtual 10.1.40.1/24
+!
+interface Vlan141
+   description Tenant_A_DB_Zone_2
+   no shutdown
+   vrf Tenant_A_DB_Zone
+   ip address virtual 10.1.41.1/24
+!
+interface Vlan210
+   description Tenant_B_OP_Zone_1
+   no shutdown
+   vrf Tenant_B_OP_Zone
+   ip address virtual 10.2.10.1/24
+!
+interface Vlan211
+   description Tenant_B_OP_Zone_2
+   no shutdown
+   vrf Tenant_B_OP_Zone
+   ip address virtual 10.2.11.1/24
+!
+interface Vlan310
+   description Tenant_C_OP_Zone_1
+   no shutdown
+   vrf Tenant_C_OP_Zone
+   ip address virtual 10.3.10.1/24
+!
+interface Vlan311
+   description Tenant_C_OP_Zone_2
+   no shutdown
+   vrf Tenant_C_OP_Zone
+   ip address virtual 10.3.11.1/24
+</code></pre></div>
+<h4 id="vxlan-interface">VXLAN Interface<a class="headerlink" href="#vxlan-interface" title="Permanent link">&para;</a></h4>
+<h5 id="vxlan-interface-summary">VXLAN Interface Summary<a class="headerlink" href="#vxlan-interface-summary" title="Permanent link">&para;</a></h5>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Source Interface</td>
+<td>Loopback1</td>
+</tr>
+<tr>
+<td>UDP port</td>
+<td>4789</td>
+</tr>
+</tbody>
+</table>
+<h6 id="vlan-to-vni-flood-list-and-multicast-group-mappings">VLAN to VNI, Flood List and Multicast Group Mappings<a class="headerlink" href="#vlan-to-vni-flood-list-and-multicast-group-mappings" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>VLAN</th>
+<th>VNI</th>
+<th>Flood List</th>
+<th>Multicast Group</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>110</td>
+<td>10110</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>111</td>
+<td>50111</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>120</td>
+<td>10120</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>121</td>
+<td>10121</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>130</td>
+<td>10130</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>131</td>
+<td>10131</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>140</td>
+<td>10140</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>141</td>
+<td>10141</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>160</td>
+<td>10160</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>161</td>
+<td>10161</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>210</td>
+<td>20210</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>211</td>
+<td>20211</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>310</td>
+<td>30310</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>311</td>
+<td>30311</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="vrf-to-vni-and-multicast-group-mappings">VRF to VNI and Multicast Group Mappings<a class="headerlink" href="#vrf-to-vni-and-multicast-group-mappings" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>VRF</th>
+<th>VNI</th>
+<th>Multicast Group</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tenant_A_APP_Zone</td>
+<td>12</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Tenant_A_DB_Zone</td>
+<td>13</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Tenant_A_OP_Zone</td>
+<td>10</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Tenant_A_WEB_Zone</td>
+<td>11</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Tenant_B_OP_Zone</td>
+<td>20</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Tenant_C_OP_Zone</td>
+<td>30</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h5 id="vxlan-interface-device-configuration">VXLAN Interface Device Configuration<a class="headerlink" href="#vxlan-interface-device-configuration" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code>!
+interface Vxlan1
+   description DC1-LEAF2A_VTEP
+   vxlan source-interface Loopback1
+   vxlan udp-port 4789
+   vxlan vlan 110 vni 10110
+   vxlan vlan 111 vni 50111
+   vxlan vlan 120 vni 10120
+   vxlan vlan 121 vni 10121
+   vxlan vlan 130 vni 10130
+   vxlan vlan 131 vni 10131
+   vxlan vlan 140 vni 10140
+   vxlan vlan 141 vni 10141
+   vxlan vlan 160 vni 10160
+   vxlan vlan 161 vni 10161
+   vxlan vlan 210 vni 20210
+   vxlan vlan 211 vni 20211
+   vxlan vlan 310 vni 30310
+   vxlan vlan 311 vni 30311
+   vxlan vrf Tenant_A_APP_Zone vni 12
+   vxlan vrf Tenant_A_DB_Zone vni 13
+   vxlan vrf Tenant_A_OP_Zone vni 10
+   vxlan vrf Tenant_A_WEB_Zone vni 11
+   vxlan vrf Tenant_B_OP_Zone vni 20
+   vxlan vrf Tenant_C_OP_Zone vni 30
+</code></pre></div>
+<h3 id="routing">Routing<a class="headerlink" href="#routing" title="Permanent link">&para;</a></h3>
+<h4 id="service-routing-protocols-model">Service Routing Protocols Model<a class="headerlink" href="#service-routing-protocols-model" title="Permanent link">&para;</a></h4>
+<p>Multi agent routing protocol model enabled</p>
+<div class="highlight"><pre><span></span><code>!
+service routing protocols model multi-agent
+</code></pre></div>
+<h4 id="virtual-router-mac-address">Virtual Router MAC Address<a class="headerlink" href="#virtual-router-mac-address" title="Permanent link">&para;</a></h4>
+<h5 id="virtual-router-mac-address-summary">Virtual Router MAC Address Summary<a class="headerlink" href="#virtual-router-mac-address-summary" title="Permanent link">&para;</a></h5>
+<h6 id="virtual-router-mac-address-00dc0000000a">Virtual Router MAC Address: 00:dc:00:00:00:0a<a class="headerlink" href="#virtual-router-mac-address-00dc0000000a" title="Permanent link">&para;</a></h6>
+<h5 id="virtual-router-mac-address-configuration">Virtual Router MAC Address Configuration<a class="headerlink" href="#virtual-router-mac-address-configuration" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code>!
+ip virtual-router mac-address 00:dc:00:00:00:0a
+</code></pre></div>
+<h4 id="ip-routing">IP Routing<a class="headerlink" href="#ip-routing" title="Permanent link">&para;</a></h4>
+<h5 id="ip-routing-summary">IP Routing Summary<a class="headerlink" href="#ip-routing-summary" title="Permanent link">&para;</a></h5>
+<table>
+<thead>
+<tr>
+<th>VRF</th>
+<th>Routing Enabled</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>true</td>
+</tr>
+<tr>
+<td>MGMT</td>
+<td>false</td>
+</tr>
+<tr>
+<td>Tenant_A_APP_Zone</td>
+<td>true</td>
+</tr>
+<tr>
+<td>Tenant_A_DB_Zone</td>
+<td>true</td>
+</tr>
+<tr>
+<td>Tenant_A_OP_Zone</td>
+<td>true</td>
+</tr>
+<tr>
+<td>Tenant_A_WEB_Zone</td>
+<td>true</td>
+</tr>
+<tr>
+<td>Tenant_B_OP_Zone</td>
+<td>true</td>
+</tr>
+<tr>
+<td>Tenant_C_OP_Zone</td>
+<td>true</td>
+</tr>
+</tbody>
+</table>
+<h5 id="ip-routing-device-configuration">IP Routing Device Configuration<a class="headerlink" href="#ip-routing-device-configuration" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code>!
+ip routing
+no ip routing vrf MGMT
+ip routing vrf Tenant_A_APP_Zone
+ip routing vrf Tenant_A_DB_Zone
+ip routing vrf Tenant_A_OP_Zone
+ip routing vrf Tenant_A_WEB_Zone
+ip routing vrf Tenant_B_OP_Zone
+ip routing vrf Tenant_C_OP_Zone
+</code></pre></div>
+<h4 id="ipv6-routing">IPv6 Routing<a class="headerlink" href="#ipv6-routing" title="Permanent link">&para;</a></h4>
+<h5 id="ipv6-routing-summary">IPv6 Routing Summary<a class="headerlink" href="#ipv6-routing-summary" title="Permanent link">&para;</a></h5>
+<table>
+<thead>
+<tr>
+<th>VRF</th>
+<th>Routing Enabled</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>false</td>
+</tr>
+<tr>
+<td>MGMT</td>
+<td>false</td>
+</tr>
+<tr>
+<td>Tenant_A_APP_Zone</td>
+<td>false</td>
+</tr>
+<tr>
+<td>Tenant_A_DB_Zone</td>
+<td>false</td>
+</tr>
+<tr>
+<td>Tenant_A_OP_Zone</td>
+<td>false</td>
+</tr>
+<tr>
+<td>Tenant_A_WEB_Zone</td>
+<td>false</td>
+</tr>
+<tr>
+<td>Tenant_B_OP_Zone</td>
+<td>false</td>
+</tr>
+<tr>
+<td>Tenant_C_OP_Zone</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+<h4 id="static-routes">Static Routes<a class="headerlink" href="#static-routes" title="Permanent link">&para;</a></h4>
+<h5 id="static-routes-summary">Static Routes Summary<a class="headerlink" href="#static-routes-summary" title="Permanent link">&para;</a></h5>
+<table>
+<thead>
+<tr>
+<th>VRF</th>
+<th>Destination Prefix</th>
+<th>Next Hop IP</th>
+<th>Exit interface</th>
+<th>Administrative Distance</th>
+<th>Tag</th>
+<th>Route Name</th>
+<th>Metric</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MGMT</td>
+<td>0.0.0.0/0</td>
+<td>192.168.200.5</td>
+<td>-</td>
+<td>1</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h5 id="static-routes-device-configuration">Static Routes Device Configuration<a class="headerlink" href="#static-routes-device-configuration" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code>!
+ip route vrf MGMT 0.0.0.0/0 192.168.200.5
+</code></pre></div>
+<h4 id="router-bgp">Router BGP<a class="headerlink" href="#router-bgp" title="Permanent link">&para;</a></h4>
+<h5 id="router-bgp-summary">Router BGP Summary<a class="headerlink" href="#router-bgp-summary" title="Permanent link">&para;</a></h5>
+<table>
+<thead>
+<tr>
+<th>BGP AS</th>
+<th>Router ID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>65102</td>
+<td>192.168.255.10</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>BGP Tuning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>no bgp default ipv4-unicast</td>
+</tr>
+<tr>
+<td>distance bgp 20 200 200</td>
+</tr>
+<tr>
+<td>maximum-paths 4 ecmp 4</td>
+</tr>
+</tbody>
+</table>
+<h5 id="router-bgp-peer-groups">Router BGP Peer Groups<a class="headerlink" href="#router-bgp-peer-groups" title="Permanent link">&para;</a></h5>
+<h6 id="evpn-overlay-peers">EVPN-OVERLAY-PEERS<a class="headerlink" href="#evpn-overlay-peers" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Settings</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Address Family</td>
+<td>evpn</td>
+</tr>
+<tr>
+<td>Source</td>
+<td>Loopback0</td>
+</tr>
+<tr>
+<td>BFD</td>
+<td>True</td>
+</tr>
+<tr>
+<td>Ebgp multihop</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Send community</td>
+<td>all</td>
+</tr>
+<tr>
+<td>Maximum routes</td>
+<td>0 (no limit)</td>
+</tr>
+</tbody>
+</table>
+<h6 id="underlay-peers">UNDERLAY-PEERS<a class="headerlink" href="#underlay-peers" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Settings</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Address Family</td>
+<td>ipv4</td>
+</tr>
+<tr>
+<td>Send community</td>
+<td>all</td>
+</tr>
+<tr>
+<td>Maximum routes</td>
+<td>12000</td>
+</tr>
+</tbody>
+</table>
+<h5 id="bgp-neighbors">BGP Neighbors<a class="headerlink" href="#bgp-neighbors" title="Permanent link">&para;</a></h5>
+<table>
+<thead>
+<tr>
+<th>Neighbor</th>
+<th>Remote AS</th>
+<th>VRF</th>
+<th>Shutdown</th>
+<th>Send-community</th>
+<th>Maximum-routes</th>
+<th>Allowas-in</th>
+<th>BFD</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>172.31.255.16</td>
+<td>65001</td>
+<td>default</td>
+<td>-</td>
+<td>Inherited from peer group UNDERLAY-PEERS</td>
+<td>Inherited from peer group UNDERLAY-PEERS</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>172.31.255.18</td>
+<td>65001</td>
+<td>default</td>
+<td>-</td>
+<td>Inherited from peer group UNDERLAY-PEERS</td>
+<td>Inherited from peer group UNDERLAY-PEERS</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>172.31.255.20</td>
+<td>65001</td>
+<td>default</td>
+<td>-</td>
+<td>Inherited from peer group UNDERLAY-PEERS</td>
+<td>Inherited from peer group UNDERLAY-PEERS</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>172.31.255.22</td>
+<td>65001</td>
+<td>default</td>
+<td>-</td>
+<td>Inherited from peer group UNDERLAY-PEERS</td>
+<td>Inherited from peer group UNDERLAY-PEERS</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>192.168.255.1</td>
+<td>65001</td>
+<td>default</td>
+<td>-</td>
+<td>Inherited from peer group EVPN-OVERLAY-PEERS</td>
+<td>Inherited from peer group EVPN-OVERLAY-PEERS</td>
+<td>-</td>
+<td>Inherited from peer group EVPN-OVERLAY-PEERS</td>
+</tr>
+<tr>
+<td>192.168.255.2</td>
+<td>65001</td>
+<td>default</td>
+<td>-</td>
+<td>Inherited from peer group EVPN-OVERLAY-PEERS</td>
+<td>Inherited from peer group EVPN-OVERLAY-PEERS</td>
+<td>-</td>
+<td>Inherited from peer group EVPN-OVERLAY-PEERS</td>
+</tr>
+<tr>
+<td>192.168.255.3</td>
+<td>65001</td>
+<td>default</td>
+<td>-</td>
+<td>Inherited from peer group EVPN-OVERLAY-PEERS</td>
+<td>Inherited from peer group EVPN-OVERLAY-PEERS</td>
+<td>-</td>
+<td>Inherited from peer group EVPN-OVERLAY-PEERS</td>
+</tr>
+<tr>
+<td>192.168.255.4</td>
+<td>65001</td>
+<td>default</td>
+<td>-</td>
+<td>Inherited from peer group EVPN-OVERLAY-PEERS</td>
+<td>Inherited from peer group EVPN-OVERLAY-PEERS</td>
+<td>-</td>
+<td>Inherited from peer group EVPN-OVERLAY-PEERS</td>
+</tr>
+</tbody>
+</table>
+<h5 id="router-bgp-evpn-address-family">Router BGP EVPN Address Family<a class="headerlink" href="#router-bgp-evpn-address-family" title="Permanent link">&para;</a></h5>
+<h6 id="evpn-peer-groups">EVPN Peer Groups<a class="headerlink" href="#evpn-peer-groups" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Peer Group</th>
+<th>Activate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EVPN-OVERLAY-PEERS</td>
+<td>True</td>
+</tr>
+</tbody>
+</table>
+<h5 id="router-bgp-vlan-aware-bundles">Router BGP VLAN Aware Bundles<a class="headerlink" href="#router-bgp-vlan-aware-bundles" title="Permanent link">&para;</a></h5>
+<table>
+<thead>
+<tr>
+<th>VLAN Aware Bundle</th>
+<th>Route-Distinguisher</th>
+<th>Both Route-Target</th>
+<th>Import Route Target</th>
+<th>Export Route-Target</th>
+<th>Redistribute</th>
+<th>VLANs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tenant_A_APP_Zone</td>
+<td>65001:12</td>
+<td>100000:12</td>
+<td>-</td>
+<td>-</td>
+<td>learned</td>
+<td>130-131</td>
+</tr>
+<tr>
+<td>Tenant_A_DB_Zone</td>
+<td>65001:13</td>
+<td>100000:13</td>
+<td>-</td>
+<td>-</td>
+<td>learned</td>
+<td>140-141</td>
+</tr>
+<tr>
+<td>Tenant_A_NFS</td>
+<td>65001:20161</td>
+<td>100000:20161</td>
+<td>-</td>
+<td>-</td>
+<td>learned</td>
+<td>161</td>
+</tr>
+<tr>
+<td>Tenant_A_OP_Zone</td>
+<td>65001:9</td>
+<td>100000:9</td>
+<td>-</td>
+<td>-</td>
+<td>learned</td>
+<td>110-111</td>
+</tr>
+<tr>
+<td>Tenant_A_VMOTION</td>
+<td>65001:20160</td>
+<td>100000:20160</td>
+<td>-</td>
+<td>-</td>
+<td>learned</td>
+<td>160</td>
+</tr>
+<tr>
+<td>Tenant_A_WEB_Zone</td>
+<td>65001:11</td>
+<td>100000:11</td>
+<td>-</td>
+<td>-</td>
+<td>learned</td>
+<td>120-121</td>
+</tr>
+<tr>
+<td>Tenant_B_OP_Zone</td>
+<td>65001:20</td>
+<td>100000:20</td>
+<td>-</td>
+<td>-</td>
+<td>learned</td>
+<td>210-211</td>
+</tr>
+<tr>
+<td>Tenant_C_OP_Zone</td>
+<td>65001:30</td>
+<td>100000:30</td>
+<td>-</td>
+<td>-</td>
+<td>learned</td>
+<td>310-311</td>
+</tr>
+</tbody>
+</table>
+<h5 id="router-bgp-vrfs">Router BGP VRFs<a class="headerlink" href="#router-bgp-vrfs" title="Permanent link">&para;</a></h5>
+<table>
+<thead>
+<tr>
+<th>VRF</th>
+<th>Route-Distinguisher</th>
+<th>Redistribute</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tenant_A_APP_Zone</td>
+<td>65001:12</td>
+<td>connected</td>
+</tr>
+<tr>
+<td>Tenant_A_DB_Zone</td>
+<td>65001:13</td>
+<td>connected</td>
+</tr>
+<tr>
+<td>Tenant_A_OP_Zone</td>
+<td>65001:9</td>
+<td>connected</td>
+</tr>
+<tr>
+<td>Tenant_A_WEB_Zone</td>
+<td>65001:11</td>
+<td>connected</td>
+</tr>
+<tr>
+<td>Tenant_B_OP_Zone</td>
+<td>65001:20</td>
+<td>connected</td>
+</tr>
+<tr>
+<td>Tenant_C_OP_Zone</td>
+<td>65001:30</td>
+<td>connected</td>
+</tr>
+</tbody>
+</table>
+<h5 id="router-bgp-device-configuration">Router BGP Device Configuration<a class="headerlink" href="#router-bgp-device-configuration" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code>!
+router bgp 65102
+   router-id 192.168.255.10
+   no bgp default ipv4-unicast
+   distance bgp 20 200 200
+   maximum-paths 4 ecmp 4
+   neighbor EVPN-OVERLAY-PEERS peer group
+   neighbor EVPN-OVERLAY-PEERS update-source Loopback0
+   neighbor EVPN-OVERLAY-PEERS bfd
+   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3
+   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
+   neighbor EVPN-OVERLAY-PEERS send-community
+   neighbor EVPN-OVERLAY-PEERS maximum-routes 0
+   neighbor UNDERLAY-PEERS peer group
+   neighbor UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
+   neighbor UNDERLAY-PEERS send-community
+   neighbor UNDERLAY-PEERS maximum-routes 12000
+   neighbor 172.31.255.16 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.16 remote-as 65001
+   neighbor 172.31.255.16 description DC1-SPINE1_Ethernet2
+   neighbor 172.31.255.18 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.18 remote-as 65001
+   neighbor 172.31.255.18 description DC1-SPINE2_Ethernet2
+   neighbor 172.31.255.20 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.20 remote-as 65001
+   neighbor 172.31.255.20 description DC1-SPINE3_Ethernet2
+   neighbor 172.31.255.22 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.22 remote-as 65001
+   neighbor 172.31.255.22 description DC1-SPINE4_Ethernet2
+   neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.1 remote-as 65001
+   neighbor 192.168.255.1 description DC1-SPINE1
+   neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.2 remote-as 65001
+   neighbor 192.168.255.2 description DC1-SPINE2
+   neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.3 remote-as 65001
+   neighbor 192.168.255.3 description DC1-SPINE3
+   neighbor 192.168.255.4 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.4 remote-as 65001
+   neighbor 192.168.255.4 description DC1-SPINE4
+   redistribute connected route-map RM-CONN-2-BGP
+   !
+   vlan-aware-bundle Tenant_A_APP_Zone
+      rd 65001:12
+      route-target both 100000:12
+      redistribute learned
+      vlan 130-131
+   !
+   vlan-aware-bundle Tenant_A_DB_Zone
+      rd 65001:13
+      route-target both 100000:13
+      redistribute learned
+      vlan 140-141
+   !
+   vlan-aware-bundle Tenant_A_NFS
+      rd 65001:20161
+      route-target both 100000:20161
+      redistribute learned
+      vlan 161
+   !
+   vlan-aware-bundle Tenant_A_OP_Zone
+      rd 65001:9
+      route-target both 100000:9
+      redistribute learned
+      vlan 110-111
+   !
+   vlan-aware-bundle Tenant_A_VMOTION
+      rd 65001:20160
+      route-target both 100000:20160
+      redistribute learned
+      vlan 160
+   !
+   vlan-aware-bundle Tenant_A_WEB_Zone
+      rd 65001:11
+      route-target both 100000:11
+      redistribute learned
+      vlan 120-121
+   !
+   vlan-aware-bundle Tenant_B_OP_Zone
+      rd 65001:20
+      route-target both 100000:20
+      redistribute learned
+      vlan 210-211
+   !
+   vlan-aware-bundle Tenant_C_OP_Zone
+      rd 65001:30
+      route-target both 100000:30
+      redistribute learned
+      vlan 310-311
+   !
+   address-family evpn
+      neighbor EVPN-OVERLAY-PEERS activate
+   !
+   address-family ipv4
+      no neighbor EVPN-OVERLAY-PEERS activate
+      neighbor UNDERLAY-PEERS activate
+   !
+   vrf Tenant_A_APP_Zone
+      rd 65001:12
+      route-target import evpn 100000:12
+      route-target export evpn 100000:12
+      router-id 192.168.255.10
+      redistribute connected
+   !
+   vrf Tenant_A_DB_Zone
+      rd 65001:13
+      route-target import evpn 100000:13
+      route-target export evpn 100000:13
+      router-id 192.168.255.10
+      redistribute connected
+   !
+   vrf Tenant_A_OP_Zone
+      rd 65001:9
+      route-target import evpn 100000:9
+      route-target export evpn 100000:9
+      router-id 192.168.255.10
+      redistribute connected
+   !
+   vrf Tenant_A_WEB_Zone
+      rd 65001:11
+      route-target import evpn 100000:11
+      route-target export evpn 100000:11
+      router-id 192.168.255.10
+      redistribute connected
+   !
+   vrf Tenant_B_OP_Zone
+      rd 65001:20
+      route-target import evpn 100000:20
+      route-target export evpn 100000:20
+      router-id 192.168.255.10
+      redistribute connected
+   !
+   vrf Tenant_C_OP_Zone
+      rd 65001:30
+      route-target import evpn 100000:30
+      route-target export evpn 100000:30
+      router-id 192.168.255.10
+      redistribute connected
+</code></pre></div>
+<h3 id="bfd">BFD<a class="headerlink" href="#bfd" title="Permanent link">&para;</a></h3>
+<h4 id="router-bfd">Router BFD<a class="headerlink" href="#router-bfd" title="Permanent link">&para;</a></h4>
+<h5 id="router-bfd-multihop-summary">Router BFD Multihop Summary<a class="headerlink" href="#router-bfd-multihop-summary" title="Permanent link">&para;</a></h5>
+<table>
+<thead>
+<tr>
+<th>Interval</th>
+<th>Minimum RX</th>
+<th>Multiplier</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1200</td>
+<td>1200</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<h5 id="router-bfd-device-configuration">Router BFD Device Configuration<a class="headerlink" href="#router-bfd-device-configuration" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code>!
+router bfd
+   multihop interval 1200 min-rx 1200 multiplier 3
+</code></pre></div>
+<h3 id="multicast">Multicast<a class="headerlink" href="#multicast" title="Permanent link">&para;</a></h3>
+<h4 id="ip-igmp-snooping">IP IGMP Snooping<a class="headerlink" href="#ip-igmp-snooping" title="Permanent link">&para;</a></h4>
+<h5 id="ip-igmp-snooping-summary">IP IGMP Snooping Summary<a class="headerlink" href="#ip-igmp-snooping-summary" title="Permanent link">&para;</a></h5>
+<table>
+<thead>
+<tr>
+<th>IGMP Snooping</th>
+<th>Fast Leave</th>
+<th>Interface Restart Query</th>
+<th>Proxy</th>
+<th>Restart Query Interval</th>
+<th>Robustness Variable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Enabled</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="ip-igmp-snooping-vlan-summary">IP IGMP Snooping Vlan Summary<a class="headerlink" href="#ip-igmp-snooping-vlan-summary" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Vlan</th>
+<th>IGMP Snooping</th>
+<th>Fast Leave</th>
+<th>Max Groups</th>
+<th>Proxy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>120</td>
+<td>False</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h5 id="ip-igmp-snooping-device-configuration">IP IGMP Snooping Device Configuration<a class="headerlink" href="#ip-igmp-snooping-device-configuration" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code>!
+no ip igmp snooping vlan 120
+</code></pre></div>
+<h3 id="filters">Filters<a class="headerlink" href="#filters" title="Permanent link">&para;</a></h3>
+<h4 id="prefix-lists">Prefix-lists<a class="headerlink" href="#prefix-lists" title="Permanent link">&para;</a></h4>
+<h5 id="prefix-lists-summary">Prefix-lists Summary<a class="headerlink" href="#prefix-lists-summary" title="Permanent link">&para;</a></h5>
+<h6 id="pl-loopbacks-evpn-overlay">PL-LOOPBACKS-EVPN-OVERLAY<a class="headerlink" href="#pl-loopbacks-evpn-overlay" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Sequence</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10</td>
+<td>permit 192.168.255.0/24 eq 32</td>
+</tr>
+<tr>
+<td>20</td>
+<td>permit 192.168.254.0/24 eq 32</td>
+</tr>
+</tbody>
+</table>
+<h5 id="prefix-lists-device-configuration">Prefix-lists Device Configuration<a class="headerlink" href="#prefix-lists-device-configuration" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code>!
+ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+   seq 10 permit 192.168.255.0/24 eq 32
+   seq 20 permit 192.168.254.0/24 eq 32
+</code></pre></div>
+<h4 id="route-maps">Route-maps<a class="headerlink" href="#route-maps" title="Permanent link">&para;</a></h4>
+<h5 id="route-maps-summary">Route-maps Summary<a class="headerlink" href="#route-maps-summary" title="Permanent link">&para;</a></h5>
+<h6 id="rm-conn-2-bgp">RM-CONN-2-BGP<a class="headerlink" href="#rm-conn-2-bgp" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Sequence</th>
+<th>Type</th>
+<th>Match and/or Set</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10</td>
+<td>permit</td>
+<td>match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY</td>
+</tr>
+</tbody>
+</table>
+<h5 id="route-maps-device-configuration">Route-maps Device Configuration<a class="headerlink" href="#route-maps-device-configuration" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code>!
+route-map RM-CONN-2-BGP permit 10
+   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+</code></pre></div>
+<h3 id="acl">ACL<a class="headerlink" href="#acl" title="Permanent link">&para;</a></h3>
+<h3 id="vrf-instances">VRF Instances<a class="headerlink" href="#vrf-instances" title="Permanent link">&para;</a></h3>
+<h4 id="vrf-instances-summary">VRF Instances Summary<a class="headerlink" href="#vrf-instances-summary" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>VRF Name</th>
+<th>IP Routing</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MGMT</td>
+<td>disabled</td>
+</tr>
+<tr>
+<td>Tenant_A_APP_Zone</td>
+<td>enabled</td>
+</tr>
+<tr>
+<td>Tenant_A_DB_Zone</td>
+<td>enabled</td>
+</tr>
+<tr>
+<td>Tenant_A_OP_Zone</td>
+<td>enabled</td>
+</tr>
+<tr>
+<td>Tenant_A_WEB_Zone</td>
+<td>enabled</td>
+</tr>
+<tr>
+<td>Tenant_B_OP_Zone</td>
+<td>enabled</td>
+</tr>
+<tr>
+<td>Tenant_C_OP_Zone</td>
+<td>enabled</td>
+</tr>
+</tbody>
+</table>
+<h4 id="vrf-instances-device-configuration">VRF Instances Device Configuration<a class="headerlink" href="#vrf-instances-device-configuration" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>!
+vrf instance MGMT
+!
+vrf instance Tenant_A_APP_Zone
+!
+vrf instance Tenant_A_DB_Zone
+!
+vrf instance Tenant_A_OP_Zone
+!
+vrf instance Tenant_A_WEB_Zone
+!
+vrf instance Tenant_B_OP_Zone
+!
+vrf instance Tenant_C_OP_Zone
+</code></pre></div>
+<h3 id="virtual-source-nat">Virtual Source NAT<a class="headerlink" href="#virtual-source-nat" title="Permanent link">&para;</a></h3>
+<h4 id="virtual-source-nat-summary">Virtual Source NAT Summary<a class="headerlink" href="#virtual-source-nat-summary" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Source NAT VRF</th>
+<th>Source NAT IP Address</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tenant_A_OP_Zone</td>
+<td>10.255.1.10</td>
+</tr>
+</tbody>
+</table>
+<h4 id="virtual-source-nat-configuration">Virtual Source NAT Configuration<a class="headerlink" href="#virtual-source-nat-configuration" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>!
+ip address virtual source-nat vrf Tenant_A_OP_Zone address 10.255.1.10
+</code></pre></div>
+<h3 id="platform">Platform<a class="headerlink" href="#platform" title="Permanent link">&para;</a></h3>
+<h4 id="platform-summary">Platform Summary<a class="headerlink" href="#platform-summary" title="Permanent link">&para;</a></h4>
+<h5 id="platform-sand-summary">Platform Sand Summary<a class="headerlink" href="#platform-sand-summary" title="Permanent link">&para;</a></h5>
+<table>
+<thead>
+<tr>
+<th>Settings</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>lag.hardware_only</td>
+<td>True</td>
+</tr>
+</tbody>
+</table>
+<h4 id="platform-configuration">Platform Configuration<a class="headerlink" href="#platform-configuration" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>!
+platform sand lag hardware-only
+</code></pre></div>
+<h3 id="quality-of-service">Quality Of Service<a class="headerlink" href="#quality-of-service" title="Permanent link">&para;</a></h3>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      Last update:
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">February 17, 2022</span>
+      
+    
+  </small>
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2019 - 2021 Arista Networks
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.2a6f1dda.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tablesort/5.2.1/tablesort.min.js"></script>
+      
+        <script src="../../../../docs/stylesheets/tables.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
+      
+        <script src="../../../../docs/stylesheets/highlight.js"></script>
+      
+    
+  </body>
+</html>

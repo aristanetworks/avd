@@ -1,0 +1,22 @@
+{% if peer_filters is defined and peer_filters is not none %}
+
+## Peer Filters
+
+### Peer Filters Summary
+{%     for peer_filter in peer_filters | arista.avd.natural_sort %}
+
+#### {{ peer_filter }}
+
+| Sequence | Match |
+| -------- | ----- |
+{%         for sequence in peer_filters[peer_filter].sequence_numbers | arista.avd.natural_sort %}
+| {{ sequence }} | {{ peer_filters[peer_filter].sequence_numbers[sequence].match }} |
+{%         endfor %}
+{%     endfor %}
+
+### Peer Filters Device Configuration
+
+```eos
+{%     include 'eos/peer-filters.j2' %}
+```
+{% endif %}

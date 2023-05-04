@@ -1,0 +1,14 @@
+{% if ip_virtual_router_mac_address is defined and ip_virtual_router_mac_address is not none %}
+
+## Virtual Router MAC Address
+
+### Virtual Router MAC Address Summary
+
+#### Virtual Router MAC Address: {{ ip_virtual_router_mac_address }}
+
+### Virtual Router MAC Address Configuration
+
+```eos
+{%     include 'eos/virtual-router-mac-address.j2' %}
+```
+{% endif %}

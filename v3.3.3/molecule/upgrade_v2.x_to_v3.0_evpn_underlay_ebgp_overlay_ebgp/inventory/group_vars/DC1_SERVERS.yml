@@ -1,0 +1,348 @@
+port_profiles:
+  TENANT_A_B:
+    mode: trunk
+    vlans: "110-111,210-211"
+
+  TENANT_A:
+    mode: access
+    vlans: "110"
+
+  TENANT_A_MTU:
+    mode: access
+    vlans: "110"
+    mtu: 1600
+
+  TENANT_B:
+    mode: trunk
+    vlans: "210-211"
+
+  ALL_WITH_SECURITY:
+    parent_profile: NON_EXISTING_PROFILE #Test that pointing to a nonexisting profile won't break templates.
+    mode: trunk
+    vlans: "1-4094"
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
+    spanning_tree_portfast: edge
+    l2_mtu: 8000
+    storm_control:
+      all:
+        level: 10
+        unit: percent
+      broadcast:
+        level: 100
+        unit: pps
+      multicast:
+        level: 1
+        unit: percent
+      'unknown-unicast':
+        level: 2
+        unit: percent
+
+  ALL_WITH_SECURITY_PORT_CHANNEL:
+    mode: trunk
+    vlans: "1-4094"
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
+    spanning_tree_portfast: edge
+    l2_mtu: 8000
+    storm_control:
+      all:
+        level: 10
+        unit: percent
+      broadcast:
+        level: 100
+        unit: pps
+      multicast:
+        level: 1
+        unit: percent
+      'unknown-unicast':
+        level: 2
+        unit: percent
+    port_channel:
+      description: ALL_WITH_SECURITY_PORT_CHANNEL
+      mode: active
+
+  ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK:
+    mode: trunk
+    vlans: "1-4094"
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
+    spanning_tree_portfast: edge
+    l2_mtu: 8000
+    storm_control:
+      all:
+        level: 10
+        unit: percent
+      broadcast:
+        level: 100
+        unit: pps
+      multicast:
+        level: 1
+        unit: percent
+      'unknown-unicast':
+        level: 2
+        unit: percent
+    port_channel:
+      description: ALL_WITH_SECURITY_PORT_CHANNEL
+      mode: active
+      lacp_fallback:
+        mode: static
+        timeout: 10
+
+  NESTED_PORT_PROFILE:
+    parent_profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
+    port_channel:
+      description: NESTED_ALL_WITH_SECURITY_PORT_CHANNEL
+      mode: active
+
+servers:
+  server01_MLAG:
+    rack: RackB
+    adapters:
+      - server_ports: [ Eth2, Eth3 ]
+        switch_ports: [ Ethernet10, Ethernet10 ]
+        switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+        profile: TENANT_B
+        port_channel:
+          description: PortChanne1
+          mode: active
+
+  server01_MTU_PROFILE_MLAG:
+    rack: RackB
+    adapters:
+      - server_ports: [ Eth4, Eth5 ]
+        switch_ports: [ Ethernet11, Ethernet11 ]
+        switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+        profile: TENANT_A_MTU
+        port_channel:
+          description: PortChanne1
+          mode: active
+
+  server01_MTU_ADAPTOR_MLAG:
+    rack: RackB
+    adapters:
+      - server_ports: [ Eth6, Eth7, Eth8, Eth9 ]
+        switch_ports: [ Ethernet12, Ethernet12, Ethernet13, Ethernet13 ]
+        switches: [ DC1-LEAF2A, DC1-LEAF2B, DC1-LEAF2A, DC1-LEAF2B ]
+        mtu: 1601
+        port_channel:
+          description: PortChanne1
+          mode: active
+
+  server02_SINGLE_NODE_TRUNK:
+    rack: RackB
+    adapters:
+      - server_ports: [ Eth1 ]
+        switch_ports: [ Ethernet6 ]
+        switches: [ DC1-LEAF1A ]
+        profile: ALL_WITH_SECURITY
+
+  server02_SINGLE_NODE:
+    rack: RackB
+    adapters:
+      - server_ports: [ Eth1 ]
+        switch_ports: [ Ethernet7 ]
+        switches: [ DC1-LEAF1A ]
+        profile: TENANT_A
+
+  server03_ESI:
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet10, Ethernet10 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: TENANT_A_B
+        port_channel:
+          description: PortChanne1
+          mode: active
+          short_esi: '0303:0202:0101'
+
+  server04_inherit_all_from_profile:
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet11, Ethernet11 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: ALL_WITH_SECURITY
+
+  server05_no_profile:
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet12, Ethernet12 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        mode: trunk
+        vlans: "1-4094"
+        spanning_tree_bpdufilter: true
+        spanning_tree_bpduguard: false
+        spanning_tree_portfast: edge
+        storm_control:
+          all:
+            level: 10
+            unit: percent
+          broadcast:
+            level: 100
+            unit: pps
+          multicast:
+            level: 1
+            unit: percent
+          'unknown-unicast':
+            level: 2
+            unit: percent
+
+  server06_override_profile:
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet13, Ethernet13 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: ALL_WITH_SECURITY
+        mode: access
+        vlans: "210"
+        spanning_tree_bpdufilter: false
+        spanning_tree_bpduguard: true
+        spanning_tree_portfast: network
+        storm_control:
+          all:
+            level: 20
+            unit: pps
+          broadcast:
+            level: 200
+            unit: percent
+          multicast:
+            level: 1
+            unit: percent
+          'unknown-unicast':
+            level: 2
+            unit: percent
+
+  server07_inherit_all_from_profile_port_channel:
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet14, Ethernet14 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: ALL_WITH_SECURITY_PORT_CHANNEL
+
+  server08_no_profile_port_channel:
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet15, Ethernet15 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        mode: trunk
+        vlans: "1-4094"
+        spanning_tree_bpdufilter: true
+        spanning_tree_bpduguard: false
+        spanning_tree_portfast: edge
+        storm_control:
+          all:
+            level: 10
+            unit: percent
+          broadcast:
+            level: 100
+            unit: pps
+          multicast:
+            level: 1
+            unit: percent
+          'unknown-unicast':
+            level: 2
+            unit: percent
+        port_channel:
+          description: server08_no_profile_port_channel
+          mode: 'on'
+
+  server09_override_profile_no_port_channel:
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet16, Ethernet16 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: ALL_WITH_SECURITY_PORT_CHANNEL
+        mode: access
+        vlans: "210"
+        spanning_tree_bpdufilter: false
+        spanning_tree_bpduguard: true
+        spanning_tree_portfast: network
+        storm_control:
+          all:
+            level: 20
+            unit: pps
+          broadcast:
+            level: 200
+            unit: percent
+          multicast:
+            level: 1
+            unit: percent
+          'unknown-unicast':
+            level: 2
+            unit: percent
+        port_channel: null   #Setting to null, to override port-channel inherited from profile
+
+  server10_no_profile_port_channel_lacp_fallback:
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet17, Ethernet17 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        mode: trunk
+        vlans: "1-4094"
+        spanning_tree_bpdufilter: true
+        spanning_tree_bpduguard: false
+        spanning_tree_portfast: edge
+        storm_control:
+          all:
+            level: 10
+            unit: percent
+          broadcast:
+            level: 100
+            unit: pps
+          multicast:
+            level: 1
+            unit: percent
+          'unknown-unicast':
+            level: 2
+            unit: percent
+        port_channel:
+          description: server10_no_profile_port_channel_lacp_fallback
+          mode: active
+          lacp_fallback:
+            mode: static
+
+  server11_inherit_profile_port_channel_lacp_fallback:
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet18, Ethernet18 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
+
+  server12_inherit_nested_profile_port_channel_lacp_fallback:
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet19, Ethernet19 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: NESTED_PORT_PROFILE
+
+firewalls:
+  FIREWALL01:
+    rack: RackB
+    adapters:
+      - endpoint_ports: [ E0, E1 ]
+        switch_ports: [ Ethernet20, Ethernet20 ]
+        switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+        profile: TENANT_A_B
+        port_channel:
+          description: PortChanne1
+          mode: active
+
+
+routers:
+  ROUTER01:
+    rack: RackB
+    adapters:
+      - endpoint_ports: [ Eth0, Eth1 ]
+        switch_ports: [ Ethernet21, Ethernet21 ]
+        switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+        profile: TENANT_A

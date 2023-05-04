@@ -1,0 +1,101 @@
+{
+    "targets": {
+        "configlet_build_config": {
+            "aliases": [
+                "configlet_build_config", 
+                "context//", 
+                "context//configlet_build_config", 
+                "context/target/", 
+                "context/target/configlet_build_config", 
+                "module/", 
+                "module/configlet_build_config/", 
+                "module/configlet_build_config/configlet_build_config", 
+                "non_destructive/", 
+                "non_destructive/configlet_build_config", 
+                "posix/", 
+                "role/", 
+                "role/configlet_build_config"
+            ], 
+            "modules": [
+                "configlet_build_config"
+            ], 
+            "name": "configlet_build_config", 
+            "run_time_seconds": 5, 
+            "setup_always": [], 
+            "setup_once": [], 
+            "type": "role"
+        }, 
+        "filter_password": {
+            "aliases": [
+                "context//", 
+                "context//filter_password", 
+                "context/controller/", 
+                "context/controller/filter_password", 
+                "filter_password", 
+                "non_destructive/", 
+                "non_destructive/filter_password", 
+                "non_module/", 
+                "non_module/filter_password", 
+                "posix/", 
+                "role/", 
+                "role/filter_password"
+            ], 
+            "modules": [], 
+            "name": "filter_password", 
+            "run_time_seconds": 1, 
+            "setup_always": [], 
+            "setup_once": [], 
+            "type": "role"
+        }, 
+        "inventory_to_container": {
+            "aliases": [
+                "context//", 
+                "context//inventory_to_container", 
+                "context/target/", 
+                "context/target/inventory_to_container", 
+                "inventory_to_container", 
+                "module/", 
+                "module/inventory_to_container/", 
+                "module/inventory_to_container/inventory_to_container", 
+                "non_destructive/", 
+                "non_destructive/inventory_to_container", 
+                "posix/", 
+                "role/", 
+                "role/inventory_to_container"
+            ], 
+            "modules": [
+                "inventory_to_container"
+            ], 
+            "name": "inventory_to_container", 
+            "run_time_seconds": 5, 
+            "setup_always": [], 
+            "setup_once": [], 
+            "type": "role"
+        }, 
+        "yaml_templates_to_facts": {
+            "aliases": [
+                "context//", 
+                "context//yaml_templates_to_facts", 
+                "context/target/", 
+                "context/target/yaml_templates_to_facts", 
+                "module/", 
+                "module/yaml_templates_to_facts/", 
+                "module/yaml_templates_to_facts/yaml_templates_to_facts", 
+                "non_destructive/", 
+                "non_destructive/yaml_templates_to_facts", 
+                "posix/", 
+                "role/", 
+                "role/yaml_templates_to_facts", 
+                "yaml_templates_to_facts"
+            ], 
+            "modules": [
+                "yaml_templates_to_facts"
+            ], 
+            "name": "yaml_templates_to_facts", 
+            "run_time_seconds": 7, 
+            "setup_always": [], 
+            "setup_once": [], 
+            "type": "role"
+        }
+    }
+}

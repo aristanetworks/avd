@@ -1,0 +1,34 @@
+{# QOS policy-map #}
+{% for policy_map in policy_maps.qos | arista.avd.natural_sort %}
+!
+policy-map type quality-of-service {{ policy_map }}
+{%     for class in policy_maps.qos[policy_map].classes | arista.avd.natural_sort %}
+   class {{ class }}
+{%         if policy_maps.qos[policy_map].classes[class].set is arista.avd.defined %}
+{%             for set in policy_maps.qos[policy_map].classes[class].set %}
+{%                 set cli_set = set | replace('_','-') | lower %}
+{%                 if cli_set in ['cos', 'dscp', 'traffic-class', 'drop-precedence']  %}
+      set {{ cli_set }} {{ policy_maps.qos[policy_map].classes[class].set[set] }}
+{%                 endif %}
+{%             endfor %}
+   !
+{%         endif %}
+{%     endfor %}
+{% endfor %}
+{# PBR policy-map #}
+{% for policy_map in policy_maps.pbr | arista.avd.natural_sort %}
+!
+policy-map type pbr {{ policy_map }}
+{%     for class in policy_maps.pbr[policy_map].classes | arista.avd.natural_sort %}
+   class {{ class }}
+{%         if policy_maps.pbr[policy_map].classes[class].set.nexthop.ip_address is arista.avd.defined %}
+{%             set nexthop_cli = 'set nexthop' %}
+{%             if policy_maps.pbr[policy_map].classes[class].set.nexthop.recursive is arista.avd.defined(true) %}
+{%                 set nexthop_cli = nexthop_cli ~ ' recursive' %}
+{%             endif %}
+{%             set nexthop_cli = nexthop_cli ~ ' ' ~ policy_maps.pbr[policy_map].classes[class].set.nexthop.ip_address %}
+      {{ nexthop_cli }}
+{%         endif %}
+   !
+{%     endfor %}
+{% endfor %}

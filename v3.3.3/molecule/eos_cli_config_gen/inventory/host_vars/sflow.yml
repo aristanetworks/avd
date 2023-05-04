@@ -1,0 +1,26 @@
+### Sflow ###
+sflow:
+  vrfs:
+    MGMT:
+      destinations:
+        10.6.75.62:
+          port: 123
+        10.6.75.63:
+          port: 333
+        10.6.75.59:
+      source_interface: Ethernet3
+    AAA:
+      destinations:
+        10.6.75.62:
+          port: 123
+        10.6.75.63:
+          port: 333
+      source_interface: Ethernet2
+  destinations:
+    10.6.75.62:
+      port: 123
+    10.6.75.61:
+  source_interface: Management0
+  sample: 1000
+  dangerous: true
+  run: true

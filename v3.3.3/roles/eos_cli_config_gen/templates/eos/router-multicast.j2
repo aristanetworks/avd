@@ -1,0 +1,27 @@
+{# eos - Router Multicast #}
+{% if router_multicast is arista.avd.defined %}
+!
+router multicast
+{%     if router_multicast.ipv4 is arista.avd.defined %}
+   ipv4
+{%         if router_multicast.ipv4.routing is arista.avd.defined(true) %}
+      routing
+{%         endif %}
+{%         if router_multicast.ipv4.multipath is arista.avd.defined %}
+      multipath {{ router_multicast.ipv4.multipath }}
+{%         endif %}
+{%         if router_multicast.ipv4.software_forwarding is arista.avd.defined %}
+      software-forwarding {{ router_multicast.ipv4.software_forwarding }}
+{%         endif %}
+{%     endif %}
+{%     for vrf in router_multicast.vrfs | arista.avd.natural_sort('name') %}
+      !
+      vrf {{ vrf.name }}
+{%         if vrf.ipv4 is arista.avd.defined %}
+         ipv4
+{%         endif %}
+{%         if vrf.ipv4.routing is arista.avd.defined(true) %}
+            routing
+{%         endif %}
+{%     endfor %}
+{% endif %}

@@ -1,0 +1,19 @@
+{% if ip_domain_lookup is defined and ip_domain_lookup is not none %}
+
+## Domain Lookup
+
+### DNS Domain Lookup Summary
+
+| Source interface | vrf |
+| ---------------- | --- |
+{%     for source in ip_domain_lookup.source_interfaces | arista.avd.natural_sort %}
+| {{ source }} | {% if ip_domain_lookup.source_interfaces[source].vrf is defined and ip_domain_lookup.source_interfaces[source].vrf is not none %}
+{{ ip_domain_lookup.source_interfaces[source].vrf }} {% else %} - {% endif %} |
+{%     endfor %}
+
+### DNS Domain Lookup Device Configuration
+
+```eos
+{%     include 'eos/domain-lookup.j2' %}
+```
+{% endif %}

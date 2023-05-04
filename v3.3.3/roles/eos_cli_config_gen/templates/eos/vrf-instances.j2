@@ -1,0 +1,8 @@
+{# eos - VRFs #}
+{% for vrf in vrfs | arista.avd.natural_sort if vrf != 'default' %}
+!
+vrf instance {{ vrf }}
+{%     if vrfs[vrf].description is arista.avd.defined %}
+   description {{ vrfs[vrf].description }}
+{%     endif %}
+{% endfor %}

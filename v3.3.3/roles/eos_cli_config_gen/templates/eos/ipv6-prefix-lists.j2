@@ -1,0 +1,10 @@
+{# eos - ipv6-prefix-lists #}
+{% for ipv6_prefix_list in ipv6_prefix_lists | arista.avd.natural_sort %}
+!
+ipv6 prefix-list {{ ipv6_prefix_list }}
+{%     for sequence in ipv6_prefix_lists[ipv6_prefix_list].sequence_numbers | arista.avd.natural_sort %}
+{%         if ipv6_prefix_lists[ipv6_prefix_list].sequence_numbers[sequence].action is arista.avd.defined %}
+   seq {{ sequence }} {{ ipv6_prefix_lists[ipv6_prefix_list].sequence_numbers[sequence].action }}
+{%         endif %}
+{%     endfor %}
+{% endfor %}

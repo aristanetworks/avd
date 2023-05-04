@@ -1,0 +1,48 @@
+{% if sflow is defined and sflow is not none %}
+
+## SFlow
+
+### SFlow Summary
+{%     if ((sflow.vrfs is defined and sflow.vrfs is not none) or (sflow.destinations is defined and sflow.destinations is not none) or (sflow.source_interface is defined and sflow.source_interface is not none)) %}
+
+| VRF | SFlow Source Interface | SFlow Destination | Port |
+| --- | ---------------------- | ----------------- | ---- |
+{%         if sflow.vrfs is defined and sflow.vrfs is not none %}
+{%             for vrf in sflow.vrfs | arista.avd.natural_sort %}
+{%                 if sflow.vrfs[vrf].destinations is defined and sflow.vrfs[vrf].destinations is not none %}
+{%                     for destination in sflow.vrfs[vrf].destinations | arista.avd.natural_sort %}
+| {{ vrf }} | - | {{ destination }} |{% if sflow.vrfs[vrf].destinations[destination].port is defined and sflow.vrfs[vrf].destinations[destination].port is not none %} {{ sflow.vrfs[vrf].destinations[destination].port }}{% else %} 6343 {% endif %} |
+{%                     endfor %}
+{%                 endif %}
+{%                 if sflow.vrfs[vrf].source_interface is defined and sflow.vrfs[vrf].source_interface is not none %}
+| {{ vrf }} | {{ sflow.vrfs[vrf].source_interface }} | - | - |
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%         if sflow.destinations is defined and sflow.destinations is not none %}
+{%             for destination in sflow.destinations %}
+| default | - | {{ destination }} |{% if sflow.destinations[destination].port is defined and sflow.destinations[destination].port is not none %} {{ sflow.destinations[destination].port }} {% else %} 6343 {% endif %} |
+{%             endfor %}
+{%         endif %}
+{%         if sflow.source_interface is defined and sflow.source_interface is not none %}
+| default | {{ sflow.source_interface }} | - | - |
+{%         endif %}
+{%     endif %}
+{%     if sflow.sample is defined and sflow.sample is not none %}
+
+sFlow Sample Rate: {{ sflow.sample }}
+{%     endif %}
+{%     if sflow.run is defined and sflow.run == true %}
+
+sFlow is enabled.
+{%     else %}
+
+sFlow is disabled.
+{%     endif %}
+
+### SFlow Device Configuration
+
+```eos
+{%     include 'eos/sflow.j2' %}
+```
+{% endif %}

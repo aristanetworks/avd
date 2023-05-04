@@ -1,0 +1,22 @@
+{% if prefix_lists is defined and prefix_lists is not none %}
+
+## Prefix-lists
+
+### Prefix-lists Summary
+
+{%     for prefix_list in prefix_lists | arista.avd.natural_sort %}
+#### {{ prefix_list }}
+
+| Sequence | Action |
+| -------- | ------ |
+{%         for sequence in prefix_lists[prefix_list].sequence_numbers | arista.avd.natural_sort %}
+| {{ sequence }} | {{ prefix_lists[prefix_list].sequence_numbers[sequence].action }} |
+{%         endfor %}
+
+{%     endfor %}
+### Prefix-lists Device Configuration
+
+```eos
+{%     include 'eos/prefix-lists.j2' %}
+```
+{% endif %}

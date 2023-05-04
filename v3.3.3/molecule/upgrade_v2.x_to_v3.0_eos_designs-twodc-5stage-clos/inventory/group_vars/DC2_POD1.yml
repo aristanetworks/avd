@@ -1,0 +1,88 @@
+---
+pod_name: DC2_POD1
+
+underlay_p2p_network_summary: 172.17.210.0/24
+
+overlay_loopback_network_summary: 172.16.210.0/24
+
+vtep_loopback_network_summary: 172.18.210.0/24
+
+mlag_ips:
+  mlag_peer: 172.19.210.0/24
+  leaf_peer_l3: 172.20.210.0/24
+
+l2leaf_inband_management_subnet: 172.21.210.0/24
+
+super_spine_underlay_p2p_network_summary: 172.16.21.0/24
+
+spine:
+  platform: vEOS-LAB
+  bgp_as: 65210
+  uplinks_to_super_spine_interfaces: [ Ethernet1, Ethernet2 ]
+  defaults:
+    raw_eos_cli: |
+      interface Loopback1009
+        description Loopback created from raw_eos_cli under spine defaults in DC2 POD1
+  nodes:
+    # Spine also working as EVPN RS
+    DC2-POD1-SPINE1:
+      id: 1
+      mgmt_ip: 192.168.1.20/24
+      evpn_role: server
+      super_spine_interfaces: [ Ethernet1, Ethernet1 ]
+      evpn_route_servers: [ DC1-RS1, DC1-SUPER-SPINE1, DC1-POD1-SPINE1, DC1-POD1-LEAF1A ]
+    DC2-POD1-SPINE2:
+      id: 2
+      evpn_role: none
+      mgmt_ip: 192.168.1.21/24
+      super_spine_interfaces: [ Ethernet2, Ethernet2 ]
+
+# In DC2 we define all variables via defaults
+l3leaf:
+  defaults:
+    bgp_as: 65555
+    platform: vEOS-LAB
+    spines: [ DC2-POD1-SPINE1, DC2-POD1-SPINE2 ]
+    uplink_to_spine_interfaces: [ Ethernet1, Ethernet2 ]
+    evpn_role: server
+    evpn_route_servers: [ DC1-RS1, DC1-SUPER-SPINE1, DC1-POD1-SPINE1, DC1-POD1-LEAF1A ]
+    spanning_tree_mode: rstp
+    spanning_tree_priority: 4096
+    virtual_router_mac_address: 00:1c:73:00:dc:01
+    mlag: false
+    filter:
+      always_include_vrfs_in_tenants: [ 'all' ] #Testing that we configure all VRFs even with no VLANs.
+      tags: []
+    raw_eos_cli: |
+      interface Loopback1010
+        description Loopback created from raw_eos_cli under l3leaf defaults in DC2 POD1
+
+  node_groups:
+    # Single switch working as underlay L3 router and EVPN RS
+    RACK1_SINGLE:
+      bgp_as: 65211
+      nodes:
+        DC2-POD1-LEAF1A:
+          id: 1
+          mgmt_ip: 192.168.1.22/24
+          spine_interfaces: [ Ethernet3, Ethernet3 ]
+
+# In DC2 we define all variables via defaults if possible
+l2leaf:
+  defaults:
+    platform: vEOS-LAB
+    uplink_interfaces: [ Ethernet1 ]
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 8192
+    mlag: false
+    raw_eos_cli: |
+      interface Loopback1011
+        description Loopback created from raw_eos_cli under l2leaf defaults in DC2 POD1
+  node_groups:
+    RACK1_SINGLE:
+      parent_l3leafs: [ DC2-POD1-LEAF1A ]
+      nodes:
+        DC2-POD1-L2LEAF1A:
+          id: 1
+          mgmt_ip: 192.168.1.23/24
+          l3leaf_interfaces: [ Ethernet3 ]

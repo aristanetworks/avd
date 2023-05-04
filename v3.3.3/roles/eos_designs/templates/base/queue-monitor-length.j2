@@ -1,0 +1,11 @@
+{% if queue_monitor_length is defined %}
+queue_monitor_length:
+  enabled: true
+{%     if queue_monitor_length.notifying is arista.avd.defined and
+         switch.platform_settings.feature_support.queue_monitor_length_notify is not arista.avd.defined(false) %}
+  notifying: {{ queue_monitor_length.notifying }}
+{%     endif %}
+{%     if queue_monitor_length.log is defined %}
+  log: {{ queue_monitor_length.log }}
+{%     endif %}
+{% endif %}

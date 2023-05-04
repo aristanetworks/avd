@@ -1,0 +1,15 @@
+{# Add underlay links defined on this device #}
+{% set inband_management_data.vlans = [] %}
+{% set inband_management_data.subnets = [] %}
+
+{# Add underlay links defined on other devices pointing to this device #}
+{% for fabric_switch in groups[fabric_name] | arista.avd.natural_sort %}
+{%     set fabric_switch_facts = hostvars[fabric_switch].switch | arista.avd.default %}
+{%     if inventory_hostname in fabric_switch_facts.inband_management_parents | arista.avd.default([]) %}
+{%         set inband_management_data.role = 'parent' %}
+{%         if fabric_switch_facts.inband_management_subnet not in inband_management_data.subnets %}
+{%             do inband_management_data.vlans.append(fabric_switch_facts.inband_management_vlan) %}
+{%             do inband_management_data.subnets.append(fabric_switch_facts.inband_management_subnet) %}
+{%         endif %}
+{%     endif %}
+{% endfor %}

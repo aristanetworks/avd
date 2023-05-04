@@ -1,0 +1,16 @@
+### IPv4 Prefix-Lists ###
+prefix_lists:
+  PL-LOOPBACKS-EVPN-OVERLAY:
+    sequence_numbers:
+      10:
+        action: "permit 192.168.255.0/24 eq 32"
+      20:
+        action: "permit 192.168.254.0/24 eq 32"
+
+
+### IPv6 Prefix-lists ###
+ipv6_prefix_lists:
+  PL-IPV6-LOOPBACKS:
+    sequence_numbers:
+      10:
+        action: permit 1b11:3a00:22b0:0082::/64 eq 128

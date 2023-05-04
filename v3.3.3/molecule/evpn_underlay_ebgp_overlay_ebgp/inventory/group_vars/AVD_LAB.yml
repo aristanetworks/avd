@@ -1,0 +1,49 @@
+# Nashua EVE-NG LAB shared attributes
+root_dir: '{{playbook_dir}}'
+
+# local users
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    no_password: true
+
+  cvpadmin:
+    privilege: 15
+    role: network-admin
+    sha512_password: "$6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj."
+
+# Cloud Vision server
+cvp_instance_ips:
+  - 192.168.200.11
+
+cvp_ingestauth_key: telarista
+terminattr_disable_aaa: false
+
+snmp_settings:
+  contact: example@example.com
+  location: true
+
+# OOB Management network default gateway.
+mgmt_gateway: 192.168.200.5
+
+# dns servers.
+name_servers:
+  - 192.168.200.5
+  - 8.8.8.8
+
+# NTP Servers IP or DNS name, first NTP server will be prefered, and sourced from Managment
+ntp:
+  local_interface:
+    name: "{{ mgmt_interface | arista.avd.default('Management1') }}"
+    vrf: "{{ mgmt_interface_vrf | arista.avd.default('MGMT') }}"
+  servers:
+    - name: 192.168.200.5
+      preferred: True
+      vrf: "{{ mgmt_interface_vrf | arista.avd.default('MGMT') }}"
+
+queue_monitor_length:
+  log: 5
+  notifying: true
+  # Note "notifying" should only be rendered on 7280R since default
+  # platform_settings for default has queue_monitor_length_notify_support: false

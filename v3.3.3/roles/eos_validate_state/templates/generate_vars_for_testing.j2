@@ -1,0 +1,21 @@
+{# loopback0 reachability test #}
+{% set address = [] %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].type is arista.avd.defined('l3leaf') %}
+{%         if hostvars[node].loopback_interfaces.Loopback0.ip_address is defined and hostvars[node].loopback_interfaces.Loopback0.ip_address is not none %}
+{%             do address.append(hostvars[node].loopback_interfaces.Loopback0.ip_address | ansible.netcommon.ipaddr('address')) %}
+{%         endif %}
+{%     endif %}
+{% endfor %}
+loopback0_reachability:
+  loopback0_range: {{ address | unique }}
+
+{# VTEP IP reachability test #}
+{% set address = [] %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].vxlan_interface.Vxlan1.vxlan.source_interface is arista.avd.defined %}
+{%         do address.append(hostvars[node].loopback_interfaces[hostvars[node].vxlan_interface.Vxlan1.vxlan.source_interface].ip_address | ansible.netcommon.ipaddr('address')) %}
+{%     endif %}
+{% endfor %}
+vtep_reachability:
+  vtep_ip_reachability: {{ address | unique }}

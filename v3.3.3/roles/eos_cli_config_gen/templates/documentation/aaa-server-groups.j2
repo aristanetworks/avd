@@ -1,0 +1,20 @@
+{% if aaa_server_groups is defined and aaa_server_groups is not none %}
+
+## AAA Server Groups
+
+### AAA Server Groups Summary
+
+| Server Group Name | Type  | VRF | IP address |
+| ------------------| ----- | --- | ---------- |
+{%     for aaa_server_group in aaa_server_groups %}
+{%         for server in aaa_server_group.servers %}
+| {{ aaa_server_group['name'] }} | {{ aaa_server_group['type'] }} | {% if server['vrf'] is defined and server['vrf'] is not none %} {{ server['vrf'] }} {% else %} default {% endif %}| {{ server['server'] }} |
+{%         endfor %}
+{%     endfor %}
+
+### AAA Server Groups Device Configuration
+
+```eos
+{%     include 'eos/aaa-server-groups.j2' %}
+```
+{% endif %}

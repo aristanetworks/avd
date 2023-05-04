@@ -1,0 +1,5 @@
+{%- if link.type is arista.avd.defined('underlay_p2p') -%}
+P2P_LINK_TO_{{ link.peer | upper }}_{{ link.peer_interface }}
+{%- elif link.type is arista.avd.defined('underlay_l2') -%}
+{{ link.peer | upper }}_{{ link.peer_interface }}
+{%- endif -%}

@@ -1,0 +1,30 @@
+{% if route_maps is defined and route_maps is not none %}
+
+## Route-maps
+
+### Route-maps Summary
+
+{%     for route_map in route_maps | arista.avd.natural_sort %}
+#### {{ route_map }}
+
+| Sequence | Type | Match and/or Set |
+| -------- | ---- | ---------------- |
+{%         for sequence in route_maps[route_map].sequence_numbers | arista.avd.natural_sort %}
+{%             if route_maps[route_map].sequence_numbers[sequence].match is defined and route_maps[route_map].sequence_numbers[sequence].match is not none %}
+{%                 for match_rule in route_maps[route_map].sequence_numbers[sequence].match | arista.avd.natural_sort %}
+| {{ sequence }} | {{ route_maps[route_map].sequence_numbers[sequence].type }} | match {{ match_rule }} |
+{%                 endfor %}
+{%             endif %}
+{%             if route_maps[route_map].sequence_numbers[sequence].set is defined and route_maps[route_map].sequence_numbers[sequence].set is not none %}{%                 for set_rule in route_maps[route_map].sequence_numbers[sequence].set | arista.avd.natural_sort %}
+| {{ sequence }} | {{ route_maps[route_map].sequence_numbers[sequence].type }} | set {{ set_rule }} |
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+
+{%     endfor %}
+### Route-maps Device Configuration
+
+```eos
+{%     include 'eos/route-maps.j2' %}
+```
+{% endif %}

@@ -1,0 +1,13 @@
+{# eos - standard access-lists #}
+{% for standard_access_list in standard_access_lists | arista.avd.natural_sort %}
+!
+ip access-list standard {{ standard_access_list }}
+{%     if standard_access_lists[standard_access_list].counters_per_entry is arista.avd.defined(true) %}
+   counters per-entry
+{%     endif %}
+{%     for sequence in standard_access_lists[standard_access_list].sequence_numbers | arista.avd.natural_sort %}
+{%         if standard_access_lists[standard_access_list].sequence_numbers[sequence].action is arista.avd.defined %}
+   {{ sequence }} {{ standard_access_lists[standard_access_list].sequence_numbers[sequence].action }}
+{%         endif %}
+{%     endfor %}
+{% endfor %}
