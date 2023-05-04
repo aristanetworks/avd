@@ -169,9 +169,9 @@ class EthernetInterfacesMixin(UtilsMixin):
                                 }
                                 error_message = (
                                     f"Duplicate interface_name {ethernet_interface['name']} found while generating ethernet_interfaces for"
-                                    f" point_to_point_services channel group id: {channel_group_id}."
+                                    f" point_to_point_services node: {self.shared_utils.hostname}."
                                 )
-                                ethernet_interfaces = self.shared_utils.duplicate_detection(ethernet_interfaces, "name", ethernet_interface, error_message)
+                                ethernet_interfaces = self.shared_utils.duplicate_detection(ethernet_interfaces, "name", ethernet_interface, error_message, 0)
 
                                 continue
 
@@ -200,7 +200,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                                 error_message = (
                                     f"Duplicate interface_name {ethernet_interface['name']} found while generating subinterfaces under port_to_point_services"
                                 )
-                                ethernet_interfaces = self.shared_utils.duplicate_detection(ethernet_interfaces, "name", ethernet_interface, error_message)
+                                ethernet_interfaces = self.shared_utils.duplicate_detection(ethernet_interfaces, "name", ethernet_interface, error_message, 0)
                             else:
                                 interface = {
                                     "name": interface_name,
@@ -217,7 +217,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                                 error_message = (
                                     f"Duplicate interface_name {interface['name']} found while generating ethernet_interfaces for point_to_point_services."
                                 )
-                                ethernet_interfaces = self.shared_utils.duplicate_detection(ethernet_interfaces, "name", interface, error_message)
+                                ethernet_interfaces = self.shared_utils.duplicate_detection(ethernet_interfaces, "name", interface, error_message, 0)
 
         subif_parent_interface_names = subif_parent_interface_names.difference([eth_int["name"] for eth_int in ethernet_interfaces])
         if subif_parent_interface_names:

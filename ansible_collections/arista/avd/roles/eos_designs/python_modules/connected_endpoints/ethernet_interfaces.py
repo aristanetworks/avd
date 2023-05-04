@@ -33,7 +33,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                     ethernet_interface = self._get_ethernet_interface_cfg(adapter, node_index, connected_endpoint)
                     error_message = (
                         f"Duplicate interface name {ethernet_interface['name']} found while generating ethernet_interfaces for connected_endpoints peer:"
-                        f" {ethernet_interface['peer']}, peer_interface: {ethernet_interface['peer_interface']}."
+                        f" {ethernet_interface['peer']}."
                     )
                     ethernet_interfaces = self.shared_utils.duplicate_detection(ethernet_interfaces, "name", ethernet_interface, error_message)
 
