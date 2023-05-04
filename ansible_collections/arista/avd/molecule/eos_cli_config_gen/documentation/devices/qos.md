@@ -323,14 +323,6 @@ QOS Profile: **experiment**
 | 5 | All | 40 | - | - |
 | 7 | All | 30 | - | 40 percent |
 
-**ECN Configuration**
-
-| TX queue | Type | ECN Enabled | Min Threshol | Max Threshold | Max Mark Probability |
-| -------- | ---- | ----------- | ------------ | ------------- | -------------------- |
-| 3 | All | False | -   | -  | - |
-| 4 | All | False | -   | -  | - |
-| 5 | All | False | -   | -  | - |
-| 7 | All | False | -   | -  | - |
 
 QOS Profile: **no_qos_trust**
 
@@ -340,10 +332,6 @@ QOS Profile: **no_qos_trust**
 | ----------- | ------------ | ----- | ---------- | ------------------ |
 | 3 | 4 | disabled | - | - |
 
-**ECN Configuration**
-
-| TX queue | Type | ECN Enabled | Min Threshol | Max Threshold | Max Mark Probability |
-| -------- | ---- | ----------- | ------------ | ------------- | -------------------- |
 
 QOS Profile: **qprof_testwithpolicy**
 
@@ -361,13 +349,6 @@ QOS Profile: **qprof_testwithpolicy**
 | 1 | All | 80 | - | - |
 | 5 | All | 19 | no priority | - |
 
-**ECN Configuration**
-
-| TX queue | Type | ECN Enabled | Min Threshol | Max Threshold | Max Mark Probability |
-| -------- | ---- | ----------- | ------------ | ------------- | -------------------- |
-| 0 | All | False | -   | -  | - |
-| 1 | All | False | -   | -  | - |
-| 5 | All | False | -   | -  | - |
 
 QOS Profile: **test**
 
@@ -387,11 +368,11 @@ QOS Profile: **test**
 
 **ECN Configuration**
 
-| TX queue | Type | ECN Enabled | Min Threshol | Max Threshold | Max Mark Probability |
+| TX queue | Type | ECN Enabled | Min Threshold | Max Threshold | Max Mark Probability |
 | -------- | ---- | ----------- | ------------ | ------------- | -------------------- |
-| 1 | All | False | -   | -  | - |
-| 2 | All | True | 320  kbytes | 320 kbytes | 90 |
-| 4 | All | True | 320  segments | 320 segments | - |
+| 1 | All | False | -  | -  | - |
+| 2 | All | True | 320 kbytes | 320 kbytes | 90 |
+| 4 | All | True | 320 segments | 320 segments | - |
 
 QOS Profile: **uc_mc_queues_test**
 
@@ -414,11 +395,11 @@ QOS Profile: **uc_mc_queues_test**
 
 **ECN Configuration**
 
-| TX queue | Type | ECN Enabled | Min Threshol | Max Threshold | Max Mark Probability |
+| TX queue | Type | ECN Enabled | Min Threshold | Max Threshold | Max Mark Probability |
 | -------- | ---- | ----------- | ------------ | ------------- | -------------------- |
 | 1 | Unicast | False | -  | -  | - |
-| 2 | Unicast | True | 320 kbytes | 320 kbytes | 90 |
-| 4 | Unicast | True | 320 segments | 320 segments | - |
+| 2 | Unicast | False | 320 kbytes | 320 kbytes | 90 |
+| 4 | Unicast | False | 320 segments | 320 segments | - |
 | 1 | Multicast | False | - | - | - |
 | 2 | Multicast | False | - | - | - |
 | 4 | Multicast | False | - | - | - |

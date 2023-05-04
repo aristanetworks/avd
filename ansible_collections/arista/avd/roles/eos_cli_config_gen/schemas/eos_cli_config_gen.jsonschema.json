@@ -3518,12 +3518,67 @@
                   "type": "object",
                   "properties": {
                     "ecn": {
+                      "description": "Explicit Congestion Notification",
                       "type": "object",
                       "properties": {
                         "count": {
                           "type": "boolean",
-                          "description": "Turn on random-detect ecn count\n",
+                          "description": "Enable counter for random-detect ECNs\n",
                           "title": "Count"
+                        },
+                        "threshold": {
+                          "type": "object",
+                          "properties": {
+                            "units": {
+                              "type": "string",
+                              "enum": [
+                                "segments",
+                                "bytes",
+                                "kbytes",
+                                "mbytes"
+                              ],
+                              "description": "Indicate the units to be used for the threshold values.\nThis should be one of segments, byte, kbytes, mbytes.\n",
+                              "title": "Units"
+                            },
+                            "min": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 256000000,
+                              "description": "Set the random-detect ecn minimum-threshold\n",
+                              "title": "Min"
+                            },
+                            "max": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 256000000,
+                              "description": "Set the random-detect ecn maximum-threshold\n",
+                              "title": "Max"
+                            },
+                            "max_probability": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 100,
+                              "description": "Set the random-detect ecn max-mark-probability.\nThe value should be between 1 and 100.\n",
+                              "title": "Max Probability"
+                            },
+                            "weight": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 15,
+                              "description": "Set the random-detect ecn weight.\nEnter a value between 1 and 15\n",
+                              "title": "Weight"
+                            }
+                          },
+                          "required": [
+                            "units",
+                            "min",
+                            "max"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Threshold"
                         }
                       },
                       "additionalProperties": false,
@@ -3564,12 +3619,67 @@
                   "type": "object",
                   "properties": {
                     "ecn": {
+                      "description": "Explicit Congestion Notification",
                       "type": "object",
                       "properties": {
                         "count": {
                           "type": "boolean",
-                          "description": "Turn on random-detect ecn count\n",
+                          "description": "Enable counter for random-detect ECNs\n",
                           "title": "Count"
+                        },
+                        "threshold": {
+                          "type": "object",
+                          "properties": {
+                            "units": {
+                              "type": "string",
+                              "enum": [
+                                "segments",
+                                "bytes",
+                                "kbytes",
+                                "mbytes"
+                              ],
+                              "description": "Indicate the units to be used for the threshold values.\nThis should be one of segments, byte, kbytes, mbytes.\n",
+                              "title": "Units"
+                            },
+                            "min": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 256000000,
+                              "description": "Set the random-detect ecn minimum-threshold\n",
+                              "title": "Min"
+                            },
+                            "max": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 256000000,
+                              "description": "Set the random-detect ecn maximum-threshold\n",
+                              "title": "Max"
+                            },
+                            "max_probability": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 100,
+                              "description": "Set the random-detect ecn max-mark-probability.\nThe value should be between 1 and 100.\n",
+                              "title": "Max Probability"
+                            },
+                            "weight": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 15,
+                              "description": "Set the random-detect ecn weight.\nEnter a value between 1 and 15\n",
+                              "title": "Weight"
+                            }
+                          },
+                          "required": [
+                            "units",
+                            "max",
+                            "max_probability"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Threshold"
                         }
                       },
                       "additionalProperties": false,
@@ -10252,11 +10362,12 @@
                   "type": "object",
                   "properties": {
                     "ecn": {
+                      "description": "Explicit Congestion Notification",
                       "type": "object",
                       "properties": {
                         "count": {
                           "type": "boolean",
-                          "description": "Turn on random-detect ecn count\n",
+                          "description": "Enable counter for random-detect ECNs\n",
                           "title": "Count"
                         },
                         "threshold": {
@@ -10270,29 +10381,43 @@
                                 "kbytes",
                                 "mbytes"
                               ],
+                              "description": "Indicate the units to be used for the threshold values.\nThis should be one of segments, byte, kbytes, mbytes.\n",
                               "title": "Units"
                             },
                             "min": {
                               "type": "integer",
+                              "minimum": 1,
+                              "maximum": 256000000,
                               "description": "Set the random-detect ecn minimum-threshold\n",
                               "title": "Min"
                             },
                             "max": {
                               "type": "integer",
+                              "minimum": 1,
+                              "maximum": 256000000,
                               "description": "Set the random-detect ecn maximum-threshold\n",
                               "title": "Max"
                             },
                             "max_probability": {
                               "type": "integer",
-                              "description": "Set the random-detect ecn max-mark-probability\n",
+                              "minimum": 1,
+                              "maximum": 100,
+                              "description": "Set the random-detect ecn max-mark-probability.\nThe value should be between 1 and 100.\n",
                               "title": "Max Probability"
                             },
                             "weight": {
                               "type": "integer",
-                              "description": "Set the random-detect ecn weight\n",
+                              "minimum": 1,
+                              "maximum": 15,
+                              "description": "Set the random-detect ecn weight.\nEnter a value between 1 and 15\n",
                               "title": "Weight"
                             }
                           },
+                          "required": [
+                            "units",
+                            "min",
+                            "max"
+                          ],
                           "additionalProperties": false,
                           "patternProperties": {
                             "^_.+$": {}
@@ -10369,11 +10494,12 @@
                   "type": "object",
                   "properties": {
                     "ecn": {
+                      "description": "Explicit Congestion Notification",
                       "type": "object",
                       "properties": {
                         "count": {
                           "type": "boolean",
-                          "description": "Turn on random-detect ecn count\n",
+                          "description": "Enable counter for random-detect ECNs\n",
                           "title": "Count"
                         },
                         "threshold": {
@@ -10387,32 +10513,42 @@
                                 "kbytes",
                                 "mbytes"
                               ],
-                              "description": "Indicate whether values are in kbytes or segments\n",
+                              "description": "Indicate the units to be used for the threshold values.\nThis should be one of segments, byte, kbytes, mbytes.\n",
                               "title": "Units"
                             },
                             "min": {
                               "type": "integer",
+                              "minimum": 1,
+                              "maximum": 256000000,
                               "description": "Set the random-detect ecn minimum-threshold\n",
                               "title": "Min"
                             },
                             "max": {
                               "type": "integer",
+                              "minimum": 1,
+                              "maximum": 256000000,
                               "description": "Set the random-detect ecn maximum-threshold\n",
                               "title": "Max"
                             },
                             "max_probability": {
                               "type": "integer",
-                              "description": "Set the random-detect ecn max-mark-probability\n",
+                              "minimum": 1,
+                              "maximum": 100,
+                              "description": "Set the random-detect ecn max-mark-probability.\nThe value should be between 1 and 100.\n",
                               "title": "Max Probability"
                             },
                             "weight": {
                               "type": "integer",
-                              "description": "Set the random-detect ecn weight\n",
+                              "minimum": 1,
+                              "maximum": 15,
+                              "description": "Set the random-detect ecn weight.\nEnter a value between 1 and 15\n",
                               "title": "Weight"
                             }
                           },
                           "required": [
-                            "units"
+                            "units",
+                            "min",
+                            "max"
                           ],
                           "additionalProperties": false,
                           "patternProperties": {

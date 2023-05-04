@@ -974,12 +974,60 @@ keys:
                 type: dict
                 keys:
                   ecn:
+                    description: Explicit Congestion Notification
                     type: dict
                     keys:
                       count:
                         type: bool
                         description: |
-                          Turn on random-detect ecn count
+                          Enable counter for random-detect ECNs
+                      threshold:
+                        type: dict
+                        keys:
+                          units:
+                            required: true
+                            type: str
+                            valid_values: ["segments", "bytes", "kbytes", "mbytes"]
+                            description: |
+                              Indicate the units to be used for the threshold values.
+                              This should be one of segments, byte, kbytes, mbytes.
+                          min:
+                            type: int
+                            required: true
+                            min: 1
+                            max: 256000000
+                            convert_types:
+                            - str
+                            description: |
+                              Set the random-detect ecn minimum-threshold
+                          max:
+                            type: int
+                            required: true
+                            convert_types:
+                            - str
+                            min: 1
+                            max: 256000000
+                            description: |
+                              Set the random-detect ecn maximum-threshold
+                          max_probability:
+                            type: int
+                            min: 1
+                            max: 100
+                            convert_types:
+                            - str
+                            description: |
+                              Set the random-detect ecn max-mark-probability.
+                              The value should be between 1 and 100.
+                          weight:
+                            type: int
+                            min: 1
+                            max: 15
+                            convert_types:
+                            - str
+                            description: |
+                              Set the random-detect ecn weight.
+                              Enter a value between 1 and 15
+
         tx_queues:
           type: list
           primary_key: id
@@ -998,12 +1046,59 @@ keys:
                 type: dict
                 keys:
                   ecn:
+                    description: Explicit Congestion Notification
                     type: dict
                     keys:
                       count:
                         type: bool
                         description: |
-                          Turn on random-detect ecn count
+                          Enable counter for random-detect ECNs
+                      threshold:
+                        type: dict
+                        keys:
+                          units:
+                            type: str
+                            required: true
+                            valid_values: ["segments", "bytes", "kbytes", "mbytes"]
+                            description: |
+                              Indicate the units to be used for the threshold values.
+                              This should be one of segments, byte, kbytes, mbytes.
+                          min:
+                            type: int
+                            min: 1
+                            max: 256000000
+                            convert_types:
+                            - str
+                            description: |
+                              Set the random-detect ecn minimum-threshold
+                          max:
+                            type: int
+                            required: true
+                            convert_types:
+                            - str
+                            min: 1
+                            max: 256000000
+                            description: |
+                              Set the random-detect ecn maximum-threshold
+                          max_probability:
+                            type: int
+                            required: true
+                            min: 1
+                            max: 100
+                            convert_types:
+                            - str
+                            description: |
+                              Set the random-detect ecn max-mark-probability.
+                              The value should be between 1 and 100.
+                          weight:
+                            type: int
+                            min: 1
+                            max: 15
+                            convert_types:
+                            - str
+                            description: |
+                              Set the random-detect ecn weight.
+                              Enter a value between 1 and 15
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration

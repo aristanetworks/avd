@@ -1678,13 +1678,6 @@ QOS Profile: **test**
 | 2 | Unicast | 50 | no priority | - |
 | 3 | Multicast | 50 | no priority | - |
 
-**ECN Configuration**
-
-| TX queue | Type | ECN Enabled | Min Threshol | Max Threshold | Max Mark Probability |
-| -------- | ---- | ----------- | ------------ | ------------- | -------------------- |
-| 1 | All | False | -   | -  | - |
-| 2 | Unicast | False | -  | -  | - |
-| 3 | Multicast | False | - | - | - |
 
 #### QOS Profile Device Configuration
 
