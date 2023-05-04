@@ -7074,6 +7074,17 @@ keys:
       bgp:
         type: dict
         keys:
+          default:
+            type: dict
+            keys:
+              ipv4_unicast:
+                type: bool
+                description: Default activation of IPv4 unicast address-family on
+                  all IPv4 neighbors (EOS default = True).
+              ipv4_unicast_transport_ipv6:
+                type: bool
+                description: Default activation of IPv4 unicast address-family on
+                  all IPv6 neighbors (EOS default == False).
           bestpath:
             type: dict
             keys:
