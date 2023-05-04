@@ -17756,10 +17756,12 @@
               "properties": {
                 "unmodified_enable_default": {
                   "type": "boolean",
+                  "description": "Enable unmodified egress sFlow by default.\nPlatform dependent feature.\n",
                   "title": "Unmodified Enable Default"
                 },
                 "enable_default": {
                   "type": "boolean",
+                  "description": "Enable egress sFlow by default.\nPlatform dependent feature.\n",
                   "title": "Enable Default"
                 }
               },

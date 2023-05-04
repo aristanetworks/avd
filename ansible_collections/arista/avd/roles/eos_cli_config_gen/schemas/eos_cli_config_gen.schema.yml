@@ -10335,8 +10335,18 @@ keys:
             keys:
               unmodified_enable_default:
                 type: bool
+                description: 'Enable unmodified egress sFlow by default.
+
+                  Platform dependent feature.
+
+                  '
               enable_default:
                 type: bool
+                description: 'Enable egress sFlow by default.
+
+                  Platform dependent feature.
+
+                  '
       run:
         type: bool
       hardware_acceleration:
