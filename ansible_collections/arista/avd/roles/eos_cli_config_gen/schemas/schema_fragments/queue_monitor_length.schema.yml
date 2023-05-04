@@ -24,7 +24,7 @@ keys:
             convert_types:
               - str
             description: |
-              Set the default high threshold for Ethernet Interfaces
+              Default high threshold for Ethernet Interfaces.
           low:
             type: int
             convert_types:
