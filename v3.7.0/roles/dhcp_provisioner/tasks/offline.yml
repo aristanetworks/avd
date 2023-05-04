@@ -1,0 +1,12 @@
+---
+# Tasks to build offline dhcpd.conf file
+
+- name: Execute DHCP configuration role
+  import_role:
+    name: arista.cvp.dhcp_configuration
+  vars:
+    mode: offline
+# Not possible to use "output_dir" or "eos_config_dir" because of recursive templating loop.
+    output_dir: "{{ root_dir }}/{{ output_dir_name }}/{{ eos_config_dir_name }}"
+  delegate_to: localhost
+  run_once: true

@@ -1,0 +1,26 @@
+{% if standard_access_lists is arista.avd.defined %}
+
+## Standard Access-lists
+
+### Standard Access-lists Summary
+
+{%     for standard_access_list in standard_access_lists | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+#### {{ standard_access_list.name }}
+{%         if standard_access_list.counters_per_entry is arista.avd.defined(true) %}
+
+ACL has counting mode `counters per-entry` enabled!
+{%         endif %}
+
+| Sequence | Action |
+| -------- | ------ |
+{%         for sequence in standard_access_list.sequence_numbers | arista.avd.convert_dicts('sequence') | arista.avd.natural_sort('sequence') %}
+| {{ sequence.sequence }} | {{ sequence.action }} |
+{%         endfor %}
+
+{%     endfor %}
+### Standard Access-lists Device Configuration
+
+```eos
+{%     include 'eos/standard-access-lists.j2' %}
+```
+{% endif %}

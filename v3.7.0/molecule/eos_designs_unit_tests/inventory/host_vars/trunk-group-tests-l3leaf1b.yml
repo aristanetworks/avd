@@ -1,0 +1,4 @@
+---
+# Testing "only_local_vlan_trunk_groups: true" set in hostvars to see that only
+# locally used trunk-groups are set on vlans even without "filter.only_vlans_in_use: true"
+only_local_vlan_trunk_groups: true

@@ -1,0 +1,6 @@
+{# transceiver qsfp default mode #}
+{# cannot be disabled in current EOS releases #}
+{% if not generate_default_config is arista.avd.defined(false) %}
+!
+transceiver qsfp default-mode 4x10G
+{% endif %}

@@ -1,0 +1,99 @@
+### ptp
+
+ptp:
+  clock_identity: "11:11:11:11:11:11"
+  source:
+    ip: 1.1.2.3
+  priority1: 101
+  priority2: 102
+  ttl: 12
+  domain: 17
+  message_type:
+    general:
+      dscp: 36
+    event:
+      dscp: 46
+  mode: boundary
+  forward_unicast: true
+  monitor:
+    # enabled: true (default)
+    threshold:
+      offset_from_master: 11
+      mean_path_delay: 12
+      drop:
+        offset_from_master: 13
+        mean_path_delay: 14
+    missing_message:
+      intervals:
+        announce: 101
+        follow_up: 102
+        sync: 103
+      sequence_ids:
+        enabled: true
+        announce: 201
+        delay_resp: 202
+        follow_up: 203
+        sync: 204
+
+# port-channels
+port_channel_interfaces:
+  Port-Channel5:
+    description: DC1_L2LEAF1_Po1
+    vlans: 110,201
+    mode: trunk
+    mlag: 5
+    ptp:
+      enable: true
+      delay_mechanism: e2e
+      sync_message:
+        interval: 1
+      role: dynamic
+      vlan: 2
+      transport: layer2
+
+### interface
+ethernet_interfaces:
+  Ethernet3:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet5
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE2_Ethernet5
+    type: switched
+    mode: trunk
+    vlans: 2,14
+    ptp:
+      enable: true
+      delay_mechanism: e2e
+      sync_message:
+        interval: 1
+      role: dynamic
+      vlan: 2
+      transport: layer2
+  Ethernet6:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet6
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE1_Ethernet6
+    mtu: 1500
+    type: routed
+    ip_address: 172.31.255.15/31
+    ptp:
+      enable: true
+      announce:
+        interval: 3
+        timeout: 9
+      delay_req: -7
+      delay_mechanism: e2e
+      sync_message:
+        interval: 1
+      role: dynamic
+      transport: ipv4
+# port-channel interfaces
+  Ethernet5:
+    peer: DC1-AGG01
+    peer_interface: Ethernet1
+    peer_type: l2leaf
+    description: DC1-AGG01_Ethernet1
+    channel_group:
+      id: 5
+      mode: active

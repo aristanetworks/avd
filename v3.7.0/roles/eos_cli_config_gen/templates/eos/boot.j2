@@ -1,0 +1,10 @@
+{# eos - System Boot Configuration #}
+{% if boot is arista.avd.defined %}
+!
+{%     if boot.secret.key is arista.avd.defined %}
+{%         if boot.secret.hash_algorithm is arista.avd.defined('md5') %}
+{%             set hash_algorithm = 5 %}
+{%         endif %}
+boot secret {{ hash_algorithm | arista.avd.default('sha512') }} {{ boot.secret.key }}
+{%     endif %}
+{% endif %}

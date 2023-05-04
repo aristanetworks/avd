@@ -1,0 +1,45 @@
+{# eos - Router PIM Sparse Mode #}
+{% if router_pim_sparse_mode is arista.avd.defined %}
+!
+router pim sparse-mode
+{%     if router_pim_sparse_mode.ipv4 is arista.avd.defined %}
+   ipv4
+{%         for rp_address in router_pim_sparse_mode.ipv4.rp_addresses | arista.avd.convert_dicts('address') | arista.avd.natural_sort('address') %}
+{%             if rp_address.groups is arista.avd.defined %}
+{%                 for group in rp_address.groups | arista.avd.natural_sort %}
+      rp address {{ rp_address.address }} {{ group }}
+{%                 endfor %}
+{%             else %}
+      rp address {{ rp_address.address }}
+{%             endif %}
+{%         endfor %}
+{%         for anycast_rp in router_pim_sparse_mode.ipv4.anycast_rps | arista.avd.convert_dicts('address') | arista.avd.natural_sort('address') %}
+{%             for other_anycast_rp_address in anycast_rp.other_anycast_rp_addresses | arista.avd.convert_dicts('address') | arista.avd.natural_sort('address') %}
+{%                 set other_anycast_rp_addresses_cli = "anycast-rp " ~ anycast_rp.address ~ " " ~ other_anycast_rp_address.address %}
+{%                 if other_anycast_rp_address.register_count is arista.avd.defined %}
+{%                     set other_anycast_rp_addresses_cli = other_anycast_rp_addresses_cli ~ " register-count " ~ other_anycast_rp_address.register_count %}
+{%                 endif %}
+      {{ other_anycast_rp_addresses_cli }}
+{%             endfor %}
+{%         endfor %}
+{%         if router_pim_sparse_mode.ipv4.ssm_range is arista.avd.defined %}
+      ssm range {{ router_pim_sparse_mode.ipv4.ssm_range }}
+{%         endif %}
+{%     endif %}
+{%     for vrf in router_pim_sparse_mode.vrfs | arista.avd.natural_sort('name') %}
+   !
+   vrf {{ vrf.name }}
+{%         if vrf.ipv4 is arista.avd.defined %}
+      ipv4
+{%             for rp_address in vrf.ipv4.rp_addresses | arista.avd.natural_sort('address') %}
+{%                 if rp_address.groups is arista.avd.defined %}
+{%                     for group in rp_address.groups | arista.avd.natural_sort %}
+         rp address {{ rp_address.address }} {{ group }}
+{%                     endfor %}
+{%                 else %}
+         rp address {{ rp_address.address }}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%     endfor %}
+{% endif %}

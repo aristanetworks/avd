@@ -1,0 +1,68 @@
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 172.31.0.1
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+  MGMT:
+    ip_routing: false
+management_api_http:
+  enable_vrfs:
+    MGMT: {}
+  enable_https: true
+ethernet_interfaces:
+  Ethernet1:
+    peer: OSPF-SPINE1
+    peer_interface: Ethernet1
+    peer_type: l3spine
+    description: OSPF-SPINE1_Ethernet1
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 1
+      mode: active
+  Ethernet2:
+    peer: OSPF-SPINE2
+    peer_interface: Ethernet1
+    peer_type: l3spine
+    description: OSPF-SPINE2_Ethernet1
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 1
+      mode: active
+  Ethernet10:
+    peer: Endpoint
+    peer_type: network_port
+    description: Endpoint
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 100
+  Ethernet11:
+    peer: Endpoint
+    peer_type: network_port
+    description: Endpoint
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 100
+port_channel_interfaces:
+  Port-Channel1:
+    description: OSPF_SPINES_Po1
+    type: switched
+    shutdown: false
+    vlans: 100
+    mode: trunk
+vlans:
+  100:
+    tenant: L2LS_OSPF
+    name: SVI_100
+ip_igmp_snooping:
+  globally_enabled: true

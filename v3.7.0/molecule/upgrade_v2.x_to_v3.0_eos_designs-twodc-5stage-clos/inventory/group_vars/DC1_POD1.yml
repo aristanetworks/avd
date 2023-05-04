@@ -1,0 +1,131 @@
+---
+pod_name: DC1_POD1
+
+underlay_p2p_network_summary: 172.17.110.0/24
+
+overlay_loopback_network_summary: 172.16.110.0/24
+
+vtep_loopback_network_summary: 172.18.110.0/24
+
+mlag_ips:
+  mlag_peer: 172.19.110.0/24
+  leaf_peer_l3: 172.20.110.0/24
+
+l2leaf_inband_management_subnet: 172.21.110.0/24
+l2leaf_inband_management_vlan: 4085
+
+super_spine_underlay_p2p_network_summary: 172.16.11.0/24
+
+spine:
+  platform: vEOS-LAB
+  bgp_as: 65110
+  uplinks_to_super_spine_interfaces: [ Ethernet1, Ethernet2 ]
+  nodes:
+    # Spine also working as EVPN RS
+    DC1-POD1-SPINE1:
+      id: 1
+      # mgmt_ip: 192.168.1.5/24 Test without management IP
+      evpn_role: server
+      super_spine_interfaces: [ Ethernet1, Ethernet1 ]
+      evpn_route_servers: [ DC2-RS1, DC2-SUPER-SPINE1, DC2-POD1-SPINE1, DC2-POD1-LEAF1A ]
+    DC1-POD1-SPINE2:
+      id: 2
+      evpn_role: none
+      mgmt_ip: 192.168.1.6/24
+      super_spine_interfaces: [ Ethernet2, Ethernet2 ]
+
+# In DC1 we define all variables on specific node / node_group
+l3leaf:
+  defaults:
+    bgp_as: 65555
+    virtual_router_mac_address: 00:1c:73:00:dc:01
+  node_groups:
+    # Single switch working as underlay L3 router and EVPN RS
+    RACK1_SINGLE:
+      platform: vEOS-LAB
+      spines: [ DC1-POD1-SPINE1, DC1-POD1-SPINE2 ]
+      uplink_to_spine_interfaces: [ Ethernet1, Ethernet2 ]
+      spanning_tree_mode: none
+      bgp_as: 65111
+      mlag: false
+      evpn_role: server
+      evpn_route_servers: [ DC2-RS1, DC2-SUPER-SPINE1, DC2-POD1-SPINE1, DC2-POD1-LEAF1A ]
+      filter:
+        tenants: []
+        tags: []
+        always_include_vrfs_in_tenants: [ 'all' ] #Testing that we respect the empty tenants list, so no VRFs will be configured.
+      # Below will not have any effect since it is overridden on the node level. So just a negative test.
+      raw_eos_cli: |
+        interface Loopback1001
+          description Loopback created from raw_eos_cli under node-group RACK1_SINGLE
+      nodes:
+        DC1-POD1-LEAF1A:
+          id: 1
+          # mgmt_ip: 192.168.1.7/24 Test without management IP
+          spine_interfaces: [ Ethernet3, Ethernet3 ]
+          raw_eos_cli: |
+            interface Loopback1002
+              description Loopback created from raw_eos_cli under node DC1-POD1-LEAF1A
+
+    # Regular MLAG pair
+    RACK2_MLAG:
+      platform: vEOS-LAB
+      spines: [ DC1-POD1-SPINE1, DC1-POD1-SPINE2 ]
+      uplink_to_spine_interfaces: [ Ethernet1, Ethernet2 ]
+      bgp_as: 65112
+      evpn_route_servers: [ DC1-RS1, DC1-SUPER-SPINE1, DC1-POD1-SPINE1, DC1-POD1-LEAF1A ]
+      mlag_interfaces: [ Ethernet5, Ethernet6 ]
+      mlag_dual_primary_detection: true
+      spanning_tree_mode: mstp
+      spanning_tree_priority: 4096
+      raw_eos_cli: |
+        interface Loopback1002
+          description Loopback created from raw_eos_cli under l3leaf node-group RACK2_MLAG
+      nodes:
+        DC1-POD1-LEAF2A:
+          id: 2
+          # mgmt_ip: 192.168.1.8/16 Test without management IP
+          spine_interfaces: [ Ethernet4, Ethernet4 ]
+        DC1-POD1-LEAF2B:
+          id: 3
+          mgmt_ip: 192.168.1.9/16
+          spine_interfaces: [ Ethernet5, Ethernet5 ]
+
+# In DC1 we define all variables on specific node / node_group
+l2leaf:
+  defaults:
+  node_groups:
+    RACK2_SINGLE:
+      platform: vEOS-LAB
+      parent_l3leafs: [ DC1-POD1-LEAF1A ]
+      uplink_interfaces: [ Ethernet1 ]
+      spanning_tree_mode: mstp
+      spanning_tree_priority: 8192
+      mlag: false
+      nodes:
+        DC1-POD1-L2LEAF1A:
+          id: 1
+          # mgmt_ip: 192.168.1.10/24 Test without management IP
+          l3leaf_interfaces: [ Ethernet3 ]
+    RACK2_MLAG:
+      platform: vEOS-LAB
+      parent_l3leafs: [ DC1-POD1-LEAF2A, DC1-POD1-LEAF2B ]
+      uplink_interfaces: [ Ethernet1, Ethernet2 ]
+      mlag_interfaces: [ Ethernet3, Ethernet4 ]
+      spanning_tree_mode: mstp
+      spanning_tree_priority: 8192
+      raw_eos_cli: |
+        interface Loopback1002
+          description Loopback created from raw_eos_cli under l2leaf node-group RACK2_MLAG
+      nodes:
+        DC1-POD1-L2LEAF2A:
+          id: 2
+          # mgmt_ip: 192.168.1.11/24 Test without management IP
+          l3leaf_interfaces: [ Ethernet3, Ethernet3 ]
+        DC1-POD1-L2LEAF2B:
+          id: 3
+          mgmt_ip: 192.168.1.12/24
+          l3leaf_interfaces: [ Ethernet4, Ethernet4 ]
+          raw_eos_cli: |
+            interface Loopback1003
+              description Loopback created from raw_eos_cli under l2leaf node DC1-POD1-L2LEAF2B

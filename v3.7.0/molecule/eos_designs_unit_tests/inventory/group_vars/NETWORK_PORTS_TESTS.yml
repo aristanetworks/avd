@@ -1,0 +1,49 @@
+type: l2leaf
+mgmt_gateway: 192.168.0.1
+
+port_profiles:
+  - profile: common
+    mode: access
+    vlans: "999"
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: enabled
+
+  - profile: ap_with_port_channel
+    parent_profile: common
+    vlans: "101"
+    port_channel:
+      mode: active
+
+  - profile: pc
+    parent_profile: common
+    vlans: "100"
+
+network_ports:
+  - switches:
+      - network-ports-tests.1
+    switch_ports:
+      - Ethernet1-2
+    profile: pc
+    description: PCs
+
+  - switches:
+      - network-ports-tests-2$
+    switch_ports:
+      - Ethernet1-2
+    profile: ap_with_port_channel
+    description: AP1 with port_channel
+
+  - switches:
+      - network-ports-[est]{5}[-.].*
+    switch_ports:
+      - Ethernet3-4
+      - Ethernet2/1-48
+    profile: pc
+    description: PCs
+
+l2leaf:
+  nodes:
+    network-ports-tests.1:
+      id: 1
+    network-ports-tests-2:
+      id: 2

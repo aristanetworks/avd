@@ -1,0 +1,183 @@
+{% if traffic_policies is arista.avd.defined %}
+
+## Traffic Policies information
+{%     if traffic_policies.field_sets is arista.avd.defined %}
+
+**IPv4 Field sets**
+
+{%         if traffic_policies.field_sets.ipv4 is arista.avd.defined %}
+| Field Set Name | Values |
+| -------------- | ------ |
+{%             for field_set_ipv4 in traffic_policies.field_sets.ipv4 | arista.avd.convert_dicts('name','prefixes') %}
+{%                 if field_set_ipv4 | length > 1 %}
+{%                     set value = field_set_ipv4.prefixes | join('<br/>') %}
+{%                 else %}
+{%                     set value = field_set_ipv4[0].prefixes %}
+{%                 endif %}
+| {{ field_set_ipv4.name }} | {{ value }} |
+{%             endfor %}
+{%         else %}
+No IPv4 field-set configured.
+{%         endif %}
+
+**IPv6 Field sets**
+
+{%         if traffic_policies.field_sets.ipv6 is arista.avd.defined %}
+| Field Set Name | Values |
+| -------------- | ------ |
+{%             for field_set_ipv6 in traffic_policies.field_sets.ipv6 | arista.avd.convert_dicts('name','prefixes') %}
+{%                 if field_set_ipv6 | length > 1 %}
+{%                     set value = field_set_ipv6.prefixes | join('<br/>') %}
+{%                 else %}
+{%                     set value = field_set_ipv6[0].prefixes %}
+{%                 endif %}
+| {{ field_set_ipv6.name }} | {{ value }} |
+{%             endfor %}
+{%         else %}
+No IPv6 field-set configured.
+{%         endif %}
+
+**L4 Port Field sets**
+
+{%         if traffic_policies.field_sets.ports is arista.avd.defined %}
+| Field Set Name | Values |
+| -------------- | ------ |
+{%             for field_set_port in traffic_policies.field_sets.ports | arista.avd.convert_dicts('name','port_range') %}
+| {{ field_set_port.name }} | {{ field_set_port.port_range }}|
+{%             endfor %}
+{%         else %}
+No L4 Port field-set configured.
+{%         endif %}
+{%     else %}
+No Field-set configured on device.
+{%     endif %}
+{%     if traffic_policies.policies is arista.avd.defined %}
+
+### Traffic Policies
+{%         for policy in traffic_policies.policies | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+
+**{{ policy.name }}:**
+
+{%             if policy.matches is arista.avd.defined %}
+| Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Destination port(s) | Action |
+| --------- | ---- | ------- | ------------ | -------- | -------------- | ------------------- | ------ |
+{%                 for match in policy.matches | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%                     set row = namespace() %}
+{%                     set row.match_set = match.name %}
+{%                     set row.type = match.type | lower %}
+{#                     -- Source Prefix #}
+{%                     set row.src_net = "" %}
+{%                     if match.source.prefix_lists is arista.avd.defined %}
+{%                         set row.src_net = match.source.prefix_lists | join('<br/>') %}
+{%                     elif match.source.prefixes is arista.avd.defined %}
+{%                         set row.src_net = match.source.prefixes | join('<br/>') %}
+{%                     else %}
+{%                         set row.src_net = "ANY" %}
+{%                     endif %}
+{#                     -- Destination Prefix #}
+{%                     set row.dst_net = "" %}
+{%                     if match.destination.prefix_lists is arista.avd.defined %}
+{%                         set row.dst_net = match.destination.prefix_lists | join('<br/>') %}
+{%                     elif match.destination.prefixes is arista.avd.defined %}
+{%                         set row.dst_net = match.destination.prefixes | join('<br/>') %}
+{%                     else %}
+{%                         set row.dst_net = "ANY" %}
+{%                     endif %}
+{#                     -- Protocol #}
+{%                     set row.protocols = "" %}
+{%                     if match.protocols is arista.avd.defined %}
+{%                         set row.protocols = match.protocols | arista.avd.convert_dicts('protocol') | map(attribute='protocol') | join('<br/>') %}
+{%                     else %}
+{%                         set row.protocols = "ANY" %}
+{%                     endif %}
+{#                     -- Source Port #}
+{%                     set row.src_port = "" %}
+{%                     if match.protocols is arista.avd.defined %}
+{%                         for protocol in match.protocols | arista.avd.convert_dicts('protocol') %}
+{%                             if protocol.src_field is arista.avd.defined %}
+{%                                 set row.src_port = protocol.src_field %}
+{%                             elif protocol.src_port is arista.avd.defined %}
+{%                                 set row.src_port = protocol.src_port %}
+{%                             endif %}
+{%                         endfor %}
+{%                         if row.src_port == "" %}
+{%                             set row.src_port = "ANY" %}
+{%                         endif %}
+{%                     endif %}
+{#                     -- Destination Port #}
+{%                     set row.dst_port = "" %}
+{%                     if match.protocols is arista.avd.defined %}
+{%                         for protocol in match.protocols | arista.avd.convert_dicts('protocol') %}
+{%                             if protocol.dst_field is arista.avd.defined %}
+{%                                 set row.dst_port = protocol.dst_field %}
+{%                             elif protocol.dst_port is arista.avd.defined %}
+{%                                 set row.dst_port = protocol.dst_port %}
+{%                             endif %}
+{%                         endfor %}
+{%                         if row.dst_port == "" %}
+{%                             set row.dst_port = "ANY" %}
+{%                         endif %}
+{%                     endif %}
+{#                     -- Action management #}
+{%                     set row.actions = [] %}
+{%                     if match.actions is arista.avd.defined %}
+{%                         if match.actions.drop is arista.avd.defined(true) %}
+{%                             do row.actions.append("action: DROP") %}
+{%                         else %}
+{%                             do row.actions.append("action: PASS") %}
+{%                         endif %}
+{%                         if match.actions.count is arista.avd.defined() %}
+{%                             do row.actions.append("counter: " + match.actions.count) %}
+{%                         endif %}
+{%                         if match.actions.log is arista.avd.defined(true) %}
+{%                             do row.actions.append("logging") %}
+{%                         endif %}
+{%                         if match.actions.dscp is arista.avd.defined() %}
+{%                             do row.actions.append("dscp marking: " + match.actions.dscp | string) %}
+{%                         endif %}
+{%                         if match.actions.traffic_class is arista.avd.defined() %}
+{%                             do row.actions.append("traffic-class: " + match.actions.traffic_class | string) %}
+{%                         endif %}
+{%                     else %}
+{%                         do row.actions.append("default action: PASS") %}
+{%                     endif %}
+{# -- Table rendering #}
+| {{ row.match_set }} | {{ row.type }} | {{ row.src_net }} | {{ row.dst_net }} | {{ row.protocols }} | {{ row.src_port }} | {{ row.dst_port }} | {{ row.actions | join('<br/>') }} |
+{%                 endfor %}
+{%             else %}
+No Match condition configured.
+{%             endif %}
+
+{%         endfor %}
+{%     endif %}
+{# Traffic-Policy Interfaces #}
+{%     set traffic_policy_interfaces = [] %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if ethernet_interface.traffic_policy.input is arista.avd.defined or ethernet_interface.traffic_policy.output is arista.avd.defined %}
+{%             do traffic_policy_interfaces.append(ethernet_interface) %}
+{%         endif %}
+{%     endfor %}
+{%     for port_channel_interface in port_channel_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if port_channel_interface.traffic_policy.input is arista.avd.defined or port_channel_interface.traffic_policy.output is arista.avd.defined %}
+{%             do traffic_policy_interfaces.append(port_channel_interface) %}
+{%         endif %}
+{%     endfor %}
+{%     if traffic_policy_interfaces | length > 0 %}
+
+#### Traffic-Policy Interfaces
+
+| Interface | Input Traffic-Policy | Output Traffic-Policy |
+| --------- | -------------------- | --------------------- |
+{%         for interface in traffic_policy_interfaces %}
+{%             set row_in_policy = interface.traffic_policy.input | arista.avd.default("-") %}
+{%             set row_out_policy = interface.traffic_policy.output | arista.avd.default("-") %}
+| {{ interface.name }} | {{ row_in_policy }} | {{ row_out_policy }} |
+{%         endfor %}
+
+{%     endif %}
+### Traffic Policies Device Configuration
+
+```eos
+{%     include 'eos/traffic-policies.j2' %}
+```
+{% endif %}

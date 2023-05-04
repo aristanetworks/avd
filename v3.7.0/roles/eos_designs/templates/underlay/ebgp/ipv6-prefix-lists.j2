@@ -1,0 +1,8 @@
+{# IPv6 prefix-lists #}
+{% if switch.overlay_routing_protocol != "none" %}
+ipv6_prefix_lists:
+  PL-LOOPBACKS-EVPN-OVERLAY-V6:
+    sequence_numbers:
+      10:
+        action: "permit {{ switch.loopback_ipv6_pool }} eq 128"
+{% endif %}

@@ -1,0 +1,20 @@
+{# Leaf mlag configuration #}
+mlag_configuration:
+  domain_id: {{ switch.group }}
+  local_interface: Vlan{{ switch.mlag_peer_vlan }}
+  peer_address: {{ switch.mlag_peer_ip }}
+{% if switch.mlag_dual_primary_detection == true and
+      switch.mlag_peer_mgmt_ip is arista.avd.defined and
+      mgmt_interface_vrf is arista.avd.defined %}
+  peer_address_heartbeat:
+    peer_ip: {{ switch.mlag_peer_mgmt_ip }}
+    vrf: {{ mgmt_interface_vrf }}
+  dual_primary_detection_delay: 5
+{% endif %}
+  peer_link: Port-Channel{{ switch.mlag_port_channel_id }}
+{% if switch.platform_settings.reload_delay.mlag is arista.avd.defined %}
+  reload_delay_mlag: {{ switch.platform_settings.reload_delay.mlag }}
+{% endif %}
+{% if switch.platform_settings.reload_delay.non_mlag is arista.avd.defined %}
+  reload_delay_non_mlag: {{ switch.platform_settings.reload_delay.non_mlag }}
+{% endif %}

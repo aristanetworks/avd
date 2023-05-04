@@ -1,0 +1,22 @@
+{% if tcam_profile is arista.avd.defined %}
+
+# Hardware TCAM Profile
+
+TCAM profile __`{{ tcam_profile.system | arista.avd.default('default') }}`__ is active
+{%     if tcam_profile.profiles is arista.avd.defined %}
+
+## Custom TCAM profiles
+
+Following TCAM profiles are configured on device:
+
+{%         for profile in tcam_profile.profiles | arista.avd.convert_dicts('name','config') %}
+- Profile Name: `{{ profile.name }}`
+{%         endfor %}
+{%     endif %}
+
+## Hardware TCAM configuration
+
+```eos
+{%     include 'eos/tcam-profile.j2' %}
+```
+{% endif %}

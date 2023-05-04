@@ -1,0 +1,27 @@
+{% if dhcp_relay is arista.avd.defined %}
+
+# DHCP Relay
+
+## DHCP Relay Summary
+{%     if dhcp_relay.tunnel_requests_disabled is arista.avd.defined(true) %}
+
+- DHCP Relay is disabled for tunnelled requests
+{%     elif dhcp_relay.tunnel_requests_disabled is arista.avd.defined(false) %}
+
+- DHCP Relay is enabled for tunnelled requests
+{%     endif %}
+{%     if dhcp_relay.servers is arista.avd.defined %}
+
+| DHCP Relay Servers |
+| ------------------ |
+{%         for server in dhcp_relay.servers | arista.avd.natural_sort %}
+| {{ server }} |
+{%         endfor %}
+{%     endif %}
+
+## DHCP Relay Configuration
+
+```eos
+{%     include 'eos/dhcp-relay.j2' %}
+```
+{% endif %}

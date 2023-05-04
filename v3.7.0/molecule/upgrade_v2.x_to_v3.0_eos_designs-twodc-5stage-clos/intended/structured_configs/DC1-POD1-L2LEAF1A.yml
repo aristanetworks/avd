@@ -1,0 +1,66 @@
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.1.254
+- destination_address_prefix: 0.0.0.0/0
+  gateway: 172.21.110.1
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+snmp_server:
+  location: TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-L2LEAF1A
+spanning_tree:
+  mode: mstp
+  mst_instances:
+    '0':
+      priority: 8192
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
+vrfs:
+  MGMT:
+    ip_routing: false
+management_api_http:
+  enable_vrfs:
+    MGMT: {}
+  enable_https: true
+eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
+ethernet_interfaces:
+  Ethernet1:
+    peer: DC1-POD1-LEAF1A
+    peer_interface: Ethernet3
+    peer_type: l3leaf
+    description: DC1-POD1-LEAF1A_Ethernet3
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 1
+      mode: active
+port_channel_interfaces:
+  Port-Channel1:
+    description: DC1-POD1-LEAF1A_Po3
+    type: switched
+    shutdown: false
+    vlans: 4085
+    mode: trunk
+    service_profile: QOS-PROFILE
+ip_igmp_snooping:
+  globally_enabled: true
+vlans:
+  4085:
+    tenant: system
+    name: L2LEAF_INBAND_MGMT
+management_interfaces:
+  Vlan4085:
+    description: L2LEAF_INBAND_MGMT
+    shutdown: false
+    mtu: 1500
+    ip_address: 172.21.110.4/24
+    gateway: 172.21.110.1
+    type: inband

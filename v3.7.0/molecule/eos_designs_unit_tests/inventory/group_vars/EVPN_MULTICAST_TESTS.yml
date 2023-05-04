@@ -1,0 +1,217 @@
+type: l3leaf
+
+mgmt_gateway: 192.168.200.1
+
+underlay_multicast: true # If set to "false" will raise an error.
+evpn_multicast: true
+#default_igmp_snooping_enabled: true # Default is true, if set to "false" will raise error.
+
+# Default is overlay_loopback_ip
+# If set to same value on MLAG pairs will raise error. Trigger error with "bgp_as" or "vtep_loopback".
+# overlay_rd_type:
+#   admin_subfield: overlay_loopback_ip
+
+tenants:
+  Tenant_A:
+    mac_vrf_vni_base: 10000
+    evpn_l2_multicast:
+      enabled: true
+      underlay_l2_multicast_group_ipv4_pool: 232.0.0.0/20
+    vrfs:
+      MULTICAST_ENABLED_110_111:
+        description: "MULTICAST_ENABLED_110_111"
+        vrf_vni: 11
+        svis:
+          # Expected results:
+          # - vlan 110 and 111 configured with multicast:
+          #   - Querier address configured with loopback address
+          #   - vxlan vlan 110 multicast group 232.0.0.109
+          #   - vxlan vlan 111 multicast group 232.0.0.110
+          #   - redistribute igmp on BGP vlan-aware-bundle 110-111 (LEAF1A/B)
+          #   - redistribute igmp on BGP vlan based 110 and 111 (LEAF2A)
+          110:
+            name: "MULTICAST_ENABLED_110"
+            tags: ['test_l3']
+            enabled: true
+            ip_address_virtual: 10.1.10.1/24
+          111:
+            name: "MULTICAST_ENABLED_111"
+            tags: ['test_l3']
+            enabled: true
+            ip_address_virtual: 10.1.11.1/24
+      MULTICAST_ENABLED_210_DISABLED_211:
+        description: "MULTICAST_ENABLED_210_DISABLED_211"
+        vrf_vni: 12
+        svis:
+          # Expected results:
+          # - vlan 211 not configured with multicast
+          # - vlan 210 configured with multicast:
+          #   - Querier address configured with loopback address
+          #   - vxlan vlan 210 multicast group 232.0.0.209
+          #   - redistribute igmp on BGP vlan-aware-bundle 210-211 (LEAF1A/B)
+          #   - redistribute igmp on BGP vlan based 210 (LEAF2A)
+          210:
+            name: "MULTICAST_ENABLED_210"
+            tags: ['test_l3']
+            enabled: true
+            ip_address_virtual: 10.2.10.1/24
+          211:
+            name: "MULTICAST_DISABLED_211"
+            tags: ['test_l3']
+            enabled: true
+            ip_address_virtual: 10.2.11.1/24
+            evpn_l2_multicast:
+              enabled: false
+      MULTICAST_DISABLED_310_311:
+        description: "MULTICAST_DISABLED_310_311"
+        vrf_vni: 13
+        svis:
+          # Expected results:
+          # - vlans 310 and 311 not configured with multicast
+          310:
+            name: "MULTICAST_DISABLED_310"
+            tags: ['test_l3']
+            enabled: true
+            ip_address_virtual: 10.3.10.1/24
+            evpn_l2_multicast:
+              enabled: false
+          311:
+            name: "MULTICAST_DISABLED_311"
+            tags: ['test_l3']
+            enabled: true
+            ip_address_virtual: 10.3.11.1/24
+            evpn_l2_multicast:
+              enabled: false
+    l2vlans:
+      # Expected results:
+      # - vlan 256 not configured with multicast
+      # - vlan 257 and 4096 configured with multicast:
+      #   - Querier address configured with loopback address
+      #   - vxlan vlan 257 multicast group 232.0.1.0
+      #   - vxlan vlan 4096 multicast group 232.0.15.255 (tests maximum value within subnet allocated in underlay_l2_multicast_group_ipv4_pool)
+      #   - redistribute igmp on BGP vlan-aware bundle and vlan based
+      256:
+        name: "MULTICAST_DISABLED_256"
+        tags: ['test_l2']
+        evpn_l2_multicast:
+          enabled: false
+      257:
+        name: "MULTICAST_ENABLED_257"
+        tags: ['test_l2']
+      4096:
+        name: "MULTICAST_ENABLED_4096"
+        tags: ['test_l2']
+
+# Test when tenant level evpn_l2_multicast.enabled: false and svi level enabled
+# Test with underlay_l2_multicast_group_ipv4_pool_offset
+# Test with IGMP querier version and unique address
+  Tenant_B:
+    mac_vrf_vni_base: 10000
+    evpn_l2_multicast:
+      enabled: false
+      underlay_l2_multicast_group_ipv4_pool: 232.0.16.0/20
+      underlay_l2_multicast_group_ipv4_pool_offset: 1
+    igmp_snooping_querier:
+      version: 3
+      source_address: 1.1.1.1
+    vrfs:
+      MULTICAST_ENABLED_1_2:
+        description: "MULTICAST_ENABLED_1_2"
+        vrf_vni: 21
+        svis:
+          # Expected results:
+          # - vlan 1 and 2 configured with multicast:
+          #   - Querier address configured with 1.1.1.1
+          #   - Querier version 3
+          #   - vxlan vlan 1 multicast group 232.0.16.1
+          #   - vxlan vlan 2 multicast group 232.0.16.2
+          #   - redistribute igmp on BGP vlan-aware-bundle 1-2 (LEAF1A/B)
+          #   - redistribute igmp on BGP vlan based 1 and 2 (LEAF2A)
+          1:
+            name: "MULTICAST_ENABLED_1"
+            tags: ['test_l3']
+            enabled: true
+            ip_address_virtual: 10.0.1.1/24
+            evpn_l2_multicast:
+              enabled: true
+          2:
+            name: "MULTICAST_ENABLED_2"
+            tags: ['test_l3']
+            enabled: true
+            ip_address_virtual: 10.0.2.1/24
+            evpn_l2_multicast:
+              enabled: true
+      MULTICAST_ENABLED_3_DISABLED_4:
+        description: "MULTICAST_ENABLED_3_DISABLED_4"
+        vrf_vni: 22
+        svis:
+          # Expected results:
+          # - vlan 4 not configured with multicast
+          # - vlan 3 configured with multicast:
+          #   - Querier address configured with 2.2.2.2
+          #   - Querier version 1
+          #   - vxlan vlan 3 multicast group 232.0.16.3
+          #   - redistribute igmp on BGP vlan-aware-bundle 3-4 (LEAF1A/B)
+          #   - redistribute igmp on BGP vlan based 3 (LEAF2A)
+          3:
+            name: "MULTICAST_ENABLED_3"
+            tags: ['test_l3']
+            enabled: true
+            ip_address_virtual: 10.0.3.1/24
+            evpn_l2_multicast:
+              enabled: true
+            igmp_snooping_querier:
+              version: 1
+              source_address: 2.2.2.2
+          4:
+            name: "MULTICAST_DISABLED_4"
+            tags: ['test_l3']
+            enabled: true
+            ip_address_virtual: 10.0.4.1/24
+      MULTICAST_DISABLED_5_6:
+        description: "MULTICAST_DISABLED_5_6"
+        vrf_vni: 22
+        svis:
+          # Expected results:
+          # - vlan 5 and 6 not configured with multicast
+          5:
+            name: "MULTICAST_DISABLED_5"
+            tags: ['test_l3']
+            enabled: true
+            ip_address_virtual: 10.0.5.1/24
+          6:
+            name: "MULTICAST_DISABLED_6"
+            tags: ['test_l3']
+            enabled: true
+            ip_address_virtual: 10.0.6.1/24
+    l2vlans:
+      # Expected results:
+      # - vlan 7 not configured with multicast
+      # - vlan 8 configured with multicast:
+      #   - Querier address configured with 1.1.1.1
+      #   - Querier version 3
+      #   - vxlan vlan 7 multicast group 232.0.16.8
+      #   - redistribute igmp on BGP vlan-aware-bundle 8(LEAF1A/B)
+      #   - redistribute igmp on BGP vlan based 8 (LEAF2A)
+      # - vlan 9 configured with multicast:
+      #   - Querier address configured with 2.2.2.2
+      #   - Querier version 1
+      #   - vxlan vlan 9 multicast group 232.0.16.9
+      #   - redistribute igmp on BGP vlan-aware-bundle 9 (LEAF1A/B)
+      #   - redistribute igmp on BGP vlan based 9 (LEAF2A)
+      7:
+        name: "MULTICAST_DISABLED_7"
+        tags: ['test_l2']
+      8:
+        name: "MULTICAST_ENABLED_8"
+        tags: ['test_l2']
+        evpn_l2_multicast:
+          enabled: true
+      9:
+        name: "MULTICAST_ENABLED_8"
+        tags: ['test_l2']
+        evpn_l2_multicast:
+          enabled: true
+        igmp_snooping_querier:
+          version: 1
+          source_address: 2.2.2.2

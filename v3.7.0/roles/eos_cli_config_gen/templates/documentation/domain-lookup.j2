@@ -1,0 +1,19 @@
+{% if ip_domain_lookup is arista.avd.defined %}
+
+## Domain Lookup
+
+### DNS Domain Lookup Summary
+
+| Source interface | vrf |
+| ---------------- | --- |
+{%     for source in ip_domain_lookup.source_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         set vrf = source.vrf | arista.avd.default('-') %}
+| {{ source.name }} | {{ vrf }} |
+{%     endfor %}
+
+### DNS Domain Lookup Device Configuration
+
+```eos
+{%     include 'eos/domain-lookup.j2' %}
+```
+{% endif %}

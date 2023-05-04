@@ -1,0 +1,13 @@
+{# eos - dot1x global #}
+{% if dot1x is arista.avd.defined %}
+!
+{%     if dot1x.system_auth_control is arista.avd.defined(true) %}
+dot1x system-auth-control
+{%     endif %}
+{%     if dot1x.protocol_lldp_bypass is arista.avd.defined(true) %}
+dot1x protocol lldp bypass
+{%     endif %}
+{%     if dot1x.dynamic_authorization is arista.avd.defined(true) %}
+dot1x dynamic-authorization
+{%     endif %}
+{% endif %}

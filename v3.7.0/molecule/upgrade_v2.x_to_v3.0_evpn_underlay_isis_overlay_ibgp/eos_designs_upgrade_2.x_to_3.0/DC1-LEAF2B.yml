@@ -1,0 +1,115 @@
+spine:
+  defaults:
+# Change from spine.platform to spine.defaults.platform
+    platform: vEOS-LAB
+# Change from spine.bgp_as to spine.defaults.bgp_as
+    bgp_as: 65001
+# Change from overlay_loopback_network_summary to spine.defaults.loopback_ipv4_pool
+    loopback_ipv4_pool: 192.168.255.0/24
+# Change from spine_bgp_defaults to spine.defaults.bgp_defaults
+    bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200']
+# Change from isis_site_id.0000 to spine.defaults.isis_system_id_prefix
+    isis_system_id_prefix: '0001.0000'
+# New spine.defaults.isis_maximum_paths based on max_spines * max_l3leaf_to_spine_links
+    isis_maximum_paths: 4
+# Change from mlag_ips.mlag_peer to spine.defaults.mlag_peer_ipv4_pool
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+# Change from mlag_ips.mlag_peer_l3_ipv4_pool to spine.defaults.mlag_peer_l3_ipv4_pool
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+  nodes:
+    DC1-SPINE1:
+    DC1-SPINE2:
+    DC1-SPINE3:
+    DC1-SPINE4:
+l3leaf:
+  defaults:
+# Change from overlay_loopback_network_summary to l3leaf.defaults.loopback_ipv4_pool
+    loopback_ipv4_pool: 192.168.255.0/24
+# New loopback_network_offset variable based on max_spines or length of spine.nodes
+    loopback_ipv4_offset: 4
+# Change from vtep_loopback_network_summary to l3leaf.defaults.vtep_loopback_ipv4_pool
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+# Change from l3leaf.defaults.uplink_to_spine_interfaces to l3leaf.defaults.uplink_interfaces
+    uplink_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4']
+# Change from l3leaf.defaults.spines to l3leaf.defaults.uplink_switches
+    uplink_switches: ['DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE3', 'DC1-SPINE4']
+# Change from underlay_p2p_network_summary to l3leaf.defaults.uplink_ipv4_pool
+    uplink_ipv4_pool: 172.31.255.0/24
+# Change from mlag_ips.mlag_peer to l3leaf.defaults.mlag_peer_ipv4_pool
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+# Change from mlag_ips.mlag_peer_l3_ipv4_pool to l3leaf.defaults.mlag_peer_l3_ipv4_pool
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+# Change from leaf_bgp_defaults to l3leaf.defaults.bgp_defaults
+    bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200']
+# Change from isis_site_id.0001 to l3leaf.defaults.isis_system_id_prefix
+    isis_system_id_prefix: '0001.0001'
+# New l3leaf.defaults.isis_maximum_paths based on max_spines * max_l3leaf_to_spine_links
+    isis_maximum_paths: 4
+# Retain 2.x behavior by setting spine.bgp_as on peer-node_groups
+    structured_config:
+      router_bgp:
+        peer_groups:
+          OVERLAY-PEERS:
+            remote_as: 65001
+  node_groups:
+    DC1_LEAF1:
+      nodes:
+        DC1-LEAF1A:
+# Change from l3leaf.node_groups.DC1_LEAF1.nodes.DC1-LEAF1A.spine_interfaces to l3leaf.node_groups.DC1_LEAF1.nodes.DC1-LEAF1A.uplink_switch_interfaces
+          uplink_switch_interfaces: ['Ethernet1', 'Ethernet1', 'Ethernet1', 'Ethernet1']
+    DC1_LEAF2:
+      nodes:
+        DC1-LEAF2A:
+# Change from l3leaf.node_groups.DC1_LEAF2.nodes.DC1-LEAF2A.spine_interfaces to l3leaf.node_groups.DC1_LEAF2.nodes.DC1-LEAF2A.uplink_switch_interfaces
+          uplink_switch_interfaces: ['Ethernet2', 'Ethernet2', 'Ethernet2', 'Ethernet2']
+        DC1-LEAF2B:
+# Change from l3leaf.node_groups.DC1_LEAF2.nodes.DC1-LEAF2B.spine_interfaces to l3leaf.node_groups.DC1_LEAF2.nodes.DC1-LEAF2B.uplink_switch_interfaces
+          uplink_switch_interfaces: ['Ethernet3', 'Ethernet3', 'Ethernet3', 'Ethernet3']
+    DC1_SVC3:
+      nodes:
+        DC1-SVC3A:
+# Change from l3leaf.node_groups.DC1_SVC3.nodes.DC1-SVC3A.spine_interfaces to l3leaf.node_groups.DC1_SVC3.nodes.DC1-SVC3A.uplink_switch_interfaces
+          uplink_switch_interfaces: ['Ethernet4', 'Ethernet4', 'Ethernet4', 'Ethernet4']
+        DC1-SVC3B:
+# Change from l3leaf.node_groups.DC1_SVC3.nodes.DC1-SVC3B.spine_interfaces to l3leaf.node_groups.DC1_SVC3.nodes.DC1-SVC3B.uplink_switch_interfaces
+          uplink_switch_interfaces: ['Ethernet5', 'Ethernet5', 'Ethernet5', 'Ethernet5']
+    DC1_BL1:
+      nodes:
+        DC1-BL1A:
+# Change from l3leaf.node_groups.DC1_BL1.nodes.DC1-BL1A.spine_interfaces to l3leaf.node_groups.DC1_BL1.nodes.DC1-BL1A.uplink_switch_interfaces
+          uplink_switch_interfaces: ['Ethernet6', 'Ethernet6', 'Ethernet6', 'Ethernet6']
+        DC1-BL1B:
+# Change from l3leaf.node_groups.DC1_BL1.nodes.DC1-BL1B.spine_interfaces to l3leaf.node_groups.DC1_BL1.nodes.DC1-BL1B.uplink_switch_interfaces
+          uplink_switch_interfaces: ['Ethernet7', 'Ethernet7', 'Ethernet7', 'Ethernet7']
+l2leaf:
+  defaults:
+# Change from l2leaf.defaults.parent_l3leafs to l2leaf.defaults.uplink_switches
+    uplink_switches: ['DC1-SVC3A', 'DC1-SVC3B']
+# Change from mlag_ips.mlag_peer to l2leaf.defaults.mlag_peer_ipv4_pool
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+# Change from mlag_ips.mlag_peer_l3_ipv4_pool to l2leaf.defaults.mlag_peer_l3_ipv4_pool
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+  node_groups:
+    DC1_L2LEAF1:
+# Change from l2leaf.node_groups.DC1_L2LEAF1.parent_l3leafs to l2leaf.node_groups.DC1_L2LEAF1.uplink_switches
+      uplink_switches: ['DC1-LEAF2A', 'DC1-LEAF2B']
+      nodes:
+        DC1-L2LEAF1A:
+# Change from l2leaf.node_groups.DC1_L2LEAF1.nodes.DC1-L2LEAF1A.l3leaf_interfaces to l2leaf.node_groups.DC1_L2LEAF1.nodes.DC1-L2LEAF1A.uplink_switch_interfaces
+          uplink_switch_interfaces: ['Ethernet7', 'Ethernet7']
+    DC1_L2LEAF2:
+      nodes:
+        DC1-L2LEAF2A:
+# Change from l2leaf.node_groups.DC1_L2LEAF2.nodes.DC1-L2LEAF2A.l3leaf_interfaces to l2leaf.node_groups.DC1_L2LEAF2.nodes.DC1-L2LEAF2A.uplink_switch_interfaces
+          uplink_switch_interfaces: ['Ethernet7', 'Ethernet7']
+        DC1-L2LEAF2B:
+# Change from l2leaf.node_groups.DC1_L2LEAF2.nodes.DC1-L2LEAF2B.l3leaf_interfaces to l2leaf.node_groups.DC1_L2LEAF2.nodes.DC1-L2LEAF2B.uplink_switch_interfaces
+          uplink_switch_interfaces: ['Ethernet8', 'Ethernet8']
+custom_structured_configuration_ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 192.168.200.5
+    preferred: true
+    vrf: MGMT

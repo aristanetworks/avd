@@ -1,0 +1,34 @@
+{# eos - IPV6 static routes#}
+{% if ipv6_static_routes is arista.avd.defined %}
+!
+{%     for ipv6_static_route in ipv6_static_routes %}
+{%         set ipv6_static_route_cli = "ipv6 route" %}
+{%         if ipv6_static_route.vrf is arista.avd.defined %}
+{%             if ipv6_static_route.vrf != 'default' %}
+{%                 set ipv6_static_route_cli = ipv6_static_route_cli ~ " vrf " ~ ipv6_static_route.vrf %}
+{%             endif %}
+{%         endif %}
+{%         if ipv6_static_route.destination_address_prefix is arista.avd.defined %}
+{%             set ipv6_static_route_cli = ipv6_static_route_cli ~ " " ~ ipv6_static_route.destination_address_prefix %}
+{%         endif %}
+{%         if ipv6_static_route.interface is arista.avd.defined %}
+{%             set ipv6_static_route_cli = ipv6_static_route_cli ~ " " ~ ipv6_static_route.interface | capitalize %}
+{%         endif %}
+{%         if ipv6_static_route.gateway is arista.avd.defined %}
+{%             set ipv6_static_route_cli = ipv6_static_route_cli ~ " " ~ ipv6_static_route.gateway %}
+{%         endif %}
+{%         if ipv6_static_route.distance is arista.avd.defined %}
+{%             set ipv6_static_route_cli = ipv6_static_route_cli ~ " " ~ ipv6_static_route.distance %}
+{%         endif %}
+{%         if ipv6_static_route.tag is arista.avd.defined %}
+{%             set ipv6_static_route_cli = ipv6_static_route_cli ~ " tag " ~ ipv6_static_route.tag %}
+{%         endif %}
+{%         if ipv6_static_route.name is arista.avd.defined %}
+{%             set ipv6_static_route_cli = ipv6_static_route_cli ~ " name " ~ ipv6_static_route.name %}
+{%         endif %}
+{%         if ipv6_static_route.metric is arista.avd.defined %}
+{%             set ipv6_static_route_cli = ipv6_static_route_cli ~ " metric " ~ ipv6_static_route.metric %}
+{%         endif %}
+{{ ipv6_static_route_cli }}
+{%     endfor %}
+{% endif %}

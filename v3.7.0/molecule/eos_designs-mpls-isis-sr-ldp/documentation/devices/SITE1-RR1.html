@@ -1,0 +1,2560 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Arista Validated Design collection's documentation">
+      
+      
+        <meta name="author" content="Arista Ansible Team">
+      
+      
+      
+      
+      <link rel="icon" href="../../../../docs/_media/favicon.ico">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.0.15">
+    
+    
+      
+        <title>SITE1-RR1 - Arista AVD collection</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.113286f1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.a0c5b2b5.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CFira+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Fira Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../docs/stylesheets/extra.material.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#site1-rr1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../index.html" title="Arista AVD collection" class="md-header__button md-logo" aria-label="Arista AVD collection" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M96 0C43 0 0 43 0 96v320c0 53 43 96 96 96h320c17.7 0 32-14.3 32-32s-14.3-32-32-32v-64c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H96zm0 384h256v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Arista AVD collection
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              SITE1-RR1
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+            </label>
+          
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/aristanetworks/ansible-avd" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AVD on Github
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../index.html" title="Arista AVD collection" class="md-nav__button md-logo" aria-label="Arista AVD collection" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M96 0C43 0 0 43 0 96v320c0 53 43 96 96 96h320c17.7 0 32-14.3 32-32s-14.3-32-32-32v-64c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H96zm0 384h256v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></svg>
+
+    </a>
+    Arista AVD collection
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/aristanetworks/ansible-avd" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AVD on Github
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Getting Started
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Getting Started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/getting-started/intro-to-ansible-and-avd.html" class="md-nav__link">
+        Introduction to Ansible and AVD
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../examples/single-dc-l3ls/index.html" class="md-nav__link">
+        Example for Single DC L3LS
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          Installation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Installation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/installation/collection-installation.html" class="md-nav__link">
+        Collection Installation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/installation/requirements.html" class="md-nav__link">
+        Requirements
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          How-To
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          How-To
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/how-to/first-project.html" class="md-nav__link">
+        Build Your First AVD Project
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/how-to/first-cvp-avd-project.html" class="md-nav__link">
+        Build Your First AVD & CVP Project
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/how-to/lab-with-nat.html" class="md-nav__link">
+        Use NAT Gateway With eAPI
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/how-to/tower-integration.html" class="md-nav__link">
+        AWX & Tower Integration
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/how-to/ztp.html" class="md-nav__link">
+        Configure ZTP Server With CVP Collection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/how-to/vscode-container.html" class="md-nav__link">
+        Setup Ansible AVD With VS Code Container
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          Roles Documentation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Roles Documentation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+          eos_designs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5_1">
+          <span class="md-nav__icon md-icon"></span>
+          eos_designs
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/index.html" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/connected-endpoints.html" class="md-nav__link">
+        Connected Endpoints
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/l3-edge.html" class="md-nav__link">
+        DCI & L3 Edge
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/fabric-topology.html" class="md-nav__link">
+        Fabric Topology
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/fabric-variables.html" class="md-nav__link">
+        Fabric Variables
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/management-settings.html" class="md-nav__link">
+        Management Settings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/network-services.html" class="md-nav__link">
+        Network Services
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/node-types.html" class="md-nav__link">
+        Node Types
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/platform-settings.html" class="md-nav__link">
+        Platform Specific Settings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/custom-structured-configuration.html" class="md-nav__link">
+        Custom Structured Configuration
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1_11" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5_1_11" id="__nav_5_1_11_label" tabindex="0">
+          MPLS Design (BETA)
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_1_11_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5_1_11">
+          <span class="md-nav__icon md-icon"></span>
+          MPLS Design (BETA)
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/fabric-topology-mpls-BETA.html" class="md-nav__link">
+        Fabric Topology MPLS (BETA)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/fabric-variables-mpls-BETA.html" class="md-nav__link">
+        Fabric Variables MPLS (BETA)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/core-interfaces-BETA.html" class="md-nav__link">
+        Core Interfaces (BETA)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/network-services-mpls-BETA.html" class="md-nav__link">
+        Network Services MPLS (BETA)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/connected-endpoints-mpls-BETA.html" class="md-nav__link">
+        Connected Endpoints MPLS (BETA)
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_cli_config_gen/index.html" class="md-nav__link">
+        eos_cli_config_gen
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/cvp_configlet_upload/index.html" class="md-nav__link">
+        cvp_configlet_upload
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_config_deploy_cvp/index.html" class="md-nav__link">
+        eos_config_deploy_cvp
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_config_deploy_eapi/index.html" class="md-nav__link">
+        eos_config_deploy_eapi
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_validate_state/index.html" class="md-nav__link">
+        eos_validate_state
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_snapshot/index.html" class="md-nav__link">
+        eos_snapshot
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/dhcp_provisioner/index.html" class="md-nav__link">
+        dhcp_provisioner
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/build_output_folders/index.html" class="md-nav__link">
+        build_output_folders
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          Modules Documentation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Modules Documentation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/modules/inventory_to_container.rst.html" class="md-nav__link">
+        Module Inventory to Containers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/modules/configlet_build_config.rst.html" class="md-nav__link">
+        Module Configlet Build Configuration
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../plugins/index.html" class="md-nav__link">
+        AVD Plugins & Filters
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://cvp.avd.sh/" class="md-nav__link">
+        CloudVision Module Documentation
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          Contributing to AVD
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Contributing to AVD
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/contribution/overview.html" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/contribution/setup-environment.html" class="md-nav__link">
+        Setup Environment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/contribution/setup-git.html" class="md-nav__link">
+        Git Installation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/contribution/getting-started.html" class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/contribution/style-guide.html" class="md-nav__link">
+        Code Style
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/contribution/development.html" class="md-nav__link">
+        Development Tips & Tricks
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+          External Resources
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          External Resources
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://docs.ansible.com/ansible/latest/user_guide/collections_using.html" class="md-nav__link">
+        Ansible Collection User Guide
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://docs.ansible.com/ansible/latest/user_guide/index.html" class="md-nav__link">
+        Ansible User Guide
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+          Release Notes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          Release Notes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/release-notes/3.x.x.html" class="md-nav__link">
+        3.x.x
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/release-notes/2.x.x.html" class="md-nav__link">
+        2.x.x
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/release-notes/1.1.x.html" class="md-nav__link">
+        1.1.x
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/release-notes/1.0.x.html" class="md-nav__link">
+        1.0.x
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+          About
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_10">
+          <span class="md-nav__icon md-icon"></span>
+          About
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://galaxy.ansible.com/arista/avd" class="md-nav__link">
+        AVD on Ansible Galaxy
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://cvp.avd.sh/en/latest/" class="md-nav__link">
+        Arista CVP Collection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/arista-netdevops-community/avd-install" class="md-nav__link">
+        Arista Installation Script
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://aristanetworks.github.io/netdevops-examples/" class="md-nav__link">
+        Arista NetDevOps Community
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="site1-rr1">SITE1-RR1<a class="headerlink" href="#site1-rr1" title="Permanent link">&para;</a></h1>
+<h1 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h1>
+<ul>
+<li><a href="#management">Management</a><ul>
+<li><a href="#management-interfaces">Management Interfaces</a></li>
+<li><a href="#management-api-http">Management API HTTP</a></li>
+</ul>
+</li>
+<li><a href="#authentication">Authentication</a></li>
+<li><a href="#monitoring">Monitoring</a></li>
+<li><a href="#spanning-tree">Spanning Tree</a><ul>
+<li><a href="#spanning-tree-summary">Spanning Tree Summary</a></li>
+<li><a href="#spanning-tree-device-configuration">Spanning Tree Device Configuration</a></li>
+</ul>
+</li>
+<li><a href="#internal-vlan-allocation-policy">Internal VLAN Allocation Policy</a><ul>
+<li><a href="#internal-vlan-allocation-policy-summary">Internal VLAN Allocation Policy Summary</a></li>
+<li><a href="#internal-vlan-allocation-policy-configuration">Internal VLAN Allocation Policy Configuration</a></li>
+</ul>
+</li>
+<li><a href="#interfaces">Interfaces</a><ul>
+<li><a href="#ethernet-interfaces">Ethernet Interfaces</a></li>
+<li><a href="#loopback-interfaces">Loopback Interfaces</a></li>
+</ul>
+</li>
+<li><a href="#routing">Routing</a><ul>
+<li><a href="#service-routing-protocols-model">Service Routing Protocols Model</a></li>
+<li><a href="#ip-routing">IP Routing</a></li>
+<li><a href="#ipv6-routing">IPv6 Routing</a></li>
+<li><a href="#static-routes">Static Routes</a></li>
+<li><a href="#router-isis">Router ISIS</a></li>
+<li><a href="#router-bgp">Router BGP</a></li>
+</ul>
+</li>
+<li><a href="#bfd">BFD</a><ul>
+<li><a href="#router-bfd">Router BFD</a></li>
+</ul>
+</li>
+<li><a href="#mpls">MPLS</a><ul>
+<li><a href="#mpls-and-ldp">MPLS and LDP</a></li>
+<li><a href="#mpls-interfaces">MPLS Interfaces</a></li>
+</ul>
+</li>
+<li><a href="#multicast">Multicast</a></li>
+<li><a href="#filters">Filters</a></li>
+<li><a href="#acl">ACL</a></li>
+<li><a href="#vrf-instances">VRF Instances</a><ul>
+<li><a href="#vrf-instances-summary">VRF Instances Summary</a></li>
+<li><a href="#vrf-instances-device-configuration">VRF Instances Device Configuration</a></li>
+</ul>
+</li>
+<li><a href="#quality-of-service">Quality Of Service</a></li>
+<li><a href="#eos-cli">EOS CLI</a></li>
+</ul>
+<h1 id="management">Management<a class="headerlink" href="#management" title="Permanent link">&para;</a></h1>
+<h2 id="management-interfaces">Management Interfaces<a class="headerlink" href="#management-interfaces" title="Permanent link">&para;</a></h2>
+<h3 id="management-interfaces-summary">Management Interfaces Summary<a class="headerlink" href="#management-interfaces-summary" title="Permanent link">&para;</a></h3>
+<h4 id="ipv4">IPv4<a class="headerlink" href="#ipv4" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Management Interface</th>
+<th>description</th>
+<th>Type</th>
+<th>VRF</th>
+<th>IP Address</th>
+<th>Gateway</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Management1</td>
+<td>oob_management</td>
+<td>oob</td>
+<td>MGMT</td>
+<td>10.30.30.108/24</td>
+<td>192.168.200.5</td>
+</tr>
+</tbody>
+</table>
+<h4 id="ipv6">IPv6<a class="headerlink" href="#ipv6" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Management Interface</th>
+<th>description</th>
+<th>Type</th>
+<th>VRF</th>
+<th>IPv6 Address</th>
+<th>IPv6 Gateway</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Management1</td>
+<td>oob_management</td>
+<td>oob</td>
+<td>MGMT</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="management-interfaces-device-configuration">Management Interfaces Device Configuration<a class="headerlink" href="#management-interfaces-device-configuration" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>!
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>interface Management1
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>   description oob_management
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>   no shutdown
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>   vrf MGMT
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>   ip address 10.30.30.108/24
+</code></pre></div>
+<h2 id="management-api-http">Management API HTTP<a class="headerlink" href="#management-api-http" title="Permanent link">&para;</a></h2>
+<h3 id="management-api-http-summary">Management API HTTP Summary<a class="headerlink" href="#management-api-http-summary" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>HTTP</th>
+<th>HTTPS</th>
+<th>Default Services</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>False</td>
+<td>True</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="management-api-vrf-access">Management API VRF Access<a class="headerlink" href="#management-api-vrf-access" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>VRF Name</th>
+<th>IPv4 ACL</th>
+<th>IPv6 ACL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MGMT</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="management-api-http-configuration">Management API HTTP Configuration<a class="headerlink" href="#management-api-http-configuration" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>!
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>management api http-commands
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>   protocol https
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>   no shutdown
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>   !
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>   vrf MGMT
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>      no shutdown
+</code></pre></div>
+<h1 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">&para;</a></h1>
+<h1 id="monitoring">Monitoring<a class="headerlink" href="#monitoring" title="Permanent link">&para;</a></h1>
+<h1 id="spanning-tree">Spanning Tree<a class="headerlink" href="#spanning-tree" title="Permanent link">&para;</a></h1>
+<h2 id="spanning-tree-summary">Spanning Tree Summary<a class="headerlink" href="#spanning-tree-summary" title="Permanent link">&para;</a></h2>
+<p>STP mode: <strong>none</strong></p>
+<h2 id="spanning-tree-device-configuration">Spanning Tree Device Configuration<a class="headerlink" href="#spanning-tree-device-configuration" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>!
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>spanning-tree mode none
+</code></pre></div>
+<h1 id="internal-vlan-allocation-policy">Internal VLAN Allocation Policy<a class="headerlink" href="#internal-vlan-allocation-policy" title="Permanent link">&para;</a></h1>
+<h2 id="internal-vlan-allocation-policy-summary">Internal VLAN Allocation Policy Summary<a class="headerlink" href="#internal-vlan-allocation-policy-summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Policy Allocation</th>
+<th>Range Beginning</th>
+<th>Range Ending</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ascending</td>
+<td>1006</td>
+<td>1199</td>
+</tr>
+</tbody>
+</table>
+<h2 id="internal-vlan-allocation-policy-configuration">Internal VLAN Allocation Policy Configuration<a class="headerlink" href="#internal-vlan-allocation-policy-configuration" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>!
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>vlan internal order ascending range 1006 1199
+</code></pre></div>
+<h1 id="interfaces">Interfaces<a class="headerlink" href="#interfaces" title="Permanent link">&para;</a></h1>
+<h2 id="ethernet-interfaces">Ethernet Interfaces<a class="headerlink" href="#ethernet-interfaces" title="Permanent link">&para;</a></h2>
+<h3 id="ethernet-interfaces-summary">Ethernet Interfaces Summary<a class="headerlink" href="#ethernet-interfaces-summary" title="Permanent link">&para;</a></h3>
+<h4 id="l2">L2<a class="headerlink" href="#l2" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Description</th>
+<th>Mode</th>
+<th>VLANs</th>
+<th>Native VLAN</th>
+<th>Trunk Group</th>
+<th>Channel-Group</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>*Inherited from Port-Channel Interface</p>
+<h4 id="ipv4_1">IPv4<a class="headerlink" href="#ipv4_1" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Description</th>
+<th>Type</th>
+<th>Channel Group</th>
+<th>IP Address</th>
+<th>VRF</th>
+<th>MTU</th>
+<th>Shutdown</th>
+<th>ACL In</th>
+<th>ACL Out</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ethernet4</td>
+<td>P2P_LINK_TO_SITE1-LSR1_Ethernet4</td>
+<td>routed</td>
+<td>-</td>
+<td>100.64.48.7/31</td>
+<td>default</td>
+<td>9178</td>
+<td>false</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h4 id="ipv6_1">IPv6<a class="headerlink" href="#ipv6_1" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Description</th>
+<th>Type</th>
+<th>Channel Group</th>
+<th>IPv6 Address</th>
+<th>VRF</th>
+<th>MTU</th>
+<th>Shutdown</th>
+<th>ND RA Disabled</th>
+<th>Managed Config Flag</th>
+<th>IPv6 ACL In</th>
+<th>IPv6 ACL Out</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ethernet4</td>
+<td>P2P_LINK_TO_SITE1-LSR1_Ethernet4</td>
+<td>routed</td>
+<td>-</td>
+<td>-</td>
+<td>default</td>
+<td>9178</td>
+<td>false</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h4 id="isis">ISIS<a class="headerlink" href="#isis" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Channel Group</th>
+<th>ISIS Instance</th>
+<th>ISIS Metric</th>
+<th>Mode</th>
+<th>ISIS Circuit Type</th>
+<th>Hello Padding</th>
+<th>Authentication Mode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ethernet4</td>
+<td>-</td>
+<td>CORE</td>
+<td>60</td>
+<td>point-to-point</td>
+<td>level-2</td>
+<td>False</td>
+<td>md5</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ethernet-interfaces-device-configuration">Ethernet Interfaces Device Configuration<a class="headerlink" href="#ethernet-interfaces-device-configuration" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>!
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>interface Ethernet4
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>   description P2P_LINK_TO_SITE1-LSR1_Ethernet4
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>   no shutdown
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>   mtu 9178
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>   speed forced 40gfull
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>   no switchport
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>   ip address 100.64.48.7/31
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>   ipv6 enable
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>   mpls ldp igp sync
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>   mpls ldp interface
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>   mpls ip
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>   isis enable CORE
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>   isis circuit-type level-2
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>   isis metric 60
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>   no isis hello padding
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>   isis network point-to-point
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>   isis authentication mode md5
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>   isis authentication key 7 asdadjiwtelogkkdng
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>   link-debounce time 1000
+</code></pre></div>
+<h2 id="loopback-interfaces">Loopback Interfaces<a class="headerlink" href="#loopback-interfaces" title="Permanent link">&para;</a></h2>
+<h3 id="loopback-interfaces-summary">Loopback Interfaces Summary<a class="headerlink" href="#loopback-interfaces-summary" title="Permanent link">&para;</a></h3>
+<h4 id="ipv4_2">IPv4<a class="headerlink" href="#ipv4_2" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Description</th>
+<th>VRF</th>
+<th>IP Address</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Loopback0</td>
+<td>MPLS_Overlay_peering</td>
+<td>default</td>
+<td>100.70.0.8/32</td>
+</tr>
+</tbody>
+</table>
+<h4 id="ipv6_2">IPv6<a class="headerlink" href="#ipv6_2" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Description</th>
+<th>VRF</th>
+<th>IPv6 Address</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Loopback0</td>
+<td>MPLS_Overlay_peering</td>
+<td>default</td>
+<td>2000:1234:ffff:ffff::8/128</td>
+</tr>
+</tbody>
+</table>
+<h4 id="isis_1">ISIS<a class="headerlink" href="#isis_1" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>ISIS instance</th>
+<th>ISIS metric</th>
+<th>Interface mode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Loopback0</td>
+<td>CORE</td>
+<td>-</td>
+<td>passive</td>
+</tr>
+</tbody>
+</table>
+<h3 id="loopback-interfaces-device-configuration">Loopback Interfaces Device Configuration<a class="headerlink" href="#loopback-interfaces-device-configuration" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>!
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>interface Loopback0
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>   description MPLS_Overlay_peering
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>   no shutdown
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>   ip address 100.70.0.8/32
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>   ipv6 address 2000:1234:ffff:ffff::8/128
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>   isis enable CORE
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>   isis passive
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>   mpls ldp interface
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>   node-segment ipv4 index 108
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>   node-segment ipv6 index 108
+</code></pre></div>
+<h1 id="routing">Routing<a class="headerlink" href="#routing" title="Permanent link">&para;</a></h1>
+<h2 id="service-routing-protocols-model">Service Routing Protocols Model<a class="headerlink" href="#service-routing-protocols-model" title="Permanent link">&para;</a></h2>
+<p>Multi agent routing protocol model enabled</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>!
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>service routing protocols model multi-agent
+</code></pre></div>
+<h2 id="ip-routing">IP Routing<a class="headerlink" href="#ip-routing" title="Permanent link">&para;</a></h2>
+<h3 id="ip-routing-summary">IP Routing Summary<a class="headerlink" href="#ip-routing-summary" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>VRF</th>
+<th>Routing Enabled</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>true</td>
+</tr>
+<tr>
+<td>MGMT</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ip-routing-device-configuration">IP Routing Device Configuration<a class="headerlink" href="#ip-routing-device-configuration" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>!
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>ip routing
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>no ip routing vrf MGMT
+</code></pre></div>
+<h2 id="ipv6-routing">IPv6 Routing<a class="headerlink" href="#ipv6-routing" title="Permanent link">&para;</a></h2>
+<h3 id="ipv6-routing-summary">IPv6 Routing Summary<a class="headerlink" href="#ipv6-routing-summary" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>VRF</th>
+<th>Routing Enabled</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>true</td>
+</tr>
+<tr>
+<td>MGMT</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ipv6-routing-device-configuration">IPv6 Routing Device Configuration<a class="headerlink" href="#ipv6-routing-device-configuration" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>!
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>ipv6 unicast-routing
+</code></pre></div>
+<h2 id="static-routes">Static Routes<a class="headerlink" href="#static-routes" title="Permanent link">&para;</a></h2>
+<h3 id="static-routes-summary">Static Routes Summary<a class="headerlink" href="#static-routes-summary" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>VRF</th>
+<th>Destination Prefix</th>
+<th>Next Hop IP</th>
+<th>Exit interface</th>
+<th>Administrative Distance</th>
+<th>Tag</th>
+<th>Route Name</th>
+<th>Metric</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MGMT</td>
+<td>0.0.0.0/0</td>
+<td>192.168.200.5</td>
+<td>-</td>
+<td>1</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="static-routes-device-configuration">Static Routes Device Configuration<a class="headerlink" href="#static-routes-device-configuration" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>!
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>ip route vrf MGMT 0.0.0.0/0 192.168.200.5
+</code></pre></div>
+<h2 id="router-isis">Router ISIS<a class="headerlink" href="#router-isis" title="Permanent link">&para;</a></h2>
+<h3 id="router-isis-summary">Router ISIS Summary<a class="headerlink" href="#router-isis-summary" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Settings</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Instance</td>
+<td>CORE</td>
+</tr>
+<tr>
+<td>Net-ID</td>
+<td>49.0001.0000.0002.0008.00</td>
+</tr>
+<tr>
+<td>Type</td>
+<td>level-1-2</td>
+</tr>
+<tr>
+<td>Address Family</td>
+<td>ipv4 unicast, ipv6 unicast</td>
+</tr>
+<tr>
+<td>Router-ID</td>
+<td>100.70.0.8</td>
+</tr>
+<tr>
+<td>Log Adjacency Changes</td>
+<td>True</td>
+</tr>
+<tr>
+<td>MPLS LDP Sync Default</td>
+<td>True</td>
+</tr>
+<tr>
+<td>Local Convergence Delay (ms)</td>
+<td>15000</td>
+</tr>
+<tr>
+<td>Advertise Passive-only</td>
+<td>True</td>
+</tr>
+<tr>
+<td>SR MPLS Enabled</td>
+<td>True</td>
+</tr>
+</tbody>
+</table>
+<h3 id="isis-interfaces-summary">ISIS Interfaces Summary<a class="headerlink" href="#isis-interfaces-summary" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>ISIS Instance</th>
+<th>ISIS Metric</th>
+<th>Interface Mode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ethernet4</td>
+<td>CORE</td>
+<td>60</td>
+<td>point-to-point</td>
+</tr>
+<tr>
+<td>Loopback0</td>
+<td>CORE</td>
+<td>-</td>
+<td>passive</td>
+</tr>
+</tbody>
+</table>
+<h3 id="isis-segment-routing-node-sid">ISIS Segment-routing Node-SID<a class="headerlink" href="#isis-segment-routing-node-sid" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Loopback</th>
+<th>IPv4 Index</th>
+<th>IPv6 Index</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Loopback0</td>
+<td>108</td>
+<td>108</td>
+</tr>
+</tbody>
+</table>
+<h3 id="router-isis-device-configuration">Router ISIS Device Configuration<a class="headerlink" href="#router-isis-device-configuration" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>!
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>router isis CORE
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>   net 49.0001.0000.0002.0008.00
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>   is-type level-1-2
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>   router-id ipv4 100.70.0.8
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>   log-adjacency-changes
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>   mpls ldp sync default
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>   timers local-convergence-delay 15000 protected-prefixes
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>   advertise passive-only
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>   !
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>   address-family ipv4 unicast
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>      maximum-paths 4
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>      fast-reroute ti-lfa mode link-protection
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>   address-family ipv6 unicast
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>      maximum-paths 4
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a>      fast-reroute ti-lfa mode link-protection
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a>   !
+<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a>   segment-routing mpls
+<a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a>      no shutdown
+</code></pre></div>
+<h2 id="router-bgp">Router BGP<a class="headerlink" href="#router-bgp" title="Permanent link">&para;</a></h2>
+<h3 id="router-bgp-summary">Router BGP Summary<a class="headerlink" href="#router-bgp-summary" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>BGP AS</th>
+<th>Router ID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>65000</td>
+<td>100.70.0.8</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>BGP AS</th>
+<th>Cluster ID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>65000</td>
+<td>1.1.1.1</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>BGP Tuning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>no bgp default ipv4-unicast</td>
+</tr>
+<tr>
+<td>distance bgp 20 200 200</td>
+</tr>
+<tr>
+<td>graceful-restart restart-time 300</td>
+</tr>
+<tr>
+<td>graceful-restart</td>
+</tr>
+<tr>
+<td>bgp route-reflector preserve-attributes always</td>
+</tr>
+<tr>
+<td>maximum-paths 4 ecmp 4</td>
+</tr>
+</tbody>
+</table>
+<h3 id="router-bgp-peer-groups">Router BGP Peer Groups<a class="headerlink" href="#router-bgp-peer-groups" title="Permanent link">&para;</a></h3>
+<h4 id="mpls-overlay-peers">MPLS-OVERLAY-PEERS<a class="headerlink" href="#mpls-overlay-peers" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Settings</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Address Family</td>
+<td>mpls</td>
+</tr>
+<tr>
+<td>Remote AS</td>
+<td>65000</td>
+</tr>
+<tr>
+<td>Route Reflector Client</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Source</td>
+<td>Loopback0</td>
+</tr>
+<tr>
+<td>BFD</td>
+<td>True</td>
+</tr>
+<tr>
+<td>Send community</td>
+<td>all</td>
+</tr>
+<tr>
+<td>Maximum routes</td>
+<td>0 (no limit)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="rr-overlay-peers">RR-OVERLAY-PEERS<a class="headerlink" href="#rr-overlay-peers" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Settings</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Address Family</td>
+<td>mpls</td>
+</tr>
+<tr>
+<td>Remote AS</td>
+<td>65000</td>
+</tr>
+<tr>
+<td>Source</td>
+<td>Loopback0</td>
+</tr>
+<tr>
+<td>BFD</td>
+<td>True</td>
+</tr>
+<tr>
+<td>Send community</td>
+<td>all</td>
+</tr>
+<tr>
+<td>Maximum routes</td>
+<td>0 (no limit)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="bgp-neighbors">BGP Neighbors<a class="headerlink" href="#bgp-neighbors" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Neighbor</th>
+<th>Remote AS</th>
+<th>VRF</th>
+<th>Shutdown</th>
+<th>Send-community</th>
+<th>Maximum-routes</th>
+<th>Allowas-in</th>
+<th>BFD</th>
+<th>RIB Pre-Policy Retain</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>100.70.0.5</td>
+<td>Inherited from peer group MPLS-OVERLAY-PEERS</td>
+<td>default</td>
+<td>-</td>
+<td>Inherited from peer group MPLS-OVERLAY-PEERS</td>
+<td>Inherited from peer group MPLS-OVERLAY-PEERS</td>
+<td>-</td>
+<td>Inherited from peer group MPLS-OVERLAY-PEERS</td>
+<td>-</td>
+</tr>
+<tr>
+<td>100.70.0.6</td>
+<td>Inherited from peer group MPLS-OVERLAY-PEERS</td>
+<td>default</td>
+<td>-</td>
+<td>Inherited from peer group MPLS-OVERLAY-PEERS</td>
+<td>Inherited from peer group MPLS-OVERLAY-PEERS</td>
+<td>-</td>
+<td>Inherited from peer group MPLS-OVERLAY-PEERS</td>
+<td>-</td>
+</tr>
+<tr>
+<td>100.70.0.7</td>
+<td>Inherited from peer group MPLS-OVERLAY-PEERS</td>
+<td>default</td>
+<td>-</td>
+<td>Inherited from peer group MPLS-OVERLAY-PEERS</td>
+<td>Inherited from peer group MPLS-OVERLAY-PEERS</td>
+<td>-</td>
+<td>Inherited from peer group MPLS-OVERLAY-PEERS</td>
+<td>-</td>
+</tr>
+<tr>
+<td>100.70.0.9</td>
+<td>Inherited from peer group RR-OVERLAY-PEERS</td>
+<td>default</td>
+<td>-</td>
+<td>Inherited from peer group RR-OVERLAY-PEERS</td>
+<td>Inherited from peer group RR-OVERLAY-PEERS</td>
+<td>-</td>
+<td>Inherited from peer group RR-OVERLAY-PEERS</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="router-bgp-evpn-address-family">Router BGP EVPN Address Family<a class="headerlink" href="#router-bgp-evpn-address-family" title="Permanent link">&para;</a></h3>
+<h4 id="evpn-peer-groups">EVPN Peer Groups<a class="headerlink" href="#evpn-peer-groups" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Peer Group</th>
+<th>Activate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MPLS-OVERLAY-PEERS</td>
+<td>True</td>
+</tr>
+<tr>
+<td>RR-OVERLAY-PEERS</td>
+<td>True</td>
+</tr>
+</tbody>
+</table>
+<h4 id="evpn-neighbor-default-encapsulation">EVPN Neighbor Default Encapsulation<a class="headerlink" href="#evpn-neighbor-default-encapsulation" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Neighbor Default Encapsulation</th>
+<th>Next-hop-self Source Interface</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mpls</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="router-bgp-vpn-ipv4-address-family">Router BGP VPN-IPv4 Address Family<a class="headerlink" href="#router-bgp-vpn-ipv4-address-family" title="Permanent link">&para;</a></h3>
+<h4 id="vpn-ipv4-peer-groups">VPN-IPv4 Peer Groups<a class="headerlink" href="#vpn-ipv4-peer-groups" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Peer Group</th>
+<th>Activate</th>
+<th>Route-map In</th>
+<th>Route-map Out</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MPLS-OVERLAY-PEERS</td>
+<td>True</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>RR-OVERLAY-PEERS</td>
+<td>True</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="router-bgp-vpn-ipv6-address-family">Router BGP VPN-IPv6 Address Family<a class="headerlink" href="#router-bgp-vpn-ipv6-address-family" title="Permanent link">&para;</a></h3>
+<h4 id="vpn-ipv6-peer-groups">VPN-IPv6 Peer Groups<a class="headerlink" href="#vpn-ipv6-peer-groups" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Peer Group</th>
+<th>Activate</th>
+<th>Route-map In</th>
+<th>Route-map Out</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MPLS-OVERLAY-PEERS</td>
+<td>True</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>RR-OVERLAY-PEERS</td>
+<td>True</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="router-bgp-device-configuration">Router BGP Device Configuration<a class="headerlink" href="#router-bgp-device-configuration" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>!
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>router bgp 65000
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>   router-id 100.70.0.8
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>   bgp cluster-id 1.1.1.1
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>   no bgp default ipv4-unicast
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>   distance bgp 20 200 200
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>   graceful-restart restart-time 300
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>   graceful-restart
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>   bgp route-reflector preserve-attributes always
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>   maximum-paths 4 ecmp 4
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>   neighbor MPLS-OVERLAY-PEERS peer group
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>   neighbor MPLS-OVERLAY-PEERS remote-as 65000
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>   neighbor MPLS-OVERLAY-PEERS update-source Loopback0
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>   neighbor MPLS-OVERLAY-PEERS route-reflector-client
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>   neighbor MPLS-OVERLAY-PEERS bfd
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>   neighbor MPLS-OVERLAY-PEERS password 7 $1c$U4tL2vQP9QwZlxIV1K3/pw==
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>   neighbor MPLS-OVERLAY-PEERS send-community
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>   neighbor MPLS-OVERLAY-PEERS maximum-routes 0
+<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a>   neighbor RR-OVERLAY-PEERS peer group
+<a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a>   neighbor RR-OVERLAY-PEERS remote-as 65000
+<a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a>   neighbor RR-OVERLAY-PEERS update-source Loopback0
+<a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a>   neighbor RR-OVERLAY-PEERS bfd
+<a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a>   neighbor RR-OVERLAY-PEERS password 7 $1c$U4tL2vQP9QwZlxIV1K3/pw==
+<a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a>   neighbor RR-OVERLAY-PEERS send-community
+<a id="__codelineno-11-25" name="__codelineno-11-25" href="#__codelineno-11-25"></a>   neighbor RR-OVERLAY-PEERS maximum-routes 0
+<a id="__codelineno-11-26" name="__codelineno-11-26" href="#__codelineno-11-26"></a>   neighbor 100.70.0.5 peer group MPLS-OVERLAY-PEERS
+<a id="__codelineno-11-27" name="__codelineno-11-27" href="#__codelineno-11-27"></a>   neighbor 100.70.0.5 description SITE1-LER1
+<a id="__codelineno-11-28" name="__codelineno-11-28" href="#__codelineno-11-28"></a>   neighbor 100.70.0.6 peer group MPLS-OVERLAY-PEERS
+<a id="__codelineno-11-29" name="__codelineno-11-29" href="#__codelineno-11-29"></a>   neighbor 100.70.0.6 description SITE1-LER2
+<a id="__codelineno-11-30" name="__codelineno-11-30" href="#__codelineno-11-30"></a>   neighbor 100.70.0.7 peer group MPLS-OVERLAY-PEERS
+<a id="__codelineno-11-31" name="__codelineno-11-31" href="#__codelineno-11-31"></a>   neighbor 100.70.0.7 description SITE2-LER1
+<a id="__codelineno-11-32" name="__codelineno-11-32" href="#__codelineno-11-32"></a>   neighbor 100.70.0.9 peer group RR-OVERLAY-PEERS
+<a id="__codelineno-11-33" name="__codelineno-11-33" href="#__codelineno-11-33"></a>   neighbor 100.70.0.9 description SITE2-RR1
+<a id="__codelineno-11-34" name="__codelineno-11-34" href="#__codelineno-11-34"></a>   !
+<a id="__codelineno-11-35" name="__codelineno-11-35" href="#__codelineno-11-35"></a>   address-family evpn
+<a id="__codelineno-11-36" name="__codelineno-11-36" href="#__codelineno-11-36"></a>      neighbor default encapsulation mpls
+<a id="__codelineno-11-37" name="__codelineno-11-37" href="#__codelineno-11-37"></a>      neighbor MPLS-OVERLAY-PEERS activate
+<a id="__codelineno-11-38" name="__codelineno-11-38" href="#__codelineno-11-38"></a>      neighbor RR-OVERLAY-PEERS activate
+<a id="__codelineno-11-39" name="__codelineno-11-39" href="#__codelineno-11-39"></a>   !
+<a id="__codelineno-11-40" name="__codelineno-11-40" href="#__codelineno-11-40"></a>   address-family ipv4
+<a id="__codelineno-11-41" name="__codelineno-11-41" href="#__codelineno-11-41"></a>      no neighbor MPLS-OVERLAY-PEERS activate
+<a id="__codelineno-11-42" name="__codelineno-11-42" href="#__codelineno-11-42"></a>      no neighbor RR-OVERLAY-PEERS activate
+<a id="__codelineno-11-43" name="__codelineno-11-43" href="#__codelineno-11-43"></a>   !
+<a id="__codelineno-11-44" name="__codelineno-11-44" href="#__codelineno-11-44"></a>   address-family vpn-ipv4
+<a id="__codelineno-11-45" name="__codelineno-11-45" href="#__codelineno-11-45"></a>      neighbor MPLS-OVERLAY-PEERS activate
+<a id="__codelineno-11-46" name="__codelineno-11-46" href="#__codelineno-11-46"></a>      neighbor RR-OVERLAY-PEERS activate
+<a id="__codelineno-11-47" name="__codelineno-11-47" href="#__codelineno-11-47"></a>   !
+<a id="__codelineno-11-48" name="__codelineno-11-48" href="#__codelineno-11-48"></a>   address-family vpn-ipv6
+<a id="__codelineno-11-49" name="__codelineno-11-49" href="#__codelineno-11-49"></a>      neighbor MPLS-OVERLAY-PEERS activate
+<a id="__codelineno-11-50" name="__codelineno-11-50" href="#__codelineno-11-50"></a>      neighbor RR-OVERLAY-PEERS activate
+</code></pre></div>
+<h1 id="bfd">BFD<a class="headerlink" href="#bfd" title="Permanent link">&para;</a></h1>
+<h2 id="router-bfd">Router BFD<a class="headerlink" href="#router-bfd" title="Permanent link">&para;</a></h2>
+<h3 id="router-bfd-multihop-summary">Router BFD Multihop Summary<a class="headerlink" href="#router-bfd-multihop-summary" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Interval</th>
+<th>Minimum RX</th>
+<th>Multiplier</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>300</td>
+<td>300</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<h3 id="router-bfd-device-configuration">Router BFD Device Configuration<a class="headerlink" href="#router-bfd-device-configuration" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>!
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>router bfd
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>   multihop interval 300 min-rx 300 multiplier 3
+</code></pre></div>
+<h1 id="mpls">MPLS<a class="headerlink" href="#mpls" title="Permanent link">&para;</a></h1>
+<h2 id="mpls-and-ldp">MPLS and LDP<a class="headerlink" href="#mpls-and-ldp" title="Permanent link">&para;</a></h2>
+<h3 id="mpls-and-ldp-summary">MPLS and LDP Summary<a class="headerlink" href="#mpls-and-ldp-summary" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MPLS IP Enabled</td>
+<td>True</td>
+</tr>
+<tr>
+<td>LDP Enabled</td>
+<td>True</td>
+</tr>
+<tr>
+<td>LDP Router ID</td>
+<td>100.70.0.8</td>
+</tr>
+<tr>
+<td>LDP Interface Disabled Default</td>
+<td>True</td>
+</tr>
+<tr>
+<td>LDP Transport-Address Interface</td>
+<td>Loopback0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mpls-and-ldp-configuration">MPLS and LDP Configuration<a class="headerlink" href="#mpls-and-ldp-configuration" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>!
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>mpls ip
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>!
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>mpls ldp
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>   interface disabled default
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>   router-id 100.70.0.8
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>   no shutdown
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>   transport-address interface Loopback0
+</code></pre></div>
+<h2 id="mpls-interfaces">MPLS Interfaces<a class="headerlink" href="#mpls-interfaces" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>MPLS IP Enabled</th>
+<th>LDP Enabled</th>
+<th>IGP Sync</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ethernet4</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+</tr>
+<tr>
+<td>Loopback0</td>
+<td>-</td>
+<td>True</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h1 id="multicast">Multicast<a class="headerlink" href="#multicast" title="Permanent link">&para;</a></h1>
+<h1 id="filters">Filters<a class="headerlink" href="#filters" title="Permanent link">&para;</a></h1>
+<h1 id="acl">ACL<a class="headerlink" href="#acl" title="Permanent link">&para;</a></h1>
+<h1 id="vrf-instances">VRF Instances<a class="headerlink" href="#vrf-instances" title="Permanent link">&para;</a></h1>
+<h2 id="vrf-instances-summary">VRF Instances Summary<a class="headerlink" href="#vrf-instances-summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>VRF Name</th>
+<th>IP Routing</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MGMT</td>
+<td>disabled</td>
+</tr>
+</tbody>
+</table>
+<h2 id="vrf-instances-device-configuration">VRF Instances Device Configuration<a class="headerlink" href="#vrf-instances-device-configuration" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>!
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>vrf instance MGMT
+</code></pre></div>
+<h1 id="quality-of-service">Quality Of Service<a class="headerlink" href="#quality-of-service" title="Permanent link">&para;</a></h1>
+<h1 id="eos-cli">EOS CLI<a class="headerlink" href="#eos-cli" title="Permanent link">&para;</a></h1>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>!
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>management security
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>   password encryption-key common
+</code></pre></div>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      Last update:
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">July 1, 2022</span>
+      
+    
+  </small>
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2019 - 2022 Arista Networks
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/aristanetworks/ansible-avd" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.arista.com" target="_blank" rel="noopener" title="www.arista.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M352 256c0 22.2-1.2 43.6-3.3 64H163.3c-2.2-20.4-3.3-41.8-3.3-64s1.2-43.6 3.3-64h185.4c2.2 20.4 3.3 41.8 3.3 64zm28.8-64h123.1c5.3 20.5 8.1 41.9 8.1 64s-2.8 43.5-8.1 64H380.8c2.1-20.6 3.2-42 3.2-64s-1.1-43.4-3.2-64zm112.6-32H376.7c-10-63.9-29.8-117.4-55.3-151.6 78.3 20.7 142 77.5 171.9 151.6zm-149.1 0H167.7c6.1-36.4 15.5-68.6 27-94.7 10.5-23.6 22.2-40.7 33.5-51.5C239.4 3.2 248.7 0 256 0s16.6 3.2 27.8 13.8c11.3 10.8 23 27.9 33.5 51.5 11.6 26 21 58.2 27 94.7zm-209 0H18.6c30-74.1 93.6-130.9 172-151.6-25.5 34.2-45.3 87.7-55.3 151.6zM8.1 192h123.1c-2.1 20.6-3.2 42-3.2 64s1.1 43.4 3.2 64H8.1C2.8 299.5 0 278.1 0 256s2.8-43.5 8.1-64zm186.6 254.6c-11.6-26-20.9-58.2-27-94.6h176.6c-6.1 36.4-15.5 68.6-27 94.6-10.5 23.6-22.2 40.7-33.5 51.5-11.2 10.7-20.5 13.9-27.8 13.9s-16.6-3.2-27.8-13.8c-11.3-10.8-23-27.9-33.5-51.5zM135.3 352c10 63.9 29.8 117.4 55.3 151.6-78.4-20.7-142-77.5-172-151.6h116.7zm358.1 0c-30 74.1-93.6 130.9-171.9 151.6 25.5-34.2 45.2-87.7 55.3-151.6h116.6z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["navigation.instant", "navigation.top", "search.highlight", "header.autohide", "content.code.annotate"], "search": "../../../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.2a6f1dda.min.js"></script>
+      
+        <script src="https://unpkg.com/tablesort@5.3.0/dist/tablesort.min.js"></script>
+      
+        <script src="../../../../docs/stylesheets/tables.js"></script>
+      
+    
+  </body>
+</html>

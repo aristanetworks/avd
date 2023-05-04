@@ -1,0 +1,272 @@
+---
+port_profiles:
+  Tenant_X:
+    mode: access
+    vlans: "310"
+    link_tracking:
+      enabled: true
+
+  Tenant_ESI_Auto:
+    parent_profile: Tenant_X
+    port_channel:
+      short_esi: auto
+
+  Tenant_X_LT:
+    mode: access
+    vlans: "310"
+    link_tracking:
+      enabled: true
+      name: Eth-conn-to-router
+
+  Tenant_X_Trunk:
+    mode: trunk
+    vlans: "310"
+
+  Tenant_X_Trunk_Auto:
+    parent_profile: Tenant_X_Trunk
+    port_channel:
+      mode: active
+    ethernet_segment:
+      short_esi: auto
+      redundancy: single-active
+      designated_forwarder_algorithm: auto
+
+  Tenant_X_Trunk_Auto_Eth:
+    parent_profile: Tenant_X_Trunk
+    ethernet_segment:
+      short_esi: auto
+
+servers:
+  # Connected to MH_L3LEAF1
+  server01_ES1:
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet10, Ethernet10 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_X
+        port_channel:
+          description: PortChanne1
+          mode: active
+          short_esi: 0001:1010:1010
+
+  server02:
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1 ]
+        switch_ports: [ Ethernet10 ]
+        switches: [ MH-L2LEAF1A ]
+        link_tracking:
+          enabled: true
+          name: l2leaf-server02
+
+  server03_AUTO_ESI:
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet12, Ethernet12 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_X
+        port_channel:
+          description: Auto-ESI PortChannel
+          mode: active
+          short_esi: auto
+
+  server04_AUTO_ESI_Profile:
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet13, Ethernet13 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_ESI_Auto
+        port_channel:
+          description: Auto-ESI PortChannel from profile
+          mode: active
+
+  server05_AUTO_ESI_Profile_Override:
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet14, Ethernet14 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_ESI_Auto
+        port_channel:
+          description: Auto-ESI PortChannel overridden on server
+          mode: active
+          short_esi: 010a:010a:010a
+
+  server06_Single_Active_Port_Channel:
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet15, Ethernet15 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_X_Trunk_Auto
+        # All ethernet_segment settings from profile
+        port_channel:
+          description: Single-Active ESI
+
+  server07_Single_Active_Port_Channel_Manual_DF:
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet16, Ethernet16 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_X_Trunk
+        port_channel:
+          description: Single-Active ESI with Manual DF
+          mode: active
+          # This should be overridden by short_esi under ethernet_segment
+          short_esi: 0042:0042:0042
+        ethernet_segment:
+          short_esi: auto
+          redundancy: single-active
+          designated_forwarder_algorithm: preference
+          designated_forwarder_preferences: [250, 200]
+
+  server08_Single_Active_Ethernet:
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet17, Ethernet17 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_X_Trunk_Auto_Eth
+
+  # Single-Active is the default for Ethernet interfaces in AVD
+  # This test just verifies they can be overridden
+  server09_All_Active_Ethernet:
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet18, Ethernet18 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_X_Trunk
+        ethernet_segment:
+          short_esi: 00dd:00dd:00dd
+          redundancy: all-active
+          designated_forwarder_algorithm: modulus
+
+  server10_Single_Active_Ethernet_Manual_DF:
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet19, Ethernet19 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_X_Trunk
+        ethernet_segment:
+          short_esi: auto
+          redundancy: single-active
+          designated_forwarder_algorithm: preference
+          designated_forwarder_preferences: [500, 250]
+
+  server11_Single_Active_Port_Channel_Manual_DF_Dont_Preempt:
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet20, Ethernet20 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_X_Trunk
+        port_channel:
+          description: Single-Active ESI with Manual DF
+          mode: active
+          # This should be overridden by short_esi under ethernet_segment
+          short_esi: 0042:0042:0042
+        ethernet_segment:
+          short_esi: auto
+          redundancy: single-active
+          dont_preempt: true
+          designated_forwarder_algorithm: preference
+          designated_forwarder_preferences: [100, 0]
+
+  server12_Single_Active_Ethernet_Manual_DF_Dont_Preempt:
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet21, Ethernet21 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_X_Trunk
+        ethernet_segment:
+          short_esi: auto
+          redundancy: single-active
+          dont_preempt: true
+          designated_forwarder_algorithm: preference
+          designated_forwarder_preferences: [500, 250]
+
+  # This should not configure preempt because algorithm is modulus
+  server13_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_modulus:
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet22, Ethernet22 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_X_Trunk
+        port_channel:
+          description: Single-Active ESI with Manual DF
+          mode: active
+          # This should be overridden by short_esi under ethernet_segment
+          short_esi: 0042:0042:0042
+        ethernet_segment:
+          short_esi: auto
+          redundancy: single-active
+          dont_preempt: true
+          designated_forwarder_algorithm: modulus
+
+  # This should not configure preempt because algorithm is modulus
+  server14_Single_Active_Ethernet_Manual_DF_Dont_Preempt_modulus:
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet23, Ethernet23 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_X_Trunk
+        ethernet_segment:
+          short_esi: auto
+          redundancy: single-active
+          dont_preempt: true
+          designated_forwarder_algorithm: modulus
+
+routers:
+  ROUTER01:
+    rack: RackB
+    adapters:
+      - endpoint_ports: [ Eth1 ]
+        switch_ports: [ Ethernet10 ]
+        switches: [ MH-LEAF2A ]
+        profile: Tenant_X_LT
+
+  ROUTER02_WITH_SUBIF:
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet11, Ethernet11 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        port_channel:
+          description: Testing L2 subinterfaces
+          mode: active
+          # Port-Channel L2 Subinterfaces
+          # Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.
+          subinterfaces:
+            - number: 101
+              short_esi: 0000:0000:0101 # Required for multihomed port-channels with subinterfaces
+              #vlan_id: 1101 # default is subinterface number
+              # Flexible encapsulation parameters
+              encapsulation_vlan:
+                #client_dot1q: 2101 # default is subinterface number
+            - number: 102
+              short_esi: 0000:0000:0102 # Required for multihomed port-channels with subinterfaces
+              vlan_id: 1102 # default is subinterface number
+              # Flexible encapsulation parameters
+              encapsulation_vlan:
+                client_dot1q: 2102 # default is subinterface number
+            # Tests for Auto ESI on subinterfaces
+            - number: 103
+              short_esi: auto # Required for multihomed port-channels with subinterfaces
+              vlan_id: 1103 # default is subinterface number
+              # Flexible encapsulation parameters
+              encapsulation_vlan:
+                client_dot1q: 2103 # default is subinterface number
+            - number: 104
+              short_esi: auto # Required for multihomed port-channels with subinterfaces
+              vlan_id: 1104 # default is subinterface number
+              # Flexible encapsulation parameters
+              encapsulation_vlan:
+                client_dot1q: 2104 # default is subinterface number

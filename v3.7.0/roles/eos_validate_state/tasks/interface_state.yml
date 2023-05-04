@@ -1,0 +1,110 @@
+---
+
+# Interface State Tests
+
+- name: Gather interfaces state
+  eos_command:
+    commands: "show interfaces description | json"
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  register: interfaces_state
+  tags:
+    - interfaces_state
+
+- name: Validate Ethernet interfaces state
+  assert:
+    that:
+      ( interfaces_state.stdout[0].interfaceDescriptions[ethernet_interface.key].interfaceStatus == 'up' and
+      interfaces_state.stdout[0].interfaceDescriptions[ethernet_interface.key].lineProtocolStatus == 'up' and
+      not ethernet_interfaces[ethernet_interface.key].shutdown
+      ) or
+      ( interfaces_state.stdout[0].interfaceDescriptions[ethernet_interface.key].interfaceStatus == 'adminDown' and
+      interfaces_state.stdout[0].interfaceDescriptions[ethernet_interface.key].lineProtocolStatus != 'up' and
+      ethernet_interfaces[ethernet_interface.key].shutdown
+      )
+    fail_msg: "Interface shutdown: {{ ethernet_interfaces[ethernet_interface.key].shutdown | replace('\"','') }} -
+      interface status: {{ interfaces_state.stdout[0].interfaceDescriptions[ethernet_interface.key].interfaceStatus | replace('\"','') }} -
+      line protocol status: {{ interfaces_state.stdout[0].interfaceDescriptions[ethernet_interface.key].lineProtocolStatus | replace('\"','') }}"
+    quiet: true
+  loop: "{{ ethernet_interfaces | default({}, true) | dict2items }}"
+  loop_control:
+    loop_var: ethernet_interface
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  register: ethernet_interface_state_results
+  tags:
+    - interfaces_state
+
+- name: Validate Port-Channel interfaces state
+  assert:
+    that:
+      ( interfaces_state.stdout[0].interfaceDescriptions[port_channel_interface.key].interfaceStatus == 'up' and
+      interfaces_state.stdout[0].interfaceDescriptions[port_channel_interface.key].lineProtocolStatus == 'up' and
+      not port_channel_interfaces[port_channel_interface.key].shutdown
+      ) or
+      ( interfaces_state.stdout[0].interfaceDescriptions[port_channel_interface.key].interfaceStatus == 'adminDown' and
+      interfaces_state.stdout[0].interfaceDescriptions[port_channel_interface.key].lineProtocolStatus != 'up' and
+      port_channel_interfaces[port_channel_interface.key].shutdown
+      )
+    fail_msg: "Interface shutdown: {{ port_channel_interfaces[port_channel_interface.key].shutdown | replace('\"','') }} -
+      interface status: {{ interfaces_state.stdout[0].interfaceDescriptions[port_channel_interface.key].interfaceStatus | replace('\"','') }} -
+      line protocol status: {{ interfaces_state.stdout[0].interfaceDescriptions[port_channel_interface.key].lineProtocolStatus | replace('\"','') }}"
+    quiet: true
+  loop: "{{ port_channel_interfaces | default({}, true) | dict2items }}"
+  loop_control:
+    loop_var: port_channel_interface
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  register: port_channel_interface_state_results
+  tags:
+    - interfaces_state
+
+- name: Validate Vlan interfaces state
+  assert:
+    that:
+      ( interfaces_state.stdout[0].interfaceDescriptions[vlan_interface.key].interfaceStatus == 'up' and
+      interfaces_state.stdout[0].interfaceDescriptions[vlan_interface.key].lineProtocolStatus == 'up' and
+      not vlan_interfaces[vlan_interface.key].shutdown
+      ) or
+      ( interfaces_state.stdout[0].interfaceDescriptions[vlan_interface.key].interfaceStatus == 'adminDown' and
+      interfaces_state.stdout[0].interfaceDescriptions[vlan_interface.key].lineProtocolStatus != 'up' and
+      vlan_interfaces[vlan_interface.key].shutdown
+      )
+    fail_msg: "Interface shutdown: {{ vlan_interfaces[vlan_interface.key].shutdown | replace('\"','') }} -
+      interface status: {{ interfaces_state.stdout[0].interfaceDescriptions[vlan_interface.key].interfaceStatus | replace('\"','') }} -
+      line protocol status: {{ interfaces_state.stdout[0].interfaceDescriptions[vlan_interface.key].lineProtocolStatus | replace('\"','') }}"
+    quiet: true
+  loop: "{{ vlan_interfaces | default({}, true) | dict2items }}"
+  loop_control:
+    loop_var: vlan_interface
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  register: vlan_interface_state_results
+  tags:
+    - interfaces_state
+
+- name: Validate Vxlan interfaces state
+  assert:
+    that:
+      - interfaces_state.stdout[0].interfaceDescriptions.Vxlan1.interfaceStatus == 'up'
+      - interfaces_state.stdout[0].interfaceDescriptions.Vxlan1.lineProtocolStatus == 'up'
+    fail_msg: "Interface status: {{ interfaces_state.stdout[0].interfaceDescriptions.Vxlan1.interfaceStatus | replace('\"','') }} -
+      line protocol status: {{ interfaces_state.stdout[0].interfaceDescriptions.Vxlan1.lineProtocolStatus | replace('\"','') }}"
+    quiet: true
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  when: (vxlan_interface.Vxlan1 is arista.avd.defined)
+  register: vxlan_interface_state_results
+  tags:
+    - interfaces_state
+
+- name: Validate Loopback interfaces state
+  assert:
+    that:
+      - interfaces_state.stdout[0].interfaceDescriptions[loopback_interface.key].interfaceStatus == 'up'
+      - interfaces_state.stdout[0].interfaceDescriptions[loopback_interface.key].lineProtocolStatus == 'up'
+    fail_msg: "Interface status: {{ interfaces_state.stdout[0].interfaceDescriptions[loopback_interface.key].interfaceStatus | replace('\"','') }} -
+      line protocol status: {{ interfaces_state.stdout[0].interfaceDescriptions[loopback_interface.key].lineProtocolStatus | replace('\"','') }}"
+    quiet: true
+  loop: "{{ loopback_interfaces | default({}, true) | dict2items }}"
+  loop_control:
+    loop_var: loopback_interface
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  register: loopback_interface_state_results
+  tags:
+    - interfaces_state

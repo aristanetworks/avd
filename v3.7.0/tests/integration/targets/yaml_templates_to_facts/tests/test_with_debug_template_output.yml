@@ -1,0 +1,25 @@
+- name: Test with debug and template_output
+  ignore_errors: no
+  register: result
+  yaml_templates_to_facts:
+    template_output: true
+    debug: true
+    templates:
+      - template: "templates/inline_jinja.j2"
+
+- assert:
+    that:
+      - result is success
+      - result.changed == true
+      - result.ansible_facts is defined
+      - result.ansible_facts.key_1 is defined
+      - result.ansible_facts.key_2 is defined
+      - result.ansible_facts.avd_yaml_templates_to_facts_debug is defined
+      # avd_yaml_templates_to_facts_debug could have been set by a previous test, so we accept a longer list and test only on the last element
+      - result.ansible_facts.avd_yaml_templates_to_facts_debug | length >= 2
+      - result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].action is defined
+      - result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].action == 'template_output'
+      - result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].timestamps is defined
+      - result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].timestamps.combine_data is defined
+      - result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].timestamps.templating is defined
+      - result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].timestamps.done is defined

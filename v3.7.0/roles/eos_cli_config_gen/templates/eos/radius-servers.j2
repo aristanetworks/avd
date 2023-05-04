@@ -1,0 +1,15 @@
+{% if radius_servers is arista.avd.defined %}
+!
+{%     for radius_server in radius_servers %}
+{%         if radius_server.host is arista.avd.defined %}
+{%             set radius_cli = "radius-server host " ~ radius_server.host %}
+{%         endif %}
+{%         if radius_server.vrf is arista.avd.defined %}
+{%             set radius_cli = radius_cli ~ " vrf " ~ radius_server.vrf %}
+{%         endif %}
+{%         if radius_server.key is arista.avd.defined %}
+{%             set radius_cli = radius_cli ~ " key 7 " ~ radius_server.key %}
+{%         endif %}
+{{ radius_cli }}
+{%     endfor %}
+{% endif %}

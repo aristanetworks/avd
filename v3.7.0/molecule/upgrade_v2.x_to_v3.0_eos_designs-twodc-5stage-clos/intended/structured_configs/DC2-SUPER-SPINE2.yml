@@ -1,0 +1,122 @@
+router_bgp:
+  as: '65200'
+  router_id: 172.16.200.2
+  bgp_defaults:
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+  - maximum-paths 4 ecmp 4
+  peer_groups:
+    IPv4-UNDERLAY-PEERS:
+      type: ipv4
+      password: AQQvKeimxJu+uGQ/yYvv9w==
+      maximum_routes: 12000
+      send_community: all
+  address_family_ipv4:
+    peer_groups:
+      IPv4-UNDERLAY-PEERS:
+        activate: true
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP
+  neighbors:
+    172.16.21.65:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65210'
+      description: DC2-POD1-SPINE1_Ethernet2
+    172.16.21.67:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65210'
+      description: DC2-POD1-SPINE2_Ethernet2
+    11.1.2.2:
+      remote_as: '65100'
+      description: DC1-SUPER-SPINE2
+      peer_group: IPv4-UNDERLAY-PEERS
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.1.254
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+snmp_server:
+  location: TWODC_5STAGE_CLOS DC2 DC2-SUPER-SPINE2
+spanning_tree:
+  mode: none
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
+vrfs:
+  MGMT:
+    ip_routing: false
+management_interfaces:
+  Management1:
+    description: oob_management
+    shutdown: false
+    vrf: MGMT
+    ip_address: 192.168.1.17/24
+    gateway: 192.168.1.254
+    type: oob
+management_api_http:
+  enable_vrfs:
+    MGMT: {}
+  enable_https: true
+eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
+ethernet_interfaces:
+  Ethernet1:
+    peer: DC2-POD1-SPINE1
+    peer_interface: Ethernet2
+    peer_type: spine
+    description: P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet2
+    mtu: 1500
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.16.21.64/31
+  Ethernet2:
+    peer: DC2-POD1-SPINE2
+    peer_interface: Ethernet2
+    peer_type: spine
+    description: P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet2
+    mtu: 1500
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.16.21.66/31
+  Ethernet4:
+    peer: DC1-SUPER-SPINE2
+    peer_interface: Ethernet6
+    peer_type: super-spine
+    description: P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet6
+    type: routed
+    shutdown: false
+    mtu: 1500
+    ip_address: 11.1.2.3/31
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    shutdown: false
+    ip_address: 172.16.200.2/32
+prefix_lists:
+  PL-LOOPBACKS-EVPN-OVERLAY:
+    sequence_numbers:
+      10:
+        action: permit 172.16.200.0/24 eq 32
+route_maps:
+  RM-CONN-2-BGP:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY

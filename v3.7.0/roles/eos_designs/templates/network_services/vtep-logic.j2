@@ -1,0 +1,12 @@
+{# Setting rt_admin_subfield #}
+{% set network_services_data.rt_admin_subfield = false %}
+{% set tmp_admin_subfield = evpn_rt_type.admin_subfield | arista.avd.default(overlay_rt_type.admin_subfield) %}
+{% if tmp_admin_subfield is arista.avd.defined %}
+{%     if tmp_admin_subfield == "bgp_as" %}
+{%         set network_services_data.rt_admin_subfield = switch.bgp_as %}
+{%     elif tmp_admin_subfield is number and
+            tmp_admin_subfield >= 0 and
+            tmp_admin_subfield <= 4294967295 %}
+{%         set network_services_data.rt_admin_subfield = tmp_admin_subfield %}
+{%     endif %}
+{% endif %}

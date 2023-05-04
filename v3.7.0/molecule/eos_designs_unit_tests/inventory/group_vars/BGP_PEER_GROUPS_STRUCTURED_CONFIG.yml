@@ -1,0 +1,69 @@
+# Minimum config to only test the specific feature.
+# This is in no way a "good" or working config.
+# Everything is tweaked to trigger config generation of all the different peer-groups
+
+bgp_peer_groups:
+  ipv4_underlay_peers:
+    # Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
+    structured_config:
+      description: Description for ipv4_underlay_peers via structured_config
+  mlag_ipv4_underlay_peer:
+    # Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
+    structured_config:
+      description: Description for mlag_ipv4_underlay_peer via structured_config
+  evpn_overlay_peers:
+    # Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
+    structured_config:
+      description: Description for evpn_overlay_peers via structured_config
+  evpn_overlay_core:
+    # Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
+    structured_config:
+      description: Description for evpn_overlay_core via structured_config
+  mpls_overlay_peers:
+    # Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
+    structured_config:
+      description: Description for mpls_overlay_peers via structured_config
+  rr_overlay_peers:
+    # Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
+    structured_config:
+      description: Description for rr_overlay_peers via structured_config
+
+type: l3leaf
+mgmt_gateway: 192.168.0.1
+overlay_routing_protocol: ibgp
+bgp_as: 65001
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    mlag_peer_l3_vlan: 4094
+    mlag_peer_ipv4_pool: 192.168.253.0/24
+    mlag_interfaces: [ Ethernet3 ]
+  node_groups:
+    mlag:
+      nodes:
+        bgp-peer-groups-structured-config-1:
+          id: 103
+          bgp_as: 103
+          evpn_route_servers: [ bgp-peer-groups-structured-config-2 ]
+          mpls_route_reflectors: [ bgp-peer-groups-structured-config-2 ]
+          mpls_overlay_role: client
+          evpn_gateway:
+            evpn_l3:
+              enabled: true
+        bgp-peer-groups-structured-config-2:
+          id: 104
+          bgp_as: 104
+          evpn_role: server
+          mpls_overlay_role: server
+
+# MPLS Beta code is hardcoded to look for this dictionary.
+rr:
+  node_groups:
+    dummy:
+      nodes:
+        bgp-peer-groups-structured-config-1:
+        bgp-peer-groups-structured-config-2:

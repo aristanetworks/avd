@@ -1,0 +1,11 @@
+### IP extended community lists ###
+
+ip_extcommunity_lists:
+  TEST1:
+    - type: permit
+      extcommunities: "65000:65000"
+    - type: deny
+      extcommunities: "65002:65002"
+  TEST2:
+    - type: deny
+      extcommunities: "65001:65001"

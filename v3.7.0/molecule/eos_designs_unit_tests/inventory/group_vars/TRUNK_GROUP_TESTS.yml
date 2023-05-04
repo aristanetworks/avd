@@ -1,0 +1,96 @@
+---
+pod_name: TRUNK_GROUP_TESTS
+enable_trunk_groups: true
+mgmt_gateway: 1.1.1.1
+
+tenants:
+  - name: TRUNK_GROUP_TESTS
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: TG_100
+        vrf_vni: 100
+        svis:
+          - id: 100
+            name: svi100_with_trunk_groups
+            enabled: True
+            ip_address_virtual: 10.1.0.1/24
+            trunk_groups: [ TG_100, TG_NOT_MATCHING_ANY_SERVERS ]
+            tags: [ TRUNK_GROUP_TESTS_L3LEAF1, TRUNK_GROUP_TESTS_L2LEAF1 ]
+      - name: TG_200
+        vrf_vni: 200
+        svis:
+          - id: 200
+            name: svi200_with_trunk_groups
+            enabled: True
+            ip_address_virtual: 10.2.0.1/24
+            trunk_groups: [ TG_200, TG_NOT_MATCHING_ANY_SERVERS ]
+            tags: [ TRUNK_GROUP_TESTS_L3LEAF1, TRUNK_GROUP_TESTS_L2LEAF1 ]
+      - name: TG_300
+        vrf_vni: 300
+        svis:
+          - id: 300
+            name: svi300_with_trunk_groups
+            enabled: True
+            ip_address_virtual: 10.3.0.1/24
+            trunk_groups: [ TG_300, TG_NOT_MATCHING_ANY_SERVERS ]
+            tags: [ TRUNK_GROUP_TESTS_L3LEAF1, TRUNK_GROUP_TESTS_L2LEAF1 ]
+          - id: 301
+            name: svi301_with_trunk_groups_only_l3leaf
+            enabled: True
+            ip_address_virtual: 10.3.1.1/24
+            trunk_groups: [ TG_300, TG_NOT_MATCHING_ANY_SERVERS ]
+            tags: [ TRUNK_GROUP_TESTS_L3LEAF1 ]
+          - id: 398
+            name: svi398_without_trunk_groups
+            enabled: True
+            ip_address_virtual: 10.3.1.1/24
+            tags: [ TRUNK_GROUP_TESTS_L3LEAF1, TRUNK_GROUP_TESTS_L2LEAF1 ]
+    l2vlans:
+      - id: 110
+        name: l2vlan110_with_trunk_groups
+        trunk_groups: [ TG_100, TG_NOT_MATCHING_ANY_SERVERS ]
+        tags: [ TRUNK_GROUP_TESTS_L3LEAF1, TRUNK_GROUP_TESTS_L2LEAF1 ]
+      - id: 210
+        name: l2vlan210_with_trunk_groups
+        trunk_groups: [ TG_200, TG_NOT_MATCHING_ANY_SERVERS ]
+        tags: [ TRUNK_GROUP_TESTS_L3LEAF1, TRUNK_GROUP_TESTS_L2LEAF1 ]
+      - id: 310
+        name: l2vlan310_with_trunk_groups
+        trunk_groups: [ TG_300, TG_NOT_MATCHING_ANY_SERVERS ]
+        tags: [ TRUNK_GROUP_TESTS_L3LEAF1, TRUNK_GROUP_TESTS_L2LEAF1 ]
+      - id: 311
+        name: l2vlan310_with_trunk_groups_only_l3leaf
+        trunk_groups: [ TG_300, TG_NOT_MATCHING_ANY_SERVERS ]
+        tags: [ TRUNK_GROUP_TESTS_L3LEAF1 ]
+      - id: 399
+        name: l2vlan399_without_trunk_groups
+        tags: [ TRUNK_GROUP_TESTS_L3LEAF1, TRUNK_GROUP_TESTS_L2LEAF1 ]
+
+servers:
+  server_with_tg_100:
+    adapters:
+      - server_ports: [ Nic1 ]
+        switch_ports: [ Ethernet11 ]
+        switches: [ trunk-group-tests-l3leaf1a ]
+        trunk_groups: [ TG_NOT_MATCHING_ANY_VLANS, TG_100 ]
+        mode: trunk
+        enabled: true
+  server_with_tg_200:
+    adapters:
+      - server_ports: [ Nic1, Nic2, Nic3 ]
+        switch_ports: [ Ethernet12, Ethernet12, Ethernet12 ]
+        switches: [ trunk-group-tests-l2leaf1b, trunk-group-tests-l2leaf3, trunk-group-tests-l2leaf4 ]
+        trunk_groups: [ TG_NOT_MATCHING_ANY_VLANS, TG_200 ]
+        mode: trunk
+        enabled: true
+  server_with_tg_300:
+    adapters:
+      - server_ports: [ Nic1, Nic2, Nic3, Nic4 ]
+        switch_ports: [ Ethernet13, Ethernet13, Ethernet13, Ethernet13 ]
+        switches: [ trunk-group-tests-l3leaf1a, trunk-group-tests-l3leaf1b, trunk-group-tests-l2leaf1a, trunk-group-tests-l2leaf1b ]
+        trunk_groups: [ TG_NOT_MATCHING_ANY_VLANS, TG_300 ]
+        mode: trunk
+        enabled: true
+        port_channel:
+          mode: active
+          description: portchannel

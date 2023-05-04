@@ -1,0 +1,99 @@
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 172.16.1.1
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+spanning_tree:
+  mode: mstp
+  mst_instances:
+    '0':
+      priority: 32768
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    no_password: true
+  ansible:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
+vrfs:
+  MGMT:
+    ip_routing: false
+management_interfaces:
+  Management1:
+    description: oob_management
+    shutdown: false
+    vrf: MGMT
+    ip_address: 172.16.1.152/24
+    gateway: 172.16.1.1
+    type: oob
+management_api_http:
+  enable_vrfs:
+    MGMT: {}
+  enable_https: true
+ethernet_interfaces:
+  Ethernet1:
+    peer: dc1-leaf2a
+    peer_interface: Ethernet8
+    peer_type: l3leaf
+    description: DC1-LEAF2A_Ethernet8
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 1
+      mode: active
+  Ethernet2:
+    peer: dc1-leaf2b
+    peer_interface: Ethernet8
+    peer_type: l3leaf
+    description: DC1-LEAF2B_Ethernet8
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 1
+      mode: active
+  Ethernet5:
+    peer: dc1-leaf2-server1
+    peer_interface: iLO
+    peer_type: server
+    description: dc1-leaf2-server1_iLO
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 11
+    spanning_tree_portfast: edge
+port_channel_interfaces:
+  Port-Channel1:
+    description: DC1_L3_LEAF2_Po8
+    type: switched
+    shutdown: false
+    vlans: 11-12,21-22,3401-3402
+    mode: trunk
+vlans:
+  11:
+    tenant: TENANT1
+    name: VRF1_VLAN11
+  12:
+    tenant: TENANT1
+    name: VRF1_VLAN12
+  21:
+    tenant: TENANT1
+    name: VRF2_VLAN21
+  22:
+    tenant: TENANT1
+    name: VRF2_VLAN22
+  3401:
+    tenant: TENANT1
+    name: L2_VLAN3401
+  3402:
+    tenant: TENANT1
+    name: L2_VLAN3402
+ip_igmp_snooping:
+  globally_enabled: true

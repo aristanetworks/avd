@@ -1,0 +1,6 @@
+---
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 10
+    ending: 40

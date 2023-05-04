@@ -1,0 +1,50 @@
+{% if router_general is arista.avd.defined %}
+
+## Router General
+{%     if router_general.router_id.ipv4 is arista.avd.defined %}
+
+- Global IPv4 Router ID: {{ router_general.router_id.ipv4 }}
+{%     endif %}
+{%     if router_general.router_id.ipv6 is arista.avd.defined %}
+
+- Global IPv6 Router ID: {{ router_general.router_id.ipv6 }}
+{%     endif %}
+{%     if router_general.nexthop_fast_failover is arista.avd.defined(true) %}
+
+- Nexthop fast fail-over is enabled.
+{%     endif %}
+{%     if router_general.vrfs | arista.avd.default([]) | arista.avd.convert_dicts('name') | selectattr('leak_routes','arista.avd.defined') %}
+
+### VRF Route leaking
+
+| VRF | Source VRF | Route Map Policy |
+|-----|------------|------------------|
+{%         for vrf in router_general.vrfs | arista.avd.convert_dicts('name') %}
+{%             for leak_route in vrf.leak_routes | arista.avd.natural_sort %}
+{%                 if leak_route.source_vrf is arista.avd.defined and leak_route.subscribe_policy is arista.avd.defined %}
+| {{ vrf.name }} | {{ leak_route.source_vrf }} | {{ leak_route.subscribe_policy }} |
+{%                 endif %}
+{%             endfor %}
+{%         endfor %}
+{%     endif %}
+{%     if router_general.vrfs | arista.avd.default([]) | arista.avd.convert_dicts('name') | selectattr('routes.dynamic_prefix_lists','arista.avd.defined') %}
+
+### VRF Routes Dynamic Prefix-lists
+
+| VRF | Dynamic Prefix-list |
+|-----|---------------------|
+{%         for vrf in router_general.vrfs | arista.avd.convert_dicts('name') %}
+{%             for dynamic_prefix_list in vrf.routes.dynamic_prefix_lists | arista.avd.natural_sort('name') %}
+{%                 if dynamic_prefix_list.name is arista.avd.defined %}
+| {{ vrf.name }} | {{ dynamic_prefix_list.name }} |
+{%                 endif %}
+{%             endfor %}
+{%         endfor %}
+{%     endif %}
+
+### Router General configuration
+
+```eos
+{%     include 'eos/router-general.j2' %}
+```
+{% endif %}

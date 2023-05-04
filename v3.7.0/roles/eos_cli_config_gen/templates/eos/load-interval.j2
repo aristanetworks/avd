@@ -1,0 +1,5 @@
+{# eos - load interval #}
+{% if load_interval.default is arista.avd.defined %}
+!
+load-interval default {{ load_interval.default }}
+{% endif %}

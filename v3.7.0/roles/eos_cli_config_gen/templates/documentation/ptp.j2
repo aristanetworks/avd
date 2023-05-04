@@ -1,0 +1,24 @@
+{% if ptp is defined and ptp is not none %}
+
+## PTP
+
+### PTP Summary
+
+| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast |
+| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- |
+{%     set clock_id = ptp.clock_identity | arista.avd.default('-') %}
+{%     set sip = ptp.source.ip | arista.avd.default('-') %}
+{%     set pri1 = ptp.priority1 | arista.avd.default('-') %}
+{%     set pri2 = ptp.priority2 | arista.avd.default('-') %}
+{%     set ttl = ptp.ttl | arista.avd.default('-') %}
+{%     set domain = ptp.domain | arista.avd.default('-') %}
+{%     set mode = ptp.mode | arista.avd.default('-') %}
+{%     set forward_unicast = ptp.forward_unicast | arista.avd.default('-') %}
+| {{ clock_id }} | {{ sip }} | {{ pri1 }} | {{ pri2 }} | {{ ttl }} | {{ domain }} | {{ mode }} | {{ forward_unicast }} |
+
+### PTP Device Configuration
+
+```eos
+{%     include 'eos/ptp.j2' %}
+```
+{% endif %}

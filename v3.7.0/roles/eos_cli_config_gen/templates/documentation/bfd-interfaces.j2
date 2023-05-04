@@ -1,0 +1,47 @@
+{# BFD Interfaces #}
+{% if vlan_interface_bfd.configured or ethernet_interface_bfd.configured or port_channel_interface_bfd.configured %}
+
+## BFD Interfaces
+
+| Interface | Interval | Minimum RX | Multiplier | Echo |
+| --------- | -------- | ---------- | ---------- | ---- |
+{%     if ethernet_interface_bfd.configured %}
+{%         for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%             if ethernet_interface.bfd.interval is arista.avd.defined and
+                  ethernet_interface.bfd.min_rx is arista.avd.defined and
+                  ethernet_interface.bfd.multiplier is arista.avd.defined %}
+{%                 set interval = ethernet_interface.bfd.interval %}
+{%                 set min_rx = ethernet_interface.bfd.min_rx %}
+{%                 set multiplier = ethernet_interface.bfd.multiplier %}
+{%                 set echo = ethernet_interface.bfd.echo | arista.avd.default("-") %}
+| {{ ethernet_interface.name }} | {{ interval }} | {{ min_rx }} | {{ multiplier }} | {{ echo }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     if port_channel_interface_bfd.configured %}
+{%         for port_channel_interface in port_channel_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%             if port_channel_interface.bfd.interval is arista.avd.defined and
+                  port_channel_interface.bfd.min_rx is arista.avd.defined and
+                  port_channel_interface.bfd.multiplier is arista.avd.defined %}
+{%                 set interval = port_channel_interface.bfd.interval %}
+{%                 set min_rx = port_channel_interface.bfd.min_rx %}
+{%                 set multiplier = port_channel_interface.bfd.multiplier %}
+{%                 set echo = port_channel_interface.bfd.echo | arista.avd.default("-") %}
+| {{ port_channel_interface.name }} | {{ interval }} | {{ min_rx }} | {{ multiplier }} | {{ echo }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     if vlan_interface_bfd.configured %}
+{%         for vlan_interface in vlan_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%             if vlan_interface.bfd.interval is arista.avd.defined and
+                  vlan_interface.bfd.min_rx is arista.avd.defined and
+                  vlan_interface.bfd.multiplier is arista.avd.defined %}
+{%                 set interval = vlan_interface.bfd.interval %}
+{%                 set min_rx = vlan_interface.bfd.min_rx %}
+{%                 set multiplier = vlan_interface.bfd.multiplier %}
+{%                 set echo = vlan_interface.bfd.echo | arista.avd.default("-") %}
+| {{ vlan_interface.name }} | {{ interval }} | {{ min_rx }} | {{ multiplier }} | {{ echo }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endif %}

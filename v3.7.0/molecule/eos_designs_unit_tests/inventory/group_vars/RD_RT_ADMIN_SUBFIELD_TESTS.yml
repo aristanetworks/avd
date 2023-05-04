@@ -1,0 +1,63 @@
+# RD RT ADMIN SUBFIELD TESTS
+
+# Test overlay_rd and overlay_rt values.
+type: l3leaf
+
+mgmt_gateway: 192.168.200.1
+
+
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+  nodes:
+    RD-RT-ADMIN-SUBFIELD-L3LEAF1:
+      bgp_as: 65001
+      id: 1
+      mgmt_ip: 192.168.200.101/24
+    RD-RT-ADMIN-SUBFIELD-L3LEAF2:
+      bgp_as: 65002
+      id: 2
+      mgmt_ip: 192.168.200.102/24
+    RD-RT-ADMIN-SUBFIELD-L3LEAF3:
+      bgp_as: 65003
+      id: 3
+      mgmt_ip: 192.168.200.103/24
+    RD-RT-ADMIN-SUBFIELD-L3LEAF4:
+      bgp_as: 65004
+      id: 4
+      mgmt_ip: 192.168.200.104/24
+    RD-RT-ADMIN-SUBFIELD-L3LEAF5:
+      bgp_as: 65005
+      id: 5
+      mgmt_ip: 192.168.200.105/24
+    RD-RT-ADMIN-SUBFIELD-L3LEAF6:
+      bgp_as: 65006
+      id: 6
+      mgmt_ip: 192.168.200.106/24
+    RD-RT-ADMIN-SUBFIELD-L3LEAF7:
+      bgp_as: 65007
+      id: 7
+      mgmt_ip: 192.168.200.107/24
+
+tenants:
+# igmp_snooping_querier enable on Tenant
+  Tenant_A:
+    mac_vrf_vni_base: 10000
+    vrfs:
+      TEST1:
+        description: "TEST1"
+        vrf_vni: 11
+        svis:
+          1:
+            name: "VLAN_1"
+            tags: ['test_l3']
+            enabled: True
+            ip_address_virtual: 10.0.1.1/24
+          2:
+            name: "VLAN_2"
+            tags: ['test_l3']
+            enabled: True
+            ip_address_virtual: 10.0.2.1/24

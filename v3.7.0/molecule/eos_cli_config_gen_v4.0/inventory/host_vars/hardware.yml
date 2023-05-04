@@ -1,0 +1,7 @@
+### Hardware ###
+hardware:
+  speed_groups:
+    - speed_group: 1
+      serdes: 10g
+    - speed_group: 2
+      serdes: 25g

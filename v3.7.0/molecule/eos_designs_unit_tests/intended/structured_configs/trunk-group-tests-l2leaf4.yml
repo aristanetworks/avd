@@ -1,0 +1,75 @@
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 1.1.1.1
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+  MGMT:
+    ip_routing: false
+management_api_http:
+  enable_vrfs:
+    MGMT: {}
+  enable_https: true
+ethernet_interfaces:
+  Ethernet1:
+    peer: trunk-group-tests-l3leaf2a
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+    description: TRUNK-GROUP-TESTS-L3LEAF2A_Ethernet1
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 1
+      mode: active
+  Ethernet2:
+    peer: trunk-group-tests-l3leaf2b
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+    description: TRUNK-GROUP-TESTS-L3LEAF2B_Ethernet1
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 1
+      mode: active
+  Ethernet12:
+    peer: server_with_tg_200
+    peer_interface: Nic3
+    peer_type: server
+    description: server_with_tg_200_Nic3
+    type: switched
+    shutdown: false
+    mode: trunk
+    trunk_groups:
+    - TG_NOT_MATCHING_ANY_VLANS
+    - TG_200
+port_channel_interfaces:
+  Port-Channel1:
+    description: TRUNK_GROUP_TESTS_L3LEAF2_Po1
+    type: switched
+    shutdown: false
+    trunk_groups:
+    - UPLINK
+    mode: trunk
+vlans:
+  200:
+    tenant: TRUNK_GROUP_TESTS
+    name: svi200_with_trunk_groups
+    trunk_groups:
+    - TG_200
+    - TG_NOT_MATCHING_ANY_SERVERS
+    - UPLINK
+  210:
+    tenant: TRUNK_GROUP_TESTS
+    name: l2vlan210_with_trunk_groups
+    trunk_groups:
+    - TG_200
+    - TG_NOT_MATCHING_ANY_SERVERS
+    - UPLINK
+ip_igmp_snooping:
+  globally_enabled: true

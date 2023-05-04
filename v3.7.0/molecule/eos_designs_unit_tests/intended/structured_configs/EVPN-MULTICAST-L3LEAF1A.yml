@@ -1,0 +1,760 @@
+router_bgp:
+  as: '65101'
+  router_id: 192.168.255.3
+  bgp_defaults:
+  - maximum-paths 4 ecmp 4
+  peer_groups:
+    MLAG-IPv4-UNDERLAY-PEER:
+      type: ipv4
+      remote_as: '65101'
+      next_hop_self: true
+      description: EVPN-MULTICAST-L3LEAF1B
+      maximum_routes: 12000
+      send_community: all
+      route_map_in: RM-MLAG-PEER-IN
+    IPv4-UNDERLAY-PEERS:
+      type: ipv4
+      maximum_routes: 12000
+      send_community: all
+    EVPN-OVERLAY-PEERS:
+      type: evpn
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: '3'
+      send_community: all
+      maximum_routes: 0
+  address_family_ipv4:
+    peer_groups:
+      MLAG-IPv4-UNDERLAY-PEER:
+        activate: true
+      IPv4-UNDERLAY-PEERS:
+        activate: true
+      EVPN-OVERLAY-PEERS:
+        activate: false
+  neighbors:
+    10.255.251.1:
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: EVPN-MULTICAST-L3LEAF1B
+    172.31.255.0:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65001'
+      description: EVPN-MULTICAST-SPINE1_Ethernet1
+    192.168.255.1:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: EVPN-MULTICAST-SPINE1
+      remote_as: '65001'
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+  vrfs:
+    MULTICAST_DISABLED_310_311:
+      router_id: 192.168.255.3
+      rd: 192.168.255.3:13
+      route_targets:
+        import:
+          evpn:
+          - '13:13'
+        export:
+          evpn:
+          - '13:13'
+      neighbors:
+        10.255.251.1:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
+      redistribute_routes:
+      - connected
+    MULTICAST_ENABLED_110_111:
+      router_id: 192.168.255.3
+      rd: 192.168.255.3:11
+      route_targets:
+        import:
+          evpn:
+          - '11:11'
+        export:
+          evpn:
+          - '11:11'
+      neighbors:
+        10.255.251.1:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
+      redistribute_routes:
+      - connected
+    MULTICAST_ENABLED_210_DISABLED_211:
+      router_id: 192.168.255.3
+      rd: 192.168.255.3:12
+      route_targets:
+        import:
+          evpn:
+          - '12:12'
+        export:
+          evpn:
+          - '12:12'
+      neighbors:
+        10.255.251.1:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
+      redistribute_routes:
+      - connected
+    MULTICAST_DISABLED_5_6:
+      router_id: 192.168.255.3
+      rd: 192.168.255.3:22
+      route_targets:
+        import:
+          evpn:
+          - '22:22'
+        export:
+          evpn:
+          - '22:22'
+      neighbors:
+        10.255.251.1:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
+      redistribute_routes:
+      - connected
+    MULTICAST_ENABLED_1_2:
+      router_id: 192.168.255.3
+      rd: 192.168.255.3:21
+      route_targets:
+        import:
+          evpn:
+          - '21:21'
+        export:
+          evpn:
+          - '21:21'
+      neighbors:
+        10.255.251.1:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
+      redistribute_routes:
+      - connected
+    MULTICAST_ENABLED_3_DISABLED_4:
+      router_id: 192.168.255.3
+      rd: 192.168.255.3:22
+      route_targets:
+        import:
+          evpn:
+          - '22:22'
+        export:
+          evpn:
+          - '22:22'
+      neighbors:
+        10.255.251.1:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
+      redistribute_routes:
+      - connected
+  vlan_aware_bundles:
+    MULTICAST_DISABLED_310_311:
+      rd: 192.168.255.3:13
+      route_targets:
+        both:
+        - '13:13'
+      redistribute_routes:
+      - learned
+      vlan: 310-311
+    MULTICAST_ENABLED_110_111:
+      rd: 192.168.255.3:11
+      route_targets:
+        both:
+        - '11:11'
+      redistribute_routes:
+      - learned
+      - igmp
+      vlan: 110-111
+    MULTICAST_ENABLED_210_DISABLED_211:
+      rd: 192.168.255.3:12
+      route_targets:
+        both:
+        - '12:12'
+      redistribute_routes:
+      - learned
+      - igmp
+      vlan: 210-211
+    MULTICAST_DISABLED_256:
+      tenant: Tenant_A
+      rd: 192.168.255.3:10256
+      route_targets:
+        both:
+        - 10256:10256
+      redistribute_routes:
+      - learned
+      vlan: 256
+    MULTICAST_ENABLED_257:
+      tenant: Tenant_A
+      rd: 192.168.255.3:10257
+      route_targets:
+        both:
+        - 10257:10257
+      redistribute_routes:
+      - learned
+      - igmp
+      vlan: 257
+    MULTICAST_ENABLED_4096:
+      tenant: Tenant_A
+      rd: 192.168.255.3:14096
+      route_targets:
+        both:
+        - 14096:14096
+      redistribute_routes:
+      - learned
+      - igmp
+      vlan: 4096
+    MULTICAST_DISABLED_5_6:
+      rd: 192.168.255.3:22
+      route_targets:
+        both:
+        - '22:22'
+      redistribute_routes:
+      - learned
+      vlan: 5-6
+    MULTICAST_ENABLED_1_2:
+      rd: 192.168.255.3:21
+      route_targets:
+        both:
+        - '21:21'
+      redistribute_routes:
+      - learned
+      - igmp
+      vlan: 1-2
+    MULTICAST_ENABLED_3_DISABLED_4:
+      rd: 192.168.255.3:22
+      route_targets:
+        both:
+        - '22:22'
+      redistribute_routes:
+      - learned
+      - igmp
+      vlan: 3-4
+    MULTICAST_DISABLED_7:
+      tenant: Tenant_B
+      rd: 192.168.255.3:10007
+      route_targets:
+        both:
+        - 10007:10007
+      redistribute_routes:
+      - learned
+      vlan: 7
+    MULTICAST_ENABLED_8:
+      tenant: Tenant_B
+      rd: 192.168.255.3:10009
+      route_targets:
+        both:
+        - 10009:10009
+      redistribute_routes:
+      - learned
+      - igmp
+      vlan: 9
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.200.1
+service_routing_protocols_model: multi-agent
+ip_routing: true
+router_multicast:
+  ipv4:
+    routing: true
+    software_forwarding: sfe
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+  MGMT:
+    ip_routing: false
+  MULTICAST_DISABLED_310_311:
+    tenant: Tenant_A
+    ip_routing: true
+    description: MULTICAST_DISABLED_310_311
+  MULTICAST_ENABLED_110_111:
+    tenant: Tenant_A
+    ip_routing: true
+    description: MULTICAST_ENABLED_110_111
+  MULTICAST_ENABLED_210_DISABLED_211:
+    tenant: Tenant_A
+    ip_routing: true
+    description: MULTICAST_ENABLED_210_DISABLED_211
+  MULTICAST_DISABLED_5_6:
+    tenant: Tenant_B
+    ip_routing: true
+    description: MULTICAST_DISABLED_5_6
+  MULTICAST_ENABLED_1_2:
+    tenant: Tenant_B
+    ip_routing: true
+    description: MULTICAST_ENABLED_1_2
+  MULTICAST_ENABLED_3_DISABLED_4:
+    tenant: Tenant_B
+    ip_routing: true
+    description: MULTICAST_ENABLED_3_DISABLED_4
+management_interfaces:
+  Management1:
+    description: oob_management
+    shutdown: false
+    vrf: MGMT
+    ip_address: 192.168.200.105/24
+    gateway: 192.168.200.1
+    type: oob
+management_api_http:
+  enable_vrfs:
+    MGMT: {}
+  enable_https: true
+spanning_tree:
+  no_spanning_tree_vlan: 4093-4094
+vlans:
+  4093:
+    tenant: system
+    name: LEAF_PEER_L3
+    trunk_groups:
+    - LEAF_PEER_L3
+  4094:
+    tenant: system
+    name: MLAG_PEER
+    trunk_groups:
+    - MLAG
+  310:
+    tenant: Tenant_A
+    name: MULTICAST_DISABLED_310
+  311:
+    tenant: Tenant_A
+    name: MULTICAST_DISABLED_311
+  3012:
+    tenant: Tenant_A
+    name: MLAG_iBGP_MULTICAST_DISABLED_310_311
+    trunk_groups:
+    - LEAF_PEER_L3
+  110:
+    tenant: Tenant_A
+    name: MULTICAST_ENABLED_110
+  111:
+    tenant: Tenant_A
+    name: MULTICAST_ENABLED_111
+  3010:
+    tenant: Tenant_A
+    name: MLAG_iBGP_MULTICAST_ENABLED_110_111
+    trunk_groups:
+    - LEAF_PEER_L3
+  210:
+    tenant: Tenant_A
+    name: MULTICAST_ENABLED_210
+  211:
+    tenant: Tenant_A
+    name: MULTICAST_DISABLED_211
+  3011:
+    tenant: Tenant_A
+    name: MLAG_iBGP_MULTICAST_ENABLED_210_DISABLED_211
+    trunk_groups:
+    - LEAF_PEER_L3
+  256:
+    tenant: Tenant_A
+    name: MULTICAST_DISABLED_256
+  257:
+    tenant: Tenant_A
+    name: MULTICAST_ENABLED_257
+  4096:
+    tenant: Tenant_A
+    name: MULTICAST_ENABLED_4096
+  5:
+    tenant: Tenant_B
+    name: MULTICAST_DISABLED_5
+  6:
+    tenant: Tenant_B
+    name: MULTICAST_DISABLED_6
+  3021:
+    tenant: Tenant_B
+    name: MLAG_iBGP_MULTICAST_ENABLED_3_DISABLED_4
+    trunk_groups:
+    - LEAF_PEER_L3
+  1:
+    tenant: Tenant_B
+    name: MULTICAST_ENABLED_1
+  2:
+    tenant: Tenant_B
+    name: MULTICAST_ENABLED_2
+  3020:
+    tenant: Tenant_B
+    name: MLAG_iBGP_MULTICAST_ENABLED_1_2
+    trunk_groups:
+    - LEAF_PEER_L3
+  3:
+    tenant: Tenant_B
+    name: MULTICAST_ENABLED_3
+  4:
+    tenant: Tenant_B
+    name: MULTICAST_DISABLED_4
+  7:
+    tenant: Tenant_B
+    name: MULTICAST_DISABLED_7
+  8:
+    tenant: Tenant_B
+    name: MULTICAST_ENABLED_8
+  9:
+    tenant: Tenant_B
+    name: MULTICAST_ENABLED_8
+vlan_interfaces:
+  Vlan4093:
+    description: MLAG_PEER_L3_PEERING
+    shutdown: false
+    ip_address: 10.255.251.0/31
+    mtu: 9000
+    pim:
+      ipv4:
+        sparse_mode: true
+  Vlan4094:
+    description: MLAG_PEER
+    shutdown: false
+    ip_address: 10.255.252.0/31
+    no_autostate: true
+    mtu: 9000
+  Vlan310:
+    tenant: Tenant_A
+    tags:
+    - test_l3
+    description: MULTICAST_DISABLED_310
+    shutdown: false
+    vrf: MULTICAST_DISABLED_310_311
+    ip_address_virtual: 10.3.10.1/24
+  Vlan311:
+    tenant: Tenant_A
+    tags:
+    - test_l3
+    description: MULTICAST_DISABLED_311
+    shutdown: false
+    vrf: MULTICAST_DISABLED_310_311
+    ip_address_virtual: 10.3.11.1/24
+  Vlan3012:
+    tenant: Tenant_A
+    type: underlay_peering
+    shutdown: false
+    description: 'MLAG_PEER_L3_iBGP: vrf MULTICAST_DISABLED_310_311'
+    vrf: MULTICAST_DISABLED_310_311
+    ip_address: 10.255.251.0/31
+    mtu: 9000
+  Vlan110:
+    tenant: Tenant_A
+    tags:
+    - test_l3
+    description: MULTICAST_ENABLED_110
+    shutdown: false
+    vrf: MULTICAST_ENABLED_110_111
+    ip_address_virtual: 10.1.10.1/24
+  Vlan111:
+    tenant: Tenant_A
+    tags:
+    - test_l3
+    description: MULTICAST_ENABLED_111
+    shutdown: false
+    vrf: MULTICAST_ENABLED_110_111
+    ip_address_virtual: 10.1.11.1/24
+  Vlan3010:
+    tenant: Tenant_A
+    type: underlay_peering
+    shutdown: false
+    description: 'MLAG_PEER_L3_iBGP: vrf MULTICAST_ENABLED_110_111'
+    vrf: MULTICAST_ENABLED_110_111
+    ip_address: 10.255.251.0/31
+    mtu: 9000
+  Vlan210:
+    tenant: Tenant_A
+    tags:
+    - test_l3
+    description: MULTICAST_ENABLED_210
+    shutdown: false
+    vrf: MULTICAST_ENABLED_210_DISABLED_211
+    ip_address_virtual: 10.2.10.1/24
+  Vlan211:
+    tenant: Tenant_A
+    tags:
+    - test_l3
+    description: MULTICAST_DISABLED_211
+    shutdown: false
+    vrf: MULTICAST_ENABLED_210_DISABLED_211
+    ip_address_virtual: 10.2.11.1/24
+  Vlan3011:
+    tenant: Tenant_A
+    type: underlay_peering
+    shutdown: false
+    description: 'MLAG_PEER_L3_iBGP: vrf MULTICAST_ENABLED_210_DISABLED_211'
+    vrf: MULTICAST_ENABLED_210_DISABLED_211
+    ip_address: 10.255.251.0/31
+    mtu: 9000
+  Vlan5:
+    tenant: Tenant_B
+    tags:
+    - test_l3
+    description: MULTICAST_DISABLED_5
+    shutdown: false
+    vrf: MULTICAST_DISABLED_5_6
+    ip_address_virtual: 10.0.5.1/24
+  Vlan6:
+    tenant: Tenant_B
+    tags:
+    - test_l3
+    description: MULTICAST_DISABLED_6
+    shutdown: false
+    vrf: MULTICAST_DISABLED_5_6
+    ip_address_virtual: 10.0.6.1/24
+  Vlan3021:
+    tenant: Tenant_B
+    type: underlay_peering
+    shutdown: false
+    description: 'MLAG_PEER_L3_iBGP: vrf MULTICAST_ENABLED_3_DISABLED_4'
+    vrf: MULTICAST_ENABLED_3_DISABLED_4
+    ip_address: 10.255.251.0/31
+    mtu: 9000
+  Vlan1:
+    tenant: Tenant_B
+    tags:
+    - test_l3
+    description: MULTICAST_ENABLED_1
+    shutdown: false
+    vrf: MULTICAST_ENABLED_1_2
+    ip_address_virtual: 10.0.1.1/24
+  Vlan2:
+    tenant: Tenant_B
+    tags:
+    - test_l3
+    description: MULTICAST_ENABLED_2
+    shutdown: false
+    vrf: MULTICAST_ENABLED_1_2
+    ip_address_virtual: 10.0.2.1/24
+  Vlan3020:
+    tenant: Tenant_B
+    type: underlay_peering
+    shutdown: false
+    description: 'MLAG_PEER_L3_iBGP: vrf MULTICAST_ENABLED_1_2'
+    vrf: MULTICAST_ENABLED_1_2
+    ip_address: 10.255.251.0/31
+    mtu: 9000
+  Vlan3:
+    tenant: Tenant_B
+    tags:
+    - test_l3
+    description: MULTICAST_ENABLED_3
+    shutdown: false
+    vrf: MULTICAST_ENABLED_3_DISABLED_4
+    ip_address_virtual: 10.0.3.1/24
+  Vlan4:
+    tenant: Tenant_B
+    tags:
+    - test_l3
+    description: MULTICAST_DISABLED_4
+    shutdown: false
+    vrf: MULTICAST_ENABLED_3_DISABLED_4
+    ip_address_virtual: 10.0.4.1/24
+port_channel_interfaces:
+  Port-Channel3:
+    description: MLAG_PEER_EVPN-MULTICAST-L3LEAF1B_Po3
+    type: switched
+    shutdown: false
+    vlans: 2-4094
+    mode: trunk
+    trunk_groups:
+    - LEAF_PEER_L3
+    - MLAG
+  Port-Channel6:
+    description: EVPN-MULTICAST-L2LEAF1A_Po1
+    type: switched
+    shutdown: false
+    vlans: 1-9,110-111,210-211,256-257,310-311,4096
+    mode: trunk
+    mlag: 6
+ethernet_interfaces:
+  Ethernet3:
+    peer: EVPN-MULTICAST-L3LEAF1B
+    peer_interface: Ethernet3
+    peer_type: mlag_peer
+    description: MLAG_PEER_EVPN-MULTICAST-L3LEAF1B_Ethernet3
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 3
+      mode: active
+  Ethernet4:
+    peer: EVPN-MULTICAST-L3LEAF1B
+    peer_interface: Ethernet4
+    peer_type: mlag_peer
+    description: MLAG_PEER_EVPN-MULTICAST-L3LEAF1B_Ethernet4
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 3
+      mode: active
+  Ethernet1:
+    peer: EVPN-MULTICAST-SPINE1
+    peer_interface: Ethernet1
+    peer_type: spine
+    description: P2P_LINK_TO_EVPN-MULTICAST-SPINE1_Ethernet1
+    mtu: 9000
+    type: routed
+    shutdown: false
+    ip_address: 172.31.255.1/31
+    pim:
+      ipv4:
+        sparse_mode: true
+  Ethernet6:
+    peer: EVPN-MULTICAST-L2LEAF1A
+    peer_interface: Ethernet1
+    peer_type: l2leaf
+    description: EVPN-MULTICAST-L2LEAF1A_Ethernet1
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 6
+      mode: active
+mlag_configuration:
+  domain_id: EVPN_MULTICAST_L3LEAF1
+  local_interface: Vlan4094
+  peer_address: 10.255.252.1
+  peer_link: Port-Channel3
+  reload_delay_mlag: 300
+  reload_delay_non_mlag: 330
+route_maps:
+  RM-MLAG-PEER-IN:
+    sequence_numbers:
+      10:
+        type: permit
+        set:
+        - origin incomplete
+        description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
+  RM-CONN-2-BGP:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    shutdown: false
+    ip_address: 192.168.255.3/32
+  Loopback1:
+    description: VTEP_VXLAN_Tunnel_Source
+    shutdown: false
+    ip_address: 192.168.254.3/32
+prefix_lists:
+  PL-LOOPBACKS-EVPN-OVERLAY:
+    sequence_numbers:
+      10:
+        action: permit 192.168.255.0/24 eq 32
+      20:
+        action: permit 192.168.254.0/24 eq 32
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+ip_igmp_snooping:
+  globally_enabled: true
+  vlans:
+    110:
+      querier:
+        enabled: true
+        address: 192.168.255.3
+    111:
+      querier:
+        enabled: true
+        address: 192.168.255.3
+    210:
+      querier:
+        enabled: true
+        address: 192.168.255.3
+    257:
+      querier:
+        enabled: true
+        address: 192.168.255.3
+    4096:
+      querier:
+        enabled: true
+        address: 192.168.255.3
+    1:
+      querier:
+        enabled: true
+        address: 1.1.1.1
+        version: 3
+    2:
+      querier:
+        enabled: true
+        address: 1.1.1.1
+        version: 3
+    3:
+      querier:
+        enabled: true
+        address: 2.2.2.2
+        version: 1
+    8:
+      querier:
+        enabled: true
+        address: 1.1.1.1
+        version: 3
+    9:
+      querier:
+        enabled: true
+        address: 2.2.2.2
+        version: 1
+ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+vxlan_interface:
+  Vxlan1:
+    description: EVPN-MULTICAST-L3LEAF1A_VTEP
+    vxlan:
+      source_interface: Loopback0
+      mlag_source_interface: Loopback1
+      virtual_router_encapsulation_mac_address: mlag-system-id
+      udp_port: 4789
+      vlans:
+        310:
+          vni: 10310
+        311:
+          vni: 10311
+        110:
+          vni: 10110
+          multicast_group: 232.0.0.109
+        111:
+          vni: 10111
+          multicast_group: 232.0.0.110
+        210:
+          vni: 10210
+          multicast_group: 232.0.0.209
+        211:
+          vni: 10211
+        256:
+          vni: 10256
+        257:
+          vni: 10257
+          multicast_group: 232.0.1.0
+        4096:
+          vni: 14096
+          multicast_group: 232.0.15.255
+        5:
+          vni: 10005
+        6:
+          vni: 10006
+        1:
+          vni: 10001
+          multicast_group: 232.0.16.1
+        2:
+          vni: 10002
+          multicast_group: 232.0.16.2
+        3:
+          vni: 10003
+          multicast_group: 232.0.16.3
+        4:
+          vni: 10004
+        7:
+          vni: 10007
+        8:
+          vni: 10008
+          multicast_group: 232.0.16.8
+        9:
+          vni: 10009
+          multicast_group: 232.0.16.9
+      vrfs:
+        MULTICAST_DISABLED_310_311:
+          vni: 13
+        MULTICAST_ENABLED_110_111:
+          vni: 11
+        MULTICAST_ENABLED_210_DISABLED_211:
+          vni: 12
+        MULTICAST_DISABLED_5_6:
+          vni: 22
+        MULTICAST_ENABLED_1_2:
+          vni: 21
+        MULTICAST_ENABLED_3_DISABLED_4:
+          vni: 22

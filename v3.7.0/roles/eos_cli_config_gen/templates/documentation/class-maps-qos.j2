@@ -1,0 +1,32 @@
+{% if class_maps.qos is arista.avd.defined %}
+
+## QOS Class Maps
+
+### QOS Class Maps Summary
+
+| Name | Field | Value |
+| ---- | ----- | ----- |
+{%     for class_map in class_maps.qos | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         set row = namespace() %}
+{%         if class_map.cos is arista.avd.defined %}
+{%             set row.type = 'cos' %}
+{%             set row.value = class_map.cos %}
+{%         elif class_map.vlan is arista.avd.defined %}
+{%             set row.type = 'vlan' %}
+{%             set row.value = class_map.vlan %}
+{%         elif class_map.ip.access_group is arista.avd.defined %}
+{%             set row.type = 'acl' %}
+{%             set row.value = class_map.ip.access_group %}
+{%         else %}
+{%             set row.type = '-' %}
+{%             set row.value = '-' %}
+{%         endif %}
+| {{ class_map.name }} | {{ row.type }} | {{ row.value }} |
+{%     endfor %}
+
+### Class-maps Device Configuration
+
+```eos
+{%     include 'eos/class-maps-qos.j2' %}
+```
+{% endif %}

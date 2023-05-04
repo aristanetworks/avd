@@ -1,0 +1,361 @@
+---
+# This test case is not for testing every single feature, but more to test the inheritance between
+# svi profiles, parent profiles and svis.
+
+type: l3leaf
+mgmt_gateway: 10.0.0.1
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:1c:73:00:DC:01
+  nodes:
+    #
+    SVI_PROFILE_NODE_1:
+      id: 1
+      bgp_as: 65001
+    # test with evpn_vlan_aware_bundles: true
+    SVI_PROFILE_NODE_2:
+      id: 1
+      bgp_as: 65002
+
+
+#### ---- Test inheritance of svi structured_configuration ----- ###
+# Test logic for network services: vlan-interfaces
+# Structured config is not being merged recursively, but will be taken directly from the most specific level
+# Precedence order:
+# 1. svi.nodes[inventory_hostname].structured_config
+# 2. svi_profile.nodes[inventory_hostname].structured_config
+# 3. svi_parent_profile.nodes[inventory_hostname].structured_config
+# 4. svi.structured_config
+# 5. svi_profile.structured_config
+# 6. svi_parent_profile.structured_config
+
+svi_profiles:
+  struct_config_parent_profile_1:
+    structured_config:
+      description: "set from structured_config on svi_parent_profile.structured_config"
+    nodes:
+      SVI_PROFILE_NODE_1:
+        structured_config:
+          description: "set from structured_config on svi_parent_profile.nodes[inventory_hostname].structured_config"
+      SVI_PROFILE_NODE_2:
+        structured_config:
+          description: "set from structured_config on svi_parent_profile.nodes[inventory_hostname].structured_config"
+
+  struct_config_child_profile_1:
+    structured_config:
+      description: "set from structured_config on svi_profile.structured_config"
+    nodes:
+      SVI_PROFILE_NODE_1:
+        structured_config:
+          description: "set from structured_config on svi_profile.nodes[inventory_hostname].structured_config"
+      SVI_PROFILE_NODE_2:
+        structured_config:
+          description: "set from structured_config on svi_profile.nodes[inventory_hostname].structured_config"
+    parent_profile: struct_config_parent_profile_1
+
+  struct_config_child_profile_2:
+    parent_profile: struct_config_parent_profile_1
+
+  struct_config_parent_profile_2:
+    structured_config:
+      description: "set from structured_config on svi_parent_profile.structured_config"
+
+  struct_config_child_profile_3:
+    structured_config:
+      description: "set from structured_config on svi_profile.structured_config"
+    parent_profile: struct_config_parent_profile_2
+
+  struct_config_child_profile_4:
+    parent_profile: struct_config_parent_profile_2
+
+
+#### ---- Test inheritance of svi igmp_snooping_enabled ----- ###
+# Tests logic for network services: ip igmp snooping
+# Precedence order:
+# 1. svi.igmp_snooping_enabled
+# 2. svi_profile.igmp_snooping_enabled
+# 3. svi_parent_profile.igmp_snooping_enabled
+
+  igmp_parent_profile_1:
+    igmp_snooping_enabled: false
+
+  igmp_parent_profile_2:
+    igmp_snooping_enabled: true
+
+  igmp_child_profile_1:
+    igmp_snooping_enabled: false
+
+  igmp_child_profile_2:
+    igmp_snooping_enabled: true
+    parent_profile: igmp_parent_profile_1
+
+  igmp_child_profile_3:
+    parent_profile: igmp_parent_profile_2
+
+#### ---- Test inheritance of svi.vxlan ----- ###
+# Tests logic for network services: router-bgp-vlan-aware-bundles, router-bgp-vlans and vxlan-interface.
+# Precedence order:
+# 1. svi.vxlan
+# 2. svi_profile.vxlan
+# 3. svi_parent_profile.vxlan
+
+  vxlan_parent_profile_1:
+    vxlan: true
+
+  vxlan_parent_profile_2:
+    vxlan: false
+
+  vxlan_child_profile_1:
+    vxlan: true
+    parent_profile: vxlan_parent_profile_1
+
+  vxlan_child_profile_2:
+    vxlan: false
+    parent_profile: vxlan_parent_profile_1
+
+  vxlan_child_profile_3:
+    parent_profile: vxlan_parent_profile_2
+
+#### ---- Test inheritance of svi.ip_virtual_router_addresses ----- ###
+# Tests logic for network services: static-routes and vlan-interfaces
+# Precedence order:
+# 1. svi.ip_virtual_router_addresses
+# 2. svi_profile.ip_virtual_router_addresses
+# 3. svi_parent_profile.ip_virtual_router_addresses
+
+  static_routes_parent_profile_1:
+    ip_virtual_router_addresses: [1.1.1.1/24]
+
+  static_routes_parent_profile_2:
+    ip_virtual_router_addresses: [10.4.12.1/24]
+
+  static_routes_child_profile_1:
+    ip_virtual_router_addresses: [1.1.1.1/24]
+    parent_profile: static_routes_parent_profile_1
+
+  static_routes_child_profile_2:
+    ip_virtual_router_addresses: [10.4.11.1/24]
+    parent_profile: static_routes_parent_profile_1
+
+  static_routes_child_profile_3:
+    parent_profile: static_routes_parent_profile_2
+
+#### ---- Test inheritance of svi.ospf.enabled ----- ###
+# Tests logic for network services: static-routes and vlan-interfaces
+# Precedence order:
+# 1. svi.ospf.enabled
+# 2. svi_profile.ospf.enabled
+# 3. svi_parent_profile.ospf.enabled
+
+  ospf_enabled_parent_profile_1:
+    ospf:
+      enabled: false
+
+  ospf_enabled_parent_profile_2:
+    ospf:
+      enabled: true
+
+  ospf_enabled_child_profile_1:
+    ospf:
+      enabled: false
+    parent_profile: ospf_enabled_parent_profile_1
+
+  ospf_enabled_child_profile_2:
+    ospf:
+      enabled: true
+    parent_profile: ospf_enabled_parent_profile_1
+
+  ospf_enabled_child_profile_3:
+    parent_profile: ospf_enabled_parent_profile_2
+
+### --- Network Services Generic base config--- ###
+
+tenants:
+  svi_profile_tests:
+    mac_vrf_vni_base: 10000
+    vrfs:
+      svi_profile_tests_vrf:
+        vrf_id: 1
+        ospf:
+          enabled: true
+          max_lsa: 15000
+        svis:
+
+#### ---- Test inheritance of svi structured_configuration ----- ###
+# Tests logic for network services: vlan-interfaces
+
+          # Set nodes[inventory_hostname].structured_config on all levels
+          # Expected results:
+          # - description: "set from structured_config on svi.nodes[inventory_hostname].structured_config"
+          110:
+            name: svi_profile_tests_110_description
+            enabled: true
+            ip_address_virtual: 10.1.10.1/24
+            structured_config:
+              description: set from svi.structured_config
+            nodes:
+              SVI_PROFILE_NODE_1:
+                structured_config:
+                  description: set from structured_config on svi.nodes[inventory_hostname].structured_config
+              SVI_PROFILE_NODE_2:
+                structured_config:
+                  description: set from structured_config on svi.nodes[inventory_hostname].structured_config
+            profile: struct_config_child_profile_1
+
+          # Set nodes[inventory_hostname].structured_config on child_profile and parent_profile
+          # Expected results:
+          # - description: "set from structured_config on svi_profile.nodes[inventory_hostname].structured_config"
+          111:
+            name: svi_profile_tests_111_description
+            enabled: true
+            ip_address_virtual: 10.1.11.1/24
+            structured_config:
+              description: set from svi.structured_config
+            profile: struct_config_child_profile_1
+
+          # Set nodes[inventory_hostname].structured_config on parent_profile
+          # Expected results:
+          # - descripton: "set from structured_config on svi_parent_profile.nodes[inventory_hostname].structured_config"
+          112:
+            name: svi_profile_tests_112_description
+            enabled: true
+            ip_address_virtual: 10.1.12.1/24
+            structured_config:
+              description: set from svi.structured_config
+            profile: struct_config_child_profile_2
+
+          # Expected results:
+          # - description: "set from structured_config on svi.structured_config"
+          113:
+            name: svi_profile_tests_113_description
+            enabled: true
+            ip_address_virtual: 10.1.13.1/24
+            structured_config:
+              description: set from svi.structured_config
+            profile: struct_config_child_profile_3
+
+          # Expected results:
+          # - description: set from structured_config on svi_profile.structured_config
+          114:
+            name: svi_profile_tests_114_description
+            enabled: true
+            ip_address_virtual: 10.1.14.1/24
+            profile: struct_config_child_profile_3
+
+          # Expected results:
+          # - description: set from structured_config on svi_parent_profile.structured_config
+          115:
+            name: svi_profile_tests_115_description
+            enabled: true
+            ip_address_virtual: 10.1.15.1/24
+            profile: struct_config_child_profile_4
+
+#### ---- Test inheritance of svi igmp_snooping_enabled ----- ###
+# Tests logic for network services: ip igmp snooping
+# Expected result for all tests is that igmp snooping is enabled for all VLANs
+
+          # igmp_snooping_enabled set on svi to true, child_profile and parent_profile set to false
+          210:
+            name: igmp_snooping_enabled_210
+            enabled: true
+            ip_address_virtual: 10.2.10.1/24
+            igmp_snooping_enabled: true
+            profile: igmp_child_profile_1
+
+          # igmp_snooping_enabled set on child_profile to true and parent_profile set to false
+          211:
+            name: igmp_snooping_enabled_211
+            enabled: true
+            ip_address_virtual: 10.2.11.1/24
+            profile: igmp_child_profile_2
+
+          # igmp_snooping_enabled set on parent_profile to true
+          212:
+            name: igmp_snooping_enabled_212
+            enabled: true
+            ip_address_virtual: 10.2.12.1/24
+            profile: igmp_child_profile_3
+
+#### ---- Test inheritance of svi ip_virtual_router_addresses ----- ###
+# Tests logic for network services: static-routes.
+# Expected result for all tests is vxlan disabled for all VLANs
+
+          # vxlan set on svi to false, child_profile and parent_profile set to true
+          310:
+            name: vxlan_disabled_310
+            enabled: true
+            ip_address_virtual: 10.3.10.1/24
+            vxlan: false
+            profile: vxlan_child_profile_1
+
+          # vxlan set on child_profile to false and parent_profile set to true
+          311:
+            name: vxlan_disabled_311
+            enabled: true
+            ip_address_virtual: 10.3.11.1/24
+            profile: vxlan_child_profile_2
+
+          # vxlan set on parent_profile to false
+          312:
+            name: vxlan_disabled_312
+            enabled: true
+            ip_address_virtual: 10.3.12.1/24
+            profile: vxlan_child_profile_3
+
+#### ---- Test inheritance of svi ip_virtual_router_addresses ----- ###
+# Tests logic for network services: static-routes and vlan-interfaces.
+
+          # ip_virtual_router_addresses set on svi, child_profile and parent_profile
+          # expected result: svi.ip_virtual_router_addresses should win
+          410:
+            name: static_routes_410
+            enabled: true
+            ip_virtual_router_addresses: [10.4.10.1/24]
+            profile: static_routes_child_profile_1
+
+          # ip_virtual_router_addresses set on child_profile and parent_profile
+          # expected result: child_profile.ip_virtual_router_addresses should win
+          411:
+            name: static_routes_411
+            enabled: true
+            profile: static_routes_child_profile_2
+
+          # ip_virtual_router_addresses set on child_profile and parent_profile
+          # expected result: parent_profile.ip_virtual_router_addresses should win
+          412:
+            name: static_routes_412
+            enabled: true
+            profile: static_routes_child_profile_3
+
+
+#### ---- Test inheritance of svi ospf.enabled ----- ###
+# Tests logic for network services: ospf and vlan-interfaces.
+
+          # ospf_enabled_set on svi to true, child_profile and parent_profile set to false
+          # expected result: osfp enabled on svi
+          510:
+            name: ospf_enabled_510
+            enabled: true
+            ip_address_virtual: 10.5.10.1/24
+            ospf:
+              enabled: true
+            profile: ospf_enabled_child_profile_1
+
+          # ospf_enabled set on child_profile to true and parent_profile set to false
+          # expected result: osfp enabled on svi
+          511:
+            name: ospf_enabled_511
+            enabled: true
+            ip_address_virtual: 10.5.11.1/24
+            profile: ospf_enabled_child_profile_2
+
+          # ospf_enabled on parent_profile set to true
+          # expected result: osfp enabled on svi
+          512:
+            name: ospf_enabled_512
+            enabled: true
+            ip_address_virtual: 10.5.12.1/24
+            profile: ospf_enabled_child_profile_3

@@ -1,0 +1,97 @@
+### Snmp Settings ####
+snmp_server:
+  contact: DC1_OPS
+  location: DC1
+  communities:
+    - name: SNMP-COMMUNITY-1
+      access: ro
+      access_list_ipv4:
+        name: onur
+    - name: SNMP-COMMUNITY-2
+      access: rw
+      access_list_ipv4:
+        name: SNMP-MGMT
+      access_list_ipv6:
+        name: SNMP-MGMT
+      view: VW-READ
+    - name: SNMP-COMMUNITY-3
+  local_interfaces:
+    - name: Management1
+      vrf: MGMT
+    - name: Loopback0
+    - name: Loopback12
+      vrf: Tenant_A_APP_Zone
+  ipv4_acls:
+    - name: SNMP-MGMT
+      vrf: MGMT
+    - name: onur
+  ipv6_acls:
+    - name: SNMP-MGMT
+      vrf: MGMT
+    - name: onur_v6
+  views:
+    - name: VW-WRITE
+      MIB_family_name: iso
+      included: true
+    - name: VW-READ
+      MIB_family_name: iso
+      included: true
+  groups:
+    - name: GRP-READ-ONLY
+      version: v3
+      authentication: priv
+      read: v3read
+    - name: GRP-READ-WRITE
+      version: v3
+      authentication: auth
+      read: v3read
+      write: v3write
+  users:
+    - name: USER-READ
+      group: GRP-READ-ONLY
+      version: v3
+      auth: sha
+      auth_passphrase: 7a07246a6e3467909098d01619e076adb4e2fe08
+      priv: aes
+      priv_passphrase: 7a07246a6e3467909098d01619e076ad
+    - name: USER-WRITE
+      group: GRP-READ-WRITE
+      version: v3
+      auth: sha
+      auth_passphrase: 7a07246a6e3467909098d01619e076adb4e2fe08
+      priv: aes
+      priv_passphrase: 7a07246a6e3467909098d01619e076ad
+  hosts:
+    - host: 10.6.75.121
+      vrf: MGMT
+      version: 1
+      community: SNMP-COMMUNITY-1
+    - host: 10.6.75.121
+      vrf: MGMT
+      version: 2c
+      community: SNMP-COMMUNITY-2
+    - host: 10.6.75.122
+      vrf: MGMT
+      #version: 2c should be autodetected based on community key.
+      community: SNMP-COMMUNITY-2
+    - host: 10.6.75.99
+      vrf: MGMT
+      version: 3
+      users:
+        - username: USER-READ
+          authentication_level: auth
+        - username: USER-WRITE
+          authentication_level: auth
+    - host: 10.6.75.100
+      vrf: MGMT
+      #version: 3 should be autodetected based on users key.
+      users:
+        - username: USER-READ
+          authentication_level: priv
+  traps:
+    enable: true
+  vrfs:
+    - name: default
+      enable: false
+    - name: MGMT
+      enable: true

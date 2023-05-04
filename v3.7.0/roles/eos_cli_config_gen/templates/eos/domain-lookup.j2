@@ -1,0 +1,11 @@
+{# eos - domain lookup #}
+{% if ip_domain_lookup is arista.avd.defined %}
+{%     for source in ip_domain_lookup.source_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         set ip_domain_cli = "ip domain lookup" %}
+{%         if source.vrf is arista.avd.defined %}
+{%             set ip_domain_cli = ip_domain_cli ~ " vrf " ~ source.vrf %}
+{%         endif %}
+{%         set ip_domain_cli = ip_domain_cli ~ " source-interface " ~ source.name %}
+{{ ip_domain_cli }}
+{%     endfor %}
+{% endif %}

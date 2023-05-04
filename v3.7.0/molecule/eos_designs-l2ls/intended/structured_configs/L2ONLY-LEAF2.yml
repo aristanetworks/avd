@@ -1,0 +1,68 @@
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 172.31.0.1
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+  MGMT:
+    ip_routing: false
+management_api_http:
+  enable_vrfs:
+    MGMT: {}
+  enable_https: true
+ethernet_interfaces:
+  Ethernet1:
+    peer: L2ONLY-SPINE1
+    peer_interface: Ethernet2
+    peer_type: spine
+    description: L2ONLY-SPINE1_Ethernet2
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 1
+      mode: active
+  Ethernet2:
+    peer: L2ONLY-SPINE2
+    peer_interface: Ethernet2
+    peer_type: spine
+    description: L2ONLY-SPINE2_Ethernet2
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 1
+      mode: active
+  Ethernet10:
+    peer: Endpoint
+    peer_type: network_port
+    description: Endpoint
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 100
+  Ethernet11:
+    peer: Endpoint
+    peer_type: network_port
+    description: Endpoint
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 100
+port_channel_interfaces:
+  Port-Channel1:
+    description: L2ONLY_SPINES_Po2
+    type: switched
+    shutdown: false
+    vlans: 100
+    mode: trunk
+vlans:
+  100:
+    tenant: L2LS_L2ONLY
+    name: L2VLAN_100
+ip_igmp_snooping:
+  globally_enabled: true

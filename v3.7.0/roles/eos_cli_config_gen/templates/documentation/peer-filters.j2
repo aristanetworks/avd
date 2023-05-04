@@ -1,0 +1,22 @@
+{% if peer_filters is arista.avd.defined %}
+
+## Peer Filters
+
+### Peer Filters Summary
+{%     for peer_filter in peer_filters | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+
+#### {{ peer_filter.name }}
+
+| Sequence | Match |
+| -------- | ----- |
+{%         for sequence in peer_filter.sequence_numbers | arista.avd.convert_dicts('sequence') | arista.avd.natural_sort('sequence') %}
+| {{ sequence.sequence }} | {{ sequence.match }} |
+{%         endfor %}
+{%     endfor %}
+
+### Peer Filters Device Configuration
+
+```eos
+{%     include 'eos/peer-filters.j2' %}
+```
+{% endif %}

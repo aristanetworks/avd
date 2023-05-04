@@ -1,0 +1,12 @@
+{% if evpn_rt_type.admin_subfield is arista.avd.defined("spine_asn") and spine.bgp_as is arista.avd.defined %}
+{# Deprecate evpn_rt_type.admin_subfield == "spine_asn" #}
+# Change evpn_rt_type.admin_subfield value from "spine_asn" to <value of spine.bgp_as>
+evpn_rt_type:
+  admin_subfield: {{ spine.bgp_as }}
+{% elif evpn_rt_type.admin_subfield is arista.avd.defined("leaf_asn") %}
+
+{# Deprecate evpn_rt_type.admin_subfield == "spine_asn" #}
+# Change evpn_rt_type.admin_subfield value from "leaf_asn" to "bgp_as"
+evpn_rt_type:
+  admin_subfield: "bgp_as"
+{% endif %}

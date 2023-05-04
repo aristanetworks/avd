@@ -1,0 +1,11 @@
+# Change from ntp_server to ntp data model
+ntp:
+  local_interface:
+    name: Management0
+    vrf: mgt
+  servers:
+  - name: 10.10.111.1
+    preferred: True
+    vrf: mgt
+  - name: 10.10.111.2
+    vrf: mgt

@@ -1,0 +1,513 @@
+router_bgp:
+  as: '65105'
+  router_id: 192.168.255.15
+  bgp_defaults:
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - maximum-paths 4 ecmp 4
+  peer_groups:
+    UNDERLAY-PEERS:
+      type: ipv4
+      password: AQQvKeimxJu+uGQ/yYvv9w==
+      maximum_routes: 12000
+      send_community: all
+      remote_as: 65001
+    EVPN-OVERLAY-PEERS:
+      type: evpn
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: '3'
+      password: q+VNViP5i4rVjW1cxFv2wA==
+      send_community: all
+      maximum_routes: 0
+      remote_as: 65001
+  address_family_ipv4:
+    peer_groups:
+      UNDERLAY-PEERS:
+        activate: true
+      EVPN-OVERLAY-PEERS:
+        activate: false
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP
+  neighbors:
+    172.31.255.96:
+      peer_group: UNDERLAY-PEERS
+      remote_as: '65001'
+      description: DC1-SPINE1_Ethernet7
+    172.31.255.98:
+      peer_group: UNDERLAY-PEERS
+      remote_as: '65001'
+      description: DC1-SPINE2_Ethernet7
+    172.31.255.100:
+      peer_group: UNDERLAY-PEERS
+      remote_as: '65001'
+      description: DC1-SPINE3_Ethernet7
+    172.31.255.102:
+      peer_group: UNDERLAY-PEERS
+      remote_as: '65001'
+      description: DC1-SPINE4_Ethernet7
+    192.168.255.1:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-SPINE1
+      remote_as: '65001'
+    192.168.255.2:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-SPINE2
+      remote_as: '65001'
+    192.168.255.3:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-SPINE3
+      remote_as: '65001'
+    192.168.255.4:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-SPINE4
+      remote_as: '65001'
+  address_family_evpn:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+    evpn_hostflap_detection:
+      window: 180
+      threshold: 30
+      enabled: false
+  vrfs:
+    Tenant_A_WAN_Zone:
+      router_id: 192.168.255.15
+      rd: 192.168.255.15:14
+      route_targets:
+        import:
+          evpn:
+          - '14:14'
+          - 65000:456
+          vpn-ipv4:
+          - 65000:123
+        export:
+          evpn:
+          - '14:14'
+          - 65000:789
+          vpn-ipv4:
+          - 65000:123
+      neighbors:
+        123.1.1.10:
+          remote_as: 1234
+          password: AQQvKeimxJu+uGQ/yYvv9w==
+          description: External IPv4 BGP peer
+          send_community: standard extended
+          maximum_routes: 0
+          default_originate:
+            always: false
+            route_map_out: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
+          update_source: Loopback123
+          ebgp_multihop: 3
+          route_map_in: RM-123-1-1-10-IN
+          route_map_out: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
+          local_as: 123
+        123.1.1.11:
+          remote_as: 1234
+          password: AQQvKeimxJu+uGQ/yYvv9w==
+          description: External IPv4 BGP peer
+          send_community: standard extended
+          maximum_routes: 0
+          default_originate:
+            always: false
+          update_source: Loopback123
+          ebgp_multihop: 3
+          route_map_in: RM-123-1-1-11-IN
+          route_map_out: RM-123-1-1-11-OUT
+          local_as: 123
+        fd5a:fe45:8831:06c5::a:
+          remote_as: 12345
+          send_community: all
+          route_map_out: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
+        fd5a:fe45:8831:06c5::b:
+          remote_as: 12345
+      redistribute_routes:
+      - connected
+      - static
+      address_families:
+        ipv4:
+          neighbors:
+            123.1.1.10:
+              activate: true
+            123.1.1.11:
+              activate: true
+        ipv6:
+          neighbors:
+            fd5a:fe45:8831:06c5::a:
+              activate: true
+            fd5a:fe45:8831:06c5::b:
+              activate: true
+    Tenant_L3_VRF_Zone:
+      router_id: 192.168.255.15
+      rd: 192.168.255.15:15
+      route_targets:
+        import:
+          evpn:
+          - '15:15'
+        export:
+          evpn:
+          - '15:15'
+      redistribute_routes:
+      - connected
+    Tenant_B_OP_Zone:
+      router_id: 192.168.255.15
+      rd: 192.168.255.15:20
+      route_targets:
+        import:
+          evpn:
+          - '20:20'
+        export:
+          evpn:
+          - '20:20'
+      redistribute_routes:
+      - connected
+    Tenant_B_WAN_Zone:
+      router_id: 192.168.255.15
+      rd: 192.168.255.15:21
+      route_targets:
+        import:
+          evpn:
+          - '21:21'
+        export:
+          evpn:
+          - '21:21'
+      redistribute_routes:
+      - connected
+    Tenant_C_WAN_Zone:
+      router_id: 192.168.255.15
+      rd: 192.168.255.15:31
+      route_targets:
+        import:
+          evpn:
+          - '31:31'
+        export:
+          evpn:
+          - '31:31'
+      redistribute_routes:
+      - connected
+  vlan_aware_bundles:
+    Tenant_A_WAN_Zone:
+      rd: 192.168.255.15:14
+      route_targets:
+        both:
+        - '14:14'
+      redistribute_routes:
+      - learned
+      vlan: 150
+    Tenant_B_WAN_Zone:
+      rd: 192.168.255.15:21
+      route_targets:
+        both:
+        - '21:21'
+      redistribute_routes:
+      - learned
+      vlan: 250
+    Tenant_C_WAN_Zone:
+      rd: 192.168.255.15:31
+      route_targets:
+        both:
+        - '31:31'
+      redistribute_routes:
+      - learned
+      vlan: 350
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.200.5
+- destination_address_prefix: 10.3.4.0/24
+  vrf: Tenant_A_WAN_Zone
+  gateway: 1.2.3.4
+service_routing_protocols_model: multi-agent
+ip_routing: true
+hardware:
+  speed_groups:
+    1:
+      serdes: 10G
+    2:
+      serdes: 25G
+    3:
+      serdes: 25G
+    4:
+      serdes: 10G
+daemon_terminattr:
+  cvaddrs:
+  - 192.168.200.11:9910
+  cvauth:
+    method: key
+    key: telarista
+  cvvrf: MGMT
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+  disable_aaa: false
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+name_server:
+  source:
+    vrf: MGMT
+  nodes:
+  - 192.168.200.5
+  - 8.8.8.8
+snmp_server:
+  contact: example@example.com
+  location: DC1_FABRIC DC1-BL1B
+spanning_tree:
+  root_super: true
+  mode: mstp
+  mst_instances:
+    '0':
+      priority: 4096
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    no_password: true
+  cvpadmin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+vrfs:
+  MGMT:
+    ip_routing: false
+  Tenant_A_WAN_Zone:
+    tenant: Tenant_A
+    ip_routing: true
+  Tenant_L3_VRF_Zone:
+    tenant: Tenant_A
+    ip_routing: true
+  Tenant_B_OP_Zone:
+    tenant: Tenant_B
+    ip_routing: true
+  Tenant_B_WAN_Zone:
+    tenant: Tenant_B
+    ip_routing: true
+  Tenant_C_WAN_Zone:
+    tenant: Tenant_C
+    ip_routing: true
+management_interfaces:
+  Management1:
+    description: oob_management
+    shutdown: false
+    vrf: MGMT
+    ip_address: 192.168.200.111/24
+    gateway: 192.168.200.5
+    type: oob
+tcam_profile:
+  system: vxlan-routing
+platform:
+  sand:
+    lag:
+      hardware_only: true
+management_api_http:
+  enable_vrfs:
+    MGMT: {}
+  enable_https: true
+struct_cfg:
+  router_bgp:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        remote_as: 65001
+      UNDERLAY-PEERS:
+        remote_as: 65001
+ethernet_interfaces:
+  Ethernet45:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet7
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE1_Ethernet7
+    speed: forced 100gfull
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.255.97/31
+  Ethernet46:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet7
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE2_Ethernet7
+    speed: forced 100gfull
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.255.99/31
+  Ethernet47:
+    peer: DC1-SPINE3
+    peer_interface: Ethernet7
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE3_Ethernet7
+    speed: forced 100gfull
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.255.101/31
+  Ethernet48:
+    peer: DC1-SPINE4
+    peer_interface: Ethernet7
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE4_Ethernet7
+    speed: forced 100gfull
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.255.103/31
+  Ethernet7:
+    type: routed
+    peer_type: l3_interface
+    vrf: Tenant_A_WAN_Zone
+    ip_address: 10.10.20.20/24
+    mtu: 9000
+    shutdown: false
+    description: test
+  Ethernet8:
+    type: routed
+    peer_type: l3_interface
+    vrf: Tenant_L3_VRF_Zone
+    ip_address: 10.10.30.10/24
+    mtu: 9000
+    shutdown: false
+    description: test
+  Ethernet9:
+    type: routed
+    peer_type: l3_interface
+    vrf: Tenant_L3_VRF_Zone
+    ip_address: 10.10.40.20/24
+    mtu: 9000
+    shutdown: false
+    description: test
+  Ethernet10.100:
+    type: l3dot1q
+    encapsulation_dot1q_vlan: 100
+    peer_type: l3_interface
+    vrf: Tenant_L3_VRF_Zone
+    ip_address: 10.10.31.10/24
+    mtu: 9000
+    shutdown: false
+    description: subinterface test
+  Ethernet10.200:
+    type: l3dot1q
+    encapsulation_dot1q_vlan: 141
+    peer_type: l3_interface
+    vrf: Tenant_L3_VRF_Zone
+    ip_address: 10.10.41.10/24
+    mtu: 9000
+    shutdown: false
+    description: subinterface test with vlan override
+  Ethernet10:
+    type: routed
+    peer_type: l3_interface
+    shutdown: false
+  Ethernet4000:
+    description: My second test
+    ip_address: 10.1.2.3/12
+    shutdown: false
+    type: routed
+    mtu: 1500
+    peer: MY-own-peer
+    peer_interface: Ethernet123
+    peer_type: my_precious
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    shutdown: false
+    ip_address: 192.168.255.15/32
+  Loopback1:
+    description: VTEP_VXLAN_Tunnel_Source
+    shutdown: false
+    ip_address: 192.168.254.15/32
+prefix_lists:
+  PL-LOOPBACKS-EVPN-OVERLAY:
+    sequence_numbers:
+      10:
+        action: permit 192.168.255.0/24 eq 32
+      20:
+        action: permit 192.168.254.0/24 eq 32
+route_maps:
+  RM-CONN-2-BGP:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+  RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT:
+    sequence_numbers:
+      10:
+        type: permit
+        set:
+        - ip next-hop 123.1.1.1
+  RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT:
+    sequence_numbers:
+      10:
+        type: permit
+        set:
+        - ipv6 next-hop fd5a:fe45:8831:06c5::1
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
+vlans:
+  150:
+    tenant: Tenant_A
+    name: Tenant_A_WAN_Zone_1
+  250:
+    tenant: Tenant_B
+    name: Tenant_B_WAN_Zone_1
+  350:
+    tenant: Tenant_C
+    name: Tenant_C_WAN_Zone_1
+ip_igmp_snooping:
+  globally_enabled: true
+ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+vlan_interfaces:
+  Vlan150:
+    tenant: Tenant_A
+    tags:
+    - wan
+    description: Tenant_A_WAN_Zone_1
+    shutdown: false
+    vrf: Tenant_A_WAN_Zone
+    ip_address_virtual: 10.1.40.1/24
+  Vlan250:
+    tenant: Tenant_B
+    tags:
+    - wan
+    description: Tenant_B_WAN_Zone_1
+    shutdown: false
+    vrf: Tenant_B_WAN_Zone
+    ip_address_virtual: 10.2.50.1/24
+  Vlan350:
+    tenant: Tenant_C
+    tags:
+    - wan
+    description: Tenant_C_WAN_Zone_1
+    shutdown: false
+    vrf: Tenant_C_WAN_Zone
+    ip_address_virtual: 10.3.50.1/24
+vxlan_interface:
+  Vxlan1:
+    description: DC1-BL1B_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vlans:
+        150:
+          vni: 10150
+        250:
+          vni: 20250
+        350:
+          vni: 30350
+      vrfs:
+        Tenant_A_WAN_Zone:
+          vni: 14
+        Tenant_L3_VRF_Zone:
+          vni: 15
+        Tenant_B_OP_Zone:
+          vni: 20
+        Tenant_B_WAN_Zone:
+          vni: 21
+        Tenant_C_WAN_Zone:
+          vni: 31
+ntp: null

@@ -1,0 +1,18 @@
+{# eos - Route Maps #}
+{% for route_map in route_maps | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for sequence in route_map.sequence_numbers | arista.avd.convert_dicts('sequence') | arista.avd.natural_sort('sequence') %}
+{%         if sequence.type is arista.avd.defined %}
+!
+route-map {{ route_map.name }} {{ sequence.type }} {{ sequence.sequence }}
+{%         endif %}
+{%         if sequence.description is arista.avd.defined %}
+   description {{ sequence.description }}
+{%         endif %}
+{%         for match_rule in sequence.match | arista.avd.natural_sort %}
+   match {{ match_rule }}
+{%         endfor %}
+{%         for set_rule in sequence.set | arista.avd.natural_sort %}
+   set {{ set_rule }}
+{%         endfor %}
+{%     endfor %}
+{% endfor %}

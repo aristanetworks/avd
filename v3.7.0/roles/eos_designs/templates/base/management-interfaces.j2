@@ -1,0 +1,14 @@
+{# Management interface #}
+{% if switch.mgmt_interface is arista.avd.defined and
+      mgmt_interface_vrf is arista.avd.defined and
+      mgmt_gateway is arista.avd.defined and
+      switch.mgmt_ip is arista.avd.defined %}
+management_interfaces:
+  {{ switch.mgmt_interface }}:
+    description: oob_management
+    shutdown: false
+    vrf: {{ mgmt_interface_vrf }}
+    ip_address: {{ switch.mgmt_ip }}
+    gateway: {{ mgmt_gateway }}
+    type: oob
+{% endif %}

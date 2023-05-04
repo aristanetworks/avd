@@ -1,0 +1,33 @@
+{% for connected_endpoints_key in connected_endpoints_keys | arista.avd.convert_dicts('key') %}
+{%     set switch_connected_endpoints = hostvars[inventory_hostname][connected_endpoints_key.key] | arista.avd.convert_dicts('name') | arista.avd.default([]) %}
+{%     for connected_endpoint in switch_connected_endpoints %}
+{%         if connected_endpoint.adapters | selectattr('switches', 'arista.avd.contains', inventory_hostname) | length > 0 %}
+{%             do connected_endpoint.update({"type": connected_endpoints_key.type}) %}
+{%             do connected_endpoints.append(connected_endpoint) %}
+{%         endif %}
+{%     endfor %}
+{% endfor %}
+{% if network_ports is arista.avd.defined %}
+{%     for network_port_item in network_ports %}
+{%         for switch_regex in network_port_item.switches | arista.avd.default([]) %}
+{#             The match test is built on Python re.match which tests from the beginning of the string #}
+{#             Since the user would not expect "DC1-LEAF1" to also match "DC-LEAF11" we will force ^ and $ around the regex #}
+{%             set switch_regex = "^" ~ switch_regex ~ "$" %}
+{%             if inventory_hostname is match(switch_regex) %}
+{%                 set switch_ports = network_port_item.switch_ports | arista.avd.default([]) | arista.avd.range_expand %}
+{#                 Create list of inventory_hostname once per interface to be compatible with existing adapters style #}
+{%                 set adapters = [] %}
+{%                 for switch_port in switch_ports %}
+{%                     set adapter_overrides = {"switch_ports": [switch_port], "switches": [inventory_hostname]} %}
+{%                     set adapter = network_port_item | ansible.builtin.combine(adapter_overrides) %}
+{%                     do adapters.append(adapter) %}
+{%                 endfor %}
+{%                 do connected_endpoints.append({
+                       "name": network_port_item.description | arista.avd.default,
+                       "type": "network_port",
+                       "adapters": adapters
+                   }) %}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{% endif %}

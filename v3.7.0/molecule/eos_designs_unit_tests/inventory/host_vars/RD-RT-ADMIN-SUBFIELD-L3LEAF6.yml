@@ -1,0 +1,6 @@
+---
+
+overlay_rd_type:
+# Expected result: rd 65535:*
+  admin_subfield: 65525
+  admin_subfield_offset: 10

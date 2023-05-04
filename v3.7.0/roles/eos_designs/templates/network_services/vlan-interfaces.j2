@@ -1,0 +1,134 @@
+{# tenant vlan interfaces #}
+vlan_interfaces:
+{% for tenant in network_services_data.tenants %}
+{%     for vrf in tenant.vrfs %}
+{%         for svi in vrf.svis %}
+{%             set svi_node = svi.nodes | arista.avd.default({}) |
+                                          arista.avd.convert_dicts('name') |
+                                          selectattr('name', 'arista.avd.defined', inventory_hostname) |
+                                          first %}
+{%             set svi_raw_eos_cli = svi_node.raw_eos_cli | arista.avd.default(
+                                     svi.raw_eos_cli) %}
+{%             set svi_ip_helpers = svi.ip_helpers | arista.avd.default(vrf.ip_helpers) %}
+  Vlan{{ svi.id | int }}:
+    tenant: {{ tenant.name }}
+    tags: {{ svi.tags | arista.avd.default }}
+    description: {{ svi.description | arista.avd.default(svi.name) }}
+{%             if svi.enabled is arista.avd.defined(true) %}
+    shutdown: false
+{%             else %}
+    shutdown: true
+{%             endif %}
+{%             if vrf.name != 'default' %}
+    vrf: {{ vrf.name }}
+{%             else %}
+{%                 set svi_subnet = svi_node.ip_address | arista.avd.default(svi.ip_address_virtual) | ansible.netcommon.ipaddr('subnet') %}
+{%                 if svi_subnet is arista.avd.defined and svi_subnet %}
+{%                     do default_vrf.svi_subnets.append(svi_subnet) %}
+{%                 endif %}
+{%             endif %}
+{# IP address configuration #}
+{%             if svi_node.ip_address is arista.avd.defined %}
+    ip_address: {{ svi_node.ip_address }}
+{%             endif %}
+{# IPv6 address configuration #}
+{%             if svi_node.ipv6_address is arista.avd.defined %}
+{%                 do network_services_data.ipv6vrfs.update({vrf.name: True}) %}
+    ipv6_address: {{ svi_node.ipv6_address }}
+{%             endif %}
+{# Virtual Router IP Address #}
+{%             if svi.ip_virtual_router_addresses is arista.avd.defined %}
+    ip_virtual_router_addresses: {{ svi.ip_virtual_router_addresses }}
+{%             endif %}
+{# Virtual Router IPv6 Address #}
+{%             if svi.ipv6_virtual_router_addresses is arista.avd.defined %}
+    ipv6_virtual_router_addresses: {{ svi.ipv6_virtual_router_addresses }}
+{%             endif %}
+{# Virtual IP address #}
+{%             if svi.ip_address_virtual is arista.avd.defined %}
+    ip_address_virtual: {{ svi.ip_address_virtual }}
+{%             endif %}
+{# Virtual IPv6 address #}
+{%             if svi.ipv6_address_virtual is arista.avd.defined %}
+{%                 do network_services_data.ipv6vrfs.update({vrf.name: True}) %}
+    ipv6_address_virtual: {{ svi.ipv6_address_virtual }}
+{%             endif %}
+{# Virtual Secondary IP address #}
+{%             if svi.ip_address_virtual_secondaries is arista.avd.defined %}
+    ip_address_virtual_secondaries: {{ svi.ip_address_virtual_secondaries }}
+{%             endif %}
+{# Virtual Secondary IPv6 address #}
+{%             if svi.ipv6_address_virtual_secondaries is arista.avd.defined %}
+    ipv6_address_virtual_secondaries: {{ svi.ipv6_address_virtual_secondaries }}
+{%             endif %}
+{# MTU definition #}
+{%             if svi.mtu is arista.avd.defined %}
+    mtu: {{ svi.mtu }}
+{%             endif %}
+{# IP helper configuration #}
+{%             if svi_ip_helpers is arista.avd.defined %}
+    ip_helpers:
+{%                 for helper_ip in svi_ip_helpers | arista.avd.convert_dicts('ip_helper') %}
+      {{ helper_ip.ip_helper }}:
+        source_interface: {{ helper_ip.source_interface | arista.avd.default }}
+        vrf: {{ helper_ip.source_vrf | arista.avd.default }}
+{%                 endfor %}
+{%             endif %}
+{%             if svi.ospf.enabled is arista.avd.defined(true) and vrf.ospf.enabled is arista.avd.defined(true) %}
+    ospf_area: {{ svi.ospf.area | arista.avd.default(0) }}
+    ospf_network_point_to_point: {{ svi.ospf.point_to_point | arista.avd.default(false) }}
+{%                 if svi.ospf.cost is arista.avd.defined %}
+    ospf_cost: {{ svi.ospf.cost }}
+{%                 endif %}
+{%                 if svi.ospf.authentication is arista.avd.defined("simple") and svi.ospf.simple_auth_key is arista.avd.defined %}
+    ospf_authentication: "simple"
+    ospf_authentication_key: {{ svi.ospf.simple_auth_key }}
+{%                 elif svi.ospf.authentication is arista.avd.defined("message-digest") and svi.ospf.message_digest_keys is arista.avd.defined %}
+    ospf_authentication: "message-digest"
+    ospf_message_digest_keys:
+{%                     for key in svi.ospf.message_digest_keys | arista.avd.natural_sort %}
+{%                         if key.id is arista.avd.defined and key.key is arista.avd.defined %}
+      {{ key.id }}:
+        hash_algorithm: {{ key.hash_algorithm | arista.avd.default("sha512") }}
+        key: {{ key.key }}
+{%                         endif %}
+{%                     endfor %}
+{%                 endif %}
+{%             endif %}
+{%             if svi_raw_eos_cli is arista.avd.defined %}
+    eos_cli: |
+      {{ svi_raw_eos_cli | indent(6,false) }}
+{%             endif %}
+{%             if svi.structured_config is arista.avd.defined %}
+    struct_cfg: {{ svi.structured_config }}
+{%             endif %}
+{%         endfor %}
+{# VLAN interface for iBGP peering in overlay VRFs #}
+{%         if switch.mlag_l3 is arista.avd.defined(true) %}
+{%             set configure_mlag_ibgp_peering = vrf.enable_mlag_ibgp_peering_vrfs | arista.avd.default(
+                                                 tenant.enable_mlag_ibgp_peering_vrfs,
+                                                 true) %}
+{%             if configure_mlag_ibgp_peering and vrf.name != 'default' %}
+{%                 set vrf_id_int = vrf.vrf_id | arista.avd.default(vrf.vrf_vni) | int %}
+  Vlan{{ vrf.mlag_ibgp_peering_vlan | arista.avd.default(mlag_ibgp_peering_vrfs.base_vlan + (vrf_id_int - 1)) }}:
+    tenant: {{ tenant.name }}
+    type: underlay_peering
+    shutdown: false
+    description: "MLAG_PEER_L3_iBGP: vrf {{ vrf.name }}"
+    vrf: {{ vrf.name }}
+{%                 if underlay_rfc5549 is arista.avd.defined(true) and overlay_mlag_rfc5549 is arista.avd.defined(true) %}
+    ipv6_enable: true
+{%                 elif vrf.mlag_ibgp_peering_ipv4_pool is arista.avd.defined %}
+{%                     if switch.mlag_role == 'primary' %}
+    ip_address: "{% include switch.ip_addressing.mlag_ibgp_peering_ip_primary %}/31"
+{%                     else %}
+    ip_address: "{% include switch.ip_addressing.mlag_ibgp_peering_ip_secondary %}/31"
+{%                     endif %}
+{%                 else %}
+    ip_address: {{ switch.mlag_l3_ip | arista.avd.default(switch.mlag_ip) }}/31
+{%                 endif %}
+    mtu: {{ p2p_uplinks_mtu }}
+{%             endif %}
+{%         endif %}
+{%     endfor %}
+{% endfor %}

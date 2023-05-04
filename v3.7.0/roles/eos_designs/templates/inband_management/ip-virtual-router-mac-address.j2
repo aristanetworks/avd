@@ -1,0 +1,6 @@
+{# Set virtual router mac address unless it will be set in network services #}
+{% if not (switch.network_services_l2 is arista.avd.defined(true) and switch.network_services_l3 is arista.avd.defined(true)) %}
+{%     if switch.virtual_router_mac_address is arista.avd.defined(fail_action="error", var_name="virtual_router_mac_address") %}
+ip_virtual_router_mac_address: {{ switch.virtual_router_mac_address | lower }}
+{%     endif %}
+{% endif %}

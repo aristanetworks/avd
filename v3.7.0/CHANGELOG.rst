@@ -1,0 +1,216 @@
+========================
+Arista.Avd Release Notes
+========================
+
+.. contents:: Topics
+
+
+v3.7.0
+======
+
+Release Summary
+---------------
+
+Release 3.7.0 - See documentation on avd.sh for details.
+
+
+Minor Changes
+-------------
+
+- CI - Build ci container on devel push and pr target (https://github.com/aristanetworks/ansible-avd/pull/1923)
+- CI - Limit runtime (https://github.com/aristanetworks/ansible-avd/pull/1975)
+- CI - Remove validation of single commit title (https://github.com/aristanetworks/ansible-avd/pull/1943)
+- CI - Revert building CI containers (https://github.com/aristanetworks/ansible-avd/pull/1928)
+- CI - Update CODEOWNERS after group was renamed (https://github.com/aristanetworks/ansible-avd/pull/1987)
+- CI - Update to run on ubuntu 20.04 instead of 18.04 (https://github.com/aristanetworks/ansible-avd/pull/1990)
+- CI - add flake8 support matching ansible-test sanity (https://github.com/aristanetworks/ansible-avd/pull/1944)
+- CI - move j2lint check to pre-commit (https://github.com/aristanetworks/ansible-avd/pull/1926)
+- Doc - AVD beginner TOI update to be consistent with AVD examples (https://github.com/aristanetworks/ansible-avd/pull/1908)
+- Doc - Add proper installation guide links on README (https://github.com/aristanetworks/ansible-avd/pull/1915)
+- Doc - Heading Updates (https://github.com/aristanetworks/ansible-avd/pull/1991)
+- Doc - Minor doc changes (https://github.com/aristanetworks/ansible-avd/pull/1935)
+- Doc - Update AVD Core team (https://github.com/aristanetworks/ansible-avd/pull/1920)
+- Doc - mkdoc updates with layouts, font, material theme, and syntax highlighting (https://github.com/aristanetworks/ansible-avd/pull/1951)
+- Doc - refactoring (https://github.com/aristanetworks/ansible-avd/pull/1952)
+- Doc(eos_designs) - Add documentation for mlag_ibgp_origin_incomplete (https://github.com/aristanetworks/ansible-avd/pull/1904)
+- Doc(eos_designs) - change adapters.mode to Optional (https://github.com/aristanetworks/ansible-avd/pull/1937)
+- Feat - Add AVD Example single-dc-l3ls (https://github.com/aristanetworks/ansible-avd/pull/1849)
+- Feat(eos_cli_config_gen) - BGP VPN-IPv4/v6 SAFI route-map and match failure discard (https://github.com/aristanetworks/ansible-avd/pull/1851)
+- Feat(eos_cli_config_gen) - Enhance support for PTP monitoring (https://github.com/aristanetworks/ansible-avd/pull/1921)
+- Feat(eos_cli_config_gen) - Support multicast routing under ethernet and vlan interfaces (https://github.com/aristanetworks/ansible-avd/pull/1959)
+- Feat(eos_cli_config_gen) - add ip helper to Ethernet interface (https://github.com/aristanetworks/ansible-avd/pull/1844)
+- Feat(eos_cli_config_gen) - add support for logging event congestion-drops (https://github.com/aristanetworks/ansible-avd/pull/1933)
+- Feat(eos_cli_config_gen) - router bgp link-bandwidth (https://github.com/aristanetworks/ansible-avd/pull/1950)
+- Feat(eos_designs) -  knob to enable multicast in underlay (https://github.com/aristanetworks/ansible-avd/pull/1899)
+- Feat(eos_designs) - Add l2ls default node type key and template (https://github.com/aristanetworks/ansible-avd/pull/1938)
+- Feat(eos_designs) - Add network_ports data model for large scale port configurations (https://github.com/aristanetworks/ansible-avd/pull/1910)
+- Feat(eos_designs) - Add none as a valid value for underlay and underlay protocol (https://github.com/aristanetworks/ansible-avd/pull/1939)
+- Feat(eos_designs) - Add support for trunk_groups (https://github.com/aristanetworks/ansible-avd/pull/1826)
+- Feat(eos_designs) - Automatic uplink/downlink/mlag peer-link allocation (https://github.com/aristanetworks/ansible-avd/pull/1758)
+- Feat(eos_designs) - BGP peer groups in VRFs (https://github.com/aristanetworks/ansible-avd/pull/1663)
+- Feat(eos_designs) - Fabric EVPN multicast (https://github.com/aristanetworks/ansible-avd/pull/1922)
+- Feat(eos_designs) - Native dot1x support for connected_endpoints (https://github.com/aristanetworks/ansible-avd/pull/1932)
+- Feat(eos_designs) - Only configure vlans in use by connected endpoints or downstream L2 switches (https://github.com/aristanetworks/ansible-avd/pull/1821)
+- Feat(eos_designs) - Single-Active EVPN Multihoming (https://github.com/aristanetworks/ansible-avd/pull/1864)
+- Feat(eos_designs) - Support Pure L2 Spine in L2LS (https://github.com/aristanetworks/ansible-avd/pull/1983)
+- Feat(eos_designs) - Support all keys with svi_profiles (https://github.com/aristanetworks/ansible-avd/pull/1941)
+- Feat(eos_designs) - Support automatic BGP peer groups without nodes (https://github.com/aristanetworks/ansible-avd/pull/1914)
+- Feat(eos_designs) - Support different ipv4 pool for mlag ibgp peerings (https://github.com/aristanetworks/ansible-avd/pull/1819)
+- Feat(eos_designs) - Support for structured_config on bgp_peer_groups (https://github.com/aristanetworks/ansible-avd/pull/1905)
+- Feat(eos_designs) - custom_templates_extra_vars (https://github.com/aristanetworks/ansible-avd/pull/1989)
+- Feat(eos_designs) - evpn l2 multicast in network services (https://github.com/aristanetworks/ansible-avd/pull/1907)
+- Feat(eos_designs) - igmp querier in network services (https://github.com/aristanetworks/ansible-avd/pull/1958)
+- Feat(eos_designs) - support switch_id and offset in rd admin subfield (https://github.com/aristanetworks/ansible-avd/pull/1977)
+- Refactor(eos_designs) - Wildcard dict to list for <node_type_key> (https://github.com/aristanetworks/ansible-avd/pull/1911)
+- Refactor(eos_designs) - Wildcard dict to list for tenants.vrfs.svis.nodes (https://github.com/aristanetworks/ansible-avd/pull/1976)
+- Refactor(eos_designs)! - MPLS Peer Logic (https://github.com/aristanetworks/ansible-avd/pull/1906)
+- Refactor(plugins) - Replacing ansible combine filter with deepmerge in yaml_templates_to_facts (https://github.com/aristanetworks/ansible-avd/pull/1964)
+- Test - Skip generation of fabric documentation in `EOS_DESIGNS_UNIT_TESTS` molecule scenario (https://github.com/aristanetworks/ansible-avd/pull/1912)
+- Test(eos_designs) - Add molecule scenario for L2LS (https://github.com/aristanetworks/ansible-avd/pull/1972)
+- Test(eos_designs) - Refactor unit tests (https://github.com/aristanetworks/ansible-avd/pull/1918)
+- Test(eos_designs) - Remove invalid variables from molecule scenarios (https://github.com/aristanetworks/ansible-avd/pull/1942)
+
+Bugfixes
+--------
+
+- Doc - Minor fixes in getting-started docs (https://github.com/aristanetworks/ansible-avd/pull/1934)
+- Doc(eos_snapshot) - fix var name in input example (https://github.com/aristanetworks/ansible-avd/pull/1960)
+- Fix - typos (https://github.com/aristanetworks/ansible-avd/pull/1957)
+- Fix(eos_cli_config_gen) - Re-add seperator between VRF and non-VRF config (https://github.com/aristanetworks/ansible-avd/pull/1961)
+- Fix(eos_cli_config_gen) - Rendering of dot1x cli (https://github.com/aristanetworks/ansible-avd/pull/1924)
+- Fix(eos_cli_config_gen) - add vlan.vni var is defined (https://github.com/aristanetworks/ansible-avd/pull/1919)
+- Fix(eos_cli_config_gen) - print the vlans in alphabetical order for `router bgp` (https://github.com/aristanetworks/ansible-avd/pull/1925)
+- Fix(eos_designs) - Correct underlay routing for overlay_routing_protocol "none" (https://github.com/aristanetworks/ansible-avd/pull/1970)
+- Fix(eos_designs) - Missing IGP no-passive for single MLAG VLAN (https://github.com/aristanetworks/ansible-avd/pull/1974)
+- Fix(eos_designs) - Only configure EVPN filtering on EVPN nodes (https://github.com/aristanetworks/ansible-avd/pull/1969)
+- Fix(eos_designs) - Remove unneeded mlag ibgp vlan for vrf default (https://github.com/aristanetworks/ansible-avd/pull/1968)
+- Fix(eos_designs) - Resolve inline jinja in fabric_name (https://github.com/aristanetworks/ansible-avd/pull/1967)
+- Fix(eos_designs) - fix logic for underlay_multicast (https://github.com/aristanetworks/ansible-avd/pull/1940)
+- Fix(eos_designs) - fix the Loopback0 interface description (https://github.com/aristanetworks/ansible-avd/pull/1955)
+- Fix(eos_designs) - only create igmp snooping querier configuration on l3 devices (https://github.com/aristanetworks/ansible-avd/pull/1978)
+- Fix(eos_designs) - return the missing node_type in error (https://github.com/aristanetworks/ansible-avd/pull/1981)
+- Test - Fix various ansible-test issues (https://github.com/aristanetworks/ansible-avd/pull/1917)
+
+v3.6.0
+======
+
+Release Summary
+---------------
+
+Release 3.6.0 - See documentation on avd.sh for details.
+
+
+Minor Changes
+-------------
+
+- CI - fix j2lint typo delimeter -> delimiter (https://github.com/aristanetworks/ansible-avd/pull/1875)
+- Feat(eos_cli_config_gen) - Add ip_directed_broadcast to vlan_interfaces (https://github.com/aristanetworks/ansible-avd/pull/1896)
+- Feat(eos_cli_config_gen) - Add support for OSPF BFD sessions for adjacencies in any state (https://github.com/aristanetworks/ansible-avd/pull/1830)
+- Feat(eos_cli_config_gen) - Route redistribution under router isis (https://github.com/aristanetworks/ansible-avd/pull/1811)
+- Feat(eos_cli_config_gen) - SBFD configuration under Router BFD and SR-TE policy (https://github.com/aristanetworks/ansible-avd/pull/1808)
+- Feat(eos_cli_config_gen) - Support bfd vtep evpn commands (https://github.com/aristanetworks/ansible-avd/pull/1857)
+- Feat(eos_cli_config_gen) - Support bgp additional-paths in router_bgp vrf address-families (https://github.com/aristanetworks/ansible-avd/pull/1854)
+- Feat(eos_cli_config_gen) - Support bgp missing-policy under router bgp vrf address-families (https://github.com/aristanetworks/ansible-avd/pull/1897)
+- Feat(eos_cli_config_gen) - enable global dot1x functionality (https://github.com/aristanetworks/ansible-avd/pull/1801)
+- Feat(eos_designs) -  Structured configuration support for uplink and mlag interfaces (https://github.com/aristanetworks/ansible-avd/pull/1865)
+- Feat(eos_designs) - Relax requirement of node-specific configuration (https://github.com/aristanetworks/ansible-avd/pull/1827)
+- Feat(eos_designs) - Support for computing SNMP v3 engineid and hashes (https://github.com/aristanetworks/ansible-avd/pull/1868)
+- Feat(eos_designs) - Support for short_esi - auto in port profiles & use of new eos_cli_config_gen data model (https://github.com/aristanetworks/ansible-avd/pull/1834)
+- Feat(eos_designs) - Support raw_eos_cli key on core_interfaces (https://github.com/aristanetworks/ansible-avd/pull/1862)
+- Feat(eos_designs) - add support for 7300X3 in default platforms (https://github.com/aristanetworks/ansible-avd/pull/1863)
+- Feat(eos_designs,eos_cli_config_gen) - support 'switchport trunk native vlan tag' config (https://github.com/aristanetworks/ansible-avd/pull/1871)
+- Feat(eos_snapshot) - Support for commands containing / character (https://github.com/aristanetworks/ansible-avd/pull/1838)
+- Test(eos_cli_config_gen) - Add artifacts for router_bgp vrfs address_families peer_groups (https://github.com/aristanetworks/ansible-avd/pull/1858)
+
+Bugfixes
+--------
+
+- Doc(eos_config_deploy_cvp) - fix the defaults values in README (https://github.com/aristanetworks/ansible-avd/pull/1902)
+- Fix(eos_cli_config_gen) - VRF BGP neighbor allowas_in.enabled renders invalid config (https://github.com/aristanetworks/ansible-avd/pull/1891)
+- Fix(eos_designs) - Correct pruning of vlans when no vlans are allowed (https://github.com/aristanetworks/ansible-avd/pull/1879)
+- Fix(eos_designs) - Failure with OSPF underlay and mlag_peer_l3_vlan == mlag_peer_vlan (https://github.com/aristanetworks/ansible-avd/pull/1842)
+- Fix(eos_designs) - Wrong passive interfaces rendered under OSPF process (https://github.com/aristanetworks/ansible-avd/pull/1893)
+- Fix(eos_designs, eos_cli_config_gen) - Fix the AVD version print in virtual environments (https://github.com/aristanetworks/ansible-avd/pull/1876)
+- Fix(eos_validate_state) - Follow alphabetical order on generated reports (https://github.com/aristanetworks/ansible-avd/pull/1867)
+
+v3.5.0
+======
+
+Release Summary
+---------------
+
+Release 3.5.0 - See documentation on avd.sh for details.
+
+
+Minor Changes
+-------------
+
+- Bump(requirements) - Relax ansible.netcommon requirements to ">=2.4.0,!=2.6.0" by @gmuloc (https://github.com/aristanetworks/ansible-avd/pull/1836)
+- Doc - Fix typo in release-notes for v3.4.0 by @ClausHolbechArista (https://github.com/aristanetworks/ansible-avd/pull/1698)
+- Doc - Improve documentation, fix typo by @danieltudares (https://github.com/aristanetworks/ansible-avd/pull/1749)
+- Doc - Minor Corrections on Documentation by @JulioPDX (https://github.com/aristanetworks/ansible-avd/pull/1751)
+- Doc - Network services data model in v4.0 mpls docs by @Shivani-chourasiya (https://github.com/aristanetworks/ansible-avd/pull/1794)
+- Doc - Remove CI badge by @carlbuchmann (https://github.com/aristanetworks/ansible-avd/pull/1736)
+- Doc - Update links to github documentation by @ClausHolbechArista (https://github.com/aristanetworks/ansible-avd/pull/1713)
+- Doc(eos_cli_config_gen) - Improve documentation for router_general by @gmuloc (https://github.com/aristanetworks/ansible-avd/pull/1829)
+- Doc(eos_designs) - add precisions regarding eos_designs and eos_cli_config_gen variables by @gmuloc (https://github.com/aristanetworks/ansible-avd/pull/1743)
+- Feat(eos_cli_config_gen) - Add BGP listen-range to VRF by @ccsnw (https://github.com/aristanetworks/ansible-avd/pull/1779)
+- Feat(eos_cli_config_gen) - Add BGP neighbor interfaces in VRF by @onurgashi (https://github.com/aristanetworks/ansible-avd/pull/1817)
+- Feat(eos_cli_config_gen) - Add Tap Aggregation support by @ccsnw (https://github.com/aristanetworks/ansible-avd/pull/1737)
+- Feat(eos_cli_config_gen) - Add eos_cli for loopback_interfaces by @UchihaItachiSama (https://github.com/aristanetworks/ansible-avd/pull/1707)
+- Feat(eos_cli_config_gen) - Add eos_cli for loopback_interfaces by @UchihaItachiSama (https://github.com/aristanetworks/ansible-avd/pull/1707)
+- Feat(eos_cli_config_gen) - Add management_api_models by @UchihaItachiSama (https://github.com/aristanetworks/ansible-avd/pull/1724)
+- Feat(eos_cli_config_gen) - Add sflow interface disable default command by @xaviramon (https://github.com/aristanetworks/ansible-avd/pull/1823)
+- Feat(eos_cli_config_gen) - Add support for authenticating only ntp servers by @UchihaItachiSama (https://github.com/aristanetworks/ansible-avd/pull/1810)
+- Feat(eos_cli_config_gen) - Add support for multiple dot1x interface features by @mthiel117 (https://github.com/aristanetworks/ansible-avd/pull/1739)
+- Feat(eos_cli_config_gen) - Added support for CVX client by @sugetha24 (https://github.com/aristanetworks/ansible-avd/pull/1682)
+- Feat(eos_cli_config_gen) - Adding support for ssl profile for gnmi by @noredistribution (https://github.com/aristanetworks/ansible-avd/pull/1747)
+- Feat(eos_cli_config_gen) - Aegis Traffic Policies on Interfaces by @emilarista (https://github.com/aristanetworks/ansible-avd/pull/1638)
+- Feat(eos_cli_config_gen) - BGP VRF IPv4 RM support by @danieltudares (https://github.com/aristanetworks/ansible-avd/pull/1763)
+- Feat(eos_cli_config_gen) - Extend listen_range support for BGP by @ccsnw (https://github.com/aristanetworks/ansible-avd/pull/1735)
+- Feat(eos_cli_config_gen) - Extend logging format timestamp options by @ccsnw (https://github.com/aristanetworks/ansible-avd/pull/1709)
+- Feat(eos_cli_config_gen) - Support Aboot password by @tgodaA (https://github.com/aristanetworks/ansible-avd/pull/1691)
+- Feat(eos_cli_config_gen) - Support for multiple VARPv6 addresses by @onurgashi (https://github.com/aristanetworks/ansible-avd/pull/1761)
+- Feat(eos_cli_config_gen) - Support interfaces snmp trap link-change by @tgodaA (https://github.com/aristanetworks/ansible-avd/pull/1703)
+- Feat(eos_cli_config_gen) - Support platfom sand qos-mapping by @tgodaA (https://github.com/aristanetworks/ansible-avd/pull/1686)
+- Feat(eos_cli_config_gen) - Support remove-private-as in router_bgp by @tgodaA (https://github.com/aristanetworks/ansible-avd/pull/1666)
+- Feat(eos_cli_config_gen) - VRRP timer delay and IPv4 version options by @c-po (https://github.com/aristanetworks/ansible-avd/pull/1706)
+- Feat(eos_cli_config_gen) - add PIM sparse-mode interfaces in doc by @gmuloc (https://github.com/aristanetworks/ansible-avd/pull/1848)
+- Feat(eos_cli_config_gen) - add SNMPv3 hashed user passphrases support by @gmuloc (https://github.com/aristanetworks/ansible-avd/pull/1721)
+- Feat(eos_cli_config_gen) - add VRRP support for object tracking by @ccsnw (https://github.com/aristanetworks/ansible-avd/pull/1637)
+- Feat(eos_cli_config_gen) - dot1x-pae-mode by @mthiel117 (https://github.com/aristanetworks/ansible-avd/pull/1722)
+- Feat(eos_cli_config_gen) - dot1x-reauthentication by @mthiel117 (https://github.com/aristanetworks/ansible-avd/pull/1700)
+- Feat(eos_config_deploy_cvp) - support for !vault value in inventory file by @gmuloc (https://github.com/aristanetworks/ansible-avd/pull/1799)
+- Feat(eos_designs) - Add ability to set mlag port-channel id by @ClausHolbechArista (https://github.com/aristanetworks/ansible-avd/pull/1789)
+- Feat(eos_designs) - Add platform settings for 7368X4 by @gmuloc (https://github.com/aristanetworks/ansible-avd/pull/1690)
+- Feat(eos_designs) - Auto short_esi support for connected_endpoints and l2leaf uplinks (#1609) by @jonxstill (https://github.com/aristanetworks/ansible-avd/pull/1738)
+- Feat(eos_designs) - Custom name for underlay isis process by @emilarista (https://github.com/aristanetworks/ansible-avd/pull/1731)
+- Feat(eos_designs) - EVPN VXLAN gateway feature by @xaviramon (https://github.com/aristanetworks/ansible-avd/pull/1601)
+- Feat(eos_designs) - Enable RTC for EVPN-OVERLAY-CORE peer group by @onurgashi (https://github.com/aristanetworks/ansible-avd/pull/1775)
+- Feat(eos_designs) - RFC5549 for MLAG iBGP in VRF by @onurgashi (https://github.com/aristanetworks/ansible-avd/pull/1818)
+- Feat(eos_designs) - RFC5549 support for core_interfaces by @emilarista (https://github.com/aristanetworks/ansible-avd/pull/1741)
+- Feat(eos_designs) - Shutdown underlay links if the peer device is not deployed by @perimore (https://github.com/aristanetworks/ansible-avd/pull/1745)
+- Feat(eos_designs) - Support evpn hostflap detection expiry by @tgodaA (https://github.com/aristanetworks/ansible-avd/pull/1733)
+- Feat(eos_designs) - Support for IPv6 in underlay with RFC5549 by @xaviramon (https://github.com/aristanetworks/ansible-avd/pull/1723)
+- Feat(eos_designs) - Support for IPv6 overlay peerings with RFC5549 underlay by @xaviramon (https://github.com/aristanetworks/ansible-avd/pull/1719)
+- Feat(eos_designs) - Support for Ipv6 network services by @onurgashi (https://github.com/aristanetworks/ansible-avd/pull/1760)
+- Feat(eos_designs, eos_cli_config_gen) - Support default-services in management-api-http by @tgodaA (https://github.com/aristanetworks/ansible-avd/pull/1704)
+- Feat(eos_designs, eos_cli_config_gen) - Support default-services in management-api-http by @tgodaA (https://github.com/aristanetworks/ansible-avd/pull/1704)
+- Feat(plugins) - Updated convert_dicts filter for list values in dictionary by @Shivani-chourasiya (https://github.com/aristanetworks/ansible-avd/pull/1694)
+- Feat(plugins) - Updated convert_dicts filter for list/string values in dictionary by @Shivani-chourasiya (https://github.com/aristanetworks/ansible-avd/pull/1740)
+
+Bugfixes
+--------
+
+- Fix(eos_cli_config_gen) - Adjust the address-family evpn host-flap detection by @tgodaA (https://github.com/aristanetworks/ansible-avd/pull/1728)
+- Fix(eos_cli_config_gen) - Documentation template for IPv6 on port-channels by @ClausHolbechArista (https://github.com/aristanetworks/ansible-avd/pull/1715)
+- Fix(eos_cli_config_gen) - Render error-correction encoding on port-channel members by @ClausHolbechArista (https://github.com/aristanetworks/ansible-avd/pull/1800)
+- Fix(eos_designs) - Error in eos_designs_facts when dot in hostname by @ClausHolbechArista (https://github.com/aristanetworks/ansible-avd/pull/1816)
+- Fix(eos_designs) - Fix IPv6 static routes tenants by @onurgashi (https://github.com/aristanetworks/ansible-avd/pull/1778)
+- Fix(eos_designs) - ipv6_underlay should not apply for l2 switches by @ClausHolbechArista (https://github.com/aristanetworks/ansible-avd/pull/1812)
+- Fix(plugins) - convert_dicts resolve corner case with dictionary with invalid value by @carlbuchmann (https://github.com/aristanetworks/ansible-avd/pull/1777)
+
+New Modules
+-----------
+
+- arista.avd.eos_designs_facts - Set eos_designs facts

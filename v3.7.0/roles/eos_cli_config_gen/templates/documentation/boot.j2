@@ -1,0 +1,20 @@
+{# System Boot Configuration #}
+{% if boot is arista.avd.defined %}
+
+# System Boot Settings
+{%     if boot.secret is arista.avd.defined %}
+{%         if boot.secret.key is arista.avd.defined %}
+
+## Boot Secret Summary
+{%             set method = boot.secret.hash_algorithm | arista.avd.default("sha512") ~ " hashed" %}
+
+- The {{ method }} Aboot password is configured
+{%         endif %}
+{%     endif %}
+
+## System Boot Configuration
+
+```eos
+{%     include 'eos/boot.j2' %}
+```
+{% endif %}

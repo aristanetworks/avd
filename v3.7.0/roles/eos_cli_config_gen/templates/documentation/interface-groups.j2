@@ -1,0 +1,29 @@
+{% if interface_groups is arista.avd.defined %}
+
+## Interface Groups
+
+### Interface Groups Summary
+
+| Interface Group | Interfaces | Interface maintenance profile | BGP maintenance profiles |
+| --------------- | ---------- | ----------------------------- | ------------------------ |
+{%     for interface_group in interface_groups | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         set interfaces = interface_group.interfaces | arista.avd.natural_sort | join('<br>') %}
+{%         if interface_group.interface_maintenance_profiles is arista.avd.defined %}
+{%             set interface_profile = interface_group.interface_maintenance_profiles | arista.avd.natural_sort | join('<br>') %}
+{%         else %}
+{%             set interface_profile = maintenance.default_interface_profile | arista.avd.default('Default') %}
+{%         endif %}
+{%         if interface_group.bgp_maintenance_profiles is arista.avd.defined %}
+{%             set bgp_profile = interface_group.bgp_maintenance_profiles | arista.avd.natural_sort | join('<br>') %}
+{%         else %}
+{%             set bgp_profile = maintenance.default_bgp_profile | arista.avd.default('Default') %}
+{%         endif %}
+| {{ interface_group.name }} | {{ interfaces }} | {{ interface_profile }} | {{ bgp_profile }} |
+{%     endfor %}
+
+### Interface Groups Configuration
+
+```eos
+{%     include 'eos/interface-groups.j2' %}
+```
+{% endif %}

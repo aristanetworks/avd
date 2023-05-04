@@ -1,0 +1,20 @@
+---
+my_dci_ethernet_interfaces:
+  Ethernet4000:
+    description: My test
+    ip_address: 10.1.2.3/12
+    shutdown: false
+    type: routed
+    mtu: 1500
+    peer: MY-own-peer
+    peer_interface: Ethernet123
+    peer_type: my_precious
+
+# Override the default structured config (override_ is a custom_structured_configuration_prefix set in DC1_FABRIC.yml)
+override_ntp: null
+
+# Override other custom_structured_config (above)
+# Will only take effect on DC1_BL1B since the same key is set in hostvars for DC1_BL1A.
+my_special_dci_ethernet_interfaces:
+  Ethernet4000:
+    description: My second test

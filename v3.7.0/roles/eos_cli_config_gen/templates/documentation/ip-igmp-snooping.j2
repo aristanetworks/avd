@@ -1,0 +1,76 @@
+{% if ip_igmp_snooping is arista.avd.defined %}
+
+## IP IGMP Snooping
+
+### IP IGMP Snooping Summary
+{%     if ip_igmp_snooping.globally_enabled is arista.avd.defined(false) %}
+
+IGMP snooping is globally disabled
+{%     elif ip_igmp_snooping.globally_enabled is arista.avd.defined(true) %}
+
+| IGMP Snooping | Fast Leave | Interface Restart Query | Proxy | Restart Query Interval | Robustness Variable |
+| ------------- | ---------- | ----------------------- | ----- | ---------------------- | ------------------- |
+{%         set fast_leave = ip_igmp_snooping.fast_leave | arista.avd.default('-') %}
+{%         set intf_res_qry = ip_igmp_snooping.interface_restart_query | arista.avd.default('-') %}
+{%         set proxy = ip_igmp_snooping.proxy | arista.avd.default('-') %}
+{%         set res_qry_int = ip_igmp_snooping.restart_query_interval | arista.avd.default('-') %}
+{%         set rv = ip_igmp_snooping.robustness_variable | arista.avd.default('-') %}
+| Enabled | {{ fast_leave }} | {{ intf_res_qry }} | {{ proxy }} | {{ res_qry_int }} | {{ rv }} |
+{%         if ip_igmp_snooping.querier is arista.avd.defined %}
+
+| Querier Enabled | IP Address | Query Interval | Max Response Time | Last Member Query Interval | Last Member Query Count | Startup Query Interval | Startup Query Count | Version |
+| --------------- | ---------- | -------------- | ----------------- | -------------------------- | ----------------------- | ---------------------- | ------------------- | ------- |
+{%             set querier = ip_igmp_snooping.querier.enabled | arista.avd.default('-') %}
+{%             set addr = ip_igmp_snooping.querier.address | arista.avd.default('-') %}
+{%             set qry_int = ip_igmp_snooping.querier.query_interval | arista.avd.default('-') %}
+{%             set mx_resp_time = ip_igmp_snooping.querier.max_response_time | arista.avd.default('-') %}
+{%             set last_mem_qry_int = ip_igmp_snooping.querier.last_member_query_interval | arista.avd.default('-') %}
+{%             set last_mem_qry_cnt = ip_igmp_snooping.querier.last_member_query_count | arista.avd.default('-') %}
+{%             set stu_qry_int = ip_igmp_snooping.querier.startup_query_interval | arista.avd.default('-') %}
+{%             set stu_qry_cnt = ip_igmp_snooping.querier.startup_query_count | arista.avd.default('-') %}
+{%             set version = ip_igmp_snooping.querier.version | arista.avd.default('-') %}
+| {{ querier }} | {{ addr }} | {{ qry_int }} | {{ mx_resp_time }} | {{ last_mem_qry_int }} | {{ last_mem_qry_cnt }} | {{ stu_qry_int }} | {{ stu_qry_cnt }} | {{ version }} |
+{%         endif %}
+{%         if ip_igmp_snooping.vlans is arista.avd.defined %}
+{%             set qr_settings_vlans = [] %}
+
+#### IP IGMP Snooping Vlan Summary
+
+| Vlan | IGMP Snooping | Fast Leave | Max Groups | Proxy |
+| ---- | ------------- | ---------- | ---------- | ----- |
+{%             for vlan in ip_igmp_snooping.vlans | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%                 set vlan_snooping = vlan.enabled | arista.avd.default('-') %}
+{%                 set fast_leave = vlan.fast_leave | arista.avd.default('-') %}
+{%                 set max_groups = vlan.max_groups | arista.avd.default('-') %}
+{%                 set proxy = vlan.proxy | arista.avd.default('-') %}
+| {{ vlan.id }} | {{ vlan_snooping }} | {{ fast_leave }} | {{ max_groups }} | {{ proxy }} |
+{%                 if vlan.querier is arista.avd.defined %}
+{%                     do qr_settings_vlans.append(vlan) %}
+{%                 endif %}
+{%             endfor %}
+{%             if qr_settings_vlans | length > 0 %}
+
+| Vlan | Querier Enabled | IP Address | Query Interval | Max Response Time | Last Member Query Interval | Last Member Query Count | Startup Query Interval | Startup Query Count | Version |
+| ---- | --------------- | ---------- | -------------- | ----------------- | -------------------------- | ----------------------- | ---------------------- | ------------------- | ------- |
+{%                 for vlan in qr_settings_vlans %}
+{%                     set querier = vlan.querier.enabled | arista.avd.default('-') %}
+{%                     set addr = vlan.querier.address | arista.avd.default('-') %}
+{%                     set qry_int = vlan.querier.query_interval | arista.avd.default('-') %}
+{%                     set mx_resp_time = vlan.querier.max_response_time | arista.avd.default('-') %}
+{%                     set last_mem_qry_int = vlan.querier.last_member_query_interval | arista.avd.default('-') %}
+{%                     set last_mem_qry_cnt = vlan.querier.last_member_query_count | arista.avd.default('-') %}
+{%                     set stu_qry_int = vlan.querier.startup_query_interval | arista.avd.default('-') %}
+{%                     set stu_qry_cnt = vlan.querier.startup_query_count | arista.avd.default('-') %}
+{%                     set version = vlan.querier.version | arista.avd.default('-') %}
+| {{ vlan.id }} | {{ querier }} | {{ addr }} | {{ qry_int }} | {{ mx_resp_time }} | {{ last_mem_qry_int }} | {{ last_mem_qry_cnt }} | {{ stu_qry_int }} | {{ stu_qry_cnt }} | {{ version }} |
+{%                 endfor %}
+{%             endif %}
+{%         endif %}
+{%     endif %}
+
+### IP IGMP Snooping Device Configuration
+
+```eos
+{%     include 'eos/ip-igmp-snooping.j2' %}
+```
+{% endif %}

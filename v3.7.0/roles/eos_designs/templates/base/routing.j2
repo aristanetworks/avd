@@ -1,0 +1,8 @@
+service_routing_protocols_model: multi-agent
+ip_routing: true
+{% if underlay_rfc5549 is arista.avd.defined(true) %}
+ipv6_unicast_routing: true
+ip_routing_ipv6_interfaces: true
+{% elif switch.underlay_ipv6 is arista.avd.defined(true) %}
+ipv6_unicast_routing: true
+{% endif %}

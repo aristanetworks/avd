@@ -1,0 +1,13 @@
+{% if service_routing_protocols_model is arista.avd.defined %}
+## Service Routing Protocols Model
+
+{%     if service_routing_protocols_model is arista.avd.defined('multi-agent') %}
+Multi agent routing protocol model enabled
+{%     elif service_routing_protocols_model is arista.avd.defined('ribd') %}
+Single agent routing protocol model enabled
+{%     endif %}
+
+```eos
+{%     include 'eos/service-routing-protocols-model.j2' %}
+```
+{% endif %}

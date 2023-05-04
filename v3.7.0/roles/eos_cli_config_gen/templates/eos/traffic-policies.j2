@@ -1,0 +1,207 @@
+{% if traffic_policies is arista.avd.defined %}
+!
+traffic-policies
+{# Global options #}
+{%     if traffic_policies.options.counter_per_interface is arista.avd.defined(true) %}
+   counter interface per-interface ingress
+{%     endif %}
+{# FIELD SET #}
+{#     -- IPv4 PREFIX MANAGEMENT -- #}
+{%     if traffic_policies.field_sets.ipv4 is arista.avd.defined %}
+{%         for field_set_ipv4 in traffic_policies.field_sets.ipv4 | arista.avd.convert_dicts('name','prefixes') %}
+   field-set ipv4 prefix {{ field_set_ipv4.name }}
+      {{ field_set_ipv4.prefixes | join(' ') }}
+   !
+{%         endfor %}
+{%     endif %}
+{#     -- IPv6 PREFIX MANAGEMENT -- #}
+{%     if traffic_policies.field_sets.ipv6 is arista.avd.defined %}
+{%         for field_set_ipv6 in traffic_policies.field_sets.ipv6 | arista.avd.convert_dicts('name','prefixes') %}
+   field-set ipv6 prefix {{ field_set_ipv6.name }}
+      {{ field_set_ipv6.prefixes | join(' ') }}
+   !
+{%         endfor %}
+{%     endif %}
+{#     -- L4 PORT MANAGEMENT -- #}
+{%     if traffic_policies.field_sets.ports is arista.avd.defined %}
+{%         for field_set_port in traffic_policies.field_sets.ports | arista.avd.convert_dicts('name','port_range') %}
+   field-set l4-port {{ field_set_port.name }}
+      {{ field_set_port.port_range }}
+   !
+{%         endfor %}
+{%     endif %}
+{# TRAFFIC POLICIES #}
+{%     if traffic_policies.policies is arista.avd.defined %}
+{%         for policy in traffic_policies.policies | arista.avd.convert_dicts('name') %}
+   traffic-policy {{ policy.name }}
+{%             if policy.matches is arista.avd.defined %}
+{# COUNTER CREATION SECTION #}
+{%                 set transient_values = namespace() %}
+{%                 set transient_values.counters = [] %}
+{%                 for match in policy.matches | arista.avd.convert_dicts('name') %}
+{%                     if match.actions.count is arista.avd.defined %}
+{%                         do transient_values.counters.append(match.actions.count | string) %}
+{%                     endif %}
+{%                 endfor %}
+{%                 if transient_values.counters | length > 0 %}
+      counter {{ transient_values.counters | join(' ') }}
+{%                 endif %}
+{# MATCH SECTION #}
+{%                 for match in policy.matches | arista.avd.convert_dicts('name') %}
+      match {{ match.name }} {{ match.type | lower }}
+{#                     -- SOURCE PREFIX MANAGEMENT -- #}
+{%                     if match.source is arista.avd.defined %}
+{%                         if match.source.prefixes is arista.avd.defined %}
+         source prefix {{ match.source.prefixes | join(' ') }}
+{%                         endif %}
+{%                         if match.source.prefix_lists is arista.avd.defined %}
+         source prefix field-set {{ match.source.prefix_lists | join(' ') }}
+{%                         endif %}
+{%                     endif %}
+{#                     -- DESTINATION PREFIX MANAGEMENT -- #}
+{%                     if match.destination is arista.avd.defined %}
+{%                         if match.destination.prefixes is arista.avd.defined %}
+         destination prefix {{ match.destination.prefixes | join(' ') }}
+{%                         endif %}
+{%                         if match.destination.prefix_lists is arista.avd.defined %}
+         destination prefix field-set {{ match.destination.prefix_lists | join(' ') }}
+{%                         endif %}
+{%                     endif %}
+{#                     -- PROTOCOL MANAGEMENT -- #}
+{%                     if match.protocols is arista.avd.defined %}
+{%                         for protocol in match.protocols | arista.avd.convert_dicts('protocol') %}
+{#                             -- destination port-list -- #}
+{%                             if protocol.dst_port is arista.avd.defined and protocol.protocol | lower in ['tcp','udp'] %}
+{%                                 set protocol_cli = 'protocol ' ~ protocol.protocol %}
+{%                                 if protocol.flags is arista.avd.defined %}
+{%                                     set protocol_cli = protocol_cli ~ ' flags ' ~ protocol.flags | join(' ') %}
+{%                                 endif %}
+{%                                 set protocol_cli = protocol_cli ~ ' destination port ' ~ protocol.dst_port %}
+         {{ protocol_cli }}
+{#                             -- source port-list -- #}
+{%                             elif protocol.src_port is arista.avd.defined and protocol.protocol | lower in ['tcp','udp'] %}
+{%                                 set protocol_cli = 'protocol ' ~ protocol.protocol %}
+{%                                 if protocol.flags is arista.avd.defined %}
+{%                                     set protocol_cli = protocol_cli ~ ' flags ' ~ protocol.flags | join(' ') %}
+{%                                 endif %}
+{%                                 set protocol_cli = protocol_cli ~ ' source port ' ~ protocol.src_port %}
+         {{ protocol_cli }}
+{#                             -- destination field-set -- #}
+{%                             elif protocol.dst_field is arista.avd.defined and protocol.protocol | lower in ['tcp','udp'] %}
+{%                                 set protocol_cli = 'protocol ' ~ protocol.protocol %}
+{%                                 if protocol.flags is arista.avd.defined %}
+{%                                     set protocol_cli = protocol_cli ~ ' flags ' ~  protocol.flags | join(' ') %}
+{%                                 endif %}
+{%                                 set protocol_cli = protocol_cli ~ ' destination port field-set ' ~ protocol.dst_field %}
+         {{ protocol_cli }}
+{#                             -- source field-set -- #}
+{%                             elif protocol.src_field is arista.avd.defined and protocol.protocol | lower in ['tcp','udp'] %}
+{%                                 set protocol_cli = 'protocol ' ~ protocol.protocol %}
+{%                                 if protocol.flags is arista.avd.defined %}
+{%                                     set protocol_cli = protocol_cli ~ ' flags ' ~  protocol.flags | join(' ') %}
+{%                                 endif %}
+{%                                 set protocol_cli = protocol_cli ~ ' source port field-set ' ~ protocol.src_field %}
+         {{ protocol_cli }}
+{%                             elif protocol.icmp_type is arista.avd.defined(protocol.protocol) | lower == 'icmp' %}
+         protocol icmp type {{ protocol.icmp_type | join(' ') }} code all
+{%                             elif protocol.protocol | lower == 'neighbors' %}
+         protocol neighbors bgp
+{%                             elif protocol.protocol | lower != 'ip' %}
+         protocol {{ protocol.protocol }}
+{%                             endif %}
+{%                         endfor %}
+{%                     endif %}
+{#                     -- TTL MANAGEMENT -- #}
+{%                     if match.ttl is arista.avd.defined %}
+         ttl {{ match.ttl }}
+{%                     endif %}
+{#                     -- FRAGMENT MANAGEMENT -- #}
+{%                     if match.fragment.offset is arista.avd.defined %}
+         fragment offset {{ match.fragment.offset }}
+{%                     elif  match.fragment is defined %}
+         fragment
+{%                     endif %}
+{#       -- ACTIONS SECTION -- #}
+{%                     if match.actions.count is arista.avd.defined or match.actions.traffic_class is arista.avd.defined or match.actions.dscp is arista.avd.defined or match.actions.drop is arista.avd.defined(true)  %}
+         actions
+{#                         -- COUNT packets -- #}
+{%                         if match.actions.count is arista.avd.defined %}
+            count {{ match.actions.count }}
+{%                         endif %}
+{#                         -- Traffic Class -- #}
+{%                         if match.actions.traffic_class is arista.avd.defined %}
+            set traffic class {{ match.actions.traffic_class }}
+{%                         endif %}
+{#                         -- DSCP -- #}
+{%                         if match.actions.dscp is arista.avd.defined %}
+            set dscp {{ match.actions.dscp }}
+{%                         endif %}
+{#                         -- DROP Action -- #}
+{%                         if match.actions.drop is arista.avd.defined(true) %}
+            drop
+{#                             -- LOGGING only if DROP is set-- #}
+{%                             if match.actions.log is arista.avd.defined(true) %}
+            log
+{%                             endif %}
+{%                         endif %}
+{%                     endif %}
+{# END OF MATCH Section #}
+         !
+      !
+{%                 endfor %}
+{%             endif %}
+{# DEFAULT MATCH Section #}
+{%             if policy.default_actions is arista.avd.defined %}
+{%                 for version in policy.default_actions %}
+      match {{ version | lower }}-all-default {{ version | lower }}
+         actions
+{%                     if version is arista.avd.defined('ipv4') %}
+{#                         -- COUNT packets ipv4 -- #}
+{%                         if policy.default_actions.ipv4.count is arista.avd.defined %}
+            count {{ policy.default_actions.ipv4.count }}
+{%                         endif %}
+{#                         -- Traffic Class ipv4 -- #}
+{%                         if policy.default_actions.ipv4.traffic_class is arista.avd.defined %}
+            set traffic class {{ policy.default_actions.ipv4.traffic_class }}
+{%                         endif %}
+{#                         -- DSCP ipv4 -- #}
+{%                         if policy.default_actions.ipv4.dscp is arista.avd.defined %}
+            set dscp {{ policy.default_actions.ipv4.dscp }}
+{%                         endif %}
+{#                         -- DROP Action ipv4 -- #}
+{%                         if policy.default_actions.ipv4.drop is arista.avd.defined(true) %}
+            drop
+{#                             -- LOGGING ipv4 only if DROP is set-- #}
+{%                             if policy.default_actions.ipv4.log is arista.avd.defined(true) %}
+            log
+{%                             endif %}
+{%                         endif %}
+{%                     elif version is arista.avd.defined('ipv6') %}
+{#                         -- COUNT packets ipv6 -- #}
+{%                         if policy.default_actions.ipv6.count is arista.avd.defined %}
+            count {{ policy.default_actions.ipv6.count }}
+{%                         endif %}
+{#                         -- Traffic Class ipv6 -- #}
+{%                         if policy.default_actions.ipv6.traffic_class is arista.avd.defined %}
+            set traffic class {{ policy.default_actions.ipv6.traffic_class }}
+{%                         endif %}
+{#                         -- DSCP ipv6 -- #}
+{%                         if policy.default_actions.ipv6.dscp is arista.avd.defined %}
+            set dscp {{ policy.default_actions.ipv6.dscp }}
+{%                         endif %}
+{#                         -- DROP Action ipv6 -- #}
+{%                         if policy.default_actions.ipv6.drop is arista.avd.defined(true) %}
+            drop
+{#                             -- LOGGING ipv6 only if DROP is set-- #}
+{%                             if policy.default_actions.ipv6.log is arista.avd.defined(true) %}
+            log
+{%                             endif %}
+{%                         endif %}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{# END of DEFAULT MATCH Section #}
+   !
+{%         endfor %}
+{%     endif %}
+{% endif %}

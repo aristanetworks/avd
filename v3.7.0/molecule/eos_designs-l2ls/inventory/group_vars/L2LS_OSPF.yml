@@ -1,0 +1,33 @@
+---
+
+pod_name: L2LS_OSPF
+
+underlay_routing_protocol: ospf
+
+tenants:
+  L2LS_OSPF:
+    vrfs:
+      default:
+        svis:
+          100:
+            name: SVI_100
+            ip_address_virtual: 10.0.100.1/24
+            enabled: true
+
+network_ports:
+  - switches:
+      - "OSPF-LEAF[1-2]"
+    switch_ports:
+      - "Ethernet10-11"
+    vlans: 100
+    mode: access
+    description: Endpoint
+
+core_interfaces:
+  p2p_links:
+    - subnet: 192.168.253.0/31
+      nodes: [ OSPF-SPINE1, DUMMY-CORE ]
+      interfaces: [ Ethernet5, Ethernet1/1 ]
+    - subnet: 192.168.253.2/31
+      nodes: [ OSPF-SPINE2, DUMMY-CORE ]
+      interfaces: [ Ethernet5, Ethernet1/2 ]

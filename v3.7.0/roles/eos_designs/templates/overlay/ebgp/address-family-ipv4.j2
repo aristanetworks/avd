@@ -1,0 +1,8 @@
+  address_family_ipv4:
+    peer_groups:
+      {{ switch.bgp_peer_groups.evpn_overlay_peers.name }}:
+        activate: false
+{% if switch.evpn_gateway_vxlan_l2 is arista.avd.defined(true) or switch.evpn_gateway_vxlan_l3 is arista.avd.defined(true) %}
+      {{ switch.bgp_peer_groups.evpn_overlay_core.name }}:
+        activate: false
+{% endif %}

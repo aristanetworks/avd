@@ -1,0 +1,23 @@
+{% if patch_panel is arista.avd.defined %}
+!
+patch panel
+{%     for patch in patch_panel.patches | arista.avd.default([]) %}
+{%         if patch.name is arista.avd.defined %}
+   patch {{ patch.name }}
+{%             if patch.enabled is arista.avd.defined(false) %}
+      shutdown
+{%             endif %}
+{%             for connector in patch.connectors | arista.avd.natural_sort %}
+{%                 if connector.id is arista.avd.defined %}
+{%                     if connector.type is arista.avd.defined("interface") %}
+{%                         set connector_cli = "connector " ~ connector.id ~ " interface " ~ connector.endpoint %}
+{%                     elif connector.type is arista.avd.defined("pseudowire") %}
+{%                         set connector_cli = "connector " ~ connector.id ~ " pseudowire " ~ connector.endpoint %}
+{%                     endif %}
+      {{ connector_cli }}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+   !
+{%     endfor %}
+{% endif %}

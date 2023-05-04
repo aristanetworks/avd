@@ -1,0 +1,124 @@
+---
+fabric_name: TWODC_5STAGE_CLOS
+
+evpn_ebgp_multihop: 5
+evpn_overlay_bgp_rtc: true
+
+bgp_peer_groups:
+  IPv4_UNDERLAY_PEERS:
+    password: "AQQvKeimxJu+uGQ/yYvv9w=="
+  EVPN_OVERLAY_PEERS:
+    password: "q+VNViP5i4rVjW1cxFv2wA=="
+  MLAG_IPv4_UNDERLAY_PEER:
+    password: "vnEaG8gMeQf3d3cN6PktXQ=="
+
+mgmt_gateway: 192.168.1.254
+mgmt_destination_networks:
+  - 0.0.0.0/0
+
+p2p_uplinks_qos_profile: QOS-PROFILE
+
+p2p_uplinks_ptp:
+  enable: true
+
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    no_password: true
+    sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
+
+l3_edge:
+  p2p_links_ip_pools:
+    pool-leaf: 11.1.0.0/24
+    pool-spine: 11.1.1.0/24
+    pool-super-spine: 11.1.2.0/24
+  p2p_links_profiles:
+    generic-profile:
+      mtu: 1499
+      bfd: false
+      ptp_enable: true
+  p2p_links:
+    - nodes: [ DC1-SUPER-SPINE1, DC2-SUPER-SPINE1 ]
+      id: 1
+      interfaces: [ Ethernet6, Ethernet4 ]
+      as: [ 65100, 65200 ]
+      ip_pool: pool-super-spine
+      profile: generic-profile
+      include_in_underlay_protocol: true
+      macsec_profile: MACSEC_PROFILE
+    - nodes: [ DC1-SUPER-SPINE2, DC2-SUPER-SPINE2 ]
+      id: 2
+      interfaces: [ Ethernet6, Ethernet4 ]
+      as: [ 65100, 65200 ]
+      ip_pool: pool-super-spine
+      mtu: 1500
+      include_in_underlay_protocol: true
+    - nodes: [ DC1-POD2-SPINE1, DC2-POD1-SPINE1 ]
+      id: 10
+      interfaces: [ Ethernet5, Ethernet5 ]
+      as: [ 65120, 65210 ]
+      ip_pool: pool-spine
+      mtu: 1500
+      include_in_underlay_protocol: true
+    - nodes: [ DC1-POD2-SPINE2, DC2-POD1-SPINE2 ]
+      interfaces: [ Ethernet4, Ethernet5 ]
+      as: [ 65112, 65210 ]
+      ip: [ 200.200.200.101/24, 200.200.200.201/24 ]
+      mtu: 1498
+      profile: generic-profile
+      include_in_underlay_protocol: true
+    - nodes: [ DC1-POD1-LEAF2A, DC2-POD1-LEAF1A ]
+      interfaces: [ Ethernet7, Ethernet6 ]
+      as: [ 65112, 65211 ]
+      ip: [ 100.100.100.101/24, 100.100.100.201/24 ]
+      mtu: 1500
+      include_in_underlay_protocol: true
+    - nodes: [ DC1-POD1-LEAF2B, DC2-POD1-LEAF1A ]
+      id: 20
+      interfaces: [ Ethernet7, Ethernet7 ]
+      as: [ 65120, 65211 ]
+      ip_pool: pool-leaf
+      profile: generic-profile
+      bfd: true
+      include_in_underlay_protocol: true
+
+
+p2p_uplinks_mtu: 1500
+
+# Disable update wait-for-convergence and update wait-for-install, which is not supported in vEOS-LAB.
+spine_bgp_defaults:
+#  - update wait-for-convergence
+#  - update wait-install
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+
+super_spine_bgp_defaults:
+#  - update wait-for-convergence
+#  - update wait-install
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+
+leaf_bgp_defaults:
+#  - update wait-install
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+
+platform_settings:
+  - platforms: [default]
+    reload_delay:
+      mlag: 300
+      non_mlag: 330
+  - platforms: [vEOS-LAB]
+    raw_eos_cli: |
+      interface Loopback1111
+        description Loopback created from raw_eos_cli under platform_settings vEOS-LAB
+    reload_delay:
+      mlag: 300
+      non_mlag: 330

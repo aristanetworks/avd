@@ -1,0 +1,44 @@
+{# daemon TerminAttr #}
+{% if cvp_instance_ip is arista.avd.defined or cvp_instance_ips is arista.avd.defined %}
+{# Create list of non CVaaS server #}
+{%     set cvp_on_prem = namespace() %}
+{%     set cvp_on_prem.ips = [] %}
+{%     set cvaas = namespace() %}
+{%     set cvaas.ips = [] %}
+{%     if cvp_instance_ip is arista.avd.defined %}
+{%         if "arista.io" in cvp_instance_ip %}
+{%             do cvaas.ips.append(cvp_instance_ip) %}
+{%         else %}
+{%             do cvp_on_prem.ips.append(cvp_instance_ip) %}
+{%         endif %}
+{%     elif cvp_instance_ips is arista.avd.defined %}
+{%         for cvp_ip in cvp_instance_ips %}
+{%             if "arista.io" in cvp_ip %}
+{%                 do cvaas.ips.append(cvp_ip) %}
+{%             else %}
+{%                 do cvp_on_prem.ips.append(cvp_ip) %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+daemon_terminattr:
+  cvaddrs:
+{%     if cvp_on_prem.ips | length > 0 %}
+{%         for cvp_instance_ip in cvp_on_prem.ips %}
+    - {{ cvp_instance_ip }}:{{ terminattr_ingestgrpcurl_port }}
+{%         endfor %}
+  cvauth:
+    method: "key"
+    key: "{{ cvp_ingestauth_key }}"
+{%     elif cvaas.ips | length > 0 %}
+{%         for cvp_instance_ip in cvaas.ips %}
+    - {{ cvp_instance_ip }}:443
+{%         endfor %}
+  cvauth:
+    method: "token-secure"
+    token_file: "{{ cvp_token_file | arista.avd.default('/tmp/cv-onboarding-token') }}"
+{%     endif %}
+  cvvrf: {{ mgmt_interface_vrf }}
+  smashexcludes: "{{ terminattr_smashexcludes }}"
+  ingestexclude: "{{ terminattr_ingestexclude }}"
+  disable_aaa: {{ terminattr_disable_aaa | default(false) }}
+{% endif %}

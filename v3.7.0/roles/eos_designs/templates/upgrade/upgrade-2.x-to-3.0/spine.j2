@@ -1,0 +1,75 @@
+{% if spine is arista.avd.defined %}
+{####### spine #######}
+spine:
+  defaults:
+{%     for var in ['platform','bgp_as'] %}
+{%         if spine[var] is arista.avd.defined %}
+# Change from spine.{{ var }} to spine.defaults.{{ var }}
+    {{ var }}: {{ spine[var] }}
+{%         endif %}
+{%     endfor %}
+{%     if overlay_loopback_network_summary is arista.avd.defined %}
+# Change from overlay_loopback_network_summary to spine.defaults.loopback_ipv4_pool
+    loopback_ipv4_pool: {{ overlay_loopback_network_summary }}
+{%     endif %}
+{%     if spine.uplinks_to_super_spine_interfaces is arista.avd.defined %}
+# Change from spine.uplinks_to_super_spine_interfaces to spine.defaults.uplink_interfaces
+    uplink_interfaces: {{ spine.uplinks_to_super_spine_interfaces }}
+{%         if super_spine.nodes is arista.avd.defined %}
+# New spine.defaults.uplink_switches variable based on keys in super_spine.nodes
+    uplink_switches: {{ super_spine.nodes.keys() }}
+{%         endif %}
+{%         if max_super_spines is arista.avd.defined %}
+# Change from max_super_spines to spine.defaults.max_uplink_switches
+    max_uplink_switches: {{ max_super_spines }}
+{%         endif %}
+{%         if max_spine_to_super_spine_links is arista.avd.defined %}
+# Change from max_spine_to_super_spine_links to spine.defaults.max_parallel_uplinks
+    max_parallel_uplinks: {{ max_spine_to_super_spine_links }}
+{%         endif %}
+{%         if super_spine_underlay_p2p_network_summary is arista.avd.defined %}
+# Change from super_spine_underlay_p2p_network_summary to spine.defaults.uplink_ipv4_pool
+    uplink_ipv4_pool: {{ super_spine_underlay_p2p_network_summary }}
+{%         endif %}
+{%         if p2p_uplinks_ptp is arista.avd.defined %}
+# Change from p2p_uplinks_ptp to spine.defaults.uplink_ptp
+    uplink_ptp: {{ p2p_uplinks_ptp }}
+{%         endif %}
+{%     endif %}
+{%     if spine_bgp_defaults is arista.avd.defined %}
+# Change from spine_bgp_defaults to spine.defaults.bgp_defaults
+    bgp_defaults: {{ spine_bgp_defaults }}
+{%     elif spine.defaults.bgp_defaults is not arista.avd.defined %}
+# Change from old default value of spine_bgp_defaults to spine.defaults.bgp_defaults
+    bgp_defaults:
+      - update wait-for-convergence
+      - update wait-install
+      - no bgp default ipv4-unicast
+      - distance bgp 20 200 200
+      - graceful-restart restart-time 300
+      - graceful-restart
+{%     endif %}
+{%     if underlay_routing_protocol is arista.avd.defined and underlay_routing_protocol | lower is arista.avd.defined('isis') %}
+# Change from isis_site_id.0000 to spine.defaults.isis_system_id_prefix
+    isis_system_id_prefix: '{{ isis_site_id | arista.avd.default("0001") ~ ".0000" }}'
+{%         set switch_max_spines = max_spines | arista.avd.default(spine.nodes | arista.avd.default([]) | length) %}
+# New spine.defaults.isis_maximum_paths based on max_spines * max_l3leaf_to_spine_links
+    isis_maximum_paths: {{ switch_max_spines * max_l3leaf_to_spine_links | arista.avd.default(1) }}
+{%     endif %}
+{%     if mlag_ips.mlag_peer is arista.avd.defined %}
+# Change from mlag_ips.mlag_peer to spine.defaults.mlag_peer_ipv4_pool
+    mlag_peer_ipv4_pool: {{ mlag_ips.mlag_peer }}
+{%     endif %}
+{%     if mlag_ips.leaf_peer_l3 is arista.avd.defined %}
+# Change from mlag_ips.mlag_peer_l3_ipv4_pool to spine.defaults.mlag_peer_l3_ipv4_pool
+    mlag_peer_l3_ipv4_pool: {{ mlag_ips.leaf_peer_l3 }}
+{%     endif %}
+  nodes:
+{%     for node in spine.nodes | arista.avd.default([]) %}
+    {{ node }}:
+{%         if spine.nodes[node].super_spine_interfaces is arista.avd.defined %}
+# Change from spine.nodes.{{ node }}.super_spine_interfaces to spine.nodes.{{ node }}.uplink_switch_interfaces
+      uplink_switch_interfaces: {{ spine.nodes[node].super_spine_interfaces }}
+{%         endif %}
+{%     endfor %}
+{% endif %}

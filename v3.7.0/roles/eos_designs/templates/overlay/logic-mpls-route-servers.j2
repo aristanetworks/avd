@@ -1,0 +1,37 @@
+{% set overlay_data.mpls_route_reflectors = {} %}
+{% set overlay_data.mpls_rr_peers = {} %}
+
+{# Expand data for mpls_route_reflectors #}
+{% for route_reflector in switch.mpls_route_reflectors | arista.avd.natural_sort %}
+{%     if route_reflector == inventory_hostname %}
+{%         continue %}
+{%     endif %}
+{%     set peer_facts = avd_switch_facts[route_reflector] %}
+{%     if peer_facts.switch is arista.avd.defined(fail_action='warning',var_name='avd_switch_facts[' ~ route_reflector ~ '].switch') %}
+{%         if peer_facts.switch.mpls_overlay_role is arista.avd.defined('server') %}
+{# Found a matching server. Gathering information for this server #}
+{%             set server = namespace() %}
+{%             set server.bgp_as = peer_facts.switch.bgp_as %}
+{%             set server.ip_address = peer_facts.switch.overlay_routing_protocol_peering_address %}
+{%             if switch.mpls_overlay_role == "client" %}
+{%                 do overlay_data.mpls_route_reflectors.update({ route_reflector: server }) %}
+{%             elif switch.mpls_overlay_role == "server" %}
+{%                 do overlay_data.mpls_rr_peers.update({ route_reflector: server }) %}
+{%             endif %}
+{%         endif %}
+{%     endif %}
+{% endfor %}
+{% if bgp_mesh_pes is arista.avd.defined(true) %}
+{%     set overlay_data.mpls_mesh_pes = {} %}
+{%     for fabric_switch in groups[fabric_name] if fabric_switch not in overlay_data.mpls_route_reflectors %}
+{%         if fabric_switch != inventory_hostname %}
+{%             set peer_facts = avd_switch_facts[fabric_switch] %}
+{%             if peer_facts.switch.mpls_overlay_role is arista.avd.defined('client') %}
+{%                 set peer_pe = namespace() %}
+{%                 set peer_pe.bgp_as = peer_facts.switch.bgp_as %}
+{%                 set peer_pe.ip_address = peer_facts.switch.overlay_routing_protocol_peering_address %}
+{%                 do overlay_data.mpls_mesh_pes.update({ fabric_switch: peer_pe }) %}
+{%             endif %}
+{%         endif %}
+{%     endfor %}
+{% endif %}

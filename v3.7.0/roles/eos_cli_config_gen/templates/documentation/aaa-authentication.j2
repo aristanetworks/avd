@@ -1,0 +1,42 @@
+{% if aaa_authentication is arista.avd.defined %}
+
+## AAA Authentication
+
+### AAA Authentication Summary
+
+| Type | Sub-type | User Stores |
+| ---- | -------- | ---------- |
+{%     if aaa_authentication.login.default is arista.avd.defined %}
+| Login | default | {{ aaa_authentication.login.default }} |
+{%     endif %}
+{%     if aaa_authentication.login.console is arista.avd.defined %}
+| Login | console | {{ aaa_authentication.login.console }} |
+{%     endif %}
+{%     if aaa_authentication.policies is arista.avd.defined %}
+{%         if aaa_authentication.policies.on_failure_log is arista.avd.defined(true) %}
+
+AAA Authentication on-failure log has been enabled
+{%         endif %}
+{%         if aaa_authentication.policies.on_success_log is arista.avd.defined(true) %}
+
+AAA Authentication on-success log has been enabled
+{%         endif %}
+{%         if aaa_authentication.policies.local is defined %}
+{%             if aaa_authentication.policies.local.allow_nopassword is arista.avd.defined(true) %}
+
+Policy local allow-nopassword-remote-login has been enabled.
+{%             endif %}
+{%         endif %}
+{%         if aaa_authentication.policies.lockout.failure is arista.avd.defined and aaa_authentication.policies.lockout.duration is arista.avd.defined %}
+
+Policy lockout has been enabled. After **{{ aaa_authentication.policies.lockout.failure }}** failed login attempts within **{{ aaa_authentication.policies.lockout.window | arista.avd.default('1440') }}** minutes, you'll be locked out for **{{ aaa_authentication.policies.lockout.duration }}** minutes.
+{%         endif %}
+{%     endif %}
+
+### AAA Authentication Device Configuration
+
+```eos
+{%     include 'eos/aaa-authentication.j2' %}
+!
+```
+{% endif %}

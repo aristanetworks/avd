@@ -1,0 +1,9 @@
+{# eos - ip-extended-community-lists-regexp #}
+{% for ip_extcommunity_list in ip_extcommunity_lists_regexp | arista.avd.convert_dicts('name','entries') | arista.avd.natural_sort('name') %}
+!
+{%     for entry in ip_extcommunity_list.entries | arista.avd.default([]) %}
+{%         if entry.type is arista.avd.defined and entry.regexp is arista.avd.defined %}
+ip extcommunity-list regexp {{ ip_extcommunity_list.name }} {{ entry.type }} {{ entry.regexp }}
+{%         endif %}
+{%     endfor %}
+{% endfor %}

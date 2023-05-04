@@ -1,0 +1,2232 @@
+<?xml version="1.0" ?>
+<testsuites disabled="0" errors="0" failures="0" tests="50" time="5.740383148193359">
+	<testsuite disabled="0" errors="0" failures="0" name="yaml_templates_to_facts-nqj1ei08" skipped="0" tests="50" time="5.740383148193359">
+		<testcase classname="" name="[testhost] testhost: Gathering Facts gather_subset=['all'], gather_timeout=10" time="0.7868075370788574">
+			<system-out>{
+&quot;ansible_facts&quot;: {
+&quot;ansible_apparmor&quot;: {
+&quot;status&quot;: &quot;disabled&quot;
+},
+&quot;ansible_architecture&quot;: &quot;x86_64&quot;,
+&quot;ansible_bios_date&quot;: &quot;07/21/2022&quot;,
+&quot;ansible_bios_vendor&quot;: &quot;LENOVO&quot;,
+&quot;ansible_bios_version&quot;: &quot;N23ET82P (1.57 )&quot;,
+&quot;ansible_board_asset_tag&quot;: &quot;Not Available&quot;,
+&quot;ansible_board_name&quot;: &quot;20KGSAFA00&quot;,
+&quot;ansible_board_serial&quot;: &quot;L1HF98700TM&quot;,
+&quot;ansible_board_vendor&quot;: &quot;LENOVO&quot;,
+&quot;ansible_board_version&quot;: &quot;SDK0K17763 WIN&quot;,
+&quot;ansible_chassis_asset_tag&quot;: &quot;No Asset Information&quot;,
+&quot;ansible_chassis_serial&quot;: &quot;PF1S582G&quot;,
+&quot;ansible_chassis_vendor&quot;: &quot;LENOVO&quot;,
+&quot;ansible_chassis_version&quot;: &quot;None&quot;,
+&quot;ansible_cmdline&quot;: {
+&quot;initrd&quot;: &quot;\\EFI\\Pop_OS-aafb896a-b3f3-44e4-9196-56e2006a06c8\\initrd.img&quot;,
+&quot;loglevel&quot;: &quot;0&quot;,
+&quot;quiet&quot;: true,
+&quot;ro&quot;: true,
+&quot;root&quot;: &quot;UUID=aafb896a-b3f3-44e4-9196-56e2006a06c8&quot;,
+&quot;splash&quot;: true,
+&quot;systemd.show_status&quot;: &quot;false&quot;
+},
+&quot;ansible_date_time&quot;: {
+&quot;date&quot;: &quot;2023-01-25&quot;,
+&quot;day&quot;: &quot;25&quot;,
+&quot;epoch&quot;: &quot;1674673696&quot;,
+&quot;epoch_int&quot;: &quot;1674673696&quot;,
+&quot;hour&quot;: &quot;19&quot;,
+&quot;iso8601&quot;: &quot;2023-01-25T19:08:16Z&quot;,
+&quot;iso8601_basic&quot;: &quot;20230125T190816770244&quot;,
+&quot;iso8601_basic_short&quot;: &quot;20230125T190816&quot;,
+&quot;iso8601_micro&quot;: &quot;2023-01-25T19:08:16.770244Z&quot;,
+&quot;minute&quot;: &quot;08&quot;,
+&quot;month&quot;: &quot;01&quot;,
+&quot;second&quot;: &quot;16&quot;,
+&quot;time&quot;: &quot;19:08:16&quot;,
+&quot;tz&quot;: &quot;UTC&quot;,
+&quot;tz_dst&quot;: &quot;UTC&quot;,
+&quot;tz_offset&quot;: &quot;+0000&quot;,
+&quot;weekday&quot;: &quot;Wednesday&quot;,
+&quot;weekday_number&quot;: &quot;3&quot;,
+&quot;weeknumber&quot;: &quot;04&quot;,
+&quot;year&quot;: &quot;2023&quot;
+},
+&quot;ansible_device_links&quot;: {
+&quot;ids&quot;: {},
+&quot;labels&quot;: {},
+&quot;masters&quot;: {
+&quot;sda4&quot;: [
+&quot;dm-0&quot;
+]
+},
+&quot;uuids&quot;: {}
+},
+&quot;ansible_devices&quot;: {
+&quot;dm-0&quot;: {
+&quot;holders&quot;: [],
+&quot;host&quot;: &quot;&quot;,
+&quot;links&quot;: {
+&quot;ids&quot;: [],
+&quot;labels&quot;: [],
+&quot;masters&quot;: [],
+&quot;uuids&quot;: []
+},
+&quot;model&quot;: null,
+&quot;partitions&quot;: {},
+&quot;removable&quot;: &quot;0&quot;,
+&quot;rotational&quot;: &quot;0&quot;,
+&quot;sas_address&quot;: null,
+&quot;sas_device_handle&quot;: null,
+&quot;scheduler_mode&quot;: &quot;&quot;,
+&quot;sectors&quot;: &quot;8387583&quot;,
+&quot;sectorsize&quot;: &quot;512&quot;,
+&quot;size&quot;: &quot;4.00 GB&quot;,
+&quot;support_discard&quot;: &quot;0&quot;,
+&quot;vendor&quot;: null,
+&quot;virtual&quot;: 1
+},
+&quot;loop0&quot;: {
+&quot;holders&quot;: [],
+&quot;host&quot;: &quot;&quot;,
+&quot;links&quot;: {
+&quot;ids&quot;: [],
+&quot;labels&quot;: [],
+&quot;masters&quot;: [],
+&quot;uuids&quot;: []
+},
+&quot;model&quot;: null,
+&quot;partitions&quot;: {},
+&quot;removable&quot;: &quot;0&quot;,
+&quot;rotational&quot;: &quot;1&quot;,
+&quot;sas_address&quot;: null,
+&quot;sas_device_handle&quot;: null,
+&quot;scheduler_mode&quot;: &quot;bfq&quot;,
+&quot;sectors&quot;: &quot;0&quot;,
+&quot;sectorsize&quot;: &quot;512&quot;,
+&quot;size&quot;: &quot;0.00 Bytes&quot;,
+&quot;support_discard&quot;: &quot;0&quot;,
+&quot;vendor&quot;: null,
+&quot;virtual&quot;: 1
+},
+&quot;loop1&quot;: {
+&quot;holders&quot;: [],
+&quot;host&quot;: &quot;&quot;,
+&quot;links&quot;: {
+&quot;ids&quot;: [],
+&quot;labels&quot;: [],
+&quot;masters&quot;: [],
+&quot;uuids&quot;: []
+},
+&quot;model&quot;: null,
+&quot;partitions&quot;: {},
+&quot;removable&quot;: &quot;0&quot;,
+&quot;rotational&quot;: &quot;1&quot;,
+&quot;sas_address&quot;: null,
+&quot;sas_device_handle&quot;: null,
+&quot;scheduler_mode&quot;: &quot;bfq&quot;,
+&quot;sectors&quot;: &quot;0&quot;,
+&quot;sectorsize&quot;: &quot;512&quot;,
+&quot;size&quot;: &quot;0.00 Bytes&quot;,
+&quot;support_discard&quot;: &quot;0&quot;,
+&quot;vendor&quot;: null,
+&quot;virtual&quot;: 1
+},
+&quot;loop2&quot;: {
+&quot;holders&quot;: [],
+&quot;host&quot;: &quot;&quot;,
+&quot;links&quot;: {
+&quot;ids&quot;: [],
+&quot;labels&quot;: [],
+&quot;masters&quot;: [],
+&quot;uuids&quot;: []
+},
+&quot;model&quot;: null,
+&quot;partitions&quot;: {},
+&quot;removable&quot;: &quot;0&quot;,
+&quot;rotational&quot;: &quot;1&quot;,
+&quot;sas_address&quot;: null,
+&quot;sas_device_handle&quot;: null,
+&quot;scheduler_mode&quot;: &quot;bfq&quot;,
+&quot;sectors&quot;: &quot;0&quot;,
+&quot;sectorsize&quot;: &quot;512&quot;,
+&quot;size&quot;: &quot;0.00 Bytes&quot;,
+&quot;support_discard&quot;: &quot;0&quot;,
+&quot;vendor&quot;: null,
+&quot;virtual&quot;: 1
+},
+&quot;loop3&quot;: {
+&quot;holders&quot;: [],
+&quot;host&quot;: &quot;&quot;,
+&quot;links&quot;: {
+&quot;ids&quot;: [],
+&quot;labels&quot;: [],
+&quot;masters&quot;: [],
+&quot;uuids&quot;: []
+},
+&quot;model&quot;: null,
+&quot;partitions&quot;: {},
+&quot;removable&quot;: &quot;0&quot;,
+&quot;rotational&quot;: &quot;1&quot;,
+&quot;sas_address&quot;: null,
+&quot;sas_device_handle&quot;: null,
+&quot;scheduler_mode&quot;: &quot;bfq&quot;,
+&quot;sectors&quot;: &quot;0&quot;,
+&quot;sectorsize&quot;: &quot;512&quot;,
+&quot;size&quot;: &quot;0.00 Bytes&quot;,
+&quot;support_discard&quot;: &quot;0&quot;,
+&quot;vendor&quot;: null,
+&quot;virtual&quot;: 1
+},
+&quot;loop4&quot;: {
+&quot;holders&quot;: [],
+&quot;host&quot;: &quot;&quot;,
+&quot;links&quot;: {
+&quot;ids&quot;: [],
+&quot;labels&quot;: [],
+&quot;masters&quot;: [],
+&quot;uuids&quot;: []
+},
+&quot;model&quot;: null,
+&quot;partitions&quot;: {},
+&quot;removable&quot;: &quot;0&quot;,
+&quot;rotational&quot;: &quot;1&quot;,
+&quot;sas_address&quot;: null,
+&quot;sas_device_handle&quot;: null,
+&quot;scheduler_mode&quot;: &quot;bfq&quot;,
+&quot;sectors&quot;: &quot;0&quot;,
+&quot;sectorsize&quot;: &quot;512&quot;,
+&quot;size&quot;: &quot;0.00 Bytes&quot;,
+&quot;support_discard&quot;: &quot;0&quot;,
+&quot;vendor&quot;: null,
+&quot;virtual&quot;: 1
+},
+&quot;loop5&quot;: {
+&quot;holders&quot;: [],
+&quot;host&quot;: &quot;&quot;,
+&quot;links&quot;: {
+&quot;ids&quot;: [],
+&quot;labels&quot;: [],
+&quot;masters&quot;: [],
+&quot;uuids&quot;: []
+},
+&quot;model&quot;: null,
+&quot;partitions&quot;: {},
+&quot;removable&quot;: &quot;0&quot;,
+&quot;rotational&quot;: &quot;1&quot;,
+&quot;sas_address&quot;: null,
+&quot;sas_device_handle&quot;: null,
+&quot;scheduler_mode&quot;: &quot;bfq&quot;,
+&quot;sectors&quot;: &quot;0&quot;,
+&quot;sectorsize&quot;: &quot;512&quot;,
+&quot;size&quot;: &quot;0.00 Bytes&quot;,
+&quot;support_discard&quot;: &quot;0&quot;,
+&quot;vendor&quot;: null,
+&quot;virtual&quot;: 1
+},
+&quot;loop6&quot;: {
+&quot;holders&quot;: [],
+&quot;host&quot;: &quot;&quot;,
+&quot;links&quot;: {
+&quot;ids&quot;: [],
+&quot;labels&quot;: [],
+&quot;masters&quot;: [],
+&quot;uuids&quot;: []
+},
+&quot;model&quot;: null,
+&quot;partitions&quot;: {},
+&quot;removable&quot;: &quot;0&quot;,
+&quot;rotational&quot;: &quot;1&quot;,
+&quot;sas_address&quot;: null,
+&quot;sas_device_handle&quot;: null,
+&quot;scheduler_mode&quot;: &quot;bfq&quot;,
+&quot;sectors&quot;: &quot;0&quot;,
+&quot;sectorsize&quot;: &quot;512&quot;,
+&quot;size&quot;: &quot;0.00 Bytes&quot;,
+&quot;support_discard&quot;: &quot;0&quot;,
+&quot;vendor&quot;: null,
+&quot;virtual&quot;: 1
+},
+&quot;loop7&quot;: {
+&quot;holders&quot;: [],
+&quot;host&quot;: &quot;&quot;,
+&quot;links&quot;: {
+&quot;ids&quot;: [],
+&quot;labels&quot;: [],
+&quot;masters&quot;: [],
+&quot;uuids&quot;: []
+},
+&quot;model&quot;: null,
+&quot;partitions&quot;: {},
+&quot;removable&quot;: &quot;0&quot;,
+&quot;rotational&quot;: &quot;1&quot;,
+&quot;sas_address&quot;: null,
+&quot;sas_device_handle&quot;: null,
+&quot;scheduler_mode&quot;: &quot;bfq&quot;,
+&quot;sectors&quot;: &quot;0&quot;,
+&quot;sectorsize&quot;: &quot;512&quot;,
+&quot;size&quot;: &quot;0.00 Bytes&quot;,
+&quot;support_discard&quot;: &quot;0&quot;,
+&quot;vendor&quot;: null,
+&quot;virtual&quot;: 1
+},
+&quot;sda&quot;: {
+&quot;holders&quot;: [],
+&quot;host&quot;: &quot;&quot;,
+&quot;links&quot;: {
+&quot;ids&quot;: [],
+&quot;labels&quot;: [],
+&quot;masters&quot;: [],
+&quot;uuids&quot;: []
+},
+&quot;model&quot;: &quot;WDC PC SA530 SDA&quot;,
+&quot;partitions&quot;: {
+&quot;sda1&quot;: {
+&quot;holders&quot;: [],
+&quot;links&quot;: {
+&quot;ids&quot;: [],
+&quot;labels&quot;: [],
+&quot;masters&quot;: [],
+&quot;uuids&quot;: []
+},
+&quot;sectors&quot;: &quot;1019903&quot;,
+&quot;sectorsize&quot;: 512,
+&quot;size&quot;: &quot;498.00 MB&quot;,
+&quot;start&quot;: &quot;4096&quot;,
+&quot;uuid&quot;: null
+},
+&quot;sda2&quot;: {
+&quot;holders&quot;: [],
+&quot;links&quot;: {
+&quot;ids&quot;: [],
+&quot;labels&quot;: [],
+&quot;masters&quot;: [],
+&quot;uuids&quot;: []
+},
+&quot;sectors&quot;: &quot;8388607&quot;,
+&quot;sectorsize&quot;: 512,
+&quot;size&quot;: &quot;4.00 GB&quot;,
+&quot;start&quot;: &quot;1024000&quot;,
+&quot;uuid&quot;: null
+},
+&quot;sda3&quot;: {
+&quot;holders&quot;: [],
+&quot;links&quot;: {
+&quot;ids&quot;: [],
+&quot;labels&quot;: [],
+&quot;masters&quot;: [],
+&quot;uuids&quot;: []
+},
+&quot;sectors&quot;: &quot;482312879&quot;,
+&quot;sectorsize&quot;: 512,
+&quot;size&quot;: &quot;229.98 GB&quot;,
+&quot;start&quot;: &quot;9412608&quot;,
+&quot;uuid&quot;: null
+},
+&quot;sda4&quot;: {
+&quot;holders&quot;: [
+&quot;cryptswap&quot;
+],
+&quot;links&quot;: {
+&quot;ids&quot;: [],
+&quot;labels&quot;: [],
+&quot;masters&quot;: [
+&quot;dm-0&quot;
+],
+&quot;uuids&quot;: []
+},
+&quot;sectors&quot;: &quot;8388607&quot;,
+&quot;sectorsize&quot;: 512,
+&quot;size&quot;: &quot;4.00 GB&quot;,
+&quot;start&quot;: &quot;491725488&quot;,
+&quot;uuid&quot;: null
+}
+},
+&quot;removable&quot;: &quot;0&quot;,
+&quot;rotational&quot;: &quot;0&quot;,
+&quot;sas_address&quot;: null,
+&quot;sas_device_handle&quot;: null,
+&quot;scheduler_mode&quot;: &quot;kyber&quot;,
+&quot;sectors&quot;: &quot;500118192&quot;,
+&quot;sectorsize&quot;: &quot;512&quot;,
+&quot;size&quot;: &quot;238.47 GB&quot;,
+&quot;support_discard&quot;: &quot;512&quot;,
+&quot;vendor&quot;: &quot;ATA&quot;,
+&quot;virtual&quot;: 1
+},
+&quot;sdb&quot;: {
+&quot;holders&quot;: [],
+&quot;host&quot;: &quot;&quot;,
+&quot;links&quot;: {
+&quot;ids&quot;: [],
+&quot;labels&quot;: [],
+&quot;masters&quot;: [],
+&quot;uuids&quot;: []
+},
+&quot;model&quot;: &quot;SD/MMC CRW&quot;,
+&quot;partitions&quot;: {},
+&quot;removable&quot;: &quot;1&quot;,
+&quot;rotational&quot;: &quot;1&quot;,
+&quot;sas_address&quot;: null,
+&quot;sas_device_handle&quot;: null,
+&quot;scheduler_mode&quot;: &quot;bfq&quot;,
+&quot;sectors&quot;: &quot;0&quot;,
+&quot;sectorsize&quot;: &quot;512&quot;,
+&quot;size&quot;: &quot;0.00 Bytes&quot;,
+&quot;support_discard&quot;: &quot;0&quot;,
+&quot;vendor&quot;: &quot;Generic-&quot;,
+&quot;virtual&quot;: 1
+},
+&quot;zram0&quot;: {
+&quot;holders&quot;: [],
+&quot;host&quot;: &quot;&quot;,
+&quot;links&quot;: {
+&quot;ids&quot;: [],
+&quot;labels&quot;: [],
+&quot;masters&quot;: [],
+&quot;uuids&quot;: []
+},
+&quot;model&quot;: null,
+&quot;partitions&quot;: {},
+&quot;removable&quot;: &quot;0&quot;,
+&quot;rotational&quot;: &quot;0&quot;,
+&quot;sas_address&quot;: null,
+&quot;sas_device_handle&quot;: null,
+&quot;scheduler_mode&quot;: &quot;&quot;,
+&quot;sectors&quot;: &quot;32512000&quot;,
+&quot;sectorsize&quot;: &quot;4096&quot;,
+&quot;size&quot;: &quot;15.50 GB&quot;,
+&quot;support_discard&quot;: &quot;4096&quot;,
+&quot;vendor&quot;: null,
+&quot;virtual&quot;: 1
+}
+},
+&quot;ansible_distribution&quot;: &quot;Ubuntu&quot;,
+&quot;ansible_distribution_file_parsed&quot;: true,
+&quot;ansible_distribution_file_path&quot;: &quot;/etc/os-release&quot;,
+&quot;ansible_distribution_file_variety&quot;: &quot;Debian&quot;,
+&quot;ansible_distribution_major_version&quot;: &quot;18&quot;,
+&quot;ansible_distribution_release&quot;: &quot;bionic&quot;,
+&quot;ansible_distribution_version&quot;: &quot;18.04&quot;,
+&quot;ansible_dns&quot;: {
+&quot;nameservers&quot;: [
+&quot;192.168.10.6&quot;
+],
+&quot;search&quot;: [
+&quot;home.local&quot;
+]
+},
+&quot;ansible_domain&quot;: &quot;&quot;,
+&quot;ansible_effective_group_id&quot;: 0,
+&quot;ansible_effective_user_id&quot;: 0,
+&quot;ansible_env&quot;: {
+&quot;ANSIBLE_CALLBACKS_ENABLED&quot;: &quot;junit&quot;,
+&quot;ANSIBLE_COLLECTIONS_PATH&quot;: &quot;/root&quot;,
+&quot;ANSIBLE_CONFIG&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/integration.cfg&quot;,
+&quot;ANSIBLE_DEPRECATION_WARNINGS&quot;: &quot;false&quot;,
+&quot;ANSIBLE_DEVEL_WARNING&quot;: &quot;false&quot;,
+&quot;ANSIBLE_FORCE_COLOR&quot;: &quot;true&quot;,
+&quot;ANSIBLE_FORCE_HANDLERS&quot;: &quot;true&quot;,
+&quot;ANSIBLE_HOST_KEY_CHECKING&quot;: &quot;false&quot;,
+&quot;ANSIBLE_HOST_PATTERN_MISMATCH&quot;: &quot;error&quot;,
+&quot;ANSIBLE_INVENTORY&quot;: &quot;/dev/null&quot;,
+&quot;ANSIBLE_JINJA2_NATIVE_WARNING&quot;: &quot;false&quot;,
+&quot;ANSIBLE_LIBRARY&quot;: &quot;/dev/null&quot;,
+&quot;ANSIBLE_PLAYBOOK_DIR&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration&quot;,
+&quot;ANSIBLE_PYTHON_INTERPRETER&quot;: &quot;/set/ansible_python_interpreter/in/inventory&quot;,
+&quot;ANSIBLE_PYTHON_MODULE_RLIMIT_NOFILE&quot;: &quot;1024&quot;,
+&quot;ANSIBLE_RETRY_FILES_ENABLED&quot;: &quot;false&quot;,
+&quot;ANSIBLE_ROLES_PATH&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets&quot;,
+&quot;ANSIBLE_TEST_CI&quot;: &quot;&quot;,
+&quot;ANSIBLE_TEST_COVERAGE&quot;: &quot;&quot;,
+&quot;ANSIBLE_TEST_PYTHON_INTERPRETER&quot;: &quot;/usr/bin/python3.9&quot;,
+&quot;ANSIBLE_TEST_PYTHON_VERSION&quot;: &quot;3.9&quot;,
+&quot;ANSIBLE_WORKER_SHUTDOWN_POLL_COUNT&quot;: &quot;100&quot;,
+&quot;ANSIBLE_WORKER_SHUTDOWN_POLL_DELAY&quot;: &quot;0.1&quot;,
+&quot;HOME&quot;: &quot;/root&quot;,
+&quot;INVENTORY_PATH&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/inventory&quot;,
+&quot;JUNIT_OUTPUT_DIR&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/junit&quot;,
+&quot;JUNIT_REPLACE_OUT_OF_TREE_PATH&quot;: &quot;out-of-tree:&quot;,
+&quot;JUNIT_TASK_RELATIVE_PATH&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ&quot;,
+&quot;LC_ALL&quot;: &quot;en_US.UTF-8&quot;,
+&quot;OUTPUT_DIR&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/output_dir&quot;,
+&quot;PAGER&quot;: &quot;/bin/cat&quot;,
+&quot;PATH&quot;: &quot;/tmp/ansible-test-o1k3eqvr-injector:/tmp/python-tzetam0y-ansible:/root/ansible/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin&quot;,
+&quot;PWD&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration&quot;,
+&quot;PYTHONPATH&quot;: &quot;/root/ansible/lib&quot;
+},
+&quot;ansible_fibre_channel_wwn&quot;: [],
+&quot;ansible_fips&quot;: false,
+&quot;ansible_form_factor&quot;: &quot;Notebook&quot;,
+&quot;ansible_fqdn&quot;: &quot;100e41f6dcbf&quot;,
+&quot;ansible_hostname&quot;: &quot;100e41f6dcbf&quot;,
+&quot;ansible_hostnqn&quot;: &quot;&quot;,
+&quot;ansible_is_chroot&quot;: false,
+&quot;ansible_iscsi_iqn&quot;: &quot;&quot;,
+&quot;ansible_kernel&quot;: &quot;6.0.12-76060006-generic&quot;,
+&quot;ansible_kernel_version&quot;: &quot;#202212290932~1673966427~22.04~e15d5b5 SMP PREEMPT_DYNAMIC Tue J&quot;,
+&quot;ansible_local&quot;: {},
+&quot;ansible_lsb&quot;: {
+&quot;codename&quot;: &quot;bionic&quot;,
+&quot;description&quot;: &quot;Ubuntu 18.04.5 LTS&quot;,
+&quot;id&quot;: &quot;Ubuntu&quot;,
+&quot;major_release&quot;: &quot;18&quot;,
+&quot;release&quot;: &quot;18.04&quot;
+},
+&quot;ansible_machine&quot;: &quot;x86_64&quot;,
+&quot;ansible_machine_id&quot;: &quot;b1b243e0801d43c9b4cc29cc2631e491&quot;,
+&quot;ansible_memfree_mb&quot;: 643,
+&quot;ansible_memory_mb&quot;: {
+&quot;nocache&quot;: {
+&quot;free&quot;: 9730,
+&quot;used&quot;: 6144
+},
+&quot;real&quot;: {
+&quot;free&quot;: 643,
+&quot;total&quot;: 15874,
+&quot;used&quot;: 15231
+},
+&quot;swap&quot;: {
+&quot;cached&quot;: 33,
+&quot;free&quot;: 16926,
+&quot;total&quot;: 19970,
+&quot;used&quot;: 3044
+}
+},
+&quot;ansible_memtotal_mb&quot;: 15874,
+&quot;ansible_mounts&quot;: [
+{
+&quot;block_available&quot;: 1696742,
+&quot;block_size&quot;: 4096,
+&quot;block_total&quot;: 59065395,
+&quot;block_used&quot;: 57368653,
+&quot;device&quot;: &quot;/dev/sda3&quot;,
+&quot;fstype&quot;: &quot;ext4&quot;,
+&quot;inode_available&quot;: 9893397,
+&quot;inode_total&quot;: 15073280,
+&quot;inode_used&quot;: 5179883,
+&quot;mount&quot;: &quot;/tmp&quot;,
+&quot;options&quot;: &quot;rw,noatime,errors=remount-ro,bind&quot;,
+&quot;size_available&quot;: 6949855232,
+&quot;size_total&quot;: 241931857920,
+&quot;uuid&quot;: &quot;N/A&quot;
+},
+{
+&quot;block_available&quot;: 1696742,
+&quot;block_size&quot;: 4096,
+&quot;block_total&quot;: 59065395,
+&quot;block_used&quot;: 57368653,
+&quot;device&quot;: &quot;/dev/sda3&quot;,
+&quot;fstype&quot;: &quot;ext4&quot;,
+&quot;inode_available&quot;: 9893397,
+&quot;inode_total&quot;: 15073280,
+&quot;inode_used&quot;: 5179883,
+&quot;mount&quot;: &quot;/run&quot;,
+&quot;options&quot;: &quot;rw,noatime,errors=remount-ro,bind&quot;,
+&quot;size_available&quot;: 6949855232,
+&quot;size_total&quot;: 241931857920,
+&quot;uuid&quot;: &quot;N/A&quot;
+},
+{
+&quot;block_available&quot;: 1696742,
+&quot;block_size&quot;: 4096,
+&quot;block_total&quot;: 59065395,
+&quot;block_used&quot;: 57368653,
+&quot;device&quot;: &quot;/dev/sda3&quot;,
+&quot;fstype&quot;: &quot;ext4&quot;,
+&quot;inode_available&quot;: 9893397,
+&quot;inode_total&quot;: 15073280,
+&quot;inode_used&quot;: 5179883,
+&quot;mount&quot;: &quot;/run/lock&quot;,
+&quot;options&quot;: &quot;rw,noatime,errors=remount-ro,bind&quot;,
+&quot;size_available&quot;: 6949855232,
+&quot;size_total&quot;: 241931857920,
+&quot;uuid&quot;: &quot;N/A&quot;
+},
+{
+&quot;block_available&quot;: 1696742,
+&quot;block_size&quot;: 4096,
+&quot;block_total&quot;: 59065395,
+&quot;block_used&quot;: 57368653,
+&quot;device&quot;: &quot;/dev/sda3&quot;,
+&quot;fstype&quot;: &quot;ext4&quot;,
+&quot;inode_available&quot;: 9893397,
+&quot;inode_total&quot;: 15073280,
+&quot;inode_used&quot;: 5179883,
+&quot;mount&quot;: &quot;/etc/resolv.conf&quot;,
+&quot;options&quot;: &quot;rw,noatime,errors=remount-ro,bind&quot;,
+&quot;size_available&quot;: 6949855232,
+&quot;size_total&quot;: 241931857920,
+&quot;uuid&quot;: &quot;N/A&quot;
+},
+{
+&quot;block_available&quot;: 1696742,
+&quot;block_size&quot;: 4096,
+&quot;block_total&quot;: 59065395,
+&quot;block_used&quot;: 57368653,
+&quot;device&quot;: &quot;/dev/sda3&quot;,
+&quot;fstype&quot;: &quot;ext4&quot;,
+&quot;inode_available&quot;: 9893397,
+&quot;inode_total&quot;: 15073280,
+&quot;inode_used&quot;: 5179883,
+&quot;mount&quot;: &quot;/etc/hostname&quot;,
+&quot;options&quot;: &quot;rw,noatime,errors=remount-ro,bind&quot;,
+&quot;size_available&quot;: 6949855232,
+&quot;size_total&quot;: 241931857920,
+&quot;uuid&quot;: &quot;N/A&quot;
+},
+{
+&quot;block_available&quot;: 1696742,
+&quot;block_size&quot;: 4096,
+&quot;block_total&quot;: 59065395,
+&quot;block_used&quot;: 57368653,
+&quot;device&quot;: &quot;/dev/sda3&quot;,
+&quot;fstype&quot;: &quot;ext4&quot;,
+&quot;inode_available&quot;: 9893397,
+&quot;inode_total&quot;: 15073280,
+&quot;inode_used&quot;: 5179883,
+&quot;mount&quot;: &quot;/etc/hosts&quot;,
+&quot;options&quot;: &quot;rw,noatime,errors=remount-ro,bind&quot;,
+&quot;size_available&quot;: 6949855232,
+&quot;size_total&quot;: 241931857920,
+&quot;uuid&quot;: &quot;N/A&quot;
+}
+],
+&quot;ansible_nodename&quot;: &quot;100e41f6dcbf&quot;,
+&quot;ansible_os_family&quot;: &quot;Debian&quot;,
+&quot;ansible_pkg_mgr&quot;: &quot;apt&quot;,
+&quot;ansible_proc_cmdline&quot;: {
+&quot;initrd&quot;: &quot;\\EFI\\Pop_OS-aafb896a-b3f3-44e4-9196-56e2006a06c8\\initrd.img&quot;,
+&quot;loglevel&quot;: &quot;0&quot;,
+&quot;quiet&quot;: true,
+&quot;ro&quot;: true,
+&quot;root&quot;: &quot;UUID=aafb896a-b3f3-44e4-9196-56e2006a06c8&quot;,
+&quot;splash&quot;: true,
+&quot;systemd.show_status&quot;: &quot;false&quot;
+},
+&quot;ansible_processor&quot;: [
+&quot;0&quot;,
+&quot;GenuineIntel&quot;,
+&quot;Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz&quot;,
+&quot;1&quot;,
+&quot;GenuineIntel&quot;,
+&quot;Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz&quot;,
+&quot;2&quot;,
+&quot;GenuineIntel&quot;,
+&quot;Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz&quot;,
+&quot;3&quot;,
+&quot;GenuineIntel&quot;,
+&quot;Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz&quot;,
+&quot;4&quot;,
+&quot;GenuineIntel&quot;,
+&quot;Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz&quot;,
+&quot;5&quot;,
+&quot;GenuineIntel&quot;,
+&quot;Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz&quot;,
+&quot;6&quot;,
+&quot;GenuineIntel&quot;,
+&quot;Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz&quot;,
+&quot;7&quot;,
+&quot;GenuineIntel&quot;,
+&quot;Intel(R) Core(TM) i7-8650U CPU @ 1.90GHz&quot;
+],
+&quot;ansible_processor_cores&quot;: 4,
+&quot;ansible_processor_count&quot;: 1,
+&quot;ansible_processor_nproc&quot;: 8,
+&quot;ansible_processor_threads_per_core&quot;: 2,
+&quot;ansible_processor_vcpus&quot;: 8,
+&quot;ansible_product_name&quot;: &quot;20KGSAFA00&quot;,
+&quot;ansible_product_serial&quot;: &quot;PF1S582G&quot;,
+&quot;ansible_product_uuid&quot;: &quot;9cab844c-35d0-11b2-a85c-a20901644495&quot;,
+&quot;ansible_product_version&quot;: &quot;ThinkPad X1 Carbon&quot;,
+&quot;ansible_python&quot;: {
+&quot;executable&quot;: &quot;/usr/bin/python3.9&quot;,
+&quot;has_sslcontext&quot;: true,
+&quot;type&quot;: &quot;cpython&quot;,
+&quot;version&quot;: {
+&quot;major&quot;: 3,
+&quot;micro&quot;: 7,
+&quot;minor&quot;: 9,
+&quot;releaselevel&quot;: &quot;final&quot;,
+&quot;serial&quot;: 0
+},
+&quot;version_info&quot;: [
+3,
+9,
+7,
+&quot;final&quot;,
+0
+]
+},
+&quot;ansible_python_version&quot;: &quot;3.9.7&quot;,
+&quot;ansible_real_group_id&quot;: 0,
+&quot;ansible_real_user_id&quot;: 0,
+&quot;ansible_selinux&quot;: {
+&quot;status&quot;: &quot;disabled&quot;
+},
+&quot;ansible_selinux_python_present&quot;: true,
+&quot;ansible_service_mgr&quot;: &quot;systemd&quot;,
+&quot;ansible_ssh_host_key_ecdsa_public&quot;: &quot;AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBOkeOat91w6qMPl8QNU7uqq/JhBR4a6h22LiYQmP8zxt2cABPwXsjwck6QwYfD3i4A+4AFFAmVsHwgrXm3RyMn0=&quot;,
+&quot;ansible_ssh_host_key_ecdsa_public_keytype&quot;: &quot;ecdsa-sha2-nistp256&quot;,
+&quot;ansible_ssh_host_key_ed25519_public&quot;: &quot;AAAAC3NzaC1lZDI1NTE5AAAAICq00qx/vPRmUQjUzdILzEKmcuLYRTdEbnf352kxvbRo&quot;,
+&quot;ansible_ssh_host_key_ed25519_public_keytype&quot;: &quot;ssh-ed25519&quot;,
+&quot;ansible_ssh_host_key_rsa_public&quot;: &quot;AAAAB3NzaC1yc2EAAAADAQABAAABAQDsEHWrDFQr/S1qfXq57eH4eCcCZWbuWaCJN0/QXQX2obLDGUvGVsP+n7lCo5sNlf/2aSjojxc4DBGnhxyn3NUSnxWOkgGN6q/cnYqzlc21NwvpNj3WuNT80yFgR1My6fXAS6XrkU5RfuyMYpdhzMxJpBmyU/evBarCuR2NHvnnZg6qb/SNkIPaUmT3beA9RSl4kYIB/d/hqGTrPv6QCZ6bWkWAlDCOIUP5bGjNXnyFhO5ONy5A8eMBFLpnj/UkcNKAHXZC906xA7lHC3IT7s3m/nDeJQ8ZdiBJtb03aqiqbJPAi0ZPOiKV20iqLuQxCjnwU6rWQTSsn4/96UEESpIL&quot;,
+&quot;ansible_ssh_host_key_rsa_public_keytype&quot;: &quot;ssh-rsa&quot;,
+&quot;ansible_swapfree_mb&quot;: 16926,
+&quot;ansible_swaptotal_mb&quot;: 19970,
+&quot;ansible_system&quot;: &quot;Linux&quot;,
+&quot;ansible_system_vendor&quot;: &quot;LENOVO&quot;,
+&quot;ansible_uptime_seconds&quot;: 215391,
+&quot;ansible_user_dir&quot;: &quot;/root&quot;,
+&quot;ansible_user_gecos&quot;: &quot;root&quot;,
+&quot;ansible_user_gid&quot;: 0,
+&quot;ansible_user_id&quot;: &quot;root&quot;,
+&quot;ansible_user_shell&quot;: &quot;/bin/bash&quot;,
+&quot;ansible_user_uid&quot;: 0,
+&quot;ansible_userspace_architecture&quot;: &quot;x86_64&quot;,
+&quot;ansible_userspace_bits&quot;: &quot;64&quot;,
+&quot;ansible_virtualization_role&quot;: &quot;guest&quot;,
+&quot;ansible_virtualization_tech_guest&quot;: [
+&quot;container&quot;,
+&quot;docker&quot;
+],
+&quot;ansible_virtualization_tech_host&quot;: [
+&quot;kvm&quot;
+],
+&quot;ansible_virtualization_type&quot;: &quot;container&quot;,
+&quot;gather_subset&quot;: [
+&quot;all&quot;
+],
+&quot;module_setup&quot;: true
+},
+&quot;changed&quot;: false,
+&quot;deprecations&quot;: [],
+&quot;warnings&quot;: []
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tasks/test.yml:1" name="[testhost] testhost: yaml_templates_to_facts : collect all test cases paths={{ role_path }}/tests/, patterns={{ testcase }}.yml" time="0.29016900062561035">
+			<system-out>{
+&quot;changed&quot;: false,
+&quot;examined&quot;: 22,
+&quot;files&quot;: [
+{
+&quot;atime&quot;: 1674673658.9674606,
+&quot;ctime&quot;: 1674673695.679596,
+&quot;dev&quot;: 76,
+&quot;gid&quot;: 0,
+&quot;gr_name&quot;: &quot;root&quot;,
+&quot;inode&quot;: 12767177,
+&quot;isblk&quot;: false,
+&quot;ischr&quot;: false,
+&quot;isdir&quot;: false,
+&quot;isfifo&quot;: false,
+&quot;isgid&quot;: false,
+&quot;islnk&quot;: false,
+&quot;isreg&quot;: true,
+&quot;issock&quot;: false,
+&quot;isuid&quot;: false,
+&quot;mode&quot;: &quot;0664&quot;,
+&quot;mtime&quot;: 1663089911.0,
+&quot;nlink&quot;: 1,
+&quot;path&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_no_change.yml&quot;,
+&quot;pw_name&quot;: &quot;root&quot;,
+&quot;rgrp&quot;: true,
+&quot;roth&quot;: true,
+&quot;rusr&quot;: true,
+&quot;size&quot;: 986,
+&quot;uid&quot;: 0,
+&quot;wgrp&quot;: true,
+&quot;woth&quot;: false,
+&quot;wusr&quot;: true,
+&quot;xgrp&quot;: false,
+&quot;xoth&quot;: false,
+&quot;xusr&quot;: false
+},
+{
+&quot;atime&quot;: 1674673658.9674606,
+&quot;ctime&quot;: 1674673695.679596,
+&quot;dev&quot;: 76,
+&quot;gid&quot;: 0,
+&quot;gr_name&quot;: &quot;root&quot;,
+&quot;inode&quot;: 12767633,
+&quot;isblk&quot;: false,
+&quot;ischr&quot;: false,
+&quot;isdir&quot;: false,
+&quot;isfifo&quot;: false,
+&quot;isgid&quot;: false,
+&quot;islnk&quot;: false,
+&quot;isreg&quot;: true,
+&quot;issock&quot;: false,
+&quot;isuid&quot;: false,
+&quot;mode&quot;: &quot;0664&quot;,
+&quot;mtime&quot;: 1663089911.0,
+&quot;nlink&quot;: 1,
+&quot;path&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_strip_empty_false.yml&quot;,
+&quot;pw_name&quot;: &quot;root&quot;,
+&quot;rgrp&quot;: true,
+&quot;roth&quot;: true,
+&quot;rusr&quot;: true,
+&quot;size&quot;: 738,
+&quot;uid&quot;: 0,
+&quot;wgrp&quot;: true,
+&quot;woth&quot;: false,
+&quot;wusr&quot;: true,
+&quot;xgrp&quot;: false,
+&quot;xoth&quot;: false,
+&quot;xusr&quot;: false
+},
+{
+&quot;atime&quot;: 1674673658.9674606,
+&quot;ctime&quot;: 1674673695.679596,
+&quot;dev&quot;: 76,
+&quot;gid&quot;: 0,
+&quot;gr_name&quot;: &quot;root&quot;,
+&quot;inode&quot;: 12767634,
+&quot;isblk&quot;: false,
+&quot;ischr&quot;: false,
+&quot;isdir&quot;: false,
+&quot;isfifo&quot;: false,
+&quot;isgid&quot;: false,
+&quot;islnk&quot;: false,
+&quot;isreg&quot;: true,
+&quot;issock&quot;: false,
+&quot;isuid&quot;: false,
+&quot;mode&quot;: &quot;0664&quot;,
+&quot;mtime&quot;: 1663089911.0,
+&quot;nlink&quot;: 1,
+&quot;path&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_prepend.yml&quot;,
+&quot;pw_name&quot;: &quot;root&quot;,
+&quot;rgrp&quot;: true,
+&quot;roth&quot;: true,
+&quot;rusr&quot;: true,
+&quot;size&quot;: 992,
+&quot;uid&quot;: 0,
+&quot;wgrp&quot;: true,
+&quot;woth&quot;: false,
+&quot;wusr&quot;: true,
+&quot;xgrp&quot;: false,
+&quot;xoth&quot;: false,
+&quot;xusr&quot;: false
+},
+{
+&quot;atime&quot;: 1674673658.9674606,
+&quot;ctime&quot;: 1674673695.679596,
+&quot;dev&quot;: 76,
+&quot;gid&quot;: 0,
+&quot;gr_name&quot;: &quot;root&quot;,
+&quot;inode&quot;: 12767635,
+&quot;isblk&quot;: false,
+&quot;ischr&quot;: false,
+&quot;isdir&quot;: false,
+&quot;isfifo&quot;: false,
+&quot;isgid&quot;: false,
+&quot;islnk&quot;: false,
+&quot;isreg&quot;: true,
+&quot;issock&quot;: false,
+&quot;isuid&quot;: false,
+&quot;mode&quot;: &quot;0664&quot;,
+&quot;mtime&quot;: 1663089911.0,
+&quot;nlink&quot;: 1,
+&quot;path&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_without_templates_parameter.yml&quot;,
+&quot;pw_name&quot;: &quot;root&quot;,
+&quot;rgrp&quot;: true,
+&quot;roth&quot;: true,
+&quot;rusr&quot;: true,
+&quot;size&quot;: 249,
+&quot;uid&quot;: 0,
+&quot;wgrp&quot;: true,
+&quot;woth&quot;: false,
+&quot;wusr&quot;: true,
+&quot;xgrp&quot;: false,
+&quot;xoth&quot;: false,
+&quot;xusr&quot;: false
+},
+{
+&quot;atime&quot;: 1674673658.9674606,
+&quot;ctime&quot;: 1674673695.679596,
+&quot;dev&quot;: 76,
+&quot;gid&quot;: 0,
+&quot;gr_name&quot;: &quot;root&quot;,
+&quot;inode&quot;: 12767636,
+&quot;isblk&quot;: false,
+&quot;ischr&quot;: false,
+&quot;isdir&quot;: false,
+&quot;isfifo&quot;: false,
+&quot;isgid&quot;: false,
+&quot;islnk&quot;: false,
+&quot;isreg&quot;: true,
+&quot;issock&quot;: false,
+&quot;isuid&quot;: false,
+&quot;mode&quot;: &quot;0664&quot;,
+&quot;mtime&quot;: 1663089911.0,
+&quot;nlink&quot;: 1,
+&quot;path&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_debug_dest.yml&quot;,
+&quot;pw_name&quot;: &quot;root&quot;,
+&quot;rgrp&quot;: true,
+&quot;roth&quot;: true,
+&quot;rusr&quot;: true,
+&quot;size&quot;: 1400,
+&quot;uid&quot;: 0,
+&quot;wgrp&quot;: true,
+&quot;woth&quot;: false,
+&quot;wusr&quot;: true,
+&quot;xgrp&quot;: false,
+&quot;xoth&quot;: false,
+&quot;xusr&quot;: false
+},
+{
+&quot;atime&quot;: 1674673658.9674606,
+&quot;ctime&quot;: 1674673695.679596,
+&quot;dev&quot;: 76,
+&quot;gid&quot;: 0,
+&quot;gr_name&quot;: &quot;root&quot;,
+&quot;inode&quot;: 12767637,
+&quot;isblk&quot;: false,
+&quot;ischr&quot;: false,
+&quot;isdir&quot;: false,
+&quot;isfifo&quot;: false,
+&quot;isgid&quot;: false,
+&quot;islnk&quot;: false,
+&quot;isreg&quot;: true,
+&quot;issock&quot;: false,
+&quot;isuid&quot;: false,
+&quot;mode&quot;: &quot;0664&quot;,
+&quot;mtime&quot;: 1663089911.0,
+&quot;nlink&quot;: 1,
+&quot;path&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_keep.yml&quot;,
+&quot;pw_name&quot;: &quot;root&quot;,
+&quot;rgrp&quot;: true,
+&quot;roth&quot;: true,
+&quot;rusr&quot;: true,
+&quot;size&quot;: 990,
+&quot;uid&quot;: 0,
+&quot;wgrp&quot;: true,
+&quot;woth&quot;: false,
+&quot;wusr&quot;: true,
+&quot;xgrp&quot;: false,
+&quot;xoth&quot;: false,
+&quot;xusr&quot;: false
+},
+{
+&quot;atime&quot;: 1674673658.9674606,
+&quot;ctime&quot;: 1674673695.679596,
+&quot;dev&quot;: 76,
+&quot;gid&quot;: 0,
+&quot;gr_name&quot;: &quot;root&quot;,
+&quot;inode&quot;: 12767638,
+&quot;isblk&quot;: false,
+&quot;ischr&quot;: false,
+&quot;isdir&quot;: false,
+&quot;isfifo&quot;: false,
+&quot;isgid&quot;: false,
+&quot;islnk&quot;: false,
+&quot;isreg&quot;: true,
+&quot;issock&quot;: false,
+&quot;isuid&quot;: false,
+&quot;mode&quot;: &quot;0664&quot;,
+&quot;mtime&quot;: 1663089911.0,
+&quot;nlink&quot;: 1,
+&quot;path&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_strip_empty_invalid.yml&quot;,
+&quot;pw_name&quot;: &quot;root&quot;,
+&quot;rgrp&quot;: true,
+&quot;roth&quot;: true,
+&quot;rusr&quot;: true,
+&quot;size&quot;: 753,
+&quot;uid&quot;: 0,
+&quot;wgrp&quot;: true,
+&quot;woth&quot;: false,
+&quot;wusr&quot;: true,
+&quot;xgrp&quot;: false,
+&quot;xoth&quot;: false,
+&quot;xusr&quot;: false
+},
+{
+&quot;atime&quot;: 1674673658.9674606,
+&quot;ctime&quot;: 1674673695.679596,
+&quot;dev&quot;: 76,
+&quot;gid&quot;: 0,
+&quot;gr_name&quot;: &quot;root&quot;,
+&quot;inode&quot;: 12767639,
+&quot;isblk&quot;: false,
+&quot;ischr&quot;: false,
+&quot;isdir&quot;: false,
+&quot;isfifo&quot;: false,
+&quot;isgid&quot;: false,
+&quot;islnk&quot;: false,
+&quot;isreg&quot;: true,
+&quot;issock&quot;: false,
+&quot;isuid&quot;: false,
+&quot;mode&quot;: &quot;0664&quot;,
+&quot;mtime&quot;: 1663089911.0,
+&quot;nlink&quot;: 1,
+&quot;path&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_changed.yml&quot;,
+&quot;pw_name&quot;: &quot;root&quot;,
+&quot;rgrp&quot;: true,
+&quot;roth&quot;: true,
+&quot;rusr&quot;: true,
+&quot;size&quot;: 866,
+&quot;uid&quot;: 0,
+&quot;wgrp&quot;: true,
+&quot;woth&quot;: false,
+&quot;wusr&quot;: true,
+&quot;xgrp&quot;: false,
+&quot;xoth&quot;: false,
+&quot;xusr&quot;: false
+},
+{
+&quot;atime&quot;: 1674673658.9674606,
+&quot;ctime&quot;: 1674673695.679596,
+&quot;dev&quot;: 76,
+&quot;gid&quot;: 0,
+&quot;gr_name&quot;: &quot;root&quot;,
+&quot;inode&quot;: 12767647,
+&quot;isblk&quot;: false,
+&quot;ischr&quot;: false,
+&quot;isdir&quot;: false,
+&quot;isfifo&quot;: false,
+&quot;isgid&quot;: false,
+&quot;islnk&quot;: false,
+&quot;isreg&quot;: true,
+&quot;issock&quot;: false,
+&quot;isuid&quot;: false,
+&quot;mode&quot;: &quot;0664&quot;,
+&quot;mtime&quot;: 1663089911.0,
+&quot;nlink&quot;: 1,
+&quot;path&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_prepend_rp.yml&quot;,
+&quot;pw_name&quot;: &quot;root&quot;,
+&quot;rgrp&quot;: true,
+&quot;roth&quot;: true,
+&quot;rusr&quot;: true,
+&quot;size&quot;: 994,
+&quot;uid&quot;: 0,
+&quot;wgrp&quot;: true,
+&quot;woth&quot;: false,
+&quot;wusr&quot;: true,
+&quot;xgrp&quot;: false,
+&quot;xoth&quot;: false,
+&quot;xusr&quot;: false
+},
+{
+&quot;atime&quot;: 1674673658.9674606,
+&quot;ctime&quot;: 1674673695.679596,
+&quot;dev&quot;: 76,
+&quot;gid&quot;: 0,
+&quot;gr_name&quot;: &quot;root&quot;,
+&quot;inode&quot;: 12767648,
+&quot;isblk&quot;: false,
+&quot;ischr&quot;: false,
+&quot;isdir&quot;: false,
+&quot;isfifo&quot;: false,
+&quot;isgid&quot;: false,
+&quot;islnk&quot;: false,
+&quot;isreg&quot;: true,
+&quot;issock&quot;: false,
+&quot;isuid&quot;: false,
+&quot;mode&quot;: &quot;0664&quot;,
+&quot;mtime&quot;: 1663089911.0,
+&quot;nlink&quot;: 1,
+&quot;path&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_replace.yml&quot;,
+&quot;pw_name&quot;: &quot;root&quot;,
+&quot;rgrp&quot;: true,
+&quot;roth&quot;: true,
+&quot;rusr&quot;: true,
+&quot;size&quot;: 980,
+&quot;uid&quot;: 0,
+&quot;wgrp&quot;: true,
+&quot;woth&quot;: false,
+&quot;wusr&quot;: true,
+&quot;xgrp&quot;: false,
+&quot;xoth&quot;: false,
+&quot;xusr&quot;: false
+},
+{
+&quot;atime&quot;: 1674673658.9674606,
+&quot;ctime&quot;: 1674673695.679596,
+&quot;dev&quot;: 76,
+&quot;gid&quot;: 0,
+&quot;gr_name&quot;: &quot;root&quot;,
+&quot;inode&quot;: 12767649,
+&quot;isblk&quot;: false,
+&quot;ischr&quot;: false,
+&quot;isdir&quot;: false,
+&quot;isfifo&quot;: false,
+&quot;isgid&quot;: false,
+&quot;islnk&quot;: false,
+&quot;isreg&quot;: true,
+&quot;issock&quot;: false,
+&quot;isuid&quot;: false,
+&quot;mode&quot;: &quot;0664&quot;,
+&quot;mtime&quot;: 1663089911.0,
+&quot;nlink&quot;: 1,
+&quot;path&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_root_key.yml&quot;,
+&quot;pw_name&quot;: &quot;root&quot;,
+&quot;rgrp&quot;: true,
+&quot;roth&quot;: true,
+&quot;rusr&quot;: true,
+&quot;size&quot;: 916,
+&quot;uid&quot;: 0,
+&quot;wgrp&quot;: true,
+&quot;woth&quot;: false,
+&quot;wusr&quot;: true,
+&quot;xgrp&quot;: false,
+&quot;xoth&quot;: false,
+&quot;xusr&quot;: false
+},
+{
+&quot;atime&quot;: 1674673658.9674606,
+&quot;ctime&quot;: 1674673695.679596,
+&quot;dev&quot;: 76,
+&quot;gid&quot;: 0,
+&quot;gr_name&quot;: &quot;root&quot;,
+&quot;inode&quot;: 12767650,
+&quot;isblk&quot;: false,
+&quot;ischr&quot;: false,
+&quot;isdir&quot;: false,
+&quot;isfifo&quot;: false,
+&quot;isgid&quot;: false,
+&quot;islnk&quot;: false,
+&quot;isreg&quot;: true,
+&quot;issock&quot;: false,
+&quot;isuid&quot;: false,
+&quot;mode&quot;: &quot;0664&quot;,
+&quot;mtime&quot;: 1663089911.0,
+&quot;nlink&quot;: 1,
+&quot;path&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_json.yml&quot;,
+&quot;pw_name&quot;: &quot;root&quot;,
+&quot;rgrp&quot;: true,
+&quot;roth&quot;: true,
+&quot;rusr&quot;: true,
+&quot;size&quot;: 644,
+&quot;uid&quot;: 0,
+&quot;wgrp&quot;: true,
+&quot;woth&quot;: false,
+&quot;wusr&quot;: true,
+&quot;xgrp&quot;: false,
+&quot;xoth&quot;: false,
+&quot;xusr&quot;: false
+},
+{
+&quot;atime&quot;: 1674673658.9674606,
+&quot;ctime&quot;: 1674673695.679596,
+&quot;dev&quot;: 76,
+&quot;gid&quot;: 0,
+&quot;gr_name&quot;: &quot;root&quot;,
+&quot;inode&quot;: 12767651,
+&quot;isblk&quot;: false,
+&quot;ischr&quot;: false,
+&quot;isdir&quot;: false,
+&quot;isfifo&quot;: false,
+&quot;isgid&quot;: false,
+&quot;islnk&quot;: false,
+&quot;isreg&quot;: true,
+&quot;issock&quot;: false,
+&quot;isuid&quot;: false,
+&quot;mode&quot;: &quot;0664&quot;,
+&quot;mtime&quot;: 1663089911.0,
+&quot;nlink&quot;: 1,
+&quot;path&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_template_output_false.yml&quot;,
+&quot;pw_name&quot;: &quot;root&quot;,
+&quot;rgrp&quot;: true,
+&quot;roth&quot;: true,
+&quot;rusr&quot;: true,
+&quot;size&quot;: 686,
+&quot;uid&quot;: 0,
+&quot;wgrp&quot;: true,
+&quot;woth&quot;: false,
+&quot;wusr&quot;: true,
+&quot;xgrp&quot;: false,
+&quot;xoth&quot;: false,
+&quot;xusr&quot;: false
+},
+{
+&quot;atime&quot;: 1674673658.9674606,
+&quot;ctime&quot;: 1674673695.679596,
+&quot;dev&quot;: 76,
+&quot;gid&quot;: 0,
+&quot;gr_name&quot;: &quot;root&quot;,
+&quot;inode&quot;: 12767652,
+&quot;isblk&quot;: false,
+&quot;ischr&quot;: false,
+&quot;isdir&quot;: false,
+&quot;isfifo&quot;: false,
+&quot;isgid&quot;: false,
+&quot;islnk&quot;: false,
+&quot;isreg&quot;: true,
+&quot;issock&quot;: false,
+&quot;isuid&quot;: false,
+&quot;mode&quot;: &quot;0664&quot;,
+&quot;mtime&quot;: 1663089911.0,
+&quot;nlink&quot;: 1,
+&quot;path&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_without_root_key.yml&quot;,
+&quot;pw_name&quot;: &quot;root&quot;,
+&quot;rgrp&quot;: true,
+&quot;roth&quot;: true,
+&quot;rusr&quot;: true,
+&quot;size&quot;: 692,
+&quot;uid&quot;: 0,
+&quot;wgrp&quot;: true,
+&quot;woth&quot;: false,
+&quot;wusr&quot;: true,
+&quot;xgrp&quot;: false,
+&quot;xoth&quot;: false,
+&quot;xusr&quot;: false
+},
+{
+&quot;atime&quot;: 1674673658.9674606,
+&quot;ctime&quot;: 1674673695.679596,
+&quot;dev&quot;: 76,
+&quot;gid&quot;: 0,
+&quot;gr_name&quot;: &quot;root&quot;,
+&quot;inode&quot;: 12767653,
+&quot;isblk&quot;: false,
+&quot;ischr&quot;: false,
+&quot;isdir&quot;: false,
+&quot;isfifo&quot;: false,
+&quot;isgid&quot;: false,
+&quot;islnk&quot;: false,
+&quot;isreg&quot;: true,
+&quot;issock&quot;: false,
+&quot;isuid&quot;: false,
+&quot;mode&quot;: &quot;0664&quot;,
+&quot;mtime&quot;: 1663627272.0,
+&quot;nlink&quot;: 1,
+&quot;path&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_debug_template_output.yml&quot;,
+&quot;pw_name&quot;: &quot;root&quot;,
+&quot;rgrp&quot;: true,
+&quot;roth&quot;: true,
+&quot;rusr&quot;: true,
+&quot;size&quot;: 1180,
+&quot;uid&quot;: 0,
+&quot;wgrp&quot;: true,
+&quot;woth&quot;: false,
+&quot;wusr&quot;: true,
+&quot;xgrp&quot;: false,
+&quot;xoth&quot;: false,
+&quot;xusr&quot;: false
+},
+{
+&quot;atime&quot;: 1674673658.9674606,
+&quot;ctime&quot;: 1674673695.683596,
+&quot;dev&quot;: 76,
+&quot;gid&quot;: 0,
+&quot;gr_name&quot;: &quot;root&quot;,
+&quot;inode&quot;: 12767654,
+&quot;isblk&quot;: false,
+&quot;ischr&quot;: false,
+&quot;isdir&quot;: false,
+&quot;isfifo&quot;: false,
+&quot;isgid&quot;: false,
+&quot;islnk&quot;: false,
+&quot;isreg&quot;: true,
+&quot;issock&quot;: false,
+&quot;isuid&quot;: false,
+&quot;mode&quot;: &quot;0664&quot;,
+&quot;mtime&quot;: 1663089911.0,
+&quot;nlink&quot;: 1,
+&quot;path&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_template_output.yml&quot;,
+&quot;pw_name&quot;: &quot;root&quot;,
+&quot;rgrp&quot;: true,
+&quot;roth&quot;: true,
+&quot;rusr&quot;: true,
+&quot;size&quot;: 493,
+&quot;uid&quot;: 0,
+&quot;wgrp&quot;: true,
+&quot;woth&quot;: false,
+&quot;wusr&quot;: true,
+&quot;xgrp&quot;: false,
+&quot;xoth&quot;: false,
+&quot;xusr&quot;: false
+},
+{
+&quot;atime&quot;: 1674673658.9674606,
+&quot;ctime&quot;: 1674673695.683596,
+&quot;dev&quot;: 76,
+&quot;gid&quot;: 0,
+&quot;gr_name&quot;: &quot;root&quot;,
+&quot;inode&quot;: 12767655,
+&quot;isblk&quot;: false,
+&quot;ischr&quot;: false,
+&quot;isdir&quot;: false,
+&quot;isfifo&quot;: false,
+&quot;isgid&quot;: false,
+&quot;islnk&quot;: false,
+&quot;isreg&quot;: true,
+&quot;issock&quot;: false,
+&quot;isuid&quot;: false,
+&quot;mode&quot;: &quot;0664&quot;,
+&quot;mtime&quot;: 1663089911.0,
+&quot;nlink&quot;: 1,
+&quot;path&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_debug.yml&quot;,
+&quot;pw_name&quot;: &quot;root&quot;,
+&quot;rgrp&quot;: true,
+&quot;roth&quot;: true,
+&quot;rusr&quot;: true,
+&quot;size&quot;: 1498,
+&quot;uid&quot;: 0,
+&quot;wgrp&quot;: true,
+&quot;woth&quot;: false,
+&quot;wusr&quot;: true,
+&quot;xgrp&quot;: false,
+&quot;xoth&quot;: false,
+&quot;xusr&quot;: false
+},
+{
+&quot;atime&quot;: 1674673658.9674606,
+&quot;ctime&quot;: 1674673695.683596,
+&quot;dev&quot;: 76,
+&quot;gid&quot;: 0,
+&quot;gr_name&quot;: &quot;root&quot;,
+&quot;inode&quot;: 12767656,
+&quot;isblk&quot;: false,
+&quot;ischr&quot;: false,
+&quot;isdir&quot;: false,
+&quot;isfifo&quot;: false,
+&quot;isgid&quot;: false,
+&quot;islnk&quot;: false,
+&quot;isreg&quot;: true,
+&quot;issock&quot;: false,
+&quot;isuid&quot;: false,
+&quot;mode&quot;: &quot;0664&quot;,
+&quot;mtime&quot;: 1663089911.0,
+&quot;nlink&quot;: 1,
+&quot;path&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_append_rp.yml&quot;,
+&quot;pw_name&quot;: &quot;root&quot;,
+&quot;rgrp&quot;: true,
+&quot;roth&quot;: true,
+&quot;rusr&quot;: true,
+&quot;size&quot;: 992,
+&quot;uid&quot;: 0,
+&quot;wgrp&quot;: true,
+&quot;woth&quot;: false,
+&quot;wusr&quot;: true,
+&quot;xgrp&quot;: false,
+&quot;xoth&quot;: false,
+&quot;xusr&quot;: false
+},
+{
+&quot;atime&quot;: 1674673658.9674606,
+&quot;ctime&quot;: 1674673695.683596,
+&quot;dev&quot;: 76,
+&quot;gid&quot;: 0,
+&quot;gr_name&quot;: &quot;root&quot;,
+&quot;inode&quot;: 12767657,
+&quot;isblk&quot;: false,
+&quot;ischr&quot;: false,
+&quot;isdir&quot;: false,
+&quot;isfifo&quot;: false,
+&quot;isgid&quot;: false,
+&quot;islnk&quot;: false,
+&quot;isreg&quot;: true,
+&quot;issock&quot;: false,
+&quot;isuid&quot;: false,
+&quot;mode&quot;: &quot;0664&quot;,
+&quot;mtime&quot;: 1663089911.0,
+&quot;nlink&quot;: 1,
+&quot;path&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_append.yml&quot;,
+&quot;pw_name&quot;: &quot;root&quot;,
+&quot;rgrp&quot;: true,
+&quot;roth&quot;: true,
+&quot;rusr&quot;: true,
+&quot;size&quot;: 990,
+&quot;uid&quot;: 0,
+&quot;wgrp&quot;: true,
+&quot;woth&quot;: false,
+&quot;wusr&quot;: true,
+&quot;xgrp&quot;: false,
+&quot;xoth&quot;: false,
+&quot;xusr&quot;: false
+},
+{
+&quot;atime&quot;: 1674673658.9674606,
+&quot;ctime&quot;: 1674673695.683596,
+&quot;dev&quot;: 76,
+&quot;gid&quot;: 0,
+&quot;gr_name&quot;: &quot;root&quot;,
+&quot;inode&quot;: 12767658,
+&quot;isblk&quot;: false,
+&quot;ischr&quot;: false,
+&quot;isdir&quot;: false,
+&quot;isfifo&quot;: false,
+&quot;isgid&quot;: false,
+&quot;islnk&quot;: false,
+&quot;isreg&quot;: true,
+&quot;issock&quot;: false,
+&quot;isuid&quot;: false,
+&quot;mode&quot;: &quot;0664&quot;,
+&quot;mtime&quot;: 1663089911.0,
+&quot;nlink&quot;: 1,
+&quot;path&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_invalid.yml&quot;,
+&quot;pw_name&quot;: &quot;root&quot;,
+&quot;rgrp&quot;: true,
+&quot;roth&quot;: true,
+&quot;rusr&quot;: true,
+&quot;size&quot;: 447,
+&quot;uid&quot;: 0,
+&quot;wgrp&quot;: true,
+&quot;woth&quot;: false,
+&quot;wusr&quot;: true,
+&quot;xgrp&quot;: false,
+&quot;xoth&quot;: false,
+&quot;xusr&quot;: false
+}
+],
+&quot;matched&quot;: 20,
+&quot;msg&quot;: &quot;All paths examined&quot;,
+&quot;skipped_paths&quot;: {}
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tasks/test.yml:8" name="[testhost] testhost: yaml_templates_to_facts : set test_items test_items={{ test_cases.files | map(attribute='path') | list }}" time="0.033270835876464844">
+			<system-out>{
+&quot;ansible_facts&quot;: {
+&quot;test_items&quot;: [
+&quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_no_change.yml&quot;,
+&quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_strip_empty_false.yml&quot;,
+&quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_prepend.yml&quot;,
+&quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_without_templates_parameter.yml&quot;,
+&quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_debug_dest.yml&quot;,
+&quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_keep.yml&quot;,
+&quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_strip_empty_invalid.yml&quot;,
+&quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_changed.yml&quot;,
+&quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_prepend_rp.yml&quot;,
+&quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_replace.yml&quot;,
+&quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_root_key.yml&quot;,
+&quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_json.yml&quot;,
+&quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_template_output_false.yml&quot;,
+&quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_without_root_key.yml&quot;,
+&quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_debug_template_output.yml&quot;,
+&quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_template_output.yml&quot;,
+&quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_debug.yml&quot;,
+&quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_append_rp.yml&quot;,
+&quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_append.yml&quot;,
+&quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_invalid.yml&quot;
+]
+},
+&quot;changed&quot;: false
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tasks/test.yml:11" name="[testhost] testhost: yaml_templates_to_facts : run test cases _raw_params={{ test_case_to_run }}" time="0.05341148376464844">
+			<system-out>{
+&quot;changed&quot;: false,
+&quot;msg&quot;: &quot;All items completed&quot;,
+&quot;results&quot;: [
+{
+&quot;ansible_loop_var&quot;: &quot;test_case_to_run&quot;,
+&quot;include&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_no_change.yml&quot;,
+&quot;include_args&quot;: {},
+&quot;test_case_to_run&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_no_change.yml&quot;
+},
+{
+&quot;ansible_loop_var&quot;: &quot;test_case_to_run&quot;,
+&quot;include&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_strip_empty_false.yml&quot;,
+&quot;include_args&quot;: {},
+&quot;test_case_to_run&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_strip_empty_false.yml&quot;
+},
+{
+&quot;ansible_loop_var&quot;: &quot;test_case_to_run&quot;,
+&quot;include&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_prepend.yml&quot;,
+&quot;include_args&quot;: {},
+&quot;test_case_to_run&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_prepend.yml&quot;
+},
+{
+&quot;ansible_loop_var&quot;: &quot;test_case_to_run&quot;,
+&quot;include&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_without_templates_parameter.yml&quot;,
+&quot;include_args&quot;: {},
+&quot;test_case_to_run&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_without_templates_parameter.yml&quot;
+},
+{
+&quot;ansible_loop_var&quot;: &quot;test_case_to_run&quot;,
+&quot;include&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_debug_dest.yml&quot;,
+&quot;include_args&quot;: {},
+&quot;test_case_to_run&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_debug_dest.yml&quot;
+},
+{
+&quot;ansible_loop_var&quot;: &quot;test_case_to_run&quot;,
+&quot;include&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_keep.yml&quot;,
+&quot;include_args&quot;: {},
+&quot;test_case_to_run&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_keep.yml&quot;
+},
+{
+&quot;ansible_loop_var&quot;: &quot;test_case_to_run&quot;,
+&quot;include&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_strip_empty_invalid.yml&quot;,
+&quot;include_args&quot;: {},
+&quot;test_case_to_run&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_strip_empty_invalid.yml&quot;
+},
+{
+&quot;ansible_loop_var&quot;: &quot;test_case_to_run&quot;,
+&quot;include&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_changed.yml&quot;,
+&quot;include_args&quot;: {},
+&quot;test_case_to_run&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_changed.yml&quot;
+},
+{
+&quot;ansible_loop_var&quot;: &quot;test_case_to_run&quot;,
+&quot;include&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_prepend_rp.yml&quot;,
+&quot;include_args&quot;: {},
+&quot;test_case_to_run&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_prepend_rp.yml&quot;
+},
+{
+&quot;ansible_loop_var&quot;: &quot;test_case_to_run&quot;,
+&quot;include&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_replace.yml&quot;,
+&quot;include_args&quot;: {},
+&quot;test_case_to_run&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_replace.yml&quot;
+},
+{
+&quot;ansible_loop_var&quot;: &quot;test_case_to_run&quot;,
+&quot;include&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_root_key.yml&quot;,
+&quot;include_args&quot;: {},
+&quot;test_case_to_run&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_root_key.yml&quot;
+},
+{
+&quot;ansible_loop_var&quot;: &quot;test_case_to_run&quot;,
+&quot;include&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_json.yml&quot;,
+&quot;include_args&quot;: {},
+&quot;test_case_to_run&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_json.yml&quot;
+},
+{
+&quot;ansible_loop_var&quot;: &quot;test_case_to_run&quot;,
+&quot;include&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_template_output_false.yml&quot;,
+&quot;include_args&quot;: {},
+&quot;test_case_to_run&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_template_output_false.yml&quot;
+},
+{
+&quot;ansible_loop_var&quot;: &quot;test_case_to_run&quot;,
+&quot;include&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_without_root_key.yml&quot;,
+&quot;include_args&quot;: {},
+&quot;test_case_to_run&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_without_root_key.yml&quot;
+},
+{
+&quot;ansible_loop_var&quot;: &quot;test_case_to_run&quot;,
+&quot;include&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_debug_template_output.yml&quot;,
+&quot;include_args&quot;: {},
+&quot;test_case_to_run&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_debug_template_output.yml&quot;
+},
+{
+&quot;ansible_loop_var&quot;: &quot;test_case_to_run&quot;,
+&quot;include&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_template_output.yml&quot;,
+&quot;include_args&quot;: {},
+&quot;test_case_to_run&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_template_output.yml&quot;
+},
+{
+&quot;ansible_loop_var&quot;: &quot;test_case_to_run&quot;,
+&quot;include&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_debug.yml&quot;,
+&quot;include_args&quot;: {},
+&quot;test_case_to_run&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_debug.yml&quot;
+},
+{
+&quot;ansible_loop_var&quot;: &quot;test_case_to_run&quot;,
+&quot;include&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_append_rp.yml&quot;,
+&quot;include_args&quot;: {},
+&quot;test_case_to_run&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_append_rp.yml&quot;
+},
+{
+&quot;ansible_loop_var&quot;: &quot;test_case_to_run&quot;,
+&quot;include&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_append.yml&quot;,
+&quot;include_args&quot;: {},
+&quot;test_case_to_run&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_append.yml&quot;
+},
+{
+&quot;ansible_loop_var&quot;: &quot;test_case_to_run&quot;,
+&quot;include&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_invalid.yml&quot;,
+&quot;include_args&quot;: {},
+&quot;test_case_to_run&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_invalid.yml&quot;
+}
+]
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tasks/test.yml:11" name="[include] testhost: yaml_templates_to_facts : run test cases _raw_params={{ test_case_to_run }}" time="0.13313889503479004">
+			<system-out>/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_no_change.yml (args={} vars={'test_case_to_run': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_no_change.yml', '_ansible_item_label': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_no_change.yml'}): [testhost]
+/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_strip_empty_false.yml (args={} vars={'test_case_to_run': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_strip_empty_false.yml', '_ansible_item_label': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_strip_empty_false.yml'}): [testhost]
+/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_prepend.yml (args={} vars={'test_case_to_run': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_prepend.yml', '_ansible_item_label': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_prepend.yml'}): [testhost]
+/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_without_templates_parameter.yml (args={} vars={'test_case_to_run': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_without_templates_parameter.yml', '_ansible_item_label': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_without_templates_parameter.yml'}): [testhost]
+/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_debug_dest.yml (args={} vars={'test_case_to_run': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_debug_dest.yml', '_ansible_item_label': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_debug_dest.yml'}): [testhost]
+/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_keep.yml (args={} vars={'test_case_to_run': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_keep.yml', '_ansible_item_label': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_keep.yml'}): [testhost]
+/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_strip_empty_invalid.yml (args={} vars={'test_case_to_run': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_strip_empty_invalid.yml', '_ansible_item_label': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_strip_empty_invalid.yml'}): [testhost]
+/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_changed.yml (args={} vars={'test_case_to_run': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_changed.yml', '_ansible_item_label': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_changed.yml'}): [testhost]
+/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_prepend_rp.yml (args={} vars={'test_case_to_run': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_prepend_rp.yml', '_ansible_item_label': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_prepend_rp.yml'}): [testhost]
+/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_replace.yml (args={} vars={'test_case_to_run': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_replace.yml', '_ansible_item_label': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_replace.yml'}): [testhost]
+/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_root_key.yml (args={} vars={'test_case_to_run': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_root_key.yml', '_ansible_item_label': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_root_key.yml'}): [testhost]
+/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_json.yml (args={} vars={'test_case_to_run': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_json.yml', '_ansible_item_label': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_json.yml'}): [testhost]
+/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_template_output_false.yml (args={} vars={'test_case_to_run': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_template_output_false.yml', '_ansible_item_label': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_template_output_false.yml'}): [testhost]
+/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_without_root_key.yml (args={} vars={'test_case_to_run': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_without_root_key.yml', '_ansible_item_label': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_without_root_key.yml'}): [testhost]
+/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_debug_template_output.yml (args={} vars={'test_case_to_run': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_debug_template_output.yml', '_ansible_item_label': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_debug_template_output.yml'}): [testhost]
+/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_template_output.yml (args={} vars={'test_case_to_run': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_template_output.yml', '_ansible_item_label': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_template_output.yml'}): [testhost]
+/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_debug.yml (args={} vars={'test_case_to_run': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_debug.yml', '_ansible_item_label': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_debug.yml'}): [testhost]
+/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_append_rp.yml (args={} vars={'test_case_to_run': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_append_rp.yml', '_ansible_item_label': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_append_rp.yml'}): [testhost]
+/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_append.yml (args={} vars={'test_case_to_run': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_append.yml', '_ansible_item_label': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_append.yml'}): [testhost]
+/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_invalid.yml (args={} vars={'test_case_to_run': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_invalid.yml', '_ansible_item_label': '/root/ansible_collections/arista/avd/tests/output/.tmp/integration/yaml_templates_to_facts-2gcmntvj-ÅÑŚÌβŁÈ/tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_invalid.yml'}): [testhost]</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_no_change.yml:1" name="[testhost] testhost: yaml_templates_to_facts : Test with dest (no change) - first run to ensure no change dest={{ actual_output_dir }}/yaml_templates_to_facts_test_with_dest.yml, templates=[{'template': 'templates/template.j2'}]" time="0.5541667938232422">
+			<system-out>{
+&quot;ansible_facts&quot;: {
+&quot;clock&quot;: {
+&quot;hours&quot;: 36,
+&quot;seconds&quot;: [
+1,
+1,
+2,
+3
+],
+&quot;timezone&quot;: &quot;test&quot;
+}
+},
+&quot;changed&quot;: true,
+&quot;checksum&quot;: &quot;d059695c280056f85b529dd462d355f1378499e5&quot;,
+&quot;dest&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/yaml_templates_to_facts_test_with_dest.yml&quot;,
+&quot;gid&quot;: 0,
+&quot;group&quot;: &quot;root&quot;,
+&quot;md5sum&quot;: &quot;07ca3f8be1648f557608027c8946ba9c&quot;,
+&quot;mode&quot;: &quot;0644&quot;,
+&quot;owner&quot;: &quot;root&quot;,
+&quot;size&quot;: 71,
+&quot;src&quot;: &quot;/root/.ansible/tmp/ansible-tmp-1674673697.6978977-608-166064416598183/source&quot;,
+&quot;state&quot;: &quot;file&quot;,
+&quot;uid&quot;: 0
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_no_change.yml:12" name="[testhost] testhost: yaml_templates_to_facts : Test with dest (no change) dest={{ actual_output_dir }}/yaml_templates_to_facts_test_with_dest.yml, templates=[{'template': 'templates/template.j2'}]" time="0.493363618850708">
+			<system-out>{
+&quot;ansible_facts&quot;: {
+&quot;clock&quot;: {
+&quot;hours&quot;: 36,
+&quot;seconds&quot;: [
+1,
+1,
+2,
+3
+],
+&quot;timezone&quot;: &quot;test&quot;
+}
+},
+&quot;changed&quot;: false,
+&quot;checksum&quot;: &quot;d059695c280056f85b529dd462d355f1378499e5&quot;,
+&quot;dest&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/yaml_templates_to_facts_test_with_dest.yml&quot;,
+&quot;gid&quot;: 0,
+&quot;group&quot;: &quot;root&quot;,
+&quot;mode&quot;: &quot;0644&quot;,
+&quot;owner&quot;: &quot;root&quot;,
+&quot;path&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/yaml_templates_to_facts_test_with_dest.yml&quot;,
+&quot;size&quot;: 71,
+&quot;state&quot;: &quot;file&quot;,
+&quot;uid&quot;: 0
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_no_change.yml:23" name="[testhost] testhost: yaml_templates_to_facts : shell _raw_params=diff &quot;{{ expected_output_dir }}/yaml_templates_to_facts_test_with_dest.yml&quot; &quot;{{ actual_output_dir }}/yaml_templates_to_facts_test_with_dest.yml&quot;" time="0.3406047821044922">
+			<system-out>{
+&quot;changed&quot;: true,
+&quot;cmd&quot;: &quot;diff \&quot;/root/ansible_collections/arista/avd/tests/inventory/yaml_templates_to_facts/expected_output/yaml_templates_to_facts_test_with_dest.yml\&quot; \&quot;/root/ansible_collections/arista/avd/tests/output/yaml_templates_to_facts_test_with_dest.yml\&quot;&quot;,
+&quot;delta&quot;: &quot;0:00:00.003842&quot;,
+&quot;end&quot;: &quot;2023-01-25 19:08:19.049446&quot;,
+&quot;failed_when_result&quot;: false,
+&quot;msg&quot;: &quot;&quot;,
+&quot;rc&quot;: 0,
+&quot;start&quot;: &quot;2023-01-25 19:08:19.045604&quot;,
+&quot;stderr&quot;: &quot;&quot;,
+&quot;stderr_lines&quot;: [],
+&quot;stdout&quot;: &quot;&quot;,
+&quot;stdout_lines&quot;: []
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_no_change.yml:27" name="[testhost] testhost: yaml_templates_to_facts : assert that=['result is success', 'result.changed == false', 'result.ansible_facts is defined', 'result.ansible_facts.clock is defined']" time="0.02871394157409668">
+			<system-out>{
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;All assertions passed&quot;
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_strip_empty_false.yml:1" name="[testhost] testhost: yaml_templates_to_facts : Test with strip_empty false templates=[{'template': 'templates/template.j2', 'options': {'strip_empty_keys': False}}]" time="0.033211469650268555">
+			<system-out>{
+&quot;ansible_facts&quot;: {
+&quot;clock&quot;: {
+&quot;hours&quot;: null,
+&quot;seconds&quot;: [
+1,
+1,
+2,
+3
+],
+&quot;timezone&quot;: &quot;test&quot;
+}
+},
+&quot;changed&quot;: true
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_strip_empty_false.yml:13" name="[testhost] testhost: yaml_templates_to_facts : assert that=['result is success', 'result.changed == true', 'result.ansible_facts is defined', 'result.ansible_facts.clock is defined', 'result.ansible_facts.clock.timezone is defined', &quot;result.ansible_facts.clock.timezone == 'test'&quot;, 'result.ansible_facts.clock.hours is defined', 'result.ansible_facts.clock.hours == None', 'result.ansible_facts.clock.seconds is defined', 'result.ansible_facts.clock.seconds == [1, 1, 2, 3]']" time="0.0409696102142334">
+			<system-out>{
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;All assertions passed&quot;
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_prepend.yml:1" name="[testhost] testhost: yaml_templates_to_facts : Test with list_merge prepend option templates=[{'template': 'templates/template.j2'}, {'template': 'templates/template1.j2', 'options': {'strip_empty_keys': False, 'list_merge': 'prepend'}}]" time="0.03563094139099121">
+			<system-out>{
+&quot;ansible_facts&quot;: {
+&quot;clock&quot;: {
+&quot;hours&quot;: 84,
+&quot;minutes&quot;: 30,
+&quot;seconds&quot;: [
+3,
+4,
+5,
+5,
+1,
+1,
+2,
+3
+],
+&quot;timezone&quot;: &quot;test1&quot;
+}
+},
+&quot;changed&quot;: true
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_prepend.yml:15" name="[testhost] testhost: yaml_templates_to_facts : assert that=['result is success', 'result.changed == true', 'result.ansible_facts is defined', 'result.ansible_facts.clock is defined', 'result.ansible_facts.clock.timezone is defined', &quot;result.ansible_facts.clock.timezone == 'test1'&quot;, 'result.ansible_facts.clock.hours is defined', 'result.ansible_facts.clock.hours == 84', 'result.ansible_facts.clock.minutes is defined', 'result.ansible_facts.clock.minutes == 30', 'result.ansible_facts.clock.seconds is defined', 'result.ansible_facts.clock.seconds == [3, 4, 5, 5, 1, 1, 2, 3]']" time="0.040637969970703125">
+			<system-out>{
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;All assertions passed&quot;
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_without_templates_parameter.yml:1" name="[testhost] testhost: yaml_templates_to_facts : Test without 'templates' parameter" time="0.0182039737701416">
+			<system-out>{
+&quot;changed&quot;: false,
+&quot;msg&quot;: &quot;The argument 'templates' must be set&quot;
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_without_templates_parameter.yml:6" name="[testhost] testhost: yaml_templates_to_facts : assert that=['result is failed', 'result.changed == false', 'result.msg == &quot;The argument \'templates\' must be set&quot;']" time="0.027373552322387695">
+			<system-out>{
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;All assertions passed&quot;
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_debug_dest.yml:1" name="[testhost] testhost: yaml_templates_to_facts : Test with debug and dest dest={{ actual_output_dir }}/yaml_templates_to_facts_test_with_dest.yml, debug=True, templates=[{'template': 'templates/template.j2'}]" time="0.3473834991455078">
+			<system-out>{
+&quot;ansible_facts&quot;: {
+&quot;avd_yaml_templates_to_facts_debug&quot;: [
+{
+&quot;template&quot;: &quot;templates/template.j2&quot;,
+&quot;timestamps&quot;: {
+&quot;combine_data&quot;: &quot;2023-01-25T19:08:19.444115&quot;,
+&quot;done&quot;: &quot;2023-01-25T19:08:19.444172&quot;,
+&quot;load_yaml&quot;: &quot;2023-01-25T19:08:19.443142&quot;,
+&quot;run_template&quot;: &quot;2023-01-25T19:08:19.437485&quot;,
+&quot;starting&quot;: &quot;2023-01-25T19:08:19.437467&quot;,
+&quot;strip_empty_keys&quot;: &quot;2023-01-25T19:08:19.444101&quot;
+}
+},
+{
+&quot;action&quot;: &quot;dest&quot;,
+&quot;dest&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/yaml_templates_to_facts_test_with_dest.yml&quot;,
+&quot;timestamps&quot;: {
+&quot;done&quot;: &quot;2023-01-25T19:08:19.754309&quot;,
+&quot;write_file&quot;: &quot;2023-01-25T19:08:19.444174&quot;
+}
+}
+],
+&quot;clock&quot;: {
+&quot;hours&quot;: 36,
+&quot;seconds&quot;: [
+1,
+1,
+2,
+3
+],
+&quot;timezone&quot;: &quot;test&quot;
+}
+},
+&quot;changed&quot;: false,
+&quot;checksum&quot;: &quot;d059695c280056f85b529dd462d355f1378499e5&quot;,
+&quot;dest&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/yaml_templates_to_facts_test_with_dest.yml&quot;,
+&quot;gid&quot;: 0,
+&quot;group&quot;: &quot;root&quot;,
+&quot;mode&quot;: &quot;0644&quot;,
+&quot;owner&quot;: &quot;root&quot;,
+&quot;path&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/yaml_templates_to_facts_test_with_dest.yml&quot;,
+&quot;size&quot;: 71,
+&quot;state&quot;: &quot;file&quot;,
+&quot;uid&quot;: 0
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_debug_dest.yml:13" name="[testhost] testhost: yaml_templates_to_facts : assert that=['result is success', 'result.ansible_facts is defined', 'result.ansible_facts.clock is defined', 'result.ansible_facts.avd_yaml_templates_to_facts_debug is defined', 'result.ansible_facts.avd_yaml_templates_to_facts_debug | length &gt;= 2', 'result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].action is defined', &quot;result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].action == 'dest'&quot;, 'result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].dest is defined', 'result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].dest == &quot;{{ actual_output_dir }}/yaml_templates_to_facts_test_with_dest.yml&quot;', 'result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].timestamps is defined', 'result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].timestamps.write_file is defined', 'result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].timestamps.done is defined']" time="0.056250810623168945">
+			<system-out>{
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;All assertions passed&quot;
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_keep.yml:2" name="[testhost] testhost: yaml_templates_to_facts : Test with list_merge keep option templates=[{'template': 'templates/template.j2'}, {'template': 'templates/template1.j2', 'options': {'strip_empty_keys': False, 'list_merge': 'keep'}}]" time="0.034986257553100586">
+			<system-out>{
+&quot;ansible_facts&quot;: {
+&quot;clock&quot;: {
+&quot;hours&quot;: 84,
+&quot;minutes&quot;: 30,
+&quot;seconds&quot;: [
+1,
+1,
+2,
+3
+],
+&quot;timezone&quot;: &quot;test1&quot;
+}
+},
+&quot;changed&quot;: true
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_keep.yml:16" name="[testhost] testhost: yaml_templates_to_facts : assert that=['result is success', 'result.changed == true', 'result.ansible_facts is defined', 'result.ansible_facts.clock is defined', 'result.ansible_facts.clock.timezone is defined', &quot;result.ansible_facts.clock.timezone == 'test1'&quot;, 'result.ansible_facts.clock.hours is defined', 'result.ansible_facts.clock.hours == 84', 'result.ansible_facts.clock.minutes is defined', 'result.ansible_facts.clock.minutes == 30', 'result.ansible_facts.clock.seconds is defined', 'result.ansible_facts.clock.seconds == [1, 1, 2, 3]']" time="0.04189276695251465">
+			<system-out>{
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;All assertions passed&quot;
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_strip_empty_invalid.yml:1" name="[testhost] testhost: yaml_templates_to_facts : Test with strip_empty invalid templates=[{'template': 'templates/template.j2', 'options': {'strip_empty_keys': 'test'}}]" time="0.033280372619628906">
+			<system-out>{
+&quot;ansible_facts&quot;: {
+&quot;clock&quot;: {
+&quot;seconds&quot;: [
+1,
+1,
+2,
+3
+],
+&quot;timezone&quot;: &quot;test&quot;
+}
+},
+&quot;changed&quot;: true
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_strip_empty_invalid.yml:13" name="[testhost] testhost: yaml_templates_to_facts : assert that=['result is success', 'result.changed == true', 'result.ansible_facts is defined', 'result.ansible_facts.clock is defined', 'result.ansible_facts.clock.timezone is defined', &quot;result.ansible_facts.clock.timezone == 'test'&quot;, 'result.ansible_facts.clock.hours is not defined', 'result.ansible_facts.clock.minutes is not defined', 'result.ansible_facts.clock.seconds is defined', 'result.ansible_facts.clock.seconds == [1, 1, 2, 3]']" time="0.0379486083984375">
+			<system-out>{
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;All assertions passed&quot;
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_changed.yml:1" name="[testhost] testhost: yaml_templates_to_facts : Test with dest (no change) - Remove test file to force change in template action path={{ actual_output_dir }}/yaml_templates_to_facts_test_with_dest.yml, state=absent" time="0.1644585132598877">
+			<system-out>{
+&quot;changed&quot;: true,
+&quot;path&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/yaml_templates_to_facts_test_with_dest.yml&quot;,
+&quot;state&quot;: &quot;absent&quot;
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_changed.yml:6" name="[testhost] testhost: yaml_templates_to_facts : Test with dest (changing) dest={{ actual_output_dir }}/yaml_templates_to_facts_test_with_dest.yml, templates=[{'template': 'templates/template.j2'}]" time="0.37102413177490234">
+			<system-out>{
+&quot;ansible_facts&quot;: {
+&quot;clock&quot;: {
+&quot;hours&quot;: 36,
+&quot;seconds&quot;: [
+1,
+1,
+2,
+3
+],
+&quot;timezone&quot;: &quot;test&quot;
+}
+},
+&quot;changed&quot;: true,
+&quot;checksum&quot;: &quot;d059695c280056f85b529dd462d355f1378499e5&quot;,
+&quot;dest&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/yaml_templates_to_facts_test_with_dest.yml&quot;,
+&quot;gid&quot;: 0,
+&quot;group&quot;: &quot;root&quot;,
+&quot;md5sum&quot;: &quot;07ca3f8be1648f557608027c8946ba9c&quot;,
+&quot;mode&quot;: &quot;0644&quot;,
+&quot;owner&quot;: &quot;root&quot;,
+&quot;size&quot;: 71,
+&quot;src&quot;: &quot;/root/.ansible/tmp/ansible-tmp-1674673700.2992911-750-179401716376510/source&quot;,
+&quot;state&quot;: &quot;file&quot;,
+&quot;uid&quot;: 0
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_changed.yml:17" name="[testhost] testhost: yaml_templates_to_facts : shell _raw_params=diff &quot;{{ expected_output_dir }}/yaml_templates_to_facts_test_with_dest.yml&quot; &quot;{{ actual_output_dir }}/yaml_templates_to_facts_test_with_dest.yml&quot;" time="0.21434569358825684">
+			<system-out>{
+&quot;changed&quot;: true,
+&quot;cmd&quot;: &quot;diff \&quot;/root/ansible_collections/arista/avd/tests/inventory/yaml_templates_to_facts/expected_output/yaml_templates_to_facts_test_with_dest.yml\&quot; \&quot;/root/ansible_collections/arista/avd/tests/output/yaml_templates_to_facts_test_with_dest.yml\&quot;&quot;,
+&quot;delta&quot;: &quot;0:00:00.004184&quot;,
+&quot;end&quot;: &quot;2023-01-25 19:08:20.793266&quot;,
+&quot;failed_when_result&quot;: false,
+&quot;msg&quot;: &quot;&quot;,
+&quot;rc&quot;: 0,
+&quot;start&quot;: &quot;2023-01-25 19:08:20.789082&quot;,
+&quot;stderr&quot;: &quot;&quot;,
+&quot;stderr_lines&quot;: [],
+&quot;stdout&quot;: &quot;&quot;,
+&quot;stdout_lines&quot;: []
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_changed.yml:21" name="[testhost] testhost: yaml_templates_to_facts : assert that=['result is success', 'result.changed == true', 'result.ansible_facts is defined', 'result.ansible_facts.clock is defined']" time="0.08905601501464844">
+			<system-out>{
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;All assertions passed&quot;
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_prepend_rp.yml:1" name="[testhost] testhost: yaml_templates_to_facts : Test with list_merge prepend_rp option templates=[{'template': 'templates/template.j2'}, {'template': 'templates/template1.j2', 'options': {'strip_empty_keys': False, 'list_merge': 'prepend_rp'}}]" time="0.03917407989501953">
+			<system-out>{
+&quot;ansible_facts&quot;: {
+&quot;clock&quot;: {
+&quot;hours&quot;: 84,
+&quot;minutes&quot;: 30,
+&quot;seconds&quot;: [
+3,
+4,
+5,
+5,
+1,
+1,
+2
+],
+&quot;timezone&quot;: &quot;test1&quot;
+}
+},
+&quot;changed&quot;: true
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_prepend_rp.yml:15" name="[testhost] testhost: yaml_templates_to_facts : assert that=['result is success', 'result.changed == true', 'result.ansible_facts is defined', 'result.ansible_facts.clock is defined', 'result.ansible_facts.clock.timezone is defined', &quot;result.ansible_facts.clock.timezone == 'test1'&quot;, 'result.ansible_facts.clock.hours is defined', 'result.ansible_facts.clock.hours == 84', 'result.ansible_facts.clock.minutes is defined', 'result.ansible_facts.clock.minutes == 30', 'result.ansible_facts.clock.seconds is defined', 'result.ansible_facts.clock.seconds == [3, 4, 5, 5, 1, 1, 2]']" time="0.04162430763244629">
+			<system-out>{
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;All assertions passed&quot;
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_replace.yml:1" name="[testhost] testhost: yaml_templates_to_facts : Test with list_merge replace option templates=[{'template': 'templates/template.j2'}, {'template': 'templates/template1.j2', 'options': {'strip_empty_keys': False, 'list_merge': 'replace'}}]" time="0.035511016845703125">
+			<system-out>{
+&quot;ansible_facts&quot;: {
+&quot;clock&quot;: {
+&quot;hours&quot;: 84,
+&quot;minutes&quot;: 30,
+&quot;seconds&quot;: [
+3,
+4,
+5,
+5
+],
+&quot;timezone&quot;: &quot;test1&quot;
+}
+},
+&quot;changed&quot;: true
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_replace.yml:15" name="[testhost] testhost: yaml_templates_to_facts : assert that=['result is success', 'result.changed == true', 'result.ansible_facts is defined', 'result.ansible_facts.clock is defined', 'result.ansible_facts.clock.timezone is defined', &quot;result.ansible_facts.clock.timezone == 'test1'&quot;, 'result.ansible_facts.clock.hours is defined', 'result.ansible_facts.clock.hours == 84', 'result.ansible_facts.clock.minutes is defined', 'result.ansible_facts.clock.minutes == 30', 'result.ansible_facts.clock.seconds is defined', 'result.ansible_facts.clock.seconds == [3, 4, 5, 5]']" time="0.045252084732055664">
+			<system-out>{
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;All assertions passed&quot;
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_root_key.yml:1" name="[testhost] testhost: yaml_templates_to_facts : Test with root_key parameter root_key=structured_config, templates=[{'template': 'templates/template.j2'}]" time="0.032631635665893555">
+			<system-out>{
+&quot;ansible_facts&quot;: {
+&quot;structured_config&quot;: {
+&quot;clock&quot;: {
+&quot;seconds&quot;: [
+1,
+1,
+2,
+3
+],
+&quot;timezone&quot;: &quot;test&quot;
+}
+}
+},
+&quot;changed&quot;: true
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_root_key.yml:12" name="[testhost] testhost: yaml_templates_to_facts : assert that=['result is success', 'result.changed == true', 'result.ansible_facts is defined', 'result.ansible_facts.structured_config is defined', 'result.ansible_facts.structured_config.clock is defined', 'result.ansible_facts.structured_config.clock.timezone is defined', &quot;result.ansible_facts.structured_config.clock.timezone == 'test'&quot;, 'result.ansible_facts.structured_config.clock.hours is not defined', 'result.ansible_facts.structured_config.clock.minutes is not defined', 'result.ansible_facts.structured_config.clock.seconds is defined', 'result.ansible_facts.structured_config.clock.seconds == [1, 1, 2, 3]']" time="0.03923773765563965">
+			<system-out>{
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;All assertions passed&quot;
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_json.yml:1" name="[testhost] testhost: yaml_templates_to_facts : Test with dest and changed dest={{ actual_output_dir }}/yaml_templates_to_facts_test_with_dest.json, templates=[{'template': 'templates/template.j2'}]" time="0.3486762046813965">
+			<system-out>{
+&quot;ansible_facts&quot;: {
+&quot;clock&quot;: {
+&quot;hours&quot;: 36,
+&quot;seconds&quot;: [
+1,
+1,
+2,
+3
+],
+&quot;timezone&quot;: &quot;test&quot;
+}
+},
+&quot;changed&quot;: true,
+&quot;checksum&quot;: &quot;f44a66c2581aed0faa4328577ddf32e55924e288&quot;,
+&quot;dest&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/yaml_templates_to_facts_test_with_dest.json&quot;,
+&quot;gid&quot;: 0,
+&quot;group&quot;: &quot;root&quot;,
+&quot;md5sum&quot;: &quot;ae1cfc0bdf485258e6d7dcabde1f01e2&quot;,
+&quot;mode&quot;: &quot;0644&quot;,
+&quot;owner&quot;: &quot;root&quot;,
+&quot;size&quot;: 69,
+&quot;src&quot;: &quot;/root/.ansible/tmp/ansible-tmp-1674673701.2891192-822-86378110453099/source&quot;,
+&quot;state&quot;: &quot;file&quot;,
+&quot;uid&quot;: 0
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_json.yml:12" name="[testhost] testhost: yaml_templates_to_facts : shell _raw_params=diff &quot;{{ expected_output_dir }}/yaml_templates_to_facts_test_with_dest.json&quot; &quot;{{ actual_output_dir }}/yaml_templates_to_facts_test_with_dest.json&quot;" time="0.2160944938659668">
+			<system-out>{
+&quot;changed&quot;: true,
+&quot;cmd&quot;: &quot;diff \&quot;/root/ansible_collections/arista/avd/tests/inventory/yaml_templates_to_facts/expected_output/yaml_templates_to_facts_test_with_dest.json\&quot; \&quot;/root/ansible_collections/arista/avd/tests/output/yaml_templates_to_facts_test_with_dest.json\&quot;&quot;,
+&quot;delta&quot;: &quot;0:00:00.003741&quot;,
+&quot;end&quot;: &quot;2023-01-25 19:08:21.803124&quot;,
+&quot;failed_when_result&quot;: false,
+&quot;msg&quot;: &quot;non-zero return code&quot;,
+&quot;rc&quot;: 1,
+&quot;start&quot;: &quot;2023-01-25 19:08:21.799383&quot;,
+&quot;stderr&quot;: &quot;&quot;,
+&quot;stderr_lines&quot;: [],
+&quot;stdout&quot;: &quot;1c1\n&lt; {\&quot;clock\&quot;: {\&quot;timezone\&quot;: \&quot;test\&quot;, \&quot;hours\&quot;: 36, \&quot;seconds\&quot;: [1, 1, 2, 3]}}\n---\n&gt; {\&quot;clock\&quot;: {\&quot;timezone\&quot;: \&quot;test\&quot;, \&quot;hours\&quot;: 36, \&quot;seconds\&quot;: [1, 1, 2, 3]}}\n\\ No newline at end of file&quot;,
+&quot;stdout_lines&quot;: [
+&quot;1c1&quot;,
+&quot;&lt; {\&quot;clock\&quot;: {\&quot;timezone\&quot;: \&quot;test\&quot;, \&quot;hours\&quot;: 36, \&quot;seconds\&quot;: [1, 1, 2, 3]}}&quot;,
+&quot;---&quot;,
+&quot;&gt; {\&quot;clock\&quot;: {\&quot;timezone\&quot;: \&quot;test\&quot;, \&quot;hours\&quot;: 36, \&quot;seconds\&quot;: [1, 1, 2, 3]}}&quot;,
+&quot;\\ No newline at end of file&quot;
+]
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_dest_json.yml:16" name="[testhost] testhost: yaml_templates_to_facts : assert that=['result is success', 'result.ansible_facts is defined', 'result.ansible_facts.clock is defined']" time="0.026716947555541992">
+			<system-out>{
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;All assertions passed&quot;
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_template_output_false.yml:1" name="[testhost] testhost: yaml_templates_to_facts : Test with template_output false template_output=False, templates=[{'template': 'templates/inline_jinja.j2'}]" time="0.03293967247009277">
+			<system-out>{
+&quot;ansible_facts&quot;: {
+&quot;key_1&quot;: &quot;value_1&quot;,
+&quot;key_2&quot;: &quot;{{ key_1 }}&quot;
+},
+&quot;changed&quot;: true
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_template_output_false.yml:9" name="[testhost] testhost: yaml_templates_to_facts : assert that=['result is success', 'result.changed == true', 'result.ansible_facts is defined', 'result.ansible_facts.key_1 is defined', 'result.ansible_facts.key_1 == &quot;value_1&quot;', 'result.ansible_facts.key_2 is defined', &quot;result.ansible_facts.key_2[0] == '{'&quot;, &quot;result.ansible_facts.key_2[1] == '{'&quot;, &quot;result.ansible_facts.key_2[2:9] == ' key_1 '&quot;, &quot;result.ansible_facts.key_2[9] == '}'&quot;, &quot;result.ansible_facts.key_2[10] == '}'&quot;]" time="0.040943145751953125">
+			<system-out>{
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;All assertions passed&quot;
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_without_root_key.yml:1" name="[testhost] testhost: yaml_templates_to_facts : Test without root_key parameters templates=[{'template': 'templates/template.j2'}]" time="0.03591609001159668">
+			<system-out>{
+&quot;ansible_facts&quot;: {
+&quot;clock&quot;: {
+&quot;hours&quot;: 36,
+&quot;seconds&quot;: [
+1,
+1,
+2,
+3
+],
+&quot;timezone&quot;: &quot;test&quot;
+}
+},
+&quot;changed&quot;: true
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_without_root_key.yml:11" name="[testhost] testhost: yaml_templates_to_facts : assert that=['result is success', 'result.changed == true', 'result.ansible_facts is defined', 'result.ansible_facts.clock is defined', 'result.ansible_facts.clock.timezone is defined', &quot;result.ansible_facts.clock.timezone == 'test'&quot;, 'result.ansible_facts.clock.hours is defined', 'result.ansible_facts.clock.hours == 36', 'result.ansible_facts.clock.seconds is defined', 'result.ansible_facts.clock.seconds == [1, 1, 2, 3]']" time="0.042890071868896484">
+			<system-out>{
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;All assertions passed&quot;
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_debug_template_output.yml:1" name="[testhost] testhost: yaml_templates_to_facts : Test with debug and template_output template_output=True, debug=True, templates=[{'template': 'templates/inline_jinja.j2'}]" time="0.028658628463745117">
+			<system-out>{
+&quot;ansible_facts&quot;: {
+&quot;avd_yaml_templates_to_facts_debug&quot;: [
+{
+&quot;template&quot;: &quot;templates/template.j2&quot;,
+&quot;timestamps&quot;: {
+&quot;combine_data&quot;: &quot;2023-01-25T19:08:19.444115&quot;,
+&quot;done&quot;: &quot;2023-01-25T19:08:19.444172&quot;,
+&quot;load_yaml&quot;: &quot;2023-01-25T19:08:19.443142&quot;,
+&quot;run_template&quot;: &quot;2023-01-25T19:08:19.437485&quot;,
+&quot;starting&quot;: &quot;2023-01-25T19:08:19.437467&quot;,
+&quot;strip_empty_keys&quot;: &quot;2023-01-25T19:08:19.444101&quot;
+}
+},
+{
+&quot;action&quot;: &quot;dest&quot;,
+&quot;dest&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/yaml_templates_to_facts_test_with_dest.yml&quot;,
+&quot;timestamps&quot;: {
+&quot;done&quot;: &quot;2023-01-25T19:08:19.754309&quot;,
+&quot;write_file&quot;: &quot;2023-01-25T19:08:19.444174&quot;
+}
+},
+{
+&quot;template&quot;: &quot;templates/inline_jinja.j2&quot;,
+&quot;timestamps&quot;: {
+&quot;combine_data&quot;: &quot;2023-01-25T19:08:22.106891&quot;,
+&quot;done&quot;: &quot;2023-01-25T19:08:22.106957&quot;,
+&quot;load_yaml&quot;: &quot;2023-01-25T19:08:22.106248&quot;,
+&quot;run_template&quot;: &quot;2023-01-25T19:08:22.104211&quot;,
+&quot;starting&quot;: &quot;2023-01-25T19:08:22.104190&quot;,
+&quot;strip_empty_keys&quot;: &quot;2023-01-25T19:08:22.106876&quot;
+}
+},
+{
+&quot;action&quot;: &quot;template_output&quot;,
+&quot;timestamps&quot;: {
+&quot;done&quot;: &quot;2023-01-25T19:08:22.107504&quot;,
+&quot;templating&quot;: &quot;2023-01-25T19:08:22.106959&quot;
+}
+}
+],
+&quot;key_1&quot;: &quot;value_1&quot;,
+&quot;key_2&quot;: &quot;value_1&quot;
+},
+&quot;changed&quot;: true
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_debug_template_output.yml:10" name="[testhost] testhost: yaml_templates_to_facts : assert that=['result is success', 'result.changed == true', 'result.ansible_facts is defined', 'result.ansible_facts.key_1 is defined', 'result.ansible_facts.key_2 is defined', 'result.ansible_facts.avd_yaml_templates_to_facts_debug is defined', 'result.ansible_facts.avd_yaml_templates_to_facts_debug | length &gt;= 2', 'result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].action is defined', &quot;result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].action == 'template_output'&quot;, 'result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].timestamps is defined', 'result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].timestamps.templating is defined', 'result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].timestamps.done is defined']" time="0.05588126182556152">
+			<system-out>{
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;All assertions passed&quot;
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_template_output.yml:1" name="[testhost] testhost: yaml_templates_to_facts : Test with template_output template_output=True, templates=[{'template': 'templates/inline_jinja.j2'}]" time="0.028151750564575195">
+			<system-out>{
+&quot;ansible_facts&quot;: {
+&quot;key_1&quot;: &quot;value_1&quot;,
+&quot;key_2&quot;: &quot;value_1&quot;
+},
+&quot;changed&quot;: true
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_template_output.yml:9" name="[testhost] testhost: yaml_templates_to_facts : assert that=['result is success', 'result.changed == true', 'result.ansible_facts is defined', 'result.ansible_facts.key_1 is defined', 'result.ansible_facts.key_1 == &quot;value_1&quot;', 'result.ansible_facts.key_2 is defined', 'result.ansible_facts.key_2 == &quot;value_1&quot;']" time="0.034181833267211914">
+			<system-out>{
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;All assertions passed&quot;
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_debug.yml:1" name="[testhost] testhost: yaml_templates_to_facts : Test with debug debug=True, templates=[{'template': 'templates/template.j2'}]" time="0.034700632095336914">
+			<system-out>{
+&quot;ansible_facts&quot;: {
+&quot;avd_yaml_templates_to_facts_debug&quot;: [
+{
+&quot;template&quot;: &quot;templates/template.j2&quot;,
+&quot;timestamps&quot;: {
+&quot;combine_data&quot;: &quot;2023-01-25T19:08:19.444115&quot;,
+&quot;done&quot;: &quot;2023-01-25T19:08:19.444172&quot;,
+&quot;load_yaml&quot;: &quot;2023-01-25T19:08:19.443142&quot;,
+&quot;run_template&quot;: &quot;2023-01-25T19:08:19.437485&quot;,
+&quot;starting&quot;: &quot;2023-01-25T19:08:19.437467&quot;,
+&quot;strip_empty_keys&quot;: &quot;2023-01-25T19:08:19.444101&quot;
+}
+},
+{
+&quot;action&quot;: &quot;dest&quot;,
+&quot;dest&quot;: &quot;/root/ansible_collections/arista/avd/tests/output/yaml_templates_to_facts_test_with_dest.yml&quot;,
+&quot;timestamps&quot;: {
+&quot;done&quot;: &quot;2023-01-25T19:08:19.754309&quot;,
+&quot;write_file&quot;: &quot;2023-01-25T19:08:19.444174&quot;
+}
+},
+{
+&quot;template&quot;: &quot;templates/inline_jinja.j2&quot;,
+&quot;timestamps&quot;: {
+&quot;combine_data&quot;: &quot;2023-01-25T19:08:22.106891&quot;,
+&quot;done&quot;: &quot;2023-01-25T19:08:22.106957&quot;,
+&quot;load_yaml&quot;: &quot;2023-01-25T19:08:22.106248&quot;,
+&quot;run_template&quot;: &quot;2023-01-25T19:08:22.104211&quot;,
+&quot;starting&quot;: &quot;2023-01-25T19:08:22.104190&quot;,
+&quot;strip_empty_keys&quot;: &quot;2023-01-25T19:08:22.106876&quot;
+}
+},
+{
+&quot;action&quot;: &quot;template_output&quot;,
+&quot;timestamps&quot;: {
+&quot;done&quot;: &quot;2023-01-25T19:08:22.107504&quot;,
+&quot;templating&quot;: &quot;2023-01-25T19:08:22.106959&quot;
+}
+},
+{
+&quot;template&quot;: &quot;templates/template.j2&quot;,
+&quot;timestamps&quot;: {
+&quot;combine_data&quot;: &quot;2023-01-25T19:08:22.309069&quot;,
+&quot;done&quot;: &quot;2023-01-25T19:08:22.309125&quot;,
+&quot;load_yaml&quot;: &quot;2023-01-25T19:08:22.307867&quot;,
+&quot;run_template&quot;: &quot;2023-01-25T19:08:22.302134&quot;,
+&quot;starting&quot;: &quot;2023-01-25T19:08:22.302103&quot;,
+&quot;strip_empty_keys&quot;: &quot;2023-01-25T19:08:22.309051&quot;
+}
+}
+],
+&quot;clock&quot;: {
+&quot;hours&quot;: 36,
+&quot;seconds&quot;: [
+1,
+1,
+2,
+3
+],
+&quot;timezone&quot;: &quot;test&quot;
+}
+},
+&quot;changed&quot;: true
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_debug.yml:12" name="[testhost] testhost: yaml_templates_to_facts : assert that=['result is success', 'result.changed == true', 'result.ansible_facts is defined', 'result.ansible_facts.avd_yaml_templates_to_facts_debug is defined', 'result.ansible_facts.avd_yaml_templates_to_facts_debug | length &gt;= 1', 'result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].timestamps is defined', 'result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].template is defined', 'result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].template == &quot;templates/template.j2&quot;', 'result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].timestamps.starting is defined', 'result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].timestamps.run_template is defined', 'result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].timestamps.load_yaml is defined', 'result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].timestamps.strip_empty_keys is defined', 'result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].timestamps.combine_data is defined', 'result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].timestamps.done is defined']" time="0.05744433403015137">
+			<system-out>{
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;All assertions passed&quot;
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_append_rp.yml:1" name="[testhost] testhost: yaml_templates_to_facts : Test with list_merge append_rp option templates=[{'template': 'templates/template.j2'}, {'template': 'templates/template1.j2', 'options': {'strip_empty_keys': False, 'list_merge': 'append_rp'}}]" time="0.03662109375">
+			<system-out>{
+&quot;ansible_facts&quot;: {
+&quot;clock&quot;: {
+&quot;hours&quot;: 84,
+&quot;minutes&quot;: 30,
+&quot;seconds&quot;: [
+1,
+1,
+2,
+3,
+4,
+5,
+5
+],
+&quot;timezone&quot;: &quot;test1&quot;
+}
+},
+&quot;changed&quot;: true
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_append_rp.yml:15" name="[testhost] testhost: yaml_templates_to_facts : assert that=['result is success', 'result.changed == true', 'result.ansible_facts is defined', 'result.ansible_facts.clock is defined', 'result.ansible_facts.clock.timezone is defined', &quot;result.ansible_facts.clock.timezone == 'test1'&quot;, 'result.ansible_facts.clock.hours is defined', 'result.ansible_facts.clock.hours == 84', 'result.ansible_facts.clock.minutes is defined', 'result.ansible_facts.clock.minutes == 30', 'result.ansible_facts.clock.seconds is defined', 'result.ansible_facts.clock.seconds == [1, 1, 2, 3, 4, 5, 5]']" time="0.04194521903991699">
+			<system-out>{
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;All assertions passed&quot;
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_append.yml:1" name="[testhost] testhost: yaml_templates_to_facts : Test with list_merge append option templates=[{'template': 'templates/template.j2'}, {'template': 'templates/template1.j2', 'options': {'strip_empty_keys': False, 'list_merge': 'append'}}]" time="0.041115522384643555">
+			<system-out>{
+&quot;ansible_facts&quot;: {
+&quot;clock&quot;: {
+&quot;hours&quot;: 84,
+&quot;minutes&quot;: 30,
+&quot;seconds&quot;: [
+1,
+1,
+2,
+3,
+3,
+4,
+5,
+5
+],
+&quot;timezone&quot;: &quot;test1&quot;
+}
+},
+&quot;changed&quot;: true
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_append.yml:15" name="[testhost] testhost: yaml_templates_to_facts : assert that=['result is success', 'result.changed == true', 'result.ansible_facts is defined', 'result.ansible_facts.clock is defined', 'result.ansible_facts.clock.timezone is defined', &quot;result.ansible_facts.clock.timezone == 'test1'&quot;, 'result.ansible_facts.clock.hours is defined', 'result.ansible_facts.clock.hours == 84', 'result.ansible_facts.clock.minutes is defined', 'result.ansible_facts.clock.minutes == 30', 'result.ansible_facts.clock.seconds is defined', 'result.ansible_facts.clock.seconds == [1, 1, 2, 3, 3, 4, 5, 5]']" time="0.042908668518066406">
+			<system-out>{
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;All assertions passed&quot;
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_invalid.yml:1" name="[testhost] testhost: yaml_templates_to_facts : Test with list_merge invalid option templates=[{'template': 'templates/template.j2'}, {'template': 'templates/template1.j2', 'options': {'strip_empty_keys': False, 'list_merge': 'append12'}}]" time="0.03565502166748047">
+			<system-out>{
+&quot;msg&quot;: &quot;Unexpected failure during module execution.&quot;,
+&quot;stdout&quot;: &quot;&quot;
+}</system-out>
+		</testcase>
+		<testcase classname="tests/integration/targets/yaml_templates_to_facts/tests/test_with_list_merge_invalid.yml:15" name="[testhost] testhost: yaml_templates_to_facts : assert that=['result.failed == True', &quot;result.msg == {{ lookup('file', './error.txt') }}&quot;]" time="0.02521061897277832">
+			<system-out>{
+    &quot;changed&quot;: false,
+    &quot;msg&quot;: &quot;All assertions passed&quot;
+}</system-out>
+		</testcase>
+	</testsuite>
+</testsuites>

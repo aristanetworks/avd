@@ -1,0 +1,10 @@
+{# eos - VRFs #}
+{% for vrf in vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     if vrf.name != 'default' %}
+!
+vrf instance {{ vrf.name }}
+{%         if vrf.description is arista.avd.defined %}
+   description {{ vrf.description }}
+{%         endif %}
+{%     endif %}
+{% endfor %}

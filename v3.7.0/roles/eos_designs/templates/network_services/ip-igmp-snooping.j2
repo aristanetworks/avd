@@ -1,0 +1,80 @@
+{# tenant IGMP snooping #}
+ip_igmp_snooping:
+  globally_enabled: {{ switch.igmp_snooping_enabled }}
+{% if switch.igmp_snooping_enabled is arista.avd.defined(true) %}
+  vlans:
+{# ---------------------------- #}
+{# SVI & L3VLANs services       #}
+{# ---------------------------- #}
+{%     for tenant in network_services_data.tenants %}
+{%         for vrf in tenant.vrfs %}
+{# Tenant VLANs w/SVIs #}
+{%             for svi in vrf.svis %}
+{%                 set svi_igmp_snooping_enabled = svi.igmp_snooping_enabled | arista.avd.default %}
+{%                 if switch.network_services_l3 is arista.avd.defined(true) and switch.uplink_type is arista.avd.defined("p2p") %}
+{%                     set svi_igmp_snooping_querier_enabled = svi.igmp_snooping_querier.enabled | arista.avd.default(
+                                                               tenant.igmp_snooping_querier.enabled) %}
+{%                 endif %}
+{%                 if switch.vtep is arista.avd.defined %}
+{%                     set svi_evpn_l2_multicast_enabled = svi.evpn_l2_multicast.enabled | arista.avd.default(
+                                                           tenant.evpn_l2_multicast.enabled) %}
+{%                     if svi_evpn_l2_multicast_enabled is arista.avd.defined(true) %}
+{#                         Setting to none to avoid extra line of config as we already check and enforce global igmp snooping #}
+{%                         set svi_igmp_snooping_enabled = none %}
+{%                         set svi_igmp_snooping_querier_enabled = true %}
+{%                     endif %}
+{%                 endif %}
+{%                 if svi_igmp_snooping_querier_enabled is arista.avd.defined %}
+{%                     set svi_igmp_snooping_querier_source_address = svi.igmp_snooping_querier.source_address | arista.avd.default(
+                                                                      tenant.igmp_snooping_querier.source_address,
+                                                                      switch.router_id) %}
+{%                     set svi_igmp_snooping_querier_version = svi.igmp_snooping_querier.version | arista.avd.default(
+                                                               tenant.igmp_snooping_querier.version) %}
+{%                 endif %}
+{%                 if svi_igmp_snooping_enabled is arista.avd.defined or svi_igmp_snooping_querier_enabled is arista.avd.defined %}
+    {{ svi.id | int }}:
+{%                     if svi_igmp_snooping_enabled is arista.avd.defined %}
+      enabled: {{ svi_igmp_snooping_enabled }}
+{%                     endif %}
+{%                     if svi_igmp_snooping_querier_enabled is arista.avd.defined and switch.uplink_type is arista.avd.defined("p2p") %}
+      querier:
+        enabled: {{ svi_igmp_snooping_querier_enabled }}
+        address: "{{ svi_igmp_snooping_querier_source_address }}"
+        version: {{ svi_igmp_snooping_querier_version }}
+{%                     endif %}
+{%                 endif %}
+{%             endfor %}
+{%         endfor %}
+{# ---------------------------- #}
+{# L2VLANs services             #}
+{# ---------------------------- #}
+{%         for l2vlan in tenant.l2vlans %}
+{%             set l2vlan_igmp_snooping_enabled = l2vlan.igmp_snooping_enabled | arista.avd.default %}
+{%             set l2vlan_igmp_snooping_querier_enabled = l2vlan.igmp_snooping_querier.enabled | arista.avd.default(
+                                                          tenant.igmp_snooping_querier.enabled) %}
+{%             set l2vlan_igmp_snooping_querier_source_address = l2vlan.igmp_snooping_querier.source_address | arista.avd.default(
+                                                                 tenant.igmp_snooping_querier.source_address,
+                                                                 switch.router_id) %}
+{%             set l2vlan_igmp_snooping_querier_version = l2vlan.igmp_snooping_querier.version | arista.avd.default(
+                                                          tenant.igmp_snooping_querier.version) %}
+{%             set l2vlan_evpn_l2_multicast_enabled = l2vlan.evpn_l2_multicast.enabled | arista.avd.default(
+                                                      tenant.evpn_l2_multicast.enabled) %}
+{%             if l2vlan_evpn_l2_multicast_enabled is arista.avd.defined(true) %}
+{%                 set l2vlan_igmp_snooping_enabled = none %}
+{%                 set l2vlan_igmp_snooping_querier_enabled = true %}
+{%             endif %}
+{%             if l2vlan_igmp_snooping_enabled is arista.avd.defined or l2vlan_igmp_snooping_querier_enabled is arista.avd.defined %}
+    {{ l2vlan.id | int }}:
+{%                 if l2vlan_igmp_snooping_enabled is arista.avd.defined %}
+      enabled: {{ l2vlan_igmp_snooping_enabled }}
+{%                 endif %}
+{%                 if l2vlan_igmp_snooping_querier_enabled is arista.avd.defined and switch.uplink_type is arista.avd.defined("p2p") %}
+      querier:
+        enabled: {{ l2vlan_igmp_snooping_querier_enabled }}
+        address: "{{ l2vlan_igmp_snooping_querier_source_address }}"
+        version: {{ l2vlan_igmp_snooping_querier_version }}
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{% endif %}

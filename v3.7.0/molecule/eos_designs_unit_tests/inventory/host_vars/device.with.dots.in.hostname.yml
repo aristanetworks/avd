@@ -1,0 +1,8 @@
+---
+type: spine
+spine:
+  defaults:
+    id: 1
+    loopback_ipv4_pool: 1.2.3.4/24
+    bgp_as: 1234
+mgmt_gateway: 192.168.0.1

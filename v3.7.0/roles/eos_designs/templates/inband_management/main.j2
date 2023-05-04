@@ -1,0 +1,29 @@
+{% if switch.inband_management_role is arista.avd.defined('child') %}
+{%     include 'inband_management/child-vlans.j2' %}
+
+{%     include 'inband_management/child-management-interfaces.j2' %}
+
+{%     include 'inband_management/child-static-routes.j2' %}
+
+{% else %}
+{%     set inband_management_data = namespace() %}
+{%     include 'inband_management/parent-logic.j2' %}
+
+{%     if inband_management_data.role is arista.avd.defined('parent') %}
+{%         include 'inband_management/parent-vlans.j2' %}
+
+{%         include 'inband_management/parent-vlan-interfaces.j2' %}
+
+{%         include 'inband_management/ip-virtual-router-mac-address.j2' %}
+
+{%         if switch.underlay_router is arista.avd.defined(true) and
+              switch.underlay_routing_protocol == "ebgp" %}
+{%             include 'inband_management/parent-router-bgp.j2' %}
+
+{%             include 'inband_management/parent-prefix-lists.j2' %}
+
+{%             include 'inband_management/parent-route-maps.j2' %}
+
+{%         endif %}
+{%     endif %}
+{% endif %}

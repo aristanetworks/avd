@@ -1,0 +1,12 @@
+---
+# tasks file for cvp_configlet_upload
+- name: generate intended variables
+  tags: [build, provision, apply]
+  arista.avd.configlet_build_config:
+    configlet_dir: "{{ configlet_directory }}"
+    configlet_prefix: "{{ configlets_cvp_prefix }}"
+    configlet_extension: "{{ file_extension }}"
+  register: CVP_VARS
+
+- name: "Execute upload with collection in version {{ cv_collection }}"
+  include_tasks: "cv_collection_{{ cv_collection }}.yml"

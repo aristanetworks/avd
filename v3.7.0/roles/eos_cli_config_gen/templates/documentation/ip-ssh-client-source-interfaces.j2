@@ -1,0 +1,20 @@
+{% if ip_ssh_client_source_interfaces is arista.avd.defined %}
+
+## IP SSH Client Source Interfaces
+
+### IP SSH Client Source Interfaces
+
+| VRF | Source Interface Name |
+| --- | --------------- |
+{%     for ip_ssh_client_source_interface in ip_ssh_client_source_interfaces | arista.avd.natural_sort %}
+{%         if ip_ssh_client_source_interface.name is arista.avd.defined %}
+| {{ ip_ssh_client_source_interface.vrf | arista.avd.default('default') }} | {{ ip_ssh_client_source_interface.name | capitalize }} |
+{%         endif %}
+{%     endfor %}
+
+### IP SSH Client Source Interfaces Device Configuration
+
+```eos
+{%     include 'eos/ip-ssh-client-source-interfaces.j2' %}
+```
+{% endif %}

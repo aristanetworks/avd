@@ -1,0 +1,27 @@
+{# eos - AAA Group Servers#}
+{% if tacacs_servers is arista.avd.defined %}
+!
+{%     for host in tacacs_servers.hosts | arista.avd.natural_sort %}
+{%         if host.host is arista.avd.defined %}
+{%             set host_cli = "tacacs-server host " ~ host.host %}
+{%         endif %}
+{%         if host.single_connection is arista.avd.defined(true) %}
+{%             set host_cli = host_cli ~ " single-connection" %}
+{%         endif %}
+{%         if host.vrf is arista.avd.defined %}
+{%             if host.vrf != 'default' %}
+{%                 set host_cli = host_cli ~ " vrf " ~ host.vrf %}
+{%             endif %}
+{%         endif %}
+{%         if host.timeout is arista.avd.defined %}
+{%             set host_cli = host_cli ~ " timeout " ~ host.timeout %}
+{%         endif %}
+{%         if host.key is arista.avd.defined %}
+{%             set host_cli = host_cli ~ " key " ~ host.key_type | arista.avd.default('7') ~ ' ' ~ host.key %}
+{%         endif %}
+{{ host_cli }}
+{%     endfor %}
+{%     if tacacs_servers.policy_unknown_mandatory_attribute_ignore is arista.avd.defined(true) %}
+tacacs-server policy unknown-mandatory-attribute ignore
+{%     endif %}
+{% endif %}

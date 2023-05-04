@@ -1,0 +1,32 @@
+{% if management_interfaces is arista.avd.defined %}
+
+## Management Interfaces
+
+### Management Interfaces Summary
+
+#### IPv4
+
+| Management Interface | description | Type | VRF | IP Address | Gateway |
+| -------------------- | ----------- | ---- | --- | ---------- | ------- |
+{%     for management_interface in management_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         set vrf = management_interface.vrf | arista.avd.default('default') %}
+| {{ management_interface.name }} | {{ management_interface.description }} | {{ management_interface.type | arista.avd.default('oob') }} | {{ vrf }} | {{ management_interface.ip_address }} | {{ management_interface.gateway }} |
+{%     endfor %}
+
+#### IPv6
+
+| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+{%     for management_interface in management_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         set vrf = management_interface.vrf | arista.avd.default('default') %}
+{%         set ipv6 = management_interface.ipv6_address | arista.avd.default('-') %}
+{%         set ipv6_gateway = management_interface.ipv6_gateway | arista.avd.default('-') %}
+| {{ management_interface.name }} | {{ management_interface.description }} | {{ management_interface.type | arista.avd.default('oob') }} | {{ vrf }} | {{ ipv6 }}  | {{ ipv6_gateway }} |
+{%     endfor %}
+
+### Management Interfaces Device Configuration
+
+```eos
+{%     include 'eos/management-interfaces.j2' %}
+```
+{% endif %}

@@ -1,0 +1,21 @@
+{# Link Tracking Groups #}
+{% if link_tracking_groups is arista.avd.defined %}
+
+## Link Tracking
+
+### Link Tracking Groups Summary
+
+| Group Name | Minimum Links | Recovery Delay |
+| ---------- | ------------- | -------------- |
+{%     for link_tracking_group in link_tracking_groups | arista.avd.natural_sort('name') %}
+{%         if link_tracking_group.name is arista.avd.defined %}
+| {{ link_tracking_group.name }} | {{ link_tracking_group.links_minimum | arista.avd.default("-") }} | {{ link_tracking_group.recovery_delay | arista.avd.default("-") }} |
+{%         endif %}
+{%     endfor %}
+
+### Link Tracking Groups Configuration
+
+```eos
+{%     include 'eos/link-tracking-groups.j2' %}
+```
+{% endif %}

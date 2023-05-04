@@ -1,0 +1,52 @@
+---
+
+dc_name: DC2
+
+super_spine:
+  defaults:
+    platform: vEOS-LAB
+    bgp_as: 65200
+    loopback_ipv4_pool: 172.16.200.0/24
+    bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200', 'graceful-restart restart-time 300', 'graceful-restart']
+  nodes:
+    DC2-SUPER-SPINE1:
+      id: 1
+      mgmt_ip: 192.168.1.16/24
+      evpn_role: server
+      evpn_route_servers: [ DC1-RS1, DC1-SUPER-SPINE1, DC1-POD1-SPINE1, DC1-POD1-LEAF1A ]
+    DC2-SUPER-SPINE2:
+      id: 2
+      mgmt_ip: 192.168.1.17/24
+      evpn_role: none
+
+# In DC2 we define all variables as defaults if possible
+overlay_controller:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 172.16.20.0/24
+    uplink_bfd: False
+    uplink_switches: ['DC2-SUPER-SPINE1', 'DC2-SUPER-SPINE1']
+    max_uplink_switches: 4
+    uplink_ipv4_pool: 172.17.20.0/24
+    bgp_defaults:
+      - 'no bgp default ipv4-unicast'
+      - 'distance bgp 20 200 200'
+      - 'graceful-restart restart-time 300'
+      - 'graceful-restart'
+    evpn_route_servers: [ DC1-RS1, DC1-SUPER-SPINE1, DC1-POD1-SPINE1, DC1-POD1-LEAF1A ]
+    bgp_as: 65201
+  nodes:
+    DC2-RS1:
+      id: 1
+      mgmt_ip: 192.168.1.18/24
+      uplink_switch_interfaces: ['Ethernet3', 'Ethernet6']
+      uplink_interfaces: ['Ethernet1', 'Ethernet2']
+      evpn_role: server
+    DC2-RS2:
+      id: 2
+      mgmt_ip: 192.168.1.19/24
+      uplink_switch_interfaces: ['Ethernet5', 'Ethernet7']
+      uplink_interfaces: ['Ethernet1', 'Ethernet2']
+      evpn_role: none
+
+evpn_prevent_readvertise_to_server: false

@@ -1,0 +1,35 @@
+---
+
+pod_name: L2LS_BGP
+
+underlay_routing_protocol: ebgp
+
+tenants:
+  L2LS_BGP:
+    vrfs:
+      default:
+        svis:
+          100:
+            name: SVI_100
+            ip_address_virtual: 10.1.100.1/24
+            enabled: true
+
+network_ports:
+  - switches:
+      - "BGP-LEAF[1-2]"
+    switch_ports:
+      - "Ethernet10-11"
+    vlans: 100
+    mode: access
+    description: Endpoint
+
+core_interfaces:
+  p2p_links:
+    - subnet: 192.168.253.4/31
+      nodes: [ BGP-SPINE1, DUMMY-CORE ]
+      interfaces: [ Ethernet5, Ethernet1/3 ]
+      as: [ 65001, 65000 ]
+    - subnet: 192.168.253.6/31
+      nodes: [ BGP-SPINE2, DUMMY-CORE ]
+      interfaces: [ Ethernet5, Ethernet1/4 ]
+      as: [ 65001, 65000 ]

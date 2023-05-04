@@ -1,0 +1,40 @@
+{% if l3_edge_data.p2p_interfaces | length > 0 %}
+ethernet_interfaces:
+{%     for p2p_interface_key in l3_edge_data.p2p_interfaces | arista.avd.natural_sort %}
+{%         set p2p_interface = l3_edge_data.p2p_interfaces[p2p_interface_key] %}
+  {{ p2p_interface_key }}:
+    peer: {{ p2p_interface.peer }}
+    peer_interface: {{ p2p_interface.peer_interface }}
+    peer_type: {{ p2p_interface.peer_type }}
+    description: {{ p2p_interface.description }}
+    type: {{ p2p_interface.type }}
+    shutdown: {{ p2p_interface.shutdown }}
+    mtu: {{ p2p_interface.mtu }}
+{%         if p2p_interface.ip_address is arista.avd.defined %}
+    ip_address: {{ p2p_interface.ip_address }}
+{%         endif %}
+{%         if p2p_interface.speed is arista.avd.defined %}
+    speed: {{ p2p_interface.speed }}
+{%         endif %}
+{%         if p2p_interface.qos_profile is arista.avd.defined %}
+    service_profile: {{ p2p_interface.qos_profile }}
+{%         endif %}
+{%         if p2p_interface.macsec_profile is arista.avd.defined %}
+    mac_security:
+        profile: {{ p2p_interface.macsec_profile }}
+{%         endif %}
+{%         if p2p_interface.ptp_enable is arista.avd.defined(true) %}
+    ptp:
+        enable: true
+{%         endif %}
+{%         if switch.underlay_routing_protocol == "ospf" %}
+    ospf_network_point_to_point: true
+    ospf_area: {{ underlay_ospf_area }}
+{%         endif %}
+{%         if switch.underlay_routing_protocol == "isis" %}
+    isis_enable: {{ switch.isis_instance_name }}
+    isis_metric: 50
+    isis_network_point_to_point: true
+{%         endif %}
+{%     endfor %}
+{% endif %}

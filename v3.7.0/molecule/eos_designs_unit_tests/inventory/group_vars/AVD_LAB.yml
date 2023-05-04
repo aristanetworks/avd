@@ -1,0 +1,98 @@
+# Nashua EVE-NG LAB shared attributes
+
+# local users
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    no_password: true
+
+  cvpadmin:
+    privilege: 15
+    role: network-admin
+    sha512_password: "$6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj."
+    ssh_key: "ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU= cvpadmin@hostmachine.local"
+
+# Cloud Vision server
+cvp_instance_ips:
+  - 192.168.200.11
+
+cvp_ingestauth_key: telarista
+terminattr_disable_aaa: false
+
+snmp_settings:
+  contact: example@example.com
+  location: true
+
+# OOB Management network default gateway.
+mgmt_gateway: 192.168.200.5
+
+# dns servers.
+name_servers:
+  - 192.168.200.5
+  - 8.8.8.8
+
+# Management api-http
+management_eapi:
+  enable_https: true
+  default_services: false
+
+# NTP Servers IP or DNS name, first NTP server will be preferred and sourced from Management
+ntp:
+  local_interface:
+    name: "{{ mgmt_interface | arista.avd.default('Management1') }}"
+    vrf: "{{ mgmt_interface_vrf | arista.avd.default('MGMT') }}"
+  servers:
+    - name: 192.168.200.5
+      preferred: True
+      vrf: "{{ mgmt_interface_vrf | arista.avd.default('MGMT') }}"
+
+# Support for per-platform automatic interface allocation
+default_interfaces:
+  - types: [ spine ]
+    platforms: [ 7280R3, default ]
+    uplink_interfaces: [ Ethernet49-54/1 ]
+    mlag_interfaces: [ Ethernet55-56/1 ]
+    downlink_interfaces: [ Ethernet1-32/1 ]
+
+  - types: [ spine ]
+    platforms: [ "7[58]00R3", 7500R ]
+    uplink_interfaces: [ Ethernet1/31-34/1 ]
+    mlag_interfaces: [ Ethernet1/35-36/1 ]
+    downlink_interfaces: [ Ethernet1/1-30/1 ]
+
+  - types: [ spine, l3leaf ]
+    platforms: [ "7050[SC]X3" ]
+    uplink_interfaces: [ Ethernet49-52/1 ]
+    mlag_interfaces: [ Ethernet53-54/1 ]
+    downlink_interfaces: [ Ethernet1-30/1 ]
+
+  - types: [ l3leaf, spine ]
+    platforms: [ VEOS, vEOS, vEOS.*, VEOS.* ]
+    uplink_interfaces: [ Ethernet27-34 ]
+    mlag_interfaces: [ Ethernet35-36 ]
+    downlink_interfaces: [ Ethernet1-26 ]
+
+  - types: [ l3leaf ]
+    platforms: [ default ]
+    uplink_interfaces: [ Ethernet49-52/1 ]
+    mlag_interfaces: [ Ethernet53-54/1 ]
+    downlink_interfaces: [ Ethernet1-30/1 ]
+
+  - types: [ l3leaf ]
+    platforms: [ 7280R, 7280R2 ]
+    uplink_interfaces: [ Ethernet49-56/1 ]
+    mlag_interfaces: [ Ethernet57-58/1 ]
+    downlink_interfaces: [ Ethernet1-30/1 ]
+
+  - types: [ l3leaf ]
+    platforms: [ 7368.* ]
+    uplink_interfaces: [ Ethernet1/9-14/1 ]
+    mlag_interfaces: [ Ethernet1/15-16/1 ]
+    downlink_interfaces: [ Ethernet1/1-8/1 ]
+
+  - types: [ l3leaf ]
+    platforms: [ 7300X3 ]
+    uplink_interfaces: [ Ethernet1/27-30/1 ]
+    mlag_interfaces: [ Ethernet1/31-32/1 ]
+    downlink_interfaces: [ Ethernet1/1-26/1 ]
