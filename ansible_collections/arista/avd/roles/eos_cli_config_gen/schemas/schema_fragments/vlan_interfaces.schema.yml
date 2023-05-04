@@ -71,7 +71,7 @@ keys:
         ip_igmp_version:
           type: int
           convert_types:
-            - str
+          - str
           min: 1
           max: 3
         ip_helpers:
