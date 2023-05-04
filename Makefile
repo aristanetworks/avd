@@ -64,16 +64,18 @@ integration-tests: ## Run integration test cases using ansible-test
 #########################################
 # Documentation actions					#
 #########################################
-.PHONY: webdoc
-webdoc: ## Build documentation to publish static content
-	( cd $(WEBDOC_BUILD) ; \
-	python ansible2rst.py ; \
-	mkdir ../modules/ ; \
-	find . -name '*.rst' -exec pandoc {} --from rst --to gfm -o ../modules/{}.md \;)
-	cp $(CURRENT_DIR)/contributing.md $(WEBDOC_BUILD)/.. ;\
-	cp -r $(CURRENT_DIR)/media $(WEBDOC_BUILD)/../ ;\
-	cd $(CURRENT_DIR)
-	mkdocs build -f mkdocs.yml
+.PHONY: webdoc-up
+webdoc-up: ## Build documentation to view
+	docker-compose -f development/docker-compose.yml up -d webdoc_avd ; \
+	docker exec -it webdoc_avd sh
+
+.PHONY: webdoc-down
+webdoc-down: ## shutdown docs
+	docker-compose -f development/docker-compose.yml down
+
+.PHONY: webdoc-logs
+webdoc-logs: ## View logs
+	docker logs webdoc_avd
 
 .PHONY: check-avd-404
 check-avd-404: ## Check local 404 links for AVD documentation
