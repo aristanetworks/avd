@@ -319,6 +319,10 @@ QOS Profile: **experiment**
 | 5 | All | 40 | - | - | - |
 | 7 | All | 30 | - | 40 percent | - |
 
+**Priority Flow Control**
+
+Priority Flow Control is **disabled**
+
 QOS Profile: **no_qos_trust**
 
 **Settings**
@@ -326,6 +330,10 @@ QOS Profile: **no_qos_trust**
 | Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
 | ----------- | ------------ | ----- | ---------- | ------------------ |
 | 3 | 4 | disabled | - | - |
+
+**Priority Flow Control**
+
+Priority Flow Control is **disabled**
 
 QOS Profile: **qprof_testwithpolicy**
 
@@ -343,6 +351,10 @@ QOS Profile: **qprof_testwithpolicy**
 | 1 | All | 80 | - | - | - |
 | 5 | All | 19 | no priority | - | Multi-line comment<br>here. |
 
+**Priority Flow Control**
+
+Priority Flow Control is **disabled**
+
 QOS Profile: **test**
 
 **Settings**
@@ -358,6 +370,35 @@ QOS Profile: **test**
 | 1 | All | 50 | no priority | - | - |
 | 2 | All | 10 | priority strict | - | - |
 | 4 | All | 10 | - | - | - |
+
+**Priority Flow Control**
+
+Priority Flow Control is **disabled**
+
+QOS Profile: **test_with_pfc**
+
+**Settings**
+
+| Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
+| ----------- | ------------ | ----- | ---------- | ------------------ |
+| - | - | - | - | pmap_test1 |
+
+**TX Queues**
+
+| TX queue | Type | Bandwidth | Priority | Shape Rate |
+| -------- | ---- | --------- | -------- | ---------- |
+| 0 | All | 1 | - | - |
+| 1 | All | 80 | - | - |
+| 5 | All | 19 | no priority | - |
+
+**Priority Flow Control**
+
+Priority Flow Control is **enabled**
+
+| Priority | Action |
+| -------- | ------ |
+| 0 | no-drop |
+| 1 | drop |
 
 QOS Profile: **uc_mc_queues_test**
 
@@ -377,6 +418,10 @@ QOS Profile: **uc_mc_queues_test**
 | 1 | Multicast | 50 | no priority | - | - |
 | 2 | Multicast | 10 | priority strict | - | Test strict priority |
 | 4 | Multicast | 10 | - | - | Test guaranteed percent |
+
+**Priority Flow Control**
+
+Priority Flow Control is **disabled**
 
 #### QOS Profile Device Configuration
 
@@ -436,6 +481,23 @@ qos profile test
    !
    tx-queue 4
       bandwidth guaranteed percent 10
+!
+qos profile test_with_pfc
+   service-policy type qos input pmap_test1
+   !
+   tx-queue 0
+      bandwidth percent 1
+   !
+   tx-queue 1
+      bandwidth percent 80
+   !
+   tx-queue 5
+      bandwidth percent 19
+      no priority
+   !
+   priority-flow-control on
+   priority-flow-control priority 0 no-drop
+   priority-flow-control priority 1 drop
 !
 qos profile uc_mc_queues_test
    !

@@ -81,4 +81,20 @@ qos profile {{ profile.name }}
       shape rate {{ mc_tx_queue.shape.rate }}
 {%         endif %}
 {%     endfor %}
+{%     if profile.priority_flow_control.enabled is arista.avd.defined(true) %}
+   !
+   priority-flow-control on
+{%     elif profile.priority_flow_control.enabled is arista.avd.defined(false) %}
+   !
+   no priority-flow-control
+{%     endif %}
+{%     for priority_block in profile.priority_flow_control.priorities | arista.avd.natural_sort %}
+{%         if priority_block.priority is arista.avd.defined %}
+{%             if priority_block.no_drop is arista.avd.defined(true) %}
+   priority-flow-control priority {{ priority_block.priority }} no-drop
+{%             elif priority_block.no_drop is arista.avd.defined(false) %}
+   priority-flow-control priority {{ priority_block.priority }} drop
+{%             endif %}
+{%         endif %}
+{%     endfor %}
 {% endfor %}

@@ -64,6 +64,27 @@ QOS Profile: **{{ profile.name }}**
 {%                 endfor %}
 {%             endif %}
 {%         endif %}
+
+**Priority Flow Control**
+
+{%         if profile.priority_flow_control.enabled is arista.avd.defined(true) %}
+Priority Flow Control is **enabled**
+
+| Priority | Action |
+| -------- | ------ |
+{%             for priority_block in profile.priority_flow_control.priorities | arista.avd.natural_sort %}
+{%                 if priority_block.priority is arista.avd.defined %}
+{%                     if priority_block.no_drop is arista.avd.defined(true) %}
+{%                         set action = "no-drop" %}
+{%                     else %}
+{%                         set action = "drop" %}
+{%                     endif %}
+| {{ priority_block.priority }} | {{ action }} |
+{%                 endif %}
+{%             endfor %}
+{%         else %}
+Priority Flow Control is **disabled**
+{%         endif %}
 {%     endfor %}
 
 #### QOS Profile Device Configuration

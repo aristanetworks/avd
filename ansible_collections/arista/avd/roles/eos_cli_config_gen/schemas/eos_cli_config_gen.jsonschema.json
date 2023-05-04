@@ -11143,7 +11143,7 @@
                 },
                 "comment": {
                   "type": "string",
-                  "description": "Text comment added to queue.",
+                  "description": "Text comment added to queue.\n",
                   "title": "Comment"
                 }
               },
@@ -11156,6 +11156,52 @@
               }
             },
             "title": "Mc TX Queues"
+          },
+          "priority_flow_control": {
+            "type": "object",
+            "description": "Priority Flow Control settings\n",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "description": "Enable/Disable Priority Flow control\nsettings in this profile\n",
+                "title": "Enabled"
+              },
+              "priorities": {
+                "type": "array",
+                "description": "Set the drop/no_drop on each queue\n",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "priority": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 7,
+                      "description": "Queue Number, from 0 to 7\n",
+                      "title": "Priority"
+                    },
+                    "no_drop": {
+                      "type": "boolean",
+                      "description": "Enable Priority Flow Control frames on this queue",
+                      "title": "No Drop"
+                    }
+                  },
+                  "required": [
+                    "priority",
+                    "no_drop"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Priorities"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Priority Flow Control"
           }
         },
         "required": [

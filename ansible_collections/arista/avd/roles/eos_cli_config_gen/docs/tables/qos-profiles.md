@@ -35,7 +35,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "qos_profiles.[].mc_tx_queues.[].priority") | String |  |  | Valid Values:<br>- priority strict<br>- no priority |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shape</samp>](## "qos_profiles.[].mc_tx_queues.[].shape") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rate</samp>](## "qos_profiles.[].mc_tx_queues.[].shape.rate") | String |  |  |  | Supported options are platform dependent<br>Example: "< rate > kbps", "1-100 percent", "< rate > pps"<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;comment</samp>](## "qos_profiles.[].mc_tx_queues.[].comment") | String |  |  |  | Text comment added to queue. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;comment</samp>](## "qos_profiles.[].mc_tx_queues.[].comment") | String |  |  |  | Text comment added to queue.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;priority_flow_control</samp>](## "qos_profiles.[].priority_flow_control") | Dictionary |  |  |  | Priority Flow Control settings<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "qos_profiles.[].priority_flow_control.enabled") | Boolean |  |  |  | Enable/Disable Priority Flow control<br>settings in this profile<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priorities</samp>](## "qos_profiles.[].priority_flow_control.priorities") | List, items: Dictionary |  |  |  | Set the drop/no_drop on each queue<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- priority</samp>](## "qos_profiles.[].priority_flow_control.priorities.[].priority") | Integer | Required, Unique |  | Min: 0<br>Max: 7 | Queue Number, from 0 to 7<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no_drop</samp>](## "qos_profiles.[].priority_flow_control.priorities.[].no_drop") | Boolean | Required |  |  | Enable Priority Flow Control frames on this queue |
 
 === "YAML"
 
@@ -74,4 +79,9 @@
             shape:
               rate: <str>
             comment: <str>
+        priority_flow_control:
+          enabled: <bool>
+          priorities:
+            - priority: <int>
+              no_drop: <bool>
     ```

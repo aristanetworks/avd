@@ -154,3 +154,35 @@ keys:
                 type: str
                 description: |
                   Text comment added to queue.
+        priority_flow_control:
+          type: dict
+          description: |
+            Priority Flow Control settings
+          keys:
+            enabled:
+              type: bool
+              description: |
+                Enable/Disable Priority Flow control
+                settings in this profile
+            priorities:
+              type: list
+              primary_key: priority
+              description: |
+                Set the drop/no_drop on each queue
+              items:
+                type: dict
+                keys:
+                  priority:
+                    type: int
+                    min: 0
+                    max: 7
+                    required: true
+                    convert_types:
+                      - str
+                    description: |
+                      Queue Number, from 0 to 7
+                  no_drop:
+                    type: bool
+                    required: true
+                    description: |
+                      Enable Priority Flow Control frames on this queue
