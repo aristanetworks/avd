@@ -55,13 +55,13 @@ snmp-server location {{ snmp_server.location }}
 {%             if view.name is arista.avd.defined %}
 {%                 set view_cli = "snmp-server view " ~ view.name %}
 {%             endif %}
-{%             if view.MIB_family_name is arista.avd.defined %}
-{%                 set view_cli = view_cli ~ " " ~ view.MIB_family_name ~ " " %}
+{%             if view.mib_family_name | arista.avd.default(view.MIB_family_name) is arista.avd.defined %}
+{%                 set view_cli = view_cli ~ " " ~ view.mib_family_name | arista.avd.default(view.MIB_family_name) %}
 {%             endif %}
 {%             if view.included is arista.avd.defined(true) %}
-{%                 set view_cli = view_cli ~ "included" %}
+{%                 set view_cli = view_cli ~ " included" %}
 {%             elif view.included is arista.avd.defined(false) %}
-{%                 set view_cli = view_cli ~ "excluded" %}
+{%                 set view_cli = view_cli ~ " excluded" %}
 {%             endif %}
 {{ view_cli }}
 {%         endfor %}

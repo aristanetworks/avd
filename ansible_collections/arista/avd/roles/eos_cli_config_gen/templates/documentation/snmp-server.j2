@@ -113,7 +113,7 @@
 | ---- | --------------- | ------ |
 {%         for view in snmp_server.views %}
 {%             set row_view = view.name | arista.avd.default('default') %}
-{%             set row_mib_family_name = view.MIB_family_name | arista.avd.default('-') %}
+{%             set row_mib_family_name = view.mib_family_name | arista.avd.default(view.MIB_family_name, '-') %}
 {%             if view.included | arista.avd.default(false) %}
 {%                 set row_status = 'Included' %}
 {%             else %}
