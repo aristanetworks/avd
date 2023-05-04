@@ -1,0 +1,49 @@
+type: l3leaf
+
+l3leaf:
+  defaults:
+    uplink_ipv4_pool: 10.10.101.0/24
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 32
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:1c:73:00:DC:01
+    platform: vEOS-LAB
+    uplink_switches: ['DC1-SPINE1']
+    uplink_interfaces: ['Ethernet1']
+    mlag: false
+  node_groups:
+    MH_L3LEAF1:
+      link_tracking:
+        enabled: true
+      lacp_port_id_range:
+        enabled: true
+      filter:
+        tags: [opzone]
+      nodes:
+        MH-LEAF1A:
+          id: 1
+          bgp_as: 65151
+          mgmt_ip: 192.168.201.104/24
+          uplink_switch_interfaces: [Ethernet10]
+        MH-LEAF1B:
+          id: 2
+          bgp_as: 65152
+          mgmt_ip: 192.168.201.105/24
+          uplink_switch_interfaces: [Ethernet11]
+    MH_L3LEAF2:
+      link_tracking:
+        enabled: true
+        groups:
+          - name: Eth-conn-to-router
+            recovery_delay: 520
+      # Set lacp-id port range to 257-768
+      lacp_port_id_range:
+        enabled: true
+        offset: 256
+        size: 512
+      nodes:
+        MH-LEAF2A:
+          id: 3
+          bgp_as: 65153
+          mgmt_ip: 192.168.201.106/24
+          uplink_switch_interfaces: [Ethernet12]

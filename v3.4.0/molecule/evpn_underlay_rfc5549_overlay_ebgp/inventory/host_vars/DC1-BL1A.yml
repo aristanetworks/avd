@@ -1,0 +1,9 @@
+---
+custom_structured_configuration_router_general:
+  vrfs:
+    Tenant_B_OP_Zone:
+      leak_routes:
+        - source_vrf: Tenant_A_OP_Zone
+          subscribe_policy: RM-CONN-2-BGP
+        - source_vrf: Tenant_C_OP_Zone
+          subscribe_policy: RM-CONN-2-BGP

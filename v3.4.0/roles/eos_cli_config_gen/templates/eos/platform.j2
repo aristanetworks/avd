@@ -1,0 +1,19 @@
+{# eos - platform #}
+{% if platform is arista.avd.defined %}
+!
+{%     if platform.trident.forwarding_table_partition is arista.avd.defined %}
+platform trident forwarding-table partition {{ platform.trident.forwarding_table_partition }}
+{%     endif %}
+{%     if platform.sand.lag.hardware_only is arista.avd.defined(true) %}
+platform sand lag hardware-only
+{%     endif %}
+{%     if platform.sand.lag.mode is arista.avd.defined %}
+platform sand lag mode {{ platform.sand.lag.mode }}
+{%     endif %}
+{%     if platform.sand.forwarding_mode is arista.avd.defined %}
+platform sand forwarding mode {{ platform.sand.forwarding_mode }}
+{%     endif %}
+{%     if platform.sand.multicast_replication.default is arista.avd.defined %}
+platform sand multicast replication default {{ platform.sand.multicast_replication.default }}
+{%     endif %}
+{% endif %}

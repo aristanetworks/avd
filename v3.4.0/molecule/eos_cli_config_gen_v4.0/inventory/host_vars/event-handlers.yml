@@ -1,0 +1,6 @@
+event_handlers:
+  - name: tracking
+    action_type: bash
+    action: /mnt/flash/tracking.sh
+    delay: 300
+    trigger: on-boot

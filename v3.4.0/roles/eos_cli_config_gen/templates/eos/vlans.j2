@@ -1,0 +1,18 @@
+{# eos - VLANs #}
+{% for vlan in vlans | arista.avd.natural_sort %}
+!
+vlan {{ vlan }}
+{%     if vlans[vlan].name is arista.avd.defined %}
+   name {{ vlans[vlan].name }}
+{%     endif %}
+{%     if vlans[vlan].state is arista.avd.defined %}
+   state {{ vlans[vlan].state }}
+{%     endif %}
+{%     for trunk_group in vlans[vlan].trunk_groups | arista.avd.natural_sort %}
+   trunk group {{ trunk_group }}
+{%     endfor %}
+{%     if vlans[vlan].private_vlan.type is arista.avd.defined and
+          vlans[vlan].private_vlan.primary_vlan is arista.avd.defined %}
+   private-vlan {{ vlans[vlan].private_vlan.type }} primary vlan {{ vlans[vlan].private_vlan.primary_vlan }}
+{%     endif %}
+{% endfor %}

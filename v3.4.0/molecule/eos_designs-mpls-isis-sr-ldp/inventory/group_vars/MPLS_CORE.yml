@@ -1,0 +1,227 @@
+---
+# Shared attributes
+root_dir: '{{playbook_dir}}'
+
+design:
+  type: "mpls"
+
+fabric_name: MPLS_CORE
+
+underlay_ipv6: true
+
+# OOB Management network default gateway.
+mgmt_gateway: 192.168.200.5
+
+underlay_routing_protocol: isis-sr-ldp
+
+# Core ISIS parameters
+isis_ti_lfa:
+  enabled: true
+  protection: link
+  local_convergence_delay: 15000
+
+isis_default_is_type: level-2
+isis_default_circuit_type: level-2
+isis_default_metric: 50
+isis_advertise_passive_only: true
+
+# Overlay Routing Protocol
+overlay_routing_protocol: ibgp
+bgp_as: 65000
+
+# BGP peer groups
+bgp_peer_groups:
+  mpls_overlay_peers:
+    password: $1c$U4tL2vQP9QwZlxIV1K3/pw==
+  rr_overlay_peers:
+    password: $1c$U4tL2vQP9QwZlxIV1K3/pw==
+
+
+# RD/RT Format
+overlay_rd_type:
+  admin_subfield: overlay_loopback
+overlay_rt_type:
+  admin_subfield: 65000
+
+# P-routers
+p:
+  platform: 7280SR
+  defaults:
+    loopback_ipv4_pool: 100.70.0.0/24
+    loopback_ipv6_pool: "2000:1234:ffff:ffff::/64"
+    node_sid_base: 300
+    isis_system_id_prefix: '0000.0000'
+    raw_eos_cli: |
+      management security
+         password encryption-key common
+  nodes:
+    SITE1-LSR1:
+      id: 1
+      mgmt_ip: 192.168.200.101/24
+    SITE1-LSR2:
+      id: 2
+      mgmt_ip: 192.168.200.102/24
+    SITE2-LSR1:
+      id: 3
+      mgmt_ip: 192.168.200.103/24
+    SITE2-LSR2:
+      id: 4
+      mgmt_ip: 192.168.200.104/24
+
+# PE-routers
+pe:
+  defaults:
+    virtual_router_mac_address: 00:1c:73:00:dc:00
+    platform: 7280SR3
+    loopback_ipv4_pool: 100.70.0.0/24
+    loopback_ipv6_pool: "2000:1234:ffff:ffff::/64"
+    is_type: level-1-2
+    node_sid_base: 200
+    isis_system_id_prefix: '0000.0001'
+    backbone_interface_speed: forced 100gfull
+    spanning_tree_priority: 4096
+    spanning_tree_mode: mstp
+    overlay_address_families: [ evpn, vpn-ipv4, vpn-ipv6 ]
+    bgp_defaults:
+      - 'no bgp default ipv4-unicast'
+      - 'distance bgp 20 200 200'
+      - 'graceful-restart restart-time 300'
+      - 'graceful-restart'
+    mpls_route_reflectors: [ SITE1-RR1, SITE2-RR1 ]
+    raw_eos_cli: |
+      management security
+         password encryption-key common
+  node_groups:
+    SITE1-LER1-2:
+      filter:
+        tenants: [ all ]
+        tags: [ all ]
+      nodes:
+        SITE1-LER1:
+          id: 5
+          overlay_address_families: [ evpn ]
+          mgmt_ip: 192.168.200.105/24
+        SITE1-LER2:
+          id: 6
+          mgmt_ip: 192.168.200.106/24
+    SITE2-LER1:
+      filter:
+        tenants: [ all ]
+        tags: [ all ]
+      nodes:
+        SITE2-LER1:
+          id: 7
+          mgmt_ip: 192.168.200.107/24
+    SITE3-LER1-TEST:
+      mpls_overlay_role: none
+      filter:
+        tenants: [ all ]
+        tags: [ all ]
+      nodes:
+        SITE3-LER1:
+          id: 10
+          mgmt_ip: 192.168.200.110/24
+
+# RR-routers
+rr:
+  defaults:
+    platform: 7280SR3
+    loopback_ipv4_pool: 100.70.0.0/24
+    loopback_ipv6_pool: "2000:1234:ffff:ffff::/64"
+    is_type: level-1-2
+    node_sid_base: 100
+    isis_system_id_prefix: '0000.0002'
+    overlay_address_families: [ evpn, vpn-ipv4, vpn-ipv6 ]
+    bgp_defaults:
+      - 'no bgp default ipv4-unicast'
+      - 'distance bgp 20 200 200'
+      - 'graceful-restart restart-time 300'
+      - 'graceful-restart'
+      - 'bgp route-reflector preserve-attributes always'
+    raw_eos_cli: |
+      management security
+         password encryption-key common
+  node_groups:
+    RR-CLUSTER:
+      bgp_cluster_id: 1.1.1.1
+      nodes:
+        SITE1-RR1:
+          id: 8
+          mgmt_ip: 10.30.30.108/24
+        SITE2-RR1:
+          id: 9
+          mgmt_ip: 10.30.30.109/24
+
+# Core underlay interfaces
+core_interfaces:
+  p2p_links_ip_pools:
+    - name: underlay_pool
+      ipv4_pool: 100.64.48.0/24
+  p2p_links_profiles:
+    - name: default_bb_profile
+      speed: "forced 40gfull"
+      mtu: 9178
+      isis_hello_padding: false
+      isis_metric: 60
+      ip_pool: underlay_pool
+      isis_circuit_type: level-2
+      ipv6_enable: true
+      isis_authentication_mode: md5
+      isis_authentication_key: asdadjiwtelogkkdng
+  p2p_links:
+
+    - nodes: [ SITE1-LER1, SITE1-LSR1 ]
+      id: 1
+      interfaces: [ Ethernet1, Ethernet1 ]
+      profile: default_bb_profile
+
+    - nodes: [ SITE1-LER2, SITE1-LSR2 ]
+      id: 2
+      interfaces: [ Ethernet1, Ethernet1 ]
+      profile: default_bb_profile
+      speed: "forced 100gfull"
+      mtu: 9214
+      isis_hello_padding: false
+      isis_circuit_type: level-1-2
+      isis_metric: 50
+
+    - nodes: [ SITE1-LER1, SITE1-LER2 ]
+      id: 3
+      speed: "forced 10000full"
+      isis_metric: 500
+      interfaces: [ Ethernet2, Ethernet2 ]
+      profile: default_bb_profile
+
+    - nodes: [ SITE1-LSR1, SITE1-RR1 ]
+      id: 4
+      interfaces: [ Ethernet4, Ethernet4 ]
+      profile: default_bb_profile
+
+    - nodes: [ SITE1-LSR1, SITE2-LSR1 ]
+      id: 5
+      interfaces: [ Ethernet3, Ethernet3 ]
+      profile: default_bb_profile
+
+    - nodes: [ SITE1-LSR2, SITE2-LSR2 ]
+      id: 6
+      interfaces: [ Ethernet3, Ethernet3 ]
+      profile: default_bb_profile
+
+    - nodes: [ SITE2-LSR1, SITE2-RR1 ]
+      id: 7
+      interfaces: [ Ethernet4, Ethernet4 ]
+      profile: default_bb_profile
+
+    - nodes: [ SITE2-LSR1, SITE2-LER1 ]
+      id: 8
+      interfaces: [ Ethernet1, Ethernet1 ]
+      profile: default_bb_profile
+
+    - nodes: [ SITE2-LSR2, SITE2-LER1 ]
+      id: 9
+      port_channel:
+        mode: active
+        nodes_child_interfaces:
+          SITE2-LSR2: [ Ethernet12, Ethernet13 ]
+          SITE2-LER1: [ Ethernet11, Ethernet11 ]
+      profile: default_bb_profile

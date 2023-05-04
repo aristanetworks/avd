@@ -1,0 +1,13 @@
+router_bgp:
+
+{% include 'overlay/ebgp/peer-groups.j2' %}
+
+{% include 'overlay/ebgp/address-family-ipv4.j2' %}
+
+{% include 'overlay/ebgp/address-family-evpn.j2' %}
+
+{% if evpn_overlay_bgp_rtc is arista.avd.defined(true) %}
+{%     include 'overlay/ebgp/address-family-rtc.j2' %}
+
+{% endif %}
+{% include 'overlay/ebgp/neighbors.j2' %}

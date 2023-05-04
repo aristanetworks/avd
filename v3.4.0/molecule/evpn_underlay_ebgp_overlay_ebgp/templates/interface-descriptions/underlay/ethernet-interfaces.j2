@@ -1,0 +1,14 @@
+{# j2lint: disable=jinja-statements-delimeter #}
+{%- if link.type is arista.avd.defined('underlay_p2p') -%}
+{%-     if switch.struct_cfg.tags is arista.avd.defined() -%}
+CUSTOM_P2P_LINK_TO_{{ link.peer | upper }}_{{ link.peer_interface }} {{ switch.struct_cfg.tags | arista.avd.default() }}
+{%-     else -%}
+CUSTOM_P2P_LINK_TO_{{ link.peer | upper }}_{{ link.peer_interface }}
+{%-     endif -%}
+{%- elif link.type is arista.avd.defined('underlay_l2') -%}
+{%-     if switch.struct_cfg.tags is arista.avd.defined() -%}
+CUSTOM_{{ link.peer | upper }}_{{ link.peer_interface }} {{ switch.struct_cfg.tags | arista.avd.default() }}
+{%-     else -%}
+CUSTOM_{{ link.peer | upper }}_{{ link.peer_interface }}
+{%-     endif -%}
+{%- endif -%}

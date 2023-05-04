@@ -1,0 +1,18 @@
+{# Read any global set eos_cli and add per tenant-vrf eos_cli #}
+{% set tmp_eos_clis = [] %}
+{% if eos_cli is arista.avd.defined %}
+{%     do tmp_eos_clis.append(eos_cli) %}
+{% endif %}
+{% for tenant in network_services_data.tenants %}
+{%     for vrf in tenant.vrfs %}
+{%         if vrf.raw_eos_cli is arista.avd.defined %}
+{%             do tmp_eos_clis.append(vrf.raw_eos_cli) %}
+{%         endif %}
+{%     endfor %}
+{% endfor %}
+{% if tmp_eos_clis | length > 0 %}
+eos_cli: |
+{%     for tmp_eos_cli in tmp_eos_clis %}
+  {{ tmp_eos_cli | indent(2,false) }}
+{%     endfor %}
+{% endif %}

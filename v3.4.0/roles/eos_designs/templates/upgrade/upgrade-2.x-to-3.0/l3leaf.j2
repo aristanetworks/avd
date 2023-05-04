@@ -1,0 +1,121 @@
+{# j2lint: disable=V1 #}
+{% if l3leaf is arista.avd.defined %}
+{####### l3leaf #######}
+l3leaf:
+  defaults:
+{%     if overlay_loopback_network_summary is arista.avd.defined %}
+# Change from overlay_loopback_network_summary to l3leaf.defaults.loopback_ipv4_pool
+    loopback_ipv4_pool: {{ overlay_loopback_network_summary }}
+{%         set switch_max_spines = max_spines | arista.avd.default(
+                                   spine.nodes | arista.avd.default([]) | length) %}
+{%         if switch_max_spines > 0 %}
+# New loopback_network_offset variable based on max_spines or length of spine.nodes
+    loopback_ipv4_offset: {{ switch_max_spines }}
+{%         endif %}
+{%     endif %}
+{%     if vtep_loopback_network_summary is arista.avd.defined %}
+# Change from vtep_loopback_network_summary to l3leaf.defaults.vtep_loopback_ipv4_pool
+    vtep_loopback_ipv4_pool: {{ vtep_loopback_network_summary }}
+{%     endif %}
+{%     if l3leaf.defaults.uplink_to_spine_interfaces is arista.avd.defined %}
+# Change from l3leaf.defaults.uplink_to_spine_interfaces to l3leaf.defaults.uplink_interfaces
+    uplink_interfaces: {{ l3leaf.defaults.uplink_to_spine_interfaces }}
+{%     endif %}
+{%     if l3leaf.defaults.spines is arista.avd.defined %}
+# Change from l3leaf.defaults.spines to l3leaf.defaults.uplink_switches
+    uplink_switches: {{ l3leaf.defaults.spines }}
+{%     endif %}
+{%     if max_spines is arista.avd.defined %}
+# Change from max_spines to l3leaf.defaults.max_uplink_switches
+    max_uplink_switches: {{ max_spines }}
+{%     endif %}
+{%     if max_l3leaf_to_spine_links is arista.avd.defined %}
+# Change from max_l3leaf_to_spine_links to l3leaf.defaults.max_parallel_uplinks
+    max_parallel_uplinks: {{ max_l3leaf_to_spine_links }}
+{%     endif %}
+{%     if underlay_p2p_network_summary is arista.avd.defined %}
+# Change from underlay_p2p_network_summary to l3leaf.defaults.uplink_ipv4_pool
+    uplink_ipv4_pool: {{ underlay_p2p_network_summary }}
+{%     endif %}
+{%     if p2p_uplinks_ptp is arista.avd.defined %}
+# Change from p2p_uplinks_ptp.* to l3leaf.defaults.uplink_ptp.*
+    uplink_ptp: {{ p2p_uplinks_ptp }}
+{%     endif %}
+{%     if l3leaf.defaults.p2p_link_interface_speed is arista.avd.defined %}
+# Change from l3leaf.defaults.p2p_link_interface_speed to l3leaf.defaults.uplink_interface_speed
+    uplink_interface_speed: {{ l3leaf.defaults.p2p_link_interface_speed }}
+{%     endif %}
+{%     if mlag_ips.mlag_peer is arista.avd.defined %}
+# Change from mlag_ips.mlag_peer to l3leaf.defaults.mlag_peer_ipv4_pool
+    mlag_peer_ipv4_pool: {{ mlag_ips.mlag_peer }}
+{%     endif %}
+{%     if mlag_ips.leaf_peer_l3 is arista.avd.defined %}
+# Change from mlag_ips.mlag_peer_l3_ipv4_pool to l3leaf.defaults.mlag_peer_l3_ipv4_pool
+    mlag_peer_l3_ipv4_pool: {{ mlag_ips.leaf_peer_l3 }}
+{%     endif %}
+{%     if leaf_bgp_defaults is arista.avd.defined %}
+# Change from leaf_bgp_defaults to l3leaf.defaults.bgp_defaults
+    bgp_defaults: {{ leaf_bgp_defaults }}
+{%     elif l3leaf.defaults.bgp_defaults is not arista.avd.defined %}
+# Change from old default value of leaf_bgp_defaults to l3leaf.defaults.bgp_defaults
+    bgp_defaults:
+      - update wait-install
+      - no bgp default ipv4-unicast
+      - distance bgp 20 200 200
+      - graceful-restart restart-time 300
+      - graceful-restart
+{%     endif %}
+{%     if underlay_routing_protocol is arista.avd.defined and underlay_routing_protocol | lower is arista.avd.defined('isis') %}
+# Change from isis_site_id.0001 to l3leaf.defaults.isis_system_id_prefix
+    isis_system_id_prefix: '{{ isis_site_id | arista.avd.default("0001") ~ ".0001" }}'
+{%         set switch_max_spines = max_spines | arista.avd.default(spine.nodes | arista.avd.default([]) | length) %}
+{%         if switch_max_spines > 0 %}
+# New l3leaf.defaults.isis_maximum_paths based on max_spines * max_l3leaf_to_spine_links
+    isis_maximum_paths: {{ switch_max_spines * max_l3leaf_to_spine_links | arista.avd.default(1) }}
+{%         endif %}
+{%     endif %}
+{%     if spine.bgp_as is arista.avd.defined %}
+# Retain 2.x behavior by setting spine.bgp_as on peer-node_groups
+    structured_config:
+      router_bgp:
+        peer_groups:
+{%         if underlay_routing_protocol | arista.avd.default('ebgp') | lower in ['bgp','ebgp'] %}
+          {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}:
+            remote_as: {{ spine.bgp_as }}
+{%         endif %}
+          {{ bgp_peer_groups.EVPN_OVERLAY_PEERS.name | arista.avd.default("EVPN-OVERLAY-PEERS") }}:
+            remote_as: {{ spine.bgp_as }}
+{%     endif %}
+  node_groups:
+{%     for node_group in l3leaf.node_groups | arista.avd.default([]) %}
+    {{ node_group }}:
+{%         if l3leaf.node_groups[node_group].uplink_to_spine_interfaces is arista.avd.defined %}
+# Change from l3leaf.node_groups.{{ node_group }}.uplink_to_spine_interfaces to l3leaf.node_groups.{{ node_group }}.uplink_interfaces
+      uplink_interfaces: {{ l3leaf.node_groups[node_group].uplink_to_spine_interfaces }}
+{%         endif %}
+{%         if l3leaf.node_groups[node_group].spines is arista.avd.defined %}
+# Change from l3leaf.node_groups.{{ node_group }}.spines to l3leaf.node_groups.{{ node_group }}.uplink_switches
+      uplink_switches: {{ l3leaf.node_groups[node_group].spines }}
+{%         endif %}
+{%         if l3leaf.node_groups[node_group].p2p_link_interface_speed is arista.avd.defined %}
+# Change from l3leaf.node_groups.{{ node_group }}.p2p_link_interface_speed to l3leaf.node_groups.{{ node_group }}.uplink_interface_speed
+      uplink_interface_speed: {{ l3leaf.node_groups[node_group].p2p_link_interface_speed }}
+{%         endif %}
+      nodes:
+{%         for node in l3leaf.node_groups[node_group].nodes | arista.avd.default([]) %}
+        {{ node }}:
+{%             if l3leaf.node_groups[node_group].nodes[node].spine_interfaces is arista.avd.defined %}
+# Change from l3leaf.node_groups.{{ node_group }}.nodes.{{ node }}.spine_interfaces to l3leaf.node_groups.{{ node_group }}.nodes.{{ node }}.uplink_switch_interfaces
+          uplink_switch_interfaces: {{ l3leaf.node_groups[node_group].nodes[node].spine_interfaces }}
+{%             endif %}
+{%             if l3leaf.node_groups[node_group].nodes[node].uplink_to_spine_interfaces is arista.avd.defined %}
+# Change from l3leaf.node_groups.{{ node_group }}.nodes.{{ node }}.uplink_to_spine_interfaces to l3leaf.node_groups.{{ node_group }}.nodes.{{ node }}.uplink_interfaces
+          uplink_interfaces: {{ l3leaf.node_groups[node_group].nodes[node].uplink_to_spine_interfaces }}
+{%             endif %}
+{%             if l3leaf.node_groups[node_group].nodes[node].spines is arista.avd.defined %}
+# Change from l3leaf.node_groups.{{ node_group }}.nodes.{{ node }}.spines to l3leaf.node_groups.{{ node_group }}.nodes.{{ node }}.uplink_switches
+          uplink_switches: {{ l3leaf.node_groups[node_group].nodes[node].spines }}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{% endif %}

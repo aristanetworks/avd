@@ -1,0 +1,45 @@
+router_bgp:
+  as: 65101
+  router_id: 192.168.255.3
+  bgp_defaults:
+    - no bgp default ipv4-unicast
+    - distance bgp 20 200 200
+    - graceful-restart restart-time 300
+    - graceful-restart
+    - maximum-paths 2 ecmp 2
+  peer_groups:
+    EVPN-OVERLAY-PEERS:
+      type: evpn
+      remote_as: 65001
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: 3
+      password: "q+VNViP5i4rVjW1cxFv2wA=="
+      send_community: all
+      maximum_routes: 0
+      default_originate:
+        enabled: true
+        route_map: RM-FOO
+        always: true
+      rib_in_pre_policy_retain:
+        enabled: true
+        all: true
+    MLAG-IPv4-UNDERLAY-PEER:
+      type: ipv4
+      remote_as: 65101
+      # Test no config generation
+      default_originate:
+      # Test no config generation
+      rib_in_pre_policy_retain:
+  neighbors:
+    192.168.255.1:
+      peer_group: EVPN-OVERLAY-PEERS
+    192.168.255.2:
+      peer_group: EVPN-OVERLAY-PEERS
+  address_family_evpn:
+    neighbor_default:
+      encapsulation: mpls
+      next_hop_self_source_interface: Loopback0
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true

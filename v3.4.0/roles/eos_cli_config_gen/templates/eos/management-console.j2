@@ -1,0 +1,8 @@
+{# Management console #}
+{% if management_console is arista.avd.defined %}
+!
+management console
+{%     if management_console.idle_timeout is arista.avd.defined %}
+   idle-timeout {{ management_console.idle_timeout }}
+{%     endif %}
+{% endif %}

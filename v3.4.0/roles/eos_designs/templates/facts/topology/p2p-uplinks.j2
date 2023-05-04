@@ -1,0 +1,59 @@
+{% set topology_peers = [] %}
+
+topology:
+
+{# topology.links #}
+  links:
+{% for uplink_interface in switch.uplink_interfaces | arista.avd.default([]) %}
+{%     set uplink_switch = switch.uplink_switches[loop.index0] | arista.avd.default() %}
+{%     if uplink_switch is arista.avd.defined and uplink_switch in groups[fabric_name] %}
+{%         set uplink_switch_facts = hostvars[uplink_switch].switch | arista.avd.default %}
+{%         if uplink_switch_facts is arista.avd.defined(fail_action='warning',var_name='hostvars[' ~ uplink_switch ~ '].switch') %}
+{%             do topology_peers.append(uplink_switch) %}
+    {{ uplink_interface }}:
+      peer: {{ uplink_switch }}
+      peer_interface: {{ switch.uplink_switch_interfaces[loop.index0 ] }}
+      peer_type: {{ uplink_switch_facts.type }}
+      peer_bgp_as: "{{ uplink_switch_facts.bgp_as | arista.avd.default() }}"
+      type: underlay_p2p
+{%             if switch.uplink_interface_speed is arista.avd.defined %}
+      speed: {{ switch.uplink_interface_speed }}
+{%             endif %}
+{%             if switch.uplink_bfd is arista.avd.defined(true) %}
+      bfd: true
+{%             endif %}
+{%             if switch.uplink_ptp.enable is arista.avd.defined %}
+      ptp: {{ switch.uplink_ptp.enable }}
+{%             endif %}
+{%             if switch.uplink_macsec is arista.avd.defined %}
+      mac_security: {{ switch.uplink_macsec }}
+{%             endif %}
+{%             if underlay_rfc5549 is arista.avd.defined(true) %}
+      ipv6_enable: true
+{%             else %}
+{%                 set uplink_switch_index = loop.index0 %}
+      ip_address: {% include switch.ip_addressing.p2p_uplinks_ip %}
+
+      peer_ip_address: {% include switch.ip_addressing.p2p_uplinks_peer_ip %}
+
+{%             endif %}
+{%             if switch.link_tracking_groups is arista.avd.defined %}
+{#    topology.link_tracking_group #}
+      link_tracking_groups:
+{%                 for lt_group in switch.link_tracking_groups %}
+        - name: {{ lt_group.name }}
+          direction: upstream
+{%                 endfor %}
+{%             endif %}
+{%         endif %}
+{%     endif %}
+{% endfor %}
+
+{# topology.peers #}
+{# Used during structured_config rendering to quickly scan if this switch has a peering towards the switch being rendered #}
+  peers: {{ topology_peers }}
+
+{# topology.vlans #}
+{# Vlan list taking parent switch vlans into consideration #}
+{# Since this switch is not using port-channels it is just the same as switch.vlans #}
+  vlans: {{ switch.vlans | arista.avd.default([]) }}

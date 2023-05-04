@@ -1,0 +1,17 @@
+---
+port_profiles:
+  TENANT_A_WAN_SERVICE_10:
+    mode: trunk
+    vlans: 10
+    spanning_tree_portfast: edge
+cpes:
+  CPE_TENANT_A_SITE2:
+    adapters:
+    - profile: TENANT_A_WAN_SERVICE_10
+      endpoint_ports:
+      - eth0
+      switch_ports:
+      - Ethernet8
+      switches:
+      - SITE2-LER1
+    rack: Undefined

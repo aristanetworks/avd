@@ -1,0 +1,66 @@
+{% set topology_peers = [] %}
+{% set ns = namespace(vlans=switch.vlans) %}
+
+topology:
+
+{# topology.links #}
+  links:
+{% for uplink_interface in switch.uplink_interfaces | arista.avd.default([]) %}
+{%     set uplink_switch = switch.uplink_switches[loop.index0] | arista.avd.default() %}
+{%     if uplink_switch is arista.avd.defined and uplink_switch in groups[fabric_name] %}
+{%         set uplink_switch_facts = hostvars[uplink_switch].switch | arista.avd.default %}
+{%         if uplink_switch_facts is arista.avd.defined(fail_action='warning',var_name='hostvars[' ~ uplink_switch ~ '].switch') %}
+{%             do topology_peers.append(uplink_switch) %}
+    {{ uplink_interface }}:
+      peer: {{ uplink_switch }}
+      peer_interface: {{ switch.uplink_switch_interfaces[loop.index0] }}
+      peer_type: {{ uplink_switch_facts.type }}
+      type: underlay_l2
+{%             if switch.uplink_interface_speed is arista.avd.defined %}
+      speed: {{ switch.uplink_interface_speed }}
+{%             endif %}
+{%             if uplink_switch_facts.mlag is arista.avd.defined(true) or switch.short_esi is arista.avd.defined %}
+{# Override our description on port-channel to be peer's group name if they are mlag pair or A/A #}
+      channel_description: {{ uplink_switch_facts.group }}
+{%             endif %}
+{%             if switch.mlag is arista.avd.defined(true) %}
+{# Override the peer's description on port-channel to be our group name if we are mlag pair #}
+      peer_channel_description: {{ switch.group }}
+{%             endif %}
+{%             if switch.mlag_role is arista.avd.defined('secondary') %}
+{%                 set mlag_peer_switch_facts = hostvars[switch.mlag_peer].switch %}
+      channel_group_id: {{ mlag_peer_switch_facts.uplink_interfaces[0] | regex_findall("\d") | join }}
+      peer_channel_group_id: {{ mlag_peer_switch_facts.uplink_switch_interfaces[0] | regex_findall("\d") | join }}
+{%             else %}
+      channel_group_id: {{ switch.uplink_interfaces[0] | regex_findall("\d") | join }}
+      peer_channel_group_id: {{ switch.uplink_switch_interfaces[0] | regex_findall("\d") | join }}
+{%             endif %}
+{# Remove vlans if upstream switch does not have them #}
+{%             set uplink_vlans = switch.vlans | arista.avd.default([]) | select('in', uplink_switch_facts.vlans) %}
+{%             set ns.vlans = uplink_vlans %}
+{%             if switch.inband_management_vlan is arista.avd.defined %}
+{%                 do uplink_vlans.append(switch.inband_management_vlan | int) %}
+{%             endif %}
+      vlans: {{ uplink_vlans | unique }}
+{%             if switch.short_esi is arista.avd.defined %}
+      peer_short_esi: {{ switch.short_esi }}
+{%             endif %}
+{%             if switch.link_tracking_groups is arista.avd.defined %}
+{#    topology.link_tracking_group #}
+      link_tracking_groups:
+{%                 for lt_group in switch.link_tracking_groups %}
+        - name: {{ lt_group.name }}
+          direction: upstream
+{%                 endfor %}
+{%             endif %}
+{%         endif %}
+{%     endif %}
+{% endfor %}
+
+{# topology.peers #}
+{# Used during structured_config rendering to quickly scan if this switch has a peering towards the switch being rendered #}
+  peers: {{ topology_peers }}
+
+{# topology.vlans #}
+{# Vlan list taking parent switch vlans into consideration #}
+  vlans: {{ ns.vlans }}

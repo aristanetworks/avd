@@ -1,0 +1,15 @@
+---
+- name: Create required output directories if not present
+  tags: [always]
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+  loop:
+    - "{{ structured_cvp_dir }}"
+  delegate_to: localhost
+  run_once: true
+
+- name: Start creation/update process.
+  tags: [always]
+  include_tasks: "{{ cv_collection }}/main.yml"

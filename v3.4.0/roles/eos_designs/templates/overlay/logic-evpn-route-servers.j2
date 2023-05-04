@@ -1,0 +1,15 @@
+{% set overlay_data.evpn_route_servers = {} %}
+{# #}
+{# Expand data for evpn_route_servers #}
+{% for route_server in switch.evpn_route_servers | arista.avd.natural_sort %}
+{%     set peer_facts = hostvars[route_server] %}
+{%     if peer_facts.switch is arista.avd.defined(fail_action='warning',var_name='Switch Facts for ' ~ route_server) %}
+{%         if peer_facts.switch.evpn_role is arista.avd.defined('server') %}
+{# Found a matching server. Gathering information for this server #}
+{%             set server = namespace() %}
+{%             set server.bgp_as = peer_facts.switch.bgp_as %}
+{%             set server.ip_address = peer_facts.switch.router_id %}
+{%             do overlay_data.evpn_route_servers.update({ route_server: server }) %}
+{%         endif %}
+{%     endif %}
+{% endfor %}

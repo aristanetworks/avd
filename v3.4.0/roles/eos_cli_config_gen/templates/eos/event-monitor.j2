@@ -1,0 +1,5 @@
+{# eos - Event monitor #}
+{% if event_monitor.enabled is arista.avd.defined(true) %}
+!
+event-monitor
+{% endif %}

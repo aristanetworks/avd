@@ -1,0 +1,34 @@
+### VxLAN interface ###
+
+vxlan_interface:
+  Vxlan1:
+    description: DC1-LEAF2A_VTEP
+    vxlan:
+      source_interface: Loopback0
+      mlag_source_interface: Loopback1
+      udp_port: 4789
+      virtual_router_encapsulation_mac_address: mlag-system-id
+      qos:
+        dscp_propagation_encapsulation: true
+        map_dscp_to_traffic_class_decapsulation: true
+      vlans:
+        110:
+          vni: 10110
+          multicast_group: 239.9.1.4
+        111:
+          vni: 10111
+          flood_vteps:
+            - 10.1.1.10
+            - 10.1.1.11
+      vrfs:
+        Tenant_A_OP_Zone:
+          vni: 10
+          multicast_group: 232.0.0.10
+        Tenant_A_WEB_Zone:
+          vni: 11
+      flood_vteps:
+        - 10.1.0.10
+        - 10.1.0.11
+      flood_vtep_learned_data_plane: true
+    eos_cli: |
+        vxlan encapsulation ipv4

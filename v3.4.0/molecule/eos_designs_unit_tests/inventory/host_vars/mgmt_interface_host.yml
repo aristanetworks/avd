@@ -1,0 +1,11 @@
+# Minimum config to only test the specific feature.
+l2leaf:
+  defaults:
+  nodes:
+    mgmt_interface_host:
+      platform: 7500R2
+      mgmt_interface: MY_INTERFACE_HOST
+      mgmt_interface_vrf: MGMT
+      mgmt_gateway: 1.1.1.1
+      mgmt_ip: 1.1.1.2
+      id: 104

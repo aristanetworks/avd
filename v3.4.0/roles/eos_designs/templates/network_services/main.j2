@@ -1,0 +1,82 @@
+{# Add one blank line after each included template #}
+{% if switch.network_services_l2 is arista.avd.defined(true) or switch.network_services_l3 is arista.avd.defined(true) or switch.network_services_l1 is arista.avd.defined(true) %}
+{%     set network_services_data = namespace() %}
+{%     set default_vrf = namespace(svi_subnets = []) %}
+{%     include 'network_services/logic.j2' %}
+
+{% endif %}
+
+{# L1 #}
+{% if switch.network_services_l1 is arista.avd.defined(true) %}
+{%     include 'network_services/patch-panel.j2' %}
+
+{% endif %}
+
+{# L2 #}
+{% if switch.network_services_l2 is arista.avd.defined(true) %}
+{%     include 'network_services/vlans.j2' %}
+
+{%     include 'network_services/ip-igmp-snooping.j2' %}
+
+{% endif %}
+
+{# L2 and L3 #}
+{% if switch.network_services_l2 is arista.avd.defined(true) and switch.network_services_l3 is arista.avd.defined(true) %}
+{%     include 'network_services/ip-virtual-router-mac-address.j2' %}
+
+{%     include 'network_services/vlan-interfaces.j2' %}
+
+{% endif %}
+
+{# L3 #}
+{% if switch.network_services_l3 is arista.avd.defined(true) %}
+{%     include 'network_services/ethernet-interfaces.j2' %}
+
+{%     include 'network_services/port-channel-interfaces.j2' %}
+
+{%     include 'network_services/loopback-interfaces.j2' %}
+
+{%     include 'network_services/route-maps.j2' %}
+
+{%     include 'network_services/static-routes.j2' %}
+
+{%     include 'network_services/vrfs.j2' %}
+
+{%     include 'network_services/router-ospf.j2' %}
+
+{%     include 'network_services/eos-cli-vrfs.j2' %}
+
+{%     include 'network_services/structured-config-vrfs.j2' %}
+
+{%     include 'network_services/router-ospf.j2' %}
+
+{% endif %}
+
+{# VTEP and (L1 or L2 or L3) #}
+{% if (switch.vtep is arista.avd.defined(true) or switch.mpls_ler is arista.avd.defined(true)) and
+      (switch.network_services_l2 is arista.avd.defined(true) or
+      switch.network_services_l3 is arista.avd.defined(true) or
+      switch.network_services_l1 is arista.avd.defined(true)) %}
+{%     include 'network_services/vtep-logic.j2' %}
+
+{%     if default_vrf.svi_subnets %}
+
+{%         include 'network_services/default-vrf-route-map.j2' %}
+
+{%     endif %}
+
+{%     include 'network_services/router-bgp.j2' %}
+
+{%     if switch.vtep is arista.avd.defined(true) %}
+{%         include 'network_services/vxlan-interface.j2' %}
+
+{%     endif %}
+{% endif %}
+
+{# VTEP and L2 and L3 #}
+{% if switch.vtep is arista.avd.defined(true) and
+      switch.network_services_l2 is arista.avd.defined(true) and
+      switch.network_services_l3 is arista.avd.defined(true) %}
+{%     include 'network_services/virtual-source-nat-vrfs.j2' %}
+
+{% endif %}

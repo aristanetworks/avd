@@ -1,0 +1,67 @@
+---
+pod_name: DC1_POD2
+
+spine:
+  defaults:
+    platform: vEOS-LAB
+    bgp_as: 65120
+    loopback_ipv4_pool: 172.16.120.0/24
+    uplink_interfaces: ["Ethernet1", "Ethernet2"]
+    uplink_switches: ["DC1-SUPER-SPINE1", "DC1-SUPER-SPINE2"]
+    max_uplink_switches: 4
+    uplink_ipv4_pool: 172.16.12.0/24
+    uplink_ptp:
+      enable: True
+    uplink_macsec:
+      profile: MACSEC_PROFILE
+    bgp_defaults:
+      - "no bgp default ipv4-unicast"
+      - "distance bgp 20 200 200"
+      - "graceful-restart restart-time 300"
+      - "graceful-restart"
+  nodes:
+    # Spine also working as EVPN RS
+    DC1-POD2-SPINE1:
+      id: 1
+      mgmt_ip: 192.168.1.13/24
+      evpn_route_servers: [DC1-SUPER-SPINE2]
+      uplink_switch_interfaces: ["Ethernet3", "Ethernet3"]
+    DC1-POD2-SPINE2:
+      id: 2
+      mgmt_ip: 192.168.1.14/24
+      evpn_route_servers: [DC1-SUPER-SPINE2]
+      uplink_switch_interfaces: ["Ethernet4", "Ethernet4"]
+
+# In DC1 we define all variables on specific node / node_group
+l3leaf:
+  defaults:
+    bgp_as: 65555
+    virtual_router_mac_address: 00:1c:73:00:dc:01
+    loopback_ipv4_pool: 172.16.120.0/24
+    loopback_ipv4_offset: 2
+    vtep_loopback_ipv4_pool: 172.18.120.0/24
+    uplink_ipv4_pool: 172.17.120.0/24
+    uplink_ptp:
+      enable: True
+    mac_security:
+      profile: MACSEC_PROFILE
+    bgp_defaults:
+      - "no bgp default ipv4-unicast"
+      - "distance bgp 20 200 200"
+      - "graceful-restart restart-time 300"
+      - "graceful-restart"
+    mlag_peer_l3_ipv4_pool: 172.19.120.0/24
+    mlag_peer_ipv4_pool: 172.20.120.0/24
+  node_groups:
+    # Single switch evpn to spine->super-spine2->rs2.
+    RACK1_SINGLE:
+      spanning_tree_mode: none
+      platform: vEOS-LAB
+      uplink_interfaces: ["Ethernet1", "Ethernet2"]
+      uplink_switches: ["DC1-POD2-SPINE1", "DC1-POD2-SPINE2"]
+      bgp_as: 65121
+      nodes:
+        DC1-POD2-LEAF1A:
+          id: 1
+          mgmt_ip: 192.168.1.15/24
+          uplink_switch_interfaces: ["Ethernet3", "Ethernet3"]

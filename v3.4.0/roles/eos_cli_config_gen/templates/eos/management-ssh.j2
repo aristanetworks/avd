@@ -1,0 +1,62 @@
+{# Management SSH #}
+{% if management_ssh is arista.avd.defined %}
+!
+management ssh
+{%     if management_ssh.access_groups is arista.avd.defined %}
+{%         for access_group in management_ssh.access_groups %}
+{%             set acl_cli = "ip access-group " ~ access_group.name %}
+{%             if access_group.vrf is arista.avd.defined %}
+{%                 set acl_cli = acl_cli ~ " vrf " ~ access_group.vrf  %}
+{%             endif %}
+{%             set acl_cli = acl_cli ~ " in" %}
+   {{ acl_cli }}
+{%         endfor %}
+{%     endif %}
+{%     if management_ssh.ipv6_access_groups is arista.avd.defined %}
+{%         for ipv6_access_group in management_ssh.ipv6_access_groups %}
+{%             set ipv6_acl_cli = "ipv6 access-group " ~ ipv6_access_group.name %}
+{%             if ipv6_access_group.vrf is arista.avd.defined %}
+{%                 set ipv6_acl_cli = ipv6_acl_cli ~ " vrf " ~ ipv6_access_group.vrf  %}
+{%             endif %}
+{%             set ipv6_acl_cli = ipv6_acl_cli ~ " in" %}
+   {{ ipv6_acl_cli }}
+{%         endfor %}
+{%     endif %}
+{%     if management_ssh.idle_timeout is arista.avd.defined %}
+   idle-timeout {{ management_ssh.idle_timeout }}
+{%     endif %}
+{%     if management_ssh.connection.limit is arista.avd.defined %}
+   connection limit {{ management_ssh.connection.limit }}
+{%     endif %}
+{%     if management_ssh.connection.per_host is arista.avd.defined %}
+   connection per-host {{ management_ssh.connection.per_host }}
+{%     endif %}
+{%     if management_ssh.cipher is arista.avd.defined %}
+   cipher {{ management_ssh.cipher | join(" ") }}
+{%     endif %}
+{%     if management_ssh.key_exchange is arista.avd.defined %}
+   key-exchange {{ management_ssh.key_exchange | join(" ") }}
+{%     endif %}
+{%     if management_ssh.mac is arista.avd.defined %}
+   mac {{ management_ssh.mac | join(" ") }}
+{%     endif %}
+{%     if management_ssh.hostkey.server is arista.avd.defined %}
+   hostkey server {{ management_ssh.hostkey.server | join(" ") }}
+{%     endif %}
+{%     if management_ssh.enable is arista.avd.defined(false) %}
+   shutdown
+{%     elif management_ssh.enable is arista.avd.defined(true) %}
+   no shutdown
+{%     endif %}
+{%     if management_ssh.log_level is arista.avd.defined %}
+   log-level {{ management_ssh.log_level }}
+{%     endif %}
+{%     for vrf in management_ssh.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+   vrf {{ vrf.name }}
+{%         if vrf.enable is arista.avd.defined(true) %}
+      no shutdown
+{%         elif vrf.enable is arista.avd.defined(false) %}
+      shutdown
+{%         endif %}
+{%     endfor %}
+{% endif %}

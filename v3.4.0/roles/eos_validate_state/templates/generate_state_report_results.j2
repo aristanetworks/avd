@@ -1,0 +1,437 @@
+{# j2lint: disable=V1 #}
+{# AVD State Validation Report #}
+eos_validate_state_report:
+{% set test_id = namespace(value=0) %}
+{% set copy_hostvars = namespace(hostvars) %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{# Hardware results - power supplies status #}
+{%     if copy_hostvars[node].power_supplies_results.results is arista.avd.defined %}
+{%         for result in copy_hostvars[node].power_supplies_results.results %}
+{%             set test_id.value = test_id.value + 1 %}
+- id: {{ test_id.value }}
+  device: "{{ node }}"
+  test_category: "Hardware"
+  test_description: "Power supply status"
+  test: "Power supply {{ result.powerSupply.key }}"
+{%             if result.failed is arista.avd.defined(false) %}
+  result: "PASS"
+{%             else %}
+  result: "FAIL"
+  failure_reason: "{{ result.msg }}"
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{# Hardware results - fan status (power supplies) #}
+{%     if copy_hostvars[node].fan_power_supplies_results.results is arista.avd.defined %}
+{%         for result in copy_hostvars[node].fan_power_supplies_results.results %}
+{%             set test_id.value = test_id.value + 1 %}
+- id: {{ test_id.value }}
+  device: "{{ node }}"
+  test_category: "Hardware"
+  test_description: "Fan status (power supplies)"
+  test: "Power supply fan {{ result.powerSupplySlot.label }}"
+{%             if result.failed is arista.avd.defined(false) %}
+  result: "PASS"
+{%             else %}
+  result: "FAIL"
+  failure_reason: "{{ result.msg }}"
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{# Hardware results - fan status (fan tray) #}
+{%     if copy_hostvars[node].fan_tray_status_results.results is arista.avd.defined %}
+{%         for result in copy_hostvars[node].fan_tray_status_results.results %}
+{%             set test_id.value = test_id.value + 1 %}
+- id: {{ test_id.value }}
+  device: "{{ node }}"
+  test_category: "Hardware"
+  test_description: "Fan status (fan tray)"
+  test: "Tray {{ result.fanTraySlot.label }}"
+{%             if result.failed is arista.avd.defined(false) %}
+  result: "PASS"
+{%             else %}
+  result: "FAIL"
+  failure_reason: "{{ result.msg }}"
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{# Hardware results - temperature #}
+{%     if copy_hostvars[node].environment_temperature_results is arista.avd.defined %}
+{%         set test_id.value = test_id.value + 1 %}
+- id: {{ test_id.value }}
+  device: "{{ node }}"
+  test_category: "Hardware"
+  test_description: "Temperature"
+  test: "System temperature"
+{%         if copy_hostvars[node].environment_temperature_results.failed is arista.avd.defined(false) %}
+  result: "PASS"
+{%         else %}
+  result: "FAIL"
+  failure_reason: "{{ copy_hostvars[node].environment_temperature_results.msg | replace('\"','') }}"
+{%         endif %}
+{%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{# Hardware results - transceivers manufacturers #}
+{%     if copy_hostvars[node].transceiver_inventory_results.results is arista.avd.defined %}
+{%         for result in copy_hostvars[node].transceiver_inventory_results.results if result.skipped is not arista.avd.defined %}
+{%             set test_id.value = test_id.value + 1 %}
+- id: {{ test_id.value }}
+  device: "{{ node }}"
+  test_category: "Hardware"
+  test_description: "Transceivers manufacturers"
+  test: "Port {{ result.xcvrSlot.key }}"
+{%             if result.failed is arista.avd.defined(false) %}
+  result: "PASS"
+{%             else %}
+  result: "FAIL"
+  failure_reason: "{{ result.msg }}"
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{# NTP Status Results #}
+{%     if copy_hostvars[node].ntp_status_results is arista.avd.defined and copy_hostvars[node].ntp_status_results.skipped is not arista.avd.defined %}
+{%         set test_id.value = test_id.value + 1 %}
+- id: {{ test_id.value }}
+  device: "{{ node }}"
+  test_category: "NTP"
+  test_description: "Synchronised with NTP server"
+  test: "NTP"
+{%         if copy_hostvars[node].ntp_status_results.failed is arista.avd.defined(false) %}
+  result: "PASS"
+{%         else %}
+  result: "FAIL"
+  failure_reason: "{{ copy_hostvars[node].ntp_status_results.msg }}"
+{%         endif %}
+{%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{# Ethernet Interface State Results #}
+{%     if copy_hostvars[node].ethernet_interface_state_results.results is arista.avd.defined %}
+{%         for result in copy_hostvars[node].ethernet_interface_state_results.results %}
+{%             set test_id.value = test_id.value + 1 %}
+- id: {{ test_id.value }}
+  device: "{{ node }}"
+  test_category: "Interface State"
+{%             if not result.ethernet_interface.value.shutdown %}
+  test_description: "Ethernet Interface & Line Protocol == \"up\""
+{%             else %}
+  test_description: "Ethernet Interface & Line Protocol == \"adminDown\""
+{%             endif %}
+  test: "{{ result.ethernet_interface.key }} - {{ result.ethernet_interface.value.description | arista.avd.default('') }}"
+{%             if result.failed is arista.avd.defined(false) %}
+  result: "PASS"
+{%             else %}
+  result: "FAIL"
+  failure_reason: "{{ result.msg }}"
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{# Port-Channel Interface State Results #}
+{%     if copy_hostvars[node].port_channel_interface_state_results.results is arista.avd.defined %}
+{%         for result in copy_hostvars[node].port_channel_interface_state_results.results %}
+{%             set test_id.value = test_id.value + 1 %}
+- id: {{ test_id.value }}
+  device: "{{ node }}"
+  test_category: "Interface State"
+{%             if not result.port_channel_interface.value.shutdown %}
+  test_description: "Port-Channel Interface & Line Protocol == \"up\""
+{%             else %}
+  test_description: "Port-Channel Interface & Line Protocol == \"adminDown\""
+{%             endif %}
+  test: "{{ result.port_channel_interface.key }} - {{ result.port_channel_interface.value.description | arista.avd.default('') }}"
+{%             if result.failed is arista.avd.defined(false) %}
+  result: "PASS"
+{%             else %}
+  result: "FAIL"
+  failure_reason: "{{ result.msg }}"
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{# Vlan Interface State Results #}
+{%     if copy_hostvars[node].vlan_interface_state_results.results is arista.avd.defined %}
+{%         for result in copy_hostvars[node].vlan_interface_state_results.results %}
+{%             set test_id.value = test_id.value + 1 %}
+- id: {{ test_id.value }}
+  device: "{{ node }}"
+  test_category: "Interface State"
+{%             if not result.vlan_interface.value.shutdown %}
+  test_description: "Vlan Interface & Line Protocol == \"up\""
+{%             else %}
+  test_description: "Vlan Interface & Line Protocol == \"adminDown\""
+{%             endif %}
+  test: "{{ result.vlan_interface.key }} - {{ result.vlan_interface.value.description | arista.avd.default('') }}"
+{%             if result.failed is arista.avd.defined(false) %}
+  result: "PASS"
+{%             else %}
+  result: "FAIL"
+  failure_reason: "{{ result.msg }}"
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{# Vxlan Interface State Results #}
+{%     if copy_hostvars[node].vxlan_interface_state_results is arista.avd.defined and copy_hostvars[node].vxlan_interface_state_results.skipped is not arista.avd.defined %}
+{%         set test_id.value = test_id.value + 1 %}
+- id: {{ test_id.value }}
+  device: "{{ node }}"
+  test_category: "Interface State"
+  test_description: "Vxlan Interface Status & Line Protocol == \"up\""
+  test: "Vxlan1"
+{%         if copy_hostvars[node].vxlan_interface_state_results.failed is arista.avd.defined(false) %}
+  result: "PASS"
+{%         else %}
+  result: "FAIL"
+  failure_reason: "{{ copy_hostvars[node].vxlan_interface_state_results.msg | replace('\"','') }}"
+{%         endif %}
+{%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{# Loopback Interface State Results #}
+{%     if copy_hostvars[node].loopback_interface_state_results.results is arista.avd.defined %}
+{%         for result in copy_hostvars[node].loopback_interface_state_results.results %}
+{%             set test_id.value = test_id.value + 1 %}
+- id: {{ test_id.value }}
+  device: "{{ node }}"
+  test_category: "Interface State"
+  test_description: "Loopback Interface Status & Line Protocol == \"up\""
+  test: "{{ result.loopback_interface.key }} - {{ result.loopback_interface.value.description | arista.avd.default('') }}"
+{%             if result.failed is arista.avd.defined(false) %}
+  result: "PASS"
+{%             else %}
+  result: "FAIL"
+  failure_reason: "{{ result.msg }}"
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{# LLDP Topology Results #}
+{%     if copy_hostvars[node].lldp_topology_results.results is arista.avd.defined %}
+{%         for result in copy_hostvars[node].lldp_topology_results.results %}
+{%             if result.skipped is not arista.avd.defined %}
+{%                 set test_id.value = test_id.value + 1 %}
+- id: {{ test_id.value }}
+  device: "{{ node }}"
+  test_category: "LLDP Topology"
+  test_description: "LLDP topology - validate peer and interface"
+  test: "local: {{ result.ethernet_interface.key }} - remote: {{ copy_hostvars[node].ethernet_interfaces[result.ethernet_interface.key].peer }}_{{ copy_hostvars[node].ethernet_interfaces[result.ethernet_interface.key].peer_interface }}"
+{%                 if result.failed is arista.avd.defined(false) %}
+  result: "PASS"
+{%                 else %}
+  result: "FAIL"
+  failure_reason: "{{ result.msg }}"
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{# mlag_state_results Results #}
+{%     if copy_hostvars[node].mlag_state_results is arista.avd.defined and copy_hostvars[node].mlag_state_results.skipped is not arista.avd.defined %}
+{%         set test_id.value = test_id.value + 1 %}
+- id: {{ test_id.value }}
+  device: "{{ node }}"
+  test_category: "MLAG"
+  test_description: "MLAG State active & Status connected"
+  test: "MLAG"
+{%         if copy_hostvars[node].mlag_state_results.failed is arista.avd.defined(false) %}
+  result: "PASS"
+{%         else %}
+  result: "FAIL"
+  failure_reason: "{{ copy_hostvars[node].mlag_state_results.msg | replace('\"','') }}"
+{%         endif %}
+{%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{# IP Reachability test - point-to-point links Results #}
+{%     if copy_hostvars[node].ip_reachability_results.results is arista.avd.defined %}
+{%         for result in copy_hostvars[node].ip_reachability_results.results %}
+{%             if result.skipped is not arista.avd.defined %}
+{%                 set test_id.value = test_id.value + 1 %}
+- id: {{ test_id.value }}
+  device: "{{ node }}"
+  test_category: "IP Reachability"
+  test_description: "ip reachability test p2p links"
+  test: "Source: {{ node }}_{{ result.ip_reachability_test.ethernet_interface.key }} - Destination: {{ result.ip_reachability_test.ethernet_interface.value.peer }}_{{ result.ip_reachability_test.ethernet_interface.value.peer_interface }}"
+{%                 if result.failed is arista.avd.defined(false) %}
+  result: "PASS"
+{%                 else %}
+  result: "FAIL"
+  failure_reason: "{{ result.msg }}"
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{# AirBGP #}
+{%     if copy_hostvars[node].arbgp_state_results is arista.avd.defined and copy_hostvars[node].arbgp_state_results.skipped is not arista.avd.defined %}
+{%         set test_id.value = test_id.value + 1 %}
+- id: {{ test_id.value }}
+  device: "{{ node }}"
+  test_category: "BGP"
+  test_description: "ArBGP is configured and operating"
+  test: "ArBGP"
+{%         if copy_hostvars[node].arbgp_state_results.failed is arista.avd.defined(false) %}
+  result: "PASS"
+{%         else %}
+  result: "FAIL"
+  failure_reason: "{{ copy_hostvars[node].arbgp_state_results.msg | replace('\"','') }}"
+{%         endif %}
+{%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{# ip bgp neighbors peer state type: "ipv4" Results #}
+{%     if copy_hostvars[node].ip_bgp_peer_state_results.results is arista.avd.defined %}
+{%         for result in copy_hostvars[node].ip_bgp_peer_state_results.results %}
+{%             if result.skipped is not arista.avd.defined %}
+{%                 set test_id.value = test_id.value + 1 %}
+- id: {{ test_id.value }}
+  device: "{{ node }}"
+  test_category: "BGP"
+  test_description: "ip bgp peer state established (ipv4)"
+  test: "bgp_neighbor: {{ result.bgp_neighbor.key }}"
+{%                 if result.failed is arista.avd.defined(false) %}
+  result: "PASS"
+{%                 else %}
+  result: "FAIL"
+  failure_reason: "{{ result.msg }}"
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{# bgp evpn neighbors peer state type: "evpn" Results #}
+{%     if copy_hostvars[node].bgp_evpn_peer_state_results.results is arista.avd.defined %}
+{%         for result in copy_hostvars[node].bgp_evpn_peer_state_results.results %}
+{%             if result.skipped is not arista.avd.defined %}
+{%                 set test_id.value = test_id.value + 1 %}
+- id: {{ test_id.value }}
+  device: "{{ node }}"
+  test_category: "BGP"
+  test_description: "bgp evpn peer state established (evpn)"
+  test: "bgp_neighbor: {{ result.bgp_neighbor.key }}"
+{%                 if result.failed is arista.avd.defined(false) %}
+  result: "PASS"
+{%                 else %}
+  result: "FAIL"
+  failure_reason: "{{ result.msg }}"
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{# Reload Cause Results #}
+{%     if copy_hostvars[node].reload_cause_results is arista.avd.defined and copy_hostvars[node].reload_cause_results.skipped is not arista.avd.defined %}
+{%         set test_id.value = test_id.value + 1 %}
+- id: {{ test_id.value }}
+  device: "{{ node }}"
+  test_category: "Reload Cause"
+  test_description: "Reload Cause - Reload requested by the user"
+  test: "Reload Cause"
+{%         if copy_hostvars[node].reload_cause_results.failed is arista.avd.defined(false) %}
+  result: "PASS"
+{%         else %}
+  result: "FAIL"
+  failure_reason: "Reload Cause: {{ copy_hostvars[node].reload_cause_results.msg | replace('\"','') }}"
+{%         endif %}
+{%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{# Routing table check: VTEP Results #}
+{%     if copy_hostvars[node].routing_table_vtep_results.results is arista.avd.defined %}
+{%         for result in copy_hostvars[node].routing_table_vtep_results.results %}
+{%             if result.skipped is not arista.avd.defined %}
+{%                 set test_id.value = test_id.value + 1 %}
+- id: {{ test_id.value }}
+  device: "{{ node }}"
+  test_category: "Routing Table"
+  test_description: "Remote VTEP address"
+  test: "{{ result.vtep_reachability_test.vtep_ip }}"
+{%                 if result.failed is arista.avd.defined(false) %}
+  result: "PASS"
+{%                 else %}
+  result: "FAIL"
+  failure_reason: "{{ result.msg }}"
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{# Routing table check: loopback0 Results #}
+{%     if copy_hostvars[node].routing_table_loopback0_results.results is arista.avd.defined %}
+{%         for result in copy_hostvars[node].routing_table_loopback0_results.results %}
+{%             if result.skipped is not arista.avd.defined %}
+{%                 set test_id.value = test_id.value + 1 %}
+- id: {{ test_id.value }}
+  device: "{{ node }}"
+  test_category: "Routing Table"
+  test_description: "Remote Lo0 address"
+  test: {{ result.routing_table_loopback0_test.loopback0_address }}
+{%                 if result.failed is arista.avd.defined(false) %}
+  result: "PASS"
+{%                 else %}
+  result: "FAIL"
+  failure_reason: "{{ result.msg }}"
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{# loopback0 reachability Results #}
+{%     if copy_hostvars[node].loopback0_reachability_results.results is arista.avd.defined %}
+{%         for result in copy_hostvars[node].loopback0_reachability_results.results %}
+{%             if result.skipped is not arista.avd.defined %}
+{%                 set test_id.value = test_id.value + 1 %}
+- id: {{ test_id.value }}
+  device: "{{ node }}"
+  test_category: "Loopback0 Reachability"
+  test_description: "Loopback0 Reachability"
+  test: "Source: {{ node }} - {{ copy_hostvars[node].loopback_interfaces.Loopback0.ip_address | ansible.netcommon.ipaddr('address') }} Destination: {{ result.loopback0_reachability_test.loopback0_address }}"
+{%                 if result.failed is arista.avd.defined(false) %}
+  result: "PASS"
+{%                 else %}
+  result: "FAIL"
+  failure_reason: "{{ result.msg }}"
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{# Inb management to loopback 0 reachability Results #}
+{%     if copy_hostvars[node].inb_mgmt_loopback0_reachability_results.results is arista.avd.defined %}
+{%         for result in copy_hostvars[node].inb_mgmt_loopback0_reachability_results.results %}
+{%             set test_id.value = test_id.value + 1 %}
+{%             if result.skipped is not arista.avd.defined %}
+- id: {{ test_id.value }}
+  device: "{{ node }}"
+  test_category: "Loopback0 Reachability"
+  test_description: "Inband Mgmt Reachability"
+  test: "Source: {{ node }} - {{ result.inb_mgmt_loopback0_reachability_test.invocation.module_args.commands[0].split(" ") | last }} Destination: {{ result.inb_mgmt_loopback0_reachability_test.loopback0_address }}"
+{%                 if result.failed is arista.avd.defined(false) %}
+  result: "PASS"
+{%                 else %}
+  result: "FAIL"
+  failure_reason: "{{ result.msg }}"
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}

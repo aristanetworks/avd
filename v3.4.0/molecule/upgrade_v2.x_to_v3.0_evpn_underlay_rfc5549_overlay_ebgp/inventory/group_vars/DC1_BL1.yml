@@ -1,0 +1,11 @@
+---
+my_dci_ethernet_interfaces:
+  Ethernet4000:
+    description: My test
+    ip_address: 10.1.2.3/12
+    shutdown: false
+    type: routed
+    mtu: 1500
+    peer: MY-own-peer
+    peer_interface: Ethernet123
+    peer_type: my_precious

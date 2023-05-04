@@ -1,0 +1,32 @@
+{# static routes#}
+{% if static_routes is arista.avd.defined %}
+!
+{%     for static_route in static_routes %}
+{%         set static_route_cli = "ip route" %}
+{%         if static_route.vrf is arista.avd.defined and static_route.vrf != 'default' %}
+{%             set static_route_cli = static_route_cli ~ " vrf " ~ static_route.vrf %}
+{%         endif %}
+{%         if static_route.destination_address_prefix is arista.avd.defined %}
+{%             set static_route_cli = static_route_cli ~ " " ~ static_route.destination_address_prefix %}
+{%         endif %}
+{%         if  static_route.interface is arista.avd.defined %}
+{%             set static_route_cli = static_route_cli ~ " " ~ static_route.interface | capitalize %}
+{%         endif %}
+{%         if static_route.gateway is arista.avd.defined %}
+{%             set static_route_cli = static_route_cli ~ " " ~ static_route.gateway %}
+{%         endif %}
+{%         if static_route.distance is arista.avd.defined %}
+{%             set static_route_cli = static_route_cli ~ " " ~ static_route.distance %}
+{%         endif %}
+{%         if static_route.tag is arista.avd.defined %}
+{%             set static_route_cli = static_route_cli ~ " tag " ~ static_route.tag %}
+{%         endif %}
+{%         if static_route.name is arista.avd.defined %}
+{%             set static_route_cli = static_route_cli ~ " name " ~ static_route.name %}
+{%         endif %}
+{%         if static_route.metric is arista.avd.defined %}
+{%             set static_route_cli = static_route_cli ~ " metric " ~ static_route.metric %}
+{%         endif %}
+{{ static_route_cli }}
+{%     endfor %}
+{% endif %}

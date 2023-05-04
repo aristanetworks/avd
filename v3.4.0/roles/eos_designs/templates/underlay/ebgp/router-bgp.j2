@@ -1,0 +1,48 @@
+{# EBGP #}
+{## Underlay network peerings #}
+router_bgp:
+  peer_groups:
+    {{ switch.bgp_peer_groups.ipv4_underlay_peers.name }}:
+      type: ipv4
+{% if switch.bgp_peer_groups.ipv4_underlay_peers.password is arista.avd.defined() %}
+      password: "{{ switch.bgp_peer_groups.ipv4_underlay_peers.password }}"
+{% endif %}
+      maximum_routes: 12000
+      send_community: all
+  address_family_ipv4:
+    peer_groups:
+      {{ switch.bgp_peer_groups.ipv4_underlay_peers.name }}:
+        activate: true
+{% if underlay_rfc5549 is arista.avd.defined(true) %}
+        next_hop:
+          address_family_ipv6_originate: true
+{% endif %}
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP
+
+{% if underlay_rfc5549 is arista.avd.defined(true) %}
+{# RFC5549 EBGP peerings #}
+  neighbor_interfaces:
+{%     for link_interface in underlay_data.links | arista.avd.natural_sort if underlay_data.links[link_interface].type is arista.avd.defined('underlay_p2p') %}
+{%         set link = underlay_data.links[link_interface] %}
+    {{ link_interface }}:
+      peer_group: {{ switch.bgp_peer_groups.ipv4_underlay_peers.name }}
+      remote_as: "{{ link.peer_bgp_as }}"
+      description: {{ link.peer }}_{{ link.peer_interface }}
+{%     endfor %}
+
+{% else %}
+{# Regular EBGP peerings #}
+  neighbors:
+{%     for link_interface in underlay_data.links | arista.avd.natural_sort if underlay_data.links[link_interface].type is arista.avd.defined('underlay_p2p') %}
+{%         set link = underlay_data.links[link_interface] %}
+    {{ link.peer_ip_address }}:
+      peer_group: {{ switch.bgp_peer_groups.ipv4_underlay_peers.name }}
+      remote_as: "{{ link.peer_bgp_as }}"
+      description: {{ link.peer }}_{{ link.peer_interface }}
+{%         if link.bfd is arista.avd.defined %}
+      bfd: {{ link.bfd }}
+{%         endif %}
+{%     endfor %}
+{% endif %}

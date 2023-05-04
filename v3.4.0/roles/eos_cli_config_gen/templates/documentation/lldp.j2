@@ -1,0 +1,44 @@
+{% if lldp is arista.avd.defined %}
+
+# LLDP
+
+## LLDP Summary
+
+### LLDP Global Settings
+
+| Enabled | Management Address | Management VRF | Timer | Hold-Time | Re-initialization Timer | Drop Received Tagged Packets |
+| ------- | ------------------ | -------------- | ----- | --------- | ----------------------- | ---------------------------- |
+| {{ lldp.run | arista.avd.default(true) }} | {{ lldp.management_address | arista.avd.default('-') }} | {{ lldp.vrf | arista.avd.default('Default') }} | {{ lldp.timer | arista.avd.default('30') }} | {{ lldp.holdtime | arista.avd.default('120') }} | {{ lldp.timer_reinitialization | arista.avd.default('2') }} | {{ lldp.receive_packet_tagged_drop | arista.avd.default('-') }} |
+{%     if lldp.tlvs is arista.avd.defined %}
+
+### LLDP Explicit TLV Transmit Settings
+
+| TLV | Transmit |
+| --- | -------- |
+{%         for tlv in lldp.tlvs %}
+| {{ tlv.name | arista.avd.default('-') }} | {{ tlv.transmit | arista.avd.default('-') }} |
+{%         endfor %}
+{%     endif %}
+{%     if ethernet_interfaces is arista.avd.defined %}
+
+### LLDP Interface Settings
+{%         if lldp.run is arista.avd.defined(false) %}
+
+LLDP is **disabled** globally. Local interface configs will not apply.
+{%         endif %}
+
+| Interface | Transmit | Receive |
+| --------- | -------- | ------- |
+{%         for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%             if ethernet_interface.lldp.transmit is arista.avd.defined or ethernet_interface.lldp.receive is arista.avd.defined %}
+| {{ ethernet_interface.name }} | {{ ethernet_interface.lldp.transmit | arista.avd.default('-') }} | {{ ethernet_interface.lldp.receive | arista.avd.default('-') }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+
+## LLDP Device Configuration
+
+```eos
+{%     include 'eos/lldp.j2' %}
+```
+{% endif %}

@@ -1,0 +1,7 @@
+{% if l3_edge_data.isis_interfaces | length > 0 %}
+router_isis:
+  no_passive_interfaces:
+{%     for isis_interface in l3_edge_data.isis_interfaces | arista.avd.natural_sort %}
+    - {{ isis_interface }}
+{%     endfor %}
+{% endif %}

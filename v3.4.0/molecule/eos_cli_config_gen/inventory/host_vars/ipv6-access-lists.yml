@@ -1,0 +1,46 @@
+### IPv6 ACLs ###
+ipv6_access_lists:
+  TEST1:
+    sequence_numbers:
+      10:
+        action: "permit ipv6 fe90::/64 any"
+      5:
+        action: "deny ipv6 fe80::/64 any"
+  TEST2:
+    counters_per_entry: true
+    sequence_numbers:
+      5:
+        action: "permit ipv6 2001:db8::/64 any"
+      10:
+        action: "deny ipv6 2001:db8::/32 any"
+  TEST3:
+    counters_per_entry: false
+    sequence_numbers:
+      5:
+        action: "deny ipv6 2001:db8:1000::/64 any"
+      10:
+        action: "permit ipv6 2001:db8::/32 any"
+
+
+### IPv6 Standard ACLs ###
+ipv6_standard_access_lists:
+  TEST4:
+    sequence_numbers:
+      10:
+        action: "permit fe90::/64"
+      5:
+        action: "deny fe80::/64"
+  TEST5:
+    counters_per_entry: true
+    sequence_numbers:
+      5:
+        action: "permit 2001:db8::/64"
+      10:
+        action: "deny 2001:db8::/32"
+  TEST6:
+    counters_per_entry: false
+    sequence_numbers:
+      5:
+        action: "deny 2001:db8:1000::/64"
+      10:
+        action: "permit 2001:db8::/32"

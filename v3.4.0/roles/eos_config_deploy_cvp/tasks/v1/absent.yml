@@ -1,0 +1,44 @@
+---
+# tasks file for eos-config-deploy-cvp - state=absent
+- name: "Collecting facts from CVP {{ inventory_hostname }}."
+  tags: [reset]
+  arista.cvp.cv_facts:
+  register: CVP_FACTS
+
+# Load tasks when device_filter is string
+- name: Load conditional cv_device execution if device_filter is string.
+  tags: [reset]
+  include_tasks: "./cv-device-filter-string.yml"
+  when: "device_filter is string"
+
+# Load tasks when device_filter is list
+- name: Load conditional cv_device execution if device_filter is lsit.
+  tags: [reset]
+  include_tasks: "./cv-device-filter-list.yml"
+  when: "device_filter is not string"
+
+- name: "Execute pending tasks on {{ inventory_hostname }}"
+  tags: [reset]
+  arista.cvp.cv_task:
+    tasks: "{{ CVP_DEVICES_RESULTS.data.tasks }}"
+    wait: 720
+
+- name: "Refreshing facts from CVP {{ inventory_hostname }}."
+  tags: [reset]
+  arista.cvp.cv_facts:
+  register: CVP_FACTS
+
+- name: "Deleting Containers topology on {{ inventory_hostname }}"
+  tags: [reset]
+  arista.cvp.cv_container:
+    topology: "{{ CVP_CONTAINERS }}"
+    cvp_facts: "{{ CVP_FACTS.ansible_facts }}"
+    mode: delete
+
+- name: "Delete configlets from CVP {{ inventory_hostname }}."
+  tags: [reset]
+  arista.cvp.cv_configlet:
+    cvp_facts: "{{ CVP_FACTS.ansible_facts }}"
+    configlets: "{{ CVP_VARS.CVP_CONFIGLETS }}"
+    configlet_filter: ["{{ configlets_prefix }}"]
+    state: absent

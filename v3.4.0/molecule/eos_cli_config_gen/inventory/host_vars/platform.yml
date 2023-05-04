@@ -1,0 +1,10 @@
+platform:
+  trident:
+    forwarding_table_partition: 2
+  sand:
+    lag:
+      hardware_only: true
+      mode: "512x32"
+    multicast_replication:
+      default: ingress
+    forwarding_mode: arad

@@ -1,0 +1,18 @@
+{% if name_server is defined and name_server is not none %}
+
+## Name Servers
+
+### Name Servers Summary
+
+| Name Server | Source VRF |
+| ----------- | ---------- |
+{%     for node in name_server.nodes %}
+| {{ node }} | {{ name_server.source.vrf | arista.avd.default('-') }} |
+{%     endfor %}
+
+### Name Servers Device Configuration
+
+```eos
+{%     include 'eos/name-servers.j2' %}
+```
+{% endif %}

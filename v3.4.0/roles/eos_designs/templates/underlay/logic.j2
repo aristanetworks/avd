@@ -1,0 +1,37 @@
+{# Add underlay links defined on this device #}
+{% set underlay_data.links = topology.links | arista.avd.default({}) %}
+
+{% set avd_topology_peers = avd_topology_peers[inventory_hostname] | arista.avd.default([]) %}
+
+{# Add underlay links defined on other devices pointing to this device #}
+{% for peer in avd_topology_peers %}
+{%     set peer_facts = hostvars[peer] %}
+{%     if peer_facts.topology is arista.avd.defined(fail_action='warning',var_name='Topoology Facts for ' ~ peer) and
+          peer_facts.switch is arista.avd.defined(fail_action='warning',var_name='Switch Facts for ' ~ peer) %}
+{%         for fabric_switch_interface in peer_facts.topology.links | arista.avd.natural_sort %}
+{%             set peer_link = peer_facts.topology.links[fabric_switch_interface] %}
+{%             if peer_link.peer is arista.avd.defined(inventory_hostname) %}
+{%                 set link = namespace() %}
+{%                 set link.peer = peer %}
+{%                 set link.peer_interface = fabric_switch_interface %}
+{%                 set link.peer_type = peer_facts.switch.type %}
+{%                 set link.peer_bgp_as = peer_facts.switch.bgp_as | arista.avd.default %}
+{%                 set link.type = peer_link.type | arista.avd.default %}
+{%                 set link.speed = peer_link.speed | arista.avd.default %}
+{%                 set link.ip_address = peer_link.peer_ip_address | arista.avd.default %}
+{%                 set link.peer_ip_address = peer_link.ip_address | arista.avd.default %}
+{%                 set link.channel_group_id = peer_link.peer_channel_group_id | arista.avd.default %}
+{%                 set link.peer_channel_group_id = peer_link.channel_group_id | arista.avd.default %}
+{%                 set link.channel_description = peer_link.peer_channel_description | arista.avd.default %}
+{%                 set link.vlans = peer_link.vlans | arista.avd.default %}
+{%                 set link.bfd = peer_link.bfd | arista.avd.default %}
+{%                 set link.ptp = peer_link.ptp | arista.avd.default %}
+{%                 set link.mac_security = peer_link.mac_security | arista.avd.default %}
+{%                 set link.short_esi = peer_link.peer_short_esi | arista.avd.default %}
+{%                 set link.ipv6_enable = peer_link.ipv6_enable | arista.avd.default %}
+{%                 set interface = peer_link.peer_interface %}
+{%                 do underlay_data.links.update({interface: link}) %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}

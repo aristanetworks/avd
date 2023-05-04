@@ -1,0 +1,11 @@
+# Minimum config to only test the specific feature.
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+  nodes:
+    evpn_services_l2_only_true:
+      id: 101
+      bgp_as: 101
+      evpn_services_l2_only: true

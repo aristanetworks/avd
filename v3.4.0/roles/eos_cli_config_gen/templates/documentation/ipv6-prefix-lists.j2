@@ -1,0 +1,22 @@
+{% if ipv6_prefix_lists is arista.avd.defined %}
+
+## IPv6 Prefix-lists
+
+### IPv6 Prefix-lists Summary
+
+{%     for ipv6_prefix_list in ipv6_prefix_lists | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+#### {{ ipv6_prefix_list.name }}
+
+| Sequence | Action |
+| -------- | ------ |
+{%         for sequence in ipv6_prefix_list.sequence_numbers | arista.avd.convert_dicts('sequence') | arista.avd.natural_sort('sequence') %}
+| {{ sequence.sequence }} | {{ sequence.action }} |
+{%         endfor %}
+
+{%     endfor %}
+### IPv6 Prefix-lists Device Configuration
+
+```eos
+{%     include 'eos/ipv6-prefix-lists.j2' %}
+```
+{% endif %}

@@ -1,0 +1,12 @@
+{# Read any global set structured_config and combine per tenant-vrf structured_config #}
+{% set ns = namespace(struct_cfg = {}) %}
+{% for tenant in network_services_data.tenants %}
+{%     for vrf in tenant.vrfs %}
+{%         if vrf.structured_config is arista.avd.defined %}
+{%             set ns.struct_cfg = ns.struct_cfg | combine(vrf.structured_config, recursive=true, list_merge=custom_structured_configuration_list_merge) %}
+{%         endif %}
+{%     endfor %}
+{% endfor %}
+{% if ns.struct_cfg | length > 0 %}
+struct_cfg: {{ ns.struct_cfg }}
+{% endif %}

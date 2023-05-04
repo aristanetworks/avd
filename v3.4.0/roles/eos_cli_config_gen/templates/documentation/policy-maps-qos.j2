@@ -1,0 +1,24 @@
+{% if policy_maps.qos is arista.avd.defined %}
+
+## QOS Policy Maps
+
+### QOS Policy Maps Summary
+{%     for policy_map in policy_maps.qos | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+
+**{{ policy_map.name }}**
+
+| class | Set | Value |
+| ----- | --- | ----- |
+{%         for class in policy_map.classes | arista.avd.convert_dicts('name') | arista.avd.default([]) %}
+{%             for set in class.set | arista.avd.default([]) %}
+| {{ class.name }} | {{ set }} | {{ class.set[set] }} |
+{%             endfor %}
+{%         endfor %}
+{%     endfor %}
+
+### QOS Policy Maps configuration
+
+```eos
+{%     include 'eos/policy-maps-qos.j2' %}
+```
+{% endif %}

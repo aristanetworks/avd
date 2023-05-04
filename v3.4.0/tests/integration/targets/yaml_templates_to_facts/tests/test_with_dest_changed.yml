@@ -1,0 +1,26 @@
+- name: Test with dest (no change) - Remove test file to force change in template action
+  file:
+    path: "{{ actual_output_dir }}/yaml_templates_to_facts_test_with_dest.yml"
+    state: absent
+
+- name: Test with dest (changing)
+  ignore_errors: no
+  vars:
+    timezone: "test"
+    hours: 36
+  register: result
+  yaml_templates_to_facts:
+    dest: "{{ actual_output_dir }}/yaml_templates_to_facts_test_with_dest.yml"
+    templates:
+      - template: "templates/template.j2"
+
+- local_action: shell diff "{{ expected_output_dir }}/yaml_templates_to_facts_test_with_dest.yml" "{{ actual_output_dir }}/yaml_templates_to_facts_test_with_dest.yml"
+  failed_when: "diff_output.rc > 1"
+  register: diff_output
+
+- assert:
+    that:
+      - result is success
+      - result.changed == true
+      - result.ansible_facts is defined
+      - result.ansible_facts.clock is defined

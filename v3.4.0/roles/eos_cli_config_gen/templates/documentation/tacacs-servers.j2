@@ -1,0 +1,23 @@
+{% if tacacs_servers.hosts is defined and tacacs_servers.hosts is not none %}
+
+## TACACS Servers
+
+### TACACS Servers
+
+| VRF | TACACS Servers | Single-Connection |
+| --- | -------------- | ----------------- |
+{%     for host in tacacs_servers.hosts %}
+{%         set vrf = host.vrf | arista.avd.default('default') %}
+| {{ vrf }} | {{ host.host }} | {{ host.single_connection | default(false) }} |
+{%     endfor %}
+
+{%     if tacacs_servers.policy_unknown_mandatory_attribute_ignore is arista.avd.defined and tacacs_servers.policy_unknown_mandatory_attribute_ignore == true %}
+Policy unknown-mandatory-attribute ignore is configured
+
+{%     endif %}
+### TACACS Servers Device Configuration
+
+```eos
+{%     include 'eos/tacacs-servers.j2' %}
+```
+{% endif %}

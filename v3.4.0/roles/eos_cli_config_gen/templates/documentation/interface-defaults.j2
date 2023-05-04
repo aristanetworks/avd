@@ -1,0 +1,20 @@
+{% if interface_defaults is arista.avd.defined %}
+
+## Interface Defaults
+
+### Interface Defaults Summary
+{%     if interface_defaults.ethernet.shutdown is arista.avd.defined %}
+
+- Default Ethernet Interface Shutdown: {{ interface_defaults.ethernet.shutdown }}
+{%     endif %}
+{%     if interface_defaults.mtu is arista.avd.defined %}
+
+- Default Routed Interface MTU: {{ interface_defaults.mtu }}
+{%     endif %}
+
+### Interface Defaults Configuration
+
+```eos
+{%     include 'eos/interface-defaults.j2' %}
+```
+{% endif %}

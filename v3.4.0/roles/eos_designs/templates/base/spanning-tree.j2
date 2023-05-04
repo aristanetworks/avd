@@ -1,0 +1,21 @@
+{# spanning-tree #}
+{% if switch.spanning_tree_root_super is arista.avd.defined(true) or switch.spanning_tree_mode is arista.avd.defined %}
+spanning_tree:
+{%     if switch.spanning_tree_root_super is arista.avd.defined(true) %}
+  root_super: true
+{%     endif %}
+{%     if switch.spanning_tree_mode is arista.avd.defined %}
+  mode: {{ switch.spanning_tree_mode }}
+{%         if switch.spanning_tree_mode == "mstp" %}
+  mst_instances:
+    "0":
+      priority: {{ switch.spanning_tree_priority | arista.avd.default("32768") }}
+{%         elif switch.spanning_tree_mode == "rapid-pvst" %}
+  rapid_pvst_instances:
+    "1-4094":
+      priority: {{ switch.spanning_tree_priority | arista.avd.default("32768") }}
+{%         elif switch.spanning_tree_mode == "rstp" %}
+  rstp_priority: {{ switch.spanning_tree_priority | arista.avd.default("32768") }}
+{%         endif %}
+{%     endif %}
+{% endif %}

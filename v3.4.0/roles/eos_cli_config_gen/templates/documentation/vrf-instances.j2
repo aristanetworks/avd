@@ -1,0 +1,23 @@
+{% if vrfs is arista.avd.defined %}
+
+# VRF Instances
+
+## VRF Instances Summary
+
+| VRF Name | IP Routing |
+| -------- | ---------- |
+{%     for vrf in vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if vrf.ip_routing is arista.avd.defined(true) %}
+{%             set ip_routing = 'enabled' %}
+{%         else %}
+{%             set ip_routing = 'disabled' %}
+{%         endif %}
+| {{ vrf.name }} | {{ ip_routing }} |
+{%     endfor %}
+
+## VRF Instances Device Configuration
+
+```eos
+{%     include 'eos/vrf-instances.j2' %}
+```
+{% endif %}

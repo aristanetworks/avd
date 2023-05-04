@@ -1,0 +1,10 @@
+{% for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
+{%     if vlan_interfaces[vlan_interface].struct_cfg is arista.avd.defined %}
+{%         set tmp_custom_structured_configuration = {
+               "vlan_interfaces" : {
+                   vlan_interface: vlan_interfaces[vlan_interface].struct_cfg
+               }
+           } %}
+{%         do custom_structured_configuration_data.append(tmp_custom_structured_configuration) %}
+{%     endif %}
+{% endfor %}

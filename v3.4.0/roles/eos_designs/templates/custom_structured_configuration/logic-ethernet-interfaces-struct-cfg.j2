@@ -1,0 +1,10 @@
+{% for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
+{%     if ethernet_interfaces[ethernet_interface].struct_cfg is arista.avd.defined %}
+{%         set tmp_custom_structured_configuration = {
+               "ethernet_interfaces" : {
+                   ethernet_interface: ethernet_interfaces[ethernet_interface].struct_cfg
+               }
+           } %}
+{%         do custom_structured_configuration_data.append(tmp_custom_structured_configuration) %}
+{%     endif %}
+{% endfor %}

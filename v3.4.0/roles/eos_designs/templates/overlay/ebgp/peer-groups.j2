@@ -1,0 +1,14 @@
+  peer_groups:
+    {{ switch.bgp_peer_groups.evpn_overlay_peers.name }}:
+      type: evpn
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: "{{ evpn_ebgp_multihop }}"
+{% if switch.bgp_peer_groups.evpn_overlay_peers.password is arista.avd.defined %}
+      password: "{{ switch.bgp_peer_groups.evpn_overlay_peers.password }}"
+{% endif %}
+      send_community: all
+      maximum_routes: 0
+{% if switch.evpn_role == "server" %}
+      next_hop_unchanged: true
+{% endif %}

@@ -1,0 +1,14 @@
+{% if switch.bgp_as is arista.avd.defined %}
+router_bgp:
+  as: "{{ switch.bgp_as }}"
+  router_id: {{ switch.router_id }}
+  bgp_defaults:
+{%     for bgp_default in switch.bgp_defaults %}
+    - {{ bgp_default }}
+{%     endfor %}
+{%     if bgp_maximum_paths is arista.avd.defined and bgp_ecmp is arista.avd.defined %}
+    - maximum-paths {{ bgp_maximum_paths }} ecmp {{ bgp_ecmp }}
+{%     elif bgp_maximum_paths is arista.avd.defined %}
+    - maximum-paths {{ bgp_maximum_paths }}
+{%     endif %}
+{% endif %}

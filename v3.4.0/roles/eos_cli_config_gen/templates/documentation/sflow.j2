@@ -1,0 +1,70 @@
+{% if sflow is defined and sflow is not none %}
+
+## SFlow
+
+### SFlow Summary
+{%     if ((sflow.vrfs is defined and sflow.vrfs is not none) or (sflow.destinations is defined and sflow.destinations is not none) or (sflow.source_interface is defined and sflow.source_interface is not none)) %}
+
+| VRF | SFlow Source Interface | SFlow Destination | Port |
+| --- | ---------------------- | ----------------- | ---- |
+{%         if sflow.vrfs is defined and sflow.vrfs is not none %}
+{%             for vrf in sflow.vrfs | arista.avd.natural_sort %}
+{%                 if sflow.vrfs[vrf].destinations is defined and sflow.vrfs[vrf].destinations is not none %}
+{%                     for destination in sflow.vrfs[vrf].destinations | arista.avd.natural_sort %}
+{%                         set port = sflow.vrfs[vrf].destinations[destination].port | arista.avd.default('6343') %}
+| {{ vrf }} | - | {{ destination }} | {{ port }} |
+{%                     endfor %}
+{%                 endif %}
+{%                 if sflow.vrfs[vrf].source_interface is defined and sflow.vrfs[vrf].source_interface is not none %}
+| {{ vrf }} | {{ sflow.vrfs[vrf].source_interface }} | - | - |
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%         if sflow.destinations is defined and sflow.destinations is not none %}
+{%             for destination in sflow.destinations %}
+{%                 set port = sflow.destinations[destination].port | arista.avd.default('6343') %}
+| default | - | {{ destination }} | {{ port }} |
+{%             endfor %}
+{%         endif %}
+{%         if sflow.source_interface is defined and sflow.source_interface is not none %}
+| default | {{ sflow.source_interface }} | - | - |
+{%         endif %}
+{%     endif %}
+{%     if sflow.sample is defined and sflow.sample is not none %}
+
+sFlow Sample Rate: {{ sflow.sample }}
+{%     endif %}
+{%     if sflow.run is defined and sflow.run == true %}
+
+sFlow is enabled.
+{%     else %}
+
+sFlow is disabled.
+{%     endif %}
+{%     if sflow.hardware_acceleration.enabled is arista.avd.defined(true) %}
+
+sFlow hardware acceleration is enabled.
+{%     endif %}
+{%     if sflow.hardware_acceleration.sample is arista.avd.defined %}
+
+sFlow hardware accelerated Sample Rate: {{ sflow.hardware_acceleration.sample }}
+{%     endif %}
+{%     if sflow.hardware_acceleration.modules is arista.avd.defined and sflow.hardware_acceleration.modules | length > 0 %}
+
+### SFlow Hardware Accelerated Modules
+
+| Module | Acceleration Enabled |
+| ------ | -------------------- |
+{%         for module in sflow.hardware_acceleration.modules %}
+{%             if module.name is arista.avd.defined %}
+| {{ module.name }} | {{ module.enabled | arista.avd.default(true) }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+
+### SFlow Device Configuration
+
+```eos
+{%     include 'eos/sflow.j2' %}
+```
+{% endif %}

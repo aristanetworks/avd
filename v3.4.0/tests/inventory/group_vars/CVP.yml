@@ -1,0 +1,47 @@
+---
+ztp:
+  default:
+    registration: 'http://10.255.0.1/ztp/bootstrap'
+    gateway: 10.255.0.3
+    nameservers:
+      - '10.255.0.3'
+  general:
+    subnets:
+      - network: 10.255.0.0
+        netmask: 255.255.255.0
+        gateway: 10.255.0.3
+        nameservers:
+          - '10.255.0.3'
+        start: 10.255.0.200
+        end: 10.255.0.250
+        lease_time: 300
+  clients:
+  # GNS3 VM Request
+    - name: gns3
+      mac: '00:50:56:86:8b:2f'
+      ip4: 10.255.0.2
+  # AVD/CVP Integration
+    - name: DC1-SPINE1
+      mac: '0c:1d:c0:1d:62:01'
+      ip4: 10.255.0.11
+    - name: DC1-SPINE2
+      mac: '0c:1d:c0:1d:62:02'
+      ip4: 10.255.0.12
+    - name: DC1-LEAF1A
+      mac: '0c:1d:c0:1d:62:11'
+      ip4: 10.255.0.13
+    - name: DC1-LEAF1B
+      mac: '0c:1d:c0:1d:62:12'
+      ip4: 10.255.0.14
+    - name: DC1-LEAF2A
+      mac: '0c:1d:c0:1d:62:21'
+      ip4: 10.255.0.15
+    - name: DC1-LEAF2B
+      mac: '0c:1d:c0:1d:62:22'
+      ip4: 10.255.0.16
+    - name: DC1-L2LEAF1A
+      mac: '0c:1d:c0:1d:62:13'
+      ip4: 10.255.0.17
+    - name: DC1-L2LEAF2A
+      mac: '0c:1d:c0:1d:62:23'
+      ip4: 10.255.0.18

@@ -1,0 +1,40 @@
+{# Add one blank line after each included template #}
+{% if (switch.evpn_role is arista.avd.defined and switch.evpn_role in ["client", "server"]) or switch.mpls_overlay_role is arista.avd.defined and switch.mpls_overlay_role in ["client", "server"] %}
+{%     set overlay_data = namespace() %}
+{# Set peer group names for overlay peering #}
+{%     if switch.mpls_ler is arista.avd.defined(true) or switch.mpls_overlay_role == "server" %}
+{%         set overlay_data.overlay_peer_group_name = switch.bgp_peer_groups.mpls_overlay_peers.name %}
+{%     else %}
+{%         set overlay_data.overlay_peer_group_name = switch.bgp_peer_groups.evpn_overlay_peers.name %}
+{%     endif %}
+{%     if switch.mpls_overlay_role == "server" %}
+{%         set overlay_data.rr_peers_peer_group_name = switch.bgp_peer_groups.rr_overlay_peers.name %}
+{%     endif %}
+{%     if switch.mpls_overlay_role in ["client", "server"] %}
+{%         include 'overlay/logic-mpls-route-servers.j2' %}
+
+{%         include 'overlay/logic-mpls-route-clients.j2' %}
+
+{%     endif %}
+{%     if switch.evpn_role in ["client", "server"] %}
+{%         include 'overlay/logic-evpn-route-servers.j2' %}
+
+{%         include 'overlay/logic-evpn-route-clients.j2' %}
+
+{%     endif %}
+{%     include 'overlay/router-bfd.j2' %}
+
+{%     if switch.overlay_routing_protocol == "ebgp" %}
+{%         include 'overlay/ebgp/router-bgp.j2' %}
+
+{%         include 'overlay/ebgp/route-maps.j2' %}
+
+{%     elif switch.overlay_routing_protocol == "ibgp" %}
+{%         include 'overlay/ibgp/router-bgp.j2' %}
+
+{%         include 'overlay/ibgp/route-maps.j2' %}
+
+{%         include 'overlay/ibgp/ip-extcommunity-lists.j2' %}
+
+{%     endif %}
+{% endif %}

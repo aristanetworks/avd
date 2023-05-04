@@ -1,0 +1,185 @@
+{# eos - Router OSPF #}
+{% for process_id in router_ospf.process_ids | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+!
+{%     if process_id.vrf is arista.avd.defined %}
+router ospf {{ process_id.id }} vrf {{ process_id.vrf }}
+{%     else %}
+router ospf {{ process_id.id }}
+{%     endif %}
+{%     if process_id.log_adjacency_changes_detail is arista.avd.defined(true) %}
+   log-adjacency-changes detail
+{%     endif %}
+{%     if process_id.router_id is arista.avd.defined %}
+   router-id {{ process_id.router_id }}
+{%     endif %}
+{%     if process_id.distance is arista.avd.defined %}
+{%         if process_id.distance.intra_area is arista.avd.defined %}
+   distance ospf intra-area {{ process_id.distance.intra_area }}
+{%         endif %}
+{%         if process_id.distance.external is arista.avd.defined %}
+   distance ospf external {{ process_id.distance.external }}
+{%         endif %}
+{%         if process_id.distance.inter_area is arista.avd.defined %}
+   distance ospf inter-area {{ process_id.distance.inter_area }}
+{%         endif %}
+{%     endif %}
+{%     if process_id.passive_interface_default is arista.avd.defined(true) %}
+   passive-interface default
+{%     endif %}
+{%     if process_id.no_passive_interfaces is arista.avd.defined %}
+{%         for interface in process_id.no_passive_interfaces %}
+   no passive-interface {{ interface }}
+{%         endfor %}
+{%     endif %}
+{%     for network_prefix in process_id.network_prefixes | arista.avd.convert_dicts('ipv4_prefix') | arista.avd.natural_sort('ipv4_prefix') %}
+   network {{ network_prefix.ipv4_prefix }} area {{ network_prefix.area }}
+{%     endfor %}
+{%     if process_id.bfd_enable is arista.avd.defined and process_id.bfd_enable %}
+   bfd default
+{%     endif %}
+{%     for area in process_id.areas | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{# OSPF stub area configuration #}
+{%         if area.type is arista.avd.defined("stub") %}
+{%             set stub_area_cli = "area " ~ area.id ~ " stub" %}
+{%             if area.no_summary is arista.avd.defined(true) %}
+{%                 set stub_area_cli = stub_area_cli ~ " no-summary" %}
+{%             endif %}
+   {{ stub_area_cli }}
+{%         endif %}
+{# OSPF nssa area configuration #}
+{%         if area.type is arista.avd.defined("nssa") %}
+{#             print_nssa is set to ensure not to print "area xx nssa" twice in certain corner cases #}
+{%             set ns = namespace(print_nssa = true) %}
+{%             set nssa_area_cli = "area " ~ area.id ~ " nssa" %}
+{%             if area.no_summary is arista.avd.defined(true) %}
+{%                 set ns.print_nssa = false %}
+   {{ nssa_area_cli }} no-summary
+{%             endif %}
+{%             if area.default_information_originate is defined %}
+{%                 set ns.print_nssa = true %}
+{%                 set nssa_area_cli = nssa_area_cli ~ " default-information-originate" %}
+{%                 if area.default_information_originate.metric is arista.avd.defined %}
+{%                     set nssa_area_cli = nssa_area_cli ~ " metric " ~ area.default_information_originate.metric %}
+{%                 endif %}
+{%                 if area.default_information_originate.metric_type is arista.avd.defined %}
+{%                     set nssa_area_cli = nssa_area_cli ~ " metric-type " ~ area.default_information_originate.metric_type %}
+{%                 endif %}
+{%             endif %}
+{%             if area.nssa_only is arista.avd.defined(true) %}
+{%                 set ns.print_nssa = true %}
+{%                 set nssa_area_cli = nssa_area_cli ~ " nssa-only" %}
+{%             endif %}
+{%             if ns.print_nssa == true %}
+   {{ nssa_area_cli }}
+{%             endif %}
+{%         endif %}
+{# OSPF inter-area filtering configuration #}
+{%         for filter_network in area.filter.networks | arista.avd.natural_sort %}
+   area {{ area.id }} filter {{ filter_network }}
+{%         endfor %}
+{%         if area.filter.prefix_list is arista.avd.defined %}
+   area {{ area.id }} filter prefix-list {{ area.filter.prefix_list }}
+{%         endif %}
+{%     endfor %}
+{%     if process_id.distribute_list_in.route_map is arista.avd.defined %}
+   distribute-list route-map {{ process_id.distribute_list_in.route_map }} in
+{%     endif %}
+{%     if process_id.max_lsa is arista.avd.defined %}
+   max-lsa {{ process_id.max_lsa }}
+{%     endif %}
+{%     if process_id.timers.lsa.rx_min_interval is arista.avd.defined %}
+   timers lsa rx min interval {{ process_id.timers.lsa.rx_min_interval }}
+{%     endif %}
+{%     if process_id.timers.lsa.tx_delay.initial is arista.avd.defined
+          and process_id.timers.lsa.tx_delay.min is arista.avd.defined
+          and process_id.timers.lsa.tx_delay.max is arista.avd.defined %}
+{%         set timer_ospf_lsa_tx = "timers lsa tx delay initial" %}
+{%         set timer_ospf_lsa_tx = timer_ospf_lsa_tx ~ " " ~ process_id.timers.lsa.tx_delay.initial %}
+{%         set timer_ospf_lsa_tx = timer_ospf_lsa_tx ~ " " ~ process_id.timers.lsa.tx_delay.min %}
+{%         set timer_ospf_lsa_tx = timer_ospf_lsa_tx ~ " " ~ process_id.timers.lsa.tx_delay.max %}
+   {{ timer_ospf_lsa_tx }}
+{%     endif %}
+{%     if process_id.timers.spf_delay.initial is arista.avd.defined
+          and process_id.timers.spf_delay.min is arista.avd.defined
+          and process_id.timers.spf_delay.max is arista.avd.defined %}
+{%         set timer_ospf_spf_delay = "timers spf delay initial" %}
+{%         set timer_ospf_spf_delay = timer_ospf_spf_delay ~ " " ~ process_id.timers.spf_delay.initial %}
+{%         set timer_ospf_spf_delay = timer_ospf_spf_delay ~ " " ~ process_id.timers.spf_delay.min %}
+{%         set timer_ospf_spf_delay = timer_ospf_spf_delay ~ " " ~ process_id.timers.spf_delay.max %}
+   {{ timer_ospf_spf_delay }}
+{%     endif %}
+{%     if process_id.default_information_originate is defined %}
+{%         set default_information_originate_cli = "default-information originate" %}
+{%         if process_id.default_information_originate.always is arista.avd.defined(true) %}
+{%             set default_information_originate_cli = default_information_originate_cli ~ " always" %}
+{%         endif %}
+   {{ default_information_originate_cli }}
+{%     endif %}
+{%     if process_id.redistribute.static is defined %}
+{%         set redistribute_static_cli = "redistribute static" %}
+{%         if process_id.redistribute.static.route_map is arista.avd.defined %}
+{%             set redistribute_static_cli = redistribute_static_cli ~ " route-map " ~  process_id.redistribute.static.route_map %}
+{%         endif %}
+   {{ redistribute_static_cli }}
+{%     endif %}
+{%     if process_id.redistribute.connected is defined %}
+{%         set redistribute_connected_cli = "redistribute connected" %}
+{%         if process_id.redistribute.connected.route_map is arista.avd.defined %}
+{%             set redistribute_connected_cli = redistribute_connected_cli ~ " route-map " ~ process_id.redistribute.connected.route_map %}
+{%         endif %}
+   {{ redistribute_connected_cli }}
+{%     endif %}
+{%     if process_id.redistribute.bgp is defined %}
+{%         set redistribute_bgp_cli = "redistribute bgp" %}
+{%         if process_id.redistribute.bgp.route_map is arista.avd.defined %}
+{%             set redistribute_bgp_cli = redistribute_bgp_cli ~ " route-map " ~ process_id.redistribute.bgp.route_map %}
+{%         endif %}
+   {{ redistribute_bgp_cli }}
+{%     endif %}
+{%     if process_id.auto_cost_reference_bandwidth is arista.avd.defined %}
+   auto-cost reference-bandwidth {{ process_id.auto_cost_reference_bandwidth }}
+{%     endif %}
+{%     if process_id.maximum_paths is arista.avd.defined %}
+   maximum-paths {{ process_id.maximum_paths }}
+{%     endif %}
+{%     if process_id.max_metric.router_lsa is defined %}
+{%         set max_metric_router_lsa_cli = "max-metric router-lsa" %}
+{%         if process_id.max_metric.router_lsa.external_lsa is defined %}
+{%             set max_metric_router_lsa_cli = max_metric_router_lsa_cli ~ " external-lsa" %}
+{%         endif %}
+{%         if process_id.max_metric.router_lsa.external_lsa.override_metric is arista.avd.defined %}
+{%             set max_metric_router_lsa_cli = max_metric_router_lsa_cli ~ " " ~ process_id.max_metric.router_lsa.external_lsa.override_metric %}
+{%         endif %}
+{%         if process_id.max_metric.router_lsa.include_stub is arista.avd.defined(true) %}
+{%             set max_metric_router_lsa_cli = max_metric_router_lsa_cli ~ " include-stub" %}
+{%         endif %}
+{%         if process_id.max_metric.router_lsa.on_startup is arista.avd.defined %}
+{%             set max_metric_router_lsa_cli = max_metric_router_lsa_cli ~ " on-startup " ~ process_id.max_metric.router_lsa.on_startup %}
+{%         endif %}
+{%         if process_id.max_metric.router_lsa.summary_lsa is defined %}
+{%             set max_metric_router_lsa_cli = max_metric_router_lsa_cli ~ " summary-lsa" %}
+{%         endif %}
+{%         if process_id.max_metric.router_lsa.summary_lsa.override_metric is arista.avd.defined %}
+{%             set max_metric_router_lsa_cli = max_metric_router_lsa_cli ~ " " ~ process_id.max_metric.router_lsa.summary_lsa.override_metric %}
+{%         endif %}
+   {{ max_metric_router_lsa_cli }}
+{%     endif %}
+{%     if process_id.mpls_ldp_sync_default is arista.avd.defined(true) %}
+   mpls ldp sync default
+{%     endif %}
+{%     if process_id.summary_addresses is arista.avd.defined %}
+{%         for summary_address in process_id.summary_addresses %}
+{%             if summary_address.prefix is arista.avd.defined %}
+{%                 if summary_address.tag is arista.avd.defined %}
+   summary-address {{ summary_address.prefix }} tag {{ summary_address.tag }}
+{%                 elif summary_address.attribute_map is arista.avd.defined %}
+   summary-address {{ summary_address.prefix }} attribute-map {{ summary_address.attribute_map }}
+{%                 elif summary_address.not_advertise is arista.avd.defined(true) %}
+   summary-address {{ summary_address.prefix }} not-advertise
+{%                 else %}
+   summary-address {{ summary_address.prefix }}
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}

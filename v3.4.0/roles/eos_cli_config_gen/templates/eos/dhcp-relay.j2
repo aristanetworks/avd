@@ -1,0 +1,12 @@
+{% if dhcp_relay is arista.avd.defined %}
+!
+dhcp relay
+{%     for server in dhcp_relay.servers | arista.avd.natural_sort %}
+   server {{ server }}
+{%     endfor %}
+{%     if dhcp_relay.tunnel_requests_disabled is arista.avd.defined(true) %}
+   tunnel requests disabled
+{%     elif dhcp_relay.tunnel_requests_disabled is arista.avd.defined(false) %}
+   no tunnel requests disabled
+{%     endif %}
+{% endif %}

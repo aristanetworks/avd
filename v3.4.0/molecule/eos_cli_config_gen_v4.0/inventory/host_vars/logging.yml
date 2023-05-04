@@ -1,0 +1,38 @@
+### Logging ###
+logging:
+  console: error
+  buffered:
+    size: 1000000
+    level: warnings
+  trap: disabled
+  synchronous:
+    level:
+  source_interface:
+  vrfs:
+    - name: mgt
+      source_interface: Management0
+      hosts:
+        - name: 10.10.10.7
+        - name: 30.30.30.7
+          protocol: tcp
+          ports:
+            - 100
+            - 200
+        - name: 40.40.40.7
+          ports:
+            - 300
+            - 400
+    - name: default
+      source_interface: Loopback0
+      hosts:
+        - name: 20.20.20.7
+        - name: 50.50.50.7
+          protocol: tcp
+          ports:
+            - 100
+            - 200
+        - name: 60.60.60.7
+          protocol: udp
+          ports:
+            - 100
+            - 200
