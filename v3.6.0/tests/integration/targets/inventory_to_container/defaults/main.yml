@@ -1,0 +1,7 @@
+---
+testcase: '*'
+collection_path: "{{ lookup('env', 'ANSIBLE_COLLECTIONS_PATH') }}/ansible_collections/arista/avd/tests"
+inventory_path: "{{ collection_path }}/inventory"
+configlet_path: "{{ inventory_path }}/intended/configs"
+expected_output: "{{ inventory_path }}/inventory_to_container/expected_output/"
+actual_output: "{{ collection_path }}/output/actual_output.yml"

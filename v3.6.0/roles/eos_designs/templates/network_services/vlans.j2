@@ -1,0 +1,32 @@
+{# tenant vlans #}
+vlans:
+{% for tenant in network_services_data.tenants %}
+{%     for vrf in tenant.vrfs %}
+{# Tenant VLANs w/SVIs #}
+{%         for svi in vrf.svis %}
+  {{ svi.id | int }}:
+    tenant: {{ tenant.name }}
+    name: {{ svi.name }}
+{%         endfor %}
+{# VLAN for iBGP peering in overlay VRFs #}
+{%         if switch.mlag_l3 is arista.avd.defined(true) and switch.network_services_l3 is arista.avd.defined(true) %}
+{%             set configure_mlag_ibgp_peering = vrf.enable_mlag_ibgp_peering_vrfs | arista.avd.default(
+                                                 tenant.enable_mlag_ibgp_peering_vrfs,
+                                                 true) %}
+{%             if configure_mlag_ibgp_peering %}
+{%                 set vrf_id_int = vrf.vrf_id | arista.avd.default(vrf.vrf_vni) | int %}
+  {{ vrf.mlag_ibgp_peering_vlan | arista.avd.default(mlag_ibgp_peering_vrfs.base_vlan + (vrf_id_int - 1)) }}:
+    tenant: {{ tenant.name }}
+    name: MLAG_iBGP_{{ vrf.name }}
+    trunk_groups:
+      - LEAF_PEER_L3
+{%             endif %}
+{%         endif %}
+{%     endfor %}
+{# Tenant L2 VLANs #}
+{%     for l2vlan in tenant.l2vlans %}
+  {{ l2vlan.id | int }}:
+    tenant: {{ tenant.name }}
+    name: {{ l2vlan.name }}
+{%     endfor %}
+{% endfor %}

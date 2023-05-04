@@ -1,0 +1,11 @@
+type: spine
+spine:
+  nodes:
+    cvp-instance-ips-cvaas:
+      id: 1
+      loopback_ipv4_pool: 1.2.3.4/24
+      bgp_as: 1234
+
+mgmt_gateway: 192.168.0.1
+cvp_instance_ips:
+  - cv-staging.corp.arista.io

@@ -1,0 +1,28 @@
+policy_maps:
+  qos:
+    PM_REPLICATION_LD:
+      classes:
+        CM_REPLICATION_LD:
+          set:
+            dscp: af11
+            traffic_class: 2
+            drop_precedence: 1
+        CM_REPLICATION_LD_2:
+          set:
+            dscp: af11
+            traffic_class: 2
+    PM_REPLICATION_LD2:
+      classes:
+        CM_REPLICATION_LD:
+          set:
+            dscp: af11
+            cos: 4
+  pbr:
+    PM_PBR_BREAKOUT:
+      classes:
+        CM_PBR_EXCLUDE:
+        CM_PBR_INCLUDE:
+          set:
+            nexthop:
+              ip_address: 192.168.4.2
+              recursive: true

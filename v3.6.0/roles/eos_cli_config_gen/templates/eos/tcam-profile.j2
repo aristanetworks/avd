@@ -1,0 +1,15 @@
+{# eos - tcam profile #}
+{% if tcam_profile is arista.avd.defined %}
+!
+hardware tcam
+{%     if tcam_profile.profiles is arista.avd.defined %}
+{%         for profile in tcam_profile.profiles | arista.avd.convert_dicts('name','config') | arista.avd.natural_sort('name') %}
+   profile {{ profile.name }}
+{{ profile.config }}
+   !
+{%         endfor %}
+{%     endif %}
+{%     if tcam_profile.system is arista.avd.defined %}
+   system profile {{ tcam_profile.system }}
+{%     endif %}
+{% endif %}

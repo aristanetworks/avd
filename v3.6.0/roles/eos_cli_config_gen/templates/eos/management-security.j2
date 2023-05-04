@@ -1,0 +1,26 @@
+{# eos - management security #}
+{% if management_security is arista.avd.defined %}
+!
+management security
+{%     if management_security.entropy_source is arista.avd.defined %}
+   entropy source {{ management_security.entropy_source }}
+{%     endif %}
+{%     if management_security.password.encryption_key_common is arista.avd.defined(true) %}
+   password encryption-key common
+{%     endif %}
+{%     if management_security.password.encryption_reversible is arista.avd.defined() %}
+   password encryption reversible {{ management_security.password.encryption_reversible }}
+{%     endif %}
+{%     if management_security.password.minimum_length is arista.avd.defined %}
+   password minimum length {{ management_security.password.minimum_length }}
+{%     endif %}
+{%     for ssl_profile in management_security.ssl_profiles | arista.avd.natural_sort %}
+   ssl profile {{ ssl_profile.name }}
+{%         if ssl_profile.tls_versions is arista.avd.defined %}
+      tls versions {{ ssl_profile.tls_versions }}
+{%         endif  %}
+{%         if ssl_profile.certificate is arista.avd.defined %}
+      certificate {{ ssl_profile.certificate.file }} key {{ ssl_profile.certificate.key }}
+{%         endif  %}
+{%     endfor %}
+{% endif %}

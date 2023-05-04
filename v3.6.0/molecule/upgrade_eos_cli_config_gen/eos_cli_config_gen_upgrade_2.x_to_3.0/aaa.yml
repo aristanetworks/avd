@@ -1,0 +1,11 @@
+# Change from aaa_accounting.commands.commands_default to aaa_accounting.commands.default
+aaa_accounting:
+  commands:
+    default:
+      - commands: all
+        group: TACACS
+        logging: true
+        type: start-stop
+      - commands: 0
+        logging: true
+        type: start-stop

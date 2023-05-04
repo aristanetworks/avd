@@ -1,0 +1,26 @@
+{# PBR policy-map #}
+{% for policy_map in policy_maps.pbr | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+!
+policy-map type pbr {{ policy_map.name }}
+{%     for class in policy_map.classes | arista.avd.convert_dicts('name') | arista.avd.default([]) %}
+{%         set class_cli = 'class ' ~ class.name %}
+{%         if class.index is arista.avd.defined %}
+{%             set class_cli = class.index ~ ' ' ~ class_cli %}
+{%         endif %}
+{%         if not loop.first %}
+   !
+{%         endif %}
+   {{ class_cli }}
+{%         if class.set.nexthop.ip_address is arista.avd.defined %}
+{%             set nexthop_cli = 'set nexthop' %}
+{%             if class.set.nexthop.recursive is arista.avd.defined(true) %}
+{%                 set nexthop_cli = nexthop_cli ~ ' recursive' %}
+{%             endif %}
+{%             set nexthop_cli = nexthop_cli ~ ' ' ~ class.set.nexthop.ip_address %}
+      {{ nexthop_cli }}
+{%         endif %}
+{%         if class.drop is arista.avd.defined(true) %}
+      drop
+{%         endif %}
+{%     endfor %}
+{% endfor %}

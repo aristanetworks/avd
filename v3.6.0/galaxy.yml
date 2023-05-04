@@ -1,0 +1,54 @@
+### REQUIRED
+
+# The namespace of the collection. This can be a company/brand/organization or product namespace under which all
+# content lives. May only contain alphanumeric characters and underscores. Additionally namespaces cannot start with
+# underscores or numbers and cannot contain consecutive underscores
+namespace: arista
+
+# The name of the collection. Has the same character restrictions as 'namespace'
+name: avd
+
+# The version of the collection. Must be compatible with semantic versioning
+version: 3.6.0
+
+# The path to the Markdown (.md) readme file. This path is relative to the root of the collection
+readme: README.md
+
+# A list of the collection's content authors. Can be just the name or in the format 'Full Name <email> (url)
+# @nicks:irc/im.site#channel'
+authors:
+- Arista Ansible Team <ansible@arista.com>
+
+### OPTIONAL but strongly recommended
+
+# A short summary description of the collection
+description: Ansible Roles & Modules to support Arista Validated Designs and Deployment Guides
+
+# The path to the license file for the collection. This path is relative to the root of the collection. This key is
+# mutually exclusive with 'license'
+license_file: 'LICENSE'
+
+# A list of tags you want to associate with the collection for indexing/searching. A tag name has the same character
+# requirements as 'namespace' and 'name'
+tags: ['arista', 'network', 'networking', 'eos', 'avd', 'cloudvision', 'cvp']
+
+# Collections that this collection requires to be installed for it to be usable. The key of the dict is the
+# collection label 'namespace.name'. The value is a version range
+# L(specifiers,https://python-semanticversion.readthedocs.io/en/latest/#requirement-specification). Multiple version
+# range specifiers can be set and are separated by ','
+dependencies:
+    "arista.cvp": ">=3.2.0"
+    "arista.eos": ">=3.1.0"
+    "ansible.netcommon": ">=2.4.0,!=2.6.0"
+
+# The URL of the originating SCM repository
+repository: https://github.com/aristanetworks/ansible-avd
+
+# The URL to any online docs
+documentation: https://www.avd.sh/
+
+# The URL to the homepage of the collection/project
+homepage: https://www.avd.sh/
+
+# The URL to the collection issue tracker
+issues: https://github.com/aristanetworks/ansible-avd/issues

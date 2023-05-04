@@ -1,0 +1,17 @@
+{% if l3_edge_data.bgp_neighbors | length > 0 %}
+router_bgp:
+  neighbors:
+{%     for bgp_neighbor_key in l3_edge_data.bgp_neighbors | arista.avd.natural_sort %}
+{%         set bgp_neighbor = l3_edge_data.bgp_neighbors[bgp_neighbor_key] %}
+    {{ bgp_neighbor_key }}:
+      remote_as: "{{ bgp_neighbor.remote_as }}"
+      description: {{ bgp_neighbor.description }}
+      peer_group: {{ bgp_neighbor.peer_group }}
+{%         if bgp_neighbor.bfd is arista.avd.defined(true) %}
+      bfd: true
+{%         endif %}
+{%         if bgp_neighbor.local_as is arista.avd.defined %}
+      local_as: "{{ bgp_neighbor.local_as }}"
+{%         endif %}
+{%     endfor %}
+{% endif %}

@@ -1,0 +1,84 @@
+# Templates used by AVD eos_designs role
+default_templates:
+  # Templates defined per design
+  l3ls-evpn:
+    structured_config:
+      # Render Structured Configuration
+      # Base features
+      - template: "base/main.j2"
+      # MLAG feature
+      - template: "mlag/main.j2"
+      # Underlay feature
+      - template: "underlay/main.j2"
+      # Overlay feature
+      - template: "overlay/main.j2"
+      # Core Interfaces Feature
+      - template: "core_interfaces/main.j2"
+      # L3 Edge feature
+      - template: "l3_edge/main.j2"
+      # Tenants feature
+      - template: "network_services/main.j2"
+      # Connected Endpoints feature
+      - template: "connected_endpoints/main.j2"
+      # Inband Management feature
+      - template: "inband_management/main.j2"
+      # Merge custom_structured_configuration last
+      - template: "custom_structured_configuration/main.j2"
+        options:
+          list_merge: "{{ custom_structured_configuration_list_merge }}"
+          strip_empty_keys: false
+    ip_addressing:
+      router_id: 'ip_addressing/router-id.j2'
+      ipv6_router_id: 'ip_addressing/router-id-ipv6.j2'
+      mlag_ip_primary: 'ip_addressing/mlag-ip-primary.j2'
+      mlag_ip_secondary: 'ip_addressing/mlag-ip-secondary.j2'
+      mlag_l3_ip_primary: 'ip_addressing/mlag-l3-ip-primary.j2'
+      mlag_l3_ip_secondary: 'ip_addressing/mlag-l3-ip-secondary.j2'
+      p2p_uplinks_ip: 'ip_addressing/p2p-uplinks-ip.j2'
+      p2p_uplinks_peer_ip: 'ip_addressing/p2p-uplinks-peer-ip.j2'
+      vtep_ip_mlag: 'ip_addressing/vtep-ip-mlag.j2'
+      vtep_ip: 'ip_addressing/vtep-ip.j2'
+
+    interface_descriptions:
+      underlay_ethernet_interfaces: 'interface_descriptions/underlay/ethernet-interfaces.j2'
+      underlay_port_channel_interfaces: 'interface_descriptions/underlay/port-channel-interfaces.j2'
+      mlag_ethernet_interfaces: 'interface_descriptions/mlag/ethernet-interfaces.j2'
+      mlag_port_channel_interfaces: 'interface_descriptions/mlag/port-channel-interfaces.j2'
+      connected_endpoints_ethernet_interfaces: 'interface_descriptions/connected_endpoints/ethernet-interfaces.j2'
+      connected_endpoints_port_channel_interfaces: 'interface_descriptions/connected_endpoints/port-channel-interfaces.j2'
+      overlay_loopback_interface: 'interface_descriptions/loopback_interfaces/overlay-loopback.j2'
+      vtep_loopback_interface: 'interface_descriptions/loopback_interfaces/vtep-loopback.j2'
+
+  mpls:
+    structured_config:
+      # Render Strucured Configuration
+      - template: "base/main.j2"
+      # Underlay feature
+      - template: "underlay/main.j2"
+      # Core Interfaces Feature
+      - template: "core_interfaces/main.j2"
+      # L3 Edge feature
+      - template: "l3_edge/main.j2"
+      # Connected Endpoints feature
+      - template: "connected_endpoints/main.j2"
+      # Overlay feature
+      - template: "overlay/main.j2"
+      # Tenants feature
+      - template: "network_services/main.j2"
+
+      # Merge custom_structured_configuration last
+      - template: "custom_structured_configuration/main.j2"
+        options:
+          list_merge: "{{ custom_structured_configuration_list_merge }}"
+          strip_empty_keys: false
+    ip_addressing:
+      router_id: 'ip_addressing/router-id.j2'
+      p2p_uplinks_ip: 'ip_addressing/p2p-uplinks-ip.j2'
+      p2p_uplinks_peer_ip: 'ip_addressing/p2p-uplinks-peer-ip.j2'
+      ipv6_router_id: 'ip_addressing/router-id-ipv6.j2'
+    interface_descriptions:
+      underlay_ethernet_interfaces: 'interface_descriptions/underlay/ethernet-interfaces.j2'
+      underlay_port_channel_interfaces: 'interface_descriptions/underlay/port-channel-interfaces.j2'
+      connected_endpoints_ethernet_interfaces: 'interface_descriptions/connected_endpoints/ethernet-interfaces.j2'
+      connected_endpoints_port_channel_interfaces: 'interface_descriptions/connected_endpoints/port-channel-interfaces.j2'
+      overlay_loopback_interface: 'interface_descriptions/loopback_interfaces/overlay-loopback.j2'

@@ -1,0 +1,25 @@
+{% if switchport_default is arista.avd.defined %}
+
+## Switchport Default
+
+### Switchport Defaults Summary
+
+{%     if switchport_default.mode is arista.avd.defined %}
+- Default Switchport Mode: {{ switchport_default.mode }}
+{%     endif %}
+{%     if switchport_default.phone.cos is arista.avd.defined %}
+- Default Switchport Phone COS: {{ switchport_default.phone.cos }}
+{%     endif %}
+{%     if switchport_default.phone.trunk is arista.avd.defined %}
+- Default Switchport Phone Trunk: {{ switchport_default.phone.trunk }}
+{%     endif %}
+{%     if switchport_default.phone.vlan is arista.avd.defined %}
+- Default Switchport Phone VLAN: {{ switchport_default.phone.vlan }}
+{%     endif %}
+
+### Switchport Default Configuration
+
+```eos
+{%     include 'eos/switchport-default.j2' %}
+```
+{% endif %}

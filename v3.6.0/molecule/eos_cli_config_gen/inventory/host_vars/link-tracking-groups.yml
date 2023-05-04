@@ -1,0 +1,6 @@
+---
+link_tracking_groups:
+  - name: EVPN_MH_ES1
+    links_minimum: 30
+    recovery_delay: 500
+  - name: EVPN_MH_ES2

@@ -1,0 +1,7 @@
+{% if switch.lacp_port_id.begin is arista.avd.defined and switch.lacp_port_id.end is arista.avd.defined %}
+lacp:
+  port_id:
+    range:
+      begin: {{ switch.lacp_port_id.begin }}
+      end: {{ switch.lacp_port_id.end }}
+{% endif %}

@@ -1,0 +1,152 @@
+{# Tenant l3 interfaces #}
+{% set l3_interface_subif_parents = [] %}
+{% set switch_l3_interfaces = [] %}
+ethernet_interfaces:
+{% for tenant in network_services_data.tenants %}
+{%     for vrf in tenant.vrfs %}
+{%         for l3_interface in vrf.l3_interfaces | arista.avd.default([]) %}
+{%             if l3_interface.nodes is arista.avd.defined and inventory_hostname in l3_interface.nodes and l3_interface.ip_addresses is arista.avd.defined and l3_interface.interfaces is arista.avd.defined %}
+{%                 for node in l3_interface.nodes %}
+{%                     if node == inventory_hostname %}
+{%                         if '.' in l3_interface.interfaces[loop.index0] %}
+{%                             set l3_interface_subif_id = l3_interface.encapsulation_dot1q_vlan[loop.index0] | arista.avd.default(
+                                                           l3_interface.interfaces[loop.index0].split('.') | last) %}
+{%                             do l3_interface_subif_parents.append(l3_interface.interfaces[loop.index0].split('.') | first) %}
+{%                         else %}
+{%                             do switch_l3_interfaces.append(l3_interface.interfaces[loop.index0]) %}
+{%                         endif %}
+  {{ l3_interface.interfaces[loop.index0] }}:
+{%                         if l3_interface_subif_id is arista.avd.defined %}
+    type: l3dot1q
+    encapsulation_dot1q_vlan: {{ l3_interface_subif_id }}
+{%                         else %}
+    type: routed
+{%                         endif %}
+    peer_type: l3_interface
+{%                         if vrf.name != 'default' %}
+    vrf: {{ vrf.name }}
+{%                         endif %}
+    ip_address: {{ l3_interface.ip_addresses[loop.index0] }}
+{%                         if l3_interface.mtu is arista.avd.defined %}
+    mtu: {{ l3_interface.mtu }}
+{%                         endif %}
+{%                         if l3_interface.enabled is arista.avd.defined(false) %}
+    shutdown: true
+{%                         else %}
+    shutdown: false
+{%                         endif %}
+{%                         if l3_interface.description is arista.avd.defined %}
+    description: {{ l3_interface.description }}
+{%                         endif %}
+{%                         if l3_interface.ospf.enabled is arista.avd.defined(true) and vrf.ospf.enabled is arista.avd.defined(true) %}
+    ospf_area: {{ l3_interface.ospf.area | arista.avd.default(0) }}
+    ospf_network_point_to_point: {{ l3_interface.ospf.point_to_point | arista.avd.default(true) }}
+{%                             if l3_interface.ospf.cost is arista.avd.defined %}
+    ospf_cost: {{ l3_interface.ospf.cost }}
+{%                             endif %}
+{%                             if l3_interface.ospf.authentication is arista.avd.defined("simple") and l3_interface.ospf.simple_auth_key is arista.avd.defined %}
+    ospf_authentication: "simple"
+    ospf_authentication_key: {{ l3_interface.ospf.simple_auth_key }}
+{%                             elif l3_interface.ospf.authentication is arista.avd.defined("message-digest") and l3_interface.ospf.message_digest_keys is arista.avd.defined %}
+    ospf_authentication: "message-digest"
+    ospf_message_digest_keys:
+{%                                 for key in l3_interface.ospf.message_digest_keys | arista.avd.natural_sort %}
+{%                                     if key.id is arista.avd.defined and key.key is arista.avd.defined %}
+      {{ key.id }}:
+        hash_algorithm: {{ key.hash_algorithm | arista.avd.default("sha512") }}
+        key: {{ key.key }}
+{%                                     endif %}
+{%                                 endfor %}
+{%                             endif %}
+{%                         endif %}
+{%                         if l3_interface.raw_eos_cli is arista.avd.defined %}
+    eos_cli: |
+      {{ l3_interface.raw_eos_cli | indent(6,false) }}
+{%                         endif %}
+{%                         if l3_interface.structured_config is arista.avd.defined %}
+    struct_cfg: {{ l3_interface.structured_config }}
+{%                         endif %}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{% endfor %}
+{% set point_to_point_service_subif_parents = [] %}
+{% set point_to_point_service_port_channel_members = [] %}
+{# pseudowire interfaces #}
+{% for tenant in network_services_data.tenants %}
+{%     for point_to_point_service in tenant.point_to_point_services %}
+{%         for endpoint in point_to_point_service.endpoints %}
+{%             if inventory_hostname in endpoint.nodes | arista.avd.default([]) %}
+{%                 set pw_interface = namespace() %}
+{%                 for node in endpoint.nodes %}
+{%                     if node == inventory_hostname %}
+{%                         set pw_interface.node_index = loop.index0 %}
+{%                         break %}
+{%                     endif %}
+{%                 endfor %}
+{%                 set pw_interface.interface = endpoint.interfaces[pw_interface.node_index] %}
+{%                 if endpoint.port_channel.mode is not arista.avd.defined %}
+{%                     if point_to_point_service.subinterfaces is arista.avd.defined %}
+{%                         do point_to_point_service_subif_parents.append(pw_interface.interface) %}
+{%                         for subif in point_to_point_service.subinterfaces %}
+{%                             if subif.number is arista.avd.defined and subif.number is number %}
+{# Need logic to customize flexencap on the subif in future #}
+  {{ pw_interface.interface ~ "." ~ subif.number }}:
+    type: l2dot1q
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: {{ subif.number }}
+      network:
+        client: true
+    peer_type: l3_interface
+    shutdown: false
+{%                             endif %}
+{%                         endfor %}
+{%                     else %}
+  {{ pw_interface.interface }}:
+    type: routed
+{%                         if point_to_point_service.lldp_disable is arista.avd.defined(true) %}
+    lldp:
+      transmit: false
+      receive: false
+{%                         endif %}
+    peer_type: l3_interface
+    shutdown: false
+{%                     endif %}
+{%                 else %}
+{%                     set channel_group_id = (pw_interface.interface | regex_findall("\d") | join) %}
+{%                     set channel_group_mode = endpoint.port_channel.mode %}
+{%                     set node_interfaces = [] %}
+{%                     for node in endpoint.nodes %}
+{%                         if node == inventory_hostname %}
+{%                             do node_interfaces.append(endpoint.interfaces[loop.index0]) %}
+{%                         endif %}
+{%                     endfor %}
+{%                     for interface in node_interfaces %}
+{%                         do point_to_point_service_port_channel_members.append({ "interface": interface, "channel_group_id": channel_group_id, "channel_group_mode": channel_group_mode }) %}
+{%                     endfor %}
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{% endfor %}
+{# Create parent / base interfaces as routed. Will be merged onto structured config, #}
+{# so even if the same interfaces are created elsewhere, it will still work. #}
+{% for l3_interface_subif_parent in (l3_interface_subif_parents + point_to_point_service_subif_parents) | arista.avd.natural_sort | unique %}
+{%     if l3_interface_subif_parent not in switch_l3_interfaces and l3_interface_subif_parent not in ethernet_interfaces | arista.avd.default([]) %}
+  {{ l3_interface_subif_parent }}:
+    type: routed
+    peer_type: l3_interface
+    shutdown: false
+{%     endif %}
+{% endfor %}
+{% for member in point_to_point_service_port_channel_members %}
+  {{ member.interface }}:
+    shutdown: false
+    channel_group:
+      id: {{ member.channel_group_id }}
+      mode: {{ member.channel_group_mode }}
+{% endfor %}

@@ -1,0 +1,11 @@
+{# This is an attempt to emulate the case we have in eos_designs,                          #}
+{# where you can supply inline jinja as a custom_structured_configuration_<var> group_var. #}
+{# This is not the exact same scenario, but it has not been possible to find another       #}
+
+{% set inline_jinja = "{{ key_1 }}" %}
+
+key_1: "value_1"
+
+key_2: "{{ inline_jinja }}"
+
+{# The output will be the jinja expression, so we need to run this through another templater. #}

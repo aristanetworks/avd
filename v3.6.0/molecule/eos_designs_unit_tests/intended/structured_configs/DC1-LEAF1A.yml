@@ -1,0 +1,462 @@
+router_bgp:
+  as: '65101'
+  router_id: 192.168.255.9
+  bgp_defaults:
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - maximum-paths 4 ecmp 4
+  peer_groups:
+    UNDERLAY-PEERS:
+      type: ipv4
+      password: AQQvKeimxJu+uGQ/yYvv9w==
+      maximum_routes: 12000
+      send_community: all
+    EVPN-OVERLAY-PEERS:
+      type: evpn
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: '3'
+      password: q+VNViP5i4rVjW1cxFv2wA==
+      send_community: all
+      maximum_routes: 0
+  address_family_ipv4:
+    peer_groups:
+      UNDERLAY-PEERS:
+        activate: true
+      EVPN-OVERLAY-PEERS:
+        activate: false
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP
+  neighbors:
+    172.31.255.0:
+      peer_group: UNDERLAY-PEERS
+      remote_as: '65001'
+      description: DC1-SPINE1_Ethernet1
+    172.31.255.2:
+      peer_group: UNDERLAY-PEERS
+      remote_as: '65001'
+      description: DC1-SPINE2_Ethernet1
+    172.31.255.4:
+      peer_group: UNDERLAY-PEERS
+      remote_as: '65001'
+      description: DC1-SPINE3_Ethernet1
+    172.31.255.6:
+      peer_group: UNDERLAY-PEERS
+      remote_as: '65001'
+      description: DC1-SPINE4_Ethernet1
+    192.168.255.1:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-SPINE1
+      remote_as: '65001'
+    192.168.255.2:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-SPINE2
+      remote_as: '65001'
+    192.168.255.3:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-SPINE3
+      remote_as: '65001'
+    192.168.255.4:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-SPINE4
+      remote_as: '65001'
+  address_family_evpn:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+    evpn_hostflap_detection:
+      window: 180
+      threshold: 5
+      enabled: true
+      expiry_timeout: 10
+  vrfs:
+    Tenant_A_APP_Zone:
+      router_id: 192.168.255.9
+      rd: 1.1.1.1:12
+      route_targets:
+        import:
+          evpn:
+          - '1234:12'
+        export:
+          evpn:
+          - '1234:12'
+      redistribute_routes:
+      - connected
+    Tenant_A_WEB_Zone:
+      router_id: 192.168.255.9
+      rd: 1.1.1.1:11
+      route_targets:
+        import:
+          evpn:
+          - '1234:11'
+        export:
+          evpn:
+          - '1234:11'
+      redistribute_routes:
+      - connected
+    Tenant_D_WAN_Zone:
+      router_id: 192.168.255.9
+      rd: 1.1.1.1:41
+      route_targets:
+        import:
+          evpn:
+          - '1234:41'
+        export:
+          evpn:
+          - '1234:41'
+      redistribute_routes:
+      - connected
+  vlan_aware_bundles:
+    Tenant_A_APP_Zone:
+      rd: 1.1.1.1:12
+      route_targets:
+        both:
+        - '1234:12'
+      redistribute_routes:
+      - learned
+      vlan: 130-132
+    Tenant_A_WEB_Zone:
+      rd: 1.1.1.1:11
+      route_targets:
+        both:
+        - '1234:11'
+      redistribute_routes:
+      - learned
+      vlan: 120-121
+    Tenant_D_WAN_Zone:
+      rd: 1.1.1.1:41
+      route_targets:
+        both:
+        - '1234:41'
+      redistribute_routes:
+      - learned
+      vlan: 450-452
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.200.5
+- destination_address_prefix: 10.2.32.0/24
+  vrf: Tenant_A_APP_Zone
+  name: VARP
+  interface: Vlan132
+- destination_address_prefix: 10.3.32.0/24
+  vrf: Tenant_A_APP_Zone
+  name: VARP
+  interface: Vlan132
+service_routing_protocols_model: multi-agent
+ip_routing: true
+daemon_terminattr:
+  cvaddrs:
+  - 192.168.200.11:9910
+  cvauth:
+    method: key
+    key: telarista
+  cvvrf: MGMT
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+  disable_aaa: false
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+name_server:
+  source:
+    vrf: MGMT
+  nodes:
+  - 192.168.200.5
+  - 8.8.8.8
+snmp_server:
+  contact: example@example.com
+  location: EOS_DESIGNS_UNIT_TESTS rackA DC1-LEAF1A
+spanning_tree:
+  root_super: true
+  mode: mstp
+  mst_instances:
+    '0':
+      priority: 4096
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    no_password: true
+  cvpadmin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+    ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
+      cvpadmin@hostmachine.local
+vrfs:
+  MGMT:
+    ip_routing: false
+  Tenant_A_APP_Zone:
+    tenant: Tenant_A
+    ip_routing: true
+  Tenant_A_WEB_Zone:
+    tenant: Tenant_A
+    ip_routing: true
+  Tenant_D_WAN_Zone:
+    tenant: Tenant_D
+    ip_routing: true
+    ipv6_routing: true
+management_interfaces:
+  Management1:
+    description: oob_management
+    shutdown: false
+    vrf: MGMT
+    ip_address: 192.168.200.105/24
+    gateway: 192.168.200.5
+    type: oob
+management_api_http:
+  enable_vrfs:
+    MGMT: {}
+  enable_https: true
+  default_services: false
+ethernet_interfaces:
+  Ethernet1:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet1
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE1_Ethernet1
+    speed: forced 100gfull
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.255.1/31
+  Ethernet2:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet1
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE2_Ethernet1
+    speed: forced 100gfull
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.255.3/31
+  Ethernet3:
+    peer: DC1-SPINE3
+    peer_interface: Ethernet1
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE3_Ethernet1
+    speed: forced 100gfull
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.255.5/31
+  Ethernet4:
+    peer: DC1-SPINE4
+    peer_interface: Ethernet1
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE4_Ethernet1
+    speed: forced 100gfull
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.255.7/31
+  Ethernet7:
+    peer: server02_SINGLE_NODE
+    peer_interface: Eth1
+    peer_type: server
+    description: server02_SINGLE_NODE_Eth1
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+  Ethernet6:
+    peer: server02_SINGLE_NODE_TRUNK
+    peer_interface: Eth1
+    peer_type: server
+    description: server02_SINGLE_NODE_TRUNK_Eth1
+    l2_mtu: 8000
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 1-4094
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: false
+    spanning_tree_bpduguard: false
+    storm_control:
+      all:
+        level: 10
+        unit: percent
+      broadcast:
+        level: 100
+        unit: pps
+      multicast:
+        level: 1
+        unit: percent
+      unknown-unicast:
+        level: 2
+        unit: percent
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    shutdown: false
+    ip_address: 192.168.255.9/32
+  Loopback1:
+    description: VTEP_VXLAN_Tunnel_Source
+    shutdown: false
+    ip_address: 192.168.254.9/32
+prefix_lists:
+  PL-LOOPBACKS-EVPN-OVERLAY:
+    sequence_numbers:
+      10:
+        action: permit 192.168.255.0/24 eq 32
+      20:
+        action: permit 192.168.254.0/24 eq 32
+route_maps:
+  RM-CONN-2-BGP:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
+vlans:
+  130:
+    tenant: Tenant_A
+    name: Tenant_A_APP_Zone_1
+  131:
+    tenant: Tenant_A
+    name: Tenant_A_APP_Zone_2
+  132:
+    tenant: Tenant_A
+    name: Tenant_A_APP_Zone_3
+  120:
+    tenant: Tenant_A
+    name: Tenant_A_WEB_Zone_1
+  121:
+    tenant: Tenant_A
+    name: Tenant_A_WEBZone_2
+  450:
+    tenant: Tenant_D
+    name: Tenant_D_v6_WAN_Zone_1
+  451:
+    tenant: Tenant_D
+    name: Tenant_D_v6_WAN_Zone_2
+  452:
+    tenant: Tenant_D
+    name: Tenant_D_v6_WAN_Zone_3
+ip_igmp_snooping:
+  globally_enabled: true
+  vlans:
+    120:
+      enabled: false
+ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+vlan_interfaces:
+  Vlan130:
+    tenant: Tenant_A
+    tags:
+    - app
+    - erp1
+    description: Tenant_A_APP_Zone_1
+    shutdown: false
+    vrf: Tenant_A_APP_Zone
+    ip_address_virtual: 10.1.30.1/24
+  Vlan131:
+    tenant: Tenant_A
+    tags:
+    - app
+    description: Tenant_A_APP_Zone_2
+    shutdown: false
+    vrf: Tenant_A_APP_Zone
+    ip_address_virtual: 10.1.31.1/24
+  Vlan132:
+    tenant: Tenant_A
+    tags:
+    - erp2
+    description: Tenant_A_APP_Zone_3
+    shutdown: false
+    vrf: Tenant_A_APP_Zone
+    ip_address: 10.1.32.1/24
+    ip_virtual_router_addresses:
+    - 10.1.32.254
+    - 10.2.32.254/24
+    - 10.3.32.254/24
+  Vlan120:
+    tenant: Tenant_A
+    tags:
+    - web
+    - erp1
+    description: Tenant_A_WEB_Zone_1
+    shutdown: false
+    vrf: Tenant_A_WEB_Zone
+    ip_address_virtual: 10.1.20.1/24
+    ip_address_virtual_secondaries:
+    - 10.2.20.1/24
+    - 10.2.21.1/24
+    ip_helpers:
+      1.1.1.1:
+        source_interface: lo100
+        vrf: TEST
+  Vlan121:
+    tenant: Tenant_A
+    tags:
+    - web
+    description: Tenant_A_WEBZone_2
+    shutdown: true
+    vrf: Tenant_A_WEB_Zone
+    ip_address_virtual: 10.1.10.254/24
+    mtu: 1560
+  Vlan450:
+    tenant: Tenant_D
+    tags:
+    - v6wan
+    description: Tenant_D_v6_WAN_Zone_1
+    shutdown: false
+    vrf: Tenant_D_WAN_Zone
+    ipv6_address_virtual: 2001:db8:355::1/64
+  Vlan451:
+    tenant: Tenant_D
+    tags:
+    - v6wan
+    description: Tenant_D_v6_WAN_Zone_2
+    shutdown: false
+    vrf: Tenant_D_WAN_Zone
+    ipv6_address_virtual: 2001:db8:451::1/64
+    mtu: 1560
+  Vlan452:
+    tenant: Tenant_D
+    tags:
+    - v6wan
+    description: Tenant_D_v6_WAN_Zone_3
+    shutdown: false
+    vrf: Tenant_D_WAN_Zone
+    ip_address_virtual: 10.4.12.254/24
+    ipv6_address_virtual: 2001:db8:412::1/64
+    mtu: 1560
+vxlan_interface:
+  Vxlan1:
+    description: DC1-LEAF1A_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vlans:
+        130:
+          vni: 10130
+        131:
+          vni: 10131
+        132:
+          vni: 10132
+        120:
+          vni: 10120
+        121:
+          vni: 10121
+        450:
+          vni: 40450
+        451:
+          vni: 40451
+        452:
+          vni: 40452
+      vrfs:
+        Tenant_A_APP_Zone:
+          vni: 12
+        Tenant_A_WEB_Zone:
+          vni: 11
+        Tenant_D_WAN_Zone:
+          vni: 41

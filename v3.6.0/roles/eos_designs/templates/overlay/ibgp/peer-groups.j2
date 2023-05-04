@@ -1,0 +1,36 @@
+  peer_groups:
+    {{ overlay_data.overlay_peer_group_name }}:
+{% if switch.mpls_overlay_role in ["server", "client"] %}
+      type: mpls
+{% else %}
+      type: evpn
+{% endif %}
+      update_source: Loopback0
+      remote_as: "{{ switch.bgp_as }}"
+      bfd: true
+{% if switch.mpls_overlay_role in ["server", "client"] %}
+{%     if switch.bgp_peer_groups.mpls_overlay_peers.password is arista.avd.defined %}
+      password: "{{ switch.bgp_peer_groups.mpls_overlay_peers.password }}"
+{%     endif %}
+{% else %}
+{%     if switch.bgp_peer_groups.evpn_overlay_peers.password is arista.avd.defined %}
+      password: "{{ switch.bgp_peer_groups.evpn_overlay_peers.password }}"
+{%     endif %}
+{% endif %}
+      send_community: all
+      maximum_routes: 0
+{% if switch.evpn_role == "server" or switch.mpls_overlay_role == "server" %}
+      route_reflector_client: true
+{% endif %}
+{% if switch.mpls_overlay_role == "server" and overlay_data.mpls_rr_peers is arista.avd.defined %}
+    {{ overlay_data.rr_peers_peer_group_name }}:
+      type: mpls
+      update_source: Loopback0
+      remote_as: "{{ bgp_as }}"
+      bfd: true
+{%     if switch.bgp_peer_groups.rr_overlay_peers.password is arista.avd.defined() %}
+      password: "{{ switch.bgp_peer_groups.rr_overlay_peers.password }}"
+      send_community: all
+      maximum_routes: 0
+{%     endif %}
+{% endif %}

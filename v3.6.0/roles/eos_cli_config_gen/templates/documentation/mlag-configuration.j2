@@ -1,0 +1,30 @@
+{% if mlag_configuration is arista.avd.defined %}
+
+# MLAG
+
+## MLAG Summary
+
+| Domain-id | Local-interface | Peer-address | Peer-link |
+| --------- | --------------- | ------------ | --------- |
+| {{ mlag_configuration.domain_id }} | {{ mlag_configuration.local_interface }} | {{ mlag_configuration.peer_address }} | {{ mlag_configuration.peer_link }} |
+
+{%     if mlag_configuration.heartbeat_interval is arista.avd.defined %}
+Heartbeat Interval is {{ mlag_configuration.heartbeat_interval }} milliseconds.
+{%     endif %}
+{%     if mlag_configuration.dual_primary_detection_delay is arista.avd.defined %}
+Dual primary detection is enabled. The detection delay is {{ mlag_configuration.dual_primary_detection_delay }} seconds.
+{%         if mlag_configuration.dual_primary_recovery_delay_mlag is arista.avd.defined and
+              mlag_configuration.dual_primary_recovery_delay_non_mlag is arista.avd.defined %}
+Dual primary recovery delay for MLAG interfaces is {{ mlag_configuration.dual_primary_recovery_delay_mlag }} seconds.
+Dual primary recovery delay for NON-MLAG interfaces is {{ mlag_configuration.dual_primary_recovery_delay_non_mlag }} seconds.
+{%         endif %}
+{%     else %}
+Dual primary detection is disabled.
+{%     endif %}
+
+## MLAG Device Configuration
+
+```eos
+{%     include 'eos/mlag-configuration.j2' %}
+```
+{% endif %}

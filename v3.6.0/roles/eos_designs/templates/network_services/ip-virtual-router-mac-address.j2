@@ -1,0 +1,4 @@
+{# virtual router mac address #}
+{% if switch.virtual_router_mac_address is arista.avd.defined(fail_action="error", var_name="virtual_router_mac_address") %}
+ip_virtual_router_mac_address: {{ switch.virtual_router_mac_address | lower }}
+{% endif %}

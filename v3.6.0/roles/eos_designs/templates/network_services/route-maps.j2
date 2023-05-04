@@ -1,0 +1,22 @@
+{# Route-maps for tenant bgp peers set_ipv4_next_hop parameter #}
+route_maps:
+{% for tenant in network_services_data.tenants %}
+{%     for vrf in tenant.vrfs %}
+{%         for bgp_peer in vrf.bgp_peers %}
+{%             if inventory_hostname in bgp_peer.nodes | arista.avd.default([]) %}
+{%                 if bgp_peer.set_ipv4_next_hop is arista.avd.defined or bgp_peer.set_ipv6_next_hop is arista.avd.defined %}
+  RM-{{ vrf.name }}-{{ bgp_peer.ip_address }}-SET-NEXT-HOP-OUT:
+    sequence_numbers:
+      10:
+        type: permit
+        set:
+{%                     if bgp_peer.set_ipv4_next_hop is arista.avd.defined %}
+          - "ip next-hop {{ bgp_peer.set_ipv4_next_hop }}"
+{%                     elif bgp_peer.set_ipv6_next_hop is arista.avd.defined %}
+          - "ipv6 next-hop {{ bgp_peer.set_ipv6_next_hop }}"
+{%                     endif %}
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{% endfor %}

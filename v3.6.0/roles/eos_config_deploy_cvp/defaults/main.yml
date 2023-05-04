@@ -1,0 +1,39 @@
+---
+# defaults file for eos-config-deploy-cvp
+# Root directory where to build output structure
+root_dir: '{{ inventory_dir }}'
+
+# AVD configurations output
+# Main output directory
+output_dir_name: 'intended'
+output_dir: '{{ root_dir }}/{{ output_dir_name }}'
+
+# Output for structured YAML files:
+structured_dir_name: 'structured_configs'
+structured_dir: '{{ output_dir }}/{{ structured_dir_name }}'
+
+# Output for structured YAML files for CVP:
+structured_cvp_dir_name: 'cvp'
+structured_cvp_dir: '{{ structured_dir }}/{{ structured_cvp_dir_name }}'
+
+# EOS Configuration Directory name
+eos_config_dir_name: 'configs'
+eos_config_dir: '{{ output_dir }}/{{ eos_config_dir_name }}'
+
+# Filter to apply on cv_device to target only devices involved in Fabric
+device_filter: 'all'
+
+# Define inventory group to consider root of container topology
+container_root: '{{ fabric_name }}'
+
+# Configure prefix to append to configlets on CloudVision
+configlets_prefix: 'AVD-{{ fabric_name }}-'
+
+# State management to know if module should create/update or delete fabric
+state: 'present'
+
+# CVP Deployment methodology, whether to exectute or stage tasks
+execute_tasks: false
+
+# Version of the Cloudvision collection to use for upload
+cv_collection: v1

@@ -1,0 +1,26 @@
+{% if custom_structured_configuration_prefix is arista.avd.defined %}
+{%     if custom_structured_configuration_prefix is string %}
+{%         set tmp_prefixes = [custom_structured_configuration_prefix] %}
+{%     else %}
+{%         set tmp_prefixes = custom_structured_configuration_prefix %}
+{%     endif %}
+{%     for tmp_prefix in tmp_prefixes %}
+{%         set tmp_custom_structured_configuration = {} %}
+{%         for key_name in hostvars[inventory_hostname].keys() %}
+{%             if key_name | regex_search('^' ~ tmp_prefix) %}
+{%                 if key_name in ['custom_structured_configuration_prefix', 'custom_structured_configuration_list_merge'] %}
+{#                     Skip keys with same prefix as the default prefix #}
+{%                     continue %}
+{%                 endif %}
+{%                 set tmp_key_name = key_name | regex_replace('^' ~ tmp_prefix) %}
+{%                 do tmp_custom_structured_configuration.update({tmp_key_name: hostvars[inventory_hostname][key_name]}) %}
+{%             endif %}
+{%         endfor %}
+{%         do custom_structured_configuration_data.append(tmp_custom_structured_configuration) %}
+{%     endfor %}
+{% endif %}
+{# By parsing the list of custom_structured_configurations to the combine filter,    #}
+{# it will apply them one at a time, so the first can be overridden by the next etc. #}
+{{
+    custom_structured_configuration_data | to_nice_yaml(indent=2, sort_keys=False, width=2147483647)
+}}

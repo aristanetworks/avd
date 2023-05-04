@@ -1,0 +1,14 @@
+{% if service_routing_configuration_bgp is arista.avd.defined %}
+## Service Routing Configuration BGP
+
+{%     if service_routing_configuration_bgp.no_equals_default is arista.avd.defined(true) %}
+BGP no equals default enabled
+{%     elif service_routing_configuration_bgp.no_equals_default is arista.avd.defined(false) %}
+BGP no equals default disabled
+{%     endif %}
+
+```eos
+{%     include 'eos/service-routing-configuration-bgp.j2' %}
+```
+
+{% endif %}

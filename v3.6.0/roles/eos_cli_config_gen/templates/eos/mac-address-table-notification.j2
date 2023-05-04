@@ -1,0 +1,15 @@
+{# eos- Mac address table notification #}
+{% if mac_address_table.notification_host_flap is arista.avd.defined %}
+!
+{%     if mac_address_table.notification_host_flap.logging is arista.avd.defined(false) %}
+no mac address-table notification host-flap logging
+{%     elif mac_address_table.notification_host_flap.logging is arista.avd.defined(true) %}
+mac address-table notification host-flap logging
+{%     endif %}
+{%     if mac_address_table.notification_host_flap.detection.window is arista.avd.defined %}
+mac address-table notification host-flap detection window {{ mac_address_table.notification_host_flap.detection.window }}
+{%     endif %}
+{%     if mac_address_table.notification_host_flap.detection.moves is arista.avd.defined %}
+mac address-table notification host-flap detection moves {{ mac_address_table.notification_host_flap.detection.moves }}
+{%     endif %}
+{% endif %}

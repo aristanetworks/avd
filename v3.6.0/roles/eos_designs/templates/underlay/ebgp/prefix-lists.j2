@@ -1,0 +1,14 @@
+{# prefix-lists #}
+prefix_lists:
+  PL-LOOPBACKS-EVPN-OVERLAY:
+    sequence_numbers:
+      10:
+        action: "permit {{ switch.loopback_ipv4_pool }} eq 32"
+{% if switch.vtep_ip is arista.avd.defined and switch.vtep_loopback | lower != 'loopback0' %}
+      20:
+        action: "permit {{ switch.vtep_loopback_ipv4_pool }} eq 32"
+{%     if vtep_vvtep_ip is arista.avd.defined and switch.network_services_l3 is arista.avd.defined(true) %}
+      30:
+        action: "permit {{ vtep_vvtep_ip }}"
+{%     endif %}
+{% endif %}

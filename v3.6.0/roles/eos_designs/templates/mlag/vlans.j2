@@ -1,0 +1,13 @@
+vlans:
+{% if switch.mlag_peer_l3_vlan is arista.avd.defined %}
+  {{ switch.mlag_peer_l3_vlan }}:
+    tenant: system
+    name: LEAF_PEER_L3
+    trunk_groups:
+      - LEAF_PEER_L3
+{% endif %}
+  {{ switch.mlag_peer_vlan }}:
+    tenant: system
+    name: MLAG_PEER
+    trunk_groups:
+      - MLAG

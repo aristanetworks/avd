@@ -1,0 +1,17 @@
+platform:
+  trident:
+    forwarding_table_partition: 2
+  sand:
+    qos_maps:
+      - traffic_class: 0
+        to_network_qos: 0
+      - traffic_class: 1
+        to_network_qos: 7
+      - traffic_class: 2
+        to_network_qos: 15
+    lag:
+      hardware_only: true
+      mode: "512x32"
+    multicast_replication:
+      default: ingress
+    forwarding_mode: arad

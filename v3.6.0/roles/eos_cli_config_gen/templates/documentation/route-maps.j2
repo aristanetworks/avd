@@ -1,0 +1,31 @@
+{% if route_maps is defined and route_maps is not none %}
+
+## Route-maps
+
+### Route-maps Summary
+
+{%     for route_map in route_maps | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+#### {{ route_map.name }}
+
+| Sequence | Type | Match and/or Set |
+| -------- | ---- | ---------------- |
+{%         for sequence in route_map.sequence_numbers | arista.avd.convert_dicts('sequence') | arista.avd.natural_sort('sequence') %}
+{%             if sequence.match is arista.avd.defined %}
+{%                 for match_rule in sequence.match | arista.avd.natural_sort %}
+| {{ sequence.sequence }} | {{ sequence.type }} | match {{ match_rule }} |
+{%                 endfor %}
+{%             endif %}
+{%             if sequence.set is arista.avd.defined %}
+{%                 for set_rule in sequence.set | arista.avd.natural_sort %}
+| {{ sequence.sequence }} | {{ sequence.type }} | set {{ set_rule }} |
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+
+{%     endfor %}
+### Route-maps Device Configuration
+
+```eos
+{%     include 'eos/route-maps.j2' %}
+```
+{% endif %}

@@ -1,0 +1,19 @@
+{# eos - event-handler #}
+{% if event_handlers is arista.avd.defined %}
+
+## Event Handler
+
+### Event Handler Summary
+
+| Handler | Action Type | Action | Trigger |
+| ------- | ----------- | ------ | ------- |
+{%     for handler in event_handlers | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+| {{ handler.name }} | {{ handler.action_type }} | {{ handler.action }} | {{ handler.trigger }} |
+{%     endfor %}
+
+### Event Handler Device Configuration
+
+```eos
+{%     include 'eos/event-handler.j2' %}
+```
+{% endif %}

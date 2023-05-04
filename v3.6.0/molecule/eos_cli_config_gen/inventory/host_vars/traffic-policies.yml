@@ -1,0 +1,147 @@
+---
+traffic_policies:
+  options:
+    counter_per_interface: true
+  field_sets:
+    ports:
+      SERVICE-DEMO: "10,20,80,440-450"
+    ipv4:
+      DEMO-01:
+        - 10.0.0.0/8
+        - 192.168.0.0/16
+      DEMO-02:
+        - 172.16.0.0/12
+        - 224.0.0.0/8
+  policies:
+    BLUE-C1-POLICY:
+      matches:
+        BLUE-C1-POLICY-01:
+          type: ipv4
+          source:
+            prefixes:
+              - 10.0.0.0/8
+              - 192.168.0.0/16
+          destination:
+            prefix_lists:
+              - DEMO-01
+          protocols:
+            tcp:
+              src_port: "1,10-20"
+          ttl: "10, 20-30"
+          actions:
+            traffic_class: 5
+        BLUE-C1-POLICY-02:
+          type: ipv4
+          source:
+            prefix_lists:
+              - DEMO-01
+              - DEMO-02
+          protocols:
+            tcp:
+              dst_field: SERVICE-DEMO
+              flags:
+                - established
+            icmp:
+          actions:
+            count: DEMO-TRAFFIC
+            dscp: 60
+        BLUE-C1-POLICY-03:
+          type: ipv4
+          source:
+            prefix_lists:
+              - DEMO-01
+          protocols:
+            icmp:
+              icmp_type:
+                - echo
+                - echo-reply
+          fragment:
+            offset: "1124, 2000-2010"
+          actions:
+            count: DROP-PACKETS
+            drop: true
+            log: true
+        BLUE-C1-POLICY-04:
+          type: ipv4
+          source:
+            prefix_lists:
+              - DEMO-02
+          destination:
+            prefix_lists:
+              - DEMO-01
+          protocols:
+            tcp:
+              src_port: "22"
+              flags:
+                - established
+            icmp:
+          actions:
+            traffic_class: 5
+        BLUE-C1-POLICY-05:
+          type: ipv4
+          source:
+            prefix_lists:
+              - DEMO-02
+          destination:
+            prefix_lists:
+              - DEMO-01
+          protocols:
+            tcp:
+          fragment:
+          actions:
+            traffic_class: 5
+    BLUE-C2-POLICY:
+      default_actions:
+        ipv4:
+          drop: true
+          log: true
+      matches:
+        BLUE-C2-POLICY-01:
+          type: ipv4
+          source:
+            prefixes:
+              - 10.0.0.0/8
+              - 192.168.0.0/16
+          protocols:
+            tcp:
+              src_port: "1,10-20"
+            icmp:
+          actions:
+            traffic_class: 5
+        BLUE-C2-POLICY-02:
+          type: ipv4
+          source:
+            prefix_lists:
+              - DEMO-01
+              - DEMO-02
+          protocols:
+            tcp:
+              src_field: SERVICE-DEMO
+            icmp:
+          actions:
+            count: DEMO-TRAFFIC
+            dscp: 60
+        BLUE-C2-POLICY-03:
+          type: ipv4
+          source:
+            prefix_lists:
+              - DEMO-01
+          protocols:
+            tcp:
+          actions:
+            drop: true
+            log: true
+
+ethernet_interfaces:
+  Ethernet1:
+    type: routed
+    traffic_policy:
+      input: BLUE-C1-POLICY
+      output: BLUE-C2-POLICY
+
+port_channel_interfaces:
+  Port-Channel2:
+    type: routed
+    traffic_policy:
+      input: BLUE-C1-POLICY
+      output: BLUE-C2-POLICY

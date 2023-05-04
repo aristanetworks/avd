@@ -1,0 +1,25 @@
+{% if ipv6_static_routes is defined and ipv6_static_routes is not none %}
+
+## IPv6 Static Routes
+
+### IPv6 Static Routes Summary
+
+| VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
+| --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
+{%     for static_route in ipv6_static_routes %}
+{%         set vrf = static_route.vrf | arista.avd.default('default') %}
+{%         set gateway = static_route.gateway | arista.avd.default('-') %}
+{%         set interface = static_route.interface | arista.avd.default('-') %}
+{%         set distance = static_route.distance | arista.avd.default('1') %}
+{%         set tag = static_route.tag | arista.avd.default('-') %}
+{%         set name = static_route.name | arista.avd.default('-') %}
+{%         set metric = static_route.metric | arista.avd.default('-') %}
+| {{ vrf }} | {{ static_route.destination_address_prefix }} | {{ gateway }} | {{ interface }} | {{ distance }} | {{ tag }} | {{ name }} | {{ metric }} |
+{%     endfor %}
+
+### Static Routes Device Configuration
+
+```eos
+{%     include 'eos/ipv6-static-routes.j2' %}
+```
+{% endif %}

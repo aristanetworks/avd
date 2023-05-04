@@ -1,0 +1,164 @@
+router_bgp:
+  as: 65101
+  router_id: 192.168.255.3
+  bgp_defaults:
+    - no bgp default ipv4-unicast
+    - distance bgp 20 200 200
+    - graceful-restart restart-time 300
+    - graceful-restart
+    - maximum-paths 2 ecmp 2
+  peer_groups:
+    EVPN-OVERLAY-PEERS:
+      type: evpn
+      remote_as: 65001
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: 3
+      password: "q+VNViP5i4rVjW1cxFv2wA=="
+      send_community: all
+      maximum_routes: 0
+      allowas_in:
+        enabled: true
+    MLAG-IPv4-UNDERLAY-PEER:
+      type: ipv4
+      remote_as: 65101
+      next_hop_self: true
+      password: "vnEaG8gMeQf3d3cN6PktXQ=="
+      maximum_routes: 12000
+      maximum_routes_warning_limit: 80 percent
+      maximum_routes_warning_only: true
+      send_community: all
+      route_map_in: RM-MLAG-PEER-IN
+      route_map_out: RM-MLAG-PEER-OUT
+  neighbors:
+    192.168.255.1:
+      peer_group: EVPN-OVERLAY-PEERS
+      allowas_in:
+        enabled: true
+        times: 5
+    192.168.255.2:
+      peer_group: EVPN-OVERLAY-PEERS
+    192.168.255.3:
+      allowas_in:
+        enabled: true
+        times: 5
+      maximum_routes: 52000
+      maximum_routes_warning_limit: 2000
+      maximum_routes_warning_only: true
+  redistribute_routes:
+  address_family_evpn:
+    neighbor_default:
+      next_hop_self_received_evpn_routes:
+        enable: true
+        inter_domain: true
+    domain_identifier: "65101:0"
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+        domain_remote: true
+      MLAG-IPv4-UNDERLAY-PEER:
+        activate: false
+    evpn_hostflap_detection:
+      enabled: true
+      window: 10
+      threshold: 1
+      expiry_timeout: 3
+  address_family_ipv4:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: false
+  vlan_aware_bundles:
+## Tenant_A ##
+    TENANT_A_PROJECT01:
+      rd: "192.168.255.3:11"
+      route_targets:
+        both:
+          - "11:11"
+        import_export_evpn_domains:
+          - domain: remote
+            route_target: "2:11"
+      redistribute_routes:
+        - learned
+        - igmp
+      no_redistribute_routes:
+        - connected
+      vlan: 110
+    TENANT_A_PROJECT02:
+      rd: "192.168.255.3:12"
+      rd_evpn_domain:
+        domain: remote
+        rd: "192.168.255.3:12"
+      route_targets:
+        both:
+          - "12:12"
+        import_evpn_domains:
+          - domain: remote
+            route_target: "2:12"
+        export_evpn_domains:
+          - domain: remote
+            route_target: "2:12"
+      redistribute_routes:
+        - learned
+      vlan: 112
+## Tenant_B ##
+    B-ELAN-201:
+      tenant: Tenant_B
+      rd: "192.168.255.3:20201"
+      route_targets:
+        both:
+          - "20201:20201"
+      redistribute_routes:
+        - learned
+      no_redistribute_routes:
+        - host-routes
+      vlan: 201
+  vlans:
+    2488:
+      rd: 145.245.21.0:1
+      route_targets:
+        both:
+          - 145.245.21.0:1
+      no_redistribute_routes:
+        - learned
+  vrfs:
+## Tenant_A ##
+    TENANT_A_PROJECT01:
+      router_id: 192.168.255.3
+      rd: "192.168.255.3:11"
+      evpn_multicast: true
+      route_targets:
+        import:
+          evpn:
+            - "11:11"
+        export:
+          evpn:
+            - "11:11"
+      neighbors:
+        10.255.251.1:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
+          maximum_routes: 15000
+          maximum_routes_warning_limit: 50 percent
+      redistribute_routes:
+        - connected
+    TENANT_A_PROJECT02:
+      router_id: 192.168.255.3
+      rd: "192.168.255.3:12"
+      route_targets:
+        import:
+          evpn:
+            - "12:12"
+        export:
+          evpn:
+            - "12:12"
+      neighbors:
+        10.255.251.1:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
+      redistribute_routes:
+        - connected
+      neighbor_interfaces:
+        Ethernet27:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
+          remote_as: 1
+        Ethernet28:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
+          peer_filter: SOME_FILTER

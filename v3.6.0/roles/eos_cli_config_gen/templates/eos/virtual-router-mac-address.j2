@@ -1,0 +1,5 @@
+{# eos - ip virtual router mac #}
+{% if ip_virtual_router_mac_address is arista.avd.defined %}
+!
+ip virtual-router mac-address {{ ip_virtual_router_mac_address }}
+{% endif %}

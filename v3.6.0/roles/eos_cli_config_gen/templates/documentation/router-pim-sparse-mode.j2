@@ -1,0 +1,54 @@
+{# IP PIM Sparse Mode Summary #}
+{% if router_pim_sparse_mode is arista.avd.defined %}
+
+### Router PIM Sparse Mode
+
+#### IP Sparse Mode Information
+{%     if router_pim_sparse_mode.ipv4 is arista.avd.defined %}
+{%         if router_pim_sparse_mode.ipv4.rp_addresses is arista.avd.defined %}
+
+##### IP Rendezvous Information
+
+| Rendezvous Point Address | Group Address |
+| ------------------------ | ------------- |
+{%             for rp_address in router_pim_sparse_mode.ipv4.rp_addresses | arista.avd.convert_dicts('address') | arista.avd.natural_sort('address') %}
+{%                 set rp_groups = rp_address.groups | arista.avd.default(['-']) | join(', ') %}
+| {{ rp_address.address }} | {{ rp_groups }} |
+{%             endfor %}
+{%         endif %}
+{%         if router_pim_sparse_mode.ipv4.anycast_rps is arista.avd.defined %}
+
+##### IP Anycast Information
+
+| IP Anycast Address | Other Rendezvous Point Address | Register Count |
+| ------------------ | ------------------------------ | -------------- |
+{%             for anycast_rp in router_pim_sparse_mode.ipv4.anycast_rps | arista.avd.convert_dicts('address') | arista.avd.natural_sort('address') %}
+{%                 for other_anycast_rp_address in anycast_rp.other_anycast_rp_addresses | arista.avd.convert_dicts('address') | arista.avd.natural_sort('address') %}
+{%                     set register_count = other_anycast_rp_address.register_count | arista.avd.default('-') %}
+| {{ anycast_rp.address }} | {{ other_anycast_rp_address.address }} | {{ register_count }} |
+{%                 endfor %}
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+{%     if router_pim_sparse_mode.vrfs is arista.avd.defined %}
+
+##### IP Sparse Mode VRFs
+
+| VRF Name | Rendezvous Point Address | Group Address |
+| -------- | ------------------------ | ------------- |
+{%         for vrf in router_pim_sparse_mode.vrfs | arista.avd.natural_sort('name') %}
+{%             if vrf.ipv4.rp_addresses is arista.avd.defined %}
+{%                 for rp_address in vrf.ipv4.rp_addresses | arista.avd.natural_sort('address') %}
+{%                     set rp_groups = rp_address.groups | arista.avd.default(['-']) | join(', ') %}
+| {{ vrf.name }} | {{ rp_address.address }} | {{ rp_groups }} |
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+
+#### Router Multicast Device Configuration
+
+```eos
+{%     include 'eos/router-pim-sparse-mode.j2' %}
+```
+{% endif %}

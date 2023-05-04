@@ -1,0 +1,10 @@
+{# eos - prefix-lists #}
+{% for prefix_list in prefix_lists | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+!
+ip prefix-list {{ prefix_list.name }}
+{%     for sequence in prefix_list.sequence_numbers | arista.avd.convert_dicts('sequence') | arista.avd.natural_sort('sequence') %}
+{%         if sequence.action is arista.avd.defined %}
+   seq {{ sequence.sequence }} {{ sequence.action }}
+{%         endif %}
+{%     endfor %}
+{% endfor %}

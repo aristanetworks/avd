@@ -1,0 +1,20 @@
+{% if mpls is arista.avd.defined %}
+
+## MPLS and LDP
+
+### MPLS and LDP Summary
+
+| Setting | Value |
+| -------- | ---- |
+| MPLS IP Enabled | {{ mpls.ip | arista.avd.default('-') }} |
+| LDP Enabled | {{ not mpls.ldp.shutdown | arista.avd.default('-') }} |
+| LDP Router ID | {{ mpls.ldp.router_id | arista.avd.default('-') }} |
+| LDP Interface Disabled Default | {{ mpls.ldp.interface_disabled_default | arista.avd.default('-') }} |
+| LDP Transport-Address Interface | {{ mpls.ldp.transport_address_interface | arista.avd.default('-') }} |
+
+### MPLS and LDP Configuration
+
+```eos
+{%     include 'eos/mpls.j2' %}
+```
+{% endif %}

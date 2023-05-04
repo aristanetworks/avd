@@ -1,0 +1,45 @@
+# Minimum config to only test the specific feature.
+l2leaf:
+  defaults:
+  nodes:
+    mgmt_interface_default:
+      mgmt_interface_vrf: MGMT
+      mgmt_gateway: 1.1.1.1
+      mgmt_ip: 1.1.1.2
+      id: 102
+
+snmp_settings:
+  contact: example@example.com
+  location: true
+  compute_local_engineid: true
+  compute_v3_user_localized_key: true
+  users:
+    - name: usertest-auth-priv
+      group: usergroup
+      version: v3
+      auth: sha
+      auth_passphrase: clearauth # to get from vault in real life
+      priv: aes192
+      priv_passphrase: clearpriv # to get from vault in real life
+    - name: usertest-auth-no-priv
+      group: usergroup
+      version: v3
+      auth: sha512
+      auth_passphrase: clearauth # to get from vault in real life
+    - name: usertest-no-auth-no-priv
+      group: usergroup
+      version: v3
+      # For now, not possible to run tests that raise
+      # exceptions
+      # - name: usertest-wrong-cipher
+      #   group: usergroup
+      #   version: v3
+      #   auth: toto
+      #   auth_passphrase: clearauth
+    - name: usertest-v2c
+      group: usergroup
+      version: v2c # v2c so the passphrases are not needed
+      auth: useless
+      auth_passphrase: clearauth # to get from vault in real life
+      priv: useless
+      priv_passphrase: clearpriv # to get from vault in real life

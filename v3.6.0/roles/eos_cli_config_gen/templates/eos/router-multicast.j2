@@ -1,0 +1,39 @@
+{# eos - Router Multicast #}
+{% if router_multicast is arista.avd.defined %}
+!
+router multicast
+{%     if router_multicast.ipv4 is arista.avd.defined %}
+   ipv4
+{%         for rpf_route in router_multicast.ipv4.rpf.routes | arista.avd.natural_sort('source_prefix') if rpf_route.source_prefix is arista.avd.defined %}
+{%             for destination in rpf_route.destinations | arista.avd.natural_sort('nexthop') if destination.nexthop is arista.avd.defined %}
+{%                 set rpf_route_cli = "rpf route " ~ rpf_route.source_prefix ~ " " ~ destination.nexthop %}
+{%                 if destination.distance is arista.avd.defined %}
+{%                     set rpf_route_cli = rpf_route_cli ~ " " ~ destination.distance %}
+{%                 endif %}
+      {{ rpf_route_cli }}
+{%             endfor %}
+{%         endfor %}
+{%         if router_multicast.ipv4.counters.rate_period_decay is arista.avd.defined %}
+      counters rate period decay {{ router_multicast.ipv4.counters.rate_period_decay }} seconds
+{%         endif %}
+{%         if router_multicast.ipv4.routing is arista.avd.defined(true) %}
+      routing
+{%         endif %}
+{%         if router_multicast.ipv4.multipath is arista.avd.defined %}
+      multipath {{ router_multicast.ipv4.multipath }}
+{%         endif %}
+{%         if router_multicast.ipv4.software_forwarding is arista.avd.defined %}
+      software-forwarding {{ router_multicast.ipv4.software_forwarding }}
+{%         endif %}
+{%     endif %}
+{%     for vrf in router_multicast.vrfs | arista.avd.natural_sort('name') %}
+      !
+      vrf {{ vrf.name }}
+{%         if vrf.ipv4 is arista.avd.defined %}
+         ipv4
+{%         endif %}
+{%         if vrf.ipv4.routing is arista.avd.defined(true) %}
+            routing
+{%         endif %}
+{%     endfor %}
+{% endif %}

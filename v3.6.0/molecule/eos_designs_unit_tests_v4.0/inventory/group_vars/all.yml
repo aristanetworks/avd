@@ -1,0 +1,76 @@
+---
+root_dir: '{{ playbook_dir }}'
+
+default_connected_endpoints_keys:
+  "l3ls-evpn":
+    - key: servers
+      type: server
+    - key: firewalls
+      type: firewall
+    - key: routers
+      type: router
+    - key: load_balancers
+      type: load_balancer
+    - key: storage_arrays
+      type: storage_array
+  "mpls":
+    - key: routers
+      type: router
+    - key: cpes
+      type: cpe
+
+default_node_type_keys:
+  "l3ls-evpn":
+    - key: spine
+      type: spine
+      default_evpn_role: server
+    - key: l3leaf
+      type: l3leaf
+      connected_endpoints: true
+      default_evpn_role: client
+      mlag_support: true
+      network_services:
+        l2: true
+        l3: true
+      vtep: true
+    - key: l2leaf
+      type: l2leaf
+      connected_endpoints: true
+      mlag_support: true
+      network_services:
+        l2: true
+      underlay_router: false
+      uplink_type: port-channel
+    - key: super_spine
+      type: super-spine
+    - key: overlay_controller
+      type: overlay-controller
+      default_evpn_role: server
+
+  "mpls":
+    - key: p
+      type: p
+      mpls_lsr: true
+      default_mpls_overlay_role: none
+      default_overlay_routing_protocol: ibgp
+      default_underlay_routing_protocol: isis-sr
+    - key: pe
+      type: pe
+      mpls_lsr: true
+      connected_endpoints: true
+      default_mpls_overlay_role: client
+      network_services:
+        l1: true
+        l2: true
+        l3: true
+      mpls_ler: true
+      default_overlay_routing_protocol: ibgp
+      default_underlay_routing_protocol: isis-sr
+      default_overlay_address_families: [ vpn-ipv4 ]
+    - key: rr
+      type: rr
+      mpls_lsr: true
+      default_mpls_overlay_role: server
+      default_overlay_routing_protocol: ibgp
+      default_underlay_routing_protocol: isis-sr
+      default_overlay_address_families: [ vpn-ipv4 ]

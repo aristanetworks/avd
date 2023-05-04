@@ -1,0 +1,29 @@
+{% if bgp_groups is arista.avd.defined %}
+
+## BGP Groups
+
+### BGP Groups Summary
+
+| BGP group | VRF Name | Neighbors | BGP maintenance profiles |
+| --------- | -------- | --------- | ------------------------ |
+{%     for bgp_group in bgp_groups | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         set vrf = bgp_group.vrf | arista.avd.default('-') %}
+{%         if bgp_group.neighbors is arista.avd.defined %}
+{%             set neighbors = bgp_group.neighbors | arista.avd.natural_sort | join('<br>') %}
+{%         else %}
+{%             set neighbors = '-' %}
+{%         endif %}
+{%         if bgp_group.bgp_maintenance_profiles is arista.avd.defined %}
+{%             set bgp_profile = bgp_group.bgp_maintenance_profiles | arista.avd.natural_sort | join('<br>') %}
+{%         else %}
+{%             set bgp_profile = maintenance.default_bgp_profile | arista.avd.default('Default') %}
+{%         endif %}
+| {{ bgp_group.name }} | {{ vrf }} | {{ neighbors }} | {{ bgp_profile }} |
+{%     endfor %}
+
+### BGP Groups Configuration
+
+```eos
+{%     include 'eos/bgp-groups.j2' %}
+```
+{% endif %}

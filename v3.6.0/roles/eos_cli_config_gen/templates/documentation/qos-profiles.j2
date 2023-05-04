@@ -1,0 +1,70 @@
+{% if qos_profiles is arista.avd.defined %}
+
+## QOS Profiles
+
+### QOS Profiles Summary
+
+{%     for profile in qos_profiles | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+
+QOS Profile: **{{ profile.name }}**
+
+**Settings**
+
+| Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
+| ----------- | ------------ | ----- | ---------- | ------------------ |
+{%         set cos = profile.cos | arista.avd.default('-') %}
+{%         set dscp = profile.dscp | arista.avd.default('-') %}
+{%         set trust = profile.trust | arista.avd.default('-') %}
+{%         set shape_rate = profile.shape.rate | arista.avd.default('-') %}
+{%         set qos_sp = profile.service_policy.type.qos_input | arista.avd.default('-') %}
+| {{ cos }} | {{ dscp }} | {{ trust }} | {{ shape_rate }} | {{ qos_sp }} |
+{%         if profile.tx_queues is arista.avd.defined or
+              profile.uc_tx_queues is arista.avd.defined or
+              profile.mc_tx_queues is arista.avd.defined %}
+
+**TX Queues**
+
+| TX queue | Type | Bandwidth | Priority | Shape Rate |
+| -------- | ---- | --------- | -------- | ---------- |
+{%             if profile.tx_queues is arista.avd.defined %}
+{%                 for tx_queue in profile.tx_queues | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%                     set type = "All" %}
+{%                     set bw_percent = tx_queue.bandwidth_percent | arista.avd.default(
+                                        tx_queue.bandwidth_guaranteed_percent,
+                                    '-') %}
+{%                     set priority = tx_queue.priority | arista.avd.default('-') %}
+{%                     set shape_rate = tx_queue.shape.rate | arista.avd.default('-') %}
+| {{ tx_queue.id }} | {{ type }} | {{ bw_percent }} | {{ priority }} | {{ shape_rate }} |
+{%                 endfor %}
+{%             endif %}
+{%             if profile.uc_tx_queues is arista.avd.defined %}
+{%                 for uc_tx_queue in profile.uc_tx_queues | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%                     set type = "Unicast" %}
+{%                     set bw_percent = uc_tx_queue.bandwidth_percent | arista.avd.default(
+                                        uc_tx_queue.bandwidth_guaranteed_percent,
+                                        '-') %}
+{%                     set priority = uc_tx_queue.priority | arista.avd.default('-') %}
+{%                     set shape_rate = uc_tx_queue.shape.rate | arista.avd.default('-') %}
+| {{ uc_tx_queue.id }} | {{ type }} | {{ bw_percent }} | {{ priority }} | {{ shape_rate }} |
+{%                 endfor %}
+{%             endif %}
+{%             if profile.mc_tx_queues is arista.avd.defined %}
+{%                 for mc_tx_queue in profile.mc_tx_queues | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%                     set type = "Multicast" %}
+{%                     set bw_percent = mc_tx_queue.bandwidth_percent | arista.avd.default(
+                                        mc_tx_queue.bandwidth_guaranteed_percent,
+                                        '-') %}
+{%                     set priority = mc_tx_queue.priority | arista.avd.default('-') %}
+{%                     set shape_rate = mc_tx_queue.shape.rate | arista.avd.default('-') %}
+| {{ mc_tx_queue.id }} | {{ type }} | {{ bw_percent }} | {{ priority }} | {{ shape_rate }} |
+{%                 endfor %}
+{%             endif %}
+{%         endif %}
+{%     endfor %}
+
+### QOS Profile Device Configuration
+
+```eos
+{%     include 'eos/qos-profiles.j2' %}
+```
+{% endif %}

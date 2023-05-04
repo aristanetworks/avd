@@ -1,0 +1,75 @@
+{% if logging is arista.avd.defined %}
+
+## Logging
+
+### Logging Servers and Features Summary
+
+| Type | Level |
+| -----| ----- |
+{%     if logging.console is arista.avd.defined %}
+| Console | {{ logging.console }} |
+{%     endif %}
+{%     if logging.monitor is arista.avd.defined %}
+| Monitor | {{ logging.monitor }} |
+{%     endif %}
+{%     if logging.buffered is arista.avd.defined %}
+| Buffer | {{ logging.buffered.level | arista.avd.default('-') }} |
+{%     endif %}
+{%     if logging.trap is arista.avd.defined %}
+| Trap | {{ logging.trap }} |
+{%     endif %}
+{%     if logging.synchronous is arista.avd.defined() %}
+| Synchronous | {{ logging.synchronous.level | arista.avd.default("critical") }} |
+{%     endif %}
+{%     if logging.format is arista.avd.defined %}
+
+| Format Type | Setting |
+| ----------- | ------- |
+{%         if logging.format.timestamp is arista.avd.defined %}
+| Timestamp | {{ logging.format.timestamp }} |
+{%         endif %}
+{%         if logging.format.hostname is arista.avd.defined %}
+| Hostname | {{ logging.format.hostname }} |
+{%         else %}
+| Hostname | hostname |
+{%         endif %}
+{%         if logging.format.sequence_numbers is arista.avd.defined(true) %}
+| Sequence-numbers | true |
+{%         else %}
+| Sequence-numbers | false |
+{%         endif %}
+{%     endif %}
+{%     if logging.vrfs is arista.avd.defined %}
+
+| VRF | Source Interface |
+| --- | ---------------- |
+{%         if logging.source_interface is arista.avd.defined %}
+| - | {{ logging.source_interface }} |
+{%         endif %}
+{%         for vrf in logging.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%             if vrf.source_interface is arista.avd.defined %}
+| {{ vrf.name }} | {{ vrf.source_interface }} |
+{%             endif %}
+{%         endfor %}
+
+| VRF | Hosts | Ports | Protocol |
+| --- | ----- | ----- | -------- |
+{%         for vrf in logging.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%             if vrf.hosts is arista.avd.defined %}
+{%                 for host in vrf.hosts | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+| {{ vrf.name }} | {{ host.name }} | {{ host.ports | arista.avd.default(['Default']) | join(', ') }} | {{ host.protocol | arista.avd.default('UDP') | upper }} |
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     if logging.facility is arista.avd.defined %}
+
+**Syslog facility value:** {{ logging.facility }}
+{%     endif %}
+
+### Logging Servers and Features Device Configuration
+
+```eos
+{%     include 'eos/logging.j2' %}
+```
+{% endif %}

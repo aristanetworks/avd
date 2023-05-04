@@ -1,0 +1,10 @@
+{% if switch.raw_eos_cli is arista.avd.defined or
+      switch.platform_settings.raw_eos_cli is arista.avd.defined %}
+eos_cli: |
+{%     if switch.raw_eos_cli is arista.avd.defined %}
+  {{ switch.raw_eos_cli | indent(2,false) }}
+{%     endif %}
+{%     if switch.platform_settings.raw_eos_cli is arista.avd.defined %}
+  {{ switch.platform_settings.raw_eos_cli | indent(2,false) }}
+{%     endif %}
+{% endif %}

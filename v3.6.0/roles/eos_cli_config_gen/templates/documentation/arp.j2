@@ -1,0 +1,6 @@
+{% if arp.aging.timeout_default is arista.avd.defined %}
+
+## ARP
+
+Global ARP timeout: {{ arp.aging.timeout_default }}
+{% endif %}

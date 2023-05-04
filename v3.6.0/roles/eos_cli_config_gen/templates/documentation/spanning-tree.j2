@@ -1,0 +1,91 @@
+{# spanning-tree #}
+{% if spanning_tree is arista.avd.defined %}
+
+# Spanning Tree
+
+## Spanning Tree Summary
+
+STP mode: **{{ spanning_tree.mode | arista.avd.default("mstp") }}**
+{%     if spanning_tree.root_super is arista.avd.defined %}
+
+STP Root Super: **{{ spanning_tree.root_super }}**
+{%     endif %}
+{%     if spanning_tree.mst_instances is arista.avd.defined %}
+
+### MSTP Instance and Priority
+
+| Instance(s) | Priority |
+| -------- | -------- |
+{%         for mst_instance in spanning_tree.mst_instances | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+| {{ mst_instance.id }} | {{ mst_instance.priority | arista.avd.default("-") }} |
+{%         endfor %}
+{%     endif %}
+{%     if spanning_tree.mst.configuration is arista.avd.defined %}
+
+### MST Configuration
+
+| Variable | Value |
+| -------- | -------- |
+{%         if spanning_tree.mst.configuration.name is arista.avd.defined %}
+| Name | {{ spanning_tree.mst.configuration.name }} |
+{%         endif %}
+{%         if spanning_tree.mst.configuration.revision is arista.avd.defined %}
+| Revision | {{ spanning_tree.mst.configuration.revision }} |
+{%         endif %}
+{%         if spanning_tree.mst.configuration.instances is arista.avd.defined %}
+{%             for instance in spanning_tree.mst.configuration.instances | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+| Instance {{ instance.id }} | VLAN(s) {{ instance.vlans | arista.avd.default("-") }} |
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+{%     if spanning_tree.mode is arista.avd.defined("rapid-pvst") %}
+
+### Rapid-PVST Instance and Priority
+
+| Instance(s) | Priority |
+| -------- | -------- |
+{%         if spanning_tree.rapid_pvst_instances is arista.avd.defined  %}
+{%             for vlan_id in spanning_tree.rapid_pvst_instances | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+| {{ vlan_id.id }} | {{ vlan_id.priority | arista.avd.default("-") }} |
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+{%     set global_settings = [] %}
+{%     if spanning_tree.mode is arista.avd.defined("rstp") %}
+{%         if spanning_tree.rstp_priority is arista.avd.defined %}
+{%             do global_settings.append("- Global RSTP priority: " ~ spanning_tree.rstp_priority) %}
+{%         endif %}
+{%     endif %}
+{%     if spanning_tree.no_spanning_tree_vlan is arista.avd.defined %}
+{%         do global_settings.append("- Spanning Tree disabled for VLANs: " ~ "**" ~ spanning_tree.no_spanning_tree_vlan ~ "**") %}
+{%     endif %}
+{%     if spanning_tree.edge_port.bpduguard_default is arista.avd.defined(true) %}
+{%         do global_settings.append("- Global BPDU Guard for Edge ports is enabled.") %}
+{%     elif spanning_tree.edge_port.bpduguard_default is arista.avd.defined(false) %}
+{%         do global_settings.append("- Global BPDU Guard for Edge ports is disabled.") %}
+{%     endif %}
+{%     if spanning_tree.edge_port.bpdufilter_default is arista.avd.defined(true) %}
+{%         do global_settings.append("- Global BPDU Filter for Edge ports is enabled.") %}
+{%     elif spanning_tree.edge_port.bpdufilter_default is arista.avd.defined(false) %}
+{%         do global_settings.append("- Global BPDU Filter for Edge ports is disabled.") %}
+{%     endif %}
+{%     if spanning_tree.mode is arista.avd.defined("mstp") %}
+{%         if spanning_tree.mst is arista.avd.defined %}
+{%             if spanning_tree.mst.pvst_border is arista.avd.defined(true) %}
+{%                 do global_settings.append("- MST PSVT Border is enabled.") %}
+{%             endif %}
+{%         endif %}
+{%     endif %}
+{%     if global_settings | length > 0 %}
+
+### Global Spanning-Tree Settings
+
+{{ global_settings | join("\n") }}
+{%     endif %}
+
+## Spanning Tree Device Configuration
+
+```eos
+{%     include 'eos/spanning-tree.j2' %}
+```
+{% endif %}

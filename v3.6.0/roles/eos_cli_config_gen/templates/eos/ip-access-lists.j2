@@ -1,0 +1,132 @@
+{# eos - extended access-lists - improved data model #}
+{% if ip_access_lists is arista.avd.defined %}
+{#     set maximum number of ACL entries allowed, the playbook will fail if number is over the limit #}
+{%     set counter = namespace() %}
+{%     set counter.acle_number = 0 %}
+{#     START ACL CYCLE: walk over the list of defined ACLs #}
+{%     for acl in ip_access_lists %}
+{%         if not (acl.name is arista.avd.defined) or
+              not (acl.entries is arista.avd.defined) %}
+{#             break cycle if mandatory keys are not defined #}
+{%             continue %}
+{%         endif %}
+ip access-list {{ acl.name }}
+{%         if acl.counters_per_entry is arista.avd.defined(true) %}
+   counters per-entry
+{%         endif %}
+{#         START ACL_ENTRY CYCLE: walk over the list of ACL entries #}
+{%         for acle in acl.entries %}
+{#         Build ACL entry: #}
+{#             - init ACL entry string #}
+{%             set acl_entry = namespace(string='') %}
+{#             - add sequence number if defined and space #}
+{%             if acle.sequence is arista.avd.defined %}
+{%                 set acl_entry.string = acl_entry.string ~ acle.sequence ~ ' ' %}
+{%             endif %}
+{#             - add action or remark #}
+{#             if remark is defined, add remark + text only #}
+{%             if acle.remark is arista.avd.defined %}
+{%                 set acl_entry.string = acl_entry.string ~ 'remark ' ~ acle.remark %}
+{#             if no remark defined, build normal rule #}
+{#             only build the rule if mandatory keys are defined #}
+{%             elif (acle.action is arista.avd.defined) and
+                    (acle.protocol is arista.avd.defined) and
+                    (acle.source is arista.avd.defined) and
+                    (acle.destination is arista.avd.defined) %}
+{#                 * add action #}
+{%                 set acl_entry.string = acl_entry.string ~ acle.action %}
+{#                 * add vlan #}
+{%                 if (acle.vlan_number is arista.avd.defined) and (acle.vlan_mask is arista.avd.defined) %}
+{%                     set acl_entry.string = acl_entry.string ~ ' vlan' %}
+{%                     if acle.vlan_inner is arista.avd.defined(true) %}
+{%                         set acl_entry.string = acl_entry.string ~ ' inner' %}
+{%                     endif %}
+{%                     set acl_entry.string = acl_entry.string ~ ' ' ~ acle.vlan_number ~ ' ' ~ acle.vlan_mask %}
+{%                 endif %}
+{#                 * add protocol #}
+{%                 set acl_entry.string = acl_entry.string ~ ' ' ~ acle.protocol %}
+{#                 * add source address #}
+{%                 if ('/' not in acle.source) and (acle.source != 'any') %}
+{%                     set acl_entry.string = acl_entry.string ~ ' host' %}
+{%                 endif %}
+{%                 set acl_entry.string = acl_entry.string ~ ' ' ~ acle.source %}
+{#                 * add source ports #}
+{%                 if acle.protocol | lower in ['tcp', 'udp'] %}
+{%                     if acle.source_ports is arista.avd.defined %}
+{%                         set acl_entry.string = acl_entry.string ~ ' ' ~ acle.source_ports_match | arista.avd.default('eq') %}
+{%                         for a_port in acle.source_ports %}
+{%                             set acl_entry.string = acl_entry.string ~ ' ' ~ a_port %}
+{%                         endfor %}
+{%                     endif %}
+{%                 endif %}
+{#                 * add destination address #}
+{%                 if ('/' not in acle.destination) and (acle.destination != 'any') %}
+{%                     set acl_entry.string = acl_entry.string ~ ' host' %}
+{%                 endif %}
+{%                 set acl_entry.string = acl_entry.string ~ ' ' ~ acle.destination %}
+{#                 * add destination ports #}
+{%                 if acle.protocol | lower in ['tcp', 'udp'] %}
+{%                     if acle.destination_ports is arista.avd.defined %}
+{%                         set acl_entry.string = acl_entry.string ~ ' ' ~ acle.destination_ports_match | arista.avd.default('eq') %}
+{%                         for a_port in acle.destination_ports %}
+{%                             set acl_entry.string = acl_entry.string ~ ' ' ~ a_port %}
+{%                         endfor %}
+{%                     endif %}
+{%                 endif %}
+{#                 * add tcp flags #}
+{%                 if acle.protocol | lower == 'tcp' %}
+{%                     if acle.tcp_flags is arista.avd.defined %}
+{%                         for a_flag in acle.tcp_flags %}
+{%                             set acl_entry.string = acl_entry.string ~ ' ' ~ a_flag %}
+{%                         endfor %}
+{%                     endif %}
+{%                 endif %}
+{#                 * add icmp message type and code #}
+{%                 if acle.protocol | lower == 'icmp' %}
+{%                     if acle.icmp_type is arista.avd.defined %}
+{%                         set acl_entry.string = acl_entry.string ~ ' ' ~ acle.icmp_type %}
+{%                         if acle.icmp_code is arista.avd.defined %}
+{%                             set acl_entry.string = acl_entry.string ~ ' ' ~ acle.icmp_code %}
+{%                         endif %}
+{%                     endif %}
+{%                 endif %}
+{#                 * add nexthop group #}
+{%                 if acle.nexthop_group is arista.avd.defined %}
+{%                     set acl_entry.string = acl_entry.string ~ ' nexthop-group ' ~ acle.nexthop_group %}
+{%                 endif %}
+{#                 * add match non-head fragment packets #}
+{%                 if acle.fragments is arista.avd.defined(true) %}
+{%                     set acl_entry.string = acl_entry.string ~ ' fragments' %}
+{%                 endif %}
+{#                 * add tracked #}
+{%                 if acle.tracked is arista.avd.defined(true) %}
+{%                     set acl_entry.string = acl_entry.string ~ ' tracked' %}
+{%                 endif %}
+{#                 * add ttl #}
+{%                 if acle.ttl is arista.avd.defined %}
+{%                     set acl_entry.string = acl_entry.string ~ ' ttl ' ~ acle.ttl_match | arista.avd.default('eq') %}
+{%                     set acl_entry.string = acl_entry.string ~ ' ' ~ acle.ttl %}
+{%                 endif %}
+{#                 * add dscp #}
+{%                 if acle.dscp is arista.avd.defined %}
+{%                     set acl_entry.string = acl_entry.string ~ ' dscp ' ~ acle.dscp | lower %}
+{%                 endif %}
+{#                 * add log #}
+{%                 if acle.log is arista.avd.defined(true) %}
+{%                     set acl_entry.string = acl_entry.string ~ ' log' %}
+{%                 endif %}
+{#                 check if the number of ACL entries is below the limit #}
+{%                 if ip_access_lists_max_entries is arista.avd.defined %}
+{%                     set counter.acle_number = counter.acle_number + 1 %}
+{%                     if counter.acle_number > ip_access_lists_max_entries %}
+{#                     j2lint: disable=V1 #}
+   {{ a_non_existing_var | mandatory('The number of ACL entries is above defined maximum!') }}
+{%                     endif %}
+{%                 endif %}
+{%             endif %}
+   {{ acl_entry.string }}
+{#         END ACL_ENTRY CYCLE: walk over the list of ACL entries #}
+{%         endfor %}
+{#     END ACL CYCLE: end walk over the list of defined ACLs #}
+{%     endfor %}
+{% endif %}

@@ -1,0 +1,18 @@
+{% if ip_http_client_source_interfaces is defined and ip_http_client_source_interfaces is not none %}
+
+## IP HTTP Client Source Interfaces
+
+### IP HTTP Client Source Interfaces
+
+| VRF | Source Interface Name |
+| --- | --------------- |
+{%     for ip_http_client_source_interface in ip_http_client_source_interfaces | arista.avd.natural_sort %}
+| {{ ip_http_client_source_interface.vrf | arista.avd.default('default') }} | {{ ip_http_client_source_interface.name }} |
+{%     endfor %}
+
+### IP HTTP Client Source Interfaces Device Configuration
+
+```eos
+{%     include 'eos/ip-http-client-source-interfaces.j2' %}
+```
+{% endif %}

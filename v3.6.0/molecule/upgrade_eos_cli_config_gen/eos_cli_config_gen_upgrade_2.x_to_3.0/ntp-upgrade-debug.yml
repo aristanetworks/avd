@@ -1,0 +1,10 @@
+ntp:
+  authenticate: true
+  authentication_keys:
+    1: {hash_algorithm: md5, key: 044F0E151B}
+    2: {hash_algorithm: sha1, key: 15060E1F10}
+  local_interface: {name: lo1, vrf: default}
+  servers:
+  - {name: 10.1.1.1, preferred: true, vrf: default}
+  - {name: 10.1.1.2, vrf: default}
+  trusted_keys: 1-2

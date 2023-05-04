@@ -1,0 +1,16 @@
+local_users:
+{% for local_user in local_users | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+  {{ local_user.name }}:
+    privilege: {{ local_user.privilege }}
+{%     if local_user.role is arista.avd.defined %}
+    role: {{ local_user.role }}
+{%     endif %}
+{%     if local_user.sha512_password is arista.avd.defined %}
+    sha512_password: {{ local_user.sha512_password }}
+{%     elif local_user.no_password is arista.avd.defined(true) %}
+    no_password: {{ local_user.no_password }}
+{%     endif %}
+{%     if local_user.ssh_key is arista.avd.defined %}
+    ssh_key: {{ local_user.ssh_key }}
+{%     endif %}
+{% endfor %}

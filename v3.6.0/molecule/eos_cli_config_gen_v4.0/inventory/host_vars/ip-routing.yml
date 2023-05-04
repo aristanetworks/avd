@@ -1,0 +1,17 @@
+### IP routing ###
+
+ip_routing: false
+ipv6_unicast_routing: true
+ip_routing_ipv6_interfaces: true
+vrfs:
+  - name: TEST1
+    ip_routing: true
+    ipv6_routing: true
+  - name: TEST2
+    ip_routing: false
+    ipv6_routing: false
+  - name: default
+    ip_routing: true
+    ipv6_routing: true
+ip_icmp_redirect: false
+ipv6_icmp_redirect: false

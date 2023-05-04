@@ -1,0 +1,39 @@
+{# Management Tech-Support #}
+{% if management_tech_support is arista.avd.defined %}
+
+## Management Tech-Support
+{%     if management_tech_support.policy_show_tech_support is arista.avd.defined %}
+
+### Policy
+{%         if management_tech_support.policy_show_tech_support.exclude_commands is arista.avd.defined %}
+
+#### Exclude Commands
+
+| Command | Type |
+| ------- | ---- |
+{%             if management_tech_support.policy_show_tech_support.exclude_commands is arista.avd.defined %}
+{%                 for exclude_command in management_tech_support.policy_show_tech_support.exclude_commands %}
+| {{ exclude_command.command | replace('|', '\|') }} | {{ exclude_command.type | arista.avd.default('text') }} |
+{%                 endfor %}
+{%             endif %}
+{%         endif %}
+{%         if management_tech_support.policy_show_tech_support.include_commands is arista.avd.defined %}
+
+#### Include Commands
+
+| Command |
+| ------- |
+{%             if management_tech_support.policy_show_tech_support.include_commands is arista.avd.defined %}
+{%                 for include_command in management_tech_support.policy_show_tech_support.include_commands %}
+| {{ include_command.command | replace('|', '\|') }} |
+{%                 endfor %}
+{%             endif %}
+{%         endif %}
+{%     endif %}
+
+### Policy Configuration
+
+```eos
+{%     include 'eos/management-tech-support.j2' %}
+```
+{% endif %}

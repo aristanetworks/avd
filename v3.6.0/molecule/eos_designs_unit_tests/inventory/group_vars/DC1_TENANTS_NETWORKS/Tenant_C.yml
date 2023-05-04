@@ -1,0 +1,26 @@
+Tenant_C:
+  mac_vrf_vni_base: 30000
+  vrfs:
+    Tenant_C_OP_Zone:
+      vrf_vni: 30
+      enable_mlag_ibgp_peering_vrfs: true
+      mlag_ibgp_peering_vlan: 2
+      svis:
+        310:
+          name: Tenant_C_OP_Zone_1
+          tags: ['opzone']
+          enabled: True
+          ip_address_virtual: 10.3.10.1/24
+        311:
+          name: Tenant_C_OP_Zone_2
+          tags: ['opzone']
+          enabled: True
+          ip_address_virtual: 10.3.11.1/24
+    Tenant_C_WAN_Zone:
+      vrf_vni: 31
+      svis:
+        350:
+          name: Tenant_C_WAN_Zone_1
+          tags: ['wan']
+          enabled: True
+          ip_address_virtual: 10.3.50.1/24

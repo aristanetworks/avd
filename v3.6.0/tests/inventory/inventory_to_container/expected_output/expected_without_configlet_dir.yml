@@ -1,0 +1,27 @@
+CVP_TOPOLOGY:
+  DC1_FABRIC:
+    parent_container: Tenant
+  DC1_L2LEAF1:
+    devices: []
+    parent_container: DC1_L2LEAFS
+  DC1_L2LEAF2:
+    devices: []
+    parent_container: DC1_L2LEAFS
+  DC1_L2LEAFS:
+    parent_container: DC1_FABRIC
+  DC1_L3LEAFS:
+    parent_container: DC1_FABRIC
+  DC1_LEAF1:
+    devices:
+    - DC1-LEAF1A
+    - DC1-LEAF1B
+    parent_container: DC1_L3LEAFS
+  DC1_LEAF2:
+    devices:
+    - DC1-LEAF2A
+    - DC1-LEAF2B
+    parent_container: DC1_L3LEAFS
+  DC1_SPINES:
+    devices: []
+    parent_container: DC1_FABRIC
+changed: false

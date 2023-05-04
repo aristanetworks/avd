@@ -1,0 +1,18 @@
+{% if ip_radius_source_interfaces is defined and ip_radius_source_interfaces is not none %}
+
+## IP RADIUS Source Interfaces
+
+### IP RADIUS Source Interfaces
+
+| VRF | Source Interface Name |
+| --- | --------------- |
+{%     for ip_radius_source_interface in ip_radius_source_interfaces | arista.avd.natural_sort %}
+| {{ ip_radius_source_interface.vrf | arista.avd.default('default') }} | {{ ip_radius_source_interface.name }} |
+{%     endfor %}
+
+### IP SOURCE Source Interfaces Device Configuration
+
+```eos
+{%     include 'eos/ip-radius-source-interfaces.j2' %}
+```
+{% endif %}

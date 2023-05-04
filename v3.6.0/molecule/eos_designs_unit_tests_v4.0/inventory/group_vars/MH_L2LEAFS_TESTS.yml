@@ -1,0 +1,21 @@
+type: l2leaf
+
+l2leaf:
+  defaults:
+    platform: vEOS-LAB
+    uplink_switches: [ MH-LEAF2A ]
+    uplink_interfaces: [ Ethernet1 ]
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 16384
+    link_tracking:
+      enabled: true
+      groups:
+        - name: l2leaf-server02
+          recovery_delay: 300
+    filter:
+      tags: [opzone]
+  nodes:
+    MH-L2LEAF1A:
+      id: 1
+      mgmt_ip: 192.168.201.201/24
+      uplink_switch_interfaces: [ Ethernet2 ]

@@ -1,0 +1,8 @@
+management_interfaces:
+  {{ switch.inband_management_interface }}:
+    description: L2LEAF_INBAND_MGMT
+    shutdown: false
+    mtu: {{ p2p_uplinks_mtu }}
+    ip_address: {{ switch.inband_management_ip }}
+    gateway: {{ switch.inband_management_gateway }}
+    type: inband

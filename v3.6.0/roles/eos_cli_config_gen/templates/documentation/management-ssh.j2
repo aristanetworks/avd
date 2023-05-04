@@ -1,0 +1,73 @@
+{# Management SSH #}
+{% if management_ssh is arista.avd.defined %}
+
+## Management SSH
+
+{%     if management_ssh.access_groups is arista.avd.defined %}
+### IPv4 ACL
+
+| IPv4 ACL | VRF |
+| -------- | --- |
+{%         for acl in management_ssh.access_groups %}
+| {{ acl.name }} | {{ acl.vrf | arista.avd.default('-') }} |
+{%         endfor %}
+{%     endif %}
+{%     if management_ssh.ipv6_access_groups is arista.avd.defined %}
+
+### IPv6 ACL
+
+| IPv6 ACL | VRF |
+| -------- | --- |
+{%         for acl in management_ssh.ipv6_access_groups %}
+| {{ acl.name }} | {{ acl.vrf | arista.avd.default('-') }} |
+{%         endfor %}
+{%     endif %}
+
+{%     set ssh = namespace(enable=true) %}
+{%     if management_ssh.enable is arista.avd.defined %}
+{%         set ssh.enable=management_ssh.enable %} {#enable takes de value of the variable if defined. By default is set to true#}
+{%     endif %}
+### SSH timeout and management
+
+| Idle Timeout | SSH Management |
+| ------------ | -------------- |
+{%     if ssh.enable %}
+{%         set ssh = 'Enabled' %}
+{%     else %}
+{%         set ssh = 'Disabled' %}
+{%     endif %}
+| {{ management_ssh.idle_timeout | arista.avd.default('default') }} | {{ ssh }} |
+
+### Max number of SSH sessions limit and per-host limit
+
+| Connection Limit | Max from a single Host |
+| ---------------- | ---------------------- |
+| {{ management_ssh.connection.limit | arista.avd.default('-') }} | {{ management_ssh.connection.per_host | arista.avd.default('-') }} |
+
+### Ciphers and algorithms
+
+| Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
+|---------|----------------------|----------------|---------------------------|
+| {{ management_ssh.cipher | arista.avd.default(['default']) | join(", ") }} | {{ management_ssh.key_exchange | arista.avd.default(['default']) | join(", ") }} | {{ management_ssh.mac | arista.avd.default(['default']) | join(", ") }} | {{ management_ssh.hostkey.server | arista.avd.default(['default']) | join(", ") }} |
+
+{%     if management_ssh.vrfs is arista.avd.defined %}
+### VRFs
+
+| VRF | Status |
+| --- | ------ |
+{%         for vrf in management_ssh.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%             if vrf.enable %}
+{%                 set status = 'Enabled' %}
+{%             else %}
+{%                 set status = 'Disabled' %}
+{%             endif %}
+| {{ vrf.name }} | {{ status }} |
+{%         endfor %}
+{%     endif %}
+
+### Management SSH Configuration
+
+```eos
+{%     include 'eos/management-ssh.j2' %}
+```
+{% endif %}

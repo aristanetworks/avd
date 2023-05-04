@@ -1,0 +1,49 @@
+{# Management API GNMI #}
+{% if management_api_gnmi is defined and management_api_gnmi is not none %}
+
+## Management API GNMI
+
+### Management API GNMI Summary
+{# legacy table view that will be deprecated in future releases #}
+{%     if management_api_gnmi.enable_vrfs is defined %}
+{%         if management_api_gnmi.octa is defined  %}
+{%             set octa = 'enabled' %}
+{%         else %}
+{%             set octa = 'disabled' %}
+{%         endif %}
+
+| VRF with GNMI | OCTA |
+| ------------- | ---- |
+{%         for vrf in management_api_gnmi.enable_vrfs | arista.avd.natural_sort %}
+| {{ vrf }} | {{ octa }} |
+{%         endfor %}
+{%     endif %}
+{# new table view using the new flags #}
+{%     if management_api_gnmi.transport is arista.avd.defined %}
+
+| Transport | SSL Profile | VRF | Notification Timestamp | ACL |
+| --------- | ----------- | --- | ---------------------- | --- |
+{%         if management_api_gnmi.transport.grpc is arista.avd.defined %}
+{%             for transport in management_api_gnmi.transport.grpc %}
+{%                 if transport.name is arista.avd.defined %}
+{%                     set transport_name = transport.name %}
+{%                     set ssl_profile = transport.ssl_profile | arista.avd.default('-') %}
+{%                     set vrf = transport.vrf | arista.avd.default('-') %}
+{%                     set notif = transport.notification_timestamp | arista.avd.default('last-change-time') %}
+{%                     set acl = transport.ip_access_group | arista.avd.default('-') %}
+| {{ transport_name }} | {{ ssl_profile }} | {{ vrf }} | {{ notif }} | {{ acl }} |
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+{%     if management_api_gnmi.provider is arista.avd.defined %}
+
+Provider {{ management_api_gnmi.provider }} is configured.
+{%     endif %}
+
+### Management API gnmi configuration
+
+```eos
+{%     include 'eos/management-api-gnmi.j2' %}
+```
+{% endif %}

@@ -1,0 +1,9 @@
+{# eos - virtual source-nat - introduced in 4.21 #}
+{% if virtual_source_nat_vrfs is arista.avd.defined %}
+!
+{%     for vrf in virtual_source_nat_vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if vrf.ip_address is arista.avd.defined %}
+ip address virtual source-nat vrf {{ vrf.name }} address {{ vrf.ip_address }}
+{%         endif %}
+{%     endfor %}
+{% endif %}

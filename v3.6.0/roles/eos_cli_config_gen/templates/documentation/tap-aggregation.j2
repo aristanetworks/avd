@@ -1,0 +1,49 @@
+{% if tap_aggregation is arista.avd.defined and tap_aggregation.mode.exclusive.enabled is arista.avd.defined(true) %}
+
+## Tap Aggregation
+
+### Tap Aggregation Summary
+
+| Settings | Values |
+| -------- | ------ |
+| Mode Exclusive | {{ tap_aggregation.mode.exclusive.enabled }} |
+{%     if tap_aggregation.mode.exclusive.profile is arista.avd.defined %}
+| Mode Exclusive Profile | {{ tap_aggregation.mode.exclusive.profile }} |
+{%     endif %}
+{%     if tap_aggregation.mode.exclusive.no_errdisable is arista.avd.defined %}
+| Mode Exclusive No-Errdisable | {{ tap_aggregation.mode.exclusive.no_errdisable | join(', ') }} |
+{%     endif %}
+{%     if tap_aggregation.encapsulation_dot1br_strip is arista.avd.defined(true) %}
+| Encapsulation Dot1br Strip | {{ tap_aggregation.encapsulation_dot1br_strip }} |
+{%     endif %}
+{%     if tap_aggregation.encapsulation_vn_tag_strip is arista.avd.defined(true) %}
+| Encapsulation Vn Tag Strip | {{ tap_aggregation.encapsulation_vn_tag_strip }} |
+{%     endif %}
+{%     if tap_aggregation.protocol_lldp_trap is arista.avd.defined(true) %}
+| Protocol LLDP Trap | {{ tap_aggregation.protocol_lldp_trap }} |
+{%     endif %}
+{%     if tap_aggregation.truncation_size is arista.avd.defined %}
+| Truncation Size | {{ tap_aggregation.truncation_size }} |
+{%     endif %}
+{%     if tap_aggregation.mac.timestamp.replace_source_mac is arista.avd.defined(true) %}
+| Mac Timestamp | Replace Source-Mac |
+{%     elif tap_aggregation.mac.timestamp.header is arista.avd.defined %}
+{%         if tap_aggregation.mac.timestamp.header.format is arista.avd.defined %}
+| Mac Timestamp | Header Format {{ tap_aggregation.mac.timestamp.header.format }} |
+{%         endif %}
+{%         if tap_aggregation.mac.timestamp.header.eth_type is arista.avd.defined %}
+| Mac Timestamp | Header eth-type {{ tap_aggregation.mac.timestamp.header.eth_type }} |
+{%         endif %}
+{%     endif %}
+{%     if tap_aggregation.mac.fcs_append is arista.avd.defined(true) %}
+| Mac FCS Append | {{ tap_aggregation.mac.fcs_append }} |
+{%     elif tap_aggregation.mac.fcs_error is arista.avd.defined %}
+| Mac FCS Error | {{ tap_aggregation.mac.fcs_error }} |
+{%     endif %}
+
+### Tap Aggregation Configuration
+
+```eos
+{%     include 'eos/tap-aggregation.j2' %}
+```
+{% endif %}

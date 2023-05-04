@@ -1,0 +1,50 @@
+loopback_interfaces:
+{% if switch.router_id is arista.avd.defined %}
+{# BGP Loopback #}
+  Loopback0:
+    description: "{% include switch.interface_descriptions.overlay_loopback_interface %}"
+    shutdown: false
+    ip_address: {{ switch.router_id }}/32
+{%     if switch.ipv6_router_id is arista.avd.defined %}
+    ipv6_address: {{ switch.ipv6_router_id }}/128
+{%     endif %}
+{%     if switch.underlay_routing_protocol in ["ospf", "ospf-ldp"] %}
+    ospf_area: {{ underlay_ospf_area }}
+{%     endif %}
+{%     if switch.mpls_lsr is arista.avd.defined(true) %}
+    mpls:
+      ip: true
+{%         if switch.underlay_routing_protocol in ["isis-ldp", "isis-sr-ldp", "ospf-ldp"] %}
+      ldp:
+        interface: true
+{%         endif %}
+{%     endif %}
+{%     if switch.underlay_routing_protocol in ["isis", "isis-ldp", "isis-sr", "isis-sr-ldp"] %}
+    isis_enable: {{ switch.isis_instance_name }}
+    isis_passive: true
+{%         if switch.underlay_routing_protocol in ["isis-sr", "isis-sr-ldp"] %}
+    node_segment:
+      ipv4_index: {{ switch.node_sid }}
+{%             if switch.underlay_ipv6 is arista.avd.defined(true) %}
+      ipv6_index: {{ switch.node_sid }}
+{%             endif %}
+{%         endif %}
+{%     endif %}
+{% endif %}
+{% if switch.vtep is arista.avd.defined(true) and switch.vtep_loopback | lower != 'loopback0' %}
+{# Leaf VTEP vxlan tunnel loopback source interface #}
+  {{ switch.vtep_loopback }}:
+    description: "{% include switch.interface_descriptions.vtep_loopback_interface %}"
+    shutdown: false
+    ip_address: {{ switch.vtep_ip }}/32
+{%     if vtep_vvtep_ip is arista.avd.defined and switch.network_services_l3 is arista.avd.defined(true) %}
+    ip_address_secondaries: [{{ vtep_vvtep_ip }}]
+{%     endif %}
+{%     if switch.underlay_routing_protocol in ["ospf", "ospf-ldp"] %}
+    ospf_area: {{ underlay_ospf_area }}
+{%     endif %}
+{%     if switch.underlay_routing_protocol in ["isis", "isis-ldp", "isis-sr", "isis-sr-ldp"] %}
+    isis_enable: {{ switch.isis_instance_name }}
+    isis_passive: true
+{%     endif %}
+{% endif %}

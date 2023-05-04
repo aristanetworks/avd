@@ -1,0 +1,7 @@
+{% if aaa_accounting.commands.commands_default is arista.avd.defined %}
+# Change from aaa_accounting.commands.commands_default to aaa_accounting.commands.default
+aaa_accounting:
+  commands:
+    default:
+      {{ aaa_accounting.commands.commands_default | to_nice_yaml(indent=2) | indent(6, false) -}}
+{% endif %}

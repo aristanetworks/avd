@@ -1,0 +1,42 @@
+vxlan_interface:
+{# vxlan-vtep interface #}
+  Vxlan1:
+    description: {{ inventory_hostname }}_VTEP
+    vxlan:
+      source_interface: {{ switch.vtep_loopback }}
+{% if switch.mlag is arista.avd.defined(true) %}
+      virtual_router_encapsulation_mac_address: "mlag-system-id"
+{% endif %}
+      udp_port: 4789
+      vlans:
+{% for tenant in network_services_data.tenants %}
+{%     for vrf in tenant.vrfs %}
+{%         for svi in vrf.svis %}
+{%             if svi.vxlan is arista.avd.defined(false) %}
+{%                 continue %}
+{%             endif %}
+{%             set svi_int = svi.id | int %}
+        {{ svi_int }}:
+          vni: {{ svi.vni_override | arista.avd.default(
+                  tenant.mac_vrf_vni_base + svi_int) }}
+{%         endfor %}
+{%     endfor %}
+{%     for l2vlan in tenant.l2vlans %}
+{%         if l2vlan.vxlan is arista.avd.defined(false) %}
+{%             continue %}
+{%         endif %}
+{%         set l2vlan_int = l2vlan.id | int %}
+        {{ l2vlan_int }}:
+          vni: {{ l2vlan.vni_override | arista.avd.default(
+                  tenant.mac_vrf_vni_base + l2vlan_int) }}
+{%     endfor %}
+{% endfor %}
+{% if switch.network_services_l3 is arista.avd.defined(true) %}
+      vrfs:
+{%     for tenant in network_services_data.tenants %}
+{%         for vrf in tenant.vrfs %}
+        {{ vrf.name }}:
+          vni: {{ vrf.vrf_vni | arista.avd.default(vrf.vrf_id) }}
+{%         endfor %}
+{%     endfor %}
+{% endif %}

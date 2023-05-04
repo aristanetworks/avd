@@ -1,0 +1,44 @@
+### Logging ###
+logging:
+  console: error
+  buffered:
+    size: 1000000
+    level: warnings
+  trap: disabled
+  synchronous:
+    level:
+  format:
+    timestamp: traditional year timezone
+  source_interface:
+  vrfs:
+    mgt:
+      source_interface: Management0
+      hosts:
+        10.10.10.7:
+        30.30.30.7:
+          protocol: tcp
+          ports:
+            - 100
+            - 200
+        40.40.40.7:
+          ports:
+            - 300
+            - 400
+    vrf_with_no_source_interface:
+      hosts:
+        1.2.3.4:
+          protocol: udp
+    default:
+      source_interface: Loopback0
+      hosts:
+        20.20.20.7:
+        50.50.50.7:
+          protocol: tcp
+          ports:
+            - 100
+            - 200
+        60.60.60.7:
+          protocol: udp
+          ports:
+            - 100
+            - 200

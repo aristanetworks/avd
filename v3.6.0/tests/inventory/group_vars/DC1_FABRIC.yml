@@ -1,0 +1,144 @@
+---
+# L3LS Fabric Values - update these values with caution,
+# SOME CHANGES COULD BE DISRUPTIVE.
+
+fabric_name: DC1_FABRIC
+
+# Enable vlan aware bundles
+evpn_vlan_aware_bundles: true
+
+# bgp peer groups passwords
+bgp_peer_groups:
+  ipv4_underlay_peers:
+    password: "AQQvKeimxJu+uGQ/yYvv9w=="
+  evpn_overlay_peers:
+    password: "q+VNViP5i4rVjW1cxFv2wA=="
+  mlag_ipv4_underlay_peer:
+    password: "vnEaG8gMeQf3d3cN6PktXQ=="
+
+# Spine Switches
+spine:
+  defaults:
+    platform: vEOS-LAB
+    bgp_as: 65001
+    loopback_ipv4_pool: 192.168.255.0/24
+    bgp_defaults:
+      - 'no bgp default ipv4-unicast'
+      - 'distance bgp 20 200 200'
+      - 'graceful-restart restart-time 300'
+      - 'graceful-restart'
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+  nodes:
+    DC1-SPINE1:
+      id: 1
+      mgmt_ip: 10.255.0.11/24
+    DC1-SPINE2:
+      id: 2
+      mgmt_ip: 10.255.0.12/24
+
+# Leaf switch groups
+# A maximum of two nodes can form a leaf group
+# When two nodes are in a leaf group this will automatically form mlag pair
+
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 2
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    uplink_interfaces: ['Ethernet1', 'Ethernet2']
+    uplink_switches: ['DC1-SPINE1', 'DC1-SPINE2']
+    uplink_ipv4_pool: 172.31.255.0/24
+    mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+    virtual_router_mac_address: 00:1c:73:00:dc:01
+    bgp_defaults:
+      - 'no bgp default ipv4-unicast'
+      - 'distance bgp 20 200 200'
+      - 'graceful-restart restart-time 300'
+      - 'graceful-restart'
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 16384
+  node_groups:
+    DC1_LEAF1:
+      bgp_as: 65101
+      nodes:
+        DC1-LEAF1A:
+          id: 1
+          mgmt_ip: 10.255.0.13/24
+          uplink_switch_interfaces: [Ethernet1, Ethernet1]
+        DC1-LEAF1B:
+          id: 2
+          mgmt_ip: 10.255.0.14/24
+          uplink_switch_interfaces: [Ethernet2, Ethernet2]
+    DC1_LEAF2:
+      bgp_as: 65102
+      nodes:
+        DC1-LEAF2A:
+          id: 3
+          mgmt_ip: 10.255.0.15/24
+          uplink_switch_interfaces: [Ethernet3, Ethernet3]
+        DC1-LEAF2B:
+          id: 4
+          mgmt_ip: 10.255.0.16/24
+          uplink_switch_interfaces: [Ethernet4, Ethernet4]
+
+
+l2leaf:
+  defaults:
+    platform: vEOS-LAB
+    uplink_switches: ['DC1-LEAF1A', 'DC1-LEAF1B']
+    uplink_interfaces: [ Ethernet1, Ethernet2 ]
+    mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+    virtual_router_mac_address: 00:1c:73:00:dc:01
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 16384
+    mlag: false
+  node_groups:
+    DC1_L2LEAF1:
+      uplink_switches: [ DC1-LEAF1A, DC1-LEAF1B ]
+      filter:
+        tenants: [ Tenant_A ]
+        tags: [ opzone, web, app ]
+      nodes:
+        DC1-L2LEAF1A:
+          id: 5
+          mgmt_ip: 10.255.0.17/24
+          uplink_switch_interfaces: [ Ethernet5, Ethernet5 ]
+    DC1_L2LEAF2:
+      uplink_switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+      filter:
+        tenants: [ Tenant_A ]
+        tags: [ opzone, web, app ]
+      nodes:
+        DC1-L2LEAF2A:
+          id: 7
+          mgmt_ip: 10.255.0.18/24
+          uplink_switch_interfaces: [ Ethernet5, Ethernet5 ]
+
+#### Override for vEOS Lab Caveats ####
+
+# Disable update wait-for-convergence and update wait-for-install,
+# which is not supported in vEOS-LAB.
+# Refer to design guide
+
+# Update p2p mtu 9000 -> 1500
+p2p_uplinks_mtu: 1500
+
+# Adjust default bfd values
+bfd_multihop:
+  interval: 1200
+  min_rx: 1200
+  multiplier: 3
+
+# List of additional CVP configlets to bind to devices and containers
+# Configlets MUST be configured on CVP before running AVD playbooks.
+
+# cv_configlets:
+#   containers:
+#     DC1_L3LEAFS:
+#       - ASE_GLOBAL-ALIASES

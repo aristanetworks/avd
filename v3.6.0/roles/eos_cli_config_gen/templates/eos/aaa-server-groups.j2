@@ -1,0 +1,20 @@
+{# eos - AAA Group Servers#}
+{% if aaa_server_groups is arista.avd.defined %}
+{%     for aaa_server_group in aaa_server_groups %}
+{%         if aaa_server_group.type is arista.avd.defined and aaa_server_group.name is arista.avd.defined %}
+!
+aaa group server {{ aaa_server_group.type }} {{ aaa_server_group.name }}
+{%             if aaa_server_group.servers is arista.avd.defined %}
+{%                 for server in aaa_server_group.servers %}
+{%                     if server.server is arista.avd.defined %}
+{%                         set server_cli = "server " ~ server.server %}
+{%                         if server.vrf is arista.avd.defined %}
+{%                             set server_cli = server_cli ~ " vrf " ~ server.vrf %}
+{%                         endif %}
+   {{ server_cli }}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%         endif %}
+{%     endfor %}
+{% endif %}

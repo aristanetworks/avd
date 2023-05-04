@@ -1,0 +1,9 @@
+# execution-environment.yml
+# Read by ansible-builder when this collection is a dependency for an execution-environment
+---
+version: 1
+
+dependencies:
+  galaxy: collections.yml
+  python: requirements.txt
+  system: bindep.txt

@@ -1,0 +1,22 @@
+{# eos - IPv6 Routing #}
+{% if ipv6_unicast_routing is arista.avd.defined(true) %}
+!
+ipv6 unicast-routing
+{% endif %}
+{% if ip_routing_ipv6_interfaces is arista.avd.defined(true) %}
+ip routing ipv6 interfaces
+{% endif %}
+{% for vrf in vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     if vrf.ipv6_routing is arista.avd.defined(true) %}
+{%         if loop.first %}
+!
+{%         endif %}
+ipv6 unicast-routing vrf {{ vrf.name }}
+{%     endif %}
+{% endfor %}
+{% if ipv6_icmp_redirect is arista.avd.defined(false) %}
+no ipv6 icmp redirect
+{% endif %}
+{% if ipv6_hardware.fib.optimize.prefixes.profile is arista.avd.defined %}
+ipv6 hardware fib optimize prefixes profile {{ ipv6_hardware.fib.optimize.prefixes.profile }}
+{% endif %}

@@ -1,0 +1,38 @@
+router_isis:
+  instance: {{ switch.isis_instance_name }}
+  log_adjacency_changes: true
+  net: {{ switch.isis_net }}
+  router_id: {{ switch.router_id }}
+  no_passive_interfaces:
+{% for link in underlay_data.links | arista.avd.natural_sort('interface') %}
+{# L3 P2P interfaces #}
+{%     if link.type is arista.avd.defined('underlay_p2p') %}
+    - {{ link.interface }}
+{%     endif %}
+{% endfor %}
+{% if switch.mlag_l3 is arista.avd.defined(true) %}
+    - Vlan{{ switch.mlag_peer_l3_vlan }}
+{% endif %}
+{% if switch.vtep is arista.avd.defined(true) %}
+    - {{ switch.vtep_loopback }}
+{% endif %}
+  is_type: {{ switch.is_type }}
+{% if switch.mpls_lsr is arista.avd.defined(true) %}
+{%     if switch.underlay_routing_protocol in ["isis-ldp", "isis-sr-ldp"] %}
+  mpls_ldp_sync_default: true
+{%     endif %}
+{%     if isis_ti_lfa.enabled is arista.avd.defined(true) %}
+  timers:
+    local_convergence:
+      delay: {{ isis_ti_lfa.local_convergence_delay | arista.avd.default("10000") }}
+      protected_prefixes: true
+{%     endif %}
+{% endif %}
+  address_family: ['ipv4 unicast']
+  isis_af_defaults:
+    - maximum-paths {{ isis_maximum_paths }}
+{% if isis_ti_lfa.protection is arista.avd.defined("link") %}
+    - fast-reroute ti-lfa mode link-protection
+{% elif isis_ti_lfa.protection is arista.avd.defined("node") %}
+    - fast-reroute ti-lfa mode node-protection
+{% endif %}

@@ -1,0 +1,34 @@
+eos_validate_state_validation_mode_loose: true
+
+# Format for path to r/w reports. Sync with default values configured in arista.avd.build_output_folders
+root_dir: '{{ inventory_dir }}'
+eos_validate_state_name: 'reports'
+eos_validate_state_dir: '{{ root_dir }}/{{ eos_validate_state_name }}'
+
+# Reports name
+eos_validate_state_md_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name }}-state.md'
+eos_validate_state_csv_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name }}-state.csv'
+
+# Markdown flavor to support non-text rendering
+# Only support default and github
+validate_state_markdown_flavor: "default"
+
+# Fabric Name. Required to run the validation role
+fabric_name: "all"
+
+# Allow different manufacturers
+accepted_xcvr_manufacturers: "{{ validation_role.xcvr_own_manufacturers | arista.avd.default(['Arastra, Inc.', 'Arista Networks']) }}"
+
+# Print only FAILED tests
+only_failed_tests: "{{ validation_role.only_failed_tests | arista.avd.default(false) }}"
+
+# AVD configurations output
+# Main output directory
+output_dir_name: 'intended'
+output_dir: '{{ root_dir }}/{{ output_dir_name }}'
+
+# Output for structured YAML files:
+structured_dir_name: 'structured_configs'
+structured_dir: '{{ output_dir }}/{{ structured_dir_name }}'
+
+avd_structured_config_file_format: "yml"

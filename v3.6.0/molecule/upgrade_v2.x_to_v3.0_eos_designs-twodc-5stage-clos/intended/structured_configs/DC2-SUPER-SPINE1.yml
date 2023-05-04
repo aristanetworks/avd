@@ -1,0 +1,224 @@
+router_bgp:
+  as: '65200'
+  router_id: 172.16.200.1
+  bgp_defaults:
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+  - maximum-paths 4 ecmp 4
+  peer_groups:
+    IPv4-UNDERLAY-PEERS:
+      type: ipv4
+      password: AQQvKeimxJu+uGQ/yYvv9w==
+      maximum_routes: 12000
+      send_community: all
+    EVPN-OVERLAY-PEERS:
+      type: evpn
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: '5'
+      password: q+VNViP5i4rVjW1cxFv2wA==
+      send_community: all
+      maximum_routes: 0
+      next_hop_unchanged: true
+  address_family_ipv4:
+    peer_groups:
+      IPv4-UNDERLAY-PEERS:
+        activate: true
+      EVPN-OVERLAY-PEERS:
+        activate: false
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP
+  neighbors:
+    172.16.21.1:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65210'
+      description: DC2-POD1-SPINE1_Ethernet1
+    172.16.21.3:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65210'
+      description: DC2-POD1-SPINE2_Ethernet1
+    172.17.20.1:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65201'
+      description: DC2-RS1_Ethernet1
+    172.17.20.9:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65201'
+      description: DC2-RS2_Ethernet1
+    172.17.20.3:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65201'
+      description: DC2-RS1_Ethernet2
+    172.17.20.11:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65201'
+      description: DC2-RS2_Ethernet2
+    172.16.110.3:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-POD1-LEAF1A
+      remote_as: '65111'
+    172.16.110.1:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-POD1-SPINE1
+      remote_as: '65110'
+    172.16.10.1:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-RS1
+      remote_as: '65101'
+    172.16.10.2:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-RS2
+      remote_as: '65102'
+    11.1.2.0:
+      remote_as: '65100'
+      description: DC1-SUPER-SPINE1
+      peer_group: IPv4-UNDERLAY-PEERS
+  address_family_evpn:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+  address_family_rtc:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+        default_route_target:
+          only: true
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.1.254
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+snmp_server:
+  location: TWODC_5STAGE_CLOS DC2 DC2-SUPER-SPINE1
+spanning_tree:
+  mode: none
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
+vrfs:
+  MGMT:
+    ip_routing: false
+management_interfaces:
+  Management1:
+    description: oob_management
+    shutdown: false
+    vrf: MGMT
+    ip_address: 192.168.1.16/24
+    gateway: 192.168.1.254
+    type: oob
+management_api_http:
+  enable_vrfs:
+    MGMT: {}
+  enable_https: true
+eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
+ethernet_interfaces:
+  Ethernet1:
+    peer: DC2-POD1-SPINE1
+    peer_interface: Ethernet1
+    peer_type: spine
+    description: P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet1
+    mtu: 1500
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.16.21.0/31
+  Ethernet2:
+    peer: DC2-POD1-SPINE2
+    peer_interface: Ethernet1
+    peer_type: spine
+    description: P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet1
+    mtu: 1500
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.16.21.2/31
+  Ethernet3:
+    peer: DC2-RS1
+    peer_interface: Ethernet1
+    peer_type: overlay-controller
+    description: P2P_LINK_TO_DC2-RS1_Ethernet1
+    mtu: 1500
+    service_profile: QOS-PROFILE
+    type: routed
+    shutdown: false
+    ip_address: 172.17.20.0/31
+  Ethernet5:
+    peer: DC2-RS2
+    peer_interface: Ethernet1
+    peer_type: overlay-controller
+    description: P2P_LINK_TO_DC2-RS2_Ethernet1
+    mtu: 1500
+    service_profile: QOS-PROFILE
+    type: routed
+    shutdown: false
+    ip_address: 172.17.20.8/31
+  Ethernet6:
+    peer: DC2-RS1
+    peer_interface: Ethernet2
+    peer_type: overlay-controller
+    description: P2P_LINK_TO_DC2-RS1_Ethernet2
+    mtu: 1500
+    service_profile: QOS-PROFILE
+    type: routed
+    shutdown: false
+    ip_address: 172.17.20.2/31
+  Ethernet7:
+    peer: DC2-RS2
+    peer_interface: Ethernet2
+    peer_type: overlay-controller
+    description: P2P_LINK_TO_DC2-RS2_Ethernet2
+    mtu: 1500
+    service_profile: QOS-PROFILE
+    type: routed
+    shutdown: false
+    ip_address: 172.17.20.10/31
+  Ethernet4:
+    peer: DC1-SUPER-SPINE1
+    peer_interface: Ethernet6
+    peer_type: super-spine
+    description: P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet6
+    type: routed
+    shutdown: false
+    mtu: 1499
+    ip_address: 11.1.2.1/31
+    mac_security:
+      profile: MACSEC_PROFILE
+    ptp:
+      enable: true
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    shutdown: false
+    ip_address: 172.16.200.1/32
+prefix_lists:
+  PL-LOOPBACKS-EVPN-OVERLAY:
+    sequence_numbers:
+      10:
+        action: permit 172.16.200.0/24 eq 32
+route_maps:
+  RM-CONN-2-BGP:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3

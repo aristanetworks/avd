@@ -1,0 +1,18 @@
+{% if virtual_source_nat_vrfs is arista.avd.defined %}
+
+# Virtual Source NAT
+
+## Virtual Source NAT Summary
+
+| Source NAT VRF | Source NAT IP Address |
+| -------------- | --------------------- |
+{%     for vrf in virtual_source_nat_vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+| {{ vrf.name }} | {{ vrf.ip_address }} |
+{%     endfor %}
+
+## Virtual Source NAT Configuration
+
+```eos
+{%     include 'eos/virtual-source-nat.j2' %}
+```
+{% endif %}

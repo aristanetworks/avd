@@ -1,0 +1,9 @@
+{# eos - community-lists #}
+{% if community_lists is arista.avd.defined %}
+!
+{%     for community_list in community_lists | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if community_list.action is arista.avd.defined %}
+ip community-list {{ community_list.name }} {{ community_list.action }}
+{%         endif %}
+{%     endfor %}
+{% endif %}

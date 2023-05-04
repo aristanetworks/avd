@@ -1,0 +1,34 @@
+{# Interfaces #}
+{% set ethernet_interface_bfd = namespace(configured=false) %}
+{% set port_channel_interface_bfd = namespace(configured=false) %}
+{% set vlan_interface_bfd = namespace(configured=false) %}
+{% set loopback_interface_bfd = namespace(configured=false) %}
+{% for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     if ethernet_interface.bfd.interval is arista.avd.defined and
+          ethernet_interface.bfd.min_rx is arista.avd.defined and
+          ethernet_interface.bfd.multiplier is arista.avd.defined %}
+{%         set ethernet_interface_bfd.configured = true %}
+{%     endif %}
+{% endfor %}
+{% for port_channel_interface in port_channel_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     if port_channel_interface.bfd.interval is arista.avd.defined and
+          port_channel_interface.bfd.min_rx is arista.avd.defined and
+          port_channel_interface.bfd.multiplier is arista.avd.defined %}
+{%         set port_channel_interface_bfd.configured = true %}
+{%     endif %}
+{% endfor %}
+{% for vlan_interface in vlan_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     if vlan_interface.bfd.interval is arista.avd.defined and
+          vlan_interface.bfd.min_rx is arista.avd.defined and
+          vlan_interface.bfd.multiplier is arista.avd.defined %}
+{%         set vlan_interface_bfd.configured = true %}
+{%     endif %}
+{% endfor %}
+{% if router_bfd is arista.avd.defined or ethernet_interface_bfd.configured or port_channel_interface_bfd.configured or vlan_interface_bfd.configured %}
+
+# BFD
+{## Router BFD #}
+{%     include 'documentation/router-bfd.j2' %}
+{## BFD Interfaces #}
+{%     include 'documentation/bfd-interfaces.j2' %}
+{% endif %}

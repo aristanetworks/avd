@@ -1,0 +1,146 @@
+router_bgp:
+  as: 65101
+  router_id: 192.168.255.3
+  updates:
+    wait_for_convergence: true
+    wait_install: true
+  distance:
+    external_routes: 20
+    internal_routes: 200
+    local_routes: 200
+  maximum_paths:
+    paths: 32
+    ecmp: 32
+  bgp_defaults:
+    - no bgp default ipv4-unicast
+    - graceful-restart restart-time 300
+    - graceful-restart
+  bgp:
+    bestpath:
+      d_path: true
+  listen_ranges:
+      # should render
+    - prefix: 10.10.10.0/24
+      peer_group: my-peer-group1
+      peer_filter: my-peer-filter
+      # shouldnt render because neither peer-filter nor as-filter are defined
+    - prefix: 11.10.10.0/24
+      peer_group: my-peer-group2
+      # should render with remote-as filter
+    - prefix: 12.10.10.0/24
+      peer_id_include_router_id: true
+      peer_group: my-peer-group3
+      remote_as: 65444
+      # should render with peer-filter because of precedence
+    - prefix: 13.10.10.0/24
+      peer_group: my-peer-group4
+      peer_filter: my-peer-filter
+      remote_as: 65444
+  aggregate_addresses:
+    1.1.1.0/24:
+      advertise_only: true
+    2.2.1.0/24:
+    1.12.1.0/24:
+      as_set: true
+      summary_only: true
+      attribute_map: RM-ATTRIBUTE
+      match_map: RM-MATCH
+      advertise_only: true
+  address_family_ipv4:
+    networks:
+      10.0.0.0/8:
+      172.16.0.0/12:
+      192.168.0.0/16:
+        route_map: RM-FOO-MATCH
+    peer_groups:
+      foo:
+        prefix_list_in: PL-BAR-v4-IN
+        prefix_list_out: PL-BAR-v4-OUT
+        default_originate:
+          always: true
+          route_map: RM-FOO-MATCH
+    neighbors:
+      192.0.2.1:
+        prefix_list_in: PL-FOO-v4-IN
+        prefix_list_out: PL-FOO-v4-OUT
+  address_family_ipv6:
+    networks:
+      2001:db8:100::/40:
+      2001:db8:200::/40:
+        route_map: RM-BAR-MATCH
+    peer_groups:
+      baz:
+        prefix_list_in: PL-BAR-v6-IN
+        prefix_list_out: PL-BAR-v6-OUT
+    neighbors:
+      2001:db8::1:
+        prefix_list_in: PL-FOO-v6-IN
+        prefix_list_out: PL-FOO-v6-OUT
+    redistribute_routes:
+      static:
+        route_map: RM-IPV6-STATIC-TO-BGP
+  neighbors:
+    192.0.3.1:
+      remote_as: 65432
+      send_community: all
+      default_originate:
+        enabled: true
+        always: true
+      rib_in_pre_policy_retain:
+        enabled: true
+    192.0.3.2:
+      remote_as: 65433
+      send_community: extended
+      maximum_routes: 10000
+      default_originate:
+        enabled: true
+        route_map: RM-FOO-MATCH3
+        always: false
+      rib_in_pre_policy_retain:
+        enabled: true
+        all: true
+    192.0.3.3:
+      remote_as: 65434
+      send_community: standard
+      rib_in_pre_policy_retain:
+        enabled: true
+        all: false
+      # Test no config generation
+      default_originate:
+    192.0.3.4:
+      remote_as: 65435
+      send_community: large
+      default_originate:
+        enabled: false
+      rib_in_pre_policy_retain:
+        enabled: false
+    192.0.3.5:
+      remote_as: 65436
+      description: test_ebgp_multihop
+      send_community: standard
+      ebgp_multihop: 2
+      maximum_routes: 12000
+    192.0.3.6:
+      remote_as: 65437
+      description: test_remove_private_as
+      remove_private_as:
+        enabled: true
+      remove_private_as_ingress:
+        enabled: true
+    192.0.3.7:
+      remote_as: 65438
+      description: test_remove_private_as_all
+      remove_private_as:
+        enabled: true
+        all: true
+        replace_as: true
+      remove_private_as_ingress:
+        enabled: true
+        replace_as: true
+  neighbor_interfaces:
+    Ethernet2:
+      peer_group: PG-FOO-v4
+      remote_as: 65102
+    Ethernet3:
+      peer_group: PG-FOO-v4
+      peer_filter: PF-BAR-v4

@@ -1,0 +1,9 @@
+{% for connected_endpoints_key in connected_endpoints_keys | arista.avd.convert_dicts('key') %}
+{%     set switch_connected_endpoints = hostvars[inventory_hostname][connected_endpoints_key.key] | arista.avd.convert_dicts('name') | arista.avd.default([]) %}
+{%     do connected_endpoints.update({ connected_endpoints_key.key: {} }) %}
+{%     for connected_endpoint in switch_connected_endpoints %}
+{%         if connected_endpoint.adapters | selectattr('switches','arista.avd.contains',inventory_hostname) | length > 0 %}
+{%             do connected_endpoints[connected_endpoints_key.key].update({connected_endpoint.name: connected_endpoint}) %}
+{%         endif %}
+{%     endfor %}
+{% endfor %}

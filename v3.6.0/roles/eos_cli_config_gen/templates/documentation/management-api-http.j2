@@ -1,0 +1,35 @@
+{# Management API HTTP #}
+{% if management_api_http is arista.avd.defined %}
+
+## Management API HTTP
+
+### Management API HTTP Summary
+
+| HTTP | HTTPS | Default Services |
+| ---- | ----- | ---------------- |
+| {{ management_api_http.enable_http | arista.avd.default(false) }} | {{ management_api_http.enable_https | arista.avd.default(true) }} | {{ management_api_http.default_services | arista.avd.default('-') }} |
+{%     if management_api_http.enable_https is arista.avd.defined(true) and management_api_http.https_ssl_profile is arista.avd.defined %}
+
+Management HTTPS is using the SSL profile {{ management_api_http.https_ssl_profile }}
+{%     endif %}
+{%     if management_api_http.enable_vrfs is arista.avd.defined %}
+
+### Management API VRF Access
+
+| VRF Name | IPv4 ACL | IPv6 ACL |
+| -------- | -------- | -------- |
+{%         for vrf in management_api_http.enable_vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+| {{ vrf.name }} | {{ vrf.access_group | arista.avd.default('-') }} | {{ vrf.ipv6_access_group | arista.avd.default('-') }} |
+{%         endfor %}
+{%     endif %}
+{%     if management_api_http.protocol_https_certificate.certificate is arista.avd.defined and management_api_http.protocol_https_certificate.private_key is arista.avd.defined %}
+
+HTTPS certificate and private key are configured.
+{%     endif %}
+
+### Management API HTTP Configuration
+
+```eos
+{%     include 'eos/management-api-http.j2' %}
+```
+{% endif %}

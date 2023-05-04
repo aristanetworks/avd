@@ -1,0 +1,36 @@
+{% set overlay_data.evpn_route_servers = {} %}
+{% set overlay_data.evpn_gateway_remote_peers = {} %}
+{# #}
+{# Expand data for evpn_route_servers #}
+{% for route_server in switch.evpn_route_servers | arista.avd.natural_sort %}
+{%     set peer_facts = avd_switch_facts[route_server] %}
+{%     if peer_facts.switch is arista.avd.defined(fail_action='warning',var_name='avd_switch_facts[' ~ route_server ~ '].switch') %}
+{%         if peer_facts.switch.evpn_role is arista.avd.defined('server') %}
+{# Found a matching server. Gathering information for this server #}
+{%             set server = namespace() %}
+{%             set server.bgp_as = peer_facts.switch.bgp_as %}
+{%             if switch.overlay_routing_protocol_address_family is arista.avd.defined("ipv6") %}
+{%                 set server.ip_address = peer_facts.switch.ipv6_router_id %}
+{%             else %}
+{%                 set server.ip_address = peer_facts.switch.router_id %}
+{%             endif %}
+{%             do overlay_data.evpn_route_servers.update({ route_server: server }) %}
+{%         endif %}
+{%     endif %}
+{% endfor %}
+{% for evpn_gw_remote_peer in switch.evpn_gateway_remote_peers | arista.avd.natural_sort %}
+{%     set peer_facts = avd_switch_facts[evpn_gw_remote_peer.hostname] %}
+{%     if peer_facts.switch is arista.avd.defined %}
+{# Found a matching server. Gathering information for this server #}
+{%         set server = namespace() %}
+{%         set server.bgp_as = evpn_gw_remote_peer.bgp_as | arista.avd.default(peer_facts.switch.bgp_as) %}
+{%         set server.ip_address = evpn_gw_remote_peer.ip_address | arista.avd.default(peer_facts.switch.router_id) %}
+{%         do overlay_data.evpn_gateway_remote_peers.update({ evpn_gw_remote_peer.hostname: server }) %}
+{%     else %}
+{# Server not found in inventory, adding manually #}
+{%         set server = namespace() %}
+{%         set server.bgp_as = evpn_gw_remote_peer.bgp_as %}
+{%         set server.ip_address = evpn_gw_remote_peer.ip_address %}
+{%         do overlay_data.evpn_gateway_remote_peers.update({ evpn_gw_remote_peer.hostname: server }) %}
+{%     endif %}
+{% endfor %}

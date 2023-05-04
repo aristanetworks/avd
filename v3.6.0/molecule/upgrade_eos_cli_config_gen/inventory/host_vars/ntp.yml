@@ -1,0 +1,19 @@
+### NTP tests (Tested with default VRF here. Tested with Management VRF in "dns-ntp")
+ntp_server:
+  local_interface:
+    vrf: default
+    interface: lo1
+  nodes:
+    - 10.1.1.1
+    - 10.1.1.2
+
+ntp:
+  authenticate: true
+  authentication_keys:
+    1:
+      hash_algorithm: "md5"
+      key: "044F0E151B"
+    2:
+      hash_algorithm: "sha1"
+      key: "15060E1F10"
+  trusted_keys: "1-2"

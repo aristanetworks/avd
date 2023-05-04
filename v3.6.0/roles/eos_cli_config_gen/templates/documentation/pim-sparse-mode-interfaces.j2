@@ -1,0 +1,15 @@
+{# Building list of PIM interfaces - Only IPv4 supported today #}
+{% if pim_interfaces | length > 0 %}
+
+### PIM Sparse Mode enabled interfaces
+
+| Interface Name | VRF Name | IP Version | DR Priority | Local Interface |
+| -------------- | -------- | ---------- | ----------- | --------------- |
+{%     for interface in pim_interfaces %}
+{%         set vrf = interface.vrf | arista.avd.default('-') %}
+{%         set ip_version = "IPv4" %}
+{%         set dr_priority = interface.pim.ipv4.dr_priority | arista.avd.default('-') %}
+{%         set local_interface = interface.pim.ipv4.local_interface | arista.avd.default('-') %}
+| {{ interface.name }} | {{ vrf }} | {{ ip_version }} | {{ dr_priority }} | {{ local_interface }} |
+{%     endfor %}
+{% endif %}

@@ -1,0 +1,53 @@
+{% if maintenance is arista.avd.defined %}
+
+## Maintenance
+
+### Maintenance defaults
+
+Default maintenance bgp profile: **{{ maintenance.default_bgp_profile | arista.avd.default('Default') }}**
+
+Default maintenance interface profile: **{{ maintenance.default_interface_profile | arista.avd.default('Default') }}**
+
+Default maintenance unit profile: **{{ maintenance.default_unit_profile | arista.avd.default('Default') }}**
+
+### Maintenance profiles
+
+| BGP profile | Initiator route-map |
+| ----------- | ------------------- |
+{%     for bgp_profile in maintenance.bgp_profiles | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+| {{ bgp_profile.name }} | {{ bgp_profile.initiator.route_map_inout | arista.avd.default('SystemGenerated') }} |
+{%     endfor %}
+
+| Interface profile | Rate monitoring load interval (s) | Rate monitoring threshold in/out (kbps) | Shutdown Max Delay |
+|-------------------|-----------------------------------|-----------------------------------------|--------------------|
+{%     for interface_profile in maintenance.interface_profiles | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         set row_load_interval = interface_profile.rate_monitoring.load_interval | arista.avd.default(60) %}
+{%         set row_threshold = interface_profile.rate_monitoring.threshold | arista.avd.default(100) %}
+{%         set row_shutdown = interface_profile.shutdown.max_delay | arista.avd.default('disabled') %}
+| {{ interface_profile.name }} | {{ row_load_interval }} | {{ row_threshold }} | {{ row_shutdown }} |
+{%     endfor %}
+
+| Unit profile | on-boot duration (s) |
+| ------------ | -------------------- |
+{%     for unit_profile in maintenance.unit_profiles | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+| {{ unit_profile.name }} | {{ unit_profile.on_boot.duration | arista.avd.default('disabled') }} |
+{%     endfor %}
+
+### Maintenance units
+
+| Unit | Interface groups | BGP groups | Unit profile | Quiesce |
+| ---- | ---------------- | ---------- | ------------ | ------- |
+{%     for unit in maintenance.units | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         set row_interface_groups = unit.groups.interface_groups | arista.avd.default(['-']) | arista.avd.natural_sort | join('<br/>') %}
+{%         set row_bgp_groups = unit.groups.bgp_groups | arista.avd.default(['-']) | arista.avd.natural_sort | join('<br/>') %}
+{%         set row_unit_profile = unit.profile | arista.avd.default(maintenance.default_unit_profile, 'Default') %}
+{%         set row_quiesce = unit.quiesce | arista.avd.default(false) | ternary('Yes', 'No') %}
+| {{ unit.name }} | {{ row_interface_groups }} | {{ row_bgp_groups }} | {{ row_unit_profile }} | {{ row_quiesce }} |
+{%     endfor %}
+
+### Maintenance configuration
+
+```eos
+{%     include 'eos/maintenance.j2' %}
+```
+{% endif %}

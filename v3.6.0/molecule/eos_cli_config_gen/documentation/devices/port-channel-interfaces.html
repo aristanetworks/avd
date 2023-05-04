@@ -1,0 +1,3523 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Arista Validated Design collection's documentation">
+      
+      
+        <meta name="author" content="Arista Ansible Team">
+      
+      
+      
+      
+      <link rel="icon" href="../../../../docs/_media/favicon.ico">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.0.15">
+    
+    
+      
+        <title>port-channel-interfaces - Arista AVD collection</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.113286f1.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.a0c5b2b5.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CFira+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Fira Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../docs/stylesheets/extra.material.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#port-channel-interfaces" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../index.html" title="Arista AVD collection" class="md-header__button md-logo" aria-label="Arista AVD collection" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M96 0C43 0 0 43 0 96v320c0 53 43 96 96 96h320c17.7 0 32-14.3 32-32s-14.3-32-32-32v-64c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H96zm0 384h256v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Arista AVD collection
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              port-channel-interfaces
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+            </label>
+          
+        
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/aristanetworks/ansible-avd" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AVD on Github
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../index.html" title="Arista AVD collection" class="md-nav__button md-logo" aria-label="Arista AVD collection" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M96 0C43 0 0 43 0 96v320c0 53 43 96 96 96h320c17.7 0 32-14.3 32-32s-14.3-32-32-32v-64c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H96zm0 384h256v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48h192c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></svg>
+
+    </a>
+    Arista AVD collection
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/aristanetworks/ansible-avd" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AVD on Github
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Release Notes
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Release Notes
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/release-notes/3.x.x.html" class="md-nav__link">
+        3.x.x
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/release-notes/2.x.x.html" class="md-nav__link">
+        2.x.x
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/release-notes/1.1.x.html" class="md-nav__link">
+        1.1.x
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/release-notes/1.0.x.html" class="md-nav__link">
+        1.0.x
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          Getting Started
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Getting Started
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/getting-started/intro-to-ansible-and-avd.html" class="md-nav__link">
+        Introduction to Ansible and AVD
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/getting-started.html" class="md-nav__link">
+        First steps with AVD
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          Installation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Installation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/installation/collection-installation.html" class="md-nav__link">
+        Collection Installation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/installation/requirements.html" class="md-nav__link">
+        Requirements
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+          How-To
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          How-To
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/how-to/first-project.html" class="md-nav__link">
+        Build your first AVD project
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/how-to/first-cvp-avd-project.html" class="md-nav__link">
+        Build your first AVD & CVP project
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/how-to/lab-with-nat.html" class="md-nav__link">
+        Use NAT to access eAPI
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/how-to/tower-integration.html" class="md-nav__link">
+        AWX & Tower Integration
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/how-to/ztp.html" class="md-nav__link">
+        Configure ZTP server with CV collection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/how-to/vscode-container.html" class="md-nav__link">
+        VScode Container
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          Roles documentation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Roles documentation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_1" id="__nav_6_1_label" tabindex="0">
+          eos_designs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6_1">
+          <span class="md-nav__icon md-icon"></span>
+          eos_designs
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/index.html" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/connected-endpoints.html" class="md-nav__link">
+        Connected Endpoints
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/l3-edge.html" class="md-nav__link">
+        DCI & L3 Edge
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/fabric-topology.html" class="md-nav__link">
+        Fabric Topology
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/fabric-variables.html" class="md-nav__link">
+        Fabric Variables
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/management-settings.html" class="md-nav__link">
+        Management Settings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/network-services.html" class="md-nav__link">
+        Network Services
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/node-types.html" class="md-nav__link">
+        Node types
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/platform-settings.html" class="md-nav__link">
+        Platform Settings
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/custom-structured-configuration.html" class="md-nav__link">
+        Custom Structured Configuration
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_1_11" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6_1_11" id="__nav_6_1_11_label" tabindex="0">
+          MPLS Design (BETA)
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_6_1_11_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_6_1_11">
+          <span class="md-nav__icon md-icon"></span>
+          MPLS Design (BETA)
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/fabric-topology-mpls-BETA.html" class="md-nav__link">
+        Fabric Topology MPLS (BETA)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/fabric-variables-mpls-BETA.html" class="md-nav__link">
+        Fabric Variables MPLS (BETA)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/core-interfaces-BETA.html" class="md-nav__link">
+        Core Interfaces (BETA)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/network-services-mpls-BETA.html" class="md-nav__link">
+        Network Services MPLS (BETA)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_designs/doc/connected-endpoints-mpls-BETA.html" class="md-nav__link">
+        Connected Endpoints MPLS (BETA)
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_cli_config_gen/index.html" class="md-nav__link">
+        eos_cli_config_gen
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/cvp_configlet_upload/index.html" class="md-nav__link">
+        cvp_configlet_upload
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_config_deploy_cvp/index.html" class="md-nav__link">
+        eos_config_deploy_cvp
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_config_deploy_eapi/index.html" class="md-nav__link">
+        eos_config_deploy_eapi
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_validate_state/index.html" class="md-nav__link">
+        eos_validate_state
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/eos_snapshot/index.html" class="md-nav__link">
+        eos_snapshot
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/dhcp_provisioner/index.html" class="md-nav__link">
+        dhcp_provisioner
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../roles/build_output_folders/index.html" class="md-nav__link">
+        build_output_folders
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+          Modules documentation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          Modules documentation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/modules/inventory_to_container.rst.html" class="md-nav__link">
+        Module Inventory to containers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/modules/configlet_build_config.rst.html" class="md-nav__link">
+        Module Configlet Build configuration
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../plugins/index.html" class="md-nav__link">
+        AVD Plugins & Filters
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://cvp.avd.sh/" class="md-nav__link">
+        Cloudvision Module documentation
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+          Contributing to AVD
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          Contributing to AVD
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/contribution/overview.html" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/contribution/setup-environment.html" class="md-nav__link">
+        Setup environment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/contribution/setup-git.html" class="md-nav__link">
+        Git installation
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/contribution/getting-started.html" class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/contribution/style-guide.html" class="md-nav__link">
+        Code Style
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../docs/contribution/development.html" class="md-nav__link">
+        Development tips & tricks
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+          External resources
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          External resources
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://docs.ansible.com/ansible/latest/user_guide/collections_using.html" class="md-nav__link">
+        Ansible collection user guide
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://docs.ansible.com/ansible/latest/user_guide/index.html" class="md-nav__link">
+        Ansible User guide
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_10" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+          About
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_10">
+          <span class="md-nav__icon md-icon"></span>
+          About
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://galaxy.ansible.com/arista/avd" class="md-nav__link">
+        Ansible Galaxy page
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://cvp.avd.sh/en/latest/" class="md-nav__link">
+        Arista CVP Collection
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/arista-netdevops-community/avd-install" class="md-nav__link">
+        Arista Installation Script
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://aristanetworks.github.io/netdevops-examples/" class="md-nav__link">
+        Arista Netdevops Community
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#port-channel-interfaces" class="md-nav__link">
+    port-channel-interfaces
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    Table of Contents
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#management" class="md-nav__link">
+    Management
+  </a>
+  
+    <nav class="md-nav" aria-label="Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#management-interfaces" class="md-nav__link">
+    Management Interfaces
+  </a>
+  
+    <nav class="md-nav" aria-label="Management Interfaces">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#management-interfaces-summary" class="md-nav__link">
+    Management Interfaces Summary
+  </a>
+  
+    <nav class="md-nav" aria-label="Management Interfaces Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ipv4" class="md-nav__link">
+    IPv4
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ipv6" class="md-nav__link">
+    IPv6
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#management-interfaces-device-configuration" class="md-nav__link">
+    Management Interfaces Device Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authentication" class="md-nav__link">
+    Authentication
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#monitoring" class="md-nav__link">
+    Monitoring
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#internal-vlan-allocation-policy" class="md-nav__link">
+    Internal VLAN Allocation Policy
+  </a>
+  
+    <nav class="md-nav" aria-label="Internal VLAN Allocation Policy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#internal-vlan-allocation-policy-summary" class="md-nav__link">
+    Internal VLAN Allocation Policy Summary
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interfaces" class="md-nav__link">
+    Interfaces
+  </a>
+  
+    <nav class="md-nav" aria-label="Interfaces">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ethernet-interfaces" class="md-nav__link">
+    Ethernet Interfaces
+  </a>
+  
+    <nav class="md-nav" aria-label="Ethernet Interfaces">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ethernet-interfaces-summary" class="md-nav__link">
+    Ethernet Interfaces Summary
+  </a>
+  
+    <nav class="md-nav" aria-label="Ethernet Interfaces Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#l2" class="md-nav__link">
+    L2
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ipv4_1" class="md-nav__link">
+    IPv4
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isis" class="md-nav__link">
+    ISIS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-correction-encoding-interfaces" class="md-nav__link">
+    Error Correction Encoding Interfaces
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ethernet-interfaces-device-configuration" class="md-nav__link">
+    Ethernet Interfaces Device Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#port-channel-interfaces_1" class="md-nav__link">
+    Port-Channel Interfaces
+  </a>
+  
+    <nav class="md-nav" aria-label="Port-Channel Interfaces">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#port-channel-interfaces-summary" class="md-nav__link">
+    Port-Channel Interfaces Summary
+  </a>
+  
+    <nav class="md-nav" aria-label="Port-Channel Interfaces Summary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#l2_1" class="md-nav__link">
+    L2
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#encapsulation-dot1q-interfaces" class="md-nav__link">
+    Encapsulation Dot1q Interfaces
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flexible-encapsulation-interfaces" class="md-nav__link">
+    Flexible Encapsulation Interfaces
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#private-vlan" class="md-nav__link">
+    Private VLAN
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vlan-translations" class="md-nav__link">
+    VLAN Translations
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evpn-multihoming" class="md-nav__link">
+    EVPN Multihoming
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evpn-multihoming-summary" class="md-nav__link">
+    EVPN Multihoming Summary
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#designated-forwarder-election-summary" class="md-nav__link">
+    Designated Forwarder Election Summary
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evpn-mpls-summary" class="md-nav__link">
+    EVPN-MPLS summary
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#link-tracking-groups" class="md-nav__link">
+    Link Tracking Groups
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ipv4_2" class="md-nav__link">
+    IPv4
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isis_1" class="md-nav__link">
+    ISIS
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#port-channel-interfaces-device-configuration" class="md-nav__link">
+    Port-Channel Interfaces Device Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#routing" class="md-nav__link">
+    Routing
+  </a>
+  
+    <nav class="md-nav" aria-label="Routing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ip-routing" class="md-nav__link">
+    IP Routing
+  </a>
+  
+    <nav class="md-nav" aria-label="IP Routing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ip-routing-summary" class="md-nav__link">
+    IP Routing Summary
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ip-routing-device-configuration" class="md-nav__link">
+    IP Routing Device Configuration
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ipv6-routing" class="md-nav__link">
+    IPv6 Routing
+  </a>
+  
+    <nav class="md-nav" aria-label="IPv6 Routing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ipv6-routing-summary" class="md-nav__link">
+    IPv6 Routing Summary
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bfd" class="md-nav__link">
+    BFD
+  </a>
+  
+    <nav class="md-nav" aria-label="BFD">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bfd-interfaces" class="md-nav__link">
+    BFD Interfaces
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mpls" class="md-nav__link">
+    MPLS
+  </a>
+  
+    <nav class="md-nav" aria-label="MPLS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mpls-interfaces" class="md-nav__link">
+    MPLS Interfaces
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multicast" class="md-nav__link">
+    Multicast
+  </a>
+  
+    <nav class="md-nav" aria-label="Multicast">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pim-sparse-mode" class="md-nav__link">
+    PIM Sparse Mode
+  </a>
+  
+    <nav class="md-nav" aria-label="PIM Sparse Mode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pim-sparse-mode-enabled-interfaces" class="md-nav__link">
+    PIM Sparse Mode enabled interfaces
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filters" class="md-nav__link">
+    Filters
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#acl" class="md-nav__link">
+    ACL
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quality-of-service" class="md-nav__link">
+    Quality Of Service
+  </a>
+  
+    <nav class="md-nav" aria-label="Quality Of Service">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#qos-interfaces" class="md-nav__link">
+    QOS Interfaces
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+  <h1>port-channel-interfaces</h1>
+
+<h3 id="port-channel-interfaces">port-channel-interfaces<a class="headerlink" href="#port-channel-interfaces" title="Permanent link">&para;</a></h3>
+<h3 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="#management">Management</a><ul>
+<li><a href="#management-interfaces">Management Interfaces</a></li>
+</ul>
+</li>
+<li><a href="#authentication">Authentication</a></li>
+<li><a href="#monitoring">Monitoring</a></li>
+<li><a href="#internal-vlan-allocation-policy">Internal VLAN Allocation Policy</a><ul>
+<li><a href="#internal-vlan-allocation-policy-summary">Internal VLAN Allocation Policy Summary</a></li>
+</ul>
+</li>
+<li><a href="#interfaces">Interfaces</a><ul>
+<li><a href="#ethernet-interfaces">Ethernet Interfaces</a></li>
+<li><a href="#port-channel-interfaces">Port-Channel Interfaces</a></li>
+</ul>
+</li>
+<li><a href="#routing">Routing</a><ul>
+<li><a href="#ip-routing">IP Routing</a></li>
+<li><a href="#ipv6-routing">IPv6 Routing</a></li>
+</ul>
+</li>
+<li><a href="#bfd">BFD</a><ul>
+<li><a href="#bfd-interfaces">BFD Interfaces</a></li>
+</ul>
+</li>
+<li><a href="#mpls">MPLS</a><ul>
+<li><a href="#mpls-interfaces">MPLS Interfaces</a></li>
+</ul>
+</li>
+<li><a href="#multicast">Multicast</a><ul>
+<li><a href="#pim-sparse-mode">PIM Sparse Mode</a></li>
+</ul>
+</li>
+<li><a href="#filters">Filters</a></li>
+<li><a href="#acl">ACL</a></li>
+<li><a href="#quality-of-service">Quality Of Service</a></li>
+</ul>
+<h3 id="management">Management<a class="headerlink" href="#management" title="Permanent link">&para;</a></h3>
+<h4 id="management-interfaces">Management Interfaces<a class="headerlink" href="#management-interfaces" title="Permanent link">&para;</a></h4>
+<h5 id="management-interfaces-summary">Management Interfaces Summary<a class="headerlink" href="#management-interfaces-summary" title="Permanent link">&para;</a></h5>
+<h6 id="ipv4">IPv4<a class="headerlink" href="#ipv4" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Management Interface</th>
+<th>description</th>
+<th>Type</th>
+<th>VRF</th>
+<th>IP Address</th>
+<th>Gateway</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Management1</td>
+<td>oob_management</td>
+<td>oob</td>
+<td>MGMT</td>
+<td>10.73.255.122/24</td>
+<td>10.73.255.2</td>
+</tr>
+</tbody>
+</table>
+<h6 id="ipv6">IPv6<a class="headerlink" href="#ipv6" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Management Interface</th>
+<th>description</th>
+<th>Type</th>
+<th>VRF</th>
+<th>IPv6 Address</th>
+<th>IPv6 Gateway</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Management1</td>
+<td>oob_management</td>
+<td>oob</td>
+<td>MGMT</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h5 id="management-interfaces-device-configuration">Management Interfaces Device Configuration<a class="headerlink" href="#management-interfaces-device-configuration" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code>!
+interface Management1
+   description oob_management
+   vrf MGMT
+   ip address 10.73.255.122/24
+</code></pre></div>
+<h3 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">&para;</a></h3>
+<h3 id="monitoring">Monitoring<a class="headerlink" href="#monitoring" title="Permanent link">&para;</a></h3>
+<h3 id="internal-vlan-allocation-policy">Internal VLAN Allocation Policy<a class="headerlink" href="#internal-vlan-allocation-policy" title="Permanent link">&para;</a></h3>
+<h4 id="internal-vlan-allocation-policy-summary">Internal VLAN Allocation Policy Summary<a class="headerlink" href="#internal-vlan-allocation-policy-summary" title="Permanent link">&para;</a></h4>
+<p><strong>Default Allocation Policy</strong></p>
+<table>
+<thead>
+<tr>
+<th>Policy Allocation</th>
+<th>Range Beginning</th>
+<th>Range Ending</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ascending</td>
+<td>1006</td>
+<td>4094</td>
+</tr>
+</tbody>
+</table>
+<h3 id="interfaces">Interfaces<a class="headerlink" href="#interfaces" title="Permanent link">&para;</a></h3>
+<h4 id="ethernet-interfaces">Ethernet Interfaces<a class="headerlink" href="#ethernet-interfaces" title="Permanent link">&para;</a></h4>
+<h5 id="ethernet-interfaces-summary">Ethernet Interfaces Summary<a class="headerlink" href="#ethernet-interfaces-summary" title="Permanent link">&para;</a></h5>
+<h6 id="l2">L2<a class="headerlink" href="#l2" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Description</th>
+<th>Mode</th>
+<th>VLANs</th>
+<th>Native VLAN</th>
+<th>Trunk Group</th>
+<th>Channel-Group</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ethernet3</td>
+<td>MLAG_PEER_DC1-LEAF1B_Ethernet3</td>
+<td>*trunk</td>
+<td>*2-4094</td>
+<td>*-</td>
+<td>*[&lsquo;LEAF_PEER_L3&rsquo;, &lsquo;MLAG&rsquo;]</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Ethernet4</td>
+<td>MLAG_PEER_DC1-LEAF1B_Ethernet4</td>
+<td>*trunk</td>
+<td>*2-4094</td>
+<td>*-</td>
+<td>*[&lsquo;LEAF_PEER_L3&rsquo;, &lsquo;MLAG&rsquo;]</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Ethernet5</td>
+<td>DC1-AGG01_Ethernet1</td>
+<td>*trunk</td>
+<td>*110,201</td>
+<td>*-</td>
+<td>*-</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Ethernet10/1</td>
+<td>LAG Member</td>
+<td>*access</td>
+<td>*110</td>
+<td>*-</td>
+<td>*-</td>
+<td>101</td>
+</tr>
+<tr>
+<td>Ethernet10/2</td>
+<td>LAG Member</td>
+<td>*trunk</td>
+<td>*110-112</td>
+<td>*-</td>
+<td>*-</td>
+<td>102</td>
+</tr>
+<tr>
+<td>Ethernet10/3</td>
+<td>LAG Member</td>
+<td>*trunk</td>
+<td>*110-112</td>
+<td>*-</td>
+<td>*-</td>
+<td>103</td>
+</tr>
+<tr>
+<td>Ethernet10/4</td>
+<td>LAG Member LACP fallback</td>
+<td>*trunk</td>
+<td>*112</td>
+<td>*-</td>
+<td>*-</td>
+<td>104</td>
+</tr>
+<tr>
+<td>Ethernet11/2</td>
+<td>LAG Member LACP fallback LLDP ZTP VLAN</td>
+<td>*trunk</td>
+<td>*112</td>
+<td>*-</td>
+<td>*-</td>
+<td>112</td>
+</tr>
+<tr>
+<td>Ethernet15</td>
+<td>DC1-AGG03_Ethernet1</td>
+<td>*trunk</td>
+<td>*110,201</td>
+<td>*-</td>
+<td>*-</td>
+<td>15</td>
+</tr>
+<tr>
+<td>Ethernet16</td>
+<td>DC1-AGG04_Ethernet1</td>
+<td>*trunk</td>
+<td>*110,201</td>
+<td>*-</td>
+<td>*-</td>
+<td>16</td>
+</tr>
+<tr>
+<td>Ethernet18</td>
+<td>LAG Member</td>
+<td>*access</td>
+<td>*110</td>
+<td>*-</td>
+<td>*-</td>
+<td>109</td>
+</tr>
+<tr>
+<td>Ethernet50</td>
+<td>SRV-POD03_Eth1</td>
+<td>*trunk</td>
+<td>*110,201</td>
+<td>*-</td>
+<td>*-</td>
+<td>5</td>
+</tr>
+</tbody>
+</table>
+<p>*Inherited from Port-Channel Interface</p>
+<h6 id="ipv4_1">IPv4<a class="headerlink" href="#ipv4_1" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Description</th>
+<th>Type</th>
+<th>Channel Group</th>
+<th>IP Address</th>
+<th>VRF</th>
+<th>MTU</th>
+<th>Shutdown</th>
+<th>ACL In</th>
+<th>ACL Out</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ethernet17</td>
+<td>LAG Member</td>
+<td>*routed</td>
+<td>17</td>
+<td>*192.0.2.3/31</td>
+<td>**default</td>
+<td>**-</td>
+<td>**-</td>
+<td>**-</td>
+<td>**-</td>
+</tr>
+<tr>
+<td>*Inherited from Port-Channel Interface</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h6 id="isis">ISIS<a class="headerlink" href="#isis" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Channel Group</th>
+<th>ISIS Instance</th>
+<th>ISIS Metric</th>
+<th>Mode</th>
+<th>ISIS Circuit Type</th>
+<th>Hello Padding</th>
+<th>Authentication Mode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ethernet10/10</td>
+<td>110</td>
+<td>*ISIS_TEST</td>
+<td>*99</td>
+<td>*point-to-point</td>
+<td>*level-2</td>
+<td>*True</td>
+<td>*text</td>
+</tr>
+<tr>
+<td>*Inherited from Port-Channel Interface</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h6 id="error-correction-encoding-interfaces">Error Correction Encoding Interfaces<a class="headerlink" href="#error-correction-encoding-interfaces" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Enabled</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ethernet11/1</td>
+<td>fire-code<br>reed-solomon</td>
+</tr>
+</tbody>
+</table>
+<h5 id="ethernet-interfaces-device-configuration">Ethernet Interfaces Device Configuration<a class="headerlink" href="#ethernet-interfaces-device-configuration" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code>!
+interface Ethernet3
+   description MLAG_PEER_DC1-LEAF1B_Ethernet3
+   channel-group 3 mode active
+!
+interface Ethernet4
+   description MLAG_PEER_DC1-LEAF1B_Ethernet4
+   channel-group 3 mode active
+!
+interface Ethernet5
+   description DC1-AGG01_Ethernet1
+   channel-group 5 mode active
+   transceiver media override 100gbase-ar4
+!
+interface Ethernet8
+   description MLAG_PEER_DC1-LEAF1B_Ethernet8
+   channel-group 8 mode active
+!
+interface Ethernet10/1
+   description LAG Member
+   channel-group 101 mode active
+!
+interface Ethernet10/2
+   description LAG Member
+   channel-group 102 mode active
+!
+interface Ethernet10/3
+   description LAG Member
+   channel-group 103 mode active
+!
+interface Ethernet10/4
+   description LAG Member LACP fallback
+   switchport trunk allowed vlan 100
+   switchport mode trunk
+   switchport
+   channel-group 104 mode active
+   spanning-tree portfast
+!
+interface Ethernet10/10
+   description isis_port_channel_member
+   channel-group 110 mode active
+!
+interface Ethernet11/1
+   description LAG Member with error_correction
+   error-correction encoding fire-code
+   error-correction encoding reed-solomon
+   channel-group 111 mode active
+!
+interface Ethernet11/2
+   description LAG Member LACP fallback LLDP ZTP VLAN
+   switchport trunk allowed vlan 112
+   switchport mode trunk
+   switchport
+   channel-group 112 mode active
+   lldp tlv transmit ztp vlan 112
+   spanning-tree portfast
+!
+interface Ethernet15
+   description DC1-AGG03_Ethernet1
+   channel-group 15 mode active
+   lacp timer fast
+   lacp timer multiplier 30
+!
+interface Ethernet16
+   description DC1-AGG04_Ethernet1
+   channel-group 16 mode active
+   lacp timer normal
+!
+interface Ethernet17
+   description LAG Member
+   channel-group 17 mode active
+!
+interface Ethernet18
+   description LAG Member
+   channel-group 109 mode active
+!
+interface Ethernet50
+   description SRV-POD03_Eth1
+   channel-group 5 mode active
+</code></pre></div>
+<h4 id="port-channel-interfaces_1">Port-Channel Interfaces<a class="headerlink" href="#port-channel-interfaces_1" title="Permanent link">&para;</a></h4>
+<h5 id="port-channel-interfaces-summary">Port-Channel Interfaces Summary<a class="headerlink" href="#port-channel-interfaces-summary" title="Permanent link">&para;</a></h5>
+<h6 id="l2_1">L2<a class="headerlink" href="#l2_1" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Description</th>
+<th>Type</th>
+<th>Mode</th>
+<th>VLANs</th>
+<th>Native VLAN</th>
+<th>Trunk Group</th>
+<th>LACP Fallback Timeout</th>
+<th>LACP Fallback Mode</th>
+<th>MLAG ID</th>
+<th>EVPN ESI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Port-Channel3</td>
+<td>MLAG_PEER_DC1-LEAF1B_Po3</td>
+<td>switched</td>
+<td>trunk</td>
+<td>2-4094</td>
+<td>-</td>
+<td>[&lsquo;LEAF_PEER_L3&rsquo;, &lsquo;MLAG&rsquo;]</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel5</td>
+<td>DC1_L2LEAF1_Po1</td>
+<td>switched</td>
+<td>trunk</td>
+<td>110,201</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>5</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel10</td>
+<td>SRV01_bond0</td>
+<td>switched</td>
+<td>trunk</td>
+<td>2-3000</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0000:0000:0404:0404:0303</td>
+</tr>
+<tr>
+<td>Port-Channel12</td>
+<td>interface_in_mode_access_with_voice</td>
+<td>switched</td>
+<td>trunk phone</td>
+<td>-</td>
+<td>100</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel13</td>
+<td>EVPN-Vxlan single-active redundancy</td>
+<td>switched</td>
+<td>access</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0000:0000:0000:0102:0304</td>
+</tr>
+<tr>
+<td>Port-Channel14</td>
+<td>EVPN-MPLS multihoming</td>
+<td>switched</td>
+<td>access</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0000:0000:0000:0102:0305</td>
+</tr>
+<tr>
+<td>Port-Channel15</td>
+<td>DC1_L2LEAF3_Po1</td>
+<td>switched</td>
+<td>trunk</td>
+<td>110,201</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>15</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel16</td>
+<td>DC1_L2LEAF4_Po1</td>
+<td>switched</td>
+<td>trunk</td>
+<td>110,201</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>16</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel20</td>
+<td>Po_in_mode_access_accepting_tagged_LACP_frames</td>
+<td>switched</td>
+<td>access</td>
+<td>200</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel50</td>
+<td>SRV-POD03_PortChanne1</td>
+<td>switched</td>
+<td>trunk</td>
+<td>1-4000</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0000:0000:0303:0202:0101</td>
+</tr>
+<tr>
+<td>Port-Channel51</td>
+<td>ipv6_prefix</td>
+<td>switched</td>
+<td>trunk</td>
+<td>1-500</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel100.101</td>
+<td>IFL for TENANT01</td>
+<td>switched</td>
+<td>access</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel100.102</td>
+<td>IFL for TENANT02</td>
+<td>switched</td>
+<td>access</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel101</td>
+<td>PVLAN Promiscuous Access - only one secondary</td>
+<td>switched</td>
+<td>access</td>
+<td>110</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel102</td>
+<td>PVLAN Promiscuous Trunk - vlan translation out</td>
+<td>switched</td>
+<td>trunk</td>
+<td>110-112</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel103</td>
+<td>PVLAN Secondary Trunk</td>
+<td>switched</td>
+<td>trunk</td>
+<td>110-112</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel104</td>
+<td>LACP fallback individual</td>
+<td>switched</td>
+<td>trunk</td>
+<td>112</td>
+<td>-</td>
+<td>-</td>
+<td>300</td>
+<td>individual</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel105</td>
+<td>bpdu disabled</td>
+<td>switched</td>
+<td>access</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel106</td>
+<td>bpdu enabled</td>
+<td>switched</td>
+<td>access</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel107</td>
+<td>bpdu true</td>
+<td>switched</td>
+<td>access</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel108</td>
+<td>bpdu false</td>
+<td>switched</td>
+<td>access</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel109</td>
+<td>Molecule ACLs</td>
+<td>switched</td>
+<td>access</td>
+<td>110</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel112</td>
+<td>LACP fallback individual</td>
+<td>switched</td>
+<td>trunk</td>
+<td>112</td>
+<td>-</td>
+<td>-</td>
+<td>5</td>
+<td>individual</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel115</td>
+<td>native-vlan-tag-precedence</td>
+<td>switched</td>
+<td>trunk</td>
+<td>-</td>
+<td>tag</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="encapsulation-dot1q-interfaces">Encapsulation Dot1q Interfaces<a class="headerlink" href="#encapsulation-dot1q-interfaces" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Description</th>
+<th>Type</th>
+<th>Vlan ID</th>
+<th>Dot1q VLAN Tag</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Port-Channel8.101</td>
+<td>to Dev02 Port-Channel8.101 - VRF-C1</td>
+<td>l3dot1q</td>
+<td>-</td>
+<td>101</td>
+</tr>
+</tbody>
+</table>
+<h6 id="flexible-encapsulation-interfaces">Flexible Encapsulation Interfaces<a class="headerlink" href="#flexible-encapsulation-interfaces" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Description</th>
+<th>Type</th>
+<th>Vlan ID</th>
+<th>Client Unmatched</th>
+<th>Client Dot1q VLAN</th>
+<th>Client Dot1q Outer Tag</th>
+<th>Client Dot1q Inner Tag</th>
+<th>Network Retain Client Encapsulation</th>
+<th>Network Dot1q VLAN</th>
+<th>Network Dot1q Outer Tag</th>
+<th>Network Dot1q Inner Tag</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Port-Channel111.1</td>
+<td>TENANT_A pseudowire 1 interface</td>
+<td>l2dot1q</td>
+<td>-</td>
+<td>True</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>False</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel111.100</td>
+<td>TENANT_A pseudowire 2 interface</td>
+<td>l2dot1q</td>
+<td>-</td>
+<td>False</td>
+<td>100</td>
+<td>-</td>
+<td>-</td>
+<td>True</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel111.200</td>
+<td>TENANT_A pseudowire 3 interface</td>
+<td>l2dot1q</td>
+<td>-</td>
+<td>False</td>
+<td>200</td>
+<td>-</td>
+<td>-</td>
+<td>False</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel111.300</td>
+<td>TENANT_A pseudowire 4 interface</td>
+<td>l2dot1q</td>
+<td>-</td>
+<td>False</td>
+<td>300</td>
+<td>-</td>
+<td>-</td>
+<td>False</td>
+<td>400</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel111.400</td>
+<td>TENANT_A pseudowire 3 interface</td>
+<td>l2dot1q</td>
+<td>-</td>
+<td>False</td>
+<td>-</td>
+<td>400</td>
+<td>20</td>
+<td>False</td>
+<td>-</td>
+<td>401</td>
+<td>21</td>
+</tr>
+<tr>
+<td>Port-Channel111.1000</td>
+<td>L2 Subinterface</td>
+<td>l2dot1q</td>
+<td>1000</td>
+<td>False</td>
+<td>100</td>
+<td>-</td>
+<td>-</td>
+<td>True</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="private-vlan">Private VLAN<a class="headerlink" href="#private-vlan" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>PVLAN Mapping</th>
+<th>Secondary Trunk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Port-Channel101</td>
+<td>111</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel103</td>
+<td>-</td>
+<td>True</td>
+</tr>
+</tbody>
+</table>
+<h6 id="vlan-translations">VLAN Translations<a class="headerlink" href="#vlan-translations" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>From VLAN ID(s)</th>
+<th>To VLAN ID</th>
+<th>Direction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Port-Channel102</td>
+<td>111-112</td>
+<td>110</td>
+<td>out</td>
+</tr>
+</tbody>
+</table>
+<h6 id="evpn-multihoming">EVPN Multihoming<a class="headerlink" href="#evpn-multihoming" title="Permanent link">&para;</a></h6>
+<h6 id="evpn-multihoming-summary">EVPN Multihoming Summary<a class="headerlink" href="#evpn-multihoming-summary" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Ethernet Segment Identifier</th>
+<th>Multihoming Redundancy Mode</th>
+<th>Route Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Port-Channel13</td>
+<td>0000:0000:0000:0102:0304</td>
+<td>single-active</td>
+<td>00:00:01:02:03:04</td>
+</tr>
+<tr>
+<td>Port-Channel14</td>
+<td>0000:0000:0000:0102:0305</td>
+<td>all-active</td>
+<td>00:00:01:02:03:05</td>
+</tr>
+</tbody>
+</table>
+<h6 id="designated-forwarder-election-summary">Designated Forwarder Election Summary<a class="headerlink" href="#designated-forwarder-election-summary" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Algorithm</th>
+<th>Preference Value</th>
+<th>Dont Preempt</th>
+<th>Hold time</th>
+<th>Subsequent Hold Time</th>
+<th>Candidate Reachability Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Port-Channel13</td>
+<td>preference</td>
+<td>100</td>
+<td>True</td>
+<td>10</td>
+<td>-</td>
+<td>True</td>
+</tr>
+</tbody>
+</table>
+<h6 id="evpn-mpls-summary">EVPN-MPLS summary<a class="headerlink" href="#evpn-mpls-summary" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Shared Index</th>
+<th>Tunnel Flood Filter Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Port-Channel14</td>
+<td>100</td>
+<td>100</td>
+</tr>
+</tbody>
+</table>
+<h6 id="link-tracking-groups">Link Tracking Groups<a class="headerlink" href="#link-tracking-groups" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Group Name</th>
+<th>Direction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Port-Channel5</td>
+<td>EVPN_MH_ES1</td>
+<td>downstream</td>
+</tr>
+<tr>
+<td>Port-Channel15</td>
+<td>EVPN_MH_ES2</td>
+<td>upstream</td>
+</tr>
+</tbody>
+</table>
+<h6 id="ipv4_2">IPv4<a class="headerlink" href="#ipv4_2" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Description</th>
+<th>Type</th>
+<th>MLAG ID</th>
+<th>IP Address</th>
+<th>VRF</th>
+<th>MTU</th>
+<th>Shutdown</th>
+<th>ACL In</th>
+<th>ACL Out</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Port-Channel8.101</td>
+<td>to Dev02 Port-Channel8.101 - VRF-C1</td>
+<td>routed</td>
+<td>-</td>
+<td>10.1.2.3/31</td>
+<td>default</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel9</td>
+<td>-</td>
+<td>routed</td>
+<td>-</td>
+<td>10.9.2.3/31</td>
+<td>default</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel17</td>
+<td>PBR Description</td>
+<td>routed</td>
+<td>-</td>
+<td>192.0.2.3/31</td>
+<td>default</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel99</td>
+<td>MCAST</td>
+<td>routed</td>
+<td>-</td>
+<td>192.0.2.10/31</td>
+<td>default</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel113</td>
+<td>interface_with_mpls_enabled</td>
+<td>routed</td>
+<td>-</td>
+<td>172.31.128.9/31</td>
+<td>default</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Port-Channel114</td>
+<td>interface_with_mpls_disabled</td>
+<td>routed</td>
+<td>-</td>
+<td>172.31.128.10/31</td>
+<td>default</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h6 id="isis_1">ISIS<a class="headerlink" href="#isis_1" title="Permanent link">&para;</a></h6>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>ISIS Instance</th>
+<th>ISIS Metric</th>
+<th>Mode</th>
+<th>ISIS Circuit Type</th>
+<th>Hello Padding</th>
+<th>Authentication Mode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Port-Channel110</td>
+<td>ISIS_TEST</td>
+<td>99</td>
+<td>point-to-point</td>
+<td>level-2</td>
+<td>True</td>
+<td>text</td>
+</tr>
+</tbody>
+</table>
+<h5 id="port-channel-interfaces-device-configuration">Port-Channel Interfaces Device Configuration<a class="headerlink" href="#port-channel-interfaces-device-configuration" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code>!
+interface Port-Channel3
+   description MLAG_PEER_DC1-LEAF1B_Po3
+   switchport
+   switchport trunk allowed vlan 2-4094
+   switchport mode trunk
+   switchport trunk group LEAF_PEER_L3
+   switchport trunk group MLAG
+   no snmp trap link-change
+   shape rate 200000 kbps
+!
+interface Port-Channel5
+   description DC1_L2LEAF1_Po1
+   switchport
+   switchport trunk allowed vlan 110,201
+   switchport mode trunk
+   mlag 5
+   storm-control broadcast level 1
+   storm-control multicast level 1
+   storm-control unknown-unicast level 1
+   link tracking group EVPN_MH_ES1 downstream
+   comment
+   Comment created from eos_cli under port_channel_interfaces.Port-Channel5
+   EOF
+
+!
+interface Port-Channel8
+   description to Dev02 Port-channel 8
+   no switchport
+!
+interface Port-Channel8.101
+   description to Dev02 Port-Channel8.101 - VRF-C1
+   encapsulation dot1q vlan 101
+   ip address 10.1.2.3/31
+!
+interface Port-Channel9
+   no switchport
+   spanning-tree guard root
+   ip address 10.9.2.3/31
+   bfd interval 500 min-rx 500 multiplier 5
+   bfd echo
+!
+interface Port-Channel10
+   description SRV01_bond0
+   switchport
+   switchport trunk allowed vlan 2-3000
+   switchport mode trunk
+   evpn ethernet-segment
+      identifier 0000:0000:0404:0404:0303
+      route-target import 04:04:03:03:02:02
+   shape rate 50 percent
+!
+interface Port-Channel12
+   description interface_in_mode_access_with_voice
+   switchport
+   switchport trunk native vlan 100
+   switchport phone vlan 70
+   switchport phone trunk untagged
+!
+interface Port-Channel13
+   description EVPN-Vxlan single-active redundancy
+   switchport
+   evpn ethernet-segment
+      identifier 0000:0000:0000:0102:0304
+      redundancy single-active
+      designated-forwarder election algorithm preference 100 dont-preempt
+      designated-forwarder election hold-time 10
+      designated-forwarder election candidate reachability required
+      route-target import 00:00:01:02:03:04
+!
+interface Port-Channel14
+   description EVPN-MPLS multihoming
+   switchport
+   evpn ethernet-segment
+      identifier 0000:0000:0000:0102:0305
+      mpls tunnel flood filter time 100
+      mpls shared index 100
+      route-target import 00:00:01:02:03:05
+!
+interface Port-Channel15
+   description DC1_L2LEAF3_Po1
+   switchport
+   switchport trunk allowed vlan 110,201
+   switchport mode trunk
+   mlag 15
+   spanning-tree guard loop
+   link tracking group EVPN_MH_ES2 upstream
+!
+interface Port-Channel16
+   description DC1_L2LEAF4_Po1
+   switchport
+   switchport trunk allowed vlan 110,201
+   switchport mode trunk
+   snmp trap link-change
+   mlag 16
+   spanning-tree guard none
+!
+interface Port-Channel17
+   description PBR Description
+   no switchport
+   ip address 192.0.2.3/31
+   service-policy type pbr input MyPolicy
+!
+interface Port-Channel20
+   description Po_in_mode_access_accepting_tagged_LACP_frames
+   switchport
+   switchport access vlan 200
+   l2-protocol encapsulation dot1q vlan 200
+!
+interface Port-Channel50
+   description SRV-POD03_PortChanne1
+   switchport
+   switchport trunk allowed vlan 1-4000
+   switchport mode trunk
+   evpn ethernet-segment
+      identifier 0000:0000:0303:0202:0101
+      route-target import 03:03:02:02:01:01
+   lacp system-id 0303.0202.0101
+!
+interface Port-Channel51
+   description ipv6_prefix
+   switchport
+   switchport trunk allowed vlan 1-500
+   switchport mode trunk
+   ipv6 nd prefix a1::/64 infinite infinite no-autoconfig
+!
+interface Port-Channel99
+   description MCAST
+   no switchport
+   ip address 192.0.2.10/31
+   pim ipv4 sparse-mode
+   pim ipv4 dr-priority 200
+!
+interface Port-Channel100
+   logging event link-status
+   no switchport
+!
+interface Port-Channel100.101
+   description IFL for TENANT01
+   logging event link-status
+   mtu 1500
+   switchport
+   ip address 10.1.1.3/31
+!
+interface Port-Channel100.102
+   description IFL for TENANT02
+   no logging event link-status
+   mtu 1500
+   switchport
+   vrf C2
+   ip address 10.1.2.3/31
+!
+interface Port-Channel101
+   description PVLAN Promiscuous Access - only one secondary
+   switchport
+   switchport access vlan 110
+   switchport pvlan mapping 111
+   no qos trust
+!
+interface Port-Channel102
+   description PVLAN Promiscuous Trunk - vlan translation out
+   switchport
+   switchport trunk allowed vlan 110-112
+   switchport mode trunk
+   switchport vlan translation out 111-112 110
+!
+interface Port-Channel103
+   description PVLAN Secondary Trunk
+   switchport
+   switchport trunk allowed vlan 110-112
+   switchport mode trunk
+   switchport trunk private-vlan secondary
+!
+interface Port-Channel104
+   description LACP fallback individual
+   switchport
+   switchport trunk allowed vlan 112
+   switchport mode trunk
+   port-channel lacp fallback timeout 300
+   port-channel lacp fallback individual
+!
+interface Port-Channel105
+   description bpdu disabled
+   switchport
+   spanning-tree bpduguard disable
+   spanning-tree bpdufilter disable
+!
+interface Port-Channel106
+   description bpdu enabled
+   switchport
+   spanning-tree bpduguard enable
+   spanning-tree bpdufilter enable
+!
+interface Port-Channel107
+   description bpdu true
+   switchport
+   spanning-tree bpduguard enable
+   spanning-tree bpdufilter enable
+!
+interface Port-Channel108
+   description bpdu false
+   switchport
+!
+interface Port-Channel109
+   description Molecule ACLs
+   switchport
+   switchport access vlan 110
+   ip access-group IPV4_ACL_IN in
+   ip access-group IPV4_ACL_OUT out
+   ipv6 access-group IPV6_ACL_IN in
+   ipv6 access-group IPV6_ACL_OUT out
+   mac access-group MAC_ACL_IN in
+   mac access-group MAC_ACL_OUT out
+!
+interface Port-Channel110
+   description isis_interface_knobs
+   no switchport
+   isis enable ISIS_TEST
+   isis circuit-type level-2
+   isis metric 99
+   isis network point-to-point
+   isis hello padding
+   isis authentication mode text
+   isis authentication key 7 asfddja23452
+!
+interface Port-Channel111
+   description Flexencap Port-Channel
+   no switchport
+!
+interface Port-Channel111.1
+   description TENANT_A pseudowire 1 interface
+   encapsulation vlan
+      client unmatched
+!
+interface Port-Channel111.100
+   description TENANT_A pseudowire 2 interface
+   encapsulation vlan
+      client dot1q 100 network client
+!
+interface Port-Channel111.200
+   description TENANT_A pseudowire 3 interface
+   encapsulation vlan
+      client dot1q 200
+!
+interface Port-Channel111.300
+   description TENANT_A pseudowire 4 interface
+   encapsulation vlan
+      client dot1q 300 network dot1q 400
+!
+interface Port-Channel111.400
+   description TENANT_A pseudowire 3 interface
+   encapsulation vlan
+      client dot1q outer 400 inner 20 network dot1q outer 21 inner 401
+!
+interface Port-Channel111.1000
+   description L2 Subinterface
+   vlan id 1000
+   encapsulation vlan
+      client dot1q 100 network client
+   evpn ethernet-segment
+      identifier 0000:0000:0303:0202:0101
+      route-target import 03:03:02:02:01:01
+   lacp system-id 0303.0202.0101
+!
+interface Port-Channel112
+   description LACP fallback individual
+   switchport
+   switchport trunk allowed vlan 112
+   switchport mode trunk
+   port-channel lacp fallback timeout 5
+   port-channel lacp fallback individual
+!
+interface Port-Channel113
+   description interface_with_mpls_enabled
+   no switchport
+   ip address 172.31.128.9/31
+   mpls ip
+   mpls ldp interface
+   mpls ldp igp sync
+!
+interface Port-Channel114
+   description interface_with_mpls_disabled
+   no switchport
+   ip address 172.31.128.10/31
+   no mpls ip
+   no mpls ldp interface
+!
+interface Port-Channel115
+   description native-vlan-tag-precedence
+   switchport
+   switchport trunk native vlan tag
+   switchport mode trunk
+</code></pre></div>
+<h3 id="routing">Routing<a class="headerlink" href="#routing" title="Permanent link">&para;</a></h3>
+<h4 id="ip-routing">IP Routing<a class="headerlink" href="#ip-routing" title="Permanent link">&para;</a></h4>
+<h5 id="ip-routing-summary">IP Routing Summary<a class="headerlink" href="#ip-routing-summary" title="Permanent link">&para;</a></h5>
+<table>
+<thead>
+<tr>
+<th>VRF</th>
+<th>Routing Enabled</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+<h5 id="ip-routing-device-configuration">IP Routing Device Configuration<a class="headerlink" href="#ip-routing-device-configuration" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code>
+</code></pre></div>
+<h4 id="ipv6-routing">IPv6 Routing<a class="headerlink" href="#ipv6-routing" title="Permanent link">&para;</a></h4>
+<h5 id="ipv6-routing-summary">IPv6 Routing Summary<a class="headerlink" href="#ipv6-routing-summary" title="Permanent link">&para;</a></h5>
+<table>
+<thead>
+<tr>
+<th>VRF</th>
+<th>Routing Enabled</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>default</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+<h3 id="bfd">BFD<a class="headerlink" href="#bfd" title="Permanent link">&para;</a></h3>
+<h4 id="bfd-interfaces">BFD Interfaces<a class="headerlink" href="#bfd-interfaces" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Interval</th>
+<th>Minimum RX</th>
+<th>Multiplier</th>
+<th>Echo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Port-Channel9</td>
+<td>500</td>
+<td>500</td>
+<td>5</td>
+<td>True</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mpls">MPLS<a class="headerlink" href="#mpls" title="Permanent link">&para;</a></h3>
+<h4 id="mpls-interfaces">MPLS Interfaces<a class="headerlink" href="#mpls-interfaces" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>MPLS IP Enabled</th>
+<th>LDP Enabled</th>
+<th>IGP Sync</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Port-Channel113</td>
+<td>True</td>
+<td>True</td>
+<td>True</td>
+</tr>
+<tr>
+<td>Port-Channel114</td>
+<td>False</td>
+<td>False</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="multicast">Multicast<a class="headerlink" href="#multicast" title="Permanent link">&para;</a></h3>
+<h4 id="pim-sparse-mode">PIM Sparse Mode<a class="headerlink" href="#pim-sparse-mode" title="Permanent link">&para;</a></h4>
+<h5 id="pim-sparse-mode-enabled-interfaces">PIM Sparse Mode enabled interfaces<a class="headerlink" href="#pim-sparse-mode-enabled-interfaces" title="Permanent link">&para;</a></h5>
+<table>
+<thead>
+<tr>
+<th>Interface Name</th>
+<th>VRF Name</th>
+<th>IP Version</th>
+<th>DR Priority</th>
+<th>Local Interface</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Port-Channel99</td>
+<td>-</td>
+<td>IPv4</td>
+<td>200</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="filters">Filters<a class="headerlink" href="#filters" title="Permanent link">&para;</a></h3>
+<h3 id="acl">ACL<a class="headerlink" href="#acl" title="Permanent link">&para;</a></h3>
+<h3 id="quality-of-service">Quality Of Service<a class="headerlink" href="#quality-of-service" title="Permanent link">&para;</a></h3>
+<h5 id="qos-interfaces">QOS Interfaces<a class="headerlink" href="#qos-interfaces" title="Permanent link">&para;</a></h5>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Trust</th>
+<th>Default DSCP</th>
+<th>Default COS</th>
+<th>Shape rate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Port-Channel3</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>200000 kbps</td>
+</tr>
+<tr>
+<td>Port-Channel10</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>50 percent</td>
+</tr>
+<tr>
+<td>Port-Channel101</td>
+<td>disabled</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      Last update:
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">June 21, 2022</span>
+      
+    
+  </small>
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2019 - 2021 Arista Networks
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["navigation.instant", "navigation.top"], "search": "../../../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "stable", "provider": "mike"}}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.2a6f1dda.min.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tablesort/5.2.1/tablesort.min.js"></script>
+      
+        <script src="../../../../docs/stylesheets/tables.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
+      
+        <script src="../../../../docs/stylesheets/highlight.js"></script>
+      
+    
+  </body>
+</html>

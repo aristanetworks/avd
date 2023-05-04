@@ -1,0 +1,28 @@
+{% set overlay_data.mpls_route_servers = {} %}
+{# Expand data for evpn_route_servers #}
+{% for route_server in switch.mpls_route_reflectors | arista.avd.natural_sort %}
+{%     if avd_switch_facts[route_server].switch is arista.avd.defined(fail_action='warning',var_name='avd_switch_facts[' ~ route_server ~ '].switch') %}
+{%         set route_server_vars = avd_switch_facts[route_server] %}
+{%         if route_server_vars.switch.mpls_overlay_role is arista.avd.defined('server') %}
+{# Found a matching server. Gathering information for this server #}
+{%             set server = namespace() %}
+{%             set server.bgp_as = route_server_vars.switch.bgp_as %}
+{%             set server.ip_address = route_server_vars.switch.router_id %}
+{%             do overlay_data.mpls_route_servers.update({ route_server: server }) %}
+{%         endif %}
+{%     endif %}
+{% endfor %}
+{% if bgp_mesh_pes is arista.avd.defined(true) %}
+{%     set overlay_data.mpls_mesh_pes = {} %}
+{%     for fabric_switch in groups[fabric_name] if fabric_switch not in overlay_data.mpls_route_servers | arista.avd.natural_sort %}
+{%         if fabric_switch != inventory_hostname %}
+{%             set overlay_pe_vars = avd_switch_facts[fabric_switch] %}
+{%             if overlay_pe_vars.switch.mpls_overlay_role is arista.avd.defined('client') %}
+{%                 set peer_pe = namespace() %}
+{%                 set peer_pe.bgp_as = overlay_pe_vars.switch.bgp_as %}
+{%                 set peer_pe.ip_address = overlay_pe_vars.switch.router_id %}
+{%                 do overlay_data.mpls_mesh_pes.update({ fabric_switch: peer_pe }) %}
+{%             endif %}
+{%         endif %}
+{%     endfor %}
+{% endif %}

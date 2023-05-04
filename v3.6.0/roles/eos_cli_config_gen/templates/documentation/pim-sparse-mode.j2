@@ -1,0 +1,25 @@
+{# Interfaces #}
+{% set pim_interfaces = [] %}
+{% for ethernet_interface in ethernet_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     if ethernet_interface.pim.ipv4.sparse_mode is arista.avd.defined(true) %}
+{%         do pim_interfaces.append(ethernet_interface) %}
+{%     endif %}
+{% endfor %}
+{% for port_channel_interface in port_channel_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     if port_channel_interface.pim.ipv4.sparse_mode is arista.avd.defined(true) %}
+{%         do pim_interfaces.append(port_channel_interface) %}
+{%     endif %}
+{% endfor %}
+{% for vlan_interface in vlan_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     if vlan_interface.pim.ipv4.sparse_mode is arista.avd.defined(true) %}
+{%         do pim_interfaces.append(vlan_interface) %}
+{%     endif %}
+{% endfor %}
+{% if router_pim_sparse_mode is arista.avd.defined or pim_interfaces | length > 0 %}
+
+## PIM Sparse Mode
+{## Router pim sparse-mode #}
+{%     include 'documentation/router-pim-sparse-mode.j2' %}
+{## PIM Sparse Mode Interfaces #}
+{%     include 'documentation/pim-sparse-mode-interfaces.j2' %}
+{% endif %}

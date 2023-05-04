@@ -1,0 +1,25 @@
+{% if switch.evpn_role == "server" %}
+{%     set overlay_data.evpn_route_clients = {} %}
+{# #}
+{%     set avd_overlay_peers = avd_overlay_peers[inventory_hostname] | arista.avd.default([]) %}
+
+{# Parse switches pointing to us as evpn_route_server #}
+{%     for peer in avd_overlay_peers %}
+{%         set peer_facts = avd_switch_facts[peer] %}
+{%         if peer_facts.switch is arista.avd.defined(fail_action='warning',var_name='avd_switch_facts[' ~ peer ~ '].switch') %}
+{%             if inventory_hostname in peer_facts.switch.evpn_route_servers | arista.avd.default([]) and
+                  peer_facts.switch.evpn_role in ['client', 'server'] and
+                  peer not in overlay_data.evpn_route_servers | arista.avd.default([]) %}
+{# Found a matching client. Gathering information for this client #}
+{%                 set client = namespace() %}
+{%                 set client.bgp_as = peer_facts.switch.bgp_as %}
+{%                 if switch.overlay_routing_protocol_address_family is arista.avd.defined("ipv6") %}
+{%                     set client.ip_address = peer_facts.switch.ipv6_router_id %}
+{%                 else %}
+{%                     set client.ip_address = peer_facts.switch.router_id %}
+{%                 endif %}
+{%                 do overlay_data.evpn_route_clients.update({ peer: client }) %}
+{%             endif %}
+{%         endif %}
+{%     endfor %}
+{% endif %}
