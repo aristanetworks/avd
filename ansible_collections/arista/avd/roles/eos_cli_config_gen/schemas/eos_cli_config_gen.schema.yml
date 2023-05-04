@@ -8695,6 +8695,10 @@ keys:
               primary_key: address_family
               convert_types:
               - dict
+              deprecation:
+                warning: true
+                new_key: address_family_ipv4/address_family_ipv6
+                remove_in_version: v5.0.0
               items:
                 type: dict
                 keys:
