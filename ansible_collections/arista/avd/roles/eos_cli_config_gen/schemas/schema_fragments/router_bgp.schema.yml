@@ -114,10 +114,10 @@ keys:
             keys:
               ipv4_unicast:
                 type: bool
-                description: Enable or disable IPv4 unicast address family on all IPv4 neighbors.
+                description: Default activation of IPv4 unicast address-family on all IPv4 neighbors (EOS default = True).
               ipv4_unicast_transport_ipv6:
                 type: bool
-                description: Enable or disable IPv4 unicast address family on all IPv6 neighbors.
+                description: Default activation of IPv4 unicast address-family on all IPv6 neighbors (EOS default == False).
           bestpath:
             type: dict
             keys:
