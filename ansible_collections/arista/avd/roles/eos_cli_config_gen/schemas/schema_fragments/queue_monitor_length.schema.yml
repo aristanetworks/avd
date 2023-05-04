@@ -30,7 +30,7 @@ keys:
             convert_types:
               - str
             description: |
-              Set the default low threshold for Etherenet Interfaces
+              Default low threshold for Ethernet Interfaces
       log:
         type: int
         convert_types:
