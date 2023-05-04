@@ -3309,7 +3309,7 @@
                 "properties": {
                   "input": {
                     "type": "string",
-                    "description": "Policy Based Routing map name",
+                    "description": "Policy Based Routing Policy-map name",
                     "title": "Input"
                   }
                 },
@@ -8931,7 +8931,7 @@
                 "properties": {
                   "input": {
                     "type": "string",
-                    "description": "Policy Based Routing map name",
+                    "description": "Policy Based Routing Policy-map name",
                     "title": "Input"
                   }
                 },

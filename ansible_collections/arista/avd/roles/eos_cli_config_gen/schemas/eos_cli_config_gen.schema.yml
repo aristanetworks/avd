@@ -2191,7 +2191,7 @@ keys:
               keys:
                 input:
                   type: str
-                  description: Policy Based Routing map name
+                  description: Policy Based Routing Policy-map name
             qos:
               type: dict
               keys:
@@ -5810,7 +5810,7 @@ keys:
               keys:
                 input:
                   type: str
-                  description: Policy Based Routing map name
+                  description: Policy Based Routing Policy-map name
             qos:
               type: dict
               keys:
