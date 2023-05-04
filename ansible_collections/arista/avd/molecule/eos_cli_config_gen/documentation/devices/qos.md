@@ -319,9 +319,6 @@ QOS Profile: **experiment**
 | 5 | All | 40 | - | - | - |
 | 7 | All | 30 | - | 40 percent | - |
 
-**Priority Flow Control**
-
-Priority Flow Control is **disabled**
 
 QOS Profile: **no_qos_trust**
 
@@ -331,9 +328,6 @@ QOS Profile: **no_qos_trust**
 | ----------- | ------------ | ----- | ---------- | ------------------ |
 | 3 | 4 | disabled | - | - |
 
-**Priority Flow Control**
-
-Priority Flow Control is **disabled**
 
 QOS Profile: **qprof_testwithpolicy**
 
@@ -351,9 +345,6 @@ QOS Profile: **qprof_testwithpolicy**
 | 1 | All | 80 | - | - | - |
 | 5 | All | 19 | no priority | - | Multi-line comment<br>here. |
 
-**Priority Flow Control**
-
-Priority Flow Control is **disabled**
 
 QOS Profile: **test**
 
@@ -371,9 +362,6 @@ QOS Profile: **test**
 | 2 | All | 10 | priority strict | - | - |
 | 4 | All | 10 | - | - | - |
 
-**Priority Flow Control**
-
-Priority Flow Control is **disabled**
 
 QOS Profile: **test_with_pfc**
 
@@ -393,7 +381,13 @@ QOS Profile: **test_with_pfc**
 
 **Priority Flow Control**
 
-Priority Flow Control is **enabled**
+Priority Flow Control is **enabled**.
+
+Priority Flow Control watchdog is confired with the below settings.
+
+| Enabled | Action | Timeout | Recovery | Polling |
+| ------- | ------ | ------- | -------- | ------- |
+| True | drop | 0.5 | 1 | auto |
 
 | Priority | Action |
 | -------- | ------ |
@@ -419,9 +413,6 @@ QOS Profile: **uc_mc_queues_test**
 | 2 | Multicast | 10 | priority strict | - | Test strict priority |
 | 4 | Multicast | 10 | - | - | Test guaranteed percent |
 
-**Priority Flow Control**
-
-Priority Flow Control is **disabled**
 
 #### QOS Profile Device Configuration
 
@@ -498,6 +489,9 @@ qos profile test_with_pfc
    priority-flow-control on
    priority-flow-control priority 0 no-drop
    priority-flow-control priority 1 drop
+   priority-flow-control pause watchdog
+   priority-flow-control pause watchdog port action drop
+   priority-flow-control pause watchdog port timer timeout 0.5 polling-interval auto recovery-time 1 forced
 !
 qos profile uc_mc_queues_test
    !

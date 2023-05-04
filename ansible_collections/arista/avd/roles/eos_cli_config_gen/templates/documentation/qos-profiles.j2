@@ -65,10 +65,23 @@ QOS Profile: **{{ profile.name }}**
 {%             endif %}
 {%         endif %}
 
+{%         if profile.priority_flow_control.enabled is arista.avd.defined(true) %}
 **Priority Flow Control**
 
-{%         if profile.priority_flow_control.enabled is arista.avd.defined(true) %}
-Priority Flow Control is **enabled**
+Priority Flow Control is **enabled**.
+{%             if profile.priority_flow_control.watchdog.enabled is arista.avd.defined(true) %}
+{%                 set enabled = profile.priority_flow_control.watchdog.enabled %}
+{%                 set action = profile.priority_flow_control.watchdog.action | arista.avd.default('errdisable') %}
+{%                 set timeout = profile.priority_flow_control.watchdog.timer.timeout | arista.avd.default('-') %}
+{%                 set recovery = profile.priority_flow_control.watchdog.timer.recovery_time | arista.avd.default('-') %}
+{%                 set polling = profile.priority_flow_control.watchdog.timer.polling_interval | arista.avd.default('-') %}
+
+Priority Flow Control watchdog is confired with the below settings.
+
+| Enabled | Action | Timeout | Recovery | Polling |
+| ------- | ------ | ------- | -------- | ------- |
+| {{ enabled }} | {{ action }} | {{ timeout }} | {{ recovery }} | {{ polling }} |
+{%             endif %}
 
 | Priority | Action |
 | -------- | ------ |
@@ -82,8 +95,6 @@ Priority Flow Control is **enabled**
 | {{ priority_block.priority }} | {{ action }} |
 {%                 endif %}
 {%             endfor %}
-{%         else %}
-Priority Flow Control is **disabled**
 {%         endif %}
 {%     endfor %}
 

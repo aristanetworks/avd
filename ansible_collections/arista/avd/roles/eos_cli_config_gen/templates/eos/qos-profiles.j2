@@ -97,4 +97,21 @@ qos profile {{ profile.name }}
 {%             endif %}
 {%         endif %}
 {%     endfor %}
+{%     if profile.priority_flow_control.watchdog.enabled is arista.avd.defined(true) %}
+   priority-flow-control pause watchdog
+{%         if profile.priority_flow_control.watchdog.action is arista.avd.defined %}
+   priority-flow-control pause watchdog port action {{ profile.priority_flow_control.watchdog.action }}
+{%         endif %}
+{%         if profile.priority_flow_control.watchdog.timer.timeout is arista.avd.defined %}
+{%             set pfc_timer = profile.priority_flow_control.watchdog.timer %}
+{%             set pfc_command = "priority-flow-control pause watchdog port timer" %}
+{%             set pfc_command = pfc_command ~ " timeout " ~ pfc_timer.timeout %}
+{%             set pfc_command = pfc_command ~ " polling-interval " ~ pfc_timer.polling_interval %}
+{%             set pfc_command = pfc_command ~ " recovery-time " ~ pfc_timer.recovery_time %}
+{%             if pfc_timer.forced is arista.avd.defined(true) %}
+{%                 set pfc_command = pfc_command ~ " forced" %}
+{%             endif %}
+{%         endif %}
+   {{ pfc_command }}
+{%     endif %}
 {% endfor %}

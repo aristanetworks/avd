@@ -162,8 +162,68 @@ keys:
             enabled:
               type: bool
               description: |
-                Enable/Disable Priority Flow control
-                settings in this profile
+                Enable Priority Flow control.
+            watchdog:
+              type: dict
+              description: |
+                Watchdog can detect stuck transmit queues.
+              keys:
+                enabled:
+                  type: bool
+                  required: true
+                  description: |
+                    Enable the watchdog on stuck transmit queues.
+                action:
+                  type: str
+                  valid_values: ["drop", "notify-only"]
+                  description: |
+                    Override the default ERRDISABLE action to either DROP
+                    traffic on the stuck queue or notify-only
+                    without making any actions on the stuck queue.
+                timer:
+                  type: dict
+                  description: |
+                    Timer thresholds whilst monitoring queues.
+                  keys:
+                    timeout:
+                      type: str
+                      required: true
+                      pattern: "\\d+(\\.\\d)?"
+                      convert_types:
+                        - "int"
+                      description: |
+                        Timeout after which port should be errdisabled or
+                        should start dropping on congested priorities.
+                        This should be decimal with up to 1 decimal point
+                        Example : 0.5 or 60
+                    polling_interval:
+                      type: str
+                      required: true
+                      pattern: "auto|\\d+(\\.\\d)?"
+                      convert_types:
+                        - "int"
+                      description: |
+                        Time interval at which the watchdog should poll the queues.
+                        This should be decimal with up to 1 decimal point or set
+                        to 'auto' based on recovery_time and timeout values.
+                        Example : 0.5 or 60
+                    recovery_time:
+                      type: str
+                      required: true
+                      pattern: "\\d+(\\.\\d)?"
+                      convert_types:
+                        - "int"
+                      description: |
+                        Recovery-time after which stuck queue should
+                        recover and start forwarding again.
+                        This should be decimal with up to 1 decimal point.
+                        Example : 0.5 or 60
+                    forced:
+                      type: bool
+                      description: |
+                        Force recover any stuck queue(s) after the duration,
+                        irrespective of whether PFC frames are being
+                        received or not.
             priorities:
               type: list
               primary_key: priority

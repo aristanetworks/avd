@@ -11163,8 +11163,75 @@
             "properties": {
               "enabled": {
                 "type": "boolean",
-                "description": "Enable/Disable Priority Flow control\nsettings in this profile\n",
+                "description": "Enable Priority Flow control.\n",
                 "title": "Enabled"
+              },
+              "watchdog": {
+                "type": "object",
+                "description": "Watchdog can detect stuck transmit queues.\n",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Enable the watchdog on stuck transmit queues.\n",
+                    "title": "Enabled"
+                  },
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "drop",
+                      "notify-only"
+                    ],
+                    "description": "Override the default ERRDISABLE action to either DROP\ntraffic on the stuck queue or notify-only\nwithout making any actions on the stuck queue.\n",
+                    "title": "Action"
+                  },
+                  "timer": {
+                    "type": "object",
+                    "description": "Timer thresholds whilst monitoring queues.\n",
+                    "properties": {
+                      "timeout": {
+                        "type": "string",
+                        "pattern": "\\d+(\\.\\d)?",
+                        "description": "Timeout after which port should be errdisabled or\nshould start dropping on congested priorities.\nThis should be decimal with up to 1 decimal point\nExample : 0.5 or 60\n",
+                        "title": "Timeout"
+                      },
+                      "polling_interval": {
+                        "type": "string",
+                        "pattern": "auto|\\d+(\\.\\d)?",
+                        "description": "Time interval at which the watchdog should poll the queues.\nThis should be decimal with up to 1 decimal point or set\nto 'auto' based on recovery_time and timeout values.\nExample : 0.5 or 60\n",
+                        "title": "Polling Interval"
+                      },
+                      "recovery_time": {
+                        "type": "string",
+                        "pattern": "\\d+(\\.\\d)?",
+                        "description": "Recovery-time after which stuck queue should\nrecover and start forwarding again.\nThis should be decimal with up to 1 decimal point.\nExample : 0.5 or 60\n",
+                        "title": "Recovery Time"
+                      },
+                      "forced": {
+                        "type": "boolean",
+                        "description": "Force recover any stuck queue(s) after the duration,\nirrespective of whether PFC frames are being\nreceived or not.\n",
+                        "title": "Forced"
+                      }
+                    },
+                    "required": [
+                      "timeout",
+                      "polling_interval",
+                      "recovery_time"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Timer"
+                  }
+                },
+                "required": [
+                  "enabled"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Watchdog"
               },
               "priorities": {
                 "type": "array",

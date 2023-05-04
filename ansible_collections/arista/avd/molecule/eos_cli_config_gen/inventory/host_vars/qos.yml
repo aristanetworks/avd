@@ -72,6 +72,14 @@ qos_profiles:
         qos_input: pmap_test1
     priority_flow_control:
       enabled: true
+      watchdog:
+        enabled: true
+        action: drop
+        timer:
+          timeout: "0.5"
+          polling_interval: auto
+          recovery_time: 1
+          forced: true
       priorities:
         - priority: 0
           no_drop: true
