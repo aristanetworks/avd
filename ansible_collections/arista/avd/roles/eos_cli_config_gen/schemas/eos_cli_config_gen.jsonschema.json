@@ -10935,6 +10935,26 @@
         "bgp": {
           "type": "object",
           "properties": {
+            "default": {
+              "type": "object",
+              "properties": {
+                "ipv4_unicast": {
+                  "type": "boolean",
+                  "description": "Enable or disable IPv4 unicast address family on all IPv4 neighbors.",
+                  "title": "IPv4 Unicast"
+                },
+                "ipv4_unicast_transport_ipv6": {
+                  "type": "boolean",
+                  "description": "Enable or disable IPv4 unicast address family on all IPv6 neighbors.",
+                  "title": "IPv4 Unicast Transport IPv6"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Default"
+            },
             "bestpath": {
               "type": "object",
               "properties": {
