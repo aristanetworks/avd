@@ -47,7 +47,6 @@ interface Management1
 
 | BGP Tuning |
 | ---------- |
-| no bgp default ipv4-unicast |
 | bgp bestpath d-path |
 | update wait-for-convergence |
 | update wait-install |
@@ -142,7 +141,6 @@ router bgp 65101
    update wait-install
    no bgp default ipv4-unicast
    no bgp default ipv4-unicast transport ipv6
-   no bgp default ipv4-unicast
    bgp bestpath d-path
    bgp listen range 10.10.10.0/24 peer-group my-peer-group1 peer-filter my-peer-filter
    bgp listen range 12.10.10.0/24 peer-id include router-id peer-group my-peer-group3 remote-as 65444
