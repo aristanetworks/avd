@@ -13,4 +13,8 @@ qos map dscp {{ dscp_map }}
 {%     for tc_map in qos.map.traffic_class | arista.avd.natural_sort %}
 qos map traffic-class {{ tc_map }}
 {%     endfor %}
+{%     if qos.random_detect.ecn.allow is arista.avd.defined %}
+!
+qos random-detect ecn allow {{ qos.random_detect.ecn.allow }}
+{%     endif %}
 {% endif %}

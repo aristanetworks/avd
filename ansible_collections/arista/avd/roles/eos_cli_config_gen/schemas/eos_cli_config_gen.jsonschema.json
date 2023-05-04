@@ -10242,6 +10242,37 @@
         "rewrite_dscp": {
           "type": "boolean",
           "title": "Rewrite DSCP"
+        },
+        "random_detect": {
+          "type": "object",
+          "description": "Global random-detect settings\n",
+          "properties": {
+            "ecn": {
+              "type": "object",
+              "description": "Global ECN Configuration",
+              "properties": {
+                "allow": {
+                  "type": "string",
+                  "enum": [
+                    "non-ect",
+                    "non-ect chip-based"
+                  ],
+                  "description": "Allow non-ect and set drop-precedence 1 in a policy map simultaneously.\nAvailable options are 'non-ect' or 'non-ect chip-based'\nCheck which command is required for your platform",
+                  "title": "Allow"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Ecn"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Random Detect"
         }
       },
       "additionalProperties": false,

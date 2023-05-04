@@ -10,6 +10,10 @@ QOS rewrite DSCP: **enabled**
 {%     else %}
 QOS rewrite DSCP: **disabled**
 {%     endif %}
+{%     if qos.random_detect.ecn.allow is arista.avd.defined %}
+
+QOS random-detect ecn is set to allow **{{ qos.random_detect.ecn.allow }}**
+{%     endif %}
 
 {%     if qos.map is arista.avd.defined %}
 ##### QOS Mappings

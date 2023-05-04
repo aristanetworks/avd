@@ -13,6 +13,9 @@ qos:
       - "1 to dscp 56"
       - "6 to tx-queue 2"
   rewrite_dscp: true
+  random_detect:
+    ecn:
+      allow: non-ect
 
 qos_profiles:
   - name: test
