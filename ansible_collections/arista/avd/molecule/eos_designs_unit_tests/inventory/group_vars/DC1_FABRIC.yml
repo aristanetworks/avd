@@ -130,6 +130,7 @@ l3leaf:
       platform: 7050SX3
       bgp_as: 65103
       mlag_port_channel_id: 2000
+      mlag_domain_id: custom_mlag_domain_id
       filter:
         tenants: [ Tenant_A, Tenant_B, Tenant_C ]
         tags: [ opzone, web, app, db, vmotion, nfs, wan ]
