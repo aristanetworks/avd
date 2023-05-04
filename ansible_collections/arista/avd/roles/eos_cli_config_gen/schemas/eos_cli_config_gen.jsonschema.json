@@ -13481,6 +13481,414 @@
                 },
                 "title": "Aggregate Addresses"
               },
+              "address_family_ipv4": {
+                "type": "object",
+                "properties": {
+                  "bgp": {
+                    "type": "object",
+                    "properties": {
+                      "missing_policy": {
+                        "type": "object",
+                        "properties": {
+                          "direction_in_action": {
+                            "type": "string",
+                            "enum": [
+                              "deny",
+                              "deny-in-out",
+                              "permit"
+                            ],
+                            "title": "Direction In Action"
+                          },
+                          "direction_out_action": {
+                            "type": "string",
+                            "enum": [
+                              "deny",
+                              "deny-in-out",
+                              "permit"
+                            ],
+                            "title": "Direction Out Action"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Missing Policy"
+                      },
+                      "additional_paths": {
+                        "type": "object",
+                        "properties": {
+                          "install": {
+                            "type": "boolean",
+                            "title": "Install"
+                          },
+                          "install_ecmp_primary": {
+                            "type": "boolean",
+                            "title": "Install Ecmp Primary"
+                          },
+                          "receive": {
+                            "type": "boolean",
+                            "title": "Receive"
+                          },
+                          "send": {
+                            "type": "object",
+                            "properties": {
+                              "any": {
+                                "type": "boolean",
+                                "title": "Any"
+                              },
+                              "backup": {
+                                "type": "boolean",
+                                "title": "Backup"
+                              },
+                              "ecmp": {
+                                "type": "boolean",
+                                "title": "Ecmp"
+                              },
+                              "ecmp_limit": {
+                                "type": "integer",
+                                "description": "Amount of ECMP paths to send",
+                                "minimum": 2,
+                                "maximum": 64,
+                                "title": "Ecmp Limit"
+                              },
+                              "limit": {
+                                "type": "integer",
+                                "description": "Amount of paths to send",
+                                "minimum": 2,
+                                "maximum": 64,
+                                "title": "Limit"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Send"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Additional Paths"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "BGP"
+                  },
+                  "neighbors": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "ip_address": {
+                          "type": "string",
+                          "title": "IP Address"
+                        },
+                        "activate": {
+                          "type": "boolean",
+                          "title": "Activate"
+                        },
+                        "route_map_in": {
+                          "type": "string",
+                          "description": "Inbound route-map name",
+                          "title": "Route Map In"
+                        },
+                        "route_map_out": {
+                          "type": "string",
+                          "description": "Outbound route-map name",
+                          "title": "Route Map Out"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "ip_address"
+                      ]
+                    },
+                    "title": "Neighbors"
+                  },
+                  "peer_groups": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Peer-group name",
+                          "title": "Name"
+                        },
+                        "activate": {
+                          "type": "boolean",
+                          "title": "Activate"
+                        },
+                        "next_hop": {
+                          "type": "object",
+                          "properties": {
+                            "address_family_ipv6": {
+                              "type": "object",
+                              "properties": {
+                                "enabled": {
+                                  "type": "boolean",
+                                  "title": "Enabled"
+                                },
+                                "originate": {
+                                  "type": "boolean",
+                                  "title": "Originate"
+                                }
+                              },
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Address Family IPv6"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Next Hop"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "name"
+                      ]
+                    },
+                    "title": "Peer Groups"
+                  },
+                  "networks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "prefix": {
+                          "type": "string",
+                          "description": "IPv4 prefix \"A.B.C.D/E\"",
+                          "title": "Prefix"
+                        },
+                        "route_map": {
+                          "type": "string",
+                          "title": "Route Map"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "prefix"
+                      ]
+                    },
+                    "title": "Networks"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Address Family IPv4"
+              },
+              "address_family_ipv6": {
+                "type": "object",
+                "properties": {
+                  "bgp": {
+                    "type": "object",
+                    "properties": {
+                      "missing_policy": {
+                        "type": "object",
+                        "properties": {
+                          "direction_in_action": {
+                            "type": "string",
+                            "enum": [
+                              "deny",
+                              "deny-in-out",
+                              "permit"
+                            ],
+                            "title": "Direction In Action"
+                          },
+                          "direction_out_action": {
+                            "type": "string",
+                            "enum": [
+                              "deny",
+                              "deny-in-out",
+                              "permit"
+                            ],
+                            "title": "Direction Out Action"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Missing Policy"
+                      },
+                      "additional_paths": {
+                        "type": "object",
+                        "properties": {
+                          "install": {
+                            "type": "boolean",
+                            "title": "Install"
+                          },
+                          "install_ecmp_primary": {
+                            "type": "boolean",
+                            "title": "Install Ecmp Primary"
+                          },
+                          "receive": {
+                            "type": "boolean",
+                            "title": "Receive"
+                          },
+                          "send": {
+                            "type": "object",
+                            "properties": {
+                              "any": {
+                                "type": "boolean",
+                                "title": "Any"
+                              },
+                              "backup": {
+                                "type": "boolean",
+                                "title": "Backup"
+                              },
+                              "ecmp": {
+                                "type": "boolean",
+                                "title": "Ecmp"
+                              },
+                              "ecmp_limit": {
+                                "type": "integer",
+                                "description": "Amount of ECMP paths to send",
+                                "minimum": 2,
+                                "maximum": 64,
+                                "title": "Ecmp Limit"
+                              },
+                              "limit": {
+                                "type": "integer",
+                                "description": "Amount of paths to send",
+                                "minimum": 2,
+                                "maximum": 64,
+                                "title": "Limit"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Send"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Additional Paths"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "BGP"
+                  },
+                  "neighbors": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "ip_address": {
+                          "type": "string",
+                          "title": "IP Address"
+                        },
+                        "activate": {
+                          "type": "boolean",
+                          "title": "Activate"
+                        },
+                        "route_map_in": {
+                          "type": "string",
+                          "description": "Inbound route-map name",
+                          "title": "Route Map In"
+                        },
+                        "route_map_out": {
+                          "type": "string",
+                          "description": "Outbound route-map name",
+                          "title": "Route Map Out"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "ip_address"
+                      ]
+                    },
+                    "title": "Neighbors"
+                  },
+                  "peer_groups": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Peer-group name",
+                          "title": "Name"
+                        },
+                        "activate": {
+                          "type": "boolean",
+                          "title": "Activate"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "name"
+                      ]
+                    },
+                    "title": "Peer Groups"
+                  },
+                  "networks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "prefix": {
+                          "type": "string",
+                          "description": "IPv6 prefix \"A:B:C:D:E:F:G:H/I\"",
+                          "title": "Prefix"
+                        },
+                        "route_map": {
+                          "type": "string",
+                          "title": "Route Map"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "prefix"
+                      ]
+                    },
+                    "title": "Networks"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Address Family IPv6"
+              },
               "address_families": {
                 "type": "array",
                 "items": {
