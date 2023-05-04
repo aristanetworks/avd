@@ -1,0 +1,225 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  node_type_keys:
+    documentation_options:
+      filename: Node Types
+    type: list
+    description: |
+      Define Node Type Keys, to specify the properties of each node type in the fabric.
+      This allows for complete customization of the fabric layout.
+      This should be defined in top level group_var for the fabric.
+    convert_types:
+    - dict
+    primary_key: key
+    items:
+      type: dict
+      keys:
+        key:
+          type: str
+        type:
+          type: str
+          description: Type value matching this node_type_key.
+        connected_endpoints:
+          type: bool
+          default: false
+          description: Are endpoints connected to this node type.
+        default_evpn_role:
+          type: str
+          valid_values:
+          - none
+          - client
+          - server
+          default: none
+          description: Default evpn_role. Can be overridden in topology vars.
+        default_ptp_priority1:
+          type: int
+          min: 0
+          max: 255
+          default: 127
+          description: Default PTP priority 1
+        default_underlay_routing_protocol:
+          type: str
+          default: "ebgp"
+          convert_to_lower_case: true
+          valid_values:
+          - "ebgp"
+          - "ibgp"
+          - "ospf"
+          - "ospf-ldp"
+          - "isis"
+          - "isis-sr"
+          - "isis-ldp"
+          - "isis-sr-ldp"
+          - "none"
+          description: |
+            Set the default underlay routing_protocol.
+            Can be overridden by setting "underlay_routing_protocol" host/group_vars.
+        default_overlay_routing_protocol:
+          type: str
+          default: "ebgp"
+          convert_to_lower_case: true
+          valid_values:
+          - "ebgp"
+          - "ibgp"
+          - "her"
+          - "cvx"
+          - "none"
+          description: |
+            Set the default overlay routing_protocol.
+            Can be overridden by setting "overlay_routing_protocol" host/group_vars.
+        default_mpls_overlay_role:
+          type: str
+          valid_values:
+          - "client"
+          - "server"
+          - "none"
+          description: |
+            Set the default mpls overlay role.
+            Acting role in overlay control plane.
+        default_overlay_address_families:
+          type: list
+          convert_types:
+          - "str"
+          items:
+            type: str
+            convert_to_lower_case: true
+            valid_values:
+            - "evpn"
+            - "vpn-ipv4"
+            - "vpn-ipv6"
+          description: |
+            Set the default overlay address families.
+        default_evpn_encapsulation:
+          type: str
+          convert_to_lower_case: true
+          valid_values:
+          - "mpls"
+          - "vxlan"
+          description: |
+            Set the default evpn encapsulation.
+        mlag_support:
+          type: bool
+          default: false
+          description: Can this node type support mlag.
+        network_services:
+          description: Will network services be deployed on this node type.
+          type: dict
+          keys:
+            l1:
+              type: bool
+              default: false
+              description: "??"
+            l2:
+              type: bool
+              default: false
+              description: Vlans
+            l3:
+              type: bool
+              default: false
+              description: |
+                VRFs, SVIs (if l2 is true).
+                Only supported with underlay_router.
+        underlay_router:
+          type: bool
+          default: true
+          description: Is this node type a L3 device.
+        uplink_type:
+          type: str
+          valid_values:
+          - "p2p"
+          - "port-channel"
+          default: "p2p"
+          description: Uplinks must be p2p if "vtep" or "underlay_router" is true.
+        vtep:
+          type: bool
+          default: false
+          description: Is this switch an EVPN VTEP.
+        mpls_lsr:
+          type: bool
+          default: false
+          description: Is this switch an MPLS LSR.
+        ip_addressing:
+          type: dict
+          description: Override ip_addressing templates.
+          keys:
+            python_module:
+              type: str
+              description: Python Module to import for IP addressing - default inherited from templates.ip_addressing.python_module
+            python_class_name:
+              type: str
+              description: Name of Python Class to import for IP addressing  - default inherited from templates.ip_addressing.python_class_name
+            router_id:
+              type: str
+              description: Path to J2 template - default inherited from templates.ip_addressing.router_id.
+            router_id_ipv6:
+              type: str
+              description: Path to J2 template - default inherited from templates.ip_addressing.router_id_ipv6.
+            mlag_ip_primary:
+              type: str
+              description: Path to J2 template - default inherited from templates.ip_addressing.mlag_ip_primary.
+            mlag_ip_secondary:
+              type: str
+              description: Path to J2 template - default inherited from templates.ip_addressing.mlag_ip_secondary.
+            mlag_l3_ip_primary:
+              type: str
+              description: Path to J2 template - default inherited from templates.ip_addressing.mlag_l3_ip_primary.
+            mlag_l3_ip_secondary:
+              type: str
+              description: Path to J2 template - default inherited from templates.ip_addressing.mlag_l3_ip_secondary.
+            mlag_ibgp_peering_ip_primary:
+              type: str
+              description: Path to J2 template - default inherited from templates.ip_addressing.mlag_ibgp_peering_ip_primary.
+            mlag_ibgp_peering_ip_secondary:
+              type: str
+              description: Path to J2 template - default inherited from templates.ip_addressing.mlag_ibgp_peering_ip_secondary.
+            p2p_uplinks_ip:
+              type: str
+              description: Path to J2 template - default inherited from templates.ip_addressing.p2p_uplinks_ip.
+            p2p_uplinks_peer_ip:
+              type: str
+              description: Path to J2 template - default inherited from templates.ip_addressing.p2p_uplinks_peer_ip.
+            vtep_ip_mlag:
+              type: str
+              description: Path to J2 template - default inherited from templates.ip_addressing.vtep_ip_mlag.
+            vtep_ip:
+              type: str
+              description: Path to J2 template - default inherited from templates.ip_addressing.vtep_ip.
+        interface_descriptions:
+          type: dict
+          description: |
+            Override interface_descriptions templates
+            If description templates use Jinja2, they have to strip whitespaces using {%- -%} on any code blocks.
+          keys:
+            python_module:
+              type: str
+              description: Python Module to import for interface descriptions - default inherited from templates.interface_descriptions.python_module
+            python_class_name:
+              type: str
+              description: Name of Python Class to import for interface descriptions - default inherited from templates.interface_descriptions.python_class_name
+            underlay_ethernet_interfaces:
+              type: str
+              description: Path to J2 template - default inherited from templates.interface_descriptions.underlay_ethernet_interfaces.
+            underlay_port_channel_interfaces:
+              type: str
+              description: Path to J2 template - default inherited from templates.interface_descriptions.underlay_port_channel_interfaces.
+            mlag_ethernet_interfaces:
+              type: str
+              description: Path to J2 template - default inherited from templates.interface_descriptions.mlag_ethernet_interfaces.
+            mlag_port_channel_interfaces:
+              type: str
+              description: Path to J2 template - default inherited from templates.interface_descriptions.mlag_port_channel_interfaces.
+            connected_endpoints_ethernet_interfaces:
+              type: str
+              description: Path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_ethernet_interfaces.
+            connected_endpoints_port_channel_interfaces:
+              type: str
+              description: Path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_port_channel_interfaces.
+            overlay_loopback_interface:
+              type: str
+              description: Path to J2 template - default inherited from templates.interface_descriptions.overlay_loopback_interface.
+            vtep_loopback_interface:
+              type: str
+              description: Path to J2 template - default inherited from templates.interface_descriptions.vtep_loopback_interface.

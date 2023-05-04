@@ -1,0 +1,34 @@
+- name: Create md_fragments directory for each EOS device
+  delegate_to: localhost
+  ansible.builtin.file:
+    path: "{{ snapshots_backup_dir }}/{{ inventory_hostname }}/md_fragments"
+    state: directory
+    mode: 0775
+
+- name: Save collected commands in md files
+  delegate_to: localhost
+  ansible.builtin.template:
+    src: md_report.j2
+    dest: "{{ snapshots_backup_dir }}/{{ inventory_hostname }}/md_fragments/{{ item.item | replace('/', '_') }}.md"
+    mode: 0664
+  loop: "{{ cli_output.results }}"
+
+- name: Generate table of content report
+  delegate_to: localhost
+  ansible.builtin.template:
+    src: md_table_of_content.j2
+    dest: "{{ snapshots_backup_dir }}/{{ inventory_hostname }}/md_fragments/0_table_of_content.md"
+    mode: 0664
+
+- name: Assembling md_fragments
+  delegate_to: localhost
+  ansible.builtin.assemble:
+    src: "{{ snapshots_backup_dir }}/{{ inventory_hostname }}/md_fragments"
+    dest: "{{ snapshots_backup_dir }}/{{ inventory_hostname }}/report.md"
+    mode: 0664
+
+- name: Delete md_fragments directory for each EOS device
+  delegate_to: localhost
+  ansible.builtin.file:
+    path: "{{ snapshots_backup_dir }}/{{ inventory_hostname }}/md_fragments"
+    state: absent

@@ -1,0 +1,14 @@
+---
+- name: Create AVD Schemas
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Gather AVD Schema Fragments for eos_cli_config_gen
+      ansible.builtin.import_role:
+        name: arista.avd.eos_cli_config_gen
+        tasks_from: build-schemas
+
+    - name: Gather AVD Schema Fragments for eos_designs
+      ansible.builtin.import_role:
+        name: arista.avd.eos_designs
+        tasks_from: build-schemas

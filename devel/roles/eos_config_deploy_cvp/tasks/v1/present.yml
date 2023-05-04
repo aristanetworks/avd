@@ -1,0 +1,69 @@
+---
+# tasks file for eos-config-deploy-cvp - state=present
+- name: "Collecting facts from CVP {{ inventory_hostname }}."
+  tags: [always]
+  arista.cvp.cv_facts:
+  register: cvp_facts
+
+- name: "Execute pending tasks on {{ inventory_hostname }}"
+  tags: [apply]
+  arista.cvp.cv_task:
+    tasks: "{{ cvp_facts.ansible_facts.tasks }}"  # noqa: args[module]
+  when: execute_tasks|bool
+
+- name: "Create configlets on CVP {{ inventory_hostname }}."
+  tags: [provision]
+  arista.cvp.cv_configlet:
+    cvp_facts: "{{ cvp_facts.ansible_facts }}"
+    configlets: "{{ cvp_vars.cvp_configlets }}"
+    configlet_filter: ["{{ configlets_prefix }}"]
+  register: cvp_configlets_status
+
+- name: "Execute any configlet generated tasks to update configuration on {{ inventory_hostname }}"
+  tags: [apply]
+  arista.cvp.cv_task:
+    tasks: "{{ cvp_configlets_status.data.tasks }}"  # noqa: args[module]
+    wait: 90
+  when:
+    - cvp_configlets_status.data.tasks | length > 0
+    - execute_tasks|bool
+
+- name: "Building Containers topology on {{ inventory_hostname }}"
+  tags: [provision]
+  arista.cvp.cv_container:
+    topology: "{{ cvp_containers }}"
+    cvp_facts: "{{ cvp_facts.ansible_facts }}"
+  register: cvp_container_results
+
+- name: "Execute pending tasks on {{ inventory_hostname }}"
+  tags: [apply]
+  arista.cvp.cv_task:
+    tasks: "{{ cvp_container_results.data.tasks }}"  # noqa: args[module]
+    wait: 720
+  when:
+    - execute_tasks|bool
+
+- name: "Refreshing facts from CVP {{ inventory_hostname }}."
+  tags: [always]
+  arista.cvp.cv_facts:
+  register: cvp_facts
+
+# Load tasks when device_filter is string
+- name: Load conditional cv_device execution if device_filter is string.
+  tags: [provision, apply]
+  ansible.builtin.include_tasks: "./cv-device-filter-string.yml"
+  when: "device_filter is string"
+
+# Load tasks when device_filter is list
+- name: Load conditional cv_device execution if device_filter is list.
+  tags: [provision, apply]
+  ansible.builtin.include_tasks: "./cv-device-filter-list.yml"
+  when: "device_filter is not string"
+
+- name: "Execute pending tasks on {{ inventory_hostname }}"
+  tags: [apply]
+  arista.cvp.cv_task:
+    tasks: "{{ cvp_devices_results.data.tasks }}"  # noqa: args[module]
+    wait: 720
+  when:
+    - execute_tasks|bool

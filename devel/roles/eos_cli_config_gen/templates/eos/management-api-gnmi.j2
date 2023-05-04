@@ -1,0 +1,77 @@
+{# eos - management api gnmi #}
+{% if management_api_gnmi is arista.avd.defined %}
+!
+management api gnmi
+{%     for vrf in management_api_gnmi.enable_vrfs | arista.avd.natural_sort %}
+{%         if vrf.name == 'default' %}
+   transport grpc default
+{%         else %}
+   transport grpc {{ vrf.name }}
+{%             if vrf.access_group is arista.avd.defined %}
+      ip access-group {{ vrf.access_group }}
+{%             endif %}
+      vrf {{ vrf.name }}
+{%         endif %}
+{%     endfor %}
+{%     if management_api_gnmi.octa is defined %}
+   provider eos-native
+{%     endif %}
+{%     if management_api_gnmi.transport is arista.avd.defined %}
+{%         if management_api_gnmi.transport.grpc is arista.avd.defined %}
+{%             for transport in management_api_gnmi.transport.grpc %}
+{%                 if transport.name is arista.avd.defined %}
+   transport grpc {{ transport.name }}
+{%                     if transport.ssl_profile is arista.avd.defined %}
+      ssl profile {{ transport.ssl_profile }}
+{%                     endif %}
+{%                     if transport.vrf is arista.avd.defined %}
+      vrf {{ transport.vrf }}
+{%                     endif %}
+{%                     if transport.ip_access_group is arista.avd.defined %}
+      ip access-group {{ transport.ip_access_group }}
+{%                     endif %}
+{%                     if transport.notification_timestamp is arista.avd.defined %}
+      notification timestamp {{ transport.notification_timestamp }}
+{%                     endif %}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%         if management_api_gnmi.transport.grpc_tunnels is arista.avd.defined %}
+{%             for transport in management_api_gnmi.transport.grpc_tunnels %}
+   transport grpc-tunnel {{ transport.name }}
+{%                 if transport.shutdown is arista.avd.defined(true) %}
+      shutdown
+{%                 elif transport.shutdown is arista.avd.defined(false) %}
+      no shutdown
+{%                 endif %}
+{%                 if transport.vrf is arista.avd.defined %}
+      vrf {{ transport.vrf }}
+{%                 endif %}
+{%                 if transport.tunnel_ssl_profile is arista.avd.defined %}
+      tunnel ssl profile {{ transport.tunnel_ssl_profile }}
+{%                 endif %}
+{%                 if transport.gnmi_ssl_profile is arista.avd.defined %}
+      gnmi ssl profile {{ transport.gnmi_ssl_profile }}
+{%                 endif %}
+{%                 if transport.destination is arista.avd.defined %}
+      destination {{ transport.destination.address }} port {{ transport.destination.port }}
+{%                 endif %}
+{%                 if transport.local_interface is arista.avd.defined %}
+      local interface {{ transport.local_interface.name }} port {{ transport.local_interface.port }}
+{%                 endif %}
+{%                 if transport.target.use_serial_number is arista.avd.defined(true) %}
+{%                     if transport.target.target_ids is arista.avd.defined %}
+      target serial-number {{ transport.target.target_ids | join(' ') }}
+{%                     else %}
+      target serial-number
+{%                     endif %}
+{%                 elif transport.target.target_ids is arista.avd.defined %}
+      target {{ transport.target.target_ids | join(' ') }}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+{%     if management_api_gnmi.provider is arista.avd.defined %}
+   provider {{ management_api_gnmi.provider }}
+{%     endif %}
+{% endif %}

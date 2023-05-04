@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  switchport_default:
+    documentation_options:
+      filename: data_model/Interfaces
+    type: dict
+    keys:
+      mode:
+        type: str
+        valid_values: ["routed", "access"]
+      phone:
+        type: dict
+        keys:
+          cos:
+            type: int
+            convert_types:
+              - str
+            min: 0
+            max: 7
+          trunk:
+            type: str
+            valid_values: ["tagged", "untagged"]
+          vlan:
+            type: int
+            description: VLAN ID
+            convert_types:
+              - str
+            min: 1
+            max: 4094

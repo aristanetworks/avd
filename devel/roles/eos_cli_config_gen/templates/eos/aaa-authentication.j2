@@ -1,0 +1,32 @@
+{# eos - aaa authentication #}
+{% if aaa_authentication is arista.avd.defined %}
+{%     if aaa_authentication.login.default is arista.avd.defined %}
+aaa authentication login default {{ aaa_authentication.login.default }}
+{%     endif %}
+{%     if aaa_authentication.login.console is arista.avd.defined %}
+aaa authentication login console {{ aaa_authentication.login.console }}
+{%     endif %}
+{%     if aaa_authentication.enable.default is arista.avd.defined %}
+aaa authentication enable default {{ aaa_authentication.enable.default }}
+{%     endif %}
+{%     if aaa_authentication.dot1x.default is arista.avd.defined %}
+aaa authentication dot1x default {{ aaa_authentication.dot1x.default }}
+{%     endif %}
+{%     if aaa_authentication.policies.on_failure_log is arista.avd.defined(true) %}
+aaa authentication policy on-failure log
+{%     endif %}
+{%     if aaa_authentication.policies.on_success_log is arista.avd.defined(true) %}
+aaa authentication policy on-success log
+{%     endif %}
+{%     if aaa_authentication.policies.local.allow_nopassword is arista.avd.defined(true) %}
+aaa authentication policy local allow-nopassword-remote-login
+{%     endif %}
+{%     if aaa_authentication.policies.lockout.failure is arista.avd.defined and aaa_authentication.policies.lockout.duration is arista.avd.defined %}
+{%         set lockout_cli = "aaa authentication policy lockout failure " ~ aaa_authentication.policies.lockout.failure %}
+{%         if aaa_authentication.policies.lockout.window is arista.avd.defined %}
+{%             set lockout_cli = lockout_cli ~ " window " ~ aaa_authentication.policies.lockout.window %}
+{%         endif %}
+{%         set lockout_cli = lockout_cli ~ " duration " ~ aaa_authentication.policies.lockout.duration %}
+{{ lockout_cli }}
+{%     endif %}
+{% endif %}

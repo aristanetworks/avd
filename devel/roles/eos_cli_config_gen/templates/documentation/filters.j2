@@ -1,0 +1,36 @@
+{% if community_lists is arista.avd.defined
+       or ip_community_lists is arista.avd.defined
+       or peer_filters is arista.avd.defined
+       or dynamic_prefix_lists is arista.avd.defined
+       or prefix_lists is arista.avd.defined
+       or ipv6_prefix_lists is arista.avd.defined
+       or route_maps is arista.avd.defined
+       or ip_extcommunity_lists is arista.avd.defined
+       or ip_extcommunity_lists_regexp is arista.avd.defined
+       or match_list_input is arista.avd.defined
+       or as_path is arista.avd.defined %}
+
+## Filters
+{## Community-lists #}
+{%     include 'documentation/community-lists.j2' %}
+{## Community-lists, improved data model #}
+{%     include 'documentation/ip-community-lists.j2' %}
+{## Peer Filters #}
+{%     include 'documentation/peer-filters.j2' %}
+{## Dynamic Prefix-lists #}
+{%     include 'documentation/dynamic-prefix-lists.j2' %}
+{## Prefix-lists #}
+{%     include 'documentation/prefix-lists.j2' %}
+{## IPv6 Prefix-lists #}
+{%     include 'documentation/ipv6-prefix-lists.j2' %}
+{## Route-maps #}
+{%     include 'documentation/route-maps.j2' %}
+{## IP Extended Community Lists #}
+{%     include 'documentation/ip-extcommunity-lists.j2' %}
+{## IP Extended Community Lists Regexp #}
+{%     include 'documentation/ip-extcommunity-lists-regexp.j2' %}
+{## Match-Lists #}
+{%     include 'documentation/match-list-input.j2' %}
+{## AS Paths #}
+{%     include 'documentation/as-path.j2' %}
+{% endif %}

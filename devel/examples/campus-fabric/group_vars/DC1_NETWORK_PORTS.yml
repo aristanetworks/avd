@@ -1,0 +1,78 @@
+---
+### group_vars/DC1_NETWORK_PORTS.yml
+
+port_profiles:
+  PP-DOT1X:
+    mode: "trunk phone"
+    spanning_tree_portfast: edge
+    spanning_tree_bpduguard: enabled
+    dot1x:
+      port_control: auto
+      reauthentication: true
+      pae:
+        mode: authenticator
+      host_mode:
+        mode: multi-host
+        multi_host_authenticated: true
+      mac_based_authentication:
+        enabled: true
+      timeout:
+        reauth_period: server
+        tx_period: 3
+      reauthorization_request_limit: 3
+
+network_ports:
+
+# ---------------- IDF1 ----------------
+
+  - switches:
+      - LEAF1[AB] # regex match LEAF1A & LEAF1B
+    switch_ports:
+      - Ethernet1-48
+    description: IDF1 Standard Port
+    profile: PP-DOT1X
+    native_vlan: 110
+    structured_config:
+      phone:
+        trunk: untagged
+        vlan: 120
+    dot1x:
+      authentication_failure:
+        action: allow
+        allow_vlan: 130
+
+# ---------------- IDF2 ----------------
+
+  - switches:
+      - LEAF2A
+    switch_ports:
+      - Ethernet3-7/1-48
+    description: IDF2 Standard Port
+    profile: PP-DOT1X
+    native_vlan: 210
+    structured_config:
+      phone:
+        trunk: untagged
+        vlan: 220
+    dot1x:
+      authentication_failure:
+        action: allow
+        allow_vlan: 230
+
+# ---------------- IDF3 ----------------
+
+  - switches:
+      - LEAF3[ABCDE] # regex match LEAF3A, LEAF3B, LEAF3C, LEAF3D, LEAF3E
+    switch_ports:
+      - Ethernet1-96
+    description: IDF3 Standard Port
+    profile: PP-DOT1X
+    native_vlan: 310
+    structured_config:
+      phone:
+        trunk: untagged
+        vlan: 320
+    dot1x:
+      authentication_failure:
+        action: allow
+        allow_vlan: 330

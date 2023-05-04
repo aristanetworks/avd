@@ -1,0 +1,83 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  aaa_authentication:
+    documentation_options:
+      filename: data_model/Authentication
+    type: dict
+    keys:
+      login:
+        type: dict
+        keys:
+          default:
+            type: str
+            description: |
+              Login authentication method(s) as a string.
+              Examples:
+              - "group tacacs+ local"
+              - "group MYGROUP none"
+              - "group radius group MYGROUP local"
+          console:
+            type: str
+            description: |
+              Console authentication method(s) as a string.
+              Examples:
+              - "group tacacs+ local"
+              - "group MYGROUP none"
+              - "group radius group MYGROUP local"
+      enable:
+        type: dict
+        keys:
+          default:
+            type: str
+            description: |
+              Enable authentication method(s) as a string.
+              Examples:
+              - "group tacacs+ local"
+              - "group MYGROUP none"
+              - "group radius group MYGROUP local"
+      dot1x:
+        type: dict
+        keys:
+          default:
+            type: str
+            description: |
+              802.1x authentication method(s) as a string.
+              Examples:
+              - "group radius"
+              - "group MYGROUP group radius"
+      policies:
+        type: dict
+        keys:
+          on_failure_log:
+            type: bool
+          on_success_log:
+            type: bool
+          local:
+            type: dict
+            keys:
+              allow_nopassword:
+                type: bool
+          lockout:
+            type: dict
+            keys:
+              failure:
+                type: int
+                min: 1
+                max: 255
+                convert_types:
+                - str
+              duration:
+                type: int
+                min: 1
+                max: 4294967295
+                convert_types:
+                - str
+              window:
+                type: int
+                min: 1
+                max: 4294967295
+                convert_types:
+                - str

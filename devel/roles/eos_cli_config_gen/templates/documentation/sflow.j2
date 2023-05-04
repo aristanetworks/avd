@@ -1,0 +1,111 @@
+{# doc - sflow #}
+{% if sflow is arista.avd.defined or sflow_interfaces | length > 0 %}
+
+### SFlow
+
+#### SFlow Summary
+{%     if ((sflow.vrfs is arista.avd.defined) or (sflow.destinations is arista.avd.defined) or (sflow.source_interface is arista.avd.defined)) %}
+
+| VRF | SFlow Source | SFlow Destination | Port |
+| --- | ------------ | ----------------- | ---- |
+{%         if sflow.vrfs is arista.avd.defined %}
+{%             for vrf in sflow.vrfs | arista.avd.natural_sort('name') %}
+{%                 if vrf.destinations is arista.avd.defined %}
+{%                     for destination in vrf.destinations | arista.avd.natural_sort('destination') %}
+{%                         set port = destination.port | arista.avd.default('6343') %}
+| {{ vrf.name }} | - | {{ destination.destination }} | {{ port }} |
+{%                     endfor %}
+{%                 endif %}
+{%                 if vrf.source_interface is arista.avd.defined %}
+| {{ vrf.name }} | {{ vrf.source_interface }} | - | - |
+{%                 elif vrf.source is arista.avd.defined %}
+| {{ vrf.name }} | {{ vrf.source }} | - | - |
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%         if sflow.destinations is arista.avd.defined %}
+{%             for destination in sflow.destinations  %}
+{%                 set port = destination.port | arista.avd.default('6343') %}
+| default | - | {{ destination.destination }} | {{ port }} |
+{%             endfor %}
+{%         endif %}
+{%         if sflow.source_interface is arista.avd.defined %}
+| default | {{ sflow.source_interface }} | - | - |
+{%         elif sflow.source is arista.avd.defined %}
+| default | {{ sflow.source }} | - | - |
+{%         endif %}
+{%     endif %}
+{%     if sflow.sample is arista.avd.defined %}
+
+sFlow Sample Rate: {{ sflow.sample }}
+{%     endif %}
+{%     if sflow.polling_interval is arista.avd.defined %}
+
+sFlow Polling Interval: {{ sflow.polling_interval }}
+{%     endif %}
+{%     if sflow.run is defined and sflow.run == true %}
+
+sFlow is enabled.
+{%     else %}
+
+sFlow is disabled.
+{%     endif %}
+{%     if sflow.interface.disable.default is arista.avd.defined(true) %}
+
+sFlow is disabled on all interfaces by default.
+{%     endif %}
+{%     if sflow.hardware_acceleration.enabled is arista.avd.defined(true) %}
+
+sFlow hardware acceleration is enabled.
+{%     endif %}
+{%     if sflow.hardware_acceleration.sample is arista.avd.defined %}
+
+sFlow hardware accelerated Sample Rate: {{ sflow.hardware_acceleration.sample }}
+{%     endif %}
+{%     if sflow.hardware_acceleration.modules is arista.avd.defined and sflow.hardware_acceleration.modules | length > 0 %}
+
+#### SFlow Hardware Accelerated Modules
+
+| Module | Acceleration Enabled |
+| ------ | -------------------- |
+{%         for module in sflow.hardware_acceleration.modules %}
+{%             if module.name is arista.avd.defined %}
+| {{ module.name }} | {{ module.enabled | arista.avd.default(true) }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     if sflow.extensions is arista.avd.defined %}
+
+#### SFlow Extensions
+
+| Extension | Enabled |
+| --------- | ------- |
+{%         for extension in sflow.extensions | arista.avd.natural_sort('name') if extension.name is arista.avd.defined and extension.enabled is arista.avd.defined %}
+| {{ extension.name }} | {{ extension.enabled }} |
+{%         endfor %}
+{%     endif %}
+{%     if sflow_interfaces | length > 0 %}
+
+#### SFlow Interfaces
+
+| Interface | Ingress Enabled | Egress Enabled |
+| --------- | --------------- | -------------- |
+{%         for sflow_interface in sflow_interfaces | arista.avd.natural_sort('name') %}
+{%             set sflow_ingress_enable = sflow_interface.sflow.enable | arista.avd.default("-") %}
+{%             if sflow_interface.sflow.egress.enable is arista.avd.defined %}
+{%                 set sflow_egress_enable = sflow_interface.sflow.egress.enable %}
+{%             elif sflow_interface.sflow.egress.unmodified_enable is arista.avd.defined %}
+{%                 set sflow_egress_enable = sflow_interface.sflow.egress.unmodified_enable ~ " (unmodified)" %}
+{%             endif %}
+| {{ sflow_interface.name }} | {{ sflow_ingress_enable }} | {{ sflow_egress_enable | arista.avd.default('-') }} |
+{%         endfor %}
+{%     endif %}
+{%     if sflow is arista.avd.defined %}
+
+#### SFlow Device Configuration
+
+```eos
+{%         include 'eos/sflow.j2' %}
+```
+{%     endif %}
+{% endif %}

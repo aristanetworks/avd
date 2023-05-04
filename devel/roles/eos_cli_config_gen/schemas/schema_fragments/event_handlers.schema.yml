@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  event_handlers:
+    documentation_options:
+      filename: data_model/Monitoring
+    type: list
+    primary_key: name
+    convert_types:
+    - dict
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Event Handler Name
+        action_type:
+          type: str
+          valid_values: ["bash", "increment", "log"]
+        action:
+          type: str
+          description: |
+            Command to execute
+        delay:
+          type: int
+          description: |
+            Event-handler delay in seconds
+        trigger:
+          type: str
+          description: |
+            Configure event trigger condition.
+          valid_values: ["on-logging", "on-startup-config"]
+        regex:
+          type: str
+          description: |
+            Regular expression to use for searching log messages. Required for on-logging trigger
+        asynchronous:
+          type: bool
+          default: False
+          description: |
+            Set the action to be non-blocking.

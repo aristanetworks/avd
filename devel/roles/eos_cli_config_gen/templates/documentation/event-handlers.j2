@@ -1,0 +1,23 @@
+{# doc - event handlers #}
+{% if event_handlers is arista.avd.defined %}
+
+### Event Handler
+
+#### Event Handler Summary
+
+| Handler | Action Type | Action | Trigger |
+| ------- | ----------- | ------ | ------- |
+{%     for handler in event_handlers | arista.avd.natural_sort('name') %}
+{%         set action = handler.action | replace('|', '\|') %}
+{%         if handler.action_type == 'bash' %}
+{%             set action = '<code>' ~ action ~ '</code>' %}
+{%         endif %}
+| {{ handler.name }} | {{ handler.action_type }} | {{ action }} | {{ handler.trigger }} |
+{%     endfor %}
+
+#### Event Handler Device Configuration
+
+```eos
+{%     include 'eos/event-handlers.j2' %}
+```
+{% endif %}

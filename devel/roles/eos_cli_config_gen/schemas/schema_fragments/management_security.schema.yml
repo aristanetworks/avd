@@ -1,0 +1,53 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  management_security:
+    documentation_options:
+      filename: data_model/Management
+    type: dict
+    keys:
+      entropy_source:
+        type: str
+      password:
+        type: dict
+        keys:
+          minimum_length:
+            type: int
+            min: 1
+            max: 32
+            convert_types:
+            - str
+          encryption_key_common:
+            type: bool
+          encryption_reversible:
+            type: str
+      ssl_profiles:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            tls_versions:
+              type: str
+              description: |
+                List of allowed TLS versions as string
+                Examples:
+                  - "1.0"
+                  - "1.0 1.1"
+              convert_types:
+              - float
+            cipher_list:
+              type: str
+              description: |
+                cipher_list syntax follows the openssl cipher strings format.
+                Colon (:) separated list of allowed ciphers as a string
+            certificate:
+              type: dict
+              keys:
+                file:
+                  type: str
+                key:
+                  type: str

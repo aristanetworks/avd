@@ -1,0 +1,14 @@
+{# doc - dns domain #}
+{% if dns_domain is arista.avd.defined %}
+
+### DNS Domain
+
+#### DNS domain: {{ dns_domain }}
+
+#### DNS Domain Device Configuration
+
+```eos
+{%     include 'eos/dns-domain.j2' %}
+!
+```
+{% endif %}

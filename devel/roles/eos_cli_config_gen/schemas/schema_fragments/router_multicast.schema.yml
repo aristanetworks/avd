@@ -1,0 +1,72 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  router_multicast:
+    documentation_options:
+      filename: data_model/Multicast
+    type: dict
+    keys:
+      ipv4:
+        type: dict
+        keys:
+          counters:
+            type: dict
+            keys:
+              rate_period_decay:
+                description: Rate in seconds
+                type: int
+                min: 0
+                max: 600
+                convert_types:
+                - str
+          routing:
+            type: bool
+          multipath:
+            type: str
+            valid_values: ["none", "deterministic", "deterministic color", "deterministic router-id"]
+          software_forwarding:
+            type: str
+            valid_values: ["kernel", "sfe"]
+          rpf:
+            type: dict
+            keys:
+              routes:
+                type: list
+                items:
+                  type: dict
+                  keys:
+                    source_prefix:
+                      description: Source address A.B.C.D or Source prefix A.B.C.D/E
+                      type: str
+                      required: true
+                    destinations:
+                      type: list
+                      required: true
+                      items:
+                        type: dict
+                        keys:
+                          nexthop:
+                            description: Next-hop IP address or interface name
+                            type: str
+                            required: true
+                          distance:
+                            description: Administrative distance for this route
+                            type: int
+                            min: 1
+                            max: 255
+                            convert_types:
+                            - str
+      vrfs:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            ipv4:
+              type: dict
+              keys:
+                routing:
+                  type: bool

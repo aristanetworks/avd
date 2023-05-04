@@ -1,0 +1,83 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  monitor_connectivity:
+    documentation_options:
+      filename: data_model/Monitoring
+    type: dict
+    keys:
+      shutdown:
+        type: bool
+      interval:
+        type: int
+        convert_types:
+        - str
+      interface_sets:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            interfaces:
+              type: str
+              description: |
+                Interface range(s) should be of same type, Ethernet, Loopback, Management etc.
+                Multiple interface ranges can be specified separated by ","
+      local_interfaces:
+        type: str
+      hosts:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              description: Host Name
+              type: str
+            description:
+              type: str
+            ip:
+              type: str
+            local_interfaces:
+              type: str
+            url:
+              type: str
+      vrfs:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              description: VRF Name
+              type: str
+            description:
+              type: str
+            interface_sets:
+              type: list
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                  interfaces:
+                    type: str
+            local_interfaces:
+              type: str
+            hosts:
+              type: list
+              items:
+                type: dict
+                keys:
+                  name:
+                    description: Host name
+                    type: str
+                  description:
+                    type: str
+                  ip:
+                    type: str
+                  local_interfaces:
+                    type: str
+                  url:
+                    type: str

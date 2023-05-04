@@ -1,0 +1,369 @@
+{
+    "$schema": "https://json-schema.org/draft-07/schema",
+    "$id": "https://avd.sh/development/schema-schema.json",
+    "$defs": {
+        "avd_schema_var": {
+            "type": "object",
+            "oneOf": [
+                {
+                    "required": [ "type" ],
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "int"
+                            ]
+                        },
+                        "convert_types": {
+                            "type": "array",
+                            "description": "List of types to auto-convert from.\nFor 'int' auto-conversion is supported from 'bool' and 'str'",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "bool",
+                                    "str",
+                                    "float"
+                                ]
+                            }
+                        },
+                        "default": {
+                            "description": "Default value",
+                            "type": "number"
+                        },
+                        "max": {
+                            "type": "number"
+                        },
+                        "min": {
+                            "type": "number"
+                        },
+                        "valid_values": {
+                            "type": "array",
+                            "description": "List of valid values",
+                            "items": {
+                                "type": "number"
+                            }
+                        },
+                        "display_name": { "$ref": "#/$defs/display_name" },
+                        "description": { "$ref": "#/$defs/description" },
+                        "required": { "$ref": "#/$defs/required" },
+                        "dynamic_valid_values": { "$ref": "#/$defs/dynamic_valid_values" },
+                        "deprecation": { "$ref": "#/$defs/deprecation" },
+                        "$ref": { "$ref": "#/$defs/$ref" },
+                        "documentation_options": { "$ref": "#/$defs/documentation_options" }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "required": [ "type" ],
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "bool"
+                            ]
+                        },
+                        "convert_types": {
+                            "type": "array",
+                            "description": "List of types to auto-convert from.\nFor 'bool' auto-conversion is supported from 'int' and 'str'",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "int",
+                                    "str"
+                                ]
+                            }
+                        },
+                        "default": {
+                            "description": "Default value",
+                            "type": "boolean"
+                        },
+                        "valid_values": {
+                            "type": "array",
+                            "description": "List of valid values",
+                            "items": {
+                                "type": "boolean"
+                            }
+                        },
+                        "display_name": { "$ref": "#/$defs/display_name" },
+                        "description": { "$ref": "#/$defs/description" },
+                        "required": { "$ref": "#/$defs/required" },
+                        "dynamic_valid_values": { "$ref": "#/$defs/dynamic_valid_values" },
+                        "deprecation": { "$ref": "#/$defs/deprecation" },
+                        "$ref": { "$ref": "#/$defs/$ref" },
+                        "documentation_options": { "$ref": "#/$defs/documentation_options" }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "required": [ "type" ],
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "str"
+                            ]
+                        },
+                        "convert_to_lower_case" : {
+                            "description": "Convert string value to lower case before performing validation",
+                            "type": "boolean",
+                            "default": false
+                        },
+                        "convert_types": {
+                            "type": "array",
+                            "description": "List of types to auto-convert from.\nFor 'str' auto-conversion is supported from 'bool' and 'int'",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "bool",
+                                    "int",
+                                    "float"
+                                ]
+                            }
+                        },
+                        "default": {
+                            "description": "Default value",
+                            "type": "string"
+                        },
+                        "format": {
+                            "type": "string",
+                            "enum": [
+                                "ipv4",
+                                "ipv4_cidr",
+                                "ipv6",
+                                "ipv6_cidr",
+                                "ip",
+                                "cidr",
+                                "mac"
+                            ]
+                        },
+                        "max_length": {
+                            "type": "number"
+                        },
+                        "min_length": {
+                            "type": "number"
+                        },
+                        "pattern": {
+                            "type": "string",
+                            "format": "regex",
+                            "description": " A regular expression which will be matched on the variable value.\nThe regular expression should be valid according to the ECMA 262 dialect\nRemember to use double escapes"
+
+                        },
+                        "valid_values": {
+                            "type": "array",
+                            "description": "List of valid values",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "display_name": { "$ref": "#/$defs/display_name" },
+                        "description": { "$ref": "#/$defs/description" },
+                        "required": { "$ref": "#/$defs/required" },
+                        "dynamic_valid_values": { "$ref": "#/$defs/dynamic_valid_values" },
+                        "deprecation": { "$ref": "#/$defs/deprecation" },
+                        "$ref": { "$ref": "#/$defs/$ref" },
+                        "documentation_options": { "$ref": "#/$defs/documentation_options" }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "required": [ "type" ],
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "list"
+                            ]
+                        },
+                        "convert_types": {
+                            "type": "array",
+                            "description": "List of types to auto-convert from.\nFor 'list of dicts' auto-conversion is supported from 'dict' if 'primary_key' is set on the list schema\nFor other list item types conversion from dict will use the keys as list items.",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "dict",
+                                    "list",
+                                    "str"
+                                ]
+                            }
+                        },
+                        "default": {
+                            "description": "Default value",
+                            "type": "array"
+                        },
+                        "items": {
+                            "description": "Schema for list items",
+                            "$comment": "Recursive reference to allow infinite nested data models",
+                            "$ref": "#/$defs/avd_schema_var"
+                        },
+                        "min_length": {
+                            "type": "number"
+                        },
+                        "max_length": {
+                            "type": "number"
+                        },
+                        "primary_key": {
+                            "type": "string",
+                            "$comment": "The regex here matches valid key names",
+                            "pattern": "^[a-z][a-z0-9_]*$",
+                            "description": "Name of a primary key in a list of dictionaries.\nThe configured key is implicitly required and must have unique values between the list elements"
+                        },
+                        "secondary_key": {
+                            "type": "string",
+                            "$comment": "The regex here matches valid key names",
+                            "pattern": "^[a-z][a-z0-9_]*$",
+                            "description": "Name of a secondary key, which is used with `convert_types:[dict]` in case of values not being dictionaries."
+                        },
+                        "display_name": { "$ref": "#/$defs/display_name" },
+                        "description": { "$ref": "#/$defs/description" },
+                        "required": { "$ref": "#/$defs/required" },
+                        "deprecation": { "$ref": "#/$defs/deprecation" },
+                        "$ref": { "$ref": "#/$defs/$ref" },
+                        "documentation_options": { "$ref": "#/$defs/documentation_options" }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "required": [ "type" ],
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "dict"
+                            ]
+                        },
+                        "default": {
+                            "description": "Default value",
+                            "type": "object"
+                        },
+                        "keys": {
+                            "type": "object",
+                            "description": "Dictionary of dictionary-keys in the format `{<keyname>: {<schema>}}`.\n`keyname` must use snake_case.\n`schema` is the schema for each key. This is a recursive schema, so the value must conform to AVD Schema",
+                            "$comment": "Recursive reference to allow infinite nested data models",
+                            "patternProperties": {
+                                "^[a-z][a-z0-9_]*$": {
+                                    "$comment": "The regex here matches valid key names",
+                                    "$ref": "#/$defs/avd_schema_var"
+                                }
+                            }
+                        },
+                        "dynamic_keys": {
+                            "type": "object",
+                            "description": "Dictionary of dynamic dictionary-keys in the format `{<variable.path>: {<schema>}}`.\n`variable.path` is a variable path using dot-notation and pointing to a variable under the parent dictionary containing dictionary-keys.\nIf an element of the variable path is a list, every list item will unpacked.\n`schema` is the schema for each key. This is a recursive schema, so the value must conform to AVD Schema\nNote that this is building the schema from values in the _data_ being validated!",
+                            "patternProperties": {
+                                "^[a-z][a-z0-9_.]*$": {
+                                    "$ref": "#/$defs/avd_schema_var"
+                                }
+                            }
+                        },
+                        "allow_other_keys": {
+                            "type": "boolean",
+                            "default": false,
+                            "description": "Allow keys in the dictionary which are not defined in the schema."
+                        },
+                        "display_name": { "$ref": "#/$defs/display_name" },
+                        "description": { "$ref": "#/$defs/description" },
+                        "required": { "$ref": "#/$defs/required" },
+                        "deprecation": { "$ref": "#/$defs/deprecation" },
+                        "$ref": { "$ref": "#/$defs/$ref" },
+                        "documentation_options": { "$ref": "#/$defs/documentation_options" },
+                        "$schema": { "type": "string" },
+                        "$id": { "type": "string" },
+                        "$defs": { "$ref": "#/$defs/$defs" }
+                    },
+                    "additionalProperties": false
+                },
+                {
+                    "required": [ "$ref" ],
+                    "properties": {
+                        "$ref": { "$ref": "#/$defs/$ref" }
+                    },
+                    "additionalProperties": false
+                }
+            ]
+        },
+        "display_name": {
+            "type": "string",
+            "$comment": "The regex here rejects new-lines",
+            "pattern": "^[^\n]+$",
+            "description": "Free text display name for forms and documentation (single line)"
+        },
+        "description": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Free text description for forms and documentation (multi line)"
+        },
+        "required": {
+            "type": "boolean",
+            "description": "Key is required"
+        },
+        "dynamic_valid_values": {
+            "type": "string",
+            "description": "Path to variable under the parent dictionary containing valid values.\nVariable path use dot-notation and variable path must be relative to the parent dictionary.\nIf an element of the variable path is a list, every list item will be unpacked.\nNote that this is building the schema from values in the _data_ being validated!"
+        },
+        "$ref": {
+            "type": "string",
+            "description": "Reference to Sub Schema using JSON Schema resolver.\nExample '#/keys/mykey' will resolve the schema for 'mykey' under the root dictionary of the current schema"
+        },
+        "documentation_options": {
+            "type": "object",
+            "description": "Special options used for generating documentation",
+            "properties": {
+                "filename": {
+                    "type": "string",
+                    "description": "Setting 'filename' will allow for custom grouping of schema tables in the documentation.\nBy default all tables will be part of the same 'default.md' file. By setting 'filename' the tables for one or more keys can be moved to separate file.\nIf 'filename' is set on a parent key, all child keys will be included in the same file.\nIt is _not_ possible to override 'filename' on a child key, if set on the parent.",
+                    "default": "Input Variables"
+                },
+                "table": {
+                    "type": "string",
+                    "description": "Setting 'table' will allow for custom grouping of schema fields in the documentation.\nBy default each root key has it's own table. By setting the same table-value on multiple keys, they will be merged to a single table.\nIf 'table' is set on a 'child' key, all parent keys are automatically included in the table.\nIf 'table' is set on a parent key, all child keys will be included in the same table.\nIt is _not_ possible to override 'table' on a child key, if set on the parent."
+                }
+            },
+            "additionalProperties": false
+        },
+        "$defs": {
+            "type": "object",
+            "description": "Storage for reusable schema fragments",
+            "patternProperties": {
+                "^[a-z][a-z0-9_]*$": {
+                    "$comment": "The regex here matches valid key names",
+                    "$ref": "#/$defs/avd_schema_var"
+                }
+            }
+        },
+        "deprecation": {
+            "type": "object",
+            "description": "Deprecation settings",
+            "required": ["warning"],
+            "properties": {
+                "warning": {
+                    "type": "boolean",
+                    "description": "Emit deprecation warning if key is set",
+                    "default": true
+                },
+                "new_key": {
+                    "type": "string",
+                    "description": "Relative path to new key"
+                },
+                "removed": {
+                    "type": "boolean",
+                    "description": "Support for this key has been removed",
+                    "default": false
+                },
+                "remove_in_version": {
+                    "type": "string",
+                    "description": "Version in which the key will be removed"
+                },
+                "remove_after_date": {
+                    "type": "string",
+                    "description": "Date after which the key will be removed in the next major version"
+                },
+                "url": {
+                    "type": "string",
+                    "description": "URL detailing the deprecation and migration guidelines"
+                }
+            }
+        }
+    },
+    "title": "Arista AVD Schema",
+    "$ref": "#/$defs/avd_schema_var"
+}

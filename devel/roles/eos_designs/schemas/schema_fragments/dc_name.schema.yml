@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  dc_name:
+    documentation_options:
+      filename: Fabric Topology
+      table: Topology Variables
+    description: |
+      DC Name, required to match Ansible Group name covering all devices in the DC.
+      Required for 5-stage CLOS (Super-spines).
+    type: str

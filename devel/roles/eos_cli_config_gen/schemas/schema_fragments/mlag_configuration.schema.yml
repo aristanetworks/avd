@@ -1,0 +1,67 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  mlag_configuration:
+    documentation_options:
+      filename: data_model/MLAG
+    type: dict
+    display_name: Multi-Chassis Link Aggregation (MLAG) Configuration
+    keys:
+      domain_id:
+        type: str
+      heartbeat_interval:
+        type: int
+        description: Heartbeat interval in milliseconds
+        convert_types:
+        - str
+      local_interface:
+        description: Local Interface Name
+        type: str
+      peer_address:
+        type: str
+        description: IPv4 Address
+      peer_address_heartbeat:
+        type: dict
+        keys:
+          peer_ip:
+            type: str
+            description: IPv4 Address
+          vrf:
+            description: VRF Name
+            type: str
+      dual_primary_detection_delay:
+        type: int
+        description: Delay in seconds
+        min: 0
+        max: 86400
+        convert_types:
+        - str
+      dual_primary_recovery_delay_mlag:
+        type: int
+        description: Delay in seconds
+        min: 0
+        max: 86400
+        convert_types:
+        - str
+      dual_primary_recovery_delay_non_mlag:
+        type: int
+        description: Delay in seconds
+        min: 0
+        max: 86400
+        convert_types:
+        - str
+      peer_link:
+        description: Port-Channel interface name
+        type: str
+      reload_delay_mlag:
+        type: str
+        description: Delay in seconds <0-86400> or 'infinity'
+        convert_types:
+        - int
+      reload_delay_non_mlag:
+        type: str
+        description: Delay in seconds <0-86400> or 'infinity'
+        convert_types:
+        - int

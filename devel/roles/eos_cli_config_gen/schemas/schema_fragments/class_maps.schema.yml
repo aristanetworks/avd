@@ -1,0 +1,61 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  class_maps:
+    documentation_options:
+      filename: data_model/Quality of Service
+    type: dict
+    display_name: QOS Class-maps
+    keys:
+      pbr:
+        type: list
+        primary_key: name
+        convert_types:
+          - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Class-Map Name
+            ip:
+              type: dict
+              keys:
+                access_group:
+                  type: str
+                  description: Standard Access-List Name
+      qos:
+        type: list
+        primary_key: name
+        convert_types:
+          - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Class-Map Name
+            vlan:
+              type: int
+              convert_types:
+                - str
+              description: VLAN value(s) or range(s) of VLAN values
+            cos:
+              type: int
+              convert_types:
+                - str
+              description: CoS value(s) or range(s) of CoS values
+            ip:
+              type: dict
+              keys:
+                access_group:
+                  type: str
+                  description: IPv4 Access-List Name
+            ipv6:
+              type: dict
+              keys:
+                access_group:
+                  type: str
+                  description: IPv6 Access-List Name

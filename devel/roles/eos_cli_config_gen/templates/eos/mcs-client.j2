@@ -1,0 +1,22 @@
+{# eos - mcs client #}
+{% if mcs_client is arista.avd.defined %}
+!
+mcs client
+{%     if mcs_client.shutdown is arista.avd.defined(true) %}
+   shutdown
+{%     elif mcs_client.shutdown is arista.avd.defined(false) %}
+   no shutdown
+{%     endif %}
+{%     if mcs_client.cvx_secondary.name is arista.avd.defined %}
+   !
+   cvx secondary {{ mcs_client.cvx_secondary.name }}
+{%         if mcs_client.cvx_secondary.shutdown is arista.avd.defined(false) %}
+      no shutdown
+{%         elif mcs_client.cvx_secondary.shutdown is arista.avd.defined(true) %}
+      shutdown
+{%         endif %}
+{%         for server_host in mcs_client.cvx_secondary.server_hosts | arista.avd.natural_sort %}
+      server host {{ server_host }}
+{%         endfor %}
+{%     endif %}
+{% endif %}

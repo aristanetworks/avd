@@ -1,0 +1,53 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  platform:
+    documentation_options:
+      filename: data_model/Hardware
+    type: dict
+    keys:
+      trident:
+        type: dict
+        keys:
+          forwarding_table_partition:
+            type: str
+            convert_types:
+              - int
+      sand:
+        type: dict
+        description: Most of the platform sand options are hardware dependant and optional
+        keys:
+          qos_maps:
+            type: list
+            items:
+              type: dict
+              keys:
+                traffic_class:
+                  type: int
+                  min: 0
+                  max: 7
+                  convert_types:
+                    - "str"
+                to_network_qos:
+                  type: int
+                  min: 0
+                  max: 63
+                  convert_types:
+                    - "str"
+          lag:
+            type: dict
+            keys:
+              hardware_only:
+                type: bool
+              mode:
+                type: str
+          forwarding_mode:
+            type: str
+          multicast_replication:
+            type: dict
+            keys:
+              default:
+                type: str
+                valid_values: ["ingress", "egress"]

@@ -1,0 +1,101 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+allow_other_keys: true
+keys:
+  management_ssh:
+    documentation_options:
+      filename: data_model/Management
+    type: dict
+    keys:
+      access_groups:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Standard ACL Name
+            vrf:
+              type: str
+              description: VRF Name
+      ipv6_access_groups:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Standard ACL Name
+            vrf:
+              type: str
+              description: VRF Name
+      idle_timeout:
+        type: int
+        convert_types:
+        - str
+        min: 0
+        max: 86400
+        description: Idle timeout in minutes
+      cipher:
+        description: Cryptographic ciphers for SSH to use
+        type: list
+        items:
+          type: str
+      key_exchange:
+        description: Cryptographic key exchange methods for SSH to use
+        type: list
+        items:
+          type: str
+      mac:
+        description: Cryptographic MAC algorithms for SSH to use
+        type: list
+        items:
+          type: str
+      hostkey:
+        type: dict
+        keys:
+          server:
+            description: SSH host key settings
+            type: list
+            items:
+              type: str
+      enable:
+        description: Enable SSH daemon
+        type: bool
+      connection:
+        type: dict
+        keys:
+          limit:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 100
+            description: Maximum total number of SSH sessions to device
+          per_host:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 20
+            description: Maximum number of SSH sessions to device from a single host
+      vrfs:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              description: VRF Name
+            enable:
+              description: Enable SSH in VRF
+              type: bool
+      log_level:
+        type: str
+        description: SSH daemon log level

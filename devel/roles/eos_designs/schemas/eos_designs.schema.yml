@@ -1,0 +1,3952 @@
+$id: eos_designs
+type: dict
+allow_other_keys: true
+keys:
+  bfd_multihop:
+    documentation_options:
+      filename: Fabric Variables
+      table: BFD Settings
+    type: dict
+    description: BFD Multihop tuning
+    keys:
+      interval:
+        type: int
+        convert_types:
+        - str
+        default: 300
+        min: 50
+        max: 60000
+      min_rx:
+        type: int
+        convert_types:
+        - str
+        default: 300
+        min: 50
+        max: 60000
+      multiplier:
+        type: int
+        convert_types:
+        - str
+        default: 3
+        min: 3
+        max: 50
+  bgp_as:
+    documentation_options:
+      filename: Fabric Variables
+      table: BGP Settings
+    description: AS number to use to configure overlay when "overlay_routing_protocol"
+      == ibgp
+    type: str
+    convert_types:
+    - int
+  bgp_ecmp:
+    documentation_options:
+      filename: Fabric Variables
+      table: BGP multi-path Settings
+    description: Maximum ECMP for BGP multi-path
+    type: int
+    convert_types:
+    - str
+    default: 4
+  bgp_maximum_paths:
+    documentation_options:
+      filename: Fabric Variables
+      table: BGP multi-path Settings
+    description: Maximum Paths for BGP multi-path
+    type: int
+    convert_types:
+    - str
+    default: 4
+    min: 1
+    max: 512
+  bgp_mesh_pes:
+    documentation_options:
+      filename: Fabric Variables
+      table: BGP Settings
+    type: bool
+    default: false
+    description: Whether to configure an iBGP full mesh between PEs, either because
+      there is no RR used or other reasons.
+  bgp_peer_groups:
+    documentation_options:
+      filename: Fabric Variables
+      table: BGP Peer Groups
+    description: 'Leverage an Arista EOS switch to generate the encrypted password
+      using the correct peer group name.
+
+      Note that the name of the peer groups use ''-'' instead of ''_'' in EOS configuration.
+
+      '
+    type: dict
+    keys:
+      ipv4_underlay_peers:
+        type: dict
+        keys:
+          name:
+            type: str
+            default: IPv4-UNDERLAY-PEERS
+            description: Name of peer group.
+          password:
+            type: str
+            description: Type 7 encrypted password.
+          structured_config:
+            type: dict
+            description: Custom structured config added under router_bgp.peer_groups.<name>
+              for eos_cli_config_gen
+      mlag_ipv4_underlay_peer:
+        type: dict
+        keys:
+          name:
+            type: str
+            default: MLAG-IPv4-UNDERLAY-PEER
+            description: Name of peer group.
+          password:
+            type: str
+            description: Type 7 encrypted password.
+          structured_config:
+            type: dict
+            description: Custom structured config added under router_bgp.peer_groups.<name>
+              for eos_cli_config_gen
+      evpn_overlay_peers:
+        type: dict
+        keys:
+          name:
+            type: str
+            default: EVPN-OVERLAY-PEERS
+            description: Name of peer group.
+          password:
+            type: str
+            description: Type 7 encrypted password.
+          structured_config:
+            type: dict
+            description: Custom structured config added under router_bgp.peer_groups.<name>
+              for eos_cli_config_gen
+      evpn_overlay_core:
+        type: dict
+        keys:
+          name:
+            type: str
+            default: EVPN-OVERLAY-CORE
+            description: Name of peer group.
+          password:
+            type: str
+            description: Type 7 encrypted password.
+          structured_config:
+            type: dict
+            description: Custom structured config added under router_bgp.peer_groups.<name>
+              for eos_cli_config_gen
+      mpls_overlay_peers:
+        type: dict
+        keys:
+          name:
+            type: str
+            default: MPLS-OVERLAY-PEERS
+            description: Name of peer group.
+          password:
+            type: str
+            description: Type 7 encrypted password.
+          structured_config:
+            type: dict
+            description: Custom structured config added under router_bgp.peer_groups.<name>
+              for eos_cli_config_gen
+      rr_overlay_peers:
+        type: dict
+        keys:
+          name:
+            type: str
+            default: RR-OVERLAY-PEERS
+            description: Name of peer group.
+          password:
+            type: str
+            description: Type 7 encrypted password.
+          structured_config:
+            type: dict
+            description: Custom structured config added under router_bgp.peer_groups.<name>
+              for eos_cli_config_gen
+      ipvpn_gateway_peers:
+        type: dict
+        keys:
+          name:
+            type: str
+            default: IPVPN-GATEWAY-PEERS
+            description: Name of peer group.
+          password:
+            type: str
+            description: Type 7 encrypted password.
+          structured_config:
+            type: dict
+            description: Custom structured config added under router_bgp.peer_groups.<name>
+              for eos_cli_config_gen
+      IPv4_UNDERLAY_PEERS:
+        type: dict
+        deprecation:
+          warning: true
+          new_key: bgp_peer_groups.ipv4_underlay_peers
+          removed: true
+          remove_in_version: 4.0.0
+      MLAG_IPv4_UNDERLAY_PEER:
+        type: dict
+        deprecation:
+          warning: true
+          new_key: bgp_peer_groups.mlag_ipv4_underlay_peer
+          removed: true
+          remove_in_version: 4.0.0
+      EVPN_OVERLAY_PEERS:
+        type: dict
+        deprecation:
+          warning: true
+          new_key: bgp_peer_groups.evpn_overlay_peers
+          removed: true
+          remove_in_version: 4.0.0
+  connected_endpoints_keys:
+    type: list
+    documentation_options:
+      filename: Connected Endpoints
+    primary_key: key
+    convert_types:
+    - dict
+    description: 'Define connected endpoints keys to define the grouping of endpoints
+      connecting to the fabric.
+
+      This lets you specify various keys to better organize/group your data.
+
+      The connected endpoints keys should be defined in the top level group_var for
+      the fabric.
+
+      '
+    items:
+      type: dict
+      keys:
+        key:
+          type: str
+        type:
+          type: str
+          description: Type used for documentation.
+        description:
+          type: str
+          description: Description used for documentation.
+  core_interfaces:
+    documentation_options:
+      filename: Core Interfaces
+    type: dict
+    $ref: '#/$defs/l3_edge'
+    description: 'The `core_interfaces` data model can be used to configure L3 P2P
+      links anywhere in the fabric.
+
+      It can be between two switches that are already part of the fabric inventory,
+      or it can be towards another device,
+
+      where only one end of the link is on a switch in the fabric.'
+  cvp_ingestauth_key:
+    documentation_options:
+      filename: Management Settings
+      table: CloudVision Settings
+    type: str
+    description: 'On-premise CVP ingest auth key. If set, TerminAttr will be configured
+      with key-based authentication for on-premise CVP.
+
+      If not set, TerminAttr will be configured with certificate based authentication
+      using token-secure onboarding.
+
+      Token must be copied to the device first.'
+  cvp_instance_ip:
+    documentation_options:
+      filename: Management Settings
+      table: CloudVision Settings
+    type: str
+    description: 'IPv4 address.
+
+      CloudVision - Telemetry Agent (TerminAttr) configuration is optional
+
+      You can either provide a list of IPs to target on-premise CloudVision cluster
+      or
+
+      use DNS name for your CloudVision as a Service instance. If you have both on-prem
+      and
+
+      CVaaS defined, only on-prem is going to be configured.'
+  cvp_instance_ips:
+    documentation_options:
+      filename: Management Settings
+      table: CloudVision Settings
+    type: list
+    description: 'You can either provide a list of IPs to target on-premise CloudVision
+      cluster or
+
+      use DNS name for your CloudVision as a Service instance. If you have both on-prem
+      and
+
+      CVaaS defined, only on-prem is going to be configured.
+
+      '
+    items:
+      type: str
+      description: IPv4 address or CV as a Service hostname
+  cvp_token_file:
+    documentation_options:
+      filename: Management Settings
+      table: CloudVision Settings
+    type: str
+    default: /tmp/cv-onboarding-token
+    description: cvp_token_file is the path to the token file on the switch.
+  dc_name:
+    documentation_options:
+      filename: Fabric Topology
+      table: Topology Variables
+    description: 'DC Name, required to match Ansible Group name covering all devices
+      in the DC.
+
+      Required for 5-stage CLOS (Super-spines).
+
+      '
+    type: str
+  default_igmp_snooping_enabled:
+    documentation_options:
+      filename: Fabric Variables
+      table: Multicast Settings
+    description: 'When set to false, disables IGMP snooping at fabric level and overrides
+      per vlan settings.
+
+      '
+    type: bool
+    default: true
+  default_interfaces:
+    type: list
+    documentation_options:
+      filename: Fabric Topology
+    description: "- Set default uplink, downlink, and MLAG interfaces, which will
+      be used if these interfaces are not defined on a device (either directly or
+      through inheritance).\n- These are defined based on the combination of node_type
+      (e.g., l3leaf or spine) and a regex for matching the platform.\n- A list of
+      interfaces or interface ranges can be specified.\n- Each list item supports
+      range syntax that can be expanded into a list of interfaces. Interface range
+      examples:\n  - Ethernet49-52/1: Expands to [ Ethernet49/1, Ethernet50/1, Ethernet51/1,
+      Ethernet52/1 ]\n  - Ethernet1/31-34/1: Expands to [ Ethernet1/31/1, Ethernet1/32/1,
+      Ethernet1/33/1, Ethernet1/34/1 ]\n  - Ethernet49-50,53-54: Expands to [ Ethernet49,
+      Ethernet50, Ethernet53, Ethernet54 ]\n  - Ethernet1-2/1-4: Expands to [ Ethernet1/1,
+      Ethernet1/2, Ethernet1/3, Ethernet1/4, Ethernet2/1, Ethernet2/2, Ethernet2/3,
+      Ethernet2/4 ]\n- `uplink_interfaces` and `mlag_interfaces` under `default_interfaces`
+      are directly inherited by `uplink_interfaces` and `mlag_interfaces`.\n- `downlink_interfaces`
+      are referenced by the child switch (e.g., the leaf in a leaf/spine network).
+      The child switch leverages an upstream switch's `default_downlink_interfaces`
+      using the child switch ID.  This is then used to build `uplink_switch_interfaces`
+      for that child.\n  - In the case of `max_parallel_uplinks` > 1 the `default_downlink_interfaces`
+      are mapped with consecutive downlinks per child ID.\n  - Example for `max_parallel_uplinks:
+      2`, downlink interfaces will be mapped as `[ <downlink1 to leaf-id1>, <downlink2
+      to leaf-id1>, <downlink1 to leaf-id2>, <downlink2 to leaf-id2> ...]`\n- Please
+      note that no default interfaces are defined in AVD itself. You will need to
+      create your own based on the example below.\n\nExample:\n\n```yaml\ndefault_interfaces:\n
+      \ - types: [ spine, l3leaf ]\n    platforms: [ \"7050[SC]X3\", vEOS.*, default
+      ]\n    uplink_interfaces: [ Ethernet49-54/1 ]\n    mlag_interfaces: [ Ethernet55-56/1
+      ]\n    downlink_interfaces: [ Ethernet1-32/1 ]\n```\n"
+    items:
+      type: dict
+      keys:
+        types:
+          type: list
+          required: true
+          description: List of node type keys.
+          items:
+            type: str
+        platforms:
+          type: list
+          required: true
+          description: 'List of platform families.
+
+            This is defined as a Python regular expression that matches the full platform
+            type.
+
+            '
+          items:
+            type: str
+            description: Arista platform family regular expression.
+        uplink_interfaces:
+          type: list
+          description: List of uplink interfaces or uplink interface ranges.
+          items:
+            type: str
+            description: Interface range or interface.
+        mlag_interfaces:
+          type: list
+          description: List of MLAG interfaces or MLAG interface ranges.
+          items:
+            type: str
+            description: Interface range or interface.
+        downlink_interfaces:
+          type: list
+          description: List of downlink interfaces or downlink interface ranges.
+          items:
+            type: str
+            description: Interface range or interface.
+  default_node_types:
+    type: list
+    documentation_options:
+      filename: Node Types
+    primary_key: node_type
+    description: Uses hostname matches against a regular expression to determine the
+      node type.
+    items:
+      type: dict
+      keys:
+        node_type:
+          type: str
+          required: true
+          description: Resulting node type when regex matches.
+        match_hostnames:
+          type: list
+          required: true
+          description: Regular expressions to match against hostnames.
+          items:
+            type: str
+            required: true
+            description: Regex needs to match full hostname (i.e. is bounded by ^
+              and $ elements).
+  design:
+    documentation_options:
+      filename: Fabric Topology
+      table: Design Variables
+    type: dict
+    keys:
+      type:
+        documentation_options:
+          filename: Fabric Topology
+          table: Design Variables
+        type: str
+        description: 'By setting the design.type variable, the default node-types
+          and templates described in these documents will be used.
+
+          '
+        valid_values:
+        - l3ls-evpn
+        - mpls
+        - l2ls
+        default: l3ls-evpn
+  enable_trunk_groups:
+    documentation_options:
+      filename: Fabric Variables
+      table: VLAN Settings
+    type: bool
+    description: 'Enable Trunk Group support across eos_designs
+
+      Warning: Because of the nature of the EOS Trunk Group feature, enabling this
+      is "all or nothing".
+
+      *All* vlans and *all* trunks towards connected endpoints must be using trunk
+      groups as well.
+
+      If trunk groups are not assigned to a trunk, no vlans will be enabled on that
+      trunk.
+
+      See "Details on enable_trunk_groups" below before enabling this feature.
+
+      '
+    default: false
+  evpn_ebgp_gateway_multihop:
+    documentation_options:
+      filename: Fabric Variables
+      table: EVPN Settings
+    description: 'Default of 15, considering a large value to avoid BGP reachability
+      issues in very complex DCI networks.
+
+      Adapt the value for your specific topology.
+
+      '
+    type: int
+    convert_types:
+    - str
+    default: 15
+  evpn_ebgp_multihop:
+    documentation_options:
+      filename: Fabric Variables
+      table: EVPN Settings
+    description: 'Default of 3, the recommended value for a 3 stage spine and leaf
+      topology.
+
+      Set to a higher value to allow for very large and complex topologies.
+
+      '
+    type: int
+    convert_types:
+    - str
+    default: 3
+  evpn_hostflap_detection:
+    documentation_options:
+      filename: Fabric Variables
+      table: EVPN Settings
+    type: dict
+    keys:
+      enabled:
+        description: If set to false it will disable EVPN host-flap detection
+        type: bool
+        default: true
+      threshold:
+        description: Minimum number of MAC moves that indicate a MAC duplication issue
+        type: int
+        convert_types:
+        - str
+        default: 5
+      window:
+        description: Time (in seconds) to detect a MAC duplication issue
+        type: int
+        convert_types:
+        - str
+        default: 180
+      expiry_timeout:
+        description: Time (in seconds) to purge a MAC duplication issue
+        type: int
+        convert_types:
+        - str
+  evpn_import_pruning:
+    documentation_options:
+      filename: Fabric Variables
+      table: EVPN Settings
+    description: 'Enable VPN import pruning (Min. EOS 4.24.2F)
+
+      The Route Target extended communities carried by incoming VPN paths will
+
+      be examined. If none of those Route Targets have been configured for import,
+
+      the path will be immediately discarded
+
+      '
+    type: bool
+    default: false
+  evpn_multicast:
+    documentation_options:
+      filename: Fabric Variables
+      table: EVPN Settings
+    type: bool
+    description: "General Configuration required for EVPN Multicast. \"evpn_l2_multicast\"
+      must also be configured under the Network Services (tenants).\nRequires \"underlay_multicast:
+      true\" and IGMP snooping enabled globally (default).\nFor MLAG devices Route
+      Distinguisher must be unique since this feature will create multi-vtep configuration.\nWarning
+      !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP and 722XP\n  The
+      Following default platform setting will be configured: \"platform trident forwarding-table
+      partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072\"\n  All
+      forwarding agents will be restarted when this configuration is applied.\n  You
+      can tune the settings by overridding the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n
+      \ Please contact an Arista representative for help with determining the appropriate
+      values for your environment.\n"
+    default: false
+  evpn_overlay_bgp_rtc:
+    documentation_options:
+      filename: Fabric Variables
+      table: EVPN Settings
+    description: 'Enable Route Target Membership Constraint Address Family on EVPN
+      overlay BGP peerings (Min. EOS 4.25.1F)
+
+      Requires use eBGP as overlay protocol.
+
+      '
+    type: bool
+    default: false
+  evpn_prevent_readvertise_to_server:
+    documentation_options:
+      filename: Fabric Variables
+      table: EVPN Settings
+    description: 'Configure route-map on eBGP sessions towards route-servers, where
+      prefixes with the peer''s ASN in the AS Path are filtered away.
+
+      This is very useful in large-scale networks, where convergence will be quicker
+      by not returning all updates received
+
+      from Route-server-1 to Router-server-2 just for Route-server-2 to throw them
+      away because of AS Path loop detection.
+
+      '
+    type: bool
+    default: false
+  evpn_rd_type:
+    documentation_options:
+      filename: Network Services
+      table: Global Network Services Settings
+    type: dict
+    deprecation:
+      warning: true
+      new_key: overlay_rd_type
+      removed: true
+      remove_in_version: 4.0.0
+  evpn_rt_type:
+    documentation_options:
+      filename: Network Services
+      table: Global Network Services Settings
+    type: dict
+    deprecation:
+      warning: true
+      new_key: overlay_rt_type
+      removed: true
+      remove_in_version: 4.0.0
+  evpn_short_esi_prefix:
+    documentation_options:
+      filename: Fabric Variables
+      table: EVPN Settings
+    description: Configure prefix for "short_esi" values
+    type: str
+    default: '0000:0000:'
+  evpn_vlan_aware_bundles:
+    documentation_options:
+      filename: Fabric Variables
+      table: EVPN Settings
+    description: 'Enable vlan aware bundles for EVPN MAC-VRF
+
+      Old variable name vxlan_vlan_aware_bundles, supported for backward-compatibility.
+
+      '
+    type: bool
+    default: false
+  fabric_name:
+    documentation_options:
+      filename: Fabric Topology
+      table: Topology Variables
+    description: Fabric Name, required to match Ansible Group name covering all devices
+      in the Fabric, **must** be an inventory group name.
+    type: str
+    required: true
+  internal_vlan_order:
+    documentation_options:
+      filename: Fabric Variables
+      table: VLAN Settings
+    type: dict
+    description: Internal vlan allocation order and range.
+    required: true
+    keys:
+      allocation:
+        documentation_options:
+          filename: Fabric Variables
+          table: VLAN Settings
+        type: str
+        valid_values:
+        - ascending
+        - descending
+        default: ascending
+        required: true
+      range:
+        documentation_options:
+          filename: Fabric Variables
+          table: VLAN Settings
+        type: dict
+        keys:
+          beginning:
+            documentation_options:
+              filename: Fabric Variables
+              table: VLAN Settings
+            type: int
+            convert_types:
+            - str
+            description: First VLAN ID.
+            default: 1006
+            min: 2
+            max: 4094
+            required: true
+          ending:
+            documentation_options:
+              filename: Fabric Variables
+              table: VLAN Settings
+            type: int
+            convert_types:
+            - str
+            description: Last VLAN ID.
+            default: 1199
+            min: 2
+            max: 4094
+            required: true
+  isis_advertise_passive_only:
+    documentation_options:
+      filename: Fabric Variables
+      table: ISIS Settings
+    type: bool
+    default: false
+  isis_area_id:
+    documentation_options:
+      filename: Fabric Variables
+      table: ISIS Settings
+    type: str
+    default: '49.0001'
+    convert_types:
+    - int
+    - float
+  isis_default_circuit_type:
+    documentation_options:
+      filename: Fabric Variables
+      table: ISIS Settings
+    type: str
+    valid_values:
+    - level-1-2
+    - level-1
+    - level-2
+    default: level-2
+    description: These fabric level parameters can be used with core_interfaces running
+      ISIS, and may be overridden on link profile or link level.
+  isis_default_is_type:
+    documentation_options:
+      filename: Fabric Variables
+      table: ISIS Settings
+    type: str
+    valid_values:
+    - level-1-2
+    - level-1
+    - level-2
+    default: level-2
+  isis_default_metric:
+    documentation_options:
+      filename: Fabric Variables
+      table: ISIS Settings
+    type: int
+    convert_types:
+    - str
+    default: 50
+    description: These fabric level parameters can be used with core_interfaces running
+      ISIS, and may be overridden at link profile or link level.
+  isis_ti_lfa:
+    documentation_options:
+      filename: Fabric Variables
+      table: ISIS Settings
+    type: dict
+    keys:
+      enabled:
+        documentation_options:
+          filename: Fabric Variables
+          table: ISIS Settings
+        type: bool
+        default: false
+      protection:
+        documentation_options:
+          filename: Fabric Variables
+          table: ISIS Settings
+        type: str
+        valid_values:
+        - link
+        - node
+      local_convergence_delay:
+        documentation_options:
+          filename: Fabric Variables
+          table: ISIS Settings
+        description: Local convergence delay in milliseconds
+        type: int
+        convert_types:
+        - str
+        default: 10000
+  l3_edge:
+    documentation_options:
+      filename: L3 Edge
+    type: dict
+    $ref: '#/$defs/l3_edge'
+    description: 'The `l3_edge` data model can be used to configure extra L3 P2P links
+      anywhere in the fabric.
+
+      It can be between two switches that are already part of the fabric inventory,
+      or it can be towards another device, where only one end of the link is on a
+      switch in the fabric.
+
+      Fabric switches can be types `l3leaf`, `spine` or `super-spine`.
+
+
+      The data model supports using IP pools, Subnet per link or specifying the IP
+      addresses manually.
+
+      For BGP peerings the AS number must be specified.
+
+      If the AS number is different than the AS number configured for the node, the
+      local-as will be replaced on this BGP peering (`neighbor <ip> local-as <as>
+      no-prepend replace-as`).
+
+
+      Make sure to configure the variables in a group_vars file covering all devices
+      mentioned in the data model.'
+  mac_address_table:
+    documentation_options:
+      filename: Fabric Variables
+      table: MAC Address Table Settings
+    type: dict
+    description: 'MAC address-table aging time
+
+      Use to change the EOS default of 300.
+
+      '
+    keys:
+      aging_time:
+        documentation_options:
+          filename: Fabric Variables
+          table: MAC Address Table Settings
+        type: int
+        convert_types:
+        - str
+        description: 'Aging time in seconds 10-1000000.
+
+          Enter 0 to disable aging.
+
+          '
+        min: 0
+        max: 1000000
+  mlag_ibgp_peering_vrfs:
+    documentation_options:
+      filename: Fabric Variables
+      table: MLAG Settings
+    type: dict
+    description: 'On mlag leafs, an SVI interface is defined per vrf, to establish
+      iBGP peering (required when there are MLAG leafs in topology)
+
+      The SVI id will be derived from the base vlan defined: mlag_ibgp_peering_vrfs.base_vlan
+      + (vrf_id or vrf_vni) - 1
+
+      Depending on the values of vrf_id / vrf_vni it may be required to adjust the
+      base_vlan to avoid overlaps or invalid vlan ids.
+
+      The SVI ip address derived from mlag_l3_peer_ipv4_pool is re-used across all
+      iBGP peerings.
+
+      '
+    keys:
+      base_vlan:
+        documentation_options:
+          filename: Fabric Variables
+          table: MLAG Settings
+        type: int
+        convert_types:
+        - str
+        min: 1
+        max: 4093
+        default: 3000
+  network_ports:
+    type: list
+    description: 'All switch_ports ranges are expanded into individual port configurations.
+
+      '
+    documentation_options:
+      filename: Connected Endpoints
+    items:
+      type: dict
+      $ref: '#/$defs/adapter_config'
+      keys:
+        switches:
+          type: list
+          description: 'Regex matching the full hostname of one or more switches.
+
+            The regular expression must match the full hostname.
+
+            '
+          items:
+            type: str
+        switch_ports:
+          type: list
+          description: "List of ranges using AVD range_expand syntax.\nFor example:\n\nswitch_ports:\n
+            \ - Ethernet1\n  - Ethernet2-48\n"
+          items:
+            type: str
+        description:
+          type: str
+          description: Description to be used on all ports.
+  node_type_keys:
+    documentation_options:
+      filename: Node Types
+    type: list
+    description: 'Define Node Type Keys, to specify the properties of each node type
+      in the fabric.
+
+      This allows for complete customization of the fabric layout.
+
+      This should be defined in top level group_var for the fabric.
+
+      '
+    convert_types:
+    - dict
+    primary_key: key
+    items:
+      type: dict
+      keys:
+        key:
+          type: str
+        type:
+          type: str
+          description: Type value matching this node_type_key.
+        connected_endpoints:
+          type: bool
+          default: false
+          description: Are endpoints connected to this node type.
+        default_evpn_role:
+          type: str
+          valid_values:
+          - none
+          - client
+          - server
+          default: none
+          description: Default evpn_role. Can be overridden in topology vars.
+        default_ptp_priority1:
+          type: int
+          min: 0
+          max: 255
+          default: 127
+          description: Default PTP priority 1
+        default_underlay_routing_protocol:
+          type: str
+          default: ebgp
+          convert_to_lower_case: true
+          valid_values:
+          - ebgp
+          - ibgp
+          - ospf
+          - ospf-ldp
+          - isis
+          - isis-sr
+          - isis-ldp
+          - isis-sr-ldp
+          - none
+          description: 'Set the default underlay routing_protocol.
+
+            Can be overridden by setting "underlay_routing_protocol" host/group_vars.
+
+            '
+        default_overlay_routing_protocol:
+          type: str
+          default: ebgp
+          convert_to_lower_case: true
+          valid_values:
+          - ebgp
+          - ibgp
+          - her
+          - cvx
+          - none
+          description: 'Set the default overlay routing_protocol.
+
+            Can be overridden by setting "overlay_routing_protocol" host/group_vars.
+
+            '
+        default_mpls_overlay_role:
+          type: str
+          valid_values:
+          - client
+          - server
+          - none
+          description: 'Set the default mpls overlay role.
+
+            Acting role in overlay control plane.
+
+            '
+        default_overlay_address_families:
+          type: list
+          convert_types:
+          - str
+          items:
+            type: str
+            convert_to_lower_case: true
+            valid_values:
+            - evpn
+            - vpn-ipv4
+            - vpn-ipv6
+          description: 'Set the default overlay address families.
+
+            '
+        default_evpn_encapsulation:
+          type: str
+          convert_to_lower_case: true
+          valid_values:
+          - mpls
+          - vxlan
+          description: 'Set the default evpn encapsulation.
+
+            '
+        mlag_support:
+          type: bool
+          default: false
+          description: Can this node type support mlag.
+        network_services:
+          description: Will network services be deployed on this node type.
+          type: dict
+          keys:
+            l1:
+              type: bool
+              default: false
+              description: ??
+            l2:
+              type: bool
+              default: false
+              description: Vlans
+            l3:
+              type: bool
+              default: false
+              description: 'VRFs, SVIs (if l2 is true).
+
+                Only supported with underlay_router.
+
+                '
+        underlay_router:
+          type: bool
+          default: true
+          description: Is this node type a L3 device.
+        uplink_type:
+          type: str
+          valid_values:
+          - p2p
+          - port-channel
+          default: p2p
+          description: Uplinks must be p2p if "vtep" or "underlay_router" is true.
+        vtep:
+          type: bool
+          default: false
+          description: Is this switch an EVPN VTEP.
+        mpls_lsr:
+          type: bool
+          default: false
+          description: Is this switch an MPLS LSR.
+        ip_addressing:
+          type: dict
+          description: Override ip_addressing templates.
+          keys:
+            python_module:
+              type: str
+              description: Python Module to import for IP addressing - default inherited
+                from templates.ip_addressing.python_module
+            python_class_name:
+              type: str
+              description: Name of Python Class to import for IP addressing  - default
+                inherited from templates.ip_addressing.python_class_name
+            router_id:
+              type: str
+              description: Path to J2 template - default inherited from templates.ip_addressing.router_id.
+            router_id_ipv6:
+              type: str
+              description: Path to J2 template - default inherited from templates.ip_addressing.router_id_ipv6.
+            mlag_ip_primary:
+              type: str
+              description: Path to J2 template - default inherited from templates.ip_addressing.mlag_ip_primary.
+            mlag_ip_secondary:
+              type: str
+              description: Path to J2 template - default inherited from templates.ip_addressing.mlag_ip_secondary.
+            mlag_l3_ip_primary:
+              type: str
+              description: Path to J2 template - default inherited from templates.ip_addressing.mlag_l3_ip_primary.
+            mlag_l3_ip_secondary:
+              type: str
+              description: Path to J2 template - default inherited from templates.ip_addressing.mlag_l3_ip_secondary.
+            mlag_ibgp_peering_ip_primary:
+              type: str
+              description: Path to J2 template - default inherited from templates.ip_addressing.mlag_ibgp_peering_ip_primary.
+            mlag_ibgp_peering_ip_secondary:
+              type: str
+              description: Path to J2 template - default inherited from templates.ip_addressing.mlag_ibgp_peering_ip_secondary.
+            p2p_uplinks_ip:
+              type: str
+              description: Path to J2 template - default inherited from templates.ip_addressing.p2p_uplinks_ip.
+            p2p_uplinks_peer_ip:
+              type: str
+              description: Path to J2 template - default inherited from templates.ip_addressing.p2p_uplinks_peer_ip.
+            vtep_ip_mlag:
+              type: str
+              description: Path to J2 template - default inherited from templates.ip_addressing.vtep_ip_mlag.
+            vtep_ip:
+              type: str
+              description: Path to J2 template - default inherited from templates.ip_addressing.vtep_ip.
+        interface_descriptions:
+          type: dict
+          description: 'Override interface_descriptions templates
+
+            If description templates use Jinja2, they have to strip whitespaces using
+            {%- -%} on any code blocks.
+
+            '
+          keys:
+            python_module:
+              type: str
+              description: Python Module to import for interface descriptions - default
+                inherited from templates.interface_descriptions.python_module
+            python_class_name:
+              type: str
+              description: Name of Python Class to import for interface descriptions
+                - default inherited from templates.interface_descriptions.python_class_name
+            underlay_ethernet_interfaces:
+              type: str
+              description: Path to J2 template - default inherited from templates.interface_descriptions.underlay_ethernet_interfaces.
+            underlay_port_channel_interfaces:
+              type: str
+              description: Path to J2 template - default inherited from templates.interface_descriptions.underlay_port_channel_interfaces.
+            mlag_ethernet_interfaces:
+              type: str
+              description: Path to J2 template - default inherited from templates.interface_descriptions.mlag_ethernet_interfaces.
+            mlag_port_channel_interfaces:
+              type: str
+              description: Path to J2 template - default inherited from templates.interface_descriptions.mlag_port_channel_interfaces.
+            connected_endpoints_ethernet_interfaces:
+              type: str
+              description: Path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_ethernet_interfaces.
+            connected_endpoints_port_channel_interfaces:
+              type: str
+              description: Path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_port_channel_interfaces.
+            overlay_loopback_interface:
+              type: str
+              description: Path to J2 template - default inherited from templates.interface_descriptions.overlay_loopback_interface.
+            vtep_loopback_interface:
+              type: str
+              description: Path to J2 template - default inherited from templates.interface_descriptions.vtep_loopback_interface.
+  only_local_vlan_trunk_groups:
+    documentation_options:
+      filename: Fabric Variables
+      table: VLAN Settings
+    type: bool
+    description: 'A vlan can have many trunk_groups assigned. To avoid unneeded configuration
+      changes on all leaf
+
+      switches when a new trunk group is added, this feature will only configure the
+      vlan trunk groups
+
+      matched with local connected_endpoints.
+
+      See "Details on only_local_vlan_trunk_groups" below.
+
+      Requires "enable_trunk_groups: true"
+
+      '
+    default: false
+  overlay_her_flood_list_per_vni:
+    documentation_options:
+      filename: Fabric Variables
+      table: Routing Protocol Selection
+    type: bool
+    description: 'When using Head-End Replication, configure flood-lists per VNI.
+
+      By default HER will be configured with a common flood-list containing all VTEPs.
+
+      This behavior can be changed to per-VNI flood-lists by setting `overlay_her_flood_list_per_vni:
+      true`.
+
+      This will make `eos_designs` consider configured VLANs per VTEP, and only include
+      the relevant VTEPs to each VNI''s flood-list.
+
+      '
+    default: false
+  overlay_her_flood_list_scope:
+    documentation_options:
+      filename: Fabric Variables
+      table: Routing Protocol Selection
+    type: str
+    description: 'When using Head-End Replication, set the scope of flood-lists to
+      Fabric or DC.
+
+      By default all VTEPs in the Fabric (part of the inventory group referenced by
+      "fabric_name") are added to the flood-lists.
+
+      This can be changed to all VTEPs in the DC (part of the inventory group referenced
+      by "dc_name").
+
+      This is useful if Border Leaf switches are dividing the VXLAN overlay into separate
+      domains.
+
+      '
+    valid_values:
+    - fabric
+    - dc
+    default: fabric
+  overlay_loopback_description:
+    documentation_options:
+      filename: Fabric Variables
+      table: Overlay General Settings
+    description: Customize the description on overlay interface Loopback0.
+    type: str
+  overlay_mlag_rfc5549:
+    documentation_options:
+      filename: Fabric Variables
+      table: IPv6 Underlay Settings
+    description: 'IPv6 Unnumbered for MLAG iBGP connections.
+
+      Requires "underlay_rfc5549: true".
+
+      '
+    type: bool
+    default: false
+  overlay_rd_type:
+    documentation_options:
+      filename: Network Services
+      table: Global Network Services Settings
+    type: dict
+    description: 'Specify RD type.
+
+      Route Distinguisher (RD) for L2 / L3 services is set to <overlay_loopback>:<vni>
+      per default.
+
+      By configuring overlay_rd_type the Administrator subfield (first part of RD)
+      can be set to other values.
+
+      Note:
+
+      RD is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
+
+      For loopback or 32-bit ASN/number the VNI can only be a 16-bit number.
+
+      For 16-bit ASN/number the VNI can be a 32-bit number.
+
+      '
+    keys:
+      admin_subfield:
+        type: str
+        convert_types:
+        - int
+        description: '"vtep_loopback" or "bgp_as" or <IPv4 Address> or interger between
+          <0-65535> or integer between <0-4294967295> or "overlay_loopback_ip".
+
+          '
+        default: overlay_loopback_ip
+      admin_subfield_offset:
+        type: str
+        convert_types:
+        - int
+        description: 'Offset can only be used if admin_subfield is an interger between
+          <0-4294967295> or "switch_id".
+
+          Total value of admin_subfield + admin_subfield_offset must be <= 4294967295.'
+  overlay_routing_protocol:
+    documentation_options:
+      filename: Fabric Variables
+      table: Routing Protocol Selection
+    description: "- The following overlay routing protocols are supported:\n  - eBGP:
+      Configures fabric with eBGP, default for l3ls-evpn design.\n  - iBGP: Configured
+      fabric with iBGP, only supported with OSPF or ISIS variants in underlay, default
+      for mpls design.\n  - CVX: Configures fabric to leverage CloudVision eXchange
+      as the overlay controller.\n  - HER: Configures fabric with Head-End Replication,
+      configures static VXLAN flood-lists instead of using a dynamic overlay protocol.\n
+      \ - none: No overlay configuration will be generated, default for l2ls design.\n"
+    type: str
+    valid_values:
+    - ebgp
+    - ibgp
+    - cvx
+    - her
+    - none
+    default: ebgp
+    convert_to_lower_case: true
+  overlay_routing_protocol_address_family:
+    documentation_options:
+      filename: Fabric Variables
+      table: IPv6 Underlay Settings
+    type: str
+    description: 'When set to `ipv6`, enable overlay EVPN peering with IPv6 addresses.
+
+      This feature depends on underlay_ipv6 variable. As of today, only RFC5549 is
+      capable to transport IPv6 in the underlay.
+
+      '
+    valid_values:
+    - ipv4
+    - ipv6
+    default: ipv4
+  overlay_rt_type:
+    documentation_options:
+      filename: Network Services
+      table: Global Network Services Settings
+    type: dict
+    description: 'Specify RT type.
+
+      Route Target (RT) for L2 / L3 services is set to <vni>:<vni> per default.
+
+      By configuring overlay_rt_type the Administrator subfield (first part of RT)
+      can be set to other values.
+
+      Notes:
+
+      RT is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
+
+      For 32-bit ASN/number the VNI can only be a 16-bit number.
+
+      For 16-bit ASN/number the VNI can be a 32-bit number.
+
+      '
+    keys:
+      admin_subfield:
+        type: str
+        convert_types:
+        - int
+        description: '"bgp_as" or interger between <0-65535> or integer between <0-4294967295>.
+
+          '
+        default: mac_vrf_id
+  p2p_uplinks_mtu:
+    documentation_options:
+      filename: Fabric Variables
+      table: Uplinks Settings
+    description: Point to Point Links MTU
+    type: int
+    convert_types:
+    - str
+    min: 68
+    max: 65535
+    default: 9000
+  p2p_uplinks_qos_profile:
+    documentation_options:
+      filename: Fabric Variables
+      table: Uplinks Settings
+    description: QOS Profile assigned on all infrastructure links
+    type: str
+  platform_settings:
+    documentation_options:
+      filename: Platform Specific Settings
+    type: list
+    items:
+      type: dict
+      keys:
+        platforms:
+          type: list
+          items:
+            type: str
+        trident_forwarding_table_partition:
+          type: str
+          description: Only applied when evpn_multicast is true
+        reload_delay:
+          type: dict
+          keys:
+            mlag:
+              type: int
+              convert_types:
+              - str
+              min: 0
+              max: 86400
+              description: In seconds
+            non_mlag:
+              type: int
+              convert_types:
+              - str
+              min: 0
+              max: 86400
+              description: In seconds
+        tcam_profile:
+          type: str
+        lag_hardware_only:
+          type: bool
+        feature_support:
+          type: dict
+          keys:
+            queue_monitor_length_notify:
+              type: bool
+              default: true
+            interface_storm_control:
+              type: bool
+              default: true
+        management_interface:
+          type: str
+          default: Management1
+        raw_eos_cli:
+          type: str
+          description: EOS CLI rendered directly on the root level of the final EOS
+            configuration
+  platform_speed_groups:
+    documentation_options:
+      filename: Platform Specific Settings
+    type: list
+    primary_key: platform
+    secondary_key: speeds
+    convert_types:
+    - dict
+    description: Set Hardware Speed Groups per Platform
+    items:
+      type: dict
+      keys:
+        platform:
+          type: str
+        speeds:
+          type: list
+          primary_key: speed
+          secondary_key: speed_groups
+          convert_types:
+          - dict
+          items:
+            type: dict
+            keys:
+              speed:
+                type: str
+              speed_groups:
+                type: list
+                items:
+                  type: int
+                  convert_types:
+                  - str
+  pod_name:
+    documentation_options:
+      filename: Fabric Topology
+      table: Topology Variables
+    description: 'POD Name, only used in Fabric Documentation (Optional), fallback
+      to dc_name and then to fabric_name.
+
+      Recommended to be common between Spines and Leafs within a POD (One l3ls topology).
+
+      '
+    type: str
+  port_profiles:
+    type: list
+    documentation_options:
+      filename: Connected Endpoints
+    primary_key: profile
+    convert_types:
+    - dict
+    description: 'Optional profiles to share common settings for connected_endpoints
+      and/or network_ports.
+
+      Keys are the same used under endpoints adapters. Keys defined under endpoints
+      adapters take precedence.
+
+      '
+    items:
+      type: dict
+      $ref: '#/$defs/adapter_config'
+      keys:
+        profile:
+          type: str
+          description: Port profile name.
+        parent_profile:
+          type: str
+          description: 'Parent profile is optional.
+
+            Port_profiles can refer to another port_profile to inherit settings in
+            up to two levels (adapter->profile->parent_profile).'
+  redundancy:
+    documentation_options:
+      filename: Platform Specific Settings
+    type: dict
+    description: Redundancy for chassis platforms with dual supervisors | Optional
+    keys:
+      protocol:
+        type: str
+        valid_values:
+        - sso
+        - rpr
+  shutdown_interfaces_towards_undeployed_peers:
+    documentation_options:
+      filename: Fabric Variables
+      table: Uplink Settings
+    type: bool
+    default: false
+    description: '- It is possible to provision configurations for a complete topology
+      but flag devices as undeployed using the host level variable `is_deployed: false`.
+
+
+      ```yaml
+
+      # Use at the host level
+
+      is_deployed: < true or false or default -> true >
+
+      ```
+
+
+      - By default, this will have no impact within the `eos_designs` role. Configs
+      will still be generated by the `eos_cli_config_gen` role and will still be pushed
+      by the `eos_config_deploy_eapi` directly to devices if used.
+
+      - However, if the `eos_config_deploy_cvp` role is used to push configurations,
+      CloudVision will ignore the devices flagged  as `is_deployed: false` and not
+      attempt to configure them.
+
+      - If the device is not present in the network due to CloudVision not configuring
+      the device, `eos_validate_state` role will fail tests on peers of the undeployed
+      device trying to verify that interfaces are up.
+
+      - To overcome this and shutdown interfaces towards undeployed peers, the variable
+      `shutdown_interfaces_towards_undeployed_peers` can be used, satisfying the `eos_validate_state`
+      role interface tests.
+
+      - Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices
+      are not present in the network.'
+  terminattr_disable_aaa:
+    documentation_options:
+      filename: Management Settings
+      table: CloudVision Settings
+    type: bool
+    default: false
+  terminattr_ingestexclude:
+    documentation_options:
+      filename: Management Settings
+      table: CloudVision Settings
+    type: str
+    default: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+  terminattr_ingestgrpcurl_port:
+    documentation_options:
+      filename: Management Settings
+      table: CloudVision Settings
+    type: int
+    convert_types:
+    - str
+    default: 9910
+    description: Port number for Terminattr ingest GRPC
+  terminattr_smashexcludes:
+    documentation_options:
+      filename: Management Settings
+      table: CloudVision Settings
+    type: str
+    default: ale,flexCounter,hardware,kni,pulse,strata
+  trunk_groups:
+    documentation_options:
+      filename: Fabric Variables
+      table: VLAN Settings
+    type: dict
+    keys:
+      mlag:
+        documentation_options:
+          filename: Fabric Variables
+          table: VLAN Settings
+        type: dict
+        description: 'Trunk Group used for MLAG VLAN (Typically VLAN 4094)
+
+          '
+        keys:
+          name:
+            documentation_options:
+              filename: Fabric Variables
+              table: VLAN Settings
+            type: str
+            default: MLAG
+      mlag_l3:
+        documentation_options:
+          filename: Fabric Variables
+          table: VLAN Settings
+        type: dict
+        description: 'Trunk Group used for MLAG L3 peering VLAN and for VRF L3 peering
+          VLANs (Typically VLAN 4093)
+
+          '
+        keys:
+          name:
+            documentation_options:
+              filename: Fabric Variables
+              table: VLAN Settings
+            type: str
+            default: LEAF_PEER_L3
+      uplink:
+        documentation_options:
+          filename: Fabric Variables
+          table: VLAN Settings
+        type: dict
+        description: 'Trunk Group used on L2 Leaf switches when "enable_trunk_groups"
+          is set
+
+          '
+        keys:
+          name:
+            documentation_options:
+              filename: Fabric Variables
+              table: VLAN Settings
+            type: str
+            default: UPLINK
+  type:
+    documentation_options:
+      filename: Fabric Topology
+    type: str
+    dynamic_valid_values: node_type_keys.type
+    description: 'The `type:` variable needs to be defined for each device in the
+      fabric.
+
+      This is leveraged to load the appropriate template to generate the configuration.'
+  underlay_filter_peer_as:
+    documentation_options:
+      filename: Fabric Variables
+      table: BGP Settings
+    type: bool
+    description: 'Configure route-map on eBGP sessions towards underlay peers, where
+      prefixes with the peer''s ASN in the AS Path are filtered away.
+
+      This is very useful in very large scale networks not using EVPN overlays, where
+      convergence will be quicker by not having to return
+
+      all updates received from Spine-1 to Spine-2 just for Spine-2 to throw them
+      away because of AS Path loop detection.
+
+      Note this key is ignored when EVPN is configured.
+
+      '
+    default: false
+  underlay_ipv6:
+    documentation_options:
+      filename: Fabric Variables
+      table: IPv6 Underlay Settings
+    description: 'This feature allows IPv6 underlay routing protocol with RFC5549
+      addresses to be used along with IPv4 advertisements as VXLAN tunnel endpoints.
+
+      Requires "underlay_rfc5549: true" and "loopback_ipv6_pool" under the "Fabric
+      Topology"
+
+      '
+    type: bool
+    default: false
+  underlay_isis_instance_name:
+    documentation_options:
+      filename: Fabric Variables
+      table: ISIS Settings
+    description: Default -> "EVPN_UNDERLAY" for l3ls, "CORE" for mpls
+    type: str
+  underlay_multicast:
+    documentation_options:
+      filename: Fabric Variables
+      table: Multicast Settings
+    type: bool
+    description: 'Enable Multicast in the underlay on all p2p uplink interfaces and
+      mlag l3 peer interface.
+
+      Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.
+
+      No other configuration is added, so the underlay will only support Source-Specific
+      Multicast (SSM)
+
+      The configuration is intended to be used as multicast underlay for EVPN OISM
+      overlay
+
+      '
+    default: false
+  underlay_ospf_area:
+    documentation_options:
+      filename: Fabric Variables
+      table: OSPF Settings
+    type: str
+    convert_types:
+    - int
+    format: ipv4
+    default: 0.0.0.0
+  underlay_ospf_bfd_enable:
+    documentation_options:
+      filename: Fabric Variables
+      table: OSPF Settings
+    type: bool
+    default: false
+  underlay_ospf_max_lsa:
+    documentation_options:
+      filename: Fabric Variables
+      table: OSPF Settings
+    type: int
+    convert_types:
+    - str
+    default: 12000
+  underlay_ospf_process_id:
+    documentation_options:
+      filename: Fabric Variables
+      table: OSPF Settings
+    type: int
+    convert_types:
+    - str
+    default: 100
+  underlay_rfc5549:
+    documentation_options:
+      filename: Fabric Variables
+      table: IPv6 Underlay Settings
+    description: 'Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered
+
+      Requires "underlay_routing_protocol: ebgp"
+
+      '
+    type: bool
+    default: false
+  underlay_routing_protocol:
+    documentation_options:
+      filename: Fabric Variables
+      table: Routing Protocol Selection
+    type: str
+    convert_to_lower_case: true
+    description: "- The following underlay routing protocols are supported:\n  - EBGP
+      (default for l3ls-evpn)\n  - OSPF.\n  - ISIS.\n  - ISIS-SR*.\n  - ISIS-LDP*.\n
+      \ - ISIS-SR-LDP*.\n  - OSPF-LDP*.\n- The variables should be applied to all
+      devices in the fabric.\n*Only supported with core_interfaces data model.\n"
+    valid_values:
+    - ebgp
+    - ospf
+    - isis
+    - isis-sr
+    - isis-ldp
+    - isis-sr-ldp
+    - ospf-ldp
+  uplink_ptp:
+    documentation_options:
+      filename: Fabric Variables
+      table: Uplinks Settings
+    description: Enable PTP on all infrastructure links
+    type: dict
+    keys:
+      enable:
+        documentation_options:
+          filename: Fabric Variables
+          table: Uplinks Settings
+        type: bool
+        default: false
+  vtep_vvtep_ip:
+    documentation_options:
+      filename: Fabric Variables
+      table: Overlay General Settings
+    description: 'IP Address used as Virtual VTEP. Will be configured as secondary
+      IP on Loopback1.
+
+      This is only needed for centralized routing designs.
+
+      '
+    type: str
+dynamic_keys:
+  connected_endpoints_keys.key:
+    $ref: '#/$defs/connected_endpoints'
+  node_type_keys.key:
+    $ref: '#/$defs/node_type'
+$defs:
+  adapter_config:
+    type: dict
+    keys:
+      endpoint_ports:
+        type: list
+        description: 'Endpoint ports is used for description, required unless description
+          is set.
+
+          The lists `endpoint_ports`, `switch_ports`, and `switches` must have the
+          same length.
+
+          Each list item is one switchport.
+
+          '
+        items:
+          type: str
+          description: Interface name.
+      speed:
+        type: str
+        description: 'Set adapter speed: `< interface_speed >`, `forced < interface_speed
+          >`, `auto < interface_speed >`.
+
+          If not specified will be auto.
+
+          '
+      description:
+        type: str
+        description: 'By default the description is built leveraging `<peer>_<peer_interface>`.
+
+          When set this key will overide the default value on the physical ports.
+
+          '
+      profile:
+        type: str
+        description: Port-profile name to inherit configuration.
+      enabled:
+        type: bool
+        description: 'Administrative state, setting to false will set the port to
+          ''shutdown'' in the intended configuration.
+
+          '
+        default: true
+      mode:
+        type: str
+        valid_values:
+        - access
+        - dot1q-tunnel
+        - trunk
+        - trunk phone
+        description: Interface mode.
+      mtu:
+        type: int
+        convert_types:
+        - str
+        min: 68
+        max: 65535
+      l2_mtu:
+        type: int
+        convert_types:
+        - str
+        min: 68
+        max: 9416
+        description: This should only be defined for platforms supporting the "l2
+          mtu" CLI command.
+      native_vlan:
+        type: int
+        convert_types:
+        - str
+        description: 'Native VLAN for a trunk port.
+
+          If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence.
+
+          '
+        min: 1
+        max: 4094
+      native_vlan_tag:
+        type: bool
+        default: false
+        description: If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag`
+          takes precedence.
+      trunk_groups:
+        type: list
+        items:
+          type: str
+        description: 'Required with `enable_trunk_groups: true`.
+
+          Trunk Groups are used for limiting VLANs on trunk ports to VLANs with the
+          same Trunk Group.
+
+          '
+      vlans:
+        type: str
+        description: Interface VLANs - if not set, the EOS default is that all VLANs
+          are allowed for trunk ports, and VLAN 1 will be used for access ports.
+        convert_types:
+        - int
+      spanning_tree_portfast:
+        type: str
+        valid_values:
+        - edge
+        - network
+      spanning_tree_bpdufilter:
+        type: str
+        convert_types:
+        - bool
+        valid_values:
+        - enabled
+        - disabled
+        - 'True'
+        - 'False'
+        - 'true'
+        - 'false'
+      spanning_tree_bpduguard:
+        type: str
+        convert_types:
+        - bool
+        valid_values:
+        - enabled
+        - disabled
+        - 'True'
+        - 'False'
+        - 'true'
+        - 'false'
+      flowcontrol:
+        type: dict
+        keys:
+          received:
+            type: str
+            valid_values:
+            - received
+            - send
+            - 'on'
+      qos_profile:
+        type: str
+        description: QOS profile name
+      ptp:
+        type: dict
+        description: 'The global PTP profile parameters will be applied to all connected
+          endpoints where `ptp` is manually enabled.
+
+          `ptp role master` is set to ensure control over the PTP topology.
+
+          '
+        keys:
+          enable:
+            type: bool
+            default: false
+          endpoint_role:
+            type: str
+            default: follower
+            valid_values:
+            - bmca
+            - default
+            - follower
+          profile:
+            type: str
+            default: aes67-r16-2016
+            valid_values:
+            - aes67
+            - aes67-r16-2016
+            - smpte2059-2
+      link_tracking:
+        type: dict
+        description: 'Configure the downstream interfaces of a respective Link Tracking
+          Group.
+
+          If `port_channel` is defined in an adapter, then the port-channel interface
+          is configured to be the downstream.
+
+          Else all the ethernet interfaces will be configured as downstream -> to
+          configure single-active EVPN multihomed networks.
+
+          '
+        keys:
+          enabled:
+            type: bool
+          name:
+            type: str
+            description: 'Tracking group name.
+
+              The default group name is taken from fabric variable of the switch,
+              `link_tracking.groups[0].name` with default value being "LT_GROUP1".
+
+              Optional if default link_tracking settings are configured on the node.
+
+              '
+      dot1x:
+        type: dict
+        description: 802.1x
+        keys:
+          port_control:
+            type: str
+            valid_values:
+            - auto
+            - force-authorized
+            - force-unauthorized
+          port_control_force_authorized_phone:
+            type: bool
+          reauthentication:
+            type: bool
+          pae:
+            type: dict
+            keys:
+              mode:
+                type: str
+                valid_values:
+                - authenticator
+          authentication_failure:
+            type: dict
+            keys:
+              action:
+                type: str
+                valid_values:
+                - allow
+                - drop
+              allow_vlan:
+                type: int
+                convert_types:
+                - str
+                min: 1
+                max: 4094
+          host_mode:
+            type: dict
+            keys:
+              mode:
+                type: str
+                valid_values:
+                - multi-host
+                - single-host
+              multi_host_authenticated:
+                type: bool
+          mac_based_authentication:
+            type: dict
+            keys:
+              enabled:
+                type: bool
+              always:
+                type: bool
+              host_mode_common:
+                type: bool
+          timeout:
+            type: dict
+            keys:
+              idle_host:
+                type: int
+                convert_types:
+                - str
+                min: 10
+                max: 65535
+              quiet_period:
+                type: int
+                convert_types:
+                - str
+                min: 1
+                max: 65535
+              reauth_period:
+                type: str
+                convert_types:
+                - int
+                description: Range 60-4294967295 or "server".
+              reauth_timeout_ignore:
+                type: bool
+              tx_period:
+                type: int
+                convert_types:
+                - str
+                min: 1
+                max: 65535
+          reauthorization_request_limit:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 10
+      storm_control:
+        type: dict
+        description: Storm control settings applied on port toward the endpoint.
+        keys:
+          all:
+            type: dict
+            keys:
+              level:
+                type: int
+                convert_types:
+                - str
+                description: Configure maximum storm-control level.
+              unit:
+                type: str
+                valid_values:
+                - percent
+                - pps
+                default: percent
+                description: Optional variable and is hardware dependent.
+          broadcast:
+            $ref: '#/$defs/adapter_config/keys/storm_control/keys/all'
+          multicast:
+            $ref: '#/$defs/adapter_config/keys/storm_control/keys/all'
+          unknown_unicast:
+            $ref: '#/$defs/adapter_config/keys/storm_control/keys/all'
+      monitor_sessions:
+        type: list
+        description: Used to define switchports as source or destination for monitoring
+          sessions.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              description: Session name.
+            role:
+              type: str
+              valid_values:
+              - source
+              - destination
+            source_settings:
+              type: dict
+              keys:
+                direction:
+                  type: str
+                  valid_values:
+                  - rx
+                  - tx
+                  - both
+                access_group:
+                  type: dict
+                  keys:
+                    type:
+                      type: str
+                      valid_values:
+                      - ip
+                      - ipv6
+                      - mac
+                    name:
+                      description: ACL name.
+                      type: str
+                    priority:
+                      type: int
+                      convert_types:
+                      - str
+            session_settings:
+              type: dict
+              description: 'Session settings are defined per session name.
+
+                Different session_settings for the same session name will be combined/merged.
+
+                '
+              keys:
+                encapsulation_gre_metadata_tx:
+                  type: bool
+                header_remove_size:
+                  type: int
+                  description: Number of bytes to remove from header.
+                  convert_types:
+                  - str
+                access_group:
+                  type: dict
+                  keys:
+                    type:
+                      type: str
+                      valid_values:
+                      - ip
+                      - ipv6
+                      - mac
+                    name:
+                      description: ACL name.
+                      type: str
+                rate_limit_per_ingress_chip:
+                  type: str
+                  description: "Ratelimit and unit as string.\nExamples:\n  \"100000
+                    bps\"\n  \"100 kbps\"\n  \"10 mbps\"\n"
+                rate_limit_per_egress_chip:
+                  type: str
+                  description: "Ratelimit and unit as string.\nExamples:\n  \"100000
+                    bps\"\n  \"100 kbps\"\n  \"10 mbps\"\n"
+                sample:
+                  type: int
+                  convert_types:
+                  - str
+                truncate:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                    size:
+                      type: int
+                      description: Size in bytes
+                      convert_types:
+                      - str
+      ethernet_segment:
+        type: dict
+        description: Settings for all or single-active EVPN multihoming.
+        keys:
+          short_esi:
+            type: str
+            required: true
+            description: 'In format xxxx:xxxx:xxxx or "auto".
+
+              Define a manual short-esi (be careful using this on profiles) or set
+              the value to "auto" to automatically generate the value.
+
+              Please see the notes under "EVPN A/A ESI dual and single-attached endpoint
+              scenarios" before setting `short_esi: auto`.
+
+              '
+          redundancy:
+            type: str
+            valid_values:
+            - all-active
+            - single-active
+            description: 'If omitted, Port-Channels use the EOS default of all-active.
+
+              If omitted, Ethernet interfaces are configured as single-active.
+
+              '
+          designated_forwarder_algorithm:
+            type: str
+            valid_values:
+            - auto
+            - modulus
+            - preference
+            description: "Configure DF algorithm and preferences.\n- auto: Use preference-based
+              algorithm and assign preference based on position of device in the 'switches'
+              list,\n  e.g., assuming a list of three switches, this would assign
+              a preference of 200 to the first switch, 100 to the 2nd, and 0 to the
+              third.\n- preference: Set preference for each switch manually using
+              designated_forwarder_preferences key.\n- modulus: Use the default modulus-based
+              algorithm.\nIf omitted, Port-Channels use the EOS default of modulus.\nIf
+              omitted, Ethernet interfaces default to the 'auto' mechanism detailed
+              above.\n"
+          designated_forwarder_preferences:
+            type: list
+            description: Manual preference as described above, required only for preference
+              algorithm.
+            items:
+              type: str
+              convert_types:
+              - int
+          dont_preempt:
+            type: bool
+            description: Disable preemption for single-active forwarding when auto/manual
+              DF preference is configured.
+      port_channel:
+        type: dict
+        description: Used for port-channel adapter.
+        keys:
+          mode:
+            type: str
+            description: Port-Channel Mode.
+            valid_values:
+            - active
+            - passive
+            - 'on'
+          channel_id:
+            type: int
+            convert_types:
+            - str
+            description: 'Port-Channel ID, Optional.
+
+              If no channel_id is specified, an id is generated from the first switch
+              port in the port channel.
+
+              '
+          description:
+            type: str
+            description: 'By default the description is built leveraging `<peer>`
+              name or `adapter.description` when defined.
+
+              When this key is defined, it will append its content to the physical
+              port description.
+
+              '
+          enabled:
+            type: bool
+            default: true
+            description: 'Port-Channel administrative state, Optional.
+
+              setting to false will set port to ''shutdown'' in intended configuration.
+
+              '
+          esi:
+            type: str
+            description: Format xxxx:xxxx:xxxx.
+            deprecation:
+              warning: true
+              removed: true
+              remove_in_version: 4.0.0
+              new_key: short_esi
+          short_esi:
+            type: str
+            description: In format xxxx:xxxx:xxxx or "auto".
+          lacp_fallback:
+            type: dict
+            description: LACP fallback configuration.
+            keys:
+              mode:
+                type: str
+                valid_values:
+                - static
+                description: Currently only static mode is supported.
+              timeout:
+                type: int
+                convert_types:
+                - str
+                description: Timeout in seconds, Optional - default is 90 seconds.
+          subinterfaces:
+            type: list
+            description: 'Port-Channel L2 Subinterfaces
+
+              Subinterfaces are only supported on routed port-channels, which means
+              they cannot be configured on MLAG port-channels.
+
+              Setting short_esi: auto generates the short_esi automatically using
+              a hash of configuration elements.
+
+              Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario"
+              before setting short_esi: auto.
+
+              '
+            items:
+              type: dict
+              keys:
+                number:
+                  type: int
+                  convert_types:
+                  - str
+                  description: Subinterface number
+                short_esi:
+                  type: str
+                  description: 'In format xxxx:xxxx:xxxx or "auto"
+
+                    Required for multihomed port-channels with subinterfaces
+
+                    '
+                vlan_id:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: 'VLAN ID to bridge.
+
+                    Default is subinterface number.
+
+                    '
+                encapsulation_vlan:
+                  type: dict
+                  description: 'Client VLAN ID encapsulation.
+
+                    Default is subinterface number.
+
+                    '
+                  keys:
+                    client_dot1q:
+                      type: int
+                      convert_types:
+                      - str
+                      min: 1
+                      max: 4094
+          raw_eos_cli:
+            type: str
+            description: EOS CLI rendered directly on the port-channel interface in
+              the final EOS configuration.
+          structured_config:
+            type: dict
+            description: Custom structured config added under port_channel_interfaces.<interface>
+              for eos_cli_config_gen.
+      raw_eos_cli:
+        type: str
+        description: EOS CLI rendered directly on the ethernet interface in the final
+          EOS configuration.
+      structured_config:
+        type: dict
+        description: Custom structured config added under ethernet_interfaces.<interface>
+          for eos_cli_config_gen.
+  connected_endpoints:
+    type: list
+    documentation_options:
+      filename: Connected Endpoints
+    primary_key: name
+    convert_types:
+    - dict
+    description: 'This should be applied to group_vars or host_vars where endpoints
+      are connecting.
+
+      `connected_endpoints_keys.key` is one of the keys under "connected_endpoints_keys".
+
+      The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and
+      `storage_arrays`.
+
+      '
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Endpoint name will be used in the switchport description.
+          required: true
+        rack:
+          type: str
+          description: Rack is used for documentation purposes only.
+        adapters:
+          type: list
+          description: A list of adapters, group by adapters leveraging the same port-profile.
+          items:
+            $ref: '#/$defs/adapter_config'
+            type: dict
+            keys:
+              switch_ports:
+                type: list
+                required: true
+                description: 'List of switch interfaces.
+
+                  The lists `endpoint_ports`, `switch_ports`, and `switches` must
+                  have the same length.
+
+                  '
+                items:
+                  type: str
+                  description: Switchport interface.
+              switches:
+                type: list
+                required: true
+                description: 'List of switches.
+
+                  The lists `endpoint_ports`, `switch_ports`, and `switches` must
+                  have the same length.
+
+                  '
+                items:
+                  type: str
+                  description: Device
+              server_ports:
+                type: list
+                deprecation:
+                  warning: true
+                  removed: true
+                  new_key: endpoint_ports
+                  remove_in_version: 4.0.0
+                items:
+                  type: str
+                  description: Used for documentation purposes
+  l3_edge:
+    type: dict
+    keys:
+      p2p_links_ip_pools:
+        type: list
+        convert_types:
+        - dict
+        primary_key: name
+        secondary_key: ipv4_pool
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              description: P2P pool name.
+            ipv4_pool:
+              type: str
+              description: IPv4 address/Mask.
+            prefix_size:
+              type: int
+              convert_types:
+              - str
+              description: Subnet mask size.
+              default: 31
+              min: 8
+              max: 31
+      p2p_links_profiles:
+        type: list
+        convert_types:
+        - dict
+        primary_key: name
+        $ref: '#/$defs/p2p_links'
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              description: P2P profile name. Any variable supported under p2p_links
+                can be inherited from a profile.
+      p2p_links:
+        type: list
+        $ref: '#/$defs/p2p_links'
+        items:
+          type: dict
+          keys:
+            nodes:
+              type: list
+              required: true
+            profile:
+              type: str
+              description: P2P profile name. Profile defined under p2p_profiles.
+  node_type:
+    documentation_options:
+      filename: Fabric Topology
+    type: dict
+    keys:
+      defaults:
+        type: dict
+        keys:
+          id:
+            documentation_options:
+              filename: Fabric Topology
+              table: Generic configuration management
+            description: Unique identifier used for IP addressing and other algorithms.
+            type: int
+            convert_types:
+            - str
+          platform:
+            documentation_options:
+              filename: Fabric Topology
+              table: Generic configuration management
+            description: Arista platform family.
+            type: str
+          mac_address:
+            documentation_options:
+              filename: Fabric Topology
+              table: Generic configuration management
+            type: str
+            description: Leverage to document management interface mac address.
+          system_mac_address:
+            documentation_options:
+              filename: Fabric Topology
+              table: Generic configuration management
+            type: str
+            description: 'System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".
+
+              Set to the same MAC address as available in "show version" on the device.
+
+              "system_mac_address" can also be set directly as a hostvar.
+
+              If both are set, the setting under "Fabric Topology" takes precedence.
+
+              '
+          serial_number:
+            documentation_options:
+              filename: Fabric Topology
+              table: Generic configuration management
+            type: str
+            description: 'Set to the Serial Number of the device
+
+              For  now only used for documentation purpose in the fabric documentation
+
+              and part of the structured_config
+
+              "serial_number" can also be set directly as a hostvar.
+
+              If both are set, the setting under "Fabric Topology" takes precedence.
+
+              '
+          rack:
+            documentation_options:
+              filename: Fabric Topology
+              table: Generic configuration management
+            description: Rack that the switch is located in (only used in snmp_settings
+              location).
+            type: str
+          mgmt_ip:
+            documentation_options:
+              filename: Fabric Topology
+              table: Generic configuration management
+            description: Node management interface IPv4 address.
+            type: str
+            format: cidr
+          ipv6_mgmt_ip:
+            documentation_options:
+              filename: Fabric Topology
+              table: Generic configuration management
+            description: Node management interface IPv6 address.
+            type: str
+            format: cidr
+          mgmt_interface:
+            documentation_options:
+              filename: Fabric Topology
+              table: Generic configuration management
+            description: 'Management Interface Name.
+
+              Default -> platform_management_interface -> mgmt_interface -> "Management1".
+
+              '
+            type: str
+          link_tracking:
+            documentation_options:
+              filename: Fabric Topology
+              table: Generic configuration management
+            description: 'This configures the Link Tracking Group on a switch as well
+              as adds the p2p-uplinks of the switch as the upstream interfaces.
+
+              Useful in EVPN multhoming designs.
+
+              '
+            type: dict
+            keys:
+              enabled:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: Generic configuration management
+                type: bool
+                default: false
+              groups:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: Generic configuration management
+                type: list
+                description: 'Link Tracking Groups.
+
+                  By default a single group named "LT_GROUP1" is defined with default
+                  values.
+
+                  Any groups defined under "groups" will replace the default.
+
+                  '
+                default:
+                - name: LT_GROUP1
+                items:
+                  type: dict
+                  keys:
+                    name:
+                      documentation_options:
+                        filename: Fabric Topology
+                        table: Generic configuration management
+                      type: str
+                      description: Tracking group name.
+                    recovery_delay:
+                      documentation_options:
+                        filename: Fabric Topology
+                        table: Generic configuration management
+                      type: int
+                      convert_types:
+                      - str
+                      min: 0
+                      max: 3600
+                      description: default -> platform_settings_mlag_reload_delay
+                        -> 300.
+                    links_minimum:
+                      documentation_options:
+                        filename: Fabric Topology
+                        table: Generic configuration management
+                      type: int
+                      convert_types:
+                      - str
+                      min: 1
+                      max: 100000
+          lacp_port_id_range:
+            documentation_options:
+              filename: Fabric Topology
+              table: Generic configuration management
+            description: 'This will generate the "lacp port-id range", "begin" and
+              "end" values based on node "id" and the number of nodes in the "node_group".
+
+              Unique LACP port-id ranges are recommended for EVPN Multihoming designs.
+
+              '
+            type: dict
+            keys:
+              enabled:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: Generic configuration management
+                type: bool
+                default: false
+              size:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: Generic configuration management
+                description: Recommended size > = number of ports in the switch.
+                type: int
+                convert_types:
+                - str
+                default: 128
+              offset:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: Generic configuration management
+                description: 'Offset is used to avoid overlapping port-id ranges of
+                  different switches.
+
+                  Useful when a "connected-endpoint" is connected to switches in different
+                  "node_groups".
+
+                  '
+                type: int
+                convert_types:
+                - str
+                default: 0
+          always_configure_ip_routing:
+            documentation_options:
+              filename: Fabric Topology
+              table: Generic configuration management
+            type: bool
+            default: false
+            description: 'Force configuration of "ip routing" even on L2 devices.
+
+              Use this to retain behavior of AVD versions below 4.0.0.
+
+              '
+          raw_eos_cli:
+            documentation_options:
+              filename: Fabric Topology
+              table: Generic configuration management
+            description: EOS CLI rendered directly on the root level of the final
+              EOS configuration.
+            type: str
+          structured_config:
+            documentation_options:
+              filename: Fabric Topology
+              table: Generic configuration management
+            description: Custom structured config for eos_cli_config_gen.
+            type: dict
+          uplink_ipv4_pool:
+            documentation_options:
+              filename: Fabric Topology
+              table: Uplink management
+            description: IPv4 subnet to use to connect to uplink switches.
+            type: str
+            format: ipv4_cidr
+          uplink_interfaces:
+            documentation_options:
+              filename: Fabric Topology
+              table: Uplink management
+            description: 'Local uplink interfaces
+
+              Each list item supports range syntax that can be expanded into a list
+              of interfaces.
+
+              If uplink_interfaces is not defined, platform-specific defaults (defined
+              under default_interfaces) will be used instead.
+
+              Please note that default_interfaces are not defined by default, you
+              should define these yourself.
+
+              '
+            type: list
+            items:
+              type: str
+              pattern: Ethernet[\d/]+
+          uplink_switch_interfaces:
+            documentation_options:
+              filename: Fabric Topology
+              table: Uplink management
+            description: Interfaces located on uplink switches
+            type: list
+            items:
+              type: str
+              pattern: Ethernet[\d/]+
+          uplink_switches:
+            documentation_options:
+              filename: Fabric Topology
+              table: Uplink management
+            type: list
+            items:
+              type: str
+              required: true
+              description: 'Hostname of uplink switch.
+
+                If parallel uplinks are in use, update max_parallel_uplinks below
+                and specify each uplink switch multiple times.
+
+                e.g. uplink_switches: [ ''DC1-SPINE1'', ''DC1-SPINE1'', ''DC1-SPINE2'',
+                ''DC1-SPINE2'' ].
+
+                '
+          uplink_interface_speed:
+            documentation_options:
+              filename: Fabric Topology
+              table: Uplink management
+            description: 'Set point-to-Point interface speed and will apply to uplink
+              interfaces on both ends.
+
+              interface_speed or forced interface_speed or auto interface_speed.
+
+              '
+            type: str
+          max_uplink_switches:
+            documentation_options:
+              filename: Fabric Topology
+              table: Uplink management
+            type: int
+            convert_types:
+            - str
+            description: 'Maximum number of uplink switches.
+
+              Changing this value may change IP Addressing on uplinks.
+
+              Can be used to reserve IP space for future expansions.
+
+              '
+          max_parallel_uplinks:
+            documentation_options:
+              filename: Fabric Topology
+              table: Uplink management
+            type: int
+            convert_types:
+            - str
+            description: 'Number of parallel links towards uplink switches.
+
+              Changing this value may change interface naming on uplinks (and corresponding
+              downlinks).
+
+              Can be used to reserve interfaces for future parallel uplinks.
+
+              '
+          uplink_bfd:
+            documentation_options:
+              filename: Fabric Topology
+              table: Uplink management
+            type: bool
+            default: false
+            description: Enable bfd on uplink interfaces.
+          uplink_native_vlan:
+            documentation_options:
+              filename: Fabric Topology
+              table: Uplink management
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 4094
+            description: 'Only applicable to switches with layer-2 port-channel uplinks.
+
+              A suspended (disabled) vlan will be created in both ends of the link
+              unless the vlan is defined under network services.
+
+              By default the uplink will not have a native_vlan configured, so EOS
+              defaults to vlan 1.
+
+              '
+          uplink_ptp:
+            documentation_options:
+              filename: Fabric Topology
+              table: Uplink management
+            description: Enable PTP on all infrastructure links.
+            type: dict
+            keys:
+              enable:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: Uplink management
+                type: bool
+                default: false
+          uplink_macsec:
+            documentation_options:
+              filename: Fabric Topology
+              table: Uplink management
+            description: Enable MacSec on all uplinks.
+            type: dict
+            keys:
+              profile:
+                type: str
+          uplink_structured_config:
+            documentation_options:
+              filename: Fabric Topology
+              table: Uplink management
+            type: dict
+            description: 'Custom structured config applied to "uplink_interfaces",
+              and "uplink_switch_interfaces".
+
+              When uplink_type == "p2p", custom structured config added under ethernet_interfaces.<interface>
+              for eos_cli_config_gen overrides the settings on the ethernet interface
+              level.
+
+              When uplink_type == "port-channel", custom structured config added under
+              port_channel_interfaces.<interface> for eos_cli_config_gen overrides
+              the settings on the port-channel interface level.
+
+              "uplink_structured_config" is applied after "structured_config", so
+              it can override "structured_config" defined on node-level.
+
+              '
+          mlag_port_channel_structured_config:
+            documentation_options:
+              filename: Fabric Topology
+              table: Uplink management
+            type: dict
+            description: 'Custom structured config applied to MLAG peer link port-channel
+              id.
+
+              Added under port_channel_interfaces.<interface> for eos_cli_config_gen.
+
+              Overrides the settings on the port-channel interface level.
+
+              "mlag_port_channel_structured_config" is applied after "structured_config",
+              so it can override "structured_config" defined on node-level.
+
+              '
+          mlag_peer_vlan_structured_config:
+            documentation_options:
+              filename: Fabric Topology
+              table: Uplink management
+            type: dict
+            description: 'Custom structured config applied to MLAG Peer Link (control
+              link) SVI interface id.
+
+              Added under vlan_interfaces.<interface> for eos_cli_config_gen.
+
+              Overrides the settings on the vlan interface level.
+
+              "mlag_peer_vlan_structured_config" is applied after "structured_config",
+              so it can override "structured_config" defined on node-level.
+
+              '
+          mlag_peer_l3_vlan_structured_config:
+            documentation_options:
+              filename: Fabric Topology
+              table: Uplink management
+            type: dict
+            description: 'Custom structured config applied to MLAG underlay L3 peering
+              SVI interface id.
+
+              Added under vlan_interfaces.<interface> for eos_cli_config_gen.
+
+              Overrides the settings on the vlan interface level.
+
+              "mlag_peer_l3_vlan_structured_config" is applied after "structured_config",
+              so it can override "structured_config" defined on node-level.
+
+              '
+          short_esi:
+            documentation_options:
+              filename: Fabric Topology
+              table: Uplink management
+            description: 'short_esi only valid for l2leaf devices using port-channel
+              uplink.
+
+              Setting short_esi to "auto" generates the short_esi automatically using
+              a hash of configuration elements.
+
+              < 0000:0000:0000 | auto >.
+
+              '
+            type: str
+          isis_system_id_prefix:
+            documentation_options:
+              filename: Fabric Topology
+              table: ISIS underlay protocol management
+            description: (4.4 hexadecimal).
+            type: str
+            pattern: '[0-9a-f]{4}\.[0-9a-f]{4}'
+          isis_maximum_paths:
+            documentation_options:
+              filename: Fabric Topology
+              table: ISIS underlay protocol management
+            description: Number of path to configure in ECMP for ISIS.
+            type: int
+            convert_types:
+            - str
+          is_type:
+            documentation_options:
+              filename: Fabric Topology
+              table: ISIS underlay protocol management
+            type: str
+            valid_values:
+            - level-1-2
+            - level-1
+            - level-2
+            default: level-2
+          node_sid_base:
+            documentation_options:
+              filename: Fabric Topology
+              table: ISIS underlay protocol management
+            description: Node-SID base for isis-sr underlay variants. Combined with
+              node id to generate ISIS-SR node-SID.
+            type: int
+            convert_types:
+            - str
+            default: 0
+          loopback_ipv4_pool:
+            documentation_options:
+              filename: Fabric Topology
+              table: Loopback and VTEP management
+            description: IPv4 subnet for Loopback0 allocation.
+            type: str
+            format: ipv4_cidr
+          vtep_loopback_ipv4_pool:
+            documentation_options:
+              filename: Fabric Topology
+              table: Loopback and VTEP management
+            description: IPv4 subnet for VTEP-Loopback allocation.
+            type: str
+            format: ipv4_cidr
+          loopback_ipv4_offset:
+            documentation_options:
+              filename: Fabric Topology
+              table: Loopback and VTEP management
+            description: 'Offset all assigned loopback IP addresses.
+
+              Required when the < loopback_ipv4_pool > is same for 2 different node_types
+              (like spine and l3leaf) to avoid over-lapping IPs.
+
+              For example, set the minimum offset l3leaf.defaults.loopback_ipv4_offset:
+              < total # spine switches > or vice versa.
+
+              '
+            type: int
+            convert_types:
+            - str
+            default: 0
+          loopback_ipv6_pool:
+            documentation_options:
+              filename: Fabric Topology
+              table: Loopback and VTEP management
+            description: IPv6 subnet for Loopback0 allocation.
+            type: str
+            format: ipv6_cidr
+          loopback_ipv6_offset:
+            documentation_options:
+              filename: Fabric Topology
+              table: Loopback and VTEP management
+            description: 'Offset all assigned loopback IPv6 addresses.
+
+              Required when the < loopback_ipv6_pool > is same for 2 different node_types
+              (like spine and l3leaf) to avoid overlapping IPs.
+
+              For example, set the minimum offset l3leaf.defaults.loopback_ipv6_offset:
+              < total # spine switches > or vice versa.
+
+              '
+            type: int
+            convert_types:
+            - str
+            default: 0
+          vtep_loopback:
+            documentation_options:
+              filename: Fabric Topology
+              table: Loopback and VTEP management
+            description: Set VXLAN source interface.
+            type: str
+            pattern: Loopback[\d/]+
+          bgp_as:
+            documentation_options:
+              filename: Fabric Topology
+              table: BGP & EVPN control plane
+            description: Required with eBGP.
+            type: str
+            convert_types:
+            - int
+            - float
+          bgp_defaults:
+            documentation_options:
+              filename: Fabric Topology
+              table: BGP & EVPN control plane
+            description: List of EOS commands to apply to BGP daemon.
+            type: list
+            items:
+              type: str
+          evpn_role:
+            documentation_options:
+              filename: Fabric Topology
+              table: BGP & EVPN control plane
+            type: str
+            description: Acting role in EVPN control plane. Default is set in node_type
+              definition from node_type_keys.
+            valid_values:
+            - client
+            - server
+            - none
+          evpn_route_servers:
+            documentation_options:
+              filename: Fabric Topology
+              table: BGP & EVPN control plane
+            description: List of nodes acting as EVPN Route-Servers / Route-Reflectors.
+            type: list
+            items:
+              type: str
+          evpn_services_l2_only:
+            documentation_options:
+              filename: Fabric Topology
+              table: EVPN services management
+            description: 'Possibility to prevent configuration of Tenant VRFs and
+              SVIs.
+
+              Override node definition "network_services_l3" from node_type_keys.
+
+              This allows support for centralized routing.
+
+              '
+            type: bool
+            default: false
+          filter:
+            documentation_options:
+              filename: Fabric Topology
+              table: EVPN services management
+            description: 'Filter L3 and L2 network services based on tenant and tags
+              (and operation filter).
+
+              If filter is not defined it will default to all.
+
+              '
+            type: dict
+            keys:
+              tenants:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: EVPN services management
+                type: list
+                items:
+                  type: str
+                default:
+                - all
+              tags:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: EVPN services management
+                type: list
+                items:
+                  type: str
+                default:
+                - all
+              always_include_vrfs_in_tenants:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: EVPN services management
+                description: 'List of tenants where VRFs will be configured even if
+                  VLANs are not included in tags
+
+                  Useful for L3 "border" leaf.
+
+                  '
+                type: list
+                items:
+                  type: str
+              only_vlans_in_use:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: EVPN services management
+                type: bool
+                default: false
+                description: 'Only configure VLANs, SVIs, VRFs in use by connected
+                  endpoints or downstream L2 switches.
+
+                  Note! This feature only considers configuration managed by eos_designs.
+
+                  This excludes structured_config, custom_structured_configuration_,
+                  raw_eos_cli, eos_cli, custom templates, configlets etc.
+
+                  '
+          igmp_snooping_enabled:
+            documentation_options:
+              filename: Fabric Topology
+              table: EVPN services management
+            description: Activate or deactivate IGMP snooping on device level.
+            type: bool
+            default: true
+          evpn_gateway:
+            documentation_options:
+              filename: Fabric Topology
+              table: BGP & EVPN multi-domain gateway
+            description: 'Node is acting as EVPN Multi-Domain Gateway.
+
+              New BGP peer-group is generated between EVPN GWs in different domains
+              or between GWs and Route Servers.
+
+              Name can be changed under "bgp_peer_groups.evpn_overlay_core" variable.
+
+              L3 rechability for different EVPN GWs must be already in place, it is
+              recommended to use DCI & L3 Edge if Route Servers and GWs are not defined
+              under the same Ansible inventory.
+
+              '
+            type: dict
+            keys:
+              remote_peers:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: BGP & EVPN multi-domain gateway
+                description: 'Define remote peers of the EVPN VXLAN Gateway.
+
+                  If the hostname can be found in the inventory, ip_address and BGP
+                  ASN will be automatically populated. Manual override takes precedence.
+
+                  If the peer''s hostname can not be found in the inventory, ip_address
+                  and bgp_as must be defined.
+
+                  '
+                type: list
+                items:
+                  type: dict
+                  keys:
+                    hostname:
+                      documentation_options:
+                        filename: Fabric Topology
+                        table: BGP & EVPN multi-domain gateway
+                      description: Hostname of remote EVPN GW server.
+                      type: str
+                    ip_address:
+                      documentation_options:
+                        filename: Fabric Topology
+                        table: BGP & EVPN multi-domain gateway
+                      description: Peering IP of remote Route Server.
+                      type: str
+                      format: ipv4
+                    bgp_as:
+                      documentation_options:
+                        filename: Fabric Topology
+                        table: BGP & EVPN multi-domain gateway
+                      description: BGP ASN of remote Route Server.
+                      type: str
+                      convert_types:
+                      - int
+                      - float
+              evpn_l2:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: BGP & EVPN multi-domain gateway
+                description: Enable EVPN Gateway functionality for route-types 2 (MAC-IP)
+                  and 3 (IMET).
+                type: dict
+                keys:
+                  enabled:
+                    documentation_options:
+                      filename: Fabric Topology
+                      table: BGP & EVPN multi-domain gateway
+                    type: bool
+                    default: false
+              evpn_l3:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: BGP & EVPN multi-domain gateway
+                description: Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX).
+                type: dict
+                keys:
+                  enabled:
+                    documentation_options:
+                      filename: Fabric Topology
+                      table: BGP & EVPN multi-domain gateway
+                    type: bool
+                    default: false
+                  inter_domain:
+                    documentation_options:
+                      filename: Fabric Topology
+                      table: BGP & EVPN multi-domain gateway
+                    type: bool
+                    default: true
+          ipvpn_gateway:
+            documentation_options:
+              filename: Fabric Topology
+              table: BGP & IP-VPN gateway
+            description: 'Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN
+              Interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".
+
+              L3 Reachability is required for this to work, the preferred method to
+              establish underlay connectivity is to use core_interfaces.
+
+              '
+            type: dict
+            keys:
+              enabled:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: BGP & IP-VPN gateway
+                type: bool
+                required: true
+              evpn_domain_id:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: BGP & IP-VPN gateway
+                description: Domain ID to assign to EVPN address family for use with
+                  D-path. Format <nn>:<nn>.
+                type: str
+                default: '65535:1'
+              ipvpn_domain_id:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: BGP & IP-VPN gateway
+                description: Domain ID to assign to IPVPN address families for use
+                  with D-path. Format <nn>:<nn>.
+                type: str
+                default: '65535:2'
+              enable_d_path:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: BGP & IP-VPN gateway
+                description: Enable D-path for use with BGP bestpath selection algorithm.
+                type: bool
+                default: true
+              maximum_routes:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: BGP & IP-VPN gateway
+                description: Maximum routes to accept from IPVPN remote peers.
+                type: int
+                convert_types:
+                - str
+                default: 0
+              local_as:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: BGP & IP-VPN gateway
+                description: Apply local-as to peering with IPVPN remote peers.
+                type: str
+                convert_types:
+                - int
+                default: none
+              address_families:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: BGP & IP-VPN gateway
+                description: IPVPN address families to enable for remote peers.
+                type: list
+                items:
+                  type: str
+                default:
+                - vpn-ipv4
+              remote_peers:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: BGP & IP-VPN gateway
+                type: list
+                items:
+                  type: dict
+                  keys:
+                    hostname:
+                      documentation_options:
+                        filename: Fabric Topology
+                        table: BGP & IP-VPN gateway
+                      description: Hostname of remote IPVPN Peer.
+                      type: str
+                      required: true
+                    ip_address:
+                      documentation_options:
+                        filename: Fabric Topology
+                        table: BGP & IP-VPN gateway
+                      description: Peering IP of remote IPVPN Peer.
+                      type: str
+                      format: ipv4
+                      required: true
+                    bgp_as:
+                      documentation_options:
+                        filename: Fabric Topology
+                        table: BGP & IP-VPN gateway
+                      description: BGP ASN of remote IPVPN Peer.
+                      type: str
+                      required: true
+                      convert_types:
+                      - int
+                      - float
+          mlag:
+            documentation_options:
+              filename: Fabric Topology
+              table: MLAG configuration management
+            description: Enable / Disable auto MLAG, when two nodes are defined in
+              node group.
+            type: bool
+            default: true
+          mlag_dual_primary_detection:
+            documentation_options:
+              filename: Fabric Topology
+              table: MLAG configuration management
+            description: Enable / Disable MLAG dual primary detection.
+            type: bool
+            default: false
+          mlag_ibgp_origin_incomplete:
+            documentation_options:
+              filename: Fabric Topology
+              table: MLAG configuration management
+            description: 'Set origin of routes received from MLAG iBGP peer to incomplete.
+
+              The purpose is to optimize routing for leaf loopbacks from spine perspective
+              and
+
+              avoid suboptimal routing via peerlink for control plane traffic.
+
+              '
+            type: bool
+            default: true
+          mlag_interfaces:
+            documentation_options:
+              filename: Fabric Topology
+              table: MLAG configuration management
+            description: 'Each list item supports range syntax that can be expanded
+              into a list of interfaces.
+
+              Required when MLAG leafs are present in the topology.
+
+              '
+            type: list
+            items:
+              type: str
+          mlag_interfaces_speed:
+            documentation_options:
+              filename: Fabric Topology
+              table: MLAG configuration management
+            description: 'Set MLAG interface speed.
+
+              < interface_speed or forced interface_speed or auto interface_speed
+              >.
+
+              '
+            type: str
+          mlag_peer_l3_vlan:
+            documentation_options:
+              filename: Fabric Topology
+              table: MLAG configuration management
+            description: 'Underlay L3 peering SVI interface id.
+
+              If set to 0 or the same vlan as mlag_peer_vlan, the mlag_peer_vlan will
+              be used for L3 peering.
+
+              '
+            type: int
+            convert_types:
+            - str
+            - bool
+            min: 0
+            max: 4094
+            default: 4093
+          mlag_peer_l3_ipv4_pool:
+            documentation_options:
+              filename: Fabric Topology
+              table: MLAG configuration management
+            description: 'IP address pool used for MLAG underlay L3 peering. IP is
+              derived from the node id.
+
+              Required when MLAG leafs present in topology and they are using a separate
+              L3 peering VLAN.
+
+              '
+            type: str
+            format: ipv4_cidr
+          mlag_peer_vlan:
+            documentation_options:
+              filename: Fabric Topology
+              table: MLAG configuration management
+            description: MLAG Peer Link (control link) SVI interface id.
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 4094
+            default: 4094
+          mlag_peer_link_allowed_vlans:
+            documentation_options:
+              filename: Fabric Topology
+              table: MLAG configuration management
+            type: str
+            default: 2-4094
+          mlag_peer_ipv4_pool:
+            documentation_options:
+              filename: Fabric Topology
+              table: MLAG configuration management
+            description: 'IP address pool used for MLAG Peer Link (control link).
+              IP is derived from the node id.
+
+              Required when MLAG leafs present in topology.
+
+              '
+            type: str
+            format: ipv4_cidr
+          mlag_port_channel_id:
+            documentation_options:
+              filename: Fabric Topology
+              table: MLAG configuration management
+            description: 'If not set, the mlag port-channel id is generated based
+              on the digits of the first interface present in ''mlag_interfaces''.
+
+              Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and <
+              1 - 999999 > for EOS >= 4.25.0F.
+
+              '
+            type: int
+            convert_types:
+            - str
+          mlag_domain_id:
+            documentation_options:
+              filename: Fabric Topology
+              table: MLAG configuration management
+            description: MLAG Domain ID. If not set the node group name (Set with
+              "group" key) will be used.
+            type: str
+          spanning_tree_mode:
+            documentation_options:
+              filename: Fabric Topology
+              table: MLAG configuration management
+            type: str
+            valid_values:
+            - mstp
+            - rstp
+            - rapid-pvst
+            - none
+          spanning_tree_priority:
+            documentation_options:
+              filename: Fabric Topology
+              table: MLAG configuration management
+            type: int
+            convert_types:
+            - str
+            default: 32768
+          spanning_tree_root_super:
+            documentation_options:
+              filename: Fabric Topology
+              table: MLAG configuration management
+            type: bool
+            default: false
+          virtual_router_mac_address:
+            documentation_options:
+              filename: Fabric Topology
+              table: MLAG configuration management
+            description: Virtual router mac address for anycast gateway.
+            type: str
+            format: mac
+          inband_management_subnet:
+            documentation_options:
+              filename: Fabric Topology
+              table: Inband management VLAN
+            description: 'Optional IP subnet assigned to Inband Management SVI on
+              l2leafs in default VRF.
+
+              Parent l3leafs will have SVI with "ip virtual-router" and host-route
+              injection based on ARP. This allows all l3leafs to reuse the same subnet.
+
+              SVI IP address will be assigned as follows:
+
+              virtual-router: <subnet> + 1
+
+              l3leaf A      : <subnet> + 2 (same IP on all l3leaf A)
+
+              l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
+
+              l2leafs       : <subnet> + 3 + <l2leaf id>
+
+              GW on l2leafs : <subnet> + 1
+
+              Assign range larger than total l2leafs + 5
+
+              '
+            type: str
+            format: ipv4_cidr
+          inband_management_vlan:
+            documentation_options:
+              filename: Fabric Topology
+              table: Inband management VLAN
+            description: VLAN number assigned to Inband Management SVI on l2leafs
+              in default VRF.
+            type: int
+            convert_types:
+            - str
+            default: 4092
+          mpls_overlay_role:
+            documentation_options:
+              filename: Fabric Topology
+              table: MPLS settings management
+            type: str
+            valid_values:
+            - client
+            - server
+            - none
+            description: 'Set the default mpls overlay role.
+
+              Acting role in overlay control plane.
+
+              '
+          overlay_address_families:
+            documentation_options:
+              filename: Fabric Topology
+              table: MPLS settings management
+            type: list
+            convert_types:
+            - str
+            items:
+              type: str
+              valid_values:
+              - evpn
+              - vpn-ipv4
+              - vpn-ipv6
+            description: 'Set the default overlay address families.
+
+              '
+          mpls_route_reflectors:
+            documentation_options:
+              filename: Fabric Topology
+              table: MPLS settings management
+            type: list
+            convert_types:
+            - str
+            description: List of inventory hostname acting as MPLS route-reflectors.
+            items:
+              documentation_options:
+                filename: Fabric Topology
+                table: MPLS settings management
+              type: str
+              description: Inventory_hostname_of_mpls_route_reflectors.
+          bgp_cluster_id:
+            documentation_options:
+              filename: Fabric Topology
+              table: MPLS settings management
+            type: str
+            convert_types:
+            - int
+            description: Set BGP cluster id.
+          ptp:
+            documentation_options:
+              filename: Fabric Topology
+              table: PTP settings management
+            type: dict
+            keys:
+              enabled:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: PTP settings management
+                type: bool
+                default: false
+              profile:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: PTP settings management
+                type: str
+                valid_values:
+                - aes67
+                - smpte2059-2
+                - aes67-r16-2016
+                default: aes67-r16-2016
+              domain:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: PTP settings management
+                type: int
+                convert_types:
+                - str
+                min: 0
+                max: 255
+                default: 127
+              priority1:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: PTP settings management
+                type: int
+                convert_types:
+                - str
+                min: 0
+                max: 255
+                description: 'default -> automatically set based on node_type.
+
+                  '
+              priority2:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: PTP settings management
+                type: int
+                convert_types:
+                - str
+                min: 0
+                max: 255
+                description: 'default -> (node_id modulus 256).
+
+                  '
+              auto_clock_identity:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: PTP settings management
+                type: bool
+                default: true
+                description: 'If you prefer to have PTP clock identity be the system
+                  MAC-address of the switch, which is the default EOS behaviour, simply
+                  disable the automatic PTP clock identity.
+
+                  default -> (clock_identity_prefix = 00:1C:73 (default)) + (PTP priority
+                  1 as HEX) + ":00:" + (PTP priority 2 as HEX).
+
+                  '
+              clock_identity_prefix:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: PTP settings management
+                type: str
+                description: 'PTP clock idetentiy 3-byte prefix. i.e. "01:02:03".
+
+                  By default the 3-byte prefix is "00:1C:73".
+
+                  This can be overridden if auto_clock_identity is set to true (which
+                  is the default).
+
+                  '
+              clock_identity:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: PTP settings management
+                type: str
+                description: 'Set PTP clock identity manually. 6-byte value i.e. "01:02:03:04:05:06".
+
+                  '
+              source_ip:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: PTP settings management
+                type: str
+                description: 'By default in EOS, PTP packets are sourced with an IP
+                  address from the routed port or from the relevant SVI, which is
+                  the recommended behaviour.
+
+                  This can be set manually if required, for example, to a value of
+                  "10.1.2.3".
+
+                  '
+              ttl:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: PTP settings management
+                type: int
+                convert_types:
+                - str
+              forward_unicast:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: PTP settings management
+                type: bool
+                default: false
+                description: 'Enable PTP unicast forwarding.
+
+                  '
+              dscp:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: PTP settings management
+                type: dict
+                keys:
+                  general_messages:
+                    documentation_options:
+                      filename: Fabric Topology
+                      table: PTP settings management
+                    type: int
+                    convert_types:
+                    - str
+                  event_messages:
+                    documentation_options:
+                      filename: Fabric Topology
+                      table: PTP settings management
+                    type: int
+                    convert_types:
+                    - str
+              monitor:
+                documentation_options:
+                  filename: Fabric Topology
+                  table: PTP settings management
+                type: dict
+                keys:
+                  enabled:
+                    documentation_options:
+                      filename: Fabric Topology
+                      table: PTP settings management
+                    type: bool
+                    default: true
+                  threshold:
+                    documentation_options:
+                      filename: Fabric Topology
+                      table: PTP settings management
+                    type: dict
+                    keys:
+                      offset_from_master:
+                        documentation_options:
+                          filename: Fabric Topology
+                          table: PTP settings management
+                        type: int
+                        convert_types:
+                        - str
+                        min: 0
+                        max: 1000000000
+                        default: 250
+                      mean_path_delay:
+                        documentation_options:
+                          filename: Fabric Topology
+                          table: PTP settings management
+                        type: int
+                        convert_types:
+                        - str
+                        min: 0
+                        max: 1000000000
+                        default: 1500
+                      drop:
+                        documentation_options:
+                          filename: Fabric Topology
+                          table: PTP settings management
+                        type: dict
+                        keys:
+                          offset_from_master:
+                            documentation_options:
+                              filename: Fabric Topology
+                              table: PTP settings management
+                            type: int
+                            convert_types:
+                            - str
+                            min: 0
+                            max: 1000000000
+                          mean_path_delay:
+                            documentation_options:
+                              filename: Fabric Topology
+                              table: PTP settings management
+                            type: int
+                            convert_types:
+                            - str
+                            min: 0
+                            max: 1000000000
+                  missing_message:
+                    documentation_options:
+                      filename: Fabric Topology
+                      table: PTP settings management
+                    type: dict
+                    keys:
+                      intervals:
+                        documentation_options:
+                          filename: Fabric Topology
+                          table: PTP settings management
+                        type: dict
+                        keys:
+                          announce:
+                            documentation_options:
+                              filename: Fabric Topology
+                              table: PTP settings management
+                            type: int
+                            convert_types:
+                            - str
+                            min: 2
+                            max: 255
+                          follow_up:
+                            documentation_options:
+                              filename: Fabric Topology
+                              table: PTP settings management
+                            type: int
+                            convert_types:
+                            - str
+                            min: 2
+                            max: 255
+                          sync:
+                            documentation_options:
+                              filename: Fabric Topology
+                              table: PTP settings management
+                            type: int
+                            convert_types:
+                            - str
+                            min: 2
+                            max: 255
+                      sequence_ids:
+                        documentation_options:
+                          filename: Fabric Topology
+                          table: PTP settings management
+                        type: dict
+                        keys:
+                          enabled:
+                            documentation_options:
+                              filename: Fabric Topology
+                              table: PTP settings management
+                            type: bool
+                            default: true
+                          announce:
+                            documentation_options:
+                              filename: Fabric Topology
+                              table: PTP settings management
+                            type: int
+                            convert_types:
+                            - str
+                            min: 2
+                            max: 255
+                            default: 3
+                          delay_resp:
+                            documentation_options:
+                              filename: Fabric Topology
+                              table: PTP settings management
+                            type: int
+                            convert_types:
+                            - str
+                            min: 2
+                            max: 255
+                            default: 3
+                          follow_up:
+                            documentation_options:
+                              filename: Fabric Topology
+                              table: PTP settings management
+                            type: int
+                            convert_types:
+                            - str
+                            min: 2
+                            max: 255
+                            default: 3
+                          sync:
+                            documentation_options:
+                              filename: Fabric Topology
+                              table: PTP settings management
+                            type: int
+                            convert_types:
+                            - str
+                            min: 2
+                            max: 255
+                            default: 3
+      node_groups:
+        type: list
+        convert_types:
+        - dict
+        primary_key: group
+        items:
+          $ref: '#/$defs/node_type/keys/defaults'
+          type: dict
+          keys:
+            group:
+              type: str
+              required: true
+              description: 'The Node Group Name is used for MLAG domain unless set
+                with ''mlag_domain_id''.
+
+                The Node Group Name is also used for peer description on downstream
+                switches'' uplinks.
+
+                '
+            nodes:
+              $ref: '#/$defs/node_type/keys/nodes'
+      nodes:
+        type: list
+        convert_types:
+        - dict
+        primary_key: name
+        items:
+          $ref: '#/$defs/node_type/keys/defaults'
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              description: The Node Name is used as "hostname".
+  p2p_links:
+    type: list
+    items:
+      type: dict
+      keys:
+        id:
+          type: int
+          convert_types:
+          - str
+          description: 'Unique id per subnet_summary. Used to calculate ip addresses.
+
+            Required with ip_pool. ID starting from 1.
+
+            '
+        speed:
+          type: str
+          description: The values can be speed or auto speed or forced speed.
+        ip_pool:
+          type: str
+          description: P2P pool name. IP Pool defined under p2p_links_ip_pools. A
+            /31 will be taken from the pool per P2P link
+        subnet:
+          type: str
+          description: IPv4 address/Mask. Subnet used on this P2P link.
+        ip:
+          type: list
+          description: Specific IP addresses used on this P2P link.
+          items:
+            type: str
+            description: Node IPv4 address/Mask.
+        ipv6_enable:
+          type: bool
+          default: false
+          description: Allows turning on ipv6 for the link or profile (also autodetected
+            based on underlay_rfc5549 and include_in_underlay_protocol).
+        nodes:
+          type: list
+          description: Nodes where this link should be configured.
+          items:
+            type: str
+            description: 'The values can be < node_a >, < node_b >.
+
+              ex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].
+
+              '
+        interfaces:
+          type: list
+          description: Interfaces where this link should be configured and Required
+            unless using port-channels.
+          items:
+            type: str
+            description: 'The value can be like < node_a_interface >, < node_b_interface
+              >.
+
+              ex. - [ Ethernet2, Ethernet2 ].
+
+              '
+        as:
+          type: list
+          description: 'AS numbers for BGP.
+
+            Required with bgp peering.
+
+            '
+          items:
+            type: str
+            convert_types:
+            - int
+            description: The values can be like ["node_a_as", "node_b_as"].
+        descriptions:
+          type: list
+          description: Interface description.
+          items:
+            type: str
+        include_in_underlay_protocol:
+          type: bool
+          default: true
+          description: Add this interface to underlay routing protocol.
+        isis_hello_padding:
+          type: bool
+          default: false
+        isis_metric:
+          type: int
+          convert_types:
+          - str
+        isis_circuit_type:
+          type: str
+          valid_values:
+          - level-1
+          - level-2
+          - level-1-2
+        isis_authentication_mode:
+          type: str
+          valid_values:
+          - md5
+          - text
+        isis_authentication_key:
+          type: str
+          description: Type-7 encrypted password.
+        mpls_ip:
+          type: bool
+          description: MPLS parameters. Default value is true if switch.mpls_lsr is
+            true.
+        mpls_ldp:
+          type: bool
+          description: MPLS parameters. Default value is true for ldp underlay variants,
+            otherwise false.
+        mtu:
+          type: int
+          convert_types:
+          - str
+          description: MTU for this P2P link. Default value same as p2p_uplinks_mtu.
+        bfd:
+          type: bool
+          default: false
+          description: Enable BFD (only considered for BGP).
+        ptp_enable:
+          type: bool
+          default: false
+          description: Enable PTP
+        qos_profile:
+          type: str
+          description: QOS service profile.
+        macsec_profile:
+          type: str
+          description: MAC security profile.
+        port_channel:
+          description: Port-channel parameters.
+          type: dict
+          keys:
+            mode:
+              type: str
+              default: active
+            nodes_child_interfaces:
+              type: list
+              primary_key: node
+              secondary_key: interfaces
+              convert_types:
+              - dict
+              items:
+                type: dict
+                keys:
+                  node:
+                    type: str
+                    required: true
+                  interfaces:
+                    type: list
+                    description: List of node interfaces. Ex.- [ 'node1 interface1',
+                      'node1 interface2' ].
+                    items:
+                      type: str
+        raw_eos_cli:
+          type: str
+          description: EOS CLI rendered directly on the point-to-point interface in
+            the final EOS configuration.

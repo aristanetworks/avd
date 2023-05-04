@@ -1,0 +1,69 @@
+{# doc - management api gnmi #}
+{% if management_api_gnmi is arista.avd.defined %}
+
+### Management API GNMI
+
+#### Management API GNMI Summary
+{# legacy table view that will be deprecated in future releases #}
+{%     if management_api_gnmi.enable_vrfs is defined %}
+{%         if management_api_gnmi.octa is defined  %}
+{%             set octa = 'enabled' %}
+{%         else %}
+{%             set octa = 'disabled' %}
+{%         endif %}
+
+| VRF with GNMI | OCTA |
+| ------------- | ---- |
+{%         for vrf in management_api_gnmi.enable_vrfs | arista.avd.natural_sort %}
+| {{ vrf.name }} | {{ octa }} |
+{%         endfor %}
+{%     endif %}
+{# new table view using the new flags #}
+{%     if management_api_gnmi.transport.grpc is arista.avd.defined %}
+
+| Transport | SSL Profile | VRF | Notification Timestamp | ACL |
+| --------- | ----------- | --- | ---------------------- | --- |
+{%         for transport in management_api_gnmi.transport.grpc %}
+{%             if transport.name is arista.avd.defined %}
+{%                 set transport_name = transport.name %}
+{%                 set ssl_profile = transport.ssl_profile | arista.avd.default('-') %}
+{%                 set vrf = transport.vrf | arista.avd.default('-') %}
+{%                 set notif = transport.notification_timestamp | arista.avd.default('last-change-time') %}
+{%                 set acl = transport.ip_access_group | arista.avd.default('-') %}
+| {{ transport_name }} | {{ ssl_profile }} | {{ vrf }} | {{ notif }} | {{ acl }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     if management_api_gnmi.transport.grpc_tunnels is arista.avd.defined %}
+
+| Transport | Destination | Destination Port | gNMI SSL Profile | Tunnel SSL Profile | VRF | Local Interface | Local Port | Target ID |
+| --------- | ----------- | ---------------- | ---------------- | ------------------ | --- | --------------- | ---------- | --------- |
+{%         for transport in management_api_gnmi.transport.grpc_tunnels %}
+{%             set transport_name = transport.name %}
+{%             set destination = transport.destination.address | arista.avd.default('-') %}
+{%             set port = transport.destination.port | arista.avd.default('-') %}
+{%             set gnmi_ssl_profile = transport.gnmi_ssl_profile | arista.avd.default('-') %}
+{%             set tunnel_ssl_profile = transport.tunnel_ssl_profile | arista.avd.default('-') %}
+{%             set vrf = transport.vrf | arista.avd.default('-') %}
+{%             set local_interface = transport.local_interface.name | arista.avd.default('-') %}
+{%             set local_port = transport.local_interface.port | arista.avd.default('-') %}
+{%             set target_ids = [] %}
+{%             if transport.target.use_serial_number is arista.avd.defined(true) %}
+{%                 do target_ids.append("Serial-Number") %}
+{%             endif %}
+{%             do target_ids.extend(transport.target.target_ids | arista.avd.default([])) %}
+{%             set target_id = target_ids | join(' ') | arista.avd.default('-') %}
+| {{ transport_name }} | {{ destination }} | {{ port }} | {{ gnmi_ssl_profile }} | {{ tunnel_ssl_profile }} | {{ vrf }} | {{ local_interface }} | {{ local_port }} | {{ target_id }} |
+{%         endfor %}
+{%     endif %}
+{%     if management_api_gnmi.provider is arista.avd.defined %}
+
+Provider {{ management_api_gnmi.provider }} is configured.
+{%     endif %}
+
+#### Management API gnmi configuration
+
+```eos
+{%     include 'eos/management-api-gnmi.j2' %}
+```
+{% endif %}

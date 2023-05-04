@@ -1,0 +1,25 @@
+{# doc - management cvx #}
+{% if management_cvx is arista.avd.defined %}
+
+### Management CVX Summary
+
+| Shutdown | CVX Servers |
+| -------- | ----------- |
+{%     set shut = management_cvx.shutdown | arista.avd.default('-') %}
+{%     set servers = management_cvx.server_hosts | arista.avd.default('-') | join(', ') %}
+| {{ shut }} | {{ servers }} |
+{%     if management_cvx.source_interface is arista.avd.defined %}
+
+#### Management CVX Source Interface
+
+| Interface | VRF |
+| --------- | --- |
+| {{ management_cvx.source_interface }} | {{ management_cvx.vrf | arista.avd.default('-') }} |
+{%     endif %}
+
+#### Management CVX configuration
+
+```eos
+{%     include 'eos/management-cvx.j2' %}
+```
+{% endif %}

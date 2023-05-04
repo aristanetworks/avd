@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  hardware:
+    documentation_options:
+      filename: data_model/Hardware
+    type: dict
+    keys:
+      access_list:
+        type: dict
+        keys:
+          mechanism:
+            type: str
+            valid_values: ["algomatch", "none", "tcam"]
+      speed_groups:
+        type: list
+        primary_key: speed_group
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            speed_group:
+              type: int
+              convert_types:
+              - str
+              required: true
+            serdes:
+              type: str
+              description: Serdes speed like "10g" or "25g"

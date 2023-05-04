@@ -1,0 +1,44 @@
+---
+### group_vars/DC1.yml
+
+aaa_authentication:
+  policies:
+    local:
+      allow_nopassword: true
+
+# local users
+local_users:
+  # Username with no password configured
+  arista:
+    privilege: 15
+    role: network-admin
+    no_password: true
+
+  # Username with a password
+  admin:
+    privilege: 15
+    role: network-admin
+    sha512_password: "$6$eucN5ngreuExDgwS$xnD7T8jO..GBDX0DUlp.hn.W7yW94xTjSanqgaQGBzPIhDAsyAl9N4oScHvOMvf07uVBFI4mKMxwdVEUVKgY/."
+
+# OOB Management network default gateway.
+mgmt_gateway: 172.100.100.1
+mgmt_interface: Management0
+
+# dns servers.
+name_servers:
+  - 8.8.4.4
+  - 8.8.8.8
+
+# NTP Servers IP or DNS name, first NTP server will be prefered, and sourced from Managment VRF
+ntp:
+  servers:
+    - name: time.google.com
+      preferred: true
+      vrf: MGMT
+    - name: pool.ntp.org
+      vrf: MGMT
+
+# Establish exec/enable role when logging in to switch
+aaa_authorization:
+  exec:
+    default: local

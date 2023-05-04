@@ -1,0 +1,124 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  router_pim_sparse_mode:
+    documentation_options:
+      filename: data_model/Multicast
+    type: dict
+    keys:
+      ipv4:
+        type: dict
+        keys:
+          bfd:
+            type: bool
+            description: Enable/Disable BFD
+          ssm_range:
+            type: str
+            description: IPv4 Prefix associated with SSM
+          rp_addresses:
+            type: list
+            # This primary_key is inserted to support conversion from wildcard dicts,
+            # but it also stops the user from defining the same RP address multiple times,
+            # which should be allowed. When wildcard dict support is finally removed,
+            # this primary_key should also be removed. TODO: AVD5.0
+            primary_key: address
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                address:
+                  type: str
+                  required: true
+                  description: RP Address
+                groups:
+                  type: list
+                  convert_types:
+                  - dict
+                  items:
+                    type: str
+                access_lists:
+                  type: list
+                  items:
+                    type: str
+                priority:
+                  type: int
+                  min: 0
+                  max: 255
+                hashmask:
+                  type: int
+                  min: 0
+                  max: 32
+                override:
+                  type: bool
+          anycast_rps:
+            type: list
+            primary_key: address
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                address:
+                  type: str
+                  required: true
+                  description: Anycast RP Address
+                other_anycast_rp_addresses:
+                  type: list
+                  primary_key: address
+                  convert_types:
+                  - dict
+                  items:
+                    type: dict
+                    keys:
+                      address:
+                        type: str
+                        required: true
+                        description: Other Anycast RP Address
+                      register_count:
+                        type: int
+                        convert_types:
+                        - str
+      vrfs:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: VRF Name
+            ipv4:
+              type: dict
+              keys:
+                bfd:
+                  type: bool
+                  description: Enable/Disable BFD
+                rp_addresses:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      address:
+                        type: str
+                        description: RP Address
+                        required: true
+                      groups:
+                        type: list
+                        items:
+                          type: str
+                      access_lists:
+                        type: list
+                        items:
+                          type: str
+                      priority:
+                        type: int
+                        min: 0
+                        max: 255
+                      hashmask:
+                        type: int
+                        min: 0
+                        max: 32
+                      override:
+                        type: bool

@@ -1,0 +1,47 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  static_routes:
+    documentation_options:
+      filename: data_model/Routing
+    type: list
+    items:
+      type: dict
+      keys:
+        vrf:
+          type: str
+          description: VRF Name
+        destination_address_prefix:
+          type: str
+          description: IPv4_network/Mask
+        interface:
+          type: str
+        gateway:
+          type: str
+          description: IPv4 Address
+        track_bfd:
+          type: bool
+          description: Track next-hop using BFD
+        distance:
+          type: int
+          convert_types:
+            - str
+          min: 1
+          max: 255
+        tag:
+          type: int
+          convert_types:
+            - str
+          min: 0
+          max: 4294967295
+        name:
+          type: str
+          description: Description
+        metric:
+          type: int
+          convert_types:
+            - str
+          min: 0
+          max: 4294967295

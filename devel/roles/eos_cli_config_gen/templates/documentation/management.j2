@@ -1,0 +1,59 @@
+{# Remove name_server from the list below in AVD v5.0.0 #}
+{% if management_interfaces is arista.avd.defined
+       or dns_domain is arista.avd.defined
+       or domain_list is arista.avd.defined
+       or ip_name_servers is arista.avd.defined
+       or name_server is arista.avd.defined
+       or ip_domain_lookup is arista.avd.defined
+       or clock is arista.avd.defined
+       or ntp is arista.avd.defined
+       or ptp is arista.avd.defined
+       or system is arista.avd.defined
+       or management_ssh is arista.avd.defined
+       or management_tech_support is arista.avd.defined
+       or ip_ssh_client_source_interfaces is arista.avd.defined
+       or management_api_gnmi is arista.avd.defined
+       or management_cvx is arista.avd.defined
+       or management_console is arista.avd.defined
+       or management_api_http is arista.avd.defined
+       or management_api_models is arista.avd.defined
+       or ip_http_client_source_interfaces is arista.avd.defined %}
+
+## Management
+{## Management Interface #}
+{%     include 'documentation/management-interfaces.j2' %}
+{## DNS Domain #}
+{%     include 'documentation/dns-domain.j2' %}
+{## Domain-list #}
+{%     include 'documentation/domain-list.j2' %}
+{## IP Name Servers #}
+{%     include 'documentation/ip-name-servers.j2' %}
+{## Domain Lookup #}
+{%     include 'documentation/ip-domain-lookup.j2' %}
+{## Clock #}
+{%     include 'documentation/clock.j2' %}
+{## NTP #}
+{%     include 'documentation/ntp.j2' %}
+{## PTP #}
+{%     include 'documentation/ptp.j2' %}
+{## System Control-Plane#}
+{%     include 'documentation/system.j2' %}
+{## Management SSH #}
+{%     include 'documentation/management-ssh.j2' %}
+{## Management Tech-Support #}
+{%     include 'documentation/management-tech-support.j2' %}
+{## IP SSH Client Source Interfaces #}
+{%     include 'documentation/ip-ssh-client-source-interfaces.j2' %}
+{## Management API GNMI #}
+{%     include 'documentation/management-api-gnmi.j2' %}
+{## Management CVX #}
+{%     include 'documentation/management-cvx.j2' %}
+{## Management Console #}
+{%     include 'documentation/management-console.j2' %}
+{## Management API HTTP #}
+{%     include 'documentation/management-api-http.j2' %}
+{## Management API Models #}
+{%     include 'documentation/management-api-models.j2' %}
+{## IP HTTP Client Source Interfaces #}
+{%     include 'documentation/ip-http-client-source-interfaces.j2' %}
+{% endif %}

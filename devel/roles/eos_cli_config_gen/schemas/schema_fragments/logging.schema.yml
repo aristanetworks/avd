@@ -1,0 +1,129 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  logging:
+    documentation_options:
+      filename: data_model/Monitoring
+    type: dict
+    keys:
+      console:
+        type: str
+        valid_values: ["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"]
+        description: |
+          Console logging severity level
+      monitor:
+        type: str
+        valid_values: ["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"]
+        description: |
+          Monitor logging severity level
+      buffered:
+        type: dict
+        keys:
+          size:
+            type: int
+            convert_types:
+            - str
+            min: 10
+            max: 2147483647
+          level:
+            type: str
+            valid_values: ["alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "warnings", "disabled"]
+            description: |
+              Buffer logging severity level
+      trap:
+        type: str
+        valid_values: ["alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "system", "warnings", "disabled"]
+        description: |
+          Trap logging severity level
+      synchronous:
+        type: dict
+        keys:
+          level:
+            type: str
+            valid_values: ["alerts", "all", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "warnings", "disabled"]
+            description: |
+              Synchronous logging severity level
+            default: "critical"
+      format:
+        type: dict
+        keys:
+          timestamp:
+            type: str
+            valid_values: ["high-resolution", "traditional", "traditional timezone", "traditional year", "traditional timezone year", "traditional year timezone"]
+            description: Timestamp format
+          hostname:
+            type: str
+            valid_values: ["fqdn", "ipv4"]
+            description: Hostname format
+          sequence_numbers:
+            type: bool
+            description: |
+              Add sequence numbers to log messages
+      facility:
+        type: str
+        valid_values: ["auth", "cron", "daemon", "kern", "local0", "local1", "local2", "local3", "local4",
+                       "local5", "local6", "local7", "lpr", "mail", "news", "sys9", "sys10", "sys11", "sys12",
+                       "sys13", "sys14", "syslog", "user", "uucp"]
+      source_interface:
+        type: str
+        description: Source Interface Name
+      vrfs:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              description: VRF name
+            source_interface:
+              type: str
+              description: Source interface name
+            hosts:
+              type: list
+              primary_key: name
+              convert_types:
+              - dict
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    required: true
+                    description: Syslog server name
+                  protocol:
+                    type: str
+                    valid_values: ["tcp", "udp"]
+                    default: udp
+                  ports:
+                    type: list
+                    items:
+                      type: int
+                      convert_types:
+                      - str
+      policy:
+        type: dict
+        keys:
+          match:
+            type: dict
+            keys:
+              match_lists:
+                type: list
+                primary_key: name
+                convert_types:
+                - dict
+                items:
+                  type: dict
+                  keys:
+                    name:
+                      type: str
+                      required: true
+                      description: Match list
+                    action:
+                      type: str
+                      valid_values: ["discard"]

@@ -1,0 +1,38 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  queue_monitor_length:
+    documentation_options:
+      filename: data_model/Quality of Service
+    type: dict
+    keys:
+      enabled:
+        type: bool
+        description: |
+          "enabled: true" will be required in AVD4.0.
+          In AVD3.x default is true as long as queue_monitor_length is defined and not None
+      log:
+        type: int
+        convert_types:
+          - str
+        description: "Logging interval in seconds"
+      notifying:
+        type: bool
+        description: should only be used for platforms supporting the "queue-monitor length notifying" CLI
+      cpu:
+        type: dict
+        keys:
+          thresholds:
+            type: dict
+            keys:
+              high:
+                type: int
+                required: true
+                convert_types:
+                  - str
+              low:
+                type: int
+                convert_types:
+                  - str

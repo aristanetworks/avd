@@ -1,0 +1,59 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  errdisable:
+    documentation_options:
+      filename: data_model/Errdisable
+    type: dict
+    keys:
+      detect:
+        type: dict
+        keys:
+          causes:
+            type: list
+            items:
+              type: str
+              valid_values:
+              - "acl"
+              - "arp-inspection"
+              - "dot1x"
+              - "link-change"
+              - "tapagg"
+              - "xcvr-misconfigured"
+              - "xcvr-overheat"
+              - "xcvr-power-unsupported"
+      recovery:
+        type: dict
+        keys:
+          causes:
+            type: list
+            items:
+              type: str
+              valid_values:
+              - "arp-inspection"
+              - "bpduguard"
+              - "dot1x"
+              - "hitless-reload-down"
+              - "lacp-rate-limit"
+              - "link-flap"
+              - "no-internal-vlan"
+              - "portchannelguard"
+              - "portsec"
+              - "speed-misconfigured"
+              - "tap-port-init"
+              - "tapagg"
+              - "uplink-failure-detection"
+              - "xcvr-misconfigured"
+              - "xcvr-overheat"
+              - "xcvr-power-unsupported"
+              - "xcvr-unsupported"
+          interval:
+            type: int
+            convert_types:
+            - "str"
+            description: Interval in seconds
+            default: 300
+            min: 30
+            max: 86400

@@ -1,0 +1,66 @@
+{# doc - dot1x #}
+{% set ethernet_interfaces_dot1x = [] %}
+{% for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
+{%     if ethernet_interface.dot1x is arista.avd.defined %}
+{%         do ethernet_interfaces_dot1x.append(ethernet_interface) %}
+{%     endif %}
+{% endfor %}
+{% if (dot1x is arista.avd.defined) or (ethernet_interfaces_dot1x | length > 0) %}
+
+## 802.1X Port Security
+
+### 802.1X Summary
+{%     if dot1x is arista.avd.defined %}
+
+#### 802.1X Global
+
+| System Auth Control | Protocol LLDP Bypass | Dynamic Authorization |
+| ------------------- | -------------------- | ----------------------|
+{%         set system_auth_control = dot1x.system_auth_control | arista.avd.default('-') %}
+{%         set protocol_lldp_bypass = dot1x.protocol_lldp_bypass | arista.avd.default('-') %}
+{%         set dynamic_authorization = dot1x.dynamic_authorization | arista.avd.default('-') %}
+| {{ system_auth_control }} | {{ protocol_lldp_bypass }} | {{ dynamic_authorization }} |
+{%         if dot1x.mac_based_authentication is arista.avd.defined %}
+
+#### 802.1X MAC based authentication
+
+| Delay | Hold period |
+| ----- | ----------- |
+{%             set delay = dot1x.mac_based_authentication.delay | arista.avd.default('-') %}
+{%             set hold_period = dot1x.mac_based_authentication.hold_period | arista.avd.default('-') %}
+| {{ delay }} | {{ hold_period }} |
+{%         endif %}
+{%         if dot1x.radius_av_pair is arista.avd.defined %}
+
+#### 802.1X Radius AV pair
+
+| Service type | Framed MTU |
+| ------------ | ---------- |
+{%             set radius_av_pair_service = dot1x.radius_av_pair.service_type | arista.avd.default('-') %}
+{%             set framed_mtu = dot1x.radius_av_pair.framed_mtu | arista.avd.default('-') %}
+| {{ radius_av_pair_service }} | {{ framed_mtu }} |
+{%         endif %}
+{%     endif %}
+{%     if ethernet_interfaces_dot1x | length > 0 %}
+
+#### 802.1X Interfaces
+
+| Interface | PAE Mode | State | Phone Force Authorized | Reauthentication | Auth Failure Action | Host Mode | Mac Based Auth | Eapol |
+| --------- | -------- | ------| ---------------------- | ---------------- | ------------------- | --------- | -------------- | ------ |
+{%         for ethernet_interface in ethernet_interfaces_dot1x %}
+{%             set pae_mode = ethernet_interface.dot1x.pae.mode | arista.avd.default('-') %}
+{%             set auth_failure_action = ethernet_interface.dot1x.authentication_failure.action | arista.avd.default('-') %}
+{%             if auth_failure_action == 'allow' and
+                  ethernet_interface.dot1x.authentication_failure.allow_vlan is arista.avd.defined %}
+{%                 set auth_failure_action = auth_failure_action ~ " vlan " ~ ethernet_interface.dot1x.authentication_failure.allow_vlan %}
+{%             endif %}
+{%             set state = ethernet_interface.dot1x.port_control | arista.avd.default('-') %}
+{%             set phone_state = ethernet_interface.dot1x.port_control_force_authorized_phone | arista.avd.default('-') %}
+{%             set reauthentication = ethernet_interface.dot1x.reauthentication | arista.avd.default('-') %}
+{%             set host_mode = ethernet_interface.dot1x.host_mode.mode | arista.avd.default('-') %}
+{%             set mac_based_authentication_enabled = ethernet_interface.dot1x.mac_based_authentication.enabled | arista.avd.default('-') %}
+{%             set auth_failure_fallback_mba = ethernet_interface.dot1x.eapol.authentication_failure_fallback_mba.enabled | arista.avd.default('-') %}
+| {{ ethernet_interface.name }} | {{ pae_mode }} | {{ state }} | {{ phone_state }} | {{ reauthentication }} | {{ auth_failure_action }} | {{ host_mode }} | {{ mac_based_authentication_enabled }} | {{ auth_failure_fallback_mba }} |
+{%         endfor %}
+{%     endif %}
+{% endif %}

@@ -1,0 +1,19 @@
+{# doc - community lists #}
+{% if community_lists is arista.avd.defined %}
+
+### Community-lists
+
+#### Community-lists Summary
+
+| Name | Action |
+| -------- | ------ |
+{%     for community_list in community_lists | arista.avd.natural_sort('name') %}
+| {{ community_list.name }} | {{ community_list.action }} |
+{%     endfor %}
+
+#### Community-lists Device Configuration
+
+```eos
+{%     include 'eos/community-lists.j2' %}
+```
+{% endif %}

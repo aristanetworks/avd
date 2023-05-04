@@ -1,0 +1,36 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  platform_speed_groups:
+    documentation_options:
+      filename: Platform Specific Settings
+    type: list
+    primary_key: platform
+    secondary_key: speeds
+    convert_types:
+      - dict
+    description: Set Hardware Speed Groups per Platform
+    items:
+      type: dict
+      keys:
+        platform:
+          type: str
+        speeds:
+          type: list
+          primary_key: speed
+          secondary_key: speed_groups
+          convert_types:
+            - dict
+          items:
+            type: dict
+            keys:
+              speed:
+                type: str
+              speed_groups:
+                type: list
+                items:
+                  type: int
+                  convert_types:
+                    - str

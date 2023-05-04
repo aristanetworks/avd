@@ -1,0 +1,40 @@
+{# eos - radius server #}
+{# New data model replacing radius_servers #}
+{% if radius_server is arista.avd.defined %}
+!
+{%     if radius_server.attribute_32_include_in_access_req is arista.avd.defined %}
+{%         set attribute_32_include_in_access_cli = "radius-server attribute 32 include-in-access-req" %}
+{%         if radius_server.attribute_32_include_in_access_req.hostname is arista.avd.defined (true) %}
+{%             set attribute_32_include_in_access_cli = attribute_32_include_in_access_cli ~ " hostname" %}
+{%         elif radius_server.attribute_32_include_in_access_req.format is arista.avd.defined %}
+{%             set attribute_32_include_in_access_cli = attribute_32_include_in_access_cli ~ " format " ~ radius_server.attribute_32_include_in_access.format %}
+{%         endif %}
+{{ attribute_32_include_in_access_cli }}
+{%     endif %}
+{%     if radius_server.dynamic_authorization is arista.avd.defined %}
+{%         set dynamic_authorization_cli = "radius-server dynamic-authorization" %}
+{%         if radius_server.dynamic_authorization.port is arista.avd.defined %}
+{%             set dynamic_authorization_cli = dynamic_authorization_cli ~ " port " ~ radius_server.dynamic_authorization.port %}
+{%         endif %}
+{%         if radius_server.dynamic_authorization.tls_ssl_profile is arista.avd.defined %}
+{%             set dynamic_authorization_cli = dynamic_authorization_cli ~ " tls ssl-profile " ~ radius_server.dynamic_authorization.tls_ssl_profile %}
+{%         endif %}
+{{ dynamic_authorization_cli }}
+{%     endif %}
+{%     for radius_host in radius_server.hosts | arista.avd.default([]) %}
+{%         set radius_cli = "radius-server host " ~ radius_host.host %}
+{%         if radius_host.vrf is arista.avd.defined and radius_host.vrf != "default" %}
+{%             set radius_cli = radius_cli ~ " vrf " ~ radius_host.vrf %}
+{%         endif %}
+{%         if radius_host.timeout is arista.avd.defined %}
+{%             set radius_cli = radius_cli ~ " timeout " ~ radius_host.timeout %}
+{%         endif %}
+{%         if radius_host.retransmit is arista.avd.defined %}
+{%             set radius_cli = radius_cli ~ " retransmit " ~ radius_host.retransmit %}
+{%         endif %}
+{%         if radius_host.key is arista.avd.defined %}
+{%             set radius_cli = radius_cli ~ " key 7 " ~ radius_host.key %}
+{%         endif %}
+{{ radius_cli }}
+{%     endfor %}
+{% endif %}

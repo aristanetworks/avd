@@ -1,0 +1,196 @@
+{% set node_types = node_type_keys | arista.avd.convert_dicts('key') | map(attribute="type") %}
+{% set fabric_switches = [] %}
+{% set topology_links = [] %}
+{% set uplink_ipv4_pools = [] %}
+{% set loopback_ipv4_pools = [] %}
+{% set vtep_loopback_ipv4_pools = [] %}
+{% set assigned_ip_addresses = [] %}
+{% set interfaces_done = [] %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     set node_hostvars = hostvars[node] %}
+{%     set node_facts = avd_switch_facts[node] %}
+{%     if node_facts.switch.type | arista.avd.default('undefined') in node_types %}
+{# Populate network summaries #}
+{%         do uplink_ipv4_pools.append(node_facts.switch.uplink_ipv4_pool | arista.avd.default()) %}
+{%         do loopback_ipv4_pools.append(node_facts.switch.loopback_ipv4_pool | arista.avd.default()) %}
+{%         do vtep_loopback_ipv4_pools.append(node_facts.switch.vtep_loopback_ipv4_pool | arista.avd.default()) %}
+{# Populate fabric_switch #}
+{%         set fabric_switch = namespace() %}
+{%         set fabric_switch.pod = node_hostvars.pod_name | arista.avd.default(node_hostvars.dc_name, fabric_name) %}
+{%         set fabric_switch.type = node_facts.switch.type %}
+{%         set fabric_switch.node = node %}
+{%         set fabric_switch.mgmt_ip = node_facts.switch.mgmt_ip | arista.avd.default('-') %}
+{%         do assigned_ip_addresses.append(node_facts.switch.mgmt_ip) if node_facts.switch.mgmt_ip is arista.avd.defined %}
+{%         if node_facts.switch.inband_management_vlan is arista.avd.defined %}
+{%             set fabric_switch.inband_management_interface = "Vlan" ~ node_facts.switch.inband_management_vlan %}
+{%             set fabric_switch.inband_management_ip = node_hostvars.management_interfaces | selectattr("name", "eq", fabric_switch.inband_management_interface) | map(attribute="ip_address") | first %}
+{%         endif %}
+{%         set fabric_switch.platform = node_facts.switch.platform | arista.avd.default('-') %}
+{%         set fabric_switch.provisioned = 'Not Available' if node_hostvars.is_deployed is arista.avd.defined(false) else 'Provisioned' %}
+{%         set fabric_switch.serial_number = node_facts.switch.serial_number | arista.avd.default("-") %}
+{%         if node_hostvars.loopback_interfaces is arista.avd.defined %}
+{%             set loopback0 = (node_hostvars.loopback_interfaces | arista.avd.convert_dicts("name") | selectattr("name", "arista.avd.defined", "Loopback0"))[0] | arista.avd.default %}
+{%             if loopback0.ip_address is arista.avd.defined %}
+{%                 set fabric_switch.loopback0_ip_address = loopback0.ip_address %}
+{%                 do assigned_ip_addresses.append(fabric_switch.loopback0_ip_address) %}
+{%             endif %}
+{%         endif %}
+{%         if node_hostvars.loopback_interfaces is arista.avd.defined %}
+{%             set loopback1 = (node_hostvars.loopback_interfaces | arista.avd.convert_dicts("name") | selectattr("name", "arista.avd.defined", "Loopback1"))[0] | arista.avd.default %}
+{%             if loopback1.ip_address is arista.avd.defined %}
+{%                 set fabric_switch.loopback1_ip_address = loopback1.ip_address %}
+{%                 do assigned_ip_addresses.append(fabric_switch.loopback1_ip_address) %}
+{%             endif %}
+{%         endif %}
+{%         if node_hostvars.router_isis is arista.avd.defined and node_hostvars.router_isis.net is arista.avd.defined %}
+{%             set fabric_switch.router_isis_net = node_hostvars.router_isis.net %}
+{%         endif %}
+{%         do fabric_switches.append(fabric_switch) %}
+{# Populate topology_links #}
+{%         for ethernet_interface in node_hostvars.ethernet_interfaces | arista.avd.convert_dicts("name") | arista.avd.natural_sort("name") %}
+{%             if ethernet_interface.peer_type | arista.avd.default('undefined') in node_types + ['mlag_peer'] %}
+{%                 do interfaces_done.append(node ~ "," ~ ethernet_interface.name) %}
+{%                 set peer = ethernet_interface.peer %}
+{%                 set peer_interface = ethernet_interface.peer_interface %}
+{%                 if peer is arista.avd.defined and peer_interface is arista.avd.defined and peer ~ "," ~ peer_interface not in interfaces_done %}
+{%                     set topology_link = namespace() %}
+{%                     set topology_link.type = node_facts.switch.type %}
+{%                     set topology_link.node = node %}
+{%                     set topology_link.node_interface = ethernet_interface.name %}
+{%                     set topology_link.node_ip_address = ethernet_interface.ip_address %}
+{%                     if topology_link.node_ip_address is arista.avd.defined %}
+{%                         do assigned_ip_addresses.append(topology_link.node_ip_address) %}
+{%                     endif %}
+{%                     set topology_link.peer_type = ethernet_interface.peer_type %}
+{%                     set topology_link.peer = peer %}
+{%                     set topology_link.peer_interface = peer_interface %}
+{%                     set topology_link.peer_ip_address = none %}
+{%                     set peer_hostvars = hostvars[peer] | arista.avd.default %}
+{%                     if peer_hostvars.ethernet_interfaces is arista.avd.defined %}
+{%                         set peer_ethernet_interface = (peer_hostvars.ethernet_interfaces | arista.avd.convert_dicts("name") | selectattr("name", "arista.avd.defined", peer_interface))[0] | arista.avd.default %}
+{%                         if peer_ethernet_interface.ip_address is arista.avd.defined %}
+{%                             set topology_link.peer_ip_address = peer_ethernet_interface.ip_address %}
+{%                             do assigned_ip_addresses.append(topology_link.peer_ip_address) %}
+{%                         endif %}
+{%                     endif %}
+{%                     do topology_links.append(topology_link) %}
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}
+{% set uplink_ipv4_pools = uplink_ipv4_pools | unique | reject("none") %}
+{% set loopback_ipv4_pools = loopback_ipv4_pools | unique | reject("none") %}
+{% set vtep_loopback_ipv4_pools = vtep_loopback_ipv4_pools | unique | reject("none") %}
+# {{ fabric_name }}
+
+## Table of Contents
+
+<!-- toc -->
+<!-- toc -->
+
+## Fabric Switches and Management IP
+
+| POD | Type | Node | Management IP | Platform | Provisioned in CloudVision | Serial Number |
+| --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
+{% for fabric_switch in fabric_switches %}
+| {{ fabric_switch.pod }} | {{ fabric_switch.type }} | {{ fabric_switch.node }} | {{ fabric_switch.mgmt_ip }} | {{ fabric_switch.platform }} | {{ fabric_switch.provisioned }} | {{ fabric_switch.serial_number }} |
+{% endfor %}
+
+> Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
+
+### Fabric Switches with inband Management IP
+
+| POD | Type | Node | Management IP | Inband Interface |
+| --- | ---- | ---- | ------------- | ---------------- |
+{% for fabric_switch in fabric_switches %}
+{%     if fabric_switch.inband_management_ip is arista.avd.defined and fabric_switch.inband_management_interface is arista.avd.defined %}
+| {{ fabric_switch.pod }} | {{ fabric_switch.type }} | {{ fabric_switch.node }} | {{ fabric_switch.inband_management_ip }} | {{ fabric_switch.inband_management_interface }} |
+{%     endif %}
+{% endfor %}
+
+## Fabric Topology
+
+| Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
+| ---- | ---- | -------------- | --------- | ----------| -------------- |
+{% for topology_link in topology_links %}
+| {{ topology_link.type }} | {{ topology_link.node }} | {{ topology_link.node_interface }} | {{ topology_link.peer_type }} | {{ topology_link.peer }} | {{ topology_link.peer_interface }} |
+{% endfor %}
+
+## Fabric IP Allocation
+
+### Fabric Point-To-Point Links
+
+| Uplink IPv4 Pool | Available Addresses | Assigned addresses | Assigned Address % |
+| ---------------- | ------------------- | ------------------ | ------------------ |
+{% for uplink_ipv4_pool in uplink_ipv4_pools | arista.avd.natural_sort %}
+{%     set size = uplink_ipv4_pool | ansible.utils.ipaddr('size') %}
+{%     set used = assigned_ip_addresses | ansible.utils.ipaddr(uplink_ipv4_pool) | length %}
+| {{ uplink_ipv4_pool }} | {{ size }} | {{ used }} | {{ (used / size * 100) | round(2,'ceil') }} % |
+{% endfor %}
+
+### Point-To-Point Links Node Allocation
+
+| Node | Node Interface | Node IP Address | Peer Node | Peer Interface | Peer IP Address |
+| ---- | -------------- | --------------- | --------- | -------------- | --------------- |
+{% for topology_link in topology_links %}
+{%     if topology_link.node_ip_address is arista.avd.defined and topology_link.peer_ip_address is arista.avd.defined %}
+| {{ topology_link.node }} | {{ topology_link.node_interface }} | {{ topology_link.node_ip_address }} | {{ topology_link.peer }} | {{ topology_link.peer_interface }} | {{ topology_link.peer_ip_address }} |
+{%     endif %}
+{% endfor %}
+
+### Loopback Interfaces (BGP EVPN Peering)
+
+| Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
+| ------------- | ------------------- | ------------------ | ------------------ |
+{% for overlay_loopback_network_summary in loopback_ipv4_pools | arista.avd.natural_sort %}
+{%     set size = overlay_loopback_network_summary | ansible.utils.ipaddr('size') %}
+{%     set used = assigned_ip_addresses | ansible.utils.ipaddr(overlay_loopback_network_summary) | length %}
+| {{ overlay_loopback_network_summary }} | {{ size }} | {{ used }} | {{ (used / size * 100) | round(2,'ceil') }} % |
+{% endfor %}
+
+### Loopback0 Interfaces Node Allocation
+
+| POD | Node | Loopback0 |
+| --- | ---- | --------- |
+{% for fabric_switch in fabric_switches %}
+{%     if fabric_switch.loopback0_ip_address is arista.avd.defined %}
+| {{ fabric_switch.pod }} | {{ fabric_switch.node }} | {{ fabric_switch.loopback0_ip_address }} |
+{%     endif %}
+{% endfor %}
+
+{% if avd_switch_facts[inventory_hostname].switch.underlay_routing_protocol | arista.avd.default in ["isis", "isis-sr", "isis-ldp", "isis-sr-ldp"] %}
+### ISIS CLNS interfaces
+
+| POD | Node | CLNS Address |
+| --- | ---- | ------------ |
+{%     for fabric_switch in fabric_switches %}
+{%         if fabric_switch.router_isis_net is arista.avd.defined %}
+| {{ fabric_switch.pod }} | {{ fabric_switch.node }} | {{ fabric_switch.router_isis_net }} |
+{%         endif %}
+{%     endfor %}
+
+{% endif %}
+### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
+
+| VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
+| --------------------- | ------------------- | ------------------ | ------------------ |
+{% for vtep_loopback_network_summary in vtep_loopback_ipv4_pools | arista.avd.natural_sort %}
+{%     set size = vtep_loopback_network_summary | ansible.utils.ipaddr('size') %}
+{%     set used = assigned_ip_addresses | ansible.utils.ipaddr(vtep_loopback_network_summary) | length %}
+| {{ vtep_loopback_network_summary }} | {{ size }} | {{ used }} | {{ (used / size * 100) | round(2,'ceil') }} % |
+{% endfor %}
+
+### VTEP Loopback Node allocation
+
+| POD | Node | Loopback1 |
+| --- | ---- | --------- |
+{% for fabric_switch in fabric_switches %}
+{%     if fabric_switch.loopback1_ip_address is arista.avd.defined %}
+| {{ fabric_switch.pod }} | {{ fabric_switch.node }} | {{ fabric_switch.loopback1_ip_address }} |
+{%     endif %}
+{% endfor %}
+{% if eos_designs_documentation.connected_endpoints is arista.avd.defined(true) %}
+
+{%     include 'documentation/connected-endpoints.j2' %}
+{% endif %}

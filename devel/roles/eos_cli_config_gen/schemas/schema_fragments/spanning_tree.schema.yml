@@ -1,0 +1,114 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  spanning_tree:
+    documentation_options:
+      filename: data_model/Spanning Tree
+    type: dict
+    keys:
+      root_super:
+        type: bool
+      edge_port:
+        type: dict
+        keys:
+          bpdufilter_default:
+            type: bool
+          bpduguard_default:
+            type: bool
+      mode:
+        type: str
+        valid_values: ["mstp", "rstp", "rapid-pvst", "none"]
+      bpduguard_rate_limit:
+        type: dict
+        keys:
+          default:
+            type: bool
+          count:
+            type: int
+            convert_types:
+              - str
+            description: Maximum number of BPDUs per timer interval
+      rstp_priority:
+        type: int
+        convert_types:
+          - str
+      mst:
+        type: dict
+        keys:
+          pvst_border:
+            type: bool
+          configuration:
+            type: dict
+            keys:
+              name:
+                type: str
+              revision:
+                type: int
+                convert_types:
+                  - str
+                description: 0-65535
+              instances:
+                type: list
+                primary_key: id
+                convert_types:
+                  - dict
+                items:
+                  type: dict
+                  keys:
+                    id:
+                      type: int
+                      convert_types:
+                        - str
+                      description: Instance ID
+                    vlans:
+                      type: str
+                      convert_types:
+                        - int
+                      description: |
+                        "< vlan_id >, < vlan_id >-< vlan_id >"
+                        Example: 15,16,17,18
+      mst_instances:
+        type: list
+        primary_key: id
+        convert_types:
+          - dict
+        items:
+          type: dict
+          keys:
+            id:
+              type: str
+              convert_types:
+                - int
+              description: Instance ID
+            priority:
+              type: int
+              convert_types:
+                - str
+      no_spanning_tree_vlan:
+        type: str
+        convert_types:
+          - int
+        description: |
+          "< vlan_id >, < vlan_id >-< vlan_id >"
+          Example: 105,202,505-506
+      rapid_pvst_instances:
+        type: list
+        primary_key: id
+        convert_types:
+          - dict
+        items:
+          type: dict
+          keys:
+            id:
+              type: str
+              convert_types:
+                - int
+              description: |
+                "< vlan_id >, < vlan_id >-< vlan_id >"
+                Example: 105,202,505-506
+            priority:
+              type: int
+              convert_types:
+                - str

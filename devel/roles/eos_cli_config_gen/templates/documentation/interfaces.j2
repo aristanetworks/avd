@@ -1,0 +1,30 @@
+{% if switchport_default is arista.avd.defined
+       or interface_defaults is arista.avd.defined
+       or interface_profiles is arista.avd.defined
+       or ethernet_interfaces is arista.avd.defined
+       or port_channel_interfaces is arista.avd.defined
+       or loopback_interfaces is arista.avd.defined
+       or tunnel_interfaces is arista.avd.defined
+       or vlan_interfaces is arista.avd.defined
+       or vxlan_interface is arista.avd.defined %}
+
+## Interfaces
+{## Switchport Default #}
+{%     include 'documentation/switchport-default.j2' %}
+{## Interface Defaults #}
+{%     include 'documentation/interface-defaults.j2' %}
+{## Interface Profiles #}
+{%     include 'documentation/interface-profiles.j2' %}
+{## Ethernet Interfaces #}
+{%     include 'documentation/ethernet-interfaces.j2' %}
+{## Port-Channel Interfaces #}
+{%     include 'documentation/port-channel-interfaces.j2' %}
+{## Loopback Interfaces #}
+{%     include 'documentation/loopback-interfaces.j2' %}
+{## Tunnel Interfaces #}
+{%     include 'documentation/tunnel-interfaces.j2' %}
+{## VLAN Interfaces #}
+{%     include 'documentation/vlan-interfaces.j2' %}
+{## VXLAN Interface #}
+{%     include 'documentation/vxlan-interface.j2' %}
+{% endif %}

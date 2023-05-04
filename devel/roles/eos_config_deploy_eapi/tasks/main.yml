@@ -1,0 +1,35 @@
+---
+- name: Verify Requirements
+  tags: [always, avd_req]
+  delegate_to: localhost
+  when: avd_requirements is not defined
+  arista.avd.verify_requirements:
+    requirements: "{{ lookup('file', requirements_path ~ '/requirements.txt').splitlines() }}"
+    avd_ignore_requirements: "{{ avd_ignore_requirements | default(false) }}"
+  vars:
+    requirements_path: "{{ (role_path | split('/'))[0:-2] | join('/') }}"
+  run_once: true
+  register: avd_requirements
+
+- name: Create required output directories if not present
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+  loop:
+    - "{{ post_running_config_backup_dir }}"
+    - "{{ pre_running_config_backup_dir }}"
+  delegate_to: localhost
+  run_once: true
+
+- name: Replace configuration with intended configuration
+  arista.eos.eos_config:
+    src: "{{ eos_config_dir }}/{{ inventory_hostname }}.cfg"
+    replace: config
+    save_when: modified
+    backup: "{{ eos_config_deploy_eapi_pre_running_config_backup }}"
+    backup_options:
+      filename: "{{ pre_running_config_backup_filename }}"
+      dir_path: "{{ pre_running_config_backup_dir }}"
+  notify: "backup config"
+  tags: [provision]

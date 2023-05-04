@@ -1,0 +1,55 @@
+{# SFlow Interfaces #}
+{% set sflow_interfaces = [] %}
+{% for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
+{%     if ethernet_interface.sflow is arista.avd.defined %}
+{%         do sflow_interfaces.append(ethernet_interface) %}
+{%     endif %}
+{% endfor %}
+{% for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
+{%     if port_channel_interface.sflow is arista.avd.defined %}
+{%         do sflow_interfaces.append(port_channel_interface) %}
+{%     endif %}
+{% endfor %}
+{% if daemon_terminattr is arista.avd.defined
+       or daemons is arista.avd.defined
+       or logging is arista.avd.defined
+       or mcs_client is arista.avd.defined
+       or snmp_server is arista.avd.defined
+       or monitor_sessions is arista.avd.defined
+       or tap_aggregation is arista.avd.defined
+       or sflow is arista.avd.defined
+       or hardware_counters is arista.avd.defined
+       or vmtracer_sessions is arista.avd.defined
+       or event_handlers is arista.avd.defined
+       or flow_trackings is arista.avd.defined
+       or trackers is arista.avd.defined
+       or sflow_interfaces | length > 0 %}
+
+## Monitoring
+{## TerminAttr Daemon #}
+{%     include 'documentation/daemon-terminattr.j2' %}
+{## Custom Daemons #}
+{%     include 'documentation/daemons.j2' %}
+{## Logging #}
+{%     include 'documentation/logging.j2' %}
+{## Mcs client #}
+{%     include 'documentation/mcs-client.j2' %}
+{## SNMP #}
+{%     include 'documentation/snmp-server.j2' %}
+{## Monitor Sessions #}
+{%     include 'documentation/monitor-sessions.j2' %}
+{## Tap Aggregation #}
+{%     include 'documentation/tap-aggregation.j2' %}
+{## SFlow #}
+{%     include 'documentation/sflow.j2' %}
+{## Hardware Counters #}
+{%     include 'documentation/hardware-counters.j2' %}
+{## VM Tracer Sessions #}
+{%     include 'documentation/vmtracer-sessions.j2' %}
+{## Event Handler #}
+{%     include 'documentation/event-handlers.j2' %}
+{## Flow Tracking #}
+{%     include 'documentation/flow-trackings.j2' %}
+{## Object Tracking #}
+{%     include 'documentation/trackers.j2' %}
+{% endif %}

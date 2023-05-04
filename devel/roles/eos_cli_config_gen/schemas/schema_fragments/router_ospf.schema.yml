@@ -1,0 +1,286 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  router_ospf:
+    documentation_options:
+      filename: data_model/Routing
+    type: dict
+    display_name: Router OSPF Configuration
+    keys:
+      process_ids:
+        type: list
+        primary_key: id
+        convert_types:
+          - dict
+        items:
+          type: dict
+          keys:
+            id:
+              type: int
+              convert_types:
+                - str
+              description: OSPF Process ID
+            vrf:
+              type: str
+              description: VRF Name for OSPF Process
+            passive_interface_default:
+              type: bool
+            router_id:
+              type: str
+              description: IPv4 Address
+            distance:
+              type: dict
+              keys:
+                external:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 1
+                  max: 255
+                inter_area:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 1
+                  max: 255
+                intra_area:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 1
+                  max: 255
+            log_adjacency_changes_detail:
+              type: bool
+            network_prefixes:
+              type: list
+              primary_key: ipv4_prefix
+              convert_types:
+                - dict
+              items:
+                type: dict
+                keys:
+                  ipv4_prefix:
+                    type: str
+                  area:
+                    type: str
+            bfd_enable:
+              type: bool
+            bfd_adjacency_state_any:
+              type: bool
+            no_passive_interfaces:
+              type: list
+              items:
+                type: str
+                description: Interface Name
+            distribute_list_in:
+              type: dict
+              keys:
+                route_map:
+                  type: str
+            max_lsa:
+              type: int
+              convert_types:
+                - str
+            timers:
+              type: dict
+              keys:
+                lsa:
+                  type: dict
+                  keys:
+                    rx_min_interval:
+                      type: int
+                      convert_types:
+                        - str
+                      description: Min interval in msecs between accepting the same LSA
+                      min: 0
+                      max: 600000
+                    tx_delay:
+                      type: dict
+                      keys:
+                        initial:
+                          type: int
+                          convert_types:
+                            - str
+                          description: Delay to generate first occurrence of LSA in msecs
+                          min: 0
+                          max: 600000
+                        min:
+                          type: int
+                          convert_types:
+                            - str
+                          description: Min delay between originating the same LSA in msecs
+                          min: 1
+                          max: 600000
+                        max:
+                          type: int
+                          convert_types:
+                            - str
+                          description: 1-600000 Maximum delay between originating the same LSA in msec
+                          min: 1
+                          max: 600000
+                spf_delay:
+                  type: dict
+                  keys:
+                    initial:
+                      type: int
+                      convert_types:
+                        - str
+                      description: Initial SPF schedule delay in msecs
+                      min: 0
+                      max: 600000
+                    min:
+                      type: int
+                      convert_types:
+                        - str
+                      description: Min Hold time between two SPFs in msecs
+                      min: 0
+                      max: 65535000
+                    max:
+                      type: int
+                      convert_types:
+                        - str
+                      description: Max wait time between two SPFs in msecs
+                      min: 0
+                      max: 65535000
+            default_information_originate:
+              type: dict
+              keys:
+                always:
+                  type: bool
+            summary_addresses:
+              type: list
+              primary_key: prefix
+              items:
+                type: dict
+                keys:
+                  prefix:
+                    type: str
+                    description: Summary Prefix Address
+                  tag:
+                    type: int
+                  attribute_map:
+                    type: str
+                  not_advertise:
+                    type: bool
+            redistribute:
+              type: dict
+              keys:
+                static:
+                  type: dict
+                  keys:
+                    route_map:
+                      type: str
+                      description: Route Map Name
+                    include_leaked:
+                      type: bool
+                connected:
+                  type: dict
+                  keys:
+                    route_map:
+                      type: str
+                      description: Route Map Name
+                    include_leaked:
+                      type: bool
+                bgp:
+                  type: dict
+                  keys:
+                    route_map:
+                      type: str
+                      description: Route Map Name
+                    include_leaked:
+                      type: bool
+            auto_cost_reference_bandwidth:
+              type: int
+              convert_types:
+                - str
+              description: Bandwidth in mbps
+            areas:
+              type: list
+              primary_key: id
+              convert_types:
+                - dict
+              items:
+                type: dict
+                keys:
+                  id:
+                    type: str
+                    convert_types:
+                      - int
+                  filter:
+                    type: dict
+                    keys:
+                      networks:
+                        type: list
+                        items:
+                          type: str
+                          description: IPv4 Prefix
+                      prefix_list:
+                        type: str
+                        description: Prefix-List Name
+                  type:
+                    type: str
+                    valid_values: ["normal", "stub", "nssa"]
+                    default: normal
+                  no_summary:
+                    type: bool
+                  nssa_only:
+                    type: bool
+                  default_information_originate:
+                    type: dict
+                    keys:
+                      metric:
+                        type: int
+                        convert_types:
+                          - str
+                        description: Metric for default route
+                        min: 1
+                        max: 65535
+                      metric_type:
+                        type: int
+                        convert_types:
+                          - str
+                        valid_values: [1, 2]
+                        description: OSPF metric type for default route
+            maximum_paths:
+              type: int
+              convert_types:
+                - str
+              min: 1
+              max: 128
+            max_metric:
+              type: dict
+              keys:
+                router_lsa:
+                  type: dict
+                  keys:
+                    external_lsa:
+                      type: dict
+                      keys:
+                        override_metric:
+                          type: int
+                          convert_types:
+                            - str
+                          min: 1
+                          max: 16777215
+                    include_stub:
+                      type: bool
+                    on_startup:
+                      type: str
+                      convert_types:
+                        - int
+                      description: |
+                        "wait-for-bgp" or Integer 5-86400
+                        Example: "wait-for-bgp" Or "222"
+                    summary_lsa:
+                      type: dict
+                      keys:
+                        override_metric:
+                          type: int
+                          convert_types:
+                            - str
+                          min: 1
+                          max: 16777215
+            mpls_ldp_sync_default:
+              type: bool

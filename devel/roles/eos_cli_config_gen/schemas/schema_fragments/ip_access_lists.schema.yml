@@ -1,0 +1,147 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  ip_access_lists:
+    documentation_options:
+      filename: data_model/ACLs
+    type: list
+    primary_key: name
+    convert_types:
+    - dict
+    display_name: IP Extended Access-Lists (improved model)
+    description: |
+      AVD currently supports 2 different data models for extended ACLs:
+
+      - The legacy `access_lists` data model, for compatibility with existing deployments
+      - The improved `ip_access_lists` data model, for access to more EOS features
+
+      Both data models can coexists without conflicts, as different keys are used: `access_lists` vs `ip_access_lists`.
+      Access list names must be unique.
+
+      The improved data model has a more sophisticated design documented below:
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          description: Access-list Name
+        counters_per_entry:
+          type: bool
+        entries:
+          type: list
+          description: ACL Entries
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                convert_types:
+                - str
+                description: |
+                  ACL entry sequence number.
+              remark:
+                type: str
+                description: |
+                  Comment up to 100 characters.
+                  If remark is defined, other keys in acl entry will be ignored.
+              action:
+                type: str
+                valid_values: ["permit", "deny"]
+                description: |
+                  ACL action.
+                  Required for standard entry.
+              protocol:
+                type: str
+                description: |
+                  ip, tcp, udp, icmp or other protocol name or number.
+                  Required for standard entry.
+              source:
+                type: str
+                description: |
+                  any, A.B.C.D/E or A.B.C.D.
+                  A.B.C.D without a mask means host.
+                  Required for standard entry.
+              source_ports_match:
+                type: str
+                valid_values: ["eq", "gt", "lt", "neq", "range"]
+                default: "eq"
+              source_ports:
+                type: list
+                items:
+                  type: str
+                  convert_types:
+                  - int
+                  description: TCP/UDP source port name or number.
+              destination:
+                type: str
+                description: |
+                  any, A.B.C.D/E or A.B.C.D.
+                  A.B.C.D without a mask means host.
+                  Required for standard entry.
+              destination_ports_match:
+                type: str
+                valid_values: ["eq", "gt", "lt", "neq", "range"]
+                default: "eq"
+              destination_ports:
+                type: list
+                items:
+                  type: str
+                  convert_types:
+                  - int
+                  description: TCP/UDP destination port name or number.
+              tcp_flags:
+                type: list
+                items:
+                  type: str
+                  description: TCP Flag Name
+              fragments:
+                type: bool
+                description: Match non-head fragment packets.
+              log:
+                type: bool
+                description: Log matches against this rule.
+              ttl:
+                type: int
+                description: TTL value
+                convert_types:
+                - str
+                min: 0
+                max: 254
+              ttl_match:
+                type: str
+                valid_values: ["eq", "gt", "lt", "neq"]
+                default: "eq"
+              icmp_type:
+                type: str
+                convert_types:
+                - int
+                description: Message type name/number for ICMP packets.
+              icmp_code:
+                type: str
+                convert_types:
+                - int
+                description: Message code for ICMP packets.
+              nexthop_group:
+                type: str
+                description: nexthop-group name.
+              tracked:
+                type: bool
+                description: Match packets in existing ICMP/UDP/TCP connections.
+              dscp:
+                type: str
+                convert_types:
+                - int
+                description: DSCP value or name.
+              vlan_number:
+                type: int
+                convert_types:
+                - str
+              vlan_inner:
+                type: bool
+                default: false
+              vlan_mask:
+                type: str
+                description: 0x000-0xFFF VLAN mask.

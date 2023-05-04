@@ -1,0 +1,42 @@
+{# eos - mac security #}
+{% if mac_security is arista.avd.defined %}
+!
+mac security
+{%     if mac_security.license.license_name is arista.avd.defined and mac_security.license.license_key is arista.avd.defined %}
+   license {{ mac_security.license.license_name }} {{ mac_security.license.license_key }}
+{%     endif %}
+{%     if mac_security.fips_restrictions is arista.avd.defined(true) %}
+   fips restrictions
+{%     endif %}
+   !
+{%     for profile in mac_security.profiles | arista.avd.natural_sort('name') %}
+   profile {{ profile.name }}
+{%         if profile.cipher is arista.avd.defined %}
+      cipher {{ profile.cipher }}
+{%         endif %}
+{%         for connection_key in profile.connection_keys | arista.avd.natural_sort('id') %}
+{%             if connection_key.encrypted_key is arista.avd.defined %}
+{%                 set key_cli = "key " ~ connection_key.id ~ " 7 " ~ connection_key.encrypted_key %}
+{%                 if connection_key.fallback is arista.avd.defined %}
+{%                     set key_cli = key_cli ~ " fallback" %}
+{%                 endif %}
+      {{ key_cli }}
+{%             endif %}
+{%         endfor %}
+{%         if profile.mka.key_server_priority is arista.avd.defined %}
+      mka key-server priority {{ profile.mka.key_server_priority }}
+{%         endif %}
+{%         if profile.mka.session.rekey_period is arista.avd.defined %}
+      mka session rekey-period {{ profile.mka.session.rekey_period }}
+{%         endif %}
+{%         if profile.sci is arista.avd.defined(true) %}
+      sci
+{%         endif %}
+{%         if profile.l2_protocols.ethernet_flow_control is arista.avd.defined %}
+      l2-protocol ethernet-flow-control {{ profile.l2_protocols.ethernet_flow_control.mode }}
+{%         endif %}
+{%         if profile.l2_protocols.lldp is arista.avd.defined %}
+      l2-protocol lldp {{ profile.l2_protocols.lldp.mode }}
+{%         endif %}
+{%     endfor %}
+{% endif %}

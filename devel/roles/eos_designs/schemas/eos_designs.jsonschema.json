@@ -1,0 +1,4043 @@
+{
+  "type": "object",
+  "properties": {
+    "bfd_multihop": {
+      "type": "object",
+      "description": "BFD Multihop tuning",
+      "properties": {
+        "interval": {
+          "type": "integer",
+          "default": 300,
+          "minimum": 50,
+          "maximum": 60000,
+          "title": "Interval"
+        },
+        "min_rx": {
+          "type": "integer",
+          "default": 300,
+          "minimum": 50,
+          "maximum": 60000,
+          "title": "Min RX"
+        },
+        "multiplier": {
+          "type": "integer",
+          "default": 3,
+          "minimum": 3,
+          "maximum": 50,
+          "title": "Multiplier"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "BFD Multihop"
+    },
+    "bgp_as": {
+      "description": "AS number to use to configure overlay when \"overlay_routing_protocol\" == ibgp",
+      "type": "string",
+      "title": "BGP As"
+    },
+    "bgp_ecmp": {
+      "description": "Maximum ECMP for BGP multi-path",
+      "type": "integer",
+      "default": 4,
+      "title": "BGP Ecmp"
+    },
+    "bgp_maximum_paths": {
+      "description": "Maximum Paths for BGP multi-path",
+      "type": "integer",
+      "default": 4,
+      "minimum": 1,
+      "maximum": 512,
+      "title": "BGP Maximum Paths"
+    },
+    "bgp_mesh_pes": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether to configure an iBGP full mesh between PEs, either because there is no RR used or other reasons.",
+      "title": "BGP Mesh Pes"
+    },
+    "bgp_peer_groups": {
+      "description": "Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.\nNote that the name of the peer groups use '-' instead of '_' in EOS configuration.\n",
+      "type": "object",
+      "properties": {
+        "ipv4_underlay_peers": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "IPv4-UNDERLAY-PEERS",
+              "description": "Name of peer group.",
+              "title": "Name"
+            },
+            "password": {
+              "type": "string",
+              "description": "Type 7 encrypted password.",
+              "title": "Password"
+            },
+            "structured_config": {
+              "type": "object",
+              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
+              "title": "Structured Config"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "IPv4 Underlay Peers"
+        },
+        "mlag_ipv4_underlay_peer": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "MLAG-IPv4-UNDERLAY-PEER",
+              "description": "Name of peer group.",
+              "title": "Name"
+            },
+            "password": {
+              "type": "string",
+              "description": "Type 7 encrypted password.",
+              "title": "Password"
+            },
+            "structured_config": {
+              "type": "object",
+              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
+              "title": "Structured Config"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "MLAG IPv4 Underlay Peer"
+        },
+        "evpn_overlay_peers": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "EVPN-OVERLAY-PEERS",
+              "description": "Name of peer group.",
+              "title": "Name"
+            },
+            "password": {
+              "type": "string",
+              "description": "Type 7 encrypted password.",
+              "title": "Password"
+            },
+            "structured_config": {
+              "type": "object",
+              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
+              "title": "Structured Config"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "EVPN Overlay Peers"
+        },
+        "evpn_overlay_core": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "EVPN-OVERLAY-CORE",
+              "description": "Name of peer group.",
+              "title": "Name"
+            },
+            "password": {
+              "type": "string",
+              "description": "Type 7 encrypted password.",
+              "title": "Password"
+            },
+            "structured_config": {
+              "type": "object",
+              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
+              "title": "Structured Config"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "EVPN Overlay Core"
+        },
+        "mpls_overlay_peers": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "MPLS-OVERLAY-PEERS",
+              "description": "Name of peer group.",
+              "title": "Name"
+            },
+            "password": {
+              "type": "string",
+              "description": "Type 7 encrypted password.",
+              "title": "Password"
+            },
+            "structured_config": {
+              "type": "object",
+              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
+              "title": "Structured Config"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "MPLS Overlay Peers"
+        },
+        "rr_overlay_peers": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "RR-OVERLAY-PEERS",
+              "description": "Name of peer group.",
+              "title": "Name"
+            },
+            "password": {
+              "type": "string",
+              "description": "Type 7 encrypted password.",
+              "title": "Password"
+            },
+            "structured_config": {
+              "type": "object",
+              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
+              "title": "Structured Config"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Rr Overlay Peers"
+        },
+        "ipvpn_gateway_peers": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "IPVPN-GATEWAY-PEERS",
+              "description": "Name of peer group.",
+              "title": "Name"
+            },
+            "password": {
+              "type": "string",
+              "description": "Type 7 encrypted password.",
+              "title": "Password"
+            },
+            "structured_config": {
+              "type": "object",
+              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
+              "title": "Structured Config"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Ipvpn Gateway Peers"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "BGP Peer Groups"
+    },
+    "connected_endpoints_keys": {
+      "type": "array",
+      "description": "Define connected endpoints keys to define the grouping of endpoints connecting to the fabric.\nThis lets you specify various keys to better organize/group your data.\nThe connected endpoints keys should be defined in the top level group_var for the fabric.\n",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type used for documentation.",
+            "title": "Type"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description used for documentation.",
+            "title": "Description"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "key"
+        ]
+      },
+      "title": "Connected Endpoints Keys"
+    },
+    "core_interfaces": {
+      "type": "object",
+      "description": "The `core_interfaces` data model can be used to configure L3 P2P links anywhere in the fabric.\nIt can be between two switches that are already part of the fabric inventory, or it can be towards another device,\nwhere only one end of the link is on a switch in the fabric.",
+      "properties": {
+        "p2p_links_ip_pools": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "P2P pool name.",
+                "title": "Name"
+              },
+              "ipv4_pool": {
+                "type": "string",
+                "description": "IPv4 address/Mask.",
+                "title": "IPv4 Pool"
+              },
+              "prefix_size": {
+                "type": "integer",
+                "description": "Subnet mask size.",
+                "default": 31,
+                "minimum": 8,
+                "maximum": 31,
+                "title": "Prefix Size"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "P2P Links IP Pools"
+        },
+        "p2p_links_profiles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "Unique id per subnet_summary. Used to calculate ip addresses.\nRequired with ip_pool. ID starting from 1.\n",
+                "title": "ID"
+              },
+              "speed": {
+                "type": "string",
+                "description": "The values can be speed or auto speed or forced speed.",
+                "title": "Speed"
+              },
+              "ip_pool": {
+                "type": "string",
+                "description": "P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link",
+                "title": "IP Pool"
+              },
+              "subnet": {
+                "type": "string",
+                "description": "IPv4 address/Mask. Subnet used on this P2P link.",
+                "title": "Subnet"
+              },
+              "ip": {
+                "type": "array",
+                "description": "Specific IP addresses used on this P2P link.",
+                "items": {
+                  "type": "string",
+                  "description": "Node IPv4 address/Mask."
+                },
+                "title": "IP"
+              },
+              "ipv6_enable": {
+                "type": "boolean",
+                "default": false,
+                "description": "Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol).",
+                "title": "IPv6 Enable"
+              },
+              "nodes": {
+                "type": "array",
+                "description": "Nodes where this link should be configured.",
+                "items": {
+                  "type": "string",
+                  "description": "The values can be < node_a >, < node_b >.\nex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].\n"
+                },
+                "title": "Nodes"
+              },
+              "interfaces": {
+                "type": "array",
+                "description": "Interfaces where this link should be configured and Required unless using port-channels.",
+                "items": {
+                  "type": "string",
+                  "description": "The value can be like < node_a_interface >, < node_b_interface >.\nex. - [ Ethernet2, Ethernet2 ].\n"
+                },
+                "title": "Interfaces"
+              },
+              "as": {
+                "type": "array",
+                "description": "AS numbers for BGP.\nRequired with bgp peering.\n",
+                "items": {
+                  "type": "string",
+                  "description": "The values can be like [\"node_a_as\", \"node_b_as\"]."
+                },
+                "title": "As"
+              },
+              "descriptions": {
+                "type": "array",
+                "description": "Interface description.",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Descriptions"
+              },
+              "include_in_underlay_protocol": {
+                "type": "boolean",
+                "default": true,
+                "description": "Add this interface to underlay routing protocol.",
+                "title": "Include In Underlay Protocol"
+              },
+              "isis_hello_padding": {
+                "type": "boolean",
+                "default": false,
+                "title": "ISIS Hello Padding"
+              },
+              "isis_metric": {
+                "type": "integer",
+                "title": "ISIS Metric"
+              },
+              "isis_circuit_type": {
+                "type": "string",
+                "enum": [
+                  "level-1",
+                  "level-2",
+                  "level-1-2"
+                ],
+                "title": "ISIS Circuit Type"
+              },
+              "isis_authentication_mode": {
+                "type": "string",
+                "enum": [
+                  "md5",
+                  "text"
+                ],
+                "title": "ISIS Authentication Mode"
+              },
+              "isis_authentication_key": {
+                "type": "string",
+                "description": "Type-7 encrypted password.",
+                "title": "ISIS Authentication Key"
+              },
+              "mpls_ip": {
+                "type": "boolean",
+                "description": "MPLS parameters. Default value is true if switch.mpls_lsr is true.",
+                "title": "MPLS IP"
+              },
+              "mpls_ldp": {
+                "type": "boolean",
+                "description": "MPLS parameters. Default value is true for ldp underlay variants, otherwise false.",
+                "title": "MPLS LDP"
+              },
+              "mtu": {
+                "type": "integer",
+                "description": "MTU for this P2P link. Default value same as p2p_uplinks_mtu.",
+                "title": "MTU"
+              },
+              "bfd": {
+                "type": "boolean",
+                "default": false,
+                "description": "Enable BFD (only considered for BGP).",
+                "title": "BFD"
+              },
+              "ptp_enable": {
+                "type": "boolean",
+                "default": false,
+                "description": "Enable PTP",
+                "title": "PTP Enable"
+              },
+              "qos_profile": {
+                "type": "string",
+                "description": "QOS service profile.",
+                "title": "QOS Profile"
+              },
+              "macsec_profile": {
+                "type": "string",
+                "description": "MAC security profile.",
+                "title": "Macsec Profile"
+              },
+              "port_channel": {
+                "description": "Port-channel parameters.",
+                "type": "object",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "default": "active",
+                    "title": "Mode"
+                  },
+                  "nodes_child_interfaces": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "node": {
+                          "type": "string",
+                          "title": "Node"
+                        },
+                        "interfaces": {
+                          "type": "array",
+                          "description": "List of node interfaces. Ex.- [ 'node1 interface1', 'node1 interface2' ].",
+                          "items": {
+                            "type": "string"
+                          },
+                          "title": "Interfaces"
+                        }
+                      },
+                      "required": [
+                        "node"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Nodes Child Interfaces"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Port Channel"
+              },
+              "raw_eos_cli": {
+                "type": "string",
+                "description": "EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.",
+                "title": "Raw EOS CLI"
+              },
+              "name": {
+                "type": "string",
+                "description": "P2P profile name. Any variable supported under p2p_links can be inherited from a profile.",
+                "title": "Name"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "P2P Links Profiles"
+        },
+        "p2p_links": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "Unique id per subnet_summary. Used to calculate ip addresses.\nRequired with ip_pool. ID starting from 1.\n",
+                "title": "ID"
+              },
+              "speed": {
+                "type": "string",
+                "description": "The values can be speed or auto speed or forced speed.",
+                "title": "Speed"
+              },
+              "ip_pool": {
+                "type": "string",
+                "description": "P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link",
+                "title": "IP Pool"
+              },
+              "subnet": {
+                "type": "string",
+                "description": "IPv4 address/Mask. Subnet used on this P2P link.",
+                "title": "Subnet"
+              },
+              "ip": {
+                "type": "array",
+                "description": "Specific IP addresses used on this P2P link.",
+                "items": {
+                  "type": "string",
+                  "description": "Node IPv4 address/Mask."
+                },
+                "title": "IP"
+              },
+              "ipv6_enable": {
+                "type": "boolean",
+                "default": false,
+                "description": "Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol).",
+                "title": "IPv6 Enable"
+              },
+              "nodes": {
+                "type": "array",
+                "description": "Nodes where this link should be configured.",
+                "items": {
+                  "type": "string",
+                  "description": "The values can be < node_a >, < node_b >.\nex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].\n"
+                },
+                "title": "Nodes"
+              },
+              "interfaces": {
+                "type": "array",
+                "description": "Interfaces where this link should be configured and Required unless using port-channels.",
+                "items": {
+                  "type": "string",
+                  "description": "The value can be like < node_a_interface >, < node_b_interface >.\nex. - [ Ethernet2, Ethernet2 ].\n"
+                },
+                "title": "Interfaces"
+              },
+              "as": {
+                "type": "array",
+                "description": "AS numbers for BGP.\nRequired with bgp peering.\n",
+                "items": {
+                  "type": "string",
+                  "description": "The values can be like [\"node_a_as\", \"node_b_as\"]."
+                },
+                "title": "As"
+              },
+              "descriptions": {
+                "type": "array",
+                "description": "Interface description.",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Descriptions"
+              },
+              "include_in_underlay_protocol": {
+                "type": "boolean",
+                "default": true,
+                "description": "Add this interface to underlay routing protocol.",
+                "title": "Include In Underlay Protocol"
+              },
+              "isis_hello_padding": {
+                "type": "boolean",
+                "default": false,
+                "title": "ISIS Hello Padding"
+              },
+              "isis_metric": {
+                "type": "integer",
+                "title": "ISIS Metric"
+              },
+              "isis_circuit_type": {
+                "type": "string",
+                "enum": [
+                  "level-1",
+                  "level-2",
+                  "level-1-2"
+                ],
+                "title": "ISIS Circuit Type"
+              },
+              "isis_authentication_mode": {
+                "type": "string",
+                "enum": [
+                  "md5",
+                  "text"
+                ],
+                "title": "ISIS Authentication Mode"
+              },
+              "isis_authentication_key": {
+                "type": "string",
+                "description": "Type-7 encrypted password.",
+                "title": "ISIS Authentication Key"
+              },
+              "mpls_ip": {
+                "type": "boolean",
+                "description": "MPLS parameters. Default value is true if switch.mpls_lsr is true.",
+                "title": "MPLS IP"
+              },
+              "mpls_ldp": {
+                "type": "boolean",
+                "description": "MPLS parameters. Default value is true for ldp underlay variants, otherwise false.",
+                "title": "MPLS LDP"
+              },
+              "mtu": {
+                "type": "integer",
+                "description": "MTU for this P2P link. Default value same as p2p_uplinks_mtu.",
+                "title": "MTU"
+              },
+              "bfd": {
+                "type": "boolean",
+                "default": false,
+                "description": "Enable BFD (only considered for BGP).",
+                "title": "BFD"
+              },
+              "ptp_enable": {
+                "type": "boolean",
+                "default": false,
+                "description": "Enable PTP",
+                "title": "PTP Enable"
+              },
+              "qos_profile": {
+                "type": "string",
+                "description": "QOS service profile.",
+                "title": "QOS Profile"
+              },
+              "macsec_profile": {
+                "type": "string",
+                "description": "MAC security profile.",
+                "title": "Macsec Profile"
+              },
+              "port_channel": {
+                "description": "Port-channel parameters.",
+                "type": "object",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "default": "active",
+                    "title": "Mode"
+                  },
+                  "nodes_child_interfaces": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "node": {
+                          "type": "string",
+                          "title": "Node"
+                        },
+                        "interfaces": {
+                          "type": "array",
+                          "description": "List of node interfaces. Ex.- [ 'node1 interface1', 'node1 interface2' ].",
+                          "items": {
+                            "type": "string"
+                          },
+                          "title": "Interfaces"
+                        }
+                      },
+                      "required": [
+                        "node"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Nodes Child Interfaces"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Port Channel"
+              },
+              "raw_eos_cli": {
+                "type": "string",
+                "description": "EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.",
+                "title": "Raw EOS CLI"
+              },
+              "profile": {
+                "type": "string",
+                "description": "P2P profile name. Profile defined under p2p_profiles.",
+                "title": "Profile"
+              }
+            },
+            "required": [
+              "nodes"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "P2P Links"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Core Interfaces"
+    },
+    "cvp_ingestauth_key": {
+      "type": "string",
+      "description": "On-premise CVP ingest auth key. If set, TerminAttr will be configured with key-based authentication for on-premise CVP.\nIf not set, TerminAttr will be configured with certificate based authentication using token-secure onboarding.\nToken must be copied to the device first.",
+      "title": "CVP Ingestauth Key"
+    },
+    "cvp_instance_ip": {
+      "type": "string",
+      "description": "IPv4 address.\nCloudVision - Telemetry Agent (TerminAttr) configuration is optional\nYou can either provide a list of IPs to target on-premise CloudVision cluster or\nuse DNS name for your CloudVision as a Service instance. If you have both on-prem and\nCVaaS defined, only on-prem is going to be configured.",
+      "title": "CVP Instance IP"
+    },
+    "cvp_instance_ips": {
+      "type": "array",
+      "description": "You can either provide a list of IPs to target on-premise CloudVision cluster or\nuse DNS name for your CloudVision as a Service instance. If you have both on-prem and\nCVaaS defined, only on-prem is going to be configured.\n",
+      "items": {
+        "type": "string",
+        "description": "IPv4 address or CV as a Service hostname"
+      },
+      "title": "CVP Instance Ips"
+    },
+    "cvp_token_file": {
+      "type": "string",
+      "default": "/tmp/cv-onboarding-token",
+      "description": "cvp_token_file is the path to the token file on the switch.",
+      "title": "CVP Token File"
+    },
+    "dc_name": {
+      "description": "DC Name, required to match Ansible Group name covering all devices in the DC.\nRequired for 5-stage CLOS (Super-spines).\n",
+      "type": "string",
+      "title": "DC Name"
+    },
+    "default_igmp_snooping_enabled": {
+      "description": "When set to false, disables IGMP snooping at fabric level and overrides per vlan settings.\n",
+      "type": "boolean",
+      "default": true,
+      "title": "Default IGMP Snooping Enabled"
+    },
+    "default_interfaces": {
+      "type": "array",
+      "description": "- Set default uplink, downlink, and MLAG interfaces, which will be used if these interfaces are not defined on a device (either directly or through inheritance).\n- These are defined based on the combination of node_type (e.g., l3leaf or spine) and a regex for matching the platform.\n- A list of interfaces or interface ranges can be specified.\n- Each list item supports range syntax that can be expanded into a list of interfaces. Interface range examples:\n  - Ethernet49-52/1: Expands to [ Ethernet49/1, Ethernet50/1, Ethernet51/1, Ethernet52/1 ]\n  - Ethernet1/31-34/1: Expands to [ Ethernet1/31/1, Ethernet1/32/1, Ethernet1/33/1, Ethernet1/34/1 ]\n  - Ethernet49-50,53-54: Expands to [ Ethernet49, Ethernet50, Ethernet53, Ethernet54 ]\n  - Ethernet1-2/1-4: Expands to [ Ethernet1/1, Ethernet1/2, Ethernet1/3, Ethernet1/4, Ethernet2/1, Ethernet2/2, Ethernet2/3, Ethernet2/4 ]\n- `uplink_interfaces` and `mlag_interfaces` under `default_interfaces` are directly inherited by `uplink_interfaces` and `mlag_interfaces`.\n- `downlink_interfaces` are referenced by the child switch (e.g., the leaf in a leaf/spine network). The child switch leverages an upstream switch's `default_downlink_interfaces` using the child switch ID.  This is then used to build `uplink_switch_interfaces` for that child.\n  - In the case of `max_parallel_uplinks` > 1 the `default_downlink_interfaces` are mapped with consecutive downlinks per child ID.\n  - Example for `max_parallel_uplinks: 2`, downlink interfaces will be mapped as `[ <downlink1 to leaf-id1>, <downlink2 to leaf-id1>, <downlink1 to leaf-id2>, <downlink2 to leaf-id2> ...]`\n- Please note that no default interfaces are defined in AVD itself. You will need to create your own based on the example below.\n\nExample:\n\n```yaml\ndefault_interfaces:\n  - types: [ spine, l3leaf ]\n    platforms: [ \"7050[SC]X3\", vEOS.*, default ]\n    uplink_interfaces: [ Ethernet49-54/1 ]\n    mlag_interfaces: [ Ethernet55-56/1 ]\n    downlink_interfaces: [ Ethernet1-32/1 ]\n```\n",
+      "items": {
+        "type": "object",
+        "properties": {
+          "types": {
+            "type": "array",
+            "description": "List of node type keys.",
+            "items": {
+              "type": "string"
+            },
+            "title": "Types"
+          },
+          "platforms": {
+            "type": "array",
+            "description": "List of platform families.\nThis is defined as a Python regular expression that matches the full platform type.\n",
+            "items": {
+              "type": "string",
+              "description": "Arista platform family regular expression."
+            },
+            "title": "Platforms"
+          },
+          "uplink_interfaces": {
+            "type": "array",
+            "description": "List of uplink interfaces or uplink interface ranges.",
+            "items": {
+              "type": "string",
+              "description": "Interface range or interface."
+            },
+            "title": "Uplink Interfaces"
+          },
+          "mlag_interfaces": {
+            "type": "array",
+            "description": "List of MLAG interfaces or MLAG interface ranges.",
+            "items": {
+              "type": "string",
+              "description": "Interface range or interface."
+            },
+            "title": "MLAG Interfaces"
+          },
+          "downlink_interfaces": {
+            "type": "array",
+            "description": "List of downlink interfaces or downlink interface ranges.",
+            "items": {
+              "type": "string",
+              "description": "Interface range or interface."
+            },
+            "title": "Downlink Interfaces"
+          }
+        },
+        "required": [
+          "types",
+          "platforms"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "Default Interfaces"
+    },
+    "default_node_types": {
+      "type": "array",
+      "description": "Uses hostname matches against a regular expression to determine the node type.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "node_type": {
+            "type": "string",
+            "description": "Resulting node type when regex matches.",
+            "title": "Node Type"
+          },
+          "match_hostnames": {
+            "type": "array",
+            "description": "Regular expressions to match against hostnames.",
+            "items": {
+              "type": "string",
+              "description": "Regex needs to match full hostname (i.e. is bounded by ^ and $ elements)."
+            },
+            "title": "Match Hostnames"
+          }
+        },
+        "required": [
+          "node_type",
+          "match_hostnames"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "Default Node Types"
+    },
+    "design": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "By setting the design.type variable, the default node-types and templates described in these documents will be used.\n",
+          "enum": [
+            "l3ls-evpn",
+            "mpls",
+            "l2ls"
+          ],
+          "default": "l3ls-evpn",
+          "title": "Type"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Design"
+    },
+    "enable_trunk_groups": {
+      "type": "boolean",
+      "description": "Enable Trunk Group support across eos_designs\nWarning: Because of the nature of the EOS Trunk Group feature, enabling this is \"all or nothing\".\n*All* vlans and *all* trunks towards connected endpoints must be using trunk groups as well.\nIf trunk groups are not assigned to a trunk, no vlans will be enabled on that trunk.\nSee \"Details on enable_trunk_groups\" below before enabling this feature.\n",
+      "default": false,
+      "title": "Enable Trunk Groups"
+    },
+    "evpn_ebgp_gateway_multihop": {
+      "description": "Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI networks.\nAdapt the value for your specific topology.\n",
+      "type": "integer",
+      "default": 15,
+      "title": "EVPN Ebgp Gateway Multihop"
+    },
+    "evpn_ebgp_multihop": {
+      "description": "Default of 3, the recommended value for a 3 stage spine and leaf topology.\nSet to a higher value to allow for very large and complex topologies.\n",
+      "type": "integer",
+      "default": 3,
+      "title": "EVPN Ebgp Multihop"
+    },
+    "evpn_hostflap_detection": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "description": "If set to false it will disable EVPN host-flap detection",
+          "type": "boolean",
+          "default": true,
+          "title": "Enabled"
+        },
+        "threshold": {
+          "description": "Minimum number of MAC moves that indicate a MAC duplication issue",
+          "type": "integer",
+          "default": 5,
+          "title": "Threshold"
+        },
+        "window": {
+          "description": "Time (in seconds) to detect a MAC duplication issue",
+          "type": "integer",
+          "default": 180,
+          "title": "Window"
+        },
+        "expiry_timeout": {
+          "description": "Time (in seconds) to purge a MAC duplication issue",
+          "type": "integer",
+          "title": "Expiry Timeout"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "EVPN Hostflap Detection"
+    },
+    "evpn_import_pruning": {
+      "description": "Enable VPN import pruning (Min. EOS 4.24.2F)\nThe Route Target extended communities carried by incoming VPN paths will\nbe examined. If none of those Route Targets have been configured for import,\nthe path will be immediately discarded\n",
+      "type": "boolean",
+      "default": false,
+      "title": "EVPN Import Pruning"
+    },
+    "evpn_multicast": {
+      "type": "boolean",
+      "description": "General Configuration required for EVPN Multicast. \"evpn_l2_multicast\" must also be configured under the Network Services (tenants).\nRequires \"underlay_multicast: true\" and IGMP snooping enabled globally (default).\nFor MLAG devices Route Distinguisher must be unique since this feature will create multi-vtep configuration.\nWarning !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP and 722XP\n  The Following default platform setting will be configured: \"platform trident forwarding-table partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072\"\n  All forwarding agents will be restarted when this configuration is applied.\n  You can tune the settings by overridding the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n  Please contact an Arista representative for help with determining the appropriate values for your environment.\n",
+      "default": false,
+      "title": "EVPN Multicast"
+    },
+    "evpn_overlay_bgp_rtc": {
+      "description": "Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)\nRequires use eBGP as overlay protocol.\n",
+      "type": "boolean",
+      "default": false,
+      "title": "EVPN Overlay BGP Rtc"
+    },
+    "evpn_prevent_readvertise_to_server": {
+      "description": "Configure route-map on eBGP sessions towards route-servers, where prefixes with the peer's ASN in the AS Path are filtered away.\nThis is very useful in large-scale networks, where convergence will be quicker by not returning all updates received\nfrom Route-server-1 to Router-server-2 just for Route-server-2 to throw them away because of AS Path loop detection.\n",
+      "type": "boolean",
+      "default": false,
+      "title": "EVPN Prevent Readvertise To Server"
+    },
+    "evpn_short_esi_prefix": {
+      "description": "Configure prefix for \"short_esi\" values",
+      "type": "string",
+      "default": "0000:0000:",
+      "title": "EVPN Short Esi Prefix"
+    },
+    "evpn_vlan_aware_bundles": {
+      "description": "Enable vlan aware bundles for EVPN MAC-VRF\nOld variable name vxlan_vlan_aware_bundles, supported for backward-compatibility.\n",
+      "type": "boolean",
+      "default": false,
+      "title": "EVPN VLAN Aware Bundles"
+    },
+    "fabric_name": {
+      "description": "Fabric Name, required to match Ansible Group name covering all devices in the Fabric, **must** be an inventory group name.",
+      "type": "string",
+      "title": "Fabric Name"
+    },
+    "internal_vlan_order": {
+      "type": "object",
+      "description": "Internal vlan allocation order and range.",
+      "properties": {
+        "allocation": {
+          "type": "string",
+          "enum": [
+            "ascending",
+            "descending"
+          ],
+          "default": "ascending",
+          "title": "Allocation"
+        },
+        "range": {
+          "type": "object",
+          "properties": {
+            "beginning": {
+              "type": "integer",
+              "description": "First VLAN ID.",
+              "default": 1006,
+              "minimum": 2,
+              "maximum": 4094,
+              "title": "Beginning"
+            },
+            "ending": {
+              "type": "integer",
+              "description": "Last VLAN ID.",
+              "default": 1199,
+              "minimum": 2,
+              "maximum": 4094,
+              "title": "Ending"
+            }
+          },
+          "required": [
+            "beginning",
+            "ending"
+          ],
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Range"
+        }
+      },
+      "required": [
+        "allocation"
+      ],
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Internal VLAN Order"
+    },
+    "isis_advertise_passive_only": {
+      "type": "boolean",
+      "default": false,
+      "title": "ISIS Advertise Passive Only"
+    },
+    "isis_area_id": {
+      "type": "string",
+      "default": "49.0001",
+      "title": "ISIS Area ID"
+    },
+    "isis_default_circuit_type": {
+      "type": "string",
+      "enum": [
+        "level-1-2",
+        "level-1",
+        "level-2"
+      ],
+      "default": "level-2",
+      "description": "These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden on link profile or link level.",
+      "title": "ISIS Default Circuit Type"
+    },
+    "isis_default_is_type": {
+      "type": "string",
+      "enum": [
+        "level-1-2",
+        "level-1",
+        "level-2"
+      ],
+      "default": "level-2",
+      "title": "ISIS Default IS Type"
+    },
+    "isis_default_metric": {
+      "type": "integer",
+      "default": 50,
+      "description": "These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden at link profile or link level.",
+      "title": "ISIS Default Metric"
+    },
+    "isis_ti_lfa": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false,
+          "title": "Enabled"
+        },
+        "protection": {
+          "type": "string",
+          "enum": [
+            "link",
+            "node"
+          ],
+          "title": "Protection"
+        },
+        "local_convergence_delay": {
+          "description": "Local convergence delay in milliseconds",
+          "type": "integer",
+          "default": 10000,
+          "title": "Local Convergence Delay"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "ISIS TI LFA"
+    },
+    "l3_edge": {
+      "type": "object",
+      "description": "The `l3_edge` data model can be used to configure extra L3 P2P links anywhere in the fabric.\nIt can be between two switches that are already part of the fabric inventory, or it can be towards another device, where only one end of the link is on a switch in the fabric.\nFabric switches can be types `l3leaf`, `spine` or `super-spine`.\n\nThe data model supports using IP pools, Subnet per link or specifying the IP addresses manually.\nFor BGP peerings the AS number must be specified.\nIf the AS number is different than the AS number configured for the node, the local-as will be replaced on this BGP peering (`neighbor <ip> local-as <as> no-prepend replace-as`).\n\nMake sure to configure the variables in a group_vars file covering all devices mentioned in the data model.",
+      "properties": {
+        "p2p_links_ip_pools": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "P2P pool name.",
+                "title": "Name"
+              },
+              "ipv4_pool": {
+                "type": "string",
+                "description": "IPv4 address/Mask.",
+                "title": "IPv4 Pool"
+              },
+              "prefix_size": {
+                "type": "integer",
+                "description": "Subnet mask size.",
+                "default": 31,
+                "minimum": 8,
+                "maximum": 31,
+                "title": "Prefix Size"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "P2P Links IP Pools"
+        },
+        "p2p_links_profiles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "Unique id per subnet_summary. Used to calculate ip addresses.\nRequired with ip_pool. ID starting from 1.\n",
+                "title": "ID"
+              },
+              "speed": {
+                "type": "string",
+                "description": "The values can be speed or auto speed or forced speed.",
+                "title": "Speed"
+              },
+              "ip_pool": {
+                "type": "string",
+                "description": "P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link",
+                "title": "IP Pool"
+              },
+              "subnet": {
+                "type": "string",
+                "description": "IPv4 address/Mask. Subnet used on this P2P link.",
+                "title": "Subnet"
+              },
+              "ip": {
+                "type": "array",
+                "description": "Specific IP addresses used on this P2P link.",
+                "items": {
+                  "type": "string",
+                  "description": "Node IPv4 address/Mask."
+                },
+                "title": "IP"
+              },
+              "ipv6_enable": {
+                "type": "boolean",
+                "default": false,
+                "description": "Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol).",
+                "title": "IPv6 Enable"
+              },
+              "nodes": {
+                "type": "array",
+                "description": "Nodes where this link should be configured.",
+                "items": {
+                  "type": "string",
+                  "description": "The values can be < node_a >, < node_b >.\nex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].\n"
+                },
+                "title": "Nodes"
+              },
+              "interfaces": {
+                "type": "array",
+                "description": "Interfaces where this link should be configured and Required unless using port-channels.",
+                "items": {
+                  "type": "string",
+                  "description": "The value can be like < node_a_interface >, < node_b_interface >.\nex. - [ Ethernet2, Ethernet2 ].\n"
+                },
+                "title": "Interfaces"
+              },
+              "as": {
+                "type": "array",
+                "description": "AS numbers for BGP.\nRequired with bgp peering.\n",
+                "items": {
+                  "type": "string",
+                  "description": "The values can be like [\"node_a_as\", \"node_b_as\"]."
+                },
+                "title": "As"
+              },
+              "descriptions": {
+                "type": "array",
+                "description": "Interface description.",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Descriptions"
+              },
+              "include_in_underlay_protocol": {
+                "type": "boolean",
+                "default": true,
+                "description": "Add this interface to underlay routing protocol.",
+                "title": "Include In Underlay Protocol"
+              },
+              "isis_hello_padding": {
+                "type": "boolean",
+                "default": false,
+                "title": "ISIS Hello Padding"
+              },
+              "isis_metric": {
+                "type": "integer",
+                "title": "ISIS Metric"
+              },
+              "isis_circuit_type": {
+                "type": "string",
+                "enum": [
+                  "level-1",
+                  "level-2",
+                  "level-1-2"
+                ],
+                "title": "ISIS Circuit Type"
+              },
+              "isis_authentication_mode": {
+                "type": "string",
+                "enum": [
+                  "md5",
+                  "text"
+                ],
+                "title": "ISIS Authentication Mode"
+              },
+              "isis_authentication_key": {
+                "type": "string",
+                "description": "Type-7 encrypted password.",
+                "title": "ISIS Authentication Key"
+              },
+              "mpls_ip": {
+                "type": "boolean",
+                "description": "MPLS parameters. Default value is true if switch.mpls_lsr is true.",
+                "title": "MPLS IP"
+              },
+              "mpls_ldp": {
+                "type": "boolean",
+                "description": "MPLS parameters. Default value is true for ldp underlay variants, otherwise false.",
+                "title": "MPLS LDP"
+              },
+              "mtu": {
+                "type": "integer",
+                "description": "MTU for this P2P link. Default value same as p2p_uplinks_mtu.",
+                "title": "MTU"
+              },
+              "bfd": {
+                "type": "boolean",
+                "default": false,
+                "description": "Enable BFD (only considered for BGP).",
+                "title": "BFD"
+              },
+              "ptp_enable": {
+                "type": "boolean",
+                "default": false,
+                "description": "Enable PTP",
+                "title": "PTP Enable"
+              },
+              "qos_profile": {
+                "type": "string",
+                "description": "QOS service profile.",
+                "title": "QOS Profile"
+              },
+              "macsec_profile": {
+                "type": "string",
+                "description": "MAC security profile.",
+                "title": "Macsec Profile"
+              },
+              "port_channel": {
+                "description": "Port-channel parameters.",
+                "type": "object",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "default": "active",
+                    "title": "Mode"
+                  },
+                  "nodes_child_interfaces": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "node": {
+                          "type": "string",
+                          "title": "Node"
+                        },
+                        "interfaces": {
+                          "type": "array",
+                          "description": "List of node interfaces. Ex.- [ 'node1 interface1', 'node1 interface2' ].",
+                          "items": {
+                            "type": "string"
+                          },
+                          "title": "Interfaces"
+                        }
+                      },
+                      "required": [
+                        "node"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Nodes Child Interfaces"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Port Channel"
+              },
+              "raw_eos_cli": {
+                "type": "string",
+                "description": "EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.",
+                "title": "Raw EOS CLI"
+              },
+              "name": {
+                "type": "string",
+                "description": "P2P profile name. Any variable supported under p2p_links can be inherited from a profile.",
+                "title": "Name"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "P2P Links Profiles"
+        },
+        "p2p_links": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "Unique id per subnet_summary. Used to calculate ip addresses.\nRequired with ip_pool. ID starting from 1.\n",
+                "title": "ID"
+              },
+              "speed": {
+                "type": "string",
+                "description": "The values can be speed or auto speed or forced speed.",
+                "title": "Speed"
+              },
+              "ip_pool": {
+                "type": "string",
+                "description": "P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link",
+                "title": "IP Pool"
+              },
+              "subnet": {
+                "type": "string",
+                "description": "IPv4 address/Mask. Subnet used on this P2P link.",
+                "title": "Subnet"
+              },
+              "ip": {
+                "type": "array",
+                "description": "Specific IP addresses used on this P2P link.",
+                "items": {
+                  "type": "string",
+                  "description": "Node IPv4 address/Mask."
+                },
+                "title": "IP"
+              },
+              "ipv6_enable": {
+                "type": "boolean",
+                "default": false,
+                "description": "Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol).",
+                "title": "IPv6 Enable"
+              },
+              "nodes": {
+                "type": "array",
+                "description": "Nodes where this link should be configured.",
+                "items": {
+                  "type": "string",
+                  "description": "The values can be < node_a >, < node_b >.\nex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].\n"
+                },
+                "title": "Nodes"
+              },
+              "interfaces": {
+                "type": "array",
+                "description": "Interfaces where this link should be configured and Required unless using port-channels.",
+                "items": {
+                  "type": "string",
+                  "description": "The value can be like < node_a_interface >, < node_b_interface >.\nex. - [ Ethernet2, Ethernet2 ].\n"
+                },
+                "title": "Interfaces"
+              },
+              "as": {
+                "type": "array",
+                "description": "AS numbers for BGP.\nRequired with bgp peering.\n",
+                "items": {
+                  "type": "string",
+                  "description": "The values can be like [\"node_a_as\", \"node_b_as\"]."
+                },
+                "title": "As"
+              },
+              "descriptions": {
+                "type": "array",
+                "description": "Interface description.",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Descriptions"
+              },
+              "include_in_underlay_protocol": {
+                "type": "boolean",
+                "default": true,
+                "description": "Add this interface to underlay routing protocol.",
+                "title": "Include In Underlay Protocol"
+              },
+              "isis_hello_padding": {
+                "type": "boolean",
+                "default": false,
+                "title": "ISIS Hello Padding"
+              },
+              "isis_metric": {
+                "type": "integer",
+                "title": "ISIS Metric"
+              },
+              "isis_circuit_type": {
+                "type": "string",
+                "enum": [
+                  "level-1",
+                  "level-2",
+                  "level-1-2"
+                ],
+                "title": "ISIS Circuit Type"
+              },
+              "isis_authentication_mode": {
+                "type": "string",
+                "enum": [
+                  "md5",
+                  "text"
+                ],
+                "title": "ISIS Authentication Mode"
+              },
+              "isis_authentication_key": {
+                "type": "string",
+                "description": "Type-7 encrypted password.",
+                "title": "ISIS Authentication Key"
+              },
+              "mpls_ip": {
+                "type": "boolean",
+                "description": "MPLS parameters. Default value is true if switch.mpls_lsr is true.",
+                "title": "MPLS IP"
+              },
+              "mpls_ldp": {
+                "type": "boolean",
+                "description": "MPLS parameters. Default value is true for ldp underlay variants, otherwise false.",
+                "title": "MPLS LDP"
+              },
+              "mtu": {
+                "type": "integer",
+                "description": "MTU for this P2P link. Default value same as p2p_uplinks_mtu.",
+                "title": "MTU"
+              },
+              "bfd": {
+                "type": "boolean",
+                "default": false,
+                "description": "Enable BFD (only considered for BGP).",
+                "title": "BFD"
+              },
+              "ptp_enable": {
+                "type": "boolean",
+                "default": false,
+                "description": "Enable PTP",
+                "title": "PTP Enable"
+              },
+              "qos_profile": {
+                "type": "string",
+                "description": "QOS service profile.",
+                "title": "QOS Profile"
+              },
+              "macsec_profile": {
+                "type": "string",
+                "description": "MAC security profile.",
+                "title": "Macsec Profile"
+              },
+              "port_channel": {
+                "description": "Port-channel parameters.",
+                "type": "object",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "default": "active",
+                    "title": "Mode"
+                  },
+                  "nodes_child_interfaces": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "node": {
+                          "type": "string",
+                          "title": "Node"
+                        },
+                        "interfaces": {
+                          "type": "array",
+                          "description": "List of node interfaces. Ex.- [ 'node1 interface1', 'node1 interface2' ].",
+                          "items": {
+                            "type": "string"
+                          },
+                          "title": "Interfaces"
+                        }
+                      },
+                      "required": [
+                        "node"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Nodes Child Interfaces"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Port Channel"
+              },
+              "raw_eos_cli": {
+                "type": "string",
+                "description": "EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.",
+                "title": "Raw EOS CLI"
+              },
+              "profile": {
+                "type": "string",
+                "description": "P2P profile name. Profile defined under p2p_profiles.",
+                "title": "Profile"
+              }
+            },
+            "required": [
+              "nodes"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "P2P Links"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "L3 Edge"
+    },
+    "mac_address_table": {
+      "type": "object",
+      "description": "MAC address-table aging time\nUse to change the EOS default of 300.\n",
+      "properties": {
+        "aging_time": {
+          "type": "integer",
+          "description": "Aging time in seconds 10-1000000.\nEnter 0 to disable aging.\n",
+          "minimum": 0,
+          "maximum": 1000000,
+          "title": "Aging Time"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "MAC Address Table"
+    },
+    "mlag_ibgp_peering_vrfs": {
+      "type": "object",
+      "description": "On mlag leafs, an SVI interface is defined per vrf, to establish iBGP peering (required when there are MLAG leafs in topology)\nThe SVI id will be derived from the base vlan defined: mlag_ibgp_peering_vrfs.base_vlan + (vrf_id or vrf_vni) - 1\nDepending on the values of vrf_id / vrf_vni it may be required to adjust the base_vlan to avoid overlaps or invalid vlan ids.\nThe SVI ip address derived from mlag_l3_peer_ipv4_pool is re-used across all iBGP peerings.\n",
+      "properties": {
+        "base_vlan": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4093,
+          "default": 3000,
+          "title": "Base VLAN"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "MLAG Ibgp Peering VRFs"
+    },
+    "network_ports": {
+      "type": "array",
+      "description": "All switch_ports ranges are expanded into individual port configurations.\n",
+      "items": {
+        "type": "object",
+        "properties": {
+          "endpoint_ports": {
+            "type": "array",
+            "description": "Endpoint ports is used for description, required unless description is set.\nThe lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.\nEach list item is one switchport.\n",
+            "items": {
+              "type": "string",
+              "description": "Interface name."
+            },
+            "title": "Endpoint Ports"
+          },
+          "speed": {
+            "type": "string",
+            "description": "Set adapter speed: `< interface_speed >`, `forced < interface_speed >`, `auto < interface_speed >`.\nIf not specified will be auto.\n",
+            "title": "Speed"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description to be used on all ports.",
+            "title": "Description"
+          },
+          "profile": {
+            "type": "string",
+            "description": "Port-profile name to inherit configuration.",
+            "title": "Profile"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Administrative state, setting to false will set the port to 'shutdown' in the intended configuration.\n",
+            "default": true,
+            "title": "Enabled"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "access",
+              "dot1q-tunnel",
+              "trunk",
+              "trunk phone"
+            ],
+            "description": "Interface mode.",
+            "title": "Mode"
+          },
+          "mtu": {
+            "type": "integer",
+            "minimum": 68,
+            "maximum": 65535,
+            "title": "MTU"
+          },
+          "l2_mtu": {
+            "type": "integer",
+            "minimum": 68,
+            "maximum": 9416,
+            "description": "This should only be defined for platforms supporting the \"l2 mtu\" CLI command.",
+            "title": "L2 MTU"
+          },
+          "native_vlan": {
+            "type": "integer",
+            "description": "Native VLAN for a trunk port.\nIf both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence.\n",
+            "minimum": 1,
+            "maximum": 4094,
+            "title": "Native VLAN"
+          },
+          "native_vlan_tag": {
+            "type": "boolean",
+            "default": false,
+            "description": "If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence.",
+            "title": "Native VLAN Tag"
+          },
+          "trunk_groups": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Required with `enable_trunk_groups: true`.\nTrunk Groups are used for limiting VLANs on trunk ports to VLANs with the same Trunk Group.\n",
+            "title": "Trunk Groups"
+          },
+          "vlans": {
+            "type": "string",
+            "description": "Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and VLAN 1 will be used for access ports.",
+            "title": "VLANs"
+          },
+          "spanning_tree_portfast": {
+            "type": "string",
+            "enum": [
+              "edge",
+              "network"
+            ],
+            "title": "Spanning Tree Portfast"
+          },
+          "spanning_tree_bpdufilter": {
+            "type": "string",
+            "enum": [
+              "enabled",
+              "disabled",
+              "True",
+              "False",
+              "true",
+              "false"
+            ],
+            "title": "Spanning Tree Bpdufilter"
+          },
+          "spanning_tree_bpduguard": {
+            "type": "string",
+            "enum": [
+              "enabled",
+              "disabled",
+              "True",
+              "False",
+              "true",
+              "false"
+            ],
+            "title": "Spanning Tree Bpduguard"
+          },
+          "flowcontrol": {
+            "type": "object",
+            "properties": {
+              "received": {
+                "type": "string",
+                "enum": [
+                  "received",
+                  "send",
+                  "on"
+                ],
+                "title": "Received"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Flowcontrol"
+          },
+          "qos_profile": {
+            "type": "string",
+            "description": "QOS profile name",
+            "title": "QOS Profile"
+          },
+          "ptp": {
+            "type": "object",
+            "description": "The global PTP profile parameters will be applied to all connected endpoints where `ptp` is manually enabled.\n`ptp role master` is set to ensure control over the PTP topology.\n",
+            "properties": {
+              "enable": {
+                "type": "boolean",
+                "default": false,
+                "title": "Enable"
+              },
+              "endpoint_role": {
+                "type": "string",
+                "default": "follower",
+                "enum": [
+                  "bmca",
+                  "default",
+                  "follower"
+                ],
+                "title": "Endpoint Role"
+              },
+              "profile": {
+                "type": "string",
+                "default": "aes67-r16-2016",
+                "enum": [
+                  "aes67",
+                  "aes67-r16-2016",
+                  "smpte2059-2"
+                ],
+                "title": "Profile"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "PTP"
+          },
+          "link_tracking": {
+            "type": "object",
+            "description": "Configure the downstream interfaces of a respective Link Tracking Group.\nIf `port_channel` is defined in an adapter, then the port-channel interface is configured to be the downstream.\nElse all the ethernet interfaces will be configured as downstream -> to configure single-active EVPN multihomed networks.\n",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "name": {
+                "type": "string",
+                "description": "Tracking group name.\nThe default group name is taken from fabric variable of the switch, `link_tracking.groups[0].name` with default value being \"LT_GROUP1\".\nOptional if default link_tracking settings are configured on the node.\n",
+                "title": "Name"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Link Tracking"
+          },
+          "dot1x": {
+            "type": "object",
+            "description": "802.1x",
+            "properties": {
+              "port_control": {
+                "type": "string",
+                "enum": [
+                  "auto",
+                  "force-authorized",
+                  "force-unauthorized"
+                ],
+                "title": "Port Control"
+              },
+              "port_control_force_authorized_phone": {
+                "type": "boolean",
+                "title": "Port Control Force Authorized Phone"
+              },
+              "reauthentication": {
+                "type": "boolean",
+                "title": "Reauthentication"
+              },
+              "pae": {
+                "type": "object",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "authenticator"
+                    ],
+                    "title": "Mode"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "PAE"
+              },
+              "authentication_failure": {
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "allow",
+                      "drop"
+                    ],
+                    "title": "Action"
+                  },
+                  "allow_vlan": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 4094,
+                    "title": "Allow VLAN"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Authentication Failure"
+              },
+              "host_mode": {
+                "type": "object",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "multi-host",
+                      "single-host"
+                    ],
+                    "title": "Mode"
+                  },
+                  "multi_host_authenticated": {
+                    "type": "boolean",
+                    "title": "Multi Host Authenticated"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Host Mode"
+              },
+              "mac_based_authentication": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "always": {
+                    "type": "boolean",
+                    "title": "Always"
+                  },
+                  "host_mode_common": {
+                    "type": "boolean",
+                    "title": "Host Mode Common"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "MAC Based Authentication"
+              },
+              "timeout": {
+                "type": "object",
+                "properties": {
+                  "idle_host": {
+                    "type": "integer",
+                    "minimum": 10,
+                    "maximum": 65535,
+                    "title": "Idle Host"
+                  },
+                  "quiet_period": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 65535,
+                    "title": "Quiet Period"
+                  },
+                  "reauth_period": {
+                    "type": "string",
+                    "description": "Range 60-4294967295 or \"server\".",
+                    "title": "Reauth Period"
+                  },
+                  "reauth_timeout_ignore": {
+                    "type": "boolean",
+                    "title": "Reauth Timeout Ignore"
+                  },
+                  "tx_period": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 65535,
+                    "title": "TX Period"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Timeout"
+              },
+              "reauthorization_request_limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 10,
+                "title": "Reauthorization Request Limit"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "dot1x"
+          },
+          "storm_control": {
+            "type": "object",
+            "description": "Storm control settings applied on port toward the endpoint.",
+            "properties": {
+              "all": {
+                "type": "object",
+                "properties": {
+                  "level": {
+                    "type": "integer",
+                    "description": "Configure maximum storm-control level.",
+                    "title": "Level"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "percent",
+                      "pps"
+                    ],
+                    "default": "percent",
+                    "description": "Optional variable and is hardware dependent.",
+                    "title": "Unit"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "All"
+              },
+              "broadcast": {
+                "type": "object",
+                "properties": {
+                  "level": {
+                    "type": "integer",
+                    "description": "Configure maximum storm-control level.",
+                    "title": "Level"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "percent",
+                      "pps"
+                    ],
+                    "default": "percent",
+                    "description": "Optional variable and is hardware dependent.",
+                    "title": "Unit"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Broadcast"
+              },
+              "multicast": {
+                "type": "object",
+                "properties": {
+                  "level": {
+                    "type": "integer",
+                    "description": "Configure maximum storm-control level.",
+                    "title": "Level"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "percent",
+                      "pps"
+                    ],
+                    "default": "percent",
+                    "description": "Optional variable and is hardware dependent.",
+                    "title": "Unit"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Multicast"
+              },
+              "unknown_unicast": {
+                "type": "object",
+                "properties": {
+                  "level": {
+                    "type": "integer",
+                    "description": "Configure maximum storm-control level.",
+                    "title": "Level"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "percent",
+                      "pps"
+                    ],
+                    "default": "percent",
+                    "description": "Optional variable and is hardware dependent.",
+                    "title": "Unit"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Unknown Unicast"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Storm Control"
+          },
+          "monitor_sessions": {
+            "type": "array",
+            "description": "Used to define switchports as source or destination for monitoring sessions.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Session name.",
+                  "title": "Name"
+                },
+                "role": {
+                  "type": "string",
+                  "enum": [
+                    "source",
+                    "destination"
+                  ],
+                  "title": "Role"
+                },
+                "source_settings": {
+                  "type": "object",
+                  "properties": {
+                    "direction": {
+                      "type": "string",
+                      "enum": [
+                        "rx",
+                        "tx",
+                        "both"
+                      ],
+                      "title": "Direction"
+                    },
+                    "access_group": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "ip",
+                            "ipv6",
+                            "mac"
+                          ],
+                          "title": "Type"
+                        },
+                        "name": {
+                          "description": "ACL name.",
+                          "type": "string",
+                          "title": "Name"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "title": "Priority"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Access Group"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Source Settings"
+                },
+                "session_settings": {
+                  "type": "object",
+                  "description": "Session settings are defined per session name.\nDifferent session_settings for the same session name will be combined/merged.\n",
+                  "properties": {
+                    "encapsulation_gre_metadata_tx": {
+                      "type": "boolean",
+                      "title": "Encapsulation Gre Metadata TX"
+                    },
+                    "header_remove_size": {
+                      "type": "integer",
+                      "description": "Number of bytes to remove from header.",
+                      "title": "Header Remove Size"
+                    },
+                    "access_group": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "ip",
+                            "ipv6",
+                            "mac"
+                          ],
+                          "title": "Type"
+                        },
+                        "name": {
+                          "description": "ACL name.",
+                          "type": "string",
+                          "title": "Name"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Access Group"
+                    },
+                    "rate_limit_per_ingress_chip": {
+                      "type": "string",
+                      "description": "Ratelimit and unit as string.\nExamples:\n  \"100000 bps\"\n  \"100 kbps\"\n  \"10 mbps\"\n",
+                      "title": "Rate Limit Per Ingress Chip"
+                    },
+                    "rate_limit_per_egress_chip": {
+                      "type": "string",
+                      "description": "Ratelimit and unit as string.\nExamples:\n  \"100000 bps\"\n  \"100 kbps\"\n  \"10 mbps\"\n",
+                      "title": "Rate Limit Per Egress Chip"
+                    },
+                    "sample": {
+                      "type": "integer",
+                      "title": "Sample"
+                    },
+                    "truncate": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean",
+                          "title": "Enabled"
+                        },
+                        "size": {
+                          "type": "integer",
+                          "description": "Size in bytes",
+                          "title": "Size"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Truncate"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Session Settings"
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "Monitor Sessions"
+          },
+          "ethernet_segment": {
+            "type": "object",
+            "description": "Settings for all or single-active EVPN multihoming.",
+            "properties": {
+              "short_esi": {
+                "type": "string",
+                "description": "In format xxxx:xxxx:xxxx or \"auto\".\nDefine a manual short-esi (be careful using this on profiles) or set the value to \"auto\" to automatically generate the value.\nPlease see the notes under \"EVPN A/A ESI dual and single-attached endpoint scenarios\" before setting `short_esi: auto`.\n",
+                "title": "Short Esi"
+              },
+              "redundancy": {
+                "type": "string",
+                "enum": [
+                  "all-active",
+                  "single-active"
+                ],
+                "description": "If omitted, Port-Channels use the EOS default of all-active.\nIf omitted, Ethernet interfaces are configured as single-active.\n",
+                "title": "Redundancy"
+              },
+              "designated_forwarder_algorithm": {
+                "type": "string",
+                "enum": [
+                  "auto",
+                  "modulus",
+                  "preference"
+                ],
+                "description": "Configure DF algorithm and preferences.\n- auto: Use preference-based algorithm and assign preference based on position of device in the 'switches' list,\n  e.g., assuming a list of three switches, this would assign a preference of 200 to the first switch, 100 to the 2nd, and 0 to the third.\n- preference: Set preference for each switch manually using designated_forwarder_preferences key.\n- modulus: Use the default modulus-based algorithm.\nIf omitted, Port-Channels use the EOS default of modulus.\nIf omitted, Ethernet interfaces default to the 'auto' mechanism detailed above.\n",
+                "title": "Designated Forwarder Algorithm"
+              },
+              "designated_forwarder_preferences": {
+                "type": "array",
+                "description": "Manual preference as described above, required only for preference algorithm.",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Designated Forwarder Preferences"
+              },
+              "dont_preempt": {
+                "type": "boolean",
+                "description": "Disable preemption for single-active forwarding when auto/manual DF preference is configured.",
+                "title": "Dont Preempt"
+              }
+            },
+            "required": [
+              "short_esi"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Ethernet Segment"
+          },
+          "port_channel": {
+            "type": "object",
+            "description": "Used for port-channel adapter.",
+            "properties": {
+              "mode": {
+                "type": "string",
+                "description": "Port-Channel Mode.",
+                "enum": [
+                  "active",
+                  "passive",
+                  "on"
+                ],
+                "title": "Mode"
+              },
+              "channel_id": {
+                "type": "integer",
+                "description": "Port-Channel ID, Optional.\nIf no channel_id is specified, an id is generated from the first switch port in the port channel.\n",
+                "title": "Channel ID"
+              },
+              "description": {
+                "type": "string",
+                "description": "By default the description is built leveraging `<peer>` name or `adapter.description` when defined.\nWhen this key is defined, it will append its content to the physical port description.\n",
+                "title": "Description"
+              },
+              "enabled": {
+                "type": "boolean",
+                "default": true,
+                "description": "Port-Channel administrative state, Optional.\nsetting to false will set port to 'shutdown' in intended configuration.\n",
+                "title": "Enabled"
+              },
+              "short_esi": {
+                "type": "string",
+                "description": "In format xxxx:xxxx:xxxx or \"auto\".",
+                "title": "Short Esi"
+              },
+              "lacp_fallback": {
+                "type": "object",
+                "description": "LACP fallback configuration.",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "static"
+                    ],
+                    "description": "Currently only static mode is supported.",
+                    "title": "Mode"
+                  },
+                  "timeout": {
+                    "type": "integer",
+                    "description": "Timeout in seconds, Optional - default is 90 seconds.",
+                    "title": "Timeout"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "LACP Fallback"
+              },
+              "subinterfaces": {
+                "type": "array",
+                "description": "Port-Channel L2 Subinterfaces\nSubinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.\nSetting short_esi: auto generates the short_esi automatically using a hash of configuration elements.\nPlease see the notes under \"EVPN A/A ESI dual-attached endpoint scenario\" before setting short_esi: auto.\n",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "number": {
+                      "type": "integer",
+                      "description": "Subinterface number",
+                      "title": "Number"
+                    },
+                    "short_esi": {
+                      "type": "string",
+                      "description": "In format xxxx:xxxx:xxxx or \"auto\"\nRequired for multihomed port-channels with subinterfaces\n",
+                      "title": "Short Esi"
+                    },
+                    "vlan_id": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 4094,
+                      "description": "VLAN ID to bridge.\nDefault is subinterface number.\n",
+                      "title": "VLAN ID"
+                    },
+                    "encapsulation_vlan": {
+                      "type": "object",
+                      "description": "Client VLAN ID encapsulation.\nDefault is subinterface number.\n",
+                      "properties": {
+                        "client_dot1q": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 4094,
+                          "title": "Client Dot1Q"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Encapsulation VLAN"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Subinterfaces"
+              },
+              "raw_eos_cli": {
+                "type": "string",
+                "description": "EOS CLI rendered directly on the port-channel interface in the final EOS configuration.",
+                "title": "Raw EOS CLI"
+              },
+              "structured_config": {
+                "type": "object",
+                "description": "Custom structured config added under port_channel_interfaces.<interface> for eos_cli_config_gen.",
+                "title": "Structured Config"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Port Channel"
+          },
+          "raw_eos_cli": {
+            "type": "string",
+            "description": "EOS CLI rendered directly on the ethernet interface in the final EOS configuration.",
+            "title": "Raw EOS CLI"
+          },
+          "structured_config": {
+            "type": "object",
+            "description": "Custom structured config added under ethernet_interfaces.<interface> for eos_cli_config_gen.",
+            "title": "Structured Config"
+          },
+          "switches": {
+            "type": "array",
+            "description": "Regex matching the full hostname of one or more switches.\nThe regular expression must match the full hostname.\n",
+            "items": {
+              "type": "string"
+            },
+            "title": "Switches"
+          },
+          "switch_ports": {
+            "type": "array",
+            "description": "List of ranges using AVD range_expand syntax.\nFor example:\n\nswitch_ports:\n  - Ethernet1\n  - Ethernet2-48\n",
+            "items": {
+              "type": "string"
+            },
+            "title": "Switch Ports"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "Network Ports"
+    },
+    "node_type_keys": {
+      "type": "array",
+      "description": "Define Node Type Keys, to specify the properties of each node type in the fabric.\nThis allows for complete customization of the fabric layout.\nThis should be defined in top level group_var for the fabric.\n",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type value matching this node_type_key.",
+            "title": "Type"
+          },
+          "connected_endpoints": {
+            "type": "boolean",
+            "default": false,
+            "description": "Are endpoints connected to this node type.",
+            "title": "Connected Endpoints"
+          },
+          "default_evpn_role": {
+            "type": "string",
+            "enum": [
+              "none",
+              "client",
+              "server"
+            ],
+            "default": "none",
+            "description": "Default evpn_role. Can be overridden in topology vars.",
+            "title": "Default EVPN Role"
+          },
+          "default_ptp_priority1": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 255,
+            "default": 127,
+            "description": "Default PTP priority 1",
+            "title": "Default PTP Priority1"
+          },
+          "default_underlay_routing_protocol": {
+            "type": "string",
+            "default": "ebgp",
+            "enum": [
+              "ebgp",
+              "ibgp",
+              "ospf",
+              "ospf-ldp",
+              "isis",
+              "isis-sr",
+              "isis-ldp",
+              "isis-sr-ldp",
+              "none"
+            ],
+            "description": "Set the default underlay routing_protocol.\nCan be overridden by setting \"underlay_routing_protocol\" host/group_vars.\n",
+            "title": "Default Underlay Routing Protocol"
+          },
+          "default_overlay_routing_protocol": {
+            "type": "string",
+            "default": "ebgp",
+            "enum": [
+              "ebgp",
+              "ibgp",
+              "her",
+              "cvx",
+              "none"
+            ],
+            "description": "Set the default overlay routing_protocol.\nCan be overridden by setting \"overlay_routing_protocol\" host/group_vars.\n",
+            "title": "Default Overlay Routing Protocol"
+          },
+          "default_mpls_overlay_role": {
+            "type": "string",
+            "enum": [
+              "client",
+              "server",
+              "none"
+            ],
+            "description": "Set the default mpls overlay role.\nActing role in overlay control plane.\n",
+            "title": "Default MPLS Overlay Role"
+          },
+          "default_overlay_address_families": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "evpn",
+                "vpn-ipv4",
+                "vpn-ipv6"
+              ]
+            },
+            "description": "Set the default overlay address families.\n",
+            "title": "Default Overlay Address Families"
+          },
+          "default_evpn_encapsulation": {
+            "type": "string",
+            "enum": [
+              "mpls",
+              "vxlan"
+            ],
+            "description": "Set the default evpn encapsulation.\n",
+            "title": "Default EVPN Encapsulation"
+          },
+          "mlag_support": {
+            "type": "boolean",
+            "default": false,
+            "description": "Can this node type support mlag.",
+            "title": "MLAG Support"
+          },
+          "network_services": {
+            "description": "Will network services be deployed on this node type.",
+            "type": "object",
+            "properties": {
+              "l1": {
+                "type": "boolean",
+                "default": false,
+                "description": "??",
+                "title": "L1"
+              },
+              "l2": {
+                "type": "boolean",
+                "default": false,
+                "description": "Vlans",
+                "title": "L2"
+              },
+              "l3": {
+                "type": "boolean",
+                "default": false,
+                "description": "VRFs, SVIs (if l2 is true).\nOnly supported with underlay_router.\n",
+                "title": "L3"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Network Services"
+          },
+          "underlay_router": {
+            "type": "boolean",
+            "default": true,
+            "description": "Is this node type a L3 device.",
+            "title": "Underlay Router"
+          },
+          "uplink_type": {
+            "type": "string",
+            "enum": [
+              "p2p",
+              "port-channel"
+            ],
+            "default": "p2p",
+            "description": "Uplinks must be p2p if \"vtep\" or \"underlay_router\" is true.",
+            "title": "Uplink Type"
+          },
+          "vtep": {
+            "type": "boolean",
+            "default": false,
+            "description": "Is this switch an EVPN VTEP.",
+            "title": "Vtep"
+          },
+          "mpls_lsr": {
+            "type": "boolean",
+            "default": false,
+            "description": "Is this switch an MPLS LSR.",
+            "title": "MPLS Lsr"
+          },
+          "ip_addressing": {
+            "type": "object",
+            "description": "Override ip_addressing templates.",
+            "properties": {
+              "python_module": {
+                "type": "string",
+                "description": "Python Module to import for IP addressing - default inherited from templates.ip_addressing.python_module",
+                "title": "Python Module"
+              },
+              "python_class_name": {
+                "type": "string",
+                "description": "Name of Python Class to import for IP addressing  - default inherited from templates.ip_addressing.python_class_name",
+                "title": "Python Class Name"
+              },
+              "router_id": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.router_id.",
+                "title": "Router ID"
+              },
+              "router_id_ipv6": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.router_id_ipv6.",
+                "title": "Router ID IPv6"
+              },
+              "mlag_ip_primary": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_ip_primary.",
+                "title": "MLAG IP Primary"
+              },
+              "mlag_ip_secondary": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_ip_secondary.",
+                "title": "MLAG IP Secondary"
+              },
+              "mlag_l3_ip_primary": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_l3_ip_primary.",
+                "title": "MLAG L3 IP Primary"
+              },
+              "mlag_l3_ip_secondary": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_l3_ip_secondary.",
+                "title": "MLAG L3 IP Secondary"
+              },
+              "mlag_ibgp_peering_ip_primary": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_ibgp_peering_ip_primary.",
+                "title": "MLAG Ibgp Peering IP Primary"
+              },
+              "mlag_ibgp_peering_ip_secondary": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_ibgp_peering_ip_secondary.",
+                "title": "MLAG Ibgp Peering IP Secondary"
+              },
+              "p2p_uplinks_ip": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.p2p_uplinks_ip.",
+                "title": "P2P Uplinks IP"
+              },
+              "p2p_uplinks_peer_ip": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.p2p_uplinks_peer_ip.",
+                "title": "P2P Uplinks Peer IP"
+              },
+              "vtep_ip_mlag": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.vtep_ip_mlag.",
+                "title": "Vtep IP MLAG"
+              },
+              "vtep_ip": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.ip_addressing.vtep_ip.",
+                "title": "Vtep IP"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "IP Addressing"
+          },
+          "interface_descriptions": {
+            "type": "object",
+            "description": "Override interface_descriptions templates\nIf description templates use Jinja2, they have to strip whitespaces using {%- -%} on any code blocks.\n",
+            "properties": {
+              "python_module": {
+                "type": "string",
+                "description": "Python Module to import for interface descriptions - default inherited from templates.interface_descriptions.python_module",
+                "title": "Python Module"
+              },
+              "python_class_name": {
+                "type": "string",
+                "description": "Name of Python Class to import for interface descriptions - default inherited from templates.interface_descriptions.python_class_name",
+                "title": "Python Class Name"
+              },
+              "underlay_ethernet_interfaces": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.underlay_ethernet_interfaces.",
+                "title": "Underlay Ethernet Interfaces"
+              },
+              "underlay_port_channel_interfaces": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.underlay_port_channel_interfaces.",
+                "title": "Underlay Port Channel Interfaces"
+              },
+              "mlag_ethernet_interfaces": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.mlag_ethernet_interfaces.",
+                "title": "MLAG Ethernet Interfaces"
+              },
+              "mlag_port_channel_interfaces": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.mlag_port_channel_interfaces.",
+                "title": "MLAG Port Channel Interfaces"
+              },
+              "connected_endpoints_ethernet_interfaces": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_ethernet_interfaces.",
+                "title": "Connected Endpoints Ethernet Interfaces"
+              },
+              "connected_endpoints_port_channel_interfaces": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_port_channel_interfaces.",
+                "title": "Connected Endpoints Port Channel Interfaces"
+              },
+              "overlay_loopback_interface": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.overlay_loopback_interface.",
+                "title": "Overlay Loopback Interface"
+              },
+              "vtep_loopback_interface": {
+                "type": "string",
+                "description": "Path to J2 template - default inherited from templates.interface_descriptions.vtep_loopback_interface.",
+                "title": "Vtep Loopback Interface"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Interface Descriptions"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "key"
+        ]
+      },
+      "title": "Node Type Keys"
+    },
+    "only_local_vlan_trunk_groups": {
+      "type": "boolean",
+      "description": "A vlan can have many trunk_groups assigned. To avoid unneeded configuration changes on all leaf\nswitches when a new trunk group is added, this feature will only configure the vlan trunk groups\nmatched with local connected_endpoints.\nSee \"Details on only_local_vlan_trunk_groups\" below.\nRequires \"enable_trunk_groups: true\"\n",
+      "default": false,
+      "title": "Only Local VLAN Trunk Groups"
+    },
+    "overlay_her_flood_list_per_vni": {
+      "type": "boolean",
+      "description": "When using Head-End Replication, configure flood-lists per VNI.\nBy default HER will be configured with a common flood-list containing all VTEPs.\nThis behavior can be changed to per-VNI flood-lists by setting `overlay_her_flood_list_per_vni: true`.\nThis will make `eos_designs` consider configured VLANs per VTEP, and only include the relevant VTEPs to each VNI's flood-list.\n",
+      "default": false,
+      "title": "Overlay Her Flood List Per Vni"
+    },
+    "overlay_her_flood_list_scope": {
+      "type": "string",
+      "description": "When using Head-End Replication, set the scope of flood-lists to Fabric or DC.\nBy default all VTEPs in the Fabric (part of the inventory group referenced by \"fabric_name\") are added to the flood-lists.\nThis can be changed to all VTEPs in the DC (part of the inventory group referenced by \"dc_name\").\nThis is useful if Border Leaf switches are dividing the VXLAN overlay into separate domains.\n",
+      "enum": [
+        "fabric",
+        "dc"
+      ],
+      "default": "fabric",
+      "title": "Overlay Her Flood List Scope"
+    },
+    "overlay_loopback_description": {
+      "description": "Customize the description on overlay interface Loopback0.",
+      "type": "string",
+      "title": "Overlay Loopback Description"
+    },
+    "overlay_mlag_rfc5549": {
+      "description": "IPv6 Unnumbered for MLAG iBGP connections.\nRequires \"underlay_rfc5549: true\".\n",
+      "type": "boolean",
+      "default": false,
+      "title": "Overlay MLAG Rfc5549"
+    },
+    "overlay_rd_type": {
+      "type": "object",
+      "description": "Specify RD type.\nRoute Distinguisher (RD) for L2 / L3 services is set to <overlay_loopback>:<vni> per default.\nBy configuring overlay_rd_type the Administrator subfield (first part of RD) can be set to other values.\nNote:\nRD is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.\nFor loopback or 32-bit ASN/number the VNI can only be a 16-bit number.\nFor 16-bit ASN/number the VNI can be a 32-bit number.\n",
+      "properties": {
+        "admin_subfield": {
+          "type": "string",
+          "description": "\"vtep_loopback\" or \"bgp_as\" or <IPv4 Address> or interger between <0-65535> or integer between <0-4294967295> or \"overlay_loopback_ip\".\n",
+          "default": "overlay_loopback_ip",
+          "title": "Admin Subfield"
+        },
+        "admin_subfield_offset": {
+          "type": "string",
+          "description": "Offset can only be used if admin_subfield is an interger between <0-4294967295> or \"switch_id\".\nTotal value of admin_subfield + admin_subfield_offset must be <= 4294967295.",
+          "title": "Admin Subfield Offset"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Overlay Rd Type"
+    },
+    "overlay_routing_protocol": {
+      "description": "- The following overlay routing protocols are supported:\n  - eBGP: Configures fabric with eBGP, default for l3ls-evpn design.\n  - iBGP: Configured fabric with iBGP, only supported with OSPF or ISIS variants in underlay, default for mpls design.\n  - CVX: Configures fabric to leverage CloudVision eXchange as the overlay controller.\n  - HER: Configures fabric with Head-End Replication, configures static VXLAN flood-lists instead of using a dynamic overlay protocol.\n  - none: No overlay configuration will be generated, default for l2ls design.\n",
+      "type": "string",
+      "enum": [
+        "ebgp",
+        "ibgp",
+        "cvx",
+        "her",
+        "none"
+      ],
+      "default": "ebgp",
+      "title": "Overlay Routing Protocol"
+    },
+    "overlay_routing_protocol_address_family": {
+      "type": "string",
+      "description": "When set to `ipv6`, enable overlay EVPN peering with IPv6 addresses.\nThis feature depends on underlay_ipv6 variable. As of today, only RFC5549 is capable to transport IPv6 in the underlay.\n",
+      "enum": [
+        "ipv4",
+        "ipv6"
+      ],
+      "default": "ipv4",
+      "title": "Overlay Routing Protocol Address Family"
+    },
+    "overlay_rt_type": {
+      "type": "object",
+      "description": "Specify RT type.\nRoute Target (RT) for L2 / L3 services is set to <vni>:<vni> per default.\nBy configuring overlay_rt_type the Administrator subfield (first part of RT) can be set to other values.\nNotes:\nRT is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.\nFor 32-bit ASN/number the VNI can only be a 16-bit number.\nFor 16-bit ASN/number the VNI can be a 32-bit number.\n",
+      "properties": {
+        "admin_subfield": {
+          "type": "string",
+          "description": "\"bgp_as\" or interger between <0-65535> or integer between <0-4294967295>.\n",
+          "default": "mac_vrf_id",
+          "title": "Admin Subfield"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Overlay Rt Type"
+    },
+    "p2p_uplinks_mtu": {
+      "description": "Point to Point Links MTU",
+      "type": "integer",
+      "minimum": 68,
+      "maximum": 65535,
+      "default": 9000,
+      "title": "P2P Uplinks MTU"
+    },
+    "p2p_uplinks_qos_profile": {
+      "description": "QOS Profile assigned on all infrastructure links",
+      "type": "string",
+      "title": "P2P Uplinks QOS Profile"
+    },
+    "platform_settings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "platforms": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "title": "Platforms"
+          },
+          "trident_forwarding_table_partition": {
+            "type": "string",
+            "description": "Only applied when evpn_multicast is true",
+            "title": "Trident Forwarding Table Partition"
+          },
+          "reload_delay": {
+            "type": "object",
+            "properties": {
+              "mlag": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 86400,
+                "description": "In seconds",
+                "title": "MLAG"
+              },
+              "non_mlag": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 86400,
+                "description": "In seconds",
+                "title": "Non MLAG"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Reload Delay"
+          },
+          "tcam_profile": {
+            "type": "string",
+            "title": "TCAM Profile"
+          },
+          "lag_hardware_only": {
+            "type": "boolean",
+            "title": "LAG Hardware Only"
+          },
+          "feature_support": {
+            "type": "object",
+            "properties": {
+              "queue_monitor_length_notify": {
+                "type": "boolean",
+                "default": true,
+                "title": "Queue Monitor Length Notify"
+              },
+              "interface_storm_control": {
+                "type": "boolean",
+                "default": true,
+                "title": "Interface Storm Control"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Feature Support"
+          },
+          "management_interface": {
+            "type": "string",
+            "default": "Management1",
+            "title": "Management Interface"
+          },
+          "raw_eos_cli": {
+            "type": "string",
+            "description": "EOS CLI rendered directly on the root level of the final EOS configuration",
+            "title": "Raw EOS CLI"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "Platform Settings"
+    },
+    "platform_speed_groups": {
+      "type": "array",
+      "description": "Set Hardware Speed Groups per Platform",
+      "items": {
+        "type": "object",
+        "properties": {
+          "platform": {
+            "type": "string",
+            "title": "Platform"
+          },
+          "speeds": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "speed": {
+                  "type": "string",
+                  "title": "Speed"
+                },
+                "speed_groups": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  },
+                  "title": "Speed Groups"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "required": [
+                "speed"
+              ]
+            },
+            "title": "Speeds"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "platform"
+        ]
+      },
+      "title": "Platform Speed Groups"
+    },
+    "pod_name": {
+      "description": "POD Name, only used in Fabric Documentation (Optional), fallback to dc_name and then to fabric_name.\nRecommended to be common between Spines and Leafs within a POD (One l3ls topology).\n",
+      "type": "string",
+      "title": "Pod Name"
+    },
+    "port_profiles": {
+      "type": "array",
+      "description": "Optional profiles to share common settings for connected_endpoints and/or network_ports.\nKeys are the same used under endpoints adapters. Keys defined under endpoints adapters take precedence.\n",
+      "items": {
+        "type": "object",
+        "properties": {
+          "endpoint_ports": {
+            "type": "array",
+            "description": "Endpoint ports is used for description, required unless description is set.\nThe lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.\nEach list item is one switchport.\n",
+            "items": {
+              "type": "string",
+              "description": "Interface name."
+            },
+            "title": "Endpoint Ports"
+          },
+          "speed": {
+            "type": "string",
+            "description": "Set adapter speed: `< interface_speed >`, `forced < interface_speed >`, `auto < interface_speed >`.\nIf not specified will be auto.\n",
+            "title": "Speed"
+          },
+          "description": {
+            "type": "string",
+            "description": "By default the description is built leveraging `<peer>_<peer_interface>`.\nWhen set this key will overide the default value on the physical ports.\n",
+            "title": "Description"
+          },
+          "profile": {
+            "type": "string",
+            "description": "Port profile name.",
+            "title": "Profile"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Administrative state, setting to false will set the port to 'shutdown' in the intended configuration.\n",
+            "default": true,
+            "title": "Enabled"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "access",
+              "dot1q-tunnel",
+              "trunk",
+              "trunk phone"
+            ],
+            "description": "Interface mode.",
+            "title": "Mode"
+          },
+          "mtu": {
+            "type": "integer",
+            "minimum": 68,
+            "maximum": 65535,
+            "title": "MTU"
+          },
+          "l2_mtu": {
+            "type": "integer",
+            "minimum": 68,
+            "maximum": 9416,
+            "description": "This should only be defined for platforms supporting the \"l2 mtu\" CLI command.",
+            "title": "L2 MTU"
+          },
+          "native_vlan": {
+            "type": "integer",
+            "description": "Native VLAN for a trunk port.\nIf both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence.\n",
+            "minimum": 1,
+            "maximum": 4094,
+            "title": "Native VLAN"
+          },
+          "native_vlan_tag": {
+            "type": "boolean",
+            "default": false,
+            "description": "If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence.",
+            "title": "Native VLAN Tag"
+          },
+          "trunk_groups": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Required with `enable_trunk_groups: true`.\nTrunk Groups are used for limiting VLANs on trunk ports to VLANs with the same Trunk Group.\n",
+            "title": "Trunk Groups"
+          },
+          "vlans": {
+            "type": "string",
+            "description": "Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and VLAN 1 will be used for access ports.",
+            "title": "VLANs"
+          },
+          "spanning_tree_portfast": {
+            "type": "string",
+            "enum": [
+              "edge",
+              "network"
+            ],
+            "title": "Spanning Tree Portfast"
+          },
+          "spanning_tree_bpdufilter": {
+            "type": "string",
+            "enum": [
+              "enabled",
+              "disabled",
+              "True",
+              "False",
+              "true",
+              "false"
+            ],
+            "title": "Spanning Tree Bpdufilter"
+          },
+          "spanning_tree_bpduguard": {
+            "type": "string",
+            "enum": [
+              "enabled",
+              "disabled",
+              "True",
+              "False",
+              "true",
+              "false"
+            ],
+            "title": "Spanning Tree Bpduguard"
+          },
+          "flowcontrol": {
+            "type": "object",
+            "properties": {
+              "received": {
+                "type": "string",
+                "enum": [
+                  "received",
+                  "send",
+                  "on"
+                ],
+                "title": "Received"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Flowcontrol"
+          },
+          "qos_profile": {
+            "type": "string",
+            "description": "QOS profile name",
+            "title": "QOS Profile"
+          },
+          "ptp": {
+            "type": "object",
+            "description": "The global PTP profile parameters will be applied to all connected endpoints where `ptp` is manually enabled.\n`ptp role master` is set to ensure control over the PTP topology.\n",
+            "properties": {
+              "enable": {
+                "type": "boolean",
+                "default": false,
+                "title": "Enable"
+              },
+              "endpoint_role": {
+                "type": "string",
+                "default": "follower",
+                "enum": [
+                  "bmca",
+                  "default",
+                  "follower"
+                ],
+                "title": "Endpoint Role"
+              },
+              "profile": {
+                "type": "string",
+                "default": "aes67-r16-2016",
+                "enum": [
+                  "aes67",
+                  "aes67-r16-2016",
+                  "smpte2059-2"
+                ],
+                "title": "Profile"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "PTP"
+          },
+          "link_tracking": {
+            "type": "object",
+            "description": "Configure the downstream interfaces of a respective Link Tracking Group.\nIf `port_channel` is defined in an adapter, then the port-channel interface is configured to be the downstream.\nElse all the ethernet interfaces will be configured as downstream -> to configure single-active EVPN multihomed networks.\n",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "name": {
+                "type": "string",
+                "description": "Tracking group name.\nThe default group name is taken from fabric variable of the switch, `link_tracking.groups[0].name` with default value being \"LT_GROUP1\".\nOptional if default link_tracking settings are configured on the node.\n",
+                "title": "Name"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Link Tracking"
+          },
+          "dot1x": {
+            "type": "object",
+            "description": "802.1x",
+            "properties": {
+              "port_control": {
+                "type": "string",
+                "enum": [
+                  "auto",
+                  "force-authorized",
+                  "force-unauthorized"
+                ],
+                "title": "Port Control"
+              },
+              "port_control_force_authorized_phone": {
+                "type": "boolean",
+                "title": "Port Control Force Authorized Phone"
+              },
+              "reauthentication": {
+                "type": "boolean",
+                "title": "Reauthentication"
+              },
+              "pae": {
+                "type": "object",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "authenticator"
+                    ],
+                    "title": "Mode"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "PAE"
+              },
+              "authentication_failure": {
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "allow",
+                      "drop"
+                    ],
+                    "title": "Action"
+                  },
+                  "allow_vlan": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 4094,
+                    "title": "Allow VLAN"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Authentication Failure"
+              },
+              "host_mode": {
+                "type": "object",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "multi-host",
+                      "single-host"
+                    ],
+                    "title": "Mode"
+                  },
+                  "multi_host_authenticated": {
+                    "type": "boolean",
+                    "title": "Multi Host Authenticated"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Host Mode"
+              },
+              "mac_based_authentication": {
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "title": "Enabled"
+                  },
+                  "always": {
+                    "type": "boolean",
+                    "title": "Always"
+                  },
+                  "host_mode_common": {
+                    "type": "boolean",
+                    "title": "Host Mode Common"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "MAC Based Authentication"
+              },
+              "timeout": {
+                "type": "object",
+                "properties": {
+                  "idle_host": {
+                    "type": "integer",
+                    "minimum": 10,
+                    "maximum": 65535,
+                    "title": "Idle Host"
+                  },
+                  "quiet_period": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 65535,
+                    "title": "Quiet Period"
+                  },
+                  "reauth_period": {
+                    "type": "string",
+                    "description": "Range 60-4294967295 or \"server\".",
+                    "title": "Reauth Period"
+                  },
+                  "reauth_timeout_ignore": {
+                    "type": "boolean",
+                    "title": "Reauth Timeout Ignore"
+                  },
+                  "tx_period": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 65535,
+                    "title": "TX Period"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Timeout"
+              },
+              "reauthorization_request_limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 10,
+                "title": "Reauthorization Request Limit"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "dot1x"
+          },
+          "storm_control": {
+            "type": "object",
+            "description": "Storm control settings applied on port toward the endpoint.",
+            "properties": {
+              "all": {
+                "type": "object",
+                "properties": {
+                  "level": {
+                    "type": "integer",
+                    "description": "Configure maximum storm-control level.",
+                    "title": "Level"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "percent",
+                      "pps"
+                    ],
+                    "default": "percent",
+                    "description": "Optional variable and is hardware dependent.",
+                    "title": "Unit"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "All"
+              },
+              "broadcast": {
+                "type": "object",
+                "properties": {
+                  "level": {
+                    "type": "integer",
+                    "description": "Configure maximum storm-control level.",
+                    "title": "Level"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "percent",
+                      "pps"
+                    ],
+                    "default": "percent",
+                    "description": "Optional variable and is hardware dependent.",
+                    "title": "Unit"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Broadcast"
+              },
+              "multicast": {
+                "type": "object",
+                "properties": {
+                  "level": {
+                    "type": "integer",
+                    "description": "Configure maximum storm-control level.",
+                    "title": "Level"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "percent",
+                      "pps"
+                    ],
+                    "default": "percent",
+                    "description": "Optional variable and is hardware dependent.",
+                    "title": "Unit"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Multicast"
+              },
+              "unknown_unicast": {
+                "type": "object",
+                "properties": {
+                  "level": {
+                    "type": "integer",
+                    "description": "Configure maximum storm-control level.",
+                    "title": "Level"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "percent",
+                      "pps"
+                    ],
+                    "default": "percent",
+                    "description": "Optional variable and is hardware dependent.",
+                    "title": "Unit"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Unknown Unicast"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Storm Control"
+          },
+          "monitor_sessions": {
+            "type": "array",
+            "description": "Used to define switchports as source or destination for monitoring sessions.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Session name.",
+                  "title": "Name"
+                },
+                "role": {
+                  "type": "string",
+                  "enum": [
+                    "source",
+                    "destination"
+                  ],
+                  "title": "Role"
+                },
+                "source_settings": {
+                  "type": "object",
+                  "properties": {
+                    "direction": {
+                      "type": "string",
+                      "enum": [
+                        "rx",
+                        "tx",
+                        "both"
+                      ],
+                      "title": "Direction"
+                    },
+                    "access_group": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "ip",
+                            "ipv6",
+                            "mac"
+                          ],
+                          "title": "Type"
+                        },
+                        "name": {
+                          "description": "ACL name.",
+                          "type": "string",
+                          "title": "Name"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "title": "Priority"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Access Group"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Source Settings"
+                },
+                "session_settings": {
+                  "type": "object",
+                  "description": "Session settings are defined per session name.\nDifferent session_settings for the same session name will be combined/merged.\n",
+                  "properties": {
+                    "encapsulation_gre_metadata_tx": {
+                      "type": "boolean",
+                      "title": "Encapsulation Gre Metadata TX"
+                    },
+                    "header_remove_size": {
+                      "type": "integer",
+                      "description": "Number of bytes to remove from header.",
+                      "title": "Header Remove Size"
+                    },
+                    "access_group": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "ip",
+                            "ipv6",
+                            "mac"
+                          ],
+                          "title": "Type"
+                        },
+                        "name": {
+                          "description": "ACL name.",
+                          "type": "string",
+                          "title": "Name"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Access Group"
+                    },
+                    "rate_limit_per_ingress_chip": {
+                      "type": "string",
+                      "description": "Ratelimit and unit as string.\nExamples:\n  \"100000 bps\"\n  \"100 kbps\"\n  \"10 mbps\"\n",
+                      "title": "Rate Limit Per Ingress Chip"
+                    },
+                    "rate_limit_per_egress_chip": {
+                      "type": "string",
+                      "description": "Ratelimit and unit as string.\nExamples:\n  \"100000 bps\"\n  \"100 kbps\"\n  \"10 mbps\"\n",
+                      "title": "Rate Limit Per Egress Chip"
+                    },
+                    "sample": {
+                      "type": "integer",
+                      "title": "Sample"
+                    },
+                    "truncate": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean",
+                          "title": "Enabled"
+                        },
+                        "size": {
+                          "type": "integer",
+                          "description": "Size in bytes",
+                          "title": "Size"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Truncate"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Session Settings"
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "Monitor Sessions"
+          },
+          "ethernet_segment": {
+            "type": "object",
+            "description": "Settings for all or single-active EVPN multihoming.",
+            "properties": {
+              "short_esi": {
+                "type": "string",
+                "description": "In format xxxx:xxxx:xxxx or \"auto\".\nDefine a manual short-esi (be careful using this on profiles) or set the value to \"auto\" to automatically generate the value.\nPlease see the notes under \"EVPN A/A ESI dual and single-attached endpoint scenarios\" before setting `short_esi: auto`.\n",
+                "title": "Short Esi"
+              },
+              "redundancy": {
+                "type": "string",
+                "enum": [
+                  "all-active",
+                  "single-active"
+                ],
+                "description": "If omitted, Port-Channels use the EOS default of all-active.\nIf omitted, Ethernet interfaces are configured as single-active.\n",
+                "title": "Redundancy"
+              },
+              "designated_forwarder_algorithm": {
+                "type": "string",
+                "enum": [
+                  "auto",
+                  "modulus",
+                  "preference"
+                ],
+                "description": "Configure DF algorithm and preferences.\n- auto: Use preference-based algorithm and assign preference based on position of device in the 'switches' list,\n  e.g., assuming a list of three switches, this would assign a preference of 200 to the first switch, 100 to the 2nd, and 0 to the third.\n- preference: Set preference for each switch manually using designated_forwarder_preferences key.\n- modulus: Use the default modulus-based algorithm.\nIf omitted, Port-Channels use the EOS default of modulus.\nIf omitted, Ethernet interfaces default to the 'auto' mechanism detailed above.\n",
+                "title": "Designated Forwarder Algorithm"
+              },
+              "designated_forwarder_preferences": {
+                "type": "array",
+                "description": "Manual preference as described above, required only for preference algorithm.",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Designated Forwarder Preferences"
+              },
+              "dont_preempt": {
+                "type": "boolean",
+                "description": "Disable preemption for single-active forwarding when auto/manual DF preference is configured.",
+                "title": "Dont Preempt"
+              }
+            },
+            "required": [
+              "short_esi"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Ethernet Segment"
+          },
+          "port_channel": {
+            "type": "object",
+            "description": "Used for port-channel adapter.",
+            "properties": {
+              "mode": {
+                "type": "string",
+                "description": "Port-Channel Mode.",
+                "enum": [
+                  "active",
+                  "passive",
+                  "on"
+                ],
+                "title": "Mode"
+              },
+              "channel_id": {
+                "type": "integer",
+                "description": "Port-Channel ID, Optional.\nIf no channel_id is specified, an id is generated from the first switch port in the port channel.\n",
+                "title": "Channel ID"
+              },
+              "description": {
+                "type": "string",
+                "description": "By default the description is built leveraging `<peer>` name or `adapter.description` when defined.\nWhen this key is defined, it will append its content to the physical port description.\n",
+                "title": "Description"
+              },
+              "enabled": {
+                "type": "boolean",
+                "default": true,
+                "description": "Port-Channel administrative state, Optional.\nsetting to false will set port to 'shutdown' in intended configuration.\n",
+                "title": "Enabled"
+              },
+              "short_esi": {
+                "type": "string",
+                "description": "In format xxxx:xxxx:xxxx or \"auto\".",
+                "title": "Short Esi"
+              },
+              "lacp_fallback": {
+                "type": "object",
+                "description": "LACP fallback configuration.",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "static"
+                    ],
+                    "description": "Currently only static mode is supported.",
+                    "title": "Mode"
+                  },
+                  "timeout": {
+                    "type": "integer",
+                    "description": "Timeout in seconds, Optional - default is 90 seconds.",
+                    "title": "Timeout"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "LACP Fallback"
+              },
+              "subinterfaces": {
+                "type": "array",
+                "description": "Port-Channel L2 Subinterfaces\nSubinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.\nSetting short_esi: auto generates the short_esi automatically using a hash of configuration elements.\nPlease see the notes under \"EVPN A/A ESI dual-attached endpoint scenario\" before setting short_esi: auto.\n",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "number": {
+                      "type": "integer",
+                      "description": "Subinterface number",
+                      "title": "Number"
+                    },
+                    "short_esi": {
+                      "type": "string",
+                      "description": "In format xxxx:xxxx:xxxx or \"auto\"\nRequired for multihomed port-channels with subinterfaces\n",
+                      "title": "Short Esi"
+                    },
+                    "vlan_id": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 4094,
+                      "description": "VLAN ID to bridge.\nDefault is subinterface number.\n",
+                      "title": "VLAN ID"
+                    },
+                    "encapsulation_vlan": {
+                      "type": "object",
+                      "description": "Client VLAN ID encapsulation.\nDefault is subinterface number.\n",
+                      "properties": {
+                        "client_dot1q": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 4094,
+                          "title": "Client Dot1Q"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Encapsulation VLAN"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Subinterfaces"
+              },
+              "raw_eos_cli": {
+                "type": "string",
+                "description": "EOS CLI rendered directly on the port-channel interface in the final EOS configuration.",
+                "title": "Raw EOS CLI"
+              },
+              "structured_config": {
+                "type": "object",
+                "description": "Custom structured config added under port_channel_interfaces.<interface> for eos_cli_config_gen.",
+                "title": "Structured Config"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Port Channel"
+          },
+          "raw_eos_cli": {
+            "type": "string",
+            "description": "EOS CLI rendered directly on the ethernet interface in the final EOS configuration.",
+            "title": "Raw EOS CLI"
+          },
+          "structured_config": {
+            "type": "object",
+            "description": "Custom structured config added under ethernet_interfaces.<interface> for eos_cli_config_gen.",
+            "title": "Structured Config"
+          },
+          "parent_profile": {
+            "type": "string",
+            "description": "Parent profile is optional.\nPort_profiles can refer to another port_profile to inherit settings in up to two levels (adapter->profile->parent_profile).",
+            "title": "Parent Profile"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "profile"
+        ]
+      },
+      "title": "Port Profiles"
+    },
+    "redundancy": {
+      "type": "object",
+      "description": "Redundancy for chassis platforms with dual supervisors | Optional",
+      "properties": {
+        "protocol": {
+          "type": "string",
+          "enum": [
+            "sso",
+            "rpr"
+          ],
+          "title": "Protocol"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Redundancy"
+    },
+    "shutdown_interfaces_towards_undeployed_peers": {
+      "type": "boolean",
+      "default": false,
+      "description": "- It is possible to provision configurations for a complete topology but flag devices as undeployed using the host level variable `is_deployed: false`.\n\n```yaml\n# Use at the host level\nis_deployed: < true or false or default -> true >\n```\n\n- By default, this will have no impact within the `eos_designs` role. Configs will still be generated by the `eos_cli_config_gen` role and will still be pushed by the `eos_config_deploy_eapi` directly to devices if used.\n- However, if the `eos_config_deploy_cvp` role is used to push configurations, CloudVision will ignore the devices flagged  as `is_deployed: false` and not attempt to configure them.\n- If the device is not present in the network due to CloudVision not configuring the device, `eos_validate_state` role will fail tests on peers of the undeployed device trying to verify that interfaces are up.\n- To overcome this and shutdown interfaces towards undeployed peers, the variable `shutdown_interfaces_towards_undeployed_peers` can be used, satisfying the `eos_validate_state` role interface tests.\n- Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices are not present in the network.",
+      "title": "Shutdown Interfaces Towards Undeployed Peers"
+    },
+    "terminattr_disable_aaa": {
+      "type": "boolean",
+      "default": false,
+      "title": "TerminAttr Disable AAA"
+    },
+    "terminattr_ingestexclude": {
+      "type": "string",
+      "default": "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent",
+      "title": "TerminAttr Ingestexclude"
+    },
+    "terminattr_ingestgrpcurl_port": {
+      "type": "integer",
+      "default": 9910,
+      "description": "Port number for Terminattr ingest GRPC",
+      "title": "TerminAttr Ingestgrpcurl Port"
+    },
+    "terminattr_smashexcludes": {
+      "type": "string",
+      "default": "ale,flexCounter,hardware,kni,pulse,strata",
+      "title": "TerminAttr Smashexcludes"
+    },
+    "trunk_groups": {
+      "type": "object",
+      "properties": {
+        "mlag": {
+          "type": "object",
+          "description": "Trunk Group used for MLAG VLAN (Typically VLAN 4094)\n",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "MLAG",
+              "title": "Name"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "MLAG"
+        },
+        "mlag_l3": {
+          "type": "object",
+          "description": "Trunk Group used for MLAG L3 peering VLAN and for VRF L3 peering VLANs (Typically VLAN 4093)\n",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "LEAF_PEER_L3",
+              "title": "Name"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "MLAG L3"
+        },
+        "uplink": {
+          "type": "object",
+          "description": "Trunk Group used on L2 Leaf switches when \"enable_trunk_groups\" is set\n",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "UPLINK",
+              "title": "Name"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Uplink"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Trunk Groups"
+    },
+    "type": {
+      "type": "string",
+      "description": "The `type:` variable needs to be defined for each device in the fabric.\nThis is leveraged to load the appropriate template to generate the configuration.",
+      "title": "Type"
+    },
+    "underlay_filter_peer_as": {
+      "type": "boolean",
+      "description": "Configure route-map on eBGP sessions towards underlay peers, where prefixes with the peer's ASN in the AS Path are filtered away.\nThis is very useful in very large scale networks not using EVPN overlays, where convergence will be quicker by not having to return\nall updates received from Spine-1 to Spine-2 just for Spine-2 to throw them away because of AS Path loop detection.\nNote this key is ignored when EVPN is configured.\n",
+      "default": false,
+      "title": "Underlay Filter Peer As"
+    },
+    "underlay_ipv6": {
+      "description": "This feature allows IPv6 underlay routing protocol with RFC5549 addresses to be used along with IPv4 advertisements as VXLAN tunnel endpoints.\nRequires \"underlay_rfc5549: true\" and \"loopback_ipv6_pool\" under the \"Fabric Topology\"\n",
+      "type": "boolean",
+      "default": false,
+      "title": "Underlay IPv6"
+    },
+    "underlay_isis_instance_name": {
+      "description": "Default -> \"EVPN_UNDERLAY\" for l3ls, \"CORE\" for mpls",
+      "type": "string",
+      "title": "Underlay ISIS Instance Name"
+    },
+    "underlay_multicast": {
+      "type": "boolean",
+      "description": "Enable Multicast in the underlay on all p2p uplink interfaces and mlag l3 peer interface.\nSpecifically PIM Sparse-Mode will be configured on all routed underlay interfaces.\nNo other configuration is added, so the underlay will only support Source-Specific Multicast (SSM)\nThe configuration is intended to be used as multicast underlay for EVPN OISM overlay\n",
+      "default": false,
+      "title": "Underlay Multicast"
+    },
+    "underlay_ospf_area": {
+      "type": "string",
+      "format": "ipv4",
+      "default": "0.0.0.0",
+      "title": "Underlay OSPF Area"
+    },
+    "underlay_ospf_bfd_enable": {
+      "type": "boolean",
+      "default": false,
+      "title": "Underlay OSPF BFD Enable"
+    },
+    "underlay_ospf_max_lsa": {
+      "type": "integer",
+      "default": 12000,
+      "title": "Underlay OSPF Max LSA"
+    },
+    "underlay_ospf_process_id": {
+      "type": "integer",
+      "default": 100,
+      "title": "Underlay OSPF Process ID"
+    },
+    "underlay_rfc5549": {
+      "description": "Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered\nRequires \"underlay_routing_protocol: ebgp\"\n",
+      "type": "boolean",
+      "default": false,
+      "title": "Underlay Rfc5549"
+    },
+    "underlay_routing_protocol": {
+      "type": "string",
+      "description": "- The following underlay routing protocols are supported:\n  - EBGP (default for l3ls-evpn)\n  - OSPF.\n  - ISIS.\n  - ISIS-SR*.\n  - ISIS-LDP*.\n  - ISIS-SR-LDP*.\n  - OSPF-LDP*.\n- The variables should be applied to all devices in the fabric.\n*Only supported with core_interfaces data model.\n",
+      "enum": [
+        "ebgp",
+        "ospf",
+        "isis",
+        "isis-sr",
+        "isis-ldp",
+        "isis-sr-ldp",
+        "ospf-ldp"
+      ],
+      "title": "Underlay Routing Protocol"
+    },
+    "uplink_ptp": {
+      "description": "Enable PTP on all infrastructure links",
+      "type": "object",
+      "properties": {
+        "enable": {
+          "type": "boolean",
+          "default": false,
+          "title": "Enable"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Uplink PTP"
+    },
+    "vtep_vvtep_ip": {
+      "description": "IP Address used as Virtual VTEP. Will be configured as secondary IP on Loopback1.\nThis is only needed for centralized routing designs.\n",
+      "type": "string",
+      "title": "Vtep Vvtep IP"
+    }
+  },
+  "required": [
+    "fabric_name",
+    "internal_vlan_order"
+  ],
+  "additionalProperties": true
+}

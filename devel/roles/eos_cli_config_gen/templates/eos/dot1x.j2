@@ -1,0 +1,32 @@
+{# eos - dot1x #}
+{% if dot1x is arista.avd.defined %}
+!
+{%     if dot1x.system_auth_control is arista.avd.defined(true) %}
+dot1x system-auth-control
+{%     endif %}
+{%     if dot1x.protocol_lldp_bypass is arista.avd.defined(true) %}
+dot1x protocol lldp bypass
+{%     endif %}
+{%     if dot1x.dynamic_authorization is arista.avd.defined(true) %}
+dot1x dynamic-authorization
+{%     endif %}
+{%     if dot1x.mac_based_authentication is arista.avd.defined or dot1x.radius_av_pair is arista.avd.defined %}
+dot1x
+{%         if dot1x.mac_based_authentication is arista.avd.defined %}
+{%             if dot1x.mac_based_authentication.delay is arista.avd.defined %}
+   mac based authentication delay {{ dot1x.mac_based_authentication.delay }} seconds
+{%             endif %}
+{%             if dot1x.mac_based_authentication.hold_period is arista.avd.defined %}
+   mac based authentication hold period {{ dot1x.mac_based_authentication.hold_period }} seconds
+{%             endif %}
+{%         endif %}
+{%         if dot1x.radius_av_pair is arista.avd.defined %}
+{%             if dot1x.radius_av_pair.service_type is arista.avd.defined(true) %}
+   radius av-pair service-type
+{%             endif %}
+{%             if dot1x.radius_av_pair.framed_mtu is arista.avd.defined %}
+   radius av-pair framed-mtu {{ dot1x.radius_av_pair.framed_mtu }}
+{%             endif %}
+{%         endif %}
+{%     endif %}
+{% endif %}

@@ -1,0 +1,12 @@
+{# eos - ip routing #}
+{# TODO - this currently does not handle when vrf default enables ip routing #}
+{% if ip_routing_ipv6_interfaces is arista.avd.defined(true) %}
+!
+ip routing ipv6 interfaces
+{% elif ip_routing is arista.avd.defined(true) %}
+!
+ip routing
+{% elif ip_routing is arista.avd.defined(false) %}
+!
+no ip routing
+{% endif %}

@@ -1,0 +1,40 @@
+{% if local_users is arista.avd.defined
+       or roles is arista.avd.defined
+       or enable_password is arista.avd.defined
+       or management_defaults is arista.avd.defined
+       or tacacs_servers is arista.avd.defined
+       or ip_tacacs_source_interfaces is arista.avd.defined
+       or radius_server is arista.avd.defined
+       or radius_servers is arista.avd.defined
+       or ip_radius_source_interfaces is arista.avd.defined
+       or aaa_server_groups is arista.avd.defined
+       or aaa_authentication is arista.avd.defined
+       or aaa_authorization is arista.avd.defined
+       or aaa_accounting is arista.avd.defined %}
+
+## Authentication
+{## Local Users #}
+{%     include 'documentation/local-users.j2' %}
+{## Roles #}
+{%     include 'documentation/roles.j2' %}
+{## Enable Password #}
+{%     include 'documentation/enable-password.j2' %}
+{## Management defaults #}
+{%     include 'documentation/management-defaults.j2' %}
+{## TACACS Servers #}
+{%     include 'documentation/tacacs-servers.j2' %}
+{## IP TACACS Source Interfaces #}
+{%     include 'documentation/ip-tacacs-source-interfaces.j2' %}
+{## RADIUS Servers #}
+{%     include 'documentation/radius-server.j2' %}
+{## IP RADIUS Source Interfaces #}
+{%     include 'documentation/ip-radius-source-interfaces.j2' %}
+{## AAA Server Groups #}
+{%     include 'documentation/aaa-server-groups.j2' %}
+{## AAA Authentication #}
+{%     include 'documentation/aaa-authentication.j2' %}
+{## AAA Authorization #}
+{%     include 'documentation/aaa-authorization.j2' %}
+{## AAA Accounting #}
+{%     include 'documentation/aaa-accounting.j2' %}
+{% endif %}

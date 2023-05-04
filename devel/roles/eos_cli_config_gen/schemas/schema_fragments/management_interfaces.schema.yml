@@ -1,0 +1,53 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  management_interfaces:
+    documentation_options:
+      filename: data_model/Management
+    type: list
+    primary_key: name
+    convert_types:
+      - dict
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          description: Management Interface Name
+        description:
+          type: str
+        shutdown:
+          type: bool
+        mtu:
+          type: int
+        vrf:
+          type: str
+          description: VRF Name
+        ip_address:
+          type: str
+          description: IPv4_address/Mask
+        ipv6_enable:
+          type: bool
+        ipv6_address:
+          type: str
+          description: IPv6_address/Mask
+        type:
+          type: str
+          valid_values: ["oob", "inband"]
+          default: "oob"
+          description: For documentation purposes only
+        gateway:
+          type: str
+          description: IPv4 address of default gateway in management VRF
+        ipv6_gateway:
+          type: str
+          description: IPv6 address of default gateway in management VRF
+        mac_address:
+          type: str
+          description: MAC address
+        eos_cli:
+          type: str
+          description: Multiline EOS CLI rendered directly on the management interface in the final EOS configuration

@@ -1,0 +1,78 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  loopback_interfaces:
+    documentation_options:
+      filename: data_model/Interfaces
+    type: list
+    primary_key: name
+    convert_types:
+    - dict
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Loopback interface name e.g. "Loopback0"
+          required: true
+        description:
+          type: str
+        shutdown:
+          type: bool
+        vrf:
+          type: str
+          description: VRF name
+        ip_address:
+          type: str
+          description: IPv4_address/Mask
+        ip_address_secondaries:
+          type: list
+          items:
+            type: str
+            description: IPv4_address/Mask
+        ipv6_enable:
+          type: bool
+        ipv6_address:
+          type: str
+          description: IPv6_address/Mask
+        ip_proxy_arp:
+          type: bool
+        ospf_area:
+          type: str
+          convert_types:
+          - int
+        mpls:
+          type: dict
+          keys:
+            ldp:
+              type: dict
+              keys:
+                interface:
+                  type: bool
+        isis_enable:
+          type: str
+          description: ISIS instance name
+        isis_passive:
+          type: bool
+        isis_metric:
+          type: int
+          convert_types:
+          - str
+        isis_network_point_to_point:
+          type: bool
+        node_segment:
+          type: dict
+          keys:
+            ipv4_index:
+              type: int
+              convert_types:
+              - str
+            ipv6_index:
+              type: int
+              convert_types:
+              - str
+        eos_cli:
+          type: str
+          description: EOS CLI rendered directly on the loopback interface in the final EOS configuration

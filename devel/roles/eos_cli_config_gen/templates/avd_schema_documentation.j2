@@ -1,0 +1,37 @@
+{% set filename = item %}
+{% set documentation = documentation_schema[filename] %}
+---
+search:
+  boost: 2
+---
+
+# {{ filename.split("/")[-1] }}
+{% for table in documentation.tables %}
+
+## {{ table.display_name }}
+{%     if table.description %}
+
+{{ table.description | trim }}
+{%     endif %}
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+{%     for row in table.table %}
+{%         set variable = row.variable | e | regex_replace('  ','&nbsp;&nbsp;') %}
+{%         if row.deprecation is arista.avd.defined %}
+{%             set deprecation = '<span style="color:red">' ~ row.deprecation ~ '</span>' %}
+{%             set deprecation_label = ' <span style="color:red">' ~ row.deprecation_label ~ '</span>' %}
+{%         endif %}
+    | [<samp>{{ variable }}</samp>](## "{{ row.var_path | e }}"){{ deprecation_label | arista.avd.default }} | {{ row.type }} | {{ row.required | arista.avd.default }} | {{ row.default | arista.avd.default }} | {{ row.restrictions | arista.avd.default }} | {{ row.description | arista.avd.default }}{{ deprecation | arista.avd.default }} |
+{%     endfor %}
+
+=== "YAML"
+
+    ```yaml
+{%     for row in table.yaml %}
+    {{ row }}
+{%     endfor %}
+    ```
+{% endfor %}

@@ -1,0 +1,4 @@
+---
+### group_vars/DC1_LEAFS.yml
+
+type: leaf     # Must be leaf

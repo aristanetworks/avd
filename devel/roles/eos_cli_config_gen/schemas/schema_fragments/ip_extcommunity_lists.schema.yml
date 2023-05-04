@@ -1,0 +1,37 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  ip_extcommunity_lists:
+    documentation_options:
+      filename: data_model/Filters
+    type: list
+    primary_key: name
+    secondary_key: entries
+    convert_types:
+      - dict
+    display_name: IP Extended Community Lists
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          description: Community-list Name
+        entries:
+          type: list
+          required: true
+          items:
+            type: dict
+            keys:
+              type:
+                type: str
+                required: true
+                valid_values: ["permit", "deny"]
+              extcommunities:
+                type: str
+                required: true
+                description: |
+                  Communities as string
+                  Example: "65000:65000"

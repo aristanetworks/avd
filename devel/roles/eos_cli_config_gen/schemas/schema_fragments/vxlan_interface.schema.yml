@@ -1,0 +1,122 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  vxlan_interface:
+    documentation_options:
+      filename: data_model/Interfaces
+    type: dict
+    keys:
+      Vxlan1:
+        type: dict
+        keys:
+          description:
+            type: str
+          vxlan:
+            type: dict
+            keys:
+              source_interface:
+                type: str
+                description: Source Interface Name
+              controller_client:
+                type: dict
+                description: Client to CVX Controllers
+                keys:
+                  enabled:
+                    type: bool
+              mlag_source_interface:
+                type: str
+              udp_port:
+                type: int
+                convert_types:
+                - str
+              virtual_router_encapsulation_mac_address:
+                type: str
+                description: |
+                  "mlag-system-id" or ethernet_address (H.H.H)
+              bfd_vtep_evpn:
+                type: dict
+                keys:
+                  interval:
+                    type: int
+                    convert_types:
+                    - str
+                  min_rx:
+                    type: int
+                    convert_types:
+                    - str
+                  multiplier:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 3
+                    max: 50
+                  prefix_list:
+                    type: str
+              qos:
+                type: dict
+                description: |
+                  For the Traffic Class to be derived based on the outer DSCP field of the incoming VxLan packet, the core ports must be in "DSCP Trust" mode.
+                  !!!Warning, only few hardware types with software version >= 4.26.0 support the below knobs to configure Vxlan DSCP mapping.
+                keys:
+                  dscp_propagation_encapsulation:
+                    type: bool
+                  map_dscp_to_traffic_class_decapsulation:
+                    type: bool
+              vlans:
+                type: list
+                primary_key: id
+                convert_types:
+                - dict
+                items:
+                  type: dict
+                  keys:
+                    id:
+                      type: int
+                      convert_types:
+                      - str
+                      required: true
+                      description: VLAN ID
+                    vni:
+                      type: int
+                      convert_types:
+                      - str
+                    multicast_group:
+                      type: str
+                      description: IP Multicast Group Address
+                    flood_vteps:
+                      type: list
+                      items:
+                        type: str
+                        description: Remote VTEP IP Address
+              vrfs:
+                type: list
+                primary_key: name
+                convert_types:
+                - dict
+                items:
+                  type: dict
+                  keys:
+                    name:
+                      type: str
+                      required: true
+                      description: VRF Name
+                    vni:
+                      type: int
+                      convert_types:
+                      - str
+                    multicast_group:
+                      type: str
+                      description: IP Multicast Group Address
+              flood_vteps:
+                type: list
+                items:
+                  type: str
+                  description: Remote VTEP IP Address
+              flood_vtep_learned_data_plane:
+                type: bool
+          eos_cli:
+            type: str
+            description: |
+              Multiline String with EOS CLI rendered directly on the Vxlan interface in the final EOS configuration.

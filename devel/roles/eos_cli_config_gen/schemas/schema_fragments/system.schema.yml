@@ -1,0 +1,47 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+allow_other_keys: true
+keys:
+  system:
+    documentation_options:
+      filename: data_model/System Control-Plane
+    type: dict
+    keys:
+      control_plane:
+        type: dict
+        keys:
+          tcp_mss:
+            type: dict
+            keys:
+              ipv4:
+                type: int
+                description: Segment size
+              ipv6:
+                type: int
+                description: Segment size
+          ipv4_access_groups:
+            type: list
+            primary_key: acl_name
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                acl_name:
+                  type: str
+                vrf:
+                  type: str
+          ipv6_access_groups:
+            type: list
+            primary_key: acl_name
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                acl_name:
+                  type: str
+                vrf:
+                  type: str

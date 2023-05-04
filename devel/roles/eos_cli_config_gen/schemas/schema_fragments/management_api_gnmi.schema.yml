@@ -1,0 +1,127 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  management_api_gnmi:
+    documentation_options:
+      filename: data_model/Management
+    type: dict
+    keys:
+      provider:
+        type: str
+        default: eos-native
+      transport:
+        type: dict
+        keys:
+          grpc:
+            type: list
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Transport name
+                ssl_profile:
+                  type: str
+                  description: SSL profile name
+                vrf:
+                  type: str
+                  description: VRF name is optional
+                notification_timestamp:
+                  type: str
+                  valid_values: ["send-time", "last-change-time"]
+                  description: |
+                    Per the GNMI specification, the default timestamp field of a notification message is set to be
+                    the time at which the value of the underlying data source changes or when the reported event takes place.
+                    In order to facilitate integration in legacy environments oriented around polling style operations,
+                    an option to support overriding the timestamp field to the send-time is available from EOS 4.27.0F.
+                ip_access_group:
+                  type: str
+                  description: ACL name
+          grpc_tunnels:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Transport name
+                shutdown:
+                  type: bool
+                  description: Operational status of the gRPC tunnel
+                tunnel_ssl_profile:
+                  type: str
+                  description: Tunnel SSL profile name
+                gnmi_ssl_profile:
+                  type: str
+                  description: gNMI SSL profile name
+                vrf:
+                  type: str
+                  description: VRF name
+                destination:
+                  type: dict
+                  keys:
+                    address:
+                      type: str
+                      required: true
+                      description: IP address or hostname
+                    port:
+                      type: int
+                      min: 1
+                      max: 65535
+                      required: true
+                      convert_types:
+                      - str
+                      description: TCP Port
+                local_interface:
+                  type: dict
+                  keys:
+                    name:
+                      type: str
+                      required: true
+                      description: Interface name
+                    port:
+                      type: int
+                      min: 1
+                      max: 65535
+                      required: true
+                      convert_types:
+                      - str
+                      description: TCP Port
+                target:
+                  type: dict
+                  keys:
+                    use_serial_number:
+                      type: bool
+                      description: Use serial number as the Target ID
+                    target_ids:
+                      type: list
+                      description: |
+                        Target IDs as a list.
+                      items:
+                        type: str
+      enable_vrfs:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        description: |
+          Enable VRFs will be deprecated in AVD v4.0.
+          These should not be mixed with the new keys above.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: VRF name
+            access_group:
+              type: str
+              description: Standard IPv4 ACL name
+      octa:
+        type: dict
+        description: |
+          Octa key will be deprecated in AVD v4.0.
+          These should not be mixed with the new keys above.
+          Octa activates `eos-native` provider and it is the only provider currently supported by EOS.

@@ -1,0 +1,51 @@
+---
+- name: "Load CVP device information for {{ inventory_hostname }}"
+  tags: [build, provision, online]
+  ansible.builtin.include_vars: "{{ structured_cvp_dir }}/{{ inventory_hostname }}.yml"
+
+- name: "Create configlets on CVP {{ inventory_hostname }}."
+  tags: [provision]
+  arista.cvp.cv_configlet_v3:
+    configlets: "{{ cvp_vars.cvp_configlets }}"
+  register: cvp_configlets_status
+
+- name: "Execute any configlet generated tasks to update configuration on {{ inventory_hostname }}"
+  tags: [apply]
+  arista.cvp.cv_task_v3:
+    tasks: "{{ cvp_configlets_status.taskIds }}"
+  when:
+    - cvp_configlets_status.taskIds | length > 0
+    - execute_tasks|bool
+
+- name: "Building Containers topology on {{ inventory_hostname }}"
+  tags: [provision, containers]
+  arista.cvp.cv_container_v3:
+    topology: "{{ cvp_containers }}"
+    state: present
+    apply_mode: "{{ container_apply_mode }}"
+  register: cvp_container_results
+
+- name: "Execute pending tasks on {{ inventory_hostname }}"
+  tags: [apply]
+  arista.cvp.cv_task_v3:
+    tasks: "{{ cvp_container_results.taskIds }}"
+  when:
+    - cvp_container_results.taskIds | length > 0
+    - execute_tasks|bool
+
+- name: "Configure devices on {{ inventory_hostname }}"
+  tags: [provision, apply]
+  arista.cvp.cv_device_v3:
+    devices: "{{ cvp_devices }}"  # noqa: args[module]
+    state: present
+    apply_mode: "{{ device_apply_mode }}"
+    search_key: "{{ device_search_key }}"
+  register: cvp_devices_results
+
+- name: "Execute pending tasks on {{ inventory_hostname }}"
+  tags: [apply]
+  arista.cvp.cv_task_v3:
+    tasks: "{{ cvp_devices_results.taskIds }}"
+  when:
+    - cvp_devices_results.taskIds | length > 0
+    - execute_tasks|bool

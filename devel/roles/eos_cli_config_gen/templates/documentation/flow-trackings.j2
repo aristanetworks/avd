@@ -1,0 +1,57 @@
+{# doc - flow trackings #}
+{% if flow_trackings is arista.avd.defined %}
+
+### Flow Tracking
+{%     for flow_tracking in flow_trackings %}
+{%         if flow_tracking.type == "sampled" %}
+
+#### Flow Tracking Sampled
+
+Sample: {{ flow_tracking.sample | arista.avd.default("default") }}
+{%             if flow_tracking.trackers is arista.avd.defined %}
+
+##### Trackers Summary
+
+| Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | MPLS | Number of Exporters | Applied On |
+| ------------ | --------------------------------- | ------------------------- | ---- | ------------------- | ---------- |
+{%                 for tracker in flow_tracking.trackers | arista.avd.natural_sort('name') %}
+{%                     set on_inactive_timeout = tracker.record_export.on_inactive_timeout | arista.avd.default("-") %}
+{%                     set on_interval = tracker.record_export.on_interval | arista.avd.default("-") %}
+{%                     set mpls = tracker.record_export.mpls | arista.avd.default("-") %}
+{%                     set count_exporter = tracker.exporters | arista.avd.default([]) | length %}
+{%                     set applied_on = [] %}
+{%                     for ethernet_interface in ethernet_interfaces | arista.avd.default([]) %}
+{%                         if ethernet_interface.flow_tracker.sampled is arista.avd.defined(tracker.name) %}
+{%                             do applied_on.append(ethernet_interface.name) %}
+{%                         endif %}
+{%                     endfor %}
+{%                     for port_channel_interface in port_channel_interfaces | arista.avd.default([]) %}
+{%                         if port_channel_interface.flow_tracker.sampled is arista.avd.defined(tracker.name) %}
+{%                             do applied_on.append(port_channel_interface.name) %}
+{%                         endif %}
+{%                     endfor %}
+| {{ tracker.name }} | {{ on_inactive_timeout }} | {{ on_interval }} | {{ mpls }} | {{ count_exporter }} | {{ applied_on | join("<br>") }} |
+{%                 endfor %}
+
+##### Exporters Summary
+
+| Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
+| ------------ | ------------- | ----------------- | -------------- | --------------- |
+{%                 for tracker in flow_tracking.trackers | arista.avd.natural_sort('name') %}
+{%                     for exporter in tracker.exporters | arista.avd.natural_sort('name') %}
+{%                         set host = exporter.host | arista.avd.default("-") %}
+{%                         set port = exporter.port | arista.avd.default("-") %}
+{%                         set local_interface = exporter.local_interface | arista.avd.default("No local interface") %}
+| {{ tracker.name }} | {{ exporter.name }} | {{ host }} | {{ port }} | {{ local_interface }} |
+{%                     endfor %}
+{%                 endfor %}
+{%             endif %}
+{%         endif %}
+{%     endfor %}
+
+#### Flow Tracking Configuration
+
+```eos
+{%     include 'eos/flow-trackings.j2' %}
+```
+{% endif %}

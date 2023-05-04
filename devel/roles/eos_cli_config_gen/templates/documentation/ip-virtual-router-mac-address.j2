@@ -1,0 +1,15 @@
+{# doc - ip virtual router mac address #}
+{% if ip_virtual_router_mac_address is arista.avd.defined %}
+
+### Virtual Router MAC Address
+
+#### Virtual Router MAC Address Summary
+
+##### Virtual Router MAC Address: {{ ip_virtual_router_mac_address }}
+
+#### Virtual Router MAC Address Configuration
+
+```eos
+{%     include 'eos/ip-virtual-router-mac-address.j2' %}
+```
+{% endif %}

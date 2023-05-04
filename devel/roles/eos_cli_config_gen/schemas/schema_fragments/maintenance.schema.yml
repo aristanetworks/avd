@@ -1,0 +1,133 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+allow_other_keys: true
+keys:
+  maintenance:
+    documentation_options:
+      filename: data_model/Maintenance Mode
+    type: dict
+    display_name: Maintenance Mode
+    keys:
+      default_interface_profile:
+        type: str
+        description: |
+          Name of default Interface Profile
+      default_bgp_profile:
+        type: str
+        description: |
+          Name of default BGP Profile
+      default_unit_profile:
+        type: str
+        description: |
+          Name of default Unit Profile
+      interface_profiles:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+            rate_monitoring:
+              type: dict
+              keys:
+                load_interval:
+                  type: int
+                  convert_types:
+                  - str
+                  description: |
+                    Load Interval in Seconds
+                threshold:
+                  type: int
+                  convert_types:
+                  - str
+                  description: |
+                    Threshold in kbps
+            shutdown:
+              type: dict
+              keys:
+                max_delay:
+                  type: int
+                  convert_types:
+                  - str
+                  description: |
+                    Max delay in seconds
+      bgp_profiles:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              description: BGP Profile Name
+            initiator:
+              type: dict
+              keys:
+                route_map_inout:
+                  type: str
+                  description: Route Map
+      unit_profiles:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              description: Unit Profile Name
+            on_boot:
+              type: dict
+              keys:
+                duration:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 300
+                  max: 3600
+                  description: |
+                    On-boot in seconds
+      units:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              description: Unit Name
+            quiesce:
+              type: bool
+            profile:
+              type: str
+              description: |
+                Name of Unit Profile
+            groups:
+              type: dict
+              keys:
+                bgp_groups:
+                  type: list
+                  items:
+                    type: str
+                    description: |
+                      Name of BGP Group
+                interface_groups:
+                  type: list
+                  items:
+                    type: str
+                    description: |
+                      Name of Interface Group

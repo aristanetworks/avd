@@ -1,0 +1,37 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  tacacs_servers:
+    documentation_options:
+      filename: data_model/Authentication
+    type: dict
+    keys:
+      hosts:
+        type: list
+        items:
+          type: dict
+          keys:
+            host:
+              type: str
+              description: Host IP address or name
+            vrf:
+              type: str
+            key:
+              type: str
+              description: Encrypted key
+            key_type:
+              type: str
+              convert_types:
+                - int
+              valid_values: ["0", "7", "8a"]
+              default: "7"
+            single_connection:
+              type: bool
+            timeout:
+              type: int
+              convert_types:
+                - str
+      policy_unknown_mandatory_attribute_ignore:
+        type: bool

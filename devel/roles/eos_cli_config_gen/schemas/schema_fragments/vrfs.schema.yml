@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  vrfs:
+    documentation_options:
+      filename: data_model/Routing
+    type: list
+    primary_key: name
+    description: |
+      These keys are ignored if the name of the vrf is 'default'
+    convert_types:
+      - dict
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: VRF Name
+        description:
+          type: str
+        ip_routing:
+          type: bool
+        ipv6_routing:
+          type: bool
+        ip_routing_ipv6_interfaces:
+          type: bool
+        tenant:
+          type: str
+          description: Key only used for documentation or validation purposes

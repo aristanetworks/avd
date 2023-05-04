@@ -1,0 +1,139 @@
+# Roles Defaults
+# Root directory where to build output structure
+root_dir: '{{ inventory_dir }}'
+
+# Documentation folders
+# Main documentation folder
+documentation_dir_name: 'documentation'
+documentation_dir: '{{ root_dir }}/{{ documentation_dir_name }}'
+
+# Fabric documentation
+fabric_dir_name: 'fabric'
+fabric_dir: '{{ documentation_dir }}/{{ fabric_dir_name }}'
+
+# AVD configurations output
+# Main output directory
+output_dir_name: 'intended'
+output_dir: '{{ root_dir }}/{{ output_dir_name }}'
+
+# Output for structured YAML files:
+structured_dir_name: 'structured_configs'
+structured_dir: '{{ output_dir }}/{{ structured_dir_name }}'
+
+# Design variables
+design:
+  type: "l3ls-evpn"
+
+mgmt_vrf_routing: false
+
+mgmt_interface: Management1
+mgmt_interface_vrf: MGMT
+
+# eAPI
+management_eapi:
+  enable_https: true
+
+internal_vlan_order:
+  allocation: "ascending"
+  range:
+    beginning: 1006
+    ending: 1199
+
+terminattr_ingestgrpcurl_port: 9910
+terminattr_smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
+terminattr_ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
+
+p2p_uplinks_mtu: 9000
+
+underlay_ipv6: false
+
+evpn_ebgp_multihop: 3
+evpn_ebgp_gateway_multihop: 15
+evpn_ebgp_gateway_inter_domain: true
+
+evpn_short_esi_prefix: "0000:0000:"
+
+# Underlay OSPF Defaults
+underlay_ospf_process_id: 100
+underlay_ospf_area: 0.0.0.0
+underlay_ospf_max_lsa: 12000
+underlay_ospf_bfd_enable: false
+
+# Underlay ISIS Defaults
+isis_area_id: "49.0001"
+isis_maximum_paths: 4
+
+bgp_maximum_paths: 4
+bgp_ecmp: 4
+
+evpn_vlan_aware_bundles: false
+
+default_igmp_snooping_enabled: true
+
+bfd_multihop:
+  interval: 300
+  min_rx: 300
+  multiplier: 3
+
+mlag_ibgp_peering_vrfs:
+  base_vlan: 3000
+
+# Platform Settings
+platform_settings: "{{ default_platform_settings }}"
+
+# Infrastructure Elements Keys
+connected_endpoints_keys: "{{ default_connected_endpoints_keys[design.type] }}"
+
+network_services_keys:
+  - name: tenants
+
+# custom_structured_configuration_prefix allows the user to customize the prefix for Custom Structured Configuration variables.
+custom_structured_configuration_prefix: custom_structured_configuration_
+
+# From AVD 4.0 most data models will use lists instead of dicts.
+# Input data is auto-converted from dicts to lists so it is more likely that "custom_structured_configuration_list_merge: replace" will overwrite list data unintentionally.
+# So "replace" should be avoided for most use cases going forward.
+# "append_rp" means "append unique items", so similar to append, but avoid duplicates in the resulting list.
+custom_structured_configuration_list_merge: 'append_rp'
+
+node_type_keys: "{{ default_node_type_keys[design.type] }}"
+
+templates: "{{ default_templates[design.type] }}"
+
+avd_structured_config_file_format: "yml"
+
+# Input Variable Validation
+avd_data_conversion_mode: "debug"
+avd_data_validation_mode: "warning"
+
+# PTP profiles
+ptp_profiles:
+  - profile: aes67-r16-2016
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: "ipv4"
+
+  - profile: smpte2059-2
+    announce:
+      interval: -2
+      timeout: 3
+    delay_req: -4
+    sync_message:
+      interval: -4
+    transport: "ipv4"
+
+  - profile: aes67
+    announce:
+      interval: 2
+      timeout: 3
+    delay_req: 0
+    sync_message:
+      interval: 0
+    transport: "ipv4"
+
+eos_designs_documentation:
+  connected_endpoints: false

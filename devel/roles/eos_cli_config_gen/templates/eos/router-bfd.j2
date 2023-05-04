@@ -1,0 +1,37 @@
+{# eos - router bfd #}
+{% if router_bfd is arista.avd.defined %}
+!
+router bfd
+{%     if router_bfd.interval is arista.avd.defined and router_bfd.min_rx is arista.avd.defined and router_bfd.multiplier is arista.avd.defined  %}
+   interval {{ router_bfd.interval }} min-rx {{ router_bfd.min_rx }} multiplier {{ router_bfd.multiplier }} default
+{%     endif %}
+{%     if router_bfd.multihop.interval is arista.avd.defined and router_bfd.multihop.min_rx is arista.avd.defined and router_bfd.multihop.multiplier is arista.avd.defined  %}
+   multihop interval {{ router_bfd.multihop.interval }} min-rx {{ router_bfd.multihop.min_rx }} multiplier {{ router_bfd.multihop.multiplier }}
+{%     endif %}
+{%     if router_bfd.sbfd is arista.avd.defined %}
+   !
+   sbfd
+{%         if router_bfd.sbfd.local_interface.name is arista.avd.defined
+                   and (router_bfd.sbfd.local_interface.protocols.ipv4 is arista.avd.defined(true)
+                        or router_bfd.sbfd.local_interface.protocols.ipv6 is arista.avd.defined(true)
+                   ) %}
+{%             set localint = router_bfd.sbfd.local_interface.name %}
+{%             if router_bfd.sbfd.local_interface.protocols.ipv4 is arista.avd.defined(true) %}
+{%                 set localint = localint ~ " ipv4" %}
+{%             endif %}
+{%             if router_bfd.sbfd.local_interface.protocols.ipv6 is arista.avd.defined(true) %}
+{%                 set localint = localint ~ " ipv6" %}
+{%             endif %}
+      local-interface {{ localint }}
+{%         endif %}
+{%         if router_bfd.sbfd.initiator_interval is arista.avd.defined and router_bfd.sbfd.initiator_multiplier is arista.avd.defined %}
+      initiator interval {{ router_bfd.sbfd.initiator_interval }} multiplier {{ router_bfd.sbfd.initiator_multiplier }}
+{%         endif %}
+{%         if router_bfd.sbfd.reflector.min_rx is arista.avd.defined %}
+      reflector min-rx {{ router_bfd.sbfd.reflector.min_rx }}
+{%         endif %}
+{%         if router_bfd.sbfd.reflector.local_discriminator is arista.avd.defined %}
+      reflector local-discriminator {{ router_bfd.sbfd.reflector.local_discriminator }}
+{%         endif %}
+{%     endif %}
+{% endif %}

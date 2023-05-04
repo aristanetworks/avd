@@ -1,0 +1,63 @@
+---
+
+- name: Gather ip reachability state between devices (loopback0 <-> loopback0)
+  arista.eos.eos_command:
+    commands: "ping {{ loopback0_address | ansible.utils.ipaddr('address') }} source {{ source_ip_address | ansible.utils.ipaddr('address') }} repeat 1"  # noqa: jinja[invalid]
+  loop: "{{ loopback0_reachability.loopback0_range }}"
+  loop_control:
+    loop_var: loopback0_address
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  vars:
+    # Vars are not rendered when being evaluated by "when" condition so we cannot use this var for that.
+    source_ip_address: "{{ (loopback_interfaces | arista.avd.default({}) | arista.avd.convert_dicts('name') | selectattr('name', 'eq', 'Loopback0') | map(attribute='ip_address'))[0] | arista.avd.default }}"
+  when: |
+    loopback0_reachability.loopback0_range is arista.avd.defined and
+    (loopback_interfaces | arista.avd.default({}) | arista.avd.convert_dicts('name') | selectattr('name', 'eq', 'Loopback0') | map(attribute='ip_address'))[0] is arista.avd.defined and
+    type is arista.avd.defined('l3leaf')
+  register: loopback0_reachability_state
+  tags:
+    - loopback0_reachability
+
+- name: Validate ip reachability between devices (loopback0 <-> loopback0)
+  delegate_to: localhost
+  ansible.builtin.assert:
+    that:
+      - loopback0_reachability_test.stdout[0] | regex_search("1 received")
+    fail_msg: "100% packet loss"
+    quiet: true
+  loop: "{{ loopback0_reachability_state.results }}"
+  loop_control:
+    loop_var: loopback0_reachability_test
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  when: (loopback0_reachability_test.skipped is not defined)
+  register: loopback0_reachability_results
+  tags:
+    - loopback0_reachability
+
+- name: Ping inband management interfaces
+  ansible.builtin.include_tasks: ping_inband.yml
+  loop: "{{ management_interfaces | arista.avd.default({}) | arista.avd.convert_dicts('name') }}"
+  loop_control:
+    loop_var: management_interface
+  when: |
+    (management_interfaces is arista.avd.defined)
+  tags:
+    - loopback0_reachability
+    - optional
+
+- name: Validate ip reachability from Inband Management to loopback0 in fabric
+  delegate_to: localhost
+  ansible.builtin.assert:
+    that:
+      - inb_mgmt_loopback0_reachability_test.stdout[0] | regex_search('1 received')
+    fail_msg: "100% packet loss"
+    quiet: true
+  loop: "{{ inb_mgmt_loopback0_reachability_state.results }}"
+  loop_control:
+    loop_var: inb_mgmt_loopback0_reachability_test
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  when: (inb_mgmt_loopback0_reachability_test.skipped is not defined)
+  register: inb_mgmt_loopback0_reachability_results
+  tags:
+    - loopback0_reachability
+    - optional

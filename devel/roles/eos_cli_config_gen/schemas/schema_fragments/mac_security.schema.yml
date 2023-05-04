@@ -1,0 +1,99 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  mac_security:
+    documentation_options:
+      filename: data_model/MAC Security
+    type: dict
+    display_name: MAC Security (MACsec)
+    keys:
+      license:
+        type: dict
+        required: true
+        keys:
+          license_name:
+            type: str
+            required: true
+          license_key:
+            type: str
+            required: true
+      fips_restrictions:
+        type: bool
+        required: true
+      profiles:
+        type: list
+        primary_key: name
+        convert_types:
+          - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              description: Profile-Name
+            cipher:
+              type: str
+              valid_values:
+                - aes128-gcm
+                - aes128-gcm-xpn
+                - aes256-gcm
+                - aes256-gcm-xpn
+            connection_keys:
+              type: list
+              primary_key: id
+              convert_types:
+                - dict
+              items:
+                type: dict
+                keys:
+                  id:
+                    type: str
+                  encrypted_key:
+                    type: str
+                  fallback:
+                    type: bool
+            mka:
+              type: dict
+              keys:
+                key_server_priority:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 0
+                  max: 255
+                session:
+                  type: dict
+                  keys:
+                    rekey_period:
+                      type: int
+                      convert_types:
+                        - str
+                      min: 30
+                      max: 100000
+                      description: Rekey period in seconds
+            sci:
+              type: bool
+            l2_protocols:
+              type: dict
+              keys:
+                ethernet_flow_control:
+                  type: dict
+                  keys:
+                    mode:
+                      type: str
+                      required: true
+                      valid_values:
+                        - encrypt
+                        - bypass
+                lldp:
+                  type: dict
+                  keys:
+                    mode:
+                      type: str
+                      required: true
+                      valid_values:
+                        - bypass
+                        - "bypass unauthorized"

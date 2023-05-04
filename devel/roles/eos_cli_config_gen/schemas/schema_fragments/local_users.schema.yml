@@ -1,0 +1,55 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  local_users:
+    documentation_options:
+      filename: data_model/Authentication
+    type: list
+    primary_key: name
+    convert_types:
+    - dict
+    items:
+      type: dict
+      keys:
+        name:
+          description: Username
+          type: str
+          required: true
+        disabled:
+          type: bool
+          description: |
+            If true, the user will be removed and all other settings are ignored.
+            Useful for removing the default "admin" user.
+        privilege:
+          type: int
+          convert_types:
+          - str
+          min: 0
+          max: 15
+          description: |
+            Initial privilege level with local EXEC authorization.
+        role:
+          type: str
+          description: |
+            EOS RBAC Role to be assigned to the user such as "network-admin" or "network-operator"
+        sha512_password:
+          type: str
+          description: |
+            SHA512 Hash of Password
+            Must be the hash of the password. By default EOS salts the password with the username, so the simplest is to generate the hash on an EOS device using the same username.
+        no_password:
+          type: bool
+          description: |
+            If set a password will not be configured for this user. "sha512_password" MUST not be defined for this user.
+        ssh_key:
+          type: str
+        shell:
+          type: str
+          description: |
+            Specify shell for the user
+          valid_values:
+          - /bin/bash
+          - /bin/sh
+          - /sbin/nologin

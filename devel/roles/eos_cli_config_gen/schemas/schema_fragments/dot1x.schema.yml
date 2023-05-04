@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  dot1x:
+    documentation_options:
+      filename: data_model/Endpoint Security
+    type: dict
+    display_name: Global 802.1x Authentication
+    keys:
+      system_auth_control:
+        type: bool
+      protocol_lldp_bypass:
+        type: bool
+      dynamic_authorization:
+        type: bool
+      mac_based_authentication:
+        type: dict
+        keys:
+          delay:
+            type: int
+            min: 0
+            max: 300
+            convert_types:
+              - str
+          hold_period:
+            type: int
+            min: 1
+            max: 300
+            convert_types:
+              - str
+      radius_av_pair:
+        type: dict
+        keys:
+          service_type:
+            type: bool
+          framed_mtu:
+            type: int
+            min: 68
+            max: 9236
+            convert_types:
+              - str

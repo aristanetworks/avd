@@ -1,0 +1,82 @@
+---
+- name: Verify Requirements
+  tags: [always, avd_req]
+  delegate_to: localhost
+  when: avd_requirements is not defined
+  arista.avd.verify_requirements:
+    requirements: "{{ lookup('file', requirements_path ~ '/requirements.txt').splitlines() }}"
+    avd_ignore_requirements: "{{ avd_ignore_requirements | default(false) }}"
+  vars:
+    requirements_path: "{{ (role_path | split('/'))[0:-2] | join('/') }}"
+  run_once: true
+  register: avd_requirements
+
+- name: Create required output directories if not present
+  delegate_to: localhost
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+  loop:
+    - "{{ snapshots_backup_dir }}"
+  run_once: true
+
+- name: Create output directory for each EOS device
+  delegate_to: localhost
+  ansible.builtin.file:
+    path: "{{ snapshots_backup_dir }}/{{ inventory_hostname }}"
+    state: directory
+    mode: 0775
+  when: ('text' in output_format) or
+        ('markdown' in output_format)
+
+- name: Run show commands on remote EOS devices with text output
+  arista.eos.eos_command:
+    commands: "{{ item }}"
+  with_items: "{{ commands_list }}"
+  failed_when: false
+  register: cli_output
+  when: ('text' in output_format) or
+        ('markdown' in output_format)
+
+- name: Run show commands on remote EOS devices with json output
+  arista.eos.eos_command:
+    commands:
+      - command: "{{ item }}"
+        output: json
+  with_items: "{{ commands_list }}"
+  failed_when: false
+  register: cli_output_json
+  when: ('json' in output_format) or
+        ('yaml' in output_format)
+
+- name: Save collected commands in text files
+  delegate_to: localhost
+  ansible.builtin.template:
+    src: device_text_command.j2
+    dest: "{{ snapshots_backup_dir }}/{{ inventory_hostname }}/{{ item.item | replace('/', '_') }}.txt"
+    mode: 0664
+  loop: "{{ cli_output.results }}"
+  when: ('text' in output_format)
+
+- name: Generate json report for fabric
+  delegate_to: localhost
+  ansible.builtin.template:
+    src: fabric_json_output.j2
+    dest: "{{ snapshots_backup_dir }}/report.json"
+    mode: 0664
+  run_once: true
+  when: ('json' in output_format)
+
+- name: Generate yaml report for fabric
+  delegate_to: localhost
+  ansible.builtin.template:
+    src: fabric_yaml_output.j2
+    dest: "{{ snapshots_backup_dir }}/report.yaml"
+    mode: 0664
+  run_once: true
+  when: ('yaml' in output_format)
+
+- name: Generate markdown report for fabric
+  ansible.builtin.include_tasks: "markdown.yml"
+  when: ('markdown' in output_format)

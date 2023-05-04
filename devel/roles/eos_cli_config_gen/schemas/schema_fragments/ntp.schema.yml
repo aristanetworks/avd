@@ -1,0 +1,98 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  ntp:
+    documentation_options:
+      filename: data_model/Management
+    type: dict
+    keys:
+      local_interface:
+        type: dict
+        keys:
+          name:
+            type: str
+            description: Source interface
+          vrf:
+            type: str
+            description: VRF name
+      servers:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: IP or hostname e.g., 2.2.2.55, ie.pool.ntp.org
+            burst:
+              type: bool
+            iburst:
+              type: bool
+            key:
+              type: int
+              min: 1
+              max: 65535
+              convert_types:
+              - str
+            local_interface:
+              type: str
+              description: Source interface
+            maxpoll:
+              type: int
+              min: 3
+              max: 17
+              convert_types:
+              - str
+              description: Value of maxpoll between 3 - 17 (Logarithmic)
+            minpoll:
+              type: int
+              min: 3
+              max: 17
+              convert_types:
+              - str
+              description: Value of minpoll between 3 - 17 (Logarithmic)
+            preferred:
+              type: bool
+            version:
+              type: int
+              min: 1
+              max: 4
+              convert_types:
+              - str
+            vrf:
+              type: str
+              description: VRF name
+      authenticate:
+        type: bool
+      authenticate_servers_only:
+        type: bool
+      authentication_keys:
+        type: list
+        primary_key: id
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            id:
+              type: int
+              min: 1
+              max: 65534
+              convert_types:
+              - str
+              description: Key identifier
+            hash_algorithm:
+              type: str
+              valid_values: ["md5", "sha1"]
+            key:
+              type: str
+              description: Obfuscated key
+            key_type:
+              type: str
+              convert_types:
+              - int
+              valid_values: ["0", "7", "8a"]
+      trusted_keys:
+        type: str
+        description: List of trusted-keys as string ex. 10-12,15

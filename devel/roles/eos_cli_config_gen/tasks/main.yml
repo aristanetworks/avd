@@ -1,0 +1,61 @@
+---
+- name: Verify Requirements
+  tags: [always, avd_req]
+  delegate_to: localhost
+  when: avd_requirements is not defined
+  arista.avd.verify_requirements:
+    requirements: "{{ lookup('file', requirements_path ~ '/requirements.txt').splitlines() }}"
+    avd_ignore_requirements: "{{ avd_ignore_requirements | default(false) }}"
+  vars:
+    requirements_path: "{{ (role_path | split('/'))[0:-2] | join('/') }}"
+  run_once: true
+  register: avd_requirements
+
+- name: Create required output directories if not present
+  tags: [build, provision]
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+  loop:
+    - "{{ structured_dir }}"
+    - "{{ documentation_dir }}"
+    - "{{ eos_config_dir }}"
+    - "{{ devices_dir }}"
+  delegate_to: localhost
+  run_once: true
+
+- name: Include device intended structure configuration variables
+  tags: [build, provision]
+  ansible.builtin.include_vars:
+    file: "{{ filename }}"
+  delegate_to: localhost
+  when: structured_config is not defined and lookup('first_found', filename, skip=True, errors='ignore')
+  vars:
+    filename: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
+
+- name: Generate eos intended configuration
+  tags: [build, provision]
+  arista.avd.validate_and_template:
+    template: eos-intended-config.j2
+    dest: "{{ eos_config_dir }}/{{ inventory_hostname }}.cfg"
+    mode: 0664
+    schema_id: "{{ role_name }}"
+    conversion_mode: "{{ avd_data_conversion_mode }}"
+    validation_mode: "{{ avd_data_validation_mode }}"
+  delegate_to: localhost
+  register: eosconfig
+
+- name: Generate device documentation
+  tags: [build, provision, documentation]
+  arista.avd.validate_and_template:
+    template: "eos-device-documentation.j2"
+    dest: "{{ devices_dir }}/{{ inventory_hostname }}.md"
+    mode: 0664
+    schema_id: "{{ role_name }}"
+    conversion_mode: "{{ avd_data_conversion_mode }}"
+    validation_mode: "{{ avd_data_validation_mode }}"
+    add_md_toc: true
+    md_toc_skip_lines: 3
+  delegate_to: localhost
+  when: generate_device_documentation | arista.avd.default(true)

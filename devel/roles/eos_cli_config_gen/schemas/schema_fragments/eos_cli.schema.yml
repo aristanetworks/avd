@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  eos_cli:
+    documentation_options:
+      filename: data_model/EOS CLI
+    type: str
+    description: Multiline string with EOS CLI rendered directly on the root level of the final EOS configuration

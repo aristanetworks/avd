@@ -1,0 +1,196 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  router_isis:
+    documentation_options:
+      filename: data_model/Routing
+    type: dict
+    keys:
+      instance:
+        type: str
+        description: ISIS Instance Name
+      net:
+        type: str
+        description: CLNS Address like "49.0001.0001.0000.0001.00"
+      router_id:
+        type: str
+        description: IPv4 Address
+      is_type:
+        type: str
+        valid_values:
+          - "level-1"
+          - "level-1-2"
+          - "level-2"
+      log_adjacency_changes:
+        type: bool
+      mpls_ldp_sync_default:
+        type: bool
+      timers:
+        type: dict
+        keys:
+          local_convergence:
+            type: dict
+            keys:
+              protected_prefixes:
+                type: bool
+              delay:
+                type: int
+                convert_types:
+                  - str
+                default: 10000
+                description: Delay in milliseconds.
+      advertise:
+        type: dict
+        keys:
+          passive_only:
+            type: bool
+      address_family:
+        type: list
+        items:
+          type: str
+          valid_values:
+            - "ipv4"
+            - "ipv6"
+            - "ipv4 unicast"
+            - "ipv6 unicast"
+          description: Address Family
+          deprecation:
+            warning: true
+            new_key: address_family_ipv4.enabled or address_family_ipv6.enabled
+            remove_in_version: "5.0.0"
+      isis_af_defaults:
+        type: list
+        items:
+          type: str
+          description: |
+            EOS CLI rendered under the address families
+            Example "maximum-paths 64"
+          deprecation:
+            warning: true
+            new_key: address_family_ipv4/address_family_ipv6
+            remove_in_version: "5.0.0"
+      redistribute_routes:
+        type: list
+        items:
+          type: dict
+          keys:
+            source_protocol:
+              type: str
+              required: true
+              valid_values:
+                - "bgp"
+                - "connected"
+                - "isis"
+                - "ospf"
+                - "ospfv3"
+                - "static"
+            route_map:
+              type: str
+              description: Route-map name
+            include_leaked:
+              type: bool
+            ospf_route_type:
+              type: str
+              valid_values:
+                - "external"
+                - "internal"
+                - "nssa-external"
+              description: ospf_route_type is required with source_protocols 'ospf' and 'ospfv3'
+      address_family_ipv4:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+          maximum_paths:
+            type: int
+            convert_types:
+              - "str"
+            min: 1
+            max: 128
+          fast_reroute_ti_lfa:
+            type: dict
+            keys:
+              mode:
+                type: str
+                valid_values:
+                  - "link-protection"
+                  - "node-protection"
+              level:
+                type: str
+                valid_values:
+                  - "level-1"
+                  - "level-2"
+              srlg:
+                type: dict
+                description: Shared Risk Link Group
+                keys:
+                  enable:
+                    type: bool
+                  strict:
+                    type: bool
+          tunnel_source_labeled_unicast:
+            type: dict
+            keys:
+              enabled:
+                type: bool
+              rcf:
+                type: str
+                description: Route Control Function
+      address_family_ipv6:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+          maximum_paths:
+            type: int
+            convert_types:
+              - "str"
+            min: 1
+            max: 128
+          fast_reroute_ti_lfa:
+            type: dict
+            keys:
+              mode:
+                type: str
+                valid_values:
+                  - "link-protection"
+                  - "node-protection"
+              level:
+                type: str
+                valid_values:
+                  - "level-1"
+                  - "level-2"
+                description: Optional, default is to protect all levels
+              srlg:
+                type: dict
+                description: Shared Risk Link Group
+                keys:
+                  enable:
+                    type: bool
+                  strict:
+                    type: bool
+      segment_routing_mpls:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+          router_id:
+            type: str
+          prefix_segments:
+            type: list
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                prefix:
+                  type: str
+                index:
+                  type: int
+                  convert_types:
+                    - str
+      no_passive_interfaces:
+        type: list
+        description: Unused key - to be removed from eos_designs.

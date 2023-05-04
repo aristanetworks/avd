@@ -1,0 +1,226 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  traffic_policies:
+    documentation_options:
+      filename: data_model/Traffic Policies
+    type: dict
+    keys:
+      options:
+        type: dict
+        keys:
+          counter_per_interface:
+            type: bool
+      field_sets:
+        type: dict
+        keys:
+          ipv4:
+            type: list
+            secondary_key: prefixes
+            primary_key: name
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: IPv4 Prefix Field Set Name
+                prefixes:
+                  type: list
+                  items:
+                    type: str
+                    description: IPv4 Prefix
+          ipv6:
+            type: list
+            secondary_key: prefixes
+            primary_key: name
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: IPv6 Prefix Field Set Name
+                prefixes:
+                  type: list
+                  items:
+                    type: str
+                    description: IPv6 Prefix
+          ports:
+            type: list
+            primary_key: name
+            secondary_key: port_range
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: L4 Port Field Set Name
+                port_range:
+                  type: str
+                  description: "Example: '10,20,80,440-450'"
+      policies:
+        type: list
+        primary_key: name
+        convert_types:
+          - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Traffic Policy Name
+            matches:
+              type: list
+              primary_key: name
+              convert_types:
+                - dict
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Traffic Policy Item
+                  type:
+                    type: str
+                    valid_values:
+                      - ipv4
+                      - ipv6
+                  source:
+                    type: dict
+                    keys:
+                      prefixes:
+                        type: list
+                        items:
+                          type: str
+                          description: IP address or prefix
+                      prefix_lists:
+                        type: list
+                        description: Field-set prefix lists
+                        items:
+                          type: str
+                  destination:
+                    type: dict
+                    keys:
+                      prefixes:
+                        type: list
+                        items:
+                          type: str
+                          description: IP address or prefix
+                      prefix_lists:
+                        type: list
+                        description: Field-set prefix lists
+                        items:
+                          type: str
+                  ttl:
+                    type: str
+                    description: TTL range
+                  fragment:
+                    type: dict
+                    description: |
+                      The 'fragment' command is not supported when 'source port'
+                      or 'destination port' command is configured
+                    keys:
+                      offset:
+                        type: str
+                        description: Fragment offset range
+                  protocols:
+                    type: list
+                    primary_key: protocol
+                    convert_types:
+                      - dict
+                    items:
+                      type: dict
+                      keys:
+                        protocol:
+                          type: str
+                        src_port:
+                          type: str
+                          description: Port range
+                        dst_port:
+                          type: str
+                          description: Port range
+                        src_field:
+                          type: str
+                          description: L4 port range field set
+                        dst_field:
+                          type: str
+                          description: L4 port range field set
+                        flags:
+                          type: list
+                          items:
+                            type: str
+                            valid_values: ["established", "initial"]
+                        icmp_type:
+                          type: list
+                          items:
+                            type: str
+                  actions:
+                    type: dict
+                    keys:
+                      dscp:
+                        type: int
+                        convert_types:
+                          - str
+                      traffic_class:
+                        type: int
+                        convert_types:
+                          - str
+                        description: Traffic class ID
+                      count:
+                        type: str
+                        description: Counter name
+                      drop:
+                        type: bool
+                      log:
+                        type: bool
+                        description: Only supported when action is set to drop
+            default_actions:
+              type: dict
+              keys:
+                ipv4:
+                  type: dict
+                  keys:
+                    dscp:
+                      type: int
+                      convert_types:
+                        - str
+                    traffic_class:
+                      type: int
+                      convert_types:
+                        - str
+                      description: Traffic class ID
+                    count:
+                      type: str
+                      description: Counter name
+                    drop:
+                      type: bool
+                    log:
+                      type: bool
+                      description: Only supported when action is set to drop
+                ipv6:
+                  type: dict
+                  keys:
+                    dscp:
+                      type: int
+                      convert_types:
+                        - str
+                    traffic_class:
+                      type: int
+                      convert_types:
+                        - str
+                      description: Traffic class ID
+                    count:
+                      type: str
+                      description: Counter name
+                    drop:
+                      type: bool
+                    log:
+                      type: bool
+                      description: Only supported when action is set to drop

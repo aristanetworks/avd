@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  service_unsupported_transceiver:
+    documentation_options:
+      filename: data_model/Service Unsupported Transceiver
+    type: dict
+    keys:
+      license_name:
+        type: str
+      license_key:
+        type: str

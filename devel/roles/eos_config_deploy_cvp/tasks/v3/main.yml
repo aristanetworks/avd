@@ -1,0 +1,31 @@
+---
+- name: "Generate intended variables"
+  tags: [always]
+  arista.avd.inventory_to_container:
+    # Inventory is read from memory unless 'avd_inventory_to_container_file' is set
+    inventory: "{{ avd_inventory_to_container_file }}"
+    container_root: "{{ container_root }}"
+    configlet_dir: "{{ eos_config_dir }}"
+    configlet_prefix: "{{ configlets_prefix }}"
+    destination: "{{ structured_cvp_dir }}/{{ inventory_hostname }}_configlets.yml"
+    device_filter: "{{ device_filter }}"
+  register: cvp_vars
+
+- name: "Build DEVICES and CONTAINER definition for {{ inventory_hostname }}"
+  tags: [generate, build, provision]
+  ansible.builtin.template:
+    src: "cvp-devices-v3.j2"
+    dest: "{{ structured_cvp_dir }}/{{ inventory_hostname }}.yml"
+    mode: 0664
+  delegate_to: localhost
+  run_once: true
+
+#################################################
+
+# If state=present launch creation/update process
+# If state=absent launch deletion process
+- name: Start creation/update process.
+  tags: [provision, online]
+  ansible.builtin.include_tasks: "{{ cv_collection }}/{{ state }}.yml"
+
+#################################################

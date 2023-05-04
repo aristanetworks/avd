@@ -1,0 +1,8 @@
+galaxy_info:
+  description: Build and deploy DHCP configuration file to support Zero Touch Provisioning with Arista EOS devices
+  standalone: false
+  platforms:
+    - name: EL
+      versions: ["7", "8"]
+    - name: Ubuntu
+      versions: ["focal"]

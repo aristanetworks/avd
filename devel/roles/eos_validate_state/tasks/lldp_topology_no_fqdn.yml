@@ -1,0 +1,34 @@
+---
+
+# LLDP Topology Tests
+
+- name: Gather lldp topology
+  arista.eos.eos_command:
+    commands: "show lldp neighbors detail | json"
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  register: lldp_topology_state
+  tags:
+    - lldp_topology
+
+- name: Validate lldp topology when there is no domain name
+  delegate_to: localhost
+  ansible.builtin.assert:
+    that:
+      - lldp_topology_state.stdout[0].lldpNeighbors[ethernet_interface.name].lldpNeighborInfo[0] is defined
+      - lldp_topology_state.stdout[0].lldpNeighbors[ethernet_interface.name].lldpNeighborInfo[0].systemName == ethernet_interface.peer
+      - lldp_topology_state.stdout[0].lldpNeighbors[ethernet_interface.name].lldpNeighborInfo[0].neighborInterfaceInfo.interfaceId == "\"" ~ ethernet_interface.peer_interface ~ "\""
+    fail_msg: "{{ lldp_topology_state.stdout[0].lldpNeighbors[ethernet_interface.name].lldpNeighborInfo[0].systemName | default('Interface Down') | replace('\"', '') }} - {{ lldp_topology_state.stdout[0].lldpNeighbors[ethernet_interface.name].lldpNeighborInfo[0].neighborInterfaceInfo.interfaceId | default('N/A') | replace('\"', '') }}"
+    quiet: true
+  loop: "{{ ethernet_interfaces | arista.avd.default({}) | arista.avd.convert_dicts('name') }}"
+  loop_control:
+    loop_var: ethernet_interface
+  when: |
+    ethernet_interfaces is arista.avd.defined and
+    ethernet_interface.shutdown is not arista.avd.defined(true) and
+    ethernet_interface.peer is arista.avd.defined and
+    ethernet_interface.peer_interface is arista.avd.defined and
+    hostvars[ethernet_interface.peer] is arista.avd.defined
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  register: lldp_topology_results
+  tags:
+    - lldp_topology

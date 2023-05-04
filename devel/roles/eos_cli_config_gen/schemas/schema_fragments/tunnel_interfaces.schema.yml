@@ -1,0 +1,89 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  tunnel_interfaces:
+    documentation_options:
+      filename: data_model/Interfaces
+    type: list
+    primary_key: name
+    convert_types:
+      - dict
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          description: Tunnel Interface Name
+        description:
+          type: str
+        shutdown:
+          type: bool
+        mtu:
+          type: int
+          min: 68
+          max: 65535
+          convert_types:
+            - str
+        vrf:
+          type: str
+          description: VRF Name
+        ip_address:
+          type: str
+          format: ipv4_cidr
+          description: IPv4_address/Mask
+        ipv6_enable:
+          type: bool
+        ipv6_address:
+          type: str
+          format: ipv6_cidr
+          description: IPv6_address/Mask
+        access_group_in:
+          description: IPv4 ACL Name for ingress
+          type: str
+        access_group_out:
+          description: IPv4 ACL Name for egress
+          type: str
+        ipv6_access_group_in:
+          description: IPv6 ACL Name for ingress
+          type: str
+        ipv6_access_group_out:
+          description: IPv6 ACL Name for egress
+          type: str
+        tcp_mss_ceiling:
+          type: dict
+          keys:
+            ipv4:
+              type: int
+              description: Segment Size for IPv4
+              min: 64
+              max: 65495
+              convert_types:
+                - str
+            ipv6:
+              type: int
+              description: Segment Size for IPv6
+              min: 64
+              max: 65475
+              convert_types:
+                - str
+            direction:
+              type: str
+              valid_values: ["ingress", "egress"]
+              description: |
+                Optional direction ('ingress', 'egress')  for tcp mss ceiling
+        source_interface:
+          type: str
+          description: Tunnel Source Interface Name
+        destination:
+          type: str
+          description: IPv4 or IPv6 Address Tunnel Destination
+        path_mtu_discovery:
+          type: bool
+          description: Enable Path MTU Discovery On Tunnel
+        eos_cli:
+          type: str
+          description: |
+            Multiline String with EOS CLI rendered directly on the Tunnel interface in the final EOS configuration.

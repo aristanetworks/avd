@@ -1,0 +1,55 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  patch_panel:
+    documentation_options:
+      filename: data_model/Patch Panel
+    type: dict
+    keys:
+      patches:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+            enabled:
+              type: bool
+            connectors:
+              type: list
+              primary_key: id
+              convert_types:
+              - dict
+              min_length: 2
+              max_length: 2
+              description: Must have exactly two connectors to a patch of which at least one must be of type "interface"
+              items:
+                type: dict
+                keys:
+                  id:
+                    type: str
+                    convert_types:
+                    - int
+                    required: true
+                  type:
+                    type: str
+                    valid_values:
+                    - interface
+                    - pseudowire
+                    required: true
+                  endpoint:
+                    type: str
+                    description: |
+                      String with relevant endpoint depending on type.
+                      Examples:
+                      - "Ethernet1"
+                      - "Ethernet1 dot1q vlan 123"
+                      - "bgp vpws TENANT_A pseudowire VPWS_PW_1"
+                      - "ldp LDP_PW_1"
+                    required: true
