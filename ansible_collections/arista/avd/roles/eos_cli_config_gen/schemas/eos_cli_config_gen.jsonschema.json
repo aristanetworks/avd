@@ -10940,12 +10940,12 @@
               "properties": {
                 "ipv4_unicast": {
                   "type": "boolean",
-                  "description": "Enable or disable IPv4 unicast address family on all IPv4 neighbors.",
+                  "description": "Default activation of IPv4 unicast address-family on all IPv4 neighbors (EOS default = True).",
                   "title": "IPv4 Unicast"
                 },
                 "ipv4_unicast_transport_ipv6": {
                   "type": "boolean",
-                  "description": "Enable or disable IPv4 unicast address family on all IPv6 neighbors.",
+                  "description": "Default activation of IPv4 unicast address-family on all IPv6 neighbors (EOS default == False).",
                   "title": "IPv4 Unicast Transport IPv6"
                 }
               },
