@@ -2,6 +2,11 @@
 {% if queue_monitor_length is arista.avd.defined and queue_monitor_length.enabled is not arista.avd.defined(false) %}
 !
 queue-monitor length
+{%     if queue_monitor_length.default_thresholds.high is arista.avd.defined  and queue_monitor_length.default_thresholds.low is not arista.avd.defined %}
+queue-monitor length default threshold {{ queue_monitor_length.default_thresholds.high }}
+{%     elif queue_monitor_length.default_thresholds.high is arista.avd.defined  and queue_monitor_length.default_thresholds.low is arista.avd.defined %}
+queue-monitor length default thresholds {{ queue_monitor_length.default_thresholds.high }} {{ queue_monitor_length.default_thresholds.low }}
+{%     endif %}
 {%     if queue_monitor_length.log is arista.avd.defined %}
 queue-monitor length log {{ queue_monitor_length.log }}
 {%     endif %}
