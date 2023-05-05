@@ -1048,6 +1048,50 @@ router bgp {{ router_bgp.as }}
       {{ redistribute_route_cli }}
 {%             endif %}
 {%         endfor %}
+{%         if vrf.address_family_flow_spec_ipv4 is arista.avd.defined %}
+      !
+      address-family flow-spec ipv4
+{%             if vrf.address_family_flow_spec_ipv4.bgp.missing_policy.direction_in_action is arista.avd.defined %}
+         bgp missing-policy direction in action {{ vrf.address_family_flow_spec_ipv4.bgp.missing_policy.direction_in_action }}
+{%             endif %}
+{%             if vrf.address_family_flow_spec_ipv4.bgp.missing_policy.direction_out_action is arista.avd.defined %}
+         bgp missing-policy direction out action {{ vrf.address_family_flow_spec_ipv4.bgp.missing_policy.direction_out_action }}
+{%             endif %}
+{%             for peer_group in vrf.address_family_flow_spec_ipv4.peer_groups | arista.avd.natural_sort('name') %}
+{%                 if peer_group.activate is arista.avd.defined(true) %}
+         neighbor {{ peer_group.name }} activate
+{%                 elif peer_group.activate is arista.avd.defined(false) %}
+         no neighbor {{ peer_group.name }} activate
+{%                 endif %}
+{%             endfor %}
+{%             for neighbor in vrf.address_family_flow_spec_ipv4.neighbors | arista.avd.natural_sort('ip_address') %}
+{%                 if neighbor.activate is arista.avd.defined(true) %}
+         neighbor {{ neighbor.ip_address }} activate
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%         if vrf.address_family_flow_spec_ipv6 is arista.avd.defined %}
+      !
+      address-family flow-spec ipv6
+{%             if vrf.address_family_flow_spec_ipv6.bgp.missing_policy.direction_in_action is arista.avd.defined %}
+         bgp missing-policy direction in action {{ vrf.address_family_flow_spec_ipv6.bgp.missing_policy.direction_in_action }}
+{%             endif %}
+{%             if vrf.address_family_flow_spec_ipv6.bgp.missing_policy.direction_out_action is arista.avd.defined %}
+         bgp missing-policy direction out action {{ vrf.address_family_flow_spec_ipv6.bgp.missing_policy.direction_out_action }}
+{%             endif %}
+{%             for peer_group in vrf.address_family_flow_spec_ipv6.peer_groups | arista.avd.natural_sort('name') %}
+{%                 if peer_group.activate is arista.avd.defined(true) %}
+         neighbor {{ peer_group.name }} activate
+{%                 elif peer_group.activate is arista.avd.defined(false) %}
+         no neighbor {{ peer_group.name }} activate
+{%                 endif %}
+{%             endfor %}
+{%             for neighbor in vrf.address_family_flow_spec_ipv6.neighbors | arista.avd.natural_sort('ip_address') %}
+{%                 if neighbor.activate is arista.avd.defined(true) %}
+         neighbor {{ neighbor.ip_address }} activate
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
 {%         if vrf.address_family_ipv4 is arista.avd.defined %}
       !
       address-family ipv4
@@ -1236,50 +1280,6 @@ router bgp {{ router_bgp.as }}
 {%                     set network_cli = network_cli ~ " route-map " ~ network.route_map %}
 {%                 endif %}
          {{ network_cli }}
-{%             endfor %}
-{%         endif %}
-{%         if vrf.address_family_flow_spec_ipv4 is arista.avd.defined %}
-      !
-      address-family flow-spec ipv4
-{%             if vrf.address_family_flow_spec_ipv4.bgp.missing_policy.direction_in_action is arista.avd.defined %}
-         bgp missing-policy direction in action {{ vrf.address_family_flow_spec_ipv4.bgp.missing_policy.direction_in_action }}
-{%             endif %}
-{%             if vrf.address_family_flow_spec_ipv4.bgp.missing_policy.direction_out_action is arista.avd.defined %}
-         bgp missing-policy direction out action {{ vrf.address_family_flow_spec_ipv4.bgp.missing_policy.direction_out_action }}
-{%             endif %}
-{%             for peer_group in vrf.address_family_flow_spec_ipv4.peer_groups | arista.avd.natural_sort('name') %}
-{%                 if peer_group.activate is arista.avd.defined(true) %}
-         neighbor {{ peer_group.name }} activate
-{%                 elif peer_group.activate is arista.avd.defined(false) %}
-         no neighbor {{ peer_group.name }} activate
-{%                 endif %}
-{%             endfor %}
-{%             for neighbor in vrf.address_family_flow_spec_ipv4.neighbors | arista.avd.natural_sort('ip_address') %}
-{%                 if neighbor.activate is arista.avd.defined(true) %}
-         neighbor {{ neighbor.ip_address }} activate
-{%                 endif %}
-{%             endfor %}
-{%         endif %}
-{%         if vrf.address_family_flow_spec_ipv6 is arista.avd.defined %}
-      !
-      address-family flow-spec ipv6
-{%             if vrf.address_family_flow_spec_ipv6.bgp.missing_policy.direction_in_action is arista.avd.defined %}
-         bgp missing-policy direction in action {{ vrf.address_family_flow_spec_ipv6.bgp.missing_policy.direction_in_action }}
-{%             endif %}
-{%             if vrf.address_family_flow_spec_ipv6.bgp.missing_policy.direction_out_action is arista.avd.defined %}
-         bgp missing-policy direction out action {{ vrf.address_family_flow_spec_ipv6.bgp.missing_policy.direction_out_action }}
-{%             endif %}
-{%             for peer_group in vrf.address_family_flow_spec_ipv6.peer_groups | arista.avd.natural_sort('name') %}
-{%                 if peer_group.activate is arista.avd.defined(true) %}
-         neighbor {{ peer_group.name }} activate
-{%                 elif peer_group.activate is arista.avd.defined(false) %}
-         no neighbor {{ peer_group.name }} activate
-{%                 endif %}
-{%             endfor %}
-{%             for neighbor in vrf.address_family_flow_spec_ipv6.neighbors | arista.avd.natural_sort('ip_address') %}
-{%                 if neighbor.activate is arista.avd.defined(true) %}
-         neighbor {{ neighbor.ip_address }} activate
-{%                 endif %}
 {%             endfor %}
 {%         endif %}
 {%         for  address_family in vrf.address_families | arista.avd.natural_sort('address_family') %}
