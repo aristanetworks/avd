@@ -284,7 +284,7 @@
 *Inherited from Port-Channel Interface
 {%     endif %}
 {# IP NAT Documentation #}
-{%     set ip_nat_interfaces = ethernet_interfaces | arista.avd.default({}) %}
+{%     set ip_nat_interfaces = ethernet_interfaces %}
 {%     include 'documentation/interfaces-ip-nat.j2' %}
 {# IPv6 #}
 {%     set ethernet_interface_ipv6 = namespace() %}
