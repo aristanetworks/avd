@@ -42,9 +42,6 @@
 | {{ tunnel_interface.name }} | {{ row_vrf }} | {{ row_ip_addr }} | {{ row_tcp_mss }} | {{ row_tcp_mss_direction }} | {{ row_acl_in }} | {{ row_acl_out }} |
 {%         endfor %}
 {%     endif %}
-{# IP NAT Documentation #}
-{%     set ip_nat_interfaces = tunnel_interfaces | arista.avd.default({}) %}
-{%     include 'documentation/interfaces-ip-nat.j2' %}
 {# IPv6 #}
 {%     if tunnel_interfaces_ipv6 | length > 0 %}
 

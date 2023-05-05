@@ -47,7 +47,6 @@ interface Management1
 | Tunnel2 | test ipv6 only | default | - | True | Ethernet42 | dead:beef::1 | False |
 | Tunnel3 | test dual stack | default | 1500 | - | Ethernet42 | 1.1.1.1 | - |
 | Tunnel4 | test no tcp_mss | default | 1500 | - | Ethernet42 | 1.1.1.1 | - |
-| Tunnel5 | IP NAT Testing | default | - | - | - | - | - |
 
 ##### IPv4
 
@@ -56,30 +55,6 @@ interface Management1
 | Tunnel1 | Tunnel-VRF | 42.42.42.42/24 | 666 | ingress | test-in | test-out |
 | Tunnel3 | default | 64.64.64.64/24 | 666 | - | - | - |
 | Tunnel4 | default | 64.64.64.64/24 | - | - | - | - |
-
-##### IP NAT: Source Static
-
-| Interface | Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
-| --------- | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
-| Tunnel5 | - | 3.0.0.1 | - | - | 4.0.0.1 | - | - | - | 0 | - |
-
-##### IP NAT: Source Dynamic
-
-| Interface | Access List | NAT Type | Pool Name | Priority | Comment |
-| --------- | ----------- | -------- | --------- | -------- | ------- |
-| Tunnel5 | ACL2 | pool | POOL2 | 0 | - |
-
-##### IP NAT: Destination Static
-
-| Interface | Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
-| --------- | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
-| Tunnel5 | - | 1.0.0.1 | - | - | 2.0.0.1 | - | - | - | 0 | - |
-
-##### IP NAT: Destination Dynamic
-
-| Interface | Access List | Pool Name | Priority | Comment |
-| --------- | ----------- | --------- | -------- | ------- |
-| Tunnel5 | ACL1 | POOL1 | 0 | - |
 
 ##### IPv6
 
@@ -139,11 +114,4 @@ interface Tunnel4
    ipv6 address beef::64/64
    tunnel source interface Ethernet42
    tunnel destination 1.1.1.1
-!
-interface Tunnel5
-   description IP NAT Testing
-   ip nat source static 3.0.0.1 4.0.0.1
-   ip nat source dynamic access-list ACL2 pool POOL2
-   ip nat destination static 1.0.0.1 2.0.0.1
-   ip nat destination dynamic access-list ACL1 pool POOL1
 ```
