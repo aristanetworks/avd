@@ -136,6 +136,7 @@ Make sure to configure the variables in a group_vars file covering all devices m
           mtu: <int>
           bfd: <bool>
           ptp:
+            enable: <bool>
           qos_profile: <str>
           macsec_profile: <str>
           port_channel:
@@ -173,6 +174,7 @@ Make sure to configure the variables in a group_vars file covering all devices m
           mtu: <int>
           bfd: <bool>
           ptp:
+            enable: <bool>
           qos_profile: <str>
           macsec_profile: <str>
           port_channel:
