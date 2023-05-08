@@ -42,6 +42,27 @@ keys:
               description: |
                 cipher_list syntax follows the openssl cipher strings format.
                 Colon (:) separated list of allowed ciphers as a string
+            trust_certificates:
+              type: list
+              description: |
+                List of trust certificate names or options as string
+                Examples:
+                  - test.crt
+                  - requirement
+                  - system
+                  - policy expiry-date ignore
+              items:
+                type: str
+            chain_certificates:
+              type: list
+              description: |
+                List of chain certificate names or options as string
+                Examples:
+                  - chain1.crt
+                  - chain2.crt
+                  - requirement
+              items:
+                type: str
             certificate:
               type: dict
               keys:

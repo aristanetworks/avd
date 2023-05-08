@@ -7453,6 +7453,22 @@
                 "description": "cipher_list syntax follows the openssl cipher strings format.\nColon (:) separated list of allowed ciphers as a string\n",
                 "title": "Cipher List"
               },
+              "trust_certificates": {
+                "type": "array",
+                "description": "List of trust certificate names or options as string\nExamples:\n  - test.crt\n  - requirement\n  - system\n  - policy expiry-date ignore\n",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Trust Certificates"
+              },
+              "chain_certificates": {
+                "type": "array",
+                "description": "List of chain certificate names or options as string\nExamples:\n  - chain1.crt\n  - chain2.crt\n  - requirement\n",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Chain Certificates"
+              },
               "certificate": {
                 "type": "object",
                 "properties": {

@@ -4612,6 +4612,19 @@ keys:
                 Colon (:) separated list of allowed ciphers as a string
 
                 '
+            trust_certificates:
+              type: list
+              description: "List of trust certificate names or options as string\nExamples:\n
+                \ - test.crt\n  - requirement\n  - system\n  - policy expiry-date
+                ignore\n"
+              items:
+                type: str
+            chain_certificates:
+              type: list
+              description: "List of chain certificate names or options as string\nExamples:\n
+                \ - chain1.crt\n  - chain2.crt\n  - requirement\n"
+              items:
+                type: str
             certificate:
               type: dict
               keys:
