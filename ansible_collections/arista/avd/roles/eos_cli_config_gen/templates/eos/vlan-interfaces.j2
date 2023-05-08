@@ -145,8 +145,10 @@ interface {{ vlan_interface.name }}
    multicast ipv6 static
 {%         endif %}
 {%     endif %}
-{%     set interface_ip_nat = vlan_interface.ip_nat | arista.avd.default({}) %}
-{%     include 'eos/interface-ip-nat.j2' %}
+{%     if vlan_interface.ip_nat is arista.avd.defined %}
+{%         set interface_ip_nat = vlan_interface.ip_nat %}
+{%         include 'eos/interface-ip-nat.j2' %}
+{%     endif %}
 {%     if vlan_interface.access_group_in is arista.avd.defined %}
    ip access-group {{ vlan_interface.access_group_in }} in
 {%     endif %}
