@@ -2,7 +2,7 @@
 
 <center><img src="media/avd-logo.png" alt="Arista AVD Overview" width="800"/></center>
 
-Arista Validated Designs (AVD) is an extensible data model that defines Arista’s Unified Cloud Network architecture as "code".
+Arista Validated Designs (AVD) is an extensible data model that defines Arista's Unified Cloud Network architecture as "code".
 
 ## Features
 
