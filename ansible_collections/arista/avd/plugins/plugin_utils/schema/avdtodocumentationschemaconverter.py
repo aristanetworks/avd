@@ -399,36 +399,6 @@ class AvdToDocumentationSchemaConverter:
             return "<br>".join(descriptions)
         return None
 
-    def deprecation(self, schema: dict) -> tuple[str, str]:
-        if (deprecation := schema.get("deprecation")) is None:
-            return None, None
-
-        if removed := deprecation.get("removed"):
-            removed_verb = "was"
-            state_verb = "was"
-            state = "removed"
-        else:
-            removed_verb = "will be"
-            state_verb = "is"
-            state = "deprecated"
-
-        output = [f"This key {state_verb} {state}."]
-
-        if (remove_in_version := deprecation.get("remove_in_version")) is not None:
-            output.append(f"Support {removed_verb} removed in AVD {remove_in_version}.")
-        elif (remove_after_date := deprecation.get("remove_after_date")) is not None:
-            output.append(f"Support {removed_verb} removed the first major AVD version released after {remove_after_date}.")
-        elif removed:
-            output.append(f"Support {removed_verb} removed in AVD.")
-
-        if (new_key := deprecation.get("new_key")) is not None:
-            output.append(f"Use <samp>{new_key}</samp> instead.")
-
-        if (url := deprecation.get("url")) is not None:
-            output.append(f"See [here]({url}) for details.")
-
-        return state, " ".join(output)
-
     def _get_tables(self, schema: dict):
         table = schema.get("documentation_options", {}).get("table", DEFAULT_TABLE)
         tables = [table]
