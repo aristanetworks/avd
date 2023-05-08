@@ -2868,6 +2868,14 @@
                   "congestion_drops": {
                     "type": "boolean",
                     "title": "Congestion Drops"
+                  },
+                  "spanning_tree": {
+                    "type": "boolean",
+                    "title": "Spanning Tree"
+                  },
+                  "storm_control": {
+                    "type": "boolean",
+                    "title": "Storm Control"
                   }
                 },
                 "additionalProperties": false,

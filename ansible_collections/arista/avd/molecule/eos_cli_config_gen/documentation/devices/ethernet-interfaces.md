@@ -335,6 +335,8 @@ interface Ethernet6
    description SRV-POD02_Eth1
    logging event link-status
    logging event congestion-drops
+   logging event spanning-tree
+   logging event storm-control
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
    switchport
@@ -414,6 +416,8 @@ interface Ethernet13
    description interface_in_mode_access_with_voice
    no logging event link-status
    no logging event congestion-drops
+   no logging event spanning-tree
+   no logging event storm-control
    switchport trunk native vlan 100
    switchport phone vlan 70
    switchport phone trunk untagged
