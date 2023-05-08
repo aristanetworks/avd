@@ -13,7 +13,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: inband-mgmt-parent
+- name: Ethernet1
+  peer: inband-mgmt-parent
   peer_interface: Ethernet22
   peer_type: l3leaf
   description: INBAND-MGMT-PARENT_Ethernet22
@@ -22,8 +23,8 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet1
-- peer: inband-mgmt-parent-vrf
+- name: Ethernet2
+  peer: inband-mgmt-parent-vrf
   peer_interface: Ethernet22
   peer_type: l3leaf
   description: INBAND-MGMT-PARENT-VRF_Ethernet22
@@ -32,7 +33,6 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Ethernet2
 port_channel_interfaces:
 - name: Port-Channel1
   description: INBAND-MGMT-PARENT_Po22

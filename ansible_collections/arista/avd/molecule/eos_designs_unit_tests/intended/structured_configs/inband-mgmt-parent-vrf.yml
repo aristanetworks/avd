@@ -44,7 +44,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: inband-mgmt-subnet
+- name: Ethernet21
+  peer: inband-mgmt-subnet
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: INBAND-MGMT-SUBNET_Ethernet2
@@ -53,8 +54,8 @@ ethernet_interfaces:
   channel_group:
     id: 21
     mode: active
-  name: Ethernet21
-- peer: inband-mgmt-subnet-vrf
+- name: Ethernet22
+  peer: inband-mgmt-subnet-vrf
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: INBAND-MGMT-SUBNET-VRF_Ethernet2
@@ -63,8 +64,8 @@ ethernet_interfaces:
   channel_group:
     id: 22
     mode: active
-  name: Ethernet22
-- peer: inband-mgmt-ip
+- name: Ethernet23
+  peer: inband-mgmt-ip
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: INBAND-MGMT-IP_Ethernet2
@@ -73,7 +74,6 @@ ethernet_interfaces:
   channel_group:
     id: 23
     mode: active
-  name: Ethernet23
 port_channel_interfaces:
 - name: Port-Channel21
   description: INBAND-MGMT-SUBNET_Po1
@@ -147,6 +147,7 @@ vlan_interfaces:
   ip_virtual_router_addresses:
   - 192.168.101.1
   ip_attached_host_route_export:
+    enabled: true
     distance: 19
 - name: Vlan102
   description: Inband Management
@@ -157,4 +158,5 @@ vlan_interfaces:
   ip_virtual_router_addresses:
   - 192.168.102.1
   ip_attached_host_route_export:
+    enabled: true
     distance: 19
