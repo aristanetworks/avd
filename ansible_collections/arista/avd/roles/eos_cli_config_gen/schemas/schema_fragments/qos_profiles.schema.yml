@@ -124,8 +124,7 @@ keys:
                             convert_types:
                               - str
                             description: |
-                              Set the random-detect ecn max-mark-probability.
-                              The value should be between 1 and 100.
+                              Random-detect ECN maximum mark probability.
                           weight:
                             type: int
                             min: 1
