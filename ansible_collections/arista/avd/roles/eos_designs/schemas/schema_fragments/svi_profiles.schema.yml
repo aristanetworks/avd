@@ -6,7 +6,6 @@ keys:
   svi_profiles:
     documentation_options:
       filename: Network Services
-    $ref: "#/$defs/svis"
     type: list
     primary_key: profile
     convert_types:
@@ -22,12 +21,14 @@ keys:
       5. svi_profile.structured_config
       6. svi_parent_profile.structured_config
     items:
+      $ref: "#/$defs/svi"
       type: dict
       keys:
         profile:
           type: str
           description: Profile name
-          required: true
         parent_profile:
           type: str
-          description: SVI profile name
+          description: |
+            Parent SVI profile name to apply.
+            svi_profiles can refer to another svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).

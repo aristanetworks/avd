@@ -493,7 +493,6 @@ $defs:
                   Explicitly extend all VLANs/VLAN-Aware Bundles inside the VRF to remote EVPN domains.
                   Overrides `<network_services_key>.[].evpn_l2_multi_domain`.
               svis:
-                $ref: "#/$defs/svis"
                 type: list
                 primary_key: id
                 convert_types:
@@ -502,11 +501,16 @@ $defs:
                   List of SVIs
                   This will create both the L3 SVI and L2 VLAN based on filters applied to the node..
                 items:
+                  $ref: "#/$defs/svi"
                   type: dict
                   keys:
                     id:
                       type: int
-                      required: true
+                      convert_types:
+                        - str
+                      description: SVI interface id and VLAN id.
+                      min: 1
+                      max: 4096
               l3_interfaces:
                 type: list
                 description: |
