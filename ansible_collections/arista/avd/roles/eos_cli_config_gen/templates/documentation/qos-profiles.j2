@@ -69,6 +69,19 @@ QOS Profile: **{{ profile.name }}**
 **Priority Flow Control**
 
 Priority Flow Control is **enabled**.
+
+| Priority | Action |
+| -------- | ------ |
+{%             for priority_block in profile.priority_flow_control.priorities | arista.avd.natural_sort('priority') %}
+{%                 if priority_block.priority is arista.avd.defined %}
+{%                     if priority_block.no_drop is arista.avd.defined(true) %}
+{%                         set action = "no-drop" %}
+{%                     else %}
+{%                         set action = "drop" %}
+{%                     endif %}
+| {{ priority_block.priority }} | {{ action }} |
+{%                 endif %}
+{%             endfor %}
 {%             if profile.priority_flow_control.watchdog.enabled is arista.avd.defined(true) %}
 {%                 set enabled = profile.priority_flow_control.watchdog.enabled %}
 {%                 set action = profile.priority_flow_control.watchdog.action | arista.avd.default('errdisable') %}
@@ -82,19 +95,6 @@ Priority Flow Control is **enabled**.
 | ------- | ------ | ------- | -------- | ------- |
 | {{ enabled }} | {{ action }} | {{ timeout }} | {{ recovery }} | {{ polling }} |
 {%             endif %}
-
-| Priority | Action |
-| -------- | ------ |
-{%             for priority_block in profile.priority_flow_control.priorities | arista.avd.natural_sort %}
-{%                 if priority_block.priority is arista.avd.defined %}
-{%                     if priority_block.no_drop is arista.avd.defined(true) %}
-{%                         set action = "no-drop" %}
-{%                     else %}
-{%                         set action = "drop" %}
-{%                     endif %}
-| {{ priority_block.priority }} | {{ action }} |
-{%                 endif %}
-{%             endfor %}
 {%         endif %}
 {%     endfor %}
 

@@ -379,16 +379,16 @@ QOS Profile: **test_with_pfc**
 
 Priority Flow Control is **enabled**.
 
-Priority Flow Control watchdog is confired with the below settings.
-
-| Enabled | Action | Timeout | Recovery | Polling |
-| ------- | ------ | ------- | -------- | ------- |
-| True | drop | 0.5 | 1 | auto |
-
 | Priority | Action |
 | -------- | ------ |
 | 0 | no-drop |
 | 1 | drop |
+
+**Priority Flow Control watchdog settings**
+
+| Enabled | Action | Timeout | Recovery | Polling |
+| ------- | ------ | ------- | -------- | ------- |
+| True | drop | 0.5 | 1 | auto |
 
 QOS Profile: **uc_mc_queues_test**
 
