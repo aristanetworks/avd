@@ -84,7 +84,6 @@ pe:
     spanning_tree_mode: mstp
     overlay_address_families: [ evpn, vpn-ipv4, vpn-ipv6 ]
     bgp_defaults:
-      - 'no bgp default ipv4-unicast'
       - 'distance bgp 20 200 200'
       - 'graceful-restart restart-time 300'
       - 'graceful-restart'
@@ -138,7 +137,6 @@ rr:
     overlay_address_families: [ evpn, vpn-ipv4, vpn-ipv6 ]
     mpls_route_reflectors: [ SITE1-RR1, SITE2-RR1 ]
     bgp_defaults:
-      - 'no bgp default ipv4-unicast'
       - 'distance bgp 20 200 200'
       - 'graceful-restart restart-time 300'
       - 'graceful-restart'

@@ -375,6 +375,7 @@ ip route 10.0.0.0/8 10.1.100.100
 | BGP Tuning |
 | ---------- |
 | maximum-paths 4 ecmp 4 |
+| no bgp default ipv4-unicast |
 
 #### Router BGP Peer Groups
 
@@ -409,6 +410,7 @@ ip route 10.0.0.0/8 10.1.100.100
 !
 router bgp 65001
    router-id 192.168.255.2
+   no bgp default ipv4-unicast
    maximum-paths 4 ecmp 4
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS send-community
