@@ -18,3 +18,13 @@ management_security:
       tls_versions: "1.1"
     - name: tls-single-version-profile-as-float
       tls_versions: 1.0
+    - name: test-trust-cert
+      trust_certificates:
+        - test-trust.crt
+        - requirement
+        - system
+    - name: test-chain-cert
+      chain_certificates:
+        - test-chain-cert1.crt
+        - test-chain-cert2.crt
+        - requirement include root-ca

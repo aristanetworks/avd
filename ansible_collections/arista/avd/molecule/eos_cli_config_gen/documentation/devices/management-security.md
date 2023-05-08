@@ -54,6 +54,8 @@ interface Management1
 | ---------------- | --------------------- | -------------------- | ------------ | ----------- | ----------------- | ----------------- |
 | certificate-profile | - | eAPI.crt | eAPI.key | - | - | - |
 | cipher-list-profile | - | - | - | ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384 | - | - |
+| test-chain-cert | - | - | - | - | - | test-chain-cert1.crt, test-chain-cert2.crt, requirement include root-ca |
+| test-trust-cert | - | - | - | - | test-trust.crt, requirement, system | - |
 | tls-single-version-profile-as-float | 1.0 | - | - | - | - | - |
 | tls-single-version-profile-as-string | 1.1 | - | - | - | - | - |
 | tls-versions-profile | 1.0 1.1 | - | - | - | - | - |
@@ -71,6 +73,14 @@ management security
       certificate eAPI.crt key eAPI.key
    ssl profile cipher-list-profile
       cipher-list ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
+   ssl profile test-chain-cert
+      trust certificate requirement include root-ca
+      trust certificate test-chain-cert1.crt
+      trust certificate test-chain-cert2.crt
+   ssl profile test-trust-cert
+      trust certificate requirement
+      trust certificate system
+      trust certificate test-trust.crt
    ssl profile tls-single-version-profile-as-float
       tls versions 1.0
    ssl profile tls-single-version-profile-as-string
