@@ -1,7 +1,7 @@
 ---
 # deploy.yml
 
-- name: Build and Deploy Configs # (1)!
+- name: Deploy Configurations to Devices using eAPI # (1)!
   hosts: FABRIC
   gather_facts: false
   tasks:

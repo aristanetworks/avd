@@ -602,22 +602,22 @@ tenants: # (1)!
 4. VRF VNI definition.
 5. Enable VTEP Network diagnostics. This will create a loopback with virtual source-nat enable to perform diagnostics from the switch:
 
-```eos
-interface Loopback10
-   description VRF10_VTEP_DIAGNOSTICS
-   no shutdown
-   vrf VRF10
-   ip address 10.255.10.3/32
-!
-ip address virtual source-nat vrf VRF10 address 10.255.10.3
-```
+   ```eos
+   interface Loopback10
+     description VRF10_VTEP_DIAGNOSTICS
+     no shutdown
+     vrf VRF10
+     ip address 10.255.10.3/32
+   !
+   ip address virtual source-nat vrf VRF10 address 10.255.10.3
+   ```
 
-1. Loopback interface number.
-2. Loopback ip range, a unique ip is derived from this ranged and assigned to each l3 leaf based on it's unique id.
-3. SVI Definitions for all SVIs within this tenant.
-4. SVI Description.
-5. IP anycast gateway to be used in the SVI in every leaf across the fabric.
-6. These are pure L2 vlans. They do not have a SVI defined in the l3leafs and they will be bridged inside the VXLAN fabric.
+6. Loopback interface number.
+7. Loopback ip range, a unique ip is derived from this ranged and assigned to each l3 leaf based on it's unique id.
+8. SVI Definitions for all SVIs within this tenant.
+9. SVI Description.
+10. IP anycast gateway to be used in the SVI in every leaf across the fabric.
+11. These are pure L2 vlans. They do not have a SVI defined in the l3leafs and they will be bridged inside the VXLAN fabric.
 
 AVD offers granular control of where Tenants and VLANs are configured using `tags` and `filter`. Those areas are not covered in this basic example.
 
@@ -676,7 +676,7 @@ In this example, three playbooks are included, whereof two must be used:
 1. The first playbook `build.yml` is mandatory and is used to build the structured configuration, documentation and finally the actual EOS CLI configuration.
 2. The second playbook is a choice between:
    1. `deploy.yml` to deploy the data generated from `build.yml` to the Arista switches directly using eAPI.
-   2. `deploy-cvp.yml` to deploy the data generated from `build.yml` to the Arista switches using CloudVision
+   2. `deploy-cvp.yml` to deploy the data generated from `build.yml` to the Arista switches using CloudVision.
 
 The `build.yml` playbook looks like the following:
 
@@ -733,17 +733,24 @@ Please look through the folders and files described above to learn more about th
 To build the configurations files, run the playbook called `build.yml`.
 
 ``` bash
-### Build configurations
+### Build Configurations and Documentation
 ansible-playbook playbooks/build.yml
 ```
 
 After the playbook run finishes, EOS CLI intended configuration files were written to `intended/configs`.
 
-To build and deploy the configurations to your switches, run the playbook called `deploy.yml`. This assumes that your Ansible host has access and authentication rights to the switches. Those auth variables are defined in FABRIC.yml.
+To build and deploy the configurations to your switches directly, using eAPI, run the playbook called `deploy.yml`. This assumes that your Ansible host has access and authentication rights to the switches. Those auth variables are defined in FABRIC.yml.
 
 ``` bash
-### Build configurations & Push Configs to switches
+### Deploy Configurations to Devices using eAPI
 ansible-playbook playbooks/deploy.yml
+```
+
+To build and deploy the configurations to your switches using CloudVision Portal, run the playbook called `deploy-cvp.yml`. This assumes that your CloudVision Portal server has access and authentication rights to the switches. Those auth variables are defined in FABRIC.yml.
+
+``` bash
+### Deploy Configurations to Devices Using CloudVision Portal
+ansible-playbook playbooks/deploy-cvp.yml
 ```
 
 ### EOS Intended Configurations
@@ -819,11 +826,11 @@ Your configuration files should be similar to these.
 The execution of the playbook should produce the following output:
 
 ```shell
-user@ubuntu:~/Documents/git_projects/ansible-avd-examples/single-dc-l3ls$ ansible-playbook playbook.yml
+user@ubuntu:~/Documents/git_projects/ansible-avd-examples/single-dc-l3ls$ ansible-playbook build.yml
 
 PLAY [Run AVD] *****************************************************************************************************************************************************************************
 
-TASK [arista.avd.eos_designs : Collection arista.avd version 3.5.0 loaded from /home/user/.ansible/collections/ansible_collections] ******************************************************
+TASK [arista.avd.eos_designs : Collection arista.avd version 3.8.3 loaded from /home/user/.ansible/collections/ansible_collections] ******************************************************
 ok: [dc1-leaf1a]
 
 TASK [arista.avd.eos_designs : Create required output directories if not present] **********************************************************************************************************
