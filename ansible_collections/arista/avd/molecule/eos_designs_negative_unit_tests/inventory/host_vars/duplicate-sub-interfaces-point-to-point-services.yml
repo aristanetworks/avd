@@ -1,0 +1,56 @@
+---
+node_type_keys:
+  pe:
+    type: pe
+    mpls_lsr: true
+    default_mpls_overlay_role: client
+    default_evpn_role: client
+    network_services:
+      l1: true
+      l2: true
+      l3: true
+    default_overlay_routing_protocol: ibgp
+    default_overlay_address_families: [ evpn ]
+    default_evpn_encapsulation: mpls
+
+pe:
+  defaults:
+    loopback_ipv4_pool: 10.42.0.0/24
+    bgp_as: 42
+  nodes:
+    duplicate-sub-interfaces-point-to-point-services:
+      id: 42
+
+type: pe
+design:
+  type: mpls
+
+tenants:
+  - name: TENANT_A
+    pseudowire_rt_base: 2000
+    mac_vrf_id_base: 20000
+
+    point_to_point_services:
+      - name: TEN_A_site2_site5_eline_port_based
+        type: vpws-pseudowire
+        subinterfaces:
+          - number: 1000
+        endpoints:
+          - id: 26
+            nodes: [ "duplicate-sub-interfaces-point-to-point-services" ]
+            interfaces: [ "Ethernet6" ]
+
+  - name: TENANT_B
+    pseudowire_rt_base: 2000
+    mac_vrf_id_base: 20000
+    point_to_point_services:
+      - name: TEN_B_site2_site5_eline_port_based
+        type: vpws-pseudowire
+        subinterfaces:
+          - number: 1000
+        endpoints:
+          - id: 57
+            nodes: [ "duplicate-sub-interfaces-point-to-point-services" ]
+            interfaces: [ "Ethernet6" ]
+
+expected_error_message: "Duplicate interface_name Ethernet6.1000 found while generating subinterfaces under port_to_point_services"

@@ -210,17 +210,13 @@ class EthernetInterfacesMixin(UtilsMixin):
                                         "shutdown": False,
                                     }
 
-                                if (found_eth_interface := get_item(ethernet_interfaces, "name", ethernet_interface["name"])) is None:
-                                    ethernet_interfaces.append(ethernet_interface)
-                                else:
-                                    if found_eth_interface == ethernet_interface:
-                                        # Same ethernet_interface information twice in the input data. So not duplicate interface name.
-                                        continue
-
-                                    raise AristaAvdError(
-                                        f"Duplicate interface_name {ethernet_interface['name']} found while generating subinterfaces under"
-                                        " port_to_point_services"
-                                    )
+                                    if (found_eth_interface := get_item(ethernet_interfaces, "name", ethernet_interface["name"])) is None:
+                                        ethernet_interfaces.append(ethernet_interface)
+                                    else:
+                                        raise AristaAvdError(
+                                            f"Duplicate interface_name {ethernet_interface['name']} found while generating subinterfaces under"
+                                            " port_to_point_services"
+                                        )
                             else:
                                 interface = {
                                     "name": interface_name,
