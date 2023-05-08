@@ -31,6 +31,8 @@ class AvdStructuredConfig(AvdFacts):
 
         bgp_defaults = get(self.shared_utils.switch_data_combined, "bgp_defaults", default=[])
 
+        bgp_default_ipv4_unicast = get(self._hostvars, "bgp_default_ipv4_unicast", default=False)
+
         if (bgp_maximum_paths := get(self._hostvars, "bgp_maximum_paths")) is not None:
             max_paths_str = f"maximum-paths {bgp_maximum_paths}"
             if (bgp_ecmp := get(self._hostvars, "bgp_ecmp")) is not None:
@@ -41,6 +43,11 @@ class AvdStructuredConfig(AvdFacts):
             "as": self.shared_utils.bgp_as,
             "router_id": self.shared_utils.router_id,
             "bgp_defaults": bgp_defaults,
+            "bgp": {
+                "default": {
+                    "ipv4_unicast": bgp_default_ipv4_unicast,
+                },
+            },
         }
 
     @cached_property
