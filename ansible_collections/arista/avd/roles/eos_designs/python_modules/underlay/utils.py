@@ -5,7 +5,7 @@ from functools import cached_property
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils.shared_utils import SharedUtils
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 
 class UtilsMixin:
@@ -80,8 +80,6 @@ class UtilsMixin:
                         "sflow": {"enable": self.shared_utils.fabric_sflow_downlinks},
                         "structured_config": get(uplink, "structured_config"),
                     }
-                    if default(get(uplink, "sflow"), self.shared_utils.fabric_sflow_downlinks) is not None:
-                        link["sflow"] = {"enable": default(get(uplink, "sflow"), self.shared_utils.fabric_sflow_downlinks)}
                     underlay_links.append(strip_empties_from_dict(link))
 
         return natural_sort(underlay_links, "interface")
