@@ -61,7 +61,6 @@ QOS Profile: **{{ profile.name }}**
 {%                 endfor %}
 {%             endif %}
 {%         endif %}
-
 {%         set ns = namespace(ecn_table=false) %}
 {%         for tx_queue in profile.tx_queues | arista.avd.default([]) %}
 {%             if tx_queue.random_detect.ecn.threshold.units is arista.avd.defined() %}
@@ -74,6 +73,7 @@ QOS Profile: **{{ profile.name }}**
 {%             endif %}
 {%         endfor %}
 {%         if ns.ecn_table %}
+
 **ECN Configuration**
 
 | TX queue | Type | ECN Enabled | Min Threshold | Max Threshold | Max Mark Probability |

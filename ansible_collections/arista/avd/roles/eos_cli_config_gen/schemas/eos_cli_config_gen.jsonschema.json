@@ -10412,35 +10412,33 @@
                                 "kbytes",
                                 "mbytes"
                               ],
-                              "description": "Indicate the units to be used for the threshold values.\nThis should be one of segments, byte, kbytes, mbytes.\n",
+                              "description": "Units to be used for the threshold values.\nThis should be one of segments, byte, kbytes, mbytes.\n",
                               "title": "Units"
                             },
                             "min": {
                               "type": "integer",
                               "minimum": 1,
-                              "maximum": 256000000,
-                              "description": "Set the random-detect ecn minimum-threshold\n",
+                              "description": "Random-detect ecn minimum-threshold\n",
                               "title": "Min"
                             },
                             "max": {
                               "type": "integer",
                               "minimum": 1,
-                              "maximum": 256000000,
-                              "description": "Set the random-detect ecn maximum-threshold\n",
+                              "description": "Random-detect ecn maximum-threshold\n",
                               "title": "Max"
                             },
                             "max_probability": {
                               "type": "integer",
                               "minimum": 1,
                               "maximum": 100,
-                              "description": "Set the random-detect ecn max-mark-probability.\nThe value should be between 1 and 100.\n",
+                              "description": "Random-detect ECN maximum mark probability.\n",
                               "title": "Max Probability"
                             },
                             "weight": {
                               "type": "integer",
                               "minimum": 1,
                               "maximum": 15,
-                              "description": "Set the random-detect ecn weight.\nEnter a value between 1 and 15\n",
+                              "description": "Random-detect ecn weight.\n",
                               "title": "Weight"
                             }
                           },
@@ -10544,35 +10542,33 @@
                                 "kbytes",
                                 "mbytes"
                               ],
-                              "description": "Indicate the units to be used for the threshold values.\nThis should be one of segments, byte, kbytes, mbytes.\n",
+                              "description": "Units to be used for the threshold values.\nThis should be one of segments, byte, kbytes, mbytes.\n",
                               "title": "Units"
                             },
                             "min": {
                               "type": "integer",
                               "minimum": 1,
-                              "maximum": 256000000,
-                              "description": "Set the random-detect ecn minimum-threshold\n",
+                              "description": "Random-detect ecn minimum-threshold\n",
                               "title": "Min"
                             },
                             "max": {
                               "type": "integer",
                               "minimum": 1,
-                              "maximum": 256000000,
-                              "description": "Set the random-detect ecn maximum-threshold\n",
+                              "description": "Random-detect ecn maximum-threshold\n",
                               "title": "Max"
                             },
                             "max_probability": {
                               "type": "integer",
                               "minimum": 1,
                               "maximum": 100,
-                              "description": "Set the random-detect ecn max-mark-probability.\nThe value should be between 1 and 100.\n",
+                              "description": "Random-detect ECN maximum mark probability.\n",
                               "title": "Max Probability"
                             },
                             "weight": {
                               "type": "integer",
                               "minimum": 1,
                               "maximum": 15,
-                              "description": "Set the random-detect ecn weight.\nEnter a value between 1 and 15\n",
+                              "description": "Random-detect ecn weight.\n",
                               "title": "Weight"
                             }
                           },

@@ -327,7 +327,6 @@ QOS Profile: **experiment**
 | 5 | All | 40 | - | - |
 | 7 | All | 30 | - | 40 percent |
 
-
 QOS Profile: **no_qos_trust**
 
 **Settings**
@@ -335,7 +334,6 @@ QOS Profile: **no_qos_trust**
 | Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
 | ----------- | ------------ | ----- | ---------- | ------------------ |
 | 3 | 4 | disabled | - | - |
-
 
 QOS Profile: **qprof_testwithpolicy**
 
@@ -352,7 +350,6 @@ QOS Profile: **qprof_testwithpolicy**
 | 0 | All | 1 | - | - |
 | 1 | All | 80 | - | - |
 | 5 | All | 19 | no priority | - |
-
 
 QOS Profile: **test**
 

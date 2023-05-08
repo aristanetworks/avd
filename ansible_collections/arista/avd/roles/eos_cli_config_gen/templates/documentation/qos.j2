@@ -4,10 +4,11 @@
 ### QOS
 
 #### QOS Summary
-
 {%     if qos.rewrite_dscp is arista.avd.defined(true) %}
+
 QOS rewrite DSCP: **enabled**
 {%     else %}
+
 QOS rewrite DSCP: **disabled**
 {%     endif %}
 {%     if qos.random_detect.ecn.allow is arista.avd.defined %}

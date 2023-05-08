@@ -22,10 +22,10 @@ qos profile {{ profile.name }}
    service-policy type qos input {{ profile.service_policy.type.qos_input }}
 {%     endif %}
 {%     for tx_queue in profile.tx_queues | arista.avd.natural_sort('id') %}
-{%         include 'eos/tx-queues.j2' %}
+{%         include 'eos/ethernet-interface-tx-queues.j2' %}
 {%     endfor %}
 {%     for uc_tx_queue in profile.uc_tx_queues | arista.avd.natural_sort('id') %}
-{%         include 'eos/uc-tx-queues.j2' %}
+{%         include 'eos/ethernet-interface-uc-tx-queues.j2' %}
 {%     endfor %}
 {%     for mc_tx_queue in profile.mc_tx_queues | arista.avd.natural_sort('id') %}
    !

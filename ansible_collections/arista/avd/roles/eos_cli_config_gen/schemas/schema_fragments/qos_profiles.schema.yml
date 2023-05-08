@@ -97,26 +97,24 @@ keys:
                             type: str
                             valid_values: ["segments", "bytes", "kbytes", "mbytes"]
                             description: |
-                              Indicate the units to be used for the threshold values.
+                              Units to be used for the threshold values.
                               This should be one of segments, byte, kbytes, mbytes.
                           min:
                             type: int
                             required: true
                             min: 1
-                            max: 256000000
                             convert_types:
                               - str
                             description: |
-                              Set the random-detect ecn minimum-threshold
+                              Random-detect ecn minimum-threshold
                           max:
                             type: int
                             required: true
                             min: 1
-                            max: 256000000
                             convert_types:
                               - str
                             description: |
-                              Set the random-detect ecn maximum-threshold
+                              Random-detect ecn maximum-threshold
                           max_probability:
                             type: int
                             min: 1
@@ -132,8 +130,7 @@ keys:
                             convert_types:
                               - str
                             description: |
-                              Set the random-detect ecn weight.
-                              Enter a value between 1 and 15
+                              Random-detect ecn weight.
 
         uc_tx_queues:
           type: list
@@ -187,26 +184,24 @@ keys:
                             type: str
                             valid_values: ["segments", "bytes", "kbytes", "mbytes"]
                             description: |
-                              Indicate the units to be used for the threshold values.
+                              Units to be used for the threshold values.
                               This should be one of segments, byte, kbytes, mbytes.
                           min:
                             type: int
                             required: true
                             min: 1
-                            max: 256000000
                             convert_types:
                               - str
                             description: |
-                              Set the random-detect ecn minimum-threshold
+                              Random-detect ecn minimum-threshold
                           max:
                             type: int
                             required: true
                             min: 1
-                            max: 256000000
                             convert_types:
                               - str
                             description: |
-                              Set the random-detect ecn maximum-threshold
+                              Random-detect ecn maximum-threshold
                           max_probability:
                             type: int
                             min: 1
@@ -214,8 +209,7 @@ keys:
                             convert_types:
                               - str
                             description: |
-                              Set the random-detect ecn max-mark-probability.
-                              The value should be between 1 and 100.
+                              Random-detect ECN maximum mark probability.
                           weight:
                             type: int
                             min: 1
@@ -223,8 +217,8 @@ keys:
                             convert_types:
                               - str
                             description: |
-                              Set the random-detect ecn weight.
-                              Enter a value between 1 and 15
+                              Random-detect ecn weight.
+
         mc_tx_queues:
           type: list
           primary_key: id
