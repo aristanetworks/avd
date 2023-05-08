@@ -5,7 +5,7 @@ from functools import cached_property
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils.shared_utils import SharedUtils
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 
 class UtilsMixin:
@@ -46,9 +46,9 @@ class UtilsMixin:
         """
         underlay_links = []
         underlay_links.extend(self._uplinks)
-        for uplink in underlay_links:
-            if default(get(uplink, "sflow"), self.shared_utils.fabric_sflow_uplinks) is not None:
-                uplink.update({"sflow": {"enable": default(get(uplink, "sflow"), self.shared_utils.fabric_sflow_uplinks)}})
+        if self.shared_utils.fabric_sflow_uplinks is not None:
+            for uplink in underlay_links:
+                uplink.update({"sflow": {"enable": self.shared_utils.fabric_sflow_uplinks}})
 
         for peer in self._avd_peers:
             peer_facts = self.shared_utils.get_peer_facts(peer, required=True)
@@ -77,10 +77,9 @@ class UtilsMixin:
                         "short_esi": get(uplink, "peer_short_esi"),
                         "underlay_multicast": get(uplink, "underlay_multicast"),
                         "ipv6_enable": get(uplink, "ipv6_enable"),
+                        "sflow": {"enable": self.shared_utils.fabric_sflow_downlinks},
                         "structured_config": get(uplink, "structured_config"),
                     }
-                    if default(get(uplink, "sflow"), self.shared_utils.fabric_sflow_downlinks) is not None:
-                        link["sflow"] = {"enable": default(get(uplink, "sflow"), self.shared_utils.fabric_sflow_downlinks)}
                     underlay_links.append(strip_empties_from_dict(link))
 
         return natural_sort(underlay_links, "interface")
