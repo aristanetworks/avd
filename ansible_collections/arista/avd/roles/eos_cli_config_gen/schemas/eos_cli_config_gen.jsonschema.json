@@ -10628,6 +10628,64 @@
       },
       "title": "Prefix Lists"
     },
+    "priority_flow_control": {
+      "type": "object",
+      "description": "Global Priority Flow Control settings.\n",
+      "properties": {
+        "all_off": {
+          "type": "boolean",
+          "description": "Disable PFC on all interfaces.\n",
+          "title": "All Off"
+        },
+        "watchdog": {
+          "type": "object",
+          "properties": {
+            "action": {
+              "type": "string",
+              "enum": [
+                "drop",
+                "no-drop"
+              ],
+              "description": "Action on stuck queue. Default is 'errdisable'.\nAceptable values are \"drop\" or \"no-drop\".\n",
+              "title": "Action"
+            },
+            "timeout": {
+              "type": "string",
+              "pattern": "\\d+(\\.\\d)?",
+              "description": "Timeout after which port should be errdisabled or\nshould start dropping on congested priorities.\nThis should be decimal with up to 1 decimal point.\nExample : 0.5 or 60\n",
+              "title": "Timeout"
+            },
+            "polling_interval": {
+              "type": "string",
+              "pattern": "\\d+(\\.\\d)?",
+              "description": "Time interval at which the watchdog should poll the queues.\nThis should be decimal with up to 1 decimal point or set\nto 'auto' based on recovery_time and timeout values.\nExample : 0.5 or 60\n",
+              "title": "Polling Interval"
+            },
+            "recovery_time": {
+              "type": "string",
+              "pattern": "\\d+(\\.\\d)?",
+              "description": "Time interval at which the watchdog should poll the queues.\nThis should be decimal with up to 1 decimal point or set\nto 'auto' based on recovery_time and timeout values.\nExample : 0.5 or 60\n",
+              "title": "Recovery Time"
+            },
+            "override_action_drop": {
+              "type": "boolean",
+              "description": "Override configured action on stuck queue to drop.",
+              "title": "Override Action Drop"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Watchdog"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Priority Flow Control"
+    },
     "prompt": {
       "type": "string",
       "title": "Prompt"

@@ -6347,6 +6347,75 @@ keys:
                 description: 'Action as string
 
                   Example: "permit 10.255.0.0/27 eq 32"'
+  priority_flow_control:
+    type: dict
+    description: 'Global Priority Flow Control settings.
+
+      '
+    keys:
+      all_off:
+        type: bool
+        description: 'Disable PFC on all interfaces.
+
+          '
+      watchdog:
+        type: dict
+        keys:
+          action:
+            type: str
+            valid_values:
+            - drop
+            - no-drop
+            description: 'Action on stuck queue. Default is ''errdisable''.
+
+              Aceptable values are "drop" or "no-drop".
+
+              '
+          timeout:
+            type: str
+            pattern: \d+(\.\d)?
+            convert_types:
+            - int
+            description: 'Timeout after which port should be errdisabled or
+
+              should start dropping on congested priorities.
+
+              This should be decimal with up to 1 decimal point.
+
+              Example : 0.5 or 60
+
+              '
+          polling_interval:
+            type: str
+            pattern: \d+(\.\d)?
+            convert_types:
+            - int
+            description: 'Time interval at which the watchdog should poll the queues.
+
+              This should be decimal with up to 1 decimal point or set
+
+              to ''auto'' based on recovery_time and timeout values.
+
+              Example : 0.5 or 60
+
+              '
+          recovery_time:
+            type: str
+            pattern: \d+(\.\d)?
+            convert_types:
+            - int
+            description: 'Time interval at which the watchdog should poll the queues.
+
+              This should be decimal with up to 1 decimal point or set
+
+              to ''auto'' based on recovery_time and timeout values.
+
+              Example : 0.5 or 60
+
+              '
+          override_action_drop:
+            type: bool
+            description: Override configured action on stuck queue to drop.
   prompt:
     type: str
   ptp:
