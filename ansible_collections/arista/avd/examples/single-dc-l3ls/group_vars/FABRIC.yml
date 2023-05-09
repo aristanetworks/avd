@@ -47,7 +47,7 @@ bgp_peer_groups:
 
 # P2P interfaces MTU, includes VLANs 4093 and 4094 that are over peer-link
 # If you're running vEOS-lab or cEOS, you should use MTU of 1500 instead as shown in the following line
-# p2p_uplinks_mtu: 1500
+# p2p_uplinks_mtu: 9214
 p2p_uplinks_mtu: 1500
 
 # Set default uplink, downlink, and MLAG interfaces based on node type

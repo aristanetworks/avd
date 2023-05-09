@@ -5,7 +5,6 @@ all:
       hosts:
         cvp:
           # Ansible variables used by the ansible_avd and ansible_cvp roles to push configuration to devices via CVP
-          ansible_httpapi_host: 192.168.1.12
           ansible_host: 192.168.1.12
           ansible_user: ansible
           ansible_password: ansible
@@ -13,8 +12,7 @@ all:
           ansible_httpapi_use_ssl: true
           ansible_httpapi_validate_certs: false
           ansible_network_os: eos
-          # Configuration to get Virtual Env information
-          ansible_python_interpreter: $(which python3)
+
     FABRIC:
       children:
         DC1:
