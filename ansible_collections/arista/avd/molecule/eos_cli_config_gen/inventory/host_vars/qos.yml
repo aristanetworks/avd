@@ -89,7 +89,7 @@ qos_profiles:
         timer:
           timeout: "0.5"
           polling_interval: auto
-          recovery_time: 1
+          recovery_time: 1.1
           forced: true
       priorities:
         - priority: 0

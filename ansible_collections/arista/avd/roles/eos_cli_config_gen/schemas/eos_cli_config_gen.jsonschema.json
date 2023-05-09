@@ -11239,7 +11239,7 @@
                       "drop",
                       "notify-only"
                     ],
-                    "description": "Override the default ERRDISABLE action to either DROP\ntraffic on the stuck queue or notify-only\nwithout making any actions on the stuck queue.\n",
+                    "description": "Override the default error-disable action to either drop\ntraffic on the stuck queue or notify-only\nwithout making any actions on the stuck queue.\n",
                     "title": "Action"
                   },
                   "timer": {

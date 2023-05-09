@@ -389,7 +389,7 @@ Priority Flow Control is **enabled**.
 
 | Enabled | Action | Timeout | Recovery | Polling |
 | ------- | ------ | ------- | -------- | ------- |
-| True | drop | 0.5 | 1 | auto |
+| True | drop | 0.5 | 1.1 | auto |
 
 QOS Profile: **uc_mc_queues_test**
 
@@ -487,7 +487,7 @@ qos profile test_with_pfc
    priority-flow-control priority 1 drop
    priority-flow-control pause watchdog
    priority-flow-control pause watchdog port action drop
-   priority-flow-control pause watchdog port timer timeout 0.5 polling-interval auto recovery-time 1 forced
+   priority-flow-control pause watchdog port timer timeout 0.5 polling-interval auto recovery-time 1.1 forced
 !
 qos profile uc_mc_queues_test
    !

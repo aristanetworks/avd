@@ -6794,7 +6794,8 @@ keys:
                   valid_values:
                   - drop
                   - notify-only
-                  description: 'Override the default ERRDISABLE action to either DROP
+                  description: 'Override the default error-disable action to either
+                    drop
 
                     traffic on the stuck queue or notify-only
 
@@ -6813,6 +6814,7 @@ keys:
                       pattern: \d+(\.\d)?
                       convert_types:
                       - int
+                      - float
                       description: 'Timeout after which port should be errdisabled
                         or
 
@@ -6829,6 +6831,7 @@ keys:
                       pattern: auto|\d+(\.\d)?
                       convert_types:
                       - int
+                      - float
                       description: 'Time interval at which the watchdog should poll
                         the queues.
 
@@ -6845,6 +6848,7 @@ keys:
                       pattern: \d+(\.\d)?
                       convert_types:
                       - int
+                      - float
                       description: 'Recovery-time after which stuck queue should
 
                         recover and start forwarding again.
