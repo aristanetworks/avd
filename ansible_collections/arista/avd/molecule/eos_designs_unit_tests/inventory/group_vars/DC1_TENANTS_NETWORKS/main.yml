@@ -21,6 +21,7 @@ svi_profiles:
     enabled: false
     ip_address_virtual: 10.4.12.254/24
     ipv6_address_virtual: 2001:db8:412::1/64
+    ipv6_enable: false
   TEST_SVI_NODE_INHERIT:
     name: Test the SVI and node config inheritance
     mtu: 1560

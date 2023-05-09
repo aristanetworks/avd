@@ -240,4 +240,5 @@ vlan_interfaces:
   ip_virtual_router_addresses:
   - 172.21.110.1
   ip_attached_host_route_export:
+    enabled: true
     distance: 19

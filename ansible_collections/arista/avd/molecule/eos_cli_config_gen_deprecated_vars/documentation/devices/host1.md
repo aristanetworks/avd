@@ -343,6 +343,12 @@ logging policy match match-list molecule discard
 | Loopback0 | default |
 | Loopback12 | Tenant_A_APP_Zone |
 
+#### SNMP Views Configuration
+
+| View | MIB Family Name | Status |
+| ---- | --------------- | ------ |
+| VW-WRITE | iso | Included |
+
 #### SNMP Communities
 
 | Community | Access | Access List IPv4 | Access List IPv6 | View |
@@ -358,6 +364,7 @@ logging policy match match-list molecule discard
 snmp-server vrf MGMT local-interface Management1
 snmp-server local-interface Loopback0
 snmp-server vrf Tenant_A_APP_Zone local-interface Loopback12
+snmp-server view VW-WRITE iso included
 snmp-server community SNMP-COMMUNITY-1 ro onur
 snmp-server community SNMP-COMMUNITY-2 view VW-READ rw ipv6 SNMP-MGMT SNMP-MGMT
 snmp-server community SNMP-COMMUNITY-3 ro

@@ -645,6 +645,10 @@ keys:
                   type: bool
                 congestion_drops:
                   type: bool
+                spanning_tree:
+                  type: bool
+                storm_control:
+                  type: bool
         lldp:
           type: dict
           keys:

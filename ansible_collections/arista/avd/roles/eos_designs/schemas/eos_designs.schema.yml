@@ -3341,6 +3341,13 @@ $defs:
             type: int
             convert_types:
             - str
+          mlag_domain_id:
+            documentation_options:
+              filename: Fabric Topology
+              table: MLAG configuration management
+            description: MLAG Domain ID. If not set the node group name (Set with
+              "group" key) will be used.
+            type: str
           spanning_tree_mode:
             documentation_options:
               filename: Fabric Topology
@@ -3766,7 +3773,13 @@ $defs:
             group:
               type: str
               required: true
-              description: The Node Group Name is used for MLAG domain.
+              description: 'The Node Group Name is used for MLAG domain unless set
+                with ''mlag_domain_id''.
+
+                The Node Group Name is also used for peer description on downstream
+                switches'' uplinks.
+
+                '
             nodes:
               $ref: '#/$defs/node_type/keys/nodes'
       nodes:

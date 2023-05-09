@@ -141,7 +141,7 @@ class AvdToDocumentationSchemaConverter:
             built_table["description"] = main_key_schema.get("description")
         else:
             # Combined table
-            built_table["display_name"] = key_to_display_name(table)
+            built_table["display_name"] = table
 
         schema_keys = self._get_keys(schema)
 
