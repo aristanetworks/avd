@@ -190,7 +190,8 @@ keys:
                       required: true
                       pattern: "\\d+(\\.\\d)?"
                       convert_types:
-                        - "int"
+                        - int
+                        - float
                       description: |
                         Timeout after which port should be errdisabled or
                         should start dropping on congested priorities.
@@ -201,7 +202,8 @@ keys:
                       required: true
                       pattern: "auto|\\d+(\\.\\d)?"
                       convert_types:
-                        - "int"
+                        - int
+                        - float
                       description: |
                         Time interval at which the watchdog should poll the queues.
                         This should be decimal with up to 1 decimal point or set
@@ -212,7 +214,8 @@ keys:
                       required: true
                       pattern: "\\d+(\\.\\d)?"
                       convert_types:
-                        - "int"
+                        - int
+                        - float
                       description: |
                         Recovery-time after which stuck queue should
                         recover and start forwarding again.
