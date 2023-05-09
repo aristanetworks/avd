@@ -3317,7 +3317,7 @@
                 "properties": {
                   "input": {
                     "type": "string",
-                    "description": "Policy-map name",
+                    "description": "Policy Based Routing Policy-map name",
                     "title": "Input"
                   }
                 },
@@ -3326,6 +3326,24 @@
                   "^_.+$": {}
                 },
                 "title": "PBR"
+              },
+              "qos": {
+                "type": "object",
+                "properties": {
+                  "input": {
+                    "type": "string",
+                    "description": "Quality of Service Policy-map name",
+                    "title": "Input"
+                  }
+                },
+                "required": [
+                  "input"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "QOS"
               }
             },
             "additionalProperties": false,
@@ -8921,7 +8939,7 @@
                 "properties": {
                   "input": {
                     "type": "string",
-                    "description": "Policy-map name",
+                    "description": "Policy Based Routing Policy-map name",
                     "title": "Input"
                   }
                 },
@@ -8930,6 +8948,24 @@
                   "^_.+$": {}
                 },
                 "title": "PBR"
+              },
+              "qos": {
+                "type": "object",
+                "properties": {
+                  "input": {
+                    "type": "string",
+                    "description": "Quality of Service Policy-map name",
+                    "title": "Input"
+                  }
+                },
+                "required": [
+                  "input"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "QOS"
               }
             },
             "additionalProperties": false,

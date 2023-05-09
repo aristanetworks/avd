@@ -879,7 +879,15 @@ keys:
               keys:
                 input:
                   type: str
-                  description: Policy-map name
+                  description: Policy Based Routing Policy-map name
+            qos:
+              type: dict
+              keys:
+                input:
+                  type: str
+                  required: true
+                  description: Quality of Service Policy-map name
+
         mpls:
           type: dict
           keys:
