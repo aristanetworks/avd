@@ -4,40 +4,7 @@
 type: dict
 keys:
   local_users:
+    $ref: "eos_cli_config_gen#/keys/local_users"
     type: list
-    primary_key: name
-    convert_types:
-    - dict
-    description: Dictionary of local users.
-    items:
-      type: dict
-      keys:
-        name:
-          type: str
-          required: True
-          description: Username
-        privilege:
-          type: int
-          convert_types:
-          - str
-          min: 1
-          max: 15
-          description: Initial privilege level with local EXEC authorization.
-        role:
-          type: str
-          description: EOS RBAC Role to be assigned to the user such as "network-admin" or "network-operator".
-        sha512_password:
-          type: str
-          description: Must be the hash of the password. By default EOS salts the password with the username, so the simplest is to generate the hash on an EOS device using the same username.
-        no_password:
-          type: bool
-          default: True
-          description: If set, a password will not be configured for this user. "sha512_password" MUST not be defined for this user.
-        ssh_key:
-          type: str
-          description: SSH key string
-        disabled:
-          type: bool
-          description: |
-            If "disabled" is true, the user will be removed and all other settings are ignored.
-            Useful for removing the default "admin" user.
+    documentation_options:
+      filename: Input Variables

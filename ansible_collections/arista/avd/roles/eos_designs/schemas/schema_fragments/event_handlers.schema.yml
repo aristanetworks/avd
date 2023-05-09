@@ -4,45 +4,11 @@
 type: dict
 keys:
   event_handlers:
+    $ref: "eos_cli_config_gen#/keys/event_handlers"
     type: list
-    primary_key: name
-    convert_types:
-    - dict
+    documentation_options:
+      filename: Input Variables
     description: |
       Gives the ability to monitor and react to Syslog messages.
       Event Handlers provide a powerful and flexible tool that can be used to apply self-healing actions,
       customize the system behavior, and implement workarounds to problems discovered in the field.
-    items:
-      type: dict
-      keys:
-        name:
-          type: str
-          required: True
-          description: Event handler name.
-        action_type:
-          type: str
-          valid_values:
-          - "bash"
-          - "increment"
-        action:
-          type: str
-          description: Command to run when the handler is triggered.
-        delay:
-          type: int
-          convert_types:
-          - str
-          description: Event-handler delay in seconds.
-        trigger:
-          type: str
-          description: Configure event trigger condition.
-          valid_values:
-          - "on-logging"
-        regex:
-          type: str
-          description: |
-            Regular expression to use for searching log messages.
-            Required for on-logging trigger.
-        asynchronous:
-          type: bool
-          default: False
-          description: Set the action to be non-blocking.

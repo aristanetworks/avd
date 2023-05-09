@@ -9,9 +9,10 @@ keys:
       table: CloudVision Settings
     type: list
     description: |
-      You can either provide a list of IPs to target on-premise CloudVision cluster or
-      use DNS name for your CloudVision as a Service instance. If you have both on-prem and
-      CVaaS defined, only on-prem is configured.
+      List of IPv4 addresses or DNS names for CloudVision.
+      For on-premise CloudVision enter all the nodes of the cluster.
+      For CloudVision as a Service enter the DNS name of the instance.
+      If you have both on-premise and CVaaS defined, only on-premise is configured.
     items:
       type: str
-      description: IPv4 address or CV as a Service hostname
+      description: IPv4 address or DNS name for CloudVision

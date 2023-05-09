@@ -2315,6 +2315,8 @@ keys:
             '
         delay:
           type: int
+          convert_types:
+          - str
           description: 'Event-handler delay in seconds
 
             '

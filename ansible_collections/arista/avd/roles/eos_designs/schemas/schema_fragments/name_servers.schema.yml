@@ -5,7 +5,7 @@ type: dict
 keys:
   name_servers:
     type: list
-    description: Only eos_designs name_servers variables.
+    description: List of DNS servers. The VRF is set to < mgmt_interface_vrf >.
     items:
       type: str
       description: IPv4 address

@@ -6,4 +6,4 @@ keys:
   mgmt_vrf_routing:
     type: bool
     default: False
-    description: Management interface configuration.
+    description: Configure IP routing for the OOB Management VRF.

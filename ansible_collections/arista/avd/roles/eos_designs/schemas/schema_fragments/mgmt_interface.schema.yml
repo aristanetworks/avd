@@ -6,4 +6,4 @@ keys:
   mgmt_interface:
     type: str
     default: Management1
-    description: Management interface configuration.
+    description: OOB Management interface.

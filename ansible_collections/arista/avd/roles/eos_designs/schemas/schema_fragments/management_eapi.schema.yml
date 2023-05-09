@@ -5,7 +5,7 @@ type: dict
 keys:
   management_eapi:
     description: |
-      Default is "https management eAPI enabled".
+      Default is HTTPS management eAPI enabled.
       The VRF is set to < mgmt_interface_vrf >.
     type: dict
     keys:

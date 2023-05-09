@@ -762,15 +762,15 @@
     },
     "cvp_instance_ip": {
       "type": "string",
-      "description": "IPv4 address.\nCloudVision - Telemetry Agent (TerminAttr) configuration is optional.\nYou can either provide a list of IPs to target on-premise CloudVision cluster or\nuse DNS name for your CloudVision as a Service instance. If you have both on-prem and\nCVaaS defined, only on-prem is configured.",
+      "description": "IPv4 address or DNS name for CloudVision.\nThis variable only supports an on-premise single-node cluster or the DNS name of a CloudVision as a Service instance.",
       "title": "CVP Instance IP"
     },
     "cvp_instance_ips": {
       "type": "array",
-      "description": "You can either provide a list of IPs to target on-premise CloudVision cluster or\nuse DNS name for your CloudVision as a Service instance. If you have both on-prem and\nCVaaS defined, only on-prem is configured.\n",
+      "description": "List of IPv4 addresses or DNS names for CloudVision.\nFor on-premise CloudVision enter all the nodes of the cluster.\nFor CloudVision as a Service enter the DNS name of the instance.\nIf you have both on-premise and CVaaS defined, only on-premise is configured.\n",
       "items": {
         "type": "string",
-        "description": "IPv4 address or CV as a Service hostname"
+        "description": "IPv4 address or DNS name for CloudVision"
       },
       "title": "CVP Instance Ips"
     },
@@ -913,44 +913,46 @@
     },
     "event_handlers": {
       "type": "array",
-      "description": "Gives the ability to monitor and react to Syslog messages.\nEvent Handlers provide a powerful and flexible tool that can be used to apply self-healing actions,\ncustomize the system behavior, and implement workarounds to problems discovered in the field.\n",
+      "description": "Gives the ability to monitor and react to Syslog messages.\nEvent Handlers provide a powerful and flexible tool that can be used to apply self-healing actions,\ncustomize the system behavior, and implement workarounds to problems discovered in the field.",
       "items": {
         "type": "object",
         "properties": {
           "name": {
             "type": "string",
-            "description": "Event handler name.",
+            "description": "Event Handler Name",
             "title": "Name"
           },
           "action_type": {
             "type": "string",
             "enum": [
               "bash",
-              "increment"
+              "increment",
+              "log"
             ],
             "title": "Action Type"
           },
           "action": {
             "type": "string",
-            "description": "Command to run when the handler is triggered.",
+            "description": "Command to execute\n",
             "title": "Action"
           },
           "delay": {
             "type": "integer",
-            "description": "Event-handler delay in seconds.",
+            "description": "Event-handler delay in seconds\n",
             "title": "Delay"
           },
           "trigger": {
             "type": "string",
-            "description": "Configure event trigger condition.",
+            "description": "Configure event trigger condition.\n",
             "enum": [
-              "on-logging"
+              "on-logging",
+              "on-startup-config"
             ],
             "title": "Trigger"
           },
           "regex": {
             "type": "string",
-            "description": "Regular expression to use for searching log messages.\nRequired for on-logging trigger.\n",
+            "description": "Regular expression to use for searching log messages. Required for on-logging trigger\n",
             "title": "Regex"
           },
           "asynchronous": {
@@ -960,13 +962,13 @@
             "title": "Asynchronous"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "title": "Event Handlers"
     },
@@ -1055,17 +1057,6 @@
       "description": "Fabric Name, required to match Ansible Group name covering all devices in the Fabric, **must** be an inventory group name.",
       "type": "string",
       "title": "Fabric Name"
-    },
-    "inband_management_subnet": {
-      "type": "string",
-      "description": "Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.\nParent l3leafs will have SVI with \"ip virtual-router\" and host-route injection based on ARP. This allows all l3leafs to reuse the same subnet\nSVI IP address will be assigned as follows:\nvirtual-router: <subnet> + 1\nl3leaf A      : <subnet> + 2 (same IP on all l3leaf A)\nl3leaf B      : <subnet> + 3 (same IP on all l3leaf B)\nl2leafs       : <subnet> + 3 + <l2leaf id>\nGW on l2leafs : <subnet> + 1\nAssign range larger than total l2leafs + 5",
-      "title": "Inband Management Subnet"
-    },
-    "inband_management_vlan": {
-      "type": "integer",
-      "description": "VLAN number assigned to Inband Management SVI on l2leafs in default VRF.\n",
-      "default": 4092,
-      "title": "Inband Management VLAN"
     },
     "internal_vlan_order": {
       "type": "object",
@@ -1661,47 +1652,54 @@
     },
     "local_users": {
       "type": "array",
-      "description": "Dictionary of local users.",
       "items": {
         "type": "object",
         "properties": {
           "name": {
-            "type": "string",
             "description": "Username",
+            "type": "string",
             "title": "Name"
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "If true, the user will be removed and all other settings are ignored.\nUseful for removing the default \"admin\" user.\n",
+            "title": "Disabled"
           },
           "privilege": {
             "type": "integer",
-            "minimum": 1,
+            "minimum": 0,
             "maximum": 15,
-            "description": "Initial privilege level with local EXEC authorization.",
+            "description": "Initial privilege level with local EXEC authorization.\n",
             "title": "Privilege"
           },
           "role": {
             "type": "string",
-            "description": "EOS RBAC Role to be assigned to the user such as \"network-admin\" or \"network-operator\".",
+            "description": "EOS RBAC Role to be assigned to the user such as \"network-admin\" or \"network-operator\"\n",
             "title": "Role"
           },
           "sha512_password": {
             "type": "string",
-            "description": "Must be the hash of the password. By default EOS salts the password with the username, so the simplest is to generate the hash on an EOS device using the same username.",
+            "description": "SHA512 Hash of Password\nMust be the hash of the password. By default EOS salts the password with the username, so the simplest is to generate the hash on an EOS device using the same username.\n",
             "title": "SHA512 Password"
           },
           "no_password": {
             "type": "boolean",
-            "default": true,
-            "description": "If set, a password will not be configured for this user. \"sha512_password\" MUST not be defined for this user.",
+            "description": "If set a password will not be configured for this user. \"sha512_password\" MUST not be defined for this user.\n",
             "title": "No Password"
           },
           "ssh_key": {
             "type": "string",
-            "description": "SSH key string",
             "title": "SSH Key"
           },
-          "disabled": {
-            "type": "boolean",
-            "description": "If \"disabled\" is true, the user will be removed and all other settings are ignored.\nUseful for removing the default \"admin\" user.",
-            "title": "Disabled"
+          "shell": {
+            "type": "string",
+            "description": "Specify shell for the user\n",
+            "enum": [
+              "/bin/bash",
+              "/bin/sh",
+              "/sbin/nologin"
+            ],
+            "title": "Shell"
           }
         },
         "required": [
@@ -1733,7 +1731,7 @@
       "title": "MAC Address Table"
     },
     "management_eapi": {
-      "description": "Default is \"https management eAPI enabled\".\nThe VRF is set to < mgmt_interface_vrf >.\n",
+      "description": "Default is HTTPS management eAPI enabled.\nThe VRF is set to < mgmt_interface_vrf >.\n",
       "type": "object",
       "properties": {
         "enable_http": {
@@ -1759,34 +1757,34 @@
     },
     "mgmt_destination_networks": {
       "type": "array",
-      "description": "OOB mgmt interface destination networks - override default route",
+      "description": "List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.\nReplaces the default route.",
       "items": {
         "type": "string",
-        "description": "IPv4 network and Mask.\nFor example, \"192.0.2.0/24\"."
+        "description": "IPv4_address/Mask"
       },
       "title": "Mgmt Destination Networks"
     },
     "mgmt_gateway": {
       "type": "string",
-      "description": "Management interface configuration in IPv4 format.",
+      "description": "OOB Management interface gateway in IPv4 format.",
       "title": "Mgmt Gateway"
     },
     "mgmt_interface": {
       "type": "string",
       "default": "Management1",
-      "description": "Management interface configuration.",
+      "description": "OOB Management interface.",
       "title": "Mgmt Interface"
     },
     "mgmt_interface_vrf": {
       "type": "string",
       "default": "MGMT",
-      "description": "Management interface configuration.",
+      "description": "OOB Management VRF.",
       "title": "Mgmt Interface VRF"
     },
     "mgmt_vrf_routing": {
       "type": "boolean",
       "default": false,
-      "description": "Management interface configuration.",
+      "description": "Configure IP routing for the OOB Management VRF.",
       "title": "Mgmt VRF Routing"
     },
     "mlag_ibgp_peering_vrfs": {
@@ -1807,41 +1805,9 @@
       },
       "title": "MLAG Ibgp Peering VRFs"
     },
-    "name_server": {
-      "type": "object",
-      "description": "Only name_server from eos_ci_config_gen.\nThe variables will make it to the intended config.\n",
-      "properties": {
-        "source": {
-          "type": "object",
-          "properties": {
-            "vrf": {
-              "type": "string",
-              "title": "VRF"
-            }
-          },
-          "additionalProperties": false,
-          "patternProperties": {
-            "^_.+$": {}
-          },
-          "title": "Source"
-        },
-        "nodes": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "title": "Nodes"
-        }
-      },
-      "additionalProperties": false,
-      "patternProperties": {
-        "^_.+$": {}
-      },
-      "title": "Name Server"
-    },
     "name_servers": {
       "type": "array",
-      "description": "Only eos_designs name_servers variables.",
+      "description": "List of DNS servers. The VRF is set to < mgmt_interface_vrf >.",
       "items": {
         "type": "string",
         "description": "IPv4 address"
@@ -4099,7 +4065,7 @@
         "location": {
           "type": "boolean",
           "default": false,
-          "description": "SNMP location. Formatted as {{ fabric_name }} {{ dc_name }} {{ pod_name }} {{ switch_rack }} {{ inventory_hostname }}.",
+          "description": "Set SNMP location. Formatted as {{ fabric_name }} {{ dc_name }} {{ pod_name }} {{ switch_rack }} {{ inventory_hostname }}.",
           "title": "Location"
         },
         "compute_local_engineid": {
@@ -4111,7 +4077,7 @@
         "compute_local_engineid_source": {
           "type": "string",
           "default": "hostname_and_ip",
-          "description": "If set to \"system_mac\", `system_mac_address` MUST be set for the device.",
+          "description": "`compute_local_engineid_source` supports:\n- `hostname_and_ip` generate a local engineId for SNMP by hashing via SHA1\n  the string generated via the concatenation of the hostname plus the management IP.\n  {{ inventory_hostname }} + {{ switch.mgmt_ip }}\n- `system_mac` generate the switch default engine id for AVD usage\n  To use this, `system_mac_address` MUST be set for the device\n  The formula is f5717f + system_mac_address + 00\n",
           "enum": [
             "hostname_and_ip",
             "system_mac"
@@ -4156,12 +4122,11 @@
                   "sha384",
                   "sha512"
                 ],
-                "description": "It is optional.",
                 "title": "Auth"
               },
               "auth_passphrase": {
                 "type": "string",
-                "description": "Clear passphrase, requires auth, recommended to use vault.",
+                "description": "Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set.",
                 "title": "Auth Passphrase"
               },
               "priv": {
@@ -4172,12 +4137,11 @@
                   "aes192",
                   "aes256"
                 ],
-                "description": "It is optional.",
                 "title": "Priv"
               },
               "priv_passphrase": {
                 "type": "string",
-                "description": "Clear passphrase, requires priv, recommended to use vault.",
+                "description": "Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set.",
                 "title": "Priv Passphrase"
               }
             },
@@ -4208,7 +4172,7 @@
     "terminattr_ingestgrpcurl_port": {
       "type": "integer",
       "default": 9910,
-      "description": "Port number for Terminattr ingest GRPC.",
+      "description": "Port number for Terminattr connection to an on-premise CloudVision cluster.\nThe port number is always 443 when using CloudVision as a Service.",
       "title": "TerminAttr Ingestgrpcurl Port"
     },
     "terminattr_smashexcludes": {
@@ -4218,7 +4182,7 @@
     },
     "timezone": {
       "type": "string",
-      "description": "Clock timezone is optional.",
+      "description": "Clock timezone like \"CET\" or \"US/Pacific\".",
       "title": "Timezone"
     },
     "trunk_groups": {

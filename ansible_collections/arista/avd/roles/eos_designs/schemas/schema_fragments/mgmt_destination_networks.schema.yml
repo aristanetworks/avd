@@ -5,9 +5,9 @@ type: dict
 keys:
   mgmt_destination_networks:
     type: list
-    description: OOB mgmt interface destination networks - override default route
+    description: |-
+      List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.
+      Replaces the default route.
     items:
       type: str
-      description: |
-        IPv4 network and Mask.
-        For example, "192.0.2.0/24".
+      description: IPv4_address/Mask
