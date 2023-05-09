@@ -42,27 +42,57 @@ keys:
               description: |
                 cipher_list syntax follows the openssl cipher strings format.
                 Colon (:) separated list of allowed ciphers as a string
-            trust_certificates:
-              type: list
-              description: |
-                List of trust certificate names or options as string
-                Examples:
-                  - test.crt
-                  - requirement
-                  - system
-                  - policy expiry-date ignore
-              items:
-                type: str
-            chain_certificates:
-              type: list
-              description: |
-                List of chain certificate names or options as string
-                Examples:
-                  - chain1.crt
-                  - chain2.crt
-                  - requirement
-              items:
-                type: str
+            trust_certificate:
+              type: dict
+              keys:
+                certificates:
+                  type: list
+                  description: |
+                    List of trust certificate names
+                    Examples:
+                      - test1.crt
+                      - test2.crt
+                  items:
+                    type: str
+                requirement:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                    basic_constraint_ca:
+                      type: bool
+                    hostname_fqdn:
+                      type: bool
+                policy:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                    expiry_date_ignore:
+                      type: bool
+                system:
+                  type: bool
+            chain_certificate:
+              type: dict
+              keys:
+                certificates:
+                  type: list
+                  description: |
+                    List of chain certificate names
+                    Examples:
+                      - chain1.crt
+                      - chain2.crt
+                  items:
+                    type: str
+                requirement:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                    basic_constraint_ca:
+                      type: bool
+                    include_root_ca:
+                      type: bool
             certificate:
               type: dict
               keys:

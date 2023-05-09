@@ -4612,19 +4612,51 @@ keys:
                 Colon (:) separated list of allowed ciphers as a string
 
                 '
-            trust_certificates:
-              type: list
-              description: "List of trust certificate names or options as string\nExamples:\n
-                \ - test.crt\n  - requirement\n  - system\n  - policy expiry-date
-                ignore\n"
-              items:
-                type: str
-            chain_certificates:
-              type: list
-              description: "List of chain certificate names or options as string\nExamples:\n
-                \ - chain1.crt\n  - chain2.crt\n  - requirement\n"
-              items:
-                type: str
+            trust_certificate:
+              type: dict
+              keys:
+                certificates:
+                  type: list
+                  description: "List of trust certificate names\nExamples:\n  - test1.crt\n
+                    \ - test2.crt\n"
+                  items:
+                    type: str
+                requirement:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                    basic_constraint_ca:
+                      type: bool
+                    hostname_fqdn:
+                      type: bool
+                policy:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                    expiry_date_ignore:
+                      type: bool
+                system:
+                  type: bool
+            chain_certificate:
+              type: dict
+              keys:
+                certificates:
+                  type: list
+                  description: "List of chain certificate names\nExamples:\n  - chain1.crt\n
+                    \ - chain2.crt\n"
+                  items:
+                    type: str
+                requirement:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                    basic_constraint_ca:
+                      type: bool
+                    include_root_ca:
+                      type: bool
             certificate:
               type: dict
               keys:

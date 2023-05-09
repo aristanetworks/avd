@@ -7453,21 +7453,107 @@
                 "description": "cipher_list syntax follows the openssl cipher strings format.\nColon (:) separated list of allowed ciphers as a string\n",
                 "title": "Cipher List"
               },
-              "trust_certificates": {
-                "type": "array",
-                "description": "List of trust certificate names or options as string\nExamples:\n  - test.crt\n  - requirement\n  - system\n  - policy expiry-date ignore\n",
-                "items": {
-                  "type": "string"
+              "trust_certificate": {
+                "type": "object",
+                "properties": {
+                  "certificates": {
+                    "type": "array",
+                    "description": "List of trust certificate names\nExamples:\n  - test1.crt\n  - test2.crt\n",
+                    "items": {
+                      "type": "string"
+                    },
+                    "title": "Certificates"
+                  },
+                  "requirement": {
+                    "type": "object",
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "title": "Enabled"
+                      },
+                      "basic_constraint_ca": {
+                        "type": "boolean",
+                        "title": "Basic Constraint Ca"
+                      },
+                      "hostname_fqdn": {
+                        "type": "boolean",
+                        "title": "Hostname Fqdn"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Requirement"
+                  },
+                  "policy": {
+                    "type": "object",
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "title": "Enabled"
+                      },
+                      "expiry_date_ignore": {
+                        "type": "boolean",
+                        "title": "Expiry Date Ignore"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Policy"
+                  },
+                  "system": {
+                    "type": "boolean",
+                    "title": "System"
+                  }
                 },
-                "title": "Trust Certificates"
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Trust Certificate"
               },
-              "chain_certificates": {
-                "type": "array",
-                "description": "List of chain certificate names or options as string\nExamples:\n  - chain1.crt\n  - chain2.crt\n  - requirement\n",
-                "items": {
-                  "type": "string"
+              "chain_certificate": {
+                "type": "object",
+                "properties": {
+                  "certificates": {
+                    "type": "array",
+                    "description": "List of chain certificate names\nExamples:\n  - chain1.crt\n  - chain2.crt\n",
+                    "items": {
+                      "type": "string"
+                    },
+                    "title": "Certificates"
+                  },
+                  "requirement": {
+                    "type": "object",
+                    "properties": {
+                      "enabled": {
+                        "type": "boolean",
+                        "title": "Enabled"
+                      },
+                      "basic_constraint_ca": {
+                        "type": "boolean",
+                        "title": "Basic Constraint Ca"
+                      },
+                      "include_root_ca": {
+                        "type": "boolean",
+                        "title": "Include Root Ca"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Requirement"
+                  }
                 },
-                "title": "Chain Certificates"
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Chain Certificate"
               },
               "certificate": {
                 "type": "object",
