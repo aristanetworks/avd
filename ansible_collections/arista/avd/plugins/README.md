@@ -757,16 +757,16 @@ AVD version v4.0.0-dev5-25-g0233492b5
             "not_found": {},
             "valid": {
                 "arista.cvp": {
-                    "installed": "3.3.1",
+                    "installed": "3.6.1",
                     "required_version": null
                 },
                 "arista.eos": {
-                    "installed": "4.1.1",
+                    "installed": "6.0.0",
                     "required_version": null
                 },
-                "ansible.netcommon": {
-                    "installed": "3.0.1",
-                    "required_version": "!=2.6.0,>=2.4.0"
+                "ansible.utils": {
+                    "installed": "2.9.0",
+                    "required_version": ">=2.9.0"
                 }
             },
             "mismatched": {},
