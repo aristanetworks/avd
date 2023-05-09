@@ -47,7 +47,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;recovery_time</samp>](## "qos_profiles.[].priority_flow_control.watchdog.timer.recovery_time") | String | Required |  | Pattern: \d+(\.\d)? | Recovery-time after which stuck queue should<br>recover and start forwarding again.<br>This should be decimal with up to 1 decimal point.<br>Example : 0.5 or 60<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forced</samp>](## "qos_profiles.[].priority_flow_control.watchdog.timer.forced") | Boolean |  |  |  | Force recover any stuck queue(s) after the duration,<br>irrespective of whether PFC frames are being<br>received or not.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priorities</samp>](## "qos_profiles.[].priority_flow_control.priorities") | List, items: Dictionary |  |  |  | Set the drop/no_drop on each queue<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- priority</samp>](## "qos_profiles.[].priority_flow_control.priorities.[].priority") | Integer | Required, Unique |  | Min: 0<br>Max: 7 | Queue Number, from 0 to 7<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- priority</samp>](## "qos_profiles.[].priority_flow_control.priorities.[].priority") | Integer | Required, Unique |  | Min: 0<br>Max: 7 | Priority queue number (COS value)<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no_drop</samp>](## "qos_profiles.[].priority_flow_control.priorities.[].no_drop") | Boolean | Required |  |  | Enable Priority Flow Control frames on this queue |
 
 === "YAML"

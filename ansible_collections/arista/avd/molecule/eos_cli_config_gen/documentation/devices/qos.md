@@ -536,13 +536,13 @@ Priority Flow Control is **Off** on all interfaces.
 
 | Action | Timeout | Recovery | Polling | Override Action Drop |
 | ------ | ------- | -------- | ------- |
-| no-drop | 0.5 | 1 | 10 | False |
+| no-drop | 0.5 | 1 | 10.1 | False |
 
 ```eos
 !
 priority-flow-control all off
 priority-flow-control pause watchdog action no-drop
 priority-flow-control pause watchdog default timeout 0.5
-priority-flow-control pause watchdog default polling-interval 10
+priority-flow-control pause watchdog default polling-interval 10.1
 priority-flow-control pause watchdog default recovery-time 1
 ```

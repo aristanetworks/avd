@@ -6366,9 +6366,7 @@ keys:
             valid_values:
             - drop
             - no-drop
-            description: 'Action on stuck queue. Default is ''errdisable''.
-
-              Aceptable values are "drop" or "no-drop".
+            description: 'Action on stuck queue.
 
               '
           timeout:
@@ -6376,6 +6374,7 @@ keys:
             pattern: \d+(\.\d)?
             convert_types:
             - int
+            - float
             description: 'Timeout after which port should be errdisabled or
 
               should start dropping on congested priorities.
@@ -6390,6 +6389,7 @@ keys:
             pattern: \d+(\.\d)?
             convert_types:
             - int
+            - float
             description: 'Time interval at which the watchdog should poll the queues.
 
               This should be decimal with up to 1 decimal point or set
@@ -6404,11 +6404,10 @@ keys:
             pattern: \d+(\.\d)?
             convert_types:
             - int
+            - float
             description: 'Time interval at which the watchdog should poll the queues.
 
-              This should be decimal with up to 1 decimal point or set
-
-              to ''auto'' based on recovery_time and timeout values.
+              This should be decimal with up to 1 decimal point.
 
               Example : 0.5 or 60
 
@@ -6880,7 +6879,7 @@ keys:
                     required: true
                     convert_types:
                     - str
-                    description: 'Queue Number, from 0 to 7
+                    description: 'Priority queue number (COS value)
 
                       '
                   no_drop:

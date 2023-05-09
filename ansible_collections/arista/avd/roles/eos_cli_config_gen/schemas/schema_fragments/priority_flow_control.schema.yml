@@ -50,8 +50,7 @@ keys:
               - float
             description: |
               Time interval at which the watchdog should poll the queues.
-              This should be decimal with up to 1 decimal point or set
-              to 'auto' based on recovery_time and timeout values.
+              This should be decimal with up to 1 decimal point.
               Example : 0.5 or 60
           override_action_drop:
             type: bool

@@ -10646,7 +10646,7 @@
                 "drop",
                 "no-drop"
               ],
-              "description": "Action on stuck queue. Default is 'errdisable'.\nAceptable values are \"drop\" or \"no-drop\".\n",
+              "description": "Action on stuck queue.\n",
               "title": "Action"
             },
             "timeout": {
@@ -10664,7 +10664,7 @@
             "recovery_time": {
               "type": "string",
               "pattern": "\\d+(\\.\\d)?",
-              "description": "Time interval at which the watchdog should poll the queues.\nThis should be decimal with up to 1 decimal point or set\nto 'auto' based on recovery_time and timeout values.\nExample : 0.5 or 60\n",
+              "description": "Time interval at which the watchdog should poll the queues.\nThis should be decimal with up to 1 decimal point.\nExample : 0.5 or 60\n",
               "title": "Recovery Time"
             },
             "override_action_drop": {
@@ -11301,7 +11301,7 @@
                       "type": "integer",
                       "minimum": 0,
                       "maximum": 7,
-                      "description": "Queue Number, from 0 to 7\n",
+                      "description": "Priority queue number (COS value)\n",
                       "title": "Priority"
                     },
                     "no_drop": {

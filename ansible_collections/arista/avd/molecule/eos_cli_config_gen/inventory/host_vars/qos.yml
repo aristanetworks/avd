@@ -19,7 +19,9 @@ priority_flow_control:
   watchdog:
     action: no-drop
     timeout: "0.5"
-    polling_interval: 10
+    # Test conversion of float
+    polling_interval: 10.1
+    # Test conversion of int
     recovery_time: 1
     override_action_drop: false
 
