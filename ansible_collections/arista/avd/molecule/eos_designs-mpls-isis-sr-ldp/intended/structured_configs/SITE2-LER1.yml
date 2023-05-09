@@ -88,8 +88,7 @@ router_bgp:
       description: TENANT_B_CPE_SITE5
       password: OajzUG59/YF0NkgvOQyRnQ==
       remote_as: '65202'
-    address_families:
-    - address_family: ipv4
+    address_family_ipv4:
       neighbors:
       - ip_address: 192.168.48.3
         activate: true

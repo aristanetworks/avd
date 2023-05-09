@@ -1126,8 +1126,12 @@ router bgp {{ router_bgp.as }}
 {%                 elif peer_group.activate is arista.avd.defined(false) %}
          no neighbor {{ peer_group.name }} activate
 {%                 endif %}
-{%                 if peer_group.next_hop.address_family_ipv6_originate is arista.avd.defined(true) %}
-         neighbor {{ peer_group.name }} next-hop address-family ipv6 originate
+{%                 if peer_group.next_hop.address_family_ipv6.enabled is arista.avd.defined(true) %}
+{%                     set ipv6_originate_cli = "neighbor " ~ peer_group.name ~ " next-hop address-family ipv6" %}
+{%                     if peer_group.next_hop.address_family_ipv6.originate is arista.avd.defined(true) %}
+{%                         set ipv6_originate_cli = ipv6_originate_cli ~ " originate" %}
+{%                     endif %}
+         {{ ipv6_originate_cli }}
 {%                 endif %}
 {%             endfor %}
 {%             for neighbor in vrf.address_family_ipv4.neighbors | arista.avd.natural_sort('ip_address') %}

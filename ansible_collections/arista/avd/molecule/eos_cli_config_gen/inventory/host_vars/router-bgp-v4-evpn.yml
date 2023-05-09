@@ -158,9 +158,10 @@ router_bgp:
             direction_in_action: permit
             direction_out_action: deny
           additional_paths:
-            - install
-            - receive
-            - send ecmp
+            install: true
+            receive: true
+            send:
+              ecmp: true
         neighbors:
           - ip_address: 10.2.3.4
             activate: true
@@ -176,7 +177,9 @@ router_bgp:
           - name: TEST_PEER_GRP
             activate: true
             next_hop:
-              address_family_ipv6_originate: true
+              address_family_ipv6:
+                enabled: true
+                originate: true
       redistribute_routes:
         - source_protocol: connected
         - source_protocol: static
