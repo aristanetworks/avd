@@ -15,6 +15,7 @@
   - [QOS Class Maps](#qos-class-maps)
   - [QOS Policy Maps](#qos-policy-maps)
   - [QOS Profiles](#qos-profiles)
+  - [Priority Flow Control](#priority-flow-control)
 
 ## Management
 
@@ -524,3 +525,24 @@ qos profile uc_mc_queues_test
 | Ethernet1 | dscp | 48 | - | - |
 | Ethernet6 | cos | - | 2 | - |
 | Port-Channel3 | cos | - | 2 | - |
+
+### Priority Flow Control
+
+#### Global Settings
+
+Priority Flow Control is **Off** on all interfaces.
+
+**Priority Flow Control watchdog settings**
+
+| Action | Timeout | Recovery | Polling | Override Action Drop |
+| ------ | ------- | -------- | ------- |
+| no-drop | 0.5 | 1 | 10 | False |
+
+```eos
+!
+priority-flow-control all off
+priority-flow-control pause watchdog action no-drop
+priority-flow-control pause watchdog default timeout 0.5
+priority-flow-control pause watchdog default polling-interval 10
+priority-flow-control pause watchdog default recovery-time 1
+```

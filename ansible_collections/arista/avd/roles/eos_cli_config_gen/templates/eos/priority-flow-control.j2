@@ -16,7 +16,7 @@ priority-flow-control pause watchdog default polling-interval {{ priority_flow_c
 {%     if priority_flow_control.watchdog.recovery_time is arista.avd.defined %}
 priority-flow-control pause watchdog default recovery-time {{ priority_flow_control.watchdog.recovery_time }}
 {%     endif %}
-{%     if priority_flow_control.watchdog.override_action_drop is arista.avd.defined %}
+{%     if priority_flow_control.watchdog.override_action_drop is arista.avd.defined(true) %}
 priority-flow-control pause watchdog override action drop
 {%     endif %}
 {% endif %}
