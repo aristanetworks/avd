@@ -29,6 +29,21 @@ router_bgp:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
       activate: true
+  vrfs:
+  - name: INBANDMGMT
+    router_id: 10.0.255.1
+    rd: 10.0.255.1:1
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+    redistribute_routes:
+    - source_protocol: connected
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -39,6 +54,9 @@ vlan_internal_order:
 vrfs:
 - name: MGMT
   ip_routing: false
+- name: INBANDMGMT
+  tenant: INBAND_MGMT_TESTS
+  ip_routing: true
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -131,23 +149,26 @@ router_bfd:
     interval: 300
     min_rx: 300
     multiplier: 3
-ip_igmp_snooping:
-  globally_enabled: true
-ip_virtual_router_mac_address: 00:1c:73:00:dc:01
-vxlan_interface:
-  Vxlan1:
-    description: inband-mgmt-parent_VTEP
-    vxlan:
-      udp_port: 4789
-      source_interface: Loopback1
 vlans:
+- id: 103
+  name: Inband management vlan
+  tenant: INBAND_MGMT_TESTS
 - id: 101
   tenant: system
   name: INBAND_MGMT
 - id: 102
   tenant: system
   name: INBAND_MGMT
+ip_igmp_snooping:
+  globally_enabled: true
+ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 vlan_interfaces:
+- name: Vlan103
+  tenant: INBAND_MGMT_TESTS
+  description: Inband management vlan
+  shutdown: true
+  ip_address: 192.168.103.1/24
+  vrf: INBANDMGMT
 - name: Vlan101
   description: Inband Management
   shutdown: false
@@ -168,3 +189,12 @@ vlan_interfaces:
   ip_attached_host_route_export:
     enabled: true
     distance: 19
+vxlan_interface:
+  Vxlan1:
+    description: inband-mgmt-parent_VTEP
+    vxlan:
+      udp_port: 4789
+      source_interface: Loopback1
+      vrfs:
+      - name: INBANDMGMT
+        vni: 1

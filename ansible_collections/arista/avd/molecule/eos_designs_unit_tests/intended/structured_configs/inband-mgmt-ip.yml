@@ -40,12 +40,12 @@ port_channel_interfaces:
   shutdown: false
   mode: trunk
   vlans: '103'
-ip_igmp_snooping:
-  globally_enabled: true
 vlans:
 - id: 103
-  tenant: system
   name: MYVLANNAME
+  tenant: system
+ip_igmp_snooping:
+  globally_enabled: true
 vlan_interfaces:
 - name: Vlan103
   description: My description
