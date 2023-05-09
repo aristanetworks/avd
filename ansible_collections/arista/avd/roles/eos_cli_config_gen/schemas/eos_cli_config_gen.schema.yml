@@ -10333,16 +10333,14 @@ keys:
           egress:
             type: dict
             keys:
-              unmodified_enable_default:
-                type: bool
-                description: 'Enable unmodified egress sFlow by default.
-
-                  Platform dependent feature.
-
-                  '
               enable_default:
                 type: bool
                 description: 'Enable egress sFlow by default.
+
+                  '
+              unmodified:
+                type: bool
+                description: 'Enable egress sFlow unmodified.
 
                   Platform dependent feature.
 

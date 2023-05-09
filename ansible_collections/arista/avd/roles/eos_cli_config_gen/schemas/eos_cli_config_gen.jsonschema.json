@@ -17754,15 +17754,15 @@
             "egress": {
               "type": "object",
               "properties": {
-                "unmodified_enable_default": {
-                  "type": "boolean",
-                  "description": "Enable unmodified egress sFlow by default.\nPlatform dependent feature.\n",
-                  "title": "Unmodified Enable Default"
-                },
                 "enable_default": {
                   "type": "boolean",
-                  "description": "Enable egress sFlow by default.\nPlatform dependent feature.\n",
+                  "description": "Enable egress sFlow by default.\n",
                   "title": "Enable Default"
+                },
+                "unmodified": {
+                  "type": "boolean",
+                  "description": "Enable egress sFlow unmodified.\nPlatform dependent feature.\n",
+                  "title": "Unmodified"
                 }
               },
               "additionalProperties": false,
