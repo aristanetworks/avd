@@ -6694,7 +6694,9 @@ keys:
             type: int
             convert_types:
             - str
-            description: 'Default low threshold for Ethernet Interfaces
+            description: 'Default low threshold for Ethernet Interfaces.
+
+              Low threshold support is platform dependent.
 
               '
       log:

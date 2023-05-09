@@ -10309,7 +10309,7 @@
             },
             "low": {
               "type": "integer",
-              "description": "Default low threshold for Ethernet Interfaces\n",
+              "description": "Default low threshold for Ethernet Interfaces.\nLow threshold support is platform dependent.\n",
               "title": "Low"
             }
           },
