@@ -19,8 +19,7 @@ keys:
             type: str
             valid_values: ["drop", "no-drop"]
             description: |
-              Action on stuck queue. Default is 'errdisable'.
-              Aceptable values are "drop" or "no-drop".
+              Action on stuck queue.
           timeout:
             type: str
             pattern: "\\d+(\\.\\d)?"
