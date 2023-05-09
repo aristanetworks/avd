@@ -453,6 +453,7 @@ vlan_interfaces:
   - v6wan
   description: Tenant_D_v6_WAN_Zone_1
   shutdown: false
+  ipv6_enable: true
   ipv6_address_virtuals:
   - 2001:db8:355::1/64
   vrf: Tenant_D_WAN_Zone
@@ -462,6 +463,7 @@ vlan_interfaces:
   - v6wan
   description: Tenant_D_v6_WAN_Zone_2
   shutdown: false
+  ipv6_enable: true
   mtu: 1560
   ipv6_address_virtuals:
   - 2001:db8:451::1/64
@@ -472,6 +474,7 @@ vlan_interfaces:
   - v6wan
   description: Tenant_D_v6_WAN_Zone_3
   shutdown: false
+  ipv6_enable: false
   mtu: 1560
   ip_address_virtual: 10.4.12.254/24
   ipv6_address_virtuals:

@@ -47,6 +47,16 @@ interface {{ ethernet_interface.name }}
 {%         elif ethernet_interface.logging.event.congestion_drops is arista.avd.defined(false) %}
    no logging event congestion-drops
 {%         endif %}
+{%         if ethernet_interface.logging.event.spanning_tree is arista.avd.defined(true) %}
+   logging event spanning-tree
+{%         elif ethernet_interface.logging.event.spanning_tree is arista.avd.defined(false) %}
+   no logging event spanning-tree
+{%         endif %}
+{%         if ethernet_interface.logging.event.storm_control is arista.avd.defined(true) %}
+   logging event storm-control
+{%         elif ethernet_interface.logging.event.storm_control is arista.avd.defined(false) %}
+   no logging event storm-control
+{%         endif %}
 {%     endif %}
 {%     if print_ethernet is arista.avd.defined(true) %}
 {%         if ethernet_interface.flowcontrol.received is arista.avd.defined %}
