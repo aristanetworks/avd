@@ -177,7 +177,7 @@ keys:
                   type: str
                   valid_values: ["drop", "notify-only"]
                   description: |
-                    Override the default ERRDISABLE action to either DROP
+                    Override the default error-disable action to either drop
                     traffic on the stuck queue or notify-only
                     without making any actions on the stuck queue.
                 timer:
