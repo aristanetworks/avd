@@ -466,14 +466,14 @@ interface {{ ethernet_interface.name }}
    ip ospf authentication message-digest
 {%     endif %}
 {%     if ethernet_interface.ospf_authentication_key is arista.avd.defined %}
-   ip ospf authentication-key 7 {{ ethernet_interface.ospf_authentication_key }}
+   ip ospf authentication-key 7 {{ ethernet_interface.ospf_authentication_key | arista.avd.hide_passwords(hide_passwords) }}
 {%     endif %}
 {%     if ethernet_interface.ospf_area is arista.avd.defined %}
    ip ospf area {{ ethernet_interface.ospf_area }}
 {%     endif %}
 {%     for ospf_message_digest_key in ethernet_interface.ospf_message_digest_keys | arista.avd.natural_sort('id') %}
 {%         if ospf_message_digest_key.hash_algorithm is arista.avd.defined and ospf_message_digest_key.key is arista.avd.defined %}
-   ip ospf message-digest-key {{ ospf_message_digest_key.id }} {{ ospf_message_digest_key.hash_algorithm }} 7 {{ ospf_message_digest_key.key }}
+   ip ospf message-digest-key {{ ospf_message_digest_key.id }} {{ ospf_message_digest_key.hash_algorithm }} 7 {{ ospf_message_digest_key.key | arista.avd.hide_passwords(hide_passwords) }}
 {%         endif %}
 {%     endfor %}
 {%     if ethernet_interface.pim.ipv4.sparse_mode is arista.avd.defined(true) %}
@@ -618,7 +618,7 @@ interface {{ ethernet_interface.name }}
    isis authentication mode {{ ethernet_interface.isis_authentication_mode }}
 {%     endif %}
 {%     if ethernet_interface.isis_authentication_key is arista.avd.defined %}
-   isis authentication key 7 {{ ethernet_interface.isis_authentication_key }}
+   isis authentication key 7 {{ ethernet_interface.isis_authentication_key | arista.avd.hide_passwords(hide_passwords) }}
 {%     endif %}
 {%     if ethernet_interface.spanning_tree_portfast is arista.avd.defined('edge') %}
    spanning-tree portfast

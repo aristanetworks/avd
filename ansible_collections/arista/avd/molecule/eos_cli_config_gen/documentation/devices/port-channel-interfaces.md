@@ -560,7 +560,7 @@ interface Port-Channel110
    isis network point-to-point
    isis hello padding
    isis authentication mode text
-   isis authentication key 7 asfddja23452
+   isis authentication key 7 <removed>
 !
 interface Port-Channel111
    description Flexencap Port-Channel

@@ -181,12 +181,12 @@ mac security
    !
    profile A1
       cipher aes128-gcm
-      key 1234a 7 025756085F535976
-      key 1234c 7 10195F4C5144405A fallback
+      key 1234a 7 <removed>
+      key 1234c 7 <removed> fallback
       mka key-server priority 100
       mka session rekey-period 30
       sci
       l2-protocol lldp bypass unauthorized
    profile A2
-      key 1234b 7 12485744465E5A53
+      key 1234b 7 <removed>
 ```

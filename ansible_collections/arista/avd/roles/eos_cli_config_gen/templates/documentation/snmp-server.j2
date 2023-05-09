@@ -100,7 +100,7 @@
 {%                     endfor %}
 {%                 elif host.community is arista.avd.defined
                         and host.version | arista.avd.default('2c') | string in ['1', '2c'] %}
-| {{ row_host }} | {{ row_vrf }} | {{ host.community }} | - | - | {{ host.version | arista.avd.default('2c') }} |
+| {{ row_host }} | {{ row_vrf }} | {{ host.community | arista.avd.hide_passwords(hide_passwords) }} | - | - | {{ host.version | arista.avd.default('2c') }} |
 {%                 endif %}
 {%             endif %}
 {%         endfor %}
