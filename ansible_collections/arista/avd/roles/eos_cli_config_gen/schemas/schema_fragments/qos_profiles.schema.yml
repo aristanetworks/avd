@@ -240,7 +240,7 @@ keys:
                     convert_types:
                       - str
                     description: |
-                      Queue Number, from 0 to 7
+                      Priority queue number (COS value)
                   no_drop:
                     type: bool
                     required: true
