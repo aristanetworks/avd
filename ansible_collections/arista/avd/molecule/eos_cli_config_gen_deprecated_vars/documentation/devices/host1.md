@@ -1678,7 +1678,6 @@ QOS Profile: **test**
 | 2 | Unicast | 50 | no priority | - |
 | 3 | Multicast | 50 | no priority | - |
 
-
 #### QOS Profile Device Configuration
 
 ```eos
