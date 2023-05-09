@@ -6680,7 +6680,6 @@ keys:
           '
       default_thresholds:
         type: dict
-        description: ''
         keys:
           high:
             type: int

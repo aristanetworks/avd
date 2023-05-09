@@ -15,7 +15,6 @@ keys:
           In AVD3.x default is true as long as queue_monitor_length is defined and not None
       default_thresholds:
         type: dict
-        description: |
         keys:
           high:
             type: int

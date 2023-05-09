@@ -10300,7 +10300,6 @@
         },
         "default_thresholds": {
           "type": "object",
-          "description": "",
           "properties": {
             "high": {
               "type": "integer",
