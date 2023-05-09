@@ -11,7 +11,6 @@ l3leaf:
 type: l3leaf
 
 core_interfaces:
-
   p2p_links_profiles:
     - name: isis_bb_profile
       speed: "forced 1000full"
@@ -25,24 +24,14 @@ core_interfaces:
       isis_authentication_key: $1c$sTNAlR6rKSw=
 
   p2p_links:
-
-    # Unnumbered link
     - nodes: [ duplicate-interfaces-core-interfaces, peer1]
       id: 1
       interfaces: [ Ethernet1, Ethernet2 ]
       profile: isis_bb_profile
-      ip: ["unnumbered loopback0", "unnumbered loopback0"]
 
     # Link w/o bb profile
     - nodes: [ duplicate-interfaces-core-interfaces, peer2]
       id: 2
       interfaces: [ Ethernet1, Ethernet3 ]
-      ip_pool: some_other_pool
-      speed: 100full
-      mtu: 1601
-      isis_hello_padding: true
-      isis_circuit_type: level-1
-      isis_metric: 60
-      qos_profile: test_qos_profile
 
 expected_error_message: "Duplicate interface name Ethernet1 found while generating ethernet_interface for core_interfaces peer: peer2, peer_interface: Ethernet3. Description on duplicate interface: P2P_LINK_TO_peer1_Ethernet2"

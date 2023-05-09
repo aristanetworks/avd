@@ -4,15 +4,15 @@ type: l2leaf
 
 l2leaf:
   nodes:
-    duplicate-vlans:
+    duplicate-vlans-l2vlans:
       id: 1
 
 tenants:
-  - name: duplicate-vlans
+  - name: TenantA
     l2vlans:
       - id: 1
         name: vlan
       - id: 1
         name: duplicate_vlan
 
-expected_error_message: "Duplicate VLAN ID '1' found in Tenant 'duplicate-vlans' during configuration of L2VLAN."
+expected_error_message: "Duplicate VLAN ID '1' found in Tenant 'TenantA' during configuration of L2VLAN."

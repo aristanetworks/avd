@@ -27,11 +27,8 @@ design:
 
 tenants:
   - name: TENANT
-    pseudowire_rt_base: 2000
-    mac_vrf_id_base: 20000
     point_to_point_services:
       - name: TEN_A_site2_site5_eline_port_based
-        type: vpws-pseudowire
         endpoints:
           - id: 57
             nodes: [ "duplicate-interface-name-in-sub-interfaces-point-to-point-services" ]
@@ -41,12 +38,8 @@ tenants:
               mode: active
 
   - name: TENANT_A
-    pseudowire_rt_base: 2000
-    mac_vrf_id_base: 20000
-
     point_to_point_services:
       - name: TEN_A_site2_site5_eline_port_based
-        type: vpws-pseudowire
         subinterfaces:
           - number: 1000
         endpoints:

@@ -4,9 +4,7 @@ type: l2leaf
 
 l2leaf:
   defaults:
-    platform: vEOS-lab
     uplink_interfaces: ['Ethernet2', 'Ethernet2']
-    spanning_tree_mode: mstp
 
   nodes:
     duplicate-interfaces-underlay:

@@ -27,21 +27,9 @@ design:
 
 tenants:
   - name: TENANT_B
-    pseudowire_rt_base: 2000
-    mac_vrf_id_base: 20000
     vrfs:
       - name: TENANT_B_WAN
         vrf_id: 20
-        address_families:
-          - vpn-ipv4
-          - vpn-ipv6
-        ospf:
-          enabled: true
-          process_id: 99
-          router_id: 192.168.48.4
-          max_lsa: 10000
-          nodes:
-            - duplicate-l3-interfaces-network-services
         l3_interfaces:
           - description: TENANT_B_SITE_3_OSPF
             enabled: true
@@ -51,11 +39,6 @@ tenants:
               - 192.168.48.4/31
             nodes:
               - duplicate-l3-interfaces-network-services
-            ospf:
-              enabled: true
-              point_to_point: true
-              area: 0
-              cost: 10
           - description: TENANT_B_SITE_5
             enabled: true
             interfaces:
