@@ -2,9 +2,10 @@ from __future__ import absolute_import, annotations, division, print_function
 
 __metaclass__ = type
 
-import copy
+from copy import deepcopy
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.refresolver import create_refresolver
 
 try:
@@ -72,10 +73,13 @@ def _ref_on_child(validator, ref, child_schema: dict):
     In place update of supplied child_schema
     """
     scope, ref_schema = validator.resolver.resolve(ref)
-    merged_schema = copy.deepcopy(ref_schema)
+    ref_schema = deepcopy(ref_schema)
     child_schema.pop("$ref", None)
-    always_merger.merge(merged_schema, child_schema)
-    child_schema.update(merged_schema)
+    merge(child_schema, ref_schema, merge_method="use_existing")
+    # child_schema.update(merged_schema)
+    # Resolve new refs inherited from the first ref.
+    if "$ref" in child_schema:
+        _ref_on_child(validator, child_schema["$ref"], child_schema)
 
 
 class AvdSchemaResolver:

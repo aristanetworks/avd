@@ -5556,6 +5556,23 @@ $defs:
             the final EOS configuration.
   svi:
     type: dict
+    $ref: '#/$defs/svi_settings'
+    keys:
+      nodes:
+        type: list
+        primary_key: node
+        convert_types:
+        - dict
+        description: Define node specific configuration, such as unique IP addresses.
+        items:
+          type: dict
+          $ref: '#/$defs/svi_settings'
+          keys:
+            node:
+              type: str
+              description: l3_leaf inventory hostname
+  svi_settings:
+    type: dict
     keys:
       vni_override:
         type: int
@@ -5743,85 +5760,6 @@ $defs:
         type: bool
         default: true
         description: Extend this SVI over VXLAN
-      nodes:
-        type: list
-        primary_key: node
-        convert_types:
-        - dict
-        description: Define node specific configuration, such as unique IP addresses.
-        items:
-          type: dict
-          keys:
-            node:
-              type: str
-              description: l3_leaf inventory hostname
-            ip_helpers:
-              type: list
-              primary_key: ip_helper
-              convert_types:
-              - dict
-              description: IP helper for DHCP relay
-              items:
-                type: dict
-                keys:
-                  ip_helper:
-                    type: str
-                    description: IPv4 DHCP server IP
-                  source_interface:
-                    type: str
-                    description: Interface name
-                  source_vrf:
-                    type: str
-                    description: VRF to originate DHCP relay packets to DHCP server.
-                      If not set, uses current VRF
-            ip_address:
-              type: str
-              description: 'IPv4_address/Mask
-
-                Device unique IP address for node.
-
-                '
-            ipv6_address:
-              type: str
-              description: 'IPv6_address/Mask
-
-                Device unique IPv6 address for node.
-
-                '
-            ip_address_virtual_secondaries:
-              type: list
-              items:
-                type: str
-                description: IPv4_address/Mask
-            ip_virtual_router_addresses:
-              type: list
-              items:
-                type: str
-              description: 'IPv4_address/Mask or IPv4_address
-
-                note, also requires an IP address to be configured on the SVI where
-                it is applied.
-
-                '
-            ipv6_virtual_router_addresses:
-              type: list
-              description: IPv6_address
-            structured_config:
-              type: dict
-              description: 'Custom structured config added under vlan_interfaces.<interface>
-                for eos_cli_config_gen.
-
-                Overrides the setting on SVI level.
-
-                '
-            raw_eos_cli:
-              type: str
-              description: 'EOS CLI rendered directly on the VLAN interface in the
-                final EOS configuration
-
-                Overrides the setting on SVI level.
-
-                '
       mtu:
         type: int
         convert_types:
