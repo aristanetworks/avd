@@ -13,6 +13,7 @@ spine:
       - graceful-restart
 
   nodes:
+    # This is the uplink switch for node-group "duplicate-ip-address-router-bgp"
     dc1-spine1:
       id: 1
       mgmt_ip: 172.16.1.11/24

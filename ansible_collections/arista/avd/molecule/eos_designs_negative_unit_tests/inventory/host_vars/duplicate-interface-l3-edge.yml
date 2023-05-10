@@ -18,6 +18,7 @@ l3_edge:
       profile: profile1
 
     - nodes: [duplicate-interface-l3-edge, peer2]
+      # duplicate interface for duplicate-interface-l3-edge
       interfaces: [ethernet1, ethernet2]
       id: 2
       profile: profile2

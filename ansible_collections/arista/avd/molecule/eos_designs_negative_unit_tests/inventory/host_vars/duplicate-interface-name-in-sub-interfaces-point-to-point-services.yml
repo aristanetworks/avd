@@ -1,4 +1,5 @@
 ---
+# Minimum config to only test the specific feature.
 node_type_keys:
   pe:
     type: pe
@@ -40,6 +41,7 @@ tenants:
   - name: TENANT_A
     point_to_point_services:
       - name: TEN_A_site2_site5_eline_port_based
+        # calculated interface would be Ethernet6.1000
         subinterfaces:
           - number: 1000
         endpoints:

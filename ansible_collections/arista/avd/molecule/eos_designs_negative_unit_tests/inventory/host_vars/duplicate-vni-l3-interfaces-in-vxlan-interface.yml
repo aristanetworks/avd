@@ -12,7 +12,6 @@ l3leaf:
 type: l3leaf
 
 tenants:
-  # Tenant_A Specific Information - VRFs / VLANs
   - name: Tenant_A
     mac_vrf_vni_base: 10000
     mac_vrf_id_base: 20000
@@ -21,7 +20,6 @@ tenants:
         description: "Tenant_A_OP_Zone"
         vrf_vni: 10
         svis:
-          # SVI as string
           - id: '110'
             name: Tenant_A_OP_Zone_1
 

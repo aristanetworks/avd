@@ -24,6 +24,7 @@ l3leaf:
           uplink_switch_interfaces:
             - Ethernet1
         duplicate-ip-address-2:
+          # duplicate id which will generate duplicate ip_address for uplink switch
           id: 2
           mgmt_ip: 172.16.1.102/24
           uplink_switch_interfaces:

@@ -1,4 +1,5 @@
 ---
+# Minimum config to only test the specific feature.
 node_type_keys:
   pe:
     type: pe

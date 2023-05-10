@@ -26,6 +26,7 @@ tenants:
   - name: TenantB
     mac_vrf_id_base: 10000
     vrfs:
+      # duplicate vrf name
       - name: TG_100
         vrf_vni: 100
         svis:

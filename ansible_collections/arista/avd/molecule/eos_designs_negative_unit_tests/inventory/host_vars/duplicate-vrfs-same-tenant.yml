@@ -22,6 +22,7 @@ tenants:
             name: svi100
             enabled: True
             ip_address: 10.1.0.1/24
+      # duplicate vrf
       - name: TG_100
         vrf_vni: 200
         svis:

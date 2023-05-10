@@ -1,4 +1,5 @@
 ---
+# Minimum config to only test the specific feature.
 l3leaf:
   defaults:
     loopback_ipv4_pool: 10.42.0.0/24
@@ -39,6 +40,7 @@ core_interfaces:
       port_channel:
         mode: active
         nodes_child_interfaces:
+          # duplicate interface name
           duplicate-interfaces-core-interfaces-with-port-channel: [ Ethernet1 ]
           core-2-ospf-ldp: [ Ethernet12]
       profile: isis_bb_profile

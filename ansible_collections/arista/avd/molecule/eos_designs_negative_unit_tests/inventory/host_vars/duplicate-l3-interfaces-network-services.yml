@@ -1,4 +1,5 @@
 ---
+# Minimum config to only test the specific feature.
 node_type_keys:
   pe:
     type: pe
@@ -41,6 +42,7 @@ tenants:
               - duplicate-l3-interfaces-network-services
           - description: TENANT_B_SITE_5
             enabled: true
+            # duplicate interfaces
             interfaces:
               - Ethernet6.101
             ip_addresses:

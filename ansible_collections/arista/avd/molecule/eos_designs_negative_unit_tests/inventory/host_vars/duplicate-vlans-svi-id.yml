@@ -18,6 +18,7 @@ tenants:
     vrfs:
       - name: Tenant_B_OP_Zone
         svis:
+          # duplicate vlan_id
           - id: 2
             name: vlan2
 

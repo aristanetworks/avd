@@ -30,6 +30,7 @@ tenants:
             name: Tenant_C_OP_Zone_1
       - name: Tenant_C_WAN_Zone
         enable_mlag_ibgp_peering_vrfs: true
+        # duplicate vlan_id in mlag ibgp peering
         mlag_ibgp_peering_vlan: 2
         svis:
           - id: 350
