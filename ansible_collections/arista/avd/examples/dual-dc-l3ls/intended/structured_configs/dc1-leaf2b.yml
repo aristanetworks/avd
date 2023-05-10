@@ -257,16 +257,16 @@ management_api_http:
   - name: MGMT
   enable_https: true
 vlans:
-- tenant: system
+- id: 4093
+  tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
   - LEAF_PEER_L3
-  id: 4093
-- tenant: system
+- id: 4094
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  id: 4094
 - id: 11
   name: VRF10_VLAN11
   tenant: TENANT1
@@ -374,7 +374,8 @@ port_channel_interfaces:
   spanning_tree_portfast: edge
   mlag: 5
 ethernet_interfaces:
-- peer: dc1-leaf2a
+- name: Ethernet3
+  peer: dc1-leaf2a
   peer_interface: Ethernet3
   peer_type: mlag_peer
   description: MLAG_PEER_dc1-leaf2a_Ethernet3
@@ -383,8 +384,8 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  name: Ethernet3
-- peer: dc1-leaf2a
+- name: Ethernet4
+  peer: dc1-leaf2a
   peer_interface: Ethernet4
   peer_type: mlag_peer
   description: MLAG_PEER_dc1-leaf2a_Ethernet4
@@ -393,7 +394,6 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  name: Ethernet4
 - name: Ethernet1
   peer: dc1-spine1
   peer_interface: Ethernet4

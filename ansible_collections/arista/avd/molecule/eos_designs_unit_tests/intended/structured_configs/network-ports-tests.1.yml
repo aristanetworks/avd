@@ -18,11 +18,11 @@ management_api_http:
 spanning_tree:
   no_spanning_tree_vlan: '4094'
 vlans:
-- tenant: system
+- id: 4094
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  id: 4094
 - id: 100
   name: VLAN100_ON_L2LEAF_1_AND_2
   tenant: TEST
@@ -46,7 +46,8 @@ port_channel_interfaces:
   trunk_groups:
   - MLAG
 ethernet_interfaces:
-- peer: network-ports-tests-2
+- name: Ethernet10/1
+  peer: network-ports-tests-2
   peer_interface: Ethernet10/1
   peer_type: mlag_peer
   description: MLAG_PEER_network-ports-tests-2_Ethernet10/1
@@ -55,7 +56,6 @@ ethernet_interfaces:
   channel_group:
     id: 101
     mode: active
-  name: Ethernet10/1
 - name: Ethernet1
   peer: PCs
   peer_type: network_port

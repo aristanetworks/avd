@@ -33,11 +33,11 @@ management_api_http:
 eos_cli: "interface Loopback1002\n  description Loopback created from raw_eos_cli under l2leaf node-group RACK2_MLAG\n\ninterface Loopback1111\n
   \ description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
 vlans:
-- tenant: system
+- id: 4094
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  id: 4094
 - id: 110
   name: Tenant_A_OP_Zone_1
   tenant: Tenant_A
@@ -68,9 +68,9 @@ vlans:
 - id: 2601
   name: l2vlan_with_no_vxlan
   tenant: Tenant_A
-- tenant: system
+- id: 4085
+  tenant: system
   name: L2LEAF_INBAND_MGMT
-  id: 4085
 vlan_interfaces:
 - name: Vlan4094
   description: MLAG_PEER
@@ -97,7 +97,8 @@ port_channel_interfaces:
   vlans: 110-113,1100-1102,2500,2600-2601,4085
   mlag: 1
 ethernet_interfaces:
-- peer: DC1-POD1-L2LEAF2B
+- name: Ethernet3
+  peer: DC1-POD1-L2LEAF2B
   peer_interface: Ethernet3
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-POD1-L2LEAF2B_Ethernet3
@@ -106,8 +107,8 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  name: Ethernet3
-- peer: DC1-POD1-L2LEAF2B
+- name: Ethernet4
+  peer: DC1-POD1-L2LEAF2B
   peer_interface: Ethernet4
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-POD1-L2LEAF2B_Ethernet4
@@ -116,7 +117,6 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  name: Ethernet4
 - name: Ethernet1
   peer: DC1.POD1.LEAF2A
   peer_interface: Ethernet3
