@@ -88,11 +88,11 @@ management_api_http:
   - name: MGMT
   enable_https: true
 vlans:
-- tenant: system
+- id: 4094
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  id: 4094
 vlan_interfaces:
 - name: Vlan4094
   description: MLAG_PEER
@@ -121,7 +121,8 @@ port_channel_interfaces:
   vlans: none
   mlag: 7
 ethernet_interfaces:
-- peer: DC1-SVC3B
+- name: Ethernet5
+  peer: DC1-SVC3B
   peer_interface: Ethernet5
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-SVC3B_Ethernet5
@@ -130,8 +131,8 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  name: Ethernet5
-- peer: DC1-SVC3B
+- name: Ethernet6
+  peer: DC1-SVC3B
   peer_interface: Ethernet6
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-SVC3B_Ethernet6
@@ -140,7 +141,6 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  name: Ethernet6
 - name: Ethernet1
   peer: DC1-SPINE1
   peer_interface: Ethernet4

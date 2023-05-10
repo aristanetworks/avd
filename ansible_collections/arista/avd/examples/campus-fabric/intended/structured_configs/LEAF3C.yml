@@ -3061,8 +3061,8 @@ vlans:
 - id: 330
   name: IDF3-Guest
   tenant: MY_FABRIC
-- tenant: system
+- id: 10
+  tenant: system
   name: L2LEAF_INBAND_MGMT
-  id: 10
 ip_igmp_snooping:
   globally_enabled: true

@@ -308,7 +308,8 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_enable: true
-- description: My test
+- name: Ethernet4000
+  description: My test
   ip_address: 10.1.2.3/12
   shutdown: false
   type: routed
@@ -316,7 +317,6 @@ ethernet_interfaces:
   peer: MY-own-peer
   peer_interface: Ethernet123
   peer_type: my_precious
-  name: Ethernet4000
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
