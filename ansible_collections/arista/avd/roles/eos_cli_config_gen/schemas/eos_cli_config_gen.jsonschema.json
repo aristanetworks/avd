@@ -7467,10 +7467,6 @@
                   "requirement": {
                     "type": "object",
                     "properties": {
-                      "enabled": {
-                        "type": "boolean",
-                        "title": "Enabled"
-                      },
                       "basic_constraint_ca": {
                         "type": "boolean",
                         "title": "Basic Constraint Ca"
@@ -7486,23 +7482,9 @@
                     },
                     "title": "Requirement"
                   },
-                  "policy": {
-                    "type": "object",
-                    "properties": {
-                      "enabled": {
-                        "type": "boolean",
-                        "title": "Enabled"
-                      },
-                      "expiry_date_ignore": {
-                        "type": "boolean",
-                        "title": "Expiry Date Ignore"
-                      }
-                    },
-                    "additionalProperties": false,
-                    "patternProperties": {
-                      "^_.+$": {}
-                    },
-                    "title": "Policy"
+                  "policy_expiry_date_ignore": {
+                    "type": "boolean",
+                    "title": "Policy Expiry Date Ignore"
                   },
                   "system": {
                     "type": "boolean",
@@ -7529,10 +7511,6 @@
                   "requirement": {
                     "type": "object",
                     "properties": {
-                      "enabled": {
-                        "type": "boolean",
-                        "title": "Enabled"
-                      },
                       "basic_constraint_ca": {
                         "type": "boolean",
                         "title": "Basic Constraint Ca"

@@ -57,19 +57,12 @@ keys:
                 requirement:
                   type: dict
                   keys:
-                    enabled:
-                      type: bool
                     basic_constraint_ca:
                       type: bool
                     hostname_fqdn:
                       type: bool
-                policy:
-                  type: dict
-                  keys:
-                    enabled:
-                      type: bool
-                    expiry_date_ignore:
-                      type: bool
+                policy_expiry_date_ignore:
+                  type: bool
                 system:
                   type: bool
             chain_certificate:
@@ -87,8 +80,6 @@ keys:
                 requirement:
                   type: dict
                   keys:
-                    enabled:
-                      type: bool
                     basic_constraint_ca:
                       type: bool
                     include_root_ca:

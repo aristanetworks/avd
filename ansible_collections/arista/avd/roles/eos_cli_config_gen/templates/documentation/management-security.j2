@@ -59,15 +59,11 @@
 {%                     endif %}
 {%                     if tmp_requirement | length > 0 %}
 {%                         set requirement = tmp_requirement | join(', ') %}
-{%                     elif ssl_profile.trust_certificate.requirement.enabled is arista.avd.defined(true) %}
-{%                         set requirement = 'Enabled' %}
 {%                     endif %}
 {%                 endif %}
 {%                 set policy = '-' %}
-{%                 if ssl_profile.trust_certificate.policy.expiry_date_ignore is arista.avd.defined(true) %}
+{%                 if ssl_profile.trust_certificate.policy_expiry_date_ignore is arista.avd.defined(true) %}
 {%                     set policy = 'Ignore Expiry Date' %}
-{%                 elif ssl_profile.trust_certificate.policy.enabled is arista.avd.defined(true) %}
-{%                     set policy = 'Enabled' %}
 {%                 endif %}
 {%                 if ssl_profile.trust_certificate.system is arista.avd.defined(true) %}
 {%                     set system = 'Enabled' %}
@@ -92,8 +88,6 @@
 {%                     endif %}
 {%                     if tmp_requirement | length > 0 %}
 {%                         set requirement = tmp_requirement | join(', ') %}
-{%                     elif ssl_profile.chain_certificate.requirement.enabled is arista.avd.defined(true) %}
-{%                         set requirement = 'Enabled' %}
 {%                     endif %}
 {%                 endif %}
 | {{ chain_certs }} | {{ requirement }} |

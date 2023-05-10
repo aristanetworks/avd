@@ -24,27 +24,21 @@ management_security:
           - test-trust1.crt
           - test-trust2.crt
         requirement:
-          enabled: true
-        policy:
-          enabled: true
-        system: true
+          basic_constraint_ca: true
+        policy_expiry_date_ignore: true
     - name: test1-chain-cert
       chain_certificate:
         certificates:
           - test-chain-cert1.crt
           - test-chain-cert2.crt
         requirement:
-          enabled: true
+          basic_constraint_ca: true
     - name: test2-trust-cert
       trust_certificate:
         requirement:
-          enabled: true
-          basic_constraint_ca: true
           hostname_fqdn: true
-        policy:
-          expiry_date_ignore: true
+        system: true
     - name: test2-chain-cert
       chain_certificate:
         requirement:
-          basic_constraint_ca: true
           include_root_ca: true

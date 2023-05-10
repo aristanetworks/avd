@@ -71,26 +71,26 @@ interface Management1
 
 | Chain Certificates | Requirement |
 | ------------------ | ----------- |
-| test-chain-cert1.crt, test-chain-cert2.crt | Enabled |
+| test-chain-cert1.crt, test-chain-cert2.crt | Basic Constraint CA |
 
 ### SSL profile test1-trust-cert Certificates Summary
 
 | Trust Certificates | Requirement | Policy | System |
 | ------------------ | ----------- | ------ | ------ |
-| test-trust1.crt, test-trust2.crt | Enabled | Enabled | Enabled |
+| test-trust1.crt, test-trust2.crt | Basic Constraint CA | Ignore Expiry Date | - |
 
 ### SSL profile test2-chain-cert Certificates Summary
 
 
 | Chain Certificates | Requirement |
 | ------------------ | ----------- |
-| - | Basic Constraint CA, Root CA Included |
+| - | Root CA Included |
 
 ### SSL profile test2-trust-cert Certificates Summary
 
 | Trust Certificates | Requirement | Policy | System |
 | ------------------ | ----------- | ------ | ------ |
-| - | Basic Constraint CA, Hostname must be FQDN | Ignore Expiry Date | - |
+| - | Hostname must be FQDN | - | Enabled |
 
 ### Management Security Configuration
 
@@ -108,21 +108,17 @@ management security
    ssl profile test1-chain-cert
       chain certificate test-chain-cert1.crt
       chain certificate test-chain-cert2.crt
-      chain certificate requirement
+      chain certificate requirement basic-constraint ca true
    ssl profile test1-trust-cert
       trust certificate test-trust1.crt
       trust certificate test-trust2.crt
-      trust certificate requirement
-      trust certificate policy
-      trust certificate system
+      trust certificate requirement basic-constraint ca true
+      trust certificate policy expiry-date ignore
    ssl profile test2-chain-cert
-      chain certificate requirement basic-constraint ca true
       chain certificate requirement include root-ca
    ssl profile test2-trust-cert
-      trust certificate requirement
-      trust certificate requirement basic-constraint ca true
+      trust certificate system
       trust certificate requirement hostname fqdn
-      trust certificate policy expiry-date ignore
    ssl profile tls-single-version-profile-as-float
       tls versions 1.0
    ssl profile tls-single-version-profile-as-string
