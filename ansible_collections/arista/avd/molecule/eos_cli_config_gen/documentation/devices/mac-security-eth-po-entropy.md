@@ -146,10 +146,10 @@ Settings:
 
 Keys:
 
-| Key ID | Encrypted (Type 7) Key | Fallback |
-| ------ | ---------------------- | -------- |
-| 1234a | 025756085F535976 | - |
-| 1234c | 10195F4C5144405A | True |
+| Key ID | Fallback |
+| ------ |  -------- |
+| 1234a | - |
+| 1234c | True |
 
 L2 Protocols:
 
@@ -167,9 +167,9 @@ Settings:
 
 Keys:
 
-| Key ID | Encrypted (Type 7) Key | Fallback |
-| ------ | ---------------------- | -------- |
-| 1234b | 12485744465E5A53 | - |
+| Key ID | Fallback |
+| ------ |  -------- |
+| 1234b | - |
 
 ### MACsec Device Configuration
 

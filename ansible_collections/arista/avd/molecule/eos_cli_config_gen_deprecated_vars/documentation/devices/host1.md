@@ -272,7 +272,7 @@ radius-server host 10.10.10.158 key 7 <removed>
 
 | CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
 | -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
-| gzip | 10.20.20.1:9910 | mgt | key,arista | - | - | False |
+| gzip | 10.20.20.1:9910 | mgt | key,<removed> | - | - | False |
 | gzip | 10.30.30.1:9910 | mgt | token,/tmp/tokenDC2 | - | - | False |
 
 #### TerminAttr Daemon Device Configuration
@@ -1562,9 +1562,9 @@ Settings:
 
 Keys:
 
-| Key ID | Encrypted (Type 7) Key | Fallback |
-| ------ | ---------------------- | -------- |
-| 1234b | 12485744465E5A53 | - |
+| Key ID | Fallback |
+| ------ |  -------- |
+| 1234b | - |
 
 ### MACsec Device Configuration
 
