@@ -2355,6 +2355,31 @@
                 },
                 "title": "LACP Fallback"
               },
+              "lacp_timer": {
+                "type": "object",
+                "description": "LACP timer configuration.",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "normal",
+                      "fast"
+                    ],
+                    "description": "LACP mode for interface members.",
+                    "title": "Mode"
+                  },
+                  "multiplier": {
+                    "type": "integer",
+                    "description": "Number of BPDUs lost to time out a member from the Port-channel, Optional - default is 3.",
+                    "title": "Multiplier"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "LACP Timer"
+              },
               "subinterfaces": {
                 "type": "array",
                 "description": "Port-Channel L2 Subinterfaces\nSubinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.\nSetting short_esi: auto generates the short_esi automatically using a hash of configuration elements.\nPlease see the notes under \"EVPN A/A ESI dual-attached endpoint scenario\" before setting short_esi: auto.\n",
@@ -3748,6 +3773,31 @@
                   "^_.+$": {}
                 },
                 "title": "LACP Fallback"
+              },
+              "lacp_timer": {
+                "type": "object",
+                "description": "LACP timer configuration.",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "normal",
+                      "fast"
+                    ],
+                    "description": "LACP mode for interface members.",
+                    "title": "Mode"
+                  },
+                  "multiplier": {
+                    "type": "integer",
+                    "description": "Number of BPDUs lost to time out a member from the Port-channel, Optional - default is 3.",
+                    "title": "Multiplier"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "LACP Timer"
               },
               "subinterfaces": {
                 "type": "array",

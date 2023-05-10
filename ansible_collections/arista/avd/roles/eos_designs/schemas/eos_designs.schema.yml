@@ -2181,6 +2181,22 @@ $defs:
                 convert_types:
                 - str
                 description: Timeout in seconds, Optional - default is 90 seconds.
+          lacp_timer:
+            type: dict
+            description: LACP timer configuration.
+            keys:
+              mode:
+                type: str
+                valid_values:
+                - normal
+                - fast
+                description: LACP mode for interface members.
+              multiplier:
+                type: int
+                convert_types:
+                - str
+                description: Number of BPDUs lost to time out a member from the Port-channel,
+                  Optional - default is 3.
           subinterfaces:
             type: list
             description: 'Port-Channel L2 Subinterfaces
