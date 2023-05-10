@@ -76,7 +76,6 @@ def _ref_on_child(validator, ref, child_schema: dict):
     ref_schema = deepcopy(ref_schema)
     child_schema.pop("$ref", None)
     merge(child_schema, ref_schema, merge_method="use_existing")
-    # child_schema.update(merged_schema)
     # Resolve new refs inherited from the first ref.
     if "$ref" in child_schema:
         _ref_on_child(validator, child_schema["$ref"], child_schema)
