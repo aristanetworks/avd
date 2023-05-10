@@ -234,8 +234,8 @@ class AvdStructuredConfig(AvdFacts):
                     }
                 else:
                     daemon_terminattr["cvauth"] = {
-                        "method": "token-secure",
-                        "token_file": get(self._hostvars, "cvp_token_file", "/tmp/cv-onboarding-token"),
+                        "method": "token",
+                        "token_file": get(self._hostvars, "cvp_token_file", "/tmp/token"),
                     }
 
         daemon_terminattr["cvvrf"] = self.shared_utils.mgmt_interface_vrf
