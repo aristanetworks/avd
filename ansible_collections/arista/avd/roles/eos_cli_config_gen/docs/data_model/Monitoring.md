@@ -5,6 +5,26 @@ search:
 
 # Monitoring
 
+## Custom Daemons
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>daemons</samp>](## "daemons") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;- name</samp>](## "daemons.[].name") | String | Required, Unique |  |  | Daemon Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;exec</samp>](## "daemons.[].exec") | String | Required |  |  | command to run as a daemon<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "daemons.[].enabled") | Boolean |  | True |  |  |
+
+=== "YAML"
+
+    ```yaml
+    daemons:
+      - name: <str>
+        exec: <str>
+        enabled: <bool>
+    ```
+
 ## Daemon TerminAttr
 
 You can either provide a list of IPs/FQDNs to target on-premise Cloudvision cluster or use DNS name for your Cloudvision as a Service instance.
@@ -124,26 +144,6 @@ Streaming to multiple clusters both on-prem and cloud service is supported.
           - <str>
         port: <int>
       ingestvrf: <str>
-    ```
-
-## Custom Daemons
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>daemons</samp>](## "daemons") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- name</samp>](## "daemons.[].name") | String | Required, Unique |  |  | Daemon Name |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;exec</samp>](## "daemons.[].exec") | String | Required |  |  | command to run as a daemon<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "daemons.[].enabled") | Boolean |  | True |  |  |
-
-=== "YAML"
-
-    ```yaml
-    daemons:
-      - name: <str>
-        exec: <str>
-        enabled: <bool>
     ```
 
 ## Event Handlers

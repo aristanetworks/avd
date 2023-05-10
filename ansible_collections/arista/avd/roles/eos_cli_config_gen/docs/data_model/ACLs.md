@@ -5,38 +5,23 @@ search:
 
 # ACLs
 
-## IP Extended Access-Lists (legacy model)
+## IP Access Lists Max Entries
 
-AVD currently supports 2 different data models for extended ACLs:
-
-- The legacy `access_lists` data model, for compatibility with existing deployments
-- The improved `ip_access_lists` data model, for access to more EOS features
-
-Both data models can coexists without conflicts, as different keys are used: `access_lists` vs `ip_access_lists`.
-Access list names must be unique.
-
-The legacy data model supports simplified ACL definition with `sequence` to `action` mapping:
+The `ip_access_lists` data model allows to limit the number of ACL entries that AVD is allowed to generate by defining `ip_access_lists_max_entries`.
+Only normal entries under `ip_access_lists` will be counted, remarks will be ignored.
+If the number is above the limit, the playbook will fail. This provides a simplified control over hardware utilization.
+The numbers must be based on the hardware tests and AVD does not provide any guidance. Note that other EOS features may use the same hardware resources and affect the supported scale.
 
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>access_lists</samp>](## "access_lists") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- name</samp>](## "access_lists.[].name") | String | Required, Unique |  |  | Access-list Name |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counters_per_entry</samp>](## "access_lists.[].counters_per_entry") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sequence_numbers</samp>](## "access_lists.[].sequence_numbers") | List, items: Dictionary | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- sequence</samp>](## "access_lists.[].sequence_numbers.[].sequence") | Integer | Required, Unique |  |  | Sequence ID |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "access_lists.[].sequence_numbers.[].action") | String | Required |  |  | Action as string<br>Example: "deny ip any any" |
+    | [<samp>ip_access_lists_max_entries</samp>](## "ip_access_lists_max_entries") | Integer |  |  |  |  |
 
 === "YAML"
 
     ```yaml
-    access_lists:
-      - name: <str>
-        counters_per_entry: <bool>
-        sequence_numbers:
-          - sequence: <int>
-            action: <str>
+    ip_access_lists_max_entries: <int>
     ```
 
 ## IP Extended Access-Lists (improved model)
@@ -121,23 +106,38 @@ The improved data model has a more sophisticated design documented below:
             vlan_mask: <str>
     ```
 
-## IP Access Lists Max Entries
+## IP Extended Access-Lists (legacy model)
 
-The `ip_access_lists` data model allows to limit the number of ACL entries that AVD is allowed to generate by defining `ip_access_lists_max_entries`.
-Only normal entries under `ip_access_lists` will be counted, remarks will be ignored.
-If the number is above the limit, the playbook will fail. This provides a simplified control over hardware utilization.
-The numbers must be based on the hardware tests and AVD does not provide any guidance. Note that other EOS features may use the same hardware resources and affect the supported scale.
+AVD currently supports 2 different data models for extended ACLs:
+
+- The legacy `access_lists` data model, for compatibility with existing deployments
+- The improved `ip_access_lists` data model, for access to more EOS features
+
+Both data models can coexists without conflicts, as different keys are used: `access_lists` vs `ip_access_lists`.
+Access list names must be unique.
+
+The legacy data model supports simplified ACL definition with `sequence` to `action` mapping:
 
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ip_access_lists_max_entries</samp>](## "ip_access_lists_max_entries") | Integer |  |  |  |  |
+    | [<samp>access_lists</samp>](## "access_lists") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;- name</samp>](## "access_lists.[].name") | String | Required, Unique |  |  | Access-list Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counters_per_entry</samp>](## "access_lists.[].counters_per_entry") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sequence_numbers</samp>](## "access_lists.[].sequence_numbers") | List, items: Dictionary | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- sequence</samp>](## "access_lists.[].sequence_numbers.[].sequence") | Integer | Required, Unique |  |  | Sequence ID |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "access_lists.[].sequence_numbers.[].action") | String | Required |  |  | Action as string<br>Example: "deny ip any any" |
 
 === "YAML"
 
     ```yaml
-    ip_access_lists_max_entries: <int>
+    access_lists:
+      - name: <str>
+        counters_per_entry: <bool>
+        sequence_numbers:
+          - sequence: <int>
+            action: <str>
     ```
 
 ## IPv6 Extended Access-Lists
