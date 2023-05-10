@@ -6,6 +6,5 @@ keys:
   generate_device_documentation:
     documentation_options:
       filename: inputs/Role Inputs
-      table: Device Documentation
     type: bool
     default: true

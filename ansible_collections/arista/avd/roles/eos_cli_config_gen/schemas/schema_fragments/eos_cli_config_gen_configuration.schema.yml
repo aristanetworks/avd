@@ -6,13 +6,9 @@ keys:
   eos_cli_config_gen_configuration:
     documentation_options:
       filename: inputs/Role Inputs
-      table: Device Configuration
     type: dict
     keys:
       hide_passwords:
-        documentation_options:
-          filename: inputs/Role Inputs
-          table: Device Configuration
         type: bool
         description: |
           Replace the input data using the `hide_passwords` filter in the Jinja2 templates by '<removed>' in the configruation if true

@@ -23,20 +23,6 @@ search:
         timeout_default: <int>
     ```
 
-## IP Routing IPv6 Interfaces
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ip_routing_ipv6_interfaces</samp>](## "ip_routing_ipv6_interfaces") | Boolean |  |  |  |  |
-
-=== "YAML"
-
-    ```yaml
-    ip_routing_ipv6_interfaces: <bool>
-    ```
-
 ## IP Routing
 
 === "Table"
@@ -49,6 +35,20 @@ search:
 
     ```yaml
     ip_routing: <bool>
+    ```
+
+## IP Routing IPv6 Interfaces
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>ip_routing_ipv6_interfaces</samp>](## "ip_routing_ipv6_interfaces") | Boolean |  |  |  |  |
+
+=== "YAML"
+
+    ```yaml
+    ip_routing_ipv6_interfaces: <bool>
     ```
 
 ## IP Virtual Router MAC Address
