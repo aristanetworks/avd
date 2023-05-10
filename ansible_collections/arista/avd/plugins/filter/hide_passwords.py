@@ -5,6 +5,8 @@ from __future__ import annotations
 
 __metaclass__ = type
 
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+
 DOCUMENTATION = r"""
   name: hide_passwords
   version_added: "4.0.0"
@@ -35,6 +37,8 @@ RETURN = r"""
 
 
 def hide_passwords(value: str, hide_passwords: bool = False) -> str:
+    if not isinstance(hide_passwords, bool):
+        raise AristaAvdError(f"{hide_passwords} in hide_passwords filter is not of type bool")
     return "<removed>" if hide_passwords else value
 
 

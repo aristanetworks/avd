@@ -1,0 +1,6 @@
+---
+- name: Test hide_passwords filter
+  ansible.builtin.assert:
+    that:
+      - "{{ 'dummy' | arista.avd.hide_passwords(false) == 'dummy' }}"
+      - "{{ 'dummy' | arista.avd.hide_passwords(true) == '<removed>' }}"
