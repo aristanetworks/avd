@@ -6375,7 +6375,8 @@ keys:
             convert_types:
             - int
             - float
-            description: 'Timeout after which port should be errdisabled or
+            description: 'Timeout in seconds after which port should be errdisabled
+              or
 
               should start dropping on congested priorities.
 
@@ -6390,11 +6391,10 @@ keys:
             convert_types:
             - int
             - float
-            description: 'Time interval at which the watchdog should poll the queues.
+            description: 'Time interval in seconds at which the watchdog should poll
+              the queues.
 
-              This should be decimal with up to 1 decimal point or set
-
-              to ''auto'' based on recovery_time and timeout values.
+              This should be decimal with up to 1 decimal point.
 
               Example : 0.5 or 60
 
@@ -6405,7 +6405,9 @@ keys:
             convert_types:
             - int
             - float
-            description: 'Time interval at which the watchdog should poll the queues.
+            description: 'Recovery-time in seconds after which stuck queue should
+
+              recover and start forwarding again.
 
               This should be decimal with up to 1 decimal point.
 
@@ -6815,8 +6817,8 @@ keys:
                       convert_types:
                       - int
                       - float
-                      description: 'Timeout after which port should be errdisabled
-                        or
+                      description: 'Timeout in seconds after which port should be
+                        errdisabled or
 
                         should start dropping on congested priorities.
 
@@ -6832,8 +6834,8 @@ keys:
                       convert_types:
                       - int
                       - float
-                      description: 'Time interval at which the watchdog should poll
-                        the queues.
+                      description: 'Time interval in seconds at which the watchdog
+                        should poll the queues.
 
                         This should be decimal with up to 1 decimal point or set
 
@@ -6849,7 +6851,8 @@ keys:
                       convert_types:
                       - int
                       - float
-                      description: 'Recovery-time after which stuck queue should
+                      description: 'Recovery-time in seconds after which stuck queue
+                        should
 
                         recover and start forwarding again.
 

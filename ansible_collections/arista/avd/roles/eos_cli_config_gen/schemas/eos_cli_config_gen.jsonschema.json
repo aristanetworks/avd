@@ -10652,19 +10652,19 @@
             "timeout": {
               "type": "string",
               "pattern": "\\d+(\\.\\d)?",
-              "description": "Timeout after which port should be errdisabled or\nshould start dropping on congested priorities.\nThis should be decimal with up to 1 decimal point.\nExample : 0.5 or 60\n",
+              "description": "Timeout in seconds after which port should be errdisabled or\nshould start dropping on congested priorities.\nThis should be decimal with up to 1 decimal point.\nExample : 0.5 or 60\n",
               "title": "Timeout"
             },
             "polling_interval": {
               "type": "string",
               "pattern": "\\d+(\\.\\d)?",
-              "description": "Time interval at which the watchdog should poll the queues.\nThis should be decimal with up to 1 decimal point or set\nto 'auto' based on recovery_time and timeout values.\nExample : 0.5 or 60\n",
+              "description": "Time interval in seconds at which the watchdog should poll the queues.\nThis should be decimal with up to 1 decimal point.\nExample : 0.5 or 60\n",
               "title": "Polling Interval"
             },
             "recovery_time": {
               "type": "string",
               "pattern": "\\d+(\\.\\d)?",
-              "description": "Time interval at which the watchdog should poll the queues.\nThis should be decimal with up to 1 decimal point.\nExample : 0.5 or 60\n",
+              "description": "Recovery-time in seconds after which stuck queue should\nrecover and start forwarding again.\nThis should be decimal with up to 1 decimal point.\nExample : 0.5 or 60\n",
               "title": "Recovery Time"
             },
             "override_action_drop": {
@@ -11249,19 +11249,19 @@
                       "timeout": {
                         "type": "string",
                         "pattern": "\\d+(\\.\\d)?",
-                        "description": "Timeout after which port should be errdisabled or\nshould start dropping on congested priorities.\nThis should be decimal with up to 1 decimal point\nExample : 0.5 or 60\n",
+                        "description": "Timeout in seconds after which port should be errdisabled or\nshould start dropping on congested priorities.\nThis should be decimal with up to 1 decimal point\nExample : 0.5 or 60\n",
                         "title": "Timeout"
                       },
                       "polling_interval": {
                         "type": "string",
                         "pattern": "auto|\\d+(\\.\\d)?",
-                        "description": "Time interval at which the watchdog should poll the queues.\nThis should be decimal with up to 1 decimal point or set\nto 'auto' based on recovery_time and timeout values.\nExample : 0.5 or 60\n",
+                        "description": "Time interval in seconds at which the watchdog should poll the queues.\nThis should be decimal with up to 1 decimal point or set\nto 'auto' based on recovery_time and timeout values.\nExample : 0.5 or 60\n",
                         "title": "Polling Interval"
                       },
                       "recovery_time": {
                         "type": "string",
                         "pattern": "\\d+(\\.\\d)?",
-                        "description": "Recovery-time after which stuck queue should\nrecover and start forwarding again.\nThis should be decimal with up to 1 decimal point.\nExample : 0.5 or 60\n",
+                        "description": "Recovery-time in seconds after which stuck queue should\nrecover and start forwarding again.\nThis should be decimal with up to 1 decimal point.\nExample : 0.5 or 60\n",
                         "title": "Recovery Time"
                       },
                       "forced": {

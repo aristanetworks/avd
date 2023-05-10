@@ -27,7 +27,7 @@ keys:
               - int
               - float
             description: |
-              Timeout after which port should be errdisabled or
+              Timeout in seconds after which port should be errdisabled or
               should start dropping on congested priorities.
               This should be decimal with up to 1 decimal point.
               Example : 0.5 or 60
@@ -38,9 +38,8 @@ keys:
               - int
               - float
             description: |
-              Time interval at which the watchdog should poll the queues.
-              This should be decimal with up to 1 decimal point or set
-              to 'auto' based on recovery_time and timeout values.
+              Time interval in seconds at which the watchdog should poll the queues.
+              This should be decimal with up to 1 decimal point.
               Example : 0.5 or 60
           recovery_time:
             type: str
@@ -49,7 +48,8 @@ keys:
               - int
               - float
             description: |
-              Time interval at which the watchdog should poll the queues.
+              Recovery-time in seconds after which stuck queue should
+              recover and start forwarding again.
               This should be decimal with up to 1 decimal point.
               Example : 0.5 or 60
           override_action_drop:
