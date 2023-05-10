@@ -38,10 +38,10 @@ router_bgp:
   - ip_address: 10.255.255.2
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
-    description: dc1-spine1_Ethernet2
+    description: duplicate-ip-address-uplink-switch-router-bgp_Ethernet2
   - ip_address: 10.255.0.1
     peer_group: EVPN-OVERLAY-PEERS
-    description: dc1-spine1
+    description: duplicate-ip-address-uplink-switch-router-bgp
     remote_as: '65100'
   redistribute_routes:
   - source_protocol: connected
@@ -129,10 +129,10 @@ ethernet_interfaces:
     mode: active
   name: Ethernet4
 - name: Ethernet1
-  peer: dc1-spine1
+  peer: duplicate-ip-address-uplink-switch-router-bgp
   peer_interface: Ethernet2
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE1_Ethernet2
+  description: P2P_LINK_TO_DUPLICATE-IP-ADDRESS-UPLINK-SWITCH-ROUTER-BGP_Ethernet2
   shutdown: false
   mtu: 9000
   type: routed

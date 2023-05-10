@@ -8,7 +8,7 @@ l3leaf:
     loopback_ipv4_offset: 2
     vtep_loopback_ipv4_pool: 10.255.1.0/27
     uplink_interfaces: ['Ethernet1']
-    uplink_switches: ['dc1-spine1']
+    uplink_switches: ['duplicate-ip-address-uplink-switch-router-bgp']
     uplink_ipv4_pool: 10.255.255.0/26
     mlag_interfaces: ['Ethernet3', 'Ethernet4']
     mlag_peer_ipv4_pool: 10.255.1.64/27

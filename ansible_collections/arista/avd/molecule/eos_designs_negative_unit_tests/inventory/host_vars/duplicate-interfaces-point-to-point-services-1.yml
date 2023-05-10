@@ -19,7 +19,7 @@ pe:
     loopback_ipv4_pool: 10.42.0.0/24
     bgp_as: 42
   nodes:
-    duplicate-interfaces-point-to-point-services:
+    duplicate-interfaces-point-to-point-services-1:
       id: 42
 
 type: pe
@@ -39,7 +39,7 @@ tenants:
             ip_addresses:
               - 192.168.48.4/31
             nodes:
-              - duplicate-interfaces-point-to-point-services
+              - duplicate-interfaces-point-to-point-services-1
             ospf:
               enabled: true
               point_to_point: true
@@ -49,11 +49,11 @@ tenants:
       - name: TEN_A_site2_site5_eline_port_based
         endpoints:
           - id: 26
-            nodes: [ "duplicate-interfaces-point-to-point-services" ]
+            nodes: [ "duplicate-interfaces-point-to-point-services-1" ]
             # duplicate interface
             interfaces: [ "Ethernet6" ]
             port_channel:
               description: Description1
               mode: active
 
-expected_error_message: "Duplicate interface_name Ethernet6 found while generating ethernet_interfaces for point_to_point_services node: duplicate-interfaces-point-to-point-services"
+expected_error_message: "Duplicate interface_name Ethernet6 found while generating ethernet_interfaces for point_to_point_services node: duplicate-interfaces-point-to-point-services-1"

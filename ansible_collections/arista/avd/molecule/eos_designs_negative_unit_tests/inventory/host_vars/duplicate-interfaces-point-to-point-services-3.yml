@@ -19,7 +19,7 @@ pe:
     loopback_ipv4_pool: 10.42.0.0/24
     bgp_as: 42
   nodes:
-    duplicate-sub-interfaces-point-to-point-services:
+    duplicate-interfaces-point-to-point-services-3:
       id: 42
 
 type: pe
@@ -35,7 +35,7 @@ tenants:
           - number: 1000
         endpoints:
           - id: 26
-            nodes: [ "duplicate-sub-interfaces-point-to-point-services" ]
+            nodes: [ "duplicate-interfaces-point-to-point-services-3" ]
             interfaces: [ "Ethernet6" ]
 
   - name: TENANT_B
@@ -45,7 +45,7 @@ tenants:
           - number: 1000
         endpoints:
           - id: 57
-            nodes: [ "duplicate-sub-interfaces-point-to-point-services" ]
+            nodes: [ "duplicate-interfaces-point-to-point-services-3" ]
             interfaces: [ "Ethernet6" ]
 
 expected_error_message: "Duplicate interface_name Ethernet6.1000 found while generating subinterfaces under port_to_point_services"
