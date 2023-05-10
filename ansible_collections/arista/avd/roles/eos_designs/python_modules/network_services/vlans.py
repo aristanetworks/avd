@@ -44,9 +44,11 @@ class VlansMixin(UtilsMixin):
                     continue
 
                 if vlan_id in vlans:
-                    self._raise_duplicate_vlan_error(
-                        vlan_id, f"MLAG Peering VLAN in vrf '{vrf['name']}' (check for duplicate VRF VNI/ID)", tenant["name"], vlans[vlan_id]
-                    )
+                    if vlans[vlan_id]["name"] != f"MLAG_iBGP_{vrf['name']}":
+                        # Only raise if the duplicate is for a different VRF.
+                        self._raise_duplicate_vlan_error(
+                            vlan_id, f"MLAG Peering VLAN in vrf '{vrf['name']}' (check for duplicate VRF VNI/ID)", tenant["name"], vlans[vlan_id]
+                        )
 
                 vlans[vlan_id] = {
                     "tenant": tenant["name"],
