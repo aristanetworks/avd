@@ -158,7 +158,7 @@ snmp-server location {{ snmp_server.location }}
 {%                     endfor %}
 {%                 elif host.community is arista.avd.defined
                         and host.version | arista.avd.default('2c') | string in ['1', '2c'] %}
-{{ host_cli }} version {{ host.version | arista.avd.default('2c') }} {{ host.community }}
+{{ host_cli }} version {{ host.version | arista.avd.default('2c') }} {{ host.community | arista.avd.hide_passwords(hide_passwords) }}
 {%                 endif %}
 {%             endif %}
 {%         endfor %}

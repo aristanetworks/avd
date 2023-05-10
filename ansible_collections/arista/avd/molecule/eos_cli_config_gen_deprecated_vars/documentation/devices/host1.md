@@ -259,9 +259,9 @@ username admin privilege 15 role network-admin nopassword
 
 ```eos
 !
-radius-server host 10.10.10.157 vrf mgt key 7 071B245F5A
-radius-server host 10.10.10.249 key 7 071B245F5A
-radius-server host 10.10.10.158 key 7 071B245F5A
+radius-server host 10.10.10.157 vrf mgt key 7 <removed>
+radius-server host 10.10.10.249 key 7 <removed>
+radius-server host 10.10.10.158 key 7 <removed>
 ```
 
 ## Monitoring
@@ -280,7 +280,7 @@ radius-server host 10.10.10.158 key 7 071B245F5A
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvopt DC1.addr=10.20.20.1:9910 -cvopt DC1.auth=key,arista -cvopt DC1.vrf=mgt -cvopt DC2.addr=10.30.30.1:9910 -cvopt DC2.auth=token,/tmp/tokenDC2 -cvopt DC2.vrf=mgt -taillogs
+   exec /usr/bin/TerminAttr -cvopt DC1.addr=10.20.20.1:9910 -cvopt DC1.auth=key,<removed> -cvopt DC1.vrf=mgt -cvopt DC2.addr=10.30.30.1:9910 -cvopt DC2.auth=token,/tmp/tokenDC2 -cvopt DC2.vrf=mgt -taillogs
    no shutdown
 ```
 
@@ -353,9 +353,9 @@ logging policy match match-list molecule discard
 
 | Community | Access | Access List IPv4 | Access List IPv6 | View |
 | --------- | ------ | ---------------- | ---------------- | ---- |
-| SNMP-COMMUNITY-1 | ro | onur | - | - |
-| SNMP-COMMUNITY-2 | rw | SNMP-MGMT | SNMP-MGMT | VW-READ |
-| SNMP-COMMUNITY-3 | ro | - | - | - |
+| <removed> | ro | onur | - | - |
+| <removed> | rw | SNMP-MGMT | SNMP-MGMT | VW-READ |
+| <removed> | ro | - | - | - |
 
 #### SNMP Device Configuration
 

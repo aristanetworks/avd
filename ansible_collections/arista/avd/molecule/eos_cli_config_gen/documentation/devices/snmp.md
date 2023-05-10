@@ -98,9 +98,9 @@ interface Management1
 
 | Community | Access | Access List IPv4 | Access List IPv6 | View |
 | --------- | ------ | ---------------- | ---------------- | ---- |
-| SNMP-COMMUNITY-1 | ro | onur | - | - |
-| SNMP-COMMUNITY-2 | rw | SNMP-MGMT | SNMP-MGMT | VW-READ |
-| SNMP-COMMUNITY-3 | ro | - | - | - |
+| <removed> | ro | onur | - | - |
+| <removed> | rw | SNMP-MGMT | SNMP-MGMT | VW-READ |
+| <removed> | ro | - | - | - |
 
 #### SNMP Groups Configuration
 
@@ -157,9 +157,9 @@ snmp-server user USER-WRITE GRP-READ-WRITE v3 auth sha <removed> priv aes <remov
 snmp-server user REMOTE-USER-IP-ONLY GRP-REMOTE remote 42.42.42.42 v3
 snmp-server user REMOTE-USER-IP-PORT GRP-REMOTE remote 42.42.42.42 udp-port 666 v3
 snmp-server user REMOTE-USER-IP-LOCALIZED GRP-REMOTE remote 42.42.42.42 v3 localized DEADBEEFCAFE123456 auth sha <removed>
-snmp-server host 10.6.75.121 vrf MGMT version 1 SNMP-COMMUNITY-1
-snmp-server host 10.6.75.121 vrf MGMT version 2c SNMP-COMMUNITY-2
-snmp-server host 10.6.75.122 vrf MGMT version 2c SNMP-COMMUNITY-2
+snmp-server host 10.6.75.121 vrf MGMT version 1 <removed>
+snmp-server host 10.6.75.121 vrf MGMT version 2c <removed>
+snmp-server host 10.6.75.122 vrf MGMT version 2c <removed>
 snmp-server host 10.6.75.99 vrf MGMT version 3 auth USER-READ-AUTH-NO-PRIV
 snmp-server host 10.6.75.99 vrf MGMT version 3 auth USER-WRITE
 snmp-server host 10.6.75.100 vrf MGMT version 3 priv USER-READ-AUTH-PRIV
