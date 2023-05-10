@@ -219,7 +219,7 @@ interface Ethernet1
    no isis hello padding
    isis network point-to-point
    isis authentication mode md5
-   isis authentication key 7 asdadjiwtelogkkdng
+   isis authentication key 7 <removed>
    link-debounce time 1000
 
 !
@@ -240,7 +240,7 @@ interface Ethernet2
    no isis hello padding
    isis network point-to-point
    isis authentication mode md5
-   isis authentication key 7 asdadjiwtelogkkdng
+   isis authentication key 7 <removed>
    link-debounce time 1500
 
 !
@@ -711,7 +711,7 @@ router bgp 65000
    neighbor MPLS-OVERLAY-PEERS remote-as 65000
    neighbor MPLS-OVERLAY-PEERS update-source Loopback0
    neighbor MPLS-OVERLAY-PEERS bfd
-   neighbor MPLS-OVERLAY-PEERS password 7 SHsTgDgjVUU5a9blyxSt3Q==
+   neighbor MPLS-OVERLAY-PEERS password 7 <removed>
    neighbor MPLS-OVERLAY-PEERS send-community
    neighbor MPLS-OVERLAY-PEERS maximum-routes 0
    neighbor 100.70.0.8 peer group MPLS-OVERLAY-PEERS

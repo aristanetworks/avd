@@ -135,7 +135,7 @@ management api http-commands
 ```eos
 !
 username admin privilege 15 role network-admin nopassword
-username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+username cvpadmin privilege 15 role network-admin secret sha512 <removed>
 ```
 
 ## Monitoring
@@ -672,11 +672,11 @@ router bgp 65105
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
    neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3
-   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
+   neighbor EVPN-OVERLAY-PEERS password 7 <removed>
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor UNDERLAY-PEERS peer group
-   neighbor UNDERLAY-PEERS password 7 0nsCUm70mvSTxVO0ldytrg==
+   neighbor UNDERLAY-PEERS password 7 <removed>
    neighbor UNDERLAY-PEERS send-community
    neighbor UNDERLAY-PEERS maximum-routes 12000
    neighbor 172.31.255.96 peer group UNDERLAY-PEERS
@@ -735,7 +735,7 @@ router bgp 65105
       route-target export vpn-ipv4 65000:123
       router-id 192.168.255.15
       neighbor 123.1.1.10 remote-as 1234
-      neighbor 123.1.1.10 password 7 oBztv71m2uhR7hh58/OCNA==
+      neighbor 123.1.1.10 password 7 <removed>
       neighbor 123.1.1.10 local-as 123 no-prepend replace-as
       neighbor 123.1.1.10 description External IPv4 BGP peer
       neighbor 123.1.1.10 ebgp-multihop 3
@@ -746,7 +746,7 @@ router bgp 65105
       neighbor 123.1.1.10 route-map RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT out
       neighbor 123.1.1.10 route-map RM-123-1-1-10-IN in
       neighbor 123.1.1.11 remote-as 1234
-      neighbor 123.1.1.11 password 7 oBztv71m2uhR7hh58/OCNA==
+      neighbor 123.1.1.11 password 7 <removed>
       neighbor 123.1.1.11 local-as 123 no-prepend replace-as
       neighbor 123.1.1.11 description External IPv4 BGP peer
       neighbor 123.1.1.11 ebgp-multihop 3

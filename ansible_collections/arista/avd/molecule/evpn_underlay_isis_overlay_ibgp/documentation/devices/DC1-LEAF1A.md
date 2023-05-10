@@ -151,7 +151,7 @@ management api http-commands
 ```eos
 !
 username admin privilege 15 role network-admin nopassword
-username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+username cvpadmin privilege 15 role network-admin secret sha512 <removed>
 ```
 
 ## Monitoring
@@ -505,7 +505,7 @@ router bgp 65000
    neighbor OVERLAY-PEERS remote-as 65000
    neighbor OVERLAY-PEERS update-source Loopback0
    neighbor OVERLAY-PEERS bfd
-   neighbor OVERLAY-PEERS password 7 64fqSH5CFUNLRHErezMrRg==
+   neighbor OVERLAY-PEERS password 7 <removed>
    neighbor OVERLAY-PEERS send-community
    neighbor OVERLAY-PEERS maximum-routes 0
    neighbor 192.168.255.1 peer group OVERLAY-PEERS

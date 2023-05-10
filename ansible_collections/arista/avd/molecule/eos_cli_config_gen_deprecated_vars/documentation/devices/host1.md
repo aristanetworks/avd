@@ -365,9 +365,9 @@ snmp-server vrf MGMT local-interface Management1
 snmp-server local-interface Loopback0
 snmp-server vrf Tenant_A_APP_Zone local-interface Loopback12
 snmp-server view VW-WRITE iso included
-snmp-server community SNMP-COMMUNITY-1 ro onur
-snmp-server community SNMP-COMMUNITY-2 view VW-READ rw ipv6 SNMP-MGMT SNMP-MGMT
-snmp-server community SNMP-COMMUNITY-3 ro
+snmp-server community <removed> ro onur
+snmp-server community <removed> view VW-READ rw ipv6 SNMP-MGMT SNMP-MGMT
+snmp-server community <removed> ro
 ```
 
 ### SFlow
@@ -605,9 +605,9 @@ interface Ethernet5
    ip ospf cost 99
    ip ospf network point-to-point
    ip ospf authentication message-digest
-   ip ospf authentication-key 7 asfddja23452
+   ip ospf authentication-key 7 <removed>
    ip ospf area 100
-   ip ospf message-digest-key 1 sha512 7 asfddja23452
+   ip ospf message-digest-key 1 sha512 7 <removed>
 !
 interface Ethernet26
    no switchport
@@ -1577,7 +1577,7 @@ mac security
    profile A1
       sci
    profile A2
-      key 1234b 7 12485744465E5A53
+      key 1234b 7 <removed>
 ```
 
 ### Traffic Policies information

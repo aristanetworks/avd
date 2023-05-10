@@ -159,7 +159,7 @@ management api http-commands
 ```eos
 !
 username admin privilege 15 role network-admin nopassword
-username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+username cvpadmin privilege 15 role network-admin secret sha512 <removed>
 ```
 
 ## Monitoring
@@ -631,11 +631,11 @@ router bgp 65101
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
    neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3
-   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
+   neighbor EVPN-OVERLAY-PEERS password 7 <removed>
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor UNDERLAY_PEERS peer group
-   neighbor UNDERLAY_PEERS password 7 af6F4WLl4wUrWRZcwbEwkQ==
+   neighbor UNDERLAY_PEERS password 7 <removed>
    neighbor UNDERLAY_PEERS send-community
    neighbor UNDERLAY_PEERS maximum-routes 12000
    neighbor interface Ethernet1 peer-group UNDERLAY_PEERS remote-as 65001
