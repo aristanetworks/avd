@@ -1142,6 +1142,38 @@ keys:
     type: str
     description: Multiline string with EOS CLI rendered directly on the root level
       of the final EOS configuration
+  eos_cli_config_gen_configuration:
+    documentation_options:
+      filename: inputs/Role Inputs
+      table: Device Configuration
+    type: dict
+    keys:
+      hide_passwords:
+        documentation_options:
+          filename: inputs/Role Inputs
+          table: Device Configuration
+        type: bool
+        description: 'Replace the input data using the `hide_passwords` filter in
+          the Jinja2 templates by ''<removed>'' in the configruation if true
+
+          '
+        default: false
+  eos_cli_config_gen_documentation:
+    documentation_options:
+      filename: inputs/Role Inputs
+      table: Device Documentation
+    type: dict
+    keys:
+      hide_passwords:
+        documentation_options:
+          filename: inputs/Role Inputs
+          table: Device Documentation
+        type: bool
+        description: 'Replace the input data using the `hide_passwords` filter in
+          the Jinja2 templates by ''<removed>'' in the documentation if true
+
+          '
+        default: true
   errdisable:
     documentation_options:
       filename: data_model/Errdisable
@@ -2453,6 +2485,7 @@ keys:
   generate_default_config:
     documentation_options:
       filename: inputs/Role Inputs
+      table: Device Configuration
     type: bool
     default: true
     description: 'The `generate_default_config` knob allows to omit default EOS configuration.
@@ -2479,6 +2512,7 @@ keys:
   generate_device_documentation:
     documentation_options:
       filename: inputs/Role Inputs
+      table: Device Documentation
     type: bool
     default: true
   hardware:

@@ -6,6 +6,7 @@ keys:
   generate_default_config:
     documentation_options:
       filename: inputs/Role Inputs
+      table: Device Configuration
     type: bool
     default: true
     description: |
