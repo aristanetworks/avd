@@ -1,0 +1,7 @@
+---
+overwritten_by_host_vars: GLOBAL_VALUE
+overwritten_by_group_all: GLOBAL_VALUE
+overwritten_by_group_leafs: GLOBAL_VALUE
+overwritten_by_group_spines: GLOBAL_VALUE
+overwritten_by_zz_global_vars: GLOBAL_VALUE
+not_overwritten: GLOBAL_VALUE

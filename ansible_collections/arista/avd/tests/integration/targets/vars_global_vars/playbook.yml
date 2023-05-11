@@ -1,0 +1,31 @@
+---
+- hosts: all
+  tasks:
+    - name: Verify Global Variables
+      ansible.builtin.assert:
+        that:
+          - "{{ not_overwritten == 'GLOBAL_VALUE' }}"
+          - "{{ overwritten_by_zz_global_vars == 'ZZ_GLOBAL_VALUE' }}"
+          - "{{ overwritten_by_group_all == 'ALL_VALUE' }}"
+
+- hosts: leaf1
+  tasks:
+    - name: Verify Global Variables
+      ansible.builtin.assert:
+        that:
+          - "{{ not_overwritten == 'GLOBAL_VALUE' }}"
+          - "{{ overwritten_by_zz_global_vars == 'ZZ_GLOBAL_VALUE' }}"
+          - "{{ overwritten_by_group_all == 'ALL_VALUE' }}"
+          - "{{ overwritten_by_group_leafs == 'LEAFS_VALUE' }}"
+          - "{{ overwritten_by_host_vars == 'HOST_VALUE' }}"
+
+- hosts: spine1
+  tasks:
+    - name: Verify Global Variables
+      ansible.builtin.assert:
+        that:
+          - "{{ not_overwritten == 'GLOBAL_VALUE' }}"
+          - "{{ overwritten_by_zz_global_vars == 'ZZ_GLOBAL_VALUE' }}"
+          - "{{ overwritten_by_group_all == 'ALL_VALUE' }}"
+          - "{{ overwritten_by_group_spines == 'SPINES_VALUE' }}"
+          - "{{ overwritten_by_host_vars == 'HOST_VALUE' }}"
