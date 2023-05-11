@@ -1,9 +1,6 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import NoReturn
-
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 
 from .utils import UtilsMixin
 
