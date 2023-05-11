@@ -4283,6 +4283,11 @@
                   "description": "IPv6_address/Mask. Usually set under \"nodes\" to have unique IPv6 addresses per node.",
                   "title": "IPv6 Address"
                 },
+                "ipv6_enable": {
+                  "type": "boolean",
+                  "description": "Explicitly enable/disable link-local IPv6 addressing.",
+                  "title": "IPv6 Enable"
+                },
                 "ip_address_virtual": {
                   "type": "string",
                   "description": "IPv4_address/Mask\nIPv4 VXLAN Anycast IP address\nConserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.\n",
@@ -4615,6 +4620,11 @@
             "type": "string",
             "description": "IPv6_address/Mask. Usually set under \"nodes\" to have unique IPv6 addresses per node.",
             "title": "IPv6 Address"
+          },
+          "ipv6_enable": {
+            "type": "boolean",
+            "description": "Explicitly enable/disable link-local IPv6 addressing.",
+            "title": "IPv6 Enable"
           },
           "ip_address_virtual": {
             "type": "string",

@@ -22,6 +22,9 @@ $defs:
       ipv6_address:
         type: str
         description: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
+      ipv6_enable:
+        type: bool
+        description: Explicitly enable/disable link-local IPv6 addressing.
       ip_address_virtual:
         type: str
         description: |
