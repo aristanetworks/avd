@@ -106,7 +106,7 @@ keys:
                             convert_types:
                               - str
                             description: |
-                              Random-detect ecn minimum-threshold
+                              Random-detect ECN minimum-threshold
                           max:
                             type: int
                             required: true
@@ -114,7 +114,7 @@ keys:
                             convert_types:
                               - str
                             description: |
-                              Random-detect ecn maximum-threshold
+                              Random-detect ECN maximum-threshold
                           max_probability:
                             type: int
                             min: 1
@@ -130,7 +130,7 @@ keys:
                             convert_types:
                               - str
                             description: |
-                              Random-detect ecn weight.
+                              Random-detect ECN weight.
 
         uc_tx_queues:
           type: list
@@ -184,8 +184,7 @@ keys:
                             type: str
                             valid_values: ["segments", "bytes", "kbytes", "mbytes"]
                             description: |
-                              Units to be used for the threshold values.
-                              This should be one of segments, byte, kbytes, mbytes.
+                              Unit to be used for the threshold values.
                           min:
                             type: int
                             required: true
@@ -193,7 +192,7 @@ keys:
                             convert_types:
                               - str
                             description: |
-                              Random-detect ecn minimum-threshold
+                              Random-detect ECN minimum-threshold.
                           max:
                             type: int
                             required: true
@@ -201,7 +200,7 @@ keys:
                             convert_types:
                               - str
                             description: |
-                              Random-detect ecn maximum-threshold
+                              Random-detect ECN maximum-threshold.
                           max_probability:
                             type: int
                             min: 1

@@ -15,7 +15,9 @@ qos:
   rewrite_dscp: true
   random_detect:
     ecn:
-      allow: non-ect
+      allow_non_ect:
+        enabled: true
+        chip_based: true
 
 qos_profiles:
   - name: test

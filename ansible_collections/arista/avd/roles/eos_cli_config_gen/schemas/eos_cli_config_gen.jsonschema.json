@@ -10259,14 +10259,25 @@
               "type": "object",
               "description": "Global ECN Configuration",
               "properties": {
-                "allow": {
-                  "type": "string",
-                  "enum": [
-                    "non-ect",
-                    "non-ect chip-based"
-                  ],
-                  "description": "Allow non-ect and set drop-precedence 1 in a policy map simultaneously.\nAvailable options are 'non-ect' or 'non-ect chip-based'\nCheck which command is required for your platform",
-                  "title": "Allow"
+                "allow_non_ect": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "description": "Allow non-ect and set drop-precedence 1 in a policy map simultaneously.\nCheck which command is required for your platform.\n",
+                      "title": "Enabled"
+                    },
+                    "chip_based": {
+                      "type": "boolean",
+                      "description": "Allow non-ect chip-based.",
+                      "title": "Chip Based"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Allow Non Ect"
                 }
               },
               "additionalProperties": false,
@@ -10426,13 +10437,13 @@
                             "min": {
                               "type": "integer",
                               "minimum": 1,
-                              "description": "Random-detect ecn minimum-threshold\n",
+                              "description": "Random-detect ECN minimum-threshold\n",
                               "title": "Min"
                             },
                             "max": {
                               "type": "integer",
                               "minimum": 1,
-                              "description": "Random-detect ecn maximum-threshold\n",
+                              "description": "Random-detect ECN maximum-threshold\n",
                               "title": "Max"
                             },
                             "max_probability": {
@@ -10446,7 +10457,7 @@
                               "type": "integer",
                               "minimum": 1,
                               "maximum": 15,
-                              "description": "Random-detect ecn weight.\n",
+                              "description": "Random-detect ECN weight.\n",
                               "title": "Weight"
                             }
                           },
@@ -10550,19 +10561,19 @@
                                 "kbytes",
                                 "mbytes"
                               ],
-                              "description": "Units to be used for the threshold values.\nThis should be one of segments, byte, kbytes, mbytes.\n",
+                              "description": "Unit to be used for the threshold values.\n",
                               "title": "Units"
                             },
                             "min": {
                               "type": "integer",
                               "minimum": 1,
-                              "description": "Random-detect ecn minimum-threshold\n",
+                              "description": "Random-detect ECN minimum-threshold.\n",
                               "title": "Min"
                             },
                             "max": {
                               "type": "integer",
                               "minimum": 1,
-                              "description": "Random-detect ecn maximum-threshold\n",
+                              "description": "Random-detect ECN maximum-threshold.\n",
                               "title": "Max"
                             },
                             "max_probability": {

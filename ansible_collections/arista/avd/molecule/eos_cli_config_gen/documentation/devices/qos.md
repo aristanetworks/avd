@@ -201,7 +201,7 @@ ipv6 access-list acl_qos_tc5_v6
 
 QOS rewrite DSCP: **enabled**
 
-QOS random-detect ecn is set to allow **non-ect**
+QOS random-detect ecn is set to allow **non-ect** **chip-based**
 
 ##### QOS Mappings
 
@@ -239,7 +239,7 @@ qos map traffic-class 1 to dscp 56
 qos map traffic-class 2 4 5 to cos 7
 qos map traffic-class 6 to tx-queue 2
 !
-qos random-detect ecn allow non-ect
+qos random-detect ecn allow non-ect chip-based
 ```
 
 ### QOS Class Maps

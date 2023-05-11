@@ -13,8 +13,12 @@ qos map dscp {{ dscp_map }}
 {%     for tc_map in qos.map.traffic_class | arista.avd.natural_sort %}
 qos map traffic-class {{ tc_map }}
 {%     endfor %}
-{%     if qos.random_detect.ecn.allow is arista.avd.defined %}
+{%     if qos.random_detect.ecn.allow_non_ect.enabled is arista.avd.defined %}
 !
-qos random-detect ecn allow {{ qos.random_detect.ecn.allow }}
+{%         set ecn_command = "qos random-detect ecn allow non-ect" %}
+{%         if qos.random_detect.ecn.allow_non_ect.chip_based is arista.avd.defined(true) %}
+{%             set ecn_command = ecn_command ~ " chip-based" %}
+{%         endif %}
+{{ ecn_command }}
 {%     endif %}
 {% endif %}
