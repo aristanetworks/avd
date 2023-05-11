@@ -767,7 +767,7 @@
     },
     "cvp_instance_ips": {
       "type": "array",
-      "description": "List of IPv4 addresses or DNS names for CloudVision.\nFor on-premise CloudVision enter all the nodes of the cluster.\nFor CloudVision as a Service enter the DNS name of the instance.\nIf you have both on-premise and CVaaS defined, only on-premise is configured.\n",
+      "description": "List of IPv4 addresses or DNS names for CloudVision.\nFor on-premise CloudVision enter all the nodes of the cluster.\nFor CloudVision as a Service enter the DNS name of the instance.\n`eos_designs` only supports one CloudVision cluster.\n",
       "items": {
         "type": "string",
         "description": "IPv4 address or DNS name for CloudVision"
@@ -913,7 +913,7 @@
     },
     "event_handlers": {
       "type": "array",
-      "description": "Gives the ability to monitor and react to Syslog messages.\nEvent Handlers provide a powerful and flexible tool that can be used to apply self-healing actions,\ncustomize the system behavior, and implement workarounds to problems discovered in the field.",
+      "description": "Gives the ability to monitor and react to Syslog messages.\nEvent Handlers provide a powerful and flexible tool that can be used to apply self-healing actions,\ncustomize the system behavior, and implement workarounds to problems discovered in the field.\n",
       "items": {
         "type": "object",
         "properties": {
@@ -1766,7 +1766,7 @@
     },
     "mgmt_gateway": {
       "type": "string",
-      "description": "OOB Management interface gateway in IPv4 format.",
+      "description": "OOB Management interface gateway in IPv4 format.\nUsed as next-hop for default gateway or static routes defined under 'mgmt_destination_networks'",
       "title": "Mgmt Gateway"
     },
     "mgmt_interface": {
@@ -4071,7 +4071,7 @@
         "compute_local_engineid": {
           "type": "boolean",
           "default": false,
-          "description": "Generate a local engineId for SNMP by hashing via SHA1, the string\ngenerated via the concatenation of the hostname plus the management IP.\n{{ inventory_hostname }} + {{ switch.mgmt_ip }}\n",
+          "description": "Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.\n",
           "title": "Compute Local Engineid"
         },
         "compute_local_engineid_source": {
@@ -4087,7 +4087,7 @@
         "compute_v3_user_localized_key": {
           "type": "boolean",
           "default": false,
-          "description": "Requires compute_local_engineid to be `true`. If enabled, the SNMPv3\npassphrases for auth and priv are transformed using RFC 2574,\nmatching the value they would take in EOS CLI. The algorithm requires\na local engineId, which is unknown to AVD, hence the necessity to generate\none beforehand.\n",
+          "description": "Requires compute_local_engineid to be `true`.\nIf enabled, the SNMPv3 passphrases for auth and priv are transformed using RFC 2574, matching the value they would take in EOS CLI.\nThe algorithm requires a local engineId, which is unknown to AVD, hence the necessity to generate one beforehand.\n",
           "title": "Compute V3 User Localized Key"
         },
         "users": {
@@ -4102,6 +4102,7 @@
               },
               "group": {
                 "type": "string",
+                "description": "Configuration of the SNMP User Groups are currently only possible using `structured_config`.\n",
                 "title": "Group"
               },
               "version": {
@@ -4159,6 +4160,11 @@
       },
       "title": "Snmp Settings"
     },
+    "system_mac_address": {
+      "type": "string",
+      "description": "Set to the same MAC address as available in \"show version\" on the device.\n\"system_mac_address\" can also be set under \"Fabric Topology\".\nIf both are set, the setting under \"Fabric Topology\" takes precedence.",
+      "title": "System MAC Address"
+    },
     "terminattr_disable_aaa": {
       "type": "boolean",
       "default": false,
@@ -4172,7 +4178,7 @@
     "terminattr_ingestgrpcurl_port": {
       "type": "integer",
       "default": 9910,
-      "description": "Port number for Terminattr connection to an on-premise CloudVision cluster.\nThe port number is always 443 when using CloudVision as a Service.",
+      "description": "Port number used for Terminattr connection to an on-premise CloudVision cluster.\nThe port number is always 443 when using CloudVision as a Service, so this value is ignored.",
       "title": "TerminAttr Ingestgrpcurl Port"
     },
     "terminattr_smashexcludes": {

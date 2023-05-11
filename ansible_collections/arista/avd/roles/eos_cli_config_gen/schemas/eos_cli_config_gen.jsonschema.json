@@ -3548,6 +3548,7 @@
     },
     "event_handlers": {
       "type": "array",
+      "description": "Gives the ability to monitor and react to Syslog messages.\nEvent Handlers provide a powerful and flexible tool that can be used to apply self-healing actions,\ncustomize the system behavior, and implement workarounds to problems discovered in the field.\n",
       "items": {
         "type": "object",
         "properties": {

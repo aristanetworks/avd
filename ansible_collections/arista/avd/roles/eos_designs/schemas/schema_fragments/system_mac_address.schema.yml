@@ -3,8 +3,9 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  mgmt_gateway:
+  system_mac_address:
     type: str
     description: |
-      OOB Management interface gateway in IPv4 format.
-      Used as next-hop for default gateway or static routes defined under 'mgmt_destination_networks'
+      Set to the same MAC address as available in "show version" on the device.
+      "system_mac_address" can also be set under "Fabric Topology".
+      If both are set, the setting under "Fabric Topology" takes precedence.

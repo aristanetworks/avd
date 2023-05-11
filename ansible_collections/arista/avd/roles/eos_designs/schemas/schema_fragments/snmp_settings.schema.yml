@@ -18,9 +18,7 @@ keys:
         type: bool
         default: False
         description: |
-          Generate a local engineId for SNMP by hashing via SHA1, the string
-          generated via the concatenation of the hostname plus the management IP.
-          {{ inventory_hostname }} + {{ switch.mgmt_ip }}
+          Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.
       compute_local_engineid_source:
         type: str
         default: hostname_and_ip
@@ -39,11 +37,9 @@ keys:
         type: bool
         default: False
         description: |
-          Requires compute_local_engineid to be `true`. If enabled, the SNMPv3
-          passphrases for auth and priv are transformed using RFC 2574,
-          matching the value they would take in EOS CLI. The algorithm requires
-          a local engineId, which is unknown to AVD, hence the necessity to generate
-          one beforehand.
+          Requires compute_local_engineid to be `true`.
+          If enabled, the SNMPv3 passphrases for auth and priv are transformed using RFC 2574, matching the value they would take in EOS CLI.
+          The algorithm requires a local engineId, which is unknown to AVD, hence the necessity to generate one beforehand.
       users:
         type: list
         items:
@@ -54,6 +50,8 @@ keys:
               description: Username
             group:
               type: str
+              description: |
+                Configuration of the SNMP User Groups are currently only possible using `structured_config`.
             version:
               type: str
               valid_values: ["v1", "v2c", "v3"]

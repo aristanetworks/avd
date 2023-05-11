@@ -272,7 +272,7 @@ keys:
 
       For CloudVision as a Service enter the DNS name of the instance.
 
-      If you have both on-premise and CVaaS defined, only on-premise is configured.
+      `eos_designs` only supports one CloudVision cluster.
 
       '
     items:
@@ -445,13 +445,6 @@ keys:
     type: list
     documentation_options:
       filename: Input Variables
-    description: 'Gives the ability to monitor and react to Syslog messages.
-
-      Event Handlers provide a powerful and flexible tool that can be used to apply
-      self-healing actions,
-
-      customize the system behavior, and implement workarounds to problems discovered
-      in the field.'
   evpn_ebgp_gateway_multihop:
     documentation_options:
       filename: Fabric Variables
@@ -821,7 +814,9 @@ keys:
       description: IPv4_address/Mask
   mgmt_gateway:
     type: str
-    description: OOB Management interface gateway in IPv4 format.
+    description: 'OOB Management interface gateway in IPv4 format.
+
+      Used as next-hop for default gateway or static routes defined under ''mgmt_destination_networks'''
   mgmt_interface:
     type: str
     default: Management1
@@ -1519,12 +1514,8 @@ keys:
       compute_local_engineid:
         type: bool
         default: false
-        description: 'Generate a local engineId for SNMP by hashing via SHA1, the
-          string
-
-          generated via the concatenation of the hostname plus the management IP.
-
-          {{ inventory_hostname }} + {{ switch.mgmt_ip }}
+        description: 'Generate a local engineId for SNMP using the ''compute_local_engineid_source''
+          method.
 
           '
       compute_local_engineid_source:
@@ -1542,16 +1533,13 @@ keys:
       compute_v3_user_localized_key:
         type: bool
         default: false
-        description: 'Requires compute_local_engineid to be `true`. If enabled, the
-          SNMPv3
+        description: 'Requires compute_local_engineid to be `true`.
 
-          passphrases for auth and priv are transformed using RFC 2574,
+          If enabled, the SNMPv3 passphrases for auth and priv are transformed using
+          RFC 2574, matching the value they would take in EOS CLI.
 
-          matching the value they would take in EOS CLI. The algorithm requires
-
-          a local engineId, which is unknown to AVD, hence the necessity to generate
-
-          one beforehand.
+          The algorithm requires a local engineId, which is unknown to AVD, hence
+          the necessity to generate one beforehand.
 
           '
       users:
@@ -1564,6 +1552,10 @@ keys:
               description: Username
             group:
               type: str
+              description: 'Configuration of the SNMP User Groups are currently only
+                possible using `structured_config`.
+
+                '
             version:
               type: str
               valid_values:
@@ -1593,6 +1585,14 @@ keys:
               type: str
               description: Cleartext passphrase so the recommendation is to use vault.
                 Requires 'priv' to be set.
+  system_mac_address:
+    type: str
+    description: 'Set to the same MAC address as available in "show version" on the
+      device.
+
+      "system_mac_address" can also be set under "Fabric Topology".
+
+      If both are set, the setting under "Fabric Topology" takes precedence.'
   terminattr_disable_aaa:
     documentation_options:
       filename: Management Settings
@@ -1613,10 +1613,11 @@ keys:
     convert_types:
     - str
     default: 9910
-    description: 'Port number for Terminattr connection to an on-premise CloudVision
+    description: 'Port number used for Terminattr connection to an on-premise CloudVision
       cluster.
 
-      The port number is always 443 when using CloudVision as a Service.'
+      The port number is always 443 when using CloudVision as a Service, so this value
+      is ignored.'
   terminattr_smashexcludes:
     documentation_options:
       filename: Management Settings

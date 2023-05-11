@@ -148,6 +148,10 @@ Streaming to multiple clusters both on-prem and cloud service is supported.
 
 ## Event Handlers
 
+Gives the ability to monitor and react to Syslog messages.
+Event Handlers provide a powerful and flexible tool that can be used to apply self-healing actions,
+customize the system behavior, and implement workarounds to problems discovered in the field.
+
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |

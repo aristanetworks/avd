@@ -12,7 +12,7 @@ keys:
       List of IPv4 addresses or DNS names for CloudVision.
       For on-premise CloudVision enter all the nodes of the cluster.
       For CloudVision as a Service enter the DNS name of the instance.
-      If you have both on-premise and CVaaS defined, only on-premise is configured.
+      `eos_designs` only supports one CloudVision cluster.
     items:
       type: str
       description: IPv4 address or DNS name for CloudVision
