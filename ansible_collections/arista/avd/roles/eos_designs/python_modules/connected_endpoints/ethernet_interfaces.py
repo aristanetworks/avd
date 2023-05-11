@@ -7,7 +7,7 @@ from functools import cached_property
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item, replace_or_append_item
 
 from .utils import UtilsMixin
 
@@ -22,28 +22,18 @@ class EthernetInterfacesMixin(UtilsMixin):
     def ethernet_interfaces(self) -> list | None:
         """
         Return structured config for ethernet_interfaces
+
+        Duplicate checks following these rules:
+        - Silently overwrite duplicate network_ports with other network_ports.
+        - Silently overwrite duplicate network_ports with connected_endpoints.
+        - Do NOT overwrite connected_endpoints with other connected_endpoints. Instead we raise a duplicate error.
         """
 
         ethernet_interfaces = []
-        for connected_endpoint in self._filtered_connected_endpoints:
-            for adapter in connected_endpoint["adapters"]:
-                for node_index, node_name in enumerate(adapter["switches"]):
-                    if node_name != self.shared_utils.hostname:
-                        continue
 
-                    ethernet_interface = self._get_ethernet_interface_cfg(adapter, node_index, connected_endpoint)
-                    if (found_eth_interface := get_item(ethernet_interfaces, "name", ethernet_interface["name"])) is None:
-                        ethernet_interfaces.append(ethernet_interface)
-                    else:
-                        if found_eth_interface == ethernet_interface:
-                            # Same ethernet_interface information twice in the input data. So not duplicate interface name.
-                            continue
+        # List of ethernet_interfaces used for duplicate checks.
 
-                        raise AristaAvdError(
-                            f"Duplicate interface name {ethernet_interface['name']} found while generating ethernet_interfaces for connected_endpoints peer:"
-                            f" {ethernet_interface['peer']}, peer_interface: {ethernet_interface['peer_interface']}. Description on duplicate interface:"
-                            f" {found_eth_interface['description']}"
-                        )
+        non_overwritable_ethernet_interfaces = []
 
         for network_port in self._filtered_network_ports:
             connected_endpoint = {
@@ -60,21 +50,24 @@ class EthernetInterfacesMixin(UtilsMixin):
                     network_port,
                 )
                 ethernet_interface = self._get_ethernet_interface_cfg(tmp_network_port, 0, connected_endpoint)
-                if (found_eth_interface := get_item(ethernet_interfaces, "name", ethernet_interface["name"])) is None:
-                    ethernet_interfaces.append(ethernet_interface)
-                else:
-                    if found_eth_interface == ethernet_interface:
-                        # Same ethernet_interface information twice in the input data. So not duplicate interface name.
+                replace_or_append_item(ethernet_interfaces, "name", ethernet_interface)
+
+        for connected_endpoint in self._filtered_connected_endpoints:
+            for adapter in connected_endpoint["adapters"]:
+                for node_index, node_name in enumerate(adapter["switches"]):
+                    if node_name != self.shared_utils.hostname:
                         continue
 
-                    error_message = (
-                        f"Duplicate interface name {ethernet_interface['name']} found while generating ethernet_interfaces for network_ports"
-                        f" applied to: {network_port.get('switches')}."
-                    )
-                    if duplicate_description := found_eth_interface.get("description"):
-                        error_message += f" Description on duplicate interface: {duplicate_description}"
+                    ethernet_interface = self._get_ethernet_interface_cfg(adapter, node_index, connected_endpoint)
+                    if (found_eth_interface := get_item(non_overwritable_ethernet_interfaces, "name", ethernet_interface["name"])) is not None:
+                        raise AristaAvdError(
+                            f"Duplicate interface name {ethernet_interface['name']} found while generating ethernet_interfaces for connected_endpoint:"
+                            f" {connected_endpoint['name']}, endpoint_interface: {ethernet_interface['peer_interface']}. Description on duplicate interface:"
+                            f" {found_eth_interface['description']}"
+                        )
 
-                    raise AristaAvdError(error_message)
+                    non_overwritable_ethernet_interfaces.append(ethernet_interface)
+                    replace_or_append_item(ethernet_interfaces, "name", ethernet_interface)
 
         if ethernet_interfaces:
             return ethernet_interfaces
