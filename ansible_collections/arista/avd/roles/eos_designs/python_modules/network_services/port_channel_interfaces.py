@@ -59,8 +59,14 @@ class PortChannelInterfacesMixin(UtilsMixin):
                         }
                         if (short_esi := get(endpoint, "port_channel.short_esi")) is not None:
                             if len(short_esi.split(":")) == 3:
-                                parent_interface["esi"] = generate_esi(short_esi, self.shared_utils.evpn_short_esi_prefix)
-                                parent_interface["rt"] = generate_route_target(short_esi)
+                                parent_interface.update(
+                                    {
+                                        "evpn_ethernet_segment": {
+                                            "identifier": generate_esi(short_esi, self.shared_utils.evpn_short_esi_prefix),
+                                            "route_target": generate_route_target(short_esi),
+                                        }
+                                    }
+                                )
                                 if port_channel_mode == "active":
                                     parent_interface["lacp_id"] = generate_lacp_id(short_esi)
 
@@ -101,8 +107,14 @@ class PortChannelInterfacesMixin(UtilsMixin):
 
                         if (short_esi := get(endpoint, "port_channel.short_esi")) is not None:
                             if len(short_esi.split(":")) == 3:
-                                interface["esi"] = generate_esi(short_esi, self.shared_utils.evpn_short_esi_prefix)
-                                interface["rt"] = generate_route_target(short_esi)
+                                interface.update(
+                                    {
+                                        "evpn_ethernet_segment": {
+                                            "identifier": generate_esi(short_esi, self.shared_utils.evpn_short_esi_prefix),
+                                            "route_target": generate_route_target(short_esi),
+                                        }
+                                    }
+                                )
                                 if port_channel_mode == "active":
                                     interface["lacp_id"] = generate_lacp_id(short_esi)
 

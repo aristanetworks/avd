@@ -109,16 +109,16 @@ management_api_http:
 spanning_tree:
   no_spanning_tree_vlan: 4093-4094
 vlans:
-- tenant: system
+- id: 4093
+  tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
   - LEAF_PEER_L3
-  id: 4093
-- tenant: system
+- id: 4094
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  id: 4094
 - id: 110
   name: Tenant_A_OP_Zone_1
   tenant: CUSTOM_PYTHON_MODULES_TENANT
@@ -166,7 +166,8 @@ port_channel_interfaces:
   - LEAF_PEER_L3
   - MLAG
 ethernet_interfaces:
-- peer: CUSTOM-PYTHON_MODULES-L3LEAF1B
+- name: Ethernet3
+  peer: CUSTOM-PYTHON_MODULES-L3LEAF1B
   peer_interface: Ethernet3
   peer_type: mlag_peer
   description: TEST_CUSTOM_PREFIX_MLAG_PEER_CUSTOM-PYTHON_MODULES-L3LEAF1B_Ethernet3
@@ -175,8 +176,8 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  name: Ethernet3
-- peer: CUSTOM-PYTHON_MODULES-L3LEAF1B
+- name: Ethernet4
+  peer: CUSTOM-PYTHON_MODULES-L3LEAF1B
   peer_interface: Ethernet4
   peer_type: mlag_peer
   description: TEST_CUSTOM_PREFIX_MLAG_PEER_CUSTOM-PYTHON_MODULES-L3LEAF1B_Ethernet4
@@ -185,7 +186,6 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  name: Ethernet4
 - name: Ethernet1
   peer: CUSTOM-PYTHON_MODULES-SPINE1
   peer_interface: Ethernet1

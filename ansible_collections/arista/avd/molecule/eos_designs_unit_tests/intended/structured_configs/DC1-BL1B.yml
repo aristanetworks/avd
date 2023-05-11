@@ -435,7 +435,8 @@ ethernet_interfaces:
   description: test
   type: routed
   vrf: Tenant_A_WAN_Zone
-- description: My second test
+- name: Ethernet4000
+  description: My second test
   ip_address: 10.1.2.3/12
   shutdown: false
   type: routed
@@ -443,7 +444,6 @@ ethernet_interfaces:
   peer: MY-own-peer
   peer_interface: Ethernet123
   peer_type: my_precious
-  name: Ethernet4000
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
@@ -566,9 +566,9 @@ vxlan_interface:
         vni: 31
 sflow:
   vrfs:
-  - destinations:
+  - name: OOB
+    destinations:
     - destination: 192.168.200.10
     - destination: 10.0.200.90
     source_interface: Management1
-    name: OOB
 ntp: null

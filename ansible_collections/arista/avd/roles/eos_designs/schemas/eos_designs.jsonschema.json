@@ -757,7 +757,7 @@
     },
     "cvp_ingestauth_key": {
       "type": "string",
-      "description": "On-premise CVP ingest auth key. If set, TerminAttr will be configured with key-based authentication for on-premise CVP.\nIf not set, TerminAttr will be configured with certificate based authentication using token-secure onboarding.\nToken must be copied to the device first.",
+      "description": "On-premise CVP ingest auth key. If set, TerminAttr will be configured with key-based authentication for on-premise CVP.\nIf not set, TerminAttr will be configured with certificate based authentication:\n- On-premise using token onboarding. Default token path is '/tmp/token'.\n- CVaaS using token-secure onboarding. Default token path is '/tmp/cv-onboarding-token'.\nToken must be copied to the device first.",
       "title": "CVP Ingestauth Key"
     },
     "cvp_instance_ip": {
@@ -776,8 +776,7 @@
     },
     "cvp_token_file": {
       "type": "string",
-      "default": "/tmp/cv-onboarding-token",
-      "description": "cvp_token_file is the path to the token file on the switch.",
+      "description": "cvp_token_file is the path to the token file on the switch.\nIf not set the default locations for on-premise or CVaaS will be used.\nSee cvp_ingestauth_key for details.",
       "title": "CVP Token File"
     },
     "dc_name": {

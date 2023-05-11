@@ -163,7 +163,7 @@ name_servers:
   - 10.10.10.11
 
 custom_structured_configuration_list_merge: append
-custom_structured_configuration_list_prefix: [ override_ ]
+custom_structured_configuration_prefix: [ override_ ]
 
 override_ip_name_servers:
   - ip_address: 10.10.10.12

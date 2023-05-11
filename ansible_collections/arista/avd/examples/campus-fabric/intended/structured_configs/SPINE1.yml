@@ -41,16 +41,16 @@ management_api_http:
   - name: MGMT
   enable_https: true
 vlans:
-- tenant: system
+- id: 4093
+  tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
   - LEAF_PEER_L3
-  id: 4093
-- tenant: system
+- id: 4094
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  id: 4094
 - id: 110
   name: IDF1-Data
   tenant: MY_FABRIC
@@ -78,9 +78,9 @@ vlans:
 - id: 330
   name: IDF3-Guest
   tenant: MY_FABRIC
-- tenant: system
+- id: 10
+  tenant: system
   name: L2LEAF_INBAND_MGMT
-  id: 10
 vlan_interfaces:
 - name: Vlan4093
   description: MLAG_PEER_L3_PEERING
@@ -218,7 +218,8 @@ port_channel_interfaces:
   vlans: 10,310,320,330
   mlag: 501
 ethernet_interfaces:
-- peer: SPINE2
+- name: Ethernet55/1
+  peer: SPINE2
   peer_interface: Ethernet55/1
   peer_type: mlag_peer
   description: MLAG_PEER_SPINE2_Ethernet55/1
@@ -227,8 +228,8 @@ ethernet_interfaces:
   channel_group:
     id: 551
     mode: active
-  name: Ethernet55/1
-- peer: SPINE2
+- name: Ethernet56/1
+  peer: SPINE2
   peer_interface: Ethernet56/1
   peer_type: mlag_peer
   description: MLAG_PEER_SPINE2_Ethernet56/1
@@ -237,7 +238,6 @@ ethernet_interfaces:
   channel_group:
     id: 551
     mode: active
-  name: Ethernet56/1
 - name: Ethernet1
   peer: LEAF1A
   peer_interface: Ethernet51

@@ -421,16 +421,16 @@ management_api_http:
   enable_https: true
   default_services: false
 vlans:
-- tenant: system
+- id: 4090
+  tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
   - LEAF_PEER_L3
-  id: 4090
-- tenant: system
+- id: 4092
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  id: 4092
 - id: 130
   name: Tenant_A_APP_Zone_1
   tenant: Tenant_A
@@ -974,7 +974,8 @@ port_channel_interfaces:
   shutdown: false
   mlag: 34
 ethernet_interfaces:
-- peer: DC1-SVC3A
+- name: Ethernet53/1
+  peer: DC1-SVC3A
   peer_interface: Ethernet53/1
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-SVC3A_Ethernet53/1
@@ -984,8 +985,8 @@ ethernet_interfaces:
     id: 2000
     mode: active
   speed: 100g
-  name: Ethernet53/1
-- peer: DC1-SVC3A
+- name: Ethernet54/1
+  peer: DC1-SVC3A
   peer_interface: Ethernet54/1
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-SVC3A_Ethernet54/1
@@ -995,7 +996,6 @@ ethernet_interfaces:
     id: 2000
     mode: active
   speed: 100g
-  name: Ethernet54/1
 - name: Ethernet7
   peer: DC1-L2LEAF2A
   peer_interface: Ethernet2

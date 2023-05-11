@@ -18,11 +18,11 @@ management_api_http:
 spanning_tree:
   no_spanning_tree_vlan: '4094'
 vlans:
-- tenant: system
+- id: 4094
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - CUSTOM_MLAG_TG_NAME
-  id: 4094
 - id: 100
   name: svi100_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
@@ -109,7 +109,8 @@ port_channel_interfaces:
   - TG_300
   mlag: 13
 ethernet_interfaces:
-- peer: trunk-group-tests-l2leaf1a
+- name: Ethernet3
+  peer: trunk-group-tests-l2leaf1a
   peer_interface: Ethernet3
   peer_type: mlag_peer
   description: MLAG_PEER_trunk-group-tests-l2leaf1a_Ethernet3
@@ -118,8 +119,8 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  name: Ethernet3
-- peer: trunk-group-tests-l2leaf1a
+- name: Ethernet4
+  peer: trunk-group-tests-l2leaf1a
   peer_interface: Ethernet4
   peer_type: mlag_peer
   description: MLAG_PEER_trunk-group-tests-l2leaf1a_Ethernet4
@@ -128,7 +129,6 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  name: Ethernet4
 - name: Ethernet1
   peer: trunk-group-tests-l3leaf1a
   peer_interface: Ethernet2

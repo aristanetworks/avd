@@ -92,6 +92,8 @@ keys:
               vrf:
                 type: str
                 description: VRF where DHCP server can be reached
+        ip_nat:
+          $ref: "#/$defs/interface_ip_nat"
         ipv6_enable:
           type: bool
         ipv6_address:

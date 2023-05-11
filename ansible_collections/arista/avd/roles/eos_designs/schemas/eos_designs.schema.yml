@@ -245,8 +245,11 @@ keys:
     description: 'On-premise CVP ingest auth key. If set, TerminAttr will be configured
       with key-based authentication for on-premise CVP.
 
-      If not set, TerminAttr will be configured with certificate based authentication
-      using token-secure onboarding.
+      If not set, TerminAttr will be configured with certificate based authentication:
+
+      - On-premise using token onboarding. Default token path is ''/tmp/token''.
+
+      - CVaaS using token-secure onboarding. Default token path is ''/tmp/cv-onboarding-token''.
 
       Token must be copied to the device first.'
   cvp_instance_ip:
@@ -287,8 +290,11 @@ keys:
       filename: Management Settings
       table: CloudVision Settings
     type: str
-    default: /tmp/cv-onboarding-token
-    description: cvp_token_file is the path to the token file on the switch.
+    description: 'cvp_token_file is the path to the token file on the switch.
+
+      If not set the default locations for on-premise or CVaaS will be used.
+
+      See cvp_ingestauth_key for details.'
   dc_name:
     documentation_options:
       filename: Fabric Topology
