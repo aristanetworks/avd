@@ -6,6 +6,90 @@ $defs:
   svi_settings:
     type: dict
     keys:
+      name:
+        type: str
+        description: VLAN name
+      enabled:
+        type: bool
+        description: Enable or disable interface
+      description:
+        type: str
+        description: |
+          SVI description. By default set to VLAN name.
+      ip_address:
+        type: str
+        description: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
+      ipv6_address:
+        type: str
+        description: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
+      ip_address_virtual:
+        type: str
+        description: |
+          IPv4_address/Mask
+          IPv4 VXLAN Anycast IP address
+          Conserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.
+      ipv6_address_virtual:
+        type: str
+        description: |
+          IPv6_address/Mask
+          ipv6 address virtuals to configure VXLAN Anycast IP address (Optional)
+          The below "ipv6_address_virtual" key will be deprecated in AVD v4.0 in favor of the new "ipv6_address_virtuals"
+          If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all addresses will be configured
+      ipv6_address_virtuals:
+        type: list
+        description:
+          IPv6 VXLAN Anycast IP addresses
+          Conserves IPv6 addresses in VXLAN deployments as it doesn't require unique IPv6 addresses on each node.
+        items:
+          type: str
+          description: IPv6_address/Mask
+      ip_address_virtual_secondaries:
+        type: list
+        description:
+          Secondary IPv4 VXLAN Anycast IP addresses
+        items:
+          type: str
+          description: IPv4_address/Mask
+      ip_virtual_router_addresses:
+        type: list
+        description: |
+          IPv4 VARP addresses.
+          Requires an IP address to be configured on the SVI.
+          If ip_address_virtual is also set, ip_virtual_router_addresses will take precedence
+          _if_ there is an ip_address configured for the node.
+        items:
+          type: str
+          description: |
+            IPv4_address/Mask or IPv4_address
+            IPv4_address/Mask will also configure a static route to the SVI per best practice.
+      ipv6_virtual_router_addresses:
+        type: list
+        description:
+          IPv6 VARP addresses.
+          Requires an IPv6 address to be configured on the SVI.
+          If ipv6_address_virtuals is also set, ipv6_virtual_router_addresses will take precedence
+          _if_ there is an ipv6_address configured for the node.
+        items:
+          type: str
+          description: IPv6_address
+      ip_helpers:
+        type: list
+        primary_key: ip_helper
+        convert_types:
+          - dict
+        description: IP helper for DHCP relay
+        items:
+          type: dict
+          keys:
+            ip_helper:
+              type: str
+              description: IPv4 DHCP server IP
+            source_interface:
+              type: str
+              description: Interface name to originate DHCP relay packets to DHCP server.
+            source_vrf:
+              type: str
+              description: VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI.
       vni_override:
         type: int
         convert_types:
@@ -13,7 +97,7 @@ $defs:
         min: 1
         max: 16777215
         description: |
-          By default the vni will be derived from "mac_vrf_vni_base"
+          By default the VNI will be derived from "mac_vrf_vni_base"
           The vni_override allows us to override this value and statically define it (optional)
       rt_override:
         type: int
@@ -25,31 +109,18 @@ $defs:
           By default the MAC VRF RD/RT ID will be derived from "mac_vrf_id_base"
           The rt_override allows us to override this value and statically define it (optional)
           If not set, vni_override will be used.
-      profile:
-        type: str
-        description: |
-          SVI profile name to apply
-          If variables are configured in profile AND SVI, SVI information will overwrite profile
-      name:
-        type: str
-        description: VLAN name
-      description:
-        type: str
-        description: |
-          SVI description
-        default: "VLAN name"
       tags:
         type: list
         description: |
           Tags leveraged for networks services filtering
           Tags are matched against "filter.tags" defined under Fabric Topology variables
           Tags are also matched against the "node_group" name under Fabric Topology variables
+        default: ["all"]
         items:
           type: str
-          default: all
-      enabled:
-        type: bool
-        description: Enable or disable interface
+          convert_types:
+            - int
+          description: Tag value
       trunk_groups:
         type: list
         items:
@@ -74,8 +145,7 @@ $defs:
             type: bool
       igmp_snooping_enabled:
         type: bool
-        default: true
-        description: Enable IGMP Snooping
+        description: Enable IGMP Snooping (Enabled by default on EOS)
       igmp_snooping_querier:
         type: dict
         keys:
@@ -89,64 +159,13 @@ $defs:
               If not set, IP address of "Loopback0" will be used.
           version:
             type: int
+            description: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)
             convert_types:
               - str
             valid_values:
               - 1
               - 2
               - 3
-            default: 2
-      ip_address_virtual:
-        type: str
-        description: |
-          IPv4_address/Mask
-          ip address virtual to configure VXLAN Anycast IP address
-          Conserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.
-      ipv6_address_virtual:
-        type: str
-        description: |
-          IPv6_address/Mask
-          ipv6 address virtuals to configure VXLAN Anycast IP address (Optional)
-          The below "ipv6_address_virtual" key will be deprecated in AVD v4.0 in favor of the new "ipv6_address_virtuals"
-          If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all addresses will be configured
-      ipv6_address_virtuals:
-        type: list
-        items:
-          type: str
-          description: IPv6_address/Mask
-      ip_address_virtual_secondaries:
-        type: list
-        items:
-          type: str
-          description: IPv4_address/Mask
-      ip_virtual_router_addresses:
-        type: list
-        items:
-          type: str
-        description: |
-          IPv4_address/Mask or IPv4_address
-          note, also requires an IP address to be configured on the SVI where it is applied.
-      ipv6_virtual_router_addresses:
-        type: list
-        description: IPv6_address
-      ip_helpers:
-        type: list
-        primary_key: ip_helper
-        convert_types:
-          - dict
-        description: IP helper for DHCP relay
-        items:
-          type: dict
-          keys:
-            ip_helper:
-              type: str
-              description: IPv4 DHCP server IP
-            source_interface:
-              type: str
-              description: Interface name
-            source_vrf:
-              type: str
-              description: VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF
       vxlan:
         type: bool
         default: true
@@ -155,7 +174,7 @@ $defs:
         type: int
         convert_types:
           - str
-        description: Defined interface MTU
+        description: Interface MTU
       ospf:
         type: dict
         description: OSPF interface configuration
@@ -166,11 +185,11 @@ $defs:
             type: bool
             default: true
           area:
-            type: int
+            type: str
             convert_types:
-              - str
-            description: OSPF area id
-            default: 0
+              - int
+            description: OSPF area ID
+            default: "0"
           cost:
             type: int
             convert_types:
@@ -204,11 +223,11 @@ $defs:
                   default: sha512
                 key:
                   type: str
-                  description: Key password
+                  description: Type 7 encrypted key
       bgp:
         type: dict
         description: |
-          Structured configuration and eos cli commands rendered on router_bgp.vlans
+          Structured configuration and EOS CLI commands rendered on router_bgp.vlans
           This configuration will not be applied to vlan aware bundles
         keys:
           structured_config:

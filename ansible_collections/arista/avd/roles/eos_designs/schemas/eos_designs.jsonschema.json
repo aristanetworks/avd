@@ -4258,11 +4258,114 @@
                   "description": "l3_leaf inventory hostname",
                   "title": "Node"
                 },
+                "name": {
+                  "type": "string",
+                  "description": "VLAN name",
+                  "title": "Name"
+                },
+                "enabled": {
+                  "type": "boolean",
+                  "description": "Enable or disable interface",
+                  "title": "Enabled"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "SVI description. By default set to VLAN name.\n",
+                  "title": "Description"
+                },
+                "ip_address": {
+                  "type": "string",
+                  "description": "IPv4_address/Mask. Usually set under \"nodes\" to have unique IPv4 addresses per node.",
+                  "title": "IP Address"
+                },
+                "ipv6_address": {
+                  "type": "string",
+                  "description": "IPv6_address/Mask. Usually set under \"nodes\" to have unique IPv6 addresses per node.",
+                  "title": "IPv6 Address"
+                },
+                "ip_address_virtual": {
+                  "type": "string",
+                  "description": "IPv4_address/Mask\nIPv4 VXLAN Anycast IP address\nConserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.\n",
+                  "title": "IP Address Virtual"
+                },
+                "ipv6_address_virtual": {
+                  "type": "string",
+                  "description": "IPv6_address/Mask\nipv6 address virtuals to configure VXLAN Anycast IP address (Optional)\nThe below \"ipv6_address_virtual\" key will be deprecated in AVD v4.0 in favor of the new \"ipv6_address_virtuals\"\nIf both \"ipv6_address_virtual\" and \"ipv6_address_virtuals\" are set, all addresses will be configured\n",
+                  "title": "IPv6 Address Virtual"
+                },
+                "ipv6_address_virtuals": {
+                  "type": "array",
+                  "description": "IPv6 VXLAN Anycast IP addresses Conserves IPv6 addresses in VXLAN deployments as it doesn't require unique IPv6 addresses on each node.",
+                  "items": {
+                    "type": "string",
+                    "description": "IPv6_address/Mask"
+                  },
+                  "title": "IPv6 Address Virtuals"
+                },
+                "ip_address_virtual_secondaries": {
+                  "type": "array",
+                  "description": "Secondary IPv4 VXLAN Anycast IP addresses",
+                  "items": {
+                    "type": "string",
+                    "description": "IPv4_address/Mask"
+                  },
+                  "title": "IP Address Virtual Secondaries"
+                },
+                "ip_virtual_router_addresses": {
+                  "type": "array",
+                  "description": "IPv4 VARP addresses.\nRequires an IP address to be configured on the SVI.\nIf ip_address_virtual is also set, ip_virtual_router_addresses will take precedence\n_if_ there is an ip_address configured for the node.\n",
+                  "items": {
+                    "type": "string",
+                    "description": "IPv4_address/Mask or IPv4_address\nIPv4_address/Mask will also configure a static route to the SVI per best practice.\n"
+                  },
+                  "title": "IP Virtual Router Addresses"
+                },
+                "ipv6_virtual_router_addresses": {
+                  "type": "array",
+                  "description": "IPv6 VARP addresses. Requires an IPv6 address to be configured on the SVI. If ipv6_address_virtuals is also set, ipv6_virtual_router_addresses will take precedence _if_ there is an ipv6_address configured for the node.",
+                  "items": {
+                    "type": "string",
+                    "description": "IPv6_address"
+                  },
+                  "title": "IPv6 Virtual Router Addresses"
+                },
+                "ip_helpers": {
+                  "type": "array",
+                  "description": "IP helper for DHCP relay",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "ip_helper": {
+                        "type": "string",
+                        "description": "IPv4 DHCP server IP",
+                        "title": "IP Helper"
+                      },
+                      "source_interface": {
+                        "type": "string",
+                        "description": "Interface name to originate DHCP relay packets to DHCP server.",
+                        "title": "Source Interface"
+                      },
+                      "source_vrf": {
+                        "type": "string",
+                        "description": "VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI.",
+                        "title": "Source VRF"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "required": [
+                      "ip_helper"
+                    ]
+                  },
+                  "title": "IP Helpers"
+                },
                 "vni_override": {
                   "type": "integer",
                   "minimum": 1,
                   "maximum": 16777215,
-                  "description": "By default the vni will be derived from \"mac_vrf_vni_base\"\nThe vni_override allows us to override this value and statically define it (optional)\n",
+                  "description": "By default the VNI will be derived from \"mac_vrf_vni_base\"\nThe vni_override allows us to override this value and statically define it (optional)\n",
                   "title": "Vni Override"
                 },
                 "rt_override": {
@@ -4272,35 +4375,17 @@
                   "description": "By default the MAC VRF RD/RT ID will be derived from \"mac_vrf_id_base\"\nThe rt_override allows us to override this value and statically define it (optional)\nIf not set, vni_override will be used.\n",
                   "title": "Rt Override"
                 },
-                "profile": {
-                  "type": "string",
-                  "description": "SVI profile name to apply\nIf variables are configured in profile AND SVI, SVI information will overwrite profile\n",
-                  "title": "Profile"
-                },
-                "name": {
-                  "type": "string",
-                  "description": "VLAN name",
-                  "title": "Name"
-                },
-                "description": {
-                  "type": "string",
-                  "description": "SVI description\n",
-                  "default": "VLAN name",
-                  "title": "Description"
-                },
                 "tags": {
                   "type": "array",
                   "description": "Tags leveraged for networks services filtering\nTags are matched against \"filter.tags\" defined under Fabric Topology variables\nTags are also matched against the \"node_group\" name under Fabric Topology variables\n",
+                  "default": [
+                    "all"
+                  ],
                   "items": {
                     "type": "string",
-                    "default": "all"
+                    "description": "Tag value"
                   },
                   "title": "Tags"
-                },
-                "enabled": {
-                  "type": "boolean",
-                  "description": "Enable or disable interface",
-                  "title": "Enabled"
                 },
                 "trunk_groups": {
                   "type": "array",
@@ -4342,8 +4427,7 @@
                 },
                 "igmp_snooping_enabled": {
                   "type": "boolean",
-                  "default": true,
-                  "description": "Enable IGMP Snooping",
+                  "description": "Enable IGMP Snooping (Enabled by default on EOS)",
                   "title": "IGMP Snooping Enabled"
                 },
                 "igmp_snooping_querier": {
@@ -4361,12 +4445,12 @@
                     },
                     "version": {
                       "type": "integer",
+                      "description": "IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)",
                       "enum": [
                         1,
                         2,
                         3
                       ],
-                      "default": 2,
                       "title": "Version"
                     }
                   },
@@ -4376,77 +4460,6 @@
                   },
                   "title": "IGMP Snooping Querier"
                 },
-                "ip_address_virtual": {
-                  "type": "string",
-                  "description": "IPv4_address/Mask\nip address virtual to configure VXLAN Anycast IP address\nConserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.\n",
-                  "title": "IP Address Virtual"
-                },
-                "ipv6_address_virtual": {
-                  "type": "string",
-                  "description": "IPv6_address/Mask\nipv6 address virtuals to configure VXLAN Anycast IP address (Optional)\nThe below \"ipv6_address_virtual\" key will be deprecated in AVD v4.0 in favor of the new \"ipv6_address_virtuals\"\nIf both \"ipv6_address_virtual\" and \"ipv6_address_virtuals\" are set, all addresses will be configured\n",
-                  "title": "IPv6 Address Virtual"
-                },
-                "ipv6_address_virtuals": {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "description": "IPv6_address/Mask"
-                  },
-                  "title": "IPv6 Address Virtuals"
-                },
-                "ip_address_virtual_secondaries": {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "description": "IPv4_address/Mask"
-                  },
-                  "title": "IP Address Virtual Secondaries"
-                },
-                "ip_virtual_router_addresses": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  },
-                  "description": "IPv4_address/Mask or IPv4_address\nnote, also requires an IP address to be configured on the SVI where it is applied.\n",
-                  "title": "IP Virtual Router Addresses"
-                },
-                "ipv6_virtual_router_addresses": {
-                  "type": "array",
-                  "description": "IPv6_address",
-                  "title": "IPv6 Virtual Router Addresses"
-                },
-                "ip_helpers": {
-                  "type": "array",
-                  "description": "IP helper for DHCP relay",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "ip_helper": {
-                        "type": "string",
-                        "description": "IPv4 DHCP server IP",
-                        "title": "IP Helper"
-                      },
-                      "source_interface": {
-                        "type": "string",
-                        "description": "Interface name",
-                        "title": "Source Interface"
-                      },
-                      "source_vrf": {
-                        "type": "string",
-                        "description": "VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF",
-                        "title": "Source VRF"
-                      }
-                    },
-                    "additionalProperties": false,
-                    "patternProperties": {
-                      "^_.+$": {}
-                    },
-                    "required": [
-                      "ip_helper"
-                    ]
-                  },
-                  "title": "IP Helpers"
-                },
                 "vxlan": {
                   "type": "boolean",
                   "default": true,
@@ -4455,7 +4468,7 @@
                 },
                 "mtu": {
                   "type": "integer",
-                  "description": "Defined interface MTU",
+                  "description": "Interface MTU",
                   "title": "MTU"
                 },
                 "ospf": {
@@ -4472,9 +4485,9 @@
                       "title": "Point To Point"
                     },
                     "area": {
-                      "type": "integer",
-                      "description": "OSPF area id",
-                      "default": 0,
+                      "type": "string",
+                      "description": "OSPF area ID",
+                      "default": "0",
                       "title": "Area"
                     },
                     "cost": {
@@ -4518,7 +4531,7 @@
                           },
                           "key": {
                             "type": "string",
-                            "description": "Key password",
+                            "description": "Type 7 encrypted key",
                             "title": "Key"
                           }
                         },
@@ -4538,7 +4551,7 @@
                 },
                 "bgp": {
                   "type": "object",
-                  "description": "Structured configuration and eos cli commands rendered on router_bgp.vlans\nThis configuration will not be applied to vlan aware bundles\n",
+                  "description": "Structured configuration and EOS CLI commands rendered on router_bgp.vlans\nThis configuration will not be applied to vlan aware bundles\n",
                   "properties": {
                     "structured_config": {
                       "type": "object",
@@ -4578,11 +4591,114 @@
             },
             "title": "Nodes"
           },
+          "name": {
+            "type": "string",
+            "description": "VLAN name",
+            "title": "Name"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Enable or disable interface",
+            "title": "Enabled"
+          },
+          "description": {
+            "type": "string",
+            "description": "SVI description. By default set to VLAN name.\n",
+            "title": "Description"
+          },
+          "ip_address": {
+            "type": "string",
+            "description": "IPv4_address/Mask. Usually set under \"nodes\" to have unique IPv4 addresses per node.",
+            "title": "IP Address"
+          },
+          "ipv6_address": {
+            "type": "string",
+            "description": "IPv6_address/Mask. Usually set under \"nodes\" to have unique IPv6 addresses per node.",
+            "title": "IPv6 Address"
+          },
+          "ip_address_virtual": {
+            "type": "string",
+            "description": "IPv4_address/Mask\nIPv4 VXLAN Anycast IP address\nConserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.\n",
+            "title": "IP Address Virtual"
+          },
+          "ipv6_address_virtual": {
+            "type": "string",
+            "description": "IPv6_address/Mask\nipv6 address virtuals to configure VXLAN Anycast IP address (Optional)\nThe below \"ipv6_address_virtual\" key will be deprecated in AVD v4.0 in favor of the new \"ipv6_address_virtuals\"\nIf both \"ipv6_address_virtual\" and \"ipv6_address_virtuals\" are set, all addresses will be configured\n",
+            "title": "IPv6 Address Virtual"
+          },
+          "ipv6_address_virtuals": {
+            "type": "array",
+            "description": "IPv6 VXLAN Anycast IP addresses Conserves IPv6 addresses in VXLAN deployments as it doesn't require unique IPv6 addresses on each node.",
+            "items": {
+              "type": "string",
+              "description": "IPv6_address/Mask"
+            },
+            "title": "IPv6 Address Virtuals"
+          },
+          "ip_address_virtual_secondaries": {
+            "type": "array",
+            "description": "Secondary IPv4 VXLAN Anycast IP addresses",
+            "items": {
+              "type": "string",
+              "description": "IPv4_address/Mask"
+            },
+            "title": "IP Address Virtual Secondaries"
+          },
+          "ip_virtual_router_addresses": {
+            "type": "array",
+            "description": "IPv4 VARP addresses.\nRequires an IP address to be configured on the SVI.\nIf ip_address_virtual is also set, ip_virtual_router_addresses will take precedence\n_if_ there is an ip_address configured for the node.\n",
+            "items": {
+              "type": "string",
+              "description": "IPv4_address/Mask or IPv4_address\nIPv4_address/Mask will also configure a static route to the SVI per best practice.\n"
+            },
+            "title": "IP Virtual Router Addresses"
+          },
+          "ipv6_virtual_router_addresses": {
+            "type": "array",
+            "description": "IPv6 VARP addresses. Requires an IPv6 address to be configured on the SVI. If ipv6_address_virtuals is also set, ipv6_virtual_router_addresses will take precedence _if_ there is an ipv6_address configured for the node.",
+            "items": {
+              "type": "string",
+              "description": "IPv6_address"
+            },
+            "title": "IPv6 Virtual Router Addresses"
+          },
+          "ip_helpers": {
+            "type": "array",
+            "description": "IP helper for DHCP relay",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ip_helper": {
+                  "type": "string",
+                  "description": "IPv4 DHCP server IP",
+                  "title": "IP Helper"
+                },
+                "source_interface": {
+                  "type": "string",
+                  "description": "Interface name to originate DHCP relay packets to DHCP server.",
+                  "title": "Source Interface"
+                },
+                "source_vrf": {
+                  "type": "string",
+                  "description": "VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI.",
+                  "title": "Source VRF"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "required": [
+                "ip_helper"
+              ]
+            },
+            "title": "IP Helpers"
+          },
           "vni_override": {
             "type": "integer",
             "minimum": 1,
             "maximum": 16777215,
-            "description": "By default the vni will be derived from \"mac_vrf_vni_base\"\nThe vni_override allows us to override this value and statically define it (optional)\n",
+            "description": "By default the VNI will be derived from \"mac_vrf_vni_base\"\nThe vni_override allows us to override this value and statically define it (optional)\n",
             "title": "Vni Override"
           },
           "rt_override": {
@@ -4592,30 +4708,17 @@
             "description": "By default the MAC VRF RD/RT ID will be derived from \"mac_vrf_id_base\"\nThe rt_override allows us to override this value and statically define it (optional)\nIf not set, vni_override will be used.\n",
             "title": "Rt Override"
           },
-          "name": {
-            "type": "string",
-            "description": "VLAN name",
-            "title": "Name"
-          },
-          "description": {
-            "type": "string",
-            "description": "SVI description\n",
-            "default": "VLAN name",
-            "title": "Description"
-          },
           "tags": {
             "type": "array",
             "description": "Tags leveraged for networks services filtering\nTags are matched against \"filter.tags\" defined under Fabric Topology variables\nTags are also matched against the \"node_group\" name under Fabric Topology variables\n",
+            "default": [
+              "all"
+            ],
             "items": {
               "type": "string",
-              "default": "all"
+              "description": "Tag value"
             },
             "title": "Tags"
-          },
-          "enabled": {
-            "type": "boolean",
-            "description": "Enable or disable interface",
-            "title": "Enabled"
           },
           "trunk_groups": {
             "type": "array",
@@ -4657,8 +4760,7 @@
           },
           "igmp_snooping_enabled": {
             "type": "boolean",
-            "default": true,
-            "description": "Enable IGMP Snooping",
+            "description": "Enable IGMP Snooping (Enabled by default on EOS)",
             "title": "IGMP Snooping Enabled"
           },
           "igmp_snooping_querier": {
@@ -4676,12 +4778,12 @@
               },
               "version": {
                 "type": "integer",
+                "description": "IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)",
                 "enum": [
                   1,
                   2,
                   3
                 ],
-                "default": 2,
                 "title": "Version"
               }
             },
@@ -4691,77 +4793,6 @@
             },
             "title": "IGMP Snooping Querier"
           },
-          "ip_address_virtual": {
-            "type": "string",
-            "description": "IPv4_address/Mask\nip address virtual to configure VXLAN Anycast IP address\nConserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.\n",
-            "title": "IP Address Virtual"
-          },
-          "ipv6_address_virtual": {
-            "type": "string",
-            "description": "IPv6_address/Mask\nipv6 address virtuals to configure VXLAN Anycast IP address (Optional)\nThe below \"ipv6_address_virtual\" key will be deprecated in AVD v4.0 in favor of the new \"ipv6_address_virtuals\"\nIf both \"ipv6_address_virtual\" and \"ipv6_address_virtuals\" are set, all addresses will be configured\n",
-            "title": "IPv6 Address Virtual"
-          },
-          "ipv6_address_virtuals": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "description": "IPv6_address/Mask"
-            },
-            "title": "IPv6 Address Virtuals"
-          },
-          "ip_address_virtual_secondaries": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "description": "IPv4_address/Mask"
-            },
-            "title": "IP Address Virtual Secondaries"
-          },
-          "ip_virtual_router_addresses": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "IPv4_address/Mask or IPv4_address\nnote, also requires an IP address to be configured on the SVI where it is applied.\n",
-            "title": "IP Virtual Router Addresses"
-          },
-          "ipv6_virtual_router_addresses": {
-            "type": "array",
-            "description": "IPv6_address",
-            "title": "IPv6 Virtual Router Addresses"
-          },
-          "ip_helpers": {
-            "type": "array",
-            "description": "IP helper for DHCP relay",
-            "items": {
-              "type": "object",
-              "properties": {
-                "ip_helper": {
-                  "type": "string",
-                  "description": "IPv4 DHCP server IP",
-                  "title": "IP Helper"
-                },
-                "source_interface": {
-                  "type": "string",
-                  "description": "Interface name",
-                  "title": "Source Interface"
-                },
-                "source_vrf": {
-                  "type": "string",
-                  "description": "VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF",
-                  "title": "Source VRF"
-                }
-              },
-              "additionalProperties": false,
-              "patternProperties": {
-                "^_.+$": {}
-              },
-              "required": [
-                "ip_helper"
-              ]
-            },
-            "title": "IP Helpers"
-          },
           "vxlan": {
             "type": "boolean",
             "default": true,
@@ -4770,7 +4801,7 @@
           },
           "mtu": {
             "type": "integer",
-            "description": "Defined interface MTU",
+            "description": "Interface MTU",
             "title": "MTU"
           },
           "ospf": {
@@ -4787,9 +4818,9 @@
                 "title": "Point To Point"
               },
               "area": {
-                "type": "integer",
-                "description": "OSPF area id",
-                "default": 0,
+                "type": "string",
+                "description": "OSPF area ID",
+                "default": "0",
                 "title": "Area"
               },
               "cost": {
@@ -4833,7 +4864,7 @@
                     },
                     "key": {
                       "type": "string",
-                      "description": "Key password",
+                      "description": "Type 7 encrypted key",
                       "title": "Key"
                     }
                   },
@@ -4853,7 +4884,7 @@
           },
           "bgp": {
             "type": "object",
-            "description": "Structured configuration and eos cli commands rendered on router_bgp.vlans\nThis configuration will not be applied to vlan aware bundles\n",
+            "description": "Structured configuration and EOS CLI commands rendered on router_bgp.vlans\nThis configuration will not be applied to vlan aware bundles\n",
             "properties": {
               "structured_config": {
                 "type": "object",
