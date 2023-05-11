@@ -377,6 +377,67 @@ switch:
                         platform_settings | selectattr("platforms", "arista.avd.contains", "default") | first) }}
 ```
 
+## Vars Plugins
+
+### arista.avd.global_vars
+
+Loads variables from the variable file present in ansible.cfg or environment variable. Assign the loaded variables to the 'all' inventory group. Files are restricted by extension to one of .yaml, .json, .yml or no extension. Hidden (starting with '.') and backup (ending with '~') files and directories are ignored. Only applies to inventory sources that are
+existing paths.
+
+Should run at the 'inventory' stage (default) before all other variable plugins inject the variables before any group and host vars.
+
+**parameters:**
+
+```yaml
+- paths:
+        List of relative paths, relative to the inventory file.
+        If path is a directory, all the valid files inside are loaded in alphabetical order.
+        If the environment variable is set, it takes precedence over ansible.cfg.
+        set_via:
+          env:
+          - name: ARISTA_AVD_GLOBAL_VARS_PATHS
+          ini:
+          - key: paths
+            section: vars_global_vars
+        elements: string
+        type: list
+```
+
+**examples:**
+
+#### `ansible.cfg` only example
+
+1. Enable the plugin in `ansible.cfg` - DO NOT REMOVE host_group_vars.
+
+    ```ini
+    [defaults]
+    vars_plugins_enabled = arista.avd.global_vars, host_group_vars
+
+    [vars_global_vars]
+    paths = ../relative/path/to/my/global/vars/file/or/dir
+    ```
+
+2. Run your playbook
+
+    ```shell
+    ansible-playbook -i inventory.yml playbook.yml
+    ```
+
+##### `ansible.cfg` + environement variable example
+
+1. Enable the plugin in `ansible.cfg` - DO NOT REMOVE host_group_vars.
+
+    ```ini
+    [defaults]
+    vars_plugins_enabled = arista.avd.global_vars, host_group_vars
+    ```
+
+2. Run your playbook
+
+    ```shell
+    ARISTA_AVD_GLOBAL_VARS_PATHS=../relative/path/to/my/global/vars/file/or/dir ansible-playbook -i inventory.yml playbook.yml
+    ```
+
 ## Modules
 
 ### Inventory to CloudVision Containers
