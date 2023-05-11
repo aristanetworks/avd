@@ -18,7 +18,7 @@
 {%         if nat.translated_port is arista.avd.defined %}
 {%             set nat_cli = nat_cli ~ ' ' ~ nat.translated_port %}
 {%         endif %}
-{%         if nat.protocol is arista.avd.defined %}'
+{%         if nat.protocol is arista.avd.defined %}
 {%             set nat_cli = nat_cli ~ ' protocol ' ~ nat.protocol %}
 {%         endif %}
 {%         if nat.group is arista.avd.defined %}
@@ -75,7 +75,7 @@
 {%         if nat.translated_port is arista.avd.defined %}
 {%             set nat_cli = nat_cli ~ ' ' ~ nat.translated_port %}
 {%         endif %}
-{%         if nat.protocol is arista.avd.defined %}'
+{%         if nat.protocol is arista.avd.defined %}
 {%             set nat_cli = nat_cli ~ ' protocol ' ~ nat.protocol %}
 {%         endif %}
 {%         if nat.group is arista.avd.defined %}
