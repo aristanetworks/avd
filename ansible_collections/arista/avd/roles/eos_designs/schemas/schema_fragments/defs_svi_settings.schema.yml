@@ -37,7 +37,7 @@ $defs:
           If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all addresses will be configured
       ipv6_address_virtuals:
         type: list
-        description:
+        description: |
           IPv6 VXLAN Anycast IP addresses
           Conserves IPv6 addresses in VXLAN deployments as it doesn't require unique IPv6 addresses on each node.
         items:
@@ -45,8 +45,7 @@ $defs:
           description: IPv6_address/Mask
       ip_address_virtual_secondaries:
         type: list
-        description:
-          Secondary IPv4 VXLAN Anycast IP addresses
+        description: Secondary IPv4 VXLAN Anycast IP addresses
         items:
           type: str
           description: IPv4_address/Mask
@@ -64,7 +63,7 @@ $defs:
             IPv4_address/Mask will also configure a static route to the SVI per best practice.
       ipv6_virtual_router_addresses:
         type: list
-        description:
+        description: |
           IPv6 VARP addresses.
           Requires an IPv6 address to be configured on the SVI.
           If ipv6_address_virtuals is also set, ipv6_virtual_router_addresses will take precedence
