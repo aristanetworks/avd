@@ -362,6 +362,10 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.mpls.ldp.igp_sync is arista.avd.defined(true) %}
    mpls ldp igp sync
 {%     endif %}
+{%     if port_channel_interface.ip_nat is arista.avd.defined %}
+{%         set interface_ip_nat = port_channel_interface.ip_nat %}
+{%         include 'eos/interface-ip-nat.j2' %}
+{%     endif %}
 {%     if port_channel_interface.isis_enable is arista.avd.defined %}
    isis enable {{ port_channel_interface.isis_enable }}
 {%     endif %}

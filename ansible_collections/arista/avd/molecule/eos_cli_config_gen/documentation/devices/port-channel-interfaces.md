@@ -227,6 +227,7 @@ interface Ethernet50
 | Port-Channel115 | native-vlan-tag-precedence | switched | trunk | - | tag | - | - | - | - | - |
 | Port-Channel121 | access_port_with_no_vlans | switched | access | - | - | - | - | - | - | - |
 | Port-Channel122 | trunk_port_with_no_vlans | switched | trunk | - | - | - | - | - | - | - |
+| Port-Channel130 | IP NAT Testing | switched | access | - | - | - | - | - | - | - |
 
 ##### Encapsulation Dot1q Interfaces
 
@@ -299,6 +300,30 @@ interface Ethernet50
 | Port-Channel99 | MCAST | routed | - | 192.0.2.10/31 | default | - | - | - | - |
 | Port-Channel113 | interface_with_mpls_enabled | routed | - | 172.31.128.9/31 | default | - | - | - | - |
 | Port-Channel114 | interface_with_mpls_disabled | routed | - | 172.31.128.10/31 | default | - | - | - | - |
+
+##### IP NAT: Source Static
+
+| Interface | Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
+| --------- | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
+| Port-Channel130 | - | 3.0.0.1 | - | - | 4.0.0.1 | - | - | - | 0 | - |
+
+##### IP NAT: Source Dynamic
+
+| Interface | Access List | NAT Type | Pool Name | Priority | Comment |
+| --------- | ----------- | -------- | --------- | -------- | ------- |
+| Port-Channel130 | ACL2 | pool | POOL2 | 0 | - |
+
+##### IP NAT: Destination Static
+
+| Interface | Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
+| --------- | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
+| Port-Channel130 | - | 1.0.0.1 | - | - | 2.0.0.1 | - | - | - | 0 | - |
+
+##### IP NAT: Destination Dynamic
+
+| Interface | Access List | Pool Name | Priority | Comment |
+| --------- | ----------- | --------- | -------- | ------- |
+| Port-Channel130 | ACL1 | POOL1 | 0 | - |
 
 ##### ISIS
 
@@ -635,6 +660,14 @@ interface Port-Channel122
    description trunk_port_with_no_vlans
    switchport
    switchport mode trunk
+!
+interface Port-Channel130
+   description IP NAT Testing
+   switchport
+   ip nat source static 3.0.0.1 4.0.0.1
+   ip nat source dynamic access-list ACL2 pool POOL2
+   ip nat destination static 1.0.0.1 2.0.0.1
+   ip nat destination dynamic access-list ACL1 pool POOL1
 ```
 
 ## BFD

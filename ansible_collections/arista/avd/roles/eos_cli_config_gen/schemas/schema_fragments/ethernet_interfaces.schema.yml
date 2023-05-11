@@ -275,6 +275,8 @@ keys:
               vrf:
                 type: str
                 description: VRF name
+        ip_nat:
+          $ref: "#/$defs/interface_ip_nat"
         ipv6_enable:
           type: bool
         ipv6_address:
