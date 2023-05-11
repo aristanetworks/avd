@@ -140,10 +140,10 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-  - type: permit
+  - sequence: 20
+    type: permit
     match:
     - ip address prefix-list PL-L2LEAF-INBAND-MGMT
-    sequence: 20
 router_bfd:
   multihop:
     interval: 300
