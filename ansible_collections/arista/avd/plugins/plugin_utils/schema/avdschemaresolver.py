@@ -19,13 +19,6 @@ except ImportError as imp_exc:
 else:
     JSONSCHEMA_IMPORT_ERROR = None
 
-try:
-    from deepmerge import always_merger
-except ImportError as imp_exc:
-    DEEPMERGE_IMPORT_ERROR = imp_exc
-else:
-    DEEPMERGE_IMPORT_ERROR = None
-
 
 def _keys(validator, keys: dict, resolved_schema: dict, schema: dict):
     # Resolve the child schemas
@@ -94,10 +87,8 @@ class AvdSchemaResolver:
         The "resolved_schema" must contain a copy of the original schema, and then
         the $ref resolver will merge in the resolved schema and do in-place update.
         """
-        if JSONSCHEMA_IMPORT_ERROR or DEEPMERGE_IMPORT_ERROR:
+        if JSONSCHEMA_IMPORT_ERROR:
             raise AristaAvdError('Python library "jsonschema" must be installed to use this plugin') from JSONSCHEMA_IMPORT_ERROR
-        if DEEPMERGE_IMPORT_ERROR:
-            raise AristaAvdError('Python library "deepmerge" must be installed to use this plugin') from DEEPMERGE_IMPORT_ERROR
 
         ValidatorClass = jsonschema.validators.create(
             meta_schema=store["avd_meta_schema"],
