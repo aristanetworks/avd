@@ -109,4 +109,4 @@ class InbandManagementMixin:
         if self.configure_inband_mgmt:
             return f"Vlan{self.inband_mgmt_vlan}"
 
-        return
+        return None
