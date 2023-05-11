@@ -100,6 +100,16 @@ port_profiles:
         mode: fast
         multiplier: 10
 
+  PORT_CHANNEL_LACP_TIMER_NORMAL:
+    mode: trunk
+    vlans: "1-4094"
+    port_channel:
+      description: PORT_CHANNEL_LACP_MODE_NORMAL
+      mode: active
+      lacp_timer:
+        mode: normal
+        multiplier: 100
+
   NESTED_PORT_PROFILE:
     parent_profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
     port_channel:
@@ -585,6 +595,30 @@ servers:
           lacp_timer:
             mode: fast
             multiplier: 5
+
+  server26_port_channel_lacp_timer_profile:
+    rack: RackC
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet33, Ethernet33 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: PORT_CHANNEL_LACP_TIMER_NORMAL
+        port_channel:
+          description: server26_port_channel_with_lacp_timer
+
+  server27_port_channel_lacp_timer:
+    rack: RackC
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet34, Ethernet34 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        port_channel:
+          description: server27_port_channel_with_lacp_timer
+          mode: active
+          enabled: true
+          lacp_timer:
+            mode: normal
+            multiplier: 50
 
 firewalls:
   FIREWALL01:

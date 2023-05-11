@@ -971,6 +971,18 @@ port_channel_interfaces:
   type: switched
   shutdown: false
   mlag: 32
+- name: Port-Channel33
+  description: server26_port_channel_lacp_timer_profile_server26_port_channel_with_lacp_timer
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 1-4094
+  mlag: 33
+- name: Port-Channel34
+  description: server27_port_channel_lacp_timer_server27_port_channel_with_lacp_timer
+  type: switched
+  shutdown: false
+  mlag: 34
 ethernet_interfaces:
 - peer: DC1-SVC3B
   peer_interface: Ethernet53/1
@@ -1493,6 +1505,35 @@ ethernet_interfaces:
   lacp_timer:
     mode: fast
     multiplier: 5
+- name: Ethernet33
+  peer: server26_port_channel_lacp_timer_profile
+  peer_interface: Eth1
+  peer_type: server
+  port_profile: PORT_CHANNEL_LACP_TIMER_NORMAL
+  description: server26_port_channel_lacp_timer_profile_Eth1
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 1-4094
+  channel_group:
+    id: 33
+    mode: active
+  lacp_timer:
+    mode: normal
+    multiplier: 100
+- name: Ethernet34
+  peer: server27_port_channel_lacp_timer
+  peer_interface: Eth1
+  peer_type: server
+  description: server27_port_channel_lacp_timer_Eth1
+  type: switched
+  shutdown: false
+  channel_group:
+    id: 34
+    mode: active
+  lacp_timer:
+    mode: normal
+    multiplier: 50
 mlag_configuration:
   domain_id: custom_mlag_domain_id
   local_interface: Vlan4092
