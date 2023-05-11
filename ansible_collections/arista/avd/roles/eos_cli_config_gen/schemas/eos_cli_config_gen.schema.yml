@@ -6382,7 +6382,7 @@ keys:
 
               This should be decimal with up to 1 decimal point.
 
-              Example : 0.5 or 60
+              Example: 0.5 or 60
 
               '
           polling_interval:
@@ -6396,7 +6396,7 @@ keys:
 
               This should be decimal with up to 1 decimal point.
 
-              Example : 0.5 or 60
+              Example: 0.5 or 60
 
               '
           recovery_time:
@@ -6411,7 +6411,7 @@ keys:
 
               This should be decimal with up to 1 decimal point.
 
-              Example : 0.5 or 60
+              Example: 0.5 or 60
 
               '
           override_action_drop:
@@ -6824,7 +6824,7 @@ keys:
 
                         This should be decimal with up to 1 decimal point
 
-                        Example : 0.5 or 60
+                        Example: 0.5 or 60
 
                         '
                     polling_interval:
@@ -6841,7 +6841,7 @@ keys:
 
                         to ''auto'' based on recovery_time and timeout values.
 
-                        Example : 0.5 or 60
+                        Example: 0.5 or 60
 
                         '
                     recovery_time:
@@ -6858,7 +6858,7 @@ keys:
 
                         This should be decimal with up to 1 decimal point.
 
-                        Example : 0.5 or 60
+                        Example: 0.5 or 60
 
                         '
                     forced:
