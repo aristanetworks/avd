@@ -73,8 +73,8 @@
 
 | Interface | Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
 | --------- | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
-{%     for _nat in ip_nat.src_static %}
-| {{ _nat.if_name }} | {{ _nat.direction }} | {{ _nat.o_ip }} | {{ _nat.o_port }} | {{ _nat.acl }} | {{ _nat.t_ip }} | {{ _nat.t_port }} | {{ _nat.proto }} | {{ _nat.group }} | {{ _nat.priority }} | {{ _nat.comment }} |
+{%     for row in ip_nat.src_static %}
+| {{ row.if_name }} | {{ row.direction }} | {{ row.o_ip }} | {{ row.o_port }} | {{ row.acl }} | {{ row.t_ip }} | {{ row.t_port }} | {{ row.proto }} | {{ row.group }} | {{ row.priority }} | {{ row.comment }} |
 {%     endfor %}
 {% endif %}
 {% if ip_nat.src_dyn %}
@@ -83,8 +83,8 @@
 
 | Interface | Access List | NAT Type | Pool Name | Priority | Comment |
 | --------- | ----------- | -------- | --------- | -------- | ------- |
-{%     for _nat in ip_nat.src_dyn %}
-| {{ _nat.if_name }} | {{ _nat.acl }} | {{ _nat.type }} | {{ _nat.pool }} | {{ _nat.priority }} | {{ _nat.comment }} |
+{%     for row in ip_nat.src_dyn %}
+| {{ row.if_name }} | {{ row.acl }} | {{ row.type }} | {{ row.pool }} | {{ row.priority }} | {{ row.comment }} |
 {%     endfor %}
 {% endif %}
 {% if ip_nat.dst_static %}
@@ -93,8 +93,8 @@
 
 | Interface | Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
 | --------- | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
-{%     for _nat in ip_nat.dst_static %}
-| {{ _nat.if_name }} | {{ _nat.direction }} | {{ _nat.o_ip }} | {{ _nat.o_port }} | {{ _nat.acl }} | {{ _nat.t_ip }} | {{ _nat.t_port }} | {{ _nat.proto }} | {{ _nat.group }} | {{ _nat.priority }} | {{ _nat.comment }} |
+{%     for row in ip_nat.dst_static %}
+| {{ row.if_name }} | {{ row.direction }} | {{ row.o_ip }} | {{ row.o_port }} | {{ row.acl }} | {{ row.t_ip }} | {{ row.t_port }} | {{ row.proto }} | {{ row.group }} | {{ row.priority }} | {{ row.comment }} |
 {%     endfor %}
 {% endif %}
 {% if ip_nat.dst_dyn %}
@@ -103,7 +103,7 @@
 
 | Interface | Access List | Pool Name | Priority | Comment |
 | --------- | ----------- | --------- | -------- | ------- |
-{%     for _nat in ip_nat.dst_dyn %}
-| {{ _nat.if_name }} | {{ _nat.acl }} | {{ _nat.pool }} | {{ _nat.priority }} | {{ _nat.comment }} |
+{%     for row in ip_nat.dst_dyn %}
+| {{ row.if_name }} | {{ row.acl }} | {{ row.pool }} | {{ row.priority }} | {{ row.comment }} |
 {%     endfor %}
 {% endif %}
