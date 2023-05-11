@@ -158,15 +158,46 @@ l3leaf:
 #### Setting PTP Clock Identity automatically
 
 By default PTP clock identity is generated and set automatically.
+The clock identity will consist of the following:
 
-```yaml
-auto_clock_identity = < true | false | default -> true >
-clock_identity = < (clock_identity_prefix = 00:1C:73 (default)) + (PTP priority 1 as HEX) + ":00:" + (PTP priority 2 as HEX) >
-```
+- a prefix which is "00:1C:73" by default
+- PTP priority 1 as HEX
+- ":00:"
+- PTP priority 2 as HEX
+
+This means, that for a node with PTP priority 1 = 30 and PTP priority 2 = 2, the PTP clock identity will automatically be set to: `00:1C:73:1e:00:01`
+
+If you prefer to have PTP clock identity be the system MAC-address of the switch, which is the default EOS behaviour, simply set auto_clock_identity: false on one or more of the levels shown below:
+
+- on the fabric level, for example FABRIC.yml
+
+  ```yml
+  ptp:
+    auto_clock_identity: < true | false | default -> true >
+  ```
+
+- per node_group, for example for all spine nodes in SPINES.yml
+
+  ```yml
+  spine:
+    defaults:
+      ptp:
+        auto_clock_identity: < true | false | default -> true >
+  ```
+
+- per node for a specific node/device inside a node_group, for example for a specific leaf in LEAFS.yml
+
+  ```yml
+  l3leaf:
+    nodes:
+      - name: leaf1
+        ptp:
+          auto_clock_identity: < true | false | default -> true >
+  ```
 
 #### PTP Clock Identity prefix
 
-By default the 3-byte prefix is `00:1C:73`, but this can be overridden if `auto_clock_identity` is set to `true` (which is the default).
+By default the 3-byte prefix for auto_clock_identity is `00:1C:73`, but this can be overridden if `auto_clock_identity` is set to `true` (which is the default).
 > **Please note:** Remember to use double-quotes around the value, as otherwise it will be not be rendered correctly.
 
 For example for all spine nodes:
@@ -179,40 +210,54 @@ spine:
       clock_identity_prefix: "01:02:03"
 ```
 
-#### Using Arista EOS default PTP clock identity
-
-If you prefer to have PTP clock identity be the system MAC-address of the switch, which is the default EOS behaviour, simply disable the automatic PTP clock identity as shown here:
-
-```yaml
-spine:
-  defaults:
-    ptp:
-      enabled: true
-      auto_clock_identity: false
-```
-
 #### Setting PTP Clock Identity manually
 
-PTP Clock identity can be set manually per node_group or node, for example for blue-spine1:
-> **Please note:** Remember to use double-quotes around the value, as otherwise it will be not be rendered correctly.
+If the auto generation of PTP clock_identity and the EOS system MAC-address of the switch is not what you want, the clock_identity value can be manually set on various levels of the configuration:
 
-```yaml
-spine:
-  nodes:
-    - name: blue-spine1
+- per node_group, for example for all spine nodes in SPINES.yml
+
+  ```yml
+  spine:
+    defaults:
       ptp:
-        enabled: true
         clock_identity: "01:02:03:04:05:06"
-```
+  ```
+
+- per node for a specific node/device inside a node_group, for example for a specific leaf in LEAFS.yml
+
+  ```yml
+  l3leaf:
+    nodes:
+      - name: leaf1
+        ptp:
+          clock_identity: "01:02:03:04:05:06"
+  ```
+
+> **Please note:** Remember to use double-quotes around the value, as otherwise it will be not be rendered correctly.
 
 #### Enable PTP unicast forwarding
 
 With this feature enabled, multicast PTP packets will continue to be sent to the control plane, but unicast PTP packets will be hardware forwarded through the data plane.
 This feature enables the use of protocols such as Meinbergs NetSync to monitor downstream PTP slaves in the network without having the PTP packets dropped by Arista Switches acting as boundary clocks.
 
-```yaml
-forward_unicast: < true | false | default -> false >
-```
+- per node_group, for example for all spine nodes in SPINES.yml
+
+  ```yml
+  spine:
+    defaults:
+      ptp:
+        forward_unicast: < true | false | default -> false >
+  ```
+
+- per node for a specific node/device inside a node_group, for example for a specific leaf in LEAFS.yml
+
+  ```yml
+  l3leaf:
+    nodes:
+      - name: leaf1
+        ptp:
+          forward_unicast: < true | false | default -> false >
+  ```
 
 ### PTP Source IP address
 

@@ -106,7 +106,6 @@ management_api_http:
 ptp:
   mode: boundary
   forward_unicast: true
-  clock_identity: 00:1C:73:28:00:01
   source:
     ip: 10.254.1.2
   priority1: 40

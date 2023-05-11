@@ -680,7 +680,8 @@ class AvdStructuredConfigBase(AvdFacts):
 
             priority2 = self.shared_utils.id % 256
 
-        if get(self.shared_utils.switch_data_combined, "ptp.auto_clock_identity", default=True) is True:
+        default_auto_clock_identity = get(self._hostvars, "ptp.auto_clock_identity", default=True)
+        if get(self.shared_utils.switch_data_combined, "ptp.auto_clock_identity", default=default_auto_clock_identity) is True:
             clock_identity_prefix = get(self.shared_utils.switch_data_combined, "ptp.clock_identity_prefix", default="00:1C:73")
             default_clock_identity = f"{clock_identity_prefix}:{priority1:02x}:00:{priority2:02x}"
 

@@ -4977,6 +4977,11 @@
           "minimum": 0,
           "maximum": 255,
           "title": "Domain"
+        },
+        "auto_clock_identity": {
+          "type": "boolean",
+          "default": true,
+          "title": "Auto Clock Identity"
         }
       },
       "additionalProperties": false,

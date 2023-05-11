@@ -1818,6 +1818,9 @@ keys:
         default: aes67-r16-2016
       domain:
         $ref: eos_cli_config_gen#/keys/ptp/keys/domain
+      auto_clock_identity:
+        type: bool
+        default: true
   ptp_profiles:
     documentation_options:
       table: ptp
