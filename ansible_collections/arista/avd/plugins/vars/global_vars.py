@@ -46,7 +46,8 @@ DOCUMENTATION = """
         elements: string
 """
 
-EXAMPLES = r"""
+# Cannot use EXAMPLES or ansible-lint complains.
+VARS_EXAMPLES = r"""
 # `ansible.cfg` only example
 
 1. Enable the plugin in `ansible.cfg` - DO NOT REMOVE host_group_vars.
