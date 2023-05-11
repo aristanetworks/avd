@@ -47,12 +47,12 @@ $defs:
             - str
           default: 0
           description: |
-            Base number for vlan_aware_bundle.
+            Base number for VLAN aware bundle RD/RT.
             The "Assigned Number" part of RD/RT is derived from vrf_vni + vlan_aware_bundle_number_base.
         pseudowire_rt_base:
           type: int
           description: |
-            Pseudowire rt base, used to generate route targets for vpws services.
+            Pseudowire RT base, used to generate route targets for VPWS services.
             Avoid overlapping route target spaces between different services.
           convert_types:
             - str
@@ -65,91 +65,28 @@ $defs:
             This setting can be overridden per VRF.
         bgp_peer_groups:
           type: list
+          primary_key: name
+          convert_types:
+            - dict
           description: |
             List of BGP peer groups definitions.
             This will configure BGP peer groups to be used inside the tenant VRF for peering with external devices.
             Since BGP peer groups are configured at higher BGP level, shared between VRFs,
             peer_group names should not overlap between VRFs.
           items:
+            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items"
             type: dict
             keys:
               name:
                 type: str
                 description: BGP peer group name
-              remote_as:
-                type: int
-                convert_types:
-                  - str
-                description: Remote ASN
-              description:
-                type: str
-              send_community:
-                type: str
-                description: |
-                  'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'
-              next_hop_self:
-                type: bool
-              maximum_routes:
-                type: int
-                convert_types:
-                  - str
-                min: 0
-                max: 4294967294
-              default_originate:
-                type: dict
-                keys:
-                  enabled:
-                    type: bool
-                  always:
-                    type: bool
-              update_source:
-                type: str
-              ebgp_multihop:
-                type: int
-                convert_types:
-                  - str
-                min: 1
-                max: 255
               nodes:
                 type: list
                 items:
                   type: str
                 description: |
                   Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
-                  If not set the peer-group is created on the device which has a bgp_peer mapped to corresponding peer_group.
-              set_ipv4_next_hop:
-                type: str
-                description: |
-                  IPv4_address
-                  Next hop settings can be either ipv4 or ipv6 for one neighbor, this will be applied by a uniquely generated route-map per neighbor.
-                  Next hop takes precedence over route_map_out.
-              set_ipv6_next_hop:
-                type: str
-                description: |
-                  IPv6_address
-                  Next hop settings can be either ipv4 or ipv6 for one neighbor, this will be applied by a uniquely generated route-map per neighbor.
-                  Next hop takes precedence over route_map_out.
-              route_map_out:
-                type: str
-                description: Route-map name
-              route_map_in:
-                type: str
-                description: Route-map name
-              local_as:
-                type: str
-                convert_types:
-                  - int
-                description: |
-                  Local BGP ASN
-                  eg. "65001.1200"
-              weight:
-                type: int
-                convert_types:
-                  - str
-                min: 0
-                max: 65535
-              bfd:
-                type: bool
+                  If not set the peer-group is created on devices which have a bgp_peer mapped to the corresponding peer_group.
         evpn_l2_multicast:
           description: |
             Enable EVPN L2 Multicast for all SVIs and l2vlans within Tenant.
@@ -220,15 +157,16 @@ $defs:
             type: dict
             keys:
               rps:
-                description: A minimum of one RP must be specified.
+                description: List of Rendevouz Points
                 type: list
+                min_length: 1
                 items:
                   type: str
                   description: RP address.
               nodes:
                 description: |
-                 Restric configuration to specific nodes.
-                 Configuration Will be applied to all nodes with RP addresses configured if not set.
+                 Restrict configuration to specific nodes.
+                 Configuration Will be applied to all nodes if not set.
                 type: list
                 items:
                   type: str
@@ -269,7 +207,7 @@ $defs:
           convert_types:
             - dict
           description: |
-            vrf "default" is supported under network-services. Currently the supported options for "default" vrf are route-target,
+            VRF "default" is supported under network-services. Currently the supported options for "default" vrf are route-target,
             route-distinguisher settings, structured_config, raw_eos_cli in bgp and SVIs are the only supported interface type.
             Vlan-aware-bundles are supported as well inside default vrf. OSPF is not supported currently.
           items:
@@ -390,9 +328,9 @@ $defs:
               ospf:
                 type: dict
                 description: |
-                  Dictionary for router OSPF configuration.
-                  This will create an ospf routing instance in the tenant VRF. If there is no nodes definition, the ospf instance will be
-                  created on all leafs where the vrf is deployed. This will also cause automatic ospf redistribution into bgp unless
+                  Router OSPF configuration.
+                  This will create an OSPF routing instance in the tenant VRF. If there is no nodes definition, the OSPF instance will be
+                  created on all leafs where the VRF is deployed. This will also cause automatic OSPF redistribution into BGP unless
                   explicitly turned off with "redistribute_ospf: false".
                 keys:
                   enabled:
@@ -456,7 +394,7 @@ $defs:
                         nodes:
                           type: list
                           description: |
-                            Rerstrict configuration to specific nodes.
+                            Restrict configuration to specific nodes.
                             Will apply to all nodes with RP addresses configured if not set.
                         transit:
                           type: bool
@@ -477,8 +415,8 @@ $defs:
                         description: RP address.
                     nodes:
                       description: |
-                        Restric configuration to specific nodes.
-                        Configuration Will be applied to all nodes with RP addresses configured if not set.
+                        Restrict configuration to specific nodes.
+                        Configuration Will be applied to all nodes if not set.
                       type: list
                       items:
                         type: str
@@ -840,85 +778,19 @@ $defs:
                   Since BGP peer groups are configured at higher BGP level, shared between VRFs,
                   peer_group names should not overlap between VRFs.
                 items:
+                  $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items"
                   type: dict
                   keys:
                     name:
                       type: str
                       description: BGP peer group name
-                    remote_as:
-                      type: int
-                      convert_types:
-                        - str
-                      description: Remote ASN
-                    description:
-                      type: str
-                    send_community:
-                      type: str
-                      description: |
-                        'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'
-                    next_hop_self:
-                      type: bool
-                    maximum_routes:
-                      type: int
-                      convert_types:
-                        - str
-                      min: 0
-                      max: 4294967294
-                    default_originate:
-                      type: dict
-                      keys:
-                        enabled:
-                          type: bool
-                        always:
-                          type: bool
-                    update_source:
-                      type: str
-                    ebgp_multihop:
-                      type: int
-                      convert_types:
-                        - str
-                      min: 1
-                      max: 255
                     nodes:
                       type: list
                       items:
                         type: str
                       description: |
                         Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
-                        If not set the peer-group is created on the device which has a bgp_peer mapped to corresponding peer_group.
-                    set_ipv4_next_hop:
-                      type: str
-                      description: |
-                        IPv4_address
-                        Next hop settings can be either ipv4 or ipv6 for one neighbor, this will be applied by a uniquely generated route-map per neighbor.
-                        Next hop takes precedence over route_map_out.
-                    set_ipv6_next_hop:
-                      type: str
-                      description: |
-                        IPv6_address
-                        Next hop settings can be either ipv4 or ipv6 for one neighbor, this will be applied by a uniquely generated route-map per neighbor.
-                        Next hop takes precedence over route_map_out.
-                    route_map_out:
-                      type: str
-                      description: Route-map name
-                    route_map_in:
-                      type: str
-                      description: Route-map name
-                    local_as:
-                      type: str
-                      convert_types:
-                        - int
-                      description: |
-                        Local BGP ASN
-                        eg. "65001.1200"
-                    weight:
-                      type: int
-                      convert_types:
-                        - str
-                      min: 0
-                      max: 65535
-                    bfd:
-                      type: bool
+                        If not set the peer-group is created on devices which have a bgp_peer mapped to the corresponding peer_group.
               additional_route_targets:
                 type: list
                 description: Configuration of extra route-targets for this VRF. Useful for route-leaking or gateway between address families.
@@ -964,8 +836,8 @@ $defs:
                 convert_types:
                   - str
                 min: 1
-                max: 4096
-                description: VLAN id
+                max: 4094
+                description: VLAN ID
               vni_override:
                 type: int
                 convert_types:
@@ -973,7 +845,7 @@ $defs:
                 min: 1
                 max: 16777215
                 description: |
-                  By default the vni will be derived from mac_vrf_vni_base
+                  By default the VNI will be derived from mac_vrf_vni_base
                   The vni_override, allows to override this value and statically define it.
               rt_override:
                 type: int
@@ -1058,39 +930,63 @@ $defs:
                       This configuration will not be applied to vlan aware bundles.
         point_to_point_services:
           type: list
+          primary_key: name
+          description: |
+            Point to point services (pseudowires).
+            Only supported for node types with "network_services.l1: true".
+            By default this is only set for node type "pe" with "design.type: mpls"
           items:
             type: dict
             keys:
               name:
                 type: str
+                description: Pseudowire name
               type:
                 type: str
+                default: vpws-pseudowire
                 valid_values:
-                  - "vpws-pseudowire"
+                  - vpws-pseudowire
               subinterfaces:
                 type: list
+                description: Subinterfaces will create subinterfaces and additional pseudowires/patch panel config for each endpoint.
+                primary_key: number
                 items:
                   type: dict
                   keys:
                     number:
                       type: int
+                      description: Subinterface number
                       convert_types:
                         - str
               endpoints:
                 type: list
+                description: Pseudowire terminating endpoints. Must have exactly two items.
+                min_length: 2
+                max_length: 2
                 items:
                   type: dict
                   keys:
                     id:
                       type: int
+                      required: true
                       convert_types:
                         - "str"
+                      description: Pseudowire ID on this endpoint
                     nodes:
                       type: list
+                      description: |
+                        Usually one node. With ESI multihoming we support two nodes per pseudowire endpoint
+                      required: true
+                      min_length: 1
                       items:
                         type: str
                     interfaces:
                       type: list
+                      description: |
+                        Interfaces patched to the pseudowire on this endpoints.
+                        The list of interfaces is mapped to the list of nodes, so they must have the same length.
+                      required: true
+                      min_length: 1
                       items:
                         type: str
                     port_channel:
@@ -1105,3 +1001,4 @@ $defs:
                           type: str
               lldp_disable:
                 type: bool
+                description: Disable LLDP RX/TX on port mode pseudowire services
