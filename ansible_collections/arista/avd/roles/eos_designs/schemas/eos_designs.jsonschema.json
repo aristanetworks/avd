@@ -2357,7 +2357,7 @@
               },
               "lacp_timer": {
                 "type": "object",
-                "description": "LACP timer configuration.",
+                "description": "LACP timer configuration. Optional - Applies only when Port-channel mode is not \"on\".",
                 "properties": {
                   "mode": {
                     "type": "string",
@@ -3776,7 +3776,7 @@
               },
               "lacp_timer": {
                 "type": "object",
-                "description": "LACP timer configuration.",
+                "description": "LACP timer configuration. Optional - Applies only when Port-channel mode is not \"on\".",
                 "properties": {
                   "mode": {
                     "type": "string",

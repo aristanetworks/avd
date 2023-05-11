@@ -458,7 +458,7 @@ $defs:
                 description: Timeout in seconds, Optional - default is 90 seconds.
           lacp_timer:
             type: dict
-            description: LACP timer configuration.
+            description: LACP timer configuration. Optional - Applies only when Port-channel mode is not "on".
             keys:
               mode:
                 type: str
