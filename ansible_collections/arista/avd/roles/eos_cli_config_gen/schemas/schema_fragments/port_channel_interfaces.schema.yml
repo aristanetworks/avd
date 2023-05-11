@@ -475,14 +475,20 @@ keys:
           type: str
           description: |
             EVPN Ethernet Segment Identifier (Type 1 format)
-            Will be deprecated in AVD 4.0 in favor of "evpn_ethernet_segment.identifier"
             If both "esi" and "evpn_ethernet_segment.identifier" are defined, the new variable takes precedence
+          deprecation:
+            warning: true
+            new_key: evpn_ethernet_segment.identifier
+            remove_in_version: "5.0.0"
         rt:
           type: str
           description: |
             EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx
-            Will be deprecated in AVD 4.0 in favor of "evpn_ethernet_segment.route_target"
             If both "rt" and "evpn_ethernet_segment.route_target" are defined, the new variable takes precedence
+          deprecation:
+            warning: true
+            new_key: evpn_ethernet_segment.route_target
+            remove_in_version: "5.0.0"
         lacp_id:
           type: str
           description: LACP ID with format xxxx.xxxx.xxxx

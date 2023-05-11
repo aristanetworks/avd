@@ -9333,12 +9333,14 @@
           },
           "esi": {
             "type": "string",
-            "description": "EVPN Ethernet Segment Identifier (Type 1 format)\nWill be deprecated in AVD 4.0 in favor of \"evpn_ethernet_segment.identifier\"\nIf both \"esi\" and \"evpn_ethernet_segment.identifier\" are defined, the new variable takes precedence\n",
+            "description": "EVPN Ethernet Segment Identifier (Type 1 format)\nIf both \"esi\" and \"evpn_ethernet_segment.identifier\" are defined, the new variable takes precedence\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>evpn_ethernet_segment.identifier</samp> instead.",
+            "deprecated": true,
             "title": "Esi"
           },
           "rt": {
             "type": "string",
-            "description": "EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx\nWill be deprecated in AVD 4.0 in favor of \"evpn_ethernet_segment.route_target\"\nIf both \"rt\" and \"evpn_ethernet_segment.route_target\" are defined, the new variable takes precedence\n",
+            "description": "EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx\nIf both \"rt\" and \"evpn_ethernet_segment.route_target\" are defined, the new variable takes precedence\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>evpn_ethernet_segment.route_target</samp> instead.",
+            "deprecated": true,
             "title": "Rt"
           },
           "lacp_id": {

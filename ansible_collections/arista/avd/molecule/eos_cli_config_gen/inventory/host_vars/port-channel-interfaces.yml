@@ -59,8 +59,9 @@ port_channel_interfaces:
     description: SRV01_bond0
     vlans: 2-3000
     mode: trunk
-    esi: 0000:0000:0404:0404:0303
-    rt: 04:04:03:03:02:02
+    evpn_ethernet_segment:
+      identifier: "0000:0000:0404:0404:0303"
+      route_target: "04:04:03:03:02:02"
     shape:
       rate: 50 percent
 
@@ -68,8 +69,9 @@ port_channel_interfaces:
     description: SRV-POD03_PortChanne1
     vlans: 1-4000
     mode: trunk
-    esi: 0000:0000:0303:0202:0101
-    rt: 03:03:02:02:01:01
+    evpn_ethernet_segment:
+      identifier: "0000:0000:0303:0202:0101"
+      route_target: "03:03:02:02:01:01"
     lacp_id: 0303.0202.0101
 
   - name: Port-Channel51
@@ -144,16 +146,16 @@ port_channel_interfaces:
 
   - name: Port-Channel13
     description: EVPN-Vxlan single-active redundancy
-    esi: "0000:0000:0000:0102:0304"
-    rt: "00:00:01:02:03:04"
     evpn_ethernet_segment:
       redundancy: single-active
+      identifier: "0000:0000:0000:0102:0304"
       designated_forwarder_election:
         algorithm: preference
         preference_value: 100
         dont_preempt: true
         hold_time: 10
         candidate_reachability_required: true
+      route_target: "00:00:01:02:03:04"
 
   - name: Port-Channel14
     description: EVPN-MPLS multihoming
@@ -311,8 +313,9 @@ port_channel_interfaces:
           vlan: 100
       network:
         client: true
-    esi: 0000:0000:0303:0202:0101
-    rt: 03:03:02:02:01:01
+    evpn_ethernet_segment:
+      identifier: 0000:0000:0303:0202:0101
+      route_target: 03:03:02:02:01:01
     lacp_id: 0303.0202.0101
 
   - name: Port-Channel112
