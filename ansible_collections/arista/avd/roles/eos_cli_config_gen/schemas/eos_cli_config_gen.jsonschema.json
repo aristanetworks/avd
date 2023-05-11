@@ -10334,6 +10334,29 @@
           "description": "\"enabled: true\" will be required in AVD4.0.\nIn AVD3.x default is true as long as queue_monitor_length is defined and not None\n",
           "title": "Enabled"
         },
+        "default_thresholds": {
+          "type": "object",
+          "properties": {
+            "high": {
+              "type": "integer",
+              "description": "Default high threshold for Ethernet Interfaces.\n",
+              "title": "High"
+            },
+            "low": {
+              "type": "integer",
+              "description": "Default low threshold for Ethernet Interfaces.\nLow threshold support is platform dependent.\n",
+              "title": "Low"
+            }
+          },
+          "required": [
+            "high"
+          ],
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Default Thresholds"
+        },
         "log": {
           "type": "integer",
           "description": "Logging interval in seconds",
