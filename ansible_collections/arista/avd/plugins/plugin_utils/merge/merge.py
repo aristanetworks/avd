@@ -41,7 +41,7 @@ MAP_ANSIBLE_LIST_MERGE_TO_DEEPMERGE_LIST_STRATEGY = {
 }
 
 
-def merge(base, *nxt_list, recursive=True, list_merge="append", merge_method="override", destructive_merge=True, schema: AvdSchema = None):
+def merge(base, *nxt_list, recursive=True, list_merge="append", same_key_strategy="override", destructive_merge=True, schema: AvdSchema = None):
     """
     Merge two or more data sets using deepmerge
 
@@ -55,8 +55,8 @@ def merge(base, *nxt_list, recursive=True, list_merge="append", merge_method="ov
         Perform recursive merge of dicts or just override with nxt.
     list_merge : str, default="append"
         Valid values: "append, replace, keep, prepend, append_rp, prepend_rp"
-    merge_method : str, default="override"
-        Valid values: "override | use_existing"
+    same_key_strategy : str, default="override"
+        Valid values: "override", "use_existing"
         Controls how dictionary keys that are in both base and nxt are handled:
         - "override" means nxt value replace base value.
         - "use_existing" means base value is kept.
@@ -93,9 +93,9 @@ def merge(base, *nxt_list, recursive=True, list_merge="append", merge_method="ov
         # List of tuples with strategies for each type
         [(list, list_strategies), (dict, dict_strategies), (set, ["union"])],
         # Fallback strategy applied to all other types
-        [merge_method],
+        [same_key_strategy],
         # Strategy for type conflict
-        [merge_method],
+        [same_key_strategy],
     )
     for nxt in nxt_list:
         if isinstance(nxt, list):
