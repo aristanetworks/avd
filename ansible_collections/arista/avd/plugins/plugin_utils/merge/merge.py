@@ -53,9 +53,9 @@ def merge(base, *nxt_list, recursive=True, list_merge="append", merge_method="ov
         One or more data sets which are merged one by one onto the base data set
     recursive : bool, default=True
         Perform recursive merge of dicts or just override with nxt.
-    list_merge : str, default=append
+    list_merge : str, default="append"
         Valid values: "append, replace, keep, prepend, append_rp, prepend_rp"
-    merge_method : str, default=override
+    merge_method : str, default="override"
         Valid values: "override | use_existing"
         Controls how dictionary keys that are in both base and nxt are handled:
         - "override" means nxt value replace base value.
