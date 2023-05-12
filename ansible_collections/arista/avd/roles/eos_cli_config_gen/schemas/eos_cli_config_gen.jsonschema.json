@@ -1784,7 +1784,9 @@
                 "type": "string",
                 "enum": [
                   "tagged",
-                  "untagged"
+                  "tagged phone",
+                  "untagged",
+                  "untagged phone"
                 ],
                 "title": "Trunk"
               },
