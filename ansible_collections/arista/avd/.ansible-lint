@@ -1,0 +1,10 @@
+---
+profile: production
+
+skip_list:
+  - name[template] # Remove warnings on task names where Jinja template is not at the end
+  - run-once[task] # Remove warnings on using run_once with other strategies
+  - meta-no-info # Ansible-lint does not honor meta-schema with standalone: false
+
+kinds:
+  - yaml: "**/molecule/**/inventory/host_vars/roles.yml"
