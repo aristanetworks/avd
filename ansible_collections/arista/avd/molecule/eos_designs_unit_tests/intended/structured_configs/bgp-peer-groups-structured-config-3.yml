@@ -32,7 +32,7 @@ router_bgp:
     peer_groups:
       MPLS-OVERLAY-PEERS:
         activate: true
-    domain_identifier: 0:1
+    domain_identifier: '65535:1'
   bgp:
     bestpath:
       d_path: true
@@ -44,7 +44,7 @@ router_bgp:
         activate: true
       MPLS-OVERLAY-PEERS:
         activate: true
-    domain_identifier: 0:2
+    domain_identifier: '65535:2'
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
