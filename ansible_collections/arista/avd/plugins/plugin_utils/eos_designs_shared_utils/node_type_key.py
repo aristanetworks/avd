@@ -62,6 +62,14 @@ class NodeTypeKeyMixin:
         raise AristaAvdMissingVariableError(f"node_type_keys.<>.type=={self.type}")
 
     @cached_property
+    def cvp_tag_topology_hint_type(self: SharedUtils) -> str:
+        """
+        topology_tag_type set based on
+        node_type_keys.<node_type_key>.cvp_tags.topology_hint_type
+        """
+        return get(self.node_type_key_data, "cvp_tags.topology_hint_type", default="endpoint")
+
+    @cached_property
     def connected_endpoints(self: SharedUtils) -> bool:
         """
         connected_endpoints set based on

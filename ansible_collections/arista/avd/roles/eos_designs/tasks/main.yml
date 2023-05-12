@@ -47,17 +47,12 @@
 - name: Generate device configuration in structured format
   tags: [build, provision]
   arista.avd.yaml_templates_to_facts:
-    templates: "{{ templates.structured_config }}"
-    dest: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
-    #cprofile_file: "structured-{{inventory_hostname}}.prof"
-    template_output: true
-    schema_id: "eos_designs"
-    conversion_mode: "{{ avd_data_conversion_mode }}"
-    validation_mode: "{{ avd_data_validation_mode }}"
-    output_schema_id: "eos_cli_config_gen"
+    templates:
+      - python_module: "ansible_collections.arista.avd.roles.cvp_tags.python_modules.cvp_tags"
+        python_class_name: "AvdStructuredConfig"
+    dest: "{{ cvp_tags_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
   delegate_to: localhost
   check_mode: false
-  register: structured_config
 
 - name: Generate fabric documentation
   tags: [build, provision, documentation]
