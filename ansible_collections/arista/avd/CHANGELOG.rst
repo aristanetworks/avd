@@ -5,6 +5,26 @@ Arista.Avd Release Notes
 .. contents:: Topics
 
 
+v3.8.6
+======
+
+Release Summary
+---------------
+
+Release 3.8.6 - See documentation on avd.sh for details.
+
+
+Bugfixes
+--------
+
+- Bump(requirements) - ansible.utils to ">=2.9.0" (#2740) by @carlbuchmann in (https://github.com/aristanetworks/ansible-avd/pull/2819)
+- Doc - Fix typo in custom structured configuration documentation example (#2807) by @carlbuchmann in (https://github.com/aristanetworks/ansible-avd/pull/2821)
+- Doc(plugins) - Fix plugin name in BGP example (#2601) by @carlbuchmann in (https://github.com/aristanetworks/ansible-avd/pull/2818)
+- Fix - Description key not considered with connected endpoints (#2745) by @carlbuchmann in (https://github.com/aristanetworks/ansible-avd/pull/2816)
+- Fix(eos_cli_config_gen) - Fix typo in router-bgp.j2 (#2753) by @carlbuchmann in (https://github.com/aristanetworks/ansible-avd/pull/2817)
+- Fix(eos_designs) - Invalid defaults for ipvpn_gateway domain IDs (#2739) by @carlbuchmann in (https://github.com/aristanetworks/ansible-avd/pull/2820)
+- Revert(eos_designs) - Duplicate checks for VRFs by @ClausHolbechArista in (https://github.com/aristanetworks/ansible-avd/pull/2811)
+
 v3.8.5
 ======
 
@@ -20,8 +40,8 @@ Bugfixes
 - Fix(eos_cli_config_gen) - Checks for missing "vlans" key on access port-channel (#2701) (https://github.com/aristanetworks/ansible-avd/pull/2731)
 - Fix(eos_designs) - Avoid configuring trunk-group twice on mlag peer-link if using the same name (#2658) (https://github.com/aristanetworks/ansible-avd/pull/2735)
 - Fix(eos_designs) - Change IP addressing templates from ansible netcommon to ansible.utils (#2677) (https://github.com/aristanetworks/ansible-avd/pull/2732)
-- Fix(eos_designs) - network services vlan interfaces ospf authentication message-digest (#2727) (https://github.com/aristanetworks/ansible-avd/pull/2730)
 - Fix(eos_designs) - Configure "ip routing ipv6 interface vrf X" for RFC5549 (#2660) (https://github.com/aristanetworks/ansible-avd/pull/2733)
+- Fix(eos_designs) - network services vlan interfaces ospf authentication message-digest (#2727) (https://github.com/aristanetworks/ansible-avd/pull/2730)
 
 v3.8.4
 ======
