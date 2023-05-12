@@ -97,7 +97,6 @@ tenants:
           2020:
             enabled: true
             name: TENANT_B_INSIDE_FW
-            ip_virtual_router_address: 10.1.255.1
             nodes:
               pe1:
                 ip_address: 10.1.255.2/27

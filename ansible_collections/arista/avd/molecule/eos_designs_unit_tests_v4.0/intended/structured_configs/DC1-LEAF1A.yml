@@ -363,7 +363,7 @@ vlan_interfaces:
   vrf: Tenant_A_WEB_Zone
   ip_helpers:
   - ip_helper: 1.1.1.1
-    source_interface: lo100
+    source_interface: lo101
     vrf: TEST
 - name: Vlan121
   tenant: Tenant_A

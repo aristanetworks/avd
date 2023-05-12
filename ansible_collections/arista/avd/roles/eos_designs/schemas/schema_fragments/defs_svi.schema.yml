@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+$defs:
+  svi:
+    type: dict
+    $ref: "#/$defs/svi_settings"
+    keys:
+      nodes:
+        type: list
+        primary_key: node
+        convert_types:
+          - dict
+        description: Define node specific configuration, such as unique IP addresses.
+        items:
+          type: dict
+          $ref: "#/$defs/svi_settings"
+          keys:
+            node:
+              type: str
+              description: l3_leaf inventory hostname

@@ -19,7 +19,13 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
     | [<samp>&nbsp;&nbsp;- name</samp>](## "&lt;connected_endpoints_keys.key&gt;.[].name") | String | Required, Unique |  |  | Endpoint name will be used in the switchport description. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "&lt;connected_endpoints_keys.key&gt;.[].rack") | String |  |  |  | Rack is used for documentation purposes only. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;adapters</samp>](## "&lt;connected_endpoints_keys.key&gt;.[].adapters") | List, items: Dictionary |  |  |  | A list of adapters, group by adapters leveraging the same port-profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- endpoint_ports</samp>](## "&lt;connected_endpoints_keys.key&gt;.[].adapters.[].endpoint_ports") | List, items: String |  |  |  | Endpoint ports is used for description, required unless description is set.<br>The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.<br>Each list item is one switchport.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- switch_ports</samp>](## "&lt;connected_endpoints_keys.key&gt;.[].adapters.[].switch_ports") | List, items: String | Required |  |  | List of switch interfaces.<br>The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "&lt;connected_endpoints_keys.key&gt;.[].adapters.[].switch_ports.[].&lt;str&gt;") | String |  |  |  | Switchport interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switches</samp>](## "&lt;connected_endpoints_keys.key&gt;.[].adapters.[].switches") | List, items: String | Required |  |  | List of switches.<br>The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "&lt;connected_endpoints_keys.key&gt;.[].adapters.[].switches.[].&lt;str&gt;") | String |  |  |  | Device |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server_ports</samp>](## "&lt;connected_endpoints_keys.key&gt;.[].adapters.[].server_ports") <span style="color:red">removed</span> | List, items: String |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 4.0.0. Use <samp>endpoint_ports</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "&lt;connected_endpoints_keys.key&gt;.[].adapters.[].server_ports.[].&lt;str&gt;") | String |  |  |  | Used for documentation purposes |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;endpoint_ports</samp>](## "&lt;connected_endpoints_keys.key&gt;.[].adapters.[].endpoint_ports") | List, items: String |  |  |  | Endpoint ports is used for description, required unless description is set.<br>The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.<br>Each list item is one switchport.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "&lt;connected_endpoints_keys.key&gt;.[].adapters.[].endpoint_ports.[].&lt;str&gt;") | String |  |  |  | Interface name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "&lt;connected_endpoints_keys.key&gt;.[].adapters.[].speed") | String |  |  |  | Set adapter speed: `< interface_speed >`, `forced < interface_speed >`, `auto < interface_speed >`.<br>If not specified will be auto.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "&lt;connected_endpoints_keys.key&gt;.[].adapters.[].description") | String |  |  |  | By default the description is built leveraging `<peer>_<peer_interface>`.<br>When set this key will overide the default value on the physical ports.<br> |
@@ -133,12 +139,6 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "&lt;connected_endpoints_keys.key&gt;.[].adapters.[].port_channel.structured_config") | Dictionary |  |  |  | Custom structured config added under port_channel_interfaces.<interface> for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "&lt;connected_endpoints_keys.key&gt;.[].adapters.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the ethernet interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "&lt;connected_endpoints_keys.key&gt;.[].adapters.[].structured_config") | Dictionary |  |  |  | Custom structured config added under ethernet_interfaces.<interface> for eos_cli_config_gen. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switch_ports</samp>](## "&lt;connected_endpoints_keys.key&gt;.[].adapters.[].switch_ports") | List, items: String | Required |  |  | List of switch interfaces.<br>The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "&lt;connected_endpoints_keys.key&gt;.[].adapters.[].switch_ports.[].&lt;str&gt;") | String |  |  |  | Switchport interface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switches</samp>](## "&lt;connected_endpoints_keys.key&gt;.[].adapters.[].switches") | List, items: String | Required |  |  | List of switches.<br>The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "&lt;connected_endpoints_keys.key&gt;.[].adapters.[].switches.[].&lt;str&gt;") | String |  |  |  | Device |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server_ports</samp>](## "&lt;connected_endpoints_keys.key&gt;.[].adapters.[].server_ports") <span style="color:red">removed</span> | List, items: String |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 4.0.0. Use <samp>endpoint_ports</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "&lt;connected_endpoints_keys.key&gt;.[].adapters.[].server_ports.[].&lt;str&gt;") | String |  |  |  | Used for documentation purposes |
 
 === "YAML"
 
@@ -147,7 +147,13 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
       - name: <str>
         rack: <str>
         adapters:
-          - endpoint_ports:
+          - switch_ports:
+              - <str>
+            switches:
+              - <str>
+            server_ports:
+              - <str>
+            endpoint_ports:
               - <str>
             speed: <str>
             description: <str>
@@ -261,12 +267,6 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
               structured_config:
             raw_eos_cli: <str>
             structured_config:
-            switch_ports:
-              - <str>
-            switches:
-              - <str>
-            server_ports:
-              - <str>
     ```
 
 ## Connected Endpoints Keys
@@ -302,10 +302,14 @@ All switch_ports ranges are expanded into individual port configurations.
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>network_ports</samp>](## "network_ports") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- endpoint_ports</samp>](## "network_ports.[].endpoint_ports") | List, items: String |  |  |  | Endpoint ports is used for description, required unless description is set.<br>The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.<br>Each list item is one switchport.<br> |
+    | [<samp>&nbsp;&nbsp;- switches</samp>](## "network_ports.[].switches") | List, items: String |  |  |  | Regex matching the full hostname of one or more switches.<br>The regular expression must match the full hostname.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "network_ports.[].switches.[].&lt;str&gt;") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;switch_ports</samp>](## "network_ports.[].switch_ports") | List, items: String |  |  |  | List of ranges using AVD range_expand syntax.<br>For example:<br><br>switch_ports:<br>  - Ethernet1<br>  - Ethernet2-48<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "network_ports.[].switch_ports.[].&lt;str&gt;") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "network_ports.[].description") | String |  |  |  | Description to be used on all ports. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;endpoint_ports</samp>](## "network_ports.[].endpoint_ports") | List, items: String |  |  |  | Endpoint ports is used for description, required unless description is set.<br>The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.<br>Each list item is one switchport.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "network_ports.[].endpoint_ports.[].&lt;str&gt;") | String |  |  |  | Interface name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "network_ports.[].speed") | String |  |  |  | Set adapter speed: `< interface_speed >`, `forced < interface_speed >`, `auto < interface_speed >`.<br>If not specified will be auto.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "network_ports.[].description") | String |  |  |  | Description to be used on all ports. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "network_ports.[].profile") | String |  |  |  | Port-profile name to inherit configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_ports.[].enabled") | Boolean |  | True |  | Administrative state, setting to false will set the port to 'shutdown' in the intended configuration.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "network_ports.[].mode") | String |  |  | Valid Values:<br>- access<br>- dot1q-tunnel<br>- trunk<br>- trunk phone | Interface mode. |
@@ -416,19 +420,19 @@ All switch_ports ranges are expanded into individual port configurations.
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "network_ports.[].port_channel.structured_config") | Dictionary |  |  |  | Custom structured config added under port_channel_interfaces.<interface> for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "network_ports.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the ethernet interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "network_ports.[].structured_config") | Dictionary |  |  |  | Custom structured config added under ethernet_interfaces.<interface> for eos_cli_config_gen. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;switches</samp>](## "network_ports.[].switches") | List, items: String |  |  |  | Regex matching the full hostname of one or more switches.<br>The regular expression must match the full hostname.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "network_ports.[].switches.[].&lt;str&gt;") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;switch_ports</samp>](## "network_ports.[].switch_ports") | List, items: String |  |  |  | List of ranges using AVD range_expand syntax.<br>For example:<br><br>switch_ports:<br>  - Ethernet1<br>  - Ethernet2-48<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "network_ports.[].switch_ports.[].&lt;str&gt;") | String |  |  |  |  |
 
 === "YAML"
 
     ```yaml
     network_ports:
-      - endpoint_ports:
+      - switches:
+          - <str>
+        switch_ports:
+          - <str>
+        description: <str>
+        endpoint_ports:
           - <str>
         speed: <str>
-        description: <str>
         profile: <str>
         enabled: <bool>
         mode: <str>
@@ -539,10 +543,6 @@ All switch_ports ranges are expanded into individual port configurations.
           structured_config:
         raw_eos_cli: <str>
         structured_config:
-        switches:
-          - <str>
-        switch_ports:
-          - <str>
     ```
 
 ## Port Profiles
@@ -555,11 +555,12 @@ Keys are the same used under endpoints adapters. Keys defined under endpoints ad
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>port_profiles</samp>](## "port_profiles") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- endpoint_ports</samp>](## "port_profiles.[].endpoint_ports") | List, items: String |  |  |  | Endpoint ports is used for description, required unless description is set.<br>The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.<br>Each list item is one switchport.<br> |
+    | [<samp>&nbsp;&nbsp;- profile</samp>](## "port_profiles.[].profile") | String | Required, Unique |  |  | Port profile name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;parent_profile</samp>](## "port_profiles.[].parent_profile") | String |  |  |  | Parent profile is optional.<br>Port_profiles can refer to another port_profile to inherit settings in up to two levels (adapter->profile->parent_profile). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;endpoint_ports</samp>](## "port_profiles.[].endpoint_ports") | List, items: String |  |  |  | Endpoint ports is used for description, required unless description is set.<br>The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.<br>Each list item is one switchport.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "port_profiles.[].endpoint_ports.[].&lt;str&gt;") | String |  |  |  | Interface name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "port_profiles.[].speed") | String |  |  |  | Set adapter speed: `< interface_speed >`, `forced < interface_speed >`, `auto < interface_speed >`.<br>If not specified will be auto.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "port_profiles.[].description") | String |  |  |  | By default the description is built leveraging `<peer>_<peer_interface>`.<br>When set this key will overide the default value on the physical ports.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "port_profiles.[].profile") | String | Required, Unique |  |  | Port profile name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "port_profiles.[].enabled") | Boolean |  | True |  | Administrative state, setting to false will set the port to 'shutdown' in the intended configuration.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "port_profiles.[].mode") | String |  |  | Valid Values:<br>- access<br>- dot1q-tunnel<br>- trunk<br>- trunk phone | Interface mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "port_profiles.[].mtu") | Integer |  |  | Min: 68<br>Max: 65535 |  |
@@ -669,17 +670,17 @@ Keys are the same used under endpoints adapters. Keys defined under endpoints ad
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "port_profiles.[].port_channel.structured_config") | Dictionary |  |  |  | Custom structured config added under port_channel_interfaces.<interface> for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "port_profiles.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the ethernet interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "port_profiles.[].structured_config") | Dictionary |  |  |  | Custom structured config added under ethernet_interfaces.<interface> for eos_cli_config_gen. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;parent_profile</samp>](## "port_profiles.[].parent_profile") | String |  |  |  | Parent profile is optional.<br>Port_profiles can refer to another port_profile to inherit settings in up to two levels (adapter->profile->parent_profile). |
 
 === "YAML"
 
     ```yaml
     port_profiles:
-      - endpoint_ports:
+      - profile: <str>
+        parent_profile: <str>
+        endpoint_ports:
           - <str>
         speed: <str>
         description: <str>
-        profile: <str>
         enabled: <bool>
         mode: <str>
         mtu: <int>
@@ -789,5 +790,4 @@ Keys are the same used under endpoints adapters. Keys defined under endpoints ad
           structured_config:
         raw_eos_cli: <str>
         structured_config:
-        parent_profile: <str>
     ```
