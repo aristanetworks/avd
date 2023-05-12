@@ -1378,10 +1378,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: PORT_CHANNEL_LACP_TIMER
   description: server24_port_channel_lacp_timer_profile_Eth1
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: 1-4094
+  type: port-channel-member
   channel_group:
     id: 31
     mode: active
@@ -1393,8 +1391,8 @@ ethernet_interfaces:
   peer_interface: Eth1
   peer_type: server
   description: server25_port_channel_lacp_timer_Eth1
-  type: switched
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 32
     mode: active
@@ -1407,10 +1405,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: PORT_CHANNEL_LACP_TIMER_NORMAL
   description: server26_port_channel_lacp_timer_profile_Eth1
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: 1-4094
+  type: port-channel-member
   channel_group:
     id: 33
     mode: active
@@ -1422,8 +1418,8 @@ ethernet_interfaces:
   peer_interface: Eth1
   peer_type: server
   description: server27_port_channel_lacp_timer_Eth1
-  type: switched
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 34
     mode: active
