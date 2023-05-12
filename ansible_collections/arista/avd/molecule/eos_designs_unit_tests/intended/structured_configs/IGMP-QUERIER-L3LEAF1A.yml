@@ -253,7 +253,7 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: IGMP-QUERIER-L2LEAF1A_Ethernet1
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 1
     mode: active

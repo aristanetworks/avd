@@ -77,7 +77,6 @@ sFlow is disabled.
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet2 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
-| Ethernet4 |  Molecule IPv6 | access | - | - | - | - |
 | Ethernet6 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
 | Ethernet7 |  Molecule L2 | access | - | - | - | - |
 | Ethernet11 |  interface_in_mode_access_accepting_tagged_LACP | access | 200 | - | - | - |
@@ -119,7 +118,6 @@ sFlow is disabled.
 | Ethernet52 |  SFlow Interface Testing - SFlow ingress and egress unmodified enabled | access | - | - | - | - |
 | Ethernet53 |  SFlow Interface Testing - SFlow ingress and egress disabled | access | - | - | - | - |
 | Ethernet54 |  SFlow Interface Testing - SFlow ingress and egress unmodified disabled | access | - | - | - | - |
-| Ethernet55 |  DHCPv6 Relay Testing | access | - | - | - | - |
 | Ethernet56 |  Interface with poe commands and limit in class | access | - | - | - | - |
 | Ethernet57 |  Interface with poe commands and limit in watts | access | - | - | - | - |
 | Ethernet58 |  Interface with poe disabled and no other poe keys | access | - | - | - | - |
@@ -243,9 +241,9 @@ sFlow is disabled.
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
 | Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | routed | - | 2002:ABDC::1/64 | default | 1500 | - | - | - | - | - |
-| Ethernet4 | Molecule IPv6 | switchport | - | 2020::2020/64 | default | 9100 | True | True | True | IPv6_ACL_IN | IPv6_ACL_OUT |
+| Ethernet4 | Molecule IPv6 | routed | - | 2020::2020/64 | default | 9100 | True | True | True | IPv6_ACL_IN | IPv6_ACL_OUT |
 | Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 2002:ABDC::1/64 | default | - | - | - | - | - | - |
-| Ethernet55 | DHCPv6 Relay Testing | switchport | - | a0::1/64 | default | - | False | - | - | - | - |
+| Ethernet55 | DHCPv6 Relay Testing | routed | - | a0::1/64 | default | - | False | - | - | - | - |
 
 ##### ISIS
 
@@ -344,7 +342,7 @@ interface Ethernet4
    description Molecule IPv6
    shutdown
    mtu 9100
-   switchport
+   no switchport
    snmp trap link-change
    ipv6 enable
    ipv6 address 2020::2020/64
@@ -763,7 +761,7 @@ interface Ethernet54
 interface Ethernet55
    description DHCPv6 Relay Testing
    no shutdown
-   switchport
+   no switchport
    ipv6 address a0::1/64
    ipv6 dhcp relay destination a0::2 link-address a0::3
    ipv6 dhcp relay destination a0::4 vrf TEST local-interface Loopback55 link-address a0::5

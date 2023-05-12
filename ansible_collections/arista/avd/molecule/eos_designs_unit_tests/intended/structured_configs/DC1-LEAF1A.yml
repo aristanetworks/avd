@@ -293,9 +293,9 @@ ethernet_interfaces:
   peer_type: server
   port_profile: ALL_WITH_SECURITY
   description: server02_SINGLE_NODE_TRUNK_Eth1
-  l2_mtu: 8000
-  type: switched
   shutdown: false
+  type: switched
+  l2_mtu: 8000
   mode: trunk
   vlans: 1-4094
   spanning_tree_portfast: edge
@@ -307,8 +307,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: TENANT_A
   description: server02_SINGLE_NODE_Eth1
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '110'
 loopback_interfaces:

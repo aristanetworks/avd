@@ -51,7 +51,7 @@ interface {{ port_channel_interface.name }}
    encapsulation vlan
       {{ encapsulation_cli }}
 {%         endif %}
-{%     else %}
+{%     elif port_channel_interface.type | arista.avd.default("switched") == 'switched' %}
    switchport
 {%     endif %}
 {%     if port_channel_interface.vlans is arista.avd.defined and port_channel_interface.mode is arista.avd.defined("access") %}

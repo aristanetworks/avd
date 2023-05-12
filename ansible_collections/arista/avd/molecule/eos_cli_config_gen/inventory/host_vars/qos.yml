@@ -122,6 +122,7 @@ ethernet_interfaces:
       dscp: 48
 
   - name: Ethernet6
+    type: switched
     peer: SRV-POD02
     peer_interface: Eth1
     peer_type: server
@@ -134,6 +135,7 @@ ethernet_interfaces:
       cos: 2
 
   - name: Ethernet3
+    type: port-channel-member
     peer: DC1-LEAF1B
     peer_interface: Ethernet3
     peer_type: mlag_peer
@@ -143,6 +145,7 @@ ethernet_interfaces:
       mode: active
 
   - name: Ethernet4
+    type: port-channel-member
     peer: DC1-LEAF1B
     peer_interface: Ethernet4
     peer_type: mlag_peer
@@ -152,6 +155,7 @@ ethernet_interfaces:
       mode: active
 
   - name: Ethernet7
+    type: switched
     peer: SRV-POD03
     peer_interface: Eth1
     peer_type: server
@@ -163,6 +167,7 @@ ethernet_interfaces:
 ### Port-Channel Interfaces ###
 port_channel_interfaces:
   - name: Port-Channel3
+    type: switched
     description: MLAG_PEER_DC1-LEAF1B_Po3
     vlans: "2-4094"
     mode: trunk

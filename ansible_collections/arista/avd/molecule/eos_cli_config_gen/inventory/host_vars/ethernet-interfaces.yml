@@ -94,6 +94,7 @@ ethernet_interfaces:
     spanning_tree_guard: root
 
   - name: Ethernet4
+    type: routed
     description: Molecule IPv6
     shutdown: true
     mtu: 9100
@@ -149,6 +150,7 @@ ethernet_interfaces:
     spanning_tree_guard: loop
 
   - name: Ethernet6
+    type: switched
     logging:
       event:
         link_status: true
@@ -632,6 +634,7 @@ ethernet_interfaces:
 
   - name: Ethernet55
     description: DHCPv6 Relay Testing
+    type: routed
     shutdown: false
     ipv6_address: a0::1/64
     ipv6_dhcp_relay_destinations:

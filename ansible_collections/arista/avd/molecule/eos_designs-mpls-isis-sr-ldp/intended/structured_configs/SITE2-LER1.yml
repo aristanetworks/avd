@@ -266,6 +266,7 @@ ethernet_interfaces:
       igp_sync: true
   speed: forced 40gfull
 - name: Ethernet11
+  type: port-channel-member
   peer: SITE2-LSR2
   peer_interface: Port-Channel12
   peer_type: p
@@ -281,8 +282,8 @@ ethernet_interfaces:
   peer_type: cpe
   port_profile: TENANT_A_WAN_SERVICE_10
   description: CPE_TENANT_A_SITE2_eth0
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk
   vlans: '10'
   spanning_tree_portfast: edge

@@ -1802,9 +1802,10 @@
               "routed",
               "switched",
               "l3dot1q",
-              "l2dot1q"
+              "l2dot1q",
+              "port-channel-member"
             ],
-            "description": "l3dot1q and l2dot1q are used for sub-interfaces\nThe parent interface should be defined as routed\n",
+            "description": "l3dot1q and l2dot1q are used for sub-interfaces. The parent interface should be defined as routed.\nInterface will not be listed in device documentation, unless \"type\" is set.\n",
             "title": "Type"
           },
           "snmp_trap_link_change": {
@@ -8906,7 +8907,7 @@
               "l3dot1q",
               "l2dot1q"
             ],
-            "description": "l3dot1q and l2dot1q are used for sub-interfaces\nThe parent interface should be defined as routed\n",
+            "description": "l3dot1q and l2dot1q are used for sub-interfaces. The parent interface should be defined as routed.\nInterface will not be listed in device documentation, unless \"type\" is set.\n",
             "title": "Type"
           },
           "encapsulation_dot1q_vlan": {

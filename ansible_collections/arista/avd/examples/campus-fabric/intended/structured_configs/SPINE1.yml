@@ -223,7 +223,7 @@ ethernet_interfaces:
   peer_interface: Ethernet55/1
   peer_type: mlag_peer
   description: MLAG_PEER_SPINE2_Ethernet55/1
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 551
@@ -233,7 +233,7 @@ ethernet_interfaces:
   peer_interface: Ethernet56/1
   peer_type: mlag_peer
   description: MLAG_PEER_SPINE2_Ethernet56/1
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 551
@@ -244,7 +244,7 @@ ethernet_interfaces:
   peer_type: leaf
   description: LEAF1A_Ethernet51
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -254,7 +254,7 @@ ethernet_interfaces:
   peer_type: leaf
   description: LEAF2A_Ethernet1/1
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 491
     mode: active
@@ -264,7 +264,7 @@ ethernet_interfaces:
   peer_type: leaf
   description: LEAF3A_Ethernet97/1
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 501
     mode: active
@@ -274,7 +274,7 @@ ethernet_interfaces:
   peer_type: leaf
   description: LEAF3B_Ethernet97/1
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 501
     mode: active

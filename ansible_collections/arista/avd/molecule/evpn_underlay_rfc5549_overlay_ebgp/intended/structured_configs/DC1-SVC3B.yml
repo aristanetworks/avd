@@ -834,7 +834,7 @@ ethernet_interfaces:
   peer_interface: Ethernet5
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-SVC3A_Ethernet5
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -844,7 +844,7 @@ ethernet_interfaces:
   peer_interface: Ethernet6
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-SVC3A_Ethernet6
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -891,7 +891,7 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-L2LEAF2A_Ethernet2
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 7
     mode: active
@@ -901,7 +901,7 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-L2LEAF2B_Ethernet2
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 7
     mode: active
@@ -911,8 +911,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: ALL_WITH_SECURITY
   description: server04_inherit_all_from_profile_Eth2
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk
   vlans: 1-4094
   spanning_tree_portfast: edge
@@ -936,8 +936,8 @@ ethernet_interfaces:
   peer_interface: Eth2
   peer_type: server
   description: server05_no_profile_Eth2
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk
   vlans: 1-4094
   spanning_tree_portfast: edge
@@ -962,8 +962,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: ALL_WITH_SECURITY
   description: server06_override_profile_Eth2
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '210'
   spanning_tree_portfast: network
@@ -988,26 +988,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
   description: server07_inherit_all_from_profile_port_channel_Eth2
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: 1-4094
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: 'True'
-  spanning_tree_bpduguard: 'False'
-  storm_control:
-    all:
-      level: '10'
-      unit: percent
-    broadcast:
-      level: '100'
-      unit: pps
-    multicast:
-      level: '1'
-      unit: percent
-    unknown_unicast:
-      level: '2'
-      unit: percent
+  type: port-channel-member
   channel_group:
     id: 14
     mode: active
@@ -1016,26 +998,8 @@ ethernet_interfaces:
   peer_interface: Eth2
   peer_type: server
   description: server08_no_profile_port_channel_Eth2
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: 1-4094
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: 'True'
-  spanning_tree_bpduguard: 'False'
-  storm_control:
-    all:
-      level: '10'
-      unit: percent
-    broadcast:
-      level: '100'
-      unit: pps
-    multicast:
-      level: '1'
-      unit: percent
-    unknown_unicast:
-      level: '2'
-      unit: percent
+  type: port-channel-member
   channel_group:
     id: 15
     mode: 'on'
@@ -1045,8 +1009,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
   description: server09_override_profile_no_port_channel_Eth2
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '210'
   spanning_tree_portfast: network
