@@ -57,7 +57,6 @@
     validation_mode: "{{ avd_data_validation_mode }}"
   delegate_to: localhost
   check_mode: false
-  register: structured_config
 
 - name: Generate fabric documentation
   tags: [build, provision, documentation]

@@ -1,0 +1,13 @@
+---
+
+- name: Generate cvp_tags
+  tags: [build, provision]
+  arista.avd.yaml_templates_to_facts:
+    templates:
+      - python_module: "ansible_collections.arista.avd.roles.cvp_tags.python_modules.cvp_tags"
+        python_class_name: "AvdStructuredConfig"
+    dest: "{{ cvp_tags_dir }}/{{ inventory_hostname }}.yaml"
+  delegate_to: localhost
+  check_mode: false
+
+# <insert deploy stuff here
