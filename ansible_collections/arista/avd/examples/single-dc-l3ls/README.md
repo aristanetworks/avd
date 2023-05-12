@@ -399,10 +399,6 @@ cvp_instance_ip: 192.168.1.12 # (6)!
 terminattr_smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
 terminattr_ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
 terminattr_disable_aaa: true
-custom_structured_configuration_daemon_terminattr:
-  cvauth:
-    method: token
-    token_file: /tmp/token
 
 name_servers: # (7)!
   - 192.168.1.1
