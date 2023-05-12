@@ -418,7 +418,7 @@ $defs:
             convert_types:
               - str
             description: |
-              Port-Channel ID, Optional.
+              Port-Channel ID.
               If no channel_id is specified, an id is generated from the first switch port in the port channel.
           description:
             type: str
@@ -429,8 +429,8 @@ $defs:
             type: bool
             default: true
             description: |
-              Port-Channel administrative state, Optional.
-              setting to false will set port to 'shutdown' in intended configuration.
+              Port-Channel administrative state.
+              Setting to false will set port to 'shutdown' in intended configuration.
           esi:
             type: str
             description: Format xxxx:xxxx:xxxx.
@@ -455,7 +455,22 @@ $defs:
                 type: int
                 convert_types:
                   - str
-                description: Timeout in seconds, Optional - default is 90 seconds.
+                description: Timeout in seconds. EOS default is 90 seconds.
+          lacp_timer:
+            type: dict
+            description: LACP timer configuration. Applies only when Port-channel mode is not "on".
+            keys:
+              mode:
+                type: str
+                valid_values:
+                  - normal
+                  - fast
+                description: LACP mode for interface members.
+              multiplier:
+                type: int
+                convert_types:
+                  - str
+                description: Number of LACP BPDUs lost before deeming the peer down. EOS default is 3.
           subinterfaces:
             type: list
             description: |

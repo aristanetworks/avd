@@ -2311,7 +2311,7 @@
               },
               "channel_id": {
                 "type": "integer",
-                "description": "Port-Channel ID, Optional.\nIf no channel_id is specified, an id is generated from the first switch port in the port channel.\n",
+                "description": "Port-Channel ID.\nIf no channel_id is specified, an id is generated from the first switch port in the port channel.\n",
                 "title": "Channel ID"
               },
               "description": {
@@ -2322,7 +2322,7 @@
               "enabled": {
                 "type": "boolean",
                 "default": true,
-                "description": "Port-Channel administrative state, Optional.\nsetting to false will set port to 'shutdown' in intended configuration.\n",
+                "description": "Port-Channel administrative state.\nSetting to false will set port to 'shutdown' in intended configuration.\n",
                 "title": "Enabled"
               },
               "short_esi": {
@@ -2344,7 +2344,7 @@
                   },
                   "timeout": {
                     "type": "integer",
-                    "description": "Timeout in seconds, Optional - default is 90 seconds.",
+                    "description": "Timeout in seconds. EOS default is 90 seconds.",
                     "title": "Timeout"
                   }
                 },
@@ -2353,6 +2353,31 @@
                   "^_.+$": {}
                 },
                 "title": "LACP Fallback"
+              },
+              "lacp_timer": {
+                "type": "object",
+                "description": "LACP timer configuration. Applies only when Port-channel mode is not \"on\".",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "normal",
+                      "fast"
+                    ],
+                    "description": "LACP mode for interface members.",
+                    "title": "Mode"
+                  },
+                  "multiplier": {
+                    "type": "integer",
+                    "description": "Number of LACP BPDUs lost before deeming the peer down. EOS default is 3.",
+                    "title": "Multiplier"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "LACP Timer"
               },
               "subinterfaces": {
                 "type": "array",
@@ -3705,7 +3730,7 @@
               },
               "channel_id": {
                 "type": "integer",
-                "description": "Port-Channel ID, Optional.\nIf no channel_id is specified, an id is generated from the first switch port in the port channel.\n",
+                "description": "Port-Channel ID.\nIf no channel_id is specified, an id is generated from the first switch port in the port channel.\n",
                 "title": "Channel ID"
               },
               "description": {
@@ -3716,7 +3741,7 @@
               "enabled": {
                 "type": "boolean",
                 "default": true,
-                "description": "Port-Channel administrative state, Optional.\nsetting to false will set port to 'shutdown' in intended configuration.\n",
+                "description": "Port-Channel administrative state.\nSetting to false will set port to 'shutdown' in intended configuration.\n",
                 "title": "Enabled"
               },
               "short_esi": {
@@ -3738,7 +3763,7 @@
                   },
                   "timeout": {
                     "type": "integer",
-                    "description": "Timeout in seconds, Optional - default is 90 seconds.",
+                    "description": "Timeout in seconds. EOS default is 90 seconds.",
                     "title": "Timeout"
                   }
                 },
@@ -3747,6 +3772,31 @@
                   "^_.+$": {}
                 },
                 "title": "LACP Fallback"
+              },
+              "lacp_timer": {
+                "type": "object",
+                "description": "LACP timer configuration. Applies only when Port-channel mode is not \"on\".",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "normal",
+                      "fast"
+                    ],
+                    "description": "LACP mode for interface members.",
+                    "title": "Mode"
+                  },
+                  "multiplier": {
+                    "type": "integer",
+                    "description": "Number of LACP BPDUs lost before deeming the peer down. EOS default is 3.",
+                    "title": "Multiplier"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "LACP Timer"
               },
               "subinterfaces": {
                 "type": "array",
