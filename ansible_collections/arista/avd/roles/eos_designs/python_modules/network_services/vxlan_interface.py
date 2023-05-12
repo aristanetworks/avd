@@ -76,8 +76,6 @@ class VxlanInterfaceMixin(UtilsMixin):
                     if vni is not None:
                         # Silently ignore if we cannot set a VNI
                         # This is legacy behavior so we will leave stricter enforcement to the schema
-                        if vni in vnis:
-                            self._raise_duplicate_vni_error(vni, f"VRF '{vrf_name}'", tenant["name"], vnis[vni])
 
                         vnis[vni] = tenant["name"]
                         vrfs[vrf_name] = {"vni": vni}
