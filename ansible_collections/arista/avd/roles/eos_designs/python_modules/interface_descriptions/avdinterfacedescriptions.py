@@ -95,17 +95,30 @@ class AvdInterfaceDescriptions(AvdFacts):
 
         return f"MLAG_PEER_{self._mlag_peer}_Po{self._mlag_port_channel_id}"
 
-    def connected_endpoints_ethernet_interfaces(self, peer: str = None, peer_interface: str = None) -> str:
+    def connected_endpoints_ethernet_interfaces(self, peer: str = None, peer_interface: str = None, adapter_description: str = None) -> str:
+        """If a jinja template is configured, use it.
+        If not, use the adapter.description or default to <PEER>_<PEER_INTERFACE>"""
+
         if template_path := get(
             self._hostvars,
             "switch.interface_descriptions.connected_endpoints_ethernet_interfaces",
         ):
-            return self._template(template_path, peer=peer, peer_interface=peer_interface)
+            return self._template(template_path, peer=peer, peer_interface=peer_interface, adapter_description=adapter_description)
+
+        if adapter_description:
+            return adapter_description
 
         elements = [peer, peer_interface]
         return "_".join([str(element) for element in elements if element is not None])
 
-    def connected_endpoints_port_channel_interfaces(self, peer: str = None, adapter_port_channel_description: str = None) -> str:
+    def connected_endpoints_port_channel_interfaces(
+        self, peer: str = None, adapter_description: str = None, adapter_port_channel_description: str = None
+    ) -> str:
+        """If a jinja template is configured, use it.
+        If not, return the <adapter.description>_<port_channel_description> or
+        default to <PEER>_<adapter_port_channel_description>
+        """
+
         if template_path := get(
             self._hostvars,
             "switch.interface_descriptions.connected_endpoints_port_channel_interfaces",
@@ -114,9 +127,10 @@ class AvdInterfaceDescriptions(AvdFacts):
                 template_path,
                 peer=peer,
                 adapter_port_channel_description=adapter_port_channel_description,
+                adapter_description=adapter_description,
             )
 
-        elements = [peer, adapter_port_channel_description]
+        elements = [adapter_description or peer, adapter_port_channel_description]
         return "_".join([str(element) for element in elements if element is not None])
 
     def overlay_loopback_interface(self, overlay_loopback_description: str = None) -> str:
