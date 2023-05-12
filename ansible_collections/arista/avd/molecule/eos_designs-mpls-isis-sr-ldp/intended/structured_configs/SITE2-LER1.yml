@@ -266,6 +266,7 @@ ethernet_interfaces:
       igp_sync: true
   speed: forced 40gfull
 - name: Ethernet11
+  type: port-channel-member
   peer: SITE2-LSR2
   peer_interface: Port-Channel12
   peer_type: p
