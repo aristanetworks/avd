@@ -74,7 +74,6 @@ jobs:
   pre_commit:
     name: Run pre-commit validation hooks
     runs-on: ubuntu-latest
-    container: avdteam/base:3.8-v2.0
     needs: file-changes
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true'
     steps:
@@ -95,6 +94,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [ file-changes ]
     if: needs.file-changes.outputs.docs == 'true'
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v3
       - name: 'Start docker-compose stack'
@@ -103,7 +103,7 @@ jobs:
           docker-compose -f development/docker-compose.yml ps
       - name: 'Test connectivity to mkdoc server'
         run: |
-          until docker exec webdoc_avd curl -s -I http://localhost:8000/ ; do sleep 2; done
+          bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' 127.0.0.1:8000)" != "200" ]]; do sleep 5; done'
       - name: Check links for 404
         run: |
           docker run --network container:webdoc_avd raviqqe/muffet:2.6.1 http://127.0.0.1:8000/ -e ".*fonts.googleapis.com.*" -e ".*fonts.gstatic.com.*" -e ".*tools.ietf.org.*" -e ".*edit.*" -e ".*docs.github.com.*" -e "twitter.com" -e "www.docker.com" -f --max-redirections=3 --timeout=30 --rate-limit=1
@@ -116,7 +116,7 @@ jobs:
   # -------------------------------- #
   verify_role_documentation:
     name: Verify role documentation
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: true
       matrix:
@@ -131,7 +131,7 @@ jobs:
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.3
+        uses: arista-netdevops-community/action-molecule-avd@v1.6
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
@@ -417,7 +417,6 @@ jobs:
   galaxy_importer:
     name: Test galaxy-importer
     runs-on: ubuntu-latest
-    container: avdteam/base:3.8-v2.0
     env:
       PY_COLORS: 1 # allows molecule colors to be passed to GitHub Actions
       ANSIBLE_FORCE_COLOR: 1 # allows ansible colors to be passed to GitHub Actions
