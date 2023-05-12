@@ -101,30 +101,30 @@ management_api_http:
 spanning_tree:
   no_spanning_tree_vlan: 4093-4094
 vlans:
-- tenant: system
+- id: 4093
+  tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
   - LEAF_PEER_L3
-  id: 4093
-- tenant: system
+- id: 4094
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  id: 4094
-- trunk_groups:
+- id: 200
+  trunk_groups:
   - trunk-group-tests-l2leaf4
   - TG_200
   - TG_NOT_MATCHING_ANY_SERVERS
   - MLAG
-  id: 200
   name: svi200_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
-- trunk_groups:
+- id: 210
+  trunk_groups:
   - trunk-group-tests-l2leaf4
   - TG_200
   - TG_NOT_MATCHING_ANY_SERVERS
   - MLAG
-  id: 210
   name: l2vlan210_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
 - id: 3199
@@ -180,7 +180,8 @@ port_channel_interfaces:
   - trunk-group-tests-l2leaf4
   mlag: 1
 ethernet_interfaces:
-- peer: trunk-group-tests-l3leaf2b
+- name: Ethernet3
+  peer: trunk-group-tests-l3leaf2b
   peer_interface: Ethernet3
   peer_type: mlag_peer
   description: MLAG_PEER_trunk-group-tests-l3leaf2b_Ethernet3
@@ -189,8 +190,8 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  name: Ethernet3
-- peer: trunk-group-tests-l3leaf2b
+- name: Ethernet4
+  peer: trunk-group-tests-l3leaf2b
   peer_interface: Ethernet4
   peer_type: mlag_peer
   description: MLAG_PEER_trunk-group-tests-l3leaf2b_Ethernet4
@@ -199,7 +200,6 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  name: Ethernet4
 - name: Ethernet1
   peer: trunk-group-tests-l2leaf4
   peer_interface: Ethernet1

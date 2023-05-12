@@ -78,6 +78,7 @@ interface Ethernet1
    ip address 172.31.255.1/31
    qos trust dscp
    qos dscp 48
+   service-policy type qos input pmap_test1
    service-profile test
 !
 interface Ethernet3
@@ -129,6 +130,7 @@ interface Port-Channel3
    qos trust cos
    qos cos 2
    service-profile experiment
+   service-policy type qos input pmap_test1
 ```
 
 ## ACL

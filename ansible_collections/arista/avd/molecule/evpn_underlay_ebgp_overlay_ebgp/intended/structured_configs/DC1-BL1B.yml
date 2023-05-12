@@ -411,7 +411,8 @@ ethernet_interfaces:
   type: routed
   peer_type: l3_interface
   shutdown: false
-- description: My second test
+- name: Ethernet4000
+  description: My second test
   ip_address: 10.1.2.3/12
   shutdown: false
   type: routed
@@ -419,7 +420,6 @@ ethernet_interfaces:
   peer: MY-own-peer
   peer_interface: Ethernet123
   peer_type: my_precious
-  name: Ethernet4000
 loopback_interfaces:
 - name: Loopback0
   description: CUSTOM_EVPN_Overlay_Peering_L3LEAF

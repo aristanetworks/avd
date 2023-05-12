@@ -370,6 +370,9 @@ spanning_tree:
 local_users:
 - name: admin
   disabled: true
+  privilege: 15
+  role: network-admin
+  no_password: true
 - name: cvpadmin
   privilege: 15
   role: network-admin
@@ -421,16 +424,16 @@ management_api_http:
   enable_https: true
   default_services: false
 vlans:
-- tenant: system
+- id: 4090
+  tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
   - LEAF_PEER_L3
-  id: 4090
-- tenant: system
+- id: 4092
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  id: 4092
 - id: 130
   name: Tenant_A_APP_Zone_1
   tenant: Tenant_A
@@ -959,8 +962,33 @@ port_channel_interfaces:
   mode: access
   vlans: '110'
   mlag: 1291
+- name: Port-Channel31
+  description: server24_port_channel_lacp_timer_profile_server24_port_channel_with_lacp_timer
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 1-4094
+  mlag: 31
+- name: Port-Channel32
+  description: server25_port_channel_lacp_timer_server25_port_channel_with_lacp_timer
+  type: switched
+  shutdown: false
+  mlag: 32
+- name: Port-Channel33
+  description: server26_port_channel_lacp_timer_profile_server26_port_channel_with_lacp_timer
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 1-4094
+  mlag: 33
+- name: Port-Channel34
+  description: server27_port_channel_lacp_timer_server27_port_channel_with_lacp_timer
+  type: switched
+  shutdown: false
+  mlag: 34
 ethernet_interfaces:
-- peer: DC1-SVC3B
+- name: Ethernet53/1
+  peer: DC1-SVC3B
   peer_interface: Ethernet53/1
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-SVC3B_Ethernet53/1
@@ -970,8 +998,8 @@ ethernet_interfaces:
     id: 2000
     mode: active
   speed: 100g
-  name: Ethernet53/1
-- peer: DC1-SVC3B
+- name: Ethernet54/1
+  peer: DC1-SVC3B
   peer_interface: Ethernet54/1
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-SVC3B_Ethernet54/1
@@ -981,7 +1009,6 @@ ethernet_interfaces:
     id: 2000
     mode: active
   speed: 100g
-  name: Ethernet54/1
 - name: Ethernet7
   peer: DC1-L2LEAF2A
   peer_interface: Ethernet1
@@ -1452,6 +1479,64 @@ ethernet_interfaces:
   shutdown: false
   mode: trunk phone
   vlans: '110'
+- name: Ethernet31
+  peer: server24_port_channel_lacp_timer_profile
+  peer_interface: Eth1
+  peer_type: server
+  port_profile: PORT_CHANNEL_LACP_TIMER
+  description: server24_port_channel_lacp_timer_profile_Eth1
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 1-4094
+  channel_group:
+    id: 31
+    mode: active
+  lacp_timer:
+    mode: fast
+    multiplier: 10
+- name: Ethernet32
+  peer: server25_port_channel_lacp_timer
+  peer_interface: Eth1
+  peer_type: server
+  description: server25_port_channel_lacp_timer_Eth1
+  type: switched
+  shutdown: false
+  channel_group:
+    id: 32
+    mode: active
+  lacp_timer:
+    mode: fast
+    multiplier: 5
+- name: Ethernet33
+  peer: server26_port_channel_lacp_timer_profile
+  peer_interface: Eth1
+  peer_type: server
+  port_profile: PORT_CHANNEL_LACP_TIMER_NORMAL
+  description: server26_port_channel_lacp_timer_profile_Eth1
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 1-4094
+  channel_group:
+    id: 33
+    mode: active
+  lacp_timer:
+    mode: normal
+    multiplier: 100
+- name: Ethernet34
+  peer: server27_port_channel_lacp_timer
+  peer_interface: Eth1
+  peer_type: server
+  description: server27_port_channel_lacp_timer_Eth1
+  type: switched
+  shutdown: false
+  channel_group:
+    id: 34
+    mode: active
+  lacp_timer:
+    mode: normal
+    multiplier: 50
 mlag_configuration:
   domain_id: custom_mlag_domain_id
   local_interface: Vlan4092

@@ -21,6 +21,7 @@ local_users:
 - name: admin
   privilege: 15
   role: network-admin
+  no_password: true
   sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
 vrfs:
 - name: MGMT
@@ -68,6 +69,6 @@ port_channel_interfaces:
 ip_igmp_snooping:
   globally_enabled: true
 vlans:
-- tenant: system
+- id: 4092
+  tenant: system
   name: L2LEAF_INBAND_MGMT
-  id: 4092

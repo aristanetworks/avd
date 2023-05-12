@@ -245,8 +245,11 @@ keys:
     description: 'On-premise CVP ingest auth key. If set, TerminAttr will be configured
       with key-based authentication for on-premise CVP.
 
-      If not set, TerminAttr will be configured with certificate based authentication
-      using token-secure onboarding.
+      If not set, TerminAttr will be configured with certificate based authentication:
+
+      - On-premise using token onboarding. Default token path is ''/tmp/token''.
+
+      - CVaaS using token-secure onboarding. Default token path is ''/tmp/cv-onboarding-token''.
 
       Token must be copied to the device first.'
   cvp_instance_ip:
@@ -254,41 +257,37 @@ keys:
       filename: Management Settings
       table: CloudVision Settings
     type: str
-    description: 'IPv4 address.
+    description: 'IPv4 address or DNS name for CloudVision.
 
-      CloudVision - Telemetry Agent (TerminAttr) configuration is optional
-
-      You can either provide a list of IPs to target on-premise CloudVision cluster
-      or
-
-      use DNS name for your CloudVision as a Service instance. If you have both on-prem
-      and
-
-      CVaaS defined, only on-prem is going to be configured.'
+      This variable only supports an on-premise single-node cluster or the DNS name
+      of a CloudVision as a Service instance.'
   cvp_instance_ips:
     documentation_options:
       filename: Management Settings
       table: CloudVision Settings
     type: list
-    description: 'You can either provide a list of IPs to target on-premise CloudVision
-      cluster or
+    description: 'List of IPv4 addresses or DNS names for CloudVision.
 
-      use DNS name for your CloudVision as a Service instance. If you have both on-prem
-      and
+      For on-premise CloudVision enter all the nodes of the cluster.
 
-      CVaaS defined, only on-prem is going to be configured.
+      For CloudVision as a Service enter the DNS name of the instance.
+
+      `eos_designs` only supports one CloudVision cluster.
 
       '
     items:
       type: str
-      description: IPv4 address or CV as a Service hostname
+      description: IPv4 address or DNS name for CloudVision
   cvp_token_file:
     documentation_options:
       filename: Management Settings
       table: CloudVision Settings
     type: str
-    default: /tmp/cv-onboarding-token
-    description: cvp_token_file is the path to the token file on the switch.
+    description: 'cvp_token_file is the path to the token file on the switch.
+
+      If not set the default locations for on-premise or CVaaS will be used.
+
+      See cvp_ingestauth_key for details.'
   dc_name:
     documentation_options:
       filename: Fabric Topology
@@ -441,6 +440,11 @@ keys:
 
       '
     default: false
+  event_handlers:
+    $ref: eos_cli_config_gen#/keys/event_handlers
+    type: list
+    documentation_options:
+      filename: Input Variables
   evpn_ebgp_gateway_multihop:
     documentation_options:
       filename: Fabric Variables
@@ -753,6 +757,11 @@ keys:
 
       Make sure to configure the variables in a group_vars file covering all devices
       mentioned in the data model.'
+  local_users:
+    $ref: eos_cli_config_gen#/keys/local_users
+    type: list
+    documentation_options:
+      filename: Input Variables
   mac_address_table:
     documentation_options:
       filename: Fabric Variables
@@ -778,6 +787,48 @@ keys:
           '
         min: 0
         max: 1000000
+  management_eapi:
+    description: 'Default is HTTPS management eAPI enabled.
+
+      The VRF is set to < mgmt_interface_vrf >.
+
+      '
+    type: dict
+    keys:
+      enable_http:
+        type: bool
+        default: false
+      enable_https:
+        type: bool
+        default: true
+      default_services:
+        type: bool
+  mgmt_destination_networks:
+    type: list
+    description: 'List of IPv4 prefixes to configure as static routes towards the
+      OOB Management interface gateway.
+
+      Replaces the default route.'
+    items:
+      type: str
+      description: IPv4_address/Mask
+  mgmt_gateway:
+    type: str
+    description: 'OOB Management interface gateway in IPv4 format.
+
+      Used as next-hop for default gateway or static routes defined under ''mgmt_destination_networks'''
+  mgmt_interface:
+    type: str
+    default: Management1
+    description: OOB Management interface.
+  mgmt_interface_vrf:
+    type: str
+    default: MGMT
+    description: OOB Management VRF.
+  mgmt_vrf_routing:
+    type: bool
+    default: false
+    description: Configure IP routing for the OOB Management VRF.
   mlag_ibgp_peering_vrfs:
     documentation_options:
       filename: Fabric Variables
@@ -807,6 +858,12 @@ keys:
         min: 1
         max: 4093
         default: 3000
+  name_servers:
+    type: list
+    description: List of DNS servers. The VRF is set to < mgmt_interface_vrf >.
+    items:
+      type: str
+      description: IPv4 address
   network_ports:
     type: list
     description: 'All switch_ports ranges are expanded into individual port configurations.
@@ -1442,6 +1499,100 @@ keys:
 
       - Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices
       are not present in the network.'
+  snmp_settings:
+    type: dict
+    description: Set SNMP settings (optional).
+    keys:
+      contact:
+        type: str
+        description: SNMP contact.
+      location:
+        type: bool
+        default: false
+        description: Set SNMP location. Formatted as {{ fabric_name }} {{ dc_name
+          }} {{ pod_name }} {{ switch_rack }} {{ inventory_hostname }}.
+      compute_local_engineid:
+        type: bool
+        default: false
+        description: 'Generate a local engineId for SNMP using the ''compute_local_engineid_source''
+          method.
+
+          '
+      compute_local_engineid_source:
+        type: str
+        default: hostname_and_ip
+        description: "`compute_local_engineid_source` supports:\n- `hostname_and_ip`
+          generate a local engineId for SNMP by hashing via SHA1\n  the string generated
+          via the concatenation of the hostname plus the management IP.\n  {{ inventory_hostname
+          }} + {{ switch.mgmt_ip }}\n- `system_mac` generate the switch default engine
+          id for AVD usage\n  To use this, `system_mac_address` MUST be set for the
+          device\n  The formula is f5717f + system_mac_address + 00\n"
+        valid_values:
+        - hostname_and_ip
+        - system_mac
+      compute_v3_user_localized_key:
+        type: bool
+        default: false
+        description: 'Requires compute_local_engineid to be `true`.
+
+          If enabled, the SNMPv3 passphrases for auth and priv are transformed using
+          RFC 2574, matching the value they would take in EOS CLI.
+
+          The algorithm requires a local engineId, which is unknown to AVD, hence
+          the necessity to generate one beforehand.
+
+          '
+      users:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Username
+            group:
+              type: str
+              description: 'Configuration of the SNMP User Groups are currently only
+                possible using `structured_config`.
+
+                '
+            version:
+              type: str
+              valid_values:
+              - v1
+              - v2c
+              - v3
+            auth:
+              type: str
+              valid_values:
+              - md5
+              - sha
+              - sha256
+              - sha384
+              - sha512
+            auth_passphrase:
+              type: str
+              description: Cleartext passphrase so the recommendation is to use vault.
+                Requires 'auth' to be set.
+            priv:
+              type: str
+              valid_values:
+              - des
+              - aes
+              - aes192
+              - aes256
+            priv_passphrase:
+              type: str
+              description: Cleartext passphrase so the recommendation is to use vault.
+                Requires 'priv' to be set.
+  system_mac_address:
+    type: str
+    description: 'Set to the same MAC address as available in "show version" on the
+      device.
+
+      "system_mac_address" can also be set under "Fabric Topology".
+
+      If both are set, the setting under "Fabric Topology" takes precedence.'
   terminattr_disable_aaa:
     documentation_options:
       filename: Management Settings
@@ -1462,13 +1613,20 @@ keys:
     convert_types:
     - str
     default: 9910
-    description: Port number for Terminattr ingest GRPC
+    description: 'Port number used for Terminattr connection to an on-premise CloudVision
+      cluster.
+
+      The port number is always 443 when using CloudVision as a Service, so this value
+      is ignored.'
   terminattr_smashexcludes:
     documentation_options:
       filename: Management Settings
       table: CloudVision Settings
     type: str
     default: ale,flexCounter,hardware,kni,pulse,strata
+  timezone:
+    type: str
+    description: Clock timezone like "CET" or "US/Pacific".
   trunk_groups:
     documentation_options:
       filename: Fabric Variables
@@ -2133,7 +2291,7 @@ $defs:
             type: int
             convert_types:
             - str
-            description: 'Port-Channel ID, Optional.
+            description: 'Port-Channel ID.
 
               If no channel_id is specified, an id is generated from the first switch
               port in the port channel.
@@ -2151,9 +2309,9 @@ $defs:
           enabled:
             type: bool
             default: true
-            description: 'Port-Channel administrative state, Optional.
+            description: 'Port-Channel administrative state.
 
-              setting to false will set port to ''shutdown'' in intended configuration.
+              Setting to false will set port to ''shutdown'' in intended configuration.
 
               '
           esi:
@@ -2180,7 +2338,24 @@ $defs:
                 type: int
                 convert_types:
                 - str
-                description: Timeout in seconds, Optional - default is 90 seconds.
+                description: Timeout in seconds. EOS default is 90 seconds.
+          lacp_timer:
+            type: dict
+            description: LACP timer configuration. Applies only when Port-channel
+              mode is not "on".
+            keys:
+              mode:
+                type: str
+                valid_values:
+                - normal
+                - fast
+                description: LACP mode for interface members.
+              multiplier:
+                type: int
+                convert_types:
+                - str
+                description: Number of LACP BPDUs lost before deeming the peer down.
+                  EOS default is 3.
           subinterfaces:
             type: list
             description: 'Port-Channel L2 Subinterfaces

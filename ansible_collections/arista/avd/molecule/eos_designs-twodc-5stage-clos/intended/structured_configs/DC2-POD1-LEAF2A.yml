@@ -70,6 +70,7 @@ local_users:
 - name: admin
   privilege: 15
   role: network-admin
+  no_password: true
   sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
 vrfs:
 - name: MGMT
@@ -158,10 +159,10 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-  - type: permit
+  - sequence: 20
+    type: permit
     match:
     - ip address prefix-list PL-L2LEAF-INBAND-MGMT
-    sequence: 20
 router_bfd:
   multihop:
     interval: 300
@@ -176,9 +177,9 @@ vxlan_interface:
       udp_port: 4789
       source_interface: Loopback1
 vlans:
-- tenant: system
+- id: 4092
+  tenant: system
   name: L2LEAF_INBAND_MGMT
-  id: 4092
 vlan_interfaces:
 - name: Vlan4092
   description: L2LEAF_INBAND_MGMT

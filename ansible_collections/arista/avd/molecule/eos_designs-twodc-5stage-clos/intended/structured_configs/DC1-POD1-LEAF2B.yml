@@ -304,6 +304,7 @@ local_users:
 - name: admin
   privilege: 15
   role: network-admin
+  no_password: true
   sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
 vrfs:
 - name: MGMT
@@ -336,11 +337,11 @@ eos_cli: "interface Loopback1002\n  description Loopback created from raw_eos_cl
   \ description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n\ninterface Loopback1000\n  description Loopback
   created from raw_eos_cli under VRF Common_VRF\n"
 vlans:
-- tenant: system
+- id: 4094
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  id: 4094
 - id: 110
   name: Tenant_A_OP_Zone_1
   tenant: Tenant_A
@@ -371,9 +372,9 @@ vlans:
 - id: 2601
   name: l2vlan_with_no_vxlan
   tenant: Tenant_A
-- tenant: system
+- id: 4085
+  tenant: system
   name: L2LEAF_INBAND_MGMT
-  id: 4085
 vlan_interfaces:
 - name: Vlan4094
   description: MLAG_PEER
@@ -523,7 +524,8 @@ port_channel_interfaces:
   vlans: '110'
   mlag: 19
 ethernet_interfaces:
-- peer: DC1.POD1.LEAF2A
+- name: Ethernet5
+  peer: DC1.POD1.LEAF2A
   peer_interface: Ethernet5
   peer_type: mlag_peer
   description: MLAG_PEER_DC1.POD1.LEAF2A_Ethernet5
@@ -532,8 +534,8 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  name: Ethernet5
-- peer: DC1.POD1.LEAF2A
+- name: Ethernet6
+  peer: DC1.POD1.LEAF2A
   peer_interface: Ethernet6
   peer_type: mlag_peer
   description: MLAG_PEER_DC1.POD1.LEAF2A_Ethernet6
@@ -542,7 +544,6 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  name: Ethernet6
 - name: Ethernet1
   peer: DC1-POD1-SPINE1
   peer_interface: Ethernet5

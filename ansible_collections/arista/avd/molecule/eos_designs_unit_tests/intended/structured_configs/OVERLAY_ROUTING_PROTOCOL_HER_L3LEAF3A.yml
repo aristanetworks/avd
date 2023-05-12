@@ -49,16 +49,16 @@ management_api_http:
 spanning_tree:
   no_spanning_tree_vlan: 4093-4094
 vlans:
-- tenant: system
+- id: 4093
+  tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
   - LEAF_PEER_L3
-  id: 4093
-- tenant: system
+- id: 4094
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  id: 4094
 - id: 3900
   name: SVI_ON_ALL_LEAFS
   tenant: TEST
@@ -124,7 +124,8 @@ port_channel_interfaces:
   - LEAF_PEER_L3
   - MLAG
 ethernet_interfaces:
-- peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B
+- name: Eth1
+  peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B
   peer_interface: Eth1
   peer_type: mlag_peer
   description: MLAG_PEER_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B_Eth1
@@ -133,8 +134,8 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Eth1
-- peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B
+- name: Eth2
+  peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B
   peer_interface: Eth2
   peer_type: mlag_peer
   description: MLAG_PEER_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B_Eth2
@@ -143,7 +144,6 @@ ethernet_interfaces:
   channel_group:
     id: 1
     mode: active
-  name: Eth2
 mlag_configuration:
   domain_id: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3
   local_interface: Vlan4094

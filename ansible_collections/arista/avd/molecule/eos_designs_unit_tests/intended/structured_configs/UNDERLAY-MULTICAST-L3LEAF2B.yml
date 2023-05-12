@@ -90,11 +90,11 @@ management_api_http:
 spanning_tree:
   no_spanning_tree_vlan: '4094'
 vlans:
-- tenant: system
+- id: 4094
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  id: 4094
 vlan_interfaces:
 - name: Vlan4094
   description: MLAG_PEER
@@ -116,7 +116,8 @@ port_channel_interfaces:
   - LEAF_PEER_L3
   - MLAG
 ethernet_interfaces:
-- peer: UNDERLAY-MULTICAST-L3LEAF2A
+- name: Ethernet3
+  peer: UNDERLAY-MULTICAST-L3LEAF2A
   peer_interface: Ethernet3
   peer_type: mlag_peer
   description: MLAG_PEER_UNDERLAY-MULTICAST-L3LEAF2A_Ethernet3
@@ -125,8 +126,8 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  name: Ethernet3
-- peer: UNDERLAY-MULTICAST-L3LEAF2A
+- name: Ethernet4
+  peer: UNDERLAY-MULTICAST-L3LEAF2A
   peer_interface: Ethernet4
   peer_type: mlag_peer
   description: MLAG_PEER_UNDERLAY-MULTICAST-L3LEAF2A_Ethernet4
@@ -135,7 +136,6 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  name: Ethernet4
 - name: Ethernet1
   peer: UNDERLAY-MULTICAST-SPINE1
   peer_interface: Ethernet4
