@@ -405,6 +405,7 @@ router bgp 65200
    neighbor 11.1.2.0 peer group IPv4-UNDERLAY-PEERS
    neighbor 11.1.2.0 remote-as 65100
    neighbor 11.1.2.0 description DC1-SUPER-SPINE1
+   no neighbor 11.1.2.0 bfd
    neighbor 172.16.10.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.10.1 remote-as 65101
    neighbor 172.16.10.1 description DC1-RS1
