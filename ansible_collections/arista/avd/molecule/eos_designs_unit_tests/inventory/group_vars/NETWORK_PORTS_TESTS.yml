@@ -57,8 +57,8 @@ network_ports:
       channel_id: 42
       mode: "active"
 
-  # The next entries including the commented one are used to test the duplicate check feature
-  # together with the CONNECTED_ENDPOINT_OVERWRITING_NETWORK_PORT below.
+  # The next entries are used to test the duplicate check feature together with the 
+  # CONNECTED_ENDPOINT_OVERWRITING_NETWORK_PORT below.
   - switches:
       - network-ports-tests.1
     switch_ports:
