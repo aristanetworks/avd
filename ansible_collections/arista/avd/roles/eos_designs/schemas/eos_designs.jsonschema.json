@@ -2322,7 +2322,7 @@
               "enabled": {
                 "type": "boolean",
                 "default": true,
-                "description": "Port-Channel administrative state.\nsetting to false will set port to 'shutdown' in intended configuration.\n",
+                "description": "Port-Channel administrative state.\nSetting to false will set port to 'shutdown' in intended configuration.\n",
                 "title": "Enabled"
               },
               "short_esi": {
@@ -3741,7 +3741,7 @@
               "enabled": {
                 "type": "boolean",
                 "default": true,
-                "description": "Port-Channel administrative state.\nsetting to false will set port to 'shutdown' in intended configuration.\n",
+                "description": "Port-Channel administrative state.\nSetting to false will set port to 'shutdown' in intended configuration.\n",
                 "title": "Enabled"
               },
               "short_esi": {
