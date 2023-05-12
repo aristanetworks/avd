@@ -619,16 +619,16 @@ management_api_http:
 spanning_tree:
   no_spanning_tree_vlan: 4093-4094
 vlans:
-- tenant: system
+- id: 4093
+  tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
   - LEAF_PEER_L3
-  id: 4093
-- tenant: system
+- id: 4094
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  id: 4094
 - id: 310
   name: MULTICAST_DISABLED_310
   tenant: Tenant_A
@@ -1194,7 +1194,8 @@ port_channel_interfaces:
   vlans: 1-9,110-111,130-131,140-141,150,210-211,230-231,240-241,250,256-257,260,310-311,330-331,550,4092
   mlag: 6
 ethernet_interfaces:
-- peer: EVPN-MULTICAST-L3LEAF1B
+- name: Ethernet3
+  peer: EVPN-MULTICAST-L3LEAF1B
   peer_interface: Ethernet3
   peer_type: mlag_peer
   description: MLAG_PEER_EVPN-MULTICAST-L3LEAF1B_Ethernet3
@@ -1203,8 +1204,8 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  name: Ethernet3
-- peer: EVPN-MULTICAST-L3LEAF1B
+- name: Ethernet4
+  peer: EVPN-MULTICAST-L3LEAF1B
   peer_interface: Ethernet4
   peer_type: mlag_peer
   description: MLAG_PEER_EVPN-MULTICAST-L3LEAF1B_Ethernet4
@@ -1213,7 +1214,6 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  name: Ethernet4
 - name: Ethernet1
   peer: EVPN-MULTICAST-SPINE1
   peer_interface: Ethernet1

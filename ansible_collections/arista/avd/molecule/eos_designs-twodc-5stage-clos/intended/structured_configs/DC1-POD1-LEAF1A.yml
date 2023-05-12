@@ -228,9 +228,9 @@ vxlan_interface:
       udp_port: 4789
       source_interface: Loopback1
 vlans:
-- tenant: system
+- id: 4085
+  tenant: system
   name: L2LEAF_INBAND_MGMT
-  id: 4085
 vlan_interfaces:
 - name: Vlan4085
   description: L2LEAF_INBAND_MGMT

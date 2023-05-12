@@ -1497,6 +1497,8 @@ keys:
               vrf:
                 type: str
                 description: VRF name
+        ip_nat:
+          $ref: '#/$defs/interface_ip_nat'
         ipv6_enable:
           type: bool
         ipv6_address:
@@ -2195,7 +2197,14 @@ keys:
               keys:
                 input:
                   type: str
-                  description: Policy-map name
+                  description: Policy Based Routing Policy-map name
+            qos:
+              type: dict
+              keys:
+                input:
+                  type: str
+                  required: true
+                  description: Quality of Service Policy-map name
         mpls:
           type: dict
           keys:
@@ -5977,7 +5986,14 @@ keys:
               keys:
                 input:
                   type: str
-                  description: Policy-map name
+                  description: Policy Based Routing Policy-map name
+            qos:
+              type: dict
+              keys:
+                input:
+                  type: str
+                  required: true
+                  description: Quality of Service Policy-map name
         mpls:
           type: dict
           keys:
@@ -6203,22 +6219,26 @@ keys:
           type: str
           description: 'EVPN Ethernet Segment Identifier (Type 1 format)
 
-            Will be deprecated in AVD 4.0 in favor of "evpn_ethernet_segment.identifier"
-
             If both "esi" and "evpn_ethernet_segment.identifier" are defined, the
             new variable takes precedence
 
             '
+          deprecation:
+            warning: true
+            new_key: evpn_ethernet_segment.identifier
+            remove_in_version: 5.0.0
         rt:
           type: str
           description: 'EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx
-
-            Will be deprecated in AVD 4.0 in favor of "evpn_ethernet_segment.route_target"
 
             If both "rt" and "evpn_ethernet_segment.route_target" are defined, the
             new variable takes precedence
 
             '
+          deprecation:
+            warning: true
+            new_key: evpn_ethernet_segment.route_target
+            remove_in_version: 5.0.0
         lacp_id:
           type: str
           description: LACP ID with format xxxx.xxxx.xxxx
@@ -6308,6 +6328,8 @@ keys:
         ip_address:
           type: str
           description: IPv4 address/mask
+        ip_nat:
+          $ref: '#/$defs/interface_ip_nat'
         ipv6_enable:
           type: bool
         ipv6_address:
@@ -6998,6 +7020,26 @@ keys:
           not None
 
           '
+      default_thresholds:
+        type: dict
+        keys:
+          high:
+            type: int
+            required: true
+            convert_types:
+            - str
+            description: 'Default high threshold for Ethernet Interfaces.
+
+              '
+          low:
+            type: int
+            convert_types:
+            - str
+            description: 'Default low threshold for Ethernet Interfaces.
+
+              Low threshold support is platform dependent.
+
+              '
       log:
         type: int
         convert_types:
@@ -11289,6 +11331,8 @@ keys:
               vrf:
                 type: str
                 description: VRF where DHCP server can be reached
+        ip_nat:
+          $ref: '#/$defs/interface_ip_nat'
         ipv6_enable:
           type: bool
         ipv6_address:
@@ -11967,3 +12011,129 @@ keys:
             type: str
             description: Multiline String with EOS CLI rendered directly on the Vxlan
               interface in the final EOS configuration.
+$defs:
+  interface_ip_nat:
+    type: dict
+    keys:
+      destination:
+        type: dict
+        keys:
+          dynamic:
+            type: list
+            primary_key: access_list
+            items:
+              type: dict
+              keys:
+                access_list:
+                  type: str
+                comment:
+                  type: str
+                pool_name:
+                  type: str
+                  required: true
+                priority:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 0
+                  max: 4294967295
+          static:
+            $ref: '#/$defs/interface_ip_nat_static'
+      source:
+        type: dict
+        keys:
+          dynamic:
+            type: list
+            primary_key: access_list
+            items:
+              type: dict
+              keys:
+                access_list:
+                  type: str
+                comment:
+                  type: str
+                nat_type:
+                  type: str
+                  required: true
+                  valid_values:
+                  - overload
+                  - pool
+                  - pool-address-only
+                  - pool-full-cone
+                pool_name:
+                  type: str
+                  description: 'required if ''nat_type'' is pool, pool-address-only
+                    or pool-full-cone
+
+                    ignored if ''nat_type'' is overload
+
+                    '
+                priority:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 0
+                  max: 4294967295
+          static:
+            $ref: '#/$defs/interface_ip_nat_static'
+  interface_ip_nat_static:
+    type: list
+    primary_key: original_ip
+    items:
+      type: dict
+      keys:
+        access_list:
+          type: str
+          description: '''access_list'' and ''group'' are mutual exclusive'
+        comment:
+          type: str
+        direction:
+          type: str
+          valid_values:
+          - egress
+          - ingress
+          description: 'Egress or ingress can be the default. This depends on source/destination,
+            EOS version, and hardware platform.
+
+            EOS might remove this keyword in the configuration. So, check the configuration
+            on targeted HW/SW.
+
+            '
+        group:
+          type: int
+          convert_types:
+          - str
+          min: 1
+          max: 65535
+          description: '''access_list'' and ''group'' are mutual exclusive'
+        original_ip:
+          type: str
+          description: IPv4 address
+        original_port:
+          type: int
+          convert_types:
+          - str
+          min: 1
+          max: 65535
+        priority:
+          type: int
+          convert_types:
+          - str
+          min: 0
+          max: 4294967295
+        protocol:
+          type: str
+          valid_values:
+          - udp
+          - tcp
+        translated_ip:
+          type: str
+          required: true
+          description: IPv4 address
+        translated_port:
+          type: int
+          convert_types:
+          - str
+          min: 1
+          max: 65535
+          description: requires 'original_port'

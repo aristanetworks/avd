@@ -68,6 +68,6 @@ port_channel_interfaces:
 ip_igmp_snooping:
   globally_enabled: true
 vlans:
-- tenant: system
+- id: 4092
+  tenant: system
   name: L2LEAF_INBAND_MGMT
-  id: 4092

@@ -44,11 +44,11 @@ management_api_http:
   - name: MGMT
   enable_https: true
 vlans:
-- tenant: system
+- id: 4094
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  id: 4094
 - id: 10
   name: BLUE-NET
   tenant: MY_FABRIC
@@ -79,7 +79,8 @@ port_channel_interfaces:
   vlans: 10,30
   mlag: 1
 ethernet_interfaces:
-- peer: LEAF3
+- name: Ethernet47
+  peer: LEAF3
   peer_interface: Ethernet47
   peer_type: mlag_peer
   description: MLAG_PEER_LEAF3_Ethernet47
@@ -88,8 +89,8 @@ ethernet_interfaces:
   channel_group:
     id: 47
     mode: active
-  name: Ethernet47
-- peer: LEAF3
+- name: Ethernet48
+  peer: LEAF3
   peer_interface: Ethernet48
   peer_type: mlag_peer
   description: MLAG_PEER_LEAF3_Ethernet48
@@ -98,7 +99,6 @@ ethernet_interfaces:
   channel_group:
     id: 47
     mode: active
-  name: Ethernet48
 - name: Ethernet1
   peer: SPINE1
   peer_interface: Ethernet4

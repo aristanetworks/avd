@@ -19,11 +19,11 @@ management_api_http:
 spanning_tree:
   no_spanning_tree_vlan: '4094'
 vlans:
-- tenant: system
+- id: 4094
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  id: 4094
 - id: 100
   name: SVI_100
   tenant: L2LS_OSPF
@@ -66,7 +66,8 @@ port_channel_interfaces:
   vlans: '100'
   mlag: 2
 ethernet_interfaces:
-- peer: OSPF-SPINE2
+- name: Ethernet3
+  peer: OSPF-SPINE2
   peer_interface: Ethernet3
   peer_type: mlag_peer
   description: MLAG_PEER_OSPF-SPINE2_Ethernet3
@@ -75,8 +76,8 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  name: Ethernet3
-- peer: OSPF-SPINE2
+- name: Ethernet4
+  peer: OSPF-SPINE2
   peer_interface: Ethernet4
   peer_type: mlag_peer
   description: MLAG_PEER_OSPF-SPINE2_Ethernet4
@@ -85,7 +86,6 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-  name: Ethernet4
 - name: Ethernet1
   peer: OSPF-LEAF1
   peer_interface: Ethernet1

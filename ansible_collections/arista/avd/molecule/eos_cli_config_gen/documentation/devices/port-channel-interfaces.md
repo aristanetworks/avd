@@ -227,6 +227,7 @@ interface Ethernet50
 | Port-Channel115 | native-vlan-tag-precedence | switched | trunk | - | tag | - | - | - | - | - |
 | Port-Channel121 | access_port_with_no_vlans | switched | access | - | - | - | - | - | - | - |
 | Port-Channel122 | trunk_port_with_no_vlans | switched | trunk | - | - | - | - | - | - | - |
+| Port-Channel130 | IP NAT Testing | switched | access | - | - | - | - | - | - | - |
 
 ##### Encapsulation Dot1q Interfaces
 
@@ -264,8 +265,11 @@ interface Ethernet50
 
 | Interface | Ethernet Segment Identifier | Multihoming Redundancy Mode | Route Target |
 | --------- | --------------------------- | --------------------------- | ------------ |
+| Port-Channel10 | 0000:0000:0404:0404:0303 | all-active | 04:04:03:03:02:02 |
 | Port-Channel13 | 0000:0000:0000:0102:0304 | single-active | 00:00:01:02:03:04 |
 | Port-Channel14 | 0000:0000:0000:0102:0305 | all-active | 00:00:01:02:03:05 |
+| Port-Channel50 | 0000:0000:0303:0202:0101 | all-active | 03:03:02:02:01:01 |
+| Port-Channel111.1000 | 0000:0000:0303:0202:0101 | all-active | 03:03:02:02:01:01 |
 
 ####### Designated Forwarder Election Summary
 
@@ -296,6 +300,30 @@ interface Ethernet50
 | Port-Channel99 | MCAST | routed | - | 192.0.2.10/31 | default | - | - | - | - |
 | Port-Channel113 | interface_with_mpls_enabled | routed | - | 172.31.128.9/31 | default | - | - | - | - |
 | Port-Channel114 | interface_with_mpls_disabled | routed | - | 172.31.128.10/31 | default | - | - | - | - |
+
+##### IP NAT: Source Static
+
+| Interface | Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
+| --------- | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
+| Port-Channel130 | - | 3.0.0.1 | - | - | 4.0.0.1 | - | - | - | 0 | - |
+
+##### IP NAT: Source Dynamic
+
+| Interface | Access List | NAT Type | Pool Name | Priority | Comment |
+| --------- | ----------- | -------- | --------- | -------- | ------- |
+| Port-Channel130 | ACL2 | pool | POOL2 | 0 | - |
+
+##### IP NAT: Destination Static
+
+| Interface | Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
+| --------- | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
+| Port-Channel130 | - | 1.0.0.1 | - | - | 2.0.0.1 | - | - | - | 0 | - |
+
+##### IP NAT: Destination Dynamic
+
+| Interface | Access List | Pool Name | Priority | Comment |
+| --------- | ----------- | --------- | -------- | ------- |
+| Port-Channel130 | ACL1 | POOL1 | 0 | - |
 
 ##### ISIS
 
@@ -632,6 +660,14 @@ interface Port-Channel122
    description trunk_port_with_no_vlans
    switchport
    switchport mode trunk
+!
+interface Port-Channel130
+   description IP NAT Testing
+   switchport
+   ip nat source static 3.0.0.1 4.0.0.1
+   ip nat source dynamic access-list ACL2 pool POOL2
+   ip nat destination static 1.0.0.1 2.0.0.1
+   ip nat destination dynamic access-list ACL1 pool POOL1
 ```
 
 ## BFD
