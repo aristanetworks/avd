@@ -243,7 +243,7 @@ sFlow is disabled.
 | Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | routed | - | 2002:ABDC::1/64 | default | 1500 | - | - | - | - | - |
 | Ethernet4 | Molecule IPv6 | routed | - | 2020::2020/64 | default | 9100 | True | True | True | IPv6_ACL_IN | IPv6_ACL_OUT |
 | Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 2002:ABDC::1/64 | default | - | - | - | - | - | - |
-| Ethernet55 | DHCPv6 Relay Testing | - | - | a0::1/64 | default | - | False | - | - | - | - |
+| Ethernet55 | DHCPv6 Relay Testing | routed | - | a0::1/64 | default | - | False | - | - | - | - |
 
 ##### ISIS
 
@@ -761,6 +761,7 @@ interface Ethernet54
 interface Ethernet55
    description DHCPv6 Relay Testing
    no shutdown
+   no switchport
    ipv6 address a0::1/64
    ipv6 dhcp relay destination a0::2 link-address a0::3
    ipv6 dhcp relay destination a0::4 vrf TEST local-interface Loopback55 link-address a0::5

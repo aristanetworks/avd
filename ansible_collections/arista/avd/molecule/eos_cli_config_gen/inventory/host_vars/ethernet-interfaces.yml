@@ -670,6 +670,7 @@ ethernet_interfaces:
 
   - name: Ethernet55
     description: DHCPv6 Relay Testing
+    type: routed
     shutdown: false
     ipv6_address: a0::1/64
     ipv6_dhcp_relay_destinations:
