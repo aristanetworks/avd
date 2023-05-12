@@ -1,0 +1,10 @@
+release_summary: |
+  Release 3.8.6 - See documentation on avd.sh for details.
+bugfixes:
+- Fix(eos_cli_config_gen) - Fix typo in router-bgp.j2 (#2753) by @carlbuchmann in (https://github.com/aristanetworks/ansible-avd/pull/2817)
+- Fix(eos_designs) - Invalid defaults for ipvpn_gateway domain IDs (#2739) by @carlbuchmann in (https://github.com/aristanetworks/ansible-avd/pull/2820)
+- Fix - Description key not considered with connected endpoints (#2745) by @carlbuchmann in (https://github.com/aristanetworks/ansible-avd/pull/2816)
+- Doc(plugins) - Fix plugin name in BGP example (#2601) by @carlbuchmann in (https://github.com/aristanetworks/ansible-avd/pull/2818)
+- Doc - Fix typo in custom structured configuration documentation example (#2807) by @carlbuchmann in (https://github.com/aristanetworks/ansible-avd/pull/2821)
+- Bump(requirements) - ansible.utils to ">=2.9.0" (#2740) by @carlbuchmann in (https://github.com/aristanetworks/ansible-avd/pull/2819)
+- Revert(eos_designs) - Duplicate checks for VRFs by @ClausHolbechArista in (https://github.com/aristanetworks/ansible-avd/pull/2811)
