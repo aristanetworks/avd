@@ -456,6 +456,18 @@
               "ptp": {
                 "description": "PTP parameters.",
                 "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable PTP",
+                    "title": "Enabled"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
                 "title": "PTP"
               },
               "qos_profile": {
@@ -669,6 +681,18 @@
               "ptp": {
                 "description": "PTP parameters.",
                 "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable PTP",
+                    "title": "Enabled"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
                 "title": "PTP"
               },
               "qos_profile": {
@@ -1289,6 +1313,18 @@
               "ptp": {
                 "description": "PTP parameters.",
                 "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable PTP",
+                    "title": "Enabled"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
                 "title": "PTP"
               },
               "qos_profile": {
@@ -1502,6 +1538,18 @@
               "ptp": {
                 "description": "PTP parameters.",
                 "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable PTP",
+                    "title": "Enabled"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
                 "title": "PTP"
               },
               "qos_profile": {
