@@ -430,7 +430,7 @@ $defs:
             default: true
             description: |
               Port-Channel administrative state.
-              setting to false will set port to 'shutdown' in intended configuration.
+              Setting to false will set port to 'shutdown' in intended configuration.
           esi:
             type: str
             description: Format xxxx:xxxx:xxxx.
