@@ -7,12 +7,12 @@ DOCUMENTATION = """
     version_added: "4.0.0"
     short_description: Variable plugins to allow loading global_vars with less precedence than group_vars or host_vars
     requirements:
-        - Should run at the 'inventory' stage (default) before all other variable plugins.
+        - This plugin should run at the `inventory` stage (default) before all other variable plugins, to inject the variables before any group and host vars.
     description:
-        - Loads variables from the variable file present in ansible.cfg or environment variable.
+        - Loads variables from variable files specified in ansible.cfg or in the environment variable.
         - Assign the loaded variables to the 'all' inventory group.
         - Files are restricted by extension to one of .yaml, .json, .yml or no extension.
-        - Hidden (starting with '.') and backup (ending with '~') files and directories are ignored.
+        - Hidden files (starting with '.') and backup files (ending with '~') files are ignored.
         - Only applies to inventory sources that are existing paths.
     options:
       paths:
@@ -102,6 +102,7 @@ class VarsModule(BaseVarsPlugin):
         if the path is a directory - lookup vars file inside
         """
         global_vars_paths = self.get_option("paths")
+        extensions = self.get_option("_valid_extensions")
 
         found_files = []
         for g_path in global_vars_paths:
@@ -114,9 +115,10 @@ class VarsModule(BaseVarsPlugin):
                     continue
                 self._display.vvv(f"Adding Path: {opath} to global variables")
                 if os.path.isdir(b_opath):
-                    # THIS NEEDS TO BE FIXED
-                    name = "test"
-                    found_files.extend(loader.find_vars_files(opath, name))
+                    self._display.debug(f"\tProcessing dir {opath}")
+                    res = loader._get_dir_vars_files(opath, extensions)
+                    self._display.debug(f"Found variable files {str(res)}")
+                    found_files.extend(res)
                 else:
                     found_files.append(b_opath)
 

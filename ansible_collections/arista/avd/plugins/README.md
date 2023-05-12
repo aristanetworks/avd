@@ -381,10 +381,9 @@ switch:
 
 ### arista.avd.global_vars
 
-Loads variables from the variable file present in ansible.cfg or environment variable. Assign the loaded variables to the 'all' inventory group. Files are restricted by extension to one of .yaml, .json, .yml or no extension. Hidden (starting with '.') and backup (ending with '~') files and directories are ignored. Only applies to inventory sources that are
-existing paths.
+Loads variables from variable files specified in ansible.cfg or environment variable. Assign the loaded variables to the 'all' inventory group. Files are restricted by extension to one of .yaml, .json, .yml or no extension. Hidden files (starting with '.') and backup files (ending with '~') are ignored. Only applies to inventory sources that are existing paths.
 
-Should run at the 'inventory' stage (default) before all other variable plugins inject the variables before any group and host vars.
+The `arista.avd.global_vars` vars plugin should run at the `inventory` stage (default) before all other variable plugins, to inject the variables before any group and host vars.
 
 **parameters:**
 
