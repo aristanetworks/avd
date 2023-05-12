@@ -95,6 +95,7 @@ ethernet_interfaces:
   peer_interface: Ethernet53
   peer_type: mlag_peer
   description: MLAG_PEER_LEAF1A_Ethernet53
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 53
@@ -104,6 +105,7 @@ ethernet_interfaces:
   peer_interface: Ethernet54
   peer_type: mlag_peer
   description: MLAG_PEER_LEAF1A_Ethernet54
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 53
@@ -114,6 +116,7 @@ ethernet_interfaces:
   peer_type: l3spine
   description: SPINE2_Ethernet1
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 51
     mode: active

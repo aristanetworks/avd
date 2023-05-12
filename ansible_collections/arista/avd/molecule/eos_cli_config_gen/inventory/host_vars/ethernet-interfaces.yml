@@ -31,7 +31,6 @@ ethernet_interfaces:
       EOF
 
   - name: Ethernet2
-    type: switched
     peer: SRV-POD03
     peer_interface: Eth1
     peer_type: server
@@ -280,7 +279,6 @@ ethernet_interfaces:
       vlan: 70
 
   - name: Ethernet14
-    type: switched
     logging:
       event:
         link_status: true
@@ -292,14 +290,12 @@ ethernet_interfaces:
     vlans: 110-111,210-211
 
   - name: Ethernet15
-    type: switched
     description: PVLAN Promiscuous Access - only one secondary
     mode: access
     vlans: 110
     pvlan_mapping: 111
 
   - name: Ethernet16
-    type: switched
     description: PVLAN Promiscuous Trunk - vlan translation out
     mode: trunk
     vlans: 110-112
@@ -309,7 +305,6 @@ ethernet_interfaces:
         to: 110
 
   - name: Ethernet17
-    type: switched
     description: PVLAN Secondary Trunk
     mode: trunk
     vlans: 110-112
@@ -325,7 +320,6 @@ ethernet_interfaces:
         input: MyLANServicePolicy
 
   - name: Ethernet19
-    type: switched
     description: Switched port with no LLDP rx/tx
     mode: access
     vlans: 110
@@ -341,7 +335,6 @@ ethernet_interfaces:
       receive: false
 
   - name: Ethernet21
-    type: switched
     description: 200MBit/s shape
     qos:
       trust: disabled
@@ -349,26 +342,22 @@ ethernet_interfaces:
       rate: "200000 kbps"
 
   - name: Ethernet22
-    type: switched
     description: 10% shape
     shape:
       rate: "10 percent"
 
   - name: Ethernet23
-    type: switched
     description: Error-correction encoding
     error_correction_encoding:
       fire_code: true
       reed_solomon: true
 
   - name: Ethernet24
-    type: switched
     description: Disable error-correction encoding
     error_correction_encoding:
       enabled: false
 
   - name: Ethernet25
-    type: switched
     description: Molecule MAC
     mac_access_group_in: MAC_ACL_IN
     mac_access_group_out: MAC_ACL_OUT
@@ -431,7 +420,6 @@ ethernet_interfaces:
         client: true
 
   - name: Ethernet27
-    type: switched
     description: EVPN-Vxlan single-active redundancy
     evpn_ethernet_segment:
       identifier: "0000:0000:0000:0102:0304"
@@ -445,7 +433,6 @@ ethernet_interfaces:
         candidate_reachability_required: true
 
   - name: Ethernet28
-    type: switched
     description: EVPN-MPLS multihoming
     evpn_ethernet_segment:
       identifier: "0000:0000:0000:0102:0305"
@@ -455,41 +442,35 @@ ethernet_interfaces:
         tunnel_flood_filter_time: 100
 
   - name: Ethernet29
-    type: switched
     description: DOT1X Testing - auto phone true
     dot1x:
       port_control: auto
       port_control_force_authorized_phone: true
 
   - name: Ethernet30
-    type: switched
     description: DOT1X Testing - force-authorized phone false
     dot1x:
       port_control: force-authorized
       port_control_force_authorized_phone: false
 
   - name: Ethernet31
-    type: switched
     description: DOT1X Testing - force-unauthorized - no phone
     dot1x:
       port_control: force-unauthorized
 
   - name: Ethernet32
-    type: switched
     description: DOT1X Testing - auto reauthentication
     dot1x:
       port_control: auto
       reauthentication: true
 
   - name: Ethernet33
-    type: switched
     description: DOT1X Testing - pae mode authenticator
     dot1x:
       pae:
         mode: authenticator
 
   - name: Ethernet34
-    type: switched
     description: DOT1X Testing - authentication_failure allow
     dot1x:
       authentication_failure:
@@ -497,28 +478,24 @@ ethernet_interfaces:
         allow_vlan: 800
 
   - name: Ethernet35
-    type: switched
     description: DOT1X Testing - authentication_failure drop
     dot1x:
       authentication_failure:
         action: drop
 
   - name: Ethernet36
-    type: switched
     description: DOT1X Testing - host-mode single-host
     dot1x:
       host_mode:
         mode: single-host
 
   - name: Ethernet37
-    type: switched
     description: DOT1X Testing - host-mode multi-host
     dot1x:
       host_mode:
         mode: multi-host
 
   - name: Ethernet38
-    type: switched
     description: DOT1X Testing - host-mode multi-host authenticated
     dot1x:
       host_mode:
@@ -526,7 +503,6 @@ ethernet_interfaces:
         multi_host_authenticated: true
 
   - name: Ethernet39
-    type: switched
     description: DOT1X Testing - mac_based_authentication host-mode common true
     dot1x:
       mac_based_authentication:
@@ -534,7 +510,6 @@ ethernet_interfaces:
         host_mode_common: true
 
   - name: Ethernet40
-    type: switched
     description: DOT1X Testing - mac_based_authentication always
     dot1x:
       mac_based_authentication:
@@ -542,7 +517,6 @@ ethernet_interfaces:
         always: true
 
   - name: Ethernet41
-    type: switched
     description: DOT1X Testing - mac_based_authentication always and host-mode common
     dot1x:
       mac_based_authentication:
@@ -551,14 +525,12 @@ ethernet_interfaces:
         host_mode_common: true
 
   - name: Ethernet42
-    type: switched
     description: DOT1X Testing - mac_based_authentication
     dot1x:
       mac_based_authentication:
         enabled: true
 
   - name: Ethernet43
-    type: switched
     description: DOT1X Testing - timeout values
     dot1x:
       timeout:
@@ -569,7 +541,6 @@ ethernet_interfaces:
         tx_period: 6
 
   - name: Ethernet44
-    type: switched
     description: DOT1X Testing - reauthorization_request_limit
     dot1x:
       reauthorization_request_limit: 3
@@ -577,7 +548,6 @@ ethernet_interfaces:
         disabled: true
 
   - name: Ethernet45
-    type: switched
     description: DOT1X Testing - all features
     dot1x:
       port_control: auto
@@ -606,7 +576,6 @@ ethernet_interfaces:
       reauthorization_request_limit: 2
 
   - name: Ethernet46
-    type: switched
     description: native-vlan-tag-precedence
     native_vlan_tag: true
     native_vlan: 100
@@ -633,20 +602,17 @@ ethernet_interfaces:
 
   - name: Ethernet50
     description: SFlow Interface Testing - SFlow ingress enabled
-    type: switched
     sflow:
       enable: true
 
   - name: Ethernet51
     description: SFlow Interface Testing - SFlow egress enabled
-    type: switched
     sflow:
       egress:
         enable: true
 
   - name: Ethernet52
     description: SFlow Interface Testing - SFlow ingress and egress unmodified enabled
-    type: switched
     sflow:
       enable: true
       egress:
@@ -654,7 +620,6 @@ ethernet_interfaces:
 
   - name: Ethernet53
     description: SFlow Interface Testing - SFlow ingress and egress disabled
-    type: switched
     sflow:
       enable: false
       egress:
@@ -662,7 +627,6 @@ ethernet_interfaces:
 
   - name: Ethernet54
     description: SFlow Interface Testing - SFlow ingress and egress unmodified disabled
-    type: switched
     sflow:
       enable: false
       egress:
@@ -683,7 +647,6 @@ ethernet_interfaces:
 
   - name: Ethernet56
     description: Interface with poe commands and limit in class
-    type: switched
     poe:
       priority: low
       reboot:
@@ -700,7 +663,6 @@ ethernet_interfaces:
 
   - name: Ethernet57
     description: Interface with poe commands and limit in watts
-    type: switched
     poe:
       disabled: false
       priority: critical
@@ -718,13 +680,11 @@ ethernet_interfaces:
 
   - name: Ethernet58
     description: Interface with poe disabled and no other poe keys
-    type: switched
     poe:
       disabled: true
 
   - name: Ethernet60
     description: IP NAT Testing
-    type: switched
     ip_nat:
       destination:
         dynamic:

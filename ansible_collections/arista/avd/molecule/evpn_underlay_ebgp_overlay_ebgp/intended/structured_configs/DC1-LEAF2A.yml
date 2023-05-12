@@ -374,6 +374,7 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: CUSTOM_DC1-L2LEAF1A_Ethernet1
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 7
     mode: active
@@ -383,6 +384,7 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: CUSTOM_DC1-L2LEAF1B_Ethernet1
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 7
     mode: active
@@ -392,6 +394,7 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: CUSTOM_DC1-L2LEAF3A_Ethernet1
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 9
     mode: active
@@ -402,6 +405,7 @@ ethernet_interfaces:
   port_profile: TENANT_B
   description: CUSTOM_server01_MLAG_Eth2
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 10
     mode: active
@@ -412,6 +416,7 @@ ethernet_interfaces:
   port_profile: TENANT_A_MTU
   description: CUSTOM_server01_MTU_PROFILE_MLAG_Eth4
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 11
     mode: active
@@ -421,6 +426,7 @@ ethernet_interfaces:
   peer_type: server
   description: CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth6
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 12
     mode: active
@@ -430,6 +436,7 @@ ethernet_interfaces:
   peer_type: server
   description: CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth8
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 12
     mode: active
@@ -440,6 +447,7 @@ ethernet_interfaces:
   port_profile: TENANT_A_B
   description: CUSTOM_FIREWALL01_E0
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 20
     mode: active

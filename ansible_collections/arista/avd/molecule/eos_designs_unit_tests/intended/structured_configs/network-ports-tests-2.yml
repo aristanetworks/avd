@@ -71,6 +71,7 @@ ethernet_interfaces:
   peer_interface: Ethernet10/1
   peer_type: mlag_peer
   description: MLAG_PEER_network-ports-tests.1_Ethernet10/1
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 101
@@ -81,6 +82,7 @@ ethernet_interfaces:
   port_profile: ap_with_port_channel
   description: AP1 with port_channel
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -90,6 +92,7 @@ ethernet_interfaces:
   port_profile: ap_with_port_channel
   description: AP1 with port_channel
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 2
     mode: active
@@ -648,6 +651,7 @@ ethernet_interfaces:
   peer_type: network_port
   description: Checking port-channels
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 42
     mode: active
@@ -656,6 +660,7 @@ ethernet_interfaces:
   peer_type: network_port
   description: Checking port-channels
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 42
     mode: active
@@ -664,6 +669,7 @@ ethernet_interfaces:
   peer_type: network_port
   description: Checking port-channels
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 42
     mode: active
@@ -672,6 +678,7 @@ ethernet_interfaces:
   peer_type: network_port
   description: Checking port-channels
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 42
     mode: active

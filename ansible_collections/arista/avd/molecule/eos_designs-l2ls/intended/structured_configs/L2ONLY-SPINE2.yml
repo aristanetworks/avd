@@ -63,6 +63,7 @@ ethernet_interfaces:
   peer_interface: Ethernet3
   peer_type: mlag_peer
   description: MLAG_PEER_L2ONLY-SPINE1_Ethernet3
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 3
@@ -72,6 +73,7 @@ ethernet_interfaces:
   peer_interface: Ethernet4
   peer_type: mlag_peer
   description: MLAG_PEER_L2ONLY-SPINE1_Ethernet4
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 3
@@ -82,6 +84,7 @@ ethernet_interfaces:
   peer_type: leaf
   description: L2ONLY-LEAF1_Ethernet2
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -91,6 +94,7 @@ ethernet_interfaces:
   peer_type: leaf
   description: L2ONLY-LEAF2_Ethernet2
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 2
     mode: active

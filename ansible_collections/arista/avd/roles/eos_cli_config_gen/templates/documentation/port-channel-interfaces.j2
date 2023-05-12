@@ -10,9 +10,9 @@
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 {%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
-{%         if port_channel_interface.type is arista.avd.defined("switched") %}
+{%         if port_channel_interface.type | arista.avd.default("switched") == 'switched' %}
 {%             set description = port_channel_interface.description | arista.avd.default("-") %}
-{%             set type = port_channel_interface.type %}
+{%             set type = port_channel_interface.type | arista.avd.default("switched") %}
 {%             set mode = port_channel_interface.mode | arista.avd.default("access") %}
 {%             set vlans = port_channel_interface.vlans | arista.avd.default("-") %}
 {%             if  port_channel_interface.native_vlan_tag is arista.avd.defined(true) %}

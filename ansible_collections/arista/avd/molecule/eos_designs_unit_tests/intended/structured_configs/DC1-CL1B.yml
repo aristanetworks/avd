@@ -332,6 +332,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1/31/1
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-CL1A_Ethernet1/31/1
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 1311
@@ -342,6 +343,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1/32/1
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-CL1A_Ethernet1/32/1
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 1311

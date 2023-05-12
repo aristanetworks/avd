@@ -44,6 +44,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: DC2-LEAF2A_Ethernet8
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -53,6 +54,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: DC2-LEAF2B_Ethernet8
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 1
     mode: active

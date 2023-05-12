@@ -948,6 +948,7 @@ ethernet_interfaces:
   peer_interface: Ethernet5
   peer_type: mlag_peer
   description: CUSTOM_MLAG_PEER_DC1-SVC3A_Ethernet5
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -957,6 +958,7 @@ ethernet_interfaces:
   peer_interface: Ethernet6
   peer_type: mlag_peer
   description: CUSTOM_MLAG_PEER_DC1-SVC3A_Ethernet6
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -967,6 +969,7 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: CUSTOM_DC1-L2LEAF2A_Ethernet2
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 7
     mode: active
@@ -976,6 +979,7 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: CUSTOM_DC1-L2LEAF2B_Ethernet2
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 7
     mode: active
@@ -1026,6 +1030,7 @@ ethernet_interfaces:
   port_profile: TENANT_A_B
   description: CUSTOM_server03_ESI_Eth2
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 10
     mode: active
@@ -1115,6 +1120,7 @@ ethernet_interfaces:
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
   description: CUSTOM_server07_inherit_all_from_profile_port_channel_Eth2
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 14
     mode: active
@@ -1124,6 +1130,7 @@ ethernet_interfaces:
   peer_type: server
   description: CUSTOM_server08_no_profile_port_channel_Eth2
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 15
     mode: 'on'
@@ -1160,6 +1167,7 @@ ethernet_interfaces:
   peer_type: server
   description: CUSTOM_server10_no_profile_port_channel_lacp_fallback_Eth2
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 17
     mode: active
@@ -1171,6 +1179,7 @@ ethernet_interfaces:
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
   description: CUSTOM_server11_inherit_profile_port_channel_lacp_fallback_Eth2
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 18
     mode: active
@@ -1182,6 +1191,7 @@ ethernet_interfaces:
   port_profile: NESTED_PORT_PROFILE
   description: CUSTOM_server12_inherit_nested_profile_port_channel_lacp_fallback_Eth2
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 19
     mode: active
@@ -1213,6 +1223,7 @@ ethernet_interfaces:
   port_profile: TENANT_A
   description: CUSTOM_server15_port_channel_disabled_interfaces_Eth2
   shutdown: true
+  type: port-channel-member
   channel_group:
     id: 22
     mode: active

@@ -101,10 +101,15 @@ class EthernetInterfacesMixin(UtilsMixin):
             # L2 interface
             elif link["type"] == "underlay_l2":
                 if (channel_group_id := link.get("channel_group_id")) is not None:
-                    ethernet_interface["channel_group"] = {
-                        "id": int(channel_group_id),
-                        "mode": "active",
-                    }
+                    ethernet_interface.update(
+                        {
+                            "type": "port-channel-member",
+                            "channel_group": {
+                                "id": int(channel_group_id),
+                                "mode": "active",
+                            },
+                        }
+                    )
                 else:
                     vlans = get(link, "vlans", default=[])
                     ethernet_interface.update(

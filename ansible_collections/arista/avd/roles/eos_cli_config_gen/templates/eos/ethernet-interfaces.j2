@@ -141,7 +141,7 @@ interface {{ ethernet_interface.name }}
    encapsulation vlan
       {{ encapsulation_cli }}
 {%         endif %}
-{%     elif ethernet_interface.type is arista.avd.defined('switched') %}
+{%     elif ethernet_interface.type | arista.avd.default('switched') == 'switched' %}
    switchport
 {%     endif %}
 {%     if ethernet_interface.trunk_private_vlan_secondary is arista.avd.defined(true) %}

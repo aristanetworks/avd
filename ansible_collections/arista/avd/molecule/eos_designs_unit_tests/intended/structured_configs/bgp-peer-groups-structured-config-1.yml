@@ -99,6 +99,7 @@ ethernet_interfaces:
   peer_interface: Ethernet3
   peer_type: mlag_peer
   description: MLAG_PEER_bgp-peer-groups-structured-config-2_Ethernet3
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 3

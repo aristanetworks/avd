@@ -71,6 +71,5 @@ ethernet_interfaces:
         unmatched: true
   Ethernet31:
     description: DOT1X Testing - force-unauthorized - no phone
-    type: switched
     dot1x:
       port_control: force-unauthorized

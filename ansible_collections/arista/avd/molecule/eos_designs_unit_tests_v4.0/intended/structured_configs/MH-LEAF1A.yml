@@ -155,6 +155,7 @@ ethernet_interfaces:
   port_profile: Tenant_X
   description: server01_ES1_Eth1
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 10
     mode: active
@@ -165,6 +166,7 @@ ethernet_interfaces:
   port_profile: Tenant_X
   description: server03_AUTO_ESI_Eth1
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 12
     mode: active
@@ -174,6 +176,7 @@ ethernet_interfaces:
   peer_type: router
   description: ROUTER02_WITH_SUBIF_Eth1
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 11
     mode: active

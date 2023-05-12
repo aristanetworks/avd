@@ -7,7 +7,6 @@ port_channel_interfaces:
   # Testing deprecated esi and rt variables on port-channel interfaces/subinterfaces
   Port-Channel1:
     description: SRV01_bond0
-    type: switched
     vlans: 2-3000
     mode: trunk
     esi: 0000:0000:0404:0404:0303
@@ -33,7 +32,6 @@ port_channel_interfaces:
 
   Port-Channel51:
     description: ipv6_prefix
-    type: switched
     vlans: 1-500
     mode: trunk
     # Testing ipv6_nd_prefixes as dict of dict

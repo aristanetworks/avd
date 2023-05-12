@@ -69,6 +69,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: MH-LEAF2A_Ethernet2
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 1
     mode: active

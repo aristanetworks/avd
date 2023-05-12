@@ -120,6 +120,7 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC2-POD1-L2LEAF2A_Ethernet1
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 3
     mode: active

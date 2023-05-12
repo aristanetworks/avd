@@ -54,6 +54,7 @@ ethernet_interfaces:
   peer_type: leaf
   description: LEAF3A_Ethernet98/1
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 971
     mode: active
@@ -63,6 +64,7 @@ ethernet_interfaces:
   peer_type: leaf
   description: LEAF3B_Ethernet98/1
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 971
     mode: active

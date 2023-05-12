@@ -1298,6 +1298,7 @@ keys:
           - switched
           - l3dot1q
           - l2dot1q
+          - port-channel-member
           description: 'l3dot1q and l2dot1q are used for sub-interfaces. The parent
             interface should be defined as routed.
 

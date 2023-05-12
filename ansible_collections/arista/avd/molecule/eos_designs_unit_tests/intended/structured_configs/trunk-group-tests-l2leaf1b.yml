@@ -114,6 +114,7 @@ ethernet_interfaces:
   peer_interface: Ethernet3
   peer_type: mlag_peer
   description: MLAG_PEER_trunk-group-tests-l2leaf1a_Ethernet3
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 3
@@ -123,6 +124,7 @@ ethernet_interfaces:
   peer_interface: Ethernet4
   peer_type: mlag_peer
   description: MLAG_PEER_trunk-group-tests-l2leaf1a_Ethernet4
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 3
@@ -133,6 +135,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: TRUNK-GROUP-TESTS-L3LEAF1A_Ethernet2
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -142,6 +145,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: TRUNK-GROUP-TESTS-L3LEAF1B_Ethernet2
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -162,6 +166,7 @@ ethernet_interfaces:
   peer_type: server
   description: server_with_tg_300_Nic4
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 13
     mode: active

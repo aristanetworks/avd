@@ -111,10 +111,15 @@ class EthernetInterfacesMixin(UtilsMixin):
 
         # Port-channel member
         if (port_channel_mode := get(adapter, "port_channel.mode")) is not None:
-            ethernet_interface["channel_group"] = {
-                "id": channel_group_id,
-                "mode": port_channel_mode,
-            }
+            ethernet_interface.update(
+                {
+                    "type": "port-channel-member",
+                    "channel_group": {
+                        "id": channel_group_id,
+                        "mode": port_channel_mode,
+                    },
+                }
+            )
             if get(adapter, "port_channel.lacp_fallback.mode") == "static":
                 ethernet_interface["lacp_port_priority"] = 8192 if node_index == 0 else 32768
             if port_channel_mode != "on" and get(adapter, "port_channel.lacp_timer") is not None:

@@ -129,6 +129,7 @@ ethernet_interfaces:
   peer_interface: Eth1
   peer_type: mlag_peer
   description: MLAG_PEER_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B_Eth1
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 1
@@ -138,6 +139,7 @@ ethernet_interfaces:
   peer_interface: Eth2
   peer_type: mlag_peer
   description: MLAG_PEER_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B_Eth2
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 1

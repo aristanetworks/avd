@@ -129,6 +129,7 @@ ethernet_interfaces:
   peer_interface: Ethernet5
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-BL1B_Ethernet5
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -138,6 +139,7 @@ ethernet_interfaces:
   peer_interface: Ethernet6
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-BL1B_Ethernet6
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5

@@ -844,6 +844,7 @@ ethernet_interfaces:
   peer_interface: Ethernet5
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-SVC3B_Ethernet5
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -853,6 +854,7 @@ ethernet_interfaces:
   peer_interface: Ethernet6
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-SVC3B_Ethernet6
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -899,6 +901,7 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-L2LEAF2A_Ethernet1
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 7
     mode: active
@@ -908,6 +911,7 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-L2LEAF2B_Ethernet1
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 7
     mode: active
@@ -918,6 +922,7 @@ ethernet_interfaces:
   port_profile: TENANT_A_B
   description: server03_ESI_Eth1
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 10
     mode: active
@@ -1005,6 +1010,7 @@ ethernet_interfaces:
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
   description: server07_inherit_all_from_profile_port_channel_Eth1
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 14
     mode: active
@@ -1014,6 +1020,7 @@ ethernet_interfaces:
   peer_type: server
   description: server08_no_profile_port_channel_Eth1
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 15
     mode: 'on'

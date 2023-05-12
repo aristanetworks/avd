@@ -489,6 +489,7 @@ ethernet_interfaces:
   peer_interface: Ethernet5
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-POD1-LEAF2B_Ethernet5
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -498,6 +499,7 @@ ethernet_interfaces:
   peer_interface: Ethernet6
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-POD1-LEAF2B_Ethernet6
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -536,6 +538,7 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-POD1-L2LEAF2A_Ethernet1
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 3
     mode: active
@@ -545,6 +548,7 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-POD1-L2LEAF2B_Ethernet1
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 3
     mode: active
@@ -599,6 +603,7 @@ ethernet_interfaces:
     EOF
 
     '
+  type: port-channel-member
   channel_group:
     id: 16
     mode: active
@@ -616,6 +621,7 @@ ethernet_interfaces:
     EOF
 
     '
+  type: port-channel-member
   channel_group:
     id: 17
     mode: active
@@ -633,6 +639,7 @@ ethernet_interfaces:
     EOF
 
     '
+  type: port-channel-member
   channel_group:
     id: 18
     mode: active
@@ -650,6 +657,7 @@ ethernet_interfaces:
     EOF
 
     '
+  type: port-channel-member
   channel_group:
     id: 19
     mode: active

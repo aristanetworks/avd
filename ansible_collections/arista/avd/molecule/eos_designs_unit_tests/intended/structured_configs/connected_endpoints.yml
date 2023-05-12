@@ -25,6 +25,7 @@ ethernet_interfaces:
   peer_type: server
   description: OLD_SW-1/5
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 5
     mode: active
@@ -33,6 +34,7 @@ ethernet_interfaces:
   peer_type: server
   description: OLD_SW-1/5
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 5
     mode: active
@@ -41,6 +43,7 @@ ethernet_interfaces:
   peer_type: server
   description: PHYSICAL_PORT_DESCRIPTION
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 7
     mode: active
@@ -49,6 +52,7 @@ ethernet_interfaces:
   peer_type: server
   description: PHYSICAL_PORT_DESCRIPTION
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 7
     mode: active

@@ -18,6 +18,7 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: UPLINK-NATIVE-VLAN-PARENT_Ethernet1
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 1
     mode: active

@@ -144,6 +144,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: DC1-SVC3A_Ethernet8
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -153,6 +154,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: DC1-SVC3B_Ethernet8
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 1
     mode: active

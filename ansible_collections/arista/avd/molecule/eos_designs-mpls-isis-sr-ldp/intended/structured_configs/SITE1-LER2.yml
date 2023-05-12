@@ -283,6 +283,7 @@ ethernet_interfaces:
   port_profile: TENANT_A_WAN_SERVICE_10
   description: CPE_TENANT_A_SITE1_Ethernet2
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 8
     mode: active
