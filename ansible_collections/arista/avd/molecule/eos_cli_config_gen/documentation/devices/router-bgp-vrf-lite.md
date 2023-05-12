@@ -159,16 +159,22 @@ ip route vrf BLUE-C1 193.1.2.0/24 Null0
 | -------- | ----- |
 | Address Family | ipv4 |
 | Remote AS | 65001 |
+| BFD | True |
 
 ### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- |
 | 10.1.1.0 | Inherited from peer group OBS_WAN | BLUE-C1 | - | - | - | - | - | - | - |
-| 10.255.1.1 | Inherited from peer group WELCOME_ROUTERS | BLUE-C1 | - | - | - | - | - | - | - |
+| 10.255.1.1 | Inherited from peer group WELCOME_ROUTERS | BLUE-C1 | - | - | - | - | Inherited from peer group WELCOME_ROUTERS | - | - |
 | 101.0.3.1 | Inherited from peer group SEDI | BLUE-C1 | - | - | - | - | - | - | - |
 | 101.0.3.2 | Inherited from peer group SEDI | BLUE-C1 | True | - | - | Allowed, allowed 3 (default) times | - | - | - |
 | 101.0.3.3 | - | BLUE-C1 | Inherited from peer group SEDI-shut | - | - | Allowed, allowed 5 times | - | - | - |
+| 101.0.3.4 | - | BLUE-C1 | - | - | - | - | - | - | - |
+| 101.0.3.5 | Inherited from peer group WELCOME_ROUTERS | BLUE-C1 | - | - | - | - | False | - | - |
+| 101.0.3.6 | Inherited from peer group WELCOME_ROUTERS | BLUE-C1 | - | - | - | - | True | - | - |
+| 101.0.3.7 | - | BLUE-C1 | - | - | - | - | True | - | - |
+| 101.0.3.8 | - | BLUE-C1 | - | - | - | - | False | - | - |
 | 10.1.1.0 | Inherited from peer group OBS_WAN | RED-C1 | - | - | - | - | - | - | - |
 | 10.1.1.0 | Inherited from peer group OBS_WAN | YELLOW-C1 | - | - | - | - | - | - | - |
 
@@ -204,6 +210,7 @@ router bgp 65001
    neighbor WELCOME_ROUTERS peer group
    neighbor WELCOME_ROUTERS remote-as 65001
    neighbor WELCOME_ROUTERS description BGP Connection to WELCOME ROUTER 02
+   neighbor WELCOME_ROUTERS bfd
    redistribute static
    !
    address-family ipv4
@@ -226,6 +233,12 @@ router bgp 65001
       neighbor 101.0.3.2 shutdown
       neighbor 101.0.3.3 peer group SEDI-shut
       neighbor 101.0.3.3 allowas-in 5
+      neighbor 101.0.3.4 peer group TEST-PASSIVE
+      neighbor 101.0.3.5 peer group WELCOME_ROUTERS
+      no neighbor 101.0.3.5 bfd
+      neighbor 101.0.3.6 peer group WELCOME_ROUTERS
+      neighbor 101.0.3.6 bfd
+      neighbor 101.0.3.7 bfd
       aggregate-address 0.0.0.0/0 as-set summary-only attribute-map RM-BGP-AGG-APPLY-SET
       aggregate-address 193.1.0.0/16 as-set summary-only attribute-map RM-BGP-AGG-APPLY-SET
       redistribute static

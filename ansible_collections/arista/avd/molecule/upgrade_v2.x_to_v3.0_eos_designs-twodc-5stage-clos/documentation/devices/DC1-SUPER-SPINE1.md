@@ -337,6 +337,7 @@ router bgp 65100
    neighbor 11.1.2.1 peer group IPv4-UNDERLAY-PEERS
    neighbor 11.1.2.1 remote-as 65200
    neighbor 11.1.2.1 description DC2-SUPER-SPINE1
+   no neighbor 11.1.2.1 bfd
    neighbor 172.16.11.1 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.11.1 remote-as 65110
    neighbor 172.16.11.1 description DC1-POD1-SPINE1_Ethernet1
