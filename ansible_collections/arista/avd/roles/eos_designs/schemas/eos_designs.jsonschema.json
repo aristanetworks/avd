@@ -762,15 +762,15 @@
     },
     "cvp_instance_ip": {
       "type": "string",
-      "description": "IPv4 address.\nCloudVision - Telemetry Agent (TerminAttr) configuration is optional\nYou can either provide a list of IPs to target on-premise CloudVision cluster or\nuse DNS name for your CloudVision as a Service instance. If you have both on-prem and\nCVaaS defined, only on-prem is going to be configured.",
+      "description": "IPv4 address or DNS name for CloudVision.\nThis variable only supports an on-premise single-node cluster or the DNS name of a CloudVision as a Service instance.",
       "title": "CVP Instance IP"
     },
     "cvp_instance_ips": {
       "type": "array",
-      "description": "You can either provide a list of IPs to target on-premise CloudVision cluster or\nuse DNS name for your CloudVision as a Service instance. If you have both on-prem and\nCVaaS defined, only on-prem is going to be configured.\n",
+      "description": "List of IPv4 addresses or DNS names for CloudVision.\nFor on-premise CloudVision enter all the nodes of the cluster.\nFor CloudVision as a Service enter the DNS name of the instance.\n`eos_designs` only supports one CloudVision cluster.\n",
       "items": {
         "type": "string",
-        "description": "IPv4 address or CV as a Service hostname"
+        "description": "IPv4 address or DNS name for CloudVision"
       },
       "title": "CVP Instance Ips"
     },
@@ -910,6 +910,67 @@
       "description": "Enable Trunk Group support across eos_designs\nWarning: Because of the nature of the EOS Trunk Group feature, enabling this is \"all or nothing\".\n*All* vlans and *all* trunks towards connected endpoints must be using trunk groups as well.\nIf trunk groups are not assigned to a trunk, no vlans will be enabled on that trunk.\nSee \"Details on enable_trunk_groups\" below before enabling this feature.\n",
       "default": false,
       "title": "Enable Trunk Groups"
+    },
+    "event_handlers": {
+      "type": "array",
+      "description": "Gives the ability to monitor and react to Syslog messages.\nEvent Handlers provide a powerful and flexible tool that can be used to apply self-healing actions,\ncustomize the system behavior, and implement workarounds to problems discovered in the field.\n",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Event Handler Name",
+            "title": "Name"
+          },
+          "action_type": {
+            "type": "string",
+            "enum": [
+              "bash",
+              "increment",
+              "log"
+            ],
+            "title": "Action Type"
+          },
+          "action": {
+            "type": "string",
+            "description": "Command to execute\n",
+            "title": "Action"
+          },
+          "delay": {
+            "type": "integer",
+            "description": "Event-handler delay in seconds\n",
+            "title": "Delay"
+          },
+          "trigger": {
+            "type": "string",
+            "description": "Configure event trigger condition.\n",
+            "enum": [
+              "on-logging",
+              "on-startup-config"
+            ],
+            "title": "Trigger"
+          },
+          "regex": {
+            "type": "string",
+            "description": "Regular expression to use for searching log messages. Required for on-logging trigger\n",
+            "title": "Regex"
+          },
+          "asynchronous": {
+            "type": "boolean",
+            "default": false,
+            "description": "Set the action to be non-blocking.",
+            "title": "Asynchronous"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "title": "Event Handlers"
     },
     "evpn_ebgp_gateway_multihop": {
       "description": "Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI networks.\nAdapt the value for your specific topology.\n",
@@ -1589,6 +1650,68 @@
       },
       "title": "L3 Edge"
     },
+    "local_users": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Username",
+            "type": "string",
+            "title": "Name"
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "If true, the user will be removed and all other settings are ignored.\nUseful for removing the default \"admin\" user.\n",
+            "title": "Disabled"
+          },
+          "privilege": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 15,
+            "description": "Initial privilege level with local EXEC authorization.\n",
+            "title": "Privilege"
+          },
+          "role": {
+            "type": "string",
+            "description": "EOS RBAC Role to be assigned to the user such as \"network-admin\" or \"network-operator\"\n",
+            "title": "Role"
+          },
+          "sha512_password": {
+            "type": "string",
+            "description": "SHA512 Hash of Password\nMust be the hash of the password. By default EOS salts the password with the username, so the simplest is to generate the hash on an EOS device using the same username.\n",
+            "title": "SHA512 Password"
+          },
+          "no_password": {
+            "type": "boolean",
+            "description": "If set a password will not be configured for this user. \"sha512_password\" MUST not be defined for this user.\n",
+            "title": "No Password"
+          },
+          "ssh_key": {
+            "type": "string",
+            "title": "SSH Key"
+          },
+          "shell": {
+            "type": "string",
+            "description": "Specify shell for the user\n",
+            "enum": [
+              "/bin/bash",
+              "/bin/sh",
+              "/sbin/nologin"
+            ],
+            "title": "Shell"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "Local Users"
+    },
     "mac_address_table": {
       "type": "object",
       "description": "MAC address-table aging time\nUse to change the EOS default of 300.\n",
@@ -1607,6 +1730,63 @@
       },
       "title": "MAC Address Table"
     },
+    "management_eapi": {
+      "description": "Default is HTTPS management eAPI enabled.\nThe VRF is set to < mgmt_interface_vrf >.\n",
+      "type": "object",
+      "properties": {
+        "enable_http": {
+          "type": "boolean",
+          "default": false,
+          "title": "Enable HTTP"
+        },
+        "enable_https": {
+          "type": "boolean",
+          "default": true,
+          "title": "Enable Https"
+        },
+        "default_services": {
+          "type": "boolean",
+          "title": "Default Services"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Management Eapi"
+    },
+    "mgmt_destination_networks": {
+      "type": "array",
+      "description": "List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.\nReplaces the default route.",
+      "items": {
+        "type": "string",
+        "description": "IPv4_address/Mask"
+      },
+      "title": "Mgmt Destination Networks"
+    },
+    "mgmt_gateway": {
+      "type": "string",
+      "description": "OOB Management interface gateway in IPv4 format.\nUsed as next-hop for default gateway or static routes defined under 'mgmt_destination_networks'",
+      "title": "Mgmt Gateway"
+    },
+    "mgmt_interface": {
+      "type": "string",
+      "default": "Management1",
+      "description": "OOB Management interface.",
+      "title": "Mgmt Interface"
+    },
+    "mgmt_interface_vrf": {
+      "type": "string",
+      "default": "MGMT",
+      "description": "OOB Management VRF.",
+      "title": "Mgmt Interface VRF"
+    },
+    "mgmt_vrf_routing": {
+      "type": "boolean",
+      "default": false,
+      "description": "Configure IP routing for the OOB Management VRF.",
+      "title": "Mgmt VRF Routing"
+    },
     "mlag_ibgp_peering_vrfs": {
       "type": "object",
       "description": "On mlag leafs, an SVI interface is defined per vrf, to establish iBGP peering (required when there are MLAG leafs in topology)\nThe SVI id will be derived from the base vlan defined: mlag_ibgp_peering_vrfs.base_vlan + (vrf_id or vrf_vni) - 1\nDepending on the values of vrf_id / vrf_vni it may be required to adjust the base_vlan to avoid overlaps or invalid vlan ids.\nThe SVI ip address derived from mlag_l3_peer_ipv4_pool is re-used across all iBGP peerings.\n",
@@ -1624,6 +1804,15 @@
         "^_.+$": {}
       },
       "title": "MLAG Ibgp Peering VRFs"
+    },
+    "name_servers": {
+      "type": "array",
+      "description": "List of DNS servers. The VRF is set to < mgmt_interface_vrf >.",
+      "items": {
+        "type": "string",
+        "description": "IPv4 address"
+      },
+      "title": "Name Servers"
     },
     "network_ports": {
       "type": "array",
@@ -3914,6 +4103,118 @@
       "description": "- It is possible to provision configurations for a complete topology but flag devices as undeployed using the host level variable `is_deployed: false`.\n\n```yaml\n# Use at the host level\nis_deployed: < true or false or default -> true >\n```\n\n- By default, this will have no impact within the `eos_designs` role. Configs will still be generated by the `eos_cli_config_gen` role and will still be pushed by the `eos_config_deploy_eapi` directly to devices if used.\n- However, if the `eos_config_deploy_cvp` role is used to push configurations, CloudVision will ignore the devices flagged  as `is_deployed: false` and not attempt to configure them.\n- If the device is not present in the network due to CloudVision not configuring the device, `eos_validate_state` role will fail tests on peers of the undeployed device trying to verify that interfaces are up.\n- To overcome this and shutdown interfaces towards undeployed peers, the variable `shutdown_interfaces_towards_undeployed_peers` can be used, satisfying the `eos_validate_state` role interface tests.\n- Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices are not present in the network.",
       "title": "Shutdown Interfaces Towards Undeployed Peers"
     },
+    "snmp_settings": {
+      "type": "object",
+      "description": "Set SNMP settings (optional).",
+      "properties": {
+        "contact": {
+          "type": "string",
+          "description": "SNMP contact.",
+          "title": "Contact"
+        },
+        "location": {
+          "type": "boolean",
+          "default": false,
+          "description": "Set SNMP location. Formatted as {{ fabric_name }} {{ dc_name }} {{ pod_name }} {{ switch_rack }} {{ inventory_hostname }}.",
+          "title": "Location"
+        },
+        "compute_local_engineid": {
+          "type": "boolean",
+          "default": false,
+          "description": "Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.\n",
+          "title": "Compute Local Engineid"
+        },
+        "compute_local_engineid_source": {
+          "type": "string",
+          "default": "hostname_and_ip",
+          "description": "`compute_local_engineid_source` supports:\n- `hostname_and_ip` generate a local engineId for SNMP by hashing via SHA1\n  the string generated via the concatenation of the hostname plus the management IP.\n  {{ inventory_hostname }} + {{ switch.mgmt_ip }}\n- `system_mac` generate the switch default engine id for AVD usage\n  To use this, `system_mac_address` MUST be set for the device\n  The formula is f5717f + system_mac_address + 00\n",
+          "enum": [
+            "hostname_and_ip",
+            "system_mac"
+          ],
+          "title": "Compute Local Engineid Source"
+        },
+        "compute_v3_user_localized_key": {
+          "type": "boolean",
+          "default": false,
+          "description": "Requires compute_local_engineid to be `true`.\nIf enabled, the SNMPv3 passphrases for auth and priv are transformed using RFC 2574, matching the value they would take in EOS CLI.\nThe algorithm requires a local engineId, which is unknown to AVD, hence the necessity to generate one beforehand.\n",
+          "title": "Compute V3 User Localized Key"
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Username",
+                "title": "Name"
+              },
+              "group": {
+                "type": "string",
+                "description": "Configuration of the SNMP User Groups are currently only possible using `structured_config`.\n",
+                "title": "Group"
+              },
+              "version": {
+                "type": "string",
+                "enum": [
+                  "v1",
+                  "v2c",
+                  "v3"
+                ],
+                "title": "Version"
+              },
+              "auth": {
+                "type": "string",
+                "enum": [
+                  "md5",
+                  "sha",
+                  "sha256",
+                  "sha384",
+                  "sha512"
+                ],
+                "title": "Auth"
+              },
+              "auth_passphrase": {
+                "type": "string",
+                "description": "Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set.",
+                "title": "Auth Passphrase"
+              },
+              "priv": {
+                "type": "string",
+                "enum": [
+                  "des",
+                  "aes",
+                  "aes192",
+                  "aes256"
+                ],
+                "title": "Priv"
+              },
+              "priv_passphrase": {
+                "type": "string",
+                "description": "Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set.",
+                "title": "Priv Passphrase"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Users"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Snmp Settings"
+    },
+    "system_mac_address": {
+      "type": "string",
+      "description": "Set to the same MAC address as available in \"show version\" on the device.\n\"system_mac_address\" can also be set under \"Fabric Topology\".\nIf both are set, the setting under \"Fabric Topology\" takes precedence.",
+      "title": "System MAC Address"
+    },
     "terminattr_disable_aaa": {
       "type": "boolean",
       "default": false,
@@ -3927,13 +4228,18 @@
     "terminattr_ingestgrpcurl_port": {
       "type": "integer",
       "default": 9910,
-      "description": "Port number for Terminattr ingest GRPC",
+      "description": "Port number used for Terminattr connection to an on-premise CloudVision cluster.\nThe port number is always 443 when using CloudVision as a Service, so this value is ignored.",
       "title": "TerminAttr Ingestgrpcurl Port"
     },
     "terminattr_smashexcludes": {
       "type": "string",
       "default": "ale,flexCounter,hardware,kni,pulse,strata",
       "title": "TerminAttr Smashexcludes"
+    },
+    "timezone": {
+      "type": "string",
+      "description": "Clock timezone like \"CET\" or \"US/Pacific\".",
+      "title": "Timezone"
     },
     "trunk_groups": {
       "type": "object",
