@@ -414,6 +414,7 @@ port_channel_interfaces:
 
   - name: Port-Channel130
     description: IP NAT Testing
+    type: switched
     ip_nat:
       destination:
         dynamic:

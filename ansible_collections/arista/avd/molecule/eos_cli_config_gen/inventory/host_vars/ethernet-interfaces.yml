@@ -723,6 +723,7 @@ ethernet_interfaces:
 
   - name: Ethernet60
     description: IP NAT Testing
+    type: switched
     ip_nat:
       destination:
         dynamic:
