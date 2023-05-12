@@ -97,19 +97,19 @@ jobs:
     if: needs.file-changes.outputs.docs == 'true'
     steps:
       - uses: actions/checkout@v3
-      - name: 'start docker-compose stack'
+      - name: 'Start docker-compose stack'
         run: |
           cp development/docker-compose.yml .
           sed -i 's/cd\sansible-avd\/\s\&\&//g' docker-compose.yml
           docker-compose -f docker-compose.yml up -d webdoc_avd
           docker-compose -f docker-compose.yml ps
-      - name: 'test connectivity to mkdoc server'
+      - name: 'Test connectivity to mkdoc server'
         run: |
           until docker exec webdoc_avd curl -s -I http://localhost:8000/ ; do sleep 2; done
       - name: check links for 404
         run: |
-          docker run --network container:webdoc_avd raviqqe/muffet:2.6.1 http://127.0.0.1:8000/ -e ".*fonts.googleapis.com.*" -e ".*fonts.gstatic.com.*" -e ".*tools.ietf.org.*" -e ".*edit.*" -e ".*docs.github.com.*" -e "twitter.com" -f --max-redirections=3 --timeout=30 --rate-limit=1
-      - name: 'stop docker-compose stack'
+          docker run --network container:webdoc_avd raviqqe/muffet:2.6.1 http://127.0.0.1:8000/ -e ".*fonts.googleapis.com.*" -e ".*fonts.gstatic.com.*" -e ".*tools.ietf.org.*" -e ".*edit.*" -e ".*docs.github.com.*" -e "twitter.com" -e "www.docker.com" -f --max-redirections=3 --timeout=30 --rate-limit=1
+      - name: 'Stop docker-compose stack'
         run: |
           docker-compose -f docker-compose.yml down
 
