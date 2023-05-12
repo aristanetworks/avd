@@ -79,6 +79,7 @@ router bgp 65001
          bgp additional-paths receive
          bgp additional-paths send ecmp limit 4
          neighbor FOOBAR activate
+         neighbor FOOBAR next-hop address-family ipv6 originate
          neighbor 1.2.3.4 activate
          neighbor 1.2.3.4 route-map FOO in
          neighbor 1.2.3.4 route-map BAR out
