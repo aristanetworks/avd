@@ -17,7 +17,6 @@ spine:
       # The two following commands must not be enabled when using vEOS-lab
       # - update wait-for-convergence
       # - update wait-install
-      - no bgp default ipv4-unicast
       - distance bgp 20 200 200
       - graceful-restart restart-time 300
       - graceful-restart
@@ -64,7 +63,6 @@ l3leaf:
     bgp_defaults:
       # The following command must not be enabled when using vEOS-lab
       # - update wait-install
-      - no bgp default ipv4-unicast
       - distance bgp 20 200 200
       - graceful-restart restart-time 300
       - graceful-restart

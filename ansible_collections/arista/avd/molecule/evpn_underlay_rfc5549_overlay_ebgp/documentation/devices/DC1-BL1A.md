@@ -568,9 +568,9 @@ router general
 
 | BGP Tuning |
 | ---------- |
-| no bgp default ipv4-unicast |
 | distance bgp 20 200 200 |
 | maximum-paths 4 ecmp 4 |
+| no bgp default ipv4-unicast |
 
 #### Router BGP Peer Groups
 

@@ -39,6 +39,17 @@ keys:
     type: str
     convert_types:
     - int
+  bgp_default_ipv4_unicast:
+    documentation_options:
+      filename: Fabric Variables
+      table: BGP Settings
+    description: 'Default activation of IPv4 unicast address-family on all IPv4 neighbors.
+
+      It is best practice to disable activation.
+
+      '
+    type: bool
+    default: false
   bgp_ecmp:
     documentation_options:
       filename: Fabric Variables

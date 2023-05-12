@@ -20,7 +20,6 @@ spine:
     uplink_macsec:
       profile: MACSEC_PROFILE
     bgp_defaults:
-      - "no bgp default ipv4-unicast"
       - "distance bgp 20 200 200"
       - "graceful-restart restart-time 300"
       - "graceful-restart"
@@ -54,7 +53,6 @@ l3leaf:
     uplink_macsec:
       profile: MACSEC_PROFILE
     bgp_defaults:
-      - "no bgp default ipv4-unicast"
       - "distance bgp 20 200 200"
       - "graceful-restart restart-time 300"
       - "graceful-restart"

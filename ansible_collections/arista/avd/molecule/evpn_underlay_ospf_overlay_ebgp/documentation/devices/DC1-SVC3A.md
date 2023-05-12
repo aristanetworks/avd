@@ -619,9 +619,9 @@ router ospf 101
 
 | BGP Tuning |
 | ---------- |
-| no bgp default ipv4-unicast |
 | distance bgp 20 200 200 |
 | maximum-paths 10 ecmp 10 |
+| no bgp default ipv4-unicast |
 
 #### Router BGP Peer Groups
 

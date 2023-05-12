@@ -586,9 +586,9 @@ ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 
 | BGP Tuning |
 | ---------- |
-| no bgp default ipv4-unicast |
 | distance bgp 20 200 200 |
 | maximum-paths 4 ecmp 4 |
+| no bgp default ipv4-unicast |
 
 #### Router BGP Peer Groups
 

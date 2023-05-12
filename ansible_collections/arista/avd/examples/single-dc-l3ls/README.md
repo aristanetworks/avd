@@ -352,7 +352,6 @@ spine:
     loopback_ipv4_pool: 10.255.0.0/27 # (3)!
     bgp_as: 65100 # (4)!
     bgp_defaults: # (5)!
-      - no bgp default ipv4-unicast
       - distance bgp 20 200 200
       - graceful-restart restart-time 300
       - graceful-restart
@@ -392,7 +391,6 @@ l3leaf:
     mlag_peer_ipv4_pool: 10.255.1.64/27 # (9)!
     mlag_peer_l3_ipv4_pool: 10.255.1.96/27 # (10)!
     bgp_defaults:
-      - no bgp default ipv4-unicast
       - distance bgp 20 200 200
       - graceful-restart restart-time 300
       - graceful-restart

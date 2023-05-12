@@ -38,6 +38,12 @@
       "type": "string",
       "title": "BGP As"
     },
+    "bgp_default_ipv4_unicast": {
+      "description": "Default activation of IPv4 unicast address-family on all IPv4 neighbors.\nIt is best practice to disable activation.\n",
+      "type": "boolean",
+      "default": false,
+      "title": "BGP Default IPv4 Unicast"
+    },
     "bgp_ecmp": {
       "description": "Maximum ECMP for BGP multi-path",
       "type": "integer",

@@ -460,9 +460,9 @@ router isis EVPN_UNDERLAY
 
 | BGP Tuning |
 | ---------- |
-| no bgp default ipv4-unicast |
 | distance bgp 20 200 200 |
 | maximum-paths 4 ecmp 4 |
+| no bgp default ipv4-unicast |
 
 #### Router BGP Peer Groups
 
@@ -504,8 +504,8 @@ router isis EVPN_UNDERLAY
 !
 router bgp 65000
    router-id 192.168.255.4
-   bgp cluster-id 192.168.255.4
    no bgp default ipv4-unicast
+   bgp cluster-id 192.168.255.4
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4
    neighbor OVERLAY-PEERS peer group
