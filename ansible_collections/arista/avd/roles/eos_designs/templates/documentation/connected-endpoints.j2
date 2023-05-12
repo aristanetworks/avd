@@ -29,7 +29,7 @@
 {%             set connected_endpoint.description = ethernet_interface.description | arista.avd.default("-") %}
 {%             set connected_endpoint.shutdown = ethernet_interface.shutdown | arista.avd.default(port_channel_interface.shutdown, "-") %}
 {%             if ethernet_interface.type is arista.avd.defined("port-channel-member") %}
-{%                 set connected_endpoint.type = port_channel_interface.type, "-") %}
+{%                 set connected_endpoint.type = port_channel_interface.type | arista.avd.default("-") %}
 {%             else %}
 {%                 set connected_endpoint.type = ethernet_interface.type | arista.avd.default(port_channel_interface.type, "-") %}
 {%             endif %}
