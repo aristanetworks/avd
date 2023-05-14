@@ -18,7 +18,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: INBAND-MGMT-PARENT_Ethernet21
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -28,7 +28,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: INBAND-MGMT-PARENT-VRF_Ethernet21
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 1
     mode: active

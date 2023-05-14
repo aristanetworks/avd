@@ -3,6 +3,9 @@ router_bgp:
   router_id: 10.0.255.1
   bgp_defaults:
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -68,7 +71,7 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: INBAND-MGMT-SUBNET_Ethernet1
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 21
     mode: active
@@ -78,7 +81,7 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: INBAND-MGMT-SUBNET-VRF_Ethernet1
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 22
     mode: active
@@ -88,7 +91,7 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: INBAND-MGMT-IP_Ethernet1
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 23
     mode: active
