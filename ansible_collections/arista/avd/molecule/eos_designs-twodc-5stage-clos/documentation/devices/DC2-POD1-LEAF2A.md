@@ -171,14 +171,14 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 4092 | L2LEAF_INBAND_MGMT | - |
+| 4092 | INBAND_MGMT | - |
 
 ### VLANs Device Configuration
 
 ```eos
 !
 vlan 4092
-   name L2LEAF_INBAND_MGMT
+   name INBAND_MGMT
 ```
 
 ## Interfaces
@@ -293,7 +293,7 @@ interface Loopback1
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4092 | L2LEAF_INBAND_MGMT | default | 1500 | False |
+| Vlan4092 | Inband Management | default | 1500 | False |
 
 ##### IPv4
 
@@ -306,7 +306,7 @@ interface Loopback1
 ```eos
 !
 interface Vlan4092
-   description L2LEAF_INBAND_MGMT
+   description Inband Management
    no shutdown
    mtu 1500
    ip address 172.21.210.2/24
