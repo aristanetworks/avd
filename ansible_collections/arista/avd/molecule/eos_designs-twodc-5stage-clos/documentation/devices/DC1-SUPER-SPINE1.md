@@ -73,7 +73,7 @@ management api http-commands
 
 ```eos
 !
-username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
+username admin privilege 15 role network-admin secret sha512 <removed>
 ```
 
 ## Monitoring
@@ -335,7 +335,7 @@ router bgp 65100
    graceful-restart
    maximum-paths 4 ecmp 4
    neighbor IPv4-UNDERLAY-PEERS peer group
-   neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
+   neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 11.1.2.1 peer group IPv4-UNDERLAY-PEERS

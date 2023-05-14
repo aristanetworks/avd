@@ -60,7 +60,7 @@ cvx
    peer host 1.1.1.1
    peer host 2.2.2.2
    service mcs
-      redis password 7 070E334ddD1D18
+      redis password 7 <removed>
       no shutdown
    service vxlan
       no shutdown

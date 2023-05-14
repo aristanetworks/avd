@@ -68,7 +68,7 @@ snmp-server location {{ snmp_server.location }}
 {%     endif %}
 {%     if snmp_server.communities is arista.avd.defined %}
 {%         for community in snmp_server.communities | arista.avd.natural_sort('name') %}
-{%             set communities_cli = "snmp-server community " ~ community.name %}
+{%             set communities_cli = "snmp-server community " ~ community.name | arista.avd.hide_passwords(hide_passwords) %}
 {%             if community.view is arista.avd.defined %}
 {%                 set communities_cli = communities_cli ~ " view " ~ community.view %}
 {%             endif %}
@@ -132,10 +132,10 @@ snmp-server location {{ snmp_server.location }}
 {%                 if user.localized is arista.avd.defined %}
 {%                     set user_cli = user_cli ~ " localized " ~ user.localized %}
 {%                 endif %}
-{%                 set user_cli = user_cli ~ " auth " ~ user.auth ~ " " ~ user.auth_passphrase %}
+{%                 set user_cli = user_cli ~ " auth " ~ user.auth ~ " " ~ user.auth_passphrase | arista.avd.hide_passwords(hide_passwords) %}
 {%                 if user.priv is arista.avd.defined
                       and user.priv_passphrase is arista.avd.defined %}
-{%                     set user_cli = user_cli ~ " priv " ~ user.priv ~ " " ~ user.priv_passphrase %}
+{%                     set user_cli = user_cli ~ " priv " ~ user.priv ~ " " ~ user.priv_passphrase | arista.avd.hide_passwords(hide_passwords) %}
 {%                 endif %}
 {%             endif %}
 {{ user_cli }}
@@ -158,7 +158,7 @@ snmp-server location {{ snmp_server.location }}
 {%                     endfor %}
 {%                 elif host.community is arista.avd.defined
                         and host.version | arista.avd.default('2c') | string in ['1', '2c'] %}
-{{ host_cli }} version {{ host.version | arista.avd.default('2c') }} {{ host.community }}
+{{ host_cli }} version {{ host.version | arista.avd.default('2c') }} {{ host.community | arista.avd.hide_passwords(hide_passwords) }}
 {%                 endif %}
 {%             endif %}
 {%         endfor %}

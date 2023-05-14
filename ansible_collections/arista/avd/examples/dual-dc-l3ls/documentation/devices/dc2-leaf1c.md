@@ -101,7 +101,7 @@ management api http-commands
 ```eos
 !
 username admin privilege 15 role network-admin nopassword
-username ansible privilege 15 role network-admin secret sha512 $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
+username ansible privilege 15 role network-admin secret sha512 <removed>
 ```
 
 ## Spanning Tree

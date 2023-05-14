@@ -275,11 +275,11 @@ interface {{ port_channel_interface.name }}
    ip ospf authentication message-digest
 {%     endif %}
 {%     if port_channel_interface.ospf_authentication_key is arista.avd.defined %}
-   ip ospf authentication-key 7 {{ port_channel_interface.ospf_authentication_key }}
+   ip ospf authentication-key 7 {{ port_channel_interface.ospf_authentication_key | arista.avd.hide_passwords(hide_passwords) }}
 {%     endif %}
 {%     for ospf_message_digest_key in port_channel_interface.ospf_message_digest_keys | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
 {%         if ospf_message_digest_key.hash_algorithm is arista.avd.defined and ospf_message_digest_key.key is arista.avd.defined %}
-   ip ospf message-digest-key {{ ospf_message_digest_key.id }} {{ ospf_message_digest_key.hash_algorithm }} 7 {{ ospf_message_digest_key.key }}
+   ip ospf message-digest-key {{ ospf_message_digest_key.id }} {{ ospf_message_digest_key.hash_algorithm }} 7 {{ ospf_message_digest_key.key | arista.avd.hide_passwords(hide_passwords) }}
 {%         endif %}
 {%     endfor %}
 {%     if port_channel_interface.pim.ipv4.sparse_mode is arista.avd.defined(true) %}
@@ -391,7 +391,7 @@ interface {{ port_channel_interface.name }}
    isis authentication mode {{ port_channel_interface.isis_authentication_mode }}
 {%     endif %}
 {%     if port_channel_interface.isis_authentication_key is arista.avd.defined %}
-   isis authentication key 7 {{ port_channel_interface.isis_authentication_key }}
+   isis authentication key 7 {{ port_channel_interface.isis_authentication_key | arista.avd.hide_passwords(hide_passwords) }}
 {%     endif %}
 {%     if port_channel_interface.traffic_policy.input is arista.avd.defined %}
    traffic-policy input {{ port_channel_interface.traffic_policy.input }}
