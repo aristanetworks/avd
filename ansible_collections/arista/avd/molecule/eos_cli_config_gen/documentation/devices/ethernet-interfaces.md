@@ -367,9 +367,9 @@ interface Ethernet5
    ip ospf cost 99
    ip ospf network point-to-point
    ip ospf authentication message-digest
-   ip ospf authentication-key 7 asfddja23452
+   ip ospf authentication-key 7 <removed>
    ip ospf area 100
-   ip ospf message-digest-key 1 sha512 7 asfddja23452
+   ip ospf message-digest-key 1 sha512 7 <removed>
    pim ipv4 sparse-mode
    pim ipv4 dr-priority 200
    isis enable ISIS_TEST
@@ -378,7 +378,7 @@ interface Ethernet5
    no isis hello padding
    isis network point-to-point
    isis authentication mode md5
-   isis authentication key 7 asfddja23452
+   isis authentication key 7 <removed>
    spanning-tree guard loop
 !
 interface Ethernet6

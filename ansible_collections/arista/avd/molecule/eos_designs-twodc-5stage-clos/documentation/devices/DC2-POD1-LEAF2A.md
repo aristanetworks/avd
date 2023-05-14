@@ -112,7 +112,7 @@ management api http-commands
 
 ```eos
 !
-username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
+username admin privilege 15 role network-admin secret sha512 <removed>
 ```
 
 ## Monitoring
