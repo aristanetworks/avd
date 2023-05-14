@@ -640,6 +640,31 @@ ethernet_interfaces:
   description: 'N: blah'
   shutdown: false
   type: switched
+- name: Ethernet11
+  peer: Base config which may be overwritten
+  peer_type: network_port
+  description: Base config which may be overwritten
+  shutdown: false
+  type: switched
+- name: Ethernet12
+  peer: Config overwriting base config
+  peer_type: network_port
+  description: Config overwriting base config
+  shutdown: false
+  type: switched
+- name: Ethernet13
+  peer: Base config which may be overwritten
+  peer_type: network_port
+  description: Base config which may be overwritten
+  shutdown: false
+  type: switched
+- name: Ethernet14
+  peer: CONNECTED_ENDPOINT_OVERWRITING_NETWORK_PORT
+  peer_interface: Eth42
+  peer_type: server
+  description: CONNECTED_ENDPOINT_OVERWRITING_NETWORK_PORT_Eth42
+  shutdown: false
+  type: switched
 mlag_configuration:
   domain_id: mlag
   local_interface: Vlan4094

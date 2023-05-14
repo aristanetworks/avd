@@ -23,6 +23,10 @@ class PortChannelInterfacesMixin(UtilsMixin):
     def port_channel_interfaces(self) -> list | None:
         """
         Return structured config for port_channel_interfaces
+
+        Duplicate checks following these rules:
+        - Silently ignore duplicate port-channels if they contain _exactly_ the same configuration
+        - Raise a duplicate error for any other duplicate port-channel interface
         """
         port_channel_interfaces = []
         for connected_endpoint in self._filtered_connected_endpoints:
@@ -35,7 +39,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
 
                 port_channel_interface_name = f"Port-Channel{channel_group_id}"
                 port_channel_config = self._get_port_channel_interface_cfg(adapter, port_channel_interface_name, channel_group_id, connected_endpoint)
-                self._add_if_not_duplicate(port_channel_config, port_channel_interfaces)
+                self._add_port_channel_if_not_duplicate(port_channel_config, port_channel_interfaces)
 
                 if (subinterfaces := get(adapter, "port_channel.subinterfaces")) is None:
                     continue
@@ -48,7 +52,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                     port_channel_subinterface_config = self._get_port_channel_subinterface_cfg(
                         subinterface, adapter, port_channel_subinterface_name, channel_group_id
                     )
-                    self._add_if_not_duplicate(port_channel_subinterface_config, port_channel_interfaces)
+                    self._add_port_channel_if_not_duplicate(port_channel_subinterface_config, port_channel_interfaces)
 
         for network_port in self._filtered_network_ports:
             if get(network_port, "port_channel.mode") is None:
@@ -76,7 +80,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
 
                 port_channel_interface_name = f"Port-Channel{channel_group_id}"
                 port_channel_config = self._get_port_channel_interface_cfg(tmp_network_port, port_channel_interface_name, channel_group_id, connected_endpoint)
-                self._add_if_not_duplicate(port_channel_config, port_channel_interfaces)
+                self._add_port_channel_if_not_duplicate(port_channel_config, port_channel_interfaces)
 
         if port_channel_interfaces:
             return port_channel_interfaces
@@ -181,7 +185,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
 
         return strip_null_from_data(port_channel_interface)
 
-    def _add_if_not_duplicate(self, candidate_port_channel_config, port_channel_interfaces) -> None:
+    def _add_port_channel_if_not_duplicate(self, candidate_port_channel_config, port_channel_interfaces) -> None:
         """
         This function assumes that port_channel_interfaces list DO NOT contain duplicate port-channel names.
         It CAN modify the input variable port_channel_interfaces by appending candidate_port_channel_config to it.
