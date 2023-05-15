@@ -4049,6 +4049,12 @@
                     ]
                   },
                   "title": "Exporters"
+                },
+                "table_size": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "description": "Maximum number of entries in flow table.\n",
+                  "title": "Table Size"
                 }
               },
               "additionalProperties": false,
