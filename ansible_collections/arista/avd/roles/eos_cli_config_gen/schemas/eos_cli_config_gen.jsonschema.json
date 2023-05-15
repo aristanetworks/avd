@@ -8574,6 +8574,178 @@
             "forwarding_table_partition": {
               "type": "string",
               "title": "Forwarding Table Partition"
+            },
+            "mmu": {
+              "type": "object",
+              "description": "Memory Management Unit settings.\n",
+              "properties": {
+                "active_profile": {
+                  "type": "string",
+                  "description": "The queue profile to be applied to the platform.\n",
+                  "title": "Active Profile"
+                },
+                "queue_profiles": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "title": "Name"
+                      },
+                      "multicast_queues": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 1,
+                              "title": "ID"
+                            },
+                            "unit": {
+                              "type": "string",
+                              "enum": [
+                                "bytes",
+                                "cells"
+                              ],
+                              "description": "Unit to be used for the reservation value. If not specified, default is bytes.\n",
+                              "title": "Unit"
+                            },
+                            "reserved": {
+                              "type": "integer",
+                              "description": "Amount of memory that should be reserved for this\nqueue.\n",
+                              "title": "Reserved"
+                            },
+                            "threshold": {
+                              "type": "string",
+                              "description": "Dynamic Shared Memory threshold.\n",
+                              "title": "Threshold"
+                            },
+                            "drop": {
+                              "type": "object",
+                              "properties": {
+                                "precedence": {
+                                  "type": "integer",
+                                  "enum": [
+                                    1,
+                                    2
+                                  ],
+                                  "title": "Precedence"
+                                },
+                                "threshold": {
+                                  "type": "string",
+                                  "description": "Drop Treshold. This value may also be fractions.\nExample: 7/8 or 3/4 or 1/2\n",
+                                  "title": "Threshold"
+                                }
+                              },
+                              "required": [
+                                "precedence",
+                                "threshold"
+                              ],
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Drop"
+                            }
+                          },
+                          "required": [
+                            "id"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          }
+                        },
+                        "title": "Multicast Queues"
+                      },
+                      "unicast_queues": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 7,
+                              "title": "ID"
+                            },
+                            "unit": {
+                              "type": "string",
+                              "enum": [
+                                "bytes",
+                                "cells"
+                              ],
+                              "description": "Unit to be used for the reservation value. If not specified, default is bytes.\n",
+                              "title": "Unit"
+                            },
+                            "reserved": {
+                              "type": "integer",
+                              "description": "Amount of memory that should be reserved for this\nqueue.\n",
+                              "title": "Reserved"
+                            },
+                            "threshold": {
+                              "type": "string",
+                              "description": "Dynamic Shared Memory threshold.\n",
+                              "title": "Threshold"
+                            },
+                            "drop": {
+                              "type": "object",
+                              "properties": {
+                                "precedence": {
+                                  "type": "integer",
+                                  "enum": [
+                                    1,
+                                    2
+                                  ],
+                                  "title": "Precedence"
+                                },
+                                "threshold": {
+                                  "type": "string",
+                                  "description": "Drop Treshold. This value may also be fractions.\nExample: 7/8 or 3/4 or 1/2\n",
+                                  "title": "Threshold"
+                                }
+                              },
+                              "required": [
+                                "precedence",
+                                "threshold"
+                              ],
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Drop"
+                            }
+                          },
+                          "required": [
+                            "id"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          }
+                        },
+                        "title": "Unicast Queues"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "required": [
+                      "name"
+                    ]
+                  },
+                  "title": "Queue Profiles"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Mmu"
             }
           },
           "additionalProperties": false,
