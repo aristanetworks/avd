@@ -257,6 +257,16 @@ management_api_http:
   enable_https: true
   default_services: false
 vlans:
+- id: 4090
+  tenant: system
+  name: LEAF_PEER_L3
+  trunk_groups:
+  - LEAF_PEER_L3
+- id: 4092
+  tenant: system
+  name: MLAG_PEER
+  trunk_groups:
+  - MLAG
 - id: 130
   name: Tenant_A_APP_Zone_1
   tenant: Tenant_A
