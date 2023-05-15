@@ -45,15 +45,15 @@ TCAM profile __`traffic_policy`__ is active
 Following TCAM profiles are configured on device:
 
 - Profile Name: `traffic_policy`
-- Profile Name: `MT_TCAM_PROFILE`
+- Profile Name: `MY_TCAM_PROFILE`
 
 ### Hardware TCAM configuration
 
 ```eos
 !
 hardware tcam
-   profile MT_TCAM_PROFILE
-      source flash:/TCAMP_PROFILES/MY_TCAM_PROFILE.conf
+   profile MY_TCAM_PROFILE
+      source flash:/TCAM_PROFILES/MY_TCAM_PROFILE.conf
    !
    profile traffic_policy
       feature acl port mac
