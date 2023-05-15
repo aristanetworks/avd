@@ -190,7 +190,6 @@ spine:
     loopback_ipv4_pool: 192.168.255.0/24
     # Recommended for vEOS
     bgp_defaults:
-      - 'no bgp default ipv4-unicast'
       - 'distance bgp 20 200 200'
       - 'graceful-restart restart-time 300'
       - 'graceful-restart'

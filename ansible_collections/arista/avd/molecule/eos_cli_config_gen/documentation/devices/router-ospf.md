@@ -63,7 +63,7 @@ interface Ethernet1
    ip ospf network point-to-point
    ip ospf authentication message-digest
    ip ospf area 0.0.0.1
-   ip ospf message-digest-key 55 md5 7 ABCDEFGHIJKLMNOPQRSTUVWXYZ
+   ip ospf message-digest-key 55 md5 7 <removed>
 ```
 
 ### Port-Channel Interfaces
@@ -85,7 +85,7 @@ interface Port-Channel12
    ip ospf area 0.0.0.12
    ip ospf cost 99
    ip ospf authentication message-digest
-   ip ospf message-digest-key 55 md5 7 ABCDEFGHIJKLMNOPQRSTUVWXYZ
+   ip ospf message-digest-key 55 md5 7 <removed>
 ```
 
 ### Loopback Interfaces
@@ -136,7 +136,7 @@ interface Vlan24
    ip ospf area 0.0.0.24
    ip ospf cost 99
    ip ospf authentication message-digest
-   ip ospf message-digest-key 55 md5 7 ABCDEFGHIJKLMNOPQRSTUVWXYZ
+   ip ospf message-digest-key 55 md5 7 <removed>
 ```
 
 ## Routing

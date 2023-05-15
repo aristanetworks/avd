@@ -58,8 +58,8 @@ interface Management1
 ```eos
 !
 username admin privilege 15 role network-admin nopassword
-username ansible privilege 15 role network-admin secret sha512 $6$.I7/ZR/zlLIUv8fr$vR/JvLTbq5amMt6Y1SE4CKlPDv/AzJYlFYHkUZ17BDovm0Oi4aLdBULe1EmZ0Y9xKjVLMKpxCSKmlrAioDxbQ0
-username cvpadmin privilege 15 role network-admin secret sha512 $6$.I7/ZR/zlLIUv8fr$vR/JvLTbq5amMt6Y1SE4CKlPDv/AzJYlFYHkUZ17BDovm0Oi4aLdBULe1EmZ0Y9xKjVLMKpxCSKmlrAioDxbQ0
+username ansible privilege 15 role network-admin secret sha512 <removed>
+username cvpadmin privilege 15 role network-admin secret sha512 <removed>
 username cvpadmin ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC9OuVC4D+ARBrc9sP0VRmP6osTo8fgA4Z/dkacQuiOgph6VTHaBkIuqR7XswKKCOH36GXeIChnIF+d1HSoe05mZX+bT2Nu1SObnO8jZjqIFZqUlXUTHWgmnChchABmXS3KMQlivVDE/r9o3vmHEFTfKPZsmG7YHZuavfYXxFJtqtDW0nGH/WJ+mm4v2CP1tOPBLvNE3mLXXyTepDkmrCH/fkwgPR3gBqLrkhWlma0bz+7I851RpCQemhVJFxeI/SnvQfL2VJU2ZMM3pPRSTlLry7Od6kZNAkr4dIOFDCVAaIDbBxPUZ/LvPfyEUwicEo/EKmpLBQ6E2UqcCK2pTyV/K63682spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU= cvpadmin@hostmachine.local
 ```
 
@@ -78,10 +78,10 @@ username cvpadmin ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC9OuVC4D+ARBrc9s
 
 ```eos
 !
-tacacs-server host 10.10.10.157 single-connection vrf mgt key 7 071B245F5A
-tacacs-server host 10.10.10.158 key 7 071B245F5A
-tacacs-server host 10.10.10.159 key 8a $kUVyoj7FVQ//yw9D2lbqjA==$kxxohBiofI46IX3pw18KYQ==$DOOM0l9uU4TrQt2kyA7XCKtjUA==
-tacacs-server host 10.10.10.249 timeout 23 key 7 071B245F5A
+tacacs-server host 10.10.10.157 single-connection vrf mgt key 7 <removed>
+tacacs-server host 10.10.10.158 key 7 <removed>
+tacacs-server host 10.10.10.159 key 8a <removed>
+tacacs-server host 10.10.10.249 timeout 23 key 7 <removed>
 ```
 
 ### RADIUS Server
@@ -98,9 +98,9 @@ tacacs-server host 10.10.10.249 timeout 23 key 7 071B245F5A
 
 ```eos
 !
-radius-server host 10.10.10.157 vrf mgt key 7 071B245F5A
-radius-server host 10.10.10.249 key 7 071B245F5A
-radius-server host 10.10.10.158 key 7 071B245F5A
+radius-server host 10.10.10.157 vrf mgt key 7 <removed>
+radius-server host 10.10.10.249 key 7 <removed>
+radius-server host 10.10.10.158 key 7 <removed>
 ```
 
 ### AAA Server Groups

@@ -3,6 +3,9 @@ router_bgp:
   router_id: 1.2.3.1
   bgp_defaults:
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -117,6 +120,7 @@ ethernet_interfaces:
   mtu: 9000
   ip_address: 192.168.0.6/31
 - name: Ethernet5
+  type: port-channel-member
   peer: peer5
   peer_interface: Port-Channel5
   peer_type: other
@@ -126,6 +130,7 @@ ethernet_interfaces:
     id: 5
     mode: active
 - name: Ethernet6
+  type: port-channel-member
   peer: peer5
   peer_interface: Port-Channel5
   peer_type: other
@@ -135,6 +140,7 @@ ethernet_interfaces:
     id: 5
     mode: active
 - name: Ethernet7
+  type: port-channel-member
   peer: peer6
   peer_interface: Port-Channel7
   peer_type: other
@@ -144,6 +150,7 @@ ethernet_interfaces:
     id: 7
     mode: active
 - name: Ethernet8
+  type: port-channel-member
   peer: peer6
   peer_interface: Port-Channel7
   peer_type: other

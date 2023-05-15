@@ -212,8 +212,6 @@ interface Ethernet50
 | Port-Channel20 | Po_in_mode_access_accepting_tagged_LACP_frames | switched | access | 200 | - | - | - | - | - | - |
 | Port-Channel50 | SRV-POD03_PortChanne1 | switched | trunk | 1-4000 | - | - | - | - | - | 0000:0000:0303:0202:0101 |
 | Port-Channel51 | ipv6_prefix | switched | trunk | 1-500 | - | - | - | - | - | - |
-| Port-Channel100.101 | IFL for TENANT01 | switched | access | - | - | - | - | - | - | - |
-| Port-Channel100.102 | IFL for TENANT02 | switched | access | - | - | - | - | - | - | - |
 | Port-Channel101 | PVLAN Promiscuous Access - only one secondary | switched | access | 110 | - | - | - | - | - | - |
 | Port-Channel102 | PVLAN Promiscuous Trunk - vlan translation out | switched | trunk | 110-112 | - | - | - | - | - | - |
 | Port-Channel103 | PVLAN Secondary Trunk | switched | trunk | 110-112 | - | - | - | - | - | - |
@@ -234,6 +232,8 @@ interface Ethernet50
 | Interface | Description | Type | Vlan ID | Dot1q VLAN Tag |
 | --------- | ----------- | -----| ------- | -------------- |
 | Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | l3dot1q | - | 101 |
+| Port-Channel100.101 | IFL for TENANT01 | l3dot1q | - | 101 |
+| Port-Channel100.102 | IFL for TENANT02 | l3dot1q | - | 102 |
 
 ##### Flexible Encapsulation Interfaces
 
@@ -298,6 +298,8 @@ interface Ethernet50
 | Port-Channel9 | - | routed | - | 10.9.2.3/31 | default | - | - | - | - |
 | Port-Channel17 | PBR Description | routed | - | 192.0.2.3/31 | default | - | - | - | - |
 | Port-Channel99 | MCAST | routed | - | 192.0.2.10/31 | default | - | - | - | - |
+| Port-Channel100.101 | IFL for TENANT01 | routed | - | 10.1.1.3/31 | default | 1500 | - | - | - |
+| Port-Channel100.102 | IFL for TENANT02 | routed | - | 10.1.2.3/31 | C2 | 1500 | - | - | - |
 | Port-Channel113 | interface_with_mpls_enabled | routed | - | 172.31.128.9/31 | default | - | - | - | - |
 | Port-Channel114 | interface_with_mpls_disabled | routed | - | 172.31.128.10/31 | default | - | - | - | - |
 
@@ -476,14 +478,14 @@ interface Port-Channel100.101
    description IFL for TENANT01
    logging event link-status
    mtu 1500
-   switchport
+   encapsulation dot1q vlan 101
    ip address 10.1.1.3/31
 !
 interface Port-Channel100.102
    description IFL for TENANT02
    no logging event link-status
    mtu 1500
-   switchport
+   encapsulation dot1q vlan 102
    vrf C2
    ip address 10.1.2.3/31
 !
@@ -558,7 +560,7 @@ interface Port-Channel110
    isis network point-to-point
    isis hello padding
    isis authentication mode text
-   isis authentication key 7 asfddja23452
+   isis authentication key 7 <removed>
 !
 interface Port-Channel111
    description Flexencap Port-Channel
