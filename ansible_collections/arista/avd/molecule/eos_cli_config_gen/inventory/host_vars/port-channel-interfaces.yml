@@ -90,6 +90,7 @@ port_channel_interfaces:
       event:
         link_status: true
   - name: Port-Channel100.101
+    type: l3dot1q
     logging:
       event:
         link_status: true
@@ -98,6 +99,7 @@ port_channel_interfaces:
     ip_address: 10.1.1.3/31
     encapsulation_dot1q_vlan: 101
   - name: Port-Channel100.102
+    type: l3dot1q
     logging:
       event:
         link_status: false
@@ -414,6 +416,7 @@ port_channel_interfaces:
 # Children interfaces
 ethernet_interfaces:
   - name: Ethernet5
+    type: port-channel-member
     peer: DC1-AGG01
     peer_interface: Ethernet1
     peer_type: l2leaf
@@ -426,6 +429,7 @@ ethernet_interfaces:
         override: 100gbase-ar4
 
   - name: Ethernet3
+    type: port-channel-member
     peer: DC1-LEAF1B
     peer_interface: Ethernet3
     peer_type: mlag_peer
@@ -435,6 +439,7 @@ ethernet_interfaces:
       mode: active
 
   - name: Ethernet4
+    type: port-channel-member
     peer: DC1-LEAF1B
     peer_interface: Ethernet4
     peer_type: mlag_peer
@@ -444,12 +449,11 @@ ethernet_interfaces:
       mode: active
 
   - name: Ethernet50
+    type: port-channel-member
     peer: SRV-POD03
     peer_interface: Eth1
     peer_type: server
     description: SRV-POD03_Eth1
-    mode: trunk
-    vlans: 1-4000
     channel_group:
       id: 5
       mode: "active"
@@ -458,6 +462,7 @@ ethernet_interfaces:
       transmit: false
 
   - name: Ethernet8
+    type: port-channel-member
     peer: DC1-LEAF1B
     peer_interface: Ethernet4
     description: MLAG_PEER_DC1-LEAF1B_Ethernet8
@@ -466,6 +471,7 @@ ethernet_interfaces:
       mode: active
 
   - name: Ethernet15
+    type: port-channel-member
     peer: DC1-AGG03
     peer_interface: Ethernet1
     peer_type: l2leaf
@@ -478,6 +484,7 @@ ethernet_interfaces:
       multiplier: 30
 
   - name: Ethernet16
+    type: port-channel-member
     peer: DC1-AGG04
     peer_interface: Ethernet1
     peer_type: l2leaf
@@ -489,30 +496,35 @@ ethernet_interfaces:
       mode: normal
 
   - name: Ethernet17
+    type: port-channel-member
     description: LAG Member
     channel_group:
       id: 17
       mode: active
 
   - name: Ethernet10/1
+    type: port-channel-member
     description: LAG Member
     channel_group:
       id: 101
       mode: active
 
   - name: Ethernet10/2
+    type: port-channel-member
     description: LAG Member
     channel_group:
       id: 102
       mode: active
 
   - name: Ethernet10/3
+    type: port-channel-member
     description: LAG Member
     channel_group:
       id: 103
       mode: active
 
   - name: Ethernet10/4
+    type: switched
     description: LAG Member LACP fallback
     channel_group:
       id: 104
@@ -522,18 +534,21 @@ ethernet_interfaces:
     spanning_tree_portfast: edge
 
   - name: Ethernet18
+    type: port-channel-member
     description: LAG Member
     channel_group:
       id: 109
       mode: active
 
   - name: Ethernet10/10
+    type: port-channel-member
     description: isis_port_channel_member
     channel_group:
       id: 110
       mode: active
 
   - name: Ethernet11/1
+    type: port-channel-member
     description: LAG Member with error_correction
     error_correction_encoding:
       fire_code: true

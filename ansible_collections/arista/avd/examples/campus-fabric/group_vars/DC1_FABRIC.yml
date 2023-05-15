@@ -51,8 +51,8 @@ leaf:
     mlag_peer_ipv4_pool: 192.168.0.0/24
     spanning_tree_mode: mstp
     spanning_tree_priority: 16384
-    inband_management_subnet: 10.10.10.0/24
-    inband_management_vlan: 10
+    inband_mgmt_subnet: 10.10.10.0/24
+    inband_mgmt_vlan: 10
   node_groups:
     IDF1:
       mlag: true

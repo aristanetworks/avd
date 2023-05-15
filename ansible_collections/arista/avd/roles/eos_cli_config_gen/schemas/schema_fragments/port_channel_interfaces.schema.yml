@@ -52,8 +52,8 @@ keys:
           - l3dot1q
           - l2dot1q
           description: |
-            l3dot1q and l2dot1q are used for sub-interfaces
-            The parent interface should be defined as routed
+            l3dot1q and l2dot1q are used for sub-interfaces. The parent interface should be defined as routed.
+            Interface will not be listed in device documentation, unless "type" is set.
         encapsulation_dot1q_vlan:
           type: int
           description: VLAN tag to configure on sub-interface

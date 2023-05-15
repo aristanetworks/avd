@@ -50,6 +50,6 @@ interface Management1
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvaddr=10.10.10.10:9910 -cvauth=key,key -cvvrf=default -smashexcludes=test -ingestexclude=test -taillogs
+   exec /usr/bin/TerminAttr -cvaddr=10.10.10.10:9910 -cvauth=key,<removed> -cvvrf=default -smashexcludes=test -ingestexclude=test -taillogs
    no shutdown
 ```

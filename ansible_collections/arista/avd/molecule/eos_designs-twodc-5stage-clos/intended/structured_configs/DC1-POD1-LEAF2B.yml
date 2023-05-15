@@ -2,11 +2,13 @@ router_bgp:
   as: '65112.100'
   router_id: 172.16.110.5
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - graceful-restart restart-time 300
   - graceful-restart
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
@@ -304,6 +306,7 @@ local_users:
 - name: admin
   privilege: 15
   role: network-admin
+  no_password: true
   sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
 vrfs:
 - name: MGMT
@@ -528,7 +531,7 @@ ethernet_interfaces:
   peer_interface: Ethernet5
   peer_type: mlag_peer
   description: MLAG_PEER_DC1.POD1.LEAF2A_Ethernet5
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -538,7 +541,7 @@ ethernet_interfaces:
   peer_interface: Ethernet6
   peer_type: mlag_peer
   description: MLAG_PEER_DC1.POD1.LEAF2A_Ethernet6
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -577,7 +580,7 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-POD1-L2LEAF2A_Ethernet2
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 3
     mode: active
@@ -587,7 +590,7 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-POD1-L2LEAF2B_Ethernet2
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 3
     mode: active
@@ -636,11 +639,7 @@ ethernet_interfaces:
   peer_type: server
   port_profile: TENANT_A
   description: server-1_Eth2
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '110'
-  service_profile: bar
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under profile TENANT_A
@@ -648,6 +647,7 @@ ethernet_interfaces:
     EOF
 
     '
+  type: port-channel-member
   channel_group:
     id: 16
     mode: active
@@ -657,11 +657,7 @@ ethernet_interfaces:
   peer_type: server
   port_profile: TENANT_A
   description: Set using structured_config on server adapter
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '110'
-  service_profile: foo
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under adapter for switch Eth17
@@ -669,6 +665,7 @@ ethernet_interfaces:
     EOF
 
     '
+  type: port-channel-member
   channel_group:
     id: 17
     mode: active
@@ -678,11 +675,7 @@ ethernet_interfaces:
   peer_type: server
   port_profile: NESTED_TENANT_A
   description: server-1_Eth6
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '110'
-  service_profile: foo
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under profile NESTED_TENANT_A
@@ -690,6 +683,7 @@ ethernet_interfaces:
     EOF
 
     '
+  type: port-channel-member
   channel_group:
     id: 18
     mode: active
@@ -699,11 +693,7 @@ ethernet_interfaces:
   peer_type: server
   port_profile: NESTED_TENANT_A
   description: server-1_Eth8
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '110'
-  service_profile: foo
   eos_cli: 'comment
 
     Comment created from raw_eos_cli under profile NESTED_TENANT_A
@@ -711,6 +701,7 @@ ethernet_interfaces:
     EOF
 
     '
+  type: port-channel-member
   channel_group:
     id: 19
     mode: active

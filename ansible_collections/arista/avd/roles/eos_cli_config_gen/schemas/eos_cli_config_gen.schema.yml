@@ -1142,6 +1142,30 @@ keys:
     type: str
     description: Multiline string with EOS CLI rendered directly on the root level
       of the final EOS configuration
+  eos_cli_config_gen_configuration:
+    documentation_options:
+      filename: inputs/Role Inputs
+    type: dict
+    keys:
+      hide_passwords:
+        type: bool
+        description: 'Replace the input data using the `hide_passwords` filter in
+          the Jinja2 templates by ''<removed>'' in the configruation if true
+
+          '
+        default: false
+  eos_cli_config_gen_documentation:
+    documentation_options:
+      filename: inputs/Role Inputs
+    type: dict
+    keys:
+      hide_passwords:
+        type: bool
+        description: 'Replace the input data using the `hide_passwords` filter in
+          the Jinja2 templates by ''<removed>'' in the documentation if true
+
+          '
+        default: true
   errdisable:
     documentation_options:
       filename: data_model/Errdisable
@@ -1298,9 +1322,12 @@ keys:
           - switched
           - l3dot1q
           - l2dot1q
-          description: 'l3dot1q and l2dot1q are used for sub-interfaces
+          - port-channel-member
+          description: 'l3dot1q and l2dot1q are used for sub-interfaces. The parent
+            interface should be defined as routed.
 
-            The parent interface should be defined as routed
+            Interface will not be listed in device documentation, unless "type" is
+            set.
 
             '
         snmp_trap_link_change:
@@ -2465,6 +2492,15 @@ keys:
     documentation_options:
       filename: data_model/Monitoring
     type: list
+    description: 'Gives the ability to monitor and react to Syslog messages.
+
+      Event Handlers provide a powerful and flexible tool that can be used to apply
+      self-healing actions,
+
+      customize the system behavior, and implement workarounds to problems discovered
+      in the field.
+
+      '
     primary_key: name
     convert_types:
     - dict
@@ -2487,6 +2523,8 @@ keys:
             '
         delay:
           type: int
+          convert_types:
+          - str
           description: 'Event-handler delay in seconds
 
             '
@@ -5783,9 +5821,11 @@ keys:
           - switched
           - l3dot1q
           - l2dot1q
-          description: 'l3dot1q and l2dot1q are used for sub-interfaces
+          description: 'l3dot1q and l2dot1q are used for sub-interfaces. The parent
+            interface should be defined as routed.
 
-            The parent interface should be defined as routed
+            Interface will not be listed in device documentation, unless "type" is
+            set.
 
             '
         encapsulation_dot1q_vlan:

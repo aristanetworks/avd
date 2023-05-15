@@ -16,7 +16,7 @@ mac security
 {%         endif %}
 {%         for connection_key in profile.connection_keys | arista.avd.natural_sort('id') %}
 {%             if connection_key.encrypted_key is arista.avd.defined %}
-{%                 set key_cli = "key " ~ connection_key.id ~ " 7 " ~ connection_key.encrypted_key %}
+{%                 set key_cli = "key " ~ connection_key.id ~ " 7 " ~ connection_key.encrypted_key | arista.avd.hide_passwords(hide_passwords) %}
 {%                 if connection_key.fallback is arista.avd.defined %}
 {%                     set key_cli = key_cli ~ " fallback" %}
 {%                 endif %}
