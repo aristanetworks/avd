@@ -8,7 +8,7 @@ hardware tcam
 {%             if profile.config is arista.avd.defined %}
 {{ profile.config }}
 {%             elif profile.source is arista.avd.defined %}
-     source {{ profile.source }}
+      source {{ profile.source }}
 {%             endif %}
    !
 {%         endfor %}
