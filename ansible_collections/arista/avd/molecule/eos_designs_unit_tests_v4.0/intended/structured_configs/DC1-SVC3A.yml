@@ -964,6 +964,28 @@ port_channel_interfaces:
   vlans: '110'
   mlag: 1291
 ethernet_interfaces:
+- name: Ethernet5
+  peer: DC1-SVC3B
+  peer_interface: Ethernet5
+  peer_type: mlag_peer
+  description: MLAG_PEER_DC1-SVC3B_Ethernet5
+  type: port-channel-member
+  shutdown: false
+  channel_group:
+    id: 5
+    mode: active
+  speed: 100g
+- name: Ethernet6
+  peer: DC1-SVC3B
+  peer_interface: Ethernet6
+  peer_type: mlag_peer
+  description: MLAG_PEER_DC1-SVC3B_Ethernet6
+  type: port-channel-member
+  shutdown: false
+  channel_group:
+    id: 5
+    mode: active
+  speed: 100g
 - name: Ethernet1
   peer: DC1-SPINE1
   peer_interface: Ethernet4

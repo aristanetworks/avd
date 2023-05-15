@@ -328,6 +328,28 @@ port_channel_interfaces:
   - LEAF_PEER_L3
   - MLAG
 ethernet_interfaces:
+- name: Ethernet5
+  peer: DC1-CL1B
+  peer_interface: Ethernet5
+  peer_type: mlag_peer
+  description: MLAG_PEER_DC1-CL1B_Ethernet5
+  type: port-channel-member
+  shutdown: false
+  channel_group:
+    id: 5
+    mode: active
+  speed: 100g
+- name: Ethernet6
+  peer: DC1-CL1B
+  peer_interface: Ethernet6
+  peer_type: mlag_peer
+  description: MLAG_PEER_DC1-CL1B_Ethernet6
+  type: port-channel-member
+  shutdown: false
+  channel_group:
+    id: 5
+    mode: active
+  speed: 100g
 - name: Ethernet1
   peer: DC1-SPINE1
   peer_interface: Ethernet14

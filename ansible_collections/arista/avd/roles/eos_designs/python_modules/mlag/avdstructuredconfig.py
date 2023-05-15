@@ -171,9 +171,10 @@ class AvdStructuredConfig(AvdFacts):
         if not (mlag_interfaces := self.shared_utils.mlag_interfaces):
             return None
 
-        ethernet_interfaces = {}
+        ethernet_interfaces = []
         for mlag_interface in mlag_interfaces:
             ethernet_interface = {
+                "name": mlag_interface,
                 "peer": self.shared_utils.mlag_peer,
                 "peer_interface": mlag_interface,
                 "peer_type": "mlag_peer",
@@ -186,10 +187,9 @@ class AvdStructuredConfig(AvdFacts):
                 },
                 "speed": self.shared_utils.mlag_interfaces_speed,
             }
+            ethernet_interfaces.append(strip_empties_from_dict(ethernet_interface))
 
-            ethernet_interfaces[mlag_interface] = ethernet_interface
-
-        return strip_empties_from_dict(ethernet_interfaces)
+        return ethernet_interfaces
 
     @cached_property
     def mlag_configuration(self):
