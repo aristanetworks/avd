@@ -25,4 +25,4 @@ servers:
         switches: [ duplicate-interfaces-connected-endpoints ]
 
 
-expected_error_message: "Duplicate interface name Ethernet10 found while generating ethernet_interfaces for connected_endpoints peer: server02, peer_interface: Eth2. Description on duplicate interface: server01_ES1_Eth1"
+expected_error_message: "Duplicate interface name Ethernet10 found while generating ethernet_interfaces for connected_endpoint: server02, endpoint_interface: Eth2. Description on duplicate interface: server01_ES1_Eth1"

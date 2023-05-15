@@ -12,7 +12,9 @@ tenants:
     l2vlans:
       - id: 1
         name: vlan
+  - name: TenantB
+    l2vlans:
       - id: 1
         name: duplicate_vlan
 
-expected_error_message: "Duplicate VLAN ID '1' found in Tenant 'TenantA' during configuration of L2VLAN."
+expected_error_message: "Duplicate VLAN ID '1' found in Tenant 'TenantB' during configuration of L2VLAN. Other VLAN is in Tenant 'TenantA'."

@@ -35,8 +35,7 @@ tenants:
             nodes: [ "duplicate-interfaces-point-to-point-services-2" ]
             interfaces: [ "Ethernet6" ]
             port_channel:
-              description: Description1
-              mode: active
+              mode: 'active'
 
   - name: TENANT_B
     point_to_point_services:
@@ -46,7 +45,6 @@ tenants:
             nodes: [ "duplicate-interfaces-point-to-point-services-2" ]
             interfaces: [ "Ethernet6" ]
             port_channel:
-              description: Description2
-              mode: on
+              mode: 'on'
 
-expected_error_message: "Duplicate interface_name Ethernet6 found while generating ethernet_interfaces for point_to_point_services"
+expected_error_message: "Duplicate interface_name Ethernet6 found while generating ethernet_interfaces for point_to_point_services node: duplicate-interfaces-point-to-point-services-2"

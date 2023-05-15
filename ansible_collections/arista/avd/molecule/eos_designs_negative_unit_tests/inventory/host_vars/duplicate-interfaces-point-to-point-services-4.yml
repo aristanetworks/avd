@@ -29,13 +29,12 @@ design:
 tenants:
   - name: TENANT
     point_to_point_services:
-      - name: TEN_A_site2_site5_eline_port_based
+      - name: TEN_site2_site5_eline_port_based
         endpoints:
           - id: 57
             nodes: [ "duplicate-interfaces-point-to-point-services-4" ]
             interfaces: [ "Ethernet6.1000" ]
             port_channel:
-              description: Description1
               mode: active
 
   - name: TENANT_A
