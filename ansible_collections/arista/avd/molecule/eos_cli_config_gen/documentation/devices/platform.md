@@ -45,6 +45,28 @@ interface Management1
 | Settings | Value |
 | -------- | ----- |
 | forwarding_table_partition | 2 |
+| MMU Applied Profile | mc_example_profile |
+
+#### Trident MMU QUEUE PROFILES**
+
+**mc_example_profile**
+
+| Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
+| ---- | ------------ | --------- | -------- | --------------- |
+| Unicast | 1 | - | 0 bytes | - |
+| Unicast | 2 | 1/8 | 0 cells | - |
+| Multicast | 0 | - | 0 bytes | - |
+| Multicast | 1 | 1/64 | 0 cells | - |
+
+**unused_profile**
+
+| Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
+| ---- | ------------ | --------- | -------- | --------------- |
+| Unicast | 1 | - | 0 bytes | - |
+| Unicast | 2 | 1/8 | 0 cells | - |
+| Unicast | 7 | - | - bytes | - |
+| Multicast | 0 | - | 0 bytes | - |
+| Multicast | 1 | 8 | 0 cells | - |
 
 #### Platform Sand Summary
 
@@ -68,6 +90,26 @@ interface Management1
 ```eos
 !
 platform trident forwarding-table partition 2
+platform trident mmu queue profile mc_example_profile apply
+!
+platform trident mmu queue profile mc_example_profile
+    egress multicast queue 0 reserved 0
+    egress multicast queue 0 drop-precedence 1 drop-threshold 3/4
+    egress multicast queue 1 reserved cells 0
+    egress multicast queue 1 threshold 1/64
+    egress unicast queue 1 reserved bytes 0
+    egress unicast queue 2 reserved cells 0
+    egress unicast queue 2 threshold 1/8
+!
+platform trident mmu queue profile unused_profile
+    egress multicast queue 0 reserved 0
+    egress multicast queue 0 drop-precedence 2 drop-threshold 1
+    egress multicast queue 1 reserved cells 0
+    egress multicast queue 1 threshold 8
+    egress unicast queue 1 reserved bytes 0
+    egress unicast queue 1 drop-precedence 1 drop-threshold 1/8
+    egress unicast queue 2 reserved cells 0
+    egress unicast queue 2 threshold 1/8
 platform sand qos map traffic-class 0 to network-qos 0
 platform sand qos map traffic-class 1 to network-qos 7
 platform sand qos map traffic-class 2 to network-qos 15
