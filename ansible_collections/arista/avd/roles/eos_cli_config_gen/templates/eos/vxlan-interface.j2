@@ -55,6 +55,11 @@ interface Vxlan1
 {%     elif vxlan_interface.Vxlan1.vxlan.qos.dscp_propagation_encapsulation is arista.avd.defined(false) %}
    no vxlan qos dscp propagation encapsulation
 {%     endif %}
+{%     if vxlan_interface.Vxlan1.vxlan.qos.ecn_propagation is arista.avd.defined(true) %}
+   vxlan qos ecn propagation
+{%     elif vxlan_interface.Vxlan1.vxlan.qos.ecn_propagation is arista.avd.defined(false) %}
+   no vxlan qos ecn propagation
+{%     endif %}
 {%     if vxlan_interface.Vxlan1.vxlan.qos.map_dscp_to_traffic_class_decapsulation is arista.avd.defined(true) %}
    vxlan qos map dscp to traffic-class decapsulation
 {%     elif vxlan_interface.Vxlan1.vxlan.qos.map_dscp_to_traffic_class_decapsulation is arista.avd.defined(false) %}

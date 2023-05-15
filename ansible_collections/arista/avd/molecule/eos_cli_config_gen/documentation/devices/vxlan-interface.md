@@ -50,6 +50,7 @@ interface Management1
 | EVPN MLAG Shared Router MAC | mlag-system-id |
 | VXLAN flood-lists learning from data-plane | Enabled |
 | Qos dscp propagation encapsulation | Enabled |
+| Qos ECN propagation | Enabled |
 | Qos map dscp to traffic-class decapsulation | Enabled |
 | Remote VTEPs EVPN BFD transmission rate | 300ms |
 | Remote VTEPs EVPN BFD expected minimum incoming rate (min-rx) | 300ms |
@@ -98,6 +99,7 @@ interface Vxlan1
    bfd vtep evpn prefix-list PL-TEST
    vxlan flood vtep 10.1.0.10 10.1.0.11
    vxlan qos dscp propagation encapsulation
+   vxlan qos ecn propagation
    vxlan qos map dscp to traffic-class decapsulation
    vxlan vlan 110 multicast group 239.9.1.4
    vxlan vlan 112 multicast group 239.9.1.6

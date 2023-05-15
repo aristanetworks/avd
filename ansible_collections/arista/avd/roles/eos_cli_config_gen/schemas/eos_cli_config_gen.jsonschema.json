@@ -19699,6 +19699,11 @@
                       "type": "boolean",
                       "title": "DSCP Propagation Encapsulation"
                     },
+                    "ecn_propagation": {
+                      "type": "boolean",
+                      "description": "Enable copying ECN marking to/from encapsulted packet.\n",
+                      "title": "Ecn Propagation"
+                    },
                     "map_dscp_to_traffic_class_decapsulation": {
                       "type": "boolean",
                       "title": "Map DSCP To Traffic Class Decapsulation"

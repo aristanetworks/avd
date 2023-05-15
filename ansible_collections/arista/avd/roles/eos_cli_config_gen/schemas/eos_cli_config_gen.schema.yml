@@ -11673,6 +11673,11 @@ keys:
                 keys:
                   dscp_propagation_encapsulation:
                     type: bool
+                  ecn_propagation:
+                    type: bool
+                    description: 'Enable copying ECN marking to/from encapsulted packet.
+
+                      '
                   map_dscp_to_traffic_class_decapsulation:
                     type: bool
               vlans:
