@@ -7,7 +7,7 @@ daemon TerminAttr
 {%     for cluster in daemon_terminattr.clusters | arista.avd.natural_sort('name') %}
 {%         set cvp_config.cli = cvp_config.cli ~  " -cvopt " ~ cluster.name ~ ".addr=" ~ cluster.cvaddrs | join(',') %}
 {%         if cluster.cvauth.method is arista.avd.defined('key') %}
-{%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster.name ~ ".auth=key," ~ cluster.cvauth.key | arista.avd.default('') %}
+{%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster.name ~ ".auth=key," ~ cluster.cvauth.key | arista.avd.default('') | arista.avd.hide_passwords(hide_passwords) %}
 {%         elif cluster.cvauth.method is arista.avd.defined('token') and cluster.cvauth.token_file is arista.avd.defined %}
 {%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster.name ~ ".auth=token," ~ cluster.cvauth.token_file %}
 {%         elif cluster.cvauth.method is arista.avd.defined('token-secure') and cluster.cvauth.token_file is arista.avd.defined %}
@@ -37,7 +37,7 @@ daemon TerminAttr
 {%     if daemon_terminattr.cvaddrs is arista.avd.defined %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -cvaddr=" ~ daemon_terminattr.cvaddrs | join(',') %}
 {%         if daemon_terminattr.cvauth.method is arista.avd.defined('key') %}
-{%             set cvp_config.cli = cvp_config.cli ~ " -cvauth=key," ~ daemon_terminattr.cvauth.key | arista.avd.default('') %}
+{%             set cvp_config.cli = cvp_config.cli ~ " -cvauth=key," ~ daemon_terminattr.cvauth.key | arista.avd.default('') | arista.avd.hide_passwords(hide_passwords) %}
 {%         elif daemon_terminattr.cvauth.method is arista.avd.defined('token') and daemon_terminattr.cvauth.token_file is arista.avd.defined %}
 {%             set cvp_config.cli = cvp_config.cli ~ " -cvauth=token," ~ daemon_terminattr.cvauth.token_file %}
 {%         elif daemon_terminattr.cvauth.method is arista.avd.defined('token-secure') and daemon_terminattr.cvauth.token_file is arista.avd.defined %}

@@ -17,7 +17,7 @@ no {{ local_user_cli }}
 {%             set local_user_cli = local_user_cli ~ " shell " ~ local_user.shell %}
 {%         endif %}
 {%         if local_user.sha512_password is arista.avd.defined %}
-{%             set local_user_cli = local_user_cli ~ " secret sha512 " ~ local_user.sha512_password %}
+{%             set local_user_cli = local_user_cli ~ " secret sha512 " ~ local_user.sha512_password | arista.avd.hide_passwords(hide_passwords) %}
 {%         elif local_user.no_password is arista.avd.defined(true) %}
 {%             set local_user_cli = local_user_cli ~ " nopassword" %}
 {%         endif %}

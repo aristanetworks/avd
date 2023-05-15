@@ -2,11 +2,13 @@ router_bgp:
   as: '65212'
   router_id: 172.16.210.4
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - graceful-restart restart-time 300
   - graceful-restart
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -120,7 +122,7 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC2-POD1-L2LEAF2A_Ethernet1
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 3
     mode: active
@@ -179,10 +181,10 @@ vxlan_interface:
 vlans:
 - id: 4092
   tenant: system
-  name: L2LEAF_INBAND_MGMT
+  name: INBAND_MGMT
 vlan_interfaces:
 - name: Vlan4092
-  description: L2LEAF_INBAND_MGMT
+  description: Inband Management
   shutdown: false
   mtu: 1500
   ip_address: 172.21.210.2/24

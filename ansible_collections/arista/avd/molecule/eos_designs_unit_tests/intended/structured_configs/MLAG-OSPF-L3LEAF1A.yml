@@ -3,6 +3,9 @@ router_bgp:
   router_id: 192.168.255.36
   bgp_defaults:
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
   peer_groups:
   - name: EVPN-OVERLAY-PEERS
     type: evpn
@@ -120,7 +123,7 @@ ethernet_interfaces:
   peer_interface: Ethernet5
   peer_type: mlag_peer
   description: MLAG_PEER_MLAG-OSPF-L3LEAF1B_Ethernet5
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -130,7 +133,7 @@ ethernet_interfaces:
   peer_interface: Ethernet6
   peer_type: mlag_peer
   description: MLAG_PEER_MLAG-OSPF-L3LEAF1B_Ethernet6
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5

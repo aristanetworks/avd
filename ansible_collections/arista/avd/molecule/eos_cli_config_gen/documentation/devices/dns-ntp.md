@@ -118,8 +118,8 @@ ip domain lookup vrf mgt source-interface Management0
 
 ```eos
 !
-ntp authentication-key 1 md5 044F0E151B
-ntp authentication-key 2 sha1 15060E1F10
+ntp authentication-key 1 md5 <removed>
+ntp authentication-key 2 sha1 <removed>
 ntp trusted-key 1-2
 ntp authenticate servers
 ntp local-interface vrf mgt Management0

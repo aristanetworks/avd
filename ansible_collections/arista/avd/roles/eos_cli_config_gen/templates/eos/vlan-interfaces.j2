@@ -181,12 +181,12 @@ interface {{ vlan_interface.name }}
 {%         endif %}
 {%     endif %}
 {%     if vlan_interface.ospf_authentication_key is arista.avd.defined %}
-   ip ospf authentication-key 7 {{ vlan_interface.ospf_authentication_key }}
+   ip ospf authentication-key 7 {{ vlan_interface.ospf_authentication_key | arista.avd.hide_passwords(hide_passwords) }}
 {%     endif %}
 {%     for ospf_message_digest_key in vlan_interface.ospf_message_digest_keys | arista.avd.natural_sort('id') %}
 {%         if ospf_message_digest_key.hash_algorithm is arista.avd.defined and
               ospf_message_digest_key.key is arista.avd.defined %}
-   ip ospf message-digest-key {{ ospf_message_digest_key.id }} {{ ospf_message_digest_key.hash_algorithm }} 7 {{ ospf_message_digest_key.key }}
+   ip ospf message-digest-key {{ ospf_message_digest_key.id }} {{ ospf_message_digest_key.hash_algorithm }} 7 {{ ospf_message_digest_key.key | arista.avd.hide_passwords(hide_passwords) }}
 {%         endif %}
 {%     endfor %}
 {%     if vlan_interface.pim.ipv4.sparse_mode is arista.avd.defined(true) %}

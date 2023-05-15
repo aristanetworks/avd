@@ -3,6 +3,9 @@ router_bgp:
   router_id: 10.254.1.1
   bgp_defaults:
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -160,8 +163,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: PTP-profile-BMCA
   description: bmca-endpoint_eth1
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '11'
   ptp:
@@ -178,8 +181,8 @@ ethernet_interfaces:
   peer_interface: PCI1
   peer_type: server
   description: video-endpoint_PCI1
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '11'
   spanning_tree_portfast: edge
@@ -198,8 +201,8 @@ ethernet_interfaces:
   peer_interface: eth3
   peer_type: server
   description: Endpoint-with-specific-PTP-profile_eth3
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '11'
   ptp:

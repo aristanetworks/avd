@@ -1602,6 +1602,38 @@
       "description": "Multiline string with EOS CLI rendered directly on the root level of the final EOS configuration",
       "title": "EOS CLI"
     },
+    "eos_cli_config_gen_configuration": {
+      "type": "object",
+      "properties": {
+        "hide_passwords": {
+          "type": "boolean",
+          "description": "Replace the input data using the `hide_passwords` filter in the Jinja2 templates by '<removed>' in the configruation if true\n",
+          "default": false,
+          "title": "Hide Passwords"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "EOS CLI Config Gen Configuration"
+    },
+    "eos_cli_config_gen_documentation": {
+      "type": "object",
+      "properties": {
+        "hide_passwords": {
+          "type": "boolean",
+          "description": "Replace the input data using the `hide_passwords` filter in the Jinja2 templates by '<removed>' in the documentation if true\n",
+          "default": true,
+          "title": "Hide Passwords"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "EOS CLI Config Gen Documentation"
+    },
     "errdisable": {
       "type": "object",
       "properties": {
@@ -1802,9 +1834,10 @@
               "routed",
               "switched",
               "l3dot1q",
-              "l2dot1q"
+              "l2dot1q",
+              "port-channel-member"
             ],
-            "description": "l3dot1q and l2dot1q are used for sub-interfaces\nThe parent interface should be defined as routed\n",
+            "description": "l3dot1q and l2dot1q are used for sub-interfaces. The parent interface should be defined as routed.\nInterface will not be listed in device documentation, unless \"type\" is set.\n",
             "title": "Type"
           },
           "snmp_trap_link_change": {
@@ -8906,7 +8939,7 @@
               "l3dot1q",
               "l2dot1q"
             ],
-            "description": "l3dot1q and l2dot1q are used for sub-interfaces\nThe parent interface should be defined as routed\n",
+            "description": "l3dot1q and l2dot1q are used for sub-interfaces. The parent interface should be defined as routed.\nInterface will not be listed in device documentation, unless \"type\" is set.\n",
             "title": "Type"
           },
           "encapsulation_dot1q_vlan": {
