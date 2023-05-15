@@ -14,7 +14,7 @@ cvx
 {%         if cvx.services.mcs is arista.avd.defined %}
    service mcs
 {%             if cvx.services.mcs.redis.password is arista.avd.defined %}
-      redis password {{ cvx.services.mcs.redis.password_type | arista.avd.default("7") }} {{ cvx.services.mcs.redis.password }}
+      redis password {{ cvx.services.mcs.redis.password_type | arista.avd.default("7") }} {{ cvx.services.mcs.redis.password | arista.avd.hide_passwords(hide_passwords) }}
 {%             endif %}
 {%             if cvx.services.mcs.shutdown is arista.avd.defined(false) %}
       no shutdown

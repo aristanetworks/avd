@@ -44,6 +44,6 @@ sha512 encrypted enable password is configured
 
 ```eos
 !
-enable password sha512 $6$nXycSRhVPaxRINPL$tM1MNjjRCbFD5di4XWsj8CPkm8Pdwmf9fVqRV015y3DXD4t1vi8CAWQpFP8Vbi9Y2i7.JuFey5UaafXvI6quD1
+enable password sha512 <removed>
 !
 ```

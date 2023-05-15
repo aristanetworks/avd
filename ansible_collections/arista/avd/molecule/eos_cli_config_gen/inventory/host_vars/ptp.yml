@@ -38,6 +38,7 @@ ptp:
 # port-channels
 port_channel_interfaces:
   - name: Port-Channel5
+    type: switched
     description: DC1_L2LEAF1_Po1
     vlans: 110,201
     mode: trunk
@@ -90,6 +91,7 @@ ethernet_interfaces:
       transport: ipv4
 # port-channel interfaces
   - name: Ethernet5
+    type: port-channel-member
     peer: DC1-AGG01
     peer_interface: Ethernet1
     peer_type: l2leaf

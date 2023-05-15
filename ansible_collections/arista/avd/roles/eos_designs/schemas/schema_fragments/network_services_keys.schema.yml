@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  network_services_keys:
+    documentation_options:
+      filename: Network Services
+    type: list
+    primary_key: name
+    convert_types:
+    - dict
+    description: |
+      Define network services keys, to define grouping of network services.
+      This provides the ability to define various keys of your choice to better organize/group your data.
+      This should be defined in top level group_var for the fabric.
+    items:
+      type: dict
+      keys:
+        name:
+          type: str

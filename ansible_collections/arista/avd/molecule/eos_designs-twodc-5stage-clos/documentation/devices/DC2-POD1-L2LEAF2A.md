@@ -21,6 +21,7 @@
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
+  - [VLAN Interfaces](#vlan-interfaces)
 - [Routing](#routing)
   - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
@@ -44,14 +45,12 @@
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 192.168.1.25/24 | 192.168.1.254 |
-| Vlan4092 | L2LEAF_INBAND_MGMT | inband | default | 172.21.210.5/24 | 172.21.210.1 |
 
 ##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
-| Vlan4092 | L2LEAF_INBAND_MGMT | inband | default | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -62,12 +61,6 @@ interface Management1
    no shutdown
    vrf MGMT
    ip address 192.168.1.25/24
-!
-interface Vlan4092
-   description L2LEAF_INBAND_MGMT
-   no shutdown
-   mtu 1500
-   ip address 172.21.210.5/24
 ```
 
 ### Management API HTTP
@@ -110,7 +103,7 @@ management api http-commands
 
 ```eos
 !
-username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
+username admin privilege 15 role network-admin secret sha512 <removed>
 ```
 
 ## Monitoring
@@ -171,14 +164,14 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 4092 | L2LEAF_INBAND_MGMT | - |
+| 4092 | INBAND_MGMT | - |
 
 ### VLANs Device Configuration
 
 ```eos
 !
 vlan 4092
-   name L2LEAF_INBAND_MGMT
+   name INBAND_MGMT
 ```
 
 ## Interfaces
@@ -226,6 +219,31 @@ interface Port-Channel1
    switchport trunk allowed vlan 4092
    switchport mode trunk
    service-profile QOS-PROFILE
+```
+
+### VLAN Interfaces
+
+#### VLAN Interfaces Summary
+
+| Interface | Description | VRF |  MTU | Shutdown |
+| --------- | ----------- | --- | ---- | -------- |
+| Vlan4092 | Inband Management | default | 1500 | False |
+
+##### IPv4
+
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
+| Vlan4092 |  default  |  172.21.210.5/24  |  -  |  -  |  -  |  -  |  -  |
+
+#### VLAN Interfaces Device Configuration
+
+```eos
+!
+interface Vlan4092
+   description Inband Management
+   no shutdown
+   mtu 1500
+   ip address 172.21.210.5/24
 ```
 
 ## Routing

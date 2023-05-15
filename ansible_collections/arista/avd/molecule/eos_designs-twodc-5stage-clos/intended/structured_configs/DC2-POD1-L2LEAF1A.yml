@@ -21,6 +21,7 @@ local_users:
 - name: admin
   privilege: 15
   role: network-admin
+  no_password: true
   sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
 vrfs:
 - name: MGMT
@@ -33,13 +34,6 @@ management_interfaces:
   ip_address: 192.168.1.23/24
   gateway: 192.168.1.254
   type: oob
-- name: Vlan4092
-  description: L2LEAF_INBAND_MGMT
-  shutdown: false
-  mtu: 1500
-  ip_address: 172.21.210.4/24
-  gateway: 172.21.210.1
-  type: inband
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -53,7 +47,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: DC2-POD1-LEAF1A_Ethernet3
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -70,4 +64,11 @@ ip_igmp_snooping:
 vlans:
 - id: 4092
   tenant: system
-  name: L2LEAF_INBAND_MGMT
+  name: INBAND_MGMT
+vlan_interfaces:
+- name: Vlan4092
+  description: Inband Management
+  shutdown: false
+  mtu: 1500
+  ip_address: 172.21.210.4/24
+  type: inband_mgmt

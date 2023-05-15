@@ -245,6 +245,16 @@ Example usage for `arista.avd.encrypt` filter for OSPF is to use it in conjuncti
             key: "{{ ospf_vault_password | arista.avd.encrypt(passwd_type='ospf_message_digest', key='Ethernet1', hash_algorithm='md5', key_id='1') }}"
     ```
 
+### Hide Passwords filter
+
+This filter gives the capabilities to replace a value rendered in a Jinja Template by the string `<removed>` just like in an EOS `show run sanitized`.
+
+**example:**
+
+```jinja
+ip ospf authentication-key 7 {{ vlan_interface.ospf_authentication_key | arista.avd.hide_passwords(true) }}
+```
+
 ## Plugin Tests
 
 Arista AVD provides built-in test plugins to help verify data efficiently in jinja2 templates.

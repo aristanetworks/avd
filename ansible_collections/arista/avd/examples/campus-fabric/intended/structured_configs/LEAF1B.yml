@@ -37,13 +37,6 @@ management_interfaces:
   ip_address: 172.100.100.104/24
   gateway: 172.100.100.1
   type: oob
-- name: Vlan10
-  description: L2LEAF_INBAND_MGMT
-  shutdown: false
-  mtu: 1500
-  ip_address: 10.10.10.7/24
-  gateway: 10.10.10.1
-  type: inband
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -65,7 +58,7 @@ vlans:
   tenant: MY_FABRIC
 - id: 10
   tenant: system
-  name: L2LEAF_INBAND_MGMT
+  name: INBAND_MGMT
 vlan_interfaces:
 - name: Vlan4094
   description: MLAG_PEER
@@ -73,6 +66,12 @@ vlan_interfaces:
   ip_address: 192.168.0.5/31
   no_autostate: true
   mtu: 1500
+- name: Vlan10
+  description: Inband Management
+  shutdown: false
+  mtu: 1500
+  ip_address: 10.10.10.7/24
+  type: inband_mgmt
 port_channel_interfaces:
 - name: Port-Channel53
   description: MLAG_PEER_LEAF1A_Po53
@@ -95,7 +94,7 @@ ethernet_interfaces:
   peer_interface: Ethernet53
   peer_type: mlag_peer
   description: MLAG_PEER_LEAF1A_Ethernet53
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 53
@@ -105,7 +104,7 @@ ethernet_interfaces:
   peer_interface: Ethernet54
   peer_type: mlag_peer
   description: MLAG_PEER_LEAF1A_Ethernet54
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 53
@@ -116,7 +115,7 @@ ethernet_interfaces:
   peer_type: l3spine
   description: SPINE2_Ethernet1
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 51
     mode: active
@@ -125,8 +124,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -156,8 +155,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -187,8 +186,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -218,8 +217,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -249,8 +248,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -280,8 +279,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -311,8 +310,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -342,8 +341,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -373,8 +372,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -404,8 +403,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -435,8 +434,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -466,8 +465,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -497,8 +496,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -528,8 +527,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -559,8 +558,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -590,8 +589,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -621,8 +620,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -652,8 +651,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -683,8 +682,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -714,8 +713,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -745,8 +744,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -776,8 +775,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -807,8 +806,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -838,8 +837,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -869,8 +868,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -900,8 +899,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -931,8 +930,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -962,8 +961,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -993,8 +992,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1024,8 +1023,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1055,8 +1054,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1086,8 +1085,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1117,8 +1116,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1148,8 +1147,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1179,8 +1178,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1210,8 +1209,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1241,8 +1240,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1272,8 +1271,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1303,8 +1302,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1334,8 +1333,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1365,8 +1364,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1396,8 +1395,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1427,8 +1426,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1458,8 +1457,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1489,8 +1488,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1520,8 +1519,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1551,8 +1550,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1582,8 +1581,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge

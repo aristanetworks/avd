@@ -1,0 +1,67 @@
+---
+default_node_types:
+  - match_hostnames:
+      - inband-mgmt-parent.*
+    node_type: l3leaf
+  - match_hostnames:
+      - inband-mgmt-.*
+    node_type: l2leaf
+
+default_interfaces:
+  - types: [ l3leaf, l2leaf ]
+    platforms: [ default ]
+    uplink_interfaces: [ Ethernet1-10 ]
+    mlag_interfaces: [ Ethernet11-20 ]
+    downlink_interfaces: [ Ethernet21-30 ]
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.0.255.0/24
+    vtep_loopback_ipv4_pool: 10.0.254.0/24
+    virtual_router_mac_address: 00:1c:73:00:dc:01
+    bgp_as: 65000-65100
+    filter:
+      # Ensuring that the inband management vlan is correctly configured even when only_vlans_in_use is set
+      only_vlans_in_use: true
+  nodes:
+    - name: inband-mgmt-parent
+      id: 1
+    - name: inband-mgmt-parent-vrf
+      inband_mgmt_vrf: INBANDMGMT
+      id: 2
+
+l2leaf:
+  defaults:
+    uplink_switches: [inband-mgmt-parent, inband-mgmt-parent-vrf]
+    filter:
+      # Ensuring that the inband management vlan is correctly configured even when only_vlans_in_use is set
+      only_vlans_in_use: true
+  nodes:
+    - name: inband-mgmt-subnet
+      inband_mgmt_vlan: 101
+      inband_mgmt_subnet: 192.168.101.0/24
+      id: 1
+    - name: inband-mgmt-subnet-vrf
+      inband_mgmt_vlan: 102
+      inband_mgmt_vrf: INBANDMGMT
+      inband_mgmt_subnet: 192.168.102.0/24
+      id: 2
+    - name: inband-mgmt-ip
+      inband_mgmt_vlan: 103
+      inband_mgmt_ip: 192.168.103.22/24
+      inband_mgmt_vrf: INBANDMGMT
+      inband_mgmt_description: My description
+      # This vlan name overrides the vlan name from tenants.
+      inband_mgmt_vlan_name: MYVLANNAME
+      id: 3
+
+tenants:
+  - name: INBAND_MGMT_TESTS
+    vrfs:
+      - name: INBANDMGMT
+        vrf_id: 1
+        svis:
+          - id: 103
+            name: Inband management vlan
+            vxlan: false
+            ip_address: 192.168.103.1/24

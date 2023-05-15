@@ -9,7 +9,7 @@
 {%             if authentication_key.key_type is arista.avd.defined %}
 {%                 set ntp_auth_key_cli = ntp_auth_key_cli ~ " " ~ authentication_key.key_type %}
 {%             endif %}
-{%             set ntp_auth_key_cli = ntp_auth_key_cli ~ " " ~ authentication_key.key %}
+{%             set ntp_auth_key_cli = ntp_auth_key_cli ~ " " ~ authentication_key.key | arista.avd.hide_passwords(hide_passwords) %}
 {{ ntp_auth_key_cli }}
 {%         endif %}
 {%     endfor %}
@@ -58,7 +58,7 @@ ntp authenticate
 {%                 set ntp_server_cli = ntp_server_cli ~ " local-interface " ~ server.local_interface %}
 {%             endif %}
 {%             if server.key is arista.avd.defined %}
-{%                 set ntp_server_cli = ntp_server_cli ~ " key " ~ server.key %}
+{%                 set ntp_server_cli = ntp_server_cli ~ " key " ~ server.key | arista.avd.hide_passwords(hide_passwords) %}
 {%             endif %}
 {{ ntp_server_cli }}
 {%         endif %}

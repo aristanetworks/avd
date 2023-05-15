@@ -3,6 +3,9 @@ router_bgp:
   router_id: 192.168.255.109
   bgp_defaults:
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
   peer_groups:
   - name: UNDERLAY-PEERS
     type: ipv4
@@ -353,6 +356,9 @@ snmp_server:
 local_users:
 - name: admin
   disabled: true
+  privilege: 15
+  role: network-admin
+  no_password: true
 - name: cvpadmin
   privilege: 15
   role: network-admin

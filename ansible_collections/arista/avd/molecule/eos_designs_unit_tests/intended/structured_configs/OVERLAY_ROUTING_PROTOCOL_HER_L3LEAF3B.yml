@@ -3,6 +3,9 @@ router_bgp:
   router_id: 192.168.254.4
   bgp_defaults:
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
@@ -129,7 +132,7 @@ ethernet_interfaces:
   peer_interface: Eth1
   peer_type: mlag_peer
   description: MLAG_PEER_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A_Eth1
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 1
@@ -139,7 +142,7 @@ ethernet_interfaces:
   peer_interface: Eth2
   peer_type: mlag_peer
   description: MLAG_PEER_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A_Eth2
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 1

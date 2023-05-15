@@ -38,6 +38,12 @@
       "type": "string",
       "title": "BGP As"
     },
+    "bgp_default_ipv4_unicast": {
+      "description": "Default activation of IPv4 unicast address-family on all IPv4 neighbors.\nIt is best practice to disable activation.\n",
+      "type": "boolean",
+      "default": false,
+      "title": "BGP Default IPv4 Unicast"
+    },
     "bgp_ecmp": {
       "description": "Maximum ECMP for BGP multi-path",
       "type": "integer",
@@ -325,6 +331,11 @@
           "items": {
             "type": "object",
             "properties": {
+              "name": {
+                "type": "string",
+                "description": "P2P profile name. Any variable supported under p2p_links can be inherited from a profile.",
+                "title": "Name"
+              },
               "id": {
                 "type": "integer",
                 "description": "Unique id per subnet_summary. Used to calculate ip addresses.\nRequired with ip_pool. ID starting from 1.\n",
@@ -517,11 +528,6 @@
                 "type": "string",
                 "description": "EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.",
                 "title": "Raw EOS CLI"
-              },
-              "name": {
-                "type": "string",
-                "description": "P2P profile name. Any variable supported under p2p_links can be inherited from a profile.",
-                "title": "Name"
               }
             },
             "required": [
@@ -539,6 +545,20 @@
           "items": {
             "type": "object",
             "properties": {
+              "nodes": {
+                "type": "array",
+                "description": "Nodes where this link should be configured.",
+                "items": {
+                  "type": "string",
+                  "description": "The values can be < node_a >, < node_b >.\nex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].\n"
+                },
+                "title": "Nodes"
+              },
+              "profile": {
+                "type": "string",
+                "description": "P2P profile name. Profile defined under p2p_profiles.",
+                "title": "Profile"
+              },
               "id": {
                 "type": "integer",
                 "description": "Unique id per subnet_summary. Used to calculate ip addresses.\nRequired with ip_pool. ID starting from 1.\n",
@@ -573,15 +593,6 @@
                 "default": false,
                 "description": "Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol).",
                 "title": "IPv6 Enable"
-              },
-              "nodes": {
-                "type": "array",
-                "description": "Nodes where this link should be configured.",
-                "items": {
-                  "type": "string",
-                  "description": "The values can be < node_a >, < node_b >.\nex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].\n"
-                },
-                "title": "Nodes"
               },
               "interfaces": {
                 "type": "array",
@@ -731,11 +742,6 @@
                 "type": "string",
                 "description": "EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.",
                 "title": "Raw EOS CLI"
-              },
-              "profile": {
-                "type": "string",
-                "description": "P2P profile name. Profile defined under p2p_profiles.",
-                "title": "Profile"
               }
             },
             "required": [
@@ -762,15 +768,15 @@
     },
     "cvp_instance_ip": {
       "type": "string",
-      "description": "IPv4 address.\nCloudVision - Telemetry Agent (TerminAttr) configuration is optional\nYou can either provide a list of IPs to target on-premise CloudVision cluster or\nuse DNS name for your CloudVision as a Service instance. If you have both on-prem and\nCVaaS defined, only on-prem is going to be configured.",
+      "description": "IPv4 address or DNS name for CloudVision.\nThis variable only supports an on-premise single-node cluster or the DNS name of a CloudVision as a Service instance.",
       "title": "CVP Instance IP"
     },
     "cvp_instance_ips": {
       "type": "array",
-      "description": "You can either provide a list of IPs to target on-premise CloudVision cluster or\nuse DNS name for your CloudVision as a Service instance. If you have both on-prem and\nCVaaS defined, only on-prem is going to be configured.\n",
+      "description": "List of IPv4 addresses or DNS names for CloudVision.\nFor on-premise CloudVision enter all the nodes of the cluster.\nFor CloudVision as a Service enter the DNS name of the instance.\n`eos_designs` only supports one CloudVision cluster.\n",
       "items": {
         "type": "string",
-        "description": "IPv4 address or CV as a Service hostname"
+        "description": "IPv4 address or DNS name for CloudVision"
       },
       "title": "CVP Instance Ips"
     },
@@ -910,6 +916,67 @@
       "description": "Enable Trunk Group support across eos_designs\nWarning: Because of the nature of the EOS Trunk Group feature, enabling this is \"all or nothing\".\n*All* vlans and *all* trunks towards connected endpoints must be using trunk groups as well.\nIf trunk groups are not assigned to a trunk, no vlans will be enabled on that trunk.\nSee \"Details on enable_trunk_groups\" below before enabling this feature.\n",
       "default": false,
       "title": "Enable Trunk Groups"
+    },
+    "event_handlers": {
+      "type": "array",
+      "description": "Gives the ability to monitor and react to Syslog messages.\nEvent Handlers provide a powerful and flexible tool that can be used to apply self-healing actions,\ncustomize the system behavior, and implement workarounds to problems discovered in the field.\n",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Event Handler Name",
+            "title": "Name"
+          },
+          "action_type": {
+            "type": "string",
+            "enum": [
+              "bash",
+              "increment",
+              "log"
+            ],
+            "title": "Action Type"
+          },
+          "action": {
+            "type": "string",
+            "description": "Command to execute\n",
+            "title": "Action"
+          },
+          "delay": {
+            "type": "integer",
+            "description": "Event-handler delay in seconds\n",
+            "title": "Delay"
+          },
+          "trigger": {
+            "type": "string",
+            "description": "Configure event trigger condition.\n",
+            "enum": [
+              "on-logging",
+              "on-startup-config"
+            ],
+            "title": "Trigger"
+          },
+          "regex": {
+            "type": "string",
+            "description": "Regular expression to use for searching log messages. Required for on-logging trigger\n",
+            "title": "Regex"
+          },
+          "asynchronous": {
+            "type": "boolean",
+            "default": false,
+            "description": "Set the action to be non-blocking.",
+            "title": "Asynchronous"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "title": "Event Handlers"
     },
     "evpn_ebgp_gateway_multihop": {
       "description": "Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI networks.\nAdapt the value for your specific topology.\n",
@@ -1159,6 +1226,11 @@
           "items": {
             "type": "object",
             "properties": {
+              "name": {
+                "type": "string",
+                "description": "P2P profile name. Any variable supported under p2p_links can be inherited from a profile.",
+                "title": "Name"
+              },
               "id": {
                 "type": "integer",
                 "description": "Unique id per subnet_summary. Used to calculate ip addresses.\nRequired with ip_pool. ID starting from 1.\n",
@@ -1351,11 +1423,6 @@
                 "type": "string",
                 "description": "EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.",
                 "title": "Raw EOS CLI"
-              },
-              "name": {
-                "type": "string",
-                "description": "P2P profile name. Any variable supported under p2p_links can be inherited from a profile.",
-                "title": "Name"
               }
             },
             "required": [
@@ -1373,6 +1440,20 @@
           "items": {
             "type": "object",
             "properties": {
+              "nodes": {
+                "type": "array",
+                "description": "Nodes where this link should be configured.",
+                "items": {
+                  "type": "string",
+                  "description": "The values can be < node_a >, < node_b >.\nex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].\n"
+                },
+                "title": "Nodes"
+              },
+              "profile": {
+                "type": "string",
+                "description": "P2P profile name. Profile defined under p2p_profiles.",
+                "title": "Profile"
+              },
               "id": {
                 "type": "integer",
                 "description": "Unique id per subnet_summary. Used to calculate ip addresses.\nRequired with ip_pool. ID starting from 1.\n",
@@ -1407,15 +1488,6 @@
                 "default": false,
                 "description": "Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol).",
                 "title": "IPv6 Enable"
-              },
-              "nodes": {
-                "type": "array",
-                "description": "Nodes where this link should be configured.",
-                "items": {
-                  "type": "string",
-                  "description": "The values can be < node_a >, < node_b >.\nex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].\n"
-                },
-                "title": "Nodes"
               },
               "interfaces": {
                 "type": "array",
@@ -1565,11 +1637,6 @@
                 "type": "string",
                 "description": "EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.",
                 "title": "Raw EOS CLI"
-              },
-              "profile": {
-                "type": "string",
-                "description": "P2P profile name. Profile defined under p2p_profiles.",
-                "title": "Profile"
               }
             },
             "required": [
@@ -1589,6 +1656,68 @@
       },
       "title": "L3 Edge"
     },
+    "local_users": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Username",
+            "type": "string",
+            "title": "Name"
+          },
+          "disabled": {
+            "type": "boolean",
+            "description": "If true, the user will be removed and all other settings are ignored.\nUseful for removing the default \"admin\" user.\n",
+            "title": "Disabled"
+          },
+          "privilege": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 15,
+            "description": "Initial privilege level with local EXEC authorization.\n",
+            "title": "Privilege"
+          },
+          "role": {
+            "type": "string",
+            "description": "EOS RBAC Role to be assigned to the user such as \"network-admin\" or \"network-operator\"\n",
+            "title": "Role"
+          },
+          "sha512_password": {
+            "type": "string",
+            "description": "SHA512 Hash of Password\nMust be the hash of the password. By default EOS salts the password with the username, so the simplest is to generate the hash on an EOS device using the same username.\n",
+            "title": "SHA512 Password"
+          },
+          "no_password": {
+            "type": "boolean",
+            "description": "If set a password will not be configured for this user. \"sha512_password\" MUST not be defined for this user.\n",
+            "title": "No Password"
+          },
+          "ssh_key": {
+            "type": "string",
+            "title": "SSH Key"
+          },
+          "shell": {
+            "type": "string",
+            "description": "Specify shell for the user\n",
+            "enum": [
+              "/bin/bash",
+              "/bin/sh",
+              "/sbin/nologin"
+            ],
+            "title": "Shell"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "Local Users"
+    },
     "mac_address_table": {
       "type": "object",
       "description": "MAC address-table aging time\nUse to change the EOS default of 300.\n",
@@ -1606,6 +1735,63 @@
         "^_.+$": {}
       },
       "title": "MAC Address Table"
+    },
+    "management_eapi": {
+      "description": "Default is HTTPS management eAPI enabled.\nThe VRF is set to < mgmt_interface_vrf >.\n",
+      "type": "object",
+      "properties": {
+        "enable_http": {
+          "type": "boolean",
+          "default": false,
+          "title": "Enable HTTP"
+        },
+        "enable_https": {
+          "type": "boolean",
+          "default": true,
+          "title": "Enable Https"
+        },
+        "default_services": {
+          "type": "boolean",
+          "title": "Default Services"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Management Eapi"
+    },
+    "mgmt_destination_networks": {
+      "type": "array",
+      "description": "List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.\nReplaces the default route.",
+      "items": {
+        "type": "string",
+        "description": "IPv4_address/Mask"
+      },
+      "title": "Mgmt Destination Networks"
+    },
+    "mgmt_gateway": {
+      "type": "string",
+      "description": "OOB Management interface gateway in IPv4 format.\nUsed as next-hop for default gateway or static routes defined under 'mgmt_destination_networks'",
+      "title": "Mgmt Gateway"
+    },
+    "mgmt_interface": {
+      "type": "string",
+      "default": "Management1",
+      "description": "OOB Management interface.",
+      "title": "Mgmt Interface"
+    },
+    "mgmt_interface_vrf": {
+      "type": "string",
+      "default": "MGMT",
+      "description": "OOB Management VRF.",
+      "title": "Mgmt Interface VRF"
+    },
+    "mgmt_vrf_routing": {
+      "type": "boolean",
+      "default": false,
+      "description": "Configure IP routing for the OOB Management VRF.",
+      "title": "Mgmt VRF Routing"
     },
     "mlag_ibgp_peering_vrfs": {
       "type": "object",
@@ -1625,12 +1811,42 @@
       },
       "title": "MLAG Ibgp Peering VRFs"
     },
+    "name_servers": {
+      "type": "array",
+      "description": "List of DNS servers. The VRF is set to < mgmt_interface_vrf >.",
+      "items": {
+        "type": "string",
+        "description": "IPv4 address"
+      },
+      "title": "Name Servers"
+    },
     "network_ports": {
       "type": "array",
       "description": "All switch_ports ranges are expanded into individual port configurations.\n",
       "items": {
         "type": "object",
         "properties": {
+          "switches": {
+            "type": "array",
+            "description": "Regex matching the full hostname of one or more switches.\nThe regular expression must match the full hostname.\n",
+            "items": {
+              "type": "string"
+            },
+            "title": "Switches"
+          },
+          "switch_ports": {
+            "type": "array",
+            "description": "List of ranges using AVD range_expand syntax.\nFor example:\n\nswitch_ports:\n  - Ethernet1\n  - Ethernet2-48\n",
+            "items": {
+              "type": "string"
+            },
+            "title": "Switch Ports"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description to be used on all ports.",
+            "title": "Description"
+          },
           "endpoint_ports": {
             "type": "array",
             "description": "Endpoint ports is used for description, required unless description is set.\nThe lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.\nEach list item is one switchport.\n",
@@ -1644,11 +1860,6 @@
             "type": "string",
             "description": "Set adapter speed: `< interface_speed >`, `forced < interface_speed >`, `auto < interface_speed >`.\nIf not specified will be auto.\n",
             "title": "Speed"
-          },
-          "description": {
-            "type": "string",
-            "description": "Description to be used on all ports.",
-            "title": "Description"
           },
           "profile": {
             "type": "string",
@@ -2311,7 +2522,7 @@
               },
               "channel_id": {
                 "type": "integer",
-                "description": "Port-Channel ID, Optional.\nIf no channel_id is specified, an id is generated from the first switch port in the port channel.\n",
+                "description": "Port-Channel ID.\nIf no channel_id is specified, an id is generated from the first switch port in the port channel.\n",
                 "title": "Channel ID"
               },
               "description": {
@@ -2322,7 +2533,7 @@
               "enabled": {
                 "type": "boolean",
                 "default": true,
-                "description": "Port-Channel administrative state, Optional.\nsetting to false will set port to 'shutdown' in intended configuration.\n",
+                "description": "Port-Channel administrative state.\nSetting to false will set port to 'shutdown' in intended configuration.\n",
                 "title": "Enabled"
               },
               "short_esi": {
@@ -2344,7 +2555,7 @@
                   },
                   "timeout": {
                     "type": "integer",
-                    "description": "Timeout in seconds, Optional - default is 90 seconds.",
+                    "description": "Timeout in seconds. EOS default is 90 seconds.",
                     "title": "Timeout"
                   }
                 },
@@ -2353,6 +2564,31 @@
                   "^_.+$": {}
                 },
                 "title": "LACP Fallback"
+              },
+              "lacp_timer": {
+                "type": "object",
+                "description": "LACP timer configuration. Applies only when Port-channel mode is not \"on\".",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "normal",
+                      "fast"
+                    ],
+                    "description": "LACP mode for interface members.",
+                    "title": "Mode"
+                  },
+                  "multiplier": {
+                    "type": "integer",
+                    "description": "Number of LACP BPDUs lost before deeming the peer down. EOS default is 3.",
+                    "title": "Multiplier"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "LACP Timer"
               },
               "subinterfaces": {
                 "type": "array",
@@ -2428,22 +2664,6 @@
             "type": "object",
             "description": "Custom structured config added under ethernet_interfaces.<interface> for eos_cli_config_gen.",
             "title": "Structured Config"
-          },
-          "switches": {
-            "type": "array",
-            "description": "Regex matching the full hostname of one or more switches.\nThe regular expression must match the full hostname.\n",
-            "items": {
-              "type": "string"
-            },
-            "title": "Switches"
-          },
-          "switch_ports": {
-            "type": "array",
-            "description": "List of ranges using AVD range_expand syntax.\nFor example:\n\nswitch_ports:\n  - Ethernet1\n  - Ethernet2-48\n",
-            "items": {
-              "type": "string"
-            },
-            "title": "Switch Ports"
           }
         },
         "additionalProperties": false,
@@ -2452,6 +2672,27 @@
         }
       },
       "title": "Network Ports"
+    },
+    "network_services_keys": {
+      "type": "array",
+      "description": "Define network services keys, to define grouping of network services.\nThis provides the ability to define various keys of your choice to better organize/group your data.\nThis should be defined in top level group_var for the fabric.\n",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "title": "Network Services Keys"
     },
     "node_type_keys": {
       "type": "array",
@@ -3025,6 +3266,16 @@
       "items": {
         "type": "object",
         "properties": {
+          "profile": {
+            "type": "string",
+            "description": "Port profile name.",
+            "title": "Profile"
+          },
+          "parent_profile": {
+            "type": "string",
+            "description": "Parent profile is optional.\nPort_profiles can refer to another port_profile to inherit settings in up to two levels (adapter->profile->parent_profile).",
+            "title": "Parent Profile"
+          },
           "endpoint_ports": {
             "type": "array",
             "description": "Endpoint ports is used for description, required unless description is set.\nThe lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.\nEach list item is one switchport.\n",
@@ -3043,11 +3294,6 @@
             "type": "string",
             "description": "By default the description is built leveraging `<peer>_<peer_interface>`.\nWhen set this key will overide the default value on the physical ports.\n",
             "title": "Description"
-          },
-          "profile": {
-            "type": "string",
-            "description": "Port profile name.",
-            "title": "Profile"
           },
           "enabled": {
             "type": "boolean",
@@ -3705,7 +3951,7 @@
               },
               "channel_id": {
                 "type": "integer",
-                "description": "Port-Channel ID, Optional.\nIf no channel_id is specified, an id is generated from the first switch port in the port channel.\n",
+                "description": "Port-Channel ID.\nIf no channel_id is specified, an id is generated from the first switch port in the port channel.\n",
                 "title": "Channel ID"
               },
               "description": {
@@ -3716,7 +3962,7 @@
               "enabled": {
                 "type": "boolean",
                 "default": true,
-                "description": "Port-Channel administrative state, Optional.\nsetting to false will set port to 'shutdown' in intended configuration.\n",
+                "description": "Port-Channel administrative state.\nSetting to false will set port to 'shutdown' in intended configuration.\n",
                 "title": "Enabled"
               },
               "short_esi": {
@@ -3738,7 +3984,7 @@
                   },
                   "timeout": {
                     "type": "integer",
-                    "description": "Timeout in seconds, Optional - default is 90 seconds.",
+                    "description": "Timeout in seconds. EOS default is 90 seconds.",
                     "title": "Timeout"
                   }
                 },
@@ -3747,6 +3993,31 @@
                   "^_.+$": {}
                 },
                 "title": "LACP Fallback"
+              },
+              "lacp_timer": {
+                "type": "object",
+                "description": "LACP timer configuration. Applies only when Port-channel mode is not \"on\".",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "normal",
+                      "fast"
+                    ],
+                    "description": "LACP mode for interface members.",
+                    "title": "Mode"
+                  },
+                  "multiplier": {
+                    "type": "integer",
+                    "description": "Number of LACP BPDUs lost before deeming the peer down. EOS default is 3.",
+                    "title": "Multiplier"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "LACP Timer"
               },
               "subinterfaces": {
                 "type": "array",
@@ -3822,11 +4093,6 @@
             "type": "object",
             "description": "Custom structured config added under ethernet_interfaces.<interface> for eos_cli_config_gen.",
             "title": "Structured Config"
-          },
-          "parent_profile": {
-            "type": "string",
-            "description": "Parent profile is optional.\nPort_profiles can refer to another port_profile to inherit settings in up to two levels (adapter->profile->parent_profile).",
-            "title": "Parent Profile"
           }
         },
         "additionalProperties": false,
@@ -3864,6 +4130,821 @@
       "description": "- It is possible to provision configurations for a complete topology but flag devices as undeployed using the host level variable `is_deployed: false`.\n\n```yaml\n# Use at the host level\nis_deployed: < true or false or default -> true >\n```\n\n- By default, this will have no impact within the `eos_designs` role. Configs will still be generated by the `eos_cli_config_gen` role and will still be pushed by the `eos_config_deploy_eapi` directly to devices if used.\n- However, if the `eos_config_deploy_cvp` role is used to push configurations, CloudVision will ignore the devices flagged  as `is_deployed: false` and not attempt to configure them.\n- If the device is not present in the network due to CloudVision not configuring the device, `eos_validate_state` role will fail tests on peers of the undeployed device trying to verify that interfaces are up.\n- To overcome this and shutdown interfaces towards undeployed peers, the variable `shutdown_interfaces_towards_undeployed_peers` can be used, satisfying the `eos_validate_state` role interface tests.\n- Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices are not present in the network.",
       "title": "Shutdown Interfaces Towards Undeployed Peers"
     },
+    "snmp_settings": {
+      "type": "object",
+      "description": "Set SNMP settings (optional).",
+      "properties": {
+        "contact": {
+          "type": "string",
+          "description": "SNMP contact.",
+          "title": "Contact"
+        },
+        "location": {
+          "type": "boolean",
+          "default": false,
+          "description": "Set SNMP location. Formatted as {{ fabric_name }} {{ dc_name }} {{ pod_name }} {{ switch_rack }} {{ inventory_hostname }}.",
+          "title": "Location"
+        },
+        "compute_local_engineid": {
+          "type": "boolean",
+          "default": false,
+          "description": "Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.\n",
+          "title": "Compute Local Engineid"
+        },
+        "compute_local_engineid_source": {
+          "type": "string",
+          "default": "hostname_and_ip",
+          "description": "`compute_local_engineid_source` supports:\n- `hostname_and_ip` generate a local engineId for SNMP by hashing via SHA1\n  the string generated via the concatenation of the hostname plus the management IP.\n  {{ inventory_hostname }} + {{ switch.mgmt_ip }}\n- `system_mac` generate the switch default engine id for AVD usage\n  To use this, `system_mac_address` MUST be set for the device\n  The formula is f5717f + system_mac_address + 00\n",
+          "enum": [
+            "hostname_and_ip",
+            "system_mac"
+          ],
+          "title": "Compute Local Engineid Source"
+        },
+        "compute_v3_user_localized_key": {
+          "type": "boolean",
+          "default": false,
+          "description": "Requires compute_local_engineid to be `true`.\nIf enabled, the SNMPv3 passphrases for auth and priv are transformed using RFC 2574, matching the value they would take in EOS CLI.\nThe algorithm requires a local engineId, which is unknown to AVD, hence the necessity to generate one beforehand.\n",
+          "title": "Compute V3 User Localized Key"
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Username",
+                "title": "Name"
+              },
+              "group": {
+                "type": "string",
+                "description": "Configuration of the SNMP User Groups are currently only possible using `structured_config`.\n",
+                "title": "Group"
+              },
+              "version": {
+                "type": "string",
+                "enum": [
+                  "v1",
+                  "v2c",
+                  "v3"
+                ],
+                "title": "Version"
+              },
+              "auth": {
+                "type": "string",
+                "enum": [
+                  "md5",
+                  "sha",
+                  "sha256",
+                  "sha384",
+                  "sha512"
+                ],
+                "title": "Auth"
+              },
+              "auth_passphrase": {
+                "type": "string",
+                "description": "Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set.",
+                "title": "Auth Passphrase"
+              },
+              "priv": {
+                "type": "string",
+                "enum": [
+                  "des",
+                  "aes",
+                  "aes192",
+                  "aes256"
+                ],
+                "title": "Priv"
+              },
+              "priv_passphrase": {
+                "type": "string",
+                "description": "Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set.",
+                "title": "Priv Passphrase"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Users"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Snmp Settings"
+    },
+    "svi_profiles": {
+      "type": "array",
+      "description": "Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.\nKeys are the same used under SVIs. Keys defined under SVIs take precedence.\nNote: structured configuration is not merged recursively and will be taken directly from the most specific level in the following order:\n1. svi.nodes[inventory_hostname].structured_config\n2. svi_profile.nodes[inventory_hostname].structured_config\n3. svi_parent_profile.nodes[inventory_hostname].structured_config\n4. svi.structured_config\n5. svi_profile.structured_config\n6. svi_parent_profile.structured_config\n",
+      "items": {
+        "type": "object",
+        "properties": {
+          "profile": {
+            "type": "string",
+            "description": "Profile name",
+            "title": "Profile"
+          },
+          "parent_profile": {
+            "type": "string",
+            "description": "Parent SVI profile name to apply.\nsvi_profiles can refer to another svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).",
+            "title": "Parent Profile"
+          },
+          "nodes": {
+            "type": "array",
+            "description": "Define node specific configuration, such as unique IP addresses.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "node": {
+                  "type": "string",
+                  "description": "l3_leaf inventory hostname",
+                  "title": "Node"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "VLAN name",
+                  "title": "Name"
+                },
+                "enabled": {
+                  "type": "boolean",
+                  "description": "Enable or disable interface",
+                  "title": "Enabled"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "SVI description. By default set to VLAN name.\n",
+                  "title": "Description"
+                },
+                "ip_address": {
+                  "type": "string",
+                  "description": "IPv4_address/Mask. Usually set under \"nodes\" to have unique IPv4 addresses per node.",
+                  "title": "IP Address"
+                },
+                "ipv6_address": {
+                  "type": "string",
+                  "description": "IPv6_address/Mask. Usually set under \"nodes\" to have unique IPv6 addresses per node.",
+                  "title": "IPv6 Address"
+                },
+                "ipv6_enable": {
+                  "type": "boolean",
+                  "description": "Explicitly enable/disable link-local IPv6 addressing.",
+                  "title": "IPv6 Enable"
+                },
+                "ip_address_virtual": {
+                  "type": "string",
+                  "description": "IPv4_address/Mask\nIPv4 VXLAN Anycast IP address\nConserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.\n",
+                  "title": "IP Address Virtual"
+                },
+                "ipv6_address_virtual": {
+                  "type": "string",
+                  "description": "IPv6_address/Mask\nipv6 address virtuals to configure VXLAN Anycast IP address (Optional)\nThe below \"ipv6_address_virtual\" key will be deprecated in AVD v4.0 in favor of the new \"ipv6_address_virtuals\"\nIf both \"ipv6_address_virtual\" and \"ipv6_address_virtuals\" are set, all addresses will be configured\n",
+                  "title": "IPv6 Address Virtual"
+                },
+                "ipv6_address_virtuals": {
+                  "type": "array",
+                  "description": "IPv6 VXLAN Anycast IP addresses\nConserves IPv6 addresses in VXLAN deployments as it doesn't require unique IPv6 addresses on each node.\n",
+                  "items": {
+                    "type": "string",
+                    "description": "IPv6_address/Mask"
+                  },
+                  "title": "IPv6 Address Virtuals"
+                },
+                "ip_address_virtual_secondaries": {
+                  "type": "array",
+                  "description": "Secondary IPv4 VXLAN Anycast IP addresses",
+                  "items": {
+                    "type": "string",
+                    "description": "IPv4_address/Mask"
+                  },
+                  "title": "IP Address Virtual Secondaries"
+                },
+                "ip_virtual_router_addresses": {
+                  "type": "array",
+                  "description": "IPv4 VARP addresses.\nRequires an IP address to be configured on the SVI.\nIf ip_address_virtual is also set, ip_virtual_router_addresses will take precedence\n_if_ there is an ip_address configured for the node.\n",
+                  "items": {
+                    "type": "string",
+                    "description": "IPv4_address/Mask or IPv4_address\nIPv4_address/Mask will also configure a static route to the SVI per best practice.\n"
+                  },
+                  "title": "IP Virtual Router Addresses"
+                },
+                "ipv6_virtual_router_addresses": {
+                  "type": "array",
+                  "description": "IPv6 VARP addresses.\nRequires an IPv6 address to be configured on the SVI.\nIf ipv6_address_virtuals is also set, ipv6_virtual_router_addresses will take precedence\n_if_ there is an ipv6_address configured for the node.\n",
+                  "items": {
+                    "type": "string",
+                    "description": "IPv6_address"
+                  },
+                  "title": "IPv6 Virtual Router Addresses"
+                },
+                "ip_helpers": {
+                  "type": "array",
+                  "description": "IP helper for DHCP relay",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "ip_helper": {
+                        "type": "string",
+                        "description": "IPv4 DHCP server IP",
+                        "title": "IP Helper"
+                      },
+                      "source_interface": {
+                        "type": "string",
+                        "description": "Interface name to originate DHCP relay packets to DHCP server.",
+                        "title": "Source Interface"
+                      },
+                      "source_vrf": {
+                        "type": "string",
+                        "description": "VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI.",
+                        "title": "Source VRF"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "required": [
+                      "ip_helper"
+                    ]
+                  },
+                  "title": "IP Helpers"
+                },
+                "vni_override": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 16777215,
+                  "description": "By default the VNI will be derived from \"mac_vrf_vni_base\"\nThe vni_override allows us to override this value and statically define it (optional)\n",
+                  "title": "Vni Override"
+                },
+                "rt_override": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 16777215,
+                  "description": "By default the MAC VRF RD/RT ID will be derived from \"mac_vrf_id_base\"\nThe rt_override allows us to override this value and statically define it (optional)\nIf not set, vni_override will be used.\n",
+                  "title": "Rt Override"
+                },
+                "tags": {
+                  "type": "array",
+                  "description": "Tags leveraged for networks services filtering\nTags are matched against \"filter.tags\" defined under Fabric Topology variables\nTags are also matched against the \"node_group\" name under Fabric Topology variables\n",
+                  "default": [
+                    "all"
+                  ],
+                  "items": {
+                    "type": "string",
+                    "description": "Tag value"
+                  },
+                  "title": "Tags"
+                },
+                "trunk_groups": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "Trunk groups are used for limiting vlans to trunk ports assigned to the same trunk group\nRequires \"enable_trunk_groups: true\"\n"
+                  },
+                  "title": "Trunk Groups"
+                },
+                "evpn_l2_multicast": {
+                  "type": "object",
+                  "description": "Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.\nWhen evpn_l2_multicast.enabled is set to true for a vlan or a tenant, \"igmp snooping\" and \"igmp snooping querier\" will always be enabled, overriding those individual settings.\n",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "EVPN L2 Multicast"
+                },
+                "evpn_l3_multicast": {
+                  "type": "object",
+                  "description": "Explicitly enable or disable evpn_l3_multicast to override setting of `<network_services_key>.[].evpn_l3_multicast.enabled` and `<network_services_key>.[].vrfs.[].evpn_l3_multicast.enabled`.\n",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "EVPN L3 Multicast"
+                },
+                "igmp_snooping_enabled": {
+                  "type": "boolean",
+                  "description": "Enable IGMP Snooping (Enabled by default on EOS)",
+                  "title": "IGMP Snooping Enabled"
+                },
+                "igmp_snooping_querier": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "description": "Will be enabled automatically if evpn_l2_multicast is enabled.",
+                      "title": "Enabled"
+                    },
+                    "source_address": {
+                      "type": "string",
+                      "description": "IPv4_address\nIf not set, IP address of \"Loopback0\" will be used.\n",
+                      "title": "Source Address"
+                    },
+                    "version": {
+                      "type": "integer",
+                      "description": "IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)",
+                      "enum": [
+                        1,
+                        2,
+                        3
+                      ],
+                      "title": "Version"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "IGMP Snooping Querier"
+                },
+                "vxlan": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "Extend this SVI over VXLAN",
+                  "title": "VxLAN"
+                },
+                "mtu": {
+                  "type": "integer",
+                  "description": "Interface MTU",
+                  "title": "MTU"
+                },
+                "ospf": {
+                  "type": "object",
+                  "description": "OSPF interface configuration",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "point_to_point": {
+                      "type": "boolean",
+                      "default": true,
+                      "title": "Point To Point"
+                    },
+                    "area": {
+                      "type": "string",
+                      "description": "OSPF area ID",
+                      "default": "0",
+                      "title": "Area"
+                    },
+                    "cost": {
+                      "type": "integer",
+                      "description": "OSPF link cost",
+                      "title": "Cost"
+                    },
+                    "authentication": {
+                      "type": "string",
+                      "enum": [
+                        "simple",
+                        "message-digest"
+                      ],
+                      "title": "Authentication"
+                    },
+                    "simple_auth_key": {
+                      "type": "string",
+                      "description": "Password used with simple authentication",
+                      "title": "Simple Auth Key"
+                    },
+                    "message_digest_keys": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "title": "ID"
+                          },
+                          "hash_algorithm": {
+                            "type": "string",
+                            "enum": [
+                              "md5",
+                              "sha1",
+                              "sha256",
+                              "sha384",
+                              "sha512"
+                            ],
+                            "default": "sha512",
+                            "title": "Hash Algorithm"
+                          },
+                          "key": {
+                            "type": "string",
+                            "description": "Type 7 encrypted key",
+                            "title": "Key"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        }
+                      },
+                      "title": "Message Digest Keys"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "OSPF"
+                },
+                "bgp": {
+                  "type": "object",
+                  "description": "Structured configuration and EOS CLI commands rendered on router_bgp.vlans\nThis configuration will not be applied to vlan aware bundles\n",
+                  "properties": {
+                    "structured_config": {
+                      "type": "object",
+                      "description": "Custom structured config added under vlan_interfaces.<interface> for eos_cli_config_gen.\nOverrides the setting on SVI level.\n",
+                      "title": "Structured Config"
+                    },
+                    "raw_eos_cli": {
+                      "type": "string",
+                      "description": "EOS CLI rendered directly on the VLAN interface in the final EOS configuration\nOverrides the setting on SVI level.\n",
+                      "title": "Raw EOS CLI"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "BGP"
+                },
+                "raw_eos_cli": {
+                  "type": "string",
+                  "description": "EOS CLI rendered directly on the VLAN interface in the final EOS configuration\nOverrides the setting on SVI level\n",
+                  "title": "Raw EOS CLI"
+                },
+                "structured_config": {
+                  "type": "object",
+                  "description": "Custom structured config added under vlan_interfaces.<interface> for eos_cli_config_gen.\nOverrides the setting on SVI level.",
+                  "title": "Structured Config"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "required": [
+                "node"
+              ]
+            },
+            "title": "Nodes"
+          },
+          "name": {
+            "type": "string",
+            "description": "VLAN name",
+            "title": "Name"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Enable or disable interface",
+            "title": "Enabled"
+          },
+          "description": {
+            "type": "string",
+            "description": "SVI description. By default set to VLAN name.\n",
+            "title": "Description"
+          },
+          "ip_address": {
+            "type": "string",
+            "description": "IPv4_address/Mask. Usually set under \"nodes\" to have unique IPv4 addresses per node.",
+            "title": "IP Address"
+          },
+          "ipv6_address": {
+            "type": "string",
+            "description": "IPv6_address/Mask. Usually set under \"nodes\" to have unique IPv6 addresses per node.",
+            "title": "IPv6 Address"
+          },
+          "ipv6_enable": {
+            "type": "boolean",
+            "description": "Explicitly enable/disable link-local IPv6 addressing.",
+            "title": "IPv6 Enable"
+          },
+          "ip_address_virtual": {
+            "type": "string",
+            "description": "IPv4_address/Mask\nIPv4 VXLAN Anycast IP address\nConserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.\n",
+            "title": "IP Address Virtual"
+          },
+          "ipv6_address_virtual": {
+            "type": "string",
+            "description": "IPv6_address/Mask\nipv6 address virtuals to configure VXLAN Anycast IP address (Optional)\nThe below \"ipv6_address_virtual\" key will be deprecated in AVD v4.0 in favor of the new \"ipv6_address_virtuals\"\nIf both \"ipv6_address_virtual\" and \"ipv6_address_virtuals\" are set, all addresses will be configured\n",
+            "title": "IPv6 Address Virtual"
+          },
+          "ipv6_address_virtuals": {
+            "type": "array",
+            "description": "IPv6 VXLAN Anycast IP addresses\nConserves IPv6 addresses in VXLAN deployments as it doesn't require unique IPv6 addresses on each node.\n",
+            "items": {
+              "type": "string",
+              "description": "IPv6_address/Mask"
+            },
+            "title": "IPv6 Address Virtuals"
+          },
+          "ip_address_virtual_secondaries": {
+            "type": "array",
+            "description": "Secondary IPv4 VXLAN Anycast IP addresses",
+            "items": {
+              "type": "string",
+              "description": "IPv4_address/Mask"
+            },
+            "title": "IP Address Virtual Secondaries"
+          },
+          "ip_virtual_router_addresses": {
+            "type": "array",
+            "description": "IPv4 VARP addresses.\nRequires an IP address to be configured on the SVI.\nIf ip_address_virtual is also set, ip_virtual_router_addresses will take precedence\n_if_ there is an ip_address configured for the node.\n",
+            "items": {
+              "type": "string",
+              "description": "IPv4_address/Mask or IPv4_address\nIPv4_address/Mask will also configure a static route to the SVI per best practice.\n"
+            },
+            "title": "IP Virtual Router Addresses"
+          },
+          "ipv6_virtual_router_addresses": {
+            "type": "array",
+            "description": "IPv6 VARP addresses.\nRequires an IPv6 address to be configured on the SVI.\nIf ipv6_address_virtuals is also set, ipv6_virtual_router_addresses will take precedence\n_if_ there is an ipv6_address configured for the node.\n",
+            "items": {
+              "type": "string",
+              "description": "IPv6_address"
+            },
+            "title": "IPv6 Virtual Router Addresses"
+          },
+          "ip_helpers": {
+            "type": "array",
+            "description": "IP helper for DHCP relay",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ip_helper": {
+                  "type": "string",
+                  "description": "IPv4 DHCP server IP",
+                  "title": "IP Helper"
+                },
+                "source_interface": {
+                  "type": "string",
+                  "description": "Interface name to originate DHCP relay packets to DHCP server.",
+                  "title": "Source Interface"
+                },
+                "source_vrf": {
+                  "type": "string",
+                  "description": "VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI.",
+                  "title": "Source VRF"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "required": [
+                "ip_helper"
+              ]
+            },
+            "title": "IP Helpers"
+          },
+          "vni_override": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 16777215,
+            "description": "By default the VNI will be derived from \"mac_vrf_vni_base\"\nThe vni_override allows us to override this value and statically define it (optional)\n",
+            "title": "Vni Override"
+          },
+          "rt_override": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 16777215,
+            "description": "By default the MAC VRF RD/RT ID will be derived from \"mac_vrf_id_base\"\nThe rt_override allows us to override this value and statically define it (optional)\nIf not set, vni_override will be used.\n",
+            "title": "Rt Override"
+          },
+          "tags": {
+            "type": "array",
+            "description": "Tags leveraged for networks services filtering\nTags are matched against \"filter.tags\" defined under Fabric Topology variables\nTags are also matched against the \"node_group\" name under Fabric Topology variables\n",
+            "default": [
+              "all"
+            ],
+            "items": {
+              "type": "string",
+              "description": "Tag value"
+            },
+            "title": "Tags"
+          },
+          "trunk_groups": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Trunk groups are used for limiting vlans to trunk ports assigned to the same trunk group\nRequires \"enable_trunk_groups: true\"\n"
+            },
+            "title": "Trunk Groups"
+          },
+          "evpn_l2_multicast": {
+            "type": "object",
+            "description": "Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.\nWhen evpn_l2_multicast.enabled is set to true for a vlan or a tenant, \"igmp snooping\" and \"igmp snooping querier\" will always be enabled, overriding those individual settings.\n",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "EVPN L2 Multicast"
+          },
+          "evpn_l3_multicast": {
+            "type": "object",
+            "description": "Explicitly enable or disable evpn_l3_multicast to override setting of `<network_services_key>.[].evpn_l3_multicast.enabled` and `<network_services_key>.[].vrfs.[].evpn_l3_multicast.enabled`.\n",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "EVPN L3 Multicast"
+          },
+          "igmp_snooping_enabled": {
+            "type": "boolean",
+            "description": "Enable IGMP Snooping (Enabled by default on EOS)",
+            "title": "IGMP Snooping Enabled"
+          },
+          "igmp_snooping_querier": {
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "description": "Will be enabled automatically if evpn_l2_multicast is enabled.",
+                "title": "Enabled"
+              },
+              "source_address": {
+                "type": "string",
+                "description": "IPv4_address\nIf not set, IP address of \"Loopback0\" will be used.\n",
+                "title": "Source Address"
+              },
+              "version": {
+                "type": "integer",
+                "description": "IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)",
+                "enum": [
+                  1,
+                  2,
+                  3
+                ],
+                "title": "Version"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "IGMP Snooping Querier"
+          },
+          "vxlan": {
+            "type": "boolean",
+            "default": true,
+            "description": "Extend this SVI over VXLAN",
+            "title": "VxLAN"
+          },
+          "mtu": {
+            "type": "integer",
+            "description": "Interface MTU",
+            "title": "MTU"
+          },
+          "ospf": {
+            "type": "object",
+            "description": "OSPF interface configuration",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "title": "Enabled"
+              },
+              "point_to_point": {
+                "type": "boolean",
+                "default": true,
+                "title": "Point To Point"
+              },
+              "area": {
+                "type": "string",
+                "description": "OSPF area ID",
+                "default": "0",
+                "title": "Area"
+              },
+              "cost": {
+                "type": "integer",
+                "description": "OSPF link cost",
+                "title": "Cost"
+              },
+              "authentication": {
+                "type": "string",
+                "enum": [
+                  "simple",
+                  "message-digest"
+                ],
+                "title": "Authentication"
+              },
+              "simple_auth_key": {
+                "type": "string",
+                "description": "Password used with simple authentication",
+                "title": "Simple Auth Key"
+              },
+              "message_digest_keys": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "title": "ID"
+                    },
+                    "hash_algorithm": {
+                      "type": "string",
+                      "enum": [
+                        "md5",
+                        "sha1",
+                        "sha256",
+                        "sha384",
+                        "sha512"
+                      ],
+                      "default": "sha512",
+                      "title": "Hash Algorithm"
+                    },
+                    "key": {
+                      "type": "string",
+                      "description": "Type 7 encrypted key",
+                      "title": "Key"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Message Digest Keys"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "OSPF"
+          },
+          "bgp": {
+            "type": "object",
+            "description": "Structured configuration and EOS CLI commands rendered on router_bgp.vlans\nThis configuration will not be applied to vlan aware bundles\n",
+            "properties": {
+              "structured_config": {
+                "type": "object",
+                "description": "Custom structured config added under vlan_interfaces.<interface> for eos_cli_config_gen.\nOverrides the setting on SVI level.\n",
+                "title": "Structured Config"
+              },
+              "raw_eos_cli": {
+                "type": "string",
+                "description": "EOS CLI rendered directly on the VLAN interface in the final EOS configuration\nOverrides the setting on SVI level.\n",
+                "title": "Raw EOS CLI"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "BGP"
+          },
+          "raw_eos_cli": {
+            "type": "string",
+            "description": "EOS CLI rendered directly on the VLAN interface in the final EOS configuration\nOverrides the setting on SVI level\n",
+            "title": "Raw EOS CLI"
+          },
+          "structured_config": {
+            "type": "object",
+            "description": "Custom structured config added under vlan_interfaces.<interface> for eos_cli_config_gen.\nOverrides the setting on SVI level.",
+            "title": "Structured Config"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "profile"
+        ]
+      },
+      "title": "Svi Profiles"
+    },
+    "system_mac_address": {
+      "type": "string",
+      "description": "Set to the same MAC address as available in \"show version\" on the device.\n\"system_mac_address\" can also be set under \"Fabric Topology\".\nIf both are set, the setting under \"Fabric Topology\" takes precedence.",
+      "title": "System MAC Address"
+    },
     "terminattr_disable_aaa": {
       "type": "boolean",
       "default": false,
@@ -3877,13 +4958,18 @@
     "terminattr_ingestgrpcurl_port": {
       "type": "integer",
       "default": 9910,
-      "description": "Port number for Terminattr ingest GRPC",
+      "description": "Port number used for Terminattr connection to an on-premise CloudVision cluster.\nThe port number is always 443 when using CloudVision as a Service, so this value is ignored.",
       "title": "TerminAttr Ingestgrpcurl Port"
     },
     "terminattr_smashexcludes": {
       "type": "string",
       "default": "ale,flexCounter,hardware,kni,pulse,strata",
       "title": "TerminAttr Smashexcludes"
+    },
+    "timezone": {
+      "type": "string",
+      "description": "Clock timezone like \"CET\" or \"US/Pacific\".",
+      "title": "Timezone"
     },
     "trunk_groups": {
       "type": "object",
