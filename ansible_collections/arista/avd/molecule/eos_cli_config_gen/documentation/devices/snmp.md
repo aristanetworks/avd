@@ -80,9 +80,9 @@ interface Management1
 
 | Host | VRF | Community | Username | Authentication level | SNMP Version |
 | ---- |---- | --------- | -------- | -------------------- | ------------ |
-| 10.6.75.121 | MGMT | SNMP-COMMUNITY-1 | - | - | 1 |
-| 10.6.75.121 | MGMT | SNMP-COMMUNITY-2 | - | - | 2c |
-| 10.6.75.122 | MGMT | SNMP-COMMUNITY-2 | - | - | 2c |
+| 10.6.75.121 | MGMT | <removed> | - | - | 1 |
+| 10.6.75.121 | MGMT | <removed> | - | - | 2c |
+| 10.6.75.122 | MGMT | <removed> | - | - | 2c |
 | 10.6.75.99 | MGMT | - | USER-READ-AUTH-NO-PRIV | auth | 3 |
 | 10.6.75.99 | MGMT | - | USER-WRITE | auth | 3 |
 | 10.6.75.100 | MGMT | - | USER-READ-AUTH-PRIV | priv | 3 |
@@ -98,9 +98,9 @@ interface Management1
 
 | Community | Access | Access List IPv4 | Access List IPv6 | View |
 | --------- | ------ | ---------------- | ---------------- | ---- |
-| SNMP-COMMUNITY-1 | ro | onur | - | - |
-| SNMP-COMMUNITY-2 | rw | SNMP-MGMT | SNMP-MGMT | VW-READ |
-| SNMP-COMMUNITY-3 | ro | - | - | - |
+| <removed> | ro | onur | - | - |
+| <removed> | rw | SNMP-MGMT | SNMP-MGMT | VW-READ |
+| <removed> | ro | - | - | - |
 
 #### SNMP Groups Configuration
 
@@ -142,24 +142,24 @@ snmp-server local-interface Loopback0
 snmp-server vrf Tenant_A_APP_Zone local-interface Loopback12
 snmp-server view VW-WRITE iso included
 snmp-server view VW-READ iso included
-snmp-server community SNMP-COMMUNITY-1 ro onur
-snmp-server community SNMP-COMMUNITY-2 view VW-READ rw ipv6 SNMP-MGMT SNMP-MGMT
-snmp-server community SNMP-COMMUNITY-3 ro
+snmp-server community <removed> ro onur
+snmp-server community <removed> view VW-READ rw ipv6 SNMP-MGMT SNMP-MGMT
+snmp-server community <removed> ro
 snmp-server group GRP-READ-ONLY v3 priv read v3read
 snmp-server group GRP-READ-WRITE v3 auth read v3read write v3write
 snmp-server user USER-READ-NO-AUTH-NO-PRIV GRP-READ-ONLY v3
-snmp-server user USER-READ-AUTH-NO-PRIV GRP-READ-ONLY v3 auth sha clearPassword
-snmp-server user USER-READ-AUTH-PRIV GRP-READ-ONLY v3 auth sha clearPassword priv aes clearPassword
+snmp-server user USER-READ-AUTH-NO-PRIV GRP-READ-ONLY v3 auth sha <removed>
+snmp-server user USER-READ-AUTH-PRIV GRP-READ-ONLY v3 auth sha <removed> priv aes <removed>
 snmp-server user USER-READ-NO-AUTH-NO-PRIV-LOC GRP-READ-ONLY v3
-snmp-server user USER-READ-AUTH-NO-PRIV-LOC GRP-READ-ONLY v3 localized 424242424242424242 auth sha 8da526cd35b9ea9b42d819036f7fad058576ea0a
-snmp-server user USER-READ-AUTH-PRIV-LOC GRP-READ-ONLY v3 localized 424242424242424242 auth sha 8da526cd35b9ea9b42d819036f7fad058576ea0a priv aes 8da526cd35b9ea9b42d819036f7fad05
-snmp-server user USER-WRITE GRP-READ-WRITE v3 auth sha clearPassword priv aes clearPassword
+snmp-server user USER-READ-AUTH-NO-PRIV-LOC GRP-READ-ONLY v3 localized 424242424242424242 auth sha <removed>
+snmp-server user USER-READ-AUTH-PRIV-LOC GRP-READ-ONLY v3 localized 424242424242424242 auth sha <removed> priv aes <removed>
+snmp-server user USER-WRITE GRP-READ-WRITE v3 auth sha <removed> priv aes <removed>
 snmp-server user REMOTE-USER-IP-ONLY GRP-REMOTE remote 42.42.42.42 v3
 snmp-server user REMOTE-USER-IP-PORT GRP-REMOTE remote 42.42.42.42 udp-port 666 v3
-snmp-server user REMOTE-USER-IP-LOCALIZED GRP-REMOTE remote 42.42.42.42 v3 localized DEADBEEFCAFE123456 auth sha ShouldBeEncryptedPassword
-snmp-server host 10.6.75.121 vrf MGMT version 1 SNMP-COMMUNITY-1
-snmp-server host 10.6.75.121 vrf MGMT version 2c SNMP-COMMUNITY-2
-snmp-server host 10.6.75.122 vrf MGMT version 2c SNMP-COMMUNITY-2
+snmp-server user REMOTE-USER-IP-LOCALIZED GRP-REMOTE remote 42.42.42.42 v3 localized DEADBEEFCAFE123456 auth sha <removed>
+snmp-server host 10.6.75.121 vrf MGMT version 1 <removed>
+snmp-server host 10.6.75.121 vrf MGMT version 2c <removed>
+snmp-server host 10.6.75.122 vrf MGMT version 2c <removed>
 snmp-server host 10.6.75.99 vrf MGMT version 3 auth USER-READ-AUTH-NO-PRIV
 snmp-server host 10.6.75.99 vrf MGMT version 3 auth USER-WRITE
 snmp-server host 10.6.75.100 vrf MGMT version 3 priv USER-READ-AUTH-PRIV

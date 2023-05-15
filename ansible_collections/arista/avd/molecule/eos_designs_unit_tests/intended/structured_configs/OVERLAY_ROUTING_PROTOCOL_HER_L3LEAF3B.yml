@@ -3,6 +3,9 @@ router_bgp:
   router_id: 192.168.254.4
   bgp_defaults:
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
@@ -49,16 +52,16 @@ management_api_http:
 spanning_tree:
   no_spanning_tree_vlan: 4093-4094
 vlans:
-- tenant: system
+- id: 4093
+  tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
   - LEAF_PEER_L3
-  id: 4093
-- tenant: system
+- id: 4094
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  id: 4094
 - id: 3900
   name: SVI_ON_ALL_LEAFS
   tenant: TEST
@@ -124,26 +127,26 @@ port_channel_interfaces:
   - LEAF_PEER_L3
   - MLAG
 ethernet_interfaces:
-- peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A
+- name: Eth1
+  peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A
   peer_interface: Eth1
   peer_type: mlag_peer
   description: MLAG_PEER_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A_Eth1
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  name: Eth1
-- peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A
+- name: Eth2
+  peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A
   peer_interface: Eth2
   peer_type: mlag_peer
   description: MLAG_PEER_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A_Eth2
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  name: Eth2
 mlag_configuration:
   domain_id: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3
   local_interface: Vlan4094

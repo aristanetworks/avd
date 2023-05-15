@@ -2,11 +2,13 @@ router_bgp:
   as: '65200'
   router_id: 10.255.128.11
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - graceful-restart restart-time 300
   - graceful-restart
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4

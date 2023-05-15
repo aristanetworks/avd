@@ -22,7 +22,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: TRUNK-GROUP-TESTS-L3LEAF2A_Ethernet1
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -32,7 +32,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: TRUNK-GROUP-TESTS-L3LEAF2B_Ethernet1
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -41,8 +41,8 @@ ethernet_interfaces:
   peer_interface: Nic3
   peer_type: server
   description: server_with_tg_200_Nic3
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk
   trunk_groups:
   - TG_NOT_MATCHING_ANY_VLANS

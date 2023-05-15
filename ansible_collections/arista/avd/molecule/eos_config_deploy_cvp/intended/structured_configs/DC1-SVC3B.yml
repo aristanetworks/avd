@@ -2,9 +2,11 @@ router_bgp:
   as: '65103'
   router_id: 192.168.255.9
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
@@ -390,16 +392,16 @@ management_api_http:
   - name: MGMT
   enable_https: true
 vlans:
-- tenant: system
+- id: 4093
+  tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
   - LEAF_PEER_L3
-  id: 4093
-- tenant: system
+- id: 4094
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  id: 4094
 - id: 130
   name: Tenant_A_APP_Zone_1
   tenant: Tenant_A
@@ -724,26 +726,26 @@ port_channel_interfaces:
   vlans: 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350
   mlag: 7
 ethernet_interfaces:
-- peer: DC1-SVC3A
+- name: Ethernet5
+  peer: DC1-SVC3A
   peer_interface: Ethernet5
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-SVC3A_Ethernet5
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
     mode: active
-  name: Ethernet5
-- peer: DC1-SVC3A
+- name: Ethernet6
+  peer: DC1-SVC3A
   peer_interface: Ethernet6
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-SVC3A_Ethernet6
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
     mode: active
-  name: Ethernet6
 - name: Ethernet1
   peer: DC1-SPINE1
   peer_interface: Ethernet5
@@ -786,7 +788,7 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-L2LEAF2A_Ethernet2
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 7
     mode: active
@@ -796,7 +798,7 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-L2LEAF2B_Ethernet2
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 7
     mode: active

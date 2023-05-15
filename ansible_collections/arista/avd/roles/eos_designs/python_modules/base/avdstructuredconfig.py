@@ -31,6 +31,8 @@ class AvdStructuredConfig(AvdFacts):
 
         bgp_defaults = get(self.shared_utils.switch_data_combined, "bgp_defaults", default=[])
 
+        bgp_default_ipv4_unicast = get(self._hostvars, "bgp_default_ipv4_unicast", default=False)
+
         if (bgp_maximum_paths := get(self._hostvars, "bgp_maximum_paths")) is not None:
             max_paths_str = f"maximum-paths {bgp_maximum_paths}"
             if (bgp_ecmp := get(self._hostvars, "bgp_ecmp")) is not None:
@@ -41,6 +43,11 @@ class AvdStructuredConfig(AvdFacts):
             "as": self.shared_utils.bgp_as,
             "router_id": self.shared_utils.router_id,
             "bgp_defaults": bgp_defaults,
+            "bgp": {
+                "default": {
+                    "ipv4_unicast": bgp_default_ipv4_unicast,
+                },
+            },
         }
 
     @cached_property
@@ -234,8 +241,8 @@ class AvdStructuredConfig(AvdFacts):
                     }
                 else:
                     daemon_terminattr["cvauth"] = {
-                        "method": "token-secure",
-                        "token_file": get(self._hostvars, "cvp_token_file", "/tmp/cv-onboarding-token"),
+                        "method": "token",
+                        "token_file": get(self._hostvars, "cvp_token_file", "/tmp/token"),
                     }
 
         daemon_terminattr["cvvrf"] = self.shared_utils.mgmt_interface_vrf
@@ -457,34 +464,12 @@ class AvdStructuredConfig(AvdFacts):
     @cached_property
     def local_users(self) -> list | None:
         """
-        local_users set based on various information from local_users data-model
+        local_users set based on local_users data model
         """
         if (local_users := get(self._hostvars, "local_users")) is None:
             return None
 
-        local_users = convert_dicts(local_users, "name")
-        local_users_list = []
-        for local_user in natural_sort(local_users, "name"):
-            name = local_user.get("name")
-            if local_user.get("disabled") is True:
-                local_users_list.append({"name": name, "disabled": True})
-                continue
-
-            local_users_dict = {"name": name, "privilege": get(local_user, "privilege")}
-            if (role := local_user.get("role")) is not None:
-                local_users_dict["role"] = role
-
-            if (sha512_password := local_user.get("sha512_password")) is not None:
-                local_users_dict["sha512_password"] = sha512_password
-            elif (no_password := local_user.get("no_password")) is not None:
-                local_users_dict["no_password"] = no_password
-
-            if (ssh_key := local_user.get("ssh_key")) is not None:
-                local_users_dict["ssh_key"] = ssh_key
-
-            local_users_list.append(local_users_dict)
-
-        return local_users_list
+        return natural_sort(convert_dicts(local_users, "name"), "name")
 
     @cached_property
     def clock(self) -> dict | None:

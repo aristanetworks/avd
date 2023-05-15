@@ -259,9 +259,9 @@ username admin privilege 15 role network-admin nopassword
 
 ```eos
 !
-radius-server host 10.10.10.157 vrf mgt key 7 071B245F5A
-radius-server host 10.10.10.249 key 7 071B245F5A
-radius-server host 10.10.10.158 key 7 071B245F5A
+radius-server host 10.10.10.157 vrf mgt key 7 <removed>
+radius-server host 10.10.10.249 key 7 <removed>
+radius-server host 10.10.10.158 key 7 <removed>
 ```
 
 ## Monitoring
@@ -272,7 +272,7 @@ radius-server host 10.10.10.158 key 7 071B245F5A
 
 | CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
 | -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
-| gzip | 10.20.20.1:9910 | mgt | key,arista | - | - | False |
+| gzip | 10.20.20.1:9910 | mgt | key,<removed> | - | - | False |
 | gzip | 10.30.30.1:9910 | mgt | token,/tmp/tokenDC2 | - | - | False |
 
 #### TerminAttr Daemon Device Configuration
@@ -280,7 +280,7 @@ radius-server host 10.10.10.158 key 7 071B245F5A
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvopt DC1.addr=10.20.20.1:9910 -cvopt DC1.auth=key,arista -cvopt DC1.vrf=mgt -cvopt DC2.addr=10.30.30.1:9910 -cvopt DC2.auth=token,/tmp/tokenDC2 -cvopt DC2.vrf=mgt -taillogs
+   exec /usr/bin/TerminAttr -cvopt DC1.addr=10.20.20.1:9910 -cvopt DC1.auth=key,<removed> -cvopt DC1.vrf=mgt -cvopt DC2.addr=10.30.30.1:9910 -cvopt DC2.auth=token,/tmp/tokenDC2 -cvopt DC2.vrf=mgt -taillogs
    no shutdown
 ```
 
@@ -353,9 +353,9 @@ logging policy match match-list molecule discard
 
 | Community | Access | Access List IPv4 | Access List IPv6 | View |
 | --------- | ------ | ---------------- | ---------------- | ---- |
-| SNMP-COMMUNITY-1 | ro | onur | - | - |
-| SNMP-COMMUNITY-2 | rw | SNMP-MGMT | SNMP-MGMT | VW-READ |
-| SNMP-COMMUNITY-3 | ro | - | - | - |
+| <removed> | ro | onur | - | - |
+| <removed> | rw | SNMP-MGMT | SNMP-MGMT | VW-READ |
+| <removed> | ro | - | - | - |
 
 #### SNMP Device Configuration
 
@@ -365,9 +365,9 @@ snmp-server vrf MGMT local-interface Management1
 snmp-server local-interface Loopback0
 snmp-server vrf Tenant_A_APP_Zone local-interface Loopback12
 snmp-server view VW-WRITE iso included
-snmp-server community SNMP-COMMUNITY-1 ro onur
-snmp-server community SNMP-COMMUNITY-2 view VW-READ rw ipv6 SNMP-MGMT SNMP-MGMT
-snmp-server community SNMP-COMMUNITY-3 ro
+snmp-server community <removed> ro onur
+snmp-server community <removed> view VW-READ rw ipv6 SNMP-MGMT SNMP-MGMT
+snmp-server community <removed> ro
 ```
 
 ### SFlow
@@ -605,9 +605,9 @@ interface Ethernet5
    ip ospf cost 99
    ip ospf network point-to-point
    ip ospf authentication message-digest
-   ip ospf authentication-key 7 asfddja23452
+   ip ospf authentication-key 7 <removed>
    ip ospf area 100
-   ip ospf message-digest-key 1 sha512 7 asfddja23452
+   ip ospf message-digest-key 1 sha512 7 <removed>
 !
 interface Ethernet26
    no switchport
@@ -640,11 +640,42 @@ interface Ethernet47
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel1 | SRV01_bond0 | switched | trunk | 2-3000 | - | - | - | - | - | 0000:0000:0404:0404:0303 |
 | Port-Channel51 | ipv6_prefix | switched | trunk | 1-500 | - | - | - | - | - | - |
+
+##### Flexible Encapsulation Interfaces
+
+| Interface | Description | Type | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
+| --------- | ----------- | ---- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
+| Port-Channel2.1000 | L2 Subinterface | l2dot1q | 1000 | False | 100 | - | - | True | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
 ```eos
+!
+interface Port-Channel1
+   description SRV01_bond0
+   switchport
+   switchport trunk allowed vlan 2-3000
+   switchport mode trunk
+   evpn ethernet-segment
+      identifier 0000:0000:0404:0404:0303
+      route-target import 04:04:03:03:02:02
+   lacp system-id 0303.0202.0101
+!
+interface Port-Channel2
+   description Flexencap Port-Channel
+   no switchport
+!
+interface Port-Channel2.1000
+   description L2 Subinterface
+   vlan id 1000
+   encapsulation vlan
+      client dot1q 100 network client
+   evpn ethernet-segment
+      identifier 0000:0000:0303:0202:0101
+      route-target import 03:03:02:02:01:01
+   lacp system-id 0303.0202.0101
 !
 interface Port-Channel51
    description ipv6_prefix
@@ -1531,9 +1562,9 @@ Settings:
 
 Keys:
 
-| Key ID | Encrypted (Type 7) Key | Fallback |
-| ------ | ---------------------- | -------- |
-| 1234b | 12485744465E5A53 | - |
+| Key ID | Fallback |
+| ------ |  -------- |
+| 1234b | - |
 
 ### MACsec Device Configuration
 
@@ -1546,7 +1577,7 @@ mac security
    profile A1
       sci
    profile A2
-      key 1234b 7 12485744465E5A53
+      key 1234b 7 <removed>
 ```
 
 ### Traffic Policies information

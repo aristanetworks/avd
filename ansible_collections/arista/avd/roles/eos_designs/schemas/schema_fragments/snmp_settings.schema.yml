@@ -1,0 +1,69 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  snmp_settings:
+    type: dict
+    description: Set SNMP settings (optional).
+    keys:
+      contact:
+        type: str
+        description: SNMP contact.
+      location:
+        type: bool
+        default: False
+        description: Set SNMP location. Formatted as {{ fabric_name }} {{ dc_name }} {{ pod_name }} {{ switch_rack }} {{ inventory_hostname }}.
+      compute_local_engineid:
+        type: bool
+        default: False
+        description: |
+          Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.
+      compute_local_engineid_source:
+        type: str
+        default: hostname_and_ip
+        description: |
+          `compute_local_engineid_source` supports:
+          - `hostname_and_ip` generate a local engineId for SNMP by hashing via SHA1
+            the string generated via the concatenation of the hostname plus the management IP.
+            {{ inventory_hostname }} + {{ switch.mgmt_ip }}
+          - `system_mac` generate the switch default engine id for AVD usage
+            To use this, `system_mac_address` MUST be set for the device
+            The formula is f5717f + system_mac_address + 00
+        valid_values:
+          - hostname_and_ip
+          - system_mac
+      compute_v3_user_localized_key:
+        type: bool
+        default: False
+        description: |
+          Requires compute_local_engineid to be `true`.
+          If enabled, the SNMPv3 passphrases for auth and priv are transformed using RFC 2574, matching the value they would take in EOS CLI.
+          The algorithm requires a local engineId, which is unknown to AVD, hence the necessity to generate one beforehand.
+      users:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Username
+            group:
+              type: str
+              description: |
+                Configuration of the SNMP User Groups are currently only possible using `structured_config`.
+            version:
+              type: str
+              valid_values: ["v1", "v2c", "v3"]
+            auth:
+              type: str
+              valid_values: ["md5", "sha", "sha256", "sha384", "sha512"]
+            auth_passphrase:
+              type: str
+              description: Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set.
+            priv:
+              type: str
+              valid_values: ["des", "aes", "aes192", "aes256"]
+            priv_passphrase:
+              type: str
+              description: Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set.

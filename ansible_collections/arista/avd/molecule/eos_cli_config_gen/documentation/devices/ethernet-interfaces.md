@@ -77,7 +77,6 @@ sFlow is disabled.
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet2 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
-| Ethernet4 |  Molecule IPv6 | access | - | - | - | - |
 | Ethernet6 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
 | Ethernet7 |  Molecule L2 | access | - | - | - | - |
 | Ethernet11 |  interface_in_mode_access_accepting_tagged_LACP | access | 200 | - | - | - |
@@ -119,10 +118,10 @@ sFlow is disabled.
 | Ethernet52 |  SFlow Interface Testing - SFlow ingress and egress unmodified enabled | access | - | - | - | - |
 | Ethernet53 |  SFlow Interface Testing - SFlow ingress and egress disabled | access | - | - | - | - |
 | Ethernet54 |  SFlow Interface Testing - SFlow ingress and egress unmodified disabled | access | - | - | - | - |
-| Ethernet55 |  DHCPv6 Relay Testing | access | - | - | - | - |
 | Ethernet56 |  Interface with poe commands and limit in class | access | - | - | - | - |
 | Ethernet57 |  Interface with poe commands and limit in watts | access | - | - | - | - |
 | Ethernet58 |  Interface with poe disabled and no other poe keys | access | - | - | - | - |
+| Ethernet60 |  IP NAT Testing | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -186,14 +185,65 @@ sFlow is disabled.
 | Ethernet18 | PBR Description | routed | - | 192.0.2.1/31 | default | 1500 | - | - | - |
 | Ethernet47 | IP Helper | routed | - | 172.31.255.1/31 | default | - | - | - | - |
 
+##### IP NAT: Source Static
+
+| Interface | Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
+| --------- | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
+| Ethernet60 | - | 3.0.0.1 | - | - | 4.0.0.1 | - | - | - | 0 | - |
+| Ethernet60 | - | 3.0.0.2 | 22 | - | 4.0.0.2 | - | - | - | 0 | - |
+| Ethernet60 | - | 3.0.0.3 | 22 | - | 4.0.0.3 | 23 | - | - | 0 | - |
+| Ethernet60 | - | 3.0.0.4 | 22 | - | 4.0.0.4 | 23 | UDP | - | 0 | - |
+| Ethernet60 | - | 3.0.0.5 | 22 | - | 4.0.0.5 | 23 | TCP | 1 | 0 | - |
+| Ethernet60 | - | 3.0.0.6 | 22 | - | 4.0.0.6 | 23 | TCP | 2 | 5 | Comment Test |
+| Ethernet60 | - | 3.0.0.7 | - | ACL21 | 4.0.0.7 | - | - | - | 0 | - |
+| Ethernet60 | ingress | 3.0.0.8 | - | - | 4.0.0.8 | - | - | - | 0 | - |
+
+##### IP NAT: Source Dynamic
+
+| Interface | Access List | NAT Type | Pool Name | Priority | Comment |
+| --------- | ----------- | -------- | --------- | -------- | ------- |
+| Ethernet60 | ACL11 | pool | POOL11 | 0 | - |
+| Ethernet60 | ACL12 | pool | POOL11 | 0 | POOL11 shared with ACL11/12 |
+| Ethernet60 | ACL13 | pool | POOL13 | 10 | - |
+| Ethernet60 | ACL14 | pool | POOL14 | 1 | Priority low end |
+| Ethernet60 | ACL15 | pool | POOL15 | 4294967295 | Priority high end |
+| Ethernet60 | ACL16 | pool | POOL16 | 0 | Priority default |
+| Ethernet60 | ACL17 | overload | - | 10 | Priority_10 |
+| Ethernet60 | ACL18 | pool-address-only | POOL18 | 10 | Priority_10 |
+| Ethernet60 | ACL19 | pool-full-cone | POOL19 | 10 | Priority_10 |
+
+##### IP NAT: Destination Static
+
+| Interface | Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
+| --------- | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
+| Ethernet60 | - | 1.0.0.1 | - | - | 2.0.0.1 | - | - | - | 0 | - |
+| Ethernet60 | - | 1.0.0.2 | 22 | - | 2.0.0.2 | - | - | - | 0 | - |
+| Ethernet60 | - | 1.0.0.3 | 22 | - | 2.0.0.3 | 23 | - | - | 0 | - |
+| Ethernet60 | - | 1.0.0.4 | 22 | - | 2.0.0.4 | 23 | udp | - | 0 | - |
+| Ethernet60 | - | 1.0.0.5 | 22 | - | 2.0.0.5 | 23 | tcp | 1 | 0 | - |
+| Ethernet60 | - | 1.0.0.6 | 22 | - | 2.0.0.6 | 23 | tcp | 2 | 5 | Comment Test |
+| Ethernet60 | - | 1.0.0.7 | - | ACL21 | 2.0.0.7 | - | - | - | 0 | - |
+| Ethernet60 | egress | 239.0.0.1 | - | - | 239.0.0.2 | - | - | - | 0 | - |
+
+##### IP NAT: Destination Dynamic
+
+| Interface | Access List | Pool Name | Priority | Comment |
+| --------- | ----------- | --------- | -------- | ------- |
+| Ethernet60 | ACL1 | POOL1 | 0 | - |
+| Ethernet60 | ACL2 | POOL1 | 0 | POOL1 shared with ACL1/2 |
+| Ethernet60 | ACL3 | POOL3 | 10 | - |
+| Ethernet60 | ACL4 | POOL4 | 1 | Priority low end |
+| Ethernet60 | ACL5 | POOL5 | 4294967295 | Priority high end |
+| Ethernet60 | ACL6 | POOL6 | 0 | Priority default |
+
 ##### IPv6
 
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
 | Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | routed | - | 2002:ABDC::1/64 | default | 1500 | - | - | - | - | - |
-| Ethernet4 | Molecule IPv6 | switchport | - | 2020::2020/64 | default | 9100 | True | True | True | IPv6_ACL_IN | IPv6_ACL_OUT |
+| Ethernet4 | Molecule IPv6 | routed | - | 2020::2020/64 | default | 9100 | True | True | True | IPv6_ACL_IN | IPv6_ACL_OUT |
 | Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 2002:ABDC::1/64 | default | - | - | - | - | - | - |
-| Ethernet55 | DHCPv6 Relay Testing | switchport | - | a0::1/64 | default | - | False | - | - | - | - |
+| Ethernet55 | DHCPv6 Relay Testing | routed | - | a0::1/64 | default | - | False | - | - | - | - |
 
 ##### ISIS
 
@@ -292,7 +342,7 @@ interface Ethernet4
    description Molecule IPv6
    shutdown
    mtu 9100
-   switchport
+   no switchport
    snmp trap link-change
    ipv6 enable
    ipv6 address 2020::2020/64
@@ -317,9 +367,9 @@ interface Ethernet5
    ip ospf cost 99
    ip ospf network point-to-point
    ip ospf authentication message-digest
-   ip ospf authentication-key 7 asfddja23452
+   ip ospf authentication-key 7 <removed>
    ip ospf area 100
-   ip ospf message-digest-key 1 sha512 7 asfddja23452
+   ip ospf message-digest-key 1 sha512 7 <removed>
    pim ipv4 sparse-mode
    pim ipv4 dr-priority 200
    isis enable ISIS_TEST
@@ -328,7 +378,7 @@ interface Ethernet5
    no isis hello padding
    isis network point-to-point
    isis authentication mode md5
-   isis authentication key 7 asfddja23452
+   isis authentication key 7 <removed>
    spanning-tree guard loop
 !
 interface Ethernet6
@@ -711,7 +761,7 @@ interface Ethernet54
 interface Ethernet55
    description DHCPv6 Relay Testing
    no shutdown
-   switchport
+   no switchport
    ipv6 address a0::1/64
    ipv6 dhcp relay destination a0::2 link-address a0::3
    ipv6 dhcp relay destination a0::4 vrf TEST local-interface Loopback55 link-address a0::5
@@ -740,6 +790,41 @@ interface Ethernet58
    description Interface with poe disabled and no other poe keys
    switchport
    poe disabled
+!
+interface Ethernet60
+   description IP NAT Testing
+   switchport
+   ip nat source static 3.0.0.1 4.0.0.1
+   ip nat source static 3.0.0.2 22 4.0.0.2
+   ip nat source static 3.0.0.3 22 4.0.0.3 23
+   ip nat source static 3.0.0.4 22 4.0.0.4 23 protocol udp
+   ip nat source static 3.0.0.5 22 4.0.0.5 23 protocol tcp group 1
+   ip nat source static 3.0.0.6 22 4.0.0.6 23 protocol tcp group 2 comment Comment Test
+   ip nat source static 3.0.0.7 access-list ACL21 4.0.0.7
+   ip nat source ingress static 3.0.0.8 4.0.0.8
+   ip nat source dynamic access-list ACL11 pool POOL11
+   ip nat source dynamic access-list ACL12 pool POOL11 comment POOL11 shared with ACL11/12
+   ip nat source dynamic access-list ACL13 pool POOL13 priority 10
+   ip nat source dynamic access-list ACL14 pool POOL14 priority 1 comment Priority low end
+   ip nat source dynamic access-list ACL15 pool POOL15 priority 4294967295 comment Priority high end
+   ip nat source dynamic access-list ACL16 pool POOL16 comment Priority default
+   ip nat source dynamic access-list ACL17 overload priority 10 comment Priority_10
+   ip nat source dynamic access-list ACL18 pool POOL18 address-only priority 10 comment Priority_10
+   ip nat source dynamic access-list ACL19 pool POOL19 full-cone priority 10 comment Priority_10
+   ip nat destination static 1.0.0.1 2.0.0.1
+   ip nat destination static 1.0.0.2 22 2.0.0.2
+   ip nat destination static 1.0.0.3 22 2.0.0.3 23
+   ip nat destination static 1.0.0.4 22 2.0.0.4 23 protocol udp
+   ip nat destination static 1.0.0.5 22 2.0.0.5 23 protocol tcp group 1
+   ip nat destination static 1.0.0.6 22 2.0.0.6 23 protocol tcp group 2 comment Comment Test
+   ip nat destination static 1.0.0.7 access-list ACL21 2.0.0.7
+   ip nat destination egress static 239.0.0.1 239.0.0.2
+   ip nat destination dynamic access-list ACL1 pool POOL1
+   ip nat destination dynamic access-list ACL2 pool POOL1 comment POOL1 shared with ACL1/2
+   ip nat destination dynamic access-list ACL3 pool POOL3 priority 10
+   ip nat destination dynamic access-list ACL4 pool POOL4 priority 1 comment Priority low end
+   ip nat destination dynamic access-list ACL5 pool POOL5 priority 4294967295 comment Priority high end
+   ip nat destination dynamic access-list ACL6 pool POOL6 comment Priority default
 ```
 
 ## BFD

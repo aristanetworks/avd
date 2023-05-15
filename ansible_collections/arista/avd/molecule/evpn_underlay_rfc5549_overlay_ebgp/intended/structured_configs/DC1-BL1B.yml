@@ -2,9 +2,11 @@ router_bgp:
   as: '65105'
   router_id: 192.168.255.11
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
   peer_groups:
   - name: UNDERLAY_PEERS
     type: ipv4
@@ -308,7 +310,8 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_enable: true
-- description: My test
+- name: Ethernet4000
+  description: My test
   ip_address: 10.1.2.3/12
   shutdown: false
   type: routed
@@ -316,7 +319,6 @@ ethernet_interfaces:
   peer: MY-own-peer
   peer_interface: Ethernet123
   peer_type: my_precious
-  name: Ethernet4000
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

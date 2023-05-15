@@ -1,0 +1,109 @@
+{# doc - IP NAT interfaces #}
+{% set ip_nat = namespace(dst_dyn=[], src_dyn=[], dst_static=[], src_static=[]) %}
+{% for _intf in ip_nat_interfaces | arista.avd.natural_sort('name') %}
+{#     Analyze dynamic destination NAT #}
+{%     for dst_dyn in _intf.ip_nat.destination.dynamic | arista.avd.default([]) | arista.avd.natural_sort('access_list') %}
+{%         do ip_nat.dst_dyn.append(
+               {'if_name': _intf.name,
+                'acl': dst_dyn.access_list,
+                'pool': dst_dyn.pool_name,
+                'comment': dst_dyn.comment | arista.avd.default('-'),
+                'priority': dst_dyn.priority | arista.avd.default(0)}) %}
+{%     endfor %}
+{#     Analyze dynamic source NAT #}
+{%     for src_dyn in _intf.ip_nat.source.dynamic | arista.avd.default([]) | arista.avd.natural_sort('access_list') %}
+{%         set valid = false %}
+{%         if src_dyn.nat_type == 'overload' %}
+{%             set pool = '-' %}
+{%             set valid = true %}
+{%         elif src_dyn.pool_name is arista.avd.defined %}
+{%             set pool = src_dyn.pool_name %}
+{%             set valid = true %}
+{%         endif %}
+{%         if valid %}
+{%             do ip_nat.src_dyn.append(
+                   {'if_name': _intf.name,
+                    'acl': src_dyn.access_list,
+                    'type': src_dyn.nat_type,
+                    'pool': pool,
+                    'comment': src_dyn.comment | arista.avd.default('-'),
+                    'priority': src_dyn.priority | arista.avd.default(0)}) %}
+{%         endif %}
+{%     endfor %}
+{#     Analyze static destination NAT #}
+{%     for dst_static in _intf.ip_nat.destination.static | arista.avd.default([]) | arista.avd.natural_sort('original_ip') %}
+{%         if not (dst_static.access_list is arista.avd.defined and dst_static.group is arista.avd.defined) and
+              not (dst_static.original_port is not arista.avd.defined and dst_static.translated_port is arista.avd.defined) %}
+{%             do ip_nat.dst_static.append(
+                   {'if_name': _intf.name,
+                    'direction': dst_static.direction | arista.avd.default('-'),
+                    'o_ip': dst_static.original_ip,
+                    'o_port': dst_static.original_port | arista.avd.default('-'),
+                    'acl': dst_static.access_list | arista.avd.default('-'),
+                    't_ip': dst_static.translated_ip,
+                    't_port': dst_static.translated_port | arista.avd.default('-'),
+                    'proto': dst_static.protocol | arista.avd.default('-'),
+                    'group': dst_static.group | arista.avd.default('-'),
+                    'priority': dst_static.priority | arista.avd.default(0),
+                    'comment': dst_static.comment | arista.avd.default('-')}) %}
+{%         endif %}
+{%     endfor %}
+{#     Analyze static source NAT #}
+{%     for src_static in _intf.ip_nat.source.static | arista.avd.default([]) | arista.avd.natural_sort('original_ip') %}
+{%         if not (src_static.access_list is arista.avd.defined and src_static.group is arista.avd.defined) and
+              not (src_static.original_port is not arista.avd.defined and src_static.translated_port is arista.avd.defined) %}
+{%             do ip_nat.src_static.append(
+                   {'if_name': _intf.name,
+                    'direction': src_static.direction | arista.avd.default('-'),
+                    'o_ip': src_static.original_ip,
+                    'o_port': src_static.original_port | arista.avd.default('-'),
+                    'acl': src_static.access_list | arista.avd.default('-'),
+                    't_ip': src_static.translated_ip,
+                    't_port': src_static.translated_port | arista.avd.default('-'),
+                    'proto': src_static.protocol | arista.avd.default('-') | upper,
+                    'group': src_static.group | arista.avd.default('-'),
+                    'priority': src_static.priority | arista.avd.default(0),
+                    'comment': src_static.comment | arista.avd.default('-')}) %}
+{%         endif %}
+{%     endfor %}
+{% endfor %}
+{% if ip_nat.src_static %}
+
+##### IP NAT: Source Static
+
+| Interface | Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
+| --------- | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
+{%     for row in ip_nat.src_static %}
+| {{ row.if_name }} | {{ row.direction }} | {{ row.o_ip }} | {{ row.o_port }} | {{ row.acl }} | {{ row.t_ip }} | {{ row.t_port }} | {{ row.proto }} | {{ row.group }} | {{ row.priority }} | {{ row.comment }} |
+{%     endfor %}
+{% endif %}
+{% if ip_nat.src_dyn %}
+
+##### IP NAT: Source Dynamic
+
+| Interface | Access List | NAT Type | Pool Name | Priority | Comment |
+| --------- | ----------- | -------- | --------- | -------- | ------- |
+{%     for row in ip_nat.src_dyn %}
+| {{ row.if_name }} | {{ row.acl }} | {{ row.type }} | {{ row.pool }} | {{ row.priority }} | {{ row.comment }} |
+{%     endfor %}
+{% endif %}
+{% if ip_nat.dst_static %}
+
+##### IP NAT: Destination Static
+
+| Interface | Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
+| --------- | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
+{%     for row in ip_nat.dst_static %}
+| {{ row.if_name }} | {{ row.direction }} | {{ row.o_ip }} | {{ row.o_port }} | {{ row.acl }} | {{ row.t_ip }} | {{ row.t_port }} | {{ row.proto }} | {{ row.group }} | {{ row.priority }} | {{ row.comment }} |
+{%     endfor %}
+{% endif %}
+{% if ip_nat.dst_dyn %}
+
+##### IP NAT: Destination Dynamic
+
+| Interface | Access List | Pool Name | Priority | Comment |
+| --------- | ----------- | --------- | -------- | ------- |
+{%     for row in ip_nat.dst_dyn %}
+| {{ row.if_name }} | {{ row.acl }} | {{ row.pool }} | {{ row.priority }} | {{ row.comment }} |
+{%     endfor %}
+{% endif %}

@@ -120,7 +120,7 @@ router bgp 65103
    neighbor MPLS-IBGP-PEERS peer group
    neighbor MPLS-IBGP-PEERS remote-as 65000
    neighbor MPLS-IBGP-PEERS local-as 65000 no-prepend replace-as
-   neighbor MPLS-IBGP-PEERS password 7 mWV4B6WpLCfOTyKATLWuBg==
+   neighbor MPLS-IBGP-PEERS password 7 <removed>
    neighbor MPLS-IBGP-PEERS send-community
    neighbor MPLS-IBGP-PEERS maximum-routes 0
    neighbor 192.168.255.1 peer group MPLS-IBGP-PEERS

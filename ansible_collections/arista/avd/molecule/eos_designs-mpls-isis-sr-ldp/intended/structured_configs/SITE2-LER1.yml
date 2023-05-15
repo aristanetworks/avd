@@ -2,11 +2,13 @@ router_bgp:
   as: '65000'
   router_id: 100.70.0.7
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - graceful-restart restart-time 300
   - graceful-restart
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
   peer_groups:
   - name: MPLS-OVERLAY-PEERS
     type: mpls
@@ -266,6 +268,7 @@ ethernet_interfaces:
       igp_sync: true
   speed: forced 40gfull
 - name: Ethernet11
+  type: port-channel-member
   peer: SITE2-LSR2
   peer_interface: Port-Channel12
   peer_type: p
@@ -281,8 +284,8 @@ ethernet_interfaces:
   peer_type: cpe
   port_profile: TENANT_A_WAN_SERVICE_10
   description: CPE_TENANT_A_SITE2_eth0
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk
   vlans: '10'
   spanning_tree_portfast: edge
