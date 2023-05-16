@@ -34,7 +34,7 @@ class AvdStructuredConfig(AvdFacts):
         return {"no_spanning_tree_vlan": self.shared_utils.mlag_peer_vlan}
 
     @cached_property
-    def vlans(self) -> list | None:
+    def vlans(self) -> list:
         vlans = []
         if self.shared_utils.mlag_peer_l3_vlan is not None:
             vlans.append(
