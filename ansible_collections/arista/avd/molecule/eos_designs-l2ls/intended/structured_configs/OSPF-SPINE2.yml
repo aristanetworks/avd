@@ -49,7 +49,6 @@ port_channel_interfaces:
   description: MLAG_PEER_OSPF-SPINE1_Po3
   type: switched
   shutdown: false
-  vlans: 2-4094
   mode: trunk
   trunk_groups:
   - LEAF_PEER_L3

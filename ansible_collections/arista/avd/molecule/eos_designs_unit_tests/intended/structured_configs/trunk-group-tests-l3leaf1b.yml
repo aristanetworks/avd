@@ -385,7 +385,6 @@ port_channel_interfaces:
   description: MLAG_PEER_trunk-group-tests-l3leaf1a_Po3
   type: switched
   shutdown: false
-  vlans: 2-4094
   mode: trunk
   trunk_groups:
   - CUSTOM_LEAF_PEER_L3_TG_NAME

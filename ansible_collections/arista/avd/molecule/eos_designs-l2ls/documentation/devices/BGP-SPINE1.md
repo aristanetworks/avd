@@ -152,8 +152,8 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | BGP-LEAF1_Ethernet1 | *trunk | *100 | *- | *- | 1 |
 | Ethernet2 | BGP-LEAF2_Ethernet1 | *trunk | *100 | *- | *- | 2 |
-| Ethernet3 | MLAG_PEER_BGP-SPINE2_Ethernet3 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
-| Ethernet4 | MLAG_PEER_BGP-SPINE2_Ethernet4 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
+| Ethernet3 | MLAG_PEER_BGP-SPINE2_Ethernet3 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
+| Ethernet4 | MLAG_PEER_BGP-SPINE2_Ethernet4 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
 
 *Inherited from Port-Channel Interface
 
@@ -205,7 +205,7 @@ interface Ethernet5
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | BGP-LEAF1_Po1 | switched | trunk | 100 | - | - | - | - | 1 | - |
 | Port-Channel2 | BGP-LEAF2_Po1 | switched | trunk | 100 | - | - | - | - | 2 | - |
-| Port-Channel3 | MLAG_PEER_BGP-SPINE2_Po3 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel3 | MLAG_PEER_BGP-SPINE2_Po3 | switched | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -231,7 +231,6 @@ interface Port-Channel3
    description MLAG_PEER_BGP-SPINE2_Po3
    no shutdown
    switchport
-   switchport trunk allowed vlan 2-4094
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG

@@ -554,7 +554,7 @@ default_interfaces:
     mlag_peer_vlan: < 0-4094 | default -> 4094 >
 
     # MLAG Peer Link allowed VLANs
-    mlag_peer_link_allowed_vlans: < vlans as string | default -> "2-4094" >
+    mlag_peer_link_allowed_vlans: < vlans as string >
 
     # IP address pool used for MLAG Peer Link (control link) | *Required when MLAG leafs present in topology.
     # IP is derived from the node id. Assign a prefix that can accomodate n * /31 subnets, where n is the highest id assigned to an MLAG switch.
