@@ -1,3 +1,4 @@
+import os
 from json import JSONDecodeError
 from json import loads as json_loads
 from sys import stdin
@@ -33,3 +34,11 @@ def create_common_vars(common_varfiles):
     for file in common_varfiles:
         common_vars.update(read_vars(file))
     return common_vars
+
+
+def get_files_in_folder(folder_path):
+    files = []
+    for root, _, filenames in os.walk(folder_path):
+        for filename in filenames:
+            files.append(os.path.join(root, filename))
+    return files
