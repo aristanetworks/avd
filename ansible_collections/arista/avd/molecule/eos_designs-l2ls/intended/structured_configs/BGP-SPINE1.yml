@@ -70,7 +70,7 @@ vlan_interfaces:
   shutdown: false
   ip_address: 192.168.254.0/31
   no_autostate: true
-  mtu: 9000
+  mtu: 9214
 - name: Vlan100
   tenant: L2LS_BGP
   description: SVI_100
@@ -148,7 +148,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DUMMY-CORE_Ethernet1/3
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ip_address: 192.168.253.4/31
 mlag_configuration:
   domain_id: BGP_SPINES

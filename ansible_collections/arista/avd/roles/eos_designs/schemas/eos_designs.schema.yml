@@ -1355,7 +1355,7 @@ keys:
     - str
     min: 68
     max: 65535
-    default: 9000
+    default: 9214
   p2p_uplinks_qos_profile:
     documentation_options:
       filename: Fabric Variables

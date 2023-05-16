@@ -121,7 +121,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_ptp-tests-spine1_Ethernet6
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ptp:
     announce:
       interval: 0
@@ -138,7 +138,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_ptp-tests-spine1_Ethernet7
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ptp:
     announce:
       interval: 0
@@ -155,7 +155,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_ptp-tests-spine1_Ethernet8
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ptp:
     announce:
       interval: 0
@@ -172,7 +172,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_ptp-tests-spine1_Ethernet9
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ptp:
     announce:
       interval: 0

@@ -33,7 +33,7 @@ vlan_interfaces:
   shutdown: false
   ip_address: 192.168.254.0/31
   no_autostate: true
-  mtu: 9000
+  mtu: 9214
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
 - name: Vlan100
@@ -113,7 +113,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DUMMY-CORE_Ethernet1/1
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ip_address: 192.168.253.0/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0

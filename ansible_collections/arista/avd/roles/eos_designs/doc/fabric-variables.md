@@ -89,7 +89,7 @@ isis_ti_lfa:
 bgp_as: < AS number >
 
 # Point to Point Links MTU | Required.
-p2p_uplinks_mtu: < 0-9216 | default -> 9000 >
+p2p_uplinks_mtu: < 0-9216 | default -> 9214>
 
 # IP Address used as Virtual VTEP. Will be configured as secondary IP on loopback1 | Optional
 # This is only needed for centralized routing designs

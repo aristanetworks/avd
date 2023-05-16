@@ -98,7 +98,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_peer2_ethernet2
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ip_address: 192.168.0.2/31
   ipv6_enable: true
 - name: ethernet3
@@ -108,7 +108,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_peer3_ethernet3
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ip_address: 192.168.0.4/31
 - name: ethernet4
   peer: peer4
@@ -117,7 +117,7 @@ ethernet_interfaces:
   description: Custom description on l3_edge_bgp eth4
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ip_address: 192.168.0.6/31
 - name: Ethernet5
   type: port-channel-member
@@ -167,7 +167,7 @@ port_channel_interfaces:
   description: P2P_LINK_TO_peer5_Port-Channel5
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ip_address: 192.168.0.8/31
 - name: Port-Channel7
   peer: peer6
@@ -176,5 +176,5 @@ port_channel_interfaces:
   description: P2P_LINK_TO_peer6_Port-Channel7
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ip_address: 192.168.0.10/31

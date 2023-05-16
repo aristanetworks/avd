@@ -13,4 +13,4 @@ keys:
       - str
     min: 68
     max: 65535
-    default: 9000
+    default: 9214
