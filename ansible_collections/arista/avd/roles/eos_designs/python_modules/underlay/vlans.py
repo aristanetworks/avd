@@ -31,17 +31,15 @@ class VlansMixin(UtilsMixin):
         # TODO - can probably do this with sets but need list in the end so not sure it is worth it
         for vlan_trunk_group in self._underlay_vlan_trunk_groups:
             for vlan in range_expand(vlan_trunk_group["vlan_list"]):
-                if (target := get_item(vlans, "id", int(vlan))) is None:
-                    vlan_dict = {
+                if (found_vlan := get_item(vlans, "id", int(vlan))) is None:
+                    new_vlan = {
                         "id": int(vlan),
                         "trunk_groups": [],
                     }
-                    vlan_dict["trunk_groups"].extend(vlan_trunk_group["trunk_groups"])
-                    vlans.append(vlan_dict)
+                    new_vlan["trunk_groups"].extend(vlan_trunk_group["trunk_groups"])
+                    vlans.append(new_vlan)
                 else:
-                    for trunk_group in vlan_trunk_group["trunk_groups"]:
-                        if trunk_group not in target["trunk_groups"]:
-                            target["trunk_groups"].extend(vlan_trunk_group["trunk_groups"])
+                    found_vlan["trunk_groups"].extend(vlan_trunk_group["trunk_groups"])
 
         for vlan in vlans:
             vlan["trunk_groups"] = natural_sort(set(vlan["trunk_groups"]))
