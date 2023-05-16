@@ -235,6 +235,20 @@ search:
     vtep_vvtep_ip: <str>
     ```
 
+## PTP Profiles
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>ptp_profiles</samp>](## "ptp_profiles") | List |  |  |  | PTP Profiles |
+
+=== "YAML"
+
+    ```yaml
+    ptp_profiles:
+    ```
+
 ## Routing Protocol Selection
 
 === "Table"
