@@ -628,6 +628,8 @@ router isis EVPN_UNDERLAY
 | ---------- |
 | distance bgp 20 200 200 |
 | maximum-paths 4 ecmp 4 |
+| graceful-restart restart-time 300 |
+| graceful-restart |
 | no bgp default ipv4-unicast |
 
 #### Router BGP Peer Groups
@@ -664,6 +666,8 @@ router isis EVPN_UNDERLAY
 !
 router bgp 65000
    router-id 192.168.255.6
+   graceful-restart restart-time 300
+   graceful-restart
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4

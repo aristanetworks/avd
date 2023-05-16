@@ -18,8 +18,6 @@ spine:
       # - update wait-for-convergence
       # - update wait-install
       - distance bgp 20 200 200
-      - graceful-restart restart-time 300
-      - graceful-restart
 
   # Definition of nodes contained in this group.
   # Specific configuration of device must take place under the node definition. Each node inherites all values defined under 'defaults'
@@ -64,8 +62,6 @@ l3leaf:
       # The following command must not be enabled when using vEOS-lab
       # - update wait-install
       - distance bgp 20 200 200
-      - graceful-restart restart-time 300
-      - graceful-restart
     # Virtual router mac for VNIs assigned to Leaf switches in format xx:xx:xx:xx:xx:xx
     virtual_router_mac_address: 00:1c:73:00:00:99
     spanning_tree_priority: 4096

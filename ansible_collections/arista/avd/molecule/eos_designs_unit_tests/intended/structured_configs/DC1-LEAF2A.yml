@@ -7,6 +7,8 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
+  graceful_restart:
+    enabled: false
   peer_groups:
   - name: UNDERLAY-PEERS
     type: ipv4

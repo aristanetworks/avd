@@ -353,10 +353,10 @@ router isis CORE
 | BGP Tuning |
 | ---------- |
 | distance bgp 20 200 200 |
-| graceful-restart restart-time 300 |
-| graceful-restart |
 | bgp route-reflector preserve-attributes always |
 | maximum-paths 4 ecmp 4 |
+| graceful-restart restart-time 300 |
+| graceful-restart |
 | no bgp default ipv4-unicast |
 
 #### Router BGP Peer Groups
@@ -432,11 +432,11 @@ router isis CORE
 !
 router bgp 65000
    router-id 100.70.0.9
+   graceful-restart restart-time 300
+   graceful-restart
    no bgp default ipv4-unicast
    bgp cluster-id 1.1.1.1
    distance bgp 20 200 200
-   graceful-restart restart-time 300
-   graceful-restart
    bgp route-reflector preserve-attributes always
    maximum-paths 4 ecmp 4
    neighbor MPLS-OVERLAY-PEERS peer group

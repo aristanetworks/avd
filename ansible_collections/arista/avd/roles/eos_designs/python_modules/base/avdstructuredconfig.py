@@ -29,9 +29,13 @@ class AvdStructuredConfig(AvdFacts):
         if self.shared_utils.bgp_as is None:
             return None
 
+        router_bgp = {}
+
         bgp_defaults = get(self.shared_utils.switch_data_combined, "bgp_defaults", default=[])
 
         bgp_default_ipv4_unicast = get(self._hostvars, "bgp_default_ipv4_unicast", default=False)
+
+        bgp_graceful_restart_enabled = get(self._hostvars, "bgp_graceful_restart.enabled", default=True)
 
         if (bgp_maximum_paths := get(self._hostvars, "bgp_maximum_paths")) is not None:
             max_paths_str = f"maximum-paths {bgp_maximum_paths}"
@@ -39,16 +43,35 @@ class AvdStructuredConfig(AvdFacts):
                 max_paths_str += f" ecmp {bgp_ecmp}"
             bgp_defaults.append(max_paths_str)
 
-        return {
-            "as": self.shared_utils.bgp_as,
-            "router_id": self.shared_utils.router_id,
-            "bgp_defaults": bgp_defaults,
-            "bgp": {
-                "default": {
-                    "ipv4_unicast": bgp_default_ipv4_unicast,
+        router_bgp.update(
+            {
+                "as": self.shared_utils.bgp_as,
+                "router_id": self.shared_utils.router_id,
+                "bgp_defaults": bgp_defaults,
+                "bgp": {
+                    "default": {
+                        "ipv4_unicast": bgp_default_ipv4_unicast,
+                    },
                 },
-            },
-        }
+                "graceful_restart": {
+                    "enabled": bgp_graceful_restart_enabled,
+                },
+            }
+        )
+
+        if bgp_graceful_restart_enabled is True:
+            bgp_graceful_restart_time = get(self._hostvars, "bgp_graceful_restart.restart_time", default=300)
+
+            router_bgp.update(
+                {
+                    "graceful_restart": {
+                        "enabled": bgp_graceful_restart_enabled,
+                        "restart_time": bgp_graceful_restart_time,
+                    },
+                },
+            )
+
+        return router_bgp
 
     @cached_property
     def static_routes(self) -> list | None:
