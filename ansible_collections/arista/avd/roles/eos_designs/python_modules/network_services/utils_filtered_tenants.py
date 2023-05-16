@@ -260,7 +260,7 @@ class UtilsFilteredTenantsMixin(object):
         Filtering based on accepted vlans since eos_designs_facts already
         filtered that on tags and trunk_groups.
         """
-        svis = vrf.get("svis", [])
+        svis: list[dict] = natural_sort(convert_dicts(vrf.get("svis", []), "id"), "id")
         svis = [svi for svi in svis if self._is_accepted_vlan(svi)]
 
         # Handle svi_profile inheritance
