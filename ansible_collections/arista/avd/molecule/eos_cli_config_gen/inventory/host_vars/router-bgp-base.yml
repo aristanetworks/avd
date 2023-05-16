@@ -19,9 +19,10 @@ router_bgp:
   maximum_paths:
     paths: 32
     ecmp: 32
-  bgp_defaults:
-    - no bgp default ipv4-unicast
   bgp:
+    default:
+      ipv4_unicast: false
+      ipv4_unicast_transport_ipv6: false
     bestpath:
       d_path: true
   listen_ranges:

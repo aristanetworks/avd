@@ -1602,6 +1602,38 @@
       "description": "Multiline string with EOS CLI rendered directly on the root level of the final EOS configuration",
       "title": "EOS CLI"
     },
+    "eos_cli_config_gen_configuration": {
+      "type": "object",
+      "properties": {
+        "hide_passwords": {
+          "type": "boolean",
+          "description": "Replace the input data using the `hide_passwords` filter in the Jinja2 templates by '<removed>' in the configruation if true\n",
+          "default": false,
+          "title": "Hide Passwords"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "EOS CLI Config Gen Configuration"
+    },
+    "eos_cli_config_gen_documentation": {
+      "type": "object",
+      "properties": {
+        "hide_passwords": {
+          "type": "boolean",
+          "description": "Replace the input data using the `hide_passwords` filter in the Jinja2 templates by '<removed>' in the documentation if true\n",
+          "default": true,
+          "title": "Hide Passwords"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "EOS CLI Config Gen Documentation"
+    },
     "errdisable": {
       "type": "object",
       "properties": {
@@ -1802,9 +1834,10 @@
               "routed",
               "switched",
               "l3dot1q",
-              "l2dot1q"
+              "l2dot1q",
+              "port-channel-member"
             ],
-            "description": "l3dot1q and l2dot1q are used for sub-interfaces\nThe parent interface should be defined as routed\n",
+            "description": "l3dot1q and l2dot1q are used for sub-interfaces. The parent interface should be defined as routed.\nInterface will not be listed in device documentation, unless \"type\" is set.\n",
             "title": "Type"
           },
           "snmp_trap_link_change": {
@@ -2153,6 +2186,275 @@
               }
             },
             "title": "IP Helpers"
+          },
+          "ip_nat": {
+            "type": "object",
+            "properties": {
+              "destination": {
+                "type": "object",
+                "properties": {
+                  "dynamic": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "access_list": {
+                          "type": "string",
+                          "title": "Access List"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "title": "Comment"
+                        },
+                        "pool_name": {
+                          "type": "string",
+                          "title": "Pool Name"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Priority"
+                        }
+                      },
+                      "required": [
+                        "pool_name",
+                        "access_list"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Dynamic"
+                  },
+                  "static": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "access_list": {
+                          "type": "string",
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Access List"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "title": "Comment"
+                        },
+                        "direction": {
+                          "type": "string",
+                          "enum": [
+                            "egress",
+                            "ingress"
+                          ],
+                          "description": "Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware platform.\nEOS might remove this keyword in the configuration. So, check the configuration on targeted HW/SW.\n",
+                          "title": "Direction"
+                        },
+                        "group": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Group"
+                        },
+                        "original_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Original IP"
+                        },
+                        "original_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "title": "Original Port"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Priority"
+                        },
+                        "protocol": {
+                          "type": "string",
+                          "enum": [
+                            "udp",
+                            "tcp"
+                          ],
+                          "title": "Protocol"
+                        },
+                        "translated_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Translated IP"
+                        },
+                        "translated_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "requires 'original_port'",
+                          "title": "Translated Port"
+                        }
+                      },
+                      "required": [
+                        "translated_ip",
+                        "original_ip"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Static"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Destination"
+              },
+              "source": {
+                "type": "object",
+                "properties": {
+                  "dynamic": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "access_list": {
+                          "type": "string",
+                          "title": "Access List"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "title": "Comment"
+                        },
+                        "nat_type": {
+                          "type": "string",
+                          "enum": [
+                            "overload",
+                            "pool",
+                            "pool-address-only",
+                            "pool-full-cone"
+                          ],
+                          "title": "Nat Type"
+                        },
+                        "pool_name": {
+                          "type": "string",
+                          "description": "required if 'nat_type' is pool, pool-address-only or pool-full-cone\nignored if 'nat_type' is overload\n",
+                          "title": "Pool Name"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Priority"
+                        }
+                      },
+                      "required": [
+                        "nat_type",
+                        "access_list"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Dynamic"
+                  },
+                  "static": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "access_list": {
+                          "type": "string",
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Access List"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "title": "Comment"
+                        },
+                        "direction": {
+                          "type": "string",
+                          "enum": [
+                            "egress",
+                            "ingress"
+                          ],
+                          "description": "Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware platform.\nEOS might remove this keyword in the configuration. So, check the configuration on targeted HW/SW.\n",
+                          "title": "Direction"
+                        },
+                        "group": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Group"
+                        },
+                        "original_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Original IP"
+                        },
+                        "original_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "title": "Original Port"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Priority"
+                        },
+                        "protocol": {
+                          "type": "string",
+                          "enum": [
+                            "udp",
+                            "tcp"
+                          ],
+                          "title": "Protocol"
+                        },
+                        "translated_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Translated IP"
+                        },
+                        "translated_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "requires 'original_port'",
+                          "title": "Translated Port"
+                        }
+                      },
+                      "required": [
+                        "translated_ip",
+                        "original_ip"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Static"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Source"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "IP Nat"
           },
           "ipv6_enable": {
             "type": "boolean",
@@ -2868,6 +3170,14 @@
                   "congestion_drops": {
                     "type": "boolean",
                     "title": "Congestion Drops"
+                  },
+                  "spanning_tree": {
+                    "type": "boolean",
+                    "title": "Spanning Tree"
+                  },
+                  "storm_control": {
+                    "type": "boolean",
+                    "title": "Storm Control"
                   }
                 },
                 "additionalProperties": false,
@@ -3309,7 +3619,7 @@
                 "properties": {
                   "input": {
                     "type": "string",
-                    "description": "Policy-map name",
+                    "description": "Policy Based Routing Policy-map name",
                     "title": "Input"
                   }
                 },
@@ -3318,6 +3628,24 @@
                   "^_.+$": {}
                 },
                 "title": "PBR"
+              },
+              "qos": {
+                "type": "object",
+                "properties": {
+                  "input": {
+                    "type": "string",
+                    "description": "Quality of Service Policy-map name",
+                    "title": "Input"
+                  }
+                },
+                "required": [
+                  "input"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "QOS"
               }
             },
             "additionalProperties": false,
@@ -3522,6 +3850,7 @@
     },
     "event_handlers": {
       "type": "array",
+      "description": "Gives the ability to monitor and react to Syslog messages.\nEvent Handlers provide a powerful and flexible tool that can be used to apply self-healing actions,\ncustomize the system behavior, and implement workarounds to problems discovered in the field.\n",
       "items": {
         "type": "object",
         "properties": {
@@ -8610,7 +8939,7 @@
               "l3dot1q",
               "l2dot1q"
             ],
-            "description": "l3dot1q and l2dot1q are used for sub-interfaces\nThe parent interface should be defined as routed\n",
+            "description": "l3dot1q and l2dot1q are used for sub-interfaces. The parent interface should be defined as routed.\nInterface will not be listed in device documentation, unless \"type\" is set.\n",
             "title": "Type"
           },
           "encapsulation_dot1q_vlan": {
@@ -8913,7 +9242,7 @@
                 "properties": {
                   "input": {
                     "type": "string",
-                    "description": "Policy-map name",
+                    "description": "Policy Based Routing Policy-map name",
                     "title": "Input"
                   }
                 },
@@ -8922,6 +9251,24 @@
                   "^_.+$": {}
                 },
                 "title": "PBR"
+              },
+              "qos": {
+                "type": "object",
+                "properties": {
+                  "input": {
+                    "type": "string",
+                    "description": "Quality of Service Policy-map name",
+                    "title": "Input"
+                  }
+                },
+                "required": [
+                  "input"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "QOS"
               }
             },
             "additionalProperties": false,
@@ -9289,12 +9636,14 @@
           },
           "esi": {
             "type": "string",
-            "description": "EVPN Ethernet Segment Identifier (Type 1 format)\nWill be deprecated in AVD 4.0 in favor of \"evpn_ethernet_segment.identifier\"\nIf both \"esi\" and \"evpn_ethernet_segment.identifier\" are defined, the new variable takes precedence\n",
+            "description": "EVPN Ethernet Segment Identifier (Type 1 format)\nIf both \"esi\" and \"evpn_ethernet_segment.identifier\" are defined, the new variable takes precedence\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>evpn_ethernet_segment.identifier</samp> instead.",
+            "deprecated": true,
             "title": "Esi"
           },
           "rt": {
             "type": "string",
-            "description": "EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx\nWill be deprecated in AVD 4.0 in favor of \"evpn_ethernet_segment.route_target\"\nIf both \"rt\" and \"evpn_ethernet_segment.route_target\" are defined, the new variable takes precedence\n",
+            "description": "EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx\nIf both \"rt\" and \"evpn_ethernet_segment.route_target\" are defined, the new variable takes precedence\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>evpn_ethernet_segment.route_target</samp> instead.",
+            "deprecated": true,
             "title": "Rt"
           },
           "lacp_id": {
@@ -9431,6 +9780,275 @@
             "type": "string",
             "description": "IPv4 address/mask",
             "title": "IP Address"
+          },
+          "ip_nat": {
+            "type": "object",
+            "properties": {
+              "destination": {
+                "type": "object",
+                "properties": {
+                  "dynamic": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "access_list": {
+                          "type": "string",
+                          "title": "Access List"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "title": "Comment"
+                        },
+                        "pool_name": {
+                          "type": "string",
+                          "title": "Pool Name"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Priority"
+                        }
+                      },
+                      "required": [
+                        "pool_name",
+                        "access_list"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Dynamic"
+                  },
+                  "static": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "access_list": {
+                          "type": "string",
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Access List"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "title": "Comment"
+                        },
+                        "direction": {
+                          "type": "string",
+                          "enum": [
+                            "egress",
+                            "ingress"
+                          ],
+                          "description": "Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware platform.\nEOS might remove this keyword in the configuration. So, check the configuration on targeted HW/SW.\n",
+                          "title": "Direction"
+                        },
+                        "group": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Group"
+                        },
+                        "original_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Original IP"
+                        },
+                        "original_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "title": "Original Port"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Priority"
+                        },
+                        "protocol": {
+                          "type": "string",
+                          "enum": [
+                            "udp",
+                            "tcp"
+                          ],
+                          "title": "Protocol"
+                        },
+                        "translated_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Translated IP"
+                        },
+                        "translated_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "requires 'original_port'",
+                          "title": "Translated Port"
+                        }
+                      },
+                      "required": [
+                        "translated_ip",
+                        "original_ip"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Static"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Destination"
+              },
+              "source": {
+                "type": "object",
+                "properties": {
+                  "dynamic": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "access_list": {
+                          "type": "string",
+                          "title": "Access List"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "title": "Comment"
+                        },
+                        "nat_type": {
+                          "type": "string",
+                          "enum": [
+                            "overload",
+                            "pool",
+                            "pool-address-only",
+                            "pool-full-cone"
+                          ],
+                          "title": "Nat Type"
+                        },
+                        "pool_name": {
+                          "type": "string",
+                          "description": "required if 'nat_type' is pool, pool-address-only or pool-full-cone\nignored if 'nat_type' is overload\n",
+                          "title": "Pool Name"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Priority"
+                        }
+                      },
+                      "required": [
+                        "nat_type",
+                        "access_list"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Dynamic"
+                  },
+                  "static": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "access_list": {
+                          "type": "string",
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Access List"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "title": "Comment"
+                        },
+                        "direction": {
+                          "type": "string",
+                          "enum": [
+                            "egress",
+                            "ingress"
+                          ],
+                          "description": "Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware platform.\nEOS might remove this keyword in the configuration. So, check the configuration on targeted HW/SW.\n",
+                          "title": "Direction"
+                        },
+                        "group": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Group"
+                        },
+                        "original_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Original IP"
+                        },
+                        "original_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "title": "Original Port"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Priority"
+                        },
+                        "protocol": {
+                          "type": "string",
+                          "enum": [
+                            "udp",
+                            "tcp"
+                          ],
+                          "title": "Protocol"
+                        },
+                        "translated_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Translated IP"
+                        },
+                        "translated_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "requires 'original_port'",
+                          "title": "Translated Port"
+                        }
+                      },
+                      "required": [
+                        "translated_ip",
+                        "original_ip"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Static"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Source"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "IP Nat"
           },
           "ipv6_enable": {
             "type": "boolean",
@@ -10290,6 +10908,29 @@
           "description": "\"enabled: true\" will be required in AVD4.0.\nIn AVD3.x default is true as long as queue_monitor_length is defined and not None\n",
           "title": "Enabled"
         },
+        "default_thresholds": {
+          "type": "object",
+          "properties": {
+            "high": {
+              "type": "integer",
+              "description": "Default high threshold for Ethernet Interfaces.\n",
+              "title": "High"
+            },
+            "low": {
+              "type": "integer",
+              "description": "Default low threshold for Ethernet Interfaces.\nLow threshold support is platform dependent.\n",
+              "title": "Low"
+            }
+          },
+          "required": [
+            "high"
+          ],
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Default Thresholds"
+        },
         "log": {
           "type": "integer",
           "description": "Logging interval in seconds",
@@ -10935,6 +11576,26 @@
         "bgp": {
           "type": "object",
           "properties": {
+            "default": {
+              "type": "object",
+              "properties": {
+                "ipv4_unicast": {
+                  "type": "boolean",
+                  "description": "Default activation of IPv4 unicast address-family on all IPv4 neighbors (EOS default = True).",
+                  "title": "IPv4 Unicast"
+                },
+                "ipv4_unicast_transport_ipv6": {
+                  "type": "boolean",
+                  "description": "Default activation of IPv4 unicast address-family on all IPv6 neighbors (EOS default == False).",
+                  "title": "IPv4 Unicast Transport IPv6"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Default"
+            },
             "bestpath": {
               "type": "object",
               "properties": {
@@ -18552,6 +19213,12 @@
             "type": "boolean",
             "title": "IP IGMP"
           },
+          "ip_igmp_version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 3,
+            "title": "IP IGMP Version"
+          },
           "ip_helpers": {
             "type": "array",
             "description": "List of DHCP servers",
@@ -18583,6 +19250,275 @@
               ]
             },
             "title": "IP Helpers"
+          },
+          "ip_nat": {
+            "type": "object",
+            "properties": {
+              "destination": {
+                "type": "object",
+                "properties": {
+                  "dynamic": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "access_list": {
+                          "type": "string",
+                          "title": "Access List"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "title": "Comment"
+                        },
+                        "pool_name": {
+                          "type": "string",
+                          "title": "Pool Name"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Priority"
+                        }
+                      },
+                      "required": [
+                        "pool_name",
+                        "access_list"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Dynamic"
+                  },
+                  "static": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "access_list": {
+                          "type": "string",
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Access List"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "title": "Comment"
+                        },
+                        "direction": {
+                          "type": "string",
+                          "enum": [
+                            "egress",
+                            "ingress"
+                          ],
+                          "description": "Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware platform.\nEOS might remove this keyword in the configuration. So, check the configuration on targeted HW/SW.\n",
+                          "title": "Direction"
+                        },
+                        "group": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Group"
+                        },
+                        "original_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Original IP"
+                        },
+                        "original_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "title": "Original Port"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Priority"
+                        },
+                        "protocol": {
+                          "type": "string",
+                          "enum": [
+                            "udp",
+                            "tcp"
+                          ],
+                          "title": "Protocol"
+                        },
+                        "translated_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Translated IP"
+                        },
+                        "translated_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "requires 'original_port'",
+                          "title": "Translated Port"
+                        }
+                      },
+                      "required": [
+                        "translated_ip",
+                        "original_ip"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Static"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Destination"
+              },
+              "source": {
+                "type": "object",
+                "properties": {
+                  "dynamic": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "access_list": {
+                          "type": "string",
+                          "title": "Access List"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "title": "Comment"
+                        },
+                        "nat_type": {
+                          "type": "string",
+                          "enum": [
+                            "overload",
+                            "pool",
+                            "pool-address-only",
+                            "pool-full-cone"
+                          ],
+                          "title": "Nat Type"
+                        },
+                        "pool_name": {
+                          "type": "string",
+                          "description": "required if 'nat_type' is pool, pool-address-only or pool-full-cone\nignored if 'nat_type' is overload\n",
+                          "title": "Pool Name"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Priority"
+                        }
+                      },
+                      "required": [
+                        "nat_type",
+                        "access_list"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Dynamic"
+                  },
+                  "static": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "access_list": {
+                          "type": "string",
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Access List"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "title": "Comment"
+                        },
+                        "direction": {
+                          "type": "string",
+                          "enum": [
+                            "egress",
+                            "ingress"
+                          ],
+                          "description": "Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware platform.\nEOS might remove this keyword in the configuration. So, check the configuration on targeted HW/SW.\n",
+                          "title": "Direction"
+                        },
+                        "group": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Group"
+                        },
+                        "original_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Original IP"
+                        },
+                        "original_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "title": "Original Port"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Priority"
+                        },
+                        "protocol": {
+                          "type": "string",
+                          "enum": [
+                            "udp",
+                            "tcp"
+                          ],
+                          "title": "Protocol"
+                        },
+                        "translated_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Translated IP"
+                        },
+                        "translated_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "requires 'original_port'",
+                          "title": "Translated Port"
+                        }
+                      },
+                      "required": [
+                        "translated_ip",
+                        "original_ip"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Static"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Source"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "IP Nat"
           },
           "ipv6_enable": {
             "type": "boolean",

@@ -1142,6 +1142,30 @@ keys:
     type: str
     description: Multiline string with EOS CLI rendered directly on the root level
       of the final EOS configuration
+  eos_cli_config_gen_configuration:
+    documentation_options:
+      filename: inputs/Role Inputs
+    type: dict
+    keys:
+      hide_passwords:
+        type: bool
+        description: 'Replace the input data using the `hide_passwords` filter in
+          the Jinja2 templates by ''<removed>'' in the configruation if true
+
+          '
+        default: false
+  eos_cli_config_gen_documentation:
+    documentation_options:
+      filename: inputs/Role Inputs
+    type: dict
+    keys:
+      hide_passwords:
+        type: bool
+        description: 'Replace the input data using the `hide_passwords` filter in
+          the Jinja2 templates by ''<removed>'' in the documentation if true
+
+          '
+        default: true
   errdisable:
     documentation_options:
       filename: data_model/Errdisable
@@ -1298,9 +1322,12 @@ keys:
           - switched
           - l3dot1q
           - l2dot1q
-          description: 'l3dot1q and l2dot1q are used for sub-interfaces
+          - port-channel-member
+          description: 'l3dot1q and l2dot1q are used for sub-interfaces. The parent
+            interface should be defined as routed.
 
-            The parent interface should be defined as routed
+            Interface will not be listed in device documentation, unless "type" is
+            set.
 
             '
         snmp_trap_link_change:
@@ -1497,6 +1524,8 @@ keys:
               vrf:
                 type: str
                 description: VRF name
+        ip_nat:
+          $ref: '#/$defs/interface_ip_nat'
         ipv6_enable:
           type: bool
         ipv6_address:
@@ -1923,6 +1952,10 @@ keys:
                   type: bool
                 congestion_drops:
                   type: bool
+                spanning_tree:
+                  type: bool
+                storm_control:
+                  type: bool
         lldp:
           type: dict
           keys:
@@ -2191,7 +2224,14 @@ keys:
               keys:
                 input:
                   type: str
-                  description: Policy-map name
+                  description: Policy Based Routing Policy-map name
+            qos:
+              type: dict
+              keys:
+                input:
+                  type: str
+                  required: true
+                  description: Quality of Service Policy-map name
         mpls:
           type: dict
           keys:
@@ -2282,6 +2322,15 @@ keys:
     documentation_options:
       filename: data_model/Monitoring
     type: list
+    description: 'Gives the ability to monitor and react to Syslog messages.
+
+      Event Handlers provide a powerful and flexible tool that can be used to apply
+      self-healing actions,
+
+      customize the system behavior, and implement workarounds to problems discovered
+      in the field.
+
+      '
     primary_key: name
     convert_types:
     - dict
@@ -2304,6 +2353,8 @@ keys:
             '
         delay:
           type: int
+          convert_types:
+          - str
           description: 'Event-handler delay in seconds
 
             '
@@ -5600,9 +5651,11 @@ keys:
           - switched
           - l3dot1q
           - l2dot1q
-          description: 'l3dot1q and l2dot1q are used for sub-interfaces
+          description: 'l3dot1q and l2dot1q are used for sub-interfaces. The parent
+            interface should be defined as routed.
 
-            The parent interface should be defined as routed
+            Interface will not be listed in device documentation, unless "type" is
+            set.
 
             '
         encapsulation_dot1q_vlan:
@@ -5803,7 +5856,14 @@ keys:
               keys:
                 input:
                   type: str
-                  description: Policy-map name
+                  description: Policy Based Routing Policy-map name
+            qos:
+              type: dict
+              keys:
+                input:
+                  type: str
+                  required: true
+                  description: Quality of Service Policy-map name
         mpls:
           type: dict
           keys:
@@ -6029,22 +6089,26 @@ keys:
           type: str
           description: 'EVPN Ethernet Segment Identifier (Type 1 format)
 
-            Will be deprecated in AVD 4.0 in favor of "evpn_ethernet_segment.identifier"
-
             If both "esi" and "evpn_ethernet_segment.identifier" are defined, the
             new variable takes precedence
 
             '
+          deprecation:
+            warning: true
+            new_key: evpn_ethernet_segment.identifier
+            remove_in_version: 5.0.0
         rt:
           type: str
           description: 'EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx
-
-            Will be deprecated in AVD 4.0 in favor of "evpn_ethernet_segment.route_target"
 
             If both "rt" and "evpn_ethernet_segment.route_target" are defined, the
             new variable takes precedence
 
             '
+          deprecation:
+            warning: true
+            new_key: evpn_ethernet_segment.route_target
+            remove_in_version: 5.0.0
         lacp_id:
           type: str
           description: LACP ID with format xxxx.xxxx.xxxx
@@ -6134,6 +6198,8 @@ keys:
         ip_address:
           type: str
           description: IPv4 address/mask
+        ip_nat:
+          $ref: '#/$defs/interface_ip_nat'
         ipv6_enable:
           type: bool
         ipv6_address:
@@ -6674,6 +6740,26 @@ keys:
           not None
 
           '
+      default_thresholds:
+        type: dict
+        keys:
+          high:
+            type: int
+            required: true
+            convert_types:
+            - str
+            description: 'Default high threshold for Ethernet Interfaces.
+
+              '
+          low:
+            type: int
+            convert_types:
+            - str
+            description: 'Default low threshold for Ethernet Interfaces.
+
+              Low threshold support is platform dependent.
+
+              '
       log:
         type: int
         convert_types:
@@ -7074,6 +7160,17 @@ keys:
       bgp:
         type: dict
         keys:
+          default:
+            type: dict
+            keys:
+              ipv4_unicast:
+                type: bool
+                description: Default activation of IPv4 unicast address-family on
+                  all IPv4 neighbors (EOS default = True).
+              ipv4_unicast_transport_ipv6:
+                type: bool
+                description: Default activation of IPv4 unicast address-family on
+                  all IPv6 neighbors (EOS default == False).
           bestpath:
             type: dict
             keys:
@@ -11345,6 +11442,12 @@ keys:
             description: IPv4_address/Mask
         ip_igmp:
           type: bool
+        ip_igmp_version:
+          type: int
+          convert_types:
+          - str
+          min: 1
+          max: 3
         ip_helpers:
           type: list
           description: List of DHCP servers
@@ -11363,6 +11466,8 @@ keys:
               vrf:
                 type: str
                 description: VRF where DHCP server can be reached
+        ip_nat:
+          $ref: '#/$defs/interface_ip_nat'
         ipv6_enable:
           type: bool
         ipv6_address:
@@ -12041,3 +12146,129 @@ keys:
             type: str
             description: Multiline String with EOS CLI rendered directly on the Vxlan
               interface in the final EOS configuration.
+$defs:
+  interface_ip_nat:
+    type: dict
+    keys:
+      destination:
+        type: dict
+        keys:
+          dynamic:
+            type: list
+            primary_key: access_list
+            items:
+              type: dict
+              keys:
+                access_list:
+                  type: str
+                comment:
+                  type: str
+                pool_name:
+                  type: str
+                  required: true
+                priority:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 0
+                  max: 4294967295
+          static:
+            $ref: '#/$defs/interface_ip_nat_static'
+      source:
+        type: dict
+        keys:
+          dynamic:
+            type: list
+            primary_key: access_list
+            items:
+              type: dict
+              keys:
+                access_list:
+                  type: str
+                comment:
+                  type: str
+                nat_type:
+                  type: str
+                  required: true
+                  valid_values:
+                  - overload
+                  - pool
+                  - pool-address-only
+                  - pool-full-cone
+                pool_name:
+                  type: str
+                  description: 'required if ''nat_type'' is pool, pool-address-only
+                    or pool-full-cone
+
+                    ignored if ''nat_type'' is overload
+
+                    '
+                priority:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 0
+                  max: 4294967295
+          static:
+            $ref: '#/$defs/interface_ip_nat_static'
+  interface_ip_nat_static:
+    type: list
+    primary_key: original_ip
+    items:
+      type: dict
+      keys:
+        access_list:
+          type: str
+          description: '''access_list'' and ''group'' are mutual exclusive'
+        comment:
+          type: str
+        direction:
+          type: str
+          valid_values:
+          - egress
+          - ingress
+          description: 'Egress or ingress can be the default. This depends on source/destination,
+            EOS version, and hardware platform.
+
+            EOS might remove this keyword in the configuration. So, check the configuration
+            on targeted HW/SW.
+
+            '
+        group:
+          type: int
+          convert_types:
+          - str
+          min: 1
+          max: 65535
+          description: '''access_list'' and ''group'' are mutual exclusive'
+        original_ip:
+          type: str
+          description: IPv4 address
+        original_port:
+          type: int
+          convert_types:
+          - str
+          min: 1
+          max: 65535
+        priority:
+          type: int
+          convert_types:
+          - str
+          min: 0
+          max: 4294967295
+        protocol:
+          type: str
+          valid_values:
+          - udp
+          - tcp
+        translated_ip:
+          type: str
+          required: true
+          description: IPv4 address
+        translated_port:
+          type: int
+          convert_types:
+          - str
+          min: 1
+          max: 65535
+          description: requires 'original_port'

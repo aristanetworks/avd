@@ -44,11 +44,11 @@ management_api_http:
   - name: MGMT
   enable_https: true
 vlans:
-- tenant: system
+- id: 4094
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  id: 4094
 - id: 10
   name: BLUE-NET
   tenant: MY_FABRIC
@@ -96,33 +96,33 @@ port_channel_interfaces:
   vlans: 10,20,30
   mlag: 5
 ethernet_interfaces:
-- peer: SPINE1
+- name: Ethernet47
+  peer: SPINE1
   peer_interface: Ethernet47
   peer_type: mlag_peer
   description: MLAG_PEER_SPINE1_Ethernet47
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 47
     mode: active
-  name: Ethernet47
-- peer: SPINE1
+- name: Ethernet48
+  peer: SPINE1
   peer_interface: Ethernet48
   peer_type: mlag_peer
   description: MLAG_PEER_SPINE1_Ethernet48
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 47
     mode: active
-  name: Ethernet48
 - name: Ethernet1
   peer: LEAF1
   peer_interface: Ethernet2
   peer_type: leaf
   description: LEAF1_Ethernet2
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -132,7 +132,7 @@ ethernet_interfaces:
   peer_type: leaf
   description: LEAF2_Ethernet2
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -142,7 +142,7 @@ ethernet_interfaces:
   peer_type: leaf
   description: LEAF3_Ethernet2
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 3
     mode: active
@@ -152,7 +152,7 @@ ethernet_interfaces:
   peer_type: leaf
   description: LEAF4_Ethernet2
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 3
     mode: active
@@ -162,10 +162,8 @@ ethernet_interfaces:
   peer_type: firewall
   port_profile: PP-FIREWALL
   description: FIREWALL_Eth2
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: 10,20,30
+  type: port-channel-member
   channel_group:
     id: 5
     mode: active

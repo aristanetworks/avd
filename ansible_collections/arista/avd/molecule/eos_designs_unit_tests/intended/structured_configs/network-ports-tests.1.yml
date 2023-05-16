@@ -18,11 +18,11 @@ management_api_http:
 spanning_tree:
   no_spanning_tree_vlan: '4094'
 vlans:
-- tenant: system
+- id: 4094
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  id: 4094
 - id: 100
   name: VLAN100_ON_L2LEAF_1_AND_2
   tenant: TEST
@@ -46,23 +46,23 @@ port_channel_interfaces:
   trunk_groups:
   - MLAG
 ethernet_interfaces:
-- peer: network-ports-tests-2
+- name: Ethernet10/1
+  peer: network-ports-tests-2
   peer_interface: Ethernet10/1
   peer_type: mlag_peer
   description: MLAG_PEER_network-ports-tests-2_Ethernet10/1
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 101
     mode: active
-  name: Ethernet10/1
 - name: Ethernet1
   peer: PCs
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -72,8 +72,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -83,8 +83,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -94,8 +94,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -105,8 +105,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -116,8 +116,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -127,8 +127,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -138,8 +138,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -149,8 +149,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -160,8 +160,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -171,8 +171,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -182,8 +182,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -193,8 +193,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -204,8 +204,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -215,8 +215,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -226,8 +226,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -237,8 +237,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -248,8 +248,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -259,8 +259,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -270,8 +270,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -281,8 +281,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -292,8 +292,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -303,8 +303,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -314,8 +314,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -325,8 +325,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -336,8 +336,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -347,8 +347,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -358,8 +358,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -369,8 +369,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -380,8 +380,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -391,8 +391,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -402,8 +402,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -413,8 +413,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -424,8 +424,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -435,8 +435,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -446,8 +446,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -457,8 +457,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -468,8 +468,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -479,8 +479,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -490,8 +490,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -501,8 +501,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -512,8 +512,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -523,8 +523,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -534,8 +534,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -545,8 +545,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -556,8 +556,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -567,8 +567,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -578,8 +578,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -589,8 +589,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -600,8 +600,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -611,8 +611,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -622,8 +622,8 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: pc
   description: PCs
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '100'
   spanning_tree_portfast: edge
@@ -632,14 +632,39 @@ ethernet_interfaces:
   peer: 'N: blah'
   peer_type: network_port
   description: 'N: blah'
-  type: switched
   shutdown: false
+  type: switched
 - name: Ethernet6
   peer: 'N: blah'
   peer_type: network_port
   description: 'N: blah'
-  type: switched
   shutdown: false
+  type: switched
+- name: Ethernet11
+  peer: Base config which may be overwritten
+  peer_type: network_port
+  description: Base config which may be overwritten
+  shutdown: false
+  type: switched
+- name: Ethernet12
+  peer: Config overwriting base config
+  peer_type: network_port
+  description: Config overwriting base config
+  shutdown: false
+  type: switched
+- name: Ethernet13
+  peer: Base config which may be overwritten
+  peer_type: network_port
+  description: Base config which may be overwritten
+  shutdown: false
+  type: switched
+- name: Ethernet14
+  peer: CONNECTED_ENDPOINT_OVERWRITING_NETWORK_PORT
+  peer_interface: Eth42
+  peer_type: server
+  description: CONNECTED_ENDPOINT_OVERWRITING_NETWORK_PORT_Eth42
+  shutdown: false
+  type: switched
 mlag_configuration:
   domain_id: mlag
   local_interface: Vlan4094

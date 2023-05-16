@@ -87,10 +87,10 @@ keys:
             type: str
         type:
           type: str
-          valid_values: ["routed", "switched", "l3dot1q", "l2dot1q"]
+          valid_values: ["routed", "switched", "l3dot1q", "l2dot1q", "port-channel-member"]
           description: |
-            l3dot1q and l2dot1q are used for sub-interfaces
-            The parent interface should be defined as routed
+            l3dot1q and l2dot1q are used for sub-interfaces. The parent interface should be defined as routed.
+            Interface will not be listed in device documentation, unless "type" is set.
         snmp_trap_link_change:
           type: bool
         address_locking:
@@ -275,6 +275,8 @@ keys:
               vrf:
                 type: str
                 description: VRF name
+        ip_nat:
+          $ref: "#/$defs/interface_ip_nat"
         ipv6_enable:
           type: bool
         ipv6_address:
@@ -645,6 +647,10 @@ keys:
                   type: bool
                 congestion_drops:
                   type: bool
+                spanning_tree:
+                  type: bool
+                storm_control:
+                  type: bool
         lldp:
           type: dict
           keys:
@@ -875,7 +881,15 @@ keys:
               keys:
                 input:
                   type: str
-                  description: Policy-map name
+                  description: Policy Based Routing Policy-map name
+            qos:
+              type: dict
+              keys:
+                input:
+                  type: str
+                  required: true
+                  description: Quality of Service Policy-map name
+
         mpls:
           type: dict
           keys:

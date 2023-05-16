@@ -2,9 +2,11 @@ router_bgp:
   as: '65000'
   router_id: 192.168.255.11
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
   peer_groups:
   - name: OVERLAY-PEERS
     type: evpn
@@ -88,16 +90,16 @@ management_api_http:
   - name: MGMT
   enable_https: true
 vlans:
-- tenant: system
+- id: 4093
+  tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
   - LEAF_PEER_L3
-  id: 4093
-- tenant: system
+- id: 4094
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  id: 4094
 vlan_interfaces:
 - name: Vlan4093
   description: MLAG_PEER_L3_PEERING
@@ -124,26 +126,26 @@ port_channel_interfaces:
   - LEAF_PEER_L3
   - MLAG
 ethernet_interfaces:
-- peer: DC1-BL1A
+- name: Ethernet5
+  peer: DC1-BL1A
   peer_interface: Ethernet5
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-BL1A_Ethernet5
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
     mode: active
-  name: Ethernet5
-- peer: DC1-BL1A
+- name: Ethernet6
+  peer: DC1-BL1A
   peer_interface: Ethernet6
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-BL1A_Ethernet6
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
     mode: active
-  name: Ethernet6
 - name: Ethernet1
   peer: DC1-SPINE1
   peer_interface: Ethernet7

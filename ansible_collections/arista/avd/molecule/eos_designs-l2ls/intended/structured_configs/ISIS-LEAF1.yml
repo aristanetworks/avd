@@ -30,7 +30,7 @@ ethernet_interfaces:
   peer_type: l3spine
   description: ISIS-SPINE1_Ethernet1
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 1
     mode: active

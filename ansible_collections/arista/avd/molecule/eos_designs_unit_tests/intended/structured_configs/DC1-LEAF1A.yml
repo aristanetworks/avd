@@ -2,9 +2,11 @@ router_bgp:
   as: '65101'
   router_id: 192.168.255.9
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: true
   peer_groups:
   - name: UNDERLAY-PEERS
     type: ipv4
@@ -207,6 +209,9 @@ spanning_tree:
 local_users:
 - name: admin
   disabled: true
+  privilege: 15
+  role: network-admin
+  no_password: true
 - name: cvpadmin
   privilege: 15
   role: network-admin
@@ -290,9 +295,9 @@ ethernet_interfaces:
   peer_type: server
   port_profile: ALL_WITH_SECURITY
   description: server02_SINGLE_NODE_TRUNK_Eth1
-  l2_mtu: 8000
-  type: switched
   shutdown: false
+  type: switched
+  l2_mtu: 8000
   mode: trunk
   vlans: 1-4094
   spanning_tree_portfast: edge
@@ -304,8 +309,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: TENANT_A
   description: server02_SINGLE_NODE_Eth1
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '110'
 loopback_interfaces:
@@ -453,6 +458,7 @@ vlan_interfaces:
   - v6wan
   description: Tenant_D_v6_WAN_Zone_1
   shutdown: false
+  ipv6_enable: true
   ipv6_address_virtuals:
   - 2001:db8:355::1/64
   vrf: Tenant_D_WAN_Zone
@@ -462,6 +468,7 @@ vlan_interfaces:
   - v6wan
   description: Tenant_D_v6_WAN_Zone_2
   shutdown: false
+  ipv6_enable: true
   mtu: 1560
   ipv6_address_virtuals:
   - 2001:db8:451::1/64
@@ -472,6 +479,7 @@ vlan_interfaces:
   - v6wan
   description: Tenant_D_v6_WAN_Zone_3
   shutdown: false
+  ipv6_enable: false
   mtu: 1560
   ip_address_virtual: 10.4.12.254/24
   ipv6_address_virtuals:

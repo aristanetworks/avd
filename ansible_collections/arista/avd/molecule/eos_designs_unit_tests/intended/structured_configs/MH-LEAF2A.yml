@@ -3,6 +3,9 @@ router_bgp:
   router_id: 192.168.255.35
   bgp_defaults:
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
   peer_groups:
   - name: UNDERLAY-PEERS
     type: ipv4
@@ -125,6 +128,9 @@ snmp_server:
 local_users:
 - name: admin
   disabled: true
+  privilege: 15
+  role: network-admin
+  no_password: true
 - name: cvpadmin
   privilege: 15
   role: network-admin
@@ -177,7 +183,7 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: MH-L2LEAF1A_Ethernet1
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 2
     mode: active
@@ -187,8 +193,8 @@ ethernet_interfaces:
   peer_type: router
   port_profile: Tenant_X_LT
   description: ROUTER01_Eth1
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '310'
   link_tracking_groups:

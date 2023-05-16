@@ -50,6 +50,9 @@
 {%         set row_acl_out = vlan_interface.access_group_out | arista.avd.default('-') %}
 | {{ vlan_interface.name }} |  {{ row_vrf }}  |  {{ row_ip_addr }}  |  {{ row_ip_vaddr }}  |  {{ row_varp }}  |  {{ row_vrrp }}  |  {{ row_acl_in }}  |  {{ row_acl_out }}  |
 {%     endfor %}
+{# IP NAT Documentation #}
+{%     set ip_nat_interfaces = vlan_interfaces %}
+{%     include 'documentation/interfaces-ip-nat.j2' %}
 {# IPv6 #}
 {%     set vlan_interfaces_ipv6 = [] %}
 {%     for vlan_interface in vlan_interfaces | arista.avd.default([]) %}

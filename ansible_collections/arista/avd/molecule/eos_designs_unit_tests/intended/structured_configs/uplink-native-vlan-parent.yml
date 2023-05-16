@@ -12,9 +12,9 @@ management_api_http:
   - name: MGMT
   enable_https: true
 vlans:
-- name: NATIVE
+- id: 200
+  name: NATIVE
   state: suspend
-  id: 200
 - id: 100
   name: NETWORK_SERVICES_VLAN
   tenant: test
@@ -25,7 +25,7 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: UPLINK-NATIVE-VLAN-GRANDPARENT_Ethernet1
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -35,7 +35,7 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: UPLINK-NATIVE-VLAN-CHILD_Ethernet2
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 2
     mode: active

@@ -2,9 +2,11 @@ router_bgp:
   as: '65104'
   router_id: 192.168.255.14
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
   peer_groups:
   - name: UNDERLAY-PEERS
     type: ipv4
@@ -290,13 +292,13 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 event_handlers:
-- action_type: bash
+- name: evpn-blacklist-recovery
+  action_type: bash
   action: FastCli -p 15 -c "clear bgp evpn host-flap"
   delay: 300
   trigger: on-logging
   regex: EVPN-3-BLACKLISTED_DUPLICATE_MAC
   asynchronous: true
-  name: evpn-blacklist-recovery
 ip_name_servers:
 - ip_address: 192.168.200.5
   vrf: MGMT
@@ -316,6 +318,9 @@ spanning_tree:
 local_users:
 - name: admin
   disabled: true
+  privilege: 15
+  role: network-admin
+  no_password: true
 - name: cvpadmin
   privilege: 15
   role: network-admin
@@ -457,7 +462,8 @@ ethernet_interfaces:
   - id: 2
     hash_algorithm: sha512
     key: AQQvKeimxJu+uGQ/yYvv9w==
-- description: My test
+- name: Ethernet4000
+  description: My test
   ip_address: 10.3.2.1/21
   shutdown: false
   type: routed
@@ -465,7 +471,6 @@ ethernet_interfaces:
   peer: MY-own-peer
   peer_interface: Ethernet123
   peer_type: my_precious
-  name: Ethernet4000
 loopback_interfaces:
 - name: Loopback0
   description: MY_OVERLAY_LOOPBACK
@@ -593,9 +598,9 @@ vxlan_interface:
         vni: 31
 sflow:
   vrfs:
-  - destinations:
+  - name: OOB
+    destinations:
     - destination: 192.168.200.10
     - destination: 10.0.200.90
     source_interface: Management1
-    name: OOB
 ntp: null

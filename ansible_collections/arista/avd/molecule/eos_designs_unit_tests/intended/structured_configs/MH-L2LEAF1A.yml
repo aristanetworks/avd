@@ -34,6 +34,9 @@ spanning_tree:
 local_users:
 - name: admin
   disabled: true
+  privilege: 15
+  role: network-admin
+  no_password: true
 - name: cvpadmin
   privilege: 15
   role: network-admin
@@ -66,7 +69,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: MH-LEAF2A_Ethernet2
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -75,8 +78,8 @@ ethernet_interfaces:
   peer_interface: Eth1
   peer_type: server
   description: server02_Eth1
-  type: switched
   shutdown: false
+  type: switched
   link_tracking_groups:
   - name: l2leaf-server02
     direction: downstream

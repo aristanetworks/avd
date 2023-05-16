@@ -6,6 +6,7 @@ from .get_item import get_item
 from .get_templar import get_templar
 from .groupby import groupby
 from .load_python_class import load_python_class
+from .replace_or_append_item import replace_or_append_item
 from .template import template
 from .template_var import template_var
 from .unique import unique
@@ -19,6 +20,7 @@ __all__ = [
     "get_templar",
     "groupby",
     "load_python_class",
+    "replace_or_append_item",
     "template",
     "template_var",
     "unique",

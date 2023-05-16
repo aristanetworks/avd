@@ -172,7 +172,7 @@ class AvdStructuredConfig(AvdFacts):
                 "peer_interface": mlag_interface,
                 "peer_type": "mlag_peer",
                 "description": self.shared_utils.interface_descriptions.mlag_ethernet_interfaces(mlag_interface),
-                "type": "switched",
+                "type": "port-channel-member",
                 "shutdown": False,
                 "channel_group": {
                     "id": self.shared_utils.mlag_port_channel_id,
@@ -192,7 +192,7 @@ class AvdStructuredConfig(AvdFacts):
         """
 
         mlag_configuration = {
-            "domain_id": self.shared_utils.group,
+            "domain_id": get(self.shared_utils.switch_data_combined, "mlag_domain_id", default=self.shared_utils.group),
             "local_interface": f"Vlan{self.shared_utils.mlag_peer_vlan}",
             "peer_address": self.shared_utils.mlag_peer_ip,
             "peer_link": f"Port-Channel{self.shared_utils.mlag_port_channel_id}",

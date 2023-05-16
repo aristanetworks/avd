@@ -2,9 +2,11 @@ router_bgp:
   as: '65001'
   router_id: 192.168.255.2
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
   peer_groups:
   - name: UNDERLAY-PEERS
     type: ipv4
@@ -180,6 +182,9 @@ spanning_tree:
 local_users:
 - name: admin
   disabled: true
+  privilege: 15
+  role: network-admin
+  no_password: true
 - name: cvpadmin
   privilege: 15
   role: network-admin

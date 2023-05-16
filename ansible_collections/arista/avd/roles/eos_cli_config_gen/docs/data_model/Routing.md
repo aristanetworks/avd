@@ -194,6 +194,9 @@ MAC address (hh:hh:hh:hh:hh:hh)
     | [<samp>&nbsp;&nbsp;bgp_defaults</samp>](## "router_bgp.bgp_defaults") | List, items: String |  |  |  | BGP command as string |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "router_bgp.bgp_defaults.[].&lt;str&gt;") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;bgp</samp>](## "router_bgp.bgp") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "router_bgp.bgp.default") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_unicast</samp>](## "router_bgp.bgp.default.ipv4_unicast") | Boolean |  |  |  | Default activation of IPv4 unicast address-family on all IPv4 neighbors (EOS default = True). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_unicast_transport_ipv6</samp>](## "router_bgp.bgp.default.ipv4_unicast_transport_ipv6") | Boolean |  |  |  | Default activation of IPv4 unicast address-family on all IPv6 neighbors (EOS default == False). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bestpath</samp>](## "router_bgp.bgp.bestpath") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d_path</samp>](## "router_bgp.bgp.bestpath.d_path") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;listen_ranges</samp>](## "router_bgp.listen_ranges") | List, items: Dictionary |  |  |  | Improved "listen_ranges" data model to support multiple listen ranges and additional filter capabilities<br> |
@@ -752,6 +755,9 @@ MAC address (hh:hh:hh:hh:hh:hh)
       bgp_defaults:
         - <str>
       bgp:
+        default:
+          ipv4_unicast: <bool>
+          ipv4_unicast_transport_ipv6: <bool>
         bestpath:
           d_path: <bool>
       listen_ranges:

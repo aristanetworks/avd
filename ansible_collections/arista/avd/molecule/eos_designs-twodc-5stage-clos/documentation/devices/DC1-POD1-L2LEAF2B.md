@@ -48,14 +48,12 @@
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 192.168.1.12/24 | 192.168.1.254 |
-| Vlan4085 | L2LEAF_INBAND_MGMT | inband | default | 172.21.110.6/24 | 172.21.110.1 |
 
 ##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
-| Vlan4085 | L2LEAF_INBAND_MGMT | inband | default | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -66,12 +64,6 @@ interface Management1
    no shutdown
    vrf MGMT
    ip address 192.168.1.12/24
-!
-interface Vlan4085
-   description L2LEAF_INBAND_MGMT
-   no shutdown
-   mtu 1500
-   ip address 172.21.110.6/24
 ```
 
 ### Management API HTTP
@@ -114,7 +106,7 @@ management api http-commands
 
 ```eos
 !
-username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
+username admin privilege 15 role network-admin secret sha512 <removed>
 ```
 
 ## Monitoring
@@ -340,17 +332,25 @@ interface Port-Channel3
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
+| Vlan4085 | L2LEAF_INBAND_MGMT | default | 1500 | False |
 | Vlan4094 | MLAG_PEER | default | 1500 | False |
 
 ##### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
+| Vlan4085 |  default  |  172.21.110.6/24  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  172.20.110.3/31  |  -  |  -  |  -  |  -  |  -  |
 
 #### VLAN Interfaces Device Configuration
 
 ```eos
+!
+interface Vlan4085
+   description L2LEAF_INBAND_MGMT
+   no shutdown
+   mtu 1500
+   ip address 172.21.110.6/24
 !
 interface Vlan4094
    description MLAG_PEER

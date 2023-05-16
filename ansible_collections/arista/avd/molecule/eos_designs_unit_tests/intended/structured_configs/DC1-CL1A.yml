@@ -2,9 +2,11 @@ router_bgp:
   as: '65108'
   router_id: 192.168.255.18
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
   peer_groups:
   - name: MLAG-PEERS
     type: ipv4
@@ -213,6 +215,9 @@ spanning_tree:
 local_users:
 - name: admin
   disabled: true
+  privilege: 15
+  role: network-admin
+  no_password: true
 - name: cvpadmin
   privilege: 15
   role: network-admin
@@ -236,16 +241,16 @@ management_api_http:
   enable_https: true
   default_services: false
 vlans:
-- tenant: system
+- id: 4090
+  tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
   - LEAF_PEER_L3
-  id: 4090
-- tenant: system
+- id: 4092
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  id: 4092
 - id: 130
   name: Tenant_A_APP_Zone_1
   tenant: Tenant_A
@@ -323,28 +328,28 @@ port_channel_interfaces:
   - LEAF_PEER_L3
   - MLAG
 ethernet_interfaces:
-- peer: DC1-CL1B
+- name: Ethernet1/15/1
+  peer: DC1-CL1B
   peer_interface: Ethernet1/15/1
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-CL1B_Ethernet1/15/1
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 1151
     mode: active
   speed: 100g
-  name: Ethernet1/15/1
-- peer: DC1-CL1B
+- name: Ethernet1/16/1
+  peer: DC1-CL1B
   peer_interface: Ethernet1/16/1
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-CL1B_Ethernet1/16/1
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 1151
     mode: active
   speed: 100g
-  name: Ethernet1/16/1
 - name: Ethernet1
   peer: DC1-SPINE1
   peer_interface: Ethernet26

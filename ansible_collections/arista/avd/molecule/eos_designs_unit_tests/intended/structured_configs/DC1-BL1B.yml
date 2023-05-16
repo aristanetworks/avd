@@ -2,9 +2,11 @@ router_bgp:
   as: '65105'
   router_id: 192.168.255.15
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
   peer_groups:
   - name: UNDERLAY-PEERS
     type: ipv4
@@ -310,6 +312,9 @@ spanning_tree:
 local_users:
 - name: admin
   disabled: true
+  privilege: 15
+  role: network-admin
+  no_password: true
 - name: cvpadmin
   privilege: 15
   role: network-admin
@@ -434,7 +439,8 @@ ethernet_interfaces:
   description: test
   type: routed
   vrf: Tenant_A_WAN_Zone
-- description: My second test
+- name: Ethernet4000
+  description: My second test
   ip_address: 10.1.2.3/12
   shutdown: false
   type: routed
@@ -442,7 +448,6 @@ ethernet_interfaces:
   peer: MY-own-peer
   peer_interface: Ethernet123
   peer_type: my_precious
-  name: Ethernet4000
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
@@ -565,9 +570,9 @@ vxlan_interface:
         vni: 31
 sflow:
   vrfs:
-  - destinations:
+  - name: OOB
+    destinations:
     - destination: 192.168.200.10
     - destination: 10.0.200.90
     source_interface: Management1
-    name: OOB
 ntp: null

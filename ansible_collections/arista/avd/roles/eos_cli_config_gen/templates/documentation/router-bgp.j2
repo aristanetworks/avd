@@ -30,6 +30,16 @@
 {%         if router_bgp.updates.wait_install is arista.avd.defined(true) %}
 | update wait-install |
 {%         endif %}
+{%         if router_bgp.bgp.default.ipv4_unicast is arista.avd.defined(true) %}
+| bgp default ipv4-unicast |
+{%         elif router_bgp.bgp.default.ipv4_unicast is arista.avd.defined(false) %}
+| no bgp default ipv4-unicast |
+{%         endif %}
+{%         if router_bgp.bgp.default.ipv4_unicast_transport_ipv6 is arista.avd.defined(true) %}
+| bgp default ipv4-unicast transport ipv6 |
+{%         elif router_bgp.bgp.default.ipv4_unicast_transport_ipv6 is arista.avd.defined(false) %}
+| no bgp default ipv4-unicast transport ipv6 |
+{%         endif %}
 {%         if router_bgp.distance.external_routes is arista.avd.defined %}
 {%             set distance_cli = "distance bgp " ~ router_bgp.distance.external_routes %}
 {%             if router_bgp.distance.internal_routes is arista.avd.defined and router_bgp.distance.local_routes is arista.avd.defined %}

@@ -3,6 +3,9 @@ router_bgp:
   router_id: 192.168.255.112
   bgp_defaults:
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
@@ -88,11 +91,11 @@ management_api_http:
 spanning_tree:
   no_spanning_tree_vlan: '4094'
 vlans:
-- tenant: system
+- id: 4094
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  id: 4094
 vlan_interfaces:
 - name: Vlan4094
   description: MLAG_PEER
@@ -111,16 +114,16 @@ port_channel_interfaces:
   - LEAF_PEER_L3
   - MLAG
 ethernet_interfaces:
-- peer: bgp-peer-groups-structured-config-1
+- name: Ethernet3
+  peer: bgp-peer-groups-structured-config-1
   peer_interface: Ethernet3
   peer_type: mlag_peer
   description: MLAG_PEER_bgp-peer-groups-structured-config-1_Ethernet3
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 3
     mode: active
-  name: Ethernet3
 mlag_configuration:
   domain_id: mlag
   local_interface: Vlan4094

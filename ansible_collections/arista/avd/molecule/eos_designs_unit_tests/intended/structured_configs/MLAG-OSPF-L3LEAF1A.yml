@@ -3,6 +3,9 @@ router_bgp:
   router_id: 192.168.255.36
   bgp_defaults:
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
   peer_groups:
   - name: EVPN-OVERLAY-PEERS
     type: evpn
@@ -62,6 +65,9 @@ snmp_server:
 local_users:
 - name: admin
   disabled: true
+  privilege: 15
+  role: network-admin
+  no_password: true
 - name: cvpadmin
   privilege: 15
   role: network-admin
@@ -87,11 +93,11 @@ management_api_http:
 spanning_tree:
   no_spanning_tree_vlan: '4094'
 vlans:
-- tenant: system
+- id: 4094
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  id: 4094
 vlan_interfaces:
 - name: Vlan4094
   description: MLAG_PEER
@@ -112,26 +118,26 @@ port_channel_interfaces:
   - LEAF_PEER_L3
   - MLAG
 ethernet_interfaces:
-- peer: MLAG-OSPF-L3LEAF1B
+- name: Ethernet5
+  peer: MLAG-OSPF-L3LEAF1B
   peer_interface: Ethernet5
   peer_type: mlag_peer
   description: MLAG_PEER_MLAG-OSPF-L3LEAF1B_Ethernet5
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
     mode: active
-  name: Ethernet5
-- peer: MLAG-OSPF-L3LEAF1B
+- name: Ethernet6
+  peer: MLAG-OSPF-L3LEAF1B
   peer_interface: Ethernet6
   peer_type: mlag_peer
   description: MLAG_PEER_MLAG-OSPF-L3LEAF1B_Ethernet6
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
     mode: active
-  name: Ethernet6
 - name: Ethernet1
   peer: DC1-SPINE1
   peer_interface: Ethernet18
