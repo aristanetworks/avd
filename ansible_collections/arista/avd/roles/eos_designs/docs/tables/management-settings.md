@@ -89,3 +89,42 @@
           priv_passphrase: <str>
     timezone: <str>
     ```
+
+## Underlay Multicast RPs
+
+List of PIM Sparse-Mode Rendevouz Points configured for underlay multicast on all devices.
+The device(s) listed under 'nodes', will be configured as the Rendevouz point router(s).
+If multiple nodes are configured under 'nodes' for the same RP address, they will be configured
+according to the 'rp_redundancy' setting.
+
+Requires 'underlay_multicast: true'
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>underlay_multicast_rps</samp>](## "underlay_multicast_rps") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;- rp</samp>](## "underlay_multicast_rps.[].rp") | String | Required, Unique |  |  | RP IPv4 address |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "underlay_multicast_rps.[].nodes") | List, items: Dictionary |  |  |  | List of nodes where a Loopback interface with the RP address will be configured.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "underlay_multicast_rps.[].nodes.[].name") | String | Required, Unique |  |  | Hostname |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_number</samp>](## "underlay_multicast_rps.[].nodes.[].loopback_number") | Integer | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "underlay_multicast_rps.[].nodes.[].description") | String |  | PIM RP |  | Interface description |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rp_redundancy</samp>](## "underlay_multicast_rps.[].rp_redundancy") | String |  | anycast_rp_pim | Valid Values:<br>- anycast_rp_pim<br>- anycast_rp_msdp | If multiple nodes are configured under 'nodes' for the same RP address, they will be configured<br>with either "Anycast RP using PIM" or "Anycast RP using MSDP"<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "underlay_multicast_rps.[].groups") | List, items: String |  |  |  | List of groups to associate with the RP address set in 'rp'.<br>If access_list_name is set, a standard access-list will be configured matching these groups.<br>Otherwise the groups are configured directly on the RP command.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "underlay_multicast_rps.[].groups.[].&lt;str&gt;") | String |  |  |  | Multicast Group IPv4 prefix/mask |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;access_list_name</samp>](## "underlay_multicast_rps.[].access_list_name") | String |  |  |  | Name of standard Access-List. |
+
+=== "YAML"
+
+    ```yaml
+    underlay_multicast_rps:
+      - rp: <str>
+        nodes:
+          - name: <str>
+            loopback_number: <int>
+            description: <str>
+        rp_redundancy: <str>
+        groups:
+          - <str>
+        access_list_name: <str>
+    ```

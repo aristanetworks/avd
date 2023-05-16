@@ -6138,6 +6138,85 @@
       "default": false,
       "title": "Underlay Multicast"
     },
+    "underlay_multicast_rps": {
+      "description": "List of PIM Sparse-Mode Rendevouz Points configured for underlay multicast on all devices.\nThe device(s) listed under 'nodes', will be configured as the Rendevouz point router(s).\nIf multiple nodes are configured under 'nodes' for the same RP address, they will be configured\naccording to the 'rp_redundancy' setting.\n\nRequires 'underlay_multicast: true'\n",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "rp": {
+            "type": "string",
+            "description": "RP IPv4 address",
+            "title": "RP"
+          },
+          "nodes": {
+            "type": "array",
+            "description": "List of nodes where a Loopback interface with the RP address will be configured.\n",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Hostname",
+                  "title": "Name"
+                },
+                "loopback_number": {
+                  "type": "integer",
+                  "title": "Loopback Number"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Interface description",
+                  "default": "PIM RP",
+                  "title": "Description"
+                }
+              },
+              "required": [
+                "loopback_number",
+                "name"
+              ],
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "Nodes"
+          },
+          "rp_redundancy": {
+            "type": "string",
+            "enum": [
+              "anycast_rp_pim",
+              "anycast_rp_msdp"
+            ],
+            "default": "anycast_rp_pim",
+            "description": "If multiple nodes are configured under 'nodes' for the same RP address, they will be configured\nwith either \"Anycast RP using PIM\" or \"Anycast RP using MSDP\"\n",
+            "title": "RP Redundancy"
+          },
+          "groups": {
+            "type": "array",
+            "description": "List of groups to associate with the RP address set in 'rp'.\nIf access_list_name is set, a standard access-list will be configured matching these groups.\nOtherwise the groups are configured directly on the RP command.\n",
+            "items": {
+              "type": "string",
+              "description": "Multicast Group IPv4 prefix/mask"
+            },
+            "title": "Groups"
+          },
+          "access_list_name": {
+            "type": "string",
+            "description": "Name of standard Access-List.",
+            "title": "Access List Name"
+          }
+        },
+        "required": [
+          "rp"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "Underlay Multicast RPs"
+    },
     "underlay_ospf_area": {
       "type": "string",
       "format": "ipv4",
