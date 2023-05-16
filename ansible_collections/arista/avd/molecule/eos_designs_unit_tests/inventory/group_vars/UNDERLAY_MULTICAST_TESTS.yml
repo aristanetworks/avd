@@ -31,8 +31,7 @@ underlay_multicast_rps:
       - 239.255.5.0/24
     access_list_name: RP_ACL_5
     nodes:
-      - name: UNDERLAY-MULTICAST-L3LEAF1A
+      - name: UNDERLAY-MULTICAST-L3LEAF2A
         loopback_number: 5
-      - name: UNDERLAY-MULTICAST-L3LEAF1B
+      - name: UNDERLAY-MULTICAST-L3LEAF2B
         loopback_number: 5
-    rp_redundancy: anycast_rp_msdp

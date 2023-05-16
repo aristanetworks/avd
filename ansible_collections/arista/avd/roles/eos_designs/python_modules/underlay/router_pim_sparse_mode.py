@@ -39,10 +39,10 @@ class RouterPimSparseModeMixin(UtilsMixin):
             if (nodes := get(rp_entry, "nodes")) is None or len(nodes) < 2:
                 continue
 
-            if (node_entry := get_item(nodes, "name", self.shared_utils.hostname)) is None:
+            if get_item(nodes, "name", self.shared_utils.hostname) is None:
                 continue
 
-            if get(rp_entry, "rp_redundancy", default="anycast_rp_pim") == "anycast_rp_pim":
+            if self.shared_utils.underlay_multicast_anycast_rp_mode == "pim":
                 # Anycast-RP using PIM (default)
                 anycast_rps.append(
                     {

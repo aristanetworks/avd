@@ -61,6 +61,10 @@ class UnderlayMixin:
         return get(self.hostvars, "underlay_multicast_rps")
 
     @cached_property
+    def underlay_multicast_anycast_rp_mode(self: SharedUtils) -> str:
+        return get(self.hostvars, "underlay_multicast_anycast_rp.mode", default="pim")
+
+    @cached_property
     def underlay_multicast_rp_interfaces(self: SharedUtils) -> list[dict] | None:
         if self.underlay_multicast_rps is None:
             return None

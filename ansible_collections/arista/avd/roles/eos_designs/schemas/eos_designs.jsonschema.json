@@ -6138,8 +6138,28 @@
       "default": false,
       "title": "Underlay Multicast"
     },
+    "underlay_multicast_anycast_rp": {
+      "type": "object",
+      "description": "If multiple nodes are configured under 'underlay_multicast_rps.[].nodes' for the same RP address, they will be configured\nwith one of the following methods:\n- Anycast RP using PIM (RFC4610)\n- Anycast RP using MSDP (RFC4611)\n\nNOTE: When using MSDP, all nodes across all MSDP enabled RPs will be added to a single MSDP mesh group named \"ANYCAST-RP\".\n",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "pim",
+            "msdp"
+          ],
+          "default": "pim",
+          "title": "Mode"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Underlay Multicast Anycast RP"
+    },
     "underlay_multicast_rps": {
-      "description": "List of PIM Sparse-Mode Rendevouz Points configured for underlay multicast on all devices.\nThe device(s) listed under 'nodes', will be configured as the Rendevouz point router(s).\nIf multiple nodes are configured under 'nodes' for the same RP address, they will be configured\naccording to the 'rp_redundancy' setting.\n\nRequires 'underlay_multicast: true'\n",
+      "description": "List of PIM Sparse-Mode Rendevouz Points configured for underlay multicast on all devices.\nThe device(s) listed under 'nodes', will be configured as the Rendevouz point router(s).\nIf multiple nodes are configured under 'nodes' for the same RP address, they will be configured\naccording to the 'underlay_multicast_anycast_rp.mode' setting.\n\nRequires 'underlay_multicast: true'\n",
       "type": "array",
       "items": {
         "type": "object",
@@ -6181,16 +6201,6 @@
               }
             },
             "title": "Nodes"
-          },
-          "rp_redundancy": {
-            "type": "string",
-            "enum": [
-              "anycast_rp_pim",
-              "anycast_rp_msdp"
-            ],
-            "default": "anycast_rp_pim",
-            "description": "If multiple nodes are configured under 'nodes' for the same RP address, they will be configured\nwith either \"Anycast RP using PIM\" or \"Anycast RP using MSDP\"\n",
-            "title": "RP Redundancy"
           },
           "groups": {
             "type": "array",

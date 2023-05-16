@@ -2242,6 +2242,29 @@ keys:
 
       '
     default: false
+  underlay_multicast_anycast_rp:
+    type: dict
+    description: 'If multiple nodes are configured under ''underlay_multicast_rps.[].nodes''
+      for the same RP address, they will be configured
+
+      with one of the following methods:
+
+      - Anycast RP using PIM (RFC4610)
+
+      - Anycast RP using MSDP (RFC4611)
+
+
+      NOTE: When using MSDP, all nodes across all MSDP enabled RPs will be added to
+      a single MSDP mesh group named "ANYCAST-RP".
+
+      '
+    keys:
+      mode:
+        type: str
+        valid_values:
+        - pim
+        - msdp
+        default: pim
   underlay_multicast_rps:
     description: 'List of PIM Sparse-Mode Rendevouz Points configured for underlay
       multicast on all devices.
@@ -2252,7 +2275,7 @@ keys:
       If multiple nodes are configured under ''nodes'' for the same RP address, they
       will be configured
 
-      according to the ''rp_redundancy'' setting.
+      according to the ''underlay_multicast_anycast_rp.mode'' setting.
 
 
       Requires ''underlay_multicast: true''
@@ -2289,18 +2312,6 @@ keys:
                 type: str
                 description: Interface description
                 default: PIM RP
-        rp_redundancy:
-          type: str
-          valid_values:
-          - anycast_rp_pim
-          - anycast_rp_msdp
-          default: anycast_rp_pim
-          description: 'If multiple nodes are configured under ''nodes'' for the same
-            RP address, they will be configured
-
-            with either "Anycast RP using PIM" or "Anycast RP using MSDP"
-
-            '
         groups:
           type: list
           description: 'List of groups to associate with the RP address set in ''rp''.

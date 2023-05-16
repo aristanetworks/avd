@@ -183,6 +183,10 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+  - sequence: 40
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-PIM-RP
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
@@ -192,6 +196,9 @@ loopback_interfaces:
   description: VTEP_VXLAN_Tunnel_Source
   shutdown: false
   ip_address: 192.168.254.5/32
+- name: Loopback5
+  description: PIM RP
+  ip_address: 192.168.200.5/32
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -199,6 +206,18 @@ prefix_lists:
     action: permit 192.168.255.0/24 eq 32
   - sequence: 20
     action: permit 192.168.254.0/24 eq 32
+- name: PL-LOOPBACKS-PIM-RP
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.200.5/32
+router_msdp:
+  originator_id_local_interface: Loopback0
+  peers:
+  - ipv4_address: 192.168.255.6
+    local_interface: Loopback0
+    description: UNDERLAY-MULTICAST-L3LEAF2A
+    mesh_groups:
+    - name: ANYCAST-RP
 router_pim_sparse_mode:
   ipv4:
     rp_addresses:

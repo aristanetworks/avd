@@ -209,9 +209,6 @@ loopback_interfaces:
 - name: Loopback4
   description: PIM RP
   ip_address: 192.168.200.4/32
-- name: Loopback5
-  description: PIM RP
-  ip_address: 192.168.200.5/32
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -223,16 +220,6 @@ prefix_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 192.168.200.4/32
-  - sequence: 20
-    action: permit 192.168.200.5/32
-router_msdp:
-  originator_id_local_interface: Loopback0
-  peers:
-  - ipv4_address: 192.168.255.4
-    local_interface: Loopback0
-    description: UNDERLAY-MULTICAST-L3LEAF1A
-    mesh_groups:
-    - name: ANYCAST-RP
 router_pim_sparse_mode:
   ipv4:
     rp_addresses:

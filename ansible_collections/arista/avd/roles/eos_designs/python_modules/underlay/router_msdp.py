@@ -25,11 +25,11 @@ class RouterMsdpMixin(UtilsMixin):
         if self.shared_utils.underlay_multicast_rps is None:
             return None
 
+        if self.shared_utils.underlay_multicast_anycast_rp_mode != "msdp":
+            return None
+
         peers = set()
         for rp_entry in self.shared_utils.underlay_multicast_rps:
-            if get(rp_entry, "rp_redundancy") != "anycast_rp_msdp":
-                continue
-
             if (nodes := get(rp_entry, "nodes")) is None or len(nodes) < 2:
                 continue
 
