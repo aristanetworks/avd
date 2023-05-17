@@ -543,9 +543,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | BGP Tuning |
 | ---------- |
 | distance bgp 20 200 200 |
+| maximum-paths 4 ecmp 4 |
 | graceful-restart restart-time 300 |
 | graceful-restart |
-| maximum-paths 4 ecmp 4 |
 | no bgp default ipv4-unicast |
 
 #### Router BGP Peer Groups
@@ -614,10 +614,10 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 !
 router bgp 65121
    router-id 172.16.120.3
-   no bgp default ipv4-unicast
-   distance bgp 20 200 200
    graceful-restart restart-time 300
    graceful-restart
+   no bgp default ipv4-unicast
+   distance bgp 20 200 200
    maximum-paths 4 ecmp 4
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
