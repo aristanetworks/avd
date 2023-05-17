@@ -4854,7 +4854,6 @@ $defs:
               filename: Fabric Topology
               table: MLAG configuration management
             type: str
-            default: 2-4094
           mlag_peer_ipv4_pool:
             documentation_options:
               filename: Fabric Topology

@@ -466,7 +466,6 @@ port_channel_interfaces:
   description: MLAG_PEER_DC1.POD1.LEAF2A_Po5
   type: switched
   shutdown: false
-  vlans: 2-4094
   mode: trunk
   service_profile: QOS-PROFILE
   trunk_groups:
