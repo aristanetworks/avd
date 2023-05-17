@@ -6,6 +6,9 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -111,7 +114,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_EVPN-MULTICAST-L3LEAF1A_Ethernet1
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 172.31.255.0/31
   pim:
@@ -123,7 +126,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_EVPN-MULTICAST-L3LEAF1B_Ethernet1
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 172.31.255.2/31
   pim:
@@ -135,7 +138,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_EVPN-MULTICAST-L3LEAF2A_Ethernet1
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 172.31.255.4/31
   pim:
@@ -147,7 +150,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_EVPN-MULTICAST-L3LEAF3A_Ethernet1
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 172.31.255.6/31
   pim:
@@ -159,7 +162,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_EVPN-MULTICAST-L3LEAF3B_Ethernet1
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 172.31.255.8/31
   pim:

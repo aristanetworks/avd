@@ -6,6 +6,9 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
@@ -135,14 +138,14 @@ vlan_interfaces:
 - name: Vlan4093
   description: MLAG_PEER_L3_PEERING
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.247.5/31
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
   ip_address: 10.255.248.5/31
   no_autostate: true
-  mtu: 9000
+  mtu: 9214
 - name: Vlan200
   tenant: TRUNK_GROUP_TESTS
   tags:
@@ -158,7 +161,7 @@ vlan_interfaces:
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf TG_200'
   vrf: TG_200
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.247.5/31
 port_channel_interfaces:
 - name: Port-Channel3

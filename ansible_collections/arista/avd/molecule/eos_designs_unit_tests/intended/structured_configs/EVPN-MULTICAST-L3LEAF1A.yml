@@ -6,6 +6,9 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
@@ -807,7 +810,7 @@ vlan_interfaces:
 - name: Vlan4093
   description: MLAG_PEER_L3_PEERING
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.251.0/31
   pim:
     ipv4:
@@ -817,7 +820,7 @@ vlan_interfaces:
   shutdown: false
   ip_address: 10.255.252.0/31
   no_autostate: true
-  mtu: 9000
+  mtu: 9214
 - name: Vlan310
   tenant: Tenant_A
   tags:
@@ -840,7 +843,7 @@ vlan_interfaces:
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf MULTICAST_DISABLED_310_311'
   vrf: MULTICAST_DISABLED_310_311
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.251.0/31
 - name: Vlan110
   tenant: Tenant_A
@@ -864,7 +867,7 @@ vlan_interfaces:
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf MULTICAST_ENABLED_110_111'
   vrf: MULTICAST_ENABLED_110_111
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.251.0/31
 - name: Vlan210
   tenant: Tenant_A
@@ -888,7 +891,7 @@ vlan_interfaces:
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf MULTICAST_ENABLED_210_DISABLED_211'
   vrf: MULTICAST_ENABLED_210_DISABLED_211
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.251.0/31
 - name: Vlan5
   tenant: Tenant_B
@@ -912,7 +915,7 @@ vlan_interfaces:
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf MULTICAST_DISABLED_5_6'
   vrf: MULTICAST_DISABLED_5_6
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.251.0/31
 - name: Vlan1
   tenant: Tenant_B
@@ -936,7 +939,7 @@ vlan_interfaces:
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf MULTICAST_ENABLED_1_2'
   vrf: MULTICAST_ENABLED_1_2
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.251.0/31
 - name: Vlan3
   tenant: Tenant_B
@@ -960,7 +963,7 @@ vlan_interfaces:
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf MULTICAST_ENABLED_3_DISABLED_4'
   vrf: MULTICAST_ENABLED_3_DISABLED_4
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.251.0/31
 - name: Vlan330
   tenant: Tenant_C
@@ -984,7 +987,7 @@ vlan_interfaces:
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf TEN_C_L3_MULTICAST_DISABLED_330_331'
   vrf: TEN_C_L3_MULTICAST_DISABLED_330_331
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.251.0/31
 - name: Vlan130
   tenant: Tenant_C
@@ -1017,7 +1020,7 @@ vlan_interfaces:
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf TEN_C_L3_MULTICAST_ENABLED_130_131'
   vrf: TEN_C_L3_MULTICAST_ENABLED_130_131
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.251.0/31
 - name: Vlan230
   tenant: Tenant_C
@@ -1045,7 +1048,7 @@ vlan_interfaces:
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231'
   vrf: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.251.0/31
 - name: Vlan240
   tenant: Tenant_D
@@ -1069,7 +1072,7 @@ vlan_interfaces:
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf TEN_D_L3_MULTICAST_DISABLED_240_241'
   vrf: TEN_D_L3_MULTICAST_DISABLED_240_241
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.251.0/31
 - name: Vlan140
   tenant: Tenant_D
@@ -1097,7 +1100,7 @@ vlan_interfaces:
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141'
   vrf: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.251.0/31
 - name: Vlan550
   tenant: Tenant_E
@@ -1117,7 +1120,7 @@ vlan_interfaces:
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE'
   vrf: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.251.0/31
 - name: Vlan260
   tenant: Tenant_E
@@ -1137,7 +1140,7 @@ vlan_interfaces:
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES'
   vrf: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.251.0/31
 - name: Vlan250
   tenant: Tenant_E
@@ -1157,7 +1160,7 @@ vlan_interfaces:
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf TEN_E_L3_MULTICAST_TRANSIT'
   vrf: TEN_E_L3_MULTICAST_TRANSIT
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.251.0/31
 - name: Vlan150
   tenant: Tenant_E
@@ -1177,7 +1180,7 @@ vlan_interfaces:
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf TEN_E_PEG_L3_MULTICAST_ENABLED'
   vrf: TEN_E_PEG_L3_MULTICAST_ENABLED
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.251.0/31
 port_channel_interfaces:
 - name: Port-Channel3
@@ -1223,7 +1226,7 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_EVPN-MULTICAST-SPINE1_Ethernet1
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 172.31.255.1/31
   pim:

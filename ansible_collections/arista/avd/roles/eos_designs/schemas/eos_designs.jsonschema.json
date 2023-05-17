@@ -50,6 +50,31 @@
       "default": 4,
       "title": "BGP Ecmp"
     },
+    "bgp_graceful_restart": {
+      "description": "Graceful BGP restart allows a BGP speaker with separate control plane and data plane processing to continue forwarding traffic during a BGP restart.\nIts neighbors (receiving speakers) may retain routing information from the restarting speaker while a BGP session with it is being re-established, reducing route flapping.\n",
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable or disable graceful restart helper mode for all BGP peers.",
+          "title": "Enabled"
+        },
+        "restart_time": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3600,
+          "default": 300,
+          "description": "Restart time in seconds.",
+          "title": "Restart Time"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "BGP Graceful Restart"
+    },
     "bgp_maximum_paths": {
       "description": "Maximum Paths for BGP multi-path",
       "type": "integer",
@@ -3112,7 +3137,7 @@
       "type": "integer",
       "minimum": 68,
       "maximum": 65535,
-      "default": 9000,
+      "default": 9214,
       "title": "P2P Uplinks MTU"
     },
     "p2p_uplinks_qos_profile": {

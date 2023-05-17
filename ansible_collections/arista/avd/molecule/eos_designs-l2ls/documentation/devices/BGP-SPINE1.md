@@ -161,7 +161,7 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet5 | P2P_LINK_TO_DUMMY-CORE_Ethernet1/3 | routed | - | 192.168.253.4/31 | default | 9000 | False | - | - |
+| Ethernet5 | P2P_LINK_TO_DUMMY-CORE_Ethernet1/3 | routed | - | 192.168.253.4/31 | default | 9214 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -190,7 +190,7 @@ interface Ethernet4
 interface Ethernet5
    description P2P_LINK_TO_DUMMY-CORE_Ethernet1/3
    no shutdown
-   mtu 9000
+   mtu 9214
    no switchport
    ip address 192.168.253.4/31
 ```
@@ -271,7 +271,7 @@ interface Loopback0
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
 | Vlan100 | SVI_100 | default | - | False |
-| Vlan4094 | MLAG_PEER | default | 9000 | False |
+| Vlan4094 | MLAG_PEER | default | 9214 | False |
 
 ##### IPv4
 
@@ -292,7 +292,7 @@ interface Vlan100
 interface Vlan4094
    description MLAG_PEER
    no shutdown
-   mtu 9000
+   mtu 9214
    no autostate
    ip address 192.168.254.0/31
 ```
@@ -373,6 +373,8 @@ ip route vrf MGMT 0.0.0.0/0 172.31.0.1
 | BGP Tuning |
 | ---------- |
 | maximum-paths 4 ecmp 4 |
+| graceful-restart restart-time 300 |
+| graceful-restart |
 | no bgp default ipv4-unicast |
 
 #### Router BGP Peer Groups
@@ -408,6 +410,8 @@ ip route vrf MGMT 0.0.0.0/0 172.31.0.1
 !
 router bgp 65001
    router-id 192.168.255.1
+   graceful-restart restart-time 300
+   graceful-restart
    no bgp default ipv4-unicast
    maximum-paths 4 ecmp 4
    neighbor IPv4-UNDERLAY-PEERS peer group
