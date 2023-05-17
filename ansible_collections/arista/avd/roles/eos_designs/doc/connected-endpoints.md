@@ -110,7 +110,7 @@ Both data models support variable inheritance from profiles defined under [`port
 
         # PTP Enable | Optional
         ptp:
-          enable: < true | false | default -> false | Required >
+          enabled: < true | false | default -> false | Required >
           # These are the default settings:
           # - The global PTP profile parameters will be applied to all connected endpoints where ptp is manually enabled.
           # - `ptp role master` is set to ensure control over the PTP topology.

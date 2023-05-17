@@ -16,8 +16,6 @@ spine:
       profile: MACSEC_PROFILE
     bgp_defaults:
       - "distance bgp 20 200 200"
-      - "graceful-restart restart-time 300"
-      - "graceful-restart"
   nodes:
     # Spine also working as EVPN RS
     DC1-POD2-SPINE1:
@@ -46,8 +44,6 @@ l3leaf:
       profile: MACSEC_PROFILE
     bgp_defaults:
       - "distance bgp 20 200 200"
-      - "graceful-restart restart-time 300"
-      - "graceful-restart"
     mlag_peer_l3_ipv4_pool: 172.19.120.0/24
     mlag_peer_ipv4_pool: 172.20.120.0/24
   node_groups:

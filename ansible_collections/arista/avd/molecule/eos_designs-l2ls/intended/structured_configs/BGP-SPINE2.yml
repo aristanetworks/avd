@@ -6,6 +6,9 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
@@ -74,7 +77,7 @@ vlan_interfaces:
   shutdown: false
   ip_address: 192.168.254.1/31
   no_autostate: true
-  mtu: 9000
+  mtu: 9214
 - name: Vlan100
   tenant: L2LS_BGP
   description: SVI_100
@@ -85,7 +88,6 @@ port_channel_interfaces:
   description: MLAG_PEER_BGP-SPINE1_Po3
   type: switched
   shutdown: false
-  vlans: 2-4094
   mode: trunk
   trunk_groups:
   - LEAF_PEER_L3
@@ -152,7 +154,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DUMMY-CORE_Ethernet1/4
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ip_address: 192.168.253.6/31
 mlag_configuration:
   domain_id: BGP_SPINES
