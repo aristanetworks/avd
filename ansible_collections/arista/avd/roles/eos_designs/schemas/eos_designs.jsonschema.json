@@ -4108,73 +4108,72 @@
     "ptp_profiles": {
       "type": "array",
       "description": "PTP Profiles",
-      "properties": {
-        "profile": {
-          "type": "object",
-          "description": "PTP Profile",
-          "properties": {
-            "announce": {
-              "type": "object",
-              "description": "PTP Announce Interval",
-              "properties": {
-                "interval": {
-                  "type": "integer",
-                  "minimum": -7,
-                  "maximum": 4,
-                  "title": "Interval"
-                },
-                "timeout": {
-                  "type": "integer",
-                  "minimum": 2,
-                  "maximum": 255,
-                  "title": "Timeout"
-                }
-              },
-              "additionalProperties": false,
-              "patternProperties": {
-                "^_.+$": {}
-              },
-              "title": "Announce"
-            },
-            "delay_req": {
-              "type": "integer",
-              "minimum": -7,
-              "maximum": 8,
-              "title": "Delay Req"
-            },
-            "sync_message": {
-              "type": "object",
-              "description": "PTP Sync Message Interval",
-              "properties": {
-                "interval": {
-                  "type": "integer",
-                  "minimum": -7,
-                  "maximum": 3,
-                  "title": "Interval"
-                }
-              },
-              "additionalProperties": false,
-              "patternProperties": {
-                "^_.+$": {}
-              },
-              "title": "Sync Message"
-            },
-            "transport": {
-              "type": "string",
-              "enum": "ipv4",
-              "title": "Transport"
-            }
+      "items": {
+        "type": "object",
+        "properties": {
+          "profile": {
+            "type": "string",
+            "description": "PTP Profile",
+            "title": "Profile"
           },
-          "additionalProperties": false,
-          "patternProperties": {
-            "^_.+$": {}
+          "announce": {
+            "type": "object",
+            "description": "PTP Announce Interval",
+            "properties": {
+              "interval": {
+                "type": "integer",
+                "minimum": -7,
+                "maximum": 4,
+                "title": "Interval"
+              },
+              "timeout": {
+                "type": "integer",
+                "minimum": 2,
+                "maximum": 255,
+                "title": "Timeout"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Announce"
           },
-          "title": "Profile"
+          "delay_req": {
+            "type": "integer",
+            "minimum": -7,
+            "maximum": 8,
+            "title": "Delay Req"
+          },
+          "sync_message": {
+            "type": "object",
+            "description": "PTP Sync Message Interval",
+            "properties": {
+              "interval": {
+                "type": "integer",
+                "minimum": -7,
+                "maximum": 3,
+                "title": "Interval"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Sync Message"
+          },
+          "transport": {
+            "type": "string",
+            "enum": [
+              "ipv4"
+            ],
+            "title": "Transport"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
         }
-      },
-      "additionalProperties": false,
-      "patternProperties": {
-        "^_.+$": {}
       },
       "title": "PTP Profiles"
     },

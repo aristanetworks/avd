@@ -6,46 +6,46 @@ keys:
   ptp_profiles:
     documentation_options:
       filename: Fabric Variables
-      table: PTP Profiles
     type: list
     description: PTP Profiles
-    keys:
-      profile:
-        type: dict
-        description: PTP Profile
-        keys:
-          announce:
-            type: dict
-            description: PTP Announce Interval
-            keys:
-              interval:
-                type: int
-                convert_types:
-                - str
-                min: -7
-                max: 4
-              timeout:
-                type: int
-                convert_types:
-                - str
-                min: 2
-                max: 255
-          delay_req:
-            type: int
-            convert_types:
-            - str
-            min: -7
-            max: 8
-          sync_message:
-            type: dict
-            description: PTP Sync Message Interval
-            keys:
-              interval:
-                type: int
-                convert_types:
-                - str
-                min: -7
-                max: 3
-          transport:
-            type: str
-            valid_values: "ipv4"
+    items:
+      type: dict
+      keys:
+        profile:
+          type: str
+          description: PTP Profile
+        announce:
+          type: dict
+          description: PTP Announce Interval
+          keys:
+            interval:
+              type: int
+              convert_types:
+              - str
+              min: -7
+              max: 4
+            timeout:
+              type: int
+              convert_types:
+              - str
+              min: 2
+              max: 255
+        delay_req:
+          type: int
+          convert_types:
+          - str
+          min: -7
+          max: 8
+        sync_message:
+          type: dict
+          description: PTP Sync Message Interval
+          keys:
+            interval:
+              type: int
+              convert_types:
+              - str
+              min: -7
+              max: 3
+        transport:
+          type: str
+          valid_values: ["ipv4"]
