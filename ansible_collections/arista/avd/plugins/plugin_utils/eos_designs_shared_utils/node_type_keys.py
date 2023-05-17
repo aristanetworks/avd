@@ -10,6 +10,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 if TYPE_CHECKING:
     from .shared_utils import SharedUtils
 
+# NOTE: There is a static list of default node_type_keys in the fabric documentation templates
 DEFAULT_NODE_TYPE_KEYS = {
     "l3ls-evpn": [
         {
@@ -140,6 +141,7 @@ class NodeTypeKeysMixin:
     def node_type_keys(self: SharedUtils) -> list:
         """
         NOTE: This method is called _before_ any schema validation, since we need to resolve node_type_keys dynamically
+
         """
         design_type = get(self.hostvars, "design.type", default="l3ls-evpn")
         default_node_type_keys_for_our_design = get(DEFAULT_NODE_TYPE_KEYS, design_type)

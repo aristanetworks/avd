@@ -654,9 +654,7 @@ class AvdStructuredConfig(AvdFacts):
     def ptp(self) -> dict | None:
         """
         Generates PTP config on node level as well as for interfaces, using various defaults.
-        - The following are set in roles/eos_designs/defaults/main/default-node-type-keys.yml
-            default_node_type_keys:
-              "l3ls-evpn":
+        - The following are set in default node_type_keys for design "l3ls-evpn":
                 spine:
                   default_ptp_priority1: 20
                 l3leaf:

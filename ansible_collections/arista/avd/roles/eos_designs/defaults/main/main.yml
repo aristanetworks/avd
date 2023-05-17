@@ -20,11 +20,7 @@ output_dir: '{{ root_dir }}/{{ output_dir_name }}'
 structured_dir_name: 'structured_configs'
 structured_dir: '{{ output_dir }}/{{ structured_dir_name }}'
 
-# Design variables
-design:
-  type: "l3ls-evpn"
-
-templates: "{{ default_templates[design.type] }}"
+templates: "{{ default_templates[design.type | arista.avd.default('l3ls-evpn')] }}"
 
 avd_structured_config_file_format: "yml"
 

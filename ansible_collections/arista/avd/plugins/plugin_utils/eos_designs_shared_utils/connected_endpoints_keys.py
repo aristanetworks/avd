@@ -9,19 +9,20 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 if TYPE_CHECKING:
     from .shared_utils import SharedUtils
 
+# NOTE: there is a static list of default endpoint keys in the fabric connected endpoints documentation templates.
 DEFAULT_CONNECTED_ENDPOINTS_KEYS = [
-    "servers",
-    "firewalls",
-    "load_balancers",
-    "storage_arrays",
-    "routers",
-    "cpes",
-    "workstations",
-    "access_points",
-    "phones",
-    "printers",
-    "cameras",
-    "generic_devices",
+    {"key": "servers", "type": "server", "description": "Server"},
+    {"key": "firewalls", "type": "firewall", "description": "Firewall"},
+    {"key": "routers", "type": "router", "description": "Router"},
+    {"key": "load_balancers", "type": "load_balancer", "description": "Load Balancer"},
+    {"key": "storage_arrays", "type": "storage_array", "description": "Storage Array"},
+    {"key": "cpes", "type": "cpe", "description": "CPE"},
+    {"key": "workstations", "type": "workstation", "description": "Workstation"},
+    {"key": "access_points", "type": "access_point", "description": "Access Point"},
+    {"key": "phones", "type": "phone", "description": "Phone"},
+    {"key": "printers", "type": "printer", "description": "Printer"},
+    {"key": "cameras", "type": "camera", "description": "Camera"},
+    {"key": "generic_devices", "type": "generic_device", "description": "Generic Device"},
 ]
 
 
@@ -32,21 +33,6 @@ class ConnectedEndpointsKeysMixin:
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
-    def get_default_connected_endpoints_keys(self: SharedUtils) -> list:
-        result = []
-        for key in DEFAULT_CONNECTED_ENDPOINTS_KEYS:
-            singular_key = key.removesuffix("s")
-            description = singular_key.replace("_", " ").title()
-            result.append(
-                {
-                    "key": key,
-                    "type": singular_key,
-                    "description": description,
-                }
-            )
-
-        return result
-
     @cached_property
     def connected_endpoints_keys(self: SharedUtils) -> list:
         """
@@ -56,6 +42,6 @@ class ConnectedEndpointsKeysMixin:
         """
         connected_endpoints_keys = []
         # Support legacy data model by converting nested dict to list of dict
-        connected_endpoints_keys = convert_dicts(get(self.hostvars, "connected_endpoints_keys", default=self.get_default_connected_endpoints_keys()), "key")
+        connected_endpoints_keys = convert_dicts(get(self.hostvars, "connected_endpoints_keys", default=DEFAULT_CONNECTED_ENDPOINTS_KEYS), "key")
         connected_endpoints_keys = [entry for entry in connected_endpoints_keys if entry.get("key") is not None and self.hostvars.get(entry["key"]) is not None]
         return connected_endpoints_keys
