@@ -164,6 +164,7 @@ ethernet_interfaces:
   peer: bmca-endpoint
   peer_interface: eth1
   peer_type: server
+  port_profile: PTP-profile-BMCA
   description: bmca-endpoint_eth1
   shutdown: false
   type: switched

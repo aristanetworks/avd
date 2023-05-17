@@ -489,11 +489,22 @@
                 "description": "Enable BFD (only considered for BGP).",
                 "title": "BFD"
               },
-              "ptp_enable": {
-                "type": "boolean",
-                "default": false,
-                "description": "Enable PTP",
-                "title": "PTP Enable"
+              "ptp": {
+                "description": "PTP parameters.",
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable PTP",
+                    "title": "Enabled"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "PTP"
               },
               "qos_profile": {
                 "type": "string",
@@ -703,11 +714,22 @@
                 "description": "Enable BFD (only considered for BGP).",
                 "title": "BFD"
               },
-              "ptp_enable": {
-                "type": "boolean",
-                "default": false,
-                "description": "Enable PTP",
-                "title": "PTP Enable"
+              "ptp": {
+                "description": "PTP parameters.",
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable PTP",
+                    "title": "Enabled"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "PTP"
               },
               "qos_profile": {
                 "type": "string",
@@ -1384,11 +1406,22 @@
                 "description": "Enable BFD (only considered for BGP).",
                 "title": "BFD"
               },
-              "ptp_enable": {
-                "type": "boolean",
-                "default": false,
-                "description": "Enable PTP",
-                "title": "PTP Enable"
+              "ptp": {
+                "description": "PTP parameters.",
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable PTP",
+                    "title": "Enabled"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "PTP"
               },
               "qos_profile": {
                 "type": "string",
@@ -1598,11 +1631,22 @@
                 "description": "Enable BFD (only considered for BGP).",
                 "title": "BFD"
               },
-              "ptp_enable": {
-                "type": "boolean",
-                "default": false,
-                "description": "Enable PTP",
-                "title": "PTP Enable"
+              "ptp": {
+                "description": "PTP parameters.",
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable PTP",
+                    "title": "Enabled"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "PTP"
               },
               "qos_profile": {
                 "type": "string",
@@ -2007,10 +2051,10 @@
             "type": "object",
             "description": "The global PTP profile parameters will be applied to all connected endpoints where `ptp` is manually enabled.\n`ptp role master` is set to ensure control over the PTP topology.\n",
             "properties": {
-              "enable": {
+              "enabled": {
                 "type": "boolean",
                 "default": false,
-                "title": "Enable"
+                "title": "Enabled"
               },
               "endpoint_role": {
                 "type": "string",
@@ -3436,10 +3480,10 @@
             "type": "object",
             "description": "The global PTP profile parameters will be applied to all connected endpoints where `ptp` is manually enabled.\n`ptp role master` is set to ensure control over the PTP topology.\n",
             "properties": {
-              "enable": {
+              "enabled": {
                 "type": "boolean",
                 "default": false,
-                "title": "Enable"
+                "title": "Enabled"
               },
               "endpoint_role": {
                 "type": "string",
