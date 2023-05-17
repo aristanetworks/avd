@@ -72,7 +72,7 @@ class RouterIsisMixin(UtilsMixin):
             # TODO - enabling IPv6 only in SR cases as per existing behavior
             # but this could probably be taken out
             if self.shared_utils.underlay_ipv6 is True:
-                router_isis["address_family_ipv6"] = {"enabled": True, "maximum_paths": get(self._hostvars, "isis_maximum_paths")}
+                router_isis["address_family_ipv6"] = {"enabled": True, "maximum_paths": get(self._hostvars, "isis_maximum_paths", default=4)}
                 if ti_lfa_protection == "link":
                     router_isis["address_family_ipv6"]["fast_reroute_ti_lfa"] = {"mode": "link-protection"}
                 elif ti_lfa_protection == "node":
