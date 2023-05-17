@@ -9,6 +9,9 @@ router_bgp:
       ipv4_unicast: false
     bestpath:
       d_path: true
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: UNDERLAY-PEERS
     type: ipv4

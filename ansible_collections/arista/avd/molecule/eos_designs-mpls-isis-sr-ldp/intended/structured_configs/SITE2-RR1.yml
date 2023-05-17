@@ -3,13 +3,14 @@ router_bgp:
   router_id: 100.70.0.9
   bgp_defaults:
   - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
   - bgp route-reflector preserve-attributes always
   - maximum-paths 4 ecmp 4
   bgp:
     default:
       ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   bgp_cluster_id: 1.1.1.1
   peer_groups:
   - name: MPLS-OVERLAY-PEERS

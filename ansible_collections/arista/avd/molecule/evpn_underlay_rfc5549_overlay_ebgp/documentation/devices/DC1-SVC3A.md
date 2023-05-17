@@ -1108,6 +1108,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | ---------- |
 | distance bgp 20 200 200 |
 | maximum-paths 4 ecmp 4 |
+| graceful-restart restart-time 300 |
+| graceful-restart |
 | no bgp default ipv4-unicast |
 
 #### Router BGP Peer Groups
@@ -1219,6 +1221,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 !
 router bgp 65103
    router-id 192.168.255.8
+   graceful-restart restart-time 300
+   graceful-restart
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4

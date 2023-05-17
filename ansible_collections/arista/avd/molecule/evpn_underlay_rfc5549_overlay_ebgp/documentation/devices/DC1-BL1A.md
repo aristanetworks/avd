@@ -570,6 +570,8 @@ router general
 | ---------- |
 | distance bgp 20 200 200 |
 | maximum-paths 4 ecmp 4 |
+| graceful-restart restart-time 300 |
+| graceful-restart |
 | no bgp default ipv4-unicast |
 
 #### Router BGP Peer Groups
@@ -652,6 +654,8 @@ router general
 !
 router bgp 65104
    router-id 192.168.255.10
+   graceful-restart restart-time 300
+   graceful-restart
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4

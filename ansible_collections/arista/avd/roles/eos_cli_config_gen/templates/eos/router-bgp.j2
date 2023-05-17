@@ -12,13 +12,13 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
    {{ distance_cli }}
 {%     endif %}
-{%     if router_bgp.graceful_restart.enabled is arista.avd.defined(true) and router_bgp.graceful_restart.restart_time is arista.avd.defined %}
-   graceful-restart restart-time {{ router_bgp.graceful_restart.restart_time }}
-{%     endif %}
-{%     if router_bgp.graceful_restart.stalepath_time is arista.avd.defined %}
-   graceful-restart stalepath-time {{ router_bgp.graceful_restart.stalepath_time }}
-{%     endif %}
 {%     if router_bgp.graceful_restart.enabled is arista.avd.defined(true) %}
+{%         if router_bgp.graceful_restart.restart_time is arista.avd.defined %}
+   graceful-restart restart-time {{ router_bgp.graceful_restart.restart_time }}
+{%         endif %}
+{%         if router_bgp.graceful_restart.stalepath_time is arista.avd.defined %}
+   graceful-restart stalepath-time {{ router_bgp.graceful_restart.stalepath_time }}
+{%         endif %}
    graceful-restart
 {%     endif %}
 {%     if router_bgp.graceful_restart_helper.enabled is arista.avd.defined(false) %}

@@ -7,6 +7,9 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: EVPN-OVERLAY-PEERS
     type: evpn
