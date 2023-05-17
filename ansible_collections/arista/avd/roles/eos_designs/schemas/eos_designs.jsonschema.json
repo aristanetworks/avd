@@ -4132,18 +4132,17 @@
     },
     "ptp_profiles": {
       "type": "array",
-      "description": "PTP Profiles",
       "items": {
         "type": "object",
         "properties": {
           "profile": {
             "type": "string",
-            "description": "PTP Profile",
+            "description": "PTP profile.",
             "title": "Profile"
           },
           "announce": {
             "type": "object",
-            "description": "PTP Announce Interval",
+            "description": "PTP announce interval.",
             "properties": {
               "interval": {
                 "type": "integer",
@@ -4172,7 +4171,7 @@
           },
           "sync_message": {
             "type": "object",
-            "description": "PTP Sync Message Interval",
+            "description": "PTP sync message interval.",
             "properties": {
               "interval": {
                 "type": "integer",

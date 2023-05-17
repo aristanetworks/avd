@@ -7,16 +7,15 @@ keys:
     documentation_options:
       filename: Fabric Variables
     type: list
-    description: PTP Profiles
     items:
       type: dict
       keys:
         profile:
           type: str
-          description: PTP Profile
+          description: PTP profile.
         announce:
           type: dict
-          description: PTP Announce Interval
+          description: PTP announce interval.
           keys:
             interval:
               type: int
@@ -38,7 +37,7 @@ keys:
           max: 8
         sync_message:
           type: dict
-          description: PTP Sync Message Interval
+          description: PTP sync message interval.
           keys:
             interval:
               type: int
