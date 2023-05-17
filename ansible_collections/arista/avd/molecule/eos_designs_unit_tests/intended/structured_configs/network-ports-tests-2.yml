@@ -32,7 +32,7 @@ vlan_interfaces:
   shutdown: false
   ip_address: 10.255.252.1/31
   no_autostate: true
-  mtu: 9000
+  mtu: 9214
 port_channel_interfaces:
 - name: Port-Channel101
   description: MLAG_PEER_network-ports-tests.1_Po101

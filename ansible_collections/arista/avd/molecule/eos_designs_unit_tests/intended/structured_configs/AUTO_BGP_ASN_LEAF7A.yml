@@ -96,14 +96,14 @@ vlan_interfaces:
 - name: Vlan4093
   description: MLAG_PEER_L3_PEERING
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.251.20/31
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
   ip_address: 10.255.252.20/31
   no_autostate: true
-  mtu: 9000
+  mtu: 9214
 port_channel_interfaces:
 - name: Port-Channel3
   description: MLAG_PEER_AUTO_BGP_ASN_LEAF7B_Po3

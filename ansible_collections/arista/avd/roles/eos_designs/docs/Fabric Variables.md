@@ -281,7 +281,7 @@ search:
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>p2p_uplinks_mtu</samp>](## "p2p_uplinks_mtu") | Integer |  | 9000 | Min: 68<br>Max: 65535 | Point to Point Links MTU |
+    | [<samp>p2p_uplinks_mtu</samp>](## "p2p_uplinks_mtu") | Integer |  | 9214 | Min: 68<br>Max: 65535 | Point to Point Links MTU |
     | [<samp>p2p_uplinks_qos_profile</samp>](## "p2p_uplinks_qos_profile") | String |  |  |  | QOS Profile assigned on all infrastructure links |
     | [<samp>uplink_ptp</samp>](## "uplink_ptp") | Dictionary |  |  |  | Enable PTP on all infrastructure links |
     | [<samp>&nbsp;&nbsp;enable</samp>](## "uplink_ptp.enable") | Boolean |  | False |  |  |

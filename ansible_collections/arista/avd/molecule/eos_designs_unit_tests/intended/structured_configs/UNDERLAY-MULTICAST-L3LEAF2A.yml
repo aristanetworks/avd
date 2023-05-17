@@ -107,7 +107,7 @@ vlan_interfaces:
   shutdown: false
   ip_address: 10.255.252.4/31
   no_autostate: true
-  mtu: 9000
+  mtu: 9214
   pim:
     ipv4:
       sparse_mode: true
@@ -148,7 +148,7 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_UNDERLAY-MULTICAST-SPINE1_Ethernet3
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 172.31.255.9/31
   pim:
@@ -160,7 +160,7 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_UNDERLAY-MULTICAST-SPINE2_Ethernet3
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 172.31.255.11/31
 mlag_configuration:

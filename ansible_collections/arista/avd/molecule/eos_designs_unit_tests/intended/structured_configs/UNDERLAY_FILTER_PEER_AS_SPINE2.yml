@@ -50,7 +50,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_UNDERLAY_FILTER_PEER_AS_L3LEAF1_Ethernet2
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 192.168.0.2/31
 loopback_interfaces:

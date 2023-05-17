@@ -3137,7 +3137,7 @@
       "type": "integer",
       "minimum": 68,
       "maximum": 65535,
-      "default": 9000,
+      "default": 9214,
       "title": "P2P Uplinks MTU"
     },
     "p2p_uplinks_qos_profile": {

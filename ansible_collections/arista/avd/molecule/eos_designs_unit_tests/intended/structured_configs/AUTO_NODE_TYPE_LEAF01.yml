@@ -90,7 +90,7 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_AUTO_NODE_TYPE_SPINE01_Ethernet1
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 172.31.255.1/31
 - name: Ethernet2
@@ -99,7 +99,7 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_AUTO_NODE_TYPE_SPINE02_Ethernet1
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 172.31.255.3/31
 loopback_interfaces:

@@ -130,7 +130,7 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_PTP-TESTS-SPINE1_Ethernet1
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ptp:
     announce:
@@ -148,7 +148,7 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_PTP-TESTS-SPINE1_Ethernet2
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ptp:
     announce:

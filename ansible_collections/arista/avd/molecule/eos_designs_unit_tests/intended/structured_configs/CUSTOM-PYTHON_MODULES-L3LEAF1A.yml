@@ -137,14 +137,14 @@ vlan_interfaces:
 - name: Vlan4093
   description: MLAG_PEER_L3_PEERING
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.251.10/31
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
   ip_address: 10.255.252.10/31
   no_autostate: true
-  mtu: 9000
+  mtu: 9214
 - name: Vlan110
   tenant: CUSTOM_PYTHON_MODULES_TENANT
   tags:
@@ -159,7 +159,7 @@ vlan_interfaces:
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf TEST_VRF'
   vrf: TEST_VRF
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.240.10/31
 port_channel_interfaces:
 - name: Port-Channel3
@@ -198,7 +198,7 @@ ethernet_interfaces:
   peer_type: spine
   description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON_MODULES-SPINE1_Ethernet1
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 172.31.255.21/31
 mlag_configuration:
