@@ -57,6 +57,7 @@ interface Management1
 | Unicast | 2 | 1/8 | 0 cells | - |
 | Multicast | 0 | - | 0 bytes | - |
 | Multicast | 1 | 1/64 | 0 cells | - |
+| Multicast | 7 | 1/64 | 0 cells | - |
 
 **unused_profile**
 
@@ -97,6 +98,8 @@ platform trident mmu queue profile mc_example_profile
     egress multicast queue 0 drop-precedence 1 drop-threshold 3/4
     egress multicast queue 1 reserved cells 0
     egress multicast queue 1 threshold 1/64
+    egress multicast queue 7 reserved cells 0
+    egress multicast queue 7 threshold 1/64
     egress unicast queue 1 reserved bytes 0
     egress unicast queue 2 reserved cells 0
     egress unicast queue 2 threshold 1/8
