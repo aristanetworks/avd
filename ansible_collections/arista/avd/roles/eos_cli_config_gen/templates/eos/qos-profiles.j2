@@ -35,6 +35,11 @@ qos profile {{ profile.name }}
 {%         if tx_queue.shape.rate is arista.avd.defined %}
       shape rate {{ tx_queue.shape.rate }}
 {%         endif %}
+{%         if tx_queue.comment is arista.avd.defined %}
+{%             for comment_line in tx_queue.comment.splitlines() | arista.avd.default([]) %}
+      !! {{ comment_line }}
+{%             endfor %}
+{%         endif %}
 {%     endfor %}
 {%     for uc_tx_queue in profile.uc_tx_queues | arista.avd.natural_sort('id') %}
    !
@@ -50,6 +55,11 @@ qos profile {{ profile.name }}
 {%         if uc_tx_queue.shape.rate is arista.avd.defined %}
       shape rate {{ uc_tx_queue.shape.rate }}
 {%         endif %}
+{%         if uc_tx_queue.comment is arista.avd.defined %}
+{%             for comment_line in uc_tx_queue.comment.splitlines() | arista.avd.default([]) %}
+      !! {{ comment_line }}
+{%             endfor %}
+{%         endif %}
 {%     endfor %}
 {%     for mc_tx_queue in profile.mc_tx_queues | arista.avd.natural_sort('id') %}
    !
@@ -64,6 +74,11 @@ qos profile {{ profile.name }}
 {%         endif %}
 {%         if mc_tx_queue.shape.rate is arista.avd.defined %}
       shape rate {{ mc_tx_queue.shape.rate }}
+{%         endif %}
+{%         if mc_tx_queue.comment is arista.avd.defined %}
+{%             for comment_line in mc_tx_queue.comment.splitlines() | arista.avd.default([]) %}
+      !! {{ comment_line }}
+{%             endfor %}
 {%         endif %}
 {%     endfor %}
 {% endfor %}

@@ -6468,6 +6468,11 @@ keys:
                       Example: "< rate > kbps", "1-100 percent", "< rate > pps"
 
                       '
+              comment:
+                type: str
+                description: 'Text comment added to queue.
+
+                  '
         uc_tx_queues:
           type: list
           primary_key: id
@@ -6505,6 +6510,11 @@ keys:
                       Example: "< rate > kbps", "1-100 percent", "< rate > pps"
 
                       '
+              comment:
+                type: str
+                description: 'Text comment added to queue.
+
+                  '
         mc_tx_queues:
           type: list
           primary_key: id
@@ -6539,7 +6549,12 @@ keys:
                     type: str
                     description: 'Supported options are platform dependent
 
-                      Example: "< rate > kbps", "1-100 percent", "< rate > pps"'
+                      Example: "< rate > kbps", "1-100 percent", "< rate > pps"
+
+                      '
+              comment:
+                type: str
+                description: Text comment added to queue.
   queue_monitor_length:
     type: dict
     keys:

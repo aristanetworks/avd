@@ -59,6 +59,9 @@ qos_profiles:
       - id: 5
         priority: 'no priority'
         bandwidth_percent: 19
+        comment: |
+          Multi-line comment
+          here.
       - id: 1
         bandwidth_percent: 80
       - id: 0
@@ -68,11 +71,13 @@ qos_profiles:
       - id: 1
         bandwidth_percent: 50
         priority: 'no priority'
+        comment: "Test no priority"
       - id: 2
         bandwidth_percent: 10
         priority: 'priority strict'
       - id: 4
         bandwidth_guaranteed_percent: 10
+        comment: "Test guaranteed percent"
     mc_tx_queues:
       - id: 1
         bandwidth_percent: 50
@@ -80,8 +85,10 @@ qos_profiles:
       - id: 2
         bandwidth_percent: 10
         priority: 'priority strict'
+        comment: "Test strict priority"
       - id: 4
         bandwidth_guaranteed_percent: 10
+        comment: "Test guaranteed percent"
 
 policy_maps:
   qos:
