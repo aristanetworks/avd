@@ -80,7 +80,7 @@ vlans:
   tenant: MY_FABRIC
 - id: 10
   tenant: system
-  name: L2LEAF_INBAND_MGMT
+  name: INBAND_MGMT
 vlan_interfaces:
 - name: Vlan4093
   description: MLAG_PEER_L3_PEERING
@@ -177,7 +177,7 @@ vlan_interfaces:
   ip_virtual_router_addresses:
   - 10.3.30.1
 - name: Vlan10
-  description: L2LEAF_INBAND_MGMT
+  description: Inband Management
   shutdown: false
   mtu: 1500
   ip_address: 10.10.10.2/24
@@ -191,7 +191,6 @@ port_channel_interfaces:
   description: MLAG_PEER_SPINE2_Po551
   type: switched
   shutdown: false
-  vlans: 2-4094
   mode: trunk
   trunk_groups:
   - LEAF_PEER_L3
@@ -223,7 +222,7 @@ ethernet_interfaces:
   peer_interface: Ethernet55/1
   peer_type: mlag_peer
   description: MLAG_PEER_SPINE2_Ethernet55/1
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 551
@@ -233,7 +232,7 @@ ethernet_interfaces:
   peer_interface: Ethernet56/1
   peer_type: mlag_peer
   description: MLAG_PEER_SPINE2_Ethernet56/1
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 551
@@ -244,7 +243,7 @@ ethernet_interfaces:
   peer_type: leaf
   description: LEAF1A_Ethernet51
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -254,7 +253,7 @@ ethernet_interfaces:
   peer_type: leaf
   description: LEAF2A_Ethernet1/1
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 491
     mode: active
@@ -264,7 +263,7 @@ ethernet_interfaces:
   peer_type: leaf
   description: LEAF3A_Ethernet97/1
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 501
     mode: active
@@ -274,7 +273,7 @@ ethernet_interfaces:
   peer_type: leaf
   description: LEAF3B_Ethernet97/1
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 501
     mode: active

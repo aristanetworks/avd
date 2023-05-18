@@ -13,10 +13,7 @@ spine:
     uplink_ptp:
       enable: True
     bgp_defaults:
-      - 'no bgp default ipv4-unicast'
-      - 'distance bgp 20 200 200'
-      - 'graceful-restart restart-time 300'
-      - 'graceful-restart'
+      - distance bgp 20 200 200
     raw_eos_cli: |
       interface Loopback1009
         description Loopback created from raw_eos_cli under spine defaults in DC2 POD1
@@ -45,10 +42,7 @@ l3leaf:
     uplink_ipv4_pool: 172.17.210.0/24
     uplink_ptp: {'enable': True}
     bgp_defaults:
-      - 'no bgp default ipv4-unicast'
-      - 'distance bgp 20 200 200'
-      - 'graceful-restart restart-time 300'
-      - 'graceful-restart'
+      - distance bgp 20 200 200
     bgp_as: 65555
     platform: vEOS-LAB
     evpn_role: server

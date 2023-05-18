@@ -34,7 +34,7 @@ ethernet_interfaces:
   peer_type: leaf
   description: ISIS-LEAF1_Ethernet1
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -42,8 +42,8 @@ ethernet_interfaces:
   peer: Endpoint
   peer_type: network_port
   description: Endpoint
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '110'
 port_channel_interfaces:

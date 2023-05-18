@@ -2,9 +2,14 @@ router_bgp:
   as: '65111'
   router_id: 192.168.255.22
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: MLAG-PEERS
     type: ipv4
@@ -801,7 +806,7 @@ ethernet_interfaces:
   peer_interface: Ethernet57/1
   peer_type: mlag_peer
   description: MLAG_PEER_DC1_UNDEPLOYED_LEAF1A_Ethernet57/1
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 571
@@ -812,7 +817,7 @@ ethernet_interfaces:
   peer_interface: Ethernet58/1
   peer_type: mlag_peer
   description: MLAG_PEER_DC1_UNDEPLOYED_LEAF1A_Ethernet58/1
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 571

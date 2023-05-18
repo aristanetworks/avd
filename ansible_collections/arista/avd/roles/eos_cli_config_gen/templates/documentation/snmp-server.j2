@@ -100,7 +100,7 @@
 {%                     endfor %}
 {%                 elif host.community is arista.avd.defined
                         and host.version | arista.avd.default('2c') | string in ['1', '2c'] %}
-| {{ row_host }} | {{ row_vrf }} | {{ host.community }} | - | - | {{ host.version | arista.avd.default('2c') }} |
+| {{ row_host }} | {{ row_vrf }} | {{ host.community | arista.avd.hide_passwords(hide_passwords) }} | - | - | {{ host.version | arista.avd.default('2c') }} |
 {%                 endif %}
 {%             endif %}
 {%         endfor %}
@@ -133,7 +133,7 @@
 {%             set access_list_ipv4 = community.access_list_ipv4.name | arista.avd.default("-") %}
 {%             set access_list_ipv6 = community.access_list_ipv6.name | arista.avd.default("-") %}
 {%             set view = community.view | arista.avd.default("-") %}
-| {{ community.name }} | {{ access }} | {{ access_list_ipv4 }} | {{ access_list_ipv6 }} | {{ view }} |
+| {{ community.name | arista.avd.hide_passwords(hide_passwords) }} | {{ access }} | {{ access_list_ipv4 }} | {{ access_list_ipv6 }} | {{ view }} |
 {%         endfor %}
 {%     endif %}
 {%     if snmp_server.groups is arista.avd.defined %}

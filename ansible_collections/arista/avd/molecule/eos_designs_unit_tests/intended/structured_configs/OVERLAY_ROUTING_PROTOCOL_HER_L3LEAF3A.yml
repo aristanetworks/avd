@@ -3,6 +3,12 @@ router_bgp:
   router_id: 192.168.254.3
   bgp_defaults:
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
@@ -80,14 +86,14 @@ vlan_interfaces:
 - name: Vlan4093
   description: MLAG_PEER_L3_PEERING
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ip_address: 192.168.253.4/31
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
   ip_address: 192.168.254.4/31
   no_autostate: true
-  mtu: 9000
+  mtu: 9214
 - name: Vlan3900
   tenant: TEST
   tags:
@@ -111,14 +117,13 @@ vlan_interfaces:
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf TEST'
   vrf: TEST
-  mtu: 9000
+  mtu: 9214
   ip_address: 192.168.253.4/31
 port_channel_interfaces:
 - name: Port-Channel1
   description: MLAG_PEER_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B_Po1
   type: switched
   shutdown: false
-  vlans: 2-4094
   mode: trunk
   trunk_groups:
   - LEAF_PEER_L3
@@ -129,7 +134,7 @@ ethernet_interfaces:
   peer_interface: Eth1
   peer_type: mlag_peer
   description: MLAG_PEER_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B_Eth1
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 1
@@ -139,7 +144,7 @@ ethernet_interfaces:
   peer_interface: Eth2
   peer_type: mlag_peer
   description: MLAG_PEER_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B_Eth2
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 1

@@ -10,7 +10,7 @@
 {%     for cluster in daemon_terminattr.clusters | arista.avd.natural_sort('name') %}
 {%         set url = cluster.cvaddrs | arista.avd.default([]) | join(',') %}
 {%         if cluster.cvauth.method is arista.avd.defined('key') %}
-{%             set auth = 'key,' ~ cluster.cvauth.key | arista.avd.default('') %}
+{%             set auth = 'key,' ~ cluster.cvauth.key | arista.avd.default('') | arista.avd.hide_passwords(hide_passwords) %}
 {%         elif cluster.cvauth.method is arista.avd.defined('token') and cluster.cvauth.token_file is arista.avd.defined %}
 {%             set auth = 'token,' ~ cluster.cvauth.token_file %}
 {%         elif cluster.cvauth.method is arista.avd.defined('token-secure') and cluster.cvauth.token_file is arista.avd.defined %}

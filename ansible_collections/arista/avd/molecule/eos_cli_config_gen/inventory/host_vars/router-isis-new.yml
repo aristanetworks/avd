@@ -82,6 +82,7 @@ ethernet_interfaces:
     isis_metric: 50
     isis_network_point_to_point: true
   - name: Ethernet3
+    type: port-channel-member
     peer: EAPI-LEAF1B
     peer_interface: Ethernet3
     peer_type: mlag_peer
