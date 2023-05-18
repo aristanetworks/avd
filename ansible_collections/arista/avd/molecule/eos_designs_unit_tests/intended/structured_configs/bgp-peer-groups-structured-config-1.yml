@@ -3,6 +3,12 @@ router_bgp:
   router_id: 192.168.255.111
   bgp_defaults:
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
@@ -82,13 +88,12 @@ vlan_interfaces:
   shutdown: false
   ip_address: 192.168.253.204/31
   no_autostate: true
-  mtu: 9000
+  mtu: 9214
 port_channel_interfaces:
 - name: Port-Channel3
   description: MLAG_PEER_bgp-peer-groups-structured-config-2_Po3
   type: switched
   shutdown: false
-  vlans: 2-4094
   mode: trunk
   trunk_groups:
   - LEAF_PEER_L3
@@ -99,7 +104,7 @@ ethernet_interfaces:
   peer_interface: Ethernet3
   peer_type: mlag_peer
   description: MLAG_PEER_bgp-peer-groups-structured-config-2_Ethernet3
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 3

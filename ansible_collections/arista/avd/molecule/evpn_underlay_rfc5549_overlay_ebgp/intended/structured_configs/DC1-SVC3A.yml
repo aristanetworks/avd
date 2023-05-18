@@ -2,9 +2,14 @@ router_bgp:
   as: '65103'
   router_id: 192.168.255.8
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: MLAG_PEER
     type: ipv4
@@ -770,7 +775,6 @@ port_channel_interfaces:
   description: MLAG_PEER_DC1-SVC3B_Po5
   type: switched
   shutdown: false
-  vlans: 2-4094
   mode: trunk
   trunk_groups:
   - LEAF_PEER_L3
@@ -844,7 +848,7 @@ ethernet_interfaces:
   peer_interface: Ethernet5
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-SVC3B_Ethernet5
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -854,7 +858,7 @@ ethernet_interfaces:
   peer_interface: Ethernet6
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-SVC3B_Ethernet6
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
@@ -901,7 +905,7 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-L2LEAF2A_Ethernet1
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 7
     mode: active
@@ -911,7 +915,7 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-L2LEAF2B_Ethernet1
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 7
     mode: active
@@ -921,10 +925,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: TENANT_A_B
   description: server03_ESI_Eth1
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: 110-111,210-211
+  type: port-channel-member
   channel_group:
     id: 10
     mode: active
@@ -934,8 +936,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: ALL_WITH_SECURITY
   description: server04_inherit_all_from_profile_Eth1
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk
   vlans: 1-4094
   spanning_tree_portfast: edge
@@ -959,8 +961,8 @@ ethernet_interfaces:
   peer_interface: Eth1
   peer_type: server
   description: server05_no_profile_Eth1
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk
   vlans: 1-4094
   spanning_tree_portfast: edge
@@ -985,8 +987,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: ALL_WITH_SECURITY
   description: server06_override_profile_Eth1
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '210'
   spanning_tree_portfast: network
@@ -1011,26 +1013,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
   description: server07_inherit_all_from_profile_port_channel_Eth1
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: 1-4094
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: 'True'
-  spanning_tree_bpduguard: 'False'
-  storm_control:
-    all:
-      level: '10'
-      unit: percent
-    broadcast:
-      level: '100'
-      unit: pps
-    multicast:
-      level: '1'
-      unit: percent
-    unknown_unicast:
-      level: '2'
-      unit: percent
+  type: port-channel-member
   channel_group:
     id: 14
     mode: active
@@ -1039,26 +1023,8 @@ ethernet_interfaces:
   peer_interface: Eth1
   peer_type: server
   description: server08_no_profile_port_channel_Eth1
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: 1-4094
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: 'True'
-  spanning_tree_bpduguard: 'False'
-  storm_control:
-    all:
-      level: '10'
-      unit: percent
-    broadcast:
-      level: '100'
-      unit: pps
-    multicast:
-      level: '1'
-      unit: percent
-    unknown_unicast:
-      level: '2'
-      unit: percent
+  type: port-channel-member
   channel_group:
     id: 15
     mode: 'on'
@@ -1068,8 +1034,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: ALL_WITH_SECURITY_PORT_CHANNEL
   description: server09_override_profile_no_port_channel_Eth1
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '210'
   spanning_tree_portfast: network

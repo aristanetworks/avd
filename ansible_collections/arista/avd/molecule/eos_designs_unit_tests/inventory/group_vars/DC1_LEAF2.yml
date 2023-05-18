@@ -1,4 +1,9 @@
 ---
+
+bgp_graceful_restart:
+  enabled: false
+  restart_time: 500 # this value should not get since since enable == false.
+
 overlay_rd_type:
 #   # admin_subfield: < "overlay_loopback" | "vtep_loopback" | "leaf_asn" | "spine_asn" | < IPv4 Address > | <0-65535> | <0-4294967295> | default -> "overlay_loopback" >
   admin_subfield: 65001

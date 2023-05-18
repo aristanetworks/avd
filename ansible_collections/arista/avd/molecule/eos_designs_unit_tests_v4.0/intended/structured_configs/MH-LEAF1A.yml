@@ -3,6 +3,12 @@ router_bgp:
   router_id: 192.168.255.33
   bgp_defaults:
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: UNDERLAY-PEERS
     type: ipv4
@@ -160,10 +166,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: Tenant_X
   description: server01_ES1_Eth1
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '310'
+  type: port-channel-member
   channel_group:
     id: 10
     mode: active
@@ -173,10 +177,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: Tenant_X
   description: server03_AUTO_ESI_Eth1
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '310'
+  type: port-channel-member
   channel_group:
     id: 12
     mode: active
@@ -185,8 +187,8 @@ ethernet_interfaces:
   peer_interface: Eth1
   peer_type: router
   description: ROUTER02_WITH_SUBIF_Eth1
-  type: switched
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 11
     mode: active

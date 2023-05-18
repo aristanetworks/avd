@@ -71,7 +71,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: DC1-LEAF2A_Ethernet9
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -81,7 +81,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: DC1-LEAF2B_Ethernet9
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 1
     mode: active

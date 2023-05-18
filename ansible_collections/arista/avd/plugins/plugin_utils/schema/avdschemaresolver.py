@@ -2,9 +2,10 @@ from __future__ import absolute_import, annotations, division, print_function
 
 __metaclass__ = type
 
-import copy
+from copy import deepcopy
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.refresolver import create_refresolver
 
 try:
@@ -17,13 +18,6 @@ except ImportError as imp_exc:
     JSONSCHEMA_IMPORT_ERROR = imp_exc
 else:
     JSONSCHEMA_IMPORT_ERROR = None
-
-try:
-    from deepmerge import always_merger
-except ImportError as imp_exc:
-    DEEPMERGE_IMPORT_ERROR = imp_exc
-else:
-    DEEPMERGE_IMPORT_ERROR = None
 
 
 def _keys(validator, keys: dict, resolved_schema: dict, schema: dict):
@@ -72,10 +66,12 @@ def _ref_on_child(validator, ref, child_schema: dict):
     In place update of supplied child_schema
     """
     scope, ref_schema = validator.resolver.resolve(ref)
-    merged_schema = copy.deepcopy(ref_schema)
+    ref_schema = deepcopy(ref_schema)
     child_schema.pop("$ref", None)
-    always_merger.merge(merged_schema, child_schema)
-    child_schema.update(merged_schema)
+    merge(child_schema, ref_schema, same_key_strategy="use_existing")
+    # Resolve new refs inherited from the first ref.
+    if "$ref" in child_schema:
+        _ref_on_child(validator, child_schema["$ref"], child_schema)
 
 
 class AvdSchemaResolver:
@@ -91,10 +87,8 @@ class AvdSchemaResolver:
         The "resolved_schema" must contain a copy of the original schema, and then
         the $ref resolver will merge in the resolved schema and do in-place update.
         """
-        if JSONSCHEMA_IMPORT_ERROR or DEEPMERGE_IMPORT_ERROR:
+        if JSONSCHEMA_IMPORT_ERROR:
             raise AristaAvdError('Python library "jsonschema" must be installed to use this plugin') from JSONSCHEMA_IMPORT_ERROR
-        if DEEPMERGE_IMPORT_ERROR:
-            raise AristaAvdError('Python library "deepmerge" must be installed to use this plugin') from DEEPMERGE_IMPORT_ERROR
 
         ValidatorClass = jsonschema.validators.create(
             meta_schema=store["avd_meta_schema"],

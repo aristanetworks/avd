@@ -30,18 +30,34 @@ class AvdStructuredConfig(AvdFacts):
             return None
 
         bgp_defaults = get(self.shared_utils.switch_data_combined, "bgp_defaults", default=[])
-
         if (bgp_maximum_paths := get(self._hostvars, "bgp_maximum_paths")) is not None:
             max_paths_str = f"maximum-paths {bgp_maximum_paths}"
             if (bgp_ecmp := get(self._hostvars, "bgp_ecmp")) is not None:
                 max_paths_str += f" ecmp {bgp_ecmp}"
             bgp_defaults.append(max_paths_str)
 
-        return {
+        router_bgp = {
             "as": self.shared_utils.bgp_as,
             "router_id": self.shared_utils.router_id,
             "bgp_defaults": bgp_defaults,
+            "bgp": {
+                "default": {
+                    "ipv4_unicast": get(self._hostvars, "bgp_default_ipv4_unicast", default=False),
+                },
+            },
         }
+
+        if get(self._hostvars, "bgp_graceful_restart.enabled", default=True) is True:
+            router_bgp.update(
+                {
+                    "graceful_restart": {
+                        "enabled": True,
+                        "restart_time": get(self._hostvars, "bgp_graceful_restart.restart_time", default=300),
+                    },
+                },
+            )
+
+        return router_bgp
 
     @cached_property
     def static_routes(self) -> list | None:

@@ -43,7 +43,7 @@ terminattr_ingestgrpcurl_port: 9910
 terminattr_smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
 terminattr_ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
 
-p2p_uplinks_mtu: 9000
+p2p_uplinks_mtu: 9214
 
 underlay_ipv6: false
 

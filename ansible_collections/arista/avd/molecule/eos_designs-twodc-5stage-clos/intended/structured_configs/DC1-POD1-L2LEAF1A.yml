@@ -38,7 +38,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: DC1-POD1-LEAF1A_Ethernet3
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -56,11 +56,10 @@ vlans:
 - id: 4085
   tenant: system
   name: L2LEAF_INBAND_MGMT
-management_interfaces:
+vlan_interfaces:
 - name: Vlan4085
   description: L2LEAF_INBAND_MGMT
   shutdown: false
   mtu: 1500
   ip_address: 172.21.110.4/24
-  gateway: 172.21.110.1
-  type: inband
+  type: inband_mgmt

@@ -12,13 +12,13 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
    {{ distance_cli }}
 {%     endif %}
-{%     if router_bgp.graceful_restart.enabled is arista.avd.defined(true) and router_bgp.graceful_restart.restart_time is arista.avd.defined %}
-   graceful-restart restart-time {{ router_bgp.graceful_restart.restart_time }}
-{%     endif %}
-{%     if router_bgp.graceful_restart.stalepath_time is arista.avd.defined %}
-   graceful-restart stalepath-time {{ router_bgp.graceful_restart.stalepath_time }}
-{%     endif %}
 {%     if router_bgp.graceful_restart.enabled is arista.avd.defined(true) %}
+{%         if router_bgp.graceful_restart.restart_time is arista.avd.defined %}
+   graceful-restart restart-time {{ router_bgp.graceful_restart.restart_time }}
+{%         endif %}
+{%         if router_bgp.graceful_restart.stalepath_time is arista.avd.defined %}
+   graceful-restart stalepath-time {{ router_bgp.graceful_restart.stalepath_time }}
+{%         endif %}
    graceful-restart
 {%     endif %}
 {%     if router_bgp.graceful_restart_helper.enabled is arista.avd.defined(false) %}
@@ -160,7 +160,7 @@ router bgp {{ router_bgp.as }}
    neighbor {{ peer_group.name }} ebgp-multihop {{ peer_group.ebgp_multihop }}
 {%         endif %}
 {%         if peer_group.password is arista.avd.defined %}
-   neighbor {{ peer_group.name }} password 7 {{ peer_group.password }}
+   neighbor {{ peer_group.name }} password 7 {{ peer_group.password | arista.avd.hide_passwords(hide_passwords) }}
 {%         endif %}
 {%         if peer_group.default_originate.enabled is arista.avd.defined(true) %}
 {%             set default_originate_cli = "neighbor " ~ peer_group.name ~ " default-originate" %}
@@ -300,7 +300,7 @@ router bgp {{ router_bgp.as }}
    {{ neighbor_rib_in_pre_policy_retain_cli }}
 {%         endif %}
 {%         if neighbor.password is arista.avd.defined %}
-   neighbor {{ neighbor.ip_address }} password 7 {{ neighbor.password }}
+  neighbor {{ neighbor.ip_address }} password 7 {{ neighbor.password | arista.avd.hide_passwords(hide_passwords) }}
 {%         endif %}
 {%         if neighbor.passive is arista.avd.defined(true) %}
    neighbor {{ neighbor.ip_address }} passive
@@ -919,7 +919,7 @@ router bgp {{ router_bgp.as }}
       no neighbor {{ neighbor.ip_address }} remove-private-as ingress
 {%             endif %}
 {%             if neighbor.password is arista.avd.defined %}
-      neighbor {{ neighbor.ip_address }} password 7 {{ neighbor.password }}
+      neighbor {{ neighbor.ip_address }} password 7 {{ neighbor.password | arista.avd.hide_passwords(hide_passwords) }}
 {%             endif %}
 {%             if neighbor.passive is arista.avd.defined(true) %}
       neighbor {{ neighbor.ip_address }} passive

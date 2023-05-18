@@ -40,6 +40,7 @@ management_security:
 ### L2 portchannel
 port_channel_interfaces:
   - name: Port-Channel3
+    type: switched
     description: L2-PORT
     vlans: 1-5
     mode: trunk
@@ -47,6 +48,7 @@ port_channel_interfaces:
 # Children interfaces
 ethernet_interfaces:
   - name: Ethernet3
+    type: port-channel-member
     peer: DC1-AGG01
     peer_interface: Ethernet3
     peer_type: l3leaf

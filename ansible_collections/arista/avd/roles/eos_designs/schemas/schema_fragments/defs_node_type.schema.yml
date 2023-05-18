@@ -795,7 +795,6 @@ $defs:
               filename: Fabric Topology
               table: MLAG configuration management
             type: str
-            default: "2-4094"
           mlag_peer_ipv4_pool:
             documentation_options:
               filename: Fabric Topology
@@ -853,13 +852,37 @@ $defs:
             type: str
             format: mac
             #required: true # This cannot be required in defaults, since it could be set on any level.
-          inband_management_subnet:
+          inband_mgmt_interface:
             documentation_options:
               filename: Fabric Topology
-              table: Inband management VLAN
+              table: Inband management
             description: |
-              Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.
-              Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP. This allows all l3leafs to reuse the same subnet.
+              Pointer to interface used for inband management.
+              All configuration must be done using other data models like network services or structured_config.
+              'inband_mgmt_interface' is only used to refer to this interface as source in various management protocol settings (future feature).
+
+              On L2 switches, this defaults to Vlan<inband_mgmt_vlan> if either 'inband_mgmt_subnet' or 'inband_mgmt_ip' is set.
+            type: str
+          inband_mgmt_vlan:
+            documentation_options:
+              filename: Fabric Topology
+              table: Inband management
+            description: |-
+              VLAN number used for inband management on L2 switches (switches using port-channel trunks as uplinks).
+              When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as all 'uplink_switches'.
+              When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using network services data models.
+            type: int
+            convert_types:
+              - str
+            default: 4092
+          inband_mgmt_subnet:
+            documentation_options:
+              filename: Fabric Topology
+              table: Inband management
+            description: |
+              Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels as uplinks).
+              Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP.
+              This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
               SVI IP address will be assigned as follows:
               virtual-router: <subnet> + 1
               l3leaf A      : <subnet> + 2 (same IP on all l3leaf A)
@@ -867,17 +890,88 @@ $defs:
               l2leafs       : <subnet> + 3 + <l2leaf id>
               GW on l2leafs : <subnet> + 1
               Assign range larger than total l2leafs + 5
+
+              Setting is ignored if 'inband_mgmt_ip' is set.
+
+              This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
             type: str
             format: ipv4_cidr
-          inband_management_vlan:
+          inband_mgmt_ip:
             documentation_options:
               filename: Fabric Topology
-              table: Inband management VLAN
-            description: VLAN number assigned to Inband Management SVI on l2leafs in default VRF.
+              table: Inband management
+            description: |
+              IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
+              This overrides 'inband_mgmt_subnet', hence all behavior of 'inband_mgmt_subnet' is removed.
+
+              If this is set the VLAN and SVI will only be created on the L2 switch and added to uplink trunk.
+              The VLAN and SVI on the parent switches must be created using network services data models.
+
+              This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
+            type: str
+            format: ipv4_cidr
+          inband_mgmt_gateway:
+            documentation_options:
+              filename: Fabric Topology
+              table: Inband management
+            description: |
+              Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway is derived from 'inband_mgmt_subnet' if set.
+
+              This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
+            type: str
+            format: ipv4
+          inband_mgmt_description:
+            documentation_options:
+              filename: Fabric Topology
+              table: Inband management
+            description: |-
+              Description configured on the Inband Management SVI.
+
+              This setting is only applied on the devices where it is set, it does not automatically affect any parent/child devices configuration, so it must be set on each applicable node/node-group/node-type as needed.
+            type: str
+            default: Inband Management
+          inband_mgmt_vlan_name:
+            documentation_options:
+              filename: Fabric Topology
+              table: Inband management
+            description: |-
+              Name configured on the Inband Management VLAN.
+              This setting is only applied on the devices where it is set, it does not automatically affect any parent/child devices configuration, so it must be set on each applicable node/node-group/node-type as needed.
+            type: str
+            default: Inband Management
+          inband_mgmt_vrf:
+            documentation_options:
+              filename: Fabric Topology
+              table: Inband management
+            description: |-
+              VRF configured on the Inband Management Interface.
+              The VRF is created if not already created by other means.
+              This setting is only applied on the devices where it is set, it does not automatically affect any parent/child devices configuration, so it must be set on each applicable node/node-group/node-type as needed.
+            type: str
+            default: "default"
+          inband_mgmt_mtu:
+            documentation_options:
+              filename: Fabric Topology
+              table: Inband management
+            description: |-
+              MTU configured on the Inband Management Interface.
+              This setting is only applied on the devices where it is set, it does not automatically affect any parent/child devices configuration, so it must be set on each applicable node/node-group/node-type as needed.
             type: int
-            convert_types:
-              - str
-            default: 4092
+            default: 1500
+          inband_management_subnet:
+            deprecation:
+              warning: true
+              new_key: inband_mgmt_subnet
+              remove_in_version: 5.0.0
+            type: str
+            $ref: "#/$defs/node_type/keys/defaults/keys/inband_mgmt_subnet"
+          inband_management_vlan:
+            deprecation:
+              warning: true
+              new_key: inband_mgmt_vlan
+              remove_in_version: 5.0.0
+            type: int
+            $ref: "#/$defs/node_type/keys/defaults/keys/inband_mgmt_vlan"
           mpls_overlay_role:
             documentation_options:
               filename: Fabric Topology

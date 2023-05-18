@@ -2,9 +2,16 @@ router_bgp:
   as: '65106'
   router_id: 192.168.255.16
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+    bestpath:
+      d_path: true
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: UNDERLAY-PEERS
     type: ipv4
@@ -108,9 +115,6 @@ router_bgp:
       enabled: true
       expiry_timeout: 10
     domain_identifier: '65000:3'
-  bgp:
-    bestpath:
-      d_path: true
   address_family_vpn_ipv4:
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: Loopback0

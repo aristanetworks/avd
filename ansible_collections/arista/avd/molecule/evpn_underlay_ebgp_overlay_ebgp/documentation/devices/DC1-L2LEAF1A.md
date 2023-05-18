@@ -150,7 +150,7 @@ management api http-commands
 ```eos
 !
 username admin privilege 15 role network-admin nopassword
-username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+username cvpadmin privilege 15 role network-admin secret sha512 <removed>
 ```
 
 ## Monitoring
@@ -168,7 +168,7 @@ username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAW
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
+   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=key,<removed> -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
    no shutdown
 ```
 
@@ -328,8 +328,8 @@ vlan 4091
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | CUSTOM_DC1-LEAF2A_Ethernet7 | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 1 |
 | Ethernet2 | CUSTOM_DC1-LEAF2B_Ethernet7 | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 1 |
-| Ethernet3 | MLAG_PEER_DC1-L2LEAF1B_Ethernet3 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
-| Ethernet4 | MLAG_PEER_DC1-L2LEAF1B_Ethernet4 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
+| Ethernet3 | MLAG_PEER_DC1-L2LEAF1B_Ethernet3 | *trunk | *- | *- | *['MLAG'] | 3 |
+| Ethernet4 | MLAG_PEER_DC1-L2LEAF1B_Ethernet4 | *trunk | *- | *- | *['MLAG'] | 3 |
 
 *Inherited from Port-Channel Interface
 
@@ -367,7 +367,7 @@ interface Ethernet4
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | CUSTOM_DC1_LEAF2_Po7 | switched | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | 1 | - |
-| Port-Channel3 | MLAG_PEER_DC1-L2LEAF1B_Po3 | switched | trunk | 2-4094 | - | ['MLAG'] | - | - | - | - |
+| Port-Channel3 | MLAG_PEER_DC1-L2LEAF1B_Po3 | switched | trunk | - | - | ['MLAG'] | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -385,7 +385,6 @@ interface Port-Channel3
    description MLAG_PEER_DC1-L2LEAF1B_Po3
    no shutdown
    switchport
-   switchport trunk allowed vlan 2-4094
    switchport mode trunk
    switchport trunk group MLAG
 ```

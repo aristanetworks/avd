@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  svi_profiles:
+    documentation_options:
+      filename: Network Services
+    type: list
+    primary_key: profile
+    convert_types:
+      - dict
+    description: |
+      Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.
+      Keys are the same used under SVIs. Keys defined under SVIs take precedence.
+      Note: structured configuration is not merged recursively and will be taken directly from the most specific level in the following order:
+      1. svi.nodes[inventory_hostname].structured_config
+      2. svi_profile.nodes[inventory_hostname].structured_config
+      3. svi_parent_profile.nodes[inventory_hostname].structured_config
+      4. svi.structured_config
+      5. svi_profile.structured_config
+      6. svi_parent_profile.structured_config
+    items:
+      $ref: "#/$defs/svi"
+      type: dict
+      keys:
+        profile:
+          type: str
+          description: Profile name
+        parent_profile:
+          type: str
+          description: |
+            Parent SVI profile name to apply.
+            svi_profiles can refer to another svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).

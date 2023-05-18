@@ -2,9 +2,14 @@ router_bgp:
   as: '65101'
   router_id: 192.168.255.5
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -215,8 +220,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: TENANT_A_B
   description: server02_SINGLE_NODE_TRUNK_Eth1
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk
   vlans: 110-111,210-211
 - name: Ethernet7
@@ -225,8 +230,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: TENANT_A
   description: server02_SINGLE_NODE_Eth1
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '110'
 loopback_interfaces:
