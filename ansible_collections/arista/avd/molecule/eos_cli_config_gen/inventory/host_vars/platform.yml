@@ -15,6 +15,10 @@ platform:
               unit: cells
               threshold: 1/64
               reserved: 0
+            - id: 7
+              unit: cells
+              threshold: 1/64
+              reserved: 0
           unicast_queues:
             - id: 1
               unit: bytes
