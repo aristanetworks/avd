@@ -995,6 +995,11 @@ keys:
     type: str
     default: Management1
     description: OOB Management interface.
+  mgmt_interface_description:
+    type: str
+    description: 'Description on the Management interface to override
+
+      the default `oob_management`.'
   mgmt_interface_vrf:
     type: str
     default: MGMT

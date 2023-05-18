@@ -218,6 +218,23 @@ Used as next-hop for default gateway or static routes defined under 'mgmt_destin
     mgmt_gateway: <str>
     ```
 
+## Mgmt Interface Description
+
+Description on the Management interface to override
+the default `oob_management`.
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>mgmt_interface_description</samp>](## "mgmt_interface_description") | String |  |  |  |  |
+
+=== "YAML"
+
+    ```yaml
+    mgmt_interface_description: <str>
+    ```
+
 ## Mgmt Interface VRF
 
 OOB Management VRF.

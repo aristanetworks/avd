@@ -2031,6 +2031,11 @@
       "description": "OOB Management interface.",
       "title": "Mgmt Interface"
     },
+    "mgmt_interface_description": {
+      "type": "string",
+      "description": "Description on the Management interface to override\nthe default `oob_management`.",
+      "title": "Mgmt Interface Description"
+    },
     "mgmt_interface_vrf": {
       "type": "string",
       "default": "MGMT",
