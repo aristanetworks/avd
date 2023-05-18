@@ -1,0 +1,10 @@
+### Management Interfaces ###
+
+# Testing management_interfaces as dict of dict
+# Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+management_interfaces:
+  Management1:
+    description: oob_management
+    vrf: MGMT
+    ip_address: 10.73.255.122/24
+    gateway: 10.73.255.2

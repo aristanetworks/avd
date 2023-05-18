@@ -89,7 +89,7 @@ isis_ti_lfa:
 bgp_as: < AS number >
 
 # Point to Point Links MTU | Required.
-p2p_uplinks_mtu: < 0-9216 | default -> 9000 >
+p2p_uplinks_mtu: < 0-9216 | default -> 9214>
 
 # IP Address used as Virtual VTEP. Will be configured as secondary IP on loopback1 | Optional
 # This is only needed for centralized routing designs
@@ -121,19 +121,16 @@ evpn_ebgp_gateway_multihop: < ebgp_multihop | default -> 15 >
 # Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.
 # Note that the name of the peer groups use '-' instead of '_' in EOS configuration.
 bgp_peer_groups:
-  # Old mixed case key "IPv4_UNDERLAY_PEERS" is supported for backward-compatibility
   ipv4_underlay_peers:
     name: < name of peer group | default -> IPv4-UNDERLAY-PEERS >
     password: "< encrypted password >"
     # Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
     structured_config: < dictionary >
-  # Old mixed case key "MLAG_IPv4_UNDERLAY_PEER" is supported for backward-compatibility
   mlag_ipv4_underlay_peer:
     name: < name of peer group | default -> MLAG-IPv4-UNDERLAY-PEER >
     password: "< encrypted password >"
     # Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
     structured_config: < dictionary >
-  # Old upper case key "EVPN_OVERLAY_PEERS" is supported for backward-compatibility
   evpn_overlay_peers:
     name: < name of peer group | default -> EVPN-OVERLAY-PEERS >
     password: "< encrypted password >"
@@ -213,7 +210,8 @@ overlay_her_flood_list_per_vni: < true | false | default -> false >
 overlay_her_flood_list_scope: < "fabric" | "dc" | default -> "fabric" >
 
 # Overlay settings when using CVX as overlay controller | Required if overlay_routing_protocol == CVX
-overlay_cvx_servers: [ < cvx1_ip_or_hostname >, < cvx2_ip_or_hostname >, < cvx3_ip_or_hostname > ]
+# CVX servers (VMs) are peering using their management interface, so mgmt_ip must be set for all CVX servers.
+overlay_cvx_servers: [ < cvx1_inventory_hostname >, < cvx2_inventory_hostname >, < cvx3_inventory_hostname > ]
 
 # Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.
 # Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP. This allows all l3leafs to reuse the same subnet

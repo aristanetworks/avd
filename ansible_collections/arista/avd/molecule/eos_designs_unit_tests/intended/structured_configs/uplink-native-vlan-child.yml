@@ -1,5 +1,4 @@
 service_routing_protocols_model: multi-agent
-ip_routing: true
 vlan_internal_order:
   allocation: ascending
   range:
@@ -13,23 +12,23 @@ management_api_http:
   - name: MGMT
   enable_https: true
 vlans:
-- name: NATIVE
+- id: 200
+  name: NATIVE
   state: suspend
-  id: 200
 - id: 100
   name: NETWORK_SERVICES_VLAN
   tenant: test
 ethernet_interfaces:
-- peer: uplink-native-vlan-parent
+- name: Ethernet2
+  peer: uplink-native-vlan-parent
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: UPLINK-NATIVE-VLAN-PARENT_Ethernet2
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 2
     mode: active
-  name: Ethernet2
 port_channel_interfaces:
 - name: Port-Channel2
   description: UPLINK-NATIVE-VLAN-PARENT_Po2

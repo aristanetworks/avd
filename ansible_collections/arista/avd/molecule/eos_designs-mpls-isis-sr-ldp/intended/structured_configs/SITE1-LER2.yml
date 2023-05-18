@@ -2,52 +2,56 @@ router_bgp:
   as: '65000'
   router_id: 100.70.0.6
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
-  - type: mpls
+  - name: MPLS-OVERLAY-PEERS
+    type: mpls
     update_source: Loopback0
     bfd: true
     password: SHsTgDgjVUU5a9blyxSt3Q==
     send_community: all
     maximum_routes: 0
     remote_as: '65000'
-    name: MPLS-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: false
-      name: MPLS-OVERLAY-PEERS
+    - name: MPLS-OVERLAY-PEERS
+      activate: false
   address_family_evpn:
     neighbor_default:
       encapsulation: mpls
       next_hop_self_source_interface: Loopback0
     peer_groups:
-    - activate: true
-      name: MPLS-OVERLAY-PEERS
+    - name: MPLS-OVERLAY-PEERS
+      activate: true
   address_family_vpn_ipv4:
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: Loopback0
     peer_groups:
-    - activate: true
-      name: MPLS-OVERLAY-PEERS
+    - name: MPLS-OVERLAY-PEERS
+      activate: true
   address_family_vpn_ipv6:
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: Loopback0
     peer_groups:
-    - activate: true
-      name: MPLS-OVERLAY-PEERS
+    - name: MPLS-OVERLAY-PEERS
+      activate: true
   neighbors:
-  - peer_group: MPLS-OVERLAY-PEERS
+  - ip_address: 100.70.0.8
+    peer_group: MPLS-OVERLAY-PEERS
     description: SITE1-RR1
-    ip_address: 100.70.0.8
-  - peer_group: MPLS-OVERLAY-PEERS
+  - ip_address: 100.70.0.9
+    peer_group: MPLS-OVERLAY-PEERS
     description: SITE2-RR1
-    ip_address: 100.70.0.9
   vrfs:
-  - router_id: 100.70.0.6
+  - name: TENANT_B_INTRA
+    router_id: 100.70.0.6
     rd: 100.70.0.6:19
     route_targets:
       import:
@@ -60,8 +64,8 @@ router_bgp:
         - '65000:19'
     redistribute_routes:
     - source_protocol: connected
-    name: TENANT_B_INTRA
-  - router_id: 100.70.0.6
+  - name: TENANT_B_WAN
+    router_id: 100.70.0.6
     rd: 100.70.0.6:20
     route_targets:
       import:
@@ -81,41 +85,40 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     neighbors:
-    - description: TENANT_B_CPE_SITE3
+    - ip_address: 192.168.48.1
+      description: TENANT_B_CPE_SITE3
       password: toZKiUFLVUTU4hdS5V8F4Q==
       remote_as: '65201'
-      ip_address: 192.168.48.1
     address_families:
-    - neighbors:
-      - activate: true
-        ip_address: 192.168.48.1
-      address_family: ipv4
-    name: TENANT_B_WAN
+    - address_family: ipv4
+      neighbors:
+      - ip_address: 192.168.48.1
+        activate: true
   vlans:
-  - tenant: TENANT_A
+  - id: 10
+    tenant: TENANT_A
     rd: 100.70.0.6:10010
     route_targets:
       both:
       - 65000:10010
     redistribute_routes:
     - learned
-    id: 10
-  - tenant: TENANT_A
+  - id: 20
+    tenant: TENANT_A
     rd: 100.70.0.6:123456
     route_targets:
       both:
       - 65000:123456
     redistribute_routes:
     - learned
-    id: 20
-  - tenant: TENANT_B
+  - id: 2020
+    tenant: TENANT_B
     rd: 100.70.0.6:22020
     route_targets:
       both:
       - 65000:22020
     redistribute_routes:
     - learned
-    id: 2020
   vpws:
   - name: TENANT_B
     rd: 100.70.0.6:2000
@@ -152,8 +155,8 @@ vlan_internal_order:
 spanning_tree:
   mode: mstp
   mst_instances:
-  - priority: 4096
-    id: '0'
+  - id: '0'
+    priority: 4096
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -196,12 +199,11 @@ router_isis:
   net: 49.0001.0000.0001.0006.00
   router_id: 100.70.0.6
   is_type: level-1-2
-  address_family:
-  - ipv4 unicast
-  - ipv6 unicast
-  isis_af_defaults:
-  - maximum-paths 4
-  - fast-reroute ti-lfa mode link-protection
+  address_family_ipv4:
+    enabled: true
+    maximum_paths: 4
+    fast_reroute_ti_lfa:
+      mode: link-protection
   mpls_ldp_sync_default: true
   timers:
     local_convergence:
@@ -209,6 +211,11 @@ router_isis:
       protected_prefixes: true
   advertise:
     passive_only: true
+  address_family_ipv6:
+    enabled: true
+    maximum_paths: 4
+    fast_reroute_ti_lfa:
+      mode: link-protection
   segment_routing_mpls:
     router_id: 100.70.0.6
     enabled: true
@@ -272,42 +279,39 @@ ethernet_interfaces:
       interface: true
       igp_sync: true
   speed: forced 10000full
-- peer: CPE_TENANT_A_SITE1
+- name: Ethernet8
+  peer: CPE_TENANT_A_SITE1
   peer_interface: Ethernet2
   peer_type: cpe
   port_profile: TENANT_A_WAN_SERVICE_10
   description: CPE_TENANT_A_SITE1_Ethernet2
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: '10'
-  spanning_tree_portfast: edge
+  type: port-channel-member
   channel_group:
     id: 8
     mode: active
-  name: Ethernet8
-- peer_type: l3_interface
+- name: Ethernet5.100
+  peer_type: l3_interface
   ip_address: 192.168.48.0/31
   shutdown: false
   description: TENANT_B_SITE_3
   type: l3dot1q
   encapsulation_dot1q_vlan: 100
   vrf: TENANT_B_WAN
-  name: Ethernet5.100
-- shutdown: false
+- name: Ethernet3
+  shutdown: false
   channel_group:
     id: 3
     mode: active
-  name: Ethernet3
-- shutdown: false
+- name: Ethernet4
+  shutdown: false
   channel_group:
     id: 3
     mode: active
-  name: Ethernet4
-- type: routed
+- name: Ethernet5
+  type: routed
   peer_type: l3_interface
   shutdown: false
-  name: Ethernet5
 port_channel_interfaces:
 - name: Port-Channel8
   description: CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel
@@ -407,8 +411,9 @@ port_channel_interfaces:
   type: routed
   peer_type: l3_interface
   shutdown: false
-  esi: 0000:0000:0102:0000:0034
-  rt: 01:02:00:00:00:34
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0102:0000:0034
+    route_target: 01:02:00:00:00:34
   lacp_id: 0102.0000.0034
 router_bfd:
   multihop:

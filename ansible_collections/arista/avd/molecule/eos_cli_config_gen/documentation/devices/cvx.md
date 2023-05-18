@@ -1,5 +1,6 @@
 # cvx
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -7,25 +8,25 @@
   - [CVX services](#cvx-services)
   - [CVX configuration](#cvx-configuration)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -35,7 +36,7 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# CVX
+## CVX
 
 | Peer Hosts |
 | ---------- |
@@ -43,13 +44,14 @@ interface Management1
 
 CVX is enabled
 
-## CVX services
+### CVX services
 
 | Service | Enabled | Settings |
 | ------- | ------- | -------- |
 | MCS | True | Redis Password Set |
+| VXLAN | True | VTEP MAC learning: control-plane |
 
-## CVX configuration
+### CVX configuration
 
 ```eos
 !
@@ -58,6 +60,9 @@ cvx
    peer host 1.1.1.1
    peer host 2.2.2.2
    service mcs
-      redis password 7 070E334ddD1D18
+      redis password 7 <removed>
       no shutdown
+   service vxlan
+      no shutdown
+      vtep mac-learning control-plane
 ```

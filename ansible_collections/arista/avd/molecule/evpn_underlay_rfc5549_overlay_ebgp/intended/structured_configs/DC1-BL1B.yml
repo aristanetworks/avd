@@ -2,86 +2,92 @@ router_bgp:
   as: '65105'
   router_id: 192.168.255.11
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
-  - type: ipv4
+  - name: UNDERLAY_PEERS
+    type: ipv4
     password: af6F4WLl4wUrWRZcwbEwkQ==
     maximum_routes: 12000
     send_community: all
-    name: UNDERLAY_PEERS
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     password: q+VNViP5i4rVjW1cxFv2wA==
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 3
-    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
+    - name: UNDERLAY_PEERS
+      activate: true
       next_hop:
         address_family_ipv6_originate: true
-      name: UNDERLAY_PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   neighbor_interfaces:
-  - peer_group: UNDERLAY_PEERS
+  - name: Ethernet1
+    peer_group: UNDERLAY_PEERS
     remote_as: '65001'
     description: DC1-SPINE1_Ethernet7
-    name: Ethernet1
-  - peer_group: UNDERLAY_PEERS
+  - name: Ethernet2
+    peer_group: UNDERLAY_PEERS
     remote_as: '65001'
     description: DC1-SPINE2_Ethernet7
-    name: Ethernet2
-  - peer_group: UNDERLAY_PEERS
+  - name: Ethernet3
+    peer_group: UNDERLAY_PEERS
     remote_as: '65001'
     description: DC1-SPINE3_Ethernet7
-    name: Ethernet3
-  - peer_group: UNDERLAY_PEERS
+  - name: Ethernet4
+    peer_group: UNDERLAY_PEERS
     remote_as: '65001'
     description: DC1-SPINE4_Ethernet7
-    name: Ethernet4
-  - remote_as: '65104'
+  - name: Ethernet9
+    remote_as: '65104'
     description: DC1-BL1A
     peer_group: UNDERLAY_PEERS
-    name: Ethernet9
-  - remote_as: '65104'
+  - name: Ethernet10
+    remote_as: '65104'
     description: DC1-BL1A
     peer_group: UNDERLAY_PEERS
-    name: Ethernet10
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
     evpn_hostflap_detection:
       window: 20
       threshold: 30
       enabled: true
   neighbors:
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.1
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE1
     remote_as: '65001'
-    ip_address: 192.168.255.1
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.2
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE2
     remote_as: '65001'
-    ip_address: 192.168.255.2
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.3
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE3
     remote_as: '65001'
-    ip_address: 192.168.255.3
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.4
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE4
     remote_as: '65001'
-    ip_address: 192.168.255.4
   vrfs:
-  - router_id: 192.168.255.11
+  - name: Tenant_A_WAN_Zone
+    router_id: 192.168.255.11
     rd: 192.168.255.11:14
     route_targets:
       import:
@@ -96,7 +102,8 @@ router_bgp:
     - source_protocol: connected
     - source_protocol: static
     neighbors:
-    - remote_as: '1234'
+    - ip_address: 123.1.1.10
+      remote_as: '1234'
       description: External IPv4 BGP peer
       send_community: standard extended
       maximum_routes: 0
@@ -107,26 +114,25 @@ router_bgp:
       ebgp_multihop: 3
       local_as: '123'
       route_map_out: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
-      ip_address: 123.1.1.10
-    - remote_as: '12345'
+    - ip_address: fd5a:fe45:8831:06c5::a
+      remote_as: '12345'
       send_community: null
       route_map_out: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
-      ip_address: fd5a:fe45:8831:06c5::a
-    - remote_as: '12345'
-      ip_address: fd5a:fe45:8831:06c5::b
+    - ip_address: fd5a:fe45:8831:06c5::b
+      remote_as: '12345'
     address_families:
-    - neighbors:
-      - activate: true
-        ip_address: 123.1.1.10
-      address_family: ipv4
-    - neighbors:
-      - activate: true
-        ip_address: fd5a:fe45:8831:06c5::a
-      - activate: true
-        ip_address: fd5a:fe45:8831:06c5::b
-      address_family: ipv6
-    name: Tenant_A_WAN_Zone
-  - router_id: 192.168.255.11
+    - address_family: ipv4
+      neighbors:
+      - ip_address: 123.1.1.10
+        activate: true
+    - address_family: ipv6
+      neighbors:
+      - ip_address: fd5a:fe45:8831:06c5::a
+        activate: true
+      - ip_address: fd5a:fe45:8831:06c5::b
+        activate: true
+  - name: Tenant_B_WAN_Zone
+    router_id: 192.168.255.11
     rd: 192.168.255.11:21
     route_targets:
       import:
@@ -139,8 +145,8 @@ router_bgp:
         - '21:21'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_B_WAN_Zone
-  - router_id: 192.168.255.11
+  - name: Tenant_C_WAN_Zone
+    router_id: 192.168.255.11
     rd: 192.168.255.11:31
     route_targets:
       import:
@@ -153,32 +159,31 @@ router_bgp:
         - '31:31'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_C_WAN_Zone
   vlan_aware_bundles:
-  - rd: 192.168.255.11:14
+  - name: Tenant_A_WAN_Zone
+    rd: 192.168.255.11:14
     route_targets:
       both:
       - '14:14'
     redistribute_routes:
     - learned
     vlan: '150'
-    name: Tenant_A_WAN_Zone
-  - rd: 192.168.255.11:21
+  - name: Tenant_B_WAN_Zone
+    rd: 192.168.255.11:21
     route_targets:
       both:
       - '21:21'
     redistribute_routes:
     - learned
     vlan: '250'
-    name: Tenant_B_WAN_Zone
-  - rd: 192.168.255.11:31
+  - name: Tenant_C_WAN_Zone
+    rd: 192.168.255.11:31
     route_targets:
       both:
       - '31:31'
     redistribute_routes:
     - learned
     vlan: '350'
-    name: Tenant_C_WAN_Zone
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -187,7 +192,6 @@ static_routes:
   gateway: 1.2.3.4
   vrf: Tenant_A_WAN_Zone
 service_routing_protocols_model: multi-agent
-ip_routing: true
 ipv6_unicast_routing: true
 ip_routing_ipv6_interfaces: true
 daemon_terminattr:
@@ -205,26 +209,25 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-name_server:
-  source:
-    vrf: MGMT
-  nodes:
-  - 192.168.200.5
-  - 8.8.8.8
+ip_name_servers:
+- ip_address: 192.168.200.5
+  vrf: MGMT
+- ip_address: 8.8.8.8
+  vrf: MGMT
 spanning_tree:
   mode: mstp
   mst_instances:
-  - priority: 4096
-    id: '0'
+  - id: '0'
+    priority: 4096
 local_users:
-- privilege: 15
+- name: admin
+  privilege: 15
   role: network-admin
   no_password: true
-  name: admin
-- privilege: 15
+- name: cvpadmin
+  privilege: 15
   role: network-admin
   sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
-  name: cvpadmin
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -256,7 +259,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: DC1-SPINE1
+- name: Ethernet1
+  peer: DC1-SPINE1
   peer_interface: Ethernet7
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet7
@@ -264,8 +268,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ipv6_enable: true
-  name: Ethernet1
-- peer: DC1-SPINE2
+- name: Ethernet2
+  peer: DC1-SPINE2
   peer_interface: Ethernet7
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE2_Ethernet7
@@ -273,8 +277,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ipv6_enable: true
-  name: Ethernet2
-- peer: DC1-SPINE3
+- name: Ethernet3
+  peer: DC1-SPINE3
   peer_interface: Ethernet7
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE3_Ethernet7
@@ -282,8 +286,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ipv6_enable: true
-  name: Ethernet3
-- peer: DC1-SPINE4
+- name: Ethernet4
+  peer: DC1-SPINE4
   peer_interface: Ethernet7
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE4_Ethernet7
@@ -291,7 +295,6 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ipv6_enable: true
-  name: Ethernet4
 - name: Ethernet9
   peer: DC1-BL1A
   peer_interface: Ethernet9
@@ -310,7 +313,8 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_enable: true
-- description: My test
+- name: Ethernet4000
+  description: My test
   ip_address: 10.1.2.3/12
   shutdown: false
   type: routed
@@ -318,7 +322,6 @@ ethernet_interfaces:
   peer: MY-own-peer
   peer_interface: Ethernet123
   peer_type: my_precious
-  name: Ethernet4000
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

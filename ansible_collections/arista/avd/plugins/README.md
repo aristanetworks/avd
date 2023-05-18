@@ -119,13 +119,13 @@ The module is used in `eos_designs` to create a table of contents for Fabric Doc
 To use this filter:
 
 ```jinja2
-{{ markdown string | arista.avd.add_md_toc(skip_lines=0, toc_levels=2, toc_marker='<!-- toc -->') }}
+{{ markdown string | arista.avd.add_md_toc(skip_lines=0, toc_levels=3, toc_marker='<!-- toc -->') }}
 ```
 
 | Argument | description | type | optional | default value |
 | -------- | ----------- | ---- | -------- | ------------- |
 | skip_lines | Skip first x lines when parsing MD file | Integer | True | 0 |
-| toc_levels | How many levels of headings will be included in the TOC | Integer | True | 2 |
+| toc_levels | How many levels of headings will be included in the TOC | Integer | True | 3 |
 | toc_marker | TOC will be inserted or updated between two of these markers in the MD file | String | True | `"<!-- toc -->"`
 
 **example:**
@@ -190,12 +190,17 @@ To use these filters:
 Supported types:
 
 - bgp
+- ospf_simple
+- ospf_message_digest
+
+!!! Note
+For now this filter only supports encryption and decryption to type `7` and not type `8a` for OSPF and BGP passwords
 
 #### BGP passwords
 
-BGP password are encrypted/decrypted based on the Neighbor IP or the BGP Peer Group Name in EOS.
+BGP passwords are encrypted/decrypted based on the Neighbor IP or the BGP Peer Group Name in EOS.
 
-An example usage for `arista.avd.encrypt` filter for BGP is to use it in conjunction with Ansible Vault to be able to load a password and have it encrypted on the fly by AVD in `eos_designs`.
+Example usage for `arista.avd.encrypt` filter for BGP is to use it in conjunction with Ansible Vault to be able to load a password and have it encrypted on the fly by AVD in `eos_designs`.
 
 **example:**
 
@@ -204,6 +209,50 @@ bgp_peer_groups:
   ipv4_underlay_peers:
     name: IPv4-UNDERLAY-PEERS
       password: "{{ bgp_vault_password | arista.avd.encrypt(passwd_type='bgp', key='IPv4-UNDERLAY-PEERS') }}"
+```
+
+#### OSPF passwords
+
+OSPF passwords are encrypted/decrypted based on the interface name (e.g., Ethernet1), and for message-digest-key, the hash algorithm (in the list [md5, sha1, sha256, sha384, sha512]) and the key ID (between 1 and 255).
+
+The filter provides two types for OSPF:
+
+- `ospf_simple` for simple authentication, which requires only the password and the interface name as key inputs.
+- `ospf_message_digest` for message digest keys which requires the password, the interface name as the key, the hash algorithm, and the key id as input.
+
+Example usage for `arista.avd.encrypt` filter for OSPF is to use it in conjunction with Ansible Vault to be able to load a password and have it encrypted on the fly by AVD in `eos_designs`.
+
+**examples:**
+
+- Simple authentication
+
+    ```jinja
+    ethernet_interfaces:
+      - name: Ethernet1:
+        ospf_authentication: simple
+        ospf_authentication_key: "{{ ospf_vault_password | arista.avd.encrypt(passwd_type='ospf_simple', key='Ethernet1') }}"
+    ```
+
+- Message Digest Keys
+
+    ```jinja
+    ethernet_interfaces:
+      - name: Ethernet1:
+        ospf_authentication: message-digest
+        ospf_message_digest_keys:
+          - id: 1
+            hash_algorithm: md5
+            key: "{{ ospf_vault_password | arista.avd.encrypt(passwd_type='ospf_message_digest', key='Ethernet1', hash_algorithm='md5', key_id='1') }}"
+    ```
+
+### Hide Passwords filter
+
+This filter gives the capabilities to replace a value rendered in a Jinja Template by the string `<removed>` just like in an EOS `show run sanitized`.
+
+**example:**
+
+```jinja
+ip ospf authentication-key 7 {{ vlan_interface.ospf_authentication_key | arista.avd.hide_passwords(true) }}
 ```
 
 ## Plugin Tests
@@ -337,6 +386,66 @@ switch:
   platform_settings: {{ platform_settings | selectattr("platforms", "arista.avd.contains", switch_platform) | first | arista.avd.default(
                         platform_settings | selectattr("platforms", "arista.avd.contains", "default") | first) }}
 ```
+
+## Vars Plugins
+
+### arista.avd.global_vars
+
+Loads variables from variable files specified in ansible.cfg or environment variable. Assign the loaded variables to the 'all' inventory group. Files are restricted by extension to one of .yaml, .json, .yml or no extension. Hidden files (starting with '.') and backup files (ending with '~') are ignored. Only applies to inventory sources that are existing paths.
+
+The `arista.avd.global_vars` vars plugin should run at the `inventory` stage (default) before all other variable plugins, to inject the variables before any group and host vars.
+
+**parameters:**
+
+```yaml
+- paths:
+        List of relative paths, relative to the inventory file.
+        If path is a directory, all the valid files inside are loaded in alphabetical order.
+        If the environment variable is set, it takes precedence over ansible.cfg.
+        set_via:
+          env:
+          - name: ARISTA_AVD_GLOBAL_VARS_PATHS
+          ini:
+          - key: paths
+            section: vars_global_vars
+        elements: string
+        type: list
+```
+
+**examples:**
+
+#### `ansible.cfg` only example
+
+1. Enable the plugin in `ansible.cfg` - DO NOT REMOVE host_group_vars.
+
+    ```ini
+    [defaults]
+    vars_plugins_enabled = arista.avd.global_vars, host_group_vars
+
+    [vars_global_vars]
+    paths = ../relative/path/to/my/global/vars/file/or/dir
+    ```
+
+2. Run your playbook
+
+    ```shell
+    ansible-playbook -i inventory.yml playbook.yml
+    ```
+
+##### `ansible.cfg` + environement variable example
+
+1. Enable the plugin in `ansible.cfg` - DO NOT REMOVE host_group_vars.
+
+    ```ini
+    [defaults]
+    vars_plugins_enabled = arista.avd.global_vars, host_group_vars
+    ```
+
+2. Run your playbook
+
+    ```shell
+    ARISTA_AVD_GLOBAL_VARS_PATHS=../relative/path/to/my/global/vars/file/or/dir ansible-playbook -i inventory.yml playbook.yml
+    ```
 
 ## Modules
 
@@ -550,77 +659,6 @@ templates:
           strip_empty_keys: false
 ```
 
-### EOS Designs Facts
-
-The `arista.avd.eos_designs_facts` module is an Ansible Action Plugin providing the following capabilities:
-
-- Set `avd_switch_facts` fact containing both `switch` facts per host.
-- Set `avd_topology_peers` fact containing a list of downlink switches per host. This list is built based on the `uplink_switches` from all other hosts.
-- Set `avd_overlay_peers` fact containing a list of EVPN or MPLS overlay peers per host. This list is built based on the `evpn_route_servers` and `mpls_route_reflectors` from all other hosts.
-- The plugin is designed to `run_once`. With this, Ansible will set the same facts on all devices, so all devices can lookup values of any other device without using the slower `hostvars`.
-- The facts can also be copied to the "root" `switch` in a task run per device (see example below).
-
-The module is used in `arista.avd.eos_designs` to set facts for devices, which are then used by Jinja templates in `arista.avd.eos_designs` to generate the `structured_configuration`.
-
-The module arguments are:
-
-```yaml
-- eos_designs_facts:
-    # Calculate and set 'avd_switch_facts.<devices>.switch', 'avd_overlay_peers' and 'avd_topology_peers' facts
-    avd_switch_facts: < True | False >
-
-    # Export cProfile data to a file ex. "eos_designs_facts-{{inventory_hostname}}.prof"
-    cprofile_file: < filename >
-```
-
-The output data model is:
-
-```yaml
-ansible_facts:
-  avd_switch_facts:
-    <switch_1>:
-      switch:
-        < switch.* facts used by eos_designs >
-    <switch_2>:
-      ...
-  avd_topology_peers:
-    <uplink_switch_1>:
-      - <downlink_switch_1>
-      - <downlink_switch_2>
-      - <downlink_switch_3>
-    <uplink_switch_1>:
-      ...
-  avd_overlay_peers:
-    <route_server_1>:
-      - <route_server_client_1>
-      - <route_server_client_2>
-      - <route_server_client_3>
-    <route_server_2>:
-      - <route_server_client_1>
-      - <route_server_client_2>
-      - <route_server_client_3>
-```
-
-The facts can be inspected in a file per device by running the `arista.avd.eos_designs` role with `--tags facts,debug`.
-
-**example playbook:**
-
-```yaml
-- name: Set eos_designs facts
-  tags: [build, provision, facts]
-  arista.avd.eos_designs_facts:
-    avd_switch_facts: True
-  check_mode: False
-  run_once: True
-
-- name: Set eos_designs facts per device
-  tags: [build, provision, facts]
-  ansible.builtin.set_fact:
-    switch: "{{ avd_switch_facts[inventory_hostname].switch }}"
-  delegate_to: localhost
-  changed_when: False
-```
-
 ### Validate and Template
 
 The `arista.avd.validate_and_template` Action Plugin performs data conversions and validation according to the supplied Schema.
@@ -662,6 +700,7 @@ The module arguments are:
   # Conversion is intended to help the user to identify minor issues with the input data, while still allowing the data to be validated.
   # During conversion, messages will generated with information about the host(s) and key(s) which required conversion.
   # conversion_mode:disabled means that conversion will not run.
+  # conversion_mode:error will produce error messages and fail the task.
   # conversion_mode:warning will produce warning messages.
   # conversion_mode:info will produce regular log messages.
   # conversion_mode:debug will produce hidden messages viewable with -v.
@@ -709,12 +748,12 @@ options:
     description: Path to Jinja2 Template file
     required: true
     type: str
-  dest_format_string:
+  dest_format_str:
     description: Format string used to specify target file for each item. 'item' is the current item from 'items'. Like "mypath/{item}.md"
     required: true
     type: str
   items:
-    description: List of strings. Each list item is passed to 'dest_format_string' as 'item' and passed to templater as 'item'
+    description: List of strings. Each list item is passed to 'dest_format_str' as 'item' and passed to templater as 'item'
     required: true
     type: list
     elements: str
@@ -788,16 +827,16 @@ AVD version v4.0.0-dev5-25-g0233492b5
             "not_found": {},
             "valid": {
                 "arista.cvp": {
-                    "installed": "3.3.1",
+                    "installed": "3.6.1",
                     "required_version": null
                 },
                 "arista.eos": {
-                    "installed": "4.1.1",
+                    "installed": "6.0.0",
                     "required_version": null
                 },
-                "ansible.netcommon": {
-                    "installed": "3.0.1",
-                    "required_version": "!=2.6.0,>=2.4.0"
+                "ansible.utils": {
+                    "installed": "2.9.0",
+                    "required_version": ">=2.9.0"
                 }
             },
             "mismatched": {},

@@ -19,13 +19,13 @@ class RouterBgpMixin(UtilsMixin):
         Return structured config for router_bgp
         """
 
-        if not self._underlay_bgp:
+        if not self.shared_utils.underlay_bgp:
             return None
 
-        neighbors = {}
-        neighbor_interfaces = {}
+        neighbors = []
+        neighbor_interfaces = []
         for p2p_link in self._filtered_p2p_links:
-            if not (p2p_link.get("include_in_underlay_protocol") is True):
+            if not (p2p_link.get("include_in_underlay_protocol", True) is True):
                 continue
 
             if p2p_link["data"]["bgp_as"] is None or p2p_link["data"]["peer_bgp_as"] is None:
@@ -34,13 +34,12 @@ class RouterBgpMixin(UtilsMixin):
             neighbor = {
                 "remote_as": p2p_link["data"]["peer_bgp_as"],
                 "description": p2p_link["data"]["peer"],
-                "peer_group": self._peer_group_ipv4_underlay_peers_name,
+                "peer_group": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["name"],
             }
 
             # RFC5549
-            if self._underlay_rfc5549:
-                interface = p2p_link["data"]["interface"]
-                neighbor_interfaces[interface] = neighbor
+            if self.shared_utils.underlay_rfc5549:
+                neighbor_interfaces.append({"name": p2p_link["data"]["interface"], **neighbor})
                 continue
 
             # Regular BGP Neighbors
@@ -48,14 +47,13 @@ class RouterBgpMixin(UtilsMixin):
                 raise AristaAvdMissingVariableError("l3_edge.p2p_links.[].ip, .subnet or .ip_pool")
 
             neighbor["bfd"] = p2p_link.get("bfd")
-            if p2p_link["data"]["bgp_as"] != self._bgp_as:
+            if p2p_link["data"]["bgp_as"] != self.shared_utils.bgp_as:
                 neighbor["local_as"] = p2p_link["data"]["bgp_as"]
 
             # Remove None values
             neighbor = {key: value for key, value in neighbor.items() if value is not None}
 
-            neighbor_ip = p2p_link["data"]["peer_ip"].split("/")[0]
-            neighbors[neighbor_ip] = neighbor
+            neighbors.append({"ip_address": p2p_link["data"]["peer_ip"].split("/")[0], **neighbor})
 
         router_bgp = {}
         if neighbors:

@@ -1,7 +1,7 @@
 {# doc - cvx #}
 {% if cvx is arista.avd.defined %}
 
-# CVX
+## CVX
 {%     if cvx.peer_hosts is arista.avd.defined %}
 
 | Peer Hosts |
@@ -17,7 +17,7 @@ CVX is disabled
 CVX is enabled
 {%         if cvx.services is arista.avd.defined %}
 
-## CVX services
+### CVX services
 
 | Service | Enabled | Settings |
 | ------- | ------- | -------- |
@@ -33,10 +33,22 @@ CVX is enabled
 {%                 endif %}
 | MCS | {{ enabled }} | {{ settings | join("<br>") }} |
 {%             endif %}
+{%             if cvx.services.vxlan is arista.avd.defined %}
+{%                 if cvx.services.vxlan.shutdown is arista.avd.defined %}
+{%                     set enabled = not cvx.services.vxlan.shutdown %}
+{%                 else %}
+{%                     set enabled = '-' %}
+{%                 endif %}
+{%                 set settings = [] %}
+{%                 if cvx.services.vxlan.vtep_mac_learning is arista.avd.defined %}
+{%                     do settings.append("VTEP MAC learning: " ~ cvx.services.vxlan.vtep_mac_learning) %}
+{%                 endif %}
+| VXLAN | {{ enabled }} | {{ settings | join("<br>") }} |
+{%             endif %}
 {%         endif %}
 {%     endif %}
 
-## CVX configuration
+### CVX configuration
 
 ```eos
 {%     include 'eos/cvx.j2' %}

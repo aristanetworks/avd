@@ -5,7 +5,7 @@ from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 
 from .utils import UtilsMixin
 
@@ -17,21 +17,21 @@ class EthernetInterfacesMixin(UtilsMixin):
     """
 
     @cached_property
-    def ethernet_interfaces(self) -> dict | None:
+    def ethernet_interfaces(self) -> list | None:
         """
         Return structured config for ethernet_interfaces
 
         Only used with L3 or L1 network services
         """
 
-        if not (self._network_services_l3 or self._network_services_l1):
+        if not (self.shared_utils.network_services_l3 or self.shared_utils.network_services_l1):
             return None
 
         # Using temp variables to keep the order of interfaces from Jinja
-        ethernet_interfaces = {}
+        ethernet_interfaces = []
         subif_parent_interface_names = set()
 
-        if self._network_services_l3:
+        if self.shared_utils.network_services_l3:
             for tenant in self._filtered_tenants:
                 for vrf in tenant["vrfs"]:
                     # The l3_interfaces has already been filtered in _filtered_tenants
@@ -49,7 +49,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                             )
 
                         for node_index, node_name in enumerate(l3_interface["nodes"]):
-                            if node_name != self._hostname:
+                            if node_name != self.shared_utils.hostname:
                                 continue
 
                             interface_name = str(l3_interface["interfaces"][node_index])
@@ -59,6 +59,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                             else:
                                 interface_description = l3_interface.get("description")
                             interface = {
+                                "name": interface_name,
                                 "peer_type": "l3_interface",
                                 "ip_address": l3_interface["ip_addresses"][node_index],
                                 "mtu": l3_interface.get("mtu"),
@@ -98,15 +99,18 @@ class EthernetInterfacesMixin(UtilsMixin):
                                     ospf_authentication == "message-digest"
                                     and (ospf_message_digest_keys := l3_interface["ospf"].get("message_digest_keys")) is not None
                                 ):
-                                    ospf_keys = {}
+                                    ospf_keys = []
                                     for ospf_key in ospf_message_digest_keys:
                                         if not ("id" in ospf_key and "key" in ospf_key):
                                             continue
 
-                                        ospf_keys[ospf_key["id"]] = {
-                                            "hash_algorithm": ospf_key.get("hash_algorithm", "sha512"),
-                                            "key": ospf_key["key"],
-                                        }
+                                        ospf_keys.append(
+                                            {
+                                                "id": ospf_key["id"],
+                                                "hash_algorithm": ospf_key.get("hash_algorithm", "sha512"),
+                                                "key": ospf_key["key"],
+                                            }
+                                        )
 
                                     if ospf_keys:
                                         interface["ospf_authentication"] = ospf_authentication
@@ -115,14 +119,14 @@ class EthernetInterfacesMixin(UtilsMixin):
                             if get(l3_interface, "pim.enabled"):
                                 if not vrf.get("_evpn_l3_multicast_enabled"):
                                     raise AristaAvdError(
-                                        f"'pim: enabled' set on l3_interface {interface_name} on {self._hostname} requires evpn_l3_multicast: enabled: true"
-                                        f" under VRF '{vrf.name}' or Tenant '{tenant.name}'"
+                                        f"'pim: enabled' set on l3_interface {interface_name} on {self.shared_utils.hostname} requires evpn_l3_multicast:"
+                                        f" enabled: true under VRF '{vrf.name}' or Tenant '{tenant.name}'"
                                     )
 
                                 if not vrf.get("_pim_rp_addresses"):
                                     raise AristaAvdError(
-                                        f"'pim: enabled' set on l3_interface {interface_name} on {self._hostname} requires at least one RP defined in"
-                                        f" pim_rp_addresses under VRF '{vrf.name}' or Tenant '{tenant.name}'"
+                                        f"'pim: enabled' set on l3_interface {interface_name} on {self.shared_utils.hostname} requires at least one RP defined"
+                                        f" in pim_rp_addresses under VRF '{vrf.name}' or Tenant '{tenant.name}'"
                                     )
 
                                 interface["pim"] = {"ipv4": {"sparse_mode": True}}
@@ -130,9 +134,19 @@ class EthernetInterfacesMixin(UtilsMixin):
                             # Strip None values from vlan before adding to list
                             interface = {key: value for key, value in interface.items() if value is not None}
 
-                            ethernet_interfaces[interface_name] = interface
+                            if (found_eth_interface := get_item(ethernet_interfaces, "name", interface["name"])) is None:
+                                ethernet_interfaces.append(interface)
+                            else:
+                                if found_eth_interface == interface:
+                                    # Same ethernet_interface information twice in the input data. So not duplicate interface name.
+                                    continue
 
-        if self._network_services_l1:
+                                raise AristaAvdError(
+                                    f"Duplicate interface_name {interface['name']} found while generating l3_interfaces under network_services vrf:"
+                                    f" {interface['vrf']}. Description on duplicate interface: {found_eth_interface['description']}"
+                                )
+
+        if self.shared_utils.network_services_l1:
             for tenant in self._filtered_tenants:
                 if "point_to_point_services" not in tenant:
                     continue
@@ -140,32 +154,48 @@ class EthernetInterfacesMixin(UtilsMixin):
                 for point_to_point_service in natural_sort(tenant["point_to_point_services"], "name"):
                     subifs = [subif for subif in point_to_point_service.get("subinterfaces", []) if subif.get("number") is not None]
                     for endpoint in point_to_point_service.get("endpoints", []):
-                        if self._hostname not in endpoint.get("nodes", []):
+                        if self.shared_utils.hostname not in endpoint.get("nodes", []):
                             continue
 
                         for node_index, interface_name in enumerate(endpoint["interfaces"]):
-                            if endpoint["nodes"][node_index] != self._hostname:
+                            if endpoint["nodes"][node_index] != self.shared_utils.hostname:
                                 continue
 
                             if (port_channel_mode := get(endpoint, "port_channel.mode")) in ["active", "on"]:
-                                first_interface_index = list(endpoint["nodes"]).index(self._hostname)
+                                first_interface_index = list(endpoint["nodes"]).index(self.shared_utils.hostname)
                                 first_interface_name = endpoint["interfaces"][first_interface_index]
                                 channel_group_id = int("".join(re.findall(r"\d", first_interface_name)))
-                                ethernet_interfaces[interface_name] = {
+                                ethernet_interface = {
+                                    "name": interface_name,
                                     "shutdown": False,
                                     "channel_group": {
                                         "id": channel_group_id,
                                         "mode": port_channel_mode,
                                     },
                                 }
+
+                                if (found_eth_interface := get_item(ethernet_interfaces, "name", ethernet_interface["name"])) is None:
+                                    ethernet_interfaces.append(ethernet_interface)
+                                else:
+                                    if found_eth_interface == ethernet_interface:
+                                        # Same ethernet_interface information twice in the input data. So not duplicate interface name.
+                                        continue
+
+                                    raise AristaAvdError(
+                                        f"Duplicate interface_name {ethernet_interface['name']} found while generating ethernet_interfaces for"
+                                        f" point_to_point_services channel group id: {channel_group_id}. Channel group id on duplicate"
+                                        f" interface: {found_eth_interface['channel_group']['id']}"
+                                    )
+
                                 continue
 
                             if subifs:
                                 # This is a subinterface so we need to ensure that the parent is created
                                 subif_parent_interface_names.add(interface_name)
                                 for subif in subifs:
-                                    key = f"{interface_name}.{subif['number']}"
-                                    ethernet_interfaces[key] = {
+                                    subif_name = f"{interface_name}.{subif['number']}"
+                                    ethernet_interface = {
+                                        "name": subif_name,
                                         "type": "l2dot1q",
                                         "encapsulation_vlan": {
                                             "client": {
@@ -180,8 +210,21 @@ class EthernetInterfacesMixin(UtilsMixin):
                                         "peer_type": "l3_interface",
                                         "shutdown": False,
                                     }
+
+                                if (found_eth_interface := get_item(ethernet_interfaces, "name", ethernet_interface["name"])) is None:
+                                    ethernet_interfaces.append(ethernet_interface)
+                                else:
+                                    if found_eth_interface == ethernet_interface:
+                                        # Same ethernet_interface information twice in the input data. So not duplicate interface name.
+                                        continue
+
+                                    raise AristaAvdError(
+                                        f"Duplicate interface_name {ethernet_interface['name']} found while generating subinterfaces under"
+                                        " port_to_point_services"
+                                    )
                             else:
                                 interface = {
+                                    "name": interface_name,
                                     "type": "routed",
                                     "peer_type": "l3_interface",
                                     "shutdown": False,
@@ -191,16 +234,29 @@ class EthernetInterfacesMixin(UtilsMixin):
                                         "transmit": False,
                                         "receive": False,
                                     }
-                                ethernet_interfaces[interface_name] = interface
 
-        subif_parent_interface_names = subif_parent_interface_names.difference(ethernet_interfaces.keys())
+                                if (found_eth_interface := get_item(ethernet_interfaces, "name", interface["name"])) is None:
+                                    ethernet_interfaces.append(interface)
+                                else:
+                                    if found_eth_interface == interface:
+                                        # Same ethernet_interface information twice in the input data. So not duplicate interface name.
+                                        continue
+
+                                    raise AristaAvdError(
+                                        f"Duplicate interface_name {interface['name']} found while generating ethernet_interfaces for point_to_point_services"
+                                    )
+
+        subif_parent_interface_names = subif_parent_interface_names.difference([eth_int["name"] for eth_int in ethernet_interfaces])
         if subif_parent_interface_names:
             for interface_name in natural_sort(subif_parent_interface_names):
-                ethernet_interfaces[interface_name] = {
-                    "type": "routed",
-                    "peer_type": "l3_interface",
-                    "shutdown": False,
-                }
+                ethernet_interfaces.append(
+                    {
+                        "name": interface_name,
+                        "type": "routed",
+                        "peer_type": "l3_interface",
+                        "shutdown": False,
+                    }
+                )
 
         if ethernet_interfaces:
             return ethernet_interfaces

@@ -33,22 +33,22 @@ description:
     and python module in `arista.avd.eos_designs` to generate the `structured_configuration`.
 options:
   schema:
-    description: Schema conforming to "AVD Meta Schema"
-    required: true
-    type: dict
-  template_output:
-    description: |
-      If true the output data will be run through another jinja2 rendering before returning.
-      This is to resolve any input values with inline jinja using variables/facts set by the input templates.
+    description: Schema conforming to "AVD Meta Schema". Either schema or schema_id must be set.
     required: false
-    type: bool
+    type: dict
+  schema_id:
+    description: ID of Schema conforming to "AVD Meta Schema".  Either schema or schema_id must be set.
+    required: false
+    type: str
+    choices: [ "eos_cli_config_gen", "eos_designs" ]
   conversion_mode:
     description:
-      - Run data conversion in either "warning", "info", "debug", "quiet" or "disabled" mode.
+      - Run data conversion in either "error", "warning", "info", "debug", "quiet" or "disabled" mode.
       - Conversion will perform type conversion of input variables as defined in the schema.
       - Conversion is intended to help the user to identify minor issues with the input data, while still allowing the data to be validated.
       - During conversion, messages will be generated with information about the host(s) and key(s) which required conversion.
       - conversion_mode:disabled means that conversion will not run.
+      - conversion_mode:error will produce error messages and fail the task.
       - conversion_mode:warning will produce warning messages.
       - conversion_mode:info will produce regular log messages.
       - conversion_mode:debug will produce hidden messages viewable with -v.
@@ -56,7 +56,7 @@ options:
     required: false
     default: "debug"
     type: str
-    choices: [ "warning", "info", "debug", "quiet", "disabled" ]
+    choices: [ "error", "warning", "info", "debug", "quiet", "disabled" ]
   validation_mode:
     description:
       - Run validation in either "error", "warning", "info", "debug" or "disabled" mode.
@@ -77,7 +77,7 @@ EXAMPLES = r"""
 - name: Set eos_designs facts
   tags: [build, provision, facts]
   arista.avd.eos_designs_facts:
-    avd_switch_facts: True
+    schema_id: eos_designs
   check_mode: False
   run_once: True
 

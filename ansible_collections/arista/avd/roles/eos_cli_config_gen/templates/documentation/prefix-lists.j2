@@ -1,12 +1,12 @@
 {# doc - prefix lists #}
 {% if prefix_lists is arista.avd.defined %}
 
-## Prefix-lists
+### Prefix-lists
 
-### Prefix-lists Summary
+#### Prefix-lists Summary
 
 {%     for prefix_list in prefix_lists | arista.avd.natural_sort('name') %}
-#### {{ prefix_list.name }}
+##### {{ prefix_list.name }}
 
 | Sequence | Action |
 | -------- | ------ |
@@ -15,7 +15,7 @@
 {%         endfor %}
 
 {%     endfor %}
-### Prefix-lists Device Configuration
+#### Prefix-lists Device Configuration
 
 ```eos
 {%     include 'eos/prefix-lists.j2' %}

@@ -1,19 +1,26 @@
 ### Domain Lookup ###
 ip_domain_lookup:
   source_interfaces:
-    Management0:
+    - name: Management0
       vrf: mgt
-    Loopback0:
+    - name: Loopback0
     # Note there is no value here. This is valid with the current data model, but triggered an issue with convert_dicts filter.
     # So this is added to ensure we catch regression.
 
 ### Name Servers ###
-name_server:
-  source:
-    vrf: mgt
-  nodes:
-    - 10.10.128.10
-    - 10.10.129.10
+ip_name_servers:
+  # no VRF
+  - ip_address: 10.10.128.10
+  # no VRF priority
+  - ip_address: 10.10.129.10
+    priority: 0
+  # Same DNS management VRF
+  - ip_address: 10.10.128.10
+    vrf: mgmt
+  # Same DNS different VRF and priority
+  - ip_address: 10.10.128.10
+    vrf: TEST
+    priority: 3
 
 ### DNS Domain ###
 dns_domain: test.local

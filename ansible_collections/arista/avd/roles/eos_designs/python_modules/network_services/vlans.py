@@ -26,7 +26,7 @@ class VlansMixin(UtilsMixin):
         SVIs in all VRFs and L2VLANs deployed on this device.
         """
 
-        if not self._network_services_l2:
+        if not self.shared_utils.network_services_l2:
             return None
 
         vlans = []
@@ -88,13 +88,13 @@ class VlansMixin(UtilsMixin):
             "name": vlan["name"],
             "tenant": tenant["name"],
         }
-        if self._enable_trunk_groups:
+        if self.shared_utils.enable_trunk_groups:
             trunk_groups = vlan.get("trunk_groups", [])
-            if self._only_local_vlan_trunk_groups:
-                trunk_groups = list(self._endpoint_trunk_groups.intersection(trunk_groups))
-            if self._mlag:
+            if self.shared_utils.only_local_vlan_trunk_groups:
+                trunk_groups = list(self._local_endpoint_trunk_groups.intersection(trunk_groups))
+            if self.shared_utils.mlag:
                 trunk_groups.append(self._trunk_groups_mlag_name)
-            if self._uplink_type == "port-channel":
+            if self.shared_utils.uplink_type == "port-channel":
                 trunk_groups.append(self._trunk_groups_uplink_name)
             vlans_vlan["trunk_groups"] = trunk_groups
 

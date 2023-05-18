@@ -22,9 +22,9 @@ class RouterIsisMixin(UtilsMixin):
         """
 
         if (
-            self._network_services_l3
+            self.shared_utils.network_services_l3
             and self._vrf_default_ipv4_static_routes["redistribute_in_underlay"]
-            and self._underlay_routing_protocol in ["isis", "isis-ldp", "isis-sr", "isis-sr-ldp"]
+            and self.shared_utils.underlay_routing_protocol in ["isis", "isis-ldp", "isis-sr", "isis-sr-ldp"]
         ):
             return {"redistribute_routes": [{"source_protocol": "static"}]}
 

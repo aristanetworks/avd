@@ -1,9 +1,9 @@
-import copy
-import json
-import os
 from collections import ChainMap
+from copy import deepcopy
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.refresolver import create_refresolver
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all
 
 try:
@@ -23,10 +23,6 @@ except ImportError as imp_exc:
     DEEPMERGE_IMPORT_ERROR = imp_exc
 else:
     DEEPMERGE_IMPORT_ERROR = None
-
-script_dir = os.path.dirname(__file__)
-with open(f"{script_dir}/avd_meta_schema.json", "r", encoding="UTF-8") as file:
-    AVD_META_SCHEMA = json.load(file)
 
 
 def _primary_key_validator(validator, primary_key: str, instance: list, schema: dict):
@@ -80,15 +76,15 @@ def _keys_validator(validator, keys: dict, instance: dict, schema: dict):
     for key, childschema in keys.items():
         if key in instance and "$ref" in childschema:
             scope, resolved = validator.resolver.resolve(childschema["$ref"])
-            merged_childschema = copy.deepcopy(resolved)
+            merged_childschema = deepcopy(resolved)
             always_merger.merge(merged_childschema, childschema)
             merged_childschema.pop("$ref", None)
             keys[key] = merged_childschema
 
     # Validation of "allow_other_keys"
     if not schema.get("allow_other_keys", False):
-        # Check what instance only contains the schema keys
-        invalid_keys = ", ".join([key for key in instance if key not in keys])
+        # Check that instance only contains the schema keys
+        invalid_keys = ", ".join([key for key in instance if key not in keys and key[0] != "_"])
         if invalid_keys:
             yield jsonschema.ValidationError(f"Unexpected key(s) '{invalid_keys}' found in dict.")
 
@@ -134,11 +130,18 @@ def _ref_validator(validator, ref, instance: dict, schema: dict):
     a check for $ref has been added to the other validators, to
     avoid duplicate validation (and duplicate errors)
     """
-    scope, resolved = validator.resolver.resolve(ref)
+    scope, ref_schema = validator.resolver.resolve(ref)
     validator.resolver.push_scope(scope)
-    merged_schema = copy.deepcopy(resolved)
-    always_merger.merge(merged_schema, schema)
-    merged_schema.pop("$ref", None)
+    schema = deepcopy(schema)
+    schema.pop("$ref", None)
+    merged_schema = merge(schema, ref_schema, same_key_strategy="use_existing", destructive_merge=False)
+
+    # Resolve new refs inherited from the first ref.
+    if "$ref" in merged_schema:
+        yield from _ref_validator(validator, merged_schema["$ref"], instance, merged_schema)
+        validator.resolver.pop_scope()
+        return
+
     try:
         yield from validator.descend(instance, merged_schema)
     finally:
@@ -158,7 +161,7 @@ def _is_dict(validator, instance):
 
 
 class AvdValidator:
-    def __new__(cls, schema):
+    def __new__(cls, schema, store):
         """
         AvdSchemaValidator is used to validate AVD Data.
         It uses a combination of our own validators and builtin jsonschema validators
@@ -172,7 +175,7 @@ class AvdValidator:
             raise AristaAvdError('Python library "deepmerge" must be installed to use this plugin') from DEEPMERGE_IMPORT_ERROR
 
         ValidatorClass = jsonschema.validators.create(
-            meta_schema=AVD_META_SCHEMA,
+            meta_schema=store["avd_meta_schema"],
             validators={
                 "$ref": _ref_validator,
                 "type": jsonschema._validators.type,
@@ -209,4 +212,4 @@ class AvdValidator:
             # version="0.1",
         )
 
-        return ValidatorClass(schema)
+        return ValidatorClass(schema, resolver=create_refresolver(schema, store))

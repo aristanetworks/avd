@@ -171,6 +171,14 @@ defaults <- node_group <- node_group.node <- node
       # "system_mac_address" can also be set directly as a hostvar.
       # If both are set, the setting under "Fabric Topology" takes precedence.
       system_mac_address: < "xx:xx:xx:xx:xx:xx" >
+      # Serial Number | Optional
+      # Set to the Serial Number of the device
+      # For  now only used for documentation purpose in the fabric
+      # documentation.
+      # "serial_number" can also be set directly as a hostvar.
+      # If both are set, the setting under "Fabric Topology" takes precedence.
+      serial_number: < string >
+
 ```
 
 ## Node Variables details
@@ -211,6 +219,10 @@ defaults <- node_group <- node_group.node <- node
       # Offset is used to avoid overlapping port-id ranges of different switches | Optional
       # Useful when a "connected-endpoint" is connected to switches in different "node_groups".
       offset: < offset_for_lacp_port_id_range | default -> 0 >
+
+    # Force configuration of "ip routing" even on L2 devices | Optional
+    # Use this to retain behavior of AVD versions below 4.0.0.
+    always_configure_ip_routing: < true | false | default -> false >
 
     # EOS CLI rendered directly on the root level of the final EOS configuration | Optional
     raw_eos_cli: |
@@ -476,8 +488,8 @@ default_interfaces:
         enabled: < true | false | default -> False >
 
         # Domain IDs are required to perform D-Path lookups for loop prevention. If omitted, the defaults are used.
-        evpn_domain_id: < "nn:nn" | default -> "0:1" >
-        ipvpn_domain_id: < "nn:nn" | default -> "0:2" >
+        evpn_domain_id: < "nn:nn" | default -> "65535:1" >
+        ipvpn_domain_id: < "nn:nn" | default -> "65535:2" >
 
         # D-path can be turned off for the inter-vpn export if desired.
         enable_d_path: < true | false | default -> true >
@@ -535,17 +547,17 @@ default_interfaces:
     mlag_peer_l3_vlan: < 0-4094 | false | default -> 4093 >
 
     # IP address pool used for MLAG underlay L3 peering | *Required when MLAG leafs present in topology.
-    # IP is derived from the node id.
+    # IP is derived from the node id. Assign a prefix that can accomodate n * /31 subnets, where n is the highest id assigned to an MLAG switch.
     mlag_peer_l3_ipv4_pool: < IPv4_network/Mask >
 
     # MLAG Peer Link (control link) SVI interface id.
     mlag_peer_vlan: < 0-4094 | default -> 4094 >
 
     # MLAG Peer Link allowed VLANs
-    mlag_peer_link_allowed_vlans: < vlans as string | default -> "2-4094" >
+    mlag_peer_link_allowed_vlans: < vlans as string >
 
     # IP address pool used for MLAG Peer Link (control link) | *Required when MLAG leafs present in topology.
-    # IP is derived from the node id.
+    # IP is derived from the node id. Assign a prefix that can accomodate n * /31 subnets, where n is the highest id assigned to an MLAG switch.
     mlag_peer_ipv4_pool: < IPv4_network/Mask >
 
     # Custom structured config applied to MLAG peer link port-channel id.

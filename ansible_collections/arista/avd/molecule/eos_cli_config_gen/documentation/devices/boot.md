@@ -1,5 +1,6 @@
 # boot
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -7,25 +8,25 @@
   - [Boot Secret Summary](#boot-secret-summary)
   - [System Boot Configuration](#system-boot-configuration)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -35,15 +36,15 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# System Boot Settings
+## System Boot Settings
 
-## Boot Secret Summary
+### Boot Secret Summary
 
 - The md5 hashed Aboot password is configured
 
-## System Boot Configuration
+### System Boot Configuration
 
 ```eos
 !
-boot secret 5 a153de6290ff1409257a
+boot secret 5 <removed>
 ```

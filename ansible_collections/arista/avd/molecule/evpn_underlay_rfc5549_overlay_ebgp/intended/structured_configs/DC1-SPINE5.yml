@@ -2,16 +2,22 @@ router_bgp:
   as: '65001'
   router_id: 192.168.255.5
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
-  - type: ipv4
+  - name: UNDERLAY_PEERS
+    type: ipv4
     password: af6F4WLl4wUrWRZcwbEwkQ==
     maximum_routes: 12000
     send_community: all
-    name: UNDERLAY_PEERS
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     password: q+VNViP5i4rVjW1cxFv2wA==
@@ -19,50 +25,48 @@ router_bgp:
     maximum_routes: 0
     ebgp_multihop: 3
     next_hop_unchanged: true
-    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
+    - name: UNDERLAY_PEERS
+      activate: true
       next_hop:
         address_family_ipv6_originate: true
-      name: UNDERLAY_PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   address_family_ipv6:
     peer_groups:
-    - activate: true
-      name: UNDERLAY_PEERS
+    - name: UNDERLAY_PEERS
+      activate: true
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   neighbor_interfaces:
-  - peer_group: UNDERLAY_PEERS
+  - name: Ethernet1
+    peer_group: UNDERLAY_PEERS
     remote_as: '65106'
     description: DC1-LEAF3A_Ethernet1
-    name: Ethernet1
-  - peer_group: UNDERLAY_PEERS
+  - name: Ethernet2
+    peer_group: UNDERLAY_PEERS
     remote_as: '65106'
     description: DC1-LEAF3B_Ethernet1
-    name: Ethernet2
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
   neighbors:
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 2001:1::c
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-LEAF3A
     remote_as: '65106'
-    ip_address: 2001:1::c
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 2001:1::d
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-LEAF3B
     remote_as: '65106'
-    ip_address: 2001:1::d
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.200.5
 service_routing_protocols_model: multi-agent
-ip_routing: true
 ipv6_unicast_routing: true
 ip_routing_ipv6_interfaces: true
 daemon_terminattr:
@@ -80,23 +84,22 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-name_server:
-  source:
-    vrf: MGMT
-  nodes:
-  - 192.168.200.5
-  - 8.8.8.8
+ip_name_servers:
+- ip_address: 192.168.200.5
+  vrf: MGMT
+- ip_address: 8.8.8.8
+  vrf: MGMT
 spanning_tree:
   mode: none
 local_users:
-- privilege: 15
+- name: admin
+  privilege: 15
   role: network-admin
   no_password: true
-  name: admin
-- privilege: 15
+- name: cvpadmin
+  privilege: 15
   role: network-admin
   sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
-  name: cvpadmin
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -113,7 +116,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: DC1-LEAF3A
+- name: Ethernet1
+  peer: DC1-LEAF3A
   peer_interface: Ethernet1
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-LEAF3A_Ethernet1
@@ -121,8 +125,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ipv6_enable: true
-  name: Ethernet1
-- peer: DC1-LEAF3B
+- name: Ethernet2
+  peer: DC1-LEAF3B
   peer_interface: Ethernet1
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-LEAF3B_Ethernet1
@@ -130,7 +134,6 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ipv6_enable: true
-  name: Ethernet2
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

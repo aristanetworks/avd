@@ -2,18 +2,22 @@ router_bgp:
   as: '65120'
   router_id: 172.16.120.1
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
-  - type: ipv4
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
     password: AQQvKeimxJu+uGQ/yYvv9w==
     maximum_routes: 12000
     send_community: all
-    name: IPv4-UNDERLAY-PEERS
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     password: q+VNViP5i4rVjW1cxFv2wA==
@@ -21,52 +25,51 @@ router_bgp:
     maximum_routes: 0
     ebgp_multihop: 5
     next_hop_unchanged: true
-    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: IPv4-UNDERLAY-PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   neighbors:
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.16.12.0
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
     description: DC1-SUPER-SPINE1_Ethernet3
-    ip_address: 172.16.12.0
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.16.12.64
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
     description: DC1-SUPER-SPINE2_Ethernet3
-    ip_address: 172.16.12.64
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.17.120.1
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65121'
     description: DC1-POD2-LEAF1A_Ethernet1
-    ip_address: 172.17.120.1
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.17.10.11
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65102'
     description: DC1-RS2_Ethernet2
     bfd: true
-    ip_address: 172.17.10.11
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 172.16.120.3
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-POD2-LEAF1A
     remote_as: '65121'
-    ip_address: 172.16.120.3
-  - remote_as: '65210'
+  - ip_address: 11.1.1.19
+    remote_as: '65210'
     description: DC2-POD1-SPINE1
     peer_group: IPv4-UNDERLAY-PEERS
-    ip_address: 11.1.1.19
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
   address_family_rtc:
     peer_groups:
-    - activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
       default_route_target:
         only: true
-      name: EVPN-OVERLAY-PEERS
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -83,10 +86,11 @@ snmp_server:
 spanning_tree:
   mode: none
 local_users:
-- privilege: 15
+- name: admin
+  privilege: 15
   role: network-admin
+  no_password: true
   sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
-  name: admin
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -104,7 +108,8 @@ management_api_http:
   enable_https: true
 eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
 ethernet_interfaces:
-- peer: DC1-SUPER-SPINE1
+- name: Ethernet1
+  peer: DC1-SUPER-SPINE1
   peer_interface: Ethernet3
   peer_type: super-spine
   description: P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet3
@@ -117,8 +122,8 @@ ethernet_interfaces:
   ptp:
     enable: true
   ip_address: 172.16.12.1/31
-  name: Ethernet1
-- peer: DC1-SUPER-SPINE2
+- name: Ethernet2
+  peer: DC1-SUPER-SPINE2
   peer_interface: Ethernet3
   peer_type: super-spine
   description: P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet3
@@ -131,20 +136,22 @@ ethernet_interfaces:
   ptp:
     enable: true
   ip_address: 172.16.12.65/31
-  name: Ethernet2
-- peer: DC1-POD2-LEAF1A
+- name: Ethernet3
+  peer: DC1-POD2-LEAF1A
   peer_interface: Ethernet1
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-POD2-LEAF1A_Ethernet1
   shutdown: false
   mtu: 1500
   service_profile: QOS-PROFILE
+  mac_security:
+    profile: MACSEC_PROFILE
   type: routed
   ptp:
     enable: true
   ip_address: 172.17.120.0/31
-  name: Ethernet3
-- peer: DC1-RS2
+- name: Ethernet4
+  peer: DC1-RS2
   peer_interface: Ethernet2
   peer_type: overlay-controller
   description: P2P_LINK_TO_DC1-RS2_Ethernet2
@@ -153,7 +160,6 @@ ethernet_interfaces:
   service_profile: QOS-PROFILE
   type: routed
   ip_address: 172.17.10.10/31
-  name: Ethernet4
 - name: Ethernet5
   peer: DC2-POD1-SPINE1
   peer_interface: Ethernet5

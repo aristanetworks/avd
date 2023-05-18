@@ -2,75 +2,81 @@ router_bgp:
   as: '65101'
   router_id: 192.168.255.9
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
-  - type: ipv4
+  - name: UNDERLAY-PEERS
+    type: ipv4
     password: 0nsCUm70mvSTxVO0ldytrg==
     maximum_routes: 12000
     send_community: all
-    name: UNDERLAY-PEERS
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     password: q+VNViP5i4rVjW1cxFv2wA==
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 3
-    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: UNDERLAY-PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   neighbors:
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.255.0
+    peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     description: DC1-SPINE1_Ethernet1
-    ip_address: 172.31.255.0
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.255.2
+    peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     description: DC1-SPINE2_Ethernet1
-    ip_address: 172.31.255.2
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.255.4
+    peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     description: DC1-SPINE3_Ethernet1
-    ip_address: 172.31.255.4
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.255.6
+    peer_group: UNDERLAY-PEERS
     remote_as: '65001'
     description: DC1-SPINE4_Ethernet1
-    ip_address: 172.31.255.6
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.1
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE1
     remote_as: '65001'
-    ip_address: 192.168.255.1
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.2
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE2
     remote_as: '65001'
-    ip_address: 192.168.255.2
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.3
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE3
     remote_as: '65001'
-    ip_address: 192.168.255.3
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.4
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE4
     remote_as: '65001'
-    ip_address: 192.168.255.4
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
     evpn_hostflap_detection:
       window: 180
       threshold: 30
       enabled: false
   vrfs:
-  - router_id: 192.168.255.9
+  - name: Tenant_A_APP_Zone
+    router_id: 192.168.255.9
     rd: 192.168.255.9:12
     route_targets:
       import:
@@ -83,8 +89,8 @@ router_bgp:
         - '12:12'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_A_APP_Zone
-  - router_id: 192.168.255.9
+  - name: Tenant_A_WEB_Zone
+    router_id: 192.168.255.9
     rd: 192.168.255.9:11
     route_targets:
       import:
@@ -97,24 +103,23 @@ router_bgp:
         - '11:11'
     redistribute_routes:
     - source_protocol: connected
-    name: Tenant_A_WEB_Zone
   vlan_aware_bundles:
-  - rd: 192.168.255.9:12
+  - name: Tenant_A_APP_Zone
+    rd: 192.168.255.9:12
     route_targets:
       both:
       - '12:12'
     redistribute_routes:
     - learned
     vlan: '130'
-    name: Tenant_A_APP_Zone
-  - rd: 192.168.255.9:11
+  - name: Tenant_A_WEB_Zone
+    rd: 192.168.255.9:11
     route_targets:
       both:
       - '11:11'
     redistribute_routes:
     - learned
     vlan: 120-124
-    name: Tenant_A_WEB_Zone
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -139,12 +144,11 @@ vlan_internal_order:
 queue_monitor_length:
   enabled: true
   log: 5
-name_server:
-  source:
-    vrf: MGMT
-  nodes:
-  - 192.168.200.5
-  - 8.8.8.8
+ip_name_servers:
+- ip_address: 192.168.200.5
+  vrf: MGMT
+- ip_address: 8.8.8.8
+  vrf: MGMT
 snmp_server:
   contact: example@example.com
   location: DC1_FABRIC rackA DC1-LEAF1A
@@ -152,17 +156,17 @@ spanning_tree:
   root_super: true
   mode: mstp
   mst_instances:
-  - priority: 4096
-    id: '0'
+  - id: '0'
+    priority: 4096
 local_users:
-- privilege: 15
+- name: admin
+  privilege: 15
   role: network-admin
   no_password: true
-  name: admin
-- privilege: 15
+- name: cvpadmin
+  privilege: 15
   role: network-admin
   sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
-  name: cvpadmin
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -185,54 +189,55 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: DC1-SPINE1
+- name: Ethernet1
+  peer: DC1-SPINE1
   peer_interface: Ethernet1
   peer_type: spine
-  description: CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet1 no-monitor
+  description: CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet1
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
   type: routed
   ip_address: 172.31.255.1/31
-  name: Ethernet1
-- peer: DC1-SPINE2
+- name: Ethernet2
+  peer: DC1-SPINE2
   peer_interface: Ethernet1
   peer_type: spine
-  description: CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet1 no-monitor
+  description: CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet1
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
   type: routed
   ip_address: 172.31.255.3/31
-  name: Ethernet2
-- peer: DC1-SPINE3
+- name: Ethernet3
+  peer: DC1-SPINE3
   peer_interface: Ethernet1
   peer_type: spine
-  description: CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet1 no-monitor
+  description: CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet1
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
   type: routed
   ip_address: 172.31.255.5/31
-  name: Ethernet3
-- peer: DC1-SPINE4
+- name: Ethernet4
+  peer: DC1-SPINE4
   peer_interface: Ethernet1
   peer_type: spine
-  description: CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet1 no-monitor
+  description: CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet1
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
   type: routed
   ip_address: 172.31.255.7/31
-  name: Ethernet4
-- peer: server02_SINGLE_NODE_TRUNK
+- name: Ethernet6
+  peer: server02_SINGLE_NODE_TRUNK
   peer_interface: Eth1
   peer_type: server
   port_profile: ALL_WITH_SECURITY
   description: CUSTOM_server02_SINGLE_NODE_TRUNK_Eth1
-  l2_mtu: 8000
-  type: switched
   shutdown: false
+  type: switched
+  l2_mtu: 8000
   mode: trunk
   vlans: 1-4094
   spanning_tree_portfast: edge
@@ -251,17 +256,16 @@ ethernet_interfaces:
     unknown_unicast:
       level: '2'
       unit: percent
-  name: Ethernet6
-- peer: server02_SINGLE_NODE
+- name: Ethernet7
+  peer: server02_SINGLE_NODE
   peer_interface: Eth1
   peer_type: server
   port_profile: TENANT_A
   description: CUSTOM_server02_SINGLE_NODE_Eth1
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '110'
-  name: Ethernet7
 loopback_interfaces:
 - name: Loopback0
   description: CUSTOM_EVPN_Overlay_Peering_L3LEAF

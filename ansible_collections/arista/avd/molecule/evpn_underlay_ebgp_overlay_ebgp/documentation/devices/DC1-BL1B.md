@@ -1,9 +1,10 @@
 # DC1-BL1B
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [Name Servers](#name-servers)
+  - [IP Name Servers](#ip-name-servers)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
@@ -47,25 +48,25 @@
   - [Platform Summary](#platform-summary)
   - [Platform Configuration](#platform-configuration)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 192.168.200.111/24 | 192.168.200.5 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -76,37 +77,37 @@ interface Management1
    ip address 192.168.200.111/24
 ```
 
-## Name Servers
+### IP Name Servers
 
-### Name Servers Summary
+#### IP Name Servers Summary
 
-| Name Server | Source VRF |
-| ----------- | ---------- |
-| 192.168.200.5 | MGMT |
-| 8.8.8.8 | MGMT |
+| Name Server | VRF | Priority |
+| ----------- | --- | -------- |
+| 192.168.200.5 | MGMT | - |
+| 8.8.8.8 | MGMT | - |
 
-### Name Servers Device Configuration
+#### IP Name Servers Device Configuration
 
 ```eos
 ip name-server vrf MGMT 8.8.8.8
 ip name-server vrf MGMT 192.168.200.5
 ```
 
-## Management API HTTP
+### Management API HTTP
 
-### Management API HTTP Summary
+#### Management API HTTP Summary
 
 | HTTP | HTTPS | Default Services |
 | ---- | ----- | ---------------- |
 | False | True | - |
 
-### Management API VRF Access
+#### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
 | MGMT | - | - |
 
-### Management API HTTP Configuration
+#### Management API HTTP Configuration
 
 ```eos
 !
@@ -118,53 +119,53 @@ management api http-commands
       no shutdown
 ```
 
-# Authentication
+## Authentication
 
-## Local Users
+### Local Users
 
-### Local Users Summary
+#### Local Users Summary
 
 | User | Privilege | Role | Disabled | Shell |
 | ---- | --------- | ---- | -------- | ----- |
 | admin | 15 | network-admin | False | - |
 | cvpadmin | 15 | network-admin | False | - |
 
-### Local Users Device Configuration
+#### Local Users Device Configuration
 
 ```eos
 !
 username admin privilege 15 role network-admin nopassword
-username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+username cvpadmin privilege 15 role network-admin secret sha512 <removed>
 ```
 
-# Monitoring
+## Monitoring
 
-## TerminAttr Daemon
+### TerminAttr Daemon
 
-### TerminAttr Daemon Summary
+#### TerminAttr Daemon Summary
 
 | CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
 | -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
 | gzip | 192.168.200.11:9910 | MGMT | key,telarista | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | False |
 
-### TerminAttr Daemon Device Configuration
+#### TerminAttr Daemon Device Configuration
 
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
+   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=key,<removed> -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
    no shutdown
 ```
 
-## SNMP
+### SNMP
 
-### SNMP Configuration Summary
+#### SNMP Configuration Summary
 
 | Contact | Location | SNMP Traps | State |
 | ------- | -------- | ---------- | ----- |
 | example@example.com | DC1_FABRIC DC1-BL1B | All | Disabled |
 
-### SNMP Device Configuration
+#### SNMP Device Configuration
 
 ```eos
 !
@@ -172,11 +173,11 @@ snmp-server contact example@example.com
 snmp-server location DC1_FABRIC DC1-BL1B
 ```
 
-# Hardware TCAM Profile
+## Hardware TCAM Profile
 
 TCAM profile __`vxlan-routing`__ is active
 
-## Hardware TCAM configuration
+### Hardware TCAM configuration
 
 ```eos
 !
@@ -184,21 +185,21 @@ hardware tcam
    system profile vxlan-routing
 ```
 
-# Spanning Tree
+## Spanning Tree
 
-## Spanning Tree Summary
+### Spanning Tree Summary
 
 STP mode: **mstp**
 
 STP Root Super: **True**
 
-### MSTP Instance and Priority
+#### MSTP Instance and Priority
 
 | Instance(s) | Priority |
 | -------- | -------- |
 | 0 | 4096 |
 
-## Spanning Tree Device Configuration
+### Spanning Tree Device Configuration
 
 ```eos
 !
@@ -207,24 +208,24 @@ spanning-tree mode mstp
 spanning-tree mst 0 priority 4096
 ```
 
-# Internal VLAN Allocation Policy
+## Internal VLAN Allocation Policy
 
-## Internal VLAN Allocation Policy Summary
+### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
-## Internal VLAN Allocation Policy Configuration
+### Internal VLAN Allocation Policy Configuration
 
 ```eos
 !
 vlan internal order ascending range 1006 1199
 ```
 
-# VLANs
+## VLANs
 
-## VLANs Summary
+### VLANs Summary
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
@@ -232,7 +233,7 @@ vlan internal order ascending range 1006 1199
 | 250 | Tenant_B_WAN_Zone_1 | - |
 | 350 | Tenant_C_WAN_Zone_1 | - |
 
-## VLANs Device Configuration
+### VLANs Device Configuration
 
 ```eos
 !
@@ -246,27 +247,27 @@ vlan 350
    name Tenant_C_WAN_Zone_1
 ```
 
-# Interfaces
+## Interfaces
 
-## Ethernet Interfaces
+### Ethernet Interfaces
 
-### Ethernet Interfaces Summary
+#### Ethernet Interfaces Summary
 
-#### L2
+##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 
 *Inherited from Port-Channel Interface
 
-#### Encapsulation Dot1q Interfaces
+##### Encapsulation Dot1q Interfaces
 
 | Interface | Description | Type | Vlan ID | Dot1q VLAN Tag |
 | --------- | ----------- | -----| ------- | -------------- |
 | Ethernet10.100 | subinterface test | l3dot1q | - | 100 |
 | Ethernet10.200 | subinterface test with vlan override | l3dot1q | - | 141 |
 
-#### IPv4
+##### IPv4
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
@@ -281,7 +282,7 @@ vlan 350
 | Ethernet48 | CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet7 | routed | - | 172.31.255.103/31 | default | 1500 | False | - | - |
 | Ethernet4000 | My second test | routed | - | 10.1.2.3/12 | default | 1500 | False | - | - |
 
-### Ethernet Interfaces Device Configuration
+#### Ethernet Interfaces Device Configuration
 
 ```eos
 !
@@ -369,18 +370,18 @@ interface Ethernet4000
    ip address 10.1.2.3/12
 ```
 
-## Loopback Interfaces
+### Loopback Interfaces
 
-### Loopback Interfaces Summary
+#### Loopback Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | CUSTOM_EVPN_Overlay_Peering_L3LEAF | default | 192.168.255.15/32 |
 | Loopback1 | CUSTOM_VTEP_VXLAN_Tunnel_Source_L3LEAF | default | 192.168.254.15/32 |
 
-#### IPv6
+##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
@@ -388,7 +389,7 @@ interface Ethernet4000
 | Loopback1 | CUSTOM_VTEP_VXLAN_Tunnel_Source_L3LEAF | default | - |
 
 
-### Loopback Interfaces Device Configuration
+#### Loopback Interfaces Device Configuration
 
 ```eos
 !
@@ -403,9 +404,9 @@ interface Loopback1
    ip address 192.168.254.15/32
 ```
 
-## VLAN Interfaces
+### VLAN Interfaces
 
-### VLAN Interfaces Summary
+#### VLAN Interfaces Summary
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
@@ -413,7 +414,7 @@ interface Loopback1
 | Vlan250 | Tenant_B_WAN_Zone_1 | Tenant_B_WAN_Zone | - | False |
 | Vlan350 | Tenant_C_WAN_Zone_1 | Tenant_C_WAN_Zone | - | False |
 
-#### IPv4
+##### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
@@ -421,7 +422,7 @@ interface Loopback1
 | Vlan250 |  Tenant_B_WAN_Zone  |  -  |  10.2.50.1/24  |  -  |  -  |  -  |  -  |
 | Vlan350 |  Tenant_C_WAN_Zone  |  -  |  10.3.50.1/24  |  -  |  -  |  -  |  -  |
 
-### VLAN Interfaces Device Configuration
+#### VLAN Interfaces Device Configuration
 
 ```eos
 !
@@ -444,23 +445,23 @@ interface Vlan350
    ip address virtual 10.3.50.1/24
 ```
 
-## VXLAN Interface
+### VXLAN Interface
 
-### VXLAN Interface Summary
+#### VXLAN Interface Summary
 
 | Setting | Value |
 | ------- | ----- |
 | Source Interface | Loopback1 |
 | UDP port | 4789 |
 
-#### VLAN to VNI, Flood List and Multicast Group Mappings
+##### VLAN to VNI, Flood List and Multicast Group Mappings
 
 | VLAN | VNI | Flood List | Multicast Group |
 | ---- | --- | ---------- | --------------- |
 | 150 | 10150 | - | - |
 | 250 | 20250 | - | - |
 
-#### VRF to VNI and Multicast Group Mappings
+##### VRF to VNI and Multicast Group Mappings
 
 | VRF | VNI | Multicast Group |
 | ---- | --- | --------------- |
@@ -470,7 +471,7 @@ interface Vlan350
 | Tenant_C_WAN_Zone | 31 | - |
 | Tenant_L3_VRF_Zone | 15 | - |
 
-### VXLAN Interface Device Configuration
+#### VXLAN Interface Device Configuration
 
 ```eos
 !
@@ -487,8 +488,9 @@ interface Vxlan1
    vxlan vrf Tenant_L3_VRF_Zone vni 15
 ```
 
-# Routing
-## Service Routing Protocols Model
+## Routing
+
+### Service Routing Protocols Model
 
 Multi agent routing protocol model enabled
 
@@ -497,33 +499,34 @@ Multi agent routing protocol model enabled
 service routing protocols model multi-agent
 ```
 
-## Virtual Router MAC Address
+### Virtual Router MAC Address
 
-### Virtual Router MAC Address Summary
+#### Virtual Router MAC Address Summary
 
-#### Virtual Router MAC Address: 00:dc:00:00:00:0a
+##### Virtual Router MAC Address: 00:dc:00:00:00:0a
 
-### Virtual Router MAC Address Configuration
+#### Virtual Router MAC Address Configuration
 
 ```eos
 !
 ip virtual-router mac-address 00:dc:00:00:00:0a
 ```
-## IP Routing
 
-### IP Routing Summary
+### IP Routing
+
+#### IP Routing Summary
 
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
-| MGMT | false |
-| Tenant_A_WAN_Zone | true |
-| Tenant_B_OP_Zone | true |
-| Tenant_B_WAN_Zone | true |
-| Tenant_C_WAN_Zone | true |
-| Tenant_L3_VRF_Zone | true |
+| MGMT | False |
+| Tenant_A_WAN_Zone | True |
+| Tenant_B_OP_Zone | True |
+| Tenant_B_WAN_Zone | True |
+| Tenant_C_WAN_Zone | True |
+| Tenant_L3_VRF_Zone | True |
 
-### IP Routing Device Configuration
+#### IP Routing Device Configuration
 
 ```eos
 !
@@ -536,9 +539,9 @@ ip routing vrf Tenant_C_WAN_Zone
 ip routing vrf Tenant_L3_VRF_Zone
 ```
 
-## IPv6 Routing
+### IPv6 Routing
 
-### IPv6 Routing Summary
+#### IPv6 Routing Summary
 
 | VRF | Routing Enabled |
 | --- | --------------- |
@@ -550,9 +553,9 @@ ip routing vrf Tenant_L3_VRF_Zone
 | Tenant_C_WAN_Zone | false |
 | Tenant_L3_VRF_Zone | false |
 
-## Static Routes
+### Static Routes
 
-### Static Routes Summary
+#### Static Routes Summary
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
@@ -562,7 +565,7 @@ ip routing vrf Tenant_L3_VRF_Zone
 | Tenant_A_WAN_Zone | 1.1.2.0/24 | 10.1.1.1 | vlan101 | 200 | 666 | RT-TO-FAKE-DMZ | - |
 | Tenant_A_WAN_Zone | 10.3.5.0/24 | - | Null0 | 1 | - | - | - |
 
-### Static Routes Device Configuration
+#### Static Routes Device Configuration
 
 ```eos
 !
@@ -573,9 +576,9 @@ ip route vrf Tenant_A_WAN_Zone 1.1.2.0/24 Vlan101 10.1.1.1 200 tag 666 name RT-T
 ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 ```
 
-## Router BGP
+### Router BGP
 
-### Router BGP Summary
+#### Router BGP Summary
 
 | BGP AS | Router ID |
 | ------ | --------- |
@@ -583,13 +586,15 @@ ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 
 | BGP Tuning |
 | ---------- |
-| no bgp default ipv4-unicast |
 | distance bgp 20 200 200 |
 | maximum-paths 4 ecmp 4 |
+| graceful-restart restart-time 300 |
+| graceful-restart |
+| no bgp default ipv4-unicast |
 
-### Router BGP Peer Groups
+#### Router BGP Peer Groups
 
-#### EVPN-OVERLAY-PEERS
+##### EVPN-OVERLAY-PEERS
 
 | Settings | Value |
 | -------- | ----- |
@@ -600,7 +605,7 @@ ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 | Send community | all |
 | Maximum routes | 0 (no limit) |
 
-#### UNDERLAY-PEERS
+##### UNDERLAY-PEERS
 
 | Settings | Value |
 | -------- | ----- |
@@ -608,7 +613,7 @@ ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 | Send community | all |
 | Maximum routes | 12000 |
 
-### BGP Neighbors
+#### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
@@ -625,28 +630,28 @@ ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 | fd5a:fe45:8831:06c5::a | 12345 | Tenant_A_WAN_Zone | - | all | - | - | - | - | - | - |
 | fd5a:fe45:8831:06c5::b | 12345 | Tenant_A_WAN_Zone | - | - | - | - | - | - | - | - |
 
-### Router BGP EVPN Address Family
+#### Router BGP EVPN Address Family
 
-#### EVPN Peer Groups
+##### EVPN Peer Groups
 
 | Peer Group | Activate | Encapsulation |
 | ---------- | -------- | ------------- |
 | EVPN-OVERLAY-PEERS | True | default |
 
-#### EVPN Host Flapping Settings
+##### EVPN Host Flapping Settings
 
 | State | Window | Threshold | Expiry Timeout |
 | ----- | ------ | --------- | -------------- |
 | Disabled | - | - | - |
 
-### Router BGP VLAN Aware Bundles
+#### Router BGP VLAN Aware Bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
 | Tenant_A_WAN_Zone | 192.168.255.15:14 | 14:14 | - | - | learned | 150 |
 | Tenant_B_WAN_Zone | 192.168.255.15:21 | 21:21 | - | - | learned | 250 |
 
-### Router BGP VRFs
+#### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
@@ -656,12 +661,14 @@ ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 | Tenant_C_WAN_Zone | 192.168.255.15:31 | connected |
 | Tenant_L3_VRF_Zone | 192.168.255.15:15 | connected |
 
-### Router BGP Device Configuration
+#### Router BGP Device Configuration
 
 ```eos
 !
 router bgp 65105
    router-id 192.168.255.15
+   graceful-restart restart-time 300
+   graceful-restart
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4
@@ -669,11 +676,11 @@ router bgp 65105
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
    neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3
-   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
+   neighbor EVPN-OVERLAY-PEERS password 7 <removed>
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor UNDERLAY-PEERS peer group
-   neighbor UNDERLAY-PEERS password 7 0nsCUm70mvSTxVO0ldytrg==
+   neighbor UNDERLAY-PEERS password 7 <removed>
    neighbor UNDERLAY-PEERS send-community
    neighbor UNDERLAY-PEERS maximum-routes 12000
    neighbor 172.31.255.96 peer group UNDERLAY-PEERS
@@ -732,7 +739,7 @@ router bgp 65105
       route-target export vpn-ipv4 65000:123
       router-id 192.168.255.15
       neighbor 123.1.1.10 remote-as 1234
-      neighbor 123.1.1.10 password 7 oBztv71m2uhR7hh58/OCNA==
+      neighbor 123.1.1.10 password 7 <removed>
       neighbor 123.1.1.10 local-as 123 no-prepend replace-as
       neighbor 123.1.1.10 description External IPv4 BGP peer
       neighbor 123.1.1.10 ebgp-multihop 3
@@ -743,7 +750,7 @@ router bgp 65105
       neighbor 123.1.1.10 route-map RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT out
       neighbor 123.1.1.10 route-map RM-123-1-1-10-IN in
       neighbor 123.1.1.11 remote-as 1234
-      neighbor 123.1.1.11 password 7 oBztv71m2uhR7hh58/OCNA==
+      neighbor 123.1.1.11 password 7 <removed>
       neighbor 123.1.1.11 local-as 123 no-prepend replace-as
       neighbor 123.1.1.11 description External IPv4 BGP peer
       neighbor 123.1.1.11 ebgp-multihop 3
@@ -797,17 +804,17 @@ router bgp 65105
       redistribute connected
 ```
 
-# BFD
+## BFD
 
-## Router BFD
+### Router BFD
 
-### Router BFD Multihop Summary
+#### Router BFD Multihop Summary
 
 | Interval | Minimum RX | Multiplier |
 | -------- | ---------- | ---------- |
 | 1200 | 1200 | 3 |
 
-### Router BFD Device Configuration
+#### Router BFD Device Configuration
 
 ```eos
 !
@@ -815,35 +822,35 @@ router bfd
    multihop interval 1200 min-rx 1200 multiplier 3
 ```
 
-# Multicast
+## Multicast
 
-## IP IGMP Snooping
+### IP IGMP Snooping
 
-### IP IGMP Snooping Summary
+#### IP IGMP Snooping Summary
 
 | IGMP Snooping | Fast Leave | Interface Restart Query | Proxy | Restart Query Interval | Robustness Variable |
 | ------------- | ---------- | ----------------------- | ----- | ---------------------- | ------------------- |
 | Enabled | - | - | - | - | - |
 
-### IP IGMP Snooping Device Configuration
+#### IP IGMP Snooping Device Configuration
 
 ```eos
 ```
 
-# Filters
+## Filters
 
-## Prefix-lists
+### Prefix-lists
 
-### Prefix-lists Summary
+#### Prefix-lists Summary
 
-#### PL-LOOPBACKS-EVPN-OVERLAY
+##### PL-LOOPBACKS-EVPN-OVERLAY
 
 | Sequence | Action |
 | -------- | ------ |
 | 10 | permit 192.168.255.0/24 eq 32 |
 | 20 | permit 192.168.254.0/24 eq 32 |
 
-### Prefix-lists Device Configuration
+#### Prefix-lists Device Configuration
 
 ```eos
 !
@@ -852,29 +859,29 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
    seq 20 permit 192.168.254.0/24 eq 32
 ```
 
-## Route-maps
+### Route-maps
 
-### Route-maps Summary
+#### Route-maps Summary
 
-#### RM-CONN-2-BGP
+##### RM-CONN-2-BGP
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
 | 10 | permit | ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | - | - | - |
 
-#### RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
+##### RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
 | 10 | permit | - | ip next-hop 123.1.1.1 | - | - |
 
-#### RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
+##### RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
 | 10 | permit | - | ipv6 next-hop fd5a:fe45:8831:06c5::1 | - | - |
 
-### Route-maps Device Configuration
+#### Route-maps Device Configuration
 
 ```eos
 !
@@ -888,9 +895,9 @@ route-map RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT permit 10
    set ipv6 next-hop fd5a:fe45:8831:06c5::1
 ```
 
-# VRF Instances
+## VRF Instances
 
-## VRF Instances Summary
+### VRF Instances Summary
 
 | VRF Name | IP Routing |
 | -------- | ---------- |
@@ -901,7 +908,7 @@ route-map RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT permit 10
 | Tenant_C_WAN_Zone | enabled |
 | Tenant_L3_VRF_Zone | enabled |
 
-## VRF Instances Device Configuration
+### VRF Instances Device Configuration
 
 ```eos
 !
@@ -918,17 +925,17 @@ vrf instance Tenant_C_WAN_Zone
 vrf instance Tenant_L3_VRF_Zone
 ```
 
-# Platform
+## Platform
 
-## Platform Summary
+### Platform Summary
 
-### Platform Sand Summary
+#### Platform Sand Summary
 
 | Settings | Value |
 | -------- | ----- |
 | Hardware Only Lag | True |
 
-## Platform Configuration
+### Platform Configuration
 
 ```eos
 !

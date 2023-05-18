@@ -2,16 +2,22 @@ router_bgp:
   as: '65001'
   router_id: 192.168.255.3
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
-  - type: ipv4
+  - name: UNDERLAY-PEERS
+    type: ipv4
     password: 0nsCUm70mvSTxVO0ldytrg==
     maximum_routes: 12000
     send_community: all
-    name: UNDERLAY-PEERS
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     password: q+VNViP5i4rVjW1cxFv2wA==
@@ -19,133 +25,132 @@ router_bgp:
     maximum_routes: 0
     ebgp_multihop: 3
     next_hop_unchanged: true
-    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: UNDERLAY-PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   neighbors:
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.254.5
+    peer_group: UNDERLAY-PEERS
     remote_as: '65101'
     description: DC1-LEAF1A_Ethernet29
-    ip_address: 172.31.254.5
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.254.41
+    peer_group: UNDERLAY-PEERS
     remote_as: '65102'
     description: DC1-LEAF2A_Ethernet53/1
-    ip_address: 172.31.254.41
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.254.47
+    peer_group: UNDERLAY-PEERS
     remote_as: '65102'
     description: DC1-LEAF2A_Ethernet56/1
-    ip_address: 172.31.254.47
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.254.73
+    peer_group: UNDERLAY-PEERS
     remote_as: '65102'
     description: DC1-LEAF2B_Ethernet53/1
-    ip_address: 172.31.254.73
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.254.79
+    peer_group: UNDERLAY-PEERS
     remote_as: '65102'
     description: DC1-LEAF2B_Ethernet56/1
-    ip_address: 172.31.254.79
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.254.101
+    peer_group: UNDERLAY-PEERS
     remote_as: '65103'
     description: DC1-SVC3A_Ethernet51/1
-    ip_address: 172.31.254.101
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.254.133
+    peer_group: UNDERLAY-PEERS
     remote_as: '65103'
     description: DC1-SVC3B_Ethernet51/1
-    ip_address: 172.31.254.133
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.254.165
+    peer_group: UNDERLAY-PEERS
     remote_as: '65104'
     description: DC1-BL1A_Ethernet3
-    ip_address: 172.31.254.165
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.254.197
+    peer_group: UNDERLAY-PEERS
     remote_as: '65105'
     description: DC1-BL1B_Ethernet3
-    ip_address: 172.31.254.197
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.254.229
+    peer_group: UNDERLAY-PEERS
     remote_as: '65106'
     description: DC1-BL2A_Ethernet3
-    ip_address: 172.31.254.229
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.255.5
+    peer_group: UNDERLAY-PEERS
     remote_as: '65107'
     description: DC1-BL2B_Ethernet3
-    ip_address: 172.31.255.5
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.255.37
+    peer_group: UNDERLAY-PEERS
     remote_as: '65108'
     description: DC1-CL1A_Ethernet3
-    ip_address: 172.31.255.37
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.255.69
+    peer_group: UNDERLAY-PEERS
     remote_as: '65109'
     description: DC1-CL1B_Ethernet3
-    ip_address: 172.31.255.69
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.255.133
+    peer_group: UNDERLAY-PEERS
     remote_as: '65110'
     description: DC1_UNDEPLOYED_LEAF1A_Ethernet51/1
-    ip_address: 172.31.255.133
-  - peer_group: UNDERLAY-PEERS
+  - ip_address: 172.31.255.165
+    peer_group: UNDERLAY-PEERS
     remote_as: '65111'
     description: DC1_UNDEPLOYED_LEAF1B_Ethernet51/1
-    ip_address: 172.31.255.165
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.14
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-BL1A
     remote_as: '65104'
-    ip_address: 192.168.255.14
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.15
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-BL1B
     remote_as: '65105'
-    ip_address: 192.168.255.15
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.16
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-BL2A
     remote_as: '65106'
-    ip_address: 192.168.255.16
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.17
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-BL2B
     remote_as: '65107'
-    ip_address: 192.168.255.17
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.18
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-CL1A
     remote_as: '65108'
-    ip_address: 192.168.255.18
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.19
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-CL1B
     remote_as: '65109'
-    ip_address: 192.168.255.19
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.9
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-LEAF1A
     remote_as: '65101'
-    ip_address: 192.168.255.9
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.10
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-LEAF2A
     remote_as: '65102'
-    ip_address: 192.168.255.10
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.11
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-LEAF2B
     remote_as: '65102'
-    ip_address: 192.168.255.11
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.12
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SVC3A
     remote_as: '65103'
-    ip_address: 192.168.255.12
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.13
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SVC3B
     remote_as: '65103'
-    ip_address: 192.168.255.13
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.21
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1_UNDEPLOYED_LEAF1A
     remote_as: '65110'
-    ip_address: 192.168.255.21
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.22
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1_UNDEPLOYED_LEAF1B
     remote_as: '65111'
-    ip_address: 192.168.255.22
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -167,26 +172,28 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-name_server:
-  source:
-    vrf: MGMT
-  nodes:
-  - 192.168.200.5
-  - 8.8.8.8
+ip_name_servers:
+- ip_address: 192.168.200.5
+  vrf: MGMT
+- ip_address: 8.8.8.8
+  vrf: MGMT
 snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS DC1-SPINE3
 spanning_tree:
   mode: none
 local_users:
-- disabled: true
-  name: admin
-- privilege: 15
+- name: admin
+  disabled: true
+  privilege: 15
+  role: network-admin
+  no_password: true
+- name: cvpadmin
+  privilege: 15
   role: network-admin
   sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
   ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
     cvpadmin@hostmachine.local
-  name: cvpadmin
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -204,7 +211,8 @@ management_api_http:
   enable_https: true
   default_services: false
 ethernet_interfaces:
-- peer: DC1-LEAF1A
+- name: Ethernet1/1/1
+  peer: DC1-LEAF1A
   peer_interface: Ethernet29
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-LEAF1A_Ethernet29
@@ -213,8 +221,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.4/31
-  name: Ethernet1/1/1
-- peer: DC1-LEAF2A
+- name: Ethernet1/3/1
+  peer: DC1-LEAF2A
   peer_interface: Ethernet53/1
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-LEAF2A_Ethernet53/1
@@ -223,8 +231,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.40/31
-  name: Ethernet1/3/1
-- peer: DC1-LEAF2A
+- name: Ethernet1/4/1
+  peer: DC1-LEAF2A
   peer_interface: Ethernet56/1
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-LEAF2A_Ethernet56/1
@@ -233,8 +241,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.46/31
-  name: Ethernet1/4/1
-- peer: DC1-LEAF2B
+- name: Ethernet1/5/1
+  peer: DC1-LEAF2B
   peer_interface: Ethernet53/1
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-LEAF2B_Ethernet53/1
@@ -243,8 +251,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.72/31
-  name: Ethernet1/5/1
-- peer: DC1-LEAF2B
+- name: Ethernet1/6/1
+  peer: DC1-LEAF2B
   peer_interface: Ethernet56/1
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-LEAF2B_Ethernet56/1
@@ -253,8 +261,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.78/31
-  name: Ethernet1/6/1
-- peer: DC1-SVC3A
+- name: Ethernet1/7/1
+  peer: DC1-SVC3A
   peer_interface: Ethernet51/1
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-SVC3A_Ethernet51/1
@@ -263,8 +271,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.100/31
-  name: Ethernet1/7/1
-- peer: DC1-SVC3B
+- name: Ethernet1/9/1
+  peer: DC1-SVC3B
   peer_interface: Ethernet51/1
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-SVC3B_Ethernet51/1
@@ -273,8 +281,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.132/31
-  name: Ethernet1/9/1
-- peer: DC1-BL1A
+- name: Ethernet22
+  peer: DC1-BL1A
   peer_interface: Ethernet3
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-BL1A_Ethernet3
@@ -283,8 +291,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.164/31
-  name: Ethernet22
-- peer: DC1-BL1B
+- name: Ethernet23
+  peer: DC1-BL1B
   peer_interface: Ethernet3
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-BL1B_Ethernet3
@@ -293,8 +301,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.196/31
-  name: Ethernet23
-- peer: DC1-BL2A
+- name: Ethernet24
+  peer: DC1-BL2A
   peer_interface: Ethernet3
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-BL2A_Ethernet3
@@ -303,8 +311,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.228/31
-  name: Ethernet24
-- peer: DC1-BL2B
+- name: Ethernet25
+  peer: DC1-BL2B
   peer_interface: Ethernet3
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-BL2B_Ethernet3
@@ -313,8 +321,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.4/31
-  name: Ethernet25
-- peer: DC1-CL1A
+- name: Ethernet26
+  peer: DC1-CL1A
   peer_interface: Ethernet3
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-CL1A_Ethernet3
@@ -323,8 +331,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.36/31
-  name: Ethernet26
-- peer: DC1-CL1B
+- name: Ethernet27
+  peer: DC1-CL1B
   peer_interface: Ethernet3
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-CL1B_Ethernet3
@@ -333,8 +341,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.68/31
-  name: Ethernet27
-- peer: DC1_UNDEPLOYED_LEAF1A
+- name: Ethernet28
+  peer: DC1_UNDEPLOYED_LEAF1A
   peer_interface: Ethernet51/1
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1_UNDEPLOYED_LEAF1A_Ethernet51/1
@@ -343,8 +351,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.132/31
-  name: Ethernet28
-- peer: DC1_UNDEPLOYED_LEAF1B
+- name: Ethernet29
+  peer: DC1_UNDEPLOYED_LEAF1B
   peer_interface: Ethernet51/1
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1_UNDEPLOYED_LEAF1B_Ethernet51/1
@@ -353,7 +361,6 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.255.164/31
-  name: Ethernet29
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

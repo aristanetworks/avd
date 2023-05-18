@@ -267,7 +267,7 @@ Lastly, we need to provide a way for traffic to exit the Campus Fabric via the W
 
 ``` yaml
 # Underlay Routing Protocol
-underlay_routing_protocol: OSPF
+underlay_routing_protocol: ospf
 
 #### WAN/Core Edge Links ####
 core_interfaces:

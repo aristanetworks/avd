@@ -20,7 +20,7 @@ class StructCfgsMixin(UtilsMixin):
         Return the combined structured config from VRFs
         """
 
-        if not self._network_services_l3:
+        if not self.shared_utils.network_services_l3:
             return None
 
         structured_configs = []

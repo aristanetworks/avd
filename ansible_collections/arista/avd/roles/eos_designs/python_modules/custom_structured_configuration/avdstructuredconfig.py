@@ -48,7 +48,7 @@ class AvdStructuredConfig(AvdFacts):
         return struct_cfgs
 
     def _struct_cfg(self) -> list:
-        if (struct_cfg := self._hostvars.pop("struct_cfg", None)) is not None:
+        if (struct_cfg := get(self.shared_utils.switch_data_combined, "structured_config")) is not None:
             return [struct_cfg]
 
         return []
@@ -128,7 +128,10 @@ class AvdStructuredConfig(AvdFacts):
 
         return [
             {
-                str(key)[len(prefix) :]: self._hostvars[key]
+                # Disable black to prevent whitespace before colon PEP8 E203
+                # fmt: off
+                str(key)[len(prefix):]: self._hostvars[key]
+                # fmt: on
                 for key in self._hostvars
                 if str(key).startswith(prefix) and key not in CUSTOM_STRUCTURED_CONFIGURATION_EXEMPT_KEYS
             }

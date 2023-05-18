@@ -1,9 +1,9 @@
 {# doc - ip extcommunity lists #}
 {% if ip_extcommunity_lists is arista.avd.defined %}
 
-## IP Extended Community Lists
+### IP Extended Community Lists
 
-### IP Extended Community Lists Summary
+#### IP Extended Community Lists Summary
 
 | List Name | Type | Extended Communities |
 | --------- | ---- | -------------------- |
@@ -15,7 +15,7 @@
 {%         endfor %}
 {%     endfor %}
 
-### IP Extended Community Lists configuration
+#### IP Extended Community Lists configuration
 
 ```eos
 {%     include 'eos/ip-extcommunity-lists.j2' %}

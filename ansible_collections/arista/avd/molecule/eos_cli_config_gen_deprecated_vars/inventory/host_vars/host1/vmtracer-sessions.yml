@@ -1,0 +1,15 @@
+### vmtracer sessions ###
+
+# Testing vmtracer_sessions as dict of dict
+# Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+vmtracer_sessions:
+  session_1:
+    url: "https://192.168.0.10"
+    username: user1
+    password: "encrypted_password"
+    autovlan_disable: true
+    source_interface: Management1
+  session_2:
+    url: "https://192.168.0.10"
+    username: user1
+    password: "encrypted_password"

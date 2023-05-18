@@ -2,15 +2,19 @@ router_bgp:
   as: '65000'
   router_id: 100.70.0.8
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
   - bgp route-reflector preserve-attributes always
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   bgp_cluster_id: 1.1.1.1
   peer_groups:
-  - type: mpls
+  - name: MPLS-OVERLAY-PEERS
+    type: mpls
     update_source: Loopback0
     bfd: true
     password: SHsTgDgjVUU5a9blyxSt3Q==
@@ -18,54 +22,53 @@ router_bgp:
     maximum_routes: 0
     remote_as: '65000'
     route_reflector_client: true
-    name: MPLS-OVERLAY-PEERS
-  - type: mpls
+  - name: RR-OVERLAY-PEERS
+    type: mpls
     update_source: Loopback0
     bfd: true
     password: 04FdfTXWrEfpDTUc3mlSjg==
     send_community: all
     maximum_routes: 0
     remote_as: '65000'
-    name: RR-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: false
-      name: MPLS-OVERLAY-PEERS
-    - activate: false
-      name: RR-OVERLAY-PEERS
+    - name: MPLS-OVERLAY-PEERS
+      activate: false
+    - name: RR-OVERLAY-PEERS
+      activate: false
   address_family_evpn:
     neighbor_default:
       encapsulation: mpls
     peer_groups:
-    - activate: true
-      name: MPLS-OVERLAY-PEERS
-    - activate: true
-      name: RR-OVERLAY-PEERS
+    - name: MPLS-OVERLAY-PEERS
+      activate: true
+    - name: RR-OVERLAY-PEERS
+      activate: true
   address_family_vpn_ipv4:
     peer_groups:
-    - activate: true
-      name: MPLS-OVERLAY-PEERS
-    - activate: true
-      name: RR-OVERLAY-PEERS
+    - name: MPLS-OVERLAY-PEERS
+      activate: true
+    - name: RR-OVERLAY-PEERS
+      activate: true
   address_family_vpn_ipv6:
     peer_groups:
-    - activate: true
-      name: MPLS-OVERLAY-PEERS
-    - activate: true
-      name: RR-OVERLAY-PEERS
+    - name: MPLS-OVERLAY-PEERS
+      activate: true
+    - name: RR-OVERLAY-PEERS
+      activate: true
   neighbors:
-  - peer_group: MPLS-OVERLAY-PEERS
+  - ip_address: 100.70.0.5
+    peer_group: MPLS-OVERLAY-PEERS
     description: SITE1-LER1
-    ip_address: 100.70.0.5
-  - peer_group: MPLS-OVERLAY-PEERS
+  - ip_address: 100.70.0.6
+    peer_group: MPLS-OVERLAY-PEERS
     description: SITE1-LER2
-    ip_address: 100.70.0.6
-  - peer_group: MPLS-OVERLAY-PEERS
+  - ip_address: 100.70.0.7
+    peer_group: MPLS-OVERLAY-PEERS
     description: SITE2-LER1
-    ip_address: 100.70.0.7
-  - peer_group: RR-OVERLAY-PEERS
+  - ip_address: 100.70.0.9
+    peer_group: RR-OVERLAY-PEERS
     description: SITE2-RR1
-    ip_address: 100.70.0.9
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -116,12 +119,11 @@ router_isis:
   net: 49.0001.0000.0002.0008.00
   router_id: 100.70.0.8
   is_type: level-1-2
-  address_family:
-  - ipv4 unicast
-  - ipv6 unicast
-  isis_af_defaults:
-  - maximum-paths 4
-  - fast-reroute ti-lfa mode link-protection
+  address_family_ipv4:
+    enabled: true
+    maximum_paths: 4
+    fast_reroute_ti_lfa:
+      mode: link-protection
   mpls_ldp_sync_default: true
   timers:
     local_convergence:
@@ -129,6 +131,11 @@ router_isis:
       protected_prefixes: true
   advertise:
     passive_only: true
+  address_family_ipv6:
+    enabled: true
+    maximum_paths: 4
+    fast_reroute_ti_lfa:
+      mode: link-protection
   segment_routing_mpls:
     router_id: 100.70.0.8
     enabled: true

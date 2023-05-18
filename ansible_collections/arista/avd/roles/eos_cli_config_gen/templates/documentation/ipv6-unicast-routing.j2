@@ -1,9 +1,9 @@
 {# doc - ipv6 unicast routing #}
 {% if ipv6_unicast_routing is arista.avd.defined or vrfs is arista.avd.defined %}
 
-## IPv6 Routing
+### IPv6 Routing
 
-### IPv6 Routing Summary
+#### IPv6 Routing Summary
 
 | VRF | Routing Enabled |
 | --- | --------------- |
@@ -19,11 +19,10 @@
 {%     endfor %}
 {%     if ipv6_unicast_routing is arista.avd.defined(true) or ipv6_configured_in_vrf == true %}
 
-### IPv6 Routing Device Configuration
+#### IPv6 Routing Device Configuration
 
 ```eos
 {%         include 'eos/ipv6-unicast-routing.j2' %}
-{%         include 'eos/ip-routing-ipv6-interfaces.j2' %}
 {%         include 'eos/ipv6-unicast-routing-vrfs.j2' %}
 {%         include 'eos/ipv6-icmp-redirect.j2' %}
 {%         include 'eos/ipv6-hardware.j2' %}

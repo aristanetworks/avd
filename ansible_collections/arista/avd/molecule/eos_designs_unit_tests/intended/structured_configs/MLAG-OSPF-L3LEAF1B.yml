@@ -3,33 +3,39 @@ router_bgp:
   router_id: 192.168.255.37
   bgp_defaults:
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     password: q+VNViP5i4rVjW1cxFv2wA==
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 3
-    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
     evpn_hostflap_detection:
       window: 180
       threshold: 5
       enabled: true
       expiry_timeout: 10
   neighbors:
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.1
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-SPINE1
     remote_as: '65001'
-    ip_address: 192.168.255.1
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -51,24 +57,26 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-name_server:
-  source:
-    vrf: MGMT
-  nodes:
-  - 192.168.200.5
-  - 8.8.8.8
+ip_name_servers:
+- ip_address: 192.168.200.5
+  vrf: MGMT
+- ip_address: 8.8.8.8
+  vrf: MGMT
 snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS MLAG-OSPF-L3LEAF1B
 local_users:
-- disabled: true
-  name: admin
-- privilege: 15
+- name: admin
+  disabled: true
+  privilege: 15
+  role: network-admin
+  no_password: true
+- name: cvpadmin
+  privilege: 15
   role: network-admin
   sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
   ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
     cvpadmin@hostmachine.local
-  name: cvpadmin
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -88,11 +96,11 @@ management_api_http:
 spanning_tree:
   no_spanning_tree_vlan: '4094'
 vlans:
-- tenant: system
+- id: 4094
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  id: 4094
 vlan_interfaces:
 - name: Vlan4094
   description: MLAG_PEER
@@ -107,43 +115,42 @@ port_channel_interfaces:
   description: MLAG_PEER_MLAG-OSPF-L3LEAF1A_Po5
   type: switched
   shutdown: false
-  vlans: 2-4094
   mode: trunk
   trunk_groups:
   - LEAF_PEER_L3
   - MLAG
 ethernet_interfaces:
-- peer: MLAG-OSPF-L3LEAF1A
+- name: Ethernet5
+  peer: MLAG-OSPF-L3LEAF1A
   peer_interface: Ethernet5
   peer_type: mlag_peer
   description: MLAG_PEER_MLAG-OSPF-L3LEAF1A_Ethernet5
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
     mode: active
-  name: Ethernet5
-- peer: MLAG-OSPF-L3LEAF1A
+- name: Ethernet6
+  peer: MLAG-OSPF-L3LEAF1A
   peer_interface: Ethernet6
   peer_type: mlag_peer
   description: MLAG_PEER_MLAG-OSPF-L3LEAF1A_Ethernet6
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
     mode: active
-  name: Ethernet6
-- peer: DC1-SPINE1
-  peer_interface: Ethernet18
+- name: Ethernet1
+  peer: DC1-SPINE1
+  peer_interface: Ethernet220
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE1_Ethernet18
+  description: P2P_LINK_TO_DC1-SPINE1_Ethernet220
   shutdown: false
   mtu: 1500
   type: routed
   ip_address: 10.10.101.9/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  name: Ethernet1
 mlag_configuration:
   domain_id: MLAG_OSPF_L3LEAF1
   local_interface: Vlan4094

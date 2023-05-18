@@ -2,84 +2,88 @@ router_bgp:
   as: '65211'
   router_id: 172.16.210.3
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
-  - type: ipv4
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
     maximum_routes: 12000
     send_community: all
-    name: IPv4-UNDERLAY-PEERS
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 5
     next_hop_unchanged: true
-    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: IPv4-UNDERLAY-PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   - source_protocol: attached-host
   neighbors:
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.17.210.0
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65210'
     description: DC2-POD1-SPINE1_Ethernet3
-    ip_address: 172.17.210.0
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.17.210.2
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65210'
     description: DC2-POD1-SPINE2_Ethernet3
-    ip_address: 172.17.210.2
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 172.16.110.3
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-POD1-LEAF1A
     remote_as: '65111.100'
-    ip_address: 172.16.110.3
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 172.16.110.1
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-POD1-SPINE1
     remote_as: '65110.100'
-    ip_address: 172.16.110.1
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 172.16.10.1
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-RS1
     remote_as: '65101'
-    ip_address: 172.16.10.1
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 172.16.10.2
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC1-RS2
     remote_as: '65102'
-    ip_address: 172.16.10.2
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 172.16.210.4
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC2-POD1-LEAF2A
     remote_as: '65212'
-    ip_address: 172.16.210.4
-  - remote_as: '65112.100'
+  - ip_address: 100.100.100.101
+    remote_as: '65112.100'
     description: DC1.POD1.LEAF2A
     peer_group: IPv4-UNDERLAY-PEERS
-    ip_address: 100.100.100.101
-  - remote_as: '65120'
+  - ip_address: 11.1.0.38
+    remote_as: '65120'
     description: DC1-POD1-LEAF2B
     peer_group: IPv4-UNDERLAY-PEERS
     bfd: true
-    ip_address: 11.1.0.38
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
   address_family_rtc:
     peer_groups:
-    - activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
       default_route_target:
         only: true
-      name: EVPN-OVERLAY-PEERS
   vrfs:
-  - router_id: 172.16.210.3
+  - name: Common_VRF
+    router_id: 172.16.210.3
     rd: 172.16.210.3:1025
     route_targets:
       import:
@@ -99,8 +103,8 @@ router_bgp:
       EOF
 
       '
-    name: Common_VRF
-  - router_id: 172.16.210.3
+  - name: vrf_with_loopbacks_dc1_pod1_only
+    router_id: 172.16.210.3
     rd: 172.16.210.3:1102
     route_targets:
       import:
@@ -113,8 +117,8 @@ router_bgp:
         - 1102:1102
     redistribute_routes:
     - source_protocol: connected
-    name: vrf_with_loopbacks_dc1_pod1_only
-  - router_id: 172.16.210.3
+  - name: vrf_with_loopbacks_from_overlapping_pool
+    router_id: 172.16.210.3
     rd: 172.16.210.3:1100
     route_targets:
       import:
@@ -127,8 +131,8 @@ router_bgp:
         - 1100:1100
     redistribute_routes:
     - source_protocol: connected
-    name: vrf_with_loopbacks_from_overlapping_pool
-  - router_id: 172.16.210.3
+  - name: vrf_with_loopbacks_from_pod_pools
+    router_id: 172.16.210.3
     rd: 172.16.210.3:1101
     route_targets:
       import:
@@ -141,7 +145,6 @@ router_bgp:
         - 1101:1101
     redistribute_routes:
     - source_protocol: connected
-    name: vrf_with_loopbacks_from_pod_pools
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -159,10 +162,11 @@ spanning_tree:
   mode: rstp
   rstp_priority: 4096
 local_users:
-- privilege: 15
+- name: admin
+  privilege: 15
   role: network-admin
+  no_password: true
   sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
-  name: admin
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -194,7 +198,8 @@ eos_cli: "interface Loopback1010\n  description Loopback created from raw_eos_cl
   \ description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n\ninterface Loopback1000\n  description Loopback
   created from raw_eos_cli under VRF Common_VRF\n"
 ethernet_interfaces:
-- peer: DC2-POD1-SPINE1
+- name: Ethernet1
+  peer: DC2-POD1-SPINE1
   peer_interface: Ethernet3
   peer_type: spine
   description: P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet3
@@ -205,8 +210,8 @@ ethernet_interfaces:
   ptp:
     enable: true
   ip_address: 172.17.210.1/31
-  name: Ethernet1
-- peer: DC2-POD1-SPINE2
+- name: Ethernet2
+  peer: DC2-POD1-SPINE2
   peer_interface: Ethernet3
   peer_type: spine
   description: P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet3
@@ -217,17 +222,16 @@ ethernet_interfaces:
   ptp:
     enable: true
   ip_address: 172.17.210.3/31
-  name: Ethernet2
-- peer: DC2-POD1-L2LEAF1A
+- name: Ethernet3
+  peer: DC2-POD1-L2LEAF1A
   peer_interface: Ethernet1
   peer_type: l2leaf
   description: DC2-POD1-L2LEAF1A_Ethernet1
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 3
     mode: active
-  name: Ethernet3
 - name: Ethernet6
   peer: DC1.POD1.LEAF2A
   peer_interface: Ethernet7
@@ -293,10 +297,10 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-  - type: permit
+  - sequence: 20
+    type: permit
     match:
     - ip address prefix-list PL-L2LEAF-INBAND-MGMT
-    sequence: 20
 router_bfd:
   multihop:
     interval: 300
@@ -326,18 +330,19 @@ virtual_source_nat_vrfs:
 - name: vrf_with_loopbacks_from_pod_pools
   ip_address: 10.101.201.3
 vlans:
-- tenant: system
-  name: L2LEAF_INBAND_MGMT
-  id: 4092
+- id: 4092
+  tenant: system
+  name: INBAND_MGMT
 vlan_interfaces:
 - name: Vlan4092
-  description: L2LEAF_INBAND_MGMT
+  description: Inband Management
   shutdown: false
   mtu: 1500
   ip_address: 172.21.210.2/24
   ip_virtual_router_addresses:
   - 172.21.210.1
   ip_attached_host_route_export:
+    enabled: true
     distance: 19
 domain_list:
 - structured-config.set.under.vrf.common-vrf

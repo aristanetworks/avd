@@ -217,10 +217,7 @@ spine:
       # The two following commands must not be enabled when using vEOS-lab
       # - update wait-for-convergence
       # - update wait-install
-      - no bgp default ipv4-unicast
       - distance bgp 20 200 200
-      - graceful-restart restart-time 300
-      - graceful-restart
 
   # Definition of nodes contained in this group.
   # Specific configuration of device must take place under the node definition. Each node inherites all values defined under 'defaults'
@@ -446,7 +443,6 @@ If you want to push to switches in the entire fabric using CloudVision and your 
         container_root: 'DC1'
         configlets_prefix: 'AVD'
         execute_tasks: false
-        apply_mode: strict
         state: present
         cv_collection: v3
 ```

@@ -1,5 +1,6 @@
 # DC1-POD2-LEAF1A
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -45,25 +46,25 @@
   - [Virtual Source NAT Configuration](#virtual-source-nat-configuration)
 - [EOS CLI](#eos-cli)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 192.168.1.15/24 | 192.168.1.254 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -74,33 +75,33 @@ interface Management1
    ip address 192.168.1.15/24
 ```
 
-## Domain-list
+### Domain-list
 
-### Domain-list:
+#### Domain-list:
  - structured-config.set.under.vrf.common-vrf
 
-### Domain-list Device Configuration
+#### Domain-list Device Configuration
 
 ```eos
 ip domain-list structured-config.set.under.vrf.common-vrf
 !
 ```
 
-## Management API HTTP
+### Management API HTTP
 
-### Management API HTTP Summary
+#### Management API HTTP Summary
 
 | HTTP | HTTPS | Default Services |
 | ---- | ----- | ---------------- |
 | False | True | - |
 
-### Management API VRF Access
+#### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
 | MGMT | - | - |
 
-### Management API HTTP Configuration
+#### Management API HTTP Configuration
 
 ```eos
 !
@@ -112,71 +113,71 @@ management api http-commands
       no shutdown
 ```
 
-# Authentication
+## Authentication
 
-## Local Users
+### Local Users
 
-### Local Users Summary
+#### Local Users Summary
 
 | User | Privilege | Role | Disabled | Shell |
 | ---- | --------- | ---- | -------- | ----- |
 | admin | 15 | network-admin | False | - |
 
-### Local Users Device Configuration
+#### Local Users Device Configuration
 
 ```eos
 !
-username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
+username admin privilege 15 role network-admin secret sha512 <removed>
 ```
 
-# Monitoring
+## Monitoring
 
-## SNMP
+### SNMP
 
-### SNMP Configuration Summary
+#### SNMP Configuration Summary
 
 | Contact | Location | SNMP Traps | State |
 | ------- | -------- | ---------- | ----- |
 | - | TWODC_5STAGE_CLOS DC1 DC1_POD2 DC1-POD2-LEAF1A | All | Disabled |
 
-### SNMP Device Configuration
+#### SNMP Device Configuration
 
 ```eos
 !
 snmp-server location TWODC_5STAGE_CLOS DC1 DC1_POD2 DC1-POD2-LEAF1A
 ```
 
-# Spanning Tree
+## Spanning Tree
 
-## Spanning Tree Summary
+### Spanning Tree Summary
 
 STP mode: **none**
 
-## Spanning Tree Device Configuration
+### Spanning Tree Device Configuration
 
 ```eos
 !
 spanning-tree mode none
 ```
 
-# Internal VLAN Allocation Policy
+## Internal VLAN Allocation Policy
 
-## Internal VLAN Allocation Policy Summary
+### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
-## Internal VLAN Allocation Policy Configuration
+### Internal VLAN Allocation Policy Configuration
 
 ```eos
 !
 vlan internal order ascending range 1006 1199
 ```
 
-# VLANs
+## VLANs
 
-## VLANs Summary
+### VLANs Summary
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
@@ -191,7 +192,7 @@ vlan internal order ascending range 1006 1199
 | 2600 | web-l2-vlan-2 | - |
 | 2601 | l2vlan_with_no_vxlan | - |
 
-## VLANs Device Configuration
+### VLANs Device Configuration
 
 ```eos
 !
@@ -226,20 +227,20 @@ vlan 2601
    name l2vlan_with_no_vxlan
 ```
 
-# Interfaces
+## Interfaces
 
-## Ethernet Interfaces
+### Ethernet Interfaces
 
-### Ethernet Interfaces Summary
+#### Ethernet Interfaces Summary
 
-#### L2
+##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 
 *Inherited from Port-Channel Interface
 
-#### IPv4
+##### IPv4
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
@@ -247,7 +248,7 @@ vlan 2601
 | Ethernet2 | P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet3 | routed | - | 172.17.120.3/31 | default | 1500 | False | - | - |
 | Ethernet3 | P2P_LINK_TO_DC1-RS2_Ethernet3 | routed | - | 172.17.10.12/31 | default | 1500 | False | - | - |
 
-### Ethernet Interfaces Device Configuration
+#### Ethernet Interfaces Device Configuration
 
 ```eos
 !
@@ -255,6 +256,7 @@ interface Ethernet1
    description P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet3
    no shutdown
    mtu 1500
+   mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.17.120.1/31
    ptp enable
@@ -264,6 +266,7 @@ interface Ethernet2
    description P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet3
    no shutdown
    mtu 1500
+   mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.17.120.3/31
    ptp enable
@@ -278,11 +281,11 @@ interface Ethernet3
    service-profile QOS-PROFILE
 ```
 
-## Loopback Interfaces
+### Loopback Interfaces
 
-### Loopback Interfaces Summary
+#### Loopback Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
@@ -291,7 +294,7 @@ interface Ethernet3
 | Loopback100 | vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_overlapping_pool | 10.100.0.3/32 |
 | Loopback101 | vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_pod_pools | 10.101.102.3/32 |
 
-#### IPv6
+##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
@@ -301,7 +304,7 @@ interface Ethernet3
 | Loopback101 | vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_pod_pools | - |
 
 
-### Loopback Interfaces Device Configuration
+#### Loopback Interfaces Device Configuration
 
 ```eos
 !
@@ -328,9 +331,9 @@ interface Loopback101
    ip address 10.101.102.3/32
 ```
 
-## VLAN Interfaces
+### VLAN Interfaces
 
-### VLAN Interfaces Summary
+#### VLAN Interfaces Summary
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
@@ -342,7 +345,7 @@ interface Loopback101
 | Vlan1101 | test_svi | vrf_with_loopbacks_from_pod_pools | - | False |
 | Vlan1102 | test_svi | vrf_with_loopbacks_dc1_pod1_only | - | False |
 
-#### IPv4
+##### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
@@ -354,7 +357,7 @@ interface Loopback101
 | Vlan1101 |  vrf_with_loopbacks_from_pod_pools  |  -  |  10.101.100.1/24  |  -  |  -  |  -  |  -  |
 | Vlan1102 |  vrf_with_loopbacks_dc1_pod1_only  |  -  |  10.102.100.1/24  |  -  |  -  |  -  |  -  |
 
-### VLAN Interfaces Device Configuration
+#### VLAN Interfaces Device Configuration
 
 ```eos
 !
@@ -405,16 +408,16 @@ interface Vlan1102
    ip address virtual 10.102.100.1/24
 ```
 
-## VXLAN Interface
+### VXLAN Interface
 
-### VXLAN Interface Summary
+#### VXLAN Interface Summary
 
 | Setting | Value |
 | ------- | ----- |
 | Source Interface | Loopback1 |
 | UDP port | 4789 |
 
-#### VLAN to VNI, Flood List and Multicast Group Mappings
+##### VLAN to VNI, Flood List and Multicast Group Mappings
 
 | VLAN | VNI | Flood List | Multicast Group |
 | ---- | --- | ---------- | --------------- |
@@ -424,7 +427,7 @@ interface Vlan1102
 | 2500 | 2500 | - | - |
 | 2600 | 12600 | - | - |
 
-#### VRF to VNI and Multicast Group Mappings
+##### VRF to VNI and Multicast Group Mappings
 
 | VRF | VNI | Multicast Group |
 | ---- | --- | --------------- |
@@ -433,7 +436,7 @@ interface Vlan1102
 | vrf_with_loopbacks_from_overlapping_pool | 1100 | - |
 | vrf_with_loopbacks_from_pod_pools | 1101 | - |
 
-### VXLAN Interface Device Configuration
+#### VXLAN Interface Device Configuration
 
 ```eos
 !
@@ -452,8 +455,9 @@ interface Vxlan1
    vxlan vrf vrf_with_loopbacks_from_pod_pools vni 1101
 ```
 
-# Routing
-## Service Routing Protocols Model
+## Routing
+
+### Service Routing Protocols Model
 
 Multi agent routing protocol model enabled
 
@@ -462,32 +466,33 @@ Multi agent routing protocol model enabled
 service routing protocols model multi-agent
 ```
 
-## Virtual Router MAC Address
+### Virtual Router MAC Address
 
-### Virtual Router MAC Address Summary
+#### Virtual Router MAC Address Summary
 
-#### Virtual Router MAC Address: 00:1c:73:00:dc:01
+##### Virtual Router MAC Address: 00:1c:73:00:dc:01
 
-### Virtual Router MAC Address Configuration
+#### Virtual Router MAC Address Configuration
 
 ```eos
 !
 ip virtual-router mac-address 00:1c:73:00:dc:01
 ```
-## IP Routing
 
-### IP Routing Summary
+### IP Routing
+
+#### IP Routing Summary
 
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
-| Common_VRF | true |
-| MGMT | false |
-| vrf_with_loopbacks_dc1_pod1_only | true |
-| vrf_with_loopbacks_from_overlapping_pool | true |
-| vrf_with_loopbacks_from_pod_pools | true |
+| Common_VRF | True |
+| MGMT | False |
+| vrf_with_loopbacks_dc1_pod1_only | True |
+| vrf_with_loopbacks_from_overlapping_pool | True |
+| vrf_with_loopbacks_from_pod_pools | True |
 
-### IP Routing Device Configuration
+#### IP Routing Device Configuration
 
 ```eos
 !
@@ -499,9 +504,9 @@ ip routing vrf vrf_with_loopbacks_from_overlapping_pool
 ip routing vrf vrf_with_loopbacks_from_pod_pools
 ```
 
-## IPv6 Routing
+### IPv6 Routing
 
-### IPv6 Routing Summary
+#### IPv6 Routing Summary
 
 | VRF | Routing Enabled |
 | --- | --------------- |
@@ -512,24 +517,24 @@ ip routing vrf vrf_with_loopbacks_from_pod_pools
 | vrf_with_loopbacks_from_overlapping_pool | false |
 | vrf_with_loopbacks_from_pod_pools | false |
 
-## Static Routes
+### Static Routes
 
-### Static Routes Summary
+#### Static Routes Summary
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
 | MGMT | 0.0.0.0/0 | 192.168.1.254 | - | 1 | - | - | - |
 
-### Static Routes Device Configuration
+#### Static Routes Device Configuration
 
 ```eos
 !
 ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 ```
 
-## Router BGP
+### Router BGP
 
-### Router BGP Summary
+#### Router BGP Summary
 
 | BGP AS | Router ID |
 | ------ | --------- |
@@ -537,15 +542,15 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | BGP Tuning |
 | ---------- |
-| no bgp default ipv4-unicast |
 | distance bgp 20 200 200 |
+| maximum-paths 4 ecmp 4 |
 | graceful-restart restart-time 300 |
 | graceful-restart |
-| maximum-paths 4 ecmp 4 |
+| no bgp default ipv4-unicast |
 
-### Router BGP Peer Groups
+#### Router BGP Peer Groups
 
-#### EVPN-OVERLAY-PEERS
+##### EVPN-OVERLAY-PEERS
 
 | Settings | Value |
 | -------- | ----- |
@@ -556,7 +561,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | Send community | all |
 | Maximum routes | 0 (no limit) |
 
-#### IPv4-UNDERLAY-PEERS
+##### IPv4-UNDERLAY-PEERS
 
 | Settings | Value |
 | -------- | ----- |
@@ -564,7 +569,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | Send community | all |
 | Maximum routes | 12000 |
 
-### BGP Neighbors
+#### BGP Neighbors
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
@@ -574,17 +579,17 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | 172.17.120.0 | 65120 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 | 172.17.120.2 | 65120 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 
-### Router BGP EVPN Address Family
+#### Router BGP EVPN Address Family
 
 - VPN import pruning is __enabled__
 
-#### EVPN Peer Groups
+##### EVPN Peer Groups
 
 | Peer Group | Activate | Encapsulation |
 | ---------- | -------- | ------------- |
 | EVPN-OVERLAY-PEERS | True | default |
 
-### Router BGP VLANs
+#### Router BGP VLANs
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
@@ -594,7 +599,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | 2500 | 172.16.120.3:2500 | 2500:2500 | - | - | learned |
 | 2600 | 172.16.120.3:32600 | 32600:32600 | - | - | learned<br>router-mac system |
 
-### Router BGP VRFs
+#### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
@@ -603,26 +608,26 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | vrf_with_loopbacks_from_overlapping_pool | 172.16.120.3:1100 | connected |
 | vrf_with_loopbacks_from_pod_pools | 172.16.120.3:1101 | connected |
 
-### Router BGP Device Configuration
+#### Router BGP Device Configuration
 
 ```eos
 !
 router bgp 65121
    router-id 172.16.120.3
-   no bgp default ipv4-unicast
-   distance bgp 20 200 200
    graceful-restart restart-time 300
    graceful-restart
+   no bgp default ipv4-unicast
+   distance bgp 20 200 200
    maximum-paths 4 ecmp 4
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
    neighbor EVPN-OVERLAY-PEERS ebgp-multihop 5
-   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
+   neighbor EVPN-OVERLAY-PEERS password 7 <removed>
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor IPv4-UNDERLAY-PEERS peer group
-   neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
+   neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 172.16.120.1 peer group EVPN-OVERLAY-PEERS
@@ -739,17 +744,17 @@ router bgp 65121
       redistribute connected
 ```
 
-# BFD
+## BFD
 
-## Router BFD
+### Router BFD
 
-### Router BFD Multihop Summary
+#### Router BFD Multihop Summary
 
 | Interval | Minimum RX | Multiplier |
 | -------- | ---------- | ---------- |
 | 300 | 300 | 3 |
 
-### Router BFD Device Configuration
+#### Router BFD Device Configuration
 
 ```eos
 !
@@ -757,35 +762,35 @@ router bfd
    multihop interval 300 min-rx 300 multiplier 3
 ```
 
-# Multicast
+## Multicast
 
-## IP IGMP Snooping
+### IP IGMP Snooping
 
-### IP IGMP Snooping Summary
+#### IP IGMP Snooping Summary
 
 | IGMP Snooping | Fast Leave | Interface Restart Query | Proxy | Restart Query Interval | Robustness Variable |
 | ------------- | ---------- | ----------------------- | ----- | ---------------------- | ------------------- |
 | Enabled | - | - | - | - | - |
 
-### IP IGMP Snooping Device Configuration
+#### IP IGMP Snooping Device Configuration
 
 ```eos
 ```
 
-# Filters
+## Filters
 
-## Prefix-lists
+### Prefix-lists
 
-### Prefix-lists Summary
+#### Prefix-lists Summary
 
-#### PL-LOOPBACKS-EVPN-OVERLAY
+##### PL-LOOPBACKS-EVPN-OVERLAY
 
 | Sequence | Action |
 | -------- | ------ |
 | 10 | permit 172.16.120.0/24 eq 32 |
 | 20 | permit 172.18.120.0/24 eq 32 |
 
-### Prefix-lists Device Configuration
+#### Prefix-lists Device Configuration
 
 ```eos
 !
@@ -794,24 +799,24 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
    seq 20 permit 172.18.120.0/24 eq 32
 ```
 
-## Route-maps
+### Route-maps
 
-### Route-maps Summary
+#### Route-maps Summary
 
-#### RM-CONN-2-BGP
+##### RM-CONN-2-BGP
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
 | 10 | permit | ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | - | - | - |
 
-#### RM-EVPN-FILTER-AS65120
+##### RM-EVPN-FILTER-AS65120
 
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
 | 10 | deny | as 65120 | - | - | - |
 | 20 | permit | - | - | - | - |
 
-### Route-maps Device Configuration
+#### Route-maps Device Configuration
 
 ```eos
 !
@@ -824,9 +829,9 @@ route-map RM-EVPN-FILTER-AS65120 deny 10
 route-map RM-EVPN-FILTER-AS65120 permit 20
 ```
 
-# VRF Instances
+## VRF Instances
 
-## VRF Instances Summary
+### VRF Instances Summary
 
 | VRF Name | IP Routing |
 | -------- | ---------- |
@@ -836,7 +841,7 @@ route-map RM-EVPN-FILTER-AS65120 permit 20
 | vrf_with_loopbacks_from_overlapping_pool | enabled |
 | vrf_with_loopbacks_from_pod_pools | enabled |
 
-## VRF Instances Device Configuration
+### VRF Instances Device Configuration
 
 ```eos
 !
@@ -851,16 +856,16 @@ vrf instance vrf_with_loopbacks_from_overlapping_pool
 vrf instance vrf_with_loopbacks_from_pod_pools
 ```
 
-# Virtual Source NAT
+## Virtual Source NAT
 
-## Virtual Source NAT Summary
+### Virtual Source NAT Summary
 
 | Source NAT VRF | Source NAT IP Address |
 | -------------- | --------------------- |
 | vrf_with_loopbacks_from_overlapping_pool | 10.100.0.3 |
 | vrf_with_loopbacks_from_pod_pools | 10.101.102.3 |
 
-## Virtual Source NAT Configuration
+### Virtual Source NAT Configuration
 
 ```eos
 !
@@ -868,7 +873,7 @@ ip address virtual source-nat vrf vrf_with_loopbacks_from_overlapping_pool addre
 ip address virtual source-nat vrf vrf_with_loopbacks_from_pod_pools address 10.101.102.3
 ```
 
-# EOS CLI
+## EOS CLI
 
 ```eos
 !

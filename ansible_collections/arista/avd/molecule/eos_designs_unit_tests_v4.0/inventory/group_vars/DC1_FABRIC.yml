@@ -11,12 +11,12 @@ evpn_hostflap_detection:
 
 # bgp peer groups passwords
 bgp_peer_groups:
-  IPv4_UNDERLAY_PEERS: # Using legacy upper-case keys to test backwards-compatibility
+  ipv4_underlay_peers:
     name: UNDERLAY-PEERS
     password: "0nsCUm70mvSTxVO0ldytrg=="
-  EVPN_OVERLAY_PEERS: # Using legacy upper-case keys to test backwards-compatibility
+  evpn_overlay_peers:
     password: "q+VNViP5i4rVjW1cxFv2wA=="
-  MLAG_IPv4_UNDERLAY_PEER: # Using legacy upper-case keys to test backwards-compatibility
+  mlag_ipv4_underlay_peer:
     name: MLAG-PEERS
     password: "vnEaG8gMeQf3d3cN6PktXQ=="
 
@@ -26,7 +26,7 @@ spine:
     platform: 7050SX3
     bgp_as: "65001"
     loopback_ipv4_pool: 192.168.255.0/24
-    bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200']
+    bgp_defaults: ['distance bgp 20 200 200']
   nodes:
     - name: DC1-SPINE1
       id: 1
@@ -62,7 +62,7 @@ l3leaf:
     max_uplink_switches: 8
     uplink_ipv4_pool: 172.31.255.0/24
     uplink_interface_speed: forced 100gfull
-    bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200']
+    bgp_defaults: ['distance bgp 20 200 200']
     platform: 7280R
     bgp_as: "65101"
     mlag_interfaces: [ Ethernet5, Ethernet6 ]

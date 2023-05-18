@@ -1,5 +1,6 @@
 # router-ospf
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -11,25 +12,25 @@
 - [Routing](#routing)
   - [Router OSPF](#router-ospf)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -39,20 +40,20 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Interfaces
+## Interfaces
 
-## Ethernet Interfaces
+### Ethernet Interfaces
 
-### Ethernet Interfaces Summary
+#### Ethernet Interfaces Summary
 
-#### L2
+##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 
 *Inherited from Port-Channel Interface
 
-### Ethernet Interfaces Device Configuration
+#### Ethernet Interfaces Device Configuration
 
 ```eos
 !
@@ -62,19 +63,19 @@ interface Ethernet1
    ip ospf network point-to-point
    ip ospf authentication message-digest
    ip ospf area 0.0.0.1
-   ip ospf message-digest-key 55 md5 7 ABCDEFGHIJKLMNOPQRSTUVWXYZ
+   ip ospf message-digest-key 55 md5 7 <removed>
 ```
 
-## Port-Channel Interfaces
+### Port-Channel Interfaces
 
-### Port-Channel Interfaces Summary
+#### Port-Channel Interfaces Summary
 
-#### L2
+##### L2
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 
-### Port-Channel Interfaces Device Configuration
+#### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
@@ -84,27 +85,27 @@ interface Port-Channel12
    ip ospf area 0.0.0.12
    ip ospf cost 99
    ip ospf authentication message-digest
-   ip ospf message-digest-key 55 md5 7 ABCDEFGHIJKLMNOPQRSTUVWXYZ
+   ip ospf message-digest-key 55 md5 7 <removed>
 ```
 
-## Loopback Interfaces
+### Loopback Interfaces
 
-### Loopback Interfaces Summary
+#### Loopback Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
 | Loopback2 | - | default | - |
 
-#### IPv6
+##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
 | Loopback2 | - | default | - |
 
 
-### Loopback Interfaces Device Configuration
+#### Loopback Interfaces Device Configuration
 
 ```eos
 !
@@ -112,21 +113,21 @@ interface Loopback2
    ip ospf area 0.0.0.2
 ```
 
-## VLAN Interfaces
+### VLAN Interfaces
 
-### VLAN Interfaces Summary
+#### VLAN Interfaces Summary
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
 | Vlan24 | - | default | - | - |
 
-#### IPv4
+##### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
 | Vlan24 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
 
-### VLAN Interfaces Device Configuration
+#### VLAN Interfaces Device Configuration
 
 ```eos
 !
@@ -135,14 +136,14 @@ interface Vlan24
    ip ospf area 0.0.0.24
    ip ospf cost 99
    ip ospf authentication message-digest
-   ip ospf message-digest-key 55 md5 7 ABCDEFGHIJKLMNOPQRSTUVWXYZ
+   ip ospf message-digest-key 55 md5 7 <removed>
 ```
 
-# Routing
+## Routing
 
-## Router OSPF
+### Router OSPF
 
-### Router OSPF Summary
+#### Router OSPF Summary
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
@@ -154,24 +155,30 @@ interface Vlan24
 | 500 | - | disabled |- | disabled | default | disabled | disabled | - | - | - | - |
 | 600 | - | disabled |- | disabled | default | disabled | disabled | - | - | - | - |
 
-### Router OSPF Distance
+#### Router OSPF Distance
 
 | Process ID | Intra Area | Inter Area | External |
 | ---------- | ---------- | ---------- | -------- |
 | 100 | 50 | 70 | 60 |
 
-### Router OSPF Router Redistribution
+#### Router OSPF Router Redistribution
 
-| Process ID | Source Protocol | Route Map |
-| ---------- | --------------- | --------- |
-| 100 | connected | - |
-| 100 | static | - |
-| 100 | bgp | - |
-| 200 | connected | rm-ospf-connected |
-| 200 | static | rm-ospf-static |
-| 200 | bgp | rm-ospf-bgp |
+| Process ID | Source Protocol | Include Leaked | Route Map |
+| ---------- | --------------- | -------------- | --------- |
+| 100 | connected | disabled | - |
+| 100 | static | disabled | - |
+| 100 | bgp | disabled | - |
+| 200 | connected | enabled | rm-ospf-connected |
+| 200 | static | enabled | rm-ospf-static |
+| 200 | bgp | enabled | rm-ospf-bgp |
+| 300 | connected | disabled | rm-ospf-connected |
+| 300 | static | disabled | rm-ospf-static |
+| 300 | bgp | disabled | rm-ospf-bgp |
+| 400 | connected | enabled | - |
+| 400 | static | enabled | - |
+| 400 | bgp | enabled | - |
 
-### Router OSPF Router Max-Metric
+#### Router OSPF Router Max-Metric
 
 | Process ID | Router-LSA | External-LSA (metric) | Include Stub | On Startup Delay | Summary-LSA (metric) |
 | ---------- | ---------- | --------------------- | ------------ | ---------------- | -------------------- |
@@ -179,14 +186,14 @@ interface Vlan24
 | 400 | enabled | enabled | enabled | wait-for-bgp | enabled |
 | 500 | enabled | enabled (123) | disabled | 222 | enabled (456) |
 
-### Router OSPF timers
+#### Router OSPF timers
 
 | Process ID | LSA rx | LSA tx (initial/min/max) | SPF (initial/min/max) |
 | ---------- | ------ | ------------------------ | --------------------- |
 | 101 | 100 | 100 / 200 / 300 | 100 / 200 / 300 |
 | 200 | 100 | - | - |
 
-### Router OSPF route summary
+#### Router OSPF route summary
 
 | Process ID | Prefix | Tag | Attribute Route Map | Not Advertised |
 |------------|--------|-----|---------------------|----------------|
@@ -195,7 +202,7 @@ interface Vlan24
 | 101 | 30.0.0.0/8 | - | RM-OSPF_SUMMARY | - |
 | 101 | 40.0.0.0/8 | - | - | True |
 
-### Router OSPF Areas
+#### Router OSPF Areas
 
 | Process ID | Area | Area Type | Filter Networks | Filter Prefix List | Additional Options |
 | ---------- | ---- | --------- | --------------- | ------------------ | ------------------ |
@@ -211,7 +218,7 @@ interface Vlan24
 | 600 | 0.0.20.25 | nssa | - | - | no-summary, default-information-originate metric-type 1 |
 | 600 | 0.0.20.26 | nssa | - | - | no-summary, default-information-originate metric 50 metric-type 1, nssa-only |
 
-### OSPF Interfaces
+#### OSPF Interfaces
 
 | Interface | Area | Cost | Point To Point |
 | -------- | -------- | -------- | -------- |
@@ -220,7 +227,7 @@ interface Vlan24
 | Vlan24 | 0.0.0.24 | 99 | True |
 | Loopback2 | 0.0.0.2 | - | - |
 
-### Router OSPF Device Configuration
+#### Router OSPF Device Configuration
 
 ```eos
 !
@@ -269,14 +276,20 @@ router ospf 200 vrf ospf_zone
    max-lsa 5
    timers lsa rx min interval 100
    default-information originate always
+   redistribute static include leaked route-map rm-ospf-static
+   redistribute connected include leaked route-map rm-ospf-connected
+   redistribute bgp include leaked route-map rm-ospf-bgp
+!
+router ospf 300
    redistribute static route-map rm-ospf-static
    redistribute connected route-map rm-ospf-connected
    redistribute bgp route-map rm-ospf-bgp
-!
-router ospf 300
    max-metric router-lsa
 !
 router ospf 400
+   redistribute static include leaked
+   redistribute connected include leaked
+   redistribute bgp include leaked
    max-metric router-lsa external-lsa include-stub on-startup wait-for-bgp summary-lsa
 !
 router ospf 500

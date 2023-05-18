@@ -1,0 +1,11 @@
+### Daemons ###
+
+# Testing daemons as dict of dict
+# Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+daemons:
+  ocprometheus:
+    exec: "/usr/bin/ocprometheus -config /usr/bin/ocprometheus.yml -addr localhost:6042"
+    enabled: true
+  random:
+    exec: "/usr/bin/random"
+    enabled: false

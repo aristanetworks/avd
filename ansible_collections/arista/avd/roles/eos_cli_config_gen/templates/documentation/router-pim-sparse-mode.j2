@@ -1,15 +1,15 @@
 {# doc - router pim sparse mode #}
 {% if router_pim_sparse_mode is arista.avd.defined %}
 
-### Router PIM Sparse Mode
+#### Router PIM Sparse Mode
 
-#### IP Sparse Mode Information
+##### IP Sparse Mode Information
 {%     if router_pim_sparse_mode.ipv4 is arista.avd.defined %}
 
 BFD enabled: {{ router_pim_sparse_mode.ipv4.bfd | arista.avd.default(false) }}
 {%         if router_pim_sparse_mode.ipv4.rp_addresses is arista.avd.defined %}
 
-##### IP Rendezvous Information
+####### IP Rendezvous Information
 
 | Rendezvous Point Address | Group Address | Access Lists | Priority | Hashmask | Override |
 | ------------------------ | ------------- | ------------ | -------- | -------- | -------- |
@@ -24,7 +24,7 @@ BFD enabled: {{ router_pim_sparse_mode.ipv4.bfd | arista.avd.default(false) }}
 {%         endif %}
 {%         if router_pim_sparse_mode.ipv4.anycast_rps is arista.avd.defined %}
 
-##### IP Anycast Information
+####### IP Anycast Information
 
 | IP Anycast Address | Other Rendezvous Point Address | Register Count |
 | ------------------ | ------------------------------ | -------------- |
@@ -38,7 +38,7 @@ BFD enabled: {{ router_pim_sparse_mode.ipv4.bfd | arista.avd.default(false) }}
 {%     endif %}
 {%     if router_pim_sparse_mode.vrfs is arista.avd.defined %}
 
-##### IP Sparse Mode VRFs
+####### IP Sparse Mode VRFs
 
 | VRF Name | BFD Enabled |
 | -------- | ----------- |
@@ -62,7 +62,7 @@ BFD enabled: {{ router_pim_sparse_mode.ipv4.bfd | arista.avd.default(false) }}
 {%         endfor %}
 {%     endif %}
 
-#### Router Multicast Device Configuration
+##### Router Multicast Device Configuration
 
 ```eos
 {%     include 'eos/router-pim-sparse-mode.j2' %}

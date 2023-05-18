@@ -109,6 +109,15 @@ keys:
       bgp:
         type: dict
         keys:
+          default:
+            type: dict
+            keys:
+              ipv4_unicast:
+                type: bool
+                description: Default activation of IPv4 unicast address-family on all IPv4 neighbors (EOS default = True).
+              ipv4_unicast_transport_ipv6:
+                type: bool
+                description: Default activation of IPv4 unicast address-family on all IPv6 neighbors (EOS default == False).
           bestpath:
             type: dict
             keys:
@@ -301,6 +310,8 @@ keys:
                 IP prefix range
                 note: `bgp_listen_range_prefix` and `peer_filter` will be deprecated in AVD v4.0
                 These should not be mixed with the new `listen_ranges` key above to avoid conflicts.
+            session_tracker:
+              type: str
       neighbors:
         type: list
         primary_key: ip_address
@@ -442,6 +453,8 @@ keys:
                   type: bool
                 replace_as:
                   type: bool
+            session_tracker:
+              type: str
       neighbor_interfaces:
         type: list
         primary_key: name
@@ -1555,3 +1568,19 @@ keys:
               type: str
               description: |
                 Multiline EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration
+      session_trackers:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Name of session tracker
+            recovery_delay:
+              type: int
+              description: Recovery delay in seconds
+              convert_types:
+                - str
+              min: 1
+              max: 3600

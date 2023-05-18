@@ -1,6 +1,6 @@
 # MPLS_CORE
 
-# Table of Contents
+## Table of Contents
 
 - [Fabric Switches and Management IP](#fabric-switches-and-management-ip)
   - [Fabric Switches with inband Management IP](#fabric-switches-with-inband-management-ip)
@@ -14,28 +14,29 @@
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
 
-# Fabric Switches and Management IP
+## Fabric Switches and Management IP
 
-| POD | Type | Node | Management IP | Platform | Provisioned in CloudVision |
-| --- | ---- | ---- | ------------- | -------- | -------------------------- |
-| MPLS_CORE | pe | SITE1-LER1 | 192.168.200.105/24 | 7280SR3 | Provisioned |
-| MPLS_CORE | pe | SITE1-LER2 | 192.168.200.106/24 | 7280SR3 | Provisioned |
-| MPLS_CORE | p | SITE1-LSR1 | 192.168.200.101/24 | - | Provisioned |
-| MPLS_CORE | p | SITE1-LSR2 | 192.168.200.102/24 | - | Provisioned |
-| MPLS_CORE | rr | SITE1-RR1 | 10.30.30.108/24 | 7280SR3 | Provisioned |
-| MPLS_CORE | pe | SITE2-LER1 | 192.168.200.107/24 | 7280SR3 | Provisioned |
-| MPLS_CORE | p | SITE2-LSR1 | 192.168.200.103/24 | - | Provisioned |
-| MPLS_CORE | p | SITE2-LSR2 | 192.168.200.104/24 | - | Provisioned |
-| MPLS_CORE | rr | SITE2-RR1 | 10.30.30.109/24 | 7280SR3 | Provisioned |
-| MPLS_CORE | pe | SITE3-LER1 | 192.168.200.110/24 | 7280SR3 | Provisioned |
+| POD | Type | Node | Management IP | Platform | Provisioned in CloudVision | Serial Number |
+| --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
+| MPLS_CORE | pe | SITE1-LER1 | 192.168.200.105/24 | 7280SR3 | Provisioned | - |
+| MPLS_CORE | pe | SITE1-LER2 | 192.168.200.106/24 | 7280SR3 | Provisioned | - |
+| MPLS_CORE | p | SITE1-LSR1 | 192.168.200.101/24 | 7280SR | Provisioned | - |
+| MPLS_CORE | p | SITE1-LSR2 | 192.168.200.102/24 | 7280SR | Provisioned | - |
+| MPLS_CORE | rr | SITE1-RR1 | 10.30.30.108/24 | 7280SR3 | Provisioned | - |
+| MPLS_CORE | pe | SITE2-LER1 | 192.168.200.107/24 | 7280SR3 | Provisioned | - |
+| MPLS_CORE | p | SITE2-LSR1 | 192.168.200.103/24 | 7280SR | Provisioned | - |
+| MPLS_CORE | p | SITE2-LSR2 | 192.168.200.104/24 | 7280SR | Provisioned | - |
+| MPLS_CORE | rr | SITE2-RR1 | 10.30.30.109/24 | 7280SR3 | Provisioned | - |
+| MPLS_CORE | pe | SITE3-LER1 | 192.168.200.110/24 | 7280SR3 | Provisioned | - |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
-## Fabric Switches with inband Management IP
+### Fabric Switches with inband Management IP
+
 | POD | Type | Node | Management IP | Inband Interface |
 | --- | ---- | ---- | ------------- | ---------------- |
 
-# Fabric Topology
+## Fabric Topology
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
 | ---- | ---- | -------------- | --------- | ----------| -------------- |
@@ -51,14 +52,14 @@
 | p | SITE2-LSR2 | Ethernet12 | pe | SITE2-LER1 | Port-Channel11 |
 | p | SITE2-LSR2 | Ethernet13 | pe | SITE2-LER1 | Port-Channel11 |
 
-# Fabric IP Allocation
+## Fabric IP Allocation
 
-## Fabric Point-To-Point Links
+### Fabric Point-To-Point Links
 
 | Uplink IPv4 Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ---------------- | ------------------- | ------------------ | ------------------ |
 
-## Point-To-Point Links Node Allocation
+### Point-To-Point Links Node Allocation
 
 | Node | Node Interface | Node IP Address | Peer Node | Peer Interface | Peer IP Address |
 | ---- | -------------- | --------------- | --------- | -------------- | --------------- |
@@ -71,13 +72,13 @@
 | SITE2-LER1 | Ethernet1 | 100.64.48.15/31 | SITE2-LSR1 | Ethernet1 | 100.64.48.14/31 |
 | SITE2-LSR1 | Ethernet4 | 100.64.48.12/31 | SITE2-RR1 | Ethernet4 | 100.64.48.13/31 |
 
-## Loopback Interfaces (BGP EVPN Peering)
+### Loopback Interfaces (BGP EVPN Peering)
 
 | Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------- | ------------------- | ------------------ | ------------------ |
 | 100.70.0.0/24 | 256 | 10 | 3.91 % |
 
-## Loopback0 Interfaces Node Allocation
+### Loopback0 Interfaces Node Allocation
 
 | POD | Node | Loopback0 |
 | --- | ---- | --------- |
@@ -92,7 +93,7 @@
 | MPLS_CORE | SITE2-RR1 | 100.70.0.9/32 |
 | MPLS_CORE | SITE3-LER1 | 100.70.0.10/32 |
 
-## ISIS CLNS interfaces
+### ISIS CLNS interfaces
 
 | POD | Node | CLNS Address |
 | --- | ---- | ------------ |
@@ -107,12 +108,12 @@
 | MPLS_CORE | SITE2-RR1 | 49.0001.0000.0002.0009.00 |
 | MPLS_CORE | SITE3-LER1 | 49.0001.0000.0001.0010.00 |
 
-## VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
+### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | --------------------- | ------------------- | ------------------ | ------------------ |
 
-## VTEP Loopback Node allocation
+### VTEP Loopback Node allocation
 
 | POD | Node | Loopback1 |
 | --- | ---- | --------- |

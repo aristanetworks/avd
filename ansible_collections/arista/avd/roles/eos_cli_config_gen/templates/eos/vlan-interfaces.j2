@@ -73,6 +73,9 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.ip_igmp is arista.avd.defined(true) %}
    ip igmp
 {%     endif %}
+{%     if vlan_interface.ip_igmp_version is arista.avd.defined %}
+   ip igmp version {{ vlan_interface.ip_igmp_version }}
+{%     endif %}
 {%     if vlan_interface.ipv6_enable is arista.avd.defined(true) %}
    ipv6 enable
 {%     endif %}
@@ -145,6 +148,10 @@ interface {{ vlan_interface.name }}
    multicast ipv6 static
 {%         endif %}
 {%     endif %}
+{%     if vlan_interface.ip_nat is arista.avd.defined %}
+{%         set interface_ip_nat = vlan_interface.ip_nat %}
+{%         include 'eos/interface-ip-nat.j2' %}
+{%     endif %}
 {%     if vlan_interface.access_group_in is arista.avd.defined %}
    ip access-group {{ vlan_interface.access_group_in }} in
 {%     endif %}
@@ -174,12 +181,12 @@ interface {{ vlan_interface.name }}
 {%         endif %}
 {%     endif %}
 {%     if vlan_interface.ospf_authentication_key is arista.avd.defined %}
-   ip ospf authentication-key 7 {{ vlan_interface.ospf_authentication_key }}
+   ip ospf authentication-key 7 {{ vlan_interface.ospf_authentication_key | arista.avd.hide_passwords(hide_passwords) }}
 {%     endif %}
 {%     for ospf_message_digest_key in vlan_interface.ospf_message_digest_keys | arista.avd.natural_sort('id') %}
 {%         if ospf_message_digest_key.hash_algorithm is arista.avd.defined and
               ospf_message_digest_key.key is arista.avd.defined %}
-   ip ospf message-digest-key {{ ospf_message_digest_key.id }} {{ ospf_message_digest_key.hash_algorithm }} 7 {{ ospf_message_digest_key.key }}
+   ip ospf message-digest-key {{ ospf_message_digest_key.id }} {{ ospf_message_digest_key.hash_algorithm }} 7 {{ ospf_message_digest_key.key | arista.avd.hide_passwords(hide_passwords) }}
 {%         endif %}
 {%     endfor %}
 {%     if vlan_interface.pim.ipv4.sparse_mode is arista.avd.defined(true) %}
@@ -278,10 +285,12 @@ interface {{ vlan_interface.name }}
 {%             endfor %}
 {%         endfor %}
 {%     endif %}
-{%     if vlan_interface.ip_attached_host_route_export.distance is arista.avd.defined %}
-   ip attached-host route export {{ vlan_interface.ip_attached_host_route_export.distance }}
-{%     elif vlan_interface.ip_attached_host_route_export is arista.avd.defined %}
-   ip attached-host route export
+{%     if vlan_interface.ip_attached_host_route_export.enabled is arista.avd.defined(true) %}
+{%         set ip_attached_host_route_export_cli = "ip attached-host route export" %}
+{%         if vlan_interface.ip_attached_host_route_export.distance is arista.avd.defined %}
+{%             set ip_attached_host_route_export_cli = ip_attached_host_route_export_cli ~ " " ~ vlan_interface.ip_attached_host_route_export.distance %}
+{%         endif %}
+   {{ ip_attached_host_route_export_cli }}
 {%     endif %}
 {%     if vlan_interface.bfd.interval is arista.avd.defined and
           vlan_interface.bfd.min_rx is arista.avd.defined and

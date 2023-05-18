@@ -11,6 +11,23 @@ keys:
       enabled:
         type: bool
         required: true
+      default_thresholds:
+        type: dict
+        keys:
+          high:
+            type: int
+            required: true
+            convert_types:
+              - str
+            description: |
+              Default high threshold for Ethernet Interfaces.
+          low:
+            type: int
+            convert_types:
+              - str
+            description: |
+              Default low threshold for Ethernet Interfaces.
+              Low threshold support is platform dependent.
       log:
         type: int
         convert_types:

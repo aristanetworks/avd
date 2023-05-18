@@ -8,7 +8,7 @@ router_bgp:
     - graceful-restart
     - maximum-paths 2 ecmp 2
   peer_groups:
-    EVPN-OVERLAY-PEERS:
+    - name: EVPN-OVERLAY-PEERS
       type: evpn
       remote_as: 65001
       update_source: Loopback0
@@ -17,7 +17,7 @@ router_bgp:
       password: "q+VNViP5i4rVjW1cxFv2wA=="
       send_community: all
       maximum_routes: 0
-    EVPN-OVERLAY-RS-PEERS:
+    - name: EVPN-OVERLAY-RS-PEERS
       type: evpn
       remote_as: 65001
       update_source: Loopback0
@@ -26,7 +26,7 @@ router_bgp:
       password: "dRx9sULvl+hzkCMYJLEQCw=="
       send_community: all
       maximum_routes: 0
-    MLAG-IPv4-UNDERLAY-PEER:
+    - name: MLAG-IPv4-UNDERLAY-PEER
       type: ipv4
       remote_as: 65101
       next_hop_self: true
@@ -36,9 +36,9 @@ router_bgp:
       route_map_in: RM-MLAG-PEER-IN
       route_map_out: RM-MLAG-PEER-OUT
   neighbors:
-    192.168.255.1:
+    - ip_address: 192.168.255.1
       peer_group: EVPN-OVERLAY-PEERS
-    192.168.255.2:
+    - ip_address: 192.168.255.2
       peer_group: EVPN-OVERLAY-PEERS
   redistribute_routes:
   address_family_evpn:
@@ -46,27 +46,27 @@ router_bgp:
       enabled: true
       expiry_timeout: 20
     peer_groups:
-      EVPN-OVERLAY-PEERS:
+      - name: EVPN-OVERLAY-PEERS
         activate: true
-      MLAG-IPv4-UNDERLAY-PEER:
+      - name: MLAG-IPv4-UNDERLAY-PEER
         activate: false
   address_family_rtc:
     peer_groups:
-      EVPN-OVERLAY-PEERS:
+      - name: EVPN-OVERLAY-PEERS
         activate: true
         default_route_target:
-      EVPN-OVERLAY-RS-PEERS:
+      - name: EVPN-OVERLAY-RS-PEERS
         activate: true
         default_route_target:
           only: true
           encoding_origin_as_omit:
   address_family_ipv4:
     peer_groups:
-      EVPN-OVERLAY-PEERS:
+      - name: EVPN-OVERLAY-PEERS
         activate: false
   vlan_aware_bundles:
 ## Tenant_A ##
-    TENANT_A_PROJECT01:
+    - name: TENANT_A_PROJECT01
       rd: "192.168.255.3:11"
       route_targets:
         both:
@@ -74,7 +74,7 @@ router_bgp:
       redistribute_routes:
         - learned
       vlan: 110
-    TENANT_A_PROJECT02:
+    - name: TENANT_A_PROJECT02
       rd: "192.168.255.3:12"
       route_targets:
         both:
@@ -83,7 +83,7 @@ router_bgp:
         - learned
       vlan: 112
 ## Tenant_B ##
-    B-ELAN-201:
+    - name: B-ELAN-201
       tenant: Tenant_B
       rd: "192.168.255.3:20201"
       route_targets:
@@ -95,33 +95,37 @@ router_bgp:
   vlans:
   vrfs:
 ## Tenant_A ##
-    TENANT_A_PROJECT01:
+    - name: TENANT_A_PROJECT01
       router_id: 192.168.255.3
       rd: "192.168.255.3:11"
       route_targets:
         import:
-          evpn:
-            - "11:11"
+          - address_family: evpn
+            route_targets:
+              - "11:11"
         export:
-          evpn:
-            - "11:11"
+          - address_family: evpn
+            route_targets:
+              - "11:11"
       neighbors:
-        10.255.251.1:
+        - ip_address: 10.255.251.1
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
-        - connected
-    TENANT_A_PROJECT02:
+        - source_protocol: connected
+    - name: TENANT_A_PROJECT02
       router_id: 192.168.255.3
       rd: "192.168.255.3:12"
       route_targets:
         import:
-          evpn:
-            - "12:12"
+          - address_family: evpn
+            route_targets:
+              - "12:12"
         export:
-          evpn:
-            - "12:12"
+          - address_family: evpn
+            route_targets:
+              - "12:12"
       neighbors:
-        10.255.251.1:
+        - ip_address: 10.255.251.1
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
-        - connected
+        - source_protocol: connected

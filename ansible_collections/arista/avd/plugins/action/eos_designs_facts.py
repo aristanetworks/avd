@@ -28,9 +28,10 @@ class ActionModule(ActionBase):
             profiler = cProfile.Profile()
             profiler.enable()
 
+        self._plugin_name = task_vars["ansible_role_name"]
+
         self._schema = self._task.args.get("schema")
-        if not isinstance(self._schema, dict):
-            raise AnsibleActionFail("The argument 'schema' must be set as a dict")
+        self._schema_id = self._task.args.get("schema_id")
 
         self.template_output = self._task.args.get("template_output", False)
         self._conversion_mode = self._task.args.get("conversion_mode")
@@ -45,7 +46,7 @@ class ActionModule(ActionBase):
         if fabric_name is None or not set(ansible_play_hosts_all).issubset(fabric_hosts):
             raise AnsibleActionFail(
                 "Invalid/missing 'fabric_name' variable."
-                "All hosts in the play must have the same 'fabric_name' value"
+                "All hosts in the play must have the same 'fabric_name' value "
                 "which must point to an Ansible Group containing the hosts."
             )
 
@@ -119,7 +120,15 @@ class ActionModule(ActionBase):
             True if validation failed for one or more of the hosts
         """
         # Load schema tools once with empty host.
-        avdschematools = AvdSchemaTools(self._schema, "", display, self._conversion_mode, self._validation_mode)
+        avdschematools = AvdSchemaTools(
+            hostname="",
+            ansible_display=display,
+            schema=self._schema,
+            schema_id=self._schema_id,
+            conversion_mode=self._conversion_mode,
+            validation_mode=self._validation_mode,
+            plugin_name=self._plugin_name,
+        )
 
         all_hostvars = {}
         failed = False
@@ -165,9 +174,6 @@ class ActionModule(ActionBase):
             # This is used to access EosDesignsFacts objects of other switches during rendering of one switch.
             host_hostvars["avd_switch_facts"] = avd_switch_facts
             avd_switch_facts[host] = {"switch": EosDesignsFacts(hostvars=host_hostvars, templar=self.templar)}
-            # Add reference to EosDesignsFacts object inside hostvars.
-            # This is used to allow templates to access the facts object directly with "switch.*"
-            host_hostvars["switch"] = avd_switch_facts[host]["switch"]
 
         return avd_switch_facts
 

@@ -3,18 +3,24 @@ router_bgp:
   router_id: 192.168.254.1
   bgp_defaults:
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
-  - type: ipv4
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
     maximum_routes: 12000
     send_community: all
-    name: IPv4-UNDERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: IPv4-UNDERLAY-PEERS
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -56,6 +62,7 @@ route_maps:
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 management_cvx:
+  shutdown: false
   source_interface: Loopback0
   server_hosts:
   - 192.168.254.254
@@ -84,6 +91,8 @@ vxlan_interface:
     vxlan:
       udp_port: 4789
       source_interface: Loopback1
+      controller_client:
+        enabled: true
       vlans:
       - id: 3910
         vni: 14910

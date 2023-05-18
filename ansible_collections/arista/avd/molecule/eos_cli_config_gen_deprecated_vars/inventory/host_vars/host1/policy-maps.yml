@@ -1,0 +1,28 @@
+### Policy Maps ###
+
+policy_maps:
+  # Testing qos as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  qos:
+    PM_REPLICATION_LD:
+      # Testing classes as dict of dict
+      # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+      classes:
+        CM_REPLICATION_LD:
+          set:
+            dscp: af11
+            traffic_class: 2
+            drop_precedence: 1
+  # Testing pbr as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  pbr:
+    PM_PBR_BREAKOUT:
+      # Testing classes as dict of dict
+      # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+      classes:
+        CM_PBR_EXCLUDE:
+        CM_PBR_INCLUDE:
+          set:
+            nexthop:
+              ip_address: 192.168.4.2
+              recursive: true

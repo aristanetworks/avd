@@ -1,4 +1,4 @@
-# Connected Endpoints
+## Connected Endpoints
 {# Need to merge all values of connected endpoints for each device! And keys could be conflicting between them ...#}
 {% set all_connected_endpoints_keys = {} %}
 {% set all_connected_endpoints = {} %}
@@ -16,18 +16,25 @@
 {%         if peer_type in all_connected_endpoints_keys.values() | map(attribute='type') | list %}
 {#             Retrieving key from peer_type using magic Jinja - it relies on the fact that once using items, key and value #}
 {#             can be accessed using "0" and "1" in the tuple #}
+{%             if ethernet_interface.channel_group.id is arista.avd.defined %}
+{%                 set port_channel_interface = (node_hostvars.port_channel_interfaces | selectattr("name", "eq", "Port-Channel" ~ ethernet_interface.channel_group.id))[0] | arista.avd.default %}
+{%             endif %}
 {%             set connected_endpoint_key = all_connected_endpoints_keys.items() | selectattr("1.type", "equalto", peer_type) | map(attribute="0") | first %}
-{%             set connected_endpoint = namespace () %}
+{%             set connected_endpoint = namespace() %}
 {%             set connected_endpoint.fabric_switch = node %}
 {%             set connected_endpoint.fabric_port = ethernet_interface.name %}
 {%             set connected_endpoint.peer_type = peer_type %}
 {%             set connected_endpoint.peer = ethernet_interface.peer | arista.avd.default("-") %}
 {%             set connected_endpoint.peer_interface = ethernet_interface.peer_interface | arista.avd.default("-") %}
 {%             set connected_endpoint.description = ethernet_interface.description | arista.avd.default("-") %}
-{%             set connected_endpoint.shutdown = ethernet_interface.shutdown | arista.avd.default("-") %}
-{%             set connected_endpoint.type = ethernet_interface.type | arista.avd.default("-") %}
-{%             set connected_endpoint.mode = ethernet_interface.mode | arista.avd.default("-") %}
-{%             set connected_endpoint.vlans = ethernet_interface.vlans | arista.avd.default("-") %}
+{%             set connected_endpoint.shutdown = ethernet_interface.shutdown | arista.avd.default(port_channel_interface.shutdown, "-") %}
+{%             if ethernet_interface.type is arista.avd.defined("port-channel-member") %}
+{%                 set connected_endpoint.type = port_channel_interface.type | arista.avd.default("-") %}
+{%             else %}
+{%                 set connected_endpoint.type = ethernet_interface.type | arista.avd.default(port_channel_interface.type, "-") %}
+{%             endif %}
+{%             set connected_endpoint.mode = ethernet_interface.mode | arista.avd.default(port_channel_interface.mode, "-") %}
+{%             set connected_endpoint.vlans = ethernet_interface.vlans | arista.avd.default(port_channel_interface.vlans, "-") %}
 {%             set connected_endpoint.profile = ethernet_interface.port_profile | arista.avd.default("-") %}
 {%             do all_connected_endpoints.setdefault(connected_endpoint_key, []).append(connected_endpoint) %}
 {%         endif %}
@@ -38,7 +45,7 @@
 No connected endpoint configured!
 {% else %}
 
-## Connected Endpoint Keys
+### Connected Endpoint Keys
 
 | Key | Type | Description |
 | --- | ---- | ----------- |
@@ -50,7 +57,7 @@ No connected endpoint configured!
 {% endif %}
 {% for key in all_connected_endpoints | arista.avd.natural_sort %}
 
-## {{ key | replace("_", " ") | capitalize }}
+### {{ key | replace("_", " ") | capitalize }}
 
 | Name | Port | Fabric Device | Fabric Port | Description | Shutdown | Type | Mode | VLANs | Profile |
 | ---- | ---- | ------------- | ------------| ----------- | -------- | ---- | ---- | ----- | ------- |
@@ -68,7 +75,7 @@ No connected endpoint configured!
 {% endfor %}
 {% if all_profiles | length > 0 %}
 
-## Port Profiles
+### Port Profiles
 
 | Profile Name | Parent Profile |
 | ------------ | -------------- |

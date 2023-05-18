@@ -19,7 +19,7 @@ default_node_types:
     node_type: l2leaf
 
 # OSPF Parameters when underlay_routing_protocol=OSPF
-underlay_routing_protocol: OSPF
+underlay_routing_protocol: ospf
 underlay_ospf_process_id: 101
 underlay_ospf_area: 0.0.0.0
 underlay_ospf_max_lsa: 12000
@@ -52,7 +52,6 @@ spine:
     bgp_as: 65001
     loopback_ipv4_pool: 192.168.255.0/24
     bgp_defaults:
-      - 'no bgp default ipv4-unicast'
       - 'distance bgp 20 200 200'
   nodes:
     DC1-SPINE1:
@@ -80,7 +79,7 @@ l3leaf:
     uplink_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4']
     uplink_switches: ['DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE3', 'DC1-SPINE4']
     uplink_ipv4_pool: 172.31.255.0/24
-    bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200']
+    bgp_defaults: ['distance bgp 20 200 200']
     platform: vEOS-LAB
     bgp_as: 65100
     mlag_interfaces: [ Ethernet5, Ethernet6 ]

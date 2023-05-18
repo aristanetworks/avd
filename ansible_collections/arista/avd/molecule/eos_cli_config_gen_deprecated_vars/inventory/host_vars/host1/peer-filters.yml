@@ -1,0 +1,17 @@
+### peer-filters ###
+
+# Testing peer_filters as dict of dict
+# Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+peer_filters:
+  PF1:
+    # Testing sequence_numbers as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    sequence_numbers:
+      10:
+        match: "as-range 1-2 result reject"
+      20:
+        match: "as-range 1-100 result accept"
+  PF2:
+    sequence_numbers:
+      30:
+        match: "as-range 65000 result accept"

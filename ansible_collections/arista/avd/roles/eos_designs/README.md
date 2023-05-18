@@ -137,17 +137,11 @@ However, because vEOS-LAB implements a virtual data plane, there are known cavea
 spine_bgp_defaults:
 #  - update wait-for-convergence
 #  - update wait-install
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
 
 leaf_bgp_defaults:
 #  - update wait-install
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
 
 # Update p2p mtu 9000 -> 1500, MTU 9000 not supported in vEOS-LAB.
 p2p_uplinks_mtu: 1500

@@ -20,7 +20,7 @@ class RouterMulticastMixin(UtilsMixin):
         Used to enable multicast routing on the VRF.
         """
 
-        if not self._network_services_l3:
+        if not self.shared_utils.network_services_l3:
             return None
 
         vrfs = []

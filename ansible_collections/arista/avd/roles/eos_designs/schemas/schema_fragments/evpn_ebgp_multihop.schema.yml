@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  evpn_ebgp_multihop:
+    documentation_options:
+      filename: Fabric Variables
+      table: EVPN Settings
+    description: |
+      Default of 3, the recommended value for a 3 stage spine and leaf topology.
+      Set to a higher value to allow for very large and complex topologies.
+    type: int
+    convert_types:
+      - str
+    default: 3

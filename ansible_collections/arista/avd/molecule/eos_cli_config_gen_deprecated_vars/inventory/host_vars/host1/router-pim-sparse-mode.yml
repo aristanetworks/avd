@@ -1,0 +1,21 @@
+#### Router pim sparse mode ####
+
+router_pim_sparse_mode:
+  ipv4:
+    bfd: true
+    # Testing rp_addresses as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    rp_addresses:
+      10.238.1.161:
+        groups:
+          239.12.12.12/32:
+          239.12.12.13/32:
+    # Testing anycast_rps as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    anycast_rps:
+      10.38.1.161:
+        # Testing other_anycast_rp_addresses as dict of dict
+        # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+        other_anycast_rp_addresses:
+          10.50.64.16:
+            register_count: 15

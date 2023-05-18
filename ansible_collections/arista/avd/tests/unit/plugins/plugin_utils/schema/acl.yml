@@ -1,6 +1,8 @@
 ### Access-Lists ###
 access_lists:
   - name: ACL-01
+    # Test that schema validation ignores any keys starting with underscore
+    _custom_key: mycustomvalue
     sequence_numbers:
       - sequence: 10
         action: "remark ACL to restrict access to switch API to CVP and Ansible"

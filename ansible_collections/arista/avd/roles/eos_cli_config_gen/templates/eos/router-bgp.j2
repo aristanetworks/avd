@@ -12,13 +12,13 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
    {{ distance_cli }}
 {%     endif %}
-{%     if router_bgp.graceful_restart.enabled is arista.avd.defined(true) and router_bgp.graceful_restart.restart_time is arista.avd.defined %}
-   graceful-restart restart-time {{ router_bgp.graceful_restart.restart_time }}
-{%     endif %}
-{%     if router_bgp.graceful_restart.stalepath_time is arista.avd.defined %}
-   graceful-restart stalepath-time {{ router_bgp.graceful_restart.stalepath_time }}
-{%     endif %}
 {%     if router_bgp.graceful_restart.enabled is arista.avd.defined(true) %}
+{%         if router_bgp.graceful_restart.restart_time is arista.avd.defined %}
+   graceful-restart restart-time {{ router_bgp.graceful_restart.restart_time }}
+{%         endif %}
+{%         if router_bgp.graceful_restart.stalepath_time is arista.avd.defined %}
+   graceful-restart stalepath-time {{ router_bgp.graceful_restart.stalepath_time }}
+{%         endif %}
    graceful-restart
 {%     endif %}
 {%     if router_bgp.graceful_restart_helper.enabled is arista.avd.defined(false) %}
@@ -42,6 +42,16 @@ router bgp {{ router_bgp.as }}
 {%     endif %}
 {%     if router_bgp.updates.wait_install is arista.avd.defined(true) %}
    update wait-install
+{%     endif %}
+{%     if router_bgp.bgp.default.ipv4_unicast is arista.avd.defined(true) %}
+   bgp default ipv4-unicast
+{%     elif router_bgp.bgp.default.ipv4_unicast is arista.avd.defined(false) %}
+   no bgp default ipv4-unicast
+{%     endif %}
+{%     if router_bgp.bgp.default.ipv4_unicast_transport_ipv6 is arista.avd.defined(true) %}
+   bgp default ipv4-unicast transport ipv6
+{%     elif router_bgp.bgp.default.ipv4_unicast_transport_ipv6 is arista.avd.defined(false) %}
+   no bgp default ipv4-unicast transport ipv6
 {%     endif %}
 {%     if router_bgp.bgp_cluster_id is arista.avd.defined %}
    bgp cluster-id {{ router_bgp.bgp_cluster_id }}
@@ -150,7 +160,7 @@ router bgp {{ router_bgp.as }}
    neighbor {{ peer_group.name }} ebgp-multihop {{ peer_group.ebgp_multihop }}
 {%         endif %}
 {%         if peer_group.password is arista.avd.defined %}
-   neighbor {{ peer_group.name }} password 7 {{ peer_group.password }}
+   neighbor {{ peer_group.name }} password 7 {{ peer_group.password | arista.avd.hide_passwords(hide_passwords) }}
 {%         endif %}
 {%         if peer_group.default_originate.enabled is arista.avd.defined(true) %}
 {%             set default_originate_cli = "neighbor " ~ peer_group.name ~ " default-originate" %}
@@ -164,6 +174,9 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%         if peer_group.passive is arista.avd.defined(true) %}
    neighbor {{ peer_group.name }} passive
+{%         endif %}
+{%         if peer_group.session_tracker is arista.avd.defined %}
+   neighbor {{ peer_group.name }} session tracker {{ peer_group.session_tracker }}
 {%         endif %}
 {%         if peer_group.send_community is arista.avd.defined('all') %}
    neighbor {{ peer_group.name }} send-community
@@ -266,6 +279,8 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%         if neighbor.bfd is arista.avd.defined(true) %}
    neighbor {{ neighbor.ip_address }} bfd
+{%         elif neighbor.bfd is arista.avd.defined(false) and neighbor.peer_group is arista.avd.defined %}
+   no neighbor {{ neighbor.ip_address }} bfd
 {%         endif %}
 {%         if neighbor.allowas_in.enabled is arista.avd.defined(true) %}
 {%             set allowas_in_cli = "neighbor " ~ neighbor.ip_address ~ " allowas-in" %}
@@ -285,13 +300,16 @@ router bgp {{ router_bgp.as }}
    {{ neighbor_rib_in_pre_policy_retain_cli }}
 {%         endif %}
 {%         if neighbor.password is arista.avd.defined %}
-   neighbor {{ neighbor.ip_address }} password 7 {{ neighbor.password }}
+  neighbor {{ neighbor.ip_address }} password 7 {{ neighbor.password | arista.avd.hide_passwords(hide_passwords) }}
 {%         endif %}
 {%         if neighbor.passive is arista.avd.defined(true) %}
    neighbor {{ neighbor.ip_address }} passive
 {%         endif %}
 {%         if neighbor.weight is arista.avd.defined %}
    neighbor {{ neighbor.ip_address }} weight {{ neighbor.weight }}
+{%         endif %}
+{%         if neighbor.session_tracker is arista.avd.defined() %}
+   neighbor {{ neighbor.ip_address }} session tracker {{ neighbor.session_tracker }}
 {%         endif %}
 {%         if neighbor.timers is arista.avd.defined %}
    neighbor {{ neighbor.ip_address }} timers {{ neighbor.timers }}
@@ -901,7 +919,7 @@ router bgp {{ router_bgp.as }}
       no neighbor {{ neighbor.ip_address }} remove-private-as ingress
 {%             endif %}
 {%             if neighbor.password is arista.avd.defined %}
-      neighbor {{ neighbor.ip_address }} password 7 {{ neighbor.password }}
+      neighbor {{ neighbor.ip_address }} password 7 {{ neighbor.password | arista.avd.hide_passwords(hide_passwords) }}
 {%             endif %}
 {%             if neighbor.passive is arista.avd.defined(true) %}
       neighbor {{ neighbor.ip_address }} passive
@@ -933,8 +951,8 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if neighbor.bfd is arista.avd.defined(true) %}
       neighbor {{ neighbor.ip_address }} bfd
-{%             elif neighbor.bfd is arista.avd.defined(false) %}
-      no neighbor {{ neighbo.ip_address }} bfd
+{%             elif neighbor.bfd is arista.avd.defined(false) and neighbor.peer_group is arista.avd.defined %}
+      no neighbor {{ neighbor.ip_address }} bfd
 {%             endif %}
 {%             if neighbor.allowas_in.enabled is arista.avd.defined(true) %}
 {%                 set allowas_in_cli = "neighbor " ~ neighbor.ip_address ~ " allowas-in" %}
@@ -1086,6 +1104,13 @@ router bgp {{ router_bgp.as }}
 {%         if vrf.eos_cli is arista.avd.defined %}
       !
       {{ vrf.eos_cli | indent(6, false) }}
+{%         endif %}
+{%     endfor %}
+{# BGP session tracker #}
+{%     for session_tracker in router_bgp.session_trackers | arista.avd.natural_sort('name') %}
+   session tracker {{ session_tracker.name }}
+{%         if session_tracker.recovery_delay is arista.avd.defined %}
+      recovery delay {{ session_tracker.recovery_delay }} seconds
 {%         endif %}
 {%     endfor %}
 {% endif %}

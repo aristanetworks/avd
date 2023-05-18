@@ -3,39 +3,45 @@ router_bgp:
   router_id: 1.2.3.1
   bgp_defaults:
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
-  - type: ipv4
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
     maximum_routes: 12000
     send_community: all
-    name: IPv4-UNDERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: IPv4-UNDERLAY-PEERS
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   neighbors:
-  - remote_as: '65002'
+  - ip_address: 192.168.0.3
+    remote_as: '65002'
     description: peer2
     peer_group: IPv4-UNDERLAY-PEERS
-    ip_address: 192.168.0.3
-  - remote_as: '65003'
+  - ip_address: 192.168.0.5
+    remote_as: '65003'
     description: peer3
     peer_group: IPv4-UNDERLAY-PEERS
-    ip_address: 192.168.0.5
-  - remote_as: '65004'
+  - ip_address: 192.168.0.7
+    remote_as: '65004'
     description: peer4
     peer_group: IPv4-UNDERLAY-PEERS
-    ip_address: 192.168.0.7
-  - remote_as: '65005'
+  - ip_address: 192.168.0.9
+    remote_as: '65005'
     description: peer5
     peer_group: IPv4-UNDERLAY-PEERS
-    ip_address: 192.168.0.9
-  - remote_as: '65006'
+  - ip_address: 192.168.0.11
+    remote_as: '65006'
     description: peer6
     peer_group: IPv4-UNDERLAY-PEERS
-    ip_address: 192.168.0.11
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -95,7 +101,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_peer2_ethernet2
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ip_address: 192.168.0.2/31
   ipv6_enable: true
 - name: ethernet3
@@ -105,7 +111,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_peer3_ethernet3
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ip_address: 192.168.0.4/31
 - name: ethernet4
   peer: peer4
@@ -114,9 +120,11 @@ ethernet_interfaces:
   description: Custom description on l3_edge_bgp eth4
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ip_address: 192.168.0.6/31
-- peer: peer5
+- name: Ethernet5
+  type: port-channel-member
+  peer: peer5
   peer_interface: Port-Channel5
   peer_type: other
   description: P2P_LINK_TO_peer5_Port-Channel5
@@ -124,8 +132,9 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  name: Ethernet5
-- peer: peer5
+- name: Ethernet6
+  type: port-channel-member
+  peer: peer5
   peer_interface: Port-Channel5
   peer_type: other
   description: P2P_LINK_TO_peer5_Port-Channel5
@@ -133,8 +142,9 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-  name: Ethernet6
-- peer: peer6
+- name: Ethernet7
+  type: port-channel-member
+  peer: peer6
   peer_interface: Port-Channel7
   peer_type: other
   description: P2P_LINK_TO_peer6_Port-Channel7
@@ -142,8 +152,9 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  name: Ethernet7
-- peer: peer6
+- name: Ethernet8
+  type: port-channel-member
+  peer: peer6
   peer_interface: Port-Channel7
   peer_type: other
   description: P2P_LINK_TO_peer6_Port-Channel7
@@ -151,7 +162,6 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-  name: Ethernet8
 port_channel_interfaces:
 - name: Port-Channel5
   peer: peer5
@@ -160,7 +170,7 @@ port_channel_interfaces:
   description: P2P_LINK_TO_peer5_Port-Channel5
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ip_address: 192.168.0.8/31
 - name: Port-Channel7
   peer: peer6
@@ -169,5 +179,5 @@ port_channel_interfaces:
   description: P2P_LINK_TO_peer6_Port-Channel7
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ip_address: 192.168.0.10/31

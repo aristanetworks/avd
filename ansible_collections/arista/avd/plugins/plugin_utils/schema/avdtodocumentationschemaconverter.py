@@ -68,7 +68,7 @@ class AvdToDocumentationSchemaConverter:
     in the schema. See the schema documentation for details.
 
     Example:
-    - filename: myfile
+    "myfile":
       tables:
         - display_name: Foo
           description: "foo is an example of a schema key"
@@ -87,25 +87,20 @@ class AvdToDocumentationSchemaConverter:
     def __init__(self, avdschema: AvdSchema):
         self._avdschema = avdschema
         meta_schema = self._avdschema._validator.META_SCHEMA
-        documentation_options_schema = meta_schema["$def"]["documentation_options"]
+        documentation_options_schema = meta_schema["$defs"]["documentation_options"]
         self._default_filename = documentation_options_schema["properties"]["filename"]["default"]
 
     def convert_schema(self):
         schema = {}
-        output = []
+        output = {}
 
         # Get fully resolved schema (where all $ref has been expanded recursively)
-        # Performs inplace update of the argument so we give an empty dict.
-        # By default it will resolve the full schema
-        resolve_errors = self._avdschema.resolve(schema)
-        for resolve_error in resolve_errors:
-            if isinstance(resolve_error, Exception):
-                raise AristaAvdError(resolve_error)
+        schema = self._avdschema.resolved_schema
 
         filenames = self._get_filenames(schema)
 
         for filename in filenames:
-            output.append({"filename": filename, "tables": self.build_tables(filename, schema)})
+            output[filename] = {"tables": self.build_tables(filename, schema)}
 
         return output
 
@@ -146,7 +141,7 @@ class AvdToDocumentationSchemaConverter:
             built_table["description"] = main_key_schema.get("description")
         else:
             # Combined table
-            built_table["display_name"] = key_to_display_name(table)
+            built_table["display_name"] = table
 
         schema_keys = self._get_keys(schema)
 
@@ -364,6 +359,8 @@ class AvdToDocumentationSchemaConverter:
 
     def restrictions(self, schema: dict):
         restrictions = []
+        if schema.get("convert_to_lower_case"):
+            restrictions.append("Value is converted to lower case")
         if schema.get("min") is not None:
             restrictions.append(f"Min: {schema['min']}")
         if schema.get("max") is not None:
@@ -377,7 +374,8 @@ class AvdToDocumentationSchemaConverter:
         if schema.get("dynamic_valid_values") is not None:
             schema.setdefault("valid_values", [])
             valid_value = f"<value(s) of {schema['dynamic_valid_values']}>"
-            schema["valid_values"].append(valid_value)
+            if valid_value not in schema["valid_values"]:
+                schema["valid_values"].append(valid_value)
         if schema.get("valid_values") is not None:
             restrictions.append("Valid Values:")
             for valid_value in schema["valid_values"]:

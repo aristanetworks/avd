@@ -2,54 +2,57 @@ router_bgp:
   as: '65212'
   router_id: 172.16.210.4
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
-  - type: ipv4
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
     maximum_routes: 12000
     send_community: all
-    name: IPv4-UNDERLAY-PEERS
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 5
-    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: IPv4-UNDERLAY-PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   - source_protocol: attached-host
   neighbors:
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.17.210.4
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65210'
     description: DC2-POD1-SPINE1_Ethernet4
-    ip_address: 172.17.210.4
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.17.210.6
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65210'
     description: DC2-POD1-SPINE2_Ethernet4
-    ip_address: 172.17.210.6
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 172.16.210.3
+    peer_group: EVPN-OVERLAY-PEERS
     description: DC2-POD1-LEAF1A
     remote_as: '65211'
-    ip_address: 172.16.210.3
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
   address_family_rtc:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -67,10 +70,11 @@ spanning_tree:
   mode: rstp
   rstp_priority: 4096
 local_users:
-- privilege: 15
+- name: admin
+  privilege: 15
   role: network-admin
+  no_password: true
   sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
-  name: admin
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -89,7 +93,8 @@ management_api_http:
 eos_cli: "interface Loopback1010\n  description Loopback created from raw_eos_cli under l3leaf defaults in DC2 POD1\n\ninterface Loopback1111\n
   \ description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
 ethernet_interfaces:
-- peer: DC2-POD1-SPINE1
+- name: Ethernet1
+  peer: DC2-POD1-SPINE1
   peer_interface: Ethernet4
   peer_type: spine
   description: P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet4
@@ -100,8 +105,8 @@ ethernet_interfaces:
   ptp:
     enable: true
   ip_address: 172.17.210.5/31
-  name: Ethernet1
-- peer: DC2-POD1-SPINE2
+- name: Ethernet2
+  peer: DC2-POD1-SPINE2
   peer_interface: Ethernet4
   peer_type: spine
   description: P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet4
@@ -112,17 +117,16 @@ ethernet_interfaces:
   ptp:
     enable: true
   ip_address: 172.17.210.7/31
-  name: Ethernet2
-- peer: DC2-POD1-L2LEAF2A
+- name: Ethernet3
+  peer: DC2-POD1-L2LEAF2A
   peer_interface: Ethernet1
   peer_type: l2leaf
   description: DC2-POD1-L2LEAF2A_Ethernet1
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 3
     mode: active
-  name: Ethernet3
 port_channel_interfaces:
 - name: Port-Channel3
   description: DC2-POD1-L2LEAF2A_Po1
@@ -158,10 +162,10 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-  - type: permit
+  - sequence: 20
+    type: permit
     match:
     - ip address prefix-list PL-L2LEAF-INBAND-MGMT
-    sequence: 20
 router_bfd:
   multihop:
     interval: 300
@@ -176,17 +180,18 @@ vxlan_interface:
       udp_port: 4789
       source_interface: Loopback1
 vlans:
-- tenant: system
-  name: L2LEAF_INBAND_MGMT
-  id: 4092
+- id: 4092
+  tenant: system
+  name: INBAND_MGMT
 vlan_interfaces:
 - name: Vlan4092
-  description: L2LEAF_INBAND_MGMT
+  description: Inband Management
   shutdown: false
   mtu: 1500
   ip_address: 172.21.210.2/24
   ip_virtual_router_addresses:
   - 172.21.210.1
   ip_attached_host_route_export:
+    enabled: true
     distance: 19
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01

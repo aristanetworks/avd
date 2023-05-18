@@ -3,52 +3,58 @@ router_bgp:
   router_id: 192.168.255.111
   bgp_defaults:
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
-  - type: ipv4
+  - name: MLAG-IPv4-UNDERLAY-PEER
+    type: ipv4
     remote_as: '65001'
     next_hop_self: true
     description: Description for mlag_ipv4_underlay_peer via structured_config
     maximum_routes: 12000
     send_community: all
     route_map_in: RM-MLAG-PEER-IN
-    name: MLAG-IPv4-UNDERLAY-PEER
-  - type: ipv4
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
     maximum_routes: 12000
     send_community: all
-    name: IPv4-UNDERLAY-PEERS
     description: Description for ipv4_underlay_peers via structured_config
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     send_community: all
     maximum_routes: 0
     remote_as: '65001'
-    name: EVPN-OVERLAY-PEERS
     description: Description for evpn_overlay_peers via structured_config
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: MLAG-IPv4-UNDERLAY-PEER
-    - activate: true
-      name: IPv4-UNDERLAY-PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: MLAG-IPv4-UNDERLAY-PEER
+      activate: true
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   neighbors:
-  - peer_group: MLAG-IPv4-UNDERLAY-PEER
+  - ip_address: 192.168.253.205
+    peer_group: MLAG-IPv4-UNDERLAY-PEER
     description: bgp-peer-groups-structured-config-2
-    ip_address: 192.168.253.205
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.112
+    peer_group: EVPN-OVERLAY-PEERS
     description: bgp-peer-groups-structured-config-2
-    ip_address: 192.168.255.112
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
-    - activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
-      name: EVPN-OVERLAY-PEERS
   address_family_vpn_ipv4: {}
 static_routes:
 - vrf: MGMT
@@ -71,39 +77,38 @@ management_api_http:
 spanning_tree:
   no_spanning_tree_vlan: '4094'
 vlans:
-- tenant: system
+- id: 4094
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  id: 4094
 vlan_interfaces:
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
   ip_address: 192.168.253.204/31
   no_autostate: true
-  mtu: 9000
+  mtu: 9214
 port_channel_interfaces:
 - name: Port-Channel3
   description: MLAG_PEER_bgp-peer-groups-structured-config-2_Po3
   type: switched
   shutdown: false
-  vlans: 2-4094
   mode: trunk
   trunk_groups:
   - LEAF_PEER_L3
   - MLAG
 ethernet_interfaces:
-- peer: bgp-peer-groups-structured-config-2
+- name: Ethernet3
+  peer: bgp-peer-groups-structured-config-2
   peer_interface: Ethernet3
   peer_type: mlag_peer
   description: MLAG_PEER_bgp-peer-groups-structured-config-2_Ethernet3
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 3
     mode: active
-  name: Ethernet3
 mlag_configuration:
   domain_id: mlag
   local_interface: Vlan4094
@@ -141,7 +146,7 @@ route_maps:
     - extcommunity soo 192.168.254.111:1 additive
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: MPLS_Overlay_peering
   shutdown: false
   ip_address: 192.168.255.111/32
 - name: Loopback1

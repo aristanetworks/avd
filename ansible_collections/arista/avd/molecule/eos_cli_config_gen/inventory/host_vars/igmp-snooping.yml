@@ -3,11 +3,11 @@
 ip_igmp_snooping:
   globally_enabled: false
   vlans:
-    10:
+    - id: 10
       enabled: true
-    20:
+    - id: 20
       enabled: false
-    30:
+    - id: 30
       enabled: false
 
 vlan_internal_order:
@@ -18,10 +18,10 @@ vlan_internal_order:
 
 ### VLANs ###
 vlans:
-  110:
+  - id: 110
     tenant: Tenant_A
     name: PR01-DMZ
-  3010:
+  - id: 3010
     tenant: Tenant_A
     name: MLAG_iBGP_TENANT_A_PROJECT01
     trunk_groups:

@@ -23,7 +23,7 @@ class VlanInterfacesMixin(UtilsMixin):
         Consist of svis and mlag peering vlans from filtered tenants
         """
 
-        if not (self._network_services_l2 and self._network_services_l3):
+        if not (self.shared_utils.network_services_l2 and self.shared_utils.network_services_l3):
             return None
 
         vlan_interfaces = []
@@ -51,10 +51,10 @@ class VlanInterfacesMixin(UtilsMixin):
             Check if any variable in the list of variables is not None in vlan_interface_config
             and if it is the case, raise an Exception if virtual_router_mac_address is None
             """
-            if any(vlan_interface_config[var] for var in variables) and self._virtual_router_mac_address is None:
+            if any(vlan_interface_config.get(var) for var in variables) and self.shared_utils.virtual_router_mac_address is None:
                 quoted_vars = [f"'{var}'" for var in variables]
                 raise AristaAvdMissingVariableError(
-                    f"'virtual_router_mac_address' must be set for node '{self._hostname}' when using {' or '.join(quoted_vars)} under 'svi'"
+                    f"'virtual_router_mac_address' must be set for node '{self.shared_utils.hostname}' when using {' or '.join(quoted_vars)} under 'svi'"
                 )
 
         vlan_interface_config = {
@@ -64,6 +64,7 @@ class VlanInterfacesMixin(UtilsMixin):
             "shutdown": not (svi.get("enabled", False)),
             "ip_address": svi.get("ip_address"),
             "ipv6_address": svi.get("ipv6_address"),
+            "ipv6_enable": svi.get("ipv6_enable"),
             "mtu": svi.get("mtu"),
             "eos_cli": svi.get("raw_eos_cli"),
             "struct_cfg": svi.get("structured_config"),
@@ -81,7 +82,7 @@ class VlanInterfacesMixin(UtilsMixin):
 
         pim_config_ipv4 = {}
         if default(get(svi, "evpn_l3_multicast.enabled"), get(vrf, "_evpn_l3_multicast_enabled")) is True:
-            if self._mlag:
+            if self.shared_utils.mlag:
                 pim_config_ipv4["sparse_mode"] = True
             else:
                 vlan_interface_config["ip_igmp"] = True
@@ -104,9 +105,18 @@ class VlanInterfacesMixin(UtilsMixin):
 
         # Only set Anycast v6 GW if VARPv6 is not set
         if vlan_interface_config.get("ip_virtual_router_addresses") is None:
-            vlan_interface_config["ipv6_address_virtual"] = svi.get("ipv6_address_virtual")
-            vlan_interface_config["ipv6_address_virtuals"] = svi.get("ipv6_address_virtuals")
-            _check_virtual_router_mac_address(vlan_interface_config, ["ipv6_address_virtual", "ipv6_address_virtuals"])
+            if (ipv6_address_virtual := svi.get("ipv6_address_virtual")) is not None:
+                # The singular ipv6_address_virtual is deprecated from eos_cli_config_gen. So set as list item into the new key.
+                vlan_interface_config["ipv6_address_virtuals"] = [ipv6_address_virtual]
+
+            if (ipv6_address_virtuals := svi.get("ipv6_address_virtuals")) is not None:
+                vlan_interface_config.setdefault("ipv6_address_virtuals", []).extend(ipv6_address_virtuals)
+
+            _check_virtual_router_mac_address(vlan_interface_config, ["ipv6_address_virtuals"])
+
+            if vlan_interface_config.get("ipv6_address_virtuals"):
+                # If any anycast IPs are set, we also enable link-local IPv6 per best practice, unless specifically disabled with 'ipv6_enable: false'
+                vlan_interface_config["ipv6_enable"] = default(vlan_interface_config["ipv6_enable"], True)
 
         if vrf["name"] != "default":
             vlan_interface_config["vrf"] = vrf["name"]
@@ -140,6 +150,7 @@ class VlanInterfacesMixin(UtilsMixin):
 
                     ospf_keys.append({"id": ospf_key["id"], "hash_algorithm": ospf_key.get("hash_algorithm", "sha512"), "key": ospf_key["key"]})
                 if ospf_keys:
+                    vlan_interface_config["ospf_authentication"] = ospf_authentication
                     vlan_interface_config["ospf_message_digest_keys"] = ospf_keys
 
         # Strip None values from vlan_interface_config before adding to list
@@ -154,16 +165,16 @@ class VlanInterfacesMixin(UtilsMixin):
             "shutdown": False,
             "description": f"MLAG_PEER_L3_iBGP: vrf {vrf['name']}",
             "vrf": vrf["name"],
-            "mtu": self._p2p_uplinks_mtu,
+            "mtu": self.shared_utils.p2p_uplinks_mtu,
         }
-        if self._underlay_rfc5549 and self._overlay_mlag_rfc5549:
+        if self.shared_utils.underlay_rfc5549 and self.shared_utils.overlay_mlag_rfc5549:
             vlan_interface_config["ipv6_enable"] = True
         elif (mlag_ibgp_peering_ipv4_pool := vrf.get("mlag_ibgp_peering_ipv4_pool")) is not None:
-            if self._mlag_role == "primary":
-                vlan_interface_config["ip_address"] = f"{self._avd_ip_addressing.mlag_ibgp_peering_ip_primary(mlag_ibgp_peering_ipv4_pool)}/31"
+            if self.shared_utils.mlag_role == "primary":
+                vlan_interface_config["ip_address"] = f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_primary(mlag_ibgp_peering_ipv4_pool)}/31"
             else:
-                vlan_interface_config["ip_address"] = f"{self._avd_ip_addressing.mlag_ibgp_peering_ip_secondary(mlag_ibgp_peering_ipv4_pool)}/31"
+                vlan_interface_config["ip_address"] = f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_secondary(mlag_ibgp_peering_ipv4_pool)}/31"
         else:
-            vlan_interface_config["ip_address"] = f"{self._mlag_ibgp_ip}/31"
+            vlan_interface_config["ip_address"] = f"{self.shared_utils.mlag_ibgp_ip}/31"
 
         return vlan_interface_config

@@ -13,8 +13,8 @@ vlan_internal_order:
 spanning_tree:
   mode: mstp
   mst_instances:
-  - priority: 4096
-    id: '0'
+  - id: '0'
+    priority: 4096
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -33,7 +33,7 @@ management_api_http:
 eos_cli: "management security\n   password encryption-key common\n"
 loopback_interfaces:
 - name: Loopback0
-  description: MPLS_Overlay_peering
+  description: LSR_Router_ID
   shutdown: false
   ip_address: 100.70.0.10/32
   ipv6_address: 2000:1234:ffff:ffff::a/128
@@ -51,12 +51,11 @@ router_isis:
   net: 49.0001.0000.0001.0010.00
   router_id: 100.70.0.10
   is_type: level-1-2
-  address_family:
-  - ipv4 unicast
-  - ipv6 unicast
-  isis_af_defaults:
-  - maximum-paths 4
-  - fast-reroute ti-lfa mode link-protection
+  address_family_ipv4:
+    enabled: true
+    maximum_paths: 4
+    fast_reroute_ti_lfa:
+      mode: link-protection
   mpls_ldp_sync_default: true
   timers:
     local_convergence:
@@ -64,6 +63,11 @@ router_isis:
       protected_prefixes: true
   advertise:
     passive_only: true
+  address_family_ipv6:
+    enabled: true
+    maximum_paths: 4
+    fast_reroute_ti_lfa:
+      mode: link-protection
   segment_routing_mpls:
     router_id: 100.70.0.10
     enabled: true

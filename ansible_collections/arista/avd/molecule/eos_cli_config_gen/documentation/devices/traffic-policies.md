@@ -1,5 +1,6 @@
 # traffic-policies
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -8,25 +9,25 @@
   - [Port-Channel Interfaces](#port-channel-interfaces)
   - [Traffic Policies information](#traffic-policies-information)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -36,20 +37,20 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Interfaces
+## Interfaces
 
-## Ethernet Interfaces
+### Ethernet Interfaces
 
-### Ethernet Interfaces Summary
+#### Ethernet Interfaces Summary
 
-#### L2
+##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 
 *Inherited from Port-Channel Interface
 
-### Ethernet Interfaces Device Configuration
+#### Ethernet Interfaces Device Configuration
 
 ```eos
 !
@@ -59,16 +60,16 @@ interface Ethernet1
    traffic-policy output BLUE-C2-POLICY
 ```
 
-## Port-Channel Interfaces
+### Port-Channel Interfaces
 
-### Port-Channel Interfaces Summary
+#### Port-Channel Interfaces Summary
 
-#### L2
+##### L2
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 
-### Port-Channel Interfaces Device Configuration
+#### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
@@ -78,7 +79,7 @@ interface Port-Channel2
    traffic-policy output BLUE-C2-POLICY
 ```
 
-## Traffic Policies information
+### Traffic Policies information
 
 **IPv4 Field sets**
 
@@ -97,7 +98,7 @@ No IPv6 field-set configured.
 | -------------- | ------ |
 | SERVICE-DEMO | 10,20,80,440-450|
 
-### Traffic Policies
+#### Traffic Policies
 
 **BLUE-C1-POLICY:**
 
@@ -119,14 +120,14 @@ No IPv6 field-set configured.
 | BLUE-C2-POLICY-03 | ipv4 | DEMO-01 | ANY | tcp | ANY | ANY | action: DROP<br/>logging |
 
 
-#### Traffic-Policy Interfaces
+##### Traffic-Policy Interfaces
 
 | Interface | Input Traffic-Policy | Output Traffic-Policy |
 | --------- | -------------------- | --------------------- |
 | Ethernet1 | BLUE-C1-POLICY | BLUE-C2-POLICY |
 | Port-Channel2 | BLUE-C1-POLICY | BLUE-C2-POLICY |
 
-### Traffic Policies Device Configuration
+#### Traffic Policies Device Configuration
 
 ```eos
 !

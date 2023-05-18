@@ -3,46 +3,53 @@ router_bgp:
   router_id: 10.254.1.1
   bgp_defaults:
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
-  - type: ipv4
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
     maximum_routes: 12000
     send_community: all
-    name: IPv4-UNDERLAY-PEERS
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 3
-    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: IPv4-UNDERLAY-PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   neighbors:
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 10.254.2.0
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65200'
     description: ptp-tests-spine1_Ethernet1
-    ip_address: 10.254.2.0
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 10.254.2.2
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65200'
     description: ptp-tests-spine1_Ethernet2
-    ip_address: 10.254.2.2
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 10.255.0.1
+    peer_group: EVPN-OVERLAY-PEERS
     description: ptp-tests-spine1
     remote_as: '65200'
-    ip_address: 10.255.0.1
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
   vrfs:
-  - router_id: 10.254.1.1
+  - name: VRF1
+    router_id: 10.254.1.1
     rd: 10.254.1.1:1
     route_targets:
       import:
@@ -55,16 +62,15 @@ router_bgp:
         - '1:1'
     redistribute_routes:
     - source_protocol: connected
-    name: VRF1
   vlans:
-  - tenant: PTP
+  - id: 11
+    tenant: PTP
     rd: 10.254.1.1:10011
     route_targets:
       both:
       - 10011:10011
     redistribute_routes:
     - learned
-    id: 11
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -79,8 +85,8 @@ vlan_internal_order:
 spanning_tree:
   mode: mstp
   mst_instances:
-  - priority: 4096
-    id: '0'
+  - id: '0'
+    priority: 4096
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -118,12 +124,13 @@ ptp:
         follow_up: 3
         sync: 3
 ethernet_interfaces:
-- peer: ptp-tests-spine1
+- name: Ethernet1
+  peer: ptp-tests-spine1
   peer_interface: Ethernet1
   peer_type: spine
   description: P2P_LINK_TO_PTP-TESTS-SPINE1_Ethernet1
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ptp:
     announce:
@@ -135,13 +142,13 @@ ethernet_interfaces:
     transport: ipv4
     enable: true
   ip_address: 10.254.2.1/31
-  name: Ethernet1
-- peer: ptp-tests-spine1
+- name: Ethernet2
+  peer: ptp-tests-spine1
   peer_interface: Ethernet2
   peer_type: spine
   description: P2P_LINK_TO_PTP-TESTS-SPINE1_Ethernet2
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ptp:
     announce:
@@ -153,13 +160,14 @@ ethernet_interfaces:
     transport: ipv4
     enable: true
   ip_address: 10.254.2.3/31
-  name: Ethernet2
-- peer: bmca-endpoint
+- name: Ethernet13
+  peer: bmca-endpoint
   peer_interface: eth1
   peer_type: server
+  port_profile: PTP-profile-BMCA
   description: bmca-endpoint_eth1
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '11'
   ptp:
@@ -171,13 +179,13 @@ ethernet_interfaces:
       interval: -3
     transport: ipv4
     enable: true
-  name: Ethernet13
-- peer: video-endpoint
+- name: Ethernet5
+  peer: video-endpoint
   peer_interface: PCI1
   peer_type: server
   description: video-endpoint_PCI1
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '11'
   spanning_tree_portfast: edge
@@ -191,13 +199,13 @@ ethernet_interfaces:
     transport: ipv4
     enable: true
     role: master
-  name: Ethernet5
-- peer: Endpoint-with-specific-PTP-profile
+- name: Ethernet3
+  peer: Endpoint-with-specific-PTP-profile
   peer_interface: eth3
   peer_type: server
   description: Endpoint-with-specific-PTP-profile_eth3
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '11'
   ptp:
@@ -210,7 +218,6 @@ ethernet_interfaces:
     transport: ipv4
     enable: true
     role: master
-  name: Ethernet3
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

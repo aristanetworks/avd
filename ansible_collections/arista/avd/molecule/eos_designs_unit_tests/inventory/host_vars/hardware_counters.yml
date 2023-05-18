@@ -1,8 +1,11 @@
 hardware_counters:
   features:
-    - vlan-interface: in
-    - vlan-interface: out
-    - flow-spec: in
+    - name: vlan-interface
+      direction: in
+    - name: vlan-interface
+      direction: out
+    - name: flow-spec
+      direction: in
 
 type: l2leaf
 l2leaf:

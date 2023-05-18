@@ -14,11 +14,12 @@ from ansible.plugins.action import ActionBase, display
 from ansible.utils.vars import isidentifier
 
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
+from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_templar, load_python_class
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_templar, load_python_class
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import template as templater
 
 DEFAULT_PYTHON_CLASS_NAME = "AvdStructuredConfig"
@@ -55,39 +56,59 @@ class ActionModule(ActionBase):
                 raise AnsibleActionFail("The argument 'templates' must be set as a list")
 
             schema = self._task.args.get("schema")
+            schema_id = self._task.args.get("schema_id")
             self.dest = self._task.args.get("dest", False)
             template_output = self._task.args.get("template_output", False)
             debug = self._task.args.get("debug", False)
-            remove_avd_switch_facts = self._task.args.get("remove_avd_switch_facts", False)
             conversion_mode = self._task.args.get("conversion_mode")
             validation_mode = self._task.args.get("validation_mode")
             output_schema = self._task.args.get("output_schema")
+            output_schema_id = self._task.args.get("output_schema_id")
 
         else:
             raise AnsibleActionFail("The argument 'templates' must be set")
 
-        # Read ansible variables and perform templating to support inline jinja
+        hostname = task_vars["inventory_hostname"]
+
+        task_vars["switch"] = get(task_vars, f"avd_switch_facts..{hostname}..switch", separator="..", default={})
+
+        # Read ansible variables and perform templating to support inline jinja2
         for var in task_vars:
-            if str(var).startswith(("ansible", "molecule", "hostvars", "vars")):
+            if str(var).startswith(("ansible", "molecule", "hostvars", "vars", "avd_switch_facts")):
                 continue
             if self._templar.is_template(task_vars[var]):
-                # Var contains a jinja template.
+                # Var contains a jinja2 template.
                 try:
                     task_vars[var] = self._templar.template(task_vars[var], fail_on_undefined=False)
                 except Exception as e:
                     raise AnsibleActionFail(f"Exception during templating of task_var '{var}'") from e
 
-        hostname = task_vars["inventory_hostname"]
-        if schema:
+        if schema or schema_id:
             # Load schema tools and perform conversion and validation
-            avdschematools = AvdSchemaTools(schema, hostname, display, conversion_mode, validation_mode)
+            avdschematools = AvdSchemaTools(
+                hostname=hostname,
+                ansible_display=display,
+                schema=schema,
+                schema_id=schema_id,
+                conversion_mode=conversion_mode,
+                validation_mode=validation_mode,
+                plugin_name=task_vars["ansible_role_name"],
+            )
             result.update(avdschematools.convert_and_validate_data(task_vars))
             if result.get("failed"):
                 # Input data validation failed so return errors.
                 return result
 
-        if output_schema:
-            output_avdschematools = AvdSchemaTools(output_schema, hostname, display, conversion_mode, validation_mode)
+        if output_schema or output_schema_id:
+            output_avdschematools = AvdSchemaTools(
+                hostname=hostname,
+                ansible_display=display,
+                schema=output_schema,
+                schema_id=output_schema_id,
+                conversion_mode=conversion_mode,
+                validation_mode=validation_mode,
+                plugin_name=task_vars["ansible_role_name"],
+            )
             output_avdschema = output_avdschematools.avdschema
         else:
             output_avdschema = None
@@ -105,6 +126,9 @@ class ActionModule(ActionBase):
             template_vars = ChainMap({root_key: output}, task_vars)
         else:
             template_vars = ChainMap(output, task_vars)
+
+        # Initialize SharedUtils class to be passed to each python_module below.
+        shared_utils = SharedUtils(hostvars=template_vars, templar=self.templar)
 
         # If the argument 'debug' is set, a 'avd_yaml_templates_to_facts_debug' list will be added to the output.
         # This list contains timestamps from every step for every template. This is useful for identifying slow templates.
@@ -153,7 +177,7 @@ class ActionModule(ActionBase):
                 except AristaAvdMissingVariableError as exc:
                     raise AnsibleActionFail(f"Missing module_path or class_name in {template_item}") from exc
 
-                cls_instance = cls(hostvars=template_vars, templar=self.templar)
+                cls_instance = cls(hostvars=template_vars, shared_utils=shared_utils)
 
                 if debug:
                     debug_item["timestamps"]["render_python_class"] = datetime.now()
@@ -177,7 +201,7 @@ class ActionModule(ActionBase):
 
                 # If output_schema is set, perform inplace conversion of each returned dict according to output_schema
                 # to normalize the data to correct format before merging
-                if output_schema:
+                if output_avdschema:
                     if debug:
                         debug_item["timestamps"]["data_conversion_from_schema"] = datetime.now()
 
@@ -238,8 +262,7 @@ class ActionModule(ActionBase):
         else:
             result["ansible_facts"] = output
 
-        if remove_avd_switch_facts:
-            result["ansible_facts"]["avd_switch_facts"] = None
+        result["ansible_facts"]["switch"] = task_vars.get("switch")
 
         if cprofile_file:
             profiler.disable()

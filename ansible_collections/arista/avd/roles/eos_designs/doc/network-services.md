@@ -44,7 +44,6 @@ mlag_ibgp_peering_vrfs:
 # RD is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
 # For loopback or 32-bit ASN/number the VNI can only be a 16-bit number.
 # For 16-bit ASN/number the VNI can be a 32-bit number.
-# Old variable name "evpn_rd_type", supported for backward-compatibility.
 overlay_rd_type:
   admin_subfield: < "vtep_loopback" | "bgp_as" | "switch_id" | < IPv4_address > | <0-65535> | <0-4294967295> | default -> <overlay_loopback_ip> >
   # Offset can only be used if admin_subfield is an interger between <0-4294967295> or "switch_id".
@@ -59,7 +58,6 @@ overlay_rd_type:
 # RT is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
 # For 32-bit ASN/number the VNI can only be a 16-bit number.
 # For 16-bit ASN/number the VNI can be a 32-bit number.
-# Old variable name "evpn_rt_type", supported for backward-compatibility.
 overlay_rt_type:
   admin_subfield: < "bgp_as" | <0-65535> | <0-4294967295> | default -> <mac_vrf_id> >
 
@@ -255,6 +253,9 @@ mac_address_table:
           redistribute_bgp:
             enabled: < true | false, Default -> true >
             route_map: < route-map name >
+          redistribute_connected:
+            enabled: < true | false, Default -> false >
+            route_map: < route-map name >
           nodes:
             - < hostname1 >
             - < hostname2 >
@@ -355,6 +356,9 @@ mac_address_table:
               - < IPv6_address/Mask >
               - < IPv6_address/Mask >
 
+            # ipv6_enable to explicitly enable/disable link-local IPv6 addressing | Optional
+            ipv6_enable: <true | false>
+
             # ip virtual-router address
             # note, also requires an IP address to be configured on the SVI where it is applied.
             # Optional
@@ -442,7 +446,6 @@ mac_address_table:
             tags: [ < tag_1 >, < tag_2 > ]
             enabled: < true | false >
             ip_address_virtual: < IPv4_address/Mask >
-            ipv6_address_virtual: < IPv6_address/Mask >
 
         # List of L3 interfaces | Optional.
         # This will create IP routed interface inside VRF. Length of interfaces, nodes and ip_addresses and descriptions (if used) must match.

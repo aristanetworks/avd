@@ -1,0 +1,11 @@
+### Loopback Interfaces
+
+# Testing loopback_interfaces as dict of dict
+# Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    ip_address: 192.168.255.3/32
+  Loopback1:
+    description: VTEP_VXLAN_Tunnel_Source
+    ip_address: 192.168.254.3/32

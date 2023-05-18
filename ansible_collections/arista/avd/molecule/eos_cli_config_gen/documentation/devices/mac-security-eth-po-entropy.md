@@ -1,5 +1,6 @@
 # mac-security-eth-po-entropy
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -14,25 +15,25 @@
   - [MACsec Summary](#macsec-summary)
   - [MACsec Device Configuration](#macsec-device-configuration)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -42,22 +43,22 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Management Security
+## Management Security
 
-## Management Security Summary
+### Management Security Summary
 
 | Settings | Value |
 | -------- | ----- |
 | Entropy source | hardware |
 | Common password encryption key | True |
 
-## Management Security SSL Profiles
+### Management Security SSL Profiles
 
 | SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Cipher List |
 | ---------------- | --------------------- | -------------------- | ------------ | ----------- |
 | SSL_PROFILE | 1.1 1.2 | SSL_CERT | SSL_KEY | - |
 
-## Management Security Configuration
+### Management Security Configuration
 
 ```eos
 !
@@ -69,13 +70,13 @@ management security
       certificate SSL_CERT key SSL_KEY
 ```
 
-# Interfaces
+## Interfaces
 
-## Ethernet Interfaces
+### Ethernet Interfaces
 
-### Ethernet Interfaces Summary
+#### Ethernet Interfaces Summary
 
-#### L2
+##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
@@ -83,13 +84,13 @@ management security
 
 *Inherited from Port-Channel Interface
 
-#### IPv4
+##### IPv4
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet1 | - | routed | - | 1.1.1.1/24 | default | - | - | - | - |
 
-### Ethernet Interfaces Device Configuration
+#### Ethernet Interfaces Device Configuration
 
 ```eos
 !
@@ -104,17 +105,17 @@ interface Ethernet3
    channel-group 3 mode active
 ```
 
-## Port-Channel Interfaces
+### Port-Channel Interfaces
 
-### Port-Channel Interfaces Summary
+#### Port-Channel Interfaces Summary
 
-#### L2
+##### L2
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | L2-PORT | switched | trunk | 1-5 | - | - | - | - | - | - |
 
-### Port-Channel Interfaces Device Configuration
+#### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
@@ -125,15 +126,15 @@ interface Port-Channel3
    switchport mode trunk
 ```
 
-# MACsec
+## MACsec
 
-## MACsec Summary
+### MACsec Summary
 
 License is installed.
 
 FIPS restrictions enabled.
 
-### MACsec Profiles Summary
+#### MACsec Profiles Summary
 
 **Profile A1:**
 
@@ -145,10 +146,10 @@ Settings:
 
 Keys:
 
-| Key ID | Encrypted (Type 7) Key | Fallback |
-| ------ | ---------------------- | -------- |
-| 1234a | 025756085F535976 | - |
-| 1234c | 10195F4C5144405A | True |
+| Key ID | Fallback |
+| ------ |  -------- |
+| 1234a | - |
+| 1234c | True |
 
 L2 Protocols:
 
@@ -166,11 +167,11 @@ Settings:
 
 Keys:
 
-| Key ID | Encrypted (Type 7) Key | Fallback |
-| ------ | ---------------------- | -------- |
-| 1234b | 12485744465E5A53 | - |
+| Key ID | Fallback |
+| ------ |  -------- |
+| 1234b | - |
 
-## MACsec Device Configuration
+### MACsec Device Configuration
 
 ```eos
 !
@@ -180,12 +181,12 @@ mac security
    !
    profile A1
       cipher aes128-gcm
-      key 1234a 7 025756085F535976
-      key 1234c 7 10195F4C5144405A fallback
+      key 1234a 7 <removed>
+      key 1234c 7 <removed> fallback
       mka key-server priority 100
       mka session rekey-period 30
       sci
       l2-protocol lldp bypass unauthorized
    profile A2
-      key 1234b 7 12485744465E5A53
+      key 1234b 7 <removed>
 ```

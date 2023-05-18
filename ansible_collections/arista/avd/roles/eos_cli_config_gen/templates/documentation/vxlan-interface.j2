@@ -2,14 +2,17 @@
 {# doc - vxlan interface #}
 {% if vxlan_interface.Vxlan1 is arista.avd.defined %}
 
-## VXLAN Interface
+### VXLAN Interface
 
-### VXLAN Interface Summary
+#### VXLAN Interface Summary
 
 | Setting | Value |
 | ------- | ----- |
 {%     if vxlan_interface.Vxlan1.vxlan.source_interface is arista.avd.defined %}
 | Source Interface | {{ vxlan_interface.Vxlan1.vxlan.source_interface }} |
+{%     endif %}
+{%     if vxlan_interface.Vxlan1.vxlan.controller_client.enabled is arista.avd.defined %}
+| Controller Client | {{ vxlan_interface.Vxlan1.vxlan.controller_client.enabled }} |
 {%     endif %}
 {%     if vxlan_interface.Vxlan1.vxlan.mlag_source_interface is arista.avd.defined %}
 | MLAG Source Interface | {{ vxlan_interface.Vxlan1.vxlan.mlag_source_interface }} |
@@ -49,7 +52,7 @@
 {%     endif %}
 {%     if vxlan_interface.Vxlan1.vxlan.vlans is arista.avd.defined %}
 
-#### VLAN to VNI, Flood List and Multicast Group Mappings
+##### VLAN to VNI, Flood List and Multicast Group Mappings
 
 | VLAN | VNI | Flood List | Multicast Group |
 | ---- | --- | ---------- | --------------- |
@@ -66,7 +69,7 @@
 {%     endif %}
 {%     if vxlan_interface.Vxlan1.vxlan.vrfs is arista.avd.defined %}
 
-#### VRF to VNI and Multicast Group Mappings
+##### VRF to VNI and Multicast Group Mappings
 
 | VRF | VNI | Multicast Group |
 | ---- | --- | --------------- |
@@ -78,14 +81,14 @@
 {%     endif %}
 {%     if vxlan_interface.Vxlan1.vxlan.flood_vteps is arista.avd.defined %}
 
-#### Default Flood List
+##### Default Flood List
 
 | Default Flood List |
 | ------------------ |
 | {{ vxlan_interface.Vxlan1.vxlan.flood_vteps | join('<br/>') }} |
 {%     endif %}
 
-### VXLAN Interface Device Configuration
+#### VXLAN Interface Device Configuration
 
 ```eos
 {%     include 'eos/vxlan-interface.j2' %}

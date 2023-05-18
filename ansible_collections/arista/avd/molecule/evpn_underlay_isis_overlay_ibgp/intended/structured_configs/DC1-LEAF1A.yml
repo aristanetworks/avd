@@ -2,35 +2,40 @@ router_bgp:
   as: '65000'
   router_id: 192.168.255.5
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
-  - type: evpn
+  - name: OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     password: 64fqSH5CFUNLRHErezMrRg==
     send_community: all
     maximum_routes: 0
     remote_as: '65000'
-    name: OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: false
-      name: OVERLAY-PEERS
+    - name: OVERLAY-PEERS
+      activate: false
   address_family_evpn:
     peer_groups:
-    - activate: true
+    - name: OVERLAY-PEERS
+      activate: true
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
-      name: OVERLAY-PEERS
   neighbors:
-  - peer_group: OVERLAY-PEERS
+  - ip_address: 192.168.255.1
+    peer_group: OVERLAY-PEERS
     description: DC1-SPINE1
-    ip_address: 192.168.255.1
-  - peer_group: OVERLAY-PEERS
+  - ip_address: 192.168.255.4
+    peer_group: OVERLAY-PEERS
     description: DC1-SPINE4
-    ip_address: 192.168.255.4
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -52,26 +57,25 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-name_server:
-  source:
-    vrf: MGMT
-  nodes:
-  - 192.168.200.5
-  - 8.8.8.8
+ip_name_servers:
+- ip_address: 192.168.200.5
+  vrf: MGMT
+- ip_address: 8.8.8.8
+  vrf: MGMT
 spanning_tree:
   mode: mstp
   mst_instances:
-  - priority: 4096
-    id: '0'
+  - id: '0'
+    priority: 4096
 local_users:
-- privilege: 15
+- name: admin
+  privilege: 15
   role: network-admin
   no_password: true
-  name: admin
-- privilege: 15
+- name: cvpadmin
+  privilege: 15
   role: network-admin
   sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
-  name: cvpadmin
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -88,7 +92,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: DC1-SPINE1
+- name: Ethernet1
+  peer: DC1-SPINE1
   peer_interface: Ethernet1
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE1_Ethernet1
@@ -99,8 +104,9 @@ ethernet_interfaces:
   isis_enable: EVPN_UNDERLAY
   isis_metric: 50
   isis_network_point_to_point: true
-  name: Ethernet1
-- peer: DC1-SPINE2
+  isis_circuit_type: level-2
+- name: Ethernet2
+  peer: DC1-SPINE2
   peer_interface: Ethernet1
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE2_Ethernet1
@@ -111,8 +117,9 @@ ethernet_interfaces:
   isis_enable: EVPN_UNDERLAY
   isis_metric: 50
   isis_network_point_to_point: true
-  name: Ethernet2
-- peer: DC1-SPINE3
+  isis_circuit_type: level-2
+- name: Ethernet3
+  peer: DC1-SPINE3
   peer_interface: Ethernet1
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE3_Ethernet1
@@ -123,8 +130,9 @@ ethernet_interfaces:
   isis_enable: EVPN_UNDERLAY
   isis_metric: 50
   isis_network_point_to_point: true
-  name: Ethernet3
-- peer: DC1-SPINE4
+  isis_circuit_type: level-2
+- name: Ethernet4
+  peer: DC1-SPINE4
   peer_interface: Ethernet1
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE4_Ethernet1
@@ -135,7 +143,7 @@ ethernet_interfaces:
   isis_enable: EVPN_UNDERLAY
   isis_metric: 50
   isis_network_point_to_point: true
-  name: Ethernet4
+  isis_circuit_type: level-2
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
@@ -149,10 +157,9 @@ router_isis:
   net: 49.0001.0001.0001.0001.00
   router_id: 192.168.255.5
   is_type: level-2
-  address_family:
-  - ipv4 unicast
-  isis_af_defaults:
-  - maximum-paths 4
+  address_family_ipv4:
+    enabled: true
+    maximum_paths: 4
   no_passive_interfaces:
   - Ethernet1
   - Ethernet2

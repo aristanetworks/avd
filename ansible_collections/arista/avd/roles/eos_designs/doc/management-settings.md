@@ -47,9 +47,12 @@ cvp_instance_ips:
   - < IPv4 address >
   - < IPv4 address >
   - < CV as a Service hostname >
-# cvp_ingestauth_key is required for on-prem CVP
+
+# On-premise CVP ingest auth key | Optional
+# If set, terminattr will be configured with key-based authentication for on-premise CVP.
+# If not set, terminattr will be configured with certificate based authentication using token-secure onboarding.
+# Token must be copied to the device first.
 cvp_ingestauth_key: < CloudVision Ingest Authentication key >
-# cvp_token_file is only applicable to CV as a Service
 cvp_token_file: < 'path_to_token_file_on_switch' | default -> '/tmp/cv-onboarding-token' >
 terminattr_ingestgrpcurl_port: < port_number | default -> 9910 >
 terminattr_smashexcludes: "< smash excludes | default -> ale,flexCounter,hardware,kni,pulse,strata >"
@@ -82,6 +85,14 @@ name_servers:
 # "system_mac_address" can also be set under "Fabric Topology".
 # If both are set, the setting under "Fabric Topology" takes precedence.
 system_mac_address: < "xx:xx:xx:xx:xx:xx" >
+
+# Serial Number | Optional
+# Set to the Serial Number of the device
+# For  now only used for documentation purpose in the fabric
+# documentation.
+# "serial_number" can also be set under "Fabric Topology".
+# If both are set, the setting under "Fabric Topology" takes precedence.
+serial_number: < string >
 
 # Set SNMP settings | Optional
 snmp_settings:

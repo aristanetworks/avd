@@ -1,5 +1,10 @@
-from ansible.plugins.action import ActionBase
-from ansible.template import Templar
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ansible.plugins.action import ActionBase
+    from ansible.template import Templar
 
 from .compile_searchpath import compile_searchpath
 

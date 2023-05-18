@@ -8,7 +8,7 @@ from ansible.utils.display import Display
 from ansible_collections.arista.avd.plugins.plugin_utils.errors.errors import AvdDeprecationWarning
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AristaAvdError, AvdSchema
 
-VALID_CONVERSION_MODES = ["disabled", "warning", "info", "debug", "quiet"]
+VALID_CONVERSION_MODES = ["disabled", "error", "warning", "info", "debug", "quiet"]
 DEFAULT_CONVERSION_MODE = "debug"
 VALID_VALIDATION_MODES = ["disabled", "error", "warning", "info", "debug"]
 DEFAULT_VALIDATION_MODE = "warning"
@@ -20,18 +20,30 @@ class AvdSchemaTools:
     """
 
     def __init__(
-        self, schema: dict, hostname: str, ansible_display: Display, conversion_mode: str = None, validation_mode: str = None, plugin_name: str = None
+        self,
+        hostname: str,
+        ansible_display: Display,
+        schema: dict = None,
+        schema_id: str = None,
+        conversion_mode: str = None,
+        validation_mode: str = None,
+        plugin_name: str = None,
     ) -> None:
-        try:
-            self.avdschema = AvdSchema(schema)
-        except AristaAvdError as e:
-            raise AnsibleActionFail("Invalid Schema!") from e
-
+        self._set_schema(schema, schema_id)
         self.hostname = hostname
         self.ansible_display = ansible_display
         self.plugin_name = plugin_name
         self._set_conversion_mode(conversion_mode)
         self._set_validation_mode(validation_mode)
+
+    def _set_schema(self, schema: dict | None, schema_id: str | None) -> None:
+        if schema is None and schema_id is None:
+            raise AnsibleActionFail("Either argument 'schema' or 'schema_id' must be set")
+
+        try:
+            self.avdschema = AvdSchema(schema=schema, schema_id=schema_id)
+        except AristaAvdError as e:
+            raise AnsibleActionFail("Invalid Schema!") from e
 
     def _set_conversion_mode(self, conversion_mode: str | None) -> None:
         if conversion_mode is None:
@@ -72,7 +84,10 @@ class AvdSchemaTools:
         # avd_schema.convert returns a generator, which we iterate through in handle_exceptions to perform the actual conversions.
         exceptions = self.avdschema.convert(data)
         if conversion_counter := self.handle_validation_exceptions(exceptions, self.conversion_mode):
-            result_messages.append(f"{conversion_counter} data conversions done to conform to schema.")
+            if self.conversion_mode == "error":
+                result_messages.append(f"{conversion_counter} errors raised during conversion of input vars.")
+            else:
+                result_messages.append(f"{conversion_counter} data conversions done to conform to schema.")
             if self.conversion_mode == "debug":
                 result_messages.append("Run with -v to see details")
 
@@ -115,6 +130,9 @@ class AvdSchemaTools:
 
         # Perform data conversions
         result_messages.extend(self.convert_data(data))
+        if result_messages:
+            if self.conversion_mode == "error":
+                result["failed"] = True
 
         # Perform validation
         validation_messages = self.validate_data(data)

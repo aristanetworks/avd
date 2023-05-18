@@ -5,7 +5,7 @@ __metaclass__ = type
 import json
 import os
 import sys
-from importlib.metadata import PackageNotFoundError, version
+from importlib.metadata import Distribution, PackageNotFoundError, version
 from subprocess import PIPE, Popen
 
 import yaml
@@ -18,6 +18,7 @@ from ansible.utils.collection_loader._collection_finder import _get_collection_m
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 
 try:
+    # Relying on packaging installed by ansible
     from packaging.requirements import InvalidRequirement, Requirement
     from packaging.specifiers import SpecifierSet
 
@@ -79,6 +80,14 @@ def _validate_python_requirements(requirements: list[str], result: dict) -> bool
         try:
             installed_version = version(req.name)
             display.vvv(f"Found {req.name} {installed_version} installed!", "Verify Requirements")
+
+            # If some old dist-info files are leftover in Python site-packages, it is possible
+            # to find multiple Distributions for the installed version
+            potential_dists = Distribution.discover(name=req.name)
+            detected_versions = [dist.version for dist in potential_dists]
+            valid_versions = [version for version in detected_versions if req.specifier.contains(version)]
+            if len(detected_versions) > 1:
+                display.v(f"Found {req.name} {detected_versions} metadata - this could mean legacy dist-info files are present in your site-packages folder")
         except PackageNotFoundError:
             requirements_dict["not_found"][req.name] = {
                 "installed": None,
@@ -91,6 +100,35 @@ def _validate_python_requirements(requirements: list[str], result: dict) -> bool
         if req.specifier.contains(installed_version):
             requirements_dict["valid"][req.name] = {
                 "installed": installed_version,
+                "required_version": str(req.specifier) if len(req.specifier) > 0 else None,
+            }
+        elif len(valid_versions) > 0:
+            # More than one dist found and at least one was matching - output a warning
+            requirements_dict["valid"][req.name] = {
+                "installed": installed_version,
+                "detected_versions": detected_versions,
+                "valid_versions": valid_versions,
+                "required_version": str(req.specifier) if len(req.specifier) > 0 else None,
+            }
+            display.warning(
+                f"Found {req.name} valid versions {valid_versions} among {detected_versions} from metadata - assuming a valid version is running - more"
+                " information available with -v"
+            )
+            display.v(
+                "The Arista AVD collection relies on Python built-in library `importlib.metadata` to detect running versions. In some cases where legacy"
+                " dist-info folders are leftovers in the site-packages folder, there can be misdetection of the version. This module assumes that if any"
+                " version matches the required one, then the requirement is met. This could led to false positive results. Please make sure to clean the"
+                " leftovers dist-info folders."
+            )
+        elif len(detected_versions) > 1:
+            # More than one dist found and none matching the requirements
+            display.error(
+                f"Python library '{req.name}' detected versions {detected_versions} - requirement is {str(req)} - more information available with -v", False
+            )
+            requirements_dict["mismatched"][req.name] = {
+                "installed": installed_version,
+                "detected_versions": detected_versions,
+                "valid_versions": None,
                 "required_version": str(req.specifier) if len(req.specifier) > 0 else None,
             }
         else:
@@ -224,15 +262,21 @@ def _get_running_collection_version(running_collection_name: str, result: dict) 
     collection_path = _get_collection_path(running_collection_name)
     version = _get_collection_version(collection_path)
 
-    # Try to detect a git tag
-    # Using subprocess for now
-    with Popen(["git", "describe", "--tags"], stdout=PIPE, stderr=PIPE, cwd=collection_path) as process:
-        output, err = process.communicate()
-        if err:
-            display.vvv("Not a git repository")
-        else:
-            display.vvv("This is a git repository, overwriting version with 'git describe --tags output'")
-            version = output.decode("UTF-8").strip()
+    try:
+        # Try to detect a git tag
+        # Using subprocess for now
+        with Popen(["git", "describe", "--tags"], stdout=PIPE, stderr=PIPE, cwd=collection_path) as process:
+            output, err = process.communicate()
+            if err:
+                # Not that when molecule runs, it runs in a copy of the directory that is not a git repo
+                # so only the latest tag is being returned
+                display.vvv("Not a git repository")
+            else:
+                display.vvv("This is a git repository, overwriting version with 'git describe --tags output'")
+                version = output.decode("UTF-8").strip()
+    except FileNotFoundError:
+        # Handle the case where `git` is not installed or not in the PATH
+        display.vvv("Could not find 'git' executable, returning collection version")
 
     result["collection"] = {
         "name": running_collection_name,
@@ -276,7 +320,7 @@ class ActionModule(ActionBase):
 
         _get_running_collection_version(running_collection_name, info["ansible"])
 
-        display.display(f"AVD version {info['ansible']['collection']['version']}", color=C.COLOR_HIGHLIGHT)
+        display.display(f"AVD version {info['ansible']['collection']['version']}", color=C.COLOR_OK)
         if display.verbosity < 1:
             display.display("Use -v for details.")
 

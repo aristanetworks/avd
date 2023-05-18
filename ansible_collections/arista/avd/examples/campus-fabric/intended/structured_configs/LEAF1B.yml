@@ -5,29 +5,27 @@ static_routes:
 - destination_address_prefix: 0.0.0.0/0
   gateway: 10.10.10.1
 service_routing_protocols_model: multi-agent
-ip_routing: true
 vlan_internal_order:
   allocation: ascending
   range:
     beginning: 1006
     ending: 1199
-name_server:
-  source:
-    vrf: MGMT
-  nodes:
-  - 8.8.4.4
-  - 8.8.8.8
+ip_name_servers:
+- ip_address: 8.8.4.4
+  vrf: MGMT
+- ip_address: 8.8.8.8
+  vrf: MGMT
 spanning_tree:
   mode: mstp
   mst_instances:
-  - priority: 16384
-    id: '0'
+  - id: '0'
+    priority: 16384
   no_spanning_tree_vlan: '4094'
 local_users:
-- privilege: 15
+- name: admin
+  privilege: 15
   role: network-admin
   sha512_password: $6$eucN5ngreuExDgwS$xnD7T8jO..GBDX0DUlp.hn.W7yW94xTjSanqgaQGBzPIhDAsyAl9N4oScHvOMvf07uVBFI4mKMxwdVEUVKgY/.
-  name: admin
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -39,23 +37,16 @@ management_interfaces:
   ip_address: 172.100.100.104/24
   gateway: 172.100.100.1
   type: oob
-- name: Vlan10
-  description: L2LEAF_INBAND_MGMT
-  shutdown: false
-  mtu: 1500
-  ip_address: 10.10.10.7/24
-  gateway: 10.10.10.1
-  type: inband
 management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
 vlans:
-- tenant: system
+- id: 4094
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  id: 4094
 - id: 110
   name: IDF1-Data
   tenant: MY_FABRIC
@@ -65,9 +56,9 @@ vlans:
 - id: 130
   name: IDF1-Guest
   tenant: MY_FABRIC
-- tenant: system
-  name: L2LEAF_INBAND_MGMT
-  id: 10
+- id: 10
+  tenant: system
+  name: INBAND_MGMT
 vlan_interfaces:
 - name: Vlan4094
   description: MLAG_PEER
@@ -75,12 +66,17 @@ vlan_interfaces:
   ip_address: 192.168.0.5/31
   no_autostate: true
   mtu: 1500
+- name: Vlan10
+  description: Inband Management
+  shutdown: false
+  mtu: 1500
+  ip_address: 10.10.10.7/24
+  type: inband_mgmt
 port_channel_interfaces:
 - name: Port-Channel53
   description: MLAG_PEER_LEAF1A_Po53
   type: switched
   shutdown: false
-  vlans: 2-4094
   mode: trunk
   trunk_groups:
   - MLAG
@@ -92,42 +88,43 @@ port_channel_interfaces:
   vlans: 10,110,120,130
   mlag: 51
 ethernet_interfaces:
-- peer: LEAF1A
+- name: Ethernet53
+  peer: LEAF1A
   peer_interface: Ethernet53
   peer_type: mlag_peer
   description: MLAG_PEER_LEAF1A_Ethernet53
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 53
     mode: active
-  name: Ethernet53
-- peer: LEAF1A
+- name: Ethernet54
+  peer: LEAF1A
   peer_interface: Ethernet54
   peer_type: mlag_peer
   description: MLAG_PEER_LEAF1A_Ethernet54
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 53
     mode: active
-  name: Ethernet54
-- peer: SPINE2
+- name: Ethernet51
+  peer: SPINE2
   peer_interface: Ethernet1
   peer_type: l3spine
   description: SPINE2_Ethernet1
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 51
     mode: active
-  name: Ethernet51
-- peer: IDF1 Standard Port
+- name: Ethernet1
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -149,16 +146,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet1
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet2
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -180,16 +177,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet2
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet3
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -211,16 +208,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet3
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet4
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -242,16 +239,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet4
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet5
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -273,16 +270,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet5
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet6
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -304,16 +301,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet6
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet7
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -335,16 +332,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet7
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet8
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -366,16 +363,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet8
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet9
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -397,16 +394,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet9
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet10
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -428,16 +425,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet10
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet11
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -459,16 +456,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet11
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet12
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -490,16 +487,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet12
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet13
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -521,16 +518,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet13
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet14
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -552,16 +549,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet14
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet15
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -583,16 +580,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet15
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet16
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -614,16 +611,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet16
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet17
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -645,16 +642,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet17
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet18
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -676,16 +673,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet18
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet19
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -707,16 +704,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet19
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet20
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -738,16 +735,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet20
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet21
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -769,16 +766,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet21
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet22
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -800,16 +797,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet22
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet23
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -831,16 +828,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet23
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet24
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -862,16 +859,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet24
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet25
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -893,16 +890,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet25
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet26
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -924,16 +921,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet26
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet27
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -955,16 +952,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet27
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet28
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -986,16 +983,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet28
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet29
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1017,16 +1014,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet29
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet30
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1048,16 +1045,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet30
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet31
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1079,16 +1076,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet31
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet32
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1110,16 +1107,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet32
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet33
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1141,16 +1138,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet33
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet34
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1172,16 +1169,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet34
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet35
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1203,16 +1200,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet35
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet36
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1234,16 +1231,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet36
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet37
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1265,16 +1262,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet37
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet38
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1296,16 +1293,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet38
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet39
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1327,16 +1324,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet39
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet40
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1358,16 +1355,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet40
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet41
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1389,16 +1386,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet41
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet42
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1420,16 +1417,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet42
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet43
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1451,16 +1448,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet43
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet44
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1482,16 +1479,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet44
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet45
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1513,16 +1510,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet45
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet46
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1544,16 +1541,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet46
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet47
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1575,16 +1572,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet47
   phone:
     trunk: untagged
     vlan: 120
-- peer: IDF1 Standard Port
+- name: Ethernet48
+  peer: IDF1 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF1 Standard Port
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk phone
   native_vlan: 110
   spanning_tree_portfast: edge
@@ -1606,7 +1603,6 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 130
-  name: Ethernet48
   phone:
     trunk: untagged
     vlan: 120

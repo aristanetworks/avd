@@ -36,7 +36,7 @@ There are multiple ways of supplying Custom Structured Configuration and they ca
 
 ### Examples
 
-A good example to demonstrate the various behaviors is to use the `ip name-server` configuration as it is quite straightforward. It is configured by `name_servers` for `eos_designs` and by `name_server` for `eos_cli_config_gen`.
+A good example to demonstrate the various behaviors is to use the `ip name-server` configuration as it is quite straightforward. It is configured by `name_servers` for `eos_designs` and by `ip_name_servers` for `eos_cli_config_gen`.
 
 #### eos_designs variables only
 
@@ -59,15 +59,13 @@ ip name-server vrf MGMT 192.168.42.40
 
 ```yaml
 ---
-# Only name_server from eos_ci_config_gen.
+# Only ip_name_servers from eos_ci_config_gen.
 # The variables will make it to the intended config
-name_server:
-  source:
+ip_name_servers:
+  - ip_address: 8.8.8.8
     vrf: EOS_CLI
-  nodes:
-    - 8.8.8.8
-    - 4.4.4.4
-
+  - ip_address: 4.4.4.4
+    vrf: EOS_CLI
 ```
 
 will generate as intended config:
@@ -80,19 +78,18 @@ ip name-server vrf EOS_CLI 8.8.8.8
 #### eos_cli_config_gen variables overwritten by eos_designs variables
 
 ```yaml
-# Both name_servers from eos_designs and name_server from
+# Both name_servers from eos_designs and ip_name_servers from
 # eos_ci_config_gen. The second ones WON'T be displayed
 # as they are overwritten by the generated structured_configuration
 name_servers:
   - 192.168.42.10
   - 192.168.42.40
 
-name_server:
-  source:
+ip_name_servers:
+  - ip_address: 8.8.8.8
     vrf: EOS_CLI
-  nodes:
-    - 8.8.8.8
-    - 4.4.4.4
+  - ip_address: 4.4.4.4
+    vrf: EOS_CLI
 ```
 
 will generate as intended config:
@@ -113,12 +110,11 @@ name_servers:
   - 192.168.42.10
   - 192.168.42.40
 
-custom_structured_configuration_name_server:
-  source:
+custom_structured_configuration_ip_name_servers:
+  - ip_address: 1.1.1.1
     vrf: CUSTOM_STRUCT
-  nodes:
-    - 1.1.1.1
-    - 2.2.2.2
+  - ip_address: 2.2.2.2
+    vrf: CUSTOM_STRUCT
 ```
 
 will generate as intended config:
@@ -134,21 +130,19 @@ ip name-server vrf CUSTOM_STRUCT 2.2.2.2
 
 ```yaml
 ---
-# Both name_server from eos_cli_config_gen and leveraging the
+# Both ip_name_servers from eos_cli_config_gen and leveraging the
 # custom_structured_configuration only custom_struct  will make it
-name_server:
-  source:
+ip_name_servers:
+  - ip_address: 8.8.8.8
     vrf: EOS_CLI
-  nodes:
-    - 8.8.8.8
-    - 4.4.4.4
+  - ip_address: 4.4.4.4
+    vrf: EOS_CLI
 
-custom_structured_configuration_name_server:
-  source:
+custom_structured_configuration_ip_name_servers:
+  - ip_address: 1.1.1.1
     vrf: CUSTOM_STRUCT
-  nodes:
-    - 1.1.1.1
-    - 2.2.2.2
+  - ip_address: 2.2.2.2
+    vrf: CUSTOM_STRUCT
 ```
 
 will generate as intended config:
@@ -260,9 +254,9 @@ custom_structured_configuration_list_merge: < append | keep | prepend | append_r
 #### Example using default prefix
 
 ```yaml
-custom_structured_configuration_name_server:
-  nodes:
-    - 10.2.3.4
+custom_structured_configuration_ip_name_servers:
+  - ip_address: 10.2.3.4
+    vrf: MGMT
 custom_structured_configuration_ethernet_interfaces:
   Ethernet4000:
     description: My test
@@ -275,7 +269,7 @@ custom_structured_configuration_ethernet_interfaces:
     peer_type: my_precious
 ```
 
-In this example the contents of the `name_server.nodes` variable in the Structured Configuration will be replaced by the list `[ 10.2.3.4 ]`
+In this example the contents of the `ip_name_servers` variable in the Structured Configuration will be replaced by the list `[ 10.2.3.4 ]`
 and `Ethernet4000` will be added to the `ethernet_interfaces` dictionary in the Structured Configuration.
 
 `custom_structured_configuration_prefix` allows the user to customize the prefix for Custom Structured Configuration variables.
@@ -319,32 +313,31 @@ name_servers:
   - 10.10.10.11
 
 custom_structured_configuration_list_merge: append
-custom_structured_configuration_list_prefix: [ override_ ]
+custom_structured_configuration_prefix: [ override_ ]
 
-override_name_server:
-  nodes:
-  - 10.10.10.12
+override_ip_name_servers:
+  - ip_address: 10.10.10.12
+    vrf: MGMT
 ```
 
-In this example the `name_servers` variable will be read by `eos_designs` templates and the `name_server` structured configuration will be generated accordingly:
+In this example the `name_servers` variable will be read by `eos_designs` templates and the `ip_name_servers` structured configuration will be generated accordingly:
 
 ```yaml
-name_server:
-  source:
+ip_name_servers:
+  - ip_address: 10.10.10.10
     vrf: MGMT
-  nodes:
-  - 10.10.10.10
-  - 10.10.10.11
+  - ip_address: 10.10.10.11
+    vrf: MGMT
 ```
 
-The `override_name_server.nodes` list will be `appended` to `name_server.nodes` list resulting in:
+The `override_ip_name_servers` list will be `appended` to `ip_name_servers` list resulting in:
 
 ```yaml
-name_server:
-  source:
+ip_name_servers:
+  - ip_address: 10.10.10.10
     vrf: MGMT
-  nodes:
-  - 10.10.10.10
-  - 10.10.10.11
-  - 10.10.10.12
+  - ip_address: 10.10.10.11
+    vrf: MGMT
+  - ip_address: 10.10.10.12
+    vrf: MGMT
 ```

@@ -113,10 +113,16 @@ keys:
             name:
               type: str
               description: SNMP view name
-            MIB_family_name:
+            mib_family_name:
               type: str
             included:
               type: bool
+            MIB_family_name:
+              deprecation:
+                warning: true
+                remove_in_version: 5.0.0
+                new_key: mib_family_name
+              type: str
       groups:
         type: list
         items:

@@ -3,28 +3,34 @@ router_bgp:
   router_id: 192.168.255.3
   bgp_defaults:
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
-  - type: ipv4
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
     maximum_routes: 12000
     send_community: all
-    name: IPv4-UNDERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: IPv4-UNDERLAY-PEERS
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
   redistribute_routes:
   - source_protocol: connected
   neighbors:
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 192.168.0.0
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
     description: UNDERLAY_FILTER_PEER_AS_SPINE1_Ethernet1
     route_map_out: RM-BGP-AS65000-OUT
-    ip_address: 192.168.0.0
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 192.168.0.2
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
     description: UNDERLAY_FILTER_PEER_AS_SPINE2_Ethernet1
     route_map_out: RM-BGP-AS65000-OUT
-    ip_address: 192.168.0.2
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -40,24 +46,24 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: UNDERLAY_FILTER_PEER_AS_SPINE1
+- name: Ethernet1
+  peer: UNDERLAY_FILTER_PEER_AS_SPINE1
   peer_interface: Ethernet1
   peer_type: spine
   description: P2P_LINK_TO_UNDERLAY_FILTER_PEER_AS_SPINE1_Ethernet1
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 192.168.0.1/31
-  name: Ethernet1
-- peer: UNDERLAY_FILTER_PEER_AS_SPINE2
+- name: Ethernet2
+  peer: UNDERLAY_FILTER_PEER_AS_SPINE2
   peer_interface: Ethernet1
   peer_type: spine
   description: P2P_LINK_TO_UNDERLAY_FILTER_PEER_AS_SPINE2_Ethernet1
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 192.168.0.3/31
-  name: Ethernet2
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

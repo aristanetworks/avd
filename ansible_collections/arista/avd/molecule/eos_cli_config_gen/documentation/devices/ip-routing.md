@@ -1,5 +1,6 @@
 # ip-routing
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -10,25 +11,25 @@
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -38,31 +39,31 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Routing
-## IP Routing
+## Routing
 
-### IP Routing Summary
+### IP Routing
+
+#### IP Routing Summary
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | False |
-| default | true |
-| TEST1 | true |
-| TEST2 | false |
+| default | True (ipv6 interfaces) |
+| TEST1 | True |
+| TEST2 | True (ipv6 interfaces) |
 
-### IP Routing Device Configuration
+#### IP Routing Device Configuration
 
 ```eos
 !
-no ip routing
+ip routing ipv6 interfaces
 no ip icmp redirect
 ip routing vrf TEST1
-no ip routing vrf TEST2
+ip routing ipv6 interfaces vrf TEST2
 ```
 
-## IPv6 Routing
+### IPv6 Routing
 
-### IPv6 Routing Summary
+#### IPv6 Routing Summary
 
 | VRF | Routing Enabled |
 | --- | --------------- |
@@ -71,29 +72,25 @@ no ip routing vrf TEST2
 | TEST1 | true |
 | TEST2 | false |
 
-### IPv6 Routing Device Configuration
+#### IPv6 Routing Device Configuration
 
 ```eos
 !
 ipv6 unicast-routing
-ip routing ipv6 interfaces
-!
-ipv6 unicast-routing vrf default
 ipv6 unicast-routing vrf TEST1
 no ipv6 icmp redirect
 ```
 
-# VRF Instances
+## VRF Instances
 
-## VRF Instances Summary
+### VRF Instances Summary
 
 | VRF Name | IP Routing |
 | -------- | ---------- |
-| default | enabled |
 | TEST1 | enabled |
-| TEST2 | disabled |
+| TEST2 | enabled (ipv6 interface) |
 
-## VRF Instances Device Configuration
+### VRF Instances Device Configuration
 
 ```eos
 !

@@ -14,7 +14,8 @@ l3_edge:
       speed: "forced 10000full"
       mtu: 2000
       bfd: true
-      ptp_enable: true
+      ptp:
+        enabled: true
       qos_profile: TEST-QOS-PROFILE
       macsec_profile: TEST-MACSEC-PROFILE
       raw_eos_cli: |
@@ -29,13 +30,13 @@ l3_edge:
       interfaces: [ethernet1, ethernet1]
       id: 1
       profile: profile1
+      include_in_underlay_protocol: false
 
       # P2P link with underlay routing and IP set manually, and ipv6_enabled.
     - nodes: [l3_edge_bgp, peer2]
       interfaces: [ethernet2, ethernet2]
       ip: [192.168.0.2/31, 192.168.0.3/31]
       as: [65000, 65002]
-      include_in_underlay_protocol: true
       ipv6_enable: true
 
       # P2P link with underlay routing and IP set as subnet.
@@ -43,7 +44,6 @@ l3_edge:
       interfaces: [ethernet3, ethernet3]
       subnet: 192.168.0.4/31
       as: [65000, 65003]
-      include_in_underlay_protocol: true
 
       # P2P link with underlay routing and IP set via ip_pool and id.
       # Descriptions set manually
@@ -52,7 +52,6 @@ l3_edge:
       ip_pool: pool1
       id: 4
       as: [65000, 65004]
-      include_in_underlay_protocol: true
       descriptions: ["Custom description on l3_edge_bgp eth4", "Custom description on peer4 eth4"]
 
     # P2P link with Port-Channel with underlay routing and and IP set manually.

@@ -3,42 +3,49 @@ router_bgp:
   router_id: 192.168.255.7
   bgp_defaults:
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
-  - type: ipv4
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
     maximum_routes: 12000
     send_community: all
-    name: IPv4-UNDERLAY-PEERS
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 3
-    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: IPv4-UNDERLAY-PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   neighbors:
-  - peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 172.31.255.8
+    peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
     description: EVPN-MULTICAST-SPINE1_Ethernet5
-    ip_address: 172.31.255.8
-  - peer_group: EVPN-OVERLAY-PEERS
+  - ip_address: 192.168.255.1
+    peer_group: EVPN-OVERLAY-PEERS
     description: EVPN-MULTICAST-SPINE1
     remote_as: '65001'
-    ip_address: 192.168.255.1
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
   vrfs:
-  - router_id: 192.168.255.7
+  - name: MULTICAST_DISABLED_310_311
+    router_id: 192.168.255.7
     rd: 192.168.255.7:13
     route_targets:
       import:
@@ -51,8 +58,8 @@ router_bgp:
         - '13:13'
     redistribute_routes:
     - source_protocol: connected
-    name: MULTICAST_DISABLED_310_311
-  - router_id: 192.168.255.7
+  - name: MULTICAST_ENABLED_110_111
+    router_id: 192.168.255.7
     rd: 192.168.255.7:11
     route_targets:
       import:
@@ -65,8 +72,8 @@ router_bgp:
         - '11:11'
     redistribute_routes:
     - source_protocol: connected
-    name: MULTICAST_ENABLED_110_111
-  - router_id: 192.168.255.7
+  - name: MULTICAST_ENABLED_210_DISABLED_211
+    router_id: 192.168.255.7
     rd: 192.168.255.7:12
     route_targets:
       import:
@@ -79,8 +86,8 @@ router_bgp:
         - '12:12'
     redistribute_routes:
     - source_protocol: connected
-    name: MULTICAST_ENABLED_210_DISABLED_211
-  - router_id: 192.168.255.7
+  - name: MULTICAST_DISABLED_5_6
+    router_id: 192.168.255.7
     rd: 192.168.255.7:23
     route_targets:
       import:
@@ -93,8 +100,8 @@ router_bgp:
         - '23:23'
     redistribute_routes:
     - source_protocol: connected
-    name: MULTICAST_DISABLED_5_6
-  - router_id: 192.168.255.7
+  - name: MULTICAST_ENABLED_1_2
+    router_id: 192.168.255.7
     rd: 192.168.255.7:21
     route_targets:
       import:
@@ -107,8 +114,8 @@ router_bgp:
         - '21:21'
     redistribute_routes:
     - source_protocol: connected
-    name: MULTICAST_ENABLED_1_2
-  - router_id: 192.168.255.7
+  - name: MULTICAST_ENABLED_3_DISABLED_4
+    router_id: 192.168.255.7
     rd: 192.168.255.7:22
     route_targets:
       import:
@@ -121,8 +128,8 @@ router_bgp:
         - '22:22'
     redistribute_routes:
     - source_protocol: connected
-    name: MULTICAST_ENABLED_3_DISABLED_4
-  - router_id: 192.168.255.7
+  - name: TEN_C_L3_MULTICAST_DISABLED_330_331
+    router_id: 192.168.255.7
     rd: 192.168.255.7:33
     route_targets:
       import:
@@ -136,8 +143,8 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     evpn_multicast: false
-    name: TEN_C_L3_MULTICAST_DISABLED_330_331
-  - router_id: 192.168.255.7
+  - name: TEN_C_L3_MULTICAST_ENABLED_130_131
+    router_id: 192.168.255.7
     rd: 192.168.255.7:31
     route_targets:
       import:
@@ -151,8 +158,8 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     evpn_multicast: true
-    name: TEN_C_L3_MULTICAST_ENABLED_130_131
-  - router_id: 192.168.255.7
+  - name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
+    router_id: 192.168.255.7
     rd: 192.168.255.7:32
     route_targets:
       import:
@@ -166,8 +173,8 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     evpn_multicast: true
-    name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
-  - router_id: 192.168.255.7
+  - name: TEN_D_L3_MULTICAST_DISABLED_240_241
+    router_id: 192.168.255.7
     rd: 192.168.255.7:42
     route_targets:
       import:
@@ -181,8 +188,8 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     evpn_multicast: false
-    name: TEN_D_L3_MULTICAST_DISABLED_240_241
-  - router_id: 192.168.255.7
+  - name: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
+    router_id: 192.168.255.7
     rd: 192.168.255.7:41
     route_targets:
       import:
@@ -196,8 +203,8 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     evpn_multicast: true
-    name: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
-  - router_id: 192.168.255.7
+  - name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
+    router_id: 192.168.255.7
     rd: 192.168.255.7:55
     route_targets:
       import:
@@ -211,8 +218,8 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     evpn_multicast: true
-    name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
-  - router_id: 192.168.255.7
+  - name: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
+    router_id: 192.168.255.7
     rd: 192.168.255.7:60
     route_targets:
       import:
@@ -229,8 +236,8 @@ router_bgp:
     evpn_multicast_address_family:
       ipv4:
         transit: true
-    name: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
-  - router_id: 192.168.255.7
+  - name: TEN_E_L3_MULTICAST_TRANSIT
+    router_id: 192.168.255.7
     rd: 192.168.255.7:52
     route_targets:
       import:
@@ -247,8 +254,8 @@ router_bgp:
     evpn_multicast_address_family:
       ipv4:
         transit: true
-    name: TEN_E_L3_MULTICAST_TRANSIT
-  - router_id: 192.168.255.7
+  - name: TEN_E_PEG_L3_MULTICAST_ENABLED
+    router_id: 192.168.255.7
     rd: 192.168.255.7:51
     route_targets:
       import:
@@ -262,25 +269,25 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     evpn_multicast: true
-    name: TEN_E_PEG_L3_MULTICAST_ENABLED
   vlans:
-  - tenant: Tenant_A
+  - id: 310
+    tenant: Tenant_A
     rd: 192.168.255.7:10310
     route_targets:
       both:
       - 10310:10310
     redistribute_routes:
     - learned
-    id: 310
-  - tenant: Tenant_A
+  - id: 311
+    tenant: Tenant_A
     rd: 192.168.255.7:10311
     route_targets:
       both:
       - 10311:10311
     redistribute_routes:
     - learned
-    id: 311
-  - tenant: Tenant_A
+  - id: 110
+    tenant: Tenant_A
     rd: 192.168.255.7:10110
     route_targets:
       both:
@@ -288,8 +295,8 @@ router_bgp:
     redistribute_routes:
     - learned
     - igmp
-    id: 110
-  - tenant: Tenant_A
+  - id: 111
+    tenant: Tenant_A
     rd: 192.168.255.7:10111
     route_targets:
       both:
@@ -297,8 +304,8 @@ router_bgp:
     redistribute_routes:
     - learned
     - igmp
-    id: 111
-  - tenant: Tenant_A
+  - id: 210
+    tenant: Tenant_A
     rd: 192.168.255.7:10210
     route_targets:
       both:
@@ -306,24 +313,24 @@ router_bgp:
     redistribute_routes:
     - learned
     - igmp
-    id: 210
-  - tenant: Tenant_A
+  - id: 211
+    tenant: Tenant_A
     rd: 192.168.255.7:10211
     route_targets:
       both:
       - 10211:10211
     redistribute_routes:
     - learned
-    id: 211
-  - tenant: Tenant_A
+  - id: 256
+    tenant: Tenant_A
     rd: 192.168.255.7:10256
     route_targets:
       both:
       - 10256:10256
     redistribute_routes:
     - learned
-    id: 256
-  - tenant: Tenant_A
+  - id: 257
+    tenant: Tenant_A
     rd: 192.168.255.7:10257
     route_targets:
       both:
@@ -331,8 +338,8 @@ router_bgp:
     redistribute_routes:
     - learned
     - igmp
-    id: 257
-  - tenant: Tenant_A
+  - id: 4092
+    tenant: Tenant_A
     rd: 192.168.255.7:14092
     route_targets:
       both:
@@ -340,24 +347,24 @@ router_bgp:
     redistribute_routes:
     - learned
     - igmp
-    id: 4092
-  - tenant: Tenant_B
+  - id: 5
+    tenant: Tenant_B
     rd: 192.168.255.7:10005
     route_targets:
       both:
       - 10005:10005
     redistribute_routes:
     - learned
-    id: 5
-  - tenant: Tenant_B
+  - id: 6
+    tenant: Tenant_B
     rd: 192.168.255.7:10006
     route_targets:
       both:
       - 10006:10006
     redistribute_routes:
     - learned
-    id: 6
-  - tenant: Tenant_B
+  - id: 1
+    tenant: Tenant_B
     rd: 192.168.255.7:10001
     route_targets:
       both:
@@ -365,8 +372,8 @@ router_bgp:
     redistribute_routes:
     - learned
     - igmp
-    id: 1
-  - tenant: Tenant_B
+  - id: 2
+    tenant: Tenant_B
     rd: 192.168.255.7:10002
     route_targets:
       both:
@@ -374,8 +381,8 @@ router_bgp:
     redistribute_routes:
     - learned
     - igmp
-    id: 2
-  - tenant: Tenant_B
+  - id: 3
+    tenant: Tenant_B
     rd: 192.168.255.7:10003
     route_targets:
       both:
@@ -383,24 +390,24 @@ router_bgp:
     redistribute_routes:
     - learned
     - igmp
-    id: 3
-  - tenant: Tenant_B
+  - id: 4
+    tenant: Tenant_B
     rd: 192.168.255.7:10004
     route_targets:
       both:
       - 10004:10004
     redistribute_routes:
     - learned
-    id: 4
-  - tenant: Tenant_B
+  - id: 7
+    tenant: Tenant_B
     rd: 192.168.255.7:10007
     route_targets:
       both:
       - 10007:10007
     redistribute_routes:
     - learned
-    id: 7
-  - tenant: Tenant_B
+  - id: 8
+    tenant: Tenant_B
     rd: 192.168.255.7:10008
     route_targets:
       both:
@@ -408,8 +415,8 @@ router_bgp:
     redistribute_routes:
     - learned
     - igmp
-    id: 8
-  - tenant: Tenant_B
+  - id: 9
+    tenant: Tenant_B
     rd: 192.168.255.7:10009
     route_targets:
       both:
@@ -417,119 +424,118 @@ router_bgp:
     redistribute_routes:
     - learned
     - igmp
-    id: 9
-  - tenant: Tenant_C
+  - id: 330
+    tenant: Tenant_C
     rd: 192.168.255.7:10330
     route_targets:
       both:
       - 10330:10330
     redistribute_routes:
     - learned
-    id: 330
-  - tenant: Tenant_C
+  - id: 331
+    tenant: Tenant_C
     rd: 192.168.255.7:10331
     route_targets:
       both:
       - 10331:10331
     redistribute_routes:
     - learned
-    id: 331
-  - tenant: Tenant_C
+  - id: 130
+    tenant: Tenant_C
     rd: 192.168.255.7:10130
     route_targets:
       both:
       - 10130:10130
     redistribute_routes:
     - learned
-    id: 130
-  - tenant: Tenant_C
+  - id: 131
+    tenant: Tenant_C
     rd: 192.168.255.7:10131
     route_targets:
       both:
       - 10131:10131
     redistribute_routes:
     - learned
-    id: 131
-  - tenant: Tenant_C
+  - id: 230
+    tenant: Tenant_C
     rd: 192.168.255.7:10230
     route_targets:
       both:
       - 10230:10230
     redistribute_routes:
     - learned
-    id: 230
-  - tenant: Tenant_C
+  - id: 231
+    tenant: Tenant_C
     rd: 192.168.255.7:10231
     route_targets:
       both:
       - 10231:10231
     redistribute_routes:
     - learned
-    id: 231
-  - tenant: Tenant_D
+  - id: 240
+    tenant: Tenant_D
     rd: 192.168.255.7:10240
     route_targets:
       both:
       - 10240:10240
     redistribute_routes:
     - learned
-    id: 240
-  - tenant: Tenant_D
+  - id: 241
+    tenant: Tenant_D
     rd: 192.168.255.7:10241
     route_targets:
       both:
       - 10241:10241
     redistribute_routes:
     - learned
-    id: 241
-  - tenant: Tenant_D
+  - id: 140
+    tenant: Tenant_D
     rd: 192.168.255.7:10140
     route_targets:
       both:
       - 10140:10140
     redistribute_routes:
     - learned
-    id: 140
-  - tenant: Tenant_D
+  - id: 141
+    tenant: Tenant_D
     rd: 192.168.255.7:10141
     route_targets:
       both:
       - 10141:10141
     redistribute_routes:
     - learned
-    id: 141
-  - tenant: Tenant_E
+  - id: 550
+    tenant: Tenant_E
     rd: 192.168.255.7:10550
     route_targets:
       both:
       - 10550:10550
     redistribute_routes:
     - learned
-    id: 550
-  - tenant: Tenant_E
+  - id: 260
+    tenant: Tenant_E
     rd: 192.168.255.7:10260
     route_targets:
       both:
       - 10260:10260
     redistribute_routes:
     - learned
-    id: 260
-  - tenant: Tenant_E
+  - id: 250
+    tenant: Tenant_E
     rd: 192.168.255.7:10250
     route_targets:
       both:
       - 10250:10250
     redistribute_routes:
     - learned
-    id: 250
-  - tenant: Tenant_E
+  - id: 150
+    tenant: Tenant_E
     rd: 192.168.255.7:10150
     route_targets:
       both:
       - 10150:10150
     redistribute_routes:
     - learned
-    id: 150
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -643,19 +649,20 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- peer: EVPN-MULTICAST-SPINE1
+- name: Ethernet1
+  peer: EVPN-MULTICAST-SPINE1
   peer_interface: Ethernet5
   peer_type: spine
   description: P2P_LINK_TO_EVPN-MULTICAST-SPINE1_Ethernet5
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 172.31.255.9/31
   pim:
     ipv4:
       sparse_mode: true
-  name: Ethernet1
-- peer_type: l3_interface
+- name: Ethernet9
+  peer_type: l3_interface
   ip_address: 10.2.52.2/31
   shutdown: false
   type: routed
@@ -663,15 +670,15 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  name: Ethernet9
-- peer_type: l3_interface
+- name: Ethernet7.10
+  peer_type: l3_interface
   ip_address: 10.1.51.6/31
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 10
   vrf: TEN_E_PEG_L3_MULTICAST_ENABLED
-  name: Ethernet7.10
-- peer_type: l3_interface
+- name: Ethernet8
+  peer_type: l3_interface
   ip_address: 10.1.51.6/31
   shutdown: false
   type: routed
@@ -679,11 +686,10 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
-  name: Ethernet8
-- type: routed
+- name: Ethernet7
+  type: routed
   peer_type: l3_interface
   shutdown: false
-  name: Ethernet7
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

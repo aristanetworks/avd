@@ -1,0 +1,75 @@
+---
+### Ethernet Interfaces ###
+
+# Testing ethernet_interfaces as dict of dict
+# Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+ethernet_interfaces:
+  Ethernet3:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet2
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE2_Ethernet2
+    mtu: 1500
+    type: routed
+    ipv6_enable: true
+    ipv6_address: 2002:ABDC::1/64
+    # Testing ipv6_nd_prefixes as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    ipv6_nd_prefixes:
+      2345:ABCD:3FE0::1/96:
+        valid_lifetime: infinite
+        preferred_lifetime: 50
+        no_autoconfig_flag: true
+      2345:ABCD:3FE0::2/96:
+        valid_lifetime: 50
+        preferred_lifetime: infinite
+        no_autoconfig_flag: false
+      2345:ABCD:3FE0::3/96:
+        valid_lifetime: 100000
+        no_autoconfig_flag: true
+
+  Ethernet47:
+    description: IP Helper
+    type: routed
+    ip_address: 172.31.255.1/31
+    # Testing ip_helpers as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    ip_helpers:
+      10.10.96.101:
+        source_interface: Loopback0
+      10.10.96.151:
+        vrf: MGMT
+      10.10.96.150:
+        source_interface: Loopback0
+        vrf: MGMT
+      10.10.64.151:
+
+  Ethernet5:
+    description: Molecule Routing
+    shutdown: false
+    mtu: 9100
+    type: routed
+    ospf_network_point_to_point: true
+    ospf_area: 100
+    ospf_cost: 99
+    ospf_authentication: message-digest
+    ospf_authentication_key: "asfddja23452"
+    # Testing ospf_message_digest_keys as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    ospf_message_digest_keys:
+      1:
+        hash_algorithm: sha512
+        key: "asfddja23452"
+
+  Ethernet26:
+    type: routed
+  Ethernet26.1:
+    type: l2dot1q
+    description: TENANT_A pseudowire 1 interface
+    encapsulation_vlan:
+      client:
+        unmatched: true
+  Ethernet31:
+    description: DOT1X Testing - force-unauthorized - no phone
+    dot1x:
+      port_control: force-unauthorized

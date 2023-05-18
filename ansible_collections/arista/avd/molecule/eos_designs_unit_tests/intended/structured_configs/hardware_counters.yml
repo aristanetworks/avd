@@ -1,10 +1,12 @@
 service_routing_protocols_model: multi-agent
-ip_routing: true
 hardware_counters:
   features:
-  - vlan-interface: in
-  - vlan-interface: out
-  - flow-spec: in
+  - name: vlan-interface
+    direction: in
+  - name: vlan-interface
+    direction: out
+  - name: flow-spec
+    direction: in
 vlan_internal_order:
   allocation: ascending
   range:

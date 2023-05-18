@@ -3,7 +3,6 @@ static_routes:
   destination_address_prefix: 0.0.0.0/0
   gateway: 10.0.0.1
 service_routing_protocols_model: multi-agent
-ip_routing: true
 vlan_internal_order:
   allocation: ascending
   range:
@@ -26,12 +25,12 @@ vlans:
 ip_igmp_snooping:
   globally_enabled: true
 ethernet_interfaces:
-- peer: testserver
+- name: Ethernet1
+  peer: testserver
   peer_interface: Nic1
   peer_type: server
   description: testserver_Nic1
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk
   vlans: 1-2
-  name: Ethernet1

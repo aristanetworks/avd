@@ -3,33 +3,40 @@ router_bgp:
   router_id: 192.168.255.1
   bgp_defaults:
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
-  - type: ipv4
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
     maximum_routes: 12000
     send_community: all
-    name: IPv4-UNDERLAY-PEERS
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 3
-    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: IPv4-UNDERLAY-PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
   vrfs:
-  - router_id: 192.168.255.1
+  - name: svi_profile_tests_vrf
+    router_id: 192.168.255.1
     rd: 192.168.255.1:1
     route_targets:
       import:
@@ -43,128 +50,127 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     - source_protocol: ospf
-    name: svi_profile_tests_vrf
   vlans:
-  - tenant: svi_profile_tests
+  - id: 110
+    tenant: svi_profile_tests
     rd: 192.168.255.1:10110
     route_targets:
       both:
       - 10110:10110
     redistribute_routes:
     - learned
-    id: 110
-  - tenant: svi_profile_tests
+  - id: 111
+    tenant: svi_profile_tests
     rd: 192.168.255.1:10111
     route_targets:
       both:
       - 10111:10111
     redistribute_routes:
     - learned
-    id: 111
-  - tenant: svi_profile_tests
+  - id: 112
+    tenant: svi_profile_tests
     rd: 192.168.255.1:10112
     route_targets:
       both:
       - 10112:10112
     redistribute_routes:
     - learned
-    id: 112
-  - tenant: svi_profile_tests
+  - id: 113
+    tenant: svi_profile_tests
     rd: 192.168.255.1:10113
     route_targets:
       both:
       - 10113:10113
     redistribute_routes:
     - learned
-    id: 113
-  - tenant: svi_profile_tests
+  - id: 114
+    tenant: svi_profile_tests
     rd: 192.168.255.1:10114
     route_targets:
       both:
       - 10114:10114
     redistribute_routes:
     - learned
-    id: 114
-  - tenant: svi_profile_tests
+  - id: 115
+    tenant: svi_profile_tests
     rd: 192.168.255.1:10115
     route_targets:
       both:
       - 10115:10115
     redistribute_routes:
     - learned
-    id: 115
-  - tenant: svi_profile_tests
+  - id: 210
+    tenant: svi_profile_tests
     rd: 192.168.255.1:10210
     route_targets:
       both:
       - 10210:10210
     redistribute_routes:
     - learned
-    id: 210
-  - tenant: svi_profile_tests
+  - id: 211
+    tenant: svi_profile_tests
     rd: 192.168.255.1:10211
     route_targets:
       both:
       - 10211:10211
     redistribute_routes:
     - learned
-    id: 211
-  - tenant: svi_profile_tests
+  - id: 212
+    tenant: svi_profile_tests
     rd: 192.168.255.1:10212
     route_targets:
       both:
       - 10212:10212
     redistribute_routes:
     - learned
-    id: 212
-  - tenant: svi_profile_tests
+  - id: 410
+    tenant: svi_profile_tests
     rd: 192.168.255.1:10410
     route_targets:
       both:
       - 10410:10410
     redistribute_routes:
     - learned
-    id: 410
-  - tenant: svi_profile_tests
+  - id: 411
+    tenant: svi_profile_tests
     rd: 192.168.255.1:10411
     route_targets:
       both:
       - 10411:10411
     redistribute_routes:
     - learned
-    id: 411
-  - tenant: svi_profile_tests
+  - id: 412
+    tenant: svi_profile_tests
     rd: 192.168.255.1:10412
     route_targets:
       both:
       - 10412:10412
     redistribute_routes:
     - learned
-    id: 412
-  - tenant: svi_profile_tests
+  - id: 510
+    tenant: svi_profile_tests
     rd: 192.168.255.1:10510
     route_targets:
       both:
       - 10510:10510
     redistribute_routes:
     - learned
-    id: 510
-  - tenant: svi_profile_tests
+  - id: 511
+    tenant: svi_profile_tests
     rd: 192.168.255.1:10511
     route_targets:
       both:
       - 10511:10511
     redistribute_routes:
     - learned
-    id: 511
-  - tenant: svi_profile_tests
+  - id: 512
+    tenant: svi_profile_tests
     rd: 192.168.255.1:10512
     route_targets:
       both:
       - 10512:10512
     redistribute_routes:
     - learned
-    id: 512
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

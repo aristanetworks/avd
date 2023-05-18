@@ -1,0 +1,10 @@
+### Router General ###
+
+router_general:
+  # Testing vrfs as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  vrfs:
+    BLUE-C2:
+      leak_routes:
+        - source_vrf: BLUE-C1
+          subscribe_policy: RM-BLUE-LEAKING

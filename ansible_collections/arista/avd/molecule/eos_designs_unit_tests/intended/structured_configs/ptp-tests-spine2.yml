@@ -3,32 +3,38 @@ router_bgp:
   router_id: 10.255.0.2
   bgp_defaults:
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
-  - type: ipv4
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
     maximum_routes: 12000
     send_community: all
-    name: IPv4-UNDERLAY-PEERS
-  - type: evpn
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
     update_source: Loopback0
     bfd: true
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 3
     next_hop_unchanged: true
-    name: EVPN-OVERLAY-PEERS
   address_family_ipv4:
     peer_groups:
-    - activate: true
-      name: IPv4-UNDERLAY-PEERS
-    - activate: false
-      name: EVPN-OVERLAY-PEERS
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   redistribute_routes:
-  - route_map: RM-CONN-2-BGP
-    source_protocol: connected
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
-    - activate: true
-      name: EVPN-OVERLAY-PEERS
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -118,7 +124,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_ptp-tests-spine1_Ethernet6
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ptp:
     announce:
       interval: 0
@@ -135,7 +141,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_ptp-tests-spine1_Ethernet7
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ptp:
     announce:
       interval: 0
@@ -152,7 +158,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_ptp-tests-spine1_Ethernet8
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ptp:
     announce:
       interval: 0
@@ -169,7 +175,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_ptp-tests-spine1_Ethernet9
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ptp:
     announce:
       interval: 0

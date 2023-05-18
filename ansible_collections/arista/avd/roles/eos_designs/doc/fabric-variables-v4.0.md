@@ -22,11 +22,11 @@
 
 ```yaml
 # Underlay routing protocol | Required.
-underlay_routing_protocol: < EBGP | OSPF | ISIS | ISIS-SR | ISIS-LDP | ISIS-SR-LDP | OSPF-LDP | default for l3ls-evpn -> EBGP >
-overlay_routing_protocol: < EBGP | IBGP | default for l3ls-evpn -> EBGP >
+underlay_routing_protocol: < ebgp | ospf | isis | isis-sr | isis-ldp | isis-sr-ldp | ospf-ldp | default for l3ls-evpn -> ebgp >
+overlay_routing_protocol: < ebgp | ibgp | default for l3ls-evpn -> ebgp >
 
 # Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.
-# Requires "underlay_routing_protocol: EBGP"
+# Requires "underlay_routing_protocol: ebgp"
 underlay_rfc5549: < true | false | default -> false >
 
 # Underlay OSFP | Required when < underlay_routing_protocol > == OSPF variants
@@ -53,7 +53,7 @@ isis_ti_lfa:
 bgp_as: < AS number >
 
 # Point to Point Links MTU | Required.
-p2p_uplinks_mtu: < 0-9216 | default -> 9000 >
+p2p_uplinks_mtu: < 0-9216 | default -> 9214>
 
 # IP Address used as Virtual VTEP. Will be configured as secondary IP on loopback1 | Optional
 # This is only needed for centralized routing designs
@@ -75,15 +75,12 @@ evpn_ebgp_multihop: < ebgp_multihop | default -> 3 >
 # Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.
 # Note that the name of the peer groups use '-' instead of '_' in EOS configuration.
 bgp_peer_groups:
-   # Old mixed case key "IPv4_UNDERLAY_PEERS" is supported for backward-compatibility
   ipv4_underlay_peers:
     name: < name of peer group | default -> IPv4-UNDERLAY-PEERS >
     password: "< encrypted password >"
-   # Old mixed case key "MLAG_IPv4_UNDERLAY_PEER" is supported for backward-compatibility
   mlag_ipv4_underlay_peer:
     name: < name of peer group | default -> MLAG-IPv4-UNDERLAY-PEER >
     password: "< encrypted password >"
-   # Old upper case key "EVPN_OVERLAY_PEERS" is supported for backward-compatibility
   evpn_overlay_peers:
     name: < name of peer group | default -> EVPN-OVERLAY-PEERS >
     password: "< encrypted password >"

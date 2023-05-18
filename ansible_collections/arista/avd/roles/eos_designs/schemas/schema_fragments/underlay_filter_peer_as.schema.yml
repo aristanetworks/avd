@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  underlay_filter_peer_as:
+    documentation_options:
+      filename: Fabric Variables
+      table: BGP Settings
+    type: bool
+    description: |
+      Configure route-map on eBGP sessions towards underlay peers, where prefixes with the peer's ASN in the AS Path are filtered away.
+      This is very useful in very large scale networks not using EVPN overlays, where convergence will be quicker by not having to return
+      all updates received from Spine-1 to Spine-2 just for Spine-2 to throw them away because of AS Path loop detection.
+      Note this key is ignored when EVPN is configured.
+    default: false

@@ -1,0 +1,11 @@
+### Hardware ###
+hardware:
+  access_list:
+    mechanism: tcam
+  # Testing speed_groups as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  speed_groups:
+    1:
+      serdes: 10g
+    2:
+      serdes: 25g

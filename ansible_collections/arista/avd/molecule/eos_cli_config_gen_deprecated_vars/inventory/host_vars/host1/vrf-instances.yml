@@ -1,0 +1,13 @@
+### VRFs ###
+
+# Testing vrfs as dict of dict
+# Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+vrfs:
+  MGMT:
+    ip_routing: False
+  TENANT_A_PROJECT01:
+    tenant: Tenant_A
+    ip_routing: true
+  TENANT_A_PROJECT02:
+    tenant: Tenant_A
+    ip_routing: true
