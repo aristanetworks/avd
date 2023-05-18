@@ -308,3 +308,10 @@ platform_speed_groups:
 boot:
   secret:
     key: a153de6290ff1409257ade45f
+
+hardware_counters:
+  features:
+    - name: ip
+      direction: out
+      layer3: true
+      units_packets: true

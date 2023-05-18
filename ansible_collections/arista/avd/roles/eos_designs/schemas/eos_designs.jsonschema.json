@@ -1058,6 +1058,104 @@
       "type": "string",
       "title": "Fabric Name"
     },
+    "hardware_counters": {
+      "type": "object",
+      "properties": {
+        "features": {
+          "type": "array",
+          "description": "This data model allows to configure the list of hardware counters feature\navailable on Arista platforms.\n\nThe `name` key accepts a list of valid_values which MUST be updated to support\nnew feature as they are released in EOS.\n\nThe available values of the different keys like 'direction' or 'address_type'\nare feature and hardware dependent and this model DOES NOT validate that the\ncombinations are valid. It is the responsability of the user of this data model\nto make sure that the rendered CLI is accepted by the targeted device.\n\nExamples:\n\n  * Use:\n    ```yaml\n    hardware_counters:\n      features:\n        - name: ip\n          direction: out\n          layer3: true\n          units_packets: true\n    ```\n\n    to render:\n    ```eos\n    hardware counter feature ip out layer3 units packets\n    ```\n  * Use:\n    ```yaml\n    hardware_counters:\n      features:\n        - name: route\n          address_type: ipv4\n          vrf: test\n          prefix: 192.168.0.0/24\n    ```\n\n    to render:\n    ```eos\n    hardware counter feature route ipv4 vrf test 192.168.0.0/24\n    ```\n",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "enum": [
+                  "acl",
+                  "decap-group",
+                  "directflow",
+                  "ecn",
+                  "flow-spec",
+                  "gre tunnel interface",
+                  "ip",
+                  "mpls interface",
+                  "mpls lfib",
+                  "mpls tunnel",
+                  "multicast",
+                  "nexthop",
+                  "pbr",
+                  "pdp",
+                  "policing interface",
+                  "qos",
+                  "qos dual-rate-policer",
+                  "route",
+                  "routed-port",
+                  "subinterface",
+                  "tapagg",
+                  "traffic-class",
+                  "traffic-policy",
+                  "vlan",
+                  "vlan-interface",
+                  "vni decap",
+                  "vni encap",
+                  "vtep decap",
+                  "vtep encap"
+                ],
+                "title": "Name"
+              },
+              "direction": {
+                "type": "string",
+                "enum": [
+                  "in",
+                  "out",
+                  "cpu"
+                ],
+                "description": "Most features support only 'in' and 'out'. Some like traffic-policy support 'cpu'.\nSome features DO NOT have any direction.\nThis validation IS NOT made by the schemas.\n",
+                "title": "Direction"
+              },
+              "address_type": {
+                "type": "string",
+                "enum": [
+                  "ipv4",
+                  "ipv6",
+                  "mac"
+                ],
+                "description": "Supported only for the following features:\n- acl: [ipv4, ipv6, mac] if direction is 'out'\n- multicast: [ipv4, ipv6]\n- route: [ipv4, ipv6]\nThis validation IS NOT made by the schemas.\n",
+                "title": "Address Type"
+              },
+              "layer3": {
+                "type": "boolean",
+                "description": "Supported only for the 'ip' feature\n",
+                "title": "Layer3"
+              },
+              "vrf": {
+                "type": "string",
+                "description": "Supported only for the 'route' feature.\nThis validation IS NOT made by the schemas.\n",
+                "title": "VRF"
+              },
+              "prefix": {
+                "type": "string",
+                "description": "Supported only for the 'route' feature.\nMandatory for the 'route' feature.\nThis validation IS NOT made by the schemas.\n",
+                "title": "Prefix"
+              },
+              "units_packets": {
+                "type": "boolean",
+                "title": "Units Packets"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Features"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Hardware Counters"
+    },
     "internal_vlan_order": {
       "type": "object",
       "description": "Internal vlan allocation order and range.",

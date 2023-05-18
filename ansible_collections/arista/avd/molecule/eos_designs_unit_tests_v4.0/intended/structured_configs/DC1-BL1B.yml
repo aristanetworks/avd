@@ -271,6 +271,12 @@ static_routes:
   vrf: Tenant_A_WAN_Zone
 service_routing_protocols_model: multi-agent
 ip_routing: true
+hardware_counters:
+  features:
+  - name: ip
+    direction: out
+    layer3: true
+    units_packets: true
 hardware:
   speed_groups:
   - speed_group: 1
