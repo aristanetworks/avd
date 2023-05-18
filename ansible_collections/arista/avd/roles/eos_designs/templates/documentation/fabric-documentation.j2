@@ -1,4 +1,13 @@
-{% set node_types = node_type_keys | arista.avd.convert_dicts('key') | map(attribute="type") %}
+{% if node_type_keys is arista.avd.defined %}
+{%     set node_types = node_type_keys | arista.avd.convert_dicts('key') | map(attribute="type") %}
+{% else %}
+{%     set default_node_types = {
+           "l3ls-evpn": ["spine", "l3leaf", "l2leaf", "super-spine", "overlay-controller"],
+           "mpls": ["p", "pe", "rr"],
+           "l2ls": ["l3spine", "spine", "leaf"]
+       } %}
+{%     set node_types = default_node_types[design.type | arista.avd.default("l3ls-evpn")] %}
+{% endif %}
 {% set fabric_switches = [] %}
 {% set topology_links = [] %}
 {% set uplink_ipv4_pools = [] %}
@@ -21,9 +30,9 @@
 {%         set fabric_switch.node = node %}
 {%         set fabric_switch.mgmt_ip = node_facts.switch.mgmt_ip | arista.avd.default('-') %}
 {%         do assigned_ip_addresses.append(node_facts.switch.mgmt_ip) if node_facts.switch.mgmt_ip is arista.avd.defined %}
-{%         if node_facts.switch.inband_management_vlan is arista.avd.defined %}
-{%             set fabric_switch.inband_management_interface = "Vlan" ~ node_facts.switch.inband_management_vlan %}
-{%             set fabric_switch.inband_management_ip = node_hostvars.management_interfaces | selectattr("name", "eq", fabric_switch.inband_management_interface) | map(attribute="ip_address") | first %}
+{%         if node_facts.switch.inband_mgmt_vlan is arista.avd.defined %}
+{%             set fabric_switch.inband_mgmt_interface = "Vlan" ~ node_facts.switch.inband_mgmt_vlan %}
+{%             set fabric_switch.inband_mgmt_ip = node_hostvars.vlan_interfaces | selectattr("name", "eq", fabric_switch.inband_mgmt_interface) | map(attribute="ip_address") | first %}
 {%         endif %}
 {%         set fabric_switch.platform = node_facts.switch.platform | arista.avd.default('-') %}
 {%         set fabric_switch.provisioned = 'Not Available' if node_hostvars.is_deployed is arista.avd.defined(false) else 'Provisioned' %}
@@ -104,8 +113,8 @@
 | POD | Type | Node | Management IP | Inband Interface |
 | --- | ---- | ---- | ------------- | ---------------- |
 {% for fabric_switch in fabric_switches %}
-{%     if fabric_switch.inband_management_ip is arista.avd.defined and fabric_switch.inband_management_interface is arista.avd.defined %}
-| {{ fabric_switch.pod }} | {{ fabric_switch.type }} | {{ fabric_switch.node }} | {{ fabric_switch.inband_management_ip }} | {{ fabric_switch.inband_management_interface }} |
+{%     if fabric_switch.inband_mgmt_ip is arista.avd.defined and fabric_switch.inband_mgmt_interface is arista.avd.defined %}
+| {{ fabric_switch.pod }} | {{ fabric_switch.type }} | {{ fabric_switch.node }} | {{ fabric_switch.inband_mgmt_ip }} | {{ fabric_switch.inband_mgmt_interface }} |
 {%     endif %}
 {% endfor %}
 

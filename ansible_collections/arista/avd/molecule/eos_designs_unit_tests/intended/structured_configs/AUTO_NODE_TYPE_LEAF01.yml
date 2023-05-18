@@ -2,9 +2,14 @@ router_bgp:
   as: '65101'
   router_id: 192.168.255.3
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -85,7 +90,7 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_AUTO_NODE_TYPE_SPINE01_Ethernet1
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 172.31.255.1/31
 - name: Ethernet2
@@ -94,7 +99,7 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_AUTO_NODE_TYPE_SPINE02_Ethernet1
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 172.31.255.3/31
 loopback_interfaces:

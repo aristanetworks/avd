@@ -1,0 +1,254 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+$defs:
+  svi_settings:
+    type: dict
+    keys:
+      name:
+        type: str
+        description: VLAN name
+      enabled:
+        type: bool
+        description: Enable or disable interface
+      description:
+        type: str
+        description: |
+          SVI description. By default set to VLAN name.
+      ip_address:
+        type: str
+        description: IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
+      ipv6_address:
+        type: str
+        description: IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
+      ipv6_enable:
+        type: bool
+        description: Explicitly enable/disable link-local IPv6 addressing.
+      ip_address_virtual:
+        type: str
+        description: |
+          IPv4_address/Mask
+          IPv4 VXLAN Anycast IP address
+          Conserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.
+      ipv6_address_virtual:
+        type: str
+        description: |
+          IPv6_address/Mask
+          ipv6 address virtuals to configure VXLAN Anycast IP address (Optional)
+          The below "ipv6_address_virtual" key will be deprecated in AVD v4.0 in favor of the new "ipv6_address_virtuals"
+          If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all addresses will be configured
+      ipv6_address_virtuals:
+        type: list
+        description: |
+          IPv6 VXLAN Anycast IP addresses
+          Conserves IPv6 addresses in VXLAN deployments as it doesn't require unique IPv6 addresses on each node.
+        items:
+          type: str
+          description: IPv6_address/Mask
+      ip_address_virtual_secondaries:
+        type: list
+        description: Secondary IPv4 VXLAN Anycast IP addresses
+        items:
+          type: str
+          description: IPv4_address/Mask
+      ip_virtual_router_addresses:
+        type: list
+        description: |
+          IPv4 VARP addresses.
+          Requires an IP address to be configured on the SVI.
+          If ip_address_virtual is also set, ip_virtual_router_addresses will take precedence
+          _if_ there is an ip_address configured for the node.
+        items:
+          type: str
+          description: |
+            IPv4_address/Mask or IPv4_address
+            IPv4_address/Mask will also configure a static route to the SVI per best practice.
+      ipv6_virtual_router_addresses:
+        type: list
+        description: |
+          IPv6 VARP addresses.
+          Requires an IPv6 address to be configured on the SVI.
+          If ipv6_address_virtuals is also set, ipv6_virtual_router_addresses will take precedence
+          _if_ there is an ipv6_address configured for the node.
+        items:
+          type: str
+          description: IPv6_address
+      ip_helpers:
+        type: list
+        primary_key: ip_helper
+        convert_types:
+          - dict
+        description: IP helper for DHCP relay
+        items:
+          type: dict
+          keys:
+            ip_helper:
+              type: str
+              description: IPv4 DHCP server IP
+            source_interface:
+              type: str
+              description: Interface name to originate DHCP relay packets to DHCP server.
+            source_vrf:
+              type: str
+              description: VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI.
+      vni_override:
+        type: int
+        convert_types:
+          - str
+        min: 1
+        max: 16777215
+        description: |
+          By default the VNI will be derived from "mac_vrf_vni_base"
+          The vni_override allows us to override this value and statically define it (optional)
+      rt_override:
+        type: int
+        convert_types:
+          - str
+        min: 1
+        max: 16777215
+        description: |
+          By default the MAC VRF RD/RT ID will be derived from "mac_vrf_id_base"
+          The rt_override allows us to override this value and statically define it (optional)
+          If not set, vni_override will be used.
+      tags:
+        type: list
+        description: |
+          Tags leveraged for networks services filtering
+          Tags are matched against "filter.tags" defined under Fabric Topology variables
+          Tags are also matched against the "node_group" name under Fabric Topology variables
+        default: ["all"]
+        items:
+          type: str
+          convert_types:
+            - int
+          description: Tag value
+      trunk_groups:
+        type: list
+        items:
+          type: str
+          description: |
+            Trunk groups are used for limiting vlans to trunk ports assigned to the same trunk group
+            Requires "enable_trunk_groups: true"
+      evpn_l2_multicast:
+        type: dict
+        description: |
+          Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.
+          When evpn_l2_multicast.enabled is set to true for a vlan or a tenant, "igmp snooping" and "igmp snooping querier" will always be enabled, overriding those individual settings.
+        keys:
+          enabled:
+            type: bool
+      evpn_l3_multicast:
+        type: dict
+        description: |
+          Explicitly enable or disable evpn_l3_multicast to override setting of `<network_services_key>.[].evpn_l3_multicast.enabled` and `<network_services_key>.[].vrfs.[].evpn_l3_multicast.enabled`.
+        keys:
+          enabled:
+            type: bool
+      igmp_snooping_enabled:
+        type: bool
+        description: Enable IGMP Snooping (Enabled by default on EOS)
+      igmp_snooping_querier:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            description: Will be enabled automatically if evpn_l2_multicast is enabled.
+          source_address:
+            type: str
+            description: |
+              IPv4_address
+              If not set, IP address of "Loopback0" will be used.
+          version:
+            type: int
+            description: IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)
+            convert_types:
+              - str
+            valid_values:
+              - 1
+              - 2
+              - 3
+      vxlan:
+        type: bool
+        default: true
+        description: Extend this SVI over VXLAN
+      mtu:
+        type: int
+        convert_types:
+          - str
+        description: Interface MTU
+      ospf:
+        type: dict
+        description: OSPF interface configuration
+        keys:
+          enabled:
+            type: bool
+          point_to_point:
+            type: bool
+            default: true
+          area:
+            type: str
+            convert_types:
+              - int
+            description: OSPF area ID
+            default: "0"
+          cost:
+            type: int
+            convert_types:
+              - str
+            description: OSPF link cost
+          authentication:
+            type: str
+            valid_values:
+              - "simple"
+              - "message-digest"
+          simple_auth_key:
+            type: str
+            description: Password used with simple authentication
+          message_digest_keys:
+            type: list
+            items:
+              type: dict
+              keys:
+                id:
+                  type: int
+                  convert_types:
+                    - str
+                hash_algorithm:
+                  type: str
+                  valid_values:
+                    - md5
+                    - sha1
+                    - sha256
+                    - sha384
+                    - sha512
+                  default: sha512
+                key:
+                  type: str
+                  description: Type 7 encrypted key
+      bgp:
+        type: dict
+        description: |
+          Structured configuration and EOS CLI commands rendered on router_bgp.vlans
+          This configuration will not be applied to vlan aware bundles
+        keys:
+          structured_config:
+            type: dict
+            description: |
+              Custom structured config added under vlan_interfaces.<interface> for eos_cli_config_gen.
+              Overrides the setting on SVI level.
+          raw_eos_cli:
+            type: str
+            description: |
+              EOS CLI rendered directly on the VLAN interface in the final EOS configuration
+              Overrides the setting on SVI level.
+      raw_eos_cli:
+        type: str
+        description: |
+          EOS CLI rendered directly on the VLAN interface in the final EOS configuration
+          Overrides the setting on SVI level
+      structured_config:
+        type: dict
+        description: |
+          Custom structured config added under vlan_interfaces.<interface> for eos_cli_config_gen.
+          Overrides the setting on SVI level.

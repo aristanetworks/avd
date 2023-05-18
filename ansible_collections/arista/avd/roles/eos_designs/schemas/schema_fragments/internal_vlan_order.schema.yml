@@ -9,7 +9,6 @@ keys:
       table: VLAN Settings
     type: dict
     description: Internal vlan allocation order and range.
-    required: true
     keys:
       allocation:
         documentation_options:

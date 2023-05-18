@@ -70,7 +70,6 @@ port_channel_interfaces:
   description: MLAG_PEER_SPINE2_Po47
   type: switched
   shutdown: false
-  vlans: 2-4094
   mode: trunk
   trunk_groups:
   - MLAG
@@ -101,7 +100,7 @@ ethernet_interfaces:
   peer_interface: Ethernet47
   peer_type: mlag_peer
   description: MLAG_PEER_SPINE2_Ethernet47
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 47
@@ -111,7 +110,7 @@ ethernet_interfaces:
   peer_interface: Ethernet48
   peer_type: mlag_peer
   description: MLAG_PEER_SPINE2_Ethernet48
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 47
@@ -122,7 +121,7 @@ ethernet_interfaces:
   peer_type: leaf
   description: LEAF1_Ethernet1
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -132,7 +131,7 @@ ethernet_interfaces:
   peer_type: leaf
   description: LEAF2_Ethernet1
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 1
     mode: active
@@ -142,7 +141,7 @@ ethernet_interfaces:
   peer_type: leaf
   description: LEAF3_Ethernet1
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 3
     mode: active
@@ -152,7 +151,7 @@ ethernet_interfaces:
   peer_type: leaf
   description: LEAF4_Ethernet1
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 3
     mode: active
@@ -162,10 +161,8 @@ ethernet_interfaces:
   peer_type: firewall
   port_profile: PP-FIREWALL
   description: FIREWALL_Eth1
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: 10,20,30
+  type: port-channel-member
   channel_group:
     id: 5
     mode: active

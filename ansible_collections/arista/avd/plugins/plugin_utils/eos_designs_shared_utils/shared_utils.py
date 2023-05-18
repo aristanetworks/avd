@@ -1,4 +1,5 @@
 from .bgp_peer_groups import BgpPeerGroupsMixin
+from .connected_endpoints_keys import ConnectedEndpointsKeysMixin
 from .inband_management import InbandManagementMixin
 from .interface_descriptions import InterfaceDescriptionsMixin
 from .ip_addressing import IpAddressingMixin
@@ -6,7 +7,8 @@ from .link_tracking_groups import LinkTrackingGroupsMixin
 from .mgmt import MgmtMixin
 from .misc import MiscMixin
 from .mlag import MlagMixin
-from .node_type_key import NodeTypeKeyMixin
+from .node_type import NodeTypeMixin
+from .node_type_keys import NodeTypeKeysMixin
 from .overlay import OverlayMixin
 from .platform import PlatformMixin
 from .ptp import PtpMixin
@@ -18,6 +20,7 @@ from .utils import UtilsMixin
 
 class SharedUtils(
     BgpPeerGroupsMixin,
+    ConnectedEndpointsKeysMixin,
     InbandManagementMixin,
     InterfaceDescriptionsMixin,
     IpAddressingMixin,
@@ -25,7 +28,8 @@ class SharedUtils(
     MgmtMixin,
     MlagMixin,
     MiscMixin,
-    NodeTypeKeyMixin,
+    NodeTypeMixin,
+    NodeTypeKeysMixin,
     OverlayMixin,
     PlatformMixin,
     PtpMixin,

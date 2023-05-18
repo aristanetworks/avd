@@ -2,9 +2,14 @@ router_bgp:
   as: '65108'
   router_id: 192.168.255.18
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: MLAG-PEERS
     type: ipv4
@@ -213,6 +218,9 @@ spanning_tree:
 local_users:
 - name: admin
   disabled: true
+  privilege: 15
+  role: network-admin
+  no_password: true
 - name: cvpadmin
   privilege: 15
   role: network-admin
@@ -328,7 +336,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1/15/1
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-CL1B_Ethernet1/15/1
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 1151
@@ -339,7 +347,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1/16/1
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-CL1B_Ethernet1/16/1
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 1151

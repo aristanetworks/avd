@@ -30,7 +30,7 @@ ethernet_interfaces:
   peer_interface: Nic1
   peer_type: server
   description: testserver_Nic1
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk
   vlans: 1-2

@@ -345,8 +345,8 @@ avd_switch_facts:
       evpn_route_servers: <list[str]>
       group: <str>
       id: <int>
-      inband_management_subnet: <str>
-      inband_management_vlan: <int>
+      inband_mgmt_subnet: <str>
+      inband_mgmt_vlan: <int>
       is_deployed: <bool>
       loopback_ipv4_pool: <str>
       local_endpoint_trunk_groups: <list[str]>
@@ -390,8 +390,8 @@ so they must be available in the `avd_switch_facts` object.
 | -------- | ------------ |
 | switch.type | core_interfaces/utils.py |
 | switch.type | l3_edge/utils.py |
-| switch.inband_management_subnet | inband_management/avdstructuredconfig.py |
-| switch.inband_management_vlan | inband_management/avdstructuredconfig.py |
+| switch.inband_mgmt_subnet | inband_management/avdstructuredconfig.py |
+| switch.inband_mgmt_vlan | inband_management/avdstructuredconfig.py |
 | switch.vlans | network_services/utils_filtered_tenants.py |
 | switch.vtep_ip | network_services/vxlan_interface.py |
 | switch.vlans | network_services/vxlan_interface.py |

@@ -144,7 +144,7 @@ management api http-commands
 
 ```eos
 !
-username admin privilege 15 role network-admin secret sha512 $6$eucN5ngreuExDgwS$xnD7T8jO..GBDX0DUlp.hn.W7yW94xTjSanqgaQGBzPIhDAsyAl9N4oScHvOMvf07uVBFI4mKMxwdVEUVKgY/.
+username admin privilege 15 role network-admin secret sha512 <removed>
 ```
 
 ### AAA Authorization
@@ -233,7 +233,7 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 10 | L2LEAF_INBAND_MGMT | - |
+| 10 | INBAND_MGMT | - |
 | 110 | IDF1-Data | - |
 | 120 | IDF1-Voice | - |
 | 130 | IDF1-Guest | - |
@@ -251,7 +251,7 @@ vlan internal order ascending range 1006 1199
 ```eos
 !
 vlan 10
-   name L2LEAF_INBAND_MGMT
+   name INBAND_MGMT
 !
 vlan 110
    name IDF1-Data
@@ -303,8 +303,8 @@ vlan 4094
 | Ethernet49/1 | LEAF2A_Ethernet1/3 | *trunk | *10,210,220,230 | *- | *- | 491 |
 | Ethernet50/1 | LEAF3A_Ethernet97/2 | *trunk | *10,310,320,330 | *- | *- | 501 |
 | Ethernet51/1 | LEAF3B_Ethernet97/2 | *trunk | *10,310,320,330 | *- | *- | 501 |
-| Ethernet55/1 | MLAG_PEER_SPINE1_Ethernet55/1 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 551 |
-| Ethernet56/1 | MLAG_PEER_SPINE1_Ethernet56/1 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 551 |
+| Ethernet55/1 | MLAG_PEER_SPINE1_Ethernet55/1 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 551 |
+| Ethernet56/1 | MLAG_PEER_SPINE1_Ethernet56/1 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 551 |
 
 *Inherited from Port-Channel Interface
 
@@ -369,7 +369,7 @@ interface Ethernet56/1
 | Port-Channel1 | IDF1_Po51 | switched | trunk | 10,110,120,130 | - | - | - | - | 1 | - |
 | Port-Channel491 | LEAF2A_Po11 | switched | trunk | 10,210,220,230 | - | - | - | - | 491 | - |
 | Port-Channel501 | IDF3_AGG_Po971 | switched | trunk | 10,310,320,330 | - | - | - | - | 501 | - |
-| Port-Channel551 | MLAG_PEER_SPINE1_Po551 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel551 | MLAG_PEER_SPINE1_Po551 | switched | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -403,7 +403,6 @@ interface Port-Channel551
    description MLAG_PEER_SPINE1_Po551
    no shutdown
    switchport
-   switchport trunk allowed vlan 2-4094
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
@@ -443,7 +442,7 @@ interface Loopback0
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan10 | L2LEAF_INBAND_MGMT | default | 1500 | False |
+| Vlan10 | Inband Management | default | 1500 | False |
 | Vlan110 | IDF1-Data | default | - | False |
 | Vlan120 | IDF1-Voice | default | - | False |
 | Vlan130 | IDF1-Guest | default | - | False |
@@ -478,7 +477,7 @@ interface Loopback0
 ```eos
 !
 interface Vlan10
-   description L2LEAF_INBAND_MGMT
+   description Inband Management
    no shutdown
    mtu 1500
    ip address 10.10.10.3/24

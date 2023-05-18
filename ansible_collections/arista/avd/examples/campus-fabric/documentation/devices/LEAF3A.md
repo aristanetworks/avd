@@ -50,14 +50,12 @@
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management0 | oob_management | oob | MGMT | 172.100.100.106/24 | 172.100.100.1 |
-| Vlan10 | L2LEAF_INBAND_MGMT | inband | default | 10.10.10.9/24 | 10.10.10.1 |
 
 ##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management0 | oob_management | oob | MGMT | - | - |
-| Vlan10 | L2LEAF_INBAND_MGMT | inband | default | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -68,12 +66,6 @@ interface Management0
    no shutdown
    vrf MGMT
    ip address 172.100.100.106/24
-!
-interface Vlan10
-   description L2LEAF_INBAND_MGMT
-   no shutdown
-   mtu 1500
-   ip address 10.10.10.9/24
 ```
 
 ### IP Name Servers
@@ -151,7 +143,7 @@ management api http-commands
 
 ```eos
 !
-username admin privilege 15 role network-admin secret sha512 $6$eucN5ngreuExDgwS$xnD7T8jO..GBDX0DUlp.hn.W7yW94xTjSanqgaQGBzPIhDAsyAl9N4oScHvOMvf07uVBFI4mKMxwdVEUVKgY/.
+username admin privilege 15 role network-admin secret sha512 <removed>
 ```
 
 ### AAA Authorization
@@ -240,7 +232,7 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 10 | L2LEAF_INBAND_MGMT | - |
+| 10 | INBAND_MGMT | - |
 | 310 | IDF3-Data | - |
 | 320 | IDF3-Voice | - |
 | 330 | IDF3-Guest | - |
@@ -251,7 +243,7 @@ vlan internal order ascending range 1006 1199
 ```eos
 !
 vlan 10
-   name L2LEAF_INBAND_MGMT
+   name INBAND_MGMT
 !
 vlan 310
    name IDF3-Data
@@ -378,8 +370,8 @@ vlan 4094
 | Ethernet97/3 | LEAF3C_Ethernet97/1 | *trunk | *10,310,320,330 | *- | *- | 973 |
 | Ethernet97/4 | LEAF3D_Ethernet97/1 | *trunk | *10,310,320,330 | *- | *- | 974 |
 | Ethernet98/1 | LEAF3E_Ethernet97/1 | *trunk | *10,310,320,330 | *- | *- | 981 |
-| Ethernet98/3 | MLAG_PEER_LEAF3B_Ethernet98/3 | *trunk | *2-4094 | *- | *['MLAG'] | 983 |
-| Ethernet98/4 | MLAG_PEER_LEAF3B_Ethernet98/4 | *trunk | *2-4094 | *- | *['MLAG'] | 983 |
+| Ethernet98/3 | MLAG_PEER_LEAF3B_Ethernet98/3 | *trunk | *- | *- | *['MLAG'] | 983 |
+| Ethernet98/4 | MLAG_PEER_LEAF3B_Ethernet98/4 | *trunk | *- | *- | *['MLAG'] | 983 |
 
 *Inherited from Port-Channel Interface
 
@@ -2355,7 +2347,7 @@ interface Ethernet98/4
 | Port-Channel973 | LEAF3C_Po971 | switched | trunk | 10,310,320,330 | - | - | - | - | 973 | - |
 | Port-Channel974 | LEAF3D_Po971 | switched | trunk | 10,310,320,330 | - | - | - | - | 974 | - |
 | Port-Channel981 | LEAF3E_Po971 | switched | trunk | 10,310,320,330 | - | - | - | - | 981 | - |
-| Port-Channel983 | MLAG_PEER_LEAF3B_Po983 | switched | trunk | 2-4094 | - | ['MLAG'] | - | - | - | - |
+| Port-Channel983 | MLAG_PEER_LEAF3B_Po983 | switched | trunk | - | - | ['MLAG'] | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -2397,7 +2389,6 @@ interface Port-Channel983
    description MLAG_PEER_LEAF3B_Po983
    no shutdown
    switchport
-   switchport trunk allowed vlan 2-4094
    switchport mode trunk
    switchport trunk group MLAG
 ```
@@ -2408,17 +2399,25 @@ interface Port-Channel983
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
+| Vlan10 | Inband Management | default | 1500 | False |
 | Vlan4094 | MLAG_PEER | default | 1500 | False |
 
 ##### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
+| Vlan10 |  default  |  10.10.10.9/24  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  192.168.0.10/31  |  -  |  -  |  -  |  -  |  -  |
 
 #### VLAN Interfaces Device Configuration
 
 ```eos
+!
+interface Vlan10
+   description Inband Management
+   no shutdown
+   mtu 1500
+   ip address 10.10.10.9/24
 !
 interface Vlan4094
    description MLAG_PEER

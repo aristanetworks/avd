@@ -82,7 +82,7 @@ spine:
     platform: 7050SX3
     bgp_as: 65001
     loopback_ipv4_pool: 192.168.255.0/24
-    bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200']
+    bgp_defaults: ['distance bgp 20 200 200']
   nodes:
     DC1-SPINE1:
       id: 1
@@ -115,7 +115,7 @@ l3leaf:
     max_uplink_switches: 8
     uplink_ipv4_pool: 172.31.255.0/24
     uplink_interface_speed: forced 100gfull
-    bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200']
+    bgp_defaults: ['distance bgp 20 200 200']
     platform: 7280R
     bgp_as: 65101
     mlag_interfaces: [ Ethernet5, Ethernet6 ]

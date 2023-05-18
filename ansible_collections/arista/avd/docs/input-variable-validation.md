@@ -1,13 +1,12 @@
-# Validation of Input Variables (BETA)
+# Validation of Input Variables
 
-!!! BETA
-    - The Type Conversion and Validation task is currently only enabled by default on `eos_cli_config_gen`. Run with `--tags validate` to test validation on `eos_designs`.
+!!! NOTE
     - Schemas for all input data models are still under development
     - Some schema validations are not implemented yet.
 
 `eos_designs` and `eos_cli_config_gen` support a wide range of input variables described under the role documentation sections.
 
-Internally the supported data models are described in a proprietary "AVD Schema" format, which is used to perform validation of
+Internally the supported data models are described in the proprietary "AVD Schema" format, which is used to perform validation of
 the input variables at run-time. The same schema is also used to generate the role documentation describing the supported data
 models.
 
@@ -37,7 +36,7 @@ written with dot-notation such as `"65001.10000"`. Most deployments use 16-bit A
 `bgp_as: 65001` to `bgp_as: "65001"`.
 
 Type conversion is also used for introducing changes to the data models without affecting existing deployments. For example,
-in AVD 4.0, the data models using "Dictionaries with wildcard keys" will be changed to lists.
+in AVD 4.0, the data models using "Dictionaries with wildcard keys" has been be changed to lists.
 Ex. the old data model:
 
 ```yaml
@@ -48,7 +47,7 @@ tenants:
         ...
 ```
 
-will be changed to:
+has been be changed to:
 
 ```yaml
 tenants:
@@ -160,8 +159,8 @@ This also means that a poorly written schema could have conflicting schema optio
 | <samp>&nbsp;&nbsp;remove_after_date</samp> | String | | | | Date after which the key will be removed |
 | <samp>$ref</samp> | String | | | | Reference to Sub Schema using JSON Schema resolver<br>Example '#/keys/mykey' will resolve the schema for 'mykey' under the root dictionary of the current schema |
 | <samp>documentation_options</samp> | Dictionary | | | | Special options used for generating documentation |
-| <samp>&nbsp;&nbsp;filename</samp> | String | | "Input Variables" | | Setting 'filename' will allow for custom grouping of schema tables in the documentation.<br>By default all tables will be part of the same 'default.md' file. By setting 'filename' the tables for one or more keys can be moved to separate file.<br>If 'filename' is set on a parent key, all child keys will be included in the same file.<br>It is *not* possible to override 'filename' on a child key, if set on the parent. |
-| <samp>&nbsp;&nbsp;table</samp> | String | | | | Setting 'table' will allow for custom grouping of schema fields in the documentation.<br>By default each root key has it's own table. By setting the same table-value on multiple keys, they will be merged to a single table.<br>If 'table' is set on a 'child' key, all parent keys are automatically included in the table.<br>If 'table' is set on a parent key, all child keys will be included in the same table.<br>It is *not* possible to override 'table' on a child key, if set on the parent. |
+| <samp>&nbsp;&nbsp;filename</samp> | String | | "Input Variables" | | Setting 'filename' will allow for custom grouping of schema tables in the documentation.<br>By default all tables will be part of the same 'Input Variables.md' file. By setting 'filename' the tables for one or more keys can be moved to separate file.<br>The 'filename' option is inherited to all child keys, unless specifically set on the child. |
+| <samp>&nbsp;&nbsp;table</samp> | String | | | | Setting 'table' will allow for custom grouping of schema fields in the documentation.<br>By default each root key has it's own table. By setting the same table-value on multiple keys, they will be merged to a single table.<br>If 'table' is set on a 'child' key, all "ancestor" keys are automatically included in the table so the full path is visible.<br>The 'table' option is inherited to all child keys, unless specifically set on the child. |
 
 The meta-schema does not allow for other keys to be set in the schema.
 
@@ -186,9 +185,8 @@ The meta-schema does not allow for other keys to be set in the schema.
 | <samp>&nbsp;&nbsp;remove_after_date</samp> | String | | | | Date after which the key will be removed |
 | <samp>$ref</samp> | String | | | | Reference to Sub Schema using JSON Schema resolver<br>Example '#/keys/mykey' will resolve the schema for 'mykey' under the root dictionary of the current schema |
 | <samp>documentation_options</samp> | Dictionary | | | | Special options used for generating documentation |
-| <samp>&nbsp;&nbsp;filename</samp> | String | | "Input Variables" | | Setting 'filename' will allow for custom grouping of schema tables in the documentation.<br>By default all tables will be part of the same 'default.md' file. By setting 'filename' the tables for one or more keys can be moved to separate file.<br>If 'filename' is set on a parent key, all child keys will be included in the same file.<br>It is *not* possible to override 'filename' on a child key, if set on the parent. |
-| <samp>&nbsp;&nbsp;table</samp> | String | | | | Setting 'table' will allow for custom grouping of schema fields in the documentation.<br>By default each root key has it's own table. By setting the same table-value on multiple keys, they will be merged to a single table.<br>If 'table' is set on a 'child' key, all parent keys are automatically included in the table.<br>If 'table' is set on a parent key, all child keys will be included in the same table.<br>It is *not* possible to override 'table' on a child key, if set on the parent. |
-
+| <samp>&nbsp;&nbsp;filename</samp> | String | | "Input Variables" | | Setting 'filename' will allow for custom grouping of schema tables in the documentation.<br>By default all tables will be part of the same 'Input Variables.md' file. By setting 'filename' the tables for one or more keys can be moved to separate file.<br>The 'filename' option is inherited to all child keys, unless specifically set on the child. |
+| <samp>&nbsp;&nbsp;table</samp> | String | | | | Setting 'table' will allow for custom grouping of schema fields in the documentation.<br>By default each root key has it's own table. By setting the same table-value on multiple keys, they will be merged to a single table.<br>If 'table' is set on a 'child' key, all "ancestor" keys are automatically included in the table so the full path is visible.<br>The 'table' option is inherited to all child keys, unless specifically set on the child. |
 The meta-schema does not allow for other keys to be set in the schema.
 
 ### Schema Options for type `str` (String)
@@ -217,9 +215,8 @@ The meta-schema does not allow for other keys to be set in the schema.
 | <samp>&nbsp;&nbsp;remove_after_date</samp> | String | | | | Date after which the key will be removed |
 | <samp>$ref</samp> | String | | | | Reference to Sub Schema using JSON Schema resolver<br>Example '#/keys/mykey' will resolve the schema for 'mykey' under the root dictionary of the current schema |
 | <samp>documentation_options</samp> | Dictionary | | | | Special options used for generating documentation |
-| <samp>&nbsp;&nbsp;filename</samp> | String | | "Input Variables" | | Setting 'filename' will allow for custom grouping of schema tables in the documentation.<br>By default all tables will be part of the same 'default.md' file. By setting 'filename' the tables for one or more keys can be moved to separate file.<br>If 'filename' is set on a parent key, all child keys will be included in the same file.<br>It is *not* possible to override 'filename' on a child key, if set on the parent. |
-| <samp>&nbsp;&nbsp;table</samp> | String | | | | Setting 'table' will allow for custom grouping of schema fields in the documentation.<br>By default each root key has it's own table. By setting the same table-value on multiple keys, they will be merged to a single table.<br>If 'table' is set on a 'child' key, all parent keys are automatically included in the table.<br>If 'table' is set on a parent key, all child keys will be included in the same table.<br>It is *not* possible to override 'table' on a child key, if set on the parent. |
-
+| <samp>&nbsp;&nbsp;filename</samp> | String | | "Input Variables" | | Setting 'filename' will allow for custom grouping of schema tables in the documentation.<br>By default all tables will be part of the same 'Input Variables.md' file. By setting 'filename' the tables for one or more keys can be moved to separate file.<br>The 'filename' option is inherited to all child keys, unless specifically set on the child. |
+| <samp>&nbsp;&nbsp;table</samp> | String | | | | Setting 'table' will allow for custom grouping of schema fields in the documentation.<br>By default each root key has it's own table. By setting the same table-value on multiple keys, they will be merged to a single table.<br>If 'table' is set on a 'child' key, all "ancestor" keys are automatically included in the table so the full path is visible.<br>The 'table' option is inherited to all child keys, unless specifically set on the child. |
 The meta-schema does not allow for other keys to be set in the schema.
 
 ### Schema Options for type `list` (List)
@@ -244,9 +241,8 @@ The meta-schema does not allow for other keys to be set in the schema.
 | <samp>&nbsp;&nbsp;remove_after_date</samp> | String | | | | Date after which the key will be removed |
 | <samp>$ref</samp> | String | | | | Reference to Sub Schema using JSON Schema resolver<br>Example '#/keys/mykey' will resolve the schema for 'mykey' under the root dictionary of the current schema |
 | <samp>documentation_options</samp> | Dictionary | | | | Special options used for generating documentation |
-| <samp>&nbsp;&nbsp;filename</samp> | String | | "Input Variables" | | Setting 'filename' will allow for custom grouping of schema tables in the documentation.<br>By default all tables will be part of the same 'default.md' file. By setting 'filename' the tables for one or more keys can be moved to separate file.<br>If 'filename' is set on a parent key, all child keys will be included in the same file.<br>It is *not* possible to override 'filename' on a child key, if set on the parent. |
-| <samp>&nbsp;&nbsp;table</samp> | String | | | | Setting 'table' will allow for custom grouping of schema fields in the documentation.<br>By default each root key has it's own table. By setting the same table-value on multiple keys, they will be merged to a single table.<br>If 'table' is set on a 'child' key, all parent keys are automatically included in the table.<br>If 'table' is set on a parent key, all child keys will be included in the same table.<br>It is *not* possible to override 'table' on a child key, if set on the parent. |
-
+| <samp>&nbsp;&nbsp;filename</samp> | String | | "Input Variables" | | Setting 'filename' will allow for custom grouping of schema tables in the documentation.<br>By default all tables will be part of the same 'Input Variables.md' file. By setting 'filename' the tables for one or more keys can be moved to separate file.<br>The 'filename' option is inherited to all child keys, unless specifically set on the child. |
+| <samp>&nbsp;&nbsp;table</samp> | String | | | | Setting 'table' will allow for custom grouping of schema fields in the documentation.<br>By default each root key has it's own table. By setting the same table-value on multiple keys, they will be merged to a single table.<br>If 'table' is set on a 'child' key, all "ancestor" keys are automatically included in the table so the full path is visible.<br>The 'table' option is inherited to all child keys, unless specifically set on the child. |
 The meta-schema does not allow for other keys to be set in the schema.
 
 ### Schema Options for type `dict` (Dictionary)
@@ -268,7 +264,7 @@ The meta-schema does not allow for other keys to be set in the schema.
 | <samp>&nbsp;&nbsp;remove_after_date</samp> | String | | | | Date after which the key will be removed |
 | <samp>$ref</samp> | String | | | | Reference to Sub Schema using JSON Schema resolver<br>Allows for easy reuse of schema definitions.<br>Example '#/keys/mykey' will resolve the schema for 'mykey' under the root dictionary of the current schema |
 | <samp>documentation_options</samp> | Dictionary | | | | Special options used for generating documentation |
-| <samp>&nbsp;&nbsp;filename</samp> | String | | "Input Variables" | | Setting 'filename' will allow for custom grouping of schema tables in the documentation.<br>By default all tables will be part of the same 'default.md' file. By setting 'filename' the tables for one or more keys can be moved to separate file.<br>If 'filename' is set on a parent key, all child keys will be included in the same file.<br>It is *not* possible to override 'filename' on a child key, if set on the parent. |
-| <samp>&nbsp;&nbsp;table</samp> | String | | | | Setting 'table' will allow for custom grouping of schema fields in the documentation.<br>By default each root key has it's own table. By setting the same table-value on multiple keys, they will be merged to a single table.<br>If 'table' is set on a 'child' key, all parent keys are automatically included in the table.<br>If 'table' is set on a parent key, all child keys will be included in the same table.<br>It is *not* possible to override 'table' on a child key, if set on the parent. |
+| <samp>&nbsp;&nbsp;filename</samp> | String | | "Input Variables" | | Setting 'filename' will allow for custom grouping of schema tables in the documentation.<br>By default all tables will be part of the same 'Input Variables.md' file. By setting 'filename' the tables for one or more keys can be moved to separate file.<br>The 'filename' option is inherited to all child keys, unless specifically set on the child. |
+| <samp>&nbsp;&nbsp;table</samp> | String | | | | Setting 'table' will allow for custom grouping of schema fields in the documentation.<br>By default each root key has it's own table. By setting the same table-value on multiple keys, they will be merged to a single table.<br>If 'table' is set on a 'child' key, all "ancestor" keys are automatically included in the table so the full path is visible.<br>The 'table' option is inherited to all child keys, unless specifically set on the child. |
 
 The meta-schema does not allow for other keys to be set in the schema.

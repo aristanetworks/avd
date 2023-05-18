@@ -3,6 +3,12 @@ router_bgp:
   router_id: 192.168.255.34
   bgp_defaults:
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: UNDERLAY-PEERS
     type: ipv4
@@ -100,6 +106,9 @@ snmp_server:
 local_users:
 - name: admin
   disabled: true
+  privilege: 15
+  role: network-admin
+  no_password: true
 - name: cvpadmin
   privilege: 15
   role: network-admin
@@ -152,10 +161,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: Tenant_X
   description: server01_ES1_Eth2
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '310'
+  type: port-channel-member
   channel_group:
     id: 10
     mode: active
@@ -165,10 +172,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: Tenant_X
   description: server03_AUTO_ESI_Eth2
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '310'
+  type: port-channel-member
   channel_group:
     id: 12
     mode: active
@@ -178,10 +183,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: Tenant_ESI_Auto
   description: server04_AUTO_ESI_Profile_Eth2
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '310'
+  type: port-channel-member
   channel_group:
     id: 13
     mode: active
@@ -191,10 +194,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: Tenant_ESI_Auto
   description: server05_AUTO_ESI_Profile_Override_Eth2
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '310'
+  type: port-channel-member
   channel_group:
     id: 14
     mode: active
@@ -204,10 +205,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: Tenant_X_Trunk_Auto
   description: server06_Single_Active_Port_Channel_Eth2
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: '310'
+  type: port-channel-member
   channel_group:
     id: 15
     mode: active
@@ -217,10 +216,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: Tenant_X_Trunk
   description: server07_Single_Active_Port_Channel_Manual_DF_Eth2
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: '310'
+  type: port-channel-member
   channel_group:
     id: 16
     mode: active
@@ -230,8 +227,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: Tenant_X_Trunk_Auto_Eth
   description: server08_Single_Active_Ethernet_Eth2
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk
   vlans: '310'
   evpn_ethernet_segment:
@@ -247,8 +244,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: Tenant_X_Trunk
   description: server09_All_Active_Ethernet_Eth2
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk
   vlans: '310'
   evpn_ethernet_segment:
@@ -263,8 +260,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: Tenant_X_Trunk
   description: server10_Single_Active_Ethernet_Manual_DF_Eth2
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk
   vlans: '310'
   evpn_ethernet_segment:
@@ -280,10 +277,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: Tenant_X_Trunk
   description: server11_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_Eth2
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: '310'
+  type: port-channel-member
   channel_group:
     id: 20
     mode: active
@@ -293,8 +288,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: Tenant_X_Trunk
   description: server12_Single_Active_Ethernet_Manual_DF_Dont_Preempt_Eth2
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk
   vlans: '310'
   evpn_ethernet_segment:
@@ -311,10 +306,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: Tenant_X_Trunk
   description: server13_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_modulus_Eth2
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: '310'
+  type: port-channel-member
   channel_group:
     id: 22
     mode: active
@@ -324,8 +317,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: Tenant_X_Trunk
   description: server14_Single_Active_Ethernet_Manual_DF_Dont_Preempt_modulus_Eth2
-  type: switched
   shutdown: false
+  type: switched
   mode: trunk
   vlans: '310'
   evpn_ethernet_segment:
@@ -339,8 +332,8 @@ ethernet_interfaces:
   peer_interface: Eth2
   peer_type: router
   description: ROUTER02_WITH_SUBIF_Eth2
-  type: switched
   shutdown: false
+  type: port-channel-member
   channel_group:
     id: 11
     mode: active

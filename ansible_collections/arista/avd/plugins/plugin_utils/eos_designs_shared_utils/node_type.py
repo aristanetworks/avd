@@ -4,7 +4,6 @@ from functools import cached_property
 from re import search
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
@@ -12,7 +11,7 @@ if TYPE_CHECKING:
     from .shared_utils import SharedUtils
 
 
-class NodeTypeKeyMixin:
+class NodeTypeMixin:
     """
     Mixin Class providing a subset of SharedUtils
     Class should only be used as Mixin to the SharedUtils class
@@ -45,29 +44,6 @@ class NodeTypeKeyMixin:
                     return default_node_type["node_type"]
 
         return None
-
-    @cached_property
-    def node_type_key_data(self: SharedUtils) -> dict:
-        """
-        node_type_key_data containing settings for this node_type.
-        """
-
-        node_type_keys = get(self.hostvars, "node_type_keys", required=True)
-        node_type_keys = convert_dicts(node_type_keys, "key")
-        for node_type_key in node_type_keys:
-            if node_type_key["type"] == self.type:
-                return node_type_key
-
-        # Not found
-        raise AristaAvdMissingVariableError(f"node_type_keys.<>.type=={self.type}")
-
-    @cached_property
-    def cvp_tag_topology_hint_type(self: SharedUtils) -> str:
-        """
-        topology_tag_type set based on
-        node_type_keys.<node_type_key>.cvp_tags.topology_hint_type
-        """
-        return get(self.node_type_key_data, "cvp_tags.topology_hint_type", default="endpoint")
 
     @cached_property
     def connected_endpoints(self: SharedUtils) -> bool:

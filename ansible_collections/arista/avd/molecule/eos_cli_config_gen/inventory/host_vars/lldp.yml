@@ -28,6 +28,7 @@ ethernet_interfaces:
       receive: true
 
   - name: Ethernet3
+    type: switched
     description: No special LLDP settings
     mode: access
     vlans: 110

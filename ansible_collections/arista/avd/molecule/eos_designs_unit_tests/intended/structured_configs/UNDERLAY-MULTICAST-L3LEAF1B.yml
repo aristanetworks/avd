@@ -3,6 +3,12 @@ router_bgp:
   router_id: 192.168.255.4
   bgp_defaults:
   - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
@@ -104,7 +110,7 @@ vlan_interfaces:
 - name: Vlan4093
   description: MLAG_PEER_L3_PEERING
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.251.1/31
   pim:
     ipv4:
@@ -114,13 +120,12 @@ vlan_interfaces:
   shutdown: false
   ip_address: 10.255.252.1/31
   no_autostate: true
-  mtu: 9000
+  mtu: 9214
 port_channel_interfaces:
 - name: Port-Channel3
   description: MLAG_PEER_UNDERLAY-MULTICAST-L3LEAF1A_Po3
   type: switched
   shutdown: false
-  vlans: 2-4094
   mode: trunk
   trunk_groups:
   - LEAF_PEER_L3
@@ -131,7 +136,7 @@ ethernet_interfaces:
   peer_interface: Ethernet3
   peer_type: mlag_peer
   description: MLAG_PEER_UNDERLAY-MULTICAST-L3LEAF1A_Ethernet3
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 3
@@ -141,7 +146,7 @@ ethernet_interfaces:
   peer_interface: Ethernet4
   peer_type: mlag_peer
   description: MLAG_PEER_UNDERLAY-MULTICAST-L3LEAF1A_Ethernet4
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 3
@@ -152,7 +157,7 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_UNDERLAY-MULTICAST-SPINE1_Ethernet2
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 172.31.255.5/31
   pim:
@@ -164,7 +169,7 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_UNDERLAY-MULTICAST-SPINE2_Ethernet2
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 172.31.255.7/31
 mlag_configuration:
