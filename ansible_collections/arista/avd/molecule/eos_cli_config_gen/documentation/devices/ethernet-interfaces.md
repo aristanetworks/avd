@@ -122,6 +122,8 @@ sFlow is disabled.
 | Ethernet57 |  Interface with poe commands and limit in watts | access | - | - | - | - |
 | Ethernet58 |  Interface with poe disabled and no other poe keys | access | - | - | - | - |
 | Ethernet60 |  IP NAT Testing | access | - | - | - | - |
+| Ethernet61 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
+| Ethernet62 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -825,6 +827,30 @@ interface Ethernet60
    ip nat destination dynamic access-list ACL4 pool POOL4 priority 1 comment Priority low end
    ip nat destination dynamic access-list ACL5 pool POOL5 priority 4294967295 comment Priority high end
    ip nat destination dynamic access-list ACL6 pool POOL6 comment Priority default
+!
+interface Ethernet61
+   description interface_in_mode_access_with_voice
+   no logging event link-status
+   no logging event congestion-drops
+   no logging event spanning-tree
+   no logging event storm-control
+   switchport trunk native vlan 100
+   switchport phone vlan 70
+   switchport phone trunk untagged phone
+   switchport mode trunk phone
+   switchport
+!
+interface Ethernet62
+   description interface_in_mode_access_with_voice
+   no logging event link-status
+   no logging event congestion-drops
+   no logging event spanning-tree
+   no logging event storm-control
+   switchport trunk native vlan 100
+   switchport phone vlan 70
+   switchport phone trunk tagged phone
+   switchport mode trunk phone
+   switchport
 ```
 
 ## BFD
