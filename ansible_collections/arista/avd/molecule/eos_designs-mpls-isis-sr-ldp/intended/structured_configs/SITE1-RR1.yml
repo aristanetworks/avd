@@ -146,6 +146,11 @@ mpls:
     router_id: 100.70.0.8
     shutdown: false
     transport_address_interface: Loopback0
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
 ethernet_interfaces:
 - name: Ethernet4
   peer: SITE1-LSR1
@@ -173,8 +178,3 @@ ethernet_interfaces:
       interface: true
       igp_sync: true
   speed: forced 40gfull
-router_bfd:
-  multihop:
-    interval: 300
-    min_rx: 300
-    multiplier: 3
