@@ -1335,6 +1335,11 @@
       "description": "OOB Management interface gateway in IPv6 format.\nUsed as next-hop for default gateway or static routes defined under 'ipv6_mgmt_destination_networks'",
       "title": "IPv6 Mgmt Gateway"
     },
+    "is_deployed": {
+      "description": "Is device already deployed in the fabric. If this is not defined, it is\nassumed device is deployed. When set to false, interfaces toward this\ndevice may be shutdown and `eos_config_deploy_cvp` or\n`eos_config_deploy_eapi` do not try to\ndeploy configuration for this device.\n",
+      "type": "boolean",
+      "title": "IS Deployed"
+    },
     "isis_advertise_passive_only": {
       "type": "boolean",
       "default": false,

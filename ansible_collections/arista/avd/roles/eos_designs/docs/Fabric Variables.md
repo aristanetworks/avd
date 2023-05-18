@@ -221,6 +221,26 @@ Control fabric documentation generation.
     underlay_rfc5549: <bool>
     ```
 
+## IS Deployed
+
+Is device already deployed in the fabric. If this is not defined, it is
+assumed device is deployed. When set to false, interfaces toward this
+device may be shutdown and `eos_config_deploy_cvp` or
+`eos_config_deploy_eapi` do not try to
+deploy configuration for this device.
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>is_deployed</samp>](## "is_deployed") | Boolean |  |  |  |  |
+
+=== "YAML"
+
+    ```yaml
+    is_deployed: <bool>
+    ```
+
 ## ISIS Settings
 
 === "Table"
