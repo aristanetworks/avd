@@ -1515,6 +1515,52 @@ keys:
 
             Port_profiles can refer to another port_profile to inherit settings in
             up to two levels (adapter->profile->parent_profile).'
+  ptp_profiles:
+    documentation_options:
+      filename: Fabric Variables
+    type: list
+    items:
+      type: dict
+      keys:
+        profile:
+          type: str
+          description: PTP profile.
+        announce:
+          type: dict
+          description: PTP announce interval.
+          keys:
+            interval:
+              type: int
+              convert_types:
+              - str
+              min: -7
+              max: 4
+            timeout:
+              type: int
+              convert_types:
+              - str
+              min: 2
+              max: 255
+        delay_req:
+          type: int
+          convert_types:
+          - str
+          min: -7
+          max: 8
+        sync_message:
+          type: dict
+          description: PTP sync message interval.
+          keys:
+            interval:
+              type: int
+              convert_types:
+              - str
+              min: -7
+              max: 3
+        transport:
+          type: str
+          valid_values:
+          - ipv4
   redundancy:
     documentation_options:
       filename: Platform Specific Settings
