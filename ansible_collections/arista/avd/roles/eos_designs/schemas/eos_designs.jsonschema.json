@@ -964,6 +964,22 @@
       "default": false,
       "title": "Enable Trunk Groups"
     },
+    "eos_designs_documentation": {
+      "description": "Some variables are available to control documentation generation. This can be useful\nfor instance the project has thousands of endpoints, to be able to disable\nfabric-wide connected endpoints documentation.\n",
+      "type": "object",
+      "properties": {
+        "connected_endpoints": {
+          "type": "boolean",
+          "default": "true",
+          "title": "Connected Endpoints"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "EOS Designs Documentation"
+    },
     "event_handlers": {
       "type": "array",
       "description": "Gives the ability to monitor and react to Syslog messages.\nEvent Handlers provide a powerful and flexible tool that can be used to apply self-healing actions,\ncustomize the system behavior, and implement workarounds to problems discovered in the field.\n",
@@ -1105,6 +1121,16 @@
       "type": "boolean",
       "default": false,
       "title": "EVPN VLAN Aware Bundles"
+    },
+    "fabric_evpn_encapsulation": {
+      "description": "Should be set to mpls for evpn-mpls scenario",
+      "enum": [
+        "vxlan",
+        "mpls"
+      ],
+      "default": "vxlan",
+      "type": "string",
+      "title": "Fabric EVPN Encapsulation"
     },
     "fabric_name": {
       "description": "Fabric Name, required to match Ansible Group name covering all devices in the Fabric, **must** be an inventory group name.",
@@ -1298,6 +1324,11 @@
       "default": 50,
       "description": "These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden at link profile or link level.",
       "title": "ISIS Default Metric"
+    },
+    "isis_maximum_paths": {
+      "description": "Number of path to configure in ECMP for ISIS",
+      "type": "integer",
+      "title": "ISIS Maximum Paths"
     },
     "isis_ti_lfa": {
       "type": "object",
@@ -3185,6 +3216,15 @@
       "default": false,
       "title": "Only Local VLAN Trunk Groups"
     },
+    "overlay_cvx_servers": {
+      "description": "Overlay settings when using CVX as overlay controller.\nRequired if overlay_routing_protocol == CVX.\nCVX servers (VMs) are peering using their management interface, so mgmt_ip must be set for all CVX servers.\n",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "CVX_inventory_hostname"
+      },
+      "title": "Overlay CVX Servers"
+    },
     "overlay_her_flood_list_per_vni": {
       "type": "boolean",
       "description": "When using Head-End Replication, configure flood-lists per VNI.\nBy default HER will be configured with a common flood-list containing all VTEPs.\nThis behavior can be changed to per-VNI flood-lists by setting `overlay_her_flood_list_per_vni: true`.\nThis will make `eos_designs` consider configured VLANs per VTEP, and only include the relevant VTEPs to each VNI's flood-list.\n",
@@ -4362,6 +4402,11 @@
       },
       "title": "Redundancy"
     },
+    "serial_number": {
+      "description": "Set to the Serial Number of the device\nFor now only used for documentation purpose in the fabric documentation.\n\"serial_number\" can also be set directly as a hostvar.\nIf both are set, the setting under \"Fabric Topology\" takes precedence.\n",
+      "type": "string",
+      "title": "Serial Number"
+    },
     "shutdown_interfaces_towards_undeployed_peers": {
       "type": "boolean",
       "default": false,
@@ -5277,6 +5322,12 @@
       "description": "Configure route-map on eBGP sessions towards underlay peers, where prefixes with the peer's ASN in the AS Path are filtered away.\nThis is very useful in very large scale networks not using EVPN overlays, where convergence will be quicker by not having to return\nall updates received from Spine-1 to Spine-2 just for Spine-2 to throw them away because of AS Path loop detection.\nNote this key is ignored when EVPN is configured.\n",
       "default": false,
       "title": "Underlay Filter Peer As"
+    },
+    "underlay_filter_redistribute_connected": {
+      "description": "Filter redistribution of connected into underlay routing protocol.\nOnly applicable when overlay_routing_protocol != 'none' and underlay_routing_protocol == BGP.\nCreates a route-map and prefix-list assigned to redistribute connected permitting only loopbacks and inband management subnets.\n",
+      "default": "true",
+      "type": "boolean",
+      "title": "Underlay Filter Redistribute Connected"
     },
     "underlay_ipv6": {
       "description": "This feature allows IPv6 underlay routing protocol with RFC5549 addresses to be used along with IPv4 advertisements as VXLAN tunnel endpoints.\nRequires \"underlay_rfc5549: true\" and \"loopback_ipv6_pool\" under the \"Fabric Topology\"\n",

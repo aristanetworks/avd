@@ -816,6 +816,22 @@ default_interfaces:
           inband_management_vlan: <int>
     ```
 
+## ISIS Maximum Paths
+
+Number of path to configure in ECMP for ISIS
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>isis_maximum_paths</samp>](## "isis_maximum_paths") | Integer |  |  |  |  |
+
+=== "YAML"
+
+    ```yaml
+    isis_maximum_paths: <int>
+    ```
+
 ## ISIS underlay protocol management
 
 === "Table"
@@ -1460,6 +1476,25 @@ default_interfaces:
                   delay_resp: <int>
                   follow_up: <int>
                   sync: <int>
+    ```
+
+## Serial Number
+
+Set to the Serial Number of the device
+For now only used for documentation purpose in the fabric documentation.
+"serial_number" can also be set directly as a hostvar.
+If both are set, the setting under "Fabric Topology" takes precedence.
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>serial_number</samp>](## "serial_number") | String |  |  |  |  |
+
+=== "YAML"
+
+    ```yaml
+    serial_number: <str>
     ```
 
 ## Topology Variables
