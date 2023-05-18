@@ -991,6 +991,50 @@
       "default": false,
       "title": "Enable Trunk Groups"
     },
+    "eos_designs_custom_templates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "template": {
+            "type": "string",
+            "description": "Template file.",
+            "title": "Template"
+          },
+          "options": {
+            "description": "Template options",
+            "type": "object",
+            "properties": {
+              "list_merge": {
+                "type": "string",
+                "description": "Merge strategy for lists",
+                "default": "append_rp",
+                "title": "List Merge"
+              },
+              "strip_empty_keys": {
+                "type": "boolean",
+                "description": "Filter out keys from the generated output if value is null/none/undefined",
+                "default": true,
+                "title": "Strip Empty Keys"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Options"
+          }
+        },
+        "required": [
+          "template"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "EOS Designs Custom Templates"
+    },
     "eos_designs_documentation": {
       "description": "Control fabric documentation generation.\n",
       "type": "object",

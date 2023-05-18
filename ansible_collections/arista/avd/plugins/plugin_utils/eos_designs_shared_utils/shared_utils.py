@@ -43,7 +43,7 @@ class SharedUtils(
     loaded in eos_designs.
 
     This class is instatiated in 'EosDesignsFacts' class and set as 'shared_utils' property.
-    This class is also instaticated in 'yaml_templates_to_facts' and the instance is given as argument to
+    This class is also instaticated in 'eos_designs_structured_config' and the instance is given as argument to
     each python module. The base class '__init__' will set the instance as 'shared_utils' property.
 
     Since these methods / cached_properties will not be rendered automatically, we can avoid some of the

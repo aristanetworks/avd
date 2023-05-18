@@ -8,7 +8,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import st
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
 
 
-class AvdStructuredConfig(AvdFacts):
+class AvdStructuredConfigMlag(AvdFacts):
     def render(self):
         """
         Wrap class render function with a check for mlag is True

@@ -542,6 +542,27 @@ keys:
 
       '
     default: false
+  eos_designs_custom_templates:
+    type: list
+    items:
+      type: dict
+      keys:
+        template:
+          type: str
+          description: Template file.
+          required: true
+        options:
+          description: Template options
+          type: dict
+          keys:
+            list_merge:
+              type: str
+              description: Merge strategy for lists
+              default: append_rp
+            strip_empty_keys:
+              type: bool
+              description: Filter out keys from the generated output if value is null/none/undefined
+              default: true
   eos_designs_documentation:
     documentation_options:
       filename: Fabric Variables
