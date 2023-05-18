@@ -95,12 +95,6 @@ static_routes:
   gateway: 192.168.200.5
 service_routing_protocols_model: multi-agent
 ip_routing: true
-hardware_counters:
-  features:
-  - name: ip
-    direction: out
-    layer3: true
-    units_packets: true
 daemon_terminattr:
   cvaddrs:
   - 192.168.200.11:9910
