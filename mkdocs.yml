@@ -131,7 +131,7 @@ nav:
       - AWX & Tower Integration: docs/how-to/tower-integration.md
       - Configure ZTP Server With CVP Collection: docs/how-to/ztp.md
       - Setup Ansible AVD With VS Code Container: docs/how-to/vscode-container.md
-  - Validation of Input Variables (BETA): docs/input-variable-validation-BETA.md
+  - Validation of Input Variables: docs/input-variable-validation.md
   - Roles Documentation:
       - eos_designs:
           - Overview: roles/eos_designs/README.md
