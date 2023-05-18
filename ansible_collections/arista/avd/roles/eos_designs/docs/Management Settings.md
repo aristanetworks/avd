@@ -34,3 +34,37 @@ search:
     terminattr_ingestgrpcurl_port: <int>
     terminattr_smashexcludes: <str>
     ```
+
+## IPv6 Mgmt Destination Networks
+
+IPv6_network/Mask
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>ipv6_mgmt_destination_networks</samp>](## "ipv6_mgmt_destination_networks") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "ipv6_mgmt_destination_networks.[].&lt;str&gt;") | String |  |  |  |  |
+
+=== "YAML"
+
+    ```yaml
+    ipv6_mgmt_destination_networks:
+      - <str>
+    ```
+
+## IPv6 Mgmt Gateway
+
+IPv6 address
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>ipv6_mgmt_gateway</samp>](## "ipv6_mgmt_gateway") | String |  |  | Format: ipv6 |  |
+
+=== "YAML"
+
+    ```yaml
+    ipv6_mgmt_gateway: <str>
+    ```

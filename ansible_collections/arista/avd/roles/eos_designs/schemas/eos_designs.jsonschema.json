@@ -1,6 +1,33 @@
 {
   "type": "object",
   "properties": {
+    "avd_data_conversion_mode": {
+      "type": "string",
+      "enum": [
+        "disabled",
+        "error",
+        "warning",
+        "info",
+        "debug",
+        "quiet"
+      ],
+      "default": "debug",
+      "description": "Conversion Mode for AVD input data conversion\nDuring conversion, messages will be generated with information about the host(s) and key(s) which required conversion.\n\"disabled\" means that conversion will not run - avoid this since conversion is also handling data deprecation and upgrade.\n\"error\" will produce error messages and fail the task.\n\"warning\" will produce warning messages.\n\"info\" will produce regular log messages.\n\"debug\" will produce hidden debug messages viewable with -v.\n\"quiet\" will not produce any messages",
+      "title": "Avd Data Conversion Mode"
+    },
+    "avd_data_validation_mode": {
+      "type": "string",
+      "enum": [
+        "disabled",
+        "error",
+        "warning",
+        "info",
+        "debug"
+      ],
+      "default": "warning",
+      "description": "Validation Mode for AVD input data validation\nDuring validation, messages will generated with information about the host(s) and key(s) which failed validation.\n\"disabled\" means that validation will not run.\n\"error\" will produce error messages and fail the task.\n\"warning\" will produce warning messages.\n\"info\" will produce regular log messages.\n\"debug\" will produce hidden debug messages viewable with -v.",
+      "title": "Avd Data Validation Mode"
+    },
     "bfd_multihop": {
       "type": "object",
       "description": "BFD Multihop tuning",
@@ -1041,6 +1068,10 @@
       },
       "title": "Event Handlers"
     },
+    "evpn_ebgp_gateway_inter_domain": {
+      "type": "boolean",
+      "title": "EVPN Ebgp Gateway Inter Domain"
+    },
     "evpn_ebgp_gateway_multihop": {
       "description": "Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI networks.\nAdapt the value for your specific topology.\n",
       "type": "integer",
@@ -1287,6 +1318,20 @@
         "^_.+$": {}
       },
       "title": "Internal VLAN Order"
+    },
+    "ipv6_mgmt_destination_networks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "IPv6_network/Mask",
+      "title": "IPv6 Mgmt Destination Networks"
+    },
+    "ipv6_mgmt_gateway": {
+      "type": "string",
+      "format": "ipv6",
+      "description": "IPv6 address",
+      "title": "IPv6 Mgmt Gateway"
     },
     "isis_advertise_passive_only": {
       "type": "boolean",

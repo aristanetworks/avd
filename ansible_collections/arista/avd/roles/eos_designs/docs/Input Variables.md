@@ -5,6 +5,51 @@ search:
 
 # Input Variables
 
+## Avd Data Conversion Mode
+
+Conversion Mode for AVD input data conversion
+During conversion, messages will be generated with information about the host(s) and key(s) which required conversion.
+"disabled" means that conversion will not run - avoid this since conversion is also handling data deprecation and upgrade.
+"error" will produce error messages and fail the task.
+"warning" will produce warning messages.
+"info" will produce regular log messages.
+"debug" will produce hidden debug messages viewable with -v.
+"quiet" will not produce any messages
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>avd_data_conversion_mode</samp>](## "avd_data_conversion_mode") | String |  | debug | Valid Values:<br>- disabled<br>- error<br>- warning<br>- info<br>- debug<br>- quiet |  |
+
+=== "YAML"
+
+    ```yaml
+    avd_data_conversion_mode: <str>
+    ```
+
+## Avd Data Validation Mode
+
+Validation Mode for AVD input data validation
+During validation, messages will generated with information about the host(s) and key(s) which failed validation.
+"disabled" means that validation will not run.
+"error" will produce error messages and fail the task.
+"warning" will produce warning messages.
+"info" will produce regular log messages.
+"debug" will produce hidden debug messages viewable with -v.
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>avd_data_validation_mode</samp>](## "avd_data_validation_mode") | String |  | warning | Valid Values:<br>- disabled<br>- error<br>- warning<br>- info<br>- debug |  |
+
+=== "YAML"
+
+    ```yaml
+    avd_data_validation_mode: <str>
+    ```
+
 ## Event Handlers
 
 Gives the ability to monitor and react to Syslog messages.
@@ -35,6 +80,20 @@ customize the system behavior, and implement workarounds to problems discovered 
         trigger: <str>
         regex: <str>
         asynchronous: <bool>
+    ```
+
+## EVPN Ebgp Gateway Inter Domain
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>evpn_ebgp_gateway_inter_domain</samp>](## "evpn_ebgp_gateway_inter_domain") | Boolean |  |  |  |  |
+
+=== "YAML"
+
+    ```yaml
+    evpn_ebgp_gateway_inter_domain: <bool>
     ```
 
 ## Hardware Counters

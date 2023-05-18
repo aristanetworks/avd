@@ -2,6 +2,56 @@ $id: eos_designs
 type: dict
 allow_other_keys: true
 keys:
+  avd_data_conversion_mode:
+    type: str
+    valid_values:
+    - disabled
+    - error
+    - warning
+    - info
+    - debug
+    - quiet
+    default: debug
+    description: 'Conversion Mode for AVD input data conversion
+
+      During conversion, messages will be generated with information about the host(s)
+      and key(s) which required conversion.
+
+      "disabled" means that conversion will not run - avoid this since conversion
+      is also handling data deprecation and upgrade.
+
+      "error" will produce error messages and fail the task.
+
+      "warning" will produce warning messages.
+
+      "info" will produce regular log messages.
+
+      "debug" will produce hidden debug messages viewable with -v.
+
+      "quiet" will not produce any messages'
+  avd_data_validation_mode:
+    type: str
+    valid_values:
+    - disabled
+    - error
+    - warning
+    - info
+    - debug
+    default: warning
+    description: 'Validation Mode for AVD input data validation
+
+      During validation, messages will generated with information about the host(s)
+      and key(s) which failed validation.
+
+      "disabled" means that validation will not run.
+
+      "error" will produce error messages and fail the task.
+
+      "warning" will produce warning messages.
+
+      "info" will produce regular log messages.
+
+      "debug" will produce hidden debug messages viewable with -v.'
   bfd_multihop:
     documentation_options:
       filename: Fabric Variables
@@ -505,6 +555,8 @@ keys:
     type: list
     documentation_options:
       filename: Input Variables
+  evpn_ebgp_gateway_inter_domain:
+    type: bool
   evpn_ebgp_gateway_multihop:
     documentation_options:
       filename: Fabric Variables
@@ -728,6 +780,19 @@ keys:
             min: 2
             max: 4094
             required: true
+  ipv6_mgmt_destination_networks:
+    documentation_options:
+      filename: Management Settings
+    type: list
+    items:
+      type: str
+    description: IPv6_network/Mask
+  ipv6_mgmt_gateway:
+    documentation_options:
+      filename: Management Settings
+    type: str
+    format: ipv6
+    description: IPv6 address
   isis_advertise_passive_only:
     documentation_options:
       filename: Fabric Variables
