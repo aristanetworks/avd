@@ -6734,15 +6734,7 @@ keys:
     keys:
       enabled:
         type: bool
-<<<<<<< HEAD
         required: true
-=======
-        description: '"enabled: true" will be required in AVD4.0.
-
-          In AVD3.x default is true as long as queue_monitor_length is defined and
-          not None
-
-          '
       default_thresholds:
         type: dict
         keys:
@@ -6763,7 +6755,6 @@ keys:
               Low threshold support is platform dependent.
 
               '
->>>>>>> devel
       log:
         type: int
         convert_types:
