@@ -35,7 +35,7 @@ default_templates:
       - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.custom_structured_configuration"
         python_class_name: "AvdStructuredConfig"
         options:
-          list_merge: "{{ custom_structured_configuration_list_merge }}"
+          list_merge: "{{ custom_structured_configuration_list_merge | arista.avd.default('append_rp') }}"
     ip_addressing:
       python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing"
       python_class_name: "AvdIpAddressing"
@@ -70,7 +70,7 @@ default_templates:
       - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.custom_structured_configuration"
         python_class_name: "AvdStructuredConfig"
         options:
-          list_merge: "{{ custom_structured_configuration_list_merge }}"
+          list_merge: "{{ custom_structured_configuration_list_merge | arista.avd.default('append_rp') }}"
     ip_addressing:
       python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing"
       python_class_name: "AvdIpAddressing"
@@ -109,7 +109,7 @@ default_templates:
       - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.custom_structured_configuration"
         python_class_name: "AvdStructuredConfig"
         options:
-          list_merge: "{{ custom_structured_configuration_list_merge }}"
+          list_merge: "{{ custom_structured_configuration_list_merge | arista.avd.default('append_rp') }}"
     ip_addressing:
       python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing"
       python_class_name: "AvdIpAddressing"

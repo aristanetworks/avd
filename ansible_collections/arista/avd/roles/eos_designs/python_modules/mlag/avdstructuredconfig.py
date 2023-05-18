@@ -208,13 +208,13 @@ class AvdStructuredConfig(AvdFacts):
         if (
             get(self.shared_utils.switch_data_combined, "mlag_dual_primary_detection", default=False) is True
             and self.shared_utils.mlag_peer_mgmt_ip is not None
-            and (mgmt_interface_vrf := get(self._hostvars, "mgmt_interface_vrf")) is not None
+            and (self.shared_utils.mgmt_interface_vrf) is not None
         ):
             mlag_configuration.update(
                 {
                     "peer_address_heartbeat": {
                         "peer_ip": self.shared_utils.mlag_peer_mgmt_ip,
-                        "vrf": mgmt_interface_vrf,
+                        "vrf": self.shared_utils.mgmt_interface_vrf,
                     },
                     "dual_primary_detection_delay": 5,
                 }
