@@ -11,5 +11,5 @@ keys:
       Filter redistribution of connected into underlay routing protocol.
       Only applicable when overlay_routing_protocol != 'none' and underlay_routing_protocol == BGP.
       Creates a route-map and prefix-list assigned to redistribute connected permitting only loopbacks and inband management subnets.
-    default: "true" 
+    default: "true"
     type: bool

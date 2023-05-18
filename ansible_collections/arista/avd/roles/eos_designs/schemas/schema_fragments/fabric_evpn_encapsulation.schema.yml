@@ -9,5 +9,5 @@ keys:
       table: MPLS Settings
     description: Should be set to mpls for evpn-mpls scenario
     valid_values: ["vxlan", "mpls"]
-    default: "vxlan" 
+    default: "vxlan"
     type: str

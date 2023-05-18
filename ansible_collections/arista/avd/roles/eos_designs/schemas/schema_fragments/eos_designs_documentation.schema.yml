@@ -14,4 +14,4 @@ keys:
     keys:
       connected_endpoints:
         type: bool
-        default: "true"   
+        default: "true"
