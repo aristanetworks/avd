@@ -44,7 +44,6 @@ def get_structured_config(
     result: dict,
     templar: object | None = None,
 ) -> dict:
-
     structured_config = {}
     module_vars = ChainMap(
         structured_config,
