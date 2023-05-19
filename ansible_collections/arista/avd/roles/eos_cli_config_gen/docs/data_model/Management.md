@@ -198,7 +198,7 @@ Search list of DNS domains
       enable_vrfs:
         - name: <str>
           access_group: <str>
-      octa:
+      octa: <dict>
     ```
 
 ## Management API HTTP

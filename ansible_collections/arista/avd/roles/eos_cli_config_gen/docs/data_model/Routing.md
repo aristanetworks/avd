@@ -1458,7 +1458,7 @@ MAC address (hh:hh:hh:hh:hh:hh)
         prefix_segments:
           - prefix: <str>
             index: <int>
-      no_passive_interfaces:
+      no_passive_interfaces: <list>
     ```
 
 ## Router L2 VPN

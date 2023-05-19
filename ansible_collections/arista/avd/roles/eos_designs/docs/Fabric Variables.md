@@ -87,34 +87,31 @@ search:
       ipv4_underlay_peers:
         name: <str>
         password: <str>
-        structured_config:
+        structured_config: <dict>
       mlag_ipv4_underlay_peer:
         name: <str>
         password: <str>
-        structured_config:
+        structured_config: <dict>
       evpn_overlay_peers:
         name: <str>
         password: <str>
-        structured_config:
+        structured_config: <dict>
       evpn_overlay_core:
         name: <str>
         password: <str>
-        structured_config:
+        structured_config: <dict>
       mpls_overlay_peers:
         name: <str>
         password: <str>
-        structured_config:
+        structured_config: <dict>
       rr_overlay_peers:
         name: <str>
         password: <str>
-        structured_config:
+        structured_config: <dict>
       ipvpn_gateway_peers:
         name: <str>
         password: <str>
-        structured_config:
-      IPv4_UNDERLAY_PEERS:
-      MLAG_IPv4_UNDERLAY_PEER:
-      EVPN_OVERLAY_PEERS:
+        structured_config: <dict>
     ```
 
 ## BGP Settings
@@ -555,5 +552,4 @@ If both are set, the setting under "Fabric Topology" takes precedence.
 === "YAML"
 
     ```yaml
-    vxlan_vlan_aware_bundles: <bool>
     ```

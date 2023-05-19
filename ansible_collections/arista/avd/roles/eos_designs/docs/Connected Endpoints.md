@@ -151,8 +151,6 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
               - <str>
             switches:
               - <str>
-            server_ports:
-              - <str>
             endpoint_ports:
               - <str>
             speed: <str>
@@ -249,7 +247,6 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
               channel_id: <int>
               description: <str>
               enabled: <bool>
-              esi: <str>
               short_esi: <str>
               lacp_fallback:
                 mode: <str>
@@ -264,9 +261,9 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
                   encapsulation_vlan:
                     client_dot1q: <int>
               raw_eos_cli: <str>
-              structured_config:
+              structured_config: <dict>
             raw_eos_cli: <str>
-            structured_config:
+            structured_config: <dict>
     ```
 
 ## Connected Endpoints Keys
@@ -525,7 +522,6 @@ All switch_ports ranges are expanded into individual port configurations.
           channel_id: <int>
           description: <str>
           enabled: <bool>
-          esi: <str>
           short_esi: <str>
           lacp_fallback:
             mode: <str>
@@ -540,9 +536,9 @@ All switch_ports ranges are expanded into individual port configurations.
               encapsulation_vlan:
                 client_dot1q: <int>
           raw_eos_cli: <str>
-          structured_config:
+          structured_config: <dict>
         raw_eos_cli: <str>
-        structured_config:
+        structured_config: <dict>
     ```
 
 ## Port Profiles
@@ -772,7 +768,6 @@ Keys are the same used under endpoints adapters. Keys defined under endpoints ad
           channel_id: <int>
           description: <str>
           enabled: <bool>
-          esi: <str>
           short_esi: <str>
           lacp_fallback:
             mode: <str>
@@ -787,7 +782,7 @@ Keys are the same used under endpoints adapters. Keys defined under endpoints ad
               encapsulation_vlan:
                 client_dot1q: <int>
           raw_eos_cli: <str>
-          structured_config:
+          structured_config: <dict>
         raw_eos_cli: <str>
-        structured_config:
+        structured_config: <dict>
     ```
