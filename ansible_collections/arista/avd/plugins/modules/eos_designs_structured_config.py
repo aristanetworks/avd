@@ -1,4 +1,4 @@
-# Copyright 2022 Arista Networks
+# Copyright 2021 Arista Networks
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,23 +15,56 @@
 
 DOCUMENTATION = r"""
 ---
-module: eos_designs_facts
-version_added: "3.5.0"
+module: eos_designs_structured_config
+version_added: "4.0.0"
 author: Arista Ansible Team (@aristanetworks)
-short_description: Set eos_designs facts
+short_description: Generate AVD EOS Designs structured configuration
 description:
-  - The `arista.avd.eos_designs_facts` module is an Ansible Action Plugin providing the following capabilities
-  - Set `avd_switch_facts` fact containing both `switch` facts per host.
-  - Set `avd_topology_peers` fact containing list of downlink switches per host.
-    This list is built based on the `uplink_switches` from all other hosts.
-  - Set `avd_overlay_peers` fact containing list of EVPN or MPLS overlay peers per host.
-    This list is built based on the `evpn_route_servers` and `mpls_route_reflectors` from all other hosts.
-  - The plugin is designed to `run_once`. With this, Ansible will set the same facts on all devices,
-    so all devices can lookup values of any other device without using the slower `hostvars`.
-  - The facts can also be copied to the "root" `switch` in a task run per-device (see example below)
-  - The module is used in `arista.avd.eos_designs` to set facts for devices, which are then used by jinja templates
-    and python module in `arista.avd.eos_designs` to generate the `structured_configuration`.
+  - Validates input variables according to eos_designs schema
+  - Generates structured configuration
+  - Optionally run any custom jinja2 YAML templates and merge result onto structured configuration
+  - Optionally run jinja2 templating the generated structured configuration
+  - Optionally write structured configuration to a JSON or YAML file
+  - Return structured configuration as "ansible_facts"
 options:
+  eos_designs_custom_templates:
+    description: List of dicts for Jinja2 templates to be run after generating the structured configuration
+    required: false
+    type: list
+    elements: dict
+    suboptions:
+      template:
+        description: |
+          Template file.
+        required: true
+        type: str
+      options:
+        description: Template options
+        required: false
+        type: dict
+        suboptions:
+          list_merge:
+            description: Merge strategy for lists
+            required: false
+            default: 'append'
+            type: str
+          strip_empty_keys:
+            description: |
+              Filter out keys from the generated output if value is null/none/undefined
+              Only applies to templates.
+            required: false
+            default: true
+            type: bool
+  dest:
+    description: |
+      Destination path. If set, the output facts will also be written to this path.
+      Autodetects data format based on file suffix. '.yml', '.yaml' -> YAML, default -> JSON
+    required: false
+    type: str
+  mode:
+    description: File mode (ex. 0664) for dest file. See 'ansible.builtin.copy' module for details.
+    required: false
+    type: str
   template_output:
     description: |
       If true the output data will be run through another jinja2 rendering before returning.
@@ -77,17 +110,14 @@ options:
 """
 
 EXAMPLES = r"""
-- name: Set eos_designs facts
-  tags: [build, provision, facts]
-  arista.avd.eos_designs_facts:
-    schema_id: eos_designs
-  check_mode: False
-  run_once: True
-
-- name: Set eos_designs facts per device
-  tags: [build, provision, facts]
-  ansible.builtin.set_fact:
-    switch: "{{ avd_switch_facts[inventory_hostname].switch }}"
-  delegate_to: localhost
-  changed_when: false
+- name: Generate device configuration in structured format
+  arista.avd.eos_designs_structured_config:
+    templates:
+      - template: "custom_templates/custom_feature1.j2"
+      - template: "custom_templates/custom_feature2.j2"
+        options:
+          list_merge: replace
+          strip_empty_keys: false
+  check_mode: no
+  changed_when: False
 """

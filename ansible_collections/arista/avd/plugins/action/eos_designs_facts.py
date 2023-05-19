@@ -28,11 +28,6 @@ class ActionModule(ActionBase):
             profiler = cProfile.Profile()
             profiler.enable()
 
-        self._plugin_name = task_vars["ansible_role_name"]
-
-        self._schema = self._task.args.get("schema")
-        self._schema_id = self._task.args.get("schema_id")
-
         self.template_output = self._task.args.get("template_output", False)
         self._conversion_mode = self._task.args.get("conversion_mode")
         self._validation_mode = self._task.args.get("validation_mode")
@@ -53,10 +48,7 @@ class ActionModule(ActionBase):
         # This is not all the hostvars, but just the Ansible Hostvars Manager object where we can retrieve hostvars for each host on-demand.
         hostvars = task_vars["hostvars"]
 
-        # Caveat: Since we load default vars only once, it will be templated based on the vars of the random host triggering this task
-        #         This should not be too bad, since all hosts are within the same fabric - hence they should also use the same "design"
-        default_vars = self._templar.template(self._task._role.get_default_vars())
-        all_hostvars, failed = self.get_all_hostvars(fabric_hosts, hostvars, default_vars)
+        all_hostvars, failed = self.get_all_hostvars(fabric_hosts, hostvars)
         if failed:
             # Stop here if any of the devices failed input data validation
             result["failed"] = True
@@ -97,7 +89,7 @@ class ActionModule(ActionBase):
 
         return result
 
-    def get_all_hostvars(self, fabric_hosts: list, hostvars: object, default_vars: dict):
+    def get_all_hostvars(self, fabric_hosts: list, hostvars: object):
         """
         Fetch hostvars for all hosts and perform data conversion & validation
 
@@ -107,8 +99,6 @@ class ActionModule(ActionBase):
             List of hostnames
         hostvars : object
             Ansible "hostvars" object
-        default_vars : dict
-            Default variables shared between all fabric_hosts
 
         Returns
         -------
@@ -123,18 +113,17 @@ class ActionModule(ActionBase):
         avdschematools = AvdSchemaTools(
             hostname="",
             ansible_display=display,
-            schema=self._schema,
-            schema_id=self._schema_id,
+            schema_id="eos_designs",
             conversion_mode=self._conversion_mode,
             validation_mode=self._validation_mode,
-            plugin_name=self._plugin_name,
+            plugin_name="arista.avd.eos_designs",
         )
 
         all_hostvars = {}
         failed = False
         for host in fabric_hosts:
-            # Using ChainMap to avoid copying data between defaults, hostvars and local template_vars
-            all_hostvars[host] = ChainMap({}, hostvars.get(host), default_vars)
+            # Using ChainMap to avoid exposing the hostvars object directly without having to deepcopy all the data..
+            all_hostvars[host] = ChainMap({}, hostvars.get(host))
 
             # Set correct hostname and perform conversion and validation
             avdschematools.hostname = host

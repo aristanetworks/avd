@@ -12,7 +12,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import st
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 
-class AvdStructuredConfig(AvdFacts):
+class AvdStructuredConfigBase(AvdFacts):
     @cached_property
     def serial_number(self) -> str | None:
         """

@@ -35,7 +35,7 @@ search:
     terminattr_smashexcludes: <str>
     ```
 
-## IPv6 Mgmt Destination Networks
+## IPv6 Management Destination Networks
 
 List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface gateway.
 Replaces the default route.
@@ -54,7 +54,7 @@ Replaces the default route.
       - <str>
     ```
 
-## IPv6 Mgmt Gateway
+## IPv6 Management Gateway
 
 OOB Management interface gateway in IPv6 format.
 Used as next-hop for default gateway or static routes defined under 'ipv6_mgmt_destination_networks'

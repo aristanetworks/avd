@@ -240,6 +240,11 @@ mpls:
     router_id: 100.70.0.7
     shutdown: false
     transport_address_interface: Loopback0
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
 ethernet_interfaces:
 - name: Ethernet1
   peer: SITE2-LSR1
@@ -278,17 +283,6 @@ ethernet_interfaces:
     id: 11
     mode: active
   speed: forced 40gfull
-- name: Ethernet8
-  peer: CPE_TENANT_A_SITE2
-  peer_interface: eth0
-  peer_type: cpe
-  port_profile: TENANT_A_WAN_SERVICE_10
-  description: CPE_TENANT_A_SITE2_eth0
-  shutdown: false
-  type: switched
-  mode: trunk
-  vlans: '10'
-  spanning_tree_portfast: edge
 - name: Ethernet6.10
   peer_type: l3_interface
   ip_address: 123.1.1.2/31
@@ -340,6 +334,17 @@ ethernet_interfaces:
   channel_group:
     id: 4
     mode: active
+- name: Ethernet8
+  peer: CPE_TENANT_A_SITE2
+  peer_interface: eth0
+  peer_type: cpe
+  port_profile: TENANT_A_WAN_SERVICE_10
+  description: CPE_TENANT_A_SITE2_eth0
+  shutdown: false
+  type: switched
+  mode: trunk
+  vlans: '10'
+  spanning_tree_portfast: edge
 port_channel_interfaces:
 - name: Port-Channel11
   peer: SITE2-LSR2
@@ -420,11 +425,6 @@ port_channel_interfaces:
   type: routed
   peer_type: l3_interface
   shutdown: false
-router_bfd:
-  multihop:
-    interval: 300
-    min_rx: 300
-    multiplier: 3
 patch_panel:
   patches:
   - name: TEN_A_site2_site5_eline_port_based
