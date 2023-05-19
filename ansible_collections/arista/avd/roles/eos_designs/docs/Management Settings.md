@@ -34,3 +34,39 @@ search:
     terminattr_ingestgrpcurl_port: <int>
     terminattr_smashexcludes: <str>
     ```
+
+## IPv6 Mgmt Destination Networks
+
+List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface gateway.
+Replaces the default route.
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>ipv6_mgmt_destination_networks</samp>](## "ipv6_mgmt_destination_networks") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "ipv6_mgmt_destination_networks.[].&lt;str&gt;") | String |  |  |  | IPv6_network/Mask |
+
+=== "YAML"
+
+    ```yaml
+    ipv6_mgmt_destination_networks:
+      - <str>
+    ```
+
+## IPv6 Mgmt Gateway
+
+OOB Management interface gateway in IPv6 format.
+Used as next-hop for default gateway or static routes defined under 'ipv6_mgmt_destination_networks'
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>ipv6_mgmt_gateway</samp>](## "ipv6_mgmt_gateway") | String |  |  | Format: ipv6 |  |
+
+=== "YAML"
+
+    ```yaml
+    ipv6_mgmt_gateway: <str>
+    ```
