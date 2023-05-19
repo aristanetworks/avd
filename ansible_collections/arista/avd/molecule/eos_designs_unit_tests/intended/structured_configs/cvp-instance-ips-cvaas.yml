@@ -1,7 +1,6 @@
 router_bgp:
   as: '1234'
   router_id: 1.2.3.1
-  bgp_defaults: []
   bgp:
     default:
       ipv4_unicast: false

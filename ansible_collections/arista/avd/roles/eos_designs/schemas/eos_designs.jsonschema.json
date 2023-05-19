@@ -71,6 +71,39 @@
       "default": false,
       "title": "BGP Default IPv4 Unicast"
     },
+    "bgp_distance": {
+      "type": "object",
+      "properties": {
+        "external_routes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 255,
+          "title": "External Routes"
+        },
+        "internal_routes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 255,
+          "title": "Internal Routes"
+        },
+        "local_routes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 255,
+          "title": "Local Routes"
+        }
+      },
+      "required": [
+        "external_routes",
+        "internal_routes",
+        "local_routes"
+      ],
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "BGP Distance"
+    },
     "bgp_ecmp": {
       "description": "Maximum ECMP for BGP multi-path",
       "type": "integer",

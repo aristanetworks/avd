@@ -11464,6 +11464,11 @@
               "title": "Local Routes"
             }
           },
+          "required": [
+            "external_routes",
+            "internal_routes",
+            "local_routes"
+          ],
           "additionalProperties": false,
           "patternProperties": {
             "^_.+$": {}
@@ -11540,6 +11545,10 @@
               "title": "Ecmp"
             }
           },
+          "required": [
+            "paths",
+            "ecmp"
+          ],
           "additionalProperties": false,
           "patternProperties": {
             "^_.+$": {}
@@ -14308,6 +14317,9 @@
                                   "title": "Originate"
                                 }
                               },
+                              "required": [
+                                "enabled"
+                              ],
                               "additionalProperties": false,
                               "patternProperties": {
                                 "^_.+$": {}

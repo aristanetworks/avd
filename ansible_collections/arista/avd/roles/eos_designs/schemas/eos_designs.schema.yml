@@ -108,6 +108,12 @@ keys:
       '
     type: bool
     default: false
+  bgp_distance:
+    documentation_options:
+      filename: Fabric Variables
+      table: BGP Settings
+    type: dict
+    $ref: eos_cli_config_gen#/keys/router_bgp/keys/distance
   bgp_ecmp:
     documentation_options:
       filename: Fabric Variables

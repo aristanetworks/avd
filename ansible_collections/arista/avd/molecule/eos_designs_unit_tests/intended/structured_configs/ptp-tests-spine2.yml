@@ -1,7 +1,6 @@
 router_bgp:
   as: '65200'
   router_id: 10.255.0.2
-  bgp_defaults: []
   bgp:
     default:
       ipv4_unicast: false

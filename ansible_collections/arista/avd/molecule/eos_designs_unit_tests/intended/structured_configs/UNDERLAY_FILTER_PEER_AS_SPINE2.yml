@@ -1,7 +1,6 @@
 router_bgp:
   as: '65000'
   router_id: 192.168.255.2
-  bgp_defaults: []
   bgp:
     default:
       ipv4_unicast: false
