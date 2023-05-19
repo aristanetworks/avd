@@ -7,6 +7,8 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  updates:
+    wait_install: true
   graceful_restart:
     enabled: true
     restart_time: 300
@@ -75,6 +77,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: MULTICAST_ENABLED_110_111
     router_id: 192.168.255.4
     rd: 192.168.255.4:11
@@ -92,6 +96,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: MULTICAST_ENABLED_210_DISABLED_211
     router_id: 192.168.255.4
     rd: 192.168.255.4:12
@@ -109,6 +115,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: MULTICAST_DISABLED_5_6
     router_id: 192.168.255.4
     rd: 192.168.255.4:23
@@ -126,6 +134,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: MULTICAST_ENABLED_1_2
     router_id: 192.168.255.4
     rd: 192.168.255.4:21
@@ -143,6 +153,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: MULTICAST_ENABLED_3_DISABLED_4
     router_id: 192.168.255.4
     rd: 192.168.255.4:22
@@ -160,6 +172,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: TEN_C_L3_MULTICAST_DISABLED_330_331
     router_id: 192.168.255.4
     rd: 192.168.255.4:33
@@ -178,6 +192,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: TEN_C_L3_MULTICAST_ENABLED_130_131
     router_id: 192.168.255.4
     rd: 192.168.255.4:31
@@ -196,6 +212,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
     router_id: 192.168.255.4
     rd: 192.168.255.4:32
@@ -214,6 +232,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: TEN_D_L3_MULTICAST_DISABLED_240_241
     router_id: 192.168.255.4
     rd: 192.168.255.4:42
@@ -232,6 +252,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
     router_id: 192.168.255.4
     rd: 192.168.255.4:41
@@ -250,6 +272,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
     router_id: 192.168.255.4
     rd: 192.168.255.4:55
@@ -268,6 +292,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
     router_id: 192.168.255.4
     rd: 192.168.255.4:60
@@ -289,6 +315,8 @@ router_bgp:
     evpn_multicast_address_family:
       ipv4:
         transit: true
+    updates:
+      wait_install: true
   - name: TEN_E_L3_MULTICAST_TRANSIT
     router_id: 192.168.255.4
     rd: 192.168.255.4:52
@@ -310,6 +338,8 @@ router_bgp:
     evpn_multicast_address_family:
       ipv4:
         transit: true
+    updates:
+      wait_install: true
   - name: TEN_E_PEG_L3_MULTICAST_ENABLED
     router_id: 192.168.255.4
     rd: 192.168.255.4:51
@@ -328,6 +358,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   vlan_aware_bundles:
   - name: MULTICAST_DISABLED_310_311
     rd: 192.168.255.4:13

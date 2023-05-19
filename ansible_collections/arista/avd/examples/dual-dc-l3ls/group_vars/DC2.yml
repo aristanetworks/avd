@@ -55,6 +55,11 @@ l3leaf:
     mlag_peer_ipv4_pool: 10.255.129.64/27
     # iBGP Peering between MLAG peers
     mlag_peer_l3_ipv4_pool: 10.255.129.96/27
+<<<<<<< HEAD
+=======
+    bgp_defaults:
+      - distance bgp 20 200 200
+>>>>>>> 4e5f8e2fb (Feat(eos_designs)!: Platform and Fabric variables to adjust update wait-for-convergence and update wait-install)
     # Virtual router mac for VNIs assigned to Leaf switches in format xx:xx:xx:xx:xx:xx
     virtual_router_mac_address: 00:1c:73:00:00:99
     spanning_tree_priority: 4096

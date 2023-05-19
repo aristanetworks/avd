@@ -255,6 +255,11 @@ class RouterBgpMixin(UtilsMixin):
                 if (evpn_multicast_transit_mode := get(vrf, "_evpn_l3_multicast_evpn_peg_transit")) is True:
                     bgp_vrf["evpn_multicast_address_family"] = {"ipv4": {"transit": evpn_multicast_transit_mode}}
 
+                if bgp_vrf.get("neighbors"):
+                    platform_bgp_update_wait_install = get(self.shared_utils.platform_settings, "feature_support.bgp_update_wait_install", default=True) is True
+                    if get(self._hostvars, "bgp_update_wait_install", default=True) is True and platform_bgp_update_wait_install:
+                        bgp_vrf.setdefault("updates", {})["wait_install"] = True
+
                 # Strip None values from vlan before returning
                 bgp_vrf = {key: value for key, value in bgp_vrf.items() if value is not None}
                 vrfs.append(bgp_vrf)

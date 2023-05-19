@@ -568,6 +568,7 @@ router ospf 101
 | distance bgp 20 200 200 |
 | graceful-restart restart-time 300 |
 | graceful-restart |
+| update wait-install |
 | no bgp default ipv4-unicast |
 | maximum-paths 10 ecmp 10 |
 
@@ -616,6 +617,7 @@ router bgp 65104
    graceful-restart restart-time 300
    graceful-restart
    maximum-paths 10 ecmp 10
+   update wait-install
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    neighbor EVPN-OVERLAY-PEERS peer group

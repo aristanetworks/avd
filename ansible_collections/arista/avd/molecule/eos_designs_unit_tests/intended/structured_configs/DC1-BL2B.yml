@@ -11,6 +11,8 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  updates:
+    wait_install: true
   graceful_restart:
     enabled: true
     restart_time: 300
@@ -208,6 +210,8 @@ router_bgp:
       neighbors:
       - ip_address: BEBA::C0CA:C07A
         activate: true
+    updates:
+      wait_install: true
   vlan_aware_bundles:
   - name: Tenant_A_WAN_Zone
     rd: 192.168.255.17:14

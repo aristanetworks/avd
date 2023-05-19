@@ -9,6 +9,8 @@ router_bgp:
   maximum_paths:
     paths: 10
     ecmp: 10
+  updates:
+    wait_install: true
   graceful_restart:
     enabled: true
     restart_time: 300
