@@ -12,7 +12,7 @@ keys:
     - debug
     - quiet
     default: debug
-    description: 'Conversion Mode for AVD input data conversion
+    description: 'Conversion Mode for AVD input data conversion.
 
       Input data conversion will perform type conversion of input variables as defined
       in the schema.
@@ -44,7 +44,7 @@ keys:
     - info
     - debug
     default: warning
-    description: 'Validation Mode for AVD input data validation
+    description: 'Validation Mode for AVD input data validation.
 
       Input data validation will validate the input variables according to the schema.
 
@@ -720,7 +720,7 @@ keys:
     documentation_options:
       filename: Fabric Variables
       table: MPLS Settings
-    description: Should be set to mpls for evpn-mpls scenario
+    description: Should be set to mpls for evpn-mpls scenario.
     valid_values:
     - vxlan
     - mpls
@@ -857,7 +857,7 @@ keys:
   isis_maximum_paths:
     documentation_options:
       filename: Fabric Topology
-    description: Number of path to configure in ECMP for ISIS
+    description: Number of path to configure in ECMP for ISIS.
     type: int
     convert_types:
     - str
@@ -1706,7 +1706,7 @@ keys:
   serial_number:
     documentation_options:
       filename: Fabric Variables
-    description: 'Serial Number of the device
+    description: 'Serial Number of the device.
 
       Used for documentation purpose in the fabric documentation as can also be used
       by the ''eos_config_deploy_cvp'' role.
@@ -2017,7 +2017,7 @@ keys:
       only loopbacks and inband management subnets.
 
       '
-    default: 'true'
+    default: true
     type: bool
   underlay_ipv6:
     documentation_options:

@@ -130,7 +130,7 @@ search:
     | [<samp>&nbsp;&nbsp;restart_time</samp>](## "bgp_graceful_restart.restart_time") | Integer |  | 300 | Min: 1<br>Max: 3600 | Restart time in seconds. |
     | [<samp>bgp_mesh_pes</samp>](## "bgp_mesh_pes") | Boolean |  | False |  | Whether to configure an iBGP full mesh between PEs, either because there is no RR used or other reasons. |
     | [<samp>underlay_filter_peer_as</samp>](## "underlay_filter_peer_as") | Boolean |  | False |  | Configure route-map on eBGP sessions towards underlay peers, where prefixes with the peer's ASN in the AS Path are filtered away.<br>This is very useful in very large scale networks not using EVPN overlays, where convergence will be quicker by not having to return<br>all updates received from Spine-1 to Spine-2 just for Spine-2 to throw them away because of AS Path loop detection.<br>Note this key is ignored when EVPN is configured.<br> |
-    | [<samp>underlay_filter_redistribute_connected</samp>](## "underlay_filter_redistribute_connected") | Boolean |  | true |  | Filter redistribution of connected into the underlay routing protocol.<br>Only applicable when overlay_routing_protocol != 'none' and underlay_routing_protocol == BGP.<br>Creates a route-map and prefix-list assigned to redistribute connected permitting only loopbacks and inband management subnets.<br> |
+    | [<samp>underlay_filter_redistribute_connected</samp>](## "underlay_filter_redistribute_connected") | Boolean |  | True |  | Filter redistribution of connected into the underlay routing protocol.<br>Only applicable when overlay_routing_protocol != 'none' and underlay_routing_protocol == BGP.<br>Creates a route-map and prefix-list assigned to redistribute connected permitting only loopbacks and inband management subnets.<br> |
 
 === "YAML"
 
@@ -291,7 +291,7 @@ Control fabric documentation generation.
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>fabric_evpn_encapsulation</samp>](## "fabric_evpn_encapsulation") | String |  | vxlan | Valid Values:<br>- vxlan<br>- mpls | Should be set to mpls for evpn-mpls scenario |
+    | [<samp>fabric_evpn_encapsulation</samp>](## "fabric_evpn_encapsulation") | String |  | vxlan | Valid Values:<br>- vxlan<br>- mpls | Should be set to mpls for evpn-mpls scenario. |
 
 === "YAML"
 
@@ -423,7 +423,7 @@ CVX servers (VMs) are peering using their management interface, so mgmt_ip must 
 
 ## Serial Number
 
-Serial Number of the device
+Serial Number of the device.
 Used for documentation purpose in the fabric documentation as can also be used by the 'eos_config_deploy_cvp' role.
 "serial_number" can also be set directly under "Fabric Topology".
 If both are set, the setting under "Fabric Topology" takes precedence.

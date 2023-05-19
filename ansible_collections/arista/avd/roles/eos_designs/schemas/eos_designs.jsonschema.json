@@ -12,7 +12,7 @@
         "quiet"
       ],
       "default": "debug",
-      "description": "Conversion Mode for AVD input data conversion\nInput data conversion will perform type conversion of input variables as defined in the schema.\nThe type conversion is intended to help the user to identify minor issues with the input data, while still allowing the data to be validated.\nDuring conversion, messages will generated with information about the host(s) and key(s) which required conversion.\n\"disabled\" means that conversion will not run - avoid this since conversion is also handling data deprecation and upgrade.\n\"error\" will produce error messages and fail the task.\n\"warning\" will produce warning messages.\n\"info\" will produce regular log messages.\n\"debug\" will produce hidden debug messages viewable with -v.\n\"quiet\" will not produce any messages",
+      "description": "Conversion Mode for AVD input data conversion.\nInput data conversion will perform type conversion of input variables as defined in the schema.\nThe type conversion is intended to help the user to identify minor issues with the input data, while still allowing the data to be validated.\nDuring conversion, messages will generated with information about the host(s) and key(s) which required conversion.\n\"disabled\" means that conversion will not run - avoid this since conversion is also handling data deprecation and upgrade.\n\"error\" will produce error messages and fail the task.\n\"warning\" will produce warning messages.\n\"info\" will produce regular log messages.\n\"debug\" will produce hidden debug messages viewable with -v.\n\"quiet\" will not produce any messages",
       "title": "Avd Data Conversion Mode"
     },
     "avd_data_validation_mode": {
@@ -25,7 +25,7 @@
         "debug"
       ],
       "default": "warning",
-      "description": "Validation Mode for AVD input data validation\nInput data validation will validate the input variables according to the schema.\nDuring validation, messages will generated with information about the host(s) and key(s) which failed validation.\n\"disabled\" means that validation will not run.\n\"error\" will produce error messages and fail the task.\n\"warning\" will produce warning messages.\n\"info\" will produce regular log messages.\n\"debug\" will produce hidden debug messages viewable with -v.",
+      "description": "Validation Mode for AVD input data validation.\nInput data validation will validate the input variables according to the schema.\nDuring validation, messages will generated with information about the host(s) and key(s) which failed validation.\n\"disabled\" means that validation will not run.\n\"error\" will produce error messages and fail the task.\n\"warning\" will produce warning messages.\n\"info\" will produce regular log messages.\n\"debug\" will produce hidden debug messages viewable with -v.",
       "title": "Avd Data Validation Mode"
     },
     "bfd_multihop": {
@@ -1155,7 +1155,7 @@
       "title": "EVPN VLAN Aware Bundles"
     },
     "fabric_evpn_encapsulation": {
-      "description": "Should be set to mpls for evpn-mpls scenario",
+      "description": "Should be set to mpls for evpn-mpls scenario.",
       "enum": [
         "vxlan",
         "mpls"
@@ -1373,7 +1373,7 @@
       "title": "ISIS Default Metric"
     },
     "isis_maximum_paths": {
-      "description": "Number of path to configure in ECMP for ISIS",
+      "description": "Number of path to configure in ECMP for ISIS.",
       "type": "integer",
       "title": "ISIS Maximum Paths"
     },
@@ -4450,7 +4450,7 @@
       "title": "Redundancy"
     },
     "serial_number": {
-      "description": "Serial Number of the device\nUsed for documentation purpose in the fabric documentation as can also be used by the 'eos_config_deploy_cvp' role.\n\"serial_number\" can also be set directly under \"Fabric Topology\".\nIf both are set, the setting under \"Fabric Topology\" takes precedence.\n",
+      "description": "Serial Number of the device.\nUsed for documentation purpose in the fabric documentation as can also be used by the 'eos_config_deploy_cvp' role.\n\"serial_number\" can also be set directly under \"Fabric Topology\".\nIf both are set, the setting under \"Fabric Topology\" takes precedence.\n",
       "type": "string",
       "title": "Serial Number"
     },
@@ -5372,7 +5372,7 @@
     },
     "underlay_filter_redistribute_connected": {
       "description": "Filter redistribution of connected into the underlay routing protocol.\nOnly applicable when overlay_routing_protocol != 'none' and underlay_routing_protocol == BGP.\nCreates a route-map and prefix-list assigned to redistribute connected permitting only loopbacks and inband management subnets.\n",
-      "default": "true",
+      "default": true,
       "type": "boolean",
       "title": "Underlay Filter Redistribute Connected"
     },

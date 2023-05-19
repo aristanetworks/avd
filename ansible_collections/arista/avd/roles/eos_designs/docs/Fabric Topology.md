@@ -818,7 +818,7 @@ default_interfaces:
 
 ## ISIS Maximum Paths
 
-Number of path to configure in ECMP for ISIS
+Number of path to configure in ECMP for ISIS.
 
 === "Table"
 
