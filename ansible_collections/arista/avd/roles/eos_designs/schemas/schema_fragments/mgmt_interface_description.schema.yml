@@ -6,5 +6,5 @@ keys:
   mgmt_interface_description:
     type: str
     description: |
-      Description on the Management interface to override
+      Management interface description
       the default `oob_management`.
