@@ -114,16 +114,6 @@ keys:
       table: BGP Settings
     type: dict
     $ref: eos_cli_config_gen#/keys/router_bgp/keys/distance
-    keys:
-      external_routes:
-        type: int
-        required: true
-      internal_routes:
-        type: int
-        required: true
-      local_routes:
-        type: int
-        required: true
   bgp_ecmp:
     documentation_options:
       filename: Fabric Variables

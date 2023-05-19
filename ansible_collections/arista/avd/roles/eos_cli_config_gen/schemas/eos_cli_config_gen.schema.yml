@@ -7062,18 +7062,21 @@ keys:
         keys:
           external_routes:
             type: int
+            required: true
             convert_types:
             - str
             min: 1
             max: 255
           internal_routes:
             type: int
+            required: true
             convert_types:
             - str
             min: 1
             max: 255
           local_routes:
             type: int
+            required: true
             convert_types:
             - str
             min: 1
@@ -7129,12 +7132,14 @@ keys:
         keys:
           paths:
             type: int
+            required: true
             convert_types:
             - str
             min: 1
             max: 600
           ecmp:
             type: int
+            required: true
             convert_types:
             - str
             min: 1
