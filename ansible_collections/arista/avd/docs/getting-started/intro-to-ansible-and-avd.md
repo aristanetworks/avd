@@ -214,9 +214,6 @@ spine:
     bgp_as: 65100
     # BGP configuration for fine tuning
     bgp_defaults:
-      # The two following commands must not be enabled when using vEOS-lab
-      # - update wait-for-convergence
-      # - update wait-install
       - distance bgp 20 200 200
 
   # Definition of nodes contained in this group.

@@ -864,6 +864,12 @@ router bgp {{ router_bgp.as }}
 {%         if vrf.router_id is arista.avd.defined %}
       router-id {{ vrf.router_id }}
 {%         endif %}
+{%         if vrf.updates.wait_for_convergence is arista.avd.defined(true) %}
+      update wait-for-convergence
+{%         endif %}
+{%         if vrf.updates.wait_install is arista.avd.defined(true) %}
+      update wait-install
+{%         endif %}
 {%         if vrf.timers is arista.avd.defined %}
       timers bgp {{ vrf.timers }}
 {%         endif %}

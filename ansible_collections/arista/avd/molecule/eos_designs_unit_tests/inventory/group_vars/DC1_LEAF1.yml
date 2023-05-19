@@ -1,6 +1,10 @@
 ---
 bgp_default_ipv4_unicast: true
 
+# Test to honor platform settings of vEOS-LAB
+bgp_update_wait_install: true
+bgp_update_wait_for_convergence: true
+
 # test updating graceful restart timers
 bgp_graceful_restart:
   enabled: true

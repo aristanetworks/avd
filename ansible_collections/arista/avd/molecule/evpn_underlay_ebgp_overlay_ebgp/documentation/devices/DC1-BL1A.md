@@ -591,6 +591,7 @@ ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 | distance bgp 20 200 200 |
 | graceful-restart restart-time 300 |
 | graceful-restart |
+| update wait-install |
 | no bgp default ipv4-unicast |
 | maximum-paths 4 ecmp 4 |
 
@@ -672,6 +673,7 @@ router bgp 65104
    graceful-restart restart-time 300
    graceful-restart
    maximum-paths 4 ecmp 4
+   update wait-install
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    neighbor EVPN-OVERLAY-PEERS peer group
@@ -740,6 +742,7 @@ router bgp 65104
       route-target export evpn 65000:789
       route-target export vpn-ipv4 65000:123
       router-id 192.168.255.14
+      update wait-install
       neighbor 123.1.1.10 remote-as 1234
       neighbor 123.1.1.10 password 7 <removed>
       neighbor 123.1.1.10 local-as 123 no-prepend replace-as

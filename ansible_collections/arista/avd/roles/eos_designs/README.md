@@ -133,16 +133,6 @@ However, because vEOS-LAB implements a virtual data plane, there are known cavea
 **Variables adjustments required for vEOS-LAB:**
 
 ```yaml
-# Disable update wait-for-convergence and update wait-for-install, which is not supported in vEOS-LAB.
-spine_bgp_defaults:
-#  - update wait-for-convergence
-#  - update wait-install
-  - distance bgp 20 200 200
-
-leaf_bgp_defaults:
-#  - update wait-install
-  - distance bgp 20 200 200
-
 # Update p2p mtu 9000 -> 1500, MTU 9000 not supported in vEOS-LAB.
 p2p_uplinks_mtu: 1500
 

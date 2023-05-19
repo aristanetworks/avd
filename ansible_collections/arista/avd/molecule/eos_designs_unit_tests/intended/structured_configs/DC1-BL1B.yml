@@ -9,6 +9,8 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  updates:
+    wait_install: true
   graceful_restart:
     enabled: true
     restart_time: 300
@@ -193,6 +195,8 @@ router_bgp:
         activate: true
       - ip_address: fd5a:fe45:8831:06c5::b
         activate: true
+    updates:
+      wait_install: true
   - name: Tenant_B_OP_Zone
     router_id: 192.168.255.15
     rd: 192.168.254.15:20

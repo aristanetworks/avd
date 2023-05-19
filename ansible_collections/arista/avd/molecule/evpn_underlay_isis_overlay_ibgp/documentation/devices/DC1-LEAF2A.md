@@ -628,6 +628,7 @@ router isis EVPN_UNDERLAY
 | distance bgp 20 200 200 |
 | graceful-restart restart-time 300 |
 | graceful-restart |
+| update wait-install |
 | no bgp default ipv4-unicast |
 | maximum-paths 4 ecmp 4 |
 
@@ -668,6 +669,7 @@ router bgp 65000
    graceful-restart restart-time 300
    graceful-restart
    maximum-paths 4 ecmp 4
+   update wait-install
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    neighbor OVERLAY-PEERS peer group

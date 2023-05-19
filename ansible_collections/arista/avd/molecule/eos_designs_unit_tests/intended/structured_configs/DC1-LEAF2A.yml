@@ -9,6 +9,9 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  updates:
+    wait_for_convergence: true
+    wait_install: true
   peer_groups:
   - name: UNDERLAY-PEERS
     type: ipv4
