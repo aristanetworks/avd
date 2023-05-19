@@ -206,6 +206,10 @@ class AvdToDocumentationSchemaConverter:
     def build_yaml_row(self, var_name: str, schema: dict, indentation: int, table: str, first_list_item_key: bool = False):
         output = []
 
+        deprecation_label = get_deprecation(schema)[0]
+        if deprecation_label == "removed":
+            return output
+
         row_indentation = " " * indentation
         if first_list_item_key:
             # Make an indentation of "    " into "  - " to show this is a list item in YAML format

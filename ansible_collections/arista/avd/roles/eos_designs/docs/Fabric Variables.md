@@ -112,9 +112,6 @@ search:
         name: <str>
         password: <str>
         structured_config: <dict>
-      IPv4_UNDERLAY_PEERS: <dict>
-      MLAG_IPv4_UNDERLAY_PEER: <dict>
-      EVPN_OVERLAY_PEERS: <dict>
     ```
 
 ## BGP Settings

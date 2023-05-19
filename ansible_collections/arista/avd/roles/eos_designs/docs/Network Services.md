@@ -866,8 +866,6 @@ search:
 === "YAML"
 
     ```yaml
-    evpn_rd_type: <dict>
-    evpn_rt_type: <dict>
     overlay_rd_type:
       admin_subfield: <str>
       admin_subfield_offset: <str>
