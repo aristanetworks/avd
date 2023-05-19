@@ -561,7 +561,7 @@ The `arista.avd.configlet_build_config` module provides the following capabiliti
 !!! Note
 
     This plugin is no longer used by `eos_designs`. It is still being used by `eos_validate_state`.
-    The plugin will be deprecated in a future version of this collection and later removed.
+    This plugin may be deprecated in a future version of this collection and later removed.
 
 The `arista.avd.yaml_templates_to_facts` module is an Ansible Action Plugin providing the following capabilities:
 
