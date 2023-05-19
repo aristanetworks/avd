@@ -4,8 +4,5 @@
 type: dict
 keys:
   terminattr_ingestexclude:
-    documentation_options:
-      filename: Management Settings
-      table: CloudVision Settings
     type: str
     default: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"

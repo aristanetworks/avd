@@ -342,6 +342,16 @@
       },
       "title": "BGP Peer Groups"
     },
+    "bgp_update_wait_install": {
+      "type": "boolean",
+      "description": "Do not advertise reachability to a prefix until that prefix has been installed in hardware.\nThis will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.\n",
+      "title": "BGP Update Wait Install"
+    },
+    "bgp_update_wait_for_convergence": {
+      "type": "boolean",
+      "description": "Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.\n",
+      "title": "BGP Update Wait For Convergence"
+    },
     "connected_endpoints_keys": {
       "type": "array",
       "description": "Define connected endpoints keys to define the grouping of endpoints connecting to the fabric.\nThis lets you specify various keys to better organize/group your data.\nThe connected endpoints keys should be defined in the top level group_var for the fabric.\n",
@@ -3524,6 +3534,18 @@
                 "type": "boolean",
                 "default": true,
                 "title": "Interface Storm Control"
+              },
+              "bgp_update_wait_install": {
+                "type": "boolean",
+                "default": true,
+                "description": "Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.\nCan be overridden by setting \"bgp_update_wait_install\" host/group_vars\n",
+                "title": "BGP Update Wait Install"
+              },
+              "bgp_update_wait_for_convergence": {
+                "type": "boolean",
+                "default": true,
+                "description": "Do not advertise reachability to a prefix until that prefix has been installed in hardware.\nThis will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.\nCan be overridden by setting \"bgp_update_wait_for_convergence\" host/group_vars\n",
+                "title": "BGP Update Wait For Convergence"
               }
             },
             "additionalProperties": false,

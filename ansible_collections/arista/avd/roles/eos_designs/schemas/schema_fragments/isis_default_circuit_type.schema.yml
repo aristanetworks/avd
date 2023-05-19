@@ -4,9 +4,6 @@
 type: dict
 keys:
   isis_default_circuit_type:
-    documentation_options:
-      filename: Fabric Variables
-      table: ISIS Settings
     type: str
     valid_values: ["level-1-2", "level-1", "level-2"]
     default: "level-2"

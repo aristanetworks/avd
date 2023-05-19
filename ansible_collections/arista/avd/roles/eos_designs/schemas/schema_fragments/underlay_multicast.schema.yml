@@ -4,9 +4,6 @@
 type: dict
 keys:
   underlay_multicast:
-    documentation_options:
-      filename: Fabric Variables
-      table: Multicast Settings
     type: bool
     description: |
       Enable Multicast in the underlay on all p2p uplink interfaces and mlag l3 peer interface.

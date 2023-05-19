@@ -88,6 +88,8 @@ DEFAULT_PLATFORM_SETTINGS = [
         "feature_support": {
             "queue_monitor_length_notify": False,
             "interface_storm_control": False,
+            "bgp_update_wait_for_convergence": False,
+            "bgp_update_wait_install": False,
         },
     },
     {
@@ -100,6 +102,8 @@ DEFAULT_PLATFORM_SETTINGS = [
         "feature_support": {
             "queue_monitor_length_notify": False,
             "interface_storm_control": False,
+            "bgp_update_wait_for_convergence": False,
+            "bgp_update_wait_install": False,
         },
     },
 ]

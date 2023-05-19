@@ -4,8 +4,6 @@
 type: dict
 keys:
   l3_edge:
-    documentation_options:
-      filename: L3 Edge
     type: dict
     $ref: "#/$defs/l3_edge"
     description: |

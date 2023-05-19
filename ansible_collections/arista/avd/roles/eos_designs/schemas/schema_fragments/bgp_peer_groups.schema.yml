@@ -4,9 +4,6 @@
 type: dict
 keys:
   bgp_peer_groups:
-    documentation_options:
-      filename: Fabric Variables
-      table: BGP Peer Groups
     description: |
       Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.
       Note that the name of the peer groups use '-' instead of '_' in EOS configuration.

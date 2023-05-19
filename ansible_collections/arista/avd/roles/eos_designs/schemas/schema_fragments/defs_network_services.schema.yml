@@ -4,8 +4,6 @@
 type: dict
 $defs:
   network_services:
-    documentation_options:
-      filename: Network Services
     type: list
     primary_key: name
     convert_types:

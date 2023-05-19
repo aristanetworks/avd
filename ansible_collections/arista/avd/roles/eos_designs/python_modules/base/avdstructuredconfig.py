@@ -29,6 +29,11 @@ class AvdStructuredConfigBase(AvdFacts):
         if self.shared_utils.bgp_as is None:
             return None
 
+        platform_bgp_update_wait_for_convergence = (
+            get(self.shared_utils.platform_settings, "feature_support.bgp_update_wait_for_convergence", default=True) is True
+        )
+        platform_bgp_update_wait_install = get(self.shared_utils.platform_settings, "feature_support.bgp_update_wait_install", default=True) is True
+
         router_bgp = {
             "as": self.shared_utils.bgp_as,
             "router_id": self.shared_utils.router_id,
@@ -44,6 +49,11 @@ class AvdStructuredConfigBase(AvdFacts):
                 "ecmp": get(self._hostvars, "bgp_ecmp", default=4),
             },
         }
+        if get(self._hostvars, "bgp_update_wait_for_convergence", default=False) is True and platform_bgp_update_wait_for_convergence:
+            router_bgp.setdefault("updates", {})["wait_for_convergence"] = True
+
+        if get(self._hostvars, "bgp_update_wait_install", default=True) is True and platform_bgp_update_wait_install:
+            router_bgp.setdefault("updates", {})["wait_install"] = True
 
         if get(self._hostvars, "bgp_graceful_restart.enabled", default=True) is True:
             router_bgp.update(

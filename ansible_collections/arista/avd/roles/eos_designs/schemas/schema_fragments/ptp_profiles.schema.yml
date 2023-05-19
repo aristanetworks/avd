@@ -4,8 +4,6 @@
 type: dict
 keys:
   ptp_profiles:
-    documentation_options:
-      filename: Fabric Variables
     type: list
     items:
       type: dict

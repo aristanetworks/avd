@@ -1,0 +1,8 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  bgp_update_wait_install:
+    type: bool
+    $ref: "eos_cli_config_gen#/keys/router_bgp/keys/updates/keys/wait_install"

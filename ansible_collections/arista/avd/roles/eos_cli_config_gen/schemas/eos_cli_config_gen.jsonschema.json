@@ -11560,10 +11560,12 @@
           "properties": {
             "wait_for_convergence": {
               "type": "boolean",
+              "description": "Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.\n",
               "title": "Wait For Convergence"
             },
             "wait_install": {
               "type": "boolean",
+              "description": "Do not advertise reachability to a prefix until that prefix has been installed in hardware.\nThis will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.\n",
               "title": "Wait Install"
             }
           },
@@ -13764,6 +13766,26 @@
                   ]
                 },
                 "title": "Networks"
+              },
+              "updates": {
+                "type": "object",
+                "properties": {
+                  "wait_for_convergence": {
+                    "type": "boolean",
+                    "description": "Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.\n",
+                    "title": "Wait For Convergence"
+                  },
+                  "wait_install": {
+                    "type": "boolean",
+                    "description": "Do not advertise reachability to a prefix until that prefix has been installed in hardware.\nThis will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.\n",
+                    "title": "Wait Install"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Updates"
               },
               "listen_ranges": {
                 "type": "array",

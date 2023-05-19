@@ -123,6 +123,9 @@ router_bgp:
     - name: TENANT_A_PROJECT01
       router_id: 192.168.255.3
       rd: "192.168.255.3:11"
+      updates:
+        wait_for_convergence: true
+        wait_install: true
       networks:
         - prefix: 10.0.0.0/8
         - prefix: 100.64.0.0/10
