@@ -32,7 +32,6 @@ keys:
         type: list
         items:
           type: dict
-          primary_key: "name"
           keys:
             name:
               description: Host Name
