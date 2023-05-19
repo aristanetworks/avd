@@ -29,12 +29,11 @@ class AvdStructuredConfigBase(AvdFacts):
         if self.shared_utils.bgp_as is None:
             return None
 
-        bgp_defaults = get(self.shared_utils.switch_data_combined, "bgp_defaults", default=[])
-
         router_bgp = {
             "as": self.shared_utils.bgp_as,
             "router_id": self.shared_utils.router_id,
-            "bgp_defaults": bgp_defaults,
+            "distance": get(self._hostvars, "bgp_distance"),
+            "bgp_defaults": get(self.shared_utils.switch_data_combined, "bgp_defaults"),
             "bgp": {
                 "default": {
                     "ipv4_unicast": get(self._hostvars, "bgp_default_ipv4_unicast", default=False),
@@ -56,7 +55,7 @@ class AvdStructuredConfigBase(AvdFacts):
                 },
             )
 
-        return router_bgp
+        return strip_null_from_data(router_bgp)
 
     @cached_property
     def static_routes(self) -> list | None:
