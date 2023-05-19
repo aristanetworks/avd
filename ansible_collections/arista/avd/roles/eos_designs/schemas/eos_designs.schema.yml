@@ -637,8 +637,6 @@ keys:
       table: EVPN Settings
     description: 'Enable vlan aware bundles for EVPN MAC-VRF
 
-      Old variable name vxlan_vlan_aware_bundles, supported for backward-compatibility.
-
       '
     type: bool
     default: false
@@ -1982,6 +1980,14 @@ keys:
 
       '
     type: str
+  vxlan_vlan_aware_bundles:
+    documentation_options:
+      filename: Fabric Variables
+    deprecation:
+      new_key: evpn_vlan_aware_bundles
+      removed: true
+    type: bool
+    default: false
 dynamic_keys:
   connected_endpoints_keys.key:
     $ref: '#/$defs/connected_endpoints'
