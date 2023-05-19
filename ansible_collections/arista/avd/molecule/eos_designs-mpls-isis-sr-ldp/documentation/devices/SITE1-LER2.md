@@ -599,6 +599,7 @@ router isis CORE
 | distance bgp 20 200 200 |
 | graceful-restart restart-time 300 |
 | graceful-restart |
+| update wait-install |
 | no bgp default ipv4-unicast |
 | maximum-paths 4 ecmp 4 |
 
@@ -687,6 +688,7 @@ router bgp 65000
    graceful-restart restart-time 300
    graceful-restart
    maximum-paths 4 ecmp 4
+   update wait-install
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    neighbor MPLS-OVERLAY-PEERS peer group
@@ -764,6 +766,7 @@ router bgp 65000
       route-target export vpn-ipv4 65000:20
       route-target export vpn-ipv6 65000:20
       router-id 100.70.0.6
+      update wait-install
       neighbor 192.168.48.1 remote-as 65201
       neighbor 192.168.48.1 password 7 <removed>
       neighbor 192.168.48.1 description TENANT_B_CPE_SITE3

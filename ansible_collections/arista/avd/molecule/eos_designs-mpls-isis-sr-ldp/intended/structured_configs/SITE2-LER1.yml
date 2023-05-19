@@ -9,6 +9,8 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  updates:
+    wait_install: true
   graceful_restart:
     enabled: true
     restart_time: 300
@@ -97,6 +99,8 @@ router_bgp:
       neighbors:
       - ip_address: 192.168.48.3
         activate: true
+    updates:
+      wait_install: true
   vlans:
   - id: 10
     tenant: TENANT_A

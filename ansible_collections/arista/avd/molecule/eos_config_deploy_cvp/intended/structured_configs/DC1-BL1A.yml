@@ -9,6 +9,8 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  updates:
+    wait_install: true
   graceful_restart:
     enabled: true
     restart_time: 300
@@ -104,6 +106,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.11
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: Tenant_B_WAN_Zone
     router_id: 192.168.255.10
     rd: 192.168.255.10:21
@@ -121,6 +125,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.11
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: Tenant_C_WAN_Zone
     router_id: 192.168.255.10
     rd: 192.168.255.10:31
@@ -138,6 +144,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.11
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   vlan_aware_bundles:
   - name: Tenant_A_WAN_Zone
     rd: 192.168.255.10:14
