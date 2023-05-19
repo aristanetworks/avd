@@ -41,6 +41,7 @@ WORDLIST = {
     "l2": "L2",
     "mac": "MAC",
     "mcs": "MCS",
+    "mgmt": "Management",
     "mib": "MIB",
     "mka": "MKA",
     "mlag": "MLAG",

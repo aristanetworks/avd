@@ -805,6 +805,20 @@ keys:
     description: 'OOB Management interface gateway in IPv6 format.
 
       Used as next-hop for default gateway or static routes defined under ''ipv6_mgmt_destination_networks'''
+  is_deployed:
+    description: 'Is device already deployed in the fabric
+
+      When set to false, interfaces toward this device may be shutdown depending on
+      the `shutdown_interfaces_towards_undeployed_peers` setting.
+
+      Furthermore `eos_config_deploy_cvp` will not attempt to move or apply configurations
+      to the device.
+
+      '
+    documentation_options:
+      filename: Fabric Variables
+    type: bool
+    default: true
   isis_advertise_passive_only:
     documentation_options:
       filename: Fabric Variables
@@ -979,6 +993,12 @@ keys:
     type: str
     default: Management1
     description: OOB Management interface.
+  mgmt_interface_description:
+    type: str
+    description: 'Management interface description
+
+      '
+    default: oob_management
   mgmt_interface_vrf:
     type: str
     default: MGMT

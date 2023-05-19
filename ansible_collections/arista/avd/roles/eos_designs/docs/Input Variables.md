@@ -159,6 +159,25 @@ customize the system behavior, and implement workarounds to problems discovered 
         shell: <str>
     ```
 
+## Management Destination Networks
+
+List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.
+Replaces the default route.
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>mgmt_destination_networks</samp>](## "mgmt_destination_networks") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "mgmt_destination_networks.[].&lt;str&gt;") | String |  |  |  | IPv4_address/Mask |
+
+=== "YAML"
+
+    ```yaml
+    mgmt_destination_networks:
+      - <str>
+    ```
+
 ## Management Eapi
 
 Default is HTTPS management eAPI enabled.
@@ -182,26 +201,7 @@ The VRF is set to < mgmt_interface_vrf >.
       default_services: <bool>
     ```
 
-## Mgmt Destination Networks
-
-List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.
-Replaces the default route.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>mgmt_destination_networks</samp>](## "mgmt_destination_networks") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "mgmt_destination_networks.[].&lt;str&gt;") | String |  |  |  | IPv4_address/Mask |
-
-=== "YAML"
-
-    ```yaml
-    mgmt_destination_networks:
-      - <str>
-    ```
-
-## Mgmt Gateway
+## Management Gateway
 
 OOB Management interface gateway in IPv4 format.
 Used as next-hop for default gateway or static routes defined under 'mgmt_destination_networks'
@@ -218,7 +218,23 @@ Used as next-hop for default gateway or static routes defined under 'mgmt_destin
     mgmt_gateway: <str>
     ```
 
-## Mgmt Interface VRF
+## Management Interface Description
+
+Management interface description
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>mgmt_interface_description</samp>](## "mgmt_interface_description") | String |  | oob_management |  |  |
+
+=== "YAML"
+
+    ```yaml
+    mgmt_interface_description: <str>
+    ```
+
+## Management Interface VRF
 
 OOB Management VRF.
 
@@ -234,7 +250,7 @@ OOB Management VRF.
     mgmt_interface_vrf: <str>
     ```
 
-## Mgmt Interface
+## Management Interface
 
 OOB Management interface.
 
@@ -250,7 +266,7 @@ OOB Management interface.
     mgmt_interface: <str>
     ```
 
-## Mgmt VRF Routing
+## Management VRF Routing
 
 Configure IP routing for the OOB Management VRF.
 
