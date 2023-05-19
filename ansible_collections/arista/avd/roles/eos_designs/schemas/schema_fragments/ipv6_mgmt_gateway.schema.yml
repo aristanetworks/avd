@@ -11,4 +11,3 @@ keys:
     description: |
       OOB Management interface gateway in IPv6 format.
       Used as next-hop for default gateway or static routes defined under 'ipv6_mgmt_destination_networks'
-

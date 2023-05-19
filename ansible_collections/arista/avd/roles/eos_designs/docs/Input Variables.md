@@ -8,7 +8,9 @@ search:
 ## Avd Data Conversion Mode
 
 Conversion Mode for AVD input data conversion
-During conversion, messages will be generated with information about the host(s) and key(s) which required conversion.
+Input data conversion will perform type conversion of input variables as defined in the schema.
+The type conversion is intended to help the user to identify minor issues with the input data, while still allowing the data to be validated.
+During conversion, messages will generated with information about the host(s) and key(s) which required conversion.
 "disabled" means that conversion will not run - avoid this since conversion is also handling data deprecation and upgrade.
 "error" will produce error messages and fail the task.
 "warning" will produce warning messages.
@@ -31,6 +33,7 @@ During conversion, messages will be generated with information about the host(s)
 ## Avd Data Validation Mode
 
 Validation Mode for AVD input data validation
+Input data validation will validate the input variables according to the schema.
 During validation, messages will generated with information about the host(s) and key(s) which failed validation.
 "disabled" means that validation will not run.
 "error" will produce error messages and fail the task.

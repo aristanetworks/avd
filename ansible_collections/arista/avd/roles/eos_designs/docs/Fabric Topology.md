@@ -1478,25 +1478,6 @@ Number of path to configure in ECMP for ISIS
                   sync: <int>
     ```
 
-## Serial Number
-
-Set to the Serial Number of the device
-For now only used for documentation purpose in the fabric documentation.
-"serial_number" can also be set directly as a hostvar.
-If both are set, the setting under "Fabric Topology" takes precedence.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>serial_number</samp>](## "serial_number") | String |  |  |  |  |
-
-=== "YAML"
-
-    ```yaml
-    serial_number: <str>
-    ```
-
 ## Topology Variables
 
 === "Table"

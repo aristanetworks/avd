@@ -12,7 +12,7 @@
         "quiet"
       ],
       "default": "debug",
-      "description": "Conversion Mode for AVD input data conversion\nDuring conversion, messages will be generated with information about the host(s) and key(s) which required conversion.\n\"disabled\" means that conversion will not run - avoid this since conversion is also handling data deprecation and upgrade.\n\"error\" will produce error messages and fail the task.\n\"warning\" will produce warning messages.\n\"info\" will produce regular log messages.\n\"debug\" will produce hidden debug messages viewable with -v.\n\"quiet\" will not produce any messages",
+      "description": "Conversion Mode for AVD input data conversion\nInput data conversion will perform type conversion of input variables as defined in the schema.\nThe type conversion is intended to help the user to identify minor issues with the input data, while still allowing the data to be validated.\nDuring conversion, messages will generated with information about the host(s) and key(s) which required conversion.\n\"disabled\" means that conversion will not run - avoid this since conversion is also handling data deprecation and upgrade.\n\"error\" will produce error messages and fail the task.\n\"warning\" will produce warning messages.\n\"info\" will produce regular log messages.\n\"debug\" will produce hidden debug messages viewable with -v.\n\"quiet\" will not produce any messages",
       "title": "Avd Data Conversion Mode"
     },
     "avd_data_validation_mode": {
@@ -25,7 +25,7 @@
         "debug"
       ],
       "default": "warning",
-      "description": "Validation Mode for AVD input data validation\nDuring validation, messages will generated with information about the host(s) and key(s) which failed validation.\n\"disabled\" means that validation will not run.\n\"error\" will produce error messages and fail the task.\n\"warning\" will produce warning messages.\n\"info\" will produce regular log messages.\n\"debug\" will produce hidden debug messages viewable with -v.",
+      "description": "Validation Mode for AVD input data validation\nInput data validation will validate the input variables according to the schema.\nDuring validation, messages will generated with information about the host(s) and key(s) which failed validation.\n\"disabled\" means that validation will not run.\n\"error\" will produce error messages and fail the task.\n\"warning\" will produce warning messages.\n\"info\" will produce regular log messages.\n\"debug\" will produce hidden debug messages viewable with -v.",
       "title": "Avd Data Validation Mode"
     },
     "bfd_multihop": {
@@ -992,12 +992,13 @@
       "title": "Enable Trunk Groups"
     },
     "eos_designs_documentation": {
-      "description": "Some variables are available to control documentation generation. This can be useful\nfor instance the project has thousands of endpoints, to be able to disable\nfabric-wide connected endpoints documentation.\n",
+      "description": "Control fabric documentation generation.\n",
       "type": "object",
       "properties": {
         "connected_endpoints": {
+          "description": "Generate fabric-wide documentation for connected endpoints.\n",
           "type": "boolean",
-          "default": "true",
+          "default": false,
           "title": "Connected Endpoints"
         }
       },
@@ -1320,17 +1321,18 @@
       "title": "Internal VLAN Order"
     },
     "ipv6_mgmt_destination_networks": {
+      "description": "List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface gateway.\nReplaces the default route.\n",
       "type": "array",
       "items": {
-        "type": "string"
+        "type": "string",
+        "description": "IPv6_network/Mask"
       },
-      "description": "IPv6_network/Mask",
       "title": "IPv6 Mgmt Destination Networks"
     },
     "ipv6_mgmt_gateway": {
       "type": "string",
       "format": "ipv6",
-      "description": "IPv6 address",
+      "description": "OOB Management interface gateway in IPv6 format.\nUsed as next-hop for default gateway or static routes defined under 'ipv6_mgmt_destination_networks'",
       "title": "IPv6 Mgmt Gateway"
     },
     "isis_advertise_passive_only": {
@@ -3262,11 +3264,11 @@
       "title": "Only Local VLAN Trunk Groups"
     },
     "overlay_cvx_servers": {
-      "description": "Overlay settings when using CVX as overlay controller.\nRequired if overlay_routing_protocol == CVX.\nCVX servers (VMs) are peering using their management interface, so mgmt_ip must be set for all CVX servers.\n",
+      "description": "List of CVX vxlan overlay controllers.\nRequired if overlay_routing_protocol == CVX.\nCVX servers (VMs) are peering using their management interface, so mgmt_ip must be set for all CVX servers.\n",
       "type": "array",
       "items": {
         "type": "string",
-        "description": "CVX_inventory_hostname"
+        "description": "'inventory_hostname' of CVX server"
       },
       "title": "Overlay CVX Servers"
     },
@@ -4448,7 +4450,7 @@
       "title": "Redundancy"
     },
     "serial_number": {
-      "description": "Set to the Serial Number of the device\nFor now only used for documentation purpose in the fabric documentation.\n\"serial_number\" can also be set directly as a hostvar.\nIf both are set, the setting under \"Fabric Topology\" takes precedence.\n",
+      "description": "Serial Number of the device\nUsed for documentation purpose in the fabric documentation as can also be used by the 'eos_config_deploy_cvp' role.\n\"serial_number\" can also be set directly under \"Fabric Topology\".\nIf both are set, the setting under \"Fabric Topology\" takes precedence.\n",
       "type": "string",
       "title": "Serial Number"
     },
@@ -5369,7 +5371,7 @@
       "title": "Underlay Filter Peer As"
     },
     "underlay_filter_redistribute_connected": {
-      "description": "Filter redistribution of connected into underlay routing protocol.\nOnly applicable when overlay_routing_protocol != 'none' and underlay_routing_protocol == BGP.\nCreates a route-map and prefix-list assigned to redistribute connected permitting only loopbacks and inband management subnets.\n",
+      "description": "Filter redistribution of connected into the underlay routing protocol.\nOnly applicable when overlay_routing_protocol != 'none' and underlay_routing_protocol == BGP.\nCreates a route-map and prefix-list assigned to redistribute connected permitting only loopbacks and inband management subnets.\n",
       "default": "true",
       "type": "boolean",
       "title": "Underlay Filter Redistribute Connected"

@@ -13,4 +13,5 @@ keys:
     type: list
     items:
       type: str
-      description: 'inventory_hostname' of CVX server
+      description: |
+        'inventory_hostname' of CVX server
