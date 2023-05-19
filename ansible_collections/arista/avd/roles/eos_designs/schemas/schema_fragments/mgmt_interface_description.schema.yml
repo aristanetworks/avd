@@ -7,4 +7,4 @@ keys:
     type: str
     description: |
       Management interface description
-      the default `oob_management`.
+    default: oob_management
