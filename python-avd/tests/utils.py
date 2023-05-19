@@ -38,7 +38,7 @@ def create_common_vars(common_varfiles):
 
 def get_files_in_folder(folder_path):
     files = []
-    for root, _, filenames in os.walk(folder_path):
+    for root, dir, filenames in os.walk(folder_path):
         for filename in filenames:
             files.append(os.path.join(root, filename))
     return files

@@ -79,7 +79,7 @@ def test_eos_cli_config_gen(input_structured_config: str):
 
     device_vars = read_vars(input_structured_config)
     hostname = str(path.basename(input_structured_config)).removesuffix(".yaml").removesuffix(".yml").removesuffix(".json")
-    configuration, _ = eos_cli_config_gen(hostname, device_vars, render_configuration)
+    configuration, documentation = eos_cli_config_gen(hostname, device_vars, render_configuration)
 
     with open(f"{expected_configs}/{hostname}.cfg", "r") as f:
         exp_file_output = f.read()
