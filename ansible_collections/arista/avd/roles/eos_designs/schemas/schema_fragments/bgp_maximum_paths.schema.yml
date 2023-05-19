@@ -4,9 +4,6 @@
 type: dict
 keys:
   bgp_maximum_paths:
-    documentation_options:
-      filename: Fabric Variables
-      table: BGP multi-path Settings
     description: Maximum Paths for BGP multi-path
     type: int
     convert_types:

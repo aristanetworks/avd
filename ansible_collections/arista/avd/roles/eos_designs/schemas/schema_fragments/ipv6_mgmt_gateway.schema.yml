@@ -4,8 +4,6 @@
 type: dict
 keys:
   ipv6_mgmt_gateway:
-    documentation_options:
-      filename: Management Settings
     type: str
     format: ipv6
     description: |

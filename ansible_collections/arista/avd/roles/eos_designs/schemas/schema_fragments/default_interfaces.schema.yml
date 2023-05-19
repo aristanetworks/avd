@@ -5,8 +5,6 @@ type: dict
 keys:
   default_interfaces:
     type: list
-    documentation_options:
-      filename: Fabric Topology
     description: |
       - Set default uplink, downlink, and MLAG interfaces, which will be used if these interfaces are not defined on a device (either directly or through inheritance).
       - These are defined based on the combination of node_type (e.g., l3leaf or spine) and a regex for matching the platform.

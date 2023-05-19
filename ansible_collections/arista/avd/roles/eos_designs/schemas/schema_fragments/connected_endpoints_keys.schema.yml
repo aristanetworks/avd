@@ -5,8 +5,6 @@ type: dict
 keys:
   connected_endpoints_keys:
     type: list
-    documentation_options:
-      filename: Connected Endpoints
     primary_key: key
     convert_types:
       - dict

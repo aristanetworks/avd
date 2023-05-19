@@ -4,8 +4,6 @@
 type: dict
 keys:
   serial_number:
-    documentation_options:
-      filename: Fabric Variables
     description: |
       Serial Number of the device.
       Used for documentation purpose in the fabric documentation as can also be used by the 'eos_config_deploy_cvp' role.

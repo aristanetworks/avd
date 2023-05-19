@@ -4,8 +4,6 @@
 type: dict
 keys:
   trackers:
-    documentation_options:
-      filename: data_model/Monitoring
     type: list
     primary_key: name
     items:
