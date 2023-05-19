@@ -1,11 +1,13 @@
 router_bgp:
   as: '1234'
   router_id: 1.2.3.1
-  bgp_defaults:
-  - maximum-paths 4 ecmp 4
+  bgp_defaults: []
   bgp:
     default:
       ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
   graceful_restart:
     enabled: true
     restart_time: 300
