@@ -270,7 +270,7 @@ class UtilsMixin:
 
         ethernet_cfg = {"speed": p2p_link.get("speed")}
 
-        if p2p_link.get("ptp_enable") is not True:
+        if get(p2p_link, "ptp.enabled") is not True:
             return ethernet_cfg
 
         ptp_config = {}

@@ -47,7 +47,7 @@ class UnderlayMixin:
 
     @cached_property
     def underlay_ipv6(self: SharedUtils) -> bool:
-        return get(self.hostvars, "underlay_ipv6") and self.underlay_router
+        return get(self.hostvars, "underlay_ipv6", default=False) and self.underlay_router
 
     @cached_property
     def underlay_multicast(self: SharedUtils) -> bool:
@@ -63,11 +63,11 @@ class UnderlayMixin:
 
     @cached_property
     def underlay_ospf_process_id(self: SharedUtils) -> int:
-        return get(self.hostvars, "underlay_ospf_process_id", required=True)
+        return get(self.hostvars, "underlay_ospf_process_id", default=100)
 
     @cached_property
     def underlay_ospf_area(self: SharedUtils) -> str:
-        return get(self.hostvars, "underlay_ospf_area", required=True)
+        return get(self.hostvars, "underlay_ospf_area", default="0.0.0.0")
 
     @cached_property
     def underlay_filter_peer_as(self: SharedUtils) -> bool:

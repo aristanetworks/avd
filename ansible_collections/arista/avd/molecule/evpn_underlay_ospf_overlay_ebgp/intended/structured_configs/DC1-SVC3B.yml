@@ -7,6 +7,9 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: EVPN-OVERLAY-PEERS
     type: evpn
@@ -186,7 +189,6 @@ port_channel_interfaces:
   description: MLAG_PEER_DC1-SVC3A_Po5
   type: switched
   shutdown: false
-  vlans: 2-4094
   mode: trunk
   trunk_groups:
   - LEAF_PEER_L3

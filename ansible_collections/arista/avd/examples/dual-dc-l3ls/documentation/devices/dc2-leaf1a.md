@@ -249,8 +249,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 | MLAG_PEER_dc2-leaf1b_Ethernet3 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
-| Ethernet4 | MLAG_PEER_dc2-leaf1b_Ethernet4 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
+| Ethernet3 | MLAG_PEER_dc2-leaf1b_Ethernet3 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
+| Ethernet4 | MLAG_PEER_dc2-leaf1b_Ethernet4 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
 | Ethernet5 | dc2-leaf1-server1_PCI1 | *trunk | *11-12,21-22 | *4092 | *- | 5 |
 | Ethernet8 | DC2-LEAF1C_Ethernet1 | *trunk | *11-12,21-22,3401-3402 | *- | *- | 8 |
 
@@ -310,7 +310,7 @@ interface Ethernet8
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel3 | MLAG_PEER_dc2-leaf1b_Po3 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel3 | MLAG_PEER_dc2-leaf1b_Po3 | switched | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 | Port-Channel5 | dc2-leaf1-server1_PortChannel dc2-leaf1-server1 | switched | trunk | 11-12,21-22 | 4092 | - | - | - | 5 | - |
 | Port-Channel8 | DC2-LEAF1C_Po1 | switched | trunk | 11-12,21-22,3401-3402 | - | - | - | - | 8 | - |
 
@@ -322,7 +322,6 @@ interface Port-Channel3
    description MLAG_PEER_dc2-leaf1b_Po3
    no shutdown
    switchport
-   switchport trunk allowed vlan 2-4094
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
@@ -609,9 +608,9 @@ ip route vrf MGMT 0.0.0.0/0 172.16.2.1
 | BGP Tuning |
 | ---------- |
 | distance bgp 20 200 200 |
+| maximum-paths 4 ecmp 4 |
 | graceful-restart restart-time 300 |
 | graceful-restart |
-| maximum-paths 4 ecmp 4 |
 | no bgp default ipv4-unicast |
 
 #### Router BGP Peer Groups
@@ -689,10 +688,10 @@ ip route vrf MGMT 0.0.0.0/0 172.16.2.1
 !
 router bgp 65201
    router-id 10.255.128.13
-   no bgp default ipv4-unicast
-   distance bgp 20 200 200
    graceful-restart restart-time 300
    graceful-restart
+   no bgp default ipv4-unicast
+   distance bgp 20 200 200
    maximum-paths 4 ecmp 4
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0

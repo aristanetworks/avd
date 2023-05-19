@@ -12,11 +12,17 @@ search:
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>bfd_multihop</samp>](## "bfd_multihop") | Dictionary |  |  |  | BFD Multihop tuning |
+    | [<samp>&nbsp;&nbsp;interval</samp>](## "bfd_multihop.interval") | Integer |  | 300 | Min: 50<br>Max: 60000 |  |
+    | [<samp>&nbsp;&nbsp;min_rx</samp>](## "bfd_multihop.min_rx") | Integer |  | 300 | Min: 50<br>Max: 60000 |  |
+    | [<samp>&nbsp;&nbsp;multiplier</samp>](## "bfd_multihop.multiplier") | Integer |  | 3 | Min: 3<br>Max: 50 |  |
 
 === "YAML"
 
     ```yaml
     bfd_multihop:
+      interval: <int>
+      min_rx: <int>
+      multiplier: <int>
     ```
 
 ## BGP multi-path Settings
@@ -42,11 +48,73 @@ search:
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>bgp_peer_groups</samp>](## "bgp_peer_groups") | Dictionary |  |  |  | Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.<br>Note that the name of the peer groups use '-' instead of '_' in EOS configuration.<br> |
+    | [<samp>&nbsp;&nbsp;ipv4_underlay_peers</samp>](## "bgp_peer_groups.ipv4_underlay_peers") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.ipv4_underlay_peers.name") | String |  | IPv4-UNDERLAY-PEERS |  | Name of peer group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.ipv4_underlay_peers.password") | String |  |  |  | Type 7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.ipv4_underlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen |
+    | [<samp>&nbsp;&nbsp;mlag_ipv4_underlay_peer</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer.name") | String |  | MLAG-IPv4-UNDERLAY-PEER |  | Name of peer group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer.password") | String |  |  |  | Type 7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen |
+    | [<samp>&nbsp;&nbsp;evpn_overlay_peers</samp>](## "bgp_peer_groups.evpn_overlay_peers") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.evpn_overlay_peers.name") | String |  | EVPN-OVERLAY-PEERS |  | Name of peer group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.evpn_overlay_peers.password") | String |  |  |  | Type 7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.evpn_overlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen |
+    | [<samp>&nbsp;&nbsp;evpn_overlay_core</samp>](## "bgp_peer_groups.evpn_overlay_core") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.evpn_overlay_core.name") | String |  | EVPN-OVERLAY-CORE |  | Name of peer group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.evpn_overlay_core.password") | String |  |  |  | Type 7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.evpn_overlay_core.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen |
+    | [<samp>&nbsp;&nbsp;mpls_overlay_peers</samp>](## "bgp_peer_groups.mpls_overlay_peers") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.mpls_overlay_peers.name") | String |  | MPLS-OVERLAY-PEERS |  | Name of peer group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.mpls_overlay_peers.password") | String |  |  |  | Type 7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.mpls_overlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen |
+    | [<samp>&nbsp;&nbsp;rr_overlay_peers</samp>](## "bgp_peer_groups.rr_overlay_peers") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.rr_overlay_peers.name") | String |  | RR-OVERLAY-PEERS |  | Name of peer group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.rr_overlay_peers.password") | String |  |  |  | Type 7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.rr_overlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen |
+    | [<samp>&nbsp;&nbsp;ipvpn_gateway_peers</samp>](## "bgp_peer_groups.ipvpn_gateway_peers") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.ipvpn_gateway_peers.name") | String |  | IPVPN-GATEWAY-PEERS |  | Name of peer group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.ipvpn_gateway_peers.password") | String |  |  |  | Type 7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.ipvpn_gateway_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen |
+    | [<samp>&nbsp;&nbsp;IPv4_UNDERLAY_PEERS</samp>](## "bgp_peer_groups.IPv4_UNDERLAY_PEERS") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 4.0.0. Use <samp>bgp_peer_groups.ipv4_underlay_peers</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;MLAG_IPv4_UNDERLAY_PEER</samp>](## "bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 4.0.0. Use <samp>bgp_peer_groups.mlag_ipv4_underlay_peer</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;EVPN_OVERLAY_PEERS</samp>](## "bgp_peer_groups.EVPN_OVERLAY_PEERS") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 4.0.0. Use <samp>bgp_peer_groups.evpn_overlay_peers</samp> instead.</span> |
 
 === "YAML"
 
     ```yaml
     bgp_peer_groups:
+      ipv4_underlay_peers:
+        name: <str>
+        password: <str>
+        structured_config:
+      mlag_ipv4_underlay_peer:
+        name: <str>
+        password: <str>
+        structured_config:
+      evpn_overlay_peers:
+        name: <str>
+        password: <str>
+        structured_config:
+      evpn_overlay_core:
+        name: <str>
+        password: <str>
+        structured_config:
+      mpls_overlay_peers:
+        name: <str>
+        password: <str>
+        structured_config:
+      rr_overlay_peers:
+        name: <str>
+        password: <str>
+        structured_config:
+      ipvpn_gateway_peers:
+        name: <str>
+        password: <str>
+        structured_config:
+      IPv4_UNDERLAY_PEERS:
+      MLAG_IPv4_UNDERLAY_PEER:
+      EVPN_OVERLAY_PEERS:
     ```
 
 ## BGP Settings
@@ -57,6 +125,9 @@ search:
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>bgp_as</samp>](## "bgp_as") | String |  |  |  | AS number to use to configure overlay when "overlay_routing_protocol" == ibgp |
     | [<samp>bgp_default_ipv4_unicast</samp>](## "bgp_default_ipv4_unicast") | Boolean |  | False |  | Default activation of IPv4 unicast address-family on all IPv4 neighbors.<br>It is best practice to disable activation.<br> |
+    | [<samp>bgp_graceful_restart</samp>](## "bgp_graceful_restart") | Dictionary |  |  |  | Graceful BGP restart allows a BGP speaker with separate control plane and data plane processing to continue forwarding traffic during a BGP restart.<br>Its neighbors (receiving speakers) may retain routing information from the restarting speaker while a BGP session with it is being re-established, reducing route flapping.<br> |
+    | [<samp>&nbsp;&nbsp;enabled</samp>](## "bgp_graceful_restart.enabled") | Boolean |  | True |  | Enable or disable graceful restart helper mode for all BGP peers. |
+    | [<samp>&nbsp;&nbsp;restart_time</samp>](## "bgp_graceful_restart.restart_time") | Integer |  | 300 | Min: 1<br>Max: 3600 | Restart time in seconds. |
     | [<samp>bgp_mesh_pes</samp>](## "bgp_mesh_pes") | Boolean |  | False |  | Whether to configure an iBGP full mesh between PEs, either because there is no RR used or other reasons. |
     | [<samp>underlay_filter_peer_as</samp>](## "underlay_filter_peer_as") | Boolean |  | False |  | Configure route-map on eBGP sessions towards underlay peers, where prefixes with the peer's ASN in the AS Path are filtered away.<br>This is very useful in very large scale networks not using EVPN overlays, where convergence will be quicker by not having to return<br>all updates received from Spine-1 to Spine-2 just for Spine-2 to throw them away because of AS Path loop detection.<br>Note this key is ignored when EVPN is configured.<br> |
 
@@ -65,6 +136,9 @@ search:
     ```yaml
     bgp_as: <str>
     bgp_default_ipv4_unicast: <bool>
+    bgp_graceful_restart:
+      enabled: <bool>
+      restart_time: <int>
     bgp_mesh_pes: <bool>
     underlay_filter_peer_as: <bool>
     ```
@@ -78,6 +152,10 @@ search:
     | [<samp>evpn_ebgp_gateway_multihop</samp>](## "evpn_ebgp_gateway_multihop") | Integer |  | 15 |  | Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI networks.<br>Adapt the value for your specific topology.<br> |
     | [<samp>evpn_ebgp_multihop</samp>](## "evpn_ebgp_multihop") | Integer |  | 3 |  | Default of 3, the recommended value for a 3 stage spine and leaf topology.<br>Set to a higher value to allow for very large and complex topologies.<br> |
     | [<samp>evpn_hostflap_detection</samp>](## "evpn_hostflap_detection") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;enabled</samp>](## "evpn_hostflap_detection.enabled") | Boolean |  | True |  | If set to false it will disable EVPN host-flap detection |
+    | [<samp>&nbsp;&nbsp;threshold</samp>](## "evpn_hostflap_detection.threshold") | Integer |  | 5 |  | Minimum number of MAC moves that indicate a MAC duplication issue |
+    | [<samp>&nbsp;&nbsp;window</samp>](## "evpn_hostflap_detection.window") | Integer |  | 180 |  | Time (in seconds) to detect a MAC duplication issue |
+    | [<samp>&nbsp;&nbsp;expiry_timeout</samp>](## "evpn_hostflap_detection.expiry_timeout") | Integer |  |  |  | Time (in seconds) to purge a MAC duplication issue |
     | [<samp>evpn_import_pruning</samp>](## "evpn_import_pruning") | Boolean |  | False |  | Enable VPN import pruning (Min. EOS 4.24.2F)<br>The Route Target extended communities carried by incoming VPN paths will<br>be examined. If none of those Route Targets have been configured for import,<br>the path will be immediately discarded<br> |
     | [<samp>evpn_multicast</samp>](## "evpn_multicast") | Boolean |  | False |  | General Configuration required for EVPN Multicast. "evpn_l2_multicast" must also be configured under the Network Services (tenants).<br>Requires "underlay_multicast: true" and IGMP snooping enabled globally (default).<br>For MLAG devices Route Distinguisher must be unique since this feature will create multi-vtep configuration.<br>Warning !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP and 722XP<br>  The Following default platform setting will be configured: "platform trident forwarding-table partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072"<br>  All forwarding agents will be restarted when this configuration is applied.<br>  You can tune the settings by overridding the default variable: "platform_settings[platforms].trident_forwarding_table_partition:"<br>  Please contact an Arista representative for help with determining the appropriate values for your environment.<br> |
     | [<samp>evpn_overlay_bgp_rtc</samp>](## "evpn_overlay_bgp_rtc") | Boolean |  | False |  | Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)<br>Requires use eBGP as overlay protocol.<br> |
@@ -91,6 +169,10 @@ search:
     evpn_ebgp_gateway_multihop: <int>
     evpn_ebgp_multihop: <int>
     evpn_hostflap_detection:
+      enabled: <bool>
+      threshold: <int>
+      window: <int>
+      expiry_timeout: <int>
     evpn_import_pruning: <bool>
     evpn_multicast: <bool>
     evpn_overlay_bgp_rtc: <bool>
@@ -235,6 +317,36 @@ search:
     vtep_vvtep_ip: <str>
     ```
 
+## PTP Profiles
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>ptp_profiles</samp>](## "ptp_profiles") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;- profile</samp>](## "ptp_profiles.[].profile") | String |  |  |  | PTP profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;announce</samp>](## "ptp_profiles.[].announce") | Dictionary |  |  |  | PTP announce interval. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "ptp_profiles.[].announce.interval") | Integer |  |  | Min: -7<br>Max: 4 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout</samp>](## "ptp_profiles.[].announce.timeout") | Integer |  |  | Min: 2<br>Max: 255 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;delay_req</samp>](## "ptp_profiles.[].delay_req") | Integer |  |  | Min: -7<br>Max: 8 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sync_message</samp>](## "ptp_profiles.[].sync_message") | Dictionary |  |  |  | PTP sync message interval. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "ptp_profiles.[].sync_message.interval") | Integer |  |  | Min: -7<br>Max: 3 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;transport</samp>](## "ptp_profiles.[].transport") | String |  |  | Valid Values:<br>- ipv4 |  |
+
+=== "YAML"
+
+    ```yaml
+    ptp_profiles:
+      - profile: <str>
+        announce:
+          interval: <int>
+          timeout: <int>
+        delay_req: <int>
+        sync_message:
+          interval: <int>
+        transport: <str>
+    ```
+
 ## Routing Protocol Selection
 
 === "Table"
@@ -275,7 +387,7 @@ search:
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>p2p_uplinks_mtu</samp>](## "p2p_uplinks_mtu") | Integer |  | 9000 | Min: 68<br>Max: 65535 | Point to Point Links MTU |
+    | [<samp>p2p_uplinks_mtu</samp>](## "p2p_uplinks_mtu") | Integer |  | 9214 | Min: 68<br>Max: 65535 | Point to Point Links MTU |
     | [<samp>p2p_uplinks_qos_profile</samp>](## "p2p_uplinks_qos_profile") | String |  |  |  | QOS Profile assigned on all infrastructure links |
     | [<samp>uplink_ptp</samp>](## "uplink_ptp") | Dictionary |  |  |  | Enable PTP on all infrastructure links |
     | [<samp>&nbsp;&nbsp;enable</samp>](## "uplink_ptp.enable") | Boolean |  | False |  |  |
@@ -296,7 +408,7 @@ search:
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>enable_trunk_groups</samp>](## "enable_trunk_groups") | Boolean |  | False |  | Enable Trunk Group support across eos_designs<br>Warning: Because of the nature of the EOS Trunk Group feature, enabling this is "all or nothing".<br>*All* vlans and *all* trunks towards connected endpoints must be using trunk groups as well.<br>If trunk groups are not assigned to a trunk, no vlans will be enabled on that trunk.<br>See "Details on enable_trunk_groups" below before enabling this feature.<br> |
-    | [<samp>internal_vlan_order</samp>](## "internal_vlan_order") | Dictionary | Required |  |  | Internal vlan allocation order and range. |
+    | [<samp>internal_vlan_order</samp>](## "internal_vlan_order") | Dictionary |  |  |  | Internal vlan allocation order and range. |
     | [<samp>&nbsp;&nbsp;allocation</samp>](## "internal_vlan_order.allocation") | String | Required | ascending | Valid Values:<br>- ascending<br>- descending |  |
     | [<samp>&nbsp;&nbsp;range</samp>](## "internal_vlan_order.range") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;beginning</samp>](## "internal_vlan_order.range.beginning") | Integer | Required | 1006 | Min: 2<br>Max: 4094 | First VLAN ID. |

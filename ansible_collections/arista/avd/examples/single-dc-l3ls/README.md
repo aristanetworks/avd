@@ -353,8 +353,6 @@ spine:
     bgp_as: 65100 # (4)!
     bgp_defaults: # (5)!
       - distance bgp 20 200 200
-      - graceful-restart restart-time 300
-      - graceful-restart
 
   nodes: # (6)!
     dc1-spine1:
@@ -392,8 +390,6 @@ l3leaf:
     mlag_peer_l3_ipv4_pool: 10.255.1.96/27 # (10)!
     bgp_defaults:
       - distance bgp 20 200 200
-      - graceful-restart restart-time 300
-      - graceful-restart
     virtual_router_mac_address: 00:1c:73:00:00:99 # (11)!
     spanning_tree_priority: 4096 # (12)!
     spanning_tree_mode: mstp # (13)!

@@ -70,7 +70,6 @@ port_channel_interfaces:
   description: MLAG_PEER_SPINE2_Po47
   type: switched
   shutdown: false
-  vlans: 2-4094
   mode: trunk
   trunk_groups:
   - MLAG

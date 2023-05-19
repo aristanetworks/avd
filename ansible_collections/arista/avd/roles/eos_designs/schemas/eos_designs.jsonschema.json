@@ -50,6 +50,31 @@
       "default": 4,
       "title": "BGP Ecmp"
     },
+    "bgp_graceful_restart": {
+      "description": "Graceful BGP restart allows a BGP speaker with separate control plane and data plane processing to continue forwarding traffic during a BGP restart.\nIts neighbors (receiving speakers) may retain routing information from the restarting speaker while a BGP session with it is being re-established, reducing route flapping.\n",
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable or disable graceful restart helper mode for all BGP peers.",
+          "title": "Enabled"
+        },
+        "restart_time": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3600,
+          "default": 300,
+          "description": "Restart time in seconds.",
+          "title": "Restart Time"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "BGP Graceful Restart"
+    },
     "bgp_maximum_paths": {
       "description": "Maximum Paths for BGP multi-path",
       "type": "integer",
@@ -464,11 +489,22 @@
                 "description": "Enable BFD (only considered for BGP).",
                 "title": "BFD"
               },
-              "ptp_enable": {
-                "type": "boolean",
-                "default": false,
-                "description": "Enable PTP",
-                "title": "PTP Enable"
+              "ptp": {
+                "description": "PTP parameters.",
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable PTP",
+                    "title": "Enabled"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "PTP"
               },
               "qos_profile": {
                 "type": "string",
@@ -678,11 +714,22 @@
                 "description": "Enable BFD (only considered for BGP).",
                 "title": "BFD"
               },
-              "ptp_enable": {
-                "type": "boolean",
-                "default": false,
-                "description": "Enable PTP",
-                "title": "PTP Enable"
+              "ptp": {
+                "description": "PTP parameters.",
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable PTP",
+                    "title": "Enabled"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "PTP"
               },
               "qos_profile": {
                 "type": "string",
@@ -1064,6 +1111,104 @@
       "type": "string",
       "title": "Fabric Name"
     },
+    "hardware_counters": {
+      "type": "object",
+      "properties": {
+        "features": {
+          "type": "array",
+          "description": "This data model allows to configure the list of hardware counters feature\navailable on Arista platforms.\n\nThe `name` key accepts a list of valid_values which MUST be updated to support\nnew feature as they are released in EOS.\n\nThe available values of the different keys like 'direction' or 'address_type'\nare feature and hardware dependent and this model DOES NOT validate that the\ncombinations are valid. It is the responsability of the user of this data model\nto make sure that the rendered CLI is accepted by the targeted device.\n\nExamples:\n\n  * Use:\n    ```yaml\n    hardware_counters:\n      features:\n        - name: ip\n          direction: out\n          layer3: true\n          units_packets: true\n    ```\n\n    to render:\n    ```eos\n    hardware counter feature ip out layer3 units packets\n    ```\n  * Use:\n    ```yaml\n    hardware_counters:\n      features:\n        - name: route\n          address_type: ipv4\n          vrf: test\n          prefix: 192.168.0.0/24\n    ```\n\n    to render:\n    ```eos\n    hardware counter feature route ipv4 vrf test 192.168.0.0/24\n    ```\n",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "enum": [
+                  "acl",
+                  "decap-group",
+                  "directflow",
+                  "ecn",
+                  "flow-spec",
+                  "gre tunnel interface",
+                  "ip",
+                  "mpls interface",
+                  "mpls lfib",
+                  "mpls tunnel",
+                  "multicast",
+                  "nexthop",
+                  "pbr",
+                  "pdp",
+                  "policing interface",
+                  "qos",
+                  "qos dual-rate-policer",
+                  "route",
+                  "routed-port",
+                  "subinterface",
+                  "tapagg",
+                  "traffic-class",
+                  "traffic-policy",
+                  "vlan",
+                  "vlan-interface",
+                  "vni decap",
+                  "vni encap",
+                  "vtep decap",
+                  "vtep encap"
+                ],
+                "title": "Name"
+              },
+              "direction": {
+                "type": "string",
+                "enum": [
+                  "in",
+                  "out",
+                  "cpu"
+                ],
+                "description": "Most features support only 'in' and 'out'. Some like traffic-policy support 'cpu'.\nSome features DO NOT have any direction.\nThis validation IS NOT made by the schemas.\n",
+                "title": "Direction"
+              },
+              "address_type": {
+                "type": "string",
+                "enum": [
+                  "ipv4",
+                  "ipv6",
+                  "mac"
+                ],
+                "description": "Supported only for the following features:\n- acl: [ipv4, ipv6, mac] if direction is 'out'\n- multicast: [ipv4, ipv6]\n- route: [ipv4, ipv6]\nThis validation IS NOT made by the schemas.\n",
+                "title": "Address Type"
+              },
+              "layer3": {
+                "type": "boolean",
+                "description": "Supported only for the 'ip' feature\n",
+                "title": "Layer3"
+              },
+              "vrf": {
+                "type": "string",
+                "description": "Supported only for the 'route' feature.\nThis validation IS NOT made by the schemas.\n",
+                "title": "VRF"
+              },
+              "prefix": {
+                "type": "string",
+                "description": "Supported only for the 'route' feature.\nMandatory for the 'route' feature.\nThis validation IS NOT made by the schemas.\n",
+                "title": "Prefix"
+              },
+              "units_packets": {
+                "type": "boolean",
+                "title": "Units Packets"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Features"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Hardware Counters"
+    },
     "internal_vlan_order": {
       "type": "object",
       "description": "Internal vlan allocation order and range.",
@@ -1359,11 +1504,22 @@
                 "description": "Enable BFD (only considered for BGP).",
                 "title": "BFD"
               },
-              "ptp_enable": {
-                "type": "boolean",
-                "default": false,
-                "description": "Enable PTP",
-                "title": "PTP Enable"
+              "ptp": {
+                "description": "PTP parameters.",
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable PTP",
+                    "title": "Enabled"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "PTP"
               },
               "qos_profile": {
                 "type": "string",
@@ -1573,11 +1729,22 @@
                 "description": "Enable BFD (only considered for BGP).",
                 "title": "BFD"
               },
-              "ptp_enable": {
-                "type": "boolean",
-                "default": false,
-                "description": "Enable PTP",
-                "title": "PTP Enable"
+              "ptp": {
+                "description": "PTP parameters.",
+                "type": "object",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable PTP",
+                    "title": "Enabled"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "PTP"
               },
               "qos_profile": {
                 "type": "string",
@@ -1982,10 +2149,10 @@
             "type": "object",
             "description": "The global PTP profile parameters will be applied to all connected endpoints where `ptp` is manually enabled.\n`ptp role master` is set to ensure control over the PTP topology.\n",
             "properties": {
-              "enable": {
+              "enabled": {
                 "type": "boolean",
                 "default": false,
-                "title": "Enable"
+                "title": "Enabled"
               },
               "endpoint_role": {
                 "type": "string",
@@ -3112,7 +3279,7 @@
       "type": "integer",
       "minimum": 68,
       "maximum": 65535,
-      "default": 9000,
+      "default": 9214,
       "title": "P2P Uplinks MTU"
     },
     "p2p_uplinks_qos_profile": {
@@ -3411,10 +3578,10 @@
             "type": "object",
             "description": "The global PTP profile parameters will be applied to all connected endpoints where `ptp` is manually enabled.\n`ptp role master` is set to ensure control over the PTP topology.\n",
             "properties": {
-              "enable": {
+              "enabled": {
                 "type": "boolean",
                 "default": false,
-                "title": "Enable"
+                "title": "Enabled"
               },
               "endpoint_role": {
                 "type": "string",
@@ -4104,6 +4271,77 @@
         ]
       },
       "title": "Port Profiles"
+    },
+    "ptp_profiles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "profile": {
+            "type": "string",
+            "description": "PTP profile.",
+            "title": "Profile"
+          },
+          "announce": {
+            "type": "object",
+            "description": "PTP announce interval.",
+            "properties": {
+              "interval": {
+                "type": "integer",
+                "minimum": -7,
+                "maximum": 4,
+                "title": "Interval"
+              },
+              "timeout": {
+                "type": "integer",
+                "minimum": 2,
+                "maximum": 255,
+                "title": "Timeout"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Announce"
+          },
+          "delay_req": {
+            "type": "integer",
+            "minimum": -7,
+            "maximum": 8,
+            "title": "Delay Req"
+          },
+          "sync_message": {
+            "type": "object",
+            "description": "PTP sync message interval.",
+            "properties": {
+              "interval": {
+                "type": "integer",
+                "minimum": -7,
+                "maximum": 3,
+                "title": "Interval"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Sync Message"
+          },
+          "transport": {
+            "type": "string",
+            "enum": [
+              "ipv4"
+            ],
+            "title": "Transport"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "PTP Profiles"
     },
     "redundancy": {
       "type": "object",
@@ -5121,8 +5359,7 @@
     }
   },
   "required": [
-    "fabric_name",
-    "internal_vlan_order"
+    "fabric_name"
   ],
   "additionalProperties": true
 }

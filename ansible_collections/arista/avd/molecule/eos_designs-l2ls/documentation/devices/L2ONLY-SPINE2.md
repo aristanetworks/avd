@@ -147,8 +147,8 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | L2ONLY-LEAF1_Ethernet2 | *trunk | *100 | *- | *- | 1 |
 | Ethernet2 | L2ONLY-LEAF2_Ethernet2 | *trunk | *100 | *- | *- | 2 |
-| Ethernet3 | MLAG_PEER_L2ONLY-SPINE1_Ethernet3 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
-| Ethernet4 | MLAG_PEER_L2ONLY-SPINE1_Ethernet4 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
+| Ethernet3 | MLAG_PEER_L2ONLY-SPINE1_Ethernet3 | *trunk | *- | *- | *['MLAG'] | 3 |
+| Ethernet4 | MLAG_PEER_L2ONLY-SPINE1_Ethernet4 | *trunk | *- | *- | *['MLAG'] | 3 |
 
 *Inherited from Port-Channel Interface
 
@@ -187,7 +187,7 @@ interface Ethernet4
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | L2ONLY-LEAF1_Po1 | switched | trunk | 100 | - | - | - | - | 1 | - |
 | Port-Channel2 | L2ONLY-LEAF2_Po1 | switched | trunk | 100 | - | - | - | - | 2 | - |
-| Port-Channel3 | MLAG_PEER_L2ONLY-SPINE1_Po3 | switched | trunk | 2-4094 | - | ['MLAG'] | - | - | - | - |
+| Port-Channel3 | MLAG_PEER_L2ONLY-SPINE1_Po3 | switched | trunk | - | - | ['MLAG'] | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -213,7 +213,6 @@ interface Port-Channel3
    description MLAG_PEER_L2ONLY-SPINE1_Po3
    no shutdown
    switchport
-   switchport trunk allowed vlan 2-4094
    switchport mode trunk
    switchport trunk group MLAG
 ```
@@ -224,7 +223,7 @@ interface Port-Channel3
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4094 | MLAG_PEER | default | 9000 | False |
+| Vlan4094 | MLAG_PEER | default | 9214 | False |
 
 ##### IPv4
 
@@ -239,7 +238,7 @@ interface Port-Channel3
 interface Vlan4094
    description MLAG_PEER
    no shutdown
-   mtu 9000
+   mtu 9214
    no autostate
    ip address 192.168.254.1/31
 ```

@@ -61,7 +61,7 @@ port_profiles:
       received: < "received" | "send" | "on" >
     qos_profile: < qos_profile_name >
     ptp:
-      enable: < true | false >
+      enabled: < true | false >
     storm_control:
       all:
         level: < Configure maximum storm-control level >
@@ -141,7 +141,7 @@ port_profiles:
 
         # PTP Enable | Optional
         ptp:
-          enable: < true | false >
+          enabled: < true | false >
 
         # Configure the downstream interfaces of a respective Link Tracking Group | Optional
         # If port_channel is defined in an adapter then port-channel interface is configured to be the downstream

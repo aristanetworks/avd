@@ -137,7 +137,7 @@ Unlike with the l3ls-evpn design type, underlay p2p links are built using the `c
     mlag_peer_l3_vlan: < 0-4094 | false | default -> 4093 >
     mlag_peer_l3_ipv4_pool: < IPv4_network/Mask >
     mlag_peer_vlan: < 0-4094 | default -> 4094 >
-    mlag_peer_link_allowed_vlans: < vlans as string | default -> "2-4094" >
+    mlag_peer_link_allowed_vlans: < vlans as string >
     mlag_peer_ipv4_pool: < IPv4_network/Mask >
     uplink_ipv4_pool: < IPv4_address/Mask  >
     uplink_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]

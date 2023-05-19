@@ -7,6 +7,9 @@ router_bgp:
   bgp:
     default:
       ipv4_unicast: false
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: MLAG-PEERS
     type: ipv4
@@ -425,6 +428,16 @@ management_api_http:
   enable_https: true
   default_services: false
 vlans:
+- id: 4090
+  tenant: system
+  name: LEAF_PEER_L3
+  trunk_groups:
+  - LEAF_PEER_L3
+- id: 4092
+  tenant: system
+  name: MLAG_PEER
+  trunk_groups:
+  - MLAG
 - id: 130
   name: Tenant_A_APP_Zone_1
   tenant: Tenant_A
@@ -954,6 +967,28 @@ port_channel_interfaces:
   vlans: '110'
   mlag: 1291
 ethernet_interfaces:
+- name: Ethernet5
+  peer: DC1-SVC3B
+  peer_interface: Ethernet5
+  peer_type: mlag_peer
+  description: MLAG_PEER_DC1-SVC3B_Ethernet5
+  type: port-channel-member
+  shutdown: false
+  channel_group:
+    id: 5
+    mode: active
+  speed: 100g
+- name: Ethernet6
+  peer: DC1-SVC3B
+  peer_interface: Ethernet6
+  peer_type: mlag_peer
+  description: MLAG_PEER_DC1-SVC3B_Ethernet6
+  type: port-channel-member
+  shutdown: false
+  channel_group:
+    id: 5
+    mode: active
+  speed: 100g
 - name: Ethernet1
   peer: DC1-SPINE1
   peer_interface: Ethernet4
