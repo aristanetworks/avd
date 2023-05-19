@@ -10907,7 +10907,6 @@
       "properties": {
         "enabled": {
           "type": "boolean",
-          "description": "\"enabled: true\" will be required in AVD4.0.\nIn AVD3.x default is true as long as queue_monitor_length is defined and not None\n",
           "title": "Enabled"
         },
         "default_thresholds": {
@@ -10940,7 +10939,7 @@
         },
         "notifying": {
           "type": "boolean",
-          "description": "should only be used for platforms supporting the \"queue-monitor length notifying\" CLI",
+          "description": "Should only be used for platforms supporting the \"queue-monitor length notifying\" CLI",
           "title": "Notifying"
         },
         "cpu": {
@@ -10975,6 +10974,9 @@
           "title": "CPU"
         }
       },
+      "required": [
+        "enabled"
+      ],
       "additionalProperties": false,
       "patternProperties": {
         "^_.+$": {}
