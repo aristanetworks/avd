@@ -32,7 +32,7 @@ class ActionModule(ActionBase):
             profiler = cProfile.Profile()
             profiler.enable()
 
-        template_list = self._task.args.get("templates", [])
+        eos_designs_custom_templates = self._task.args.get("eos_designs_custom_templates", [])
         self.dest = self._task.args.get("dest", False)
         template_output = self._task.args.get("template_output", False)
         conversion_mode = self._task.args.get("conversion_mode")
@@ -98,8 +98,8 @@ class ActionModule(ActionBase):
         # Any var assignments will end up in output, so all other objects are protected.
         template_vars = ChainMap(output, task_vars)
 
-        # template_list can contain a list of jinja templates to run after the builtin eos_designs python_modules
-        for template_item in template_list:
+        # eos_designs_custom_templates can contain a list of jinja templates to run after the builtin eos_designs python_modules
+        for template_item in eos_designs_custom_templates:
             template_options = template_item.get("options", {})
             list_merge = template_options.get("list_merge", "append_rp")
             strip_empty_keys = template_options.get("strip_empty_keys", True)
