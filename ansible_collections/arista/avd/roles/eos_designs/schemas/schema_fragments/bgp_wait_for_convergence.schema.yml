@@ -5,7 +5,4 @@ type: dict
 keys:
   bgp_update_wait_for_convergence:
     type: bool
-    documentation_options:
-      filename: Fabric Variables
-      table: BGP Settings
     $ref: "eos_cli_config_gen#/keys/router_bgp/keys/updates/keys/wait_for_convergence"

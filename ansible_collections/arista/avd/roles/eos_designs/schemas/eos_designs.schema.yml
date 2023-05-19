@@ -100,9 +100,6 @@ keys:
     type: bool
     default: false
   bgp_distance:
-    documentation_options:
-      filename: Fabric Variables
-      table: BGP Settings
     type: dict
     $ref: eos_cli_config_gen#/keys/router_bgp/keys/distance
   bgp_ecmp:
@@ -278,15 +275,9 @@ keys:
           remove_in_version: 4.0.0
   bgp_update_wait_install:
     type: bool
-    documentation_options:
-      filename: Fabric Variables
-      table: BGP Settings
     $ref: eos_cli_config_gen#/keys/router_bgp/keys/updates/keys/wait_install
   bgp_update_wait_for_convergence:
     type: bool
-    documentation_options:
-      filename: Fabric Variables
-      table: BGP Settings
     $ref: eos_cli_config_gen#/keys/router_bgp/keys/updates/keys/wait_for_convergence
   connected_endpoints_keys:
     type: list

@@ -151,8 +151,6 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
               - <str>
             switches:
               - <str>
-            server_ports:
-              - <str>
             endpoint_ports:
               - <str>
             speed: <str>
@@ -249,7 +247,6 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
               channel_id: <int>
               description: <str>
               enabled: <bool>
-              esi: <str>
               short_esi: <str>
               lacp_fallback:
                 mode: <str>
@@ -264,9 +261,9 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
                   encapsulation_vlan:
                     client_dot1q: <int>
               raw_eos_cli: <str>
-              structured_config:
+              structured_config: <dict>
             raw_eos_cli: <str>
-            structured_config:
+            structured_config: <dict>
     ```
 
 ## <Network Services Keys.Name>
@@ -816,7 +813,7 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
             evpn_l3_multicast:
               enabled: <bool>
               evpn_peg:
-                - nodes:
+                - nodes: <list>
                   transit: <bool>
             pim_rp_addresses:
               - rps:
@@ -881,10 +878,10 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
                           hash_algorithm: <str>
                           key: <str>
                     bgp:
-                      structured_config:
+                      structured_config: <dict>
                       raw_eos_cli: <str>
                     raw_eos_cli: <str>
-                    structured_config:
+                    structured_config: <dict>
                 enabled: <bool>
                 description: <str>
                 ip_address: <str>
@@ -933,10 +930,10 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
                       hash_algorithm: <str>
                       key: <str>
                 bgp:
-                  structured_config:
+                  structured_config: <dict>
                   raw_eos_cli: <str>
                 raw_eos_cli: <str>
-                structured_config:
+                structured_config: <dict>
             l3_interfaces:
               - interfaces:
                   - <str>
@@ -964,7 +961,7 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
                       key: <str>
                 pim:
                   enabled: <bool>
-                structured_config:
+                structured_config: <dict>
                 raw_eos_cli: <str>
             static_routes:
               - destination_address_prefix: <str>
@@ -1016,7 +1013,7 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
                 bfd: <bool>
             bgp:
               raw_eos_cli: <str>
-              structured_config:
+              structured_config: <dict>
             bgp_peer_groups:
               - name: <str>
                 nodes:
@@ -1075,7 +1072,7 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
                 nodes:
                   - <str>
             raw_eos_cli: <str>
-            structured_config:
+            structured_config: <dict>
         l2vlans:
           - id: <int>
             vni_override: <int>
@@ -1094,7 +1091,7 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
               source_address: <str>
               version: <int>
             bgp:
-              structured_config:
+              structured_config: <dict>
               raw_eos_cli: <str>
         point_to_point_services:
           - name: <str>
@@ -1794,7 +1791,7 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
           offset: <int>
         always_configure_ip_routing: <bool>
         raw_eos_cli: <str>
-        structured_config:
+        structured_config: <dict>
         uplink_ipv4_pool: <str>
         uplink_interfaces:
           - <str>
@@ -1811,10 +1808,10 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
           enable: <bool>
         uplink_macsec:
           profile: <str>
-        uplink_structured_config:
-        mlag_port_channel_structured_config:
-        mlag_peer_vlan_structured_config:
-        mlag_peer_l3_vlan_structured_config:
+        uplink_structured_config: <dict>
+        mlag_port_channel_structured_config: <dict>
+        mlag_peer_vlan_structured_config: <dict>
+        mlag_peer_l3_vlan_structured_config: <dict>
         short_esi: <str>
         isis_system_id_prefix: <str>
         isis_maximum_paths: <int>
@@ -1958,7 +1955,7 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
                 offset: <int>
               always_configure_ip_routing: <bool>
               raw_eos_cli: <str>
-              structured_config:
+              structured_config: <dict>
               uplink_ipv4_pool: <str>
               uplink_interfaces:
                 - <str>
@@ -1975,10 +1972,10 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
                 enable: <bool>
               uplink_macsec:
                 profile: <str>
-              uplink_structured_config:
-              mlag_port_channel_structured_config:
-              mlag_peer_vlan_structured_config:
-              mlag_peer_l3_vlan_structured_config:
+              uplink_structured_config: <dict>
+              mlag_port_channel_structured_config: <dict>
+              mlag_peer_vlan_structured_config: <dict>
+              mlag_peer_l3_vlan_structured_config: <dict>
               short_esi: <str>
               isis_system_id_prefix: <str>
               isis_maximum_paths: <int>
@@ -2118,7 +2115,7 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
             offset: <int>
           always_configure_ip_routing: <bool>
           raw_eos_cli: <str>
-          structured_config:
+          structured_config: <dict>
           uplink_ipv4_pool: <str>
           uplink_interfaces:
             - <str>
@@ -2135,10 +2132,10 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
             enable: <bool>
           uplink_macsec:
             profile: <str>
-          uplink_structured_config:
-          mlag_port_channel_structured_config:
-          mlag_peer_vlan_structured_config:
-          mlag_peer_l3_vlan_structured_config:
+          uplink_structured_config: <dict>
+          mlag_port_channel_structured_config: <dict>
+          mlag_peer_vlan_structured_config: <dict>
+          mlag_peer_l3_vlan_structured_config: <dict>
           short_esi: <str>
           isis_system_id_prefix: <str>
           isis_maximum_paths: <int>
@@ -2280,7 +2277,7 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
             offset: <int>
           always_configure_ip_routing: <bool>
           raw_eos_cli: <str>
-          structured_config:
+          structured_config: <dict>
           uplink_ipv4_pool: <str>
           uplink_interfaces:
             - <str>
@@ -2297,10 +2294,10 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
             enable: <bool>
           uplink_macsec:
             profile: <str>
-          uplink_structured_config:
-          mlag_port_channel_structured_config:
-          mlag_peer_vlan_structured_config:
-          mlag_peer_l3_vlan_structured_config:
+          uplink_structured_config: <dict>
+          mlag_port_channel_structured_config: <dict>
+          mlag_peer_vlan_structured_config: <dict>
+          mlag_peer_l3_vlan_structured_config: <dict>
           short_esi: <str>
           isis_system_id_prefix: <str>
           isis_maximum_paths: <int>
@@ -2524,6 +2521,26 @@ It is best practice to disable activation.
     bgp_default_ipv4_unicast: <bool>
     ```
 
+## BGP Distance
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>bgp_distance</samp>](## "bgp_distance") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;external_routes</samp>](## "bgp_distance.external_routes") | Integer | Required |  | Min: 1<br>Max: 255 |  |
+    | [<samp>&nbsp;&nbsp;internal_routes</samp>](## "bgp_distance.internal_routes") | Integer | Required |  | Min: 1<br>Max: 255 |  |
+    | [<samp>&nbsp;&nbsp;local_routes</samp>](## "bgp_distance.local_routes") | Integer | Required |  | Min: 1<br>Max: 255 |  |
+
+=== "YAML"
+
+    ```yaml
+    bgp_distance:
+      external_routes: <int>
+      internal_routes: <int>
+      local_routes: <int>
+    ```
+
 ## BGP Ecmp
 
 Maximum ECMP for BGP multi-path
@@ -2642,34 +2659,64 @@ Note that the name of the peer groups use '-' instead of '_' in EOS configuratio
       ipv4_underlay_peers:
         name: <str>
         password: <str>
-        structured_config:
+        structured_config: <dict>
       mlag_ipv4_underlay_peer:
         name: <str>
         password: <str>
-        structured_config:
+        structured_config: <dict>
       evpn_overlay_peers:
         name: <str>
         password: <str>
-        structured_config:
+        structured_config: <dict>
       evpn_overlay_core:
         name: <str>
         password: <str>
-        structured_config:
+        structured_config: <dict>
       mpls_overlay_peers:
         name: <str>
         password: <str>
-        structured_config:
+        structured_config: <dict>
       rr_overlay_peers:
         name: <str>
         password: <str>
-        structured_config:
+        structured_config: <dict>
       ipvpn_gateway_peers:
         name: <str>
         password: <str>
-        structured_config:
-      IPv4_UNDERLAY_PEERS:
-      MLAG_IPv4_UNDERLAY_PEER:
-      EVPN_OVERLAY_PEERS:
+        structured_config: <dict>
+    ```
+
+## BGP Update Wait For Convergence
+
+Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>bgp_update_wait_for_convergence</samp>](## "bgp_update_wait_for_convergence") | Boolean |  |  |  |  |
+
+=== "YAML"
+
+    ```yaml
+    bgp_update_wait_for_convergence: <bool>
+    ```
+
+## BGP Update Wait Install
+
+Do not advertise reachability to a prefix until that prefix has been installed in hardware.
+This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>bgp_update_wait_install</samp>](## "bgp_update_wait_install") | Boolean |  |  |  |  |
+
+=== "YAML"
+
+    ```yaml
+    bgp_update_wait_install: <bool>
     ```
 
 ## Connected Endpoints Keys
@@ -3330,7 +3377,6 @@ from Route-server-1 to Router-server-2 just for Route-server-2 to throw them awa
 === "YAML"
 
     ```yaml
-    evpn_rd_type:
     ```
 
 ## EVPN Rt Type
@@ -3344,7 +3390,6 @@ from Route-server-1 to Router-server-2 just for Route-server-2 to throw them awa
 === "YAML"
 
     ```yaml
-    evpn_rt_type:
     ```
 
 ## EVPN Short Esi Prefix
@@ -4256,7 +4301,6 @@ All switch_ports ranges are expanded into individual port configurations.
           channel_id: <int>
           description: <str>
           enabled: <bool>
-          esi: <str>
           short_esi: <str>
           lacp_fallback:
             mode: <str>
@@ -4271,9 +4315,9 @@ All switch_ports ranges are expanded into individual port configurations.
               encapsulation_vlan:
                 client_dot1q: <int>
           raw_eos_cli: <str>
-          structured_config:
+          structured_config: <dict>
         raw_eos_cli: <str>
-        structured_config:
+        structured_config: <dict>
     ```
 
 ## Network Services Keys
@@ -4655,6 +4699,8 @@ QOS Profile assigned on all infrastructure links
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;feature_support</samp>](## "platform_settings.[].feature_support") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_monitor_length_notify</samp>](## "platform_settings.[].feature_support.queue_monitor_length_notify") | Boolean |  | True |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_storm_control</samp>](## "platform_settings.[].feature_support.interface_storm_control") | Boolean |  | True |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_update_wait_install</samp>](## "platform_settings.[].feature_support.bgp_update_wait_install") | Boolean |  | True |  | Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.<br>Can be overridden by setting "bgp_update_wait_install" host/group_vars<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_update_wait_for_convergence</samp>](## "platform_settings.[].feature_support.bgp_update_wait_for_convergence") | Boolean |  | True |  | Do not advertise reachability to a prefix until that prefix has been installed in hardware.<br>This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.<br>Can be overridden by setting "bgp_update_wait_for_convergence" host/group_vars<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;management_interface</samp>](## "platform_settings.[].management_interface") | String |  | Management1 |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "platform_settings.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration |
 
@@ -4673,6 +4719,8 @@ QOS Profile assigned on all infrastructure links
         feature_support:
           queue_monitor_length_notify: <bool>
           interface_storm_control: <bool>
+          bgp_update_wait_install: <bool>
+          bgp_update_wait_for_convergence: <bool>
         management_interface: <str>
         raw_eos_cli: <str>
     ```
@@ -4947,7 +4995,6 @@ Keys are the same used under endpoints adapters. Keys defined under endpoints ad
           channel_id: <int>
           description: <str>
           enabled: <bool>
-          esi: <str>
           short_esi: <str>
           lacp_fallback:
             mode: <str>
@@ -4962,9 +5009,9 @@ Keys are the same used under endpoints adapters. Keys defined under endpoints ad
               encapsulation_vlan:
                 client_dot1q: <int>
           raw_eos_cli: <str>
-          structured_config:
+          structured_config: <dict>
         raw_eos_cli: <str>
-        structured_config:
+        structured_config: <dict>
     ```
 
 ## PTP Profiles
@@ -5288,10 +5335,10 @@ Note: structured configuration is not merged recursively and will be taken direc
                   hash_algorithm: <str>
                   key: <str>
             bgp:
-              structured_config:
+              structured_config: <dict>
               raw_eos_cli: <str>
             raw_eos_cli: <str>
-            structured_config:
+            structured_config: <dict>
         name: <str>
         enabled: <bool>
         description: <str>
@@ -5341,10 +5388,10 @@ Note: structured configuration is not merged recursively and will be taken direc
               hash_algorithm: <str>
               key: <str>
         bgp:
-          structured_config:
+          structured_config: <dict>
           raw_eos_cli: <str>
         raw_eos_cli: <str>
-        structured_config:
+        structured_config: <dict>
     ```
 
 ## System MAC Address
@@ -5716,5 +5763,4 @@ This is only needed for centralized routing designs.
 === "YAML"
 
     ```yaml
-    vxlan_vlan_aware_bundles: <bool>
     ```
