@@ -4,9 +4,6 @@
 type: dict
 keys:
   terminattr_ingestgrpcurl_port:
-    documentation_options:
-      filename: Management Settings
-      table: CloudVision Settings
     type: int
     convert_types:
     - str

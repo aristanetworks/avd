@@ -4,9 +4,6 @@
 type: dict
 keys:
   overlay_her_flood_list_per_vni:
-    documentation_options:
-      filename: Fabric Variables
-      table: Routing Protocol Selection
     type: bool
     description: |
       When using Head-End Replication, configure flood-lists per VNI.

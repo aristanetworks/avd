@@ -4,8 +4,5 @@
 type: dict
 keys:
   underlay_isis_instance_name:
-    documentation_options:
-      filename: Fabric Variables
-      table: ISIS Settings
     description: Default -> "EVPN_UNDERLAY" for l3ls, "CORE" for mpls
     type: str

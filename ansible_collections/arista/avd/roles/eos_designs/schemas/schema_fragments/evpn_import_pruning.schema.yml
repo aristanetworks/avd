@@ -4,9 +4,6 @@
 type: dict
 keys:
   evpn_import_pruning:
-    documentation_options:
-      filename: Fabric Variables
-      table: EVPN Settings
     description: |
       Enable VPN import pruning (Min. EOS 4.24.2F)
       The Route Target extended communities carried by incoming VPN paths will

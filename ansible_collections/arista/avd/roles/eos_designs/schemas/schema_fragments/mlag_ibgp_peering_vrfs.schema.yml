@@ -4,9 +4,6 @@
 type: dict
 keys:
   mlag_ibgp_peering_vrfs:
-    documentation_options:
-      filename: Fabric Variables
-      table: MLAG Settings
     type: dict
     description: |
       On mlag leafs, an SVI interface is defined per vrf, to establish iBGP peering (required when there are MLAG leafs in topology)
@@ -15,9 +12,6 @@ keys:
       The SVI ip address derived from mlag_l3_peer_ipv4_pool is re-used across all iBGP peerings.
     keys:
       base_vlan:
-        documentation_options:
-          filename: Fabric Variables
-          table: MLAG Settings
         type: int
         convert_types:
           - str

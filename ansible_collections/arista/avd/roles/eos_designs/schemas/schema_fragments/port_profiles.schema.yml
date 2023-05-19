@@ -5,8 +5,6 @@ type: dict
 keys:
   port_profiles:
     type: list
-    documentation_options:
-      filename: Connected Endpoints
     primary_key: profile
     convert_types:
       - dict

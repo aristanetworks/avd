@@ -4,8 +4,6 @@
 type: dict
 keys:
   dot1x:
-    documentation_options:
-      filename: data_model/Endpoint Security
     type: dict
     display_name: Global 802.1x Authentication
     keys:

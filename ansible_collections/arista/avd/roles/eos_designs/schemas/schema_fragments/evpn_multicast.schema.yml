@@ -4,9 +4,6 @@
 type: dict
 keys:
   evpn_multicast:
-    documentation_options:
-      filename: Fabric Variables
-      table: EVPN Settings
     type: bool
     description: |
       General Configuration required for EVPN Multicast. "evpn_l2_multicast" must also be configured under the Network Services (tenants).

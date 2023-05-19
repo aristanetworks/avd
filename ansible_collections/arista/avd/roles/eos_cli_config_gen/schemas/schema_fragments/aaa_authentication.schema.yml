@@ -4,8 +4,6 @@
 type: dict
 keys:
   aaa_authentication:
-    documentation_options:
-      filename: data_model/Authentication
     type: dict
     keys:
       login:

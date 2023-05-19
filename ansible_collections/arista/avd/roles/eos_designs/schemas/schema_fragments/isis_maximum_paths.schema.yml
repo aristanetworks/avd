@@ -4,8 +4,6 @@
 type: dict
 keys:
   isis_maximum_paths:
-    documentation_options:
-      filename: Fabric Topology
     description: Number of path to configure in ECMP for ISIS.
     type: int
     convert_types:

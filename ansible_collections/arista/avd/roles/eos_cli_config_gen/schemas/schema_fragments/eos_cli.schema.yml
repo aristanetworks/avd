@@ -4,7 +4,5 @@
 type: dict
 keys:
   eos_cli:
-    documentation_options:
-      filename: data_model/EOS CLI
     type: str
     description: Multiline string with EOS CLI rendered directly on the root level of the final EOS configuration

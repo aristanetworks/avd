@@ -4,8 +4,6 @@
 type: dict
 keys:
   l2_protocol:
-    documentation_options:
-      filename: data_model/L2 Protocol Forwarding
     type: dict
     keys:
       forwarding_profiles:
