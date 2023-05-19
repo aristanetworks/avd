@@ -1293,7 +1293,9 @@ keys:
               type: str
               valid_values:
               - tagged
+              - tagged phone
               - untagged
+              - untagged phone
             vlan:
               type: int
               min: 1
