@@ -198,12 +198,11 @@ router_bgp:
     - ip_address: BEBA::C0CA:C07A
       peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
       description: test_ipv6
-    address_families:
-    - address_family: ipv4
+    address_family_ipv4:
       neighbors:
       - ip_address: 1.1.1.1
         activate: true
-    - address_family: ipv6
+    address_family_ipv6:
       neighbors:
       - ip_address: BEBA::C0CA:C07A
         activate: true
