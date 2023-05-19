@@ -223,16 +223,15 @@ Control fabric documentation generation.
 
 ## IS Deployed
 
-Is device already deployed in the fabric. If this is not defined, it is
-assumed device is deployed. When set to false, interfaces toward this
-device may be shutdown and `eos_config_deploy_cvp` does not try to
-deploy configuration for this device.
+Is device already deployed in the fabric
+When set to false, interfaces toward this device may be shutdown depending on the `shutdown_interfaces_towards_undeployed_peers` setting.
+Furthermore `eos_config_deploy_cvp` will not attempt to move or apply configurations to the device.
 
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>is_deployed</samp>](## "is_deployed") | Boolean |  |  |  |  |
+    | [<samp>is_deployed</samp>](## "is_deployed") | Boolean |  | True |  |  |
 
 === "YAML"
 

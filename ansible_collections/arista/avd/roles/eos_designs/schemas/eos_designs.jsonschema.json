@@ -1336,8 +1336,9 @@
       "title": "IPv6 Mgmt Gateway"
     },
     "is_deployed": {
-      "description": "Is device already deployed in the fabric. If this is not defined, it is\nassumed device is deployed. When set to false, interfaces toward this\ndevice may be shutdown and `eos_config_deploy_cvp` does not try to\ndeploy configuration for this device.\n",
+      "description": "Is device already deployed in the fabric\nWhen set to false, interfaces toward this device may be shutdown depending on the `shutdown_interfaces_towards_undeployed_peers` setting.\nFurthermore `eos_config_deploy_cvp` will not attempt to move or apply configurations to the device.\n",
       "type": "boolean",
+      "default": true,
       "title": "IS Deployed"
     },
     "isis_advertise_passive_only": {
@@ -2018,36 +2019,36 @@
         "type": "string",
         "description": "IPv4_address/Mask"
       },
-      "title": "Mgmt Destination Networks"
+      "title": "Management Destination Networks"
     },
     "mgmt_gateway": {
       "type": "string",
       "description": "OOB Management interface gateway in IPv4 format.\nUsed as next-hop for default gateway or static routes defined under 'mgmt_destination_networks'",
-      "title": "Mgmt Gateway"
+      "title": "Management Gateway"
     },
     "mgmt_interface": {
       "type": "string",
       "default": "Management1",
       "description": "OOB Management interface.",
-      "title": "Mgmt Interface"
+      "title": "Management Interface"
     },
     "mgmt_interface_description": {
       "type": "string",
       "description": "Management interface description\n",
       "default": "oob_management",
-      "title": "Mgmt Interface Description"
+      "title": "Management Interface Description"
     },
     "mgmt_interface_vrf": {
       "type": "string",
       "default": "MGMT",
       "description": "OOB Management VRF.",
-      "title": "Mgmt Interface VRF"
+      "title": "Management Interface VRF"
     },
     "mgmt_vrf_routing": {
       "type": "boolean",
       "default": false,
       "description": "Configure IP routing for the OOB Management VRF.",
-      "title": "Mgmt VRF Routing"
+      "title": "Management VRF Routing"
     },
     "mlag_ibgp_peering_vrfs": {
       "type": "object",

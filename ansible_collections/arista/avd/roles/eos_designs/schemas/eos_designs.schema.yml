@@ -806,19 +806,19 @@ keys:
 
       Used as next-hop for default gateway or static routes defined under ''ipv6_mgmt_destination_networks'''
   is_deployed:
-    description: 'Is device already deployed in the fabric. If this is not defined,
-      it is
+    description: 'Is device already deployed in the fabric
 
-      assumed device is deployed. When set to false, interfaces toward this
+      When set to false, interfaces toward this device may be shutdown depending on
+      the `shutdown_interfaces_towards_undeployed_peers` setting.
 
-      device may be shutdown and `eos_config_deploy_cvp` does not try to
-
-      deploy configuration for this device.
+      Furthermore `eos_config_deploy_cvp` will not attempt to move or apply configurations
+      to the device.
 
       '
     documentation_options:
       filename: Fabric Variables
     type: bool
+    default: true
   isis_advertise_passive_only:
     documentation_options:
       filename: Fabric Variables
