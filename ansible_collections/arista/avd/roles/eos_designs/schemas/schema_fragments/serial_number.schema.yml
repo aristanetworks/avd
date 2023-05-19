@@ -5,11 +5,11 @@ type: dict
 keys:
   serial_number:
     documentation_options:
-      filename: Fabric Topology
+      filename: Fabric Variables
     description: |
-      Set to the Serial Number of the device
-      For now only used for documentation purpose in the fabric documentation.
-      "serial_number" can also be set directly as a hostvar.
+      Serial Number of the device
+      Used for documentation purpose in the fabric documentation as can also be used by the 'eos_config_deploy_cvp' role.
+      "serial_number" can also be set directly under "Fabric Topology".
       If both are set, the setting under "Fabric Topology" takes precedence.
     type: str
     convert_types:

@@ -8,4 +8,7 @@ keys:
       filename: Management Settings
     type: str
     format: ipv6
-    description: IPv6 address
+    description: |
+      OOB Management interface gateway in IPv6 format.
+      Used as next-hop for default gateway or static routes defined under 'ipv6_mgmt_destination_networks'
+

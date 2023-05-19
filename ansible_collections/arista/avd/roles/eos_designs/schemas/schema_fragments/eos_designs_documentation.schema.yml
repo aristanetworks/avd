@@ -7,11 +7,11 @@ keys:
     documentation_options:
       filename: Fabric Variables
     description: |
-      Some variables are available to control documentation generation. This can be useful
-      for instance the project has thousands of endpoints, to be able to disable
-      fabric-wide connected endpoints documentation.
+      Control fabric documentation generation.
     type: dict
     keys:
       connected_endpoints:
+        description: |
+          Generate fabric-wide documentation for connected endpoints.
         type: bool
-        default: "true"
+        default: false

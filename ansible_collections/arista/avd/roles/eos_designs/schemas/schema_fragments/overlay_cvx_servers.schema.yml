@@ -7,10 +7,10 @@ keys:
     documentation_options:
       filename: Fabric Variables
     description: |
-      Overlay settings when using CVX as overlay controller.
+      List of CVX vxlan overlay controllers.
       Required if overlay_routing_protocol == CVX.
       CVX servers (VMs) are peering using their management interface, so mgmt_ip must be set for all CVX servers.
     type: list
     items:
       type: str
-      description: CVX_inventory_hostname
+      description: 'inventory_hostname' of CVX server
