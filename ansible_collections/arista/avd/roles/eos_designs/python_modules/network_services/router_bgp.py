@@ -215,16 +215,16 @@ class RouterBgpMixin(UtilsMixin):
                             {"ip_address": ip_address, "peer_group": self.shared_utils.bgp_peer_groups["mlag_ipv4_underlay_peer"]["name"]}
                         )
 
-                address_families = []
+                address_families = {}
                 for bgp_peer in vrf["bgp_peers"]:
                     peer_ip = bgp_peer.pop("ip_address")
-                    address_family = f"ipv{ipaddress.ip_address(peer_ip).version}"
-
+                    address_family = f"address_family_ipv{ipaddress.ip_address(peer_ip).version}"
                     neighbor = {"ip_address": peer_ip, "activate": True}
-                    if (af := get_item(address_families, "address_family", address_family)) is None:
-                        address_families.append({"address_family": address_family, "neighbors": [neighbor]})
+
+                    if address_family not in address_families:
+                        address_families[address_family] = {"neighbors": [neighbor]}
                     else:
-                        af["neighbors"].append(neighbor)
+                        address_families[address_family]["neighbors"].append(neighbor)
 
                     if bgp_peer.get("set_ipv4_next_hop") is not None or bgp_peer.get("set_ipv6_next_hop") is not None:
                         route_map = f"RM-{vrf_name}-{peer_ip}-SET-NEXT-HOP-OUT"
@@ -250,7 +250,7 @@ class RouterBgpMixin(UtilsMixin):
                     bgp_vrf["redistribute_routes"].append({"source_protocol": "ospf"})
 
                 if address_families:
-                    bgp_vrf["address_families"] = address_families
+                    bgp_vrf.update(address_families)
 
                 if (evpn_multicast_transit_mode := get(vrf, "_evpn_l3_multicast_evpn_peg_transit")) is True:
                     bgp_vrf["evpn_multicast_address_family"] = {"ipv4": {"transit": evpn_multicast_transit_mode}}
@@ -344,7 +344,7 @@ class RouterBgpMixin(UtilsMixin):
 
     @cached_property
     def _evpn_vlan_aware_bundles(self) -> bool:
-        return default(get(self._hostvars, "vxlan_vlan_aware_bundles"), get(self._hostvars, "evpn_vlan_aware_bundles"), False)
+        return get(self._hostvars, "evpn_vlan_aware_bundles", default=False)
 
     @cached_property
     def _router_bgp_vlan_aware_bundles(self) -> list | None:

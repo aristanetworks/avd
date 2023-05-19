@@ -122,22 +122,50 @@ search:
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>bgp_as</samp>](## "bgp_as") | String |  |  |  | AS number to use to configure overlay when "overlay_routing_protocol" == ibgp |
     | [<samp>bgp_default_ipv4_unicast</samp>](## "bgp_default_ipv4_unicast") | Boolean |  | False |  | Default activation of IPv4 unicast address-family on all IPv4 neighbors.<br>It is best practice to disable activation.<br> |
+    | [<samp>bgp_distance</samp>](## "bgp_distance") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;external_routes</samp>](## "bgp_distance.external_routes") | Integer | Required |  | Min: 1<br>Max: 255 |  |
+    | [<samp>&nbsp;&nbsp;internal_routes</samp>](## "bgp_distance.internal_routes") | Integer | Required |  | Min: 1<br>Max: 255 |  |
+    | [<samp>&nbsp;&nbsp;local_routes</samp>](## "bgp_distance.local_routes") | Integer | Required |  | Min: 1<br>Max: 255 |  |
     | [<samp>bgp_graceful_restart</samp>](## "bgp_graceful_restart") | Dictionary |  |  |  | Graceful BGP restart allows a BGP speaker with separate control plane and data plane processing to continue forwarding traffic during a BGP restart.<br>Its neighbors (receiving speakers) may retain routing information from the restarting speaker while a BGP session with it is being re-established, reducing route flapping.<br> |
     | [<samp>&nbsp;&nbsp;enabled</samp>](## "bgp_graceful_restart.enabled") | Boolean |  | True |  | Enable or disable graceful restart helper mode for all BGP peers. |
     | [<samp>&nbsp;&nbsp;restart_time</samp>](## "bgp_graceful_restart.restart_time") | Integer |  | 300 | Min: 1<br>Max: 3600 | Restart time in seconds. |
     | [<samp>bgp_mesh_pes</samp>](## "bgp_mesh_pes") | Boolean |  | False |  | Whether to configure an iBGP full mesh between PEs, either because there is no RR used or other reasons. |
     | [<samp>underlay_filter_peer_as</samp>](## "underlay_filter_peer_as") | Boolean |  | False |  | Configure route-map on eBGP sessions towards underlay peers, where prefixes with the peer's ASN in the AS Path are filtered away.<br>This is very useful in very large scale networks not using EVPN overlays, where convergence will be quicker by not having to return<br>all updates received from Spine-1 to Spine-2 just for Spine-2 to throw them away because of AS Path loop detection.<br>Note this key is ignored when EVPN is configured.<br> |
+    | [<samp>underlay_filter_redistribute_connected</samp>](## "underlay_filter_redistribute_connected") | Boolean |  | True |  | Filter redistribution of connected into the underlay routing protocol.<br>Only applicable when overlay_routing_protocol != 'none' and underlay_routing_protocol == BGP.<br>Creates a route-map and prefix-list assigned to redistribute connected permitting only loopbacks and inband management subnets.<br> |
 
 === "YAML"
 
     ```yaml
     bgp_as: <str>
     bgp_default_ipv4_unicast: <bool>
+    bgp_distance:
+      external_routes: <int>
+      internal_routes: <int>
+      local_routes: <int>
     bgp_graceful_restart:
       enabled: <bool>
       restart_time: <int>
     bgp_mesh_pes: <bool>
     underlay_filter_peer_as: <bool>
+    underlay_filter_redistribute_connected: <bool>
+    ```
+
+## EOS Designs Documentation
+
+Control fabric documentation generation.
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>eos_designs_documentation</samp>](## "eos_designs_documentation") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;connected_endpoints</samp>](## "eos_designs_documentation.connected_endpoints") | Boolean |  | False |  | Generate fabric-wide documentation for connected endpoints.<br> |
+
+=== "YAML"
+
+    ```yaml
+    eos_designs_documentation:
+      connected_endpoints: <bool>
     ```
 
 ## EVPN Settings
@@ -158,7 +186,7 @@ search:
     | [<samp>evpn_overlay_bgp_rtc</samp>](## "evpn_overlay_bgp_rtc") | Boolean |  | False |  | Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)<br>Requires use eBGP as overlay protocol.<br> |
     | [<samp>evpn_prevent_readvertise_to_server</samp>](## "evpn_prevent_readvertise_to_server") | Boolean |  | False |  | Configure route-map on eBGP sessions towards route-servers, where prefixes with the peer's ASN in the AS Path are filtered away.<br>This is very useful in large-scale networks, where convergence will be quicker by not returning all updates received<br>from Route-server-1 to Router-server-2 just for Route-server-2 to throw them away because of AS Path loop detection.<br> |
     | [<samp>evpn_short_esi_prefix</samp>](## "evpn_short_esi_prefix") | String |  | 0000:0000: |  | Configure prefix for "short_esi" values |
-    | [<samp>evpn_vlan_aware_bundles</samp>](## "evpn_vlan_aware_bundles") | Boolean |  | False |  | Enable vlan aware bundles for EVPN MAC-VRF<br>Old variable name vxlan_vlan_aware_bundles, supported for backward-compatibility.<br> |
+    | [<samp>evpn_vlan_aware_bundles</samp>](## "evpn_vlan_aware_bundles") | Boolean |  | False |  | Enable vlan aware bundles for EVPN MAC-VRF<br> |
 
 === "YAML"
 
@@ -196,6 +224,24 @@ search:
     overlay_routing_protocol_address_family: <str>
     underlay_ipv6: <bool>
     underlay_rfc5549: <bool>
+    ```
+
+## IS Deployed
+
+Is device already deployed in the fabric
+When set to false, interfaces toward this device may be shutdown depending on the `shutdown_interfaces_towards_undeployed_peers` setting.
+Furthermore `eos_config_deploy_cvp` will not attempt to move or apply configurations to the device.
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>is_deployed</samp>](## "is_deployed") | Boolean |  | True |  |  |
+
+=== "YAML"
+
+    ```yaml
+    is_deployed: <bool>
     ```
 
 ## ISIS Settings
@@ -262,6 +308,20 @@ search:
       base_vlan: <int>
     ```
 
+## MPLS Settings
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>fabric_evpn_encapsulation</samp>](## "fabric_evpn_encapsulation") | String |  | vxlan | Valid Values:<br>- vxlan<br>- mpls | Should be set to mpls for evpn-mpls scenario. |
+
+=== "YAML"
+
+    ```yaml
+    fabric_evpn_encapsulation: <str>
+    ```
+
 ## Multicast Settings
 
 === "Table"
@@ -296,6 +356,26 @@ search:
     underlay_ospf_bfd_enable: <bool>
     underlay_ospf_max_lsa: <int>
     underlay_ospf_process_id: <int>
+    ```
+
+## Overlay CVX Servers
+
+List of CVX vxlan overlay controllers.
+Required if overlay_routing_protocol == CVX.
+CVX servers (VMs) are peering using their management interface, so mgmt_ip must be set for all CVX servers.
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>overlay_cvx_servers</samp>](## "overlay_cvx_servers") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "overlay_cvx_servers.[].&lt;str&gt;") | String |  |  |  | 'inventory_hostname' of CVX server |
+
+=== "YAML"
+
+    ```yaml
+    overlay_cvx_servers:
+      - <str>
     ```
 
 ## Overlay General Settings
@@ -362,6 +442,25 @@ search:
     overlay_her_flood_list_scope: <str>
     overlay_routing_protocol: <str>
     underlay_routing_protocol: <str>
+    ```
+
+## Serial Number
+
+Serial Number of the device.
+Used for documentation purpose in the fabric documentation as can also be used by the 'eos_config_deploy_cvp' role.
+"serial_number" can also be set directly under "Fabric Topology".
+If both are set, the setting under "Fabric Topology" takes precedence.
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>serial_number</samp>](## "serial_number") | String |  |  |  |  |
+
+=== "YAML"
+
+    ```yaml
+    serial_number: <str>
     ```
 
 ## Uplink Settings
@@ -436,4 +535,18 @@ search:
         name: <str>
       uplink:
         name: <str>
+    ```
+
+## VxLAN VLAN Aware Bundles
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>vxlan_vlan_aware_bundles</samp>](## "vxlan_vlan_aware_bundles") <span style="color:red">removed</span> | Boolean |  | False |  | <span style="color:red">This key was removed. Support was removed in AVD version 4.0.0. Use <samp>evpn_vlan_aware_bundles</samp> instead.</span> |
+
+=== "YAML"
+
+    ```yaml
+    vxlan_vlan_aware_bundles: <bool>
     ```

@@ -9,6 +9,5 @@ keys:
       table: EVPN Settings
     description: |
       Enable vlan aware bundles for EVPN MAC-VRF
-      Old variable name vxlan_vlan_aware_bundles, supported for backward-compatibility.
     type: bool
     default: false

@@ -1,11 +1,12 @@
 router_bgp:
   as: '65005'
   router_id: 192.168.255.5
-  bgp_defaults:
-  - maximum-paths 4 ecmp 4
   bgp:
     default:
       ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
   graceful_restart:
     enabled: true
     restart_time: 300

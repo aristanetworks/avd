@@ -1,0 +1,9 @@
+queue_monitor_length:
+  enabled: true
+  log: 100
+  notifying: true
+  cpu:
+    thresholds:
+      # "high" threshold is mandatory
+      high: 200000
+      low: 100000

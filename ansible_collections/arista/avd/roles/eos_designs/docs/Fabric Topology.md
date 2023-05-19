@@ -816,6 +816,22 @@ default_interfaces:
           inband_management_vlan: <int>
     ```
 
+## ISIS Maximum Paths
+
+Number of path to configure in ECMP for ISIS.
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>isis_maximum_paths</samp>](## "isis_maximum_paths") | Integer |  |  |  |  |
+
+=== "YAML"
+
+    ```yaml
+    isis_maximum_paths: <int>
+    ```
+
 ## ISIS underlay protocol management
 
 === "Table"

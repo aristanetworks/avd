@@ -12,7 +12,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import st
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 
-class AvdStructuredConfig(AvdFacts):
+class AvdStructuredConfigBase(AvdFacts):
     @cached_property
     def serial_number(self) -> str | None:
         """
@@ -29,21 +29,19 @@ class AvdStructuredConfig(AvdFacts):
         if self.shared_utils.bgp_as is None:
             return None
 
-        bgp_defaults = get(self.shared_utils.switch_data_combined, "bgp_defaults", default=[])
-
-        max_paths_str = f"maximum-paths {get(self._hostvars, 'bgp_maximum_paths', default=4)}"
-        if (bgp_ecmp := get(self._hostvars, "bgp_ecmp", default=4)) is not None:
-            max_paths_str += f" ecmp {bgp_ecmp}"
-        bgp_defaults.append(max_paths_str)
-
         router_bgp = {
             "as": self.shared_utils.bgp_as,
             "router_id": self.shared_utils.router_id,
-            "bgp_defaults": bgp_defaults,
+            "distance": get(self._hostvars, "bgp_distance"),
+            "bgp_defaults": get(self.shared_utils.switch_data_combined, "bgp_defaults"),
             "bgp": {
                 "default": {
                     "ipv4_unicast": get(self._hostvars, "bgp_default_ipv4_unicast", default=False),
                 },
+            },
+            "maximum_paths": {
+                "paths": get(self._hostvars, "bgp_maximum_paths", default=4),
+                "ecmp": get(self._hostvars, "bgp_ecmp", default=4),
             },
         }
 
@@ -57,7 +55,7 @@ class AvdStructuredConfig(AvdFacts):
                 },
             )
 
-        return router_bgp
+        return strip_null_from_data(router_bgp)
 
     @cached_property
     def static_routes(self) -> list | None:

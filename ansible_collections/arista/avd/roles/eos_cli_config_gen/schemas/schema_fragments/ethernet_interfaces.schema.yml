@@ -63,7 +63,7 @@ keys:
           keys:
             trunk:
               type: str
-              valid_values: ["tagged", "untagged"]
+              valid_values: ["tagged", "tagged phone", "untagged", "untagged phone"]
             vlan:
               type: int
               min: 1

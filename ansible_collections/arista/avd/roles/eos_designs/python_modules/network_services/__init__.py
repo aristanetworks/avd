@@ -1,3 +1,3 @@
-from .avdstructuredconfig import AvdStructuredConfig
+from .avdstructuredconfig import AvdStructuredConfigNetworkServices
 
-__all__ = ["AvdStructuredConfig"]
+__all__ = ["AvdStructuredConfigNetworkServices"]
