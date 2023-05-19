@@ -3,6 +3,7 @@ WORDLIST = {
     "af": "AF",
     "api": "API",
     "arp": "ARP",
+    "avd": "AVD",
     "bfd": "BFD",
     "bgp": "BGP",
     "cli": "CLI",

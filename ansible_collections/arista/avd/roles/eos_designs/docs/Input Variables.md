@@ -5,7 +5,7 @@ search:
 
 # Input Variables
 
-## Avd Data Conversion Mode
+## AVD Data Conversion Mode
 
 Conversion Mode for AVD input data conversion.
 Input data conversion will perform type conversion of input variables as defined in the schema.
@@ -30,7 +30,7 @@ During conversion, messages will generated with information about the host(s) an
     avd_data_conversion_mode: <str>
     ```
 
-## Avd Data Validation Mode
+## AVD Data Validation Mode
 
 Validation Mode for AVD input data validation.
 Input data validation will validate the input variables according to the schema.
