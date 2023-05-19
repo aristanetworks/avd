@@ -1577,10 +1577,10 @@ keys:
                         keys:
                           address_family_ipv6:
                             type: dict
-                            primary_key: enabled
                             keys:
                               enabled:
                                 type: bool
+                                required: true
                               originate:
                                 type: bool
                 networks:

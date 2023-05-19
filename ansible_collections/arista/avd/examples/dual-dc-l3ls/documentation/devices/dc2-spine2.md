@@ -277,7 +277,6 @@ ip route vrf MGMT 0.0.0.0/0 172.16.2.1
 
 | BGP Tuning |
 | ---------- |
-| distance bgp 20 200 200 |
 | graceful-restart restart-time 300 |
 | graceful-restart |
 | no bgp default ipv4-unicast |
@@ -336,7 +335,6 @@ router bgp 65200
    graceful-restart
    maximum-paths 4 ecmp 4
    no bgp default ipv4-unicast
-   distance bgp 20 200 200
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0

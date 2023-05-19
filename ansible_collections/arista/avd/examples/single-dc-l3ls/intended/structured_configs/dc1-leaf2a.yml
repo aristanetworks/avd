@@ -1,8 +1,6 @@
 router_bgp:
   as: '65102'
   router_id: 10.255.0.5
-  bgp_defaults:
-  - distance bgp 20 200 200
   bgp:
     default:
       ipv4_unicast: false
