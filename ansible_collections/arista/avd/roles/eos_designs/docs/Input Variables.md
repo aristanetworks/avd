@@ -220,14 +220,13 @@ Used as next-hop for default gateway or static routes defined under 'mgmt_destin
 
 ## Mgmt Interface Description
 
-Description on the Management interface to override
-the default `oob_management`.
+Management interface description
 
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>mgmt_interface_description</samp>](## "mgmt_interface_description") | String |  |  |  |  |
+    | [<samp>mgmt_interface_description</samp>](## "mgmt_interface_description") | String |  | oob_management |  |  |
 
 === "YAML"
 

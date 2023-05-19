@@ -225,8 +225,7 @@ Control fabric documentation generation.
 
 Is device already deployed in the fabric. If this is not defined, it is
 assumed device is deployed. When set to false, interfaces toward this
-device may be shutdown and `eos_config_deploy_cvp` or
-`eos_config_deploy_eapi` do not try to
+device may be shutdown and `eos_config_deploy_cvp` does not try to
 deploy configuration for this device.
 
 === "Table"
