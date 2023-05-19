@@ -2,8 +2,8 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-from ansible.utils.display import Display
 from ansible.errors import AnsibleFilterError
+from ansible.utils.display import Display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema
