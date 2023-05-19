@@ -2189,6 +2189,7 @@ keys:
     documentation_options:
       filename: Fabric Variables
     deprecation:
+      warning: true
       new_key: evpn_vlan_aware_bundles
       removed: true
       remove_in_version: 4.0.0

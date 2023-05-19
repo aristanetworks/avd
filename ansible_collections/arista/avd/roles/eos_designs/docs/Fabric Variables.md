@@ -548,5 +548,4 @@ If both are set, the setting under "Fabric Topology" takes precedence.
 === "YAML"
 
     ```yaml
-    vxlan_vlan_aware_bundles: <bool>
     ```
