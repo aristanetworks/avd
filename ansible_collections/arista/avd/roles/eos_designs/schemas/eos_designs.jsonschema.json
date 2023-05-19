@@ -1101,7 +1101,7 @@
       "title": "EVPN Short Esi Prefix"
     },
     "evpn_vlan_aware_bundles": {
-      "description": "Enable vlan aware bundles for EVPN MAC-VRF\nOld variable name vxlan_vlan_aware_bundles, supported for backward-compatibility.\n",
+      "description": "Enable vlan aware bundles for EVPN MAC-VRF\n",
       "type": "boolean",
       "default": false,
       "title": "EVPN VLAN Aware Bundles"

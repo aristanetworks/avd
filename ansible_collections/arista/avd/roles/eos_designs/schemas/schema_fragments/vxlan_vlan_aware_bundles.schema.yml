@@ -3,11 +3,12 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  evpn_vlan_aware_bundles:
+  vxlan_vlan_aware_bundles:
     documentation_options:
       filename: Fabric Variables
-      table: EVPN Settings
-    description: |
-      Enable vlan aware bundles for EVPN MAC-VRF
+    deprecation:
+      new_key: evpn_vlan_aware_bundles
+      removed: true
+      remove_in_version: "4.0.0"
     type: bool
     default: false

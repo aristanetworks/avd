@@ -161,7 +161,7 @@ search:
     | [<samp>evpn_overlay_bgp_rtc</samp>](## "evpn_overlay_bgp_rtc") | Boolean |  | False |  | Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)<br>Requires use eBGP as overlay protocol.<br> |
     | [<samp>evpn_prevent_readvertise_to_server</samp>](## "evpn_prevent_readvertise_to_server") | Boolean |  | False |  | Configure route-map on eBGP sessions towards route-servers, where prefixes with the peer's ASN in the AS Path are filtered away.<br>This is very useful in large-scale networks, where convergence will be quicker by not returning all updates received<br>from Route-server-1 to Router-server-2 just for Route-server-2 to throw them away because of AS Path loop detection.<br> |
     | [<samp>evpn_short_esi_prefix</samp>](## "evpn_short_esi_prefix") | String |  | 0000:0000: |  | Configure prefix for "short_esi" values |
-    | [<samp>evpn_vlan_aware_bundles</samp>](## "evpn_vlan_aware_bundles") | Boolean |  | False |  | Enable vlan aware bundles for EVPN MAC-VRF<br>Old variable name vxlan_vlan_aware_bundles, supported for backward-compatibility.<br> |
+    | [<samp>evpn_vlan_aware_bundles</samp>](## "evpn_vlan_aware_bundles") | Boolean |  | False |  | Enable vlan aware bundles for EVPN MAC-VRF<br> |
 
 === "YAML"
 
@@ -439,4 +439,18 @@ search:
         name: <str>
       uplink:
         name: <str>
+    ```
+
+## VxLAN VLAN Aware Bundles
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>vxlan_vlan_aware_bundles</samp>](## "vxlan_vlan_aware_bundles") <span style="color:red">removed</span> | Boolean |  | False |  | <span style="color:red">This key was removed. Support was removed in AVD version 4.0.0. Use <samp>evpn_vlan_aware_bundles</samp> instead.</span> |
+
+=== "YAML"
+
+    ```yaml
+    vxlan_vlan_aware_bundles: <bool>
     ```
