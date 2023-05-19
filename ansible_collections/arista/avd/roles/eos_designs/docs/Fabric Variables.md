@@ -87,34 +87,34 @@ search:
       ipv4_underlay_peers:
         name: <str>
         password: <str>
-        structured_config:
+        structured_config: <dict>
       mlag_ipv4_underlay_peer:
         name: <str>
         password: <str>
-        structured_config:
+        structured_config: <dict>
       evpn_overlay_peers:
         name: <str>
         password: <str>
-        structured_config:
+        structured_config: <dict>
       evpn_overlay_core:
         name: <str>
         password: <str>
-        structured_config:
+        structured_config: <dict>
       mpls_overlay_peers:
         name: <str>
         password: <str>
-        structured_config:
+        structured_config: <dict>
       rr_overlay_peers:
         name: <str>
         password: <str>
-        structured_config:
+        structured_config: <dict>
       ipvpn_gateway_peers:
         name: <str>
         password: <str>
-        structured_config:
-      IPv4_UNDERLAY_PEERS:
-      MLAG_IPv4_UNDERLAY_PEER:
-      EVPN_OVERLAY_PEERS:
+        structured_config: <dict>
+      IPv4_UNDERLAY_PEERS: <dict>
+      MLAG_IPv4_UNDERLAY_PEER: <dict>
+      EVPN_OVERLAY_PEERS: <dict>
     ```
 
 ## BGP Settings

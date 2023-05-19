@@ -552,7 +552,7 @@ search:
             evpn_l3_multicast:
               enabled: <bool>
               evpn_peg:
-                - nodes:
+                - nodes: <list>
                   transit: <bool>
             pim_rp_addresses:
               - rps:
@@ -617,10 +617,10 @@ search:
                           hash_algorithm: <str>
                           key: <str>
                     bgp:
-                      structured_config:
+                      structured_config: <dict>
                       raw_eos_cli: <str>
                     raw_eos_cli: <str>
-                    structured_config:
+                    structured_config: <dict>
                 enabled: <bool>
                 description: <str>
                 ip_address: <str>
@@ -669,10 +669,10 @@ search:
                       hash_algorithm: <str>
                       key: <str>
                 bgp:
-                  structured_config:
+                  structured_config: <dict>
                   raw_eos_cli: <str>
                 raw_eos_cli: <str>
-                structured_config:
+                structured_config: <dict>
             l3_interfaces:
               - interfaces:
                   - <str>
@@ -700,7 +700,7 @@ search:
                       key: <str>
                 pim:
                   enabled: <bool>
-                structured_config:
+                structured_config: <dict>
                 raw_eos_cli: <str>
             static_routes:
               - destination_address_prefix: <str>
@@ -752,7 +752,7 @@ search:
                 bfd: <bool>
             bgp:
               raw_eos_cli: <str>
-              structured_config:
+              structured_config: <dict>
             bgp_peer_groups:
               - name: <str>
                 nodes:
@@ -811,7 +811,7 @@ search:
                 nodes:
                   - <str>
             raw_eos_cli: <str>
-            structured_config:
+            structured_config: <dict>
         l2vlans:
           - id: <int>
             vni_override: <int>
@@ -830,7 +830,7 @@ search:
               source_address: <str>
               version: <int>
             bgp:
-              structured_config:
+              structured_config: <dict>
               raw_eos_cli: <str>
         point_to_point_services:
           - name: <str>
@@ -866,8 +866,8 @@ search:
 === "YAML"
 
     ```yaml
-    evpn_rd_type:
-    evpn_rt_type:
+    evpn_rd_type: <dict>
+    evpn_rt_type: <dict>
     overlay_rd_type:
       admin_subfield: <str>
       admin_subfield_offset: <str>
@@ -1080,10 +1080,10 @@ Note: structured configuration is not merged recursively and will be taken direc
                   hash_algorithm: <str>
                   key: <str>
             bgp:
-              structured_config:
+              structured_config: <dict>
               raw_eos_cli: <str>
             raw_eos_cli: <str>
-            structured_config:
+            structured_config: <dict>
         name: <str>
         enabled: <bool>
         description: <str>
@@ -1133,8 +1133,8 @@ Note: structured configuration is not merged recursively and will be taken direc
               hash_algorithm: <str>
               key: <str>
         bgp:
-          structured_config:
+          structured_config: <dict>
           raw_eos_cli: <str>
         raw_eos_cli: <str>
-        structured_config:
+        structured_config: <dict>
     ```

@@ -70,7 +70,7 @@ search:
             type: <str>
             group: <str>
             logging: <bool>
-        commands_default:
+        commands_default: <list>
     ```
 
 ## AAA Authentication

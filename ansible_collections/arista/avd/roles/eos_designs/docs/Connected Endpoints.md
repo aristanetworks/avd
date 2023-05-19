@@ -264,9 +264,9 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
                   encapsulation_vlan:
                     client_dot1q: <int>
               raw_eos_cli: <str>
-              structured_config:
+              structured_config: <dict>
             raw_eos_cli: <str>
-            structured_config:
+            structured_config: <dict>
     ```
 
 ## Connected Endpoints Keys
@@ -540,9 +540,9 @@ All switch_ports ranges are expanded into individual port configurations.
               encapsulation_vlan:
                 client_dot1q: <int>
           raw_eos_cli: <str>
-          structured_config:
+          structured_config: <dict>
         raw_eos_cli: <str>
-        structured_config:
+        structured_config: <dict>
     ```
 
 ## Port Profiles
@@ -787,7 +787,7 @@ Keys are the same used under endpoints adapters. Keys defined under endpoints ad
               encapsulation_vlan:
                 client_dot1q: <int>
           raw_eos_cli: <str>
-          structured_config:
+          structured_config: <dict>
         raw_eos_cli: <str>
-        structured_config:
+        structured_config: <dict>
     ```

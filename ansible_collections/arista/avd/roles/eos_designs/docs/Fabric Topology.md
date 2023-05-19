@@ -634,7 +634,7 @@ default_interfaces:
           offset: <int>
         always_configure_ip_routing: <bool>
         raw_eos_cli: <str>
-        structured_config:
+        structured_config: <dict>
       node_groups:
         - nodes:
             - id: <int>
@@ -658,7 +658,7 @@ default_interfaces:
                 offset: <int>
               always_configure_ip_routing: <bool>
               raw_eos_cli: <str>
-              structured_config:
+              structured_config: <dict>
           id: <int>
           platform: <str>
           mac_address: <str>
@@ -680,7 +680,7 @@ default_interfaces:
             offset: <int>
           always_configure_ip_routing: <bool>
           raw_eos_cli: <str>
-          structured_config:
+          structured_config: <dict>
       nodes:
         - id: <int>
           platform: <str>
@@ -703,7 +703,7 @@ default_interfaces:
             offset: <int>
           always_configure_ip_routing: <bool>
           raw_eos_cli: <str>
-          structured_config:
+          structured_config: <dict>
     ```
 
 ## Inband management
@@ -1614,10 +1614,10 @@ This is leveraged to load the appropriate template to generate the configuration
           enable: <bool>
         uplink_macsec:
           profile: <str>
-        uplink_structured_config:
-        mlag_port_channel_structured_config:
-        mlag_peer_vlan_structured_config:
-        mlag_peer_l3_vlan_structured_config:
+        uplink_structured_config: <dict>
+        mlag_port_channel_structured_config: <dict>
+        mlag_peer_vlan_structured_config: <dict>
+        mlag_peer_l3_vlan_structured_config: <dict>
         short_esi: <str>
       node_groups:
         - nodes:
@@ -1637,10 +1637,10 @@ This is leveraged to load the appropriate template to generate the configuration
                 enable: <bool>
               uplink_macsec:
                 profile: <str>
-              uplink_structured_config:
-              mlag_port_channel_structured_config:
-              mlag_peer_vlan_structured_config:
-              mlag_peer_l3_vlan_structured_config:
+              uplink_structured_config: <dict>
+              mlag_port_channel_structured_config: <dict>
+              mlag_peer_vlan_structured_config: <dict>
+              mlag_peer_l3_vlan_structured_config: <dict>
               short_esi: <str>
           uplink_ipv4_pool: <str>
           uplink_interfaces:
@@ -1658,10 +1658,10 @@ This is leveraged to load the appropriate template to generate the configuration
             enable: <bool>
           uplink_macsec:
             profile: <str>
-          uplink_structured_config:
-          mlag_port_channel_structured_config:
-          mlag_peer_vlan_structured_config:
-          mlag_peer_l3_vlan_structured_config:
+          uplink_structured_config: <dict>
+          mlag_port_channel_structured_config: <dict>
+          mlag_peer_vlan_structured_config: <dict>
+          mlag_peer_l3_vlan_structured_config: <dict>
           short_esi: <str>
       nodes:
         - uplink_ipv4_pool: <str>
@@ -1680,9 +1680,9 @@ This is leveraged to load the appropriate template to generate the configuration
             enable: <bool>
           uplink_macsec:
             profile: <str>
-          uplink_structured_config:
-          mlag_port_channel_structured_config:
-          mlag_peer_vlan_structured_config:
-          mlag_peer_l3_vlan_structured_config:
+          uplink_structured_config: <dict>
+          mlag_port_channel_structured_config: <dict>
+          mlag_peer_vlan_structured_config: <dict>
+          mlag_peer_l3_vlan_structured_config: <dict>
           short_esi: <str>
     ```

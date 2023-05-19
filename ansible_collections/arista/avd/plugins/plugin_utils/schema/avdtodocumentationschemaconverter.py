@@ -213,15 +213,9 @@ class AvdToDocumentationSchemaConverter:
 
         row = f"{row_indentation}{var_name}:"
         var_type = schema.get("type")
-        if var_type not in ["list", "dict"]:
-            row = f"{row} <{var_type}>"
 
-        output.append(row)
-
-        schema_keys = self._get_keys(schema)
-        schema_items = schema.get("items")
-
-        if schema_keys:
+        if var_type == "dict" and (schema_keys := self._get_keys(schema)):
+            output.append(row)
             for key, childschema in schema_keys.items():
                 if table not in self._get_tables(childschema):
                     # Skip key if none of the underlying keys have the relevant table
@@ -234,9 +228,10 @@ class AvdToDocumentationSchemaConverter:
                     table=table,
                 )
                 output.extend(rows)
-        elif schema_items:
+        elif var_type == "list" and (schema_items := schema.get("items")):
+            output.append(row)
             schema_items_type = schema_items.get("type")
-            if schema_items_type == "dict":
+            if schema_items_type == "dict" and "keys" in schema_items:
                 schema_keys = self._get_keys(schema_items)
                 first = True
                 for key, childschema in schema_keys.items():
@@ -257,6 +252,9 @@ class AvdToDocumentationSchemaConverter:
                 row_indentation = " " * indentation
                 row = f"{row_indentation}  - <{schema_items_type}>"
                 output.append(row)
+        else:
+            row = f"{row} <{var_type}>"
+            output.append(row)
 
         return output
 
