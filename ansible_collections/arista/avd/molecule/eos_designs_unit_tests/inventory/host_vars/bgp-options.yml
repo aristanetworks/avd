@@ -1,10 +1,10 @@
 type: spine
 spine:
   nodes:
-   - name: bgp-options
-     bgp_as: 65000
-     loopback_ipv4_pool: 10.10.10.0/24
-     id: 1
+  - name: bgp-options
+    bgp_as: 65000
+    loopback_ipv4_pool: 10.10.10.0/24
+    id: 1
 
 bgp_distance:
   external_routes: 20
