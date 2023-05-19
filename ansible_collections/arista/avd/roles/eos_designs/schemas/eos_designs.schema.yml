@@ -1986,6 +1986,7 @@ keys:
     deprecation:
       new_key: evpn_vlan_aware_bundles
       removed: true
+      remove_in_version: 4.0.0
     type: bool
     default: false
 dynamic_keys:

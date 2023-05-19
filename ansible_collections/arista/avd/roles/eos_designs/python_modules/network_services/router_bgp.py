@@ -344,7 +344,7 @@ class RouterBgpMixin(UtilsMixin):
 
     @cached_property
     def _evpn_vlan_aware_bundles(self) -> bool:
-        return default(get(self._hostvars, "vxlan_vlan_aware_bundles"), get(self._hostvars, "evpn_vlan_aware_bundles"), False)
+        return default(get(self._hostvars, "evpn_vlan_aware_bundles"), False)
 
     @cached_property
     def _router_bgp_vlan_aware_bundles(self) -> list | None:
