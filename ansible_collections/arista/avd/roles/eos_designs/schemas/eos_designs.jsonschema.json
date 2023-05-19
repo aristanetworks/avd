@@ -1371,13 +1371,13 @@
         "type": "string",
         "description": "IPv6_network/Mask"
       },
-      "title": "IPv6 Mgmt Destination Networks"
+      "title": "IPv6 Management Destination Networks"
     },
     "ipv6_mgmt_gateway": {
       "type": "string",
       "format": "ipv6",
       "description": "OOB Management interface gateway in IPv6 format.\nUsed as next-hop for default gateway or static routes defined under 'ipv6_mgmt_destination_networks'",
-      "title": "IPv6 Mgmt Gateway"
+      "title": "IPv6 Management Gateway"
     },
     "is_deployed": {
       "description": "Is device already deployed in the fabric\nWhen set to false, interfaces toward this device may be shutdown depending on the `shutdown_interfaces_towards_undeployed_peers` setting.\nFurthermore `eos_config_deploy_cvp` will not attempt to move or apply configurations to the device.\n",
