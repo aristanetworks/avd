@@ -434,10 +434,10 @@ spine:
     loopback_ipv4_pool: 10.255.0.0/27 # (3)!
     bgp_as: 65100 # (4)!
 
-  nodes: # (6)!
+  nodes: # (5)!
     dc1-spine1:
-      id: 1 # (7)!
-      mgmt_ip: 172.16.1.11/24 # (8)!
+      id: 1 # (6)!
+      mgmt_ip: 172.16.1.11/24 # (7)!
 
     dc1-spine2:
       id: 2
