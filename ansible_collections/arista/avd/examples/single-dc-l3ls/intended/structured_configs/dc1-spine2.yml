@@ -119,12 +119,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-<<<<<<< HEAD
 - name: Ethernet1
   peer: dc1-leaf1a
-=======
-- peer: dc1-leaf1a
->>>>>>> 5ab47d831... Updated
   peer_interface: Ethernet2
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-LEAF1A_Ethernet2
@@ -132,13 +128,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.255.255.2/31
-<<<<<<< HEAD
 - name: Ethernet2
   peer: dc1-leaf1b
-=======
-  name: Ethernet1
-- peer: dc1-leaf1b
->>>>>>> 5ab47d831... Updated
   peer_interface: Ethernet2
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-LEAF1B_Ethernet2
@@ -146,13 +137,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.255.255.6/31
-<<<<<<< HEAD
 - name: Ethernet3
   peer: dc1-leaf2a
-=======
-  name: Ethernet2
-- peer: dc1-leaf2a
->>>>>>> 5ab47d831... Updated
   peer_interface: Ethernet2
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-LEAF2A_Ethernet2
@@ -160,13 +146,8 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.255.255.10/31
-<<<<<<< HEAD
 - name: Ethernet4
   peer: dc1-leaf2b
-=======
-  name: Ethernet3
-- peer: dc1-leaf2b
->>>>>>> 5ab47d831... Updated
   peer_interface: Ethernet2
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-LEAF2B_Ethernet2
@@ -174,10 +155,6 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.255.255.14/31
-<<<<<<< HEAD
-=======
-  name: Ethernet4
->>>>>>> 5ab47d831... Updated
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

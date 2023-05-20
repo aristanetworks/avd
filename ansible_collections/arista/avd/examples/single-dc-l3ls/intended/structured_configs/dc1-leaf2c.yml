@@ -51,36 +51,22 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-<<<<<<< HEAD
 - name: Ethernet1
   peer: dc1-leaf2a
-=======
-- peer: dc1-leaf2a
->>>>>>> 5ab47d831... Updated
   peer_interface: Ethernet8
   peer_type: l3leaf
   description: DC1-LEAF2A_Ethernet8
   shutdown: false
-<<<<<<< HEAD
   type: port-channel-member
   channel_group:
     id: 1
     mode: active
 - name: Ethernet2
   peer: dc1-leaf2b
-=======
-  type: switched
-  channel_group:
-    id: 1
-    mode: active
-  name: Ethernet1
-- peer: dc1-leaf2b
->>>>>>> 5ab47d831... Updated
   peer_interface: Ethernet8
   peer_type: l3leaf
   description: DC1-LEAF2B_Ethernet8
   shutdown: false
-<<<<<<< HEAD
   type: port-channel-member
   channel_group:
     id: 1
@@ -95,23 +81,6 @@ ethernet_interfaces:
   mode: access
   vlans: '11'
   spanning_tree_portfast: edge
-=======
-  type: switched
-  channel_group:
-    id: 1
-    mode: active
-  name: Ethernet2
-- peer: dc1-leaf2-server1
-  peer_interface: iLO
-  peer_type: server
-  description: dc1-leaf2-server1_iLO
-  type: switched
-  shutdown: false
-  mode: access
-  vlans: '11'
-  spanning_tree_portfast: edge
-  name: Ethernet5
->>>>>>> 5ab47d831... Updated
 port_channel_interfaces:
 - name: Port-Channel1
   description: DC1_L3_LEAF2_Po8

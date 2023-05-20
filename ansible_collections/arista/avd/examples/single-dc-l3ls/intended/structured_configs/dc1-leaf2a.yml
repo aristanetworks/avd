@@ -210,7 +210,6 @@ management_api_http:
   - name: MGMT
   enable_https: true
 vlans:
-<<<<<<< HEAD
 - id: 4093
   tenant: system
   name: LEAF_PEER_L3
@@ -221,18 +220,6 @@ vlans:
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-=======
-- tenant: system
-  name: LEAF_PEER_L3
-  trunk_groups:
-  - LEAF_PEER_L3
-  id: 4093
-- tenant: system
-  name: MLAG_PEER
-  trunk_groups:
-  - MLAG
-  id: 4094
->>>>>>> 5ab47d831... Updated
 - id: 11
   name: VRF10_VLAN11
   tenant: TENANT1
@@ -314,18 +301,10 @@ vlan_interfaces:
   mtu: 1500
   ip_address: 10.255.1.100/31
 port_channel_interfaces:
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5ab47d831... Updated
 - name: Port-Channel3
   description: MLAG_PEER_dc1-leaf2b_Po3
   type: switched
   shutdown: false
-<<<<<<< HEAD
-=======
-  vlans: 2-4094
->>>>>>> 5ab47d831... Updated
   mode: trunk
   trunk_groups:
   - LEAF_PEER_L3
@@ -346,7 +325,6 @@ port_channel_interfaces:
   native_vlan: 4092
   spanning_tree_portfast: edge
   mlag: 5
-<<<<<<< HEAD
 ethernet_interfaces:
 - name: Ethernet3
   peer: dc1-leaf2b
@@ -406,161 +384,6 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
-=======
-  Port-Channel3:
-    description: MLAG_PEER_dc1-leaf2b_Po3
-    type: switched
-    shutdown: false
-    vlans: 2-4094
-    mode: trunk
-    trunk_groups:
-    - LEAF_PEER_L3
-    - MLAG
-  Port-Channel8:
-    description: DC1-LEAF2C_Po1
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 11-12,21-22,3401-3402
-    mlag: 8
-  Port-Channel5:
-    description: dc1-leaf2-server1_PortChannel dc1-leaf2-server1
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 11-12,21-22
-    native_vlan: 4092
-    spanning_tree_portfast: edge
-    mlag: 5
-ethernet_interfaces:
-  Ethernet3:
-    peer: dc1-leaf2b
-    peer_interface: Ethernet3
-    peer_type: mlag_peer
-    description: MLAG_PEER_dc1-leaf2b_Ethernet3
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 3
-      mode: active
-  Ethernet4:
-    peer: dc1-leaf2b
-    peer_interface: Ethernet4
-    peer_type: mlag_peer
-    description: MLAG_PEER_dc1-leaf2b_Ethernet4
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 3
-      mode: active
-  Ethernet1:
-    peer: dc1-spine1
-    peer_interface: Ethernet3
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE1_Ethernet3
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 10.255.255.9/31
-  Ethernet2:
-    peer: dc1-spine2
-    peer_interface: Ethernet3
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE2_Ethernet3
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 10.255.255.11/31
-  Ethernet8:
-    peer: dc1-leaf2c
-    peer_interface: Ethernet1
-    peer_type: l2leaf
-    description: DC1-LEAF2C_Ethernet1
-    shutdown: false
-    type: switched
-    channel_group:
-      id: 8
-      mode: active
-  Ethernet5:
-    peer: dc1-leaf2-server1
-    peer_interface: PCI1
-    peer_type: server
-    description: dc1-leaf2-server1_PCI1
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 11-12,21-22
-    native_vlan: 4092
-    spanning_tree_portfast: edge
-    channel_group:
-      id: 5
-      mode: active
->>>>>>> 40f539e32... Initial commit
-=======
-ethernet_interfaces:
-- peer: dc1-leaf2b
-  peer_interface: Ethernet3
-  peer_type: mlag_peer
-  description: MLAG_PEER_dc1-leaf2b_Ethernet3
-  type: switched
-  shutdown: false
-  channel_group:
-    id: 3
-    mode: active
-  name: Ethernet3
-- peer: dc1-leaf2b
-  peer_interface: Ethernet4
-  peer_type: mlag_peer
-  description: MLAG_PEER_dc1-leaf2b_Ethernet4
-  type: switched
-  shutdown: false
-  channel_group:
-    id: 3
-    mode: active
-  name: Ethernet4
-- peer: dc1-spine1
-  peer_interface: Ethernet3
-  peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE1_Ethernet3
-  shutdown: false
-  mtu: 1500
-  type: routed
-  ip_address: 10.255.255.9/31
-  name: Ethernet1
-- peer: dc1-spine2
-  peer_interface: Ethernet3
-  peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE2_Ethernet3
-  shutdown: false
-  mtu: 1500
-  type: routed
-  ip_address: 10.255.255.11/31
-  name: Ethernet2
-- peer: dc1-leaf2c
-  peer_interface: Ethernet1
-  peer_type: l2leaf
-  description: DC1-LEAF2C_Ethernet1
-  shutdown: false
-  type: switched
-  channel_group:
-    id: 8
-    mode: active
-  name: Ethernet8
-- peer: dc1-leaf2-server1
-  peer_interface: PCI1
-  peer_type: server
-  description: dc1-leaf2-server1_PCI1
-  type: switched
-  shutdown: false
-  mode: trunk
-  vlans: 11-12,21-22
-  native_vlan: 4092
-  spanning_tree_portfast: edge
-  channel_group:
-    id: 5
-    mode: active
-  name: Ethernet5
->>>>>>> 5ab47d831... Updated
 mlag_configuration:
   domain_id: DC1_L3_LEAF2
   local_interface: Vlan4094
