@@ -470,13 +470,6 @@ l3leaf:
     virtual_router_mac_address: 00:1c:73:00:00:99 # (11)!
     spanning_tree_priority: 4096 # (12)!
     spanning_tree_mode: mstp # (13)!
-=======
-      - graceful-restart restart-time 300
-      - graceful-restart
-    virtual_router_mac_address: 00:1c:73:00:00:99 # (9)!
-    spanning_tree_priority: 4096 # (10)!
-    spanning_tree_mode: mstp # (11)!
->>>>>>> 5ab47d831... Updated
 
   node_groups: # (12)!
     DC1_L3_LEAF1:
