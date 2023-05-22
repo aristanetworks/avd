@@ -71,7 +71,7 @@ def ospf_simple_decrypt(password: str, key: str) -> str:
 OSPF_MESSAGE_DIGEST_HASH_ALGORITHMS = ["md5", "sha1", "sha256", "sha384", "sha512"]
 
 
-def ospf_message_digest_encrypt(password: str, key: str, hash_algorithm: str | None = None, key_id: str | None = None) -> str:
+def ospf_message_digest_encrypt(password: str, key: str, hash_algorithm: str = None, key_id: str = None) -> str:
     """
     Encrypt a password for Message Digest Keys
 
@@ -95,7 +95,7 @@ def ospf_message_digest_encrypt(password: str, key: str, hash_algorithm: str | N
     return cbc_encrypt(key_b, data).decode()
 
 
-def ospf_message_digest_decrypt(password: str, key: str, hash_algorithm: str | None = None, key_id: str | None = None) -> str:
+def ospf_message_digest_decrypt(password: str, key: str, hash_algorithm: str = None, key_id: str = None) -> str:
     """
     Decrypt a password for Message Digest Keys
 
