@@ -4,8 +4,6 @@
 type: dict
 keys:
   core_interfaces:
-    documentation_options:
-      filename: Core Interfaces
     type: dict
     $ref: "#/$defs/l3_edge"
     description: |

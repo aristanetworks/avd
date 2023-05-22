@@ -1,11 +1,17 @@
 router_bgp:
   as: '65105'
   router_id: 192.168.255.7
-  bgp_defaults:
-  - maximum-paths 4 ecmp 4
   bgp:
     default:
       ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -652,7 +658,7 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_EVPN-MULTICAST-SPINE1_Ethernet5
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 172.31.255.9/31
   pim:

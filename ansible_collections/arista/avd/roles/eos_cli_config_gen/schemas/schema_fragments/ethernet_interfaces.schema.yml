@@ -4,8 +4,6 @@
 type: dict
 keys:
   ethernet_interfaces:
-    documentation_options:
-      filename: data_model/Interfaces
     type: list
     primary_key: name
     convert_types:
@@ -63,7 +61,7 @@ keys:
           keys:
             trunk:
               type: str
-              valid_values: ["tagged", "untagged"]
+              valid_values: ["tagged", "tagged phone", "untagged", "untagged phone"]
             vlan:
               type: int
               min: 1

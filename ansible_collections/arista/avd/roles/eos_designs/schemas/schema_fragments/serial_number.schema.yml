@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  serial_number:
+    description: |
+      Serial Number of the device.
+      Used for documentation purpose in the fabric documentation as can also be used by the 'eos_config_deploy_cvp' role.
+      "serial_number" can also be set directly under "Fabric Topology".
+      If both are set, the setting under "Fabric Topology" takes precedence.
+    type: str
+    convert_types:
+      - int

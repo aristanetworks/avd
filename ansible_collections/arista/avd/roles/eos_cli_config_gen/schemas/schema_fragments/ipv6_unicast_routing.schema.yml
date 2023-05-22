@@ -4,6 +4,4 @@
 type: dict
 keys:
   ipv6_unicast_routing:
-    documentation_options:
-      filename: data_model/Routing
     type: bool

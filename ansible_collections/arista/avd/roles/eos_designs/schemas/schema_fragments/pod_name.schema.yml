@@ -4,9 +4,6 @@
 type: dict
 keys:
   pod_name:
-    documentation_options:
-      filename: Fabric Topology
-      table: Topology Variables
     description: |
       POD Name, only used in Fabric Documentation (Optional), fallback to dc_name and then to fabric_name.
       Recommended to be common between Spines and Leafs within a POD (One l3ls topology).

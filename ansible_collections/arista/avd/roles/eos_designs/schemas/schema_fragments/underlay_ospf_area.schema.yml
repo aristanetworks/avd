@@ -4,9 +4,6 @@
 type: dict
 keys:
   underlay_ospf_area:
-    documentation_options:
-      filename: Fabric Variables
-      table: OSPF Settings
     type: str
     convert_types:
       - int

@@ -4,9 +4,6 @@
 type: dict
 keys:
   underlay_rfc5549:
-    documentation_options:
-      filename: Fabric Variables
-      table: IPv6 Underlay Settings
     description: |
       Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered
       Requires "underlay_routing_protocol: ebgp"

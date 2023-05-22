@@ -1,11 +1,17 @@
 router_bgp:
   as: '65200'
   router_id: 10.255.0.1
-  bgp_defaults:
-  - maximum-paths 4 ecmp 4
   bgp:
     default:
       ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -110,7 +116,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_PTP-TESTS-LEAF1_Ethernet1
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ptp:
     announce:
@@ -128,7 +134,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_PTP-TESTS-LEAF1_Ethernet2
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ptp:
     announce:
@@ -146,7 +152,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_PTP-TESTS-LEAF2_Ethernet1
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ptp:
     announce:
@@ -164,7 +170,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_PTP-TESTS-LEAF2_Ethernet2
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ptp:
     announce:
@@ -183,7 +189,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_ptp-tests-spine2_Ethernet6
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ptp:
     announce:
       interval: 0
@@ -200,7 +206,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_ptp-tests-spine2_Ethernet7
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ptp:
     announce:
       interval: 0
@@ -217,7 +223,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_ptp-tests-spine2_Ethernet8
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ptp:
     announce:
       interval: 0
@@ -234,7 +240,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_ptp-tests-spine2_Ethernet9
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ptp:
     announce:
       interval: 0

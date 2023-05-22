@@ -100,11 +100,11 @@ class AvdToDocumentationSchemaConverter:
         filenames = self._get_filenames(schema)
 
         for filename in filenames:
-            output[filename] = {"tables": self.build_tables(filename, schema)}
+            output[filename] = {"tables": self.build_tables(schema=schema, filter_filename=filename)}
 
         return output
 
-    def build_tables(self, filename: str, schema: dict):
+    def build_tables(self, schema: dict, filter_filename: str = None):
         tables = self._get_tables(schema)
 
         # Skip the default table, since we want a unique table per root key if table is not set.
@@ -114,7 +114,7 @@ class AvdToDocumentationSchemaConverter:
         output = []
         # Build tables for keys where "documentation_options.table" is set in their schema
         for table in tables:
-            built_table = self.build_table(table, filename, schema)
+            built_table = self.build_table(table=table, schema=schema, filter_filename=filter_filename)
             # Only append if the table contain rows
             if built_table["table"]:
                 output.append(built_table)
@@ -123,14 +123,14 @@ class AvdToDocumentationSchemaConverter:
         schema_keys = self._get_keys(schema)
         for key, childschema in schema_keys.items():
             table_schema = {"keys": {key: childschema}}
-            built_table = self.build_table(DEFAULT_TABLE, filename, table_schema)
+            built_table = self.build_table(table=DEFAULT_TABLE, schema=table_schema, filter_filename=filter_filename)
             # Only append if the table contain rows
             if built_table["table"]:
                 output.append(built_table)
 
         return output
 
-    def build_table(self, table: str, filename: str, schema: dict):
+    def build_table(self, table: str, schema: dict, filter_filename: str = None):
         built_table = {}
 
         if table == DEFAULT_TABLE:
@@ -148,7 +148,7 @@ class AvdToDocumentationSchemaConverter:
         built_table["table"] = []
         built_table["yaml"] = []
         for key, childschema in schema_keys.items():
-            if filename not in self._get_filenames(childschema):
+            if filter_filename is not None and filter_filename not in self._get_filenames(childschema):
                 # Skip key if none of the underlying keys have the relevant filename
                 continue
             if table not in self._get_tables(childschema):
@@ -206,6 +206,10 @@ class AvdToDocumentationSchemaConverter:
     def build_yaml_row(self, var_name: str, schema: dict, indentation: int, table: str, first_list_item_key: bool = False):
         output = []
 
+        deprecation_label = get_deprecation(schema)[0]
+        if deprecation_label == "removed":
+            return output
+
         row_indentation = " " * indentation
         if first_list_item_key:
             # Make an indentation of "    " into "  - " to show this is a list item in YAML format
@@ -213,15 +217,9 @@ class AvdToDocumentationSchemaConverter:
 
         row = f"{row_indentation}{var_name}:"
         var_type = schema.get("type")
-        if var_type not in ["list", "dict"]:
-            row = f"{row} <{var_type}>"
 
-        output.append(row)
-
-        schema_keys = self._get_keys(schema)
-        schema_items = schema.get("items")
-
-        if schema_keys:
+        if var_type == "dict" and (schema_keys := self._get_keys(schema)):
+            output.append(row)
             for key, childschema in schema_keys.items():
                 if table not in self._get_tables(childschema):
                     # Skip key if none of the underlying keys have the relevant table
@@ -234,9 +232,10 @@ class AvdToDocumentationSchemaConverter:
                     table=table,
                 )
                 output.extend(rows)
-        elif schema_items:
+        elif var_type == "list" and (schema_items := schema.get("items")):
+            output.append(row)
             schema_items_type = schema_items.get("type")
-            if schema_items_type == "dict":
+            if schema_items_type == "dict" and "keys" in schema_items:
                 schema_keys = self._get_keys(schema_items)
                 first = True
                 for key, childschema in schema_keys.items():
@@ -257,6 +256,9 @@ class AvdToDocumentationSchemaConverter:
                 row_indentation = " " * indentation
                 row = f"{row_indentation}  - <{schema_items_type}>"
                 output.append(row)
+        else:
+            row = f"{row} <{var_type}>"
+            output.append(row)
 
         return output
 
@@ -399,50 +401,48 @@ class AvdToDocumentationSchemaConverter:
             return "<br>".join(descriptions)
         return None
 
-    def _get_tables(self, schema: dict):
-        table = schema.get("documentation_options", {}).get("table", DEFAULT_TABLE)
-        tables = [table]
+    def _get_tables(self, schema: dict, parent_table: str = DEFAULT_TABLE):
+        """
+        Get list of tables recursively for this schema and all childschemas.
+        Handles inheritance by accepting the parent_table argument which will be used as the default table.
+        """
+        table = schema.setdefault("documentation_options", {}).setdefault("table", parent_table)
+        tables = {table}
 
-        # Only check for table on childschemas if the parent is set to default.
-        # This ensures that all keys below will inherit the parent setting
-        if table == DEFAULT_TABLE:
-            if "keys" in schema:
-                for key, childschema in schema["keys"].items():
-                    # tables.extend(self._get_tables(childschema, default_table))
-                    tables.extend(self._get_tables(childschema))
+        if "keys" in schema:
+            for key, childschema in schema["keys"].items():
+                tables.update(self._get_tables(childschema, parent_table=table))
 
-            if "dynamic_keys" in schema:
-                for key, childschema in schema["dynamic_keys"].items():
-                    # tables.extend(self._get_tables(childschema, default_table))
-                    tables.extend(self._get_tables(childschema))
+        if "dynamic_keys" in schema:
+            for key, childschema in schema["dynamic_keys"].items():
+                tables.update(self._get_tables(childschema, parent_table=table))
 
-            if "items" in schema:
-                # tables.extend(self._get_tables(schema["items"], default_table))
-                tables.extend(self._get_tables(schema["items"]))
+        if "items" in schema:
+            tables.update(self._get_tables(schema["items"], parent_table=table))
 
-        # Return list of unique tables
-        return list(set(tables))
+        # Return sorted list of unique tables
+        return sorted(tables)
 
-    def _get_filenames(self, schema: dict):
-        filename = schema.get("documentation_options", {}).get("filename", self._default_filename)
-        filenames = [filename]
+    def _get_filenames(self, schema: dict, parent_filename: str = None):
+        if parent_filename is None:
+            parent_filename = self._default_filename
 
-        # Only check for filename on childschemas if the parent is set to default.
-        # This ensures that all keys below will inherit the parent setting
-        if filename == self._default_filename:
-            if "keys" in schema:
-                for key, childschema in schema["keys"].items():
-                    filenames.extend(self._get_filenames(childschema))
+        filename = schema.setdefault("documentation_options", {}).setdefault("filename", parent_filename)
+        filenames = {filename}
 
-            if "dynamic_keys" in schema:
-                for key, childschema in schema["dynamic_keys"].items():
-                    filenames.extend(self._get_filenames(childschema))
+        if "keys" in schema:
+            for key, childschema in schema["keys"].items():
+                filenames.update(self._get_filenames(childschema, parent_filename=filename))
 
-            if "items" in schema:
-                filenames.extend(self._get_filenames(schema["items"]))
+        if "dynamic_keys" in schema:
+            for key, childschema in schema["dynamic_keys"].items():
+                filenames.update(self._get_filenames(childschema, parent_filename=filename))
 
-        # Return list of unique tables
-        return list(set(filenames))
+        if "items" in schema:
+            filenames.update(self._get_filenames(schema["items"], parent_filename=filename))
+
+        # Return sorted list of unique filenames
+        return sorted(filenames)
 
     def _get_keys(self, schema: dict):
         keys = schema.get("keys", {})

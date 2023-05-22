@@ -28,7 +28,7 @@ event_handlers:
     regex: EVPN-3-BLACKLISTED_DUPLICATE_MAC
     asynchronous: true
 
-# Testing with inline jinja - targeting base.py loaded in yaml_templates_to_facts.
+# Testing with inline jinja - targeting base.py loaded in eos_designs_structured_config.
 # Since base.py is not performing any templating, the vars must be templated before handed over to the python class.
 template_timezone: "correctly_templated_timezone"
 timezone: "{{ template_timezone }}"
@@ -40,7 +40,7 @@ mac_address_table:
 # Testing custom_structured_configuration setting a dict key from inline jinja with switch.x facts.
 # Rare customer use case, but known to be in the field, so we should make sure this does not break.
 #
-# Unless switch.x is available in hostvars when yaml_templates_to_facts run, this will _overwrite_ the
+# Unless switch.x is available in hostvars when eos_designs_structured_config run, this will _overwrite_ the
 # dict (aging_time: 42 will disappear), since the unresolved jinja will be seen as a string,
 # so combine is not possible.
 #

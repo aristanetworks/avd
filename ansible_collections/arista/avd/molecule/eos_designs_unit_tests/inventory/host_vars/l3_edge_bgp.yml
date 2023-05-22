@@ -14,7 +14,8 @@ l3_edge:
       speed: "forced 10000full"
       mtu: 2000
       bfd: true
-      ptp_enable: true
+      ptp:
+        enabled: true
       qos_profile: TEST-QOS-PROFILE
       macsec_profile: TEST-MACSEC-PROFILE
       raw_eos_cli: |

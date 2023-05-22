@@ -1,11 +1,17 @@
 router_bgp:
   as: '65161'
   router_id: 192.168.255.36
-  bgp_defaults:
-  - maximum-paths 4 ecmp 4
   bgp:
     default:
       ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: EVPN-OVERLAY-PEERS
     type: evpn
@@ -112,7 +118,6 @@ port_channel_interfaces:
   description: MLAG_PEER_MLAG-OSPF-L3LEAF1B_Po5
   type: switched
   shutdown: false
-  vlans: 2-4094
   mode: trunk
   trunk_groups:
   - LEAF_PEER_L3

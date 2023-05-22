@@ -4,8 +4,5 @@
 type: dict
 keys:
   terminattr_disable_aaa:
-    documentation_options:
-      filename: Management Settings
-      table: CloudVision Settings
     type: bool
     default: False

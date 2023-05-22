@@ -4,8 +4,5 @@
 type: dict
 keys:
   underlay_ospf_bfd_enable:
-    documentation_options:
-      filename: Fabric Variables
-      table: OSPF Settings
     type: bool
     default: false

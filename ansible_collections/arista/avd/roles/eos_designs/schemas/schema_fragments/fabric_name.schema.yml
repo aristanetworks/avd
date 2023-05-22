@@ -4,9 +4,6 @@
 type: dict
 keys:
   fabric_name:
-    documentation_options:
-      filename: Fabric Topology
-      table: Topology Variables
     description: Fabric Name, required to match Ansible Group name covering all devices in the Fabric, **must** be an inventory group name.
     type: str
     required: true

@@ -4,13 +4,10 @@
 type: dict
 keys:
   p2p_uplinks_mtu:
-    documentation_options:
-      filename: Fabric Variables
-      table: Uplinks Settings
     description: Point to Point Links MTU
     type: int
     convert_types:
       - str
     min: 68
     max: 65535
-    default: 9000
+    default: 9214
