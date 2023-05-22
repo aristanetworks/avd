@@ -441,7 +441,6 @@ If you want to push to switches in the entire fabric using CloudVision and your 
         configlets_prefix: 'AVD'
         execute_tasks: false
         state: present
-        cv_collection: v3
 ```
 
 You would execute it using the same command:

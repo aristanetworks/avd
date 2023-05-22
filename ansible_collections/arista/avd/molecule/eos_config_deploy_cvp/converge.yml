@@ -30,4 +30,4 @@
         device_filter: 'DC1'
         execute_tasks: false
         state: present
-        cv_collection: v1
+        cv_collection: v3
