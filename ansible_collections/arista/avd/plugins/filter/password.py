@@ -1,8 +1,6 @@
 """
 Encrypt / Decrypt filters
 """
-from __future__ import annotations
-
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.password_utils import cbc_decrypt, cbc_encrypt
 
