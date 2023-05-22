@@ -4889,6 +4889,7 @@ keys:
               type: str
       vrfs:
         type: list
+        primary_key: name
         items:
           type: dict
           keys:
@@ -9458,6 +9459,7 @@ keys:
                             - str
       vrfs:
         type: list
+        primary_key: name
         items:
           type: dict
           keys:
@@ -9832,12 +9834,14 @@ keys:
                         - str
       vrfs:
         type: list
+        primary_key: name
         items:
           type: dict
           keys:
             name:
               type: str
               description: VRF Name
+              required: true
             ipv4:
               type: dict
               keys:
@@ -10371,6 +10375,7 @@ keys:
                   default: true
       vrfs:
         type: list
+        primary_key: name
         items:
           type: dict
           keys:
