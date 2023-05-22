@@ -8,7 +8,7 @@ The **eos_designs** role:
 
 - Enables network engineers to deploy Arista Leaf & Spine fabrics with underlay and overlay network services effectively and with consistency.
 - Designed to be extended easily, leveraging a ***"stackable template architecture."***
-  - Enabled by the [yaml_template_to_facts](../../plugins/README.md#yaml-templates-to-facts) action plugin.
+  - Enabled by the [eos_designs_custom_templates](docs/Input%20Variables.md#eos_designs_custom_templates) data model.
 - Designed to be used with the [eos_cli_config_gen](../eos_cli_config_gen/README.md) role to generate a complete switch configuration and applied using a config replace strategy with either
   - [eos_config_deploy_eapi](../eos_config_deploy_eapi/README.md) role.
   - [eos_config_deploy_cvp](../eos_config_deploy_cvp/README.md)  role.
@@ -101,7 +101,7 @@ Across all designs, the following functionality is provided:
 | L3 + OSPF | L2 | Arbitrary or leaf-spine |
 | L3 + ISIS | L2 | Arbitrary or leaf-spine |
 
-### (BETA) MPLS Core with MPLS EVPN, VPN-IPv4, VPN-IPv6
+### MPLS Core with MPLS EVPN, VPN-IPv4, VPN-IPv6
 
 | Underlay | Overlay | Topology |
 | -------- | ------- | -------- |
@@ -114,9 +114,9 @@ Across all designs, the following functionality is provided:
 
 Requirements are located here: [avd-requirements](../../README.md#Requirements)
 
-## Role Variables
+## Input Variables
 
-The role variables are documented inline within YAML formatted output with: `< >`. Some variables are required, while others are optional. Default values are stored in the role defaults [main.yml](https://github.com/aristanetworks/ansible-avd/tree/devel/ansible_collections/arista/avd/roles/eos_designs/defaults) file.
+The role input variables are documented in the [Input Variables](docs/Input%20Variables.md) section.
 
 Role variables are grouped by configuration elements and are typically stored in different group_vars files.
 
@@ -133,7 +133,7 @@ However, because vEOS-LAB implements a virtual data plane, there are known cavea
 **Variables adjustments required for vEOS-LAB:**
 
 ```yaml
-# Update p2p mtu 9000 -> 1500, MTU 9000 not supported in vEOS-LAB.
+# Update p2p_uplinks_mtu 9214 -> 1500, MTU 9000 not supported in vEOS-LAB.
 p2p_uplinks_mtu: 1500
 
 # Adjust default bfd values, to avoid high CPU.

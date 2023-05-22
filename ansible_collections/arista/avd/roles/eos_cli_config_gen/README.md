@@ -38,8 +38,7 @@ Requirements are located here: [avd-requirements](../../README.md#Requirements)
 
 ## Input Variables
 
-- The input variables are documented in the [Data Model](docs/data_model/ACLs.md) section.
-- Variables are organized by subject. For example, `AAA` input data is listed under `Authentication`.
+- The input variables are documented in the [Input Variables](docs/Input Variables.md) section.
 - Available features and variables may vary by platforms, refer to documentation on arista.com for specifics.
 - All values are optional.
 
