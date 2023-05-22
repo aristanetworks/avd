@@ -68,7 +68,6 @@ interface Management1
 
 ### SSL profile test1-chain-cert Certificates Summary
 
-
 | Chain Certificates | Requirement |
 | ------------------ | ----------- |
 | test-chain-cert1.crt, test-chain-cert2.crt | Basic Constraint CA |
@@ -80,7 +79,6 @@ interface Management1
 | test-trust1.crt, test-trust2.crt | Basic Constraint CA | Ignore Expiry Date | - |
 
 ### SSL profile test2-chain-cert Certificates Summary
-
 
 | Chain Certificates | Requirement |
 | ------------------ | ----------- |

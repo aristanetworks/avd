@@ -43,8 +43,8 @@
 {%         for ssl_profile in ssl_profiles_certs | arista.avd.natural_sort('name') %}
 
 ### SSL profile {{ ssl_profile.name }} Certificates Summary
-
 {%             if ssl_profile.trust_certificate is arista.avd.defined %}
+
 | Trust Certificates | Requirement | Policy | System |
 | ------------------ | ----------- | ------ | ------ |
 {%                 set trust_certs = ssl_profile.trust_certificate.certificates | arista.avd.default('-') | join(', ') %}

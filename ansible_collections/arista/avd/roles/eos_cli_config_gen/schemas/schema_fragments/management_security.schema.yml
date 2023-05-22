@@ -61,10 +61,14 @@ keys:
                       type: bool
                     hostname_fqdn:
                       type: bool
+                      description: |
+                        Enforce hostname to be FQDN without wildcard.
                 policy_expiry_date_ignore:
                   type: bool
                 system:
                   type: bool
+                  description: |
+                    Use system-supplied trust certificates.
             chain_certificate:
               type: dict
               keys:

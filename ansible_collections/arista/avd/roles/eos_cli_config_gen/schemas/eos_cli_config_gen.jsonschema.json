@@ -7473,6 +7473,7 @@
                       },
                       "hostname_fqdn": {
                         "type": "boolean",
+                        "description": "Enforce hostname to be FQDN without wildcard.\n",
                         "title": "Hostname Fqdn"
                       }
                     },
@@ -7488,6 +7489,7 @@
                   },
                   "system": {
                     "type": "boolean",
+                    "description": "Use system-supplied trust certificates.\n",
                     "title": "System"
                   }
                 },
