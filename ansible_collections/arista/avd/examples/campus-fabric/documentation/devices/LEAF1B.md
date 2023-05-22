@@ -318,8 +318,8 @@ vlan 4094
 | Ethernet47 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
 | Ethernet48 |  IDF1 Standard Port | trunk phone | - | 110 | - | - |
 | Ethernet51 | SPINE2_Ethernet1 | *trunk | *10,110,120,130 | *- | *- | 51 |
-| Ethernet53 | MLAG_PEER_LEAF1A_Ethernet53 | *trunk | *2-4094 | *- | *['MLAG'] | 53 |
-| Ethernet54 | MLAG_PEER_LEAF1A_Ethernet54 | *trunk | *2-4094 | *- | *['MLAG'] | 53 |
+| Ethernet53 | MLAG_PEER_LEAF1A_Ethernet53 | *trunk | *- | *- | *['MLAG'] | 53 |
+| Ethernet54 | MLAG_PEER_LEAF1A_Ethernet54 | *trunk | *- | *- | *['MLAG'] | 53 |
 
 *Inherited from Port-Channel Interface
 
@@ -1312,7 +1312,7 @@ interface Ethernet54
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel51 | SPINES_Po1 | switched | trunk | 10,110,120,130 | - | - | - | - | 51 | - |
-| Port-Channel53 | MLAG_PEER_LEAF1A_Po53 | switched | trunk | 2-4094 | - | ['MLAG'] | - | - | - | - |
+| Port-Channel53 | MLAG_PEER_LEAF1A_Po53 | switched | trunk | - | - | ['MLAG'] | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -1330,7 +1330,6 @@ interface Port-Channel53
    description MLAG_PEER_LEAF1A_Po53
    no shutdown
    switchport
-   switchport trunk allowed vlan 2-4094
    switchport mode trunk
    switchport trunk group MLAG
 ```

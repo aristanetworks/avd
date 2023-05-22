@@ -1,13 +1,19 @@
 router_bgp:
   as: '65001'
   router_id: 192.168.255.114
-  bgp_defaults:
-  - maximum-paths 4 ecmp 4
   bgp:
     default:
       ipv4_unicast: false
     bestpath:
       d_path: true
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: MPLS-OVERLAY-PEERS
     type: mpls

@@ -4,8 +4,6 @@
 type: dict
 keys:
   vlan_internal_order:
-    documentation_options:
-      filename: data_model/VLAN Internal Order
     type: dict
     keys:
       allocation:

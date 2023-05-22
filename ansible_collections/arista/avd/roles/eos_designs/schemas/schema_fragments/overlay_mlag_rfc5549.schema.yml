@@ -4,9 +4,6 @@
 type: dict
 keys:
   overlay_mlag_rfc5549:
-    documentation_options:
-      filename: Fabric Variables
-      table: IPv6 Underlay Settings
     description: |
       IPv6 Unnumbered for MLAG iBGP connections.
       Requires "underlay_rfc5549: true".

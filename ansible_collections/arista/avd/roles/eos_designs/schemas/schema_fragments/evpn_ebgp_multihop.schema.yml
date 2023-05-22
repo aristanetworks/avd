@@ -4,9 +4,6 @@
 type: dict
 keys:
   evpn_ebgp_multihop:
-    documentation_options:
-      filename: Fabric Variables
-      table: EVPN Settings
     description: |
       Default of 3, the recommended value for a 3 stage spine and leaf topology.
       Set to a higher value to allow for very large and complex topologies.

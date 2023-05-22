@@ -3,8 +3,6 @@ type: dict
 allow_other_keys: true
 keys:
   aaa_accounting:
-    documentation_options:
-      filename: data_model/Authentication
     type: dict
     keys:
       exec:
@@ -112,8 +110,6 @@ keys:
             type: list
             description: Deprecated and removed key from AVD 2.x
   aaa_authentication:
-    documentation_options:
-      filename: data_model/Authentication
     type: dict
     keys:
       login:
@@ -209,8 +205,6 @@ keys:
                 convert_types:
                 - str
   aaa_authorization:
-    documentation_options:
-      filename: data_model/Authentication
     type: dict
     keys:
       policy:
@@ -284,8 +278,6 @@ keys:
 
                     - "group tacacs+ group MYGROUP local"'
   aaa_root:
-    documentation_options:
-      filename: data_model/Authentication
     type: dict
     keys:
       secret:
@@ -294,8 +286,6 @@ keys:
           sha512_password:
             type: str
   aaa_server_groups:
-    documentation_options:
-      filename: data_model/Authentication
     type: list
     items:
       type: dict
@@ -321,8 +311,6 @@ keys:
                 type: str
                 description: VRF name
   access_lists:
-    documentation_options:
-      filename: data_model/ACLs
     type: list
     primary_key: name
     convert_types:
@@ -377,8 +365,6 @@ keys:
 
                   Example: "deny ip any any"'
   address_locking:
-    documentation_options:
-      filename: data_model/Address Locking
     type: dict
     keys:
       dhcp_servers_ipv4:
@@ -417,15 +403,11 @@ keys:
             type: bool
             description: Configure enforcement for locked IPv6 addresses
   aliases:
-    documentation_options:
-      filename: data_model/Aliases
     type: str
     description: "Multi-line string with one or more alias commands.\n\nExample:\n\n```yaml\naliases:
       |\n  alias wr copy running-config startup-config\n  alias siib show ip interface
       brief\n```"
   arp:
-    documentation_options:
-      filename: data_model/Routing
     type: dict
     keys:
       aging:
@@ -437,8 +419,6 @@ keys:
             min: 60
             max: 65535
   as_path:
-    documentation_options:
-      filename: data_model/Filters
     type: dict
     keys:
       regex_mode:
@@ -476,8 +456,6 @@ keys:
                     - incomplete
                     default: any
   banners:
-    documentation_options:
-      filename: data_model/Banners
     type: dict
     keys:
       login:
@@ -487,8 +465,6 @@ keys:
         type: str
         description: Multiline string ending with EOF on the last line
   bgp_groups:
-    documentation_options:
-      filename: data_model/Maintenance Mode
     type: list
     primary_key: name
     convert_types:
@@ -512,8 +488,6 @@ keys:
             type: str
             description: Profile Name
   boot:
-    documentation_options:
-      filename: data_model/System Boot Settings
     display_name: System Boot Settings
     description: 'Set the Aboot password
 
@@ -533,8 +507,6 @@ keys:
             description: Hashed Password
             type: str
   class_maps:
-    documentation_options:
-      filename: data_model/Quality of Service
     type: dict
     display_name: QOS Class-maps
     keys:
@@ -589,15 +561,11 @@ keys:
                   type: str
                   description: IPv6 Access-List Name
   clock:
-    documentation_options:
-      filename: data_model/Management
     type: dict
     keys:
       timezone:
         type: str
   community_lists:
-    documentation_options:
-      filename: data_model/Filters
     type: list
     primary_key: name
     convert_types:
@@ -636,8 +604,6 @@ keys:
 
             Example: "permit GSHUT 65123:123"'
   custom_templates:
-    documentation_options:
-      filename: inputs/Role Inputs
     type: list
     display_name: Extensibility with Custom Templates
     description: "- Custom templates can be added below the playbook directory.\n-
@@ -652,8 +618,6 @@ keys:
       type: str
       description: Template relative path below playbook directory
   cvx:
-    documentation_options:
-      filename: data_model/Authentication
     type: dict
     description: CVX server features are not supported on physical switches. See `management_cvx`
       for client configurations.
@@ -700,8 +664,6 @@ keys:
                 - control-plane
                 - data-plane
   daemon_terminattr:
-    documentation_options:
-      filename: data_model/Monitoring
     type: dict
     description: "You can either provide a list of IPs/FQDNs to target on-premise
       Cloudvision cluster or use DNS name for your Cloudvision as a Service instance.\nStreaming
@@ -1012,8 +974,6 @@ keys:
           '
         type: str
   daemons:
-    documentation_options:
-      filename: data_model/Monitoring
     type: list
     primary_key: name
     convert_types:
@@ -1036,8 +996,6 @@ keys:
           type: bool
           default: true
   dhcp_relay:
-    documentation_options:
-      filename: data_model/DHCP Relay
     type: dict
     keys:
       servers:
@@ -1048,21 +1006,15 @@ keys:
       tunnel_requests_disabled:
         type: bool
   dns_domain:
-    documentation_options:
-      filename: data_model/Management
     type: str
     description: Domain Name
   domain_list:
-    documentation_options:
-      filename: data_model/Management
     type: list
     description: Search list of DNS domains
     items:
       type: str
       description: Domain name
   dot1x:
-    documentation_options:
-      filename: data_model/Endpoint Security
     type: dict
     display_name: Global 802.1x Authentication
     keys:
@@ -1099,8 +1051,6 @@ keys:
             convert_types:
             - str
   dynamic_prefix_lists:
-    documentation_options:
-      filename: data_model/Filters
     type: list
     items:
       type: dict
@@ -1121,8 +1071,6 @@ keys:
               type: str
               description: Prefix-list name
   enable_password:
-    documentation_options:
-      filename: data_model/Authentication
     type: dict
     keys:
       hash_algorithm:
@@ -1137,14 +1085,10 @@ keys:
           By default EOS salts the password, so the simplest is to generate the hash
           on an EOS device.'
   eos_cli:
-    documentation_options:
-      filename: data_model/EOS CLI
     type: str
     description: Multiline string with EOS CLI rendered directly on the root level
       of the final EOS configuration
   eos_cli_config_gen_configuration:
-    documentation_options:
-      filename: inputs/Role Inputs
     type: dict
     keys:
       hide_passwords:
@@ -1155,8 +1099,6 @@ keys:
           '
         default: false
   eos_cli_config_gen_documentation:
-    documentation_options:
-      filename: inputs/Role Inputs
     type: dict
     keys:
       hide_passwords:
@@ -1167,8 +1109,6 @@ keys:
           '
         default: true
   errdisable:
-    documentation_options:
-      filename: data_model/Errdisable
     type: dict
     keys:
       detect:
@@ -1221,8 +1161,6 @@ keys:
             min: 30
             max: 86400
   ethernet_interfaces:
-    documentation_options:
-      filename: data_model/Interfaces
     type: list
     primary_key: name
     convert_types:
@@ -1293,7 +1231,9 @@ keys:
               type: str
               valid_values:
               - tagged
+              - tagged phone
               - untagged
+              - untagged phone
             vlan:
               type: int
               min: 1
@@ -2319,8 +2259,6 @@ keys:
           description: Multiline EOS CLI rendered directly on the ethernet interface
             in the final EOS configuration
   event_handlers:
-    documentation_options:
-      filename: data_model/Monitoring
     type: list
     description: 'Gives the ability to monitor and react to Syslog messages.
 
@@ -2377,15 +2315,11 @@ keys:
           default: false
           description: Set the action to be non-blocking.
   event_monitor:
-    documentation_options:
-      filename: data_model/Monitoring
     type: dict
     keys:
       enabled:
         type: bool
   flow_trackings:
-    documentation_options:
-      filename: data_model/Flow Tracking
     type: list
     primary_key: type
     items:
@@ -2475,8 +2409,6 @@ keys:
           type: bool
           default: false
   generate_default_config:
-    documentation_options:
-      filename: inputs/Role Inputs
     type: bool
     default: true
     description: 'The `generate_default_config` knob allows to omit default EOS configuration.
@@ -2501,13 +2433,9 @@ keys:
 
       - End of configuration delimiter'
   generate_device_documentation:
-    documentation_options:
-      filename: inputs/Role Inputs
     type: bool
     default: true
   hardware:
-    documentation_options:
-      filename: data_model/Hardware
     type: dict
     keys:
       access_list:
@@ -2536,8 +2464,6 @@ keys:
               type: str
               description: Serdes speed like "10g" or "25g"
   hardware_counters:
-    documentation_options:
-      filename: data_model/Hardware
     type: dict
     keys:
       features:
@@ -2647,8 +2573,6 @@ keys:
             units_packets:
               type: bool
   interface_defaults:
-    documentation_options:
-      filename: data_model/Interfaces
     type: dict
     keys:
       ethernet:
@@ -2661,8 +2585,6 @@ keys:
         convert_types:
         - str
   interface_groups:
-    documentation_options:
-      filename: data_model/Maintenance Mode
     type: list
     display_name: Maintenance Interface Groups
     primary_key: name
@@ -2691,8 +2613,6 @@ keys:
             type: str
             description: Name of Interface Maintenance Profile
   interface_profiles:
-    documentation_options:
-      filename: data_model/Interfaces
     type: list
     primary_key: name
     convert_types:
@@ -2713,8 +2633,6 @@ keys:
 
               Example: "switchport mode access"'
   ip_access_lists:
-    documentation_options:
-      filename: data_model/ACLs
     type: list
     primary_key: name
     convert_types:
@@ -2891,8 +2809,6 @@ keys:
                 type: str
                 description: 0x000-0xFFF VLAN mask.
   ip_access_lists_max_entries:
-    documentation_options:
-      filename: data_model/ACLs
     type: int
     convert_types:
     - str
@@ -2909,8 +2825,6 @@ keys:
       guidance. Note that other EOS features may use the same hardware resources and
       affect the supported scale.'
   ip_community_lists:
-    documentation_options:
-      filename: data_model/Filters
     type: list
     secondary_key: entries
     primary_key: name
@@ -2985,16 +2899,12 @@ keys:
 
                   If defined, a regex community-list will be configured'
   ip_dhcp_relay:
-    documentation_options:
-      filename: data_model/IP DHCP Relay
     type: dict
     keys:
       information_option:
         type: bool
         description: Insert Option-82 information
   ip_domain_lookup:
-    documentation_options:
-      filename: data_model/Management
     type: dict
     keys:
       source_interfaces:
@@ -3014,8 +2924,6 @@ keys:
             vrf:
               type: str
   ip_extcommunity_lists:
-    documentation_options:
-      filename: data_model/Filters
     type: list
     primary_key: name
     secondary_key: entries
@@ -3048,8 +2956,6 @@ keys:
 
                   Example: "65000:65000"'
   ip_extcommunity_lists_regexp:
-    documentation_options:
-      filename: data_model/Filters
     type: list
     primary_key: name
     secondary_key: entries
@@ -3080,8 +2986,6 @@ keys:
                 required: true
                 description: Regular Expression
   ip_hardware:
-    documentation_options:
-      filename: data_model/IP Hardware
     type: dict
     keys:
       fib:
@@ -3099,8 +3003,6 @@ keys:
                     - internet
                     - urpf-internet
   ip_http_client_source_interfaces:
-    documentation_options:
-      filename: data_model/Management
     type: list
     items:
       type: dict
@@ -3111,12 +3013,8 @@ keys:
         vrf:
           type: str
   ip_icmp_redirect:
-    documentation_options:
-      filename: data_model/IP ICMP Redirect
     type: bool
   ip_igmp_snooping:
-    documentation_options:
-      filename: data_model/Multicast
     type: dict
     keys:
       globally_enabled:
@@ -3237,8 +3135,6 @@ keys:
               description: Global proxy settings should be enabled before enabling
                 per-vlan
   ip_name_servers:
-    documentation_options:
-      filename: data_model/Management
     type: list
     items:
       type: dict
@@ -3257,8 +3153,6 @@ keys:
           min: 0
           max: 4
   ip_nat:
-    documentation_options:
-      filename: data_model/IP NAT
     type: dict
     keys:
       kernel_buffer_size:
@@ -3433,8 +3327,6 @@ keys:
                   max: 4294967295
                   description: in seconds
   ip_radius_source_interfaces:
-    documentation_options:
-      filename: data_model/Authentication
     type: list
     items:
       type: dict
@@ -3446,16 +3338,10 @@ keys:
           type: str
           description: VRF Name
   ip_routing:
-    documentation_options:
-      filename: data_model/Routing
     type: bool
   ip_routing_ipv6_interfaces:
-    documentation_options:
-      filename: data_model/Routing
     type: bool
   ip_ssh_client_source_interfaces:
-    documentation_options:
-      filename: data_model/Management
     type: list
     items:
       type: dict
@@ -3467,8 +3353,6 @@ keys:
           type: str
           default: default
   ip_tacacs_source_interfaces:
-    documentation_options:
-      filename: data_model/Authentication
     type: list
     display_name: IP Tacacs Source Interfaces
     items:
@@ -3481,13 +3365,9 @@ keys:
           type: str
           display_name: VRF
   ip_virtual_router_mac_address:
-    documentation_options:
-      filename: data_model/Routing
     type: str
     description: MAC address (hh:hh:hh:hh:hh:hh)
   ipv6_access_lists:
-    documentation_options:
-      filename: data_model/ACLs
     type: list
     primary_key: name
     convert_types:
@@ -3524,8 +3404,6 @@ keys:
 
                   Example: "deny ipv6 any any"'
   ipv6_hardware:
-    documentation_options:
-      filename: data_model/IPv6 Hardware
     type: dict
     keys:
       fib:
@@ -3542,12 +3420,8 @@ keys:
                     description: Pre-defined profile 'internet' or user-defined profile
                       name
   ipv6_icmp_redirect:
-    documentation_options:
-      filename: data_model/IP ICMP Redirect
     type: bool
   ipv6_prefix_lists:
-    documentation_options:
-      filename: data_model/Filters
     type: list
     primary_key: name
     convert_types:
@@ -3581,8 +3455,6 @@ keys:
 
                   Example: "permit 1b11:3a00:22b0:0082::/64 eq 128"'
   ipv6_standard_access_lists:
-    documentation_options:
-      filename: data_model/ACLs
     type: list
     primary_key: name
     convert_types:
@@ -3618,8 +3490,6 @@ keys:
 
                   Example: "deny ipv6 any any"'
   ipv6_static_routes:
-    documentation_options:
-      filename: data_model/Routing
     type: list
     items:
       type: dict
@@ -3659,12 +3529,8 @@ keys:
           min: 0
           max: 4294967295
   ipv6_unicast_routing:
-    documentation_options:
-      filename: data_model/Routing
     type: bool
   l2_protocol:
-    documentation_options:
-      filename: data_model/L2 Protocol Forwarding
     type: dict
     keys:
       forwarding_profiles:
@@ -3701,8 +3567,6 @@ keys:
                   untagged_forward:
                     type: bool
   lacp:
-    documentation_options:
-      filename: data_model/LACP
     type: dict
     description: Set Link Aggregation Control Protocol (LACP) parameters.
     keys:
@@ -3732,8 +3596,6 @@ keys:
         min: 0
         max: 65535
   link_tracking_groups:
-    documentation_options:
-      filename: data_model/Link Tracking Groups
     type: list
     primary_key: name
     convert_types:
@@ -3753,8 +3615,6 @@ keys:
           min: 0
           max: 3600
   lldp:
-    documentation_options:
-      filename: data_model/LLDP
     type: dict
     keys:
       timer:
@@ -3796,8 +3656,6 @@ keys:
       run:
         type: bool
   load_interval:
-    documentation_options:
-      filename: data_model/Monitoring
     type: dict
     keys:
       default:
@@ -3806,8 +3664,6 @@ keys:
         convert_types:
         - str
   local_users:
-    documentation_options:
-      filename: data_model/Authentication
     type: list
     primary_key: name
     convert_types:
@@ -3869,8 +3725,6 @@ keys:
           - /bin/sh
           - /sbin/nologin
   logging:
-    documentation_options:
-      filename: data_model/Monitoring
     type: dict
     keys:
       console:
@@ -4079,8 +3933,6 @@ keys:
                       valid_values:
                       - discard
   loopback_interfaces:
-    documentation_options:
-      filename: data_model/Interfaces
     type: list
     primary_key: name
     convert_types:
@@ -4153,8 +4005,6 @@ keys:
           description: EOS CLI rendered directly on the loopback interface in the
             final EOS configuration
   mac_access_lists:
-    documentation_options:
-      filename: data_model/ACLs
     type: list
     primary_key: name
     convert_types:
@@ -4180,8 +4030,6 @@ keys:
               action:
                 type: str
   mac_address_table:
-    documentation_options:
-      filename: data_model/MAC Address-table
     type: dict
     keys:
       aging_time:
@@ -4210,8 +4058,6 @@ keys:
                 convert_types:
                 - str
   mac_security:
-    documentation_options:
-      filename: data_model/MAC Security
     type: dict
     display_name: MAC Security (MACsec)
     keys:
@@ -4304,8 +4150,6 @@ keys:
                       - bypass
                       - bypass unauthorized
   maintenance:
-    documentation_options:
-      filename: data_model/Maintenance Mode
     type: dict
     display_name: Maintenance Mode
     keys:
@@ -4439,8 +4283,6 @@ keys:
                     type: str
                     description: Name of Interface Group
   management_api_gnmi:
-    documentation_options:
-      filename: data_model/Management
     type: dict
     keys:
       provider:
@@ -4576,8 +4418,6 @@ keys:
           Octa activates `eos-native` provider and it is the only provider currently
           supported by EOS.'
   management_api_http:
-    documentation_options:
-      filename: data_model/Management
     type: dict
     keys:
       enable_http:
@@ -4618,8 +4458,6 @@ keys:
             type: str
             description: Name of private key; certificate must also be specified
   management_api_models:
-    documentation_options:
-      filename: data_model/Management
     type: dict
     keys:
       providers:
@@ -4643,8 +4481,6 @@ keys:
                     type: bool
                     default: false
   management_console:
-    documentation_options:
-      filename: data_model/Management
     type: dict
     keys:
       idle_timeout:
@@ -4654,8 +4490,6 @@ keys:
         convert_types:
         - str
   management_cvx:
-    documentation_options:
-      filename: data_model/Management
     type: dict
     keys:
       shutdown:
@@ -4672,8 +4506,6 @@ keys:
         type: str
         description: VRF Name
   management_defaults:
-    documentation_options:
-      filename: data_model/Management
     type: dict
     keys:
       secret:
@@ -4685,8 +4517,6 @@ keys:
             - md5
             - sha512
   management_interfaces:
-    documentation_options:
-      filename: data_model/Management
     type: list
     primary_key: name
     convert_types:
@@ -4736,8 +4566,6 @@ keys:
           description: Multiline EOS CLI rendered directly on the management interface
             in the final EOS configuration
   management_security:
-    documentation_options:
-      filename: data_model/Management
     type: dict
     keys:
       entropy_source:
@@ -4784,8 +4612,6 @@ keys:
                 key:
                   type: str
   management_ssh:
-    documentation_options:
-      filename: data_model/Management
     type: dict
     keys:
       access_groups:
@@ -4879,8 +4705,6 @@ keys:
         type: str
         description: SSH daemon log level
   management_tech_support:
-    documentation_options:
-      filename: data_model/Management
     type: dict
     keys:
       policy_show_tech_support:
@@ -4910,8 +4734,6 @@ keys:
                   type: str
                   description: Command to include in tech-support
   match_list_input:
-    documentation_options:
-      filename: data_model/Filters
     type: dict
     display_name: Match Lists
     keys:
@@ -4947,8 +4769,6 @@ keys:
                     required: true
                     description: Regular Expression
   mcs_client:
-    documentation_options:
-      filename: data_model/MCS Client
     type: dict
     keys:
       shutdown:
@@ -4966,8 +4786,6 @@ keys:
               type: str
               description: IP or hostname
   mlag_configuration:
-    documentation_options:
-      filename: data_model/MLAG
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration
     keys:
@@ -5028,8 +4846,6 @@ keys:
         convert_types:
         - int
   monitor_connectivity:
-    documentation_options:
-      filename: data_model/Monitoring
     type: dict
     keys:
       shutdown:
@@ -5109,8 +4925,6 @@ keys:
                   url:
                     type: str
   monitor_sessions:
-    documentation_options:
-      filename: data_model/Monitoring
     type: list
     convert_types:
     - dict
@@ -5198,8 +5012,6 @@ keys:
               convert_types:
               - str
   mpls:
-    documentation_options:
-      filename: data_model/MPLS
     type: dict
     keys:
       ip:
@@ -5221,8 +5033,6 @@ keys:
       warning: true
       new_key: ip_name_servers
       remove_in_version: v5.0.0
-    documentation_options:
-      filename: data_model/Management
     type: dict
     keys:
       source:
@@ -5236,8 +5046,6 @@ keys:
         items:
           type: str
   ntp:
-    documentation_options:
-      filename: data_model/Management
     type: dict
     keys:
       local_interface:
@@ -5334,8 +5142,6 @@ keys:
         type: str
         description: List of trusted-keys as string ex. 10-12,15
   patch_panel:
-    documentation_options:
-      filename: data_model/Patch Panel
     type: dict
     keys:
       patches:
@@ -5391,8 +5197,6 @@ keys:
                       '
                     required: true
   peer_filters:
-    documentation_options:
-      filename: data_model/Filters
     type: list
     primary_key: name
     convert_types:
@@ -5426,8 +5230,6 @@ keys:
 
                   Example: "as-range 1-100 result accept"'
   platform:
-    documentation_options:
-      filename: data_model/Hardware
     type: dict
     keys:
       trident:
@@ -5477,8 +5279,6 @@ keys:
                 - ingress
                 - egress
   poe:
-    documentation_options:
-      filename: data_model/Power over Ethernet
     type: dict
     keys:
       reboot:
@@ -5506,8 +5306,6 @@ keys:
             description: PoE action for interface. By default in EOS, interface shutdown
               action is set to maintain.
   policy_maps:
-    documentation_options:
-      filename: data_model/Quality of Service
     type: dict
     keys:
       pbr:
@@ -5599,8 +5397,6 @@ keys:
                         convert_types:
                         - str
   port_channel_interfaces:
-    documentation_options:
-      filename: data_model/Interfaces
     type: list
     primary_key: name
     convert_types:
@@ -6351,8 +6147,6 @@ keys:
           description: Multiline EOS CLI rendered directly on the port-channel interface
             in the final EOS configuration
   prefix_lists:
-    documentation_options:
-      filename: data_model/Filters
     type: list
     primary_key: name
     convert_types:
@@ -6386,12 +6180,8 @@ keys:
 
                   Example: "permit 10.255.0.0/27 eq 32"'
   prompt:
-    documentation_options:
-      filename: data_model/Prompt
     type: str
   ptp:
-    documentation_options:
-      filename: data_model/PTP
     type: dict
     keys:
       mode:
@@ -6541,8 +6331,6 @@ keys:
                     convert_types:
                     - str
   qos:
-    documentation_options:
-      filename: data_model/Quality of Service
     type: dict
     keys:
       map:
@@ -6572,8 +6360,6 @@ keys:
       rewrite_dscp:
         type: bool
   qos_profiles:
-    documentation_options:
-      filename: data_model/Quality of Service
     type: list
     primary_key: name
     convert_types:
@@ -6728,18 +6514,11 @@ keys:
 
                       Example: "< rate > kbps", "1-100 percent", "< rate > pps"'
   queue_monitor_length:
-    documentation_options:
-      filename: data_model/Quality of Service
     type: dict
     keys:
       enabled:
         type: bool
-        description: '"enabled: true" will be required in AVD4.0.
-
-          In AVD3.x default is true as long as queue_monitor_length is defined and
-          not None
-
-          '
+        required: true
       default_thresholds:
         type: dict
         keys:
@@ -6767,7 +6546,7 @@ keys:
         description: Logging interval in seconds
       notifying:
         type: bool
-        description: should only be used for platforms supporting the "queue-monitor
+        description: Should only be used for platforms supporting the "queue-monitor
           length notifying" CLI
       cpu:
         type: dict
@@ -6785,8 +6564,6 @@ keys:
                 convert_types:
                 - str
   queue_monitor_streaming:
-    documentation_options:
-      filename: data_model/Quality of Service
     type: dict
     keys:
       enable:
@@ -6806,8 +6583,6 @@ keys:
       vrf:
         type: str
   radius_server:
-    documentation_options:
-      filename: data_model/Authentication
     type: dict
     keys:
       attribute_32_include_in_access_req:
@@ -6863,8 +6638,6 @@ keys:
       warning: true
       new_key: radius_server.hosts
       remove_in_version: v5.0.0
-    documentation_options:
-      filename: data_model/Authentication
     type: list
     items:
       type: dict
@@ -6878,16 +6651,12 @@ keys:
           type: str
           description: Encrypted key
   redundancy:
-    documentation_options:
-      filename: data_model/Hardware
     type: dict
     keys:
       protocol:
         type: str
         description: Redundancy Protocol
   roles:
-    documentation_options:
-      filename: data_model/Authentication
     type: list
     items:
       type: dict
@@ -6919,8 +6688,6 @@ keys:
                 type: str
                 description: Command as string
   route_maps:
-    documentation_options:
-      filename: data_model/Filters
     type: list
     primary_key: name
     convert_types:
@@ -6988,8 +6755,6 @@ keys:
                     convert_types:
                     - str
   router_bfd:
-    documentation_options:
-      filename: data_model/Routing
     type: dict
     keys:
       interval:
@@ -7048,8 +6813,6 @@ keys:
                 type: str
                 description: IPv4 address or 32 bit integer
   router_bgp:
-    documentation_options:
-      filename: data_model/Routing
     type: dict
     keys:
       as:
@@ -7065,18 +6828,21 @@ keys:
         keys:
           external_routes:
             type: int
+            required: true
             convert_types:
             - str
             min: 1
             max: 255
           internal_routes:
             type: int
+            required: true
             convert_types:
             - str
             min: 1
             max: 255
           local_routes:
             type: int
+            required: true
             convert_types:
             - str
             min: 1
@@ -7132,12 +6898,14 @@ keys:
         keys:
           paths:
             type: int
+            required: true
             convert_types:
             - str
             min: 1
             max: 600
           ecmp:
             type: int
+            required: true
             convert_types:
             - str
             min: 1
@@ -7147,8 +6915,20 @@ keys:
         keys:
           wait_for_convergence:
             type: bool
+            description: 'Disables FIB updates and route advertisement when the BGP
+              instance is initiated until the BGP convergence state is reached.
+
+              '
           wait_install:
             type: bool
+            description: 'Do not advertise reachability to a prefix until that prefix
+              has been installed in hardware.
+
+              This will eliminate any temporary black holes due to a BGP speaker advertising
+              reachability to a prefix that may not yet be installed into the forwarding
+              plane.
+
+              '
       bgp_cluster_id:
         type: str
         description: IP Address A.B.C.D
@@ -8345,6 +8125,26 @@ keys:
                     description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"
                   route_map:
                     type: str
+            updates:
+              type: dict
+              keys:
+                wait_for_convergence:
+                  type: bool
+                  description: 'Disables FIB updates and route advertisement when
+                    the BGP instance is initiated until the BGP convergence state
+                    is reached.
+
+                    '
+                wait_install:
+                  type: bool
+                  description: 'Do not advertise reachability to a prefix until that
+                    prefix has been installed in hardware.
+
+                    This will eliminate any temporary black holes due to a BGP speaker
+                    advertising reachability to a prefix that may not yet be installed
+                    into the forwarding plane.
+
+                    '
             listen_ranges:
               type: list
               description: 'Improved "listen_ranges" data model to support multiple
@@ -8582,11 +8382,426 @@ keys:
                     type: str
                   match_map:
                     type: str
+            address_family_ipv4:
+              type: dict
+              keys:
+                bgp:
+                  type: dict
+                  keys:
+                    missing_policy:
+                      type: dict
+                      keys:
+                        direction_in_action:
+                          type: str
+                          valid_values:
+                          - deny
+                          - deny-in-out
+                          - permit
+                        direction_out_action:
+                          type: str
+                          valid_values:
+                          - deny
+                          - deny-in-out
+                          - permit
+                    additional_paths:
+                      type: dict
+                      keys:
+                        install:
+                          type: bool
+                        install_ecmp_primary:
+                          type: bool
+                        receive:
+                          type: bool
+                        send:
+                          type: dict
+                          keys:
+                            any:
+                              type: bool
+                            backup:
+                              type: bool
+                            ecmp:
+                              type: bool
+                            ecmp_limit:
+                              type: int
+                              description: Amount of ECMP paths to send
+                              convert_types:
+                              - str
+                              min: 2
+                              max: 64
+                            limit:
+                              type: int
+                              description: Amount of paths to send
+                              convert_types:
+                              - str
+                              min: 2
+                              max: 64
+                neighbors:
+                  type: list
+                  primary_key: ip_address
+                  convert_types:
+                  - dict
+                  items:
+                    type: dict
+                    keys:
+                      ip_address:
+                        type: str
+                      activate:
+                        type: bool
+                      route_map_in:
+                        type: str
+                        description: Inbound route-map name
+                      route_map_out:
+                        type: str
+                        description: Outbound route-map name
+                peer_groups:
+                  type: list
+                  primary_key: name
+                  convert_types:
+                  - dict
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+                        description: Peer-group name
+                      activate:
+                        type: bool
+                      next_hop:
+                        type: dict
+                        keys:
+                          address_family_ipv6:
+                            type: dict
+                            keys:
+                              enabled:
+                                type: bool
+                                required: true
+                              originate:
+                                type: bool
+                networks:
+                  type: list
+                  primary_key: prefix
+                  convert_types:
+                  - dict
+                  items:
+                    type: dict
+                    keys:
+                      prefix:
+                        type: str
+                        description: IPv4 prefix "A.B.C.D/E"
+                      route_map:
+                        type: str
+            address_family_ipv6:
+              type: dict
+              keys:
+                bgp:
+                  type: dict
+                  keys:
+                    missing_policy:
+                      type: dict
+                      keys:
+                        direction_in_action:
+                          type: str
+                          valid_values:
+                          - deny
+                          - deny-in-out
+                          - permit
+                        direction_out_action:
+                          type: str
+                          valid_values:
+                          - deny
+                          - deny-in-out
+                          - permit
+                    additional_paths:
+                      type: dict
+                      keys:
+                        install:
+                          type: bool
+                        install_ecmp_primary:
+                          type: bool
+                        receive:
+                          type: bool
+                        send:
+                          type: dict
+                          keys:
+                            any:
+                              type: bool
+                            backup:
+                              type: bool
+                            ecmp:
+                              type: bool
+                            ecmp_limit:
+                              type: int
+                              description: Amount of ECMP paths to send
+                              convert_types:
+                              - str
+                              min: 2
+                              max: 64
+                            limit:
+                              type: int
+                              description: Amount of paths to send
+                              convert_types:
+                              - str
+                              min: 2
+                              max: 64
+                neighbors:
+                  type: list
+                  primary_key: ip_address
+                  convert_types:
+                  - dict
+                  items:
+                    type: dict
+                    keys:
+                      ip_address:
+                        type: str
+                      activate:
+                        type: bool
+                      route_map_in:
+                        type: str
+                        description: Inbound route-map name
+                      route_map_out:
+                        type: str
+                        description: Outbound route-map name
+                peer_groups:
+                  type: list
+                  primary_key: name
+                  convert_types:
+                  - dict
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+                        description: Peer-group name
+                      activate:
+                        type: bool
+                networks:
+                  type: list
+                  primary_key: prefix
+                  convert_types:
+                  - dict
+                  items:
+                    type: dict
+                    keys:
+                      prefix:
+                        type: str
+                        description: IPv6 prefix "A:B:C:D:E:F:G:H/I"
+                      route_map:
+                        type: str
+            address_family_ipv4_multicast:
+              type: dict
+              keys:
+                bgp:
+                  type: dict
+                  keys:
+                    missing_policy:
+                      type: dict
+                      keys:
+                        direction_in_action:
+                          type: str
+                          valid_values:
+                          - deny
+                          - deny-in-out
+                          - permit
+                        direction_out_action:
+                          type: str
+                          valid_values:
+                          - deny
+                          - deny-in-out
+                          - permit
+                    additional_paths:
+                      type: dict
+                      keys:
+                        receive:
+                          type: bool
+                neighbors:
+                  type: list
+                  primary_key: ip_address
+                  convert_types:
+                  - dict
+                  items:
+                    type: dict
+                    keys:
+                      ip_address:
+                        type: str
+                      activate:
+                        type: bool
+                      route_map_in:
+                        type: str
+                        description: Inbound route-map name
+                      route_map_out:
+                        type: str
+                        description: Outbound route-map name
+                peer_groups:
+                  type: list
+                  primary_key: name
+                  convert_types:
+                  - dict
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+                        description: Peer-group name
+                      activate:
+                        type: bool
+                networks:
+                  type: list
+                  primary_key: prefix
+                  convert_types:
+                  - dict
+                  items:
+                    type: dict
+                    keys:
+                      prefix:
+                        type: str
+                        description: IPv6 prefix "A.B.C.D/E"
+                      route_map:
+                        type: str
+            address_family_ipv6_multicast:
+              type: dict
+              keys:
+                bgp:
+                  type: dict
+                  keys:
+                    missing_policy:
+                      type: dict
+                      keys:
+                        direction_in_action:
+                          type: str
+                          valid_values:
+                          - deny
+                          - deny-in-out
+                          - permit
+                        direction_out_action:
+                          type: str
+                          valid_values:
+                          - deny
+                          - deny-in-out
+                          - permit
+                    additional_paths:
+                      type: dict
+                      keys:
+                        receive:
+                          type: bool
+                neighbors:
+                  type: list
+                  primary_key: ip_address
+                  convert_types:
+                  - dict
+                  items:
+                    type: dict
+                    keys:
+                      ip_address:
+                        type: str
+                      activate:
+                        type: bool
+                      route_map_in:
+                        type: str
+                        description: Inbound route-map name
+                      route_map_out:
+                        type: str
+                        description: Outbound route-map name
+                peer_groups:
+                  type: list
+                  primary_key: name
+                  convert_types:
+                  - dict
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+                        description: Peer-group name
+                      activate:
+                        type: bool
+                networks:
+                  type: list
+                  primary_key: prefix
+                  convert_types:
+                  - dict
+                  items:
+                    type: dict
+                    keys:
+                      prefix:
+                        type: str
+                        description: IPv6 prefix "A:B:C:D:E:F:G:H/I"
+                      route_map:
+                        type: str
+            address_family_flow_spec_ipv4:
+              type: dict
+              keys:
+                bgp:
+                  type: dict
+                  keys:
+                    missing_policy:
+                      type: dict
+                      keys:
+                        direction_in_action:
+                          type: str
+                          valid_values:
+                          - deny
+                          - deny-in-out
+                          - permit
+                        direction_out_action:
+                          type: str
+                          valid_values:
+                          - deny
+                          - deny-in-out
+                          - permit
+                neighbors:
+                  type: list
+                  primary_key: ip_address
+                  convert_types:
+                  - dict
+                  items:
+                    type: dict
+                    keys:
+                      ip_address:
+                        type: str
+                      activate:
+                        type: bool
+            address_family_flow_spec_ipv6:
+              type: dict
+              keys:
+                bgp:
+                  type: dict
+                  keys:
+                    missing_policy:
+                      type: dict
+                      keys:
+                        direction_in_action:
+                          type: str
+                          valid_values:
+                          - deny
+                          - deny-in-out
+                          - permit
+                        direction_out_action:
+                          type: str
+                          valid_values:
+                          - deny
+                          - deny-in-out
+                          - permit
+                neighbors:
+                  type: list
+                  primary_key: ip_address
+                  convert_types:
+                  - dict
+                  items:
+                    type: dict
+                    keys:
+                      ip_address:
+                        type: str
+                      activate:
+                        type: bool
             address_families:
               type: list
               primary_key: address_family
               convert_types:
               - dict
+              deprecation:
+                warning: true
+                new_key: address_family_*
+                remove_in_version: v5.0.0
               items:
                 type: dict
                 keys:
@@ -8686,8 +8901,6 @@ keys:
               min: 1
               max: 3600
   router_general:
-    documentation_options:
-      filename: data_model/Routing
     type: dict
     display_name: Router General configuration
     keys:
@@ -8737,16 +8950,12 @@ keys:
                         type: str
                         description: Dynamic Prefix List Name
   router_igmp:
-    documentation_options:
-      filename: data_model/Routing
     type: dict
     display_name: Router IGMP Configuration
     keys:
       ssm_aware:
         type: bool
   router_isis:
-    documentation_options:
-      filename: data_model/Routing
     type: dict
     keys:
       instance:
@@ -8939,8 +9148,6 @@ keys:
         type: list
         description: Unused key - to be removed from eos_designs.
   router_l2_vpn:
-    documentation_options:
-      filename: data_model/Routing
     type: dict
     keys:
       arp_learning_bridged:
@@ -8968,8 +9175,6 @@ keys:
       virtual_router_nd_ra_flooding_disabled:
         type: bool
   router_msdp:
-    documentation_options:
-      filename: data_model/Routing
     type: dict
     keys:
       originator_id_local_interface:
@@ -9193,8 +9398,6 @@ keys:
                         type: str
                         description: ACL to filter outbound SA messages
   router_multicast:
-    documentation_options:
-      filename: data_model/Multicast
     type: dict
     keys:
       ipv4:
@@ -9266,8 +9469,6 @@ keys:
                 routing:
                   type: bool
   router_ospf:
-    documentation_options:
-      filename: data_model/Routing
     type: dict
     display_name: Router OSPF Configuration
     keys:
@@ -9558,8 +9759,6 @@ keys:
             mpls_ldp_sync_default:
               type: bool
   router_pim_sparse_mode:
-    documentation_options:
-      filename: data_model/Multicast
     type: dict
     keys:
       ipv4:
@@ -9673,8 +9872,6 @@ keys:
                       override:
                         type: bool
   router_traffic_engineering:
-    documentation_options:
-      filename: data_model/Routing
     type: dict
     keys:
       router_id:
@@ -9761,22 +9958,16 @@ keys:
                                     convert_types:
                                     - str
   service_routing_configuration_bgp:
-    documentation_options:
-      filename: data_model/Routing
     type: dict
     keys:
       no_equals_default:
         type: bool
   service_routing_protocols_model:
-    documentation_options:
-      filename: data_model/Routing
     type: str
     valid_values:
     - multi-agent
     - ribd
   service_unsupported_transceiver:
-    documentation_options:
-      filename: data_model/Service Unsupported Transceiver
     type: dict
     keys:
       license_name:
@@ -9784,8 +9975,6 @@ keys:
       license_key:
         type: str
   sflow:
-    documentation_options:
-      filename: data_model/Monitoring
     type: dict
     keys:
       sample:
@@ -9907,8 +10096,6 @@ keys:
                   type: bool
                   default: true
   snmp_server:
-    documentation_options:
-      filename: data_model/Monitoring
     type: dict
     description: SNMP settings
     keys:
@@ -10193,8 +10380,6 @@ keys:
             enable:
               type: bool
   spanning_tree:
-    documentation_options:
-      filename: data_model/Spanning Tree
     type: dict
     keys:
       root_super:
@@ -10312,8 +10497,6 @@ keys:
               convert_types:
               - str
   standard_access_lists:
-    documentation_options:
-      filename: data_model/ACLs
     type: list
     primary_key: name
     convert_types:
@@ -10349,8 +10532,6 @@ keys:
 
                   Example: "deny ip any any"'
   static_routes:
-    documentation_options:
-      filename: data_model/Routing
     type: list
     items:
       type: dict
@@ -10391,8 +10572,6 @@ keys:
           min: 0
           max: 4294967295
   switchport_default:
-    documentation_options:
-      filename: data_model/Interfaces
     type: dict
     keys:
       mode:
@@ -10422,8 +10601,6 @@ keys:
             min: 1
             max: 4094
   system:
-    documentation_options:
-      filename: data_model/System Control-Plane
     type: dict
     keys:
       control_plane:
@@ -10463,8 +10640,6 @@ keys:
                 vrf:
                   type: str
   tacacs_servers:
-    documentation_options:
-      filename: data_model/Authentication
     type: dict
     keys:
       hosts:
@@ -10498,8 +10673,6 @@ keys:
       policy_unknown_mandatory_attribute_ignore:
         type: bool
   tap_aggregation:
-    documentation_options:
-      filename: data_model/Monitoring
     type: dict
     keys:
       mode:
@@ -10568,8 +10741,6 @@ keys:
             - discard
             - pass-through
   tcam_profile:
-    documentation_options:
-      filename: data_model/Hardware
     type: dict
     display_name: Hardware TCAM Profiles
     keys:
@@ -10599,8 +10770,6 @@ keys:
 
                 Example: "{{ lookup(''file'', ''TCAM_TRAFFIC_POLICY.conf'') }}"'
   terminal:
-    documentation_options:
-      filename: data_model/Terminal Settings
     type: dict
     display_name: Terminal Settings
     keys:
@@ -10613,8 +10782,6 @@ keys:
         min: 10
         max: 32767
   trackers:
-    documentation_options:
-      filename: data_model/Monitoring
     type: list
     primary_key: name
     items:
@@ -10633,8 +10800,6 @@ keys:
           default: line-protocol
           description: Property to track
   traffic_policies:
-    documentation_options:
-      filename: data_model/Traffic Policies
     type: dict
     keys:
       options:
@@ -10859,8 +11024,6 @@ keys:
                       type: bool
                       description: Only supported when action is set to drop
   tunnel_interfaces:
-    documentation_options:
-      filename: data_model/Interfaces
     type: list
     primary_key: name
     convert_types:
@@ -10947,8 +11110,6 @@ keys:
           description: Multiline String with EOS CLI rendered directly on the Tunnel
             interface in the final EOS configuration.
   virtual_source_nat_vrfs:
-    documentation_options:
-      filename: data_model/Virtual Source NAT
     type: list
     primary_key: name
     convert_types:
@@ -10963,8 +11124,6 @@ keys:
           type: str
           description: IPv4 Address
   vlan_interfaces:
-    documentation_options:
-      filename: data_model/Interfaces
     type: list
     primary_key: name
     convert_types:
@@ -11482,8 +11641,6 @@ keys:
           description: Multiline EOS CLI rendered directly on the VLAN interface in
             the final EOS configuration
   vlan_internal_order:
-    documentation_options:
-      filename: data_model/VLAN Internal Order
     type: dict
     keys:
       allocation:
@@ -11513,8 +11670,6 @@ keys:
             convert_types:
             - str
   vlans:
-    documentation_options:
-      filename: data_model/VLANs
     type: list
     primary_key: id
     convert_types:
@@ -11557,8 +11712,6 @@ keys:
           type: str
           description: Key only used for documentation or validation purposes
   vmtracer_sessions:
-    documentation_options:
-      filename: data_model/System Control-Plane
     type: list
     primary_key: name
     convert_types:
@@ -11582,8 +11735,6 @@ keys:
         source_interface:
           type: str
   vrfs:
-    documentation_options:
-      filename: data_model/Routing
     type: list
     primary_key: name
     description: 'These keys are ignored if the name of the vrf is ''default''
@@ -11609,8 +11760,6 @@ keys:
           type: str
           description: Key only used for documentation or validation purposes
   vxlan_interface:
-    documentation_options:
-      filename: data_model/Interfaces
     type: dict
     keys:
       Vxlan1:

@@ -9,7 +9,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import st
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 
-class AvdStructuredConfig(AvdFacts):
+class AvdStructuredConfigInbandManagement(AvdFacts):
     @cached_property
     def vlans(self) -> list | None:
         if not self._inband_management_parent_vlans and not self.shared_utils.configure_inband_mgmt:

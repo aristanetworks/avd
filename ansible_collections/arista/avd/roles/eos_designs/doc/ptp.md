@@ -308,7 +308,7 @@ servers:
       switch_ports: [ <switchports> ]
       switches: [ <switches> ]
       ptp:
-        enable: < false | true | default -> false >
+        enabled: < false | true | default -> false >
         endpoint_role: < follower | bmca | default -> follower >
         profile: < aes67 | smpte2059-2 | aes67-r16-2016 | default -> aes67-r16-2016 >
 ```
@@ -328,7 +328,7 @@ servers:
       structured_config:
         type: routed
       ptp:
-        enable: true
+        enabled: true
         endpoint_role: bmca
 ```
 
@@ -343,7 +343,7 @@ servers:
       switch_ports: [ Ethernet7 ]
       switches: [ blue-leaf1 ]
       ptp:
-        enable: true
+        enabled: true
         profile: smpte2059-2
 ```
 
@@ -363,13 +363,15 @@ core_interfaces:
       # Interfaces where this link should be configured | Required unless using port-channels
       interfaces: [ Ethernet10, Ethernet10 ]
       # Enable PTP
-      ptp_enable: true
+      ptp:
+        enabled: true
       # Do not add this interface to underlay routing protocol
       include_in_underlay_protocol: false
     - id: 2
       nodes: [ blue-leaf1, blue-leaf2 ]
       interfaces: [ Ethernet11, Ethernet11 ]
-      ptp_enable: true
+      ptp:
+        enabled: true
       include_in_underlay_protocol: false
 ```
 

@@ -4,8 +4,6 @@
 type: dict
 keys:
   community_lists:
-    documentation_options:
-      filename: data_model/Filters
     type: list
     primary_key: name
     convert_types:

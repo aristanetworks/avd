@@ -12,11 +12,13 @@ core_interfaces:
   p2p_links:
     - nodes: [ ptp-tests-spine1, ptp-tests-spine2 ]
       interfaces: [ Ethernet6, Ethernet6 ]
-      ptp_enable: true
+      ptp:
+        enabled: true
       include_in_underlay_protocol: false
     - nodes: [ ptp-tests-spine1, ptp-tests-spine2 ]
       interfaces: [ Ethernet7, Ethernet7 ]
-      ptp_enable: true
+      ptp:
+        enabled: true
       include_in_underlay_protocol: false
 
 # Testing the same as above with l3_edge
@@ -24,12 +26,19 @@ l3_edge:
   p2p_links:
     - nodes: [ ptp-tests-spine1, ptp-tests-spine2 ]
       interfaces: [ Ethernet8, Ethernet8 ]
-      ptp_enable: true
+      ptp:
+        enabled: true
       include_in_underlay_protocol: false
     - nodes: [ ptp-tests-spine1, ptp-tests-spine2 ]
       interfaces: [ Ethernet9, Ethernet9 ]
-      ptp_enable: true
+      ptp:
+        enabled: true
       include_in_underlay_protocol: false
+
+ptp:
+  enabled: true
+  # profile: < aes67 | smpte2059-2 | aes67-r16-2016 | default -> aes67-r16-2016  >
+  # domain: < 0-255 | default -> 127 >
 
 tenants:
   PTP:
@@ -49,17 +58,21 @@ tenants:
               ptp-tests-leaf2:
                 ip_address: 172.17.11.1/24
 
+port_profiles:
+  PTP-profile-BMCA:
+    vlans: 11
+    mode: access
+    ptp:
+      enabled: true
+      endpoint_role: bmca
+
 servers:
   bmca-endpoint:
     adapters:
       - endpoint_ports: [ eth1 ]
         switch_ports: [ Ethernet13 ]
         switches: [ ptp-tests-leaf1 ]
-        vlans: 11
-        mode: access
-        ptp:
-          enable: true
-          endpoint_role: bmca
+        profile: PTP-profile-BMCA
 
   video-endpoint:
     adapters:
@@ -70,7 +83,7 @@ servers:
         mode: access
         spanning_tree_portfast: edge
         ptp:
-          enable: true
+          enabled: true
           endpoint_role: follower
 
   Endpoint-with-specific-PTP-profile:
@@ -81,5 +94,5 @@ servers:
         vlans: 11
         mode: access
         ptp:
-          enable: true
+          enabled: true
           profile: smpte2059-2

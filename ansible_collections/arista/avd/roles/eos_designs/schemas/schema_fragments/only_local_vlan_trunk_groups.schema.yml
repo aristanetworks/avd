@@ -4,9 +4,6 @@
 type: dict
 keys:
   only_local_vlan_trunk_groups:
-    documentation_options:
-      filename: Fabric Variables
-      table: VLAN Settings
     type: bool
     description: |
       A vlan can have many trunk_groups assigned. To avoid unneeded configuration changes on all leaf

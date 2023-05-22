@@ -10,8 +10,8 @@ overlay_routing_protocol: ibgp
 bgp_as: 65000
 isis_area_id: "49.0001"
 
-# Enable vlan aware bundles using the old name of the setting (backwards compatible)
-vxlan_vlan_aware_bundles: true
+# Enable vlan aware bundles for EVPN MAC-VRF
+evpn_vlan_aware_bundles: true
 
 # bgp peer groups passwords
 bgp_peer_groups:

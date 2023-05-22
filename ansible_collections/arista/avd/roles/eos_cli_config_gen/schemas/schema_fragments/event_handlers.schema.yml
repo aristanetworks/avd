@@ -4,8 +4,6 @@
 type: dict
 keys:
   event_handlers:
-    documentation_options:
-      filename: data_model/Monitoring
     type: list
     description: |
       Gives the ability to monitor and react to Syslog messages.

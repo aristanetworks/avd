@@ -4,8 +4,6 @@
 type: dict
 keys:
   tcam_profile:
-    documentation_options:
-      filename: data_model/Hardware
     type: dict
     display_name: Hardware TCAM Profiles
     keys:

@@ -4,8 +4,6 @@
 type: dict
 keys:
   generate_default_config:
-    documentation_options:
-      filename: inputs/Role Inputs
     type: bool
     default: true
     description: |

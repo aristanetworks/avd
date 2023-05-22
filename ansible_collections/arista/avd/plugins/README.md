@@ -387,6 +387,66 @@ switch:
                         platform_settings | selectattr("platforms", "arista.avd.contains", "default") | first) }}
 ```
 
+## Vars Plugins
+
+### arista.avd.global_vars
+
+Loads variables from variable files specified in ansible.cfg or environment variable. Assign the loaded variables to the 'all' inventory group. Files are restricted by extension to one of .yaml, .json, .yml or no extension. Hidden files (starting with '.') and backup files (ending with '~') are ignored. Only applies to inventory sources that are existing paths.
+
+The `arista.avd.global_vars` vars plugin should run at the `inventory` stage (default) before all other variable plugins, to inject the variables before any group and host vars.
+
+**parameters:**
+
+```yaml
+- paths:
+        List of relative paths, relative to the inventory file.
+        If path is a directory, all the valid files inside are loaded in alphabetical order.
+        If the environment variable is set, it takes precedence over ansible.cfg.
+        set_via:
+          env:
+          - name: ARISTA_AVD_GLOBAL_VARS_PATHS
+          ini:
+          - key: paths
+            section: vars_global_vars
+        elements: string
+        type: list
+```
+
+**examples:**
+
+#### `ansible.cfg` only example
+
+1. Enable the plugin in `ansible.cfg` - DO NOT REMOVE host_group_vars.
+
+    ```ini
+    [defaults]
+    vars_plugins_enabled = arista.avd.global_vars, host_group_vars
+
+    [vars_global_vars]
+    paths = ../relative/path/to/my/global/vars/file/or/dir
+    ```
+
+2. Run your playbook
+
+    ```shell
+    ansible-playbook -i inventory.yml playbook.yml
+    ```
+
+##### `ansible.cfg` + environement variable example
+
+1. Enable the plugin in `ansible.cfg` - DO NOT REMOVE host_group_vars.
+
+    ```ini
+    [defaults]
+    vars_plugins_enabled = arista.avd.global_vars, host_group_vars
+    ```
+
+2. Run your playbook
+
+    ```shell
+    ARISTA_AVD_GLOBAL_VARS_PATHS=../relative/path/to/my/global/vars/file/or/dir ansible-playbook -i inventory.yml playbook.yml
+    ```
+
 ## Modules
 
 ### Inventory to CloudVision Containers
@@ -498,6 +558,11 @@ The `arista.avd.configlet_build_config` module provides the following capabiliti
 
 ### YAML Templates to Facts
 
+!!! Note
+
+    This plugin is no longer used by `eos_designs`. It is still being used by `eos_validate_state`.
+    This plugin may be deprecated in a future version of this collection and later removed.
+
 The `arista.avd.yaml_templates_to_facts` module is an Ansible Action Plugin providing the following capabilities:
 
 - Set Facts based on one or more Jinja2 templates producing YAML output.
@@ -505,8 +570,6 @@ The `arista.avd.yaml_templates_to_facts` module is an Ansible Action Plugin prov
 - Facts set by one template will be accessible by the following templates.
 - Returned facts can be set below a specific `root_key`.
 - Facts returned templates can be stripped for `null` values to avoid overwriting previous set facts.
-
-The module is used in `eos_designs` to generate the `structured_configuration` based on all the `eos_designs` templates.
 
 The module arguments are:
 
