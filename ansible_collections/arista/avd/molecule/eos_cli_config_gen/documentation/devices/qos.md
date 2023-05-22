@@ -341,7 +341,7 @@ QOS Profile: **qprof_testwithpolicy**
 | -------- | ---- | --------- | -------- | ---------- | ------- |
 | 0 | All | 1 | - | - | - |
 | 1 | All | 80 | - | - | - |
-| 5 | All | 19 | no priority | - | Multi-line comment here.  |
+| 5 | All | 19 | no priority | - | Multi-line comment<br>here. |
 
 QOS Profile: **test**
 
@@ -416,10 +416,10 @@ qos profile qprof_testwithpolicy
       bandwidth percent 80
    !
    tx-queue 5
-      bandwidth percent 19
-      no priority
       !! Multi-line comment
       !! here.
+      bandwidth percent 19
+      no priority
 !
 qos profile test
    qos trust dscp
@@ -440,30 +440,30 @@ qos profile test
 qos profile uc_mc_queues_test
    !
    uc-tx-queue 1
+      !! Test no priority
       bandwidth percent 50
       no priority
-      !! Test no priority
    !
    uc-tx-queue 2
       bandwidth percent 10
       priority strict
    !
    uc-tx-queue 4
-      bandwidth guaranteed percent 10
       !! Test guaranteed percent
+      bandwidth guaranteed percent 10
    !
    mc-tx-queue 1
       bandwidth percent 50
       no priority
    !
    mc-tx-queue 2
+      !! Test strict priority
       bandwidth percent 10
       priority strict
-      !! Test strict priority
    !
    mc-tx-queue 4
-      bandwidth guaranteed percent 10
       !! Test guaranteed percent
+      bandwidth guaranteed percent 10
 ```
 
 #### QOS Interfaces

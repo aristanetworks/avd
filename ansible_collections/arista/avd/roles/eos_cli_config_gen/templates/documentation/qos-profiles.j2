@@ -35,7 +35,7 @@ QOS Profile: **{{ profile.name }}**
                                     '-') %}
 {%                     set priority = tx_queue.priority | arista.avd.default('-') %}
 {%                     set shape_rate = tx_queue.shape.rate | arista.avd.default('-') %}
-{%                     set comment = tx_queue.comment | arista.avd.default('-') | replace('\n', ' ') %}
+{%                     set comment = tx_queue.comment | arista.avd.default('-') | trim | replace('\n', '<br>') %}
 | {{ tx_queue.id }} | {{ type }} | {{ bw_percent }} | {{ priority }} | {{ shape_rate }} | {{ comment }} |
 {%                 endfor %}
 {%             endif %}
@@ -47,7 +47,7 @@ QOS Profile: **{{ profile.name }}**
                                         '-') %}
 {%                     set priority = uc_tx_queue.priority | arista.avd.default('-') %}
 {%                     set shape_rate = uc_tx_queue.shape.rate | arista.avd.default('-') %}
-{%                     set comment = uc_tx_queue.comment | arista.avd.default('-') | replace('\n', ' ') %}
+{%                     set comment = uc_tx_queue.comment | arista.avd.default('-') | trim | replace('\n', '<br>') %}
 | {{ uc_tx_queue.id }} | {{ type }} | {{ bw_percent }} | {{ priority }} | {{ shape_rate }} | {{ comment }} |
 {%                 endfor %}
 {%             endif %}
@@ -59,7 +59,7 @@ QOS Profile: **{{ profile.name }}**
                                         '-') %}
 {%                     set priority = mc_tx_queue.priority | arista.avd.default('-') %}
 {%                     set shape_rate = mc_tx_queue.shape.rate | arista.avd.default('-') %}
-{%                     set comment = mc_tx_queue.comment | arista.avd.default('-') | replace('\n', ' ') %}
+{%                     set comment = mc_tx_queue.comment | arista.avd.default('-') | trim | replace('\n', '<br>') %}
 | {{ mc_tx_queue.id }} | {{ type }} | {{ bw_percent }} | {{ priority }} | {{ shape_rate }} | {{ comment }} |
 {%                 endfor %}
 {%             endif %}
