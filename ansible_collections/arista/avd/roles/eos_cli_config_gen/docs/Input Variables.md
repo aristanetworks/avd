@@ -3001,10 +3001,10 @@ Set Link Aggregation Control Protocol (LACP) parameters.
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use_serial_number</samp>](## "management_api_gnmi.transport.grpc_tunnels.[].target.use_serial_number") | Boolean |  |  |  | Use serial number as the Target ID |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;target_ids</samp>](## "management_api_gnmi.transport.grpc_tunnels.[].target.target_ids") | List, items: String |  |  |  | Target IDs as a list.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "management_api_gnmi.transport.grpc_tunnels.[].target.target_ids.[].&lt;str&gt;") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;enable_vrfs</samp>](## "management_api_gnmi.enable_vrfs") | List, items: Dictionary |  |  |  | Enable VRFs will be deprecated in AVD v4.0.<br>These should not be mixed with the new keys above.<br> |
+    | [<samp>&nbsp;&nbsp;enable_vrfs</samp>](## "management_api_gnmi.enable_vrfs") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | These should not be mixed with the new keys above.<br><span style="color:red">This key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>grpc</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "management_api_gnmi.enable_vrfs.[].name") | String | Required, Unique |  |  | VRF name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_group</samp>](## "management_api_gnmi.enable_vrfs.[].access_group") | String |  |  |  | Standard IPv4 ACL name |
-    | [<samp>&nbsp;&nbsp;octa</samp>](## "management_api_gnmi.octa") | Dictionary |  |  |  | Octa key will be deprecated in AVD v4.0.<br>These should not be mixed with the new keys above.<br>Octa activates `eos-native` provider and it is the only provider currently supported by EOS. |
+    | [<samp>&nbsp;&nbsp;octa</samp>](## "management_api_gnmi.octa") <span style="color:red">deprecated</span> | Dictionary |  |  |  | These should not be mixed with the new keys above.<br>Octa activates `eos-native` provider and it is the only provider currently supported by EOS.<span style="color:red">This key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>provider</samp> instead.</span> |
 
 === "YAML"
 
