@@ -38,10 +38,12 @@ interface Management1
 
 #### Management API GNMI Summary
 
-| VRF with GNMI | OCTA |
-| ------------- | ---- |
-| MGMT | enabled |
-| MONITORING | enabled |
+| Transport | SSL Profile | VRF | Notification Timestamp | ACL |
+| --------- | ----------- | --- | ---------------------- | --- |
+| MGMT | - | MGMT | last-change-time | ACL-GNMI |
+| MONITORING | - | MONITORING | last-change-time | - |
+
+Provider eos-native is configured.
 
 #### Management API gnmi configuration
 
@@ -49,8 +51,8 @@ interface Management1
 !
 management api gnmi
    transport grpc MGMT
-      ip access-group ACL-GNMI
       vrf MGMT
+      ip access-group ACL-GNMI
    transport grpc MONITORING
       vrf MONITORING
    provider eos-native
