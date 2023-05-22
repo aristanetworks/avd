@@ -58,6 +58,7 @@ interface Management1
 | no bgp default ipv4-unicast transport ipv6 |
 | distance bgp 20 200 200 |
 | maximum-paths 32 ecmp 32 |
+| bgp route-reflector preserve-attributes always |
 
 #### Router BGP Listen Ranges
 
@@ -145,6 +146,7 @@ router bgp 65101
    update wait-install
    no bgp default ipv4-unicast
    no bgp default ipv4-unicast transport ipv6
+   bgp route-reflector preserve-attributes always
    bgp bestpath d-path
    bgp listen range 10.10.10.0/24 peer-group my-peer-group1 peer-filter my-peer-filter
    bgp listen range 12.10.10.0/24 peer-id include router-id peer-group my-peer-group3 remote-as 65444

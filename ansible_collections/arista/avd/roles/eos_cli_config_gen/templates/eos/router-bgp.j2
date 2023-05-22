@@ -53,6 +53,13 @@ router bgp {{ router_bgp.as }}
 {%     elif router_bgp.bgp.default.ipv4_unicast_transport_ipv6 is arista.avd.defined(false) %}
    no bgp default ipv4-unicast transport ipv6
 {%     endif %}
+{%     if router_bgp.bgp.route_reflector_preserve_attributes.enabled is arista.avd.defined(true) %}
+{%         set rr_preserve_attributes_cli = 'bgp route-reflector preserve-attributes' %}
+{%         if router_bgp.bgp.route_reflector_preserve_attributes.always is arista.avd.defined(true) %}
+{%             set rr_preserve_attributes_cli = rr_preserve_attributes_cli ~ ' always' %}
+{%         endif %}
+   {{ rr_preserve_attributes_cli }}
+{%     endif %}
 {%     if router_bgp.bgp_cluster_id is arista.avd.defined %}
    bgp cluster-id {{ router_bgp.bgp_cluster_id }}
 {%     endif %}

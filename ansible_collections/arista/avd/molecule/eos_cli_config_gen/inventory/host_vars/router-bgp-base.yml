@@ -23,6 +23,9 @@ router_bgp:
     default:
       ipv4_unicast: false
       ipv4_unicast_transport_ipv6: false
+    route_reflector_preserve_attributes:
+      enabled: true
+      always: true
     bestpath:
       d_path: true
   listen_ranges:
