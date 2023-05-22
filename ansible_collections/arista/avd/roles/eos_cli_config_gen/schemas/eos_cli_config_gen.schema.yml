@@ -4394,7 +4394,7 @@ keys:
         type: list
         deprecation:
           warning: true
-          new_key: grpc
+          new_key: transport.grpc
           remove_in_version: 5.0.0
         primary_key: name
         convert_types:

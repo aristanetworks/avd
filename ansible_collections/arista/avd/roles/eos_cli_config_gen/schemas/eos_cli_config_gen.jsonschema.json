@@ -7085,7 +7085,7 @@
         },
         "enable_vrfs": {
           "type": "array",
-          "description": "These should not be mixed with the new keys above.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>grpc</samp> instead.",
+          "description": "These should not be mixed with the new keys above.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>transport.grpc</samp> instead.",
           "deprecated": true,
           "items": {
             "type": "object",
