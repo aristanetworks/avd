@@ -858,7 +858,7 @@ keys:
           '
       cvgnmi:
         type: bool
-        description: 'Stream states from EOS GNMI servers (Openconfig) to CloudVision.
+        description: 'Stream states from EOS gNMI servers (Openconfig) to CloudVision.
           Available as of TerminAttr v1.13.1
 
           '
@@ -4310,7 +4310,7 @@ keys:
                   valid_values:
                   - send-time
                   - last-change-time
-                  description: 'Per the GNMI specification, the default timestamp
+                  description: 'Per the gNMI specification, the default timestamp
                     field of a notification message is set to be
 
                     the time at which the value of the underlying data source changes

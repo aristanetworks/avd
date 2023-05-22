@@ -21,6 +21,7 @@ WORDLIST = {
     "eos": "EOS",
     "evpn": "EVPN",
     "fcs": "FCS",
+    "gnmi": "gNMI",
     "http": "HTTP",
     "icmp": "ICMP",
     "id": "ID",

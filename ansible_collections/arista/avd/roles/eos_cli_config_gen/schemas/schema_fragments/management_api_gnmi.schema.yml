@@ -30,7 +30,7 @@ keys:
                   type: str
                   valid_values: ["send-time", "last-change-time"]
                   description: |
-                    Per the GNMI specification, the default timestamp field of a notification message is set to be
+                    Per the gNMI specification, the default timestamp field of a notification message is set to be
                     the time at which the value of the underlying data source changes or when the reported event takes place.
                     In order to facilitate integration in legacy environments oriented around polling style operations,
                     an option to support overriding the timestamp field to the send-time is available from EOS 4.27.0F.
