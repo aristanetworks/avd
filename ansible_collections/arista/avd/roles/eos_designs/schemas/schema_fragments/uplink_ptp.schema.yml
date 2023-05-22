@@ -4,15 +4,9 @@
 type: dict
 keys:
   uplink_ptp:
-    documentation_options:
-      filename: Fabric Variables
-      table: Uplinks Settings
     description: Enable PTP on all infrastructure links
     type: dict
     keys:
       enable:
-        documentation_options:
-          filename: Fabric Variables
-          table: Uplinks Settings
         type: bool
         default: false

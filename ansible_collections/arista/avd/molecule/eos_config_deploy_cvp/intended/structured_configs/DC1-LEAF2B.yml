@@ -3,10 +3,17 @@ router_bgp:
   router_id: 192.168.255.7
   bgp_defaults:
   - distance bgp 20 200 200
-  - maximum-paths 4 ecmp 4
   bgp:
     default:
       ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
@@ -99,6 +106,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.2
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: Tenant_A_DB_Zone
     router_id: 192.168.255.7
     rd: 192.168.255.7:13
@@ -116,6 +125,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.2
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: Tenant_A_OP_Zone
     router_id: 192.168.255.7
     rd: 192.168.255.7:10
@@ -133,6 +144,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.2
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: Tenant_A_WEB_Zone
     router_id: 192.168.255.7
     rd: 192.168.255.7:11
@@ -150,6 +163,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.2
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: Tenant_B_OP_Zone
     router_id: 192.168.255.7
     rd: 192.168.255.7:20
@@ -167,6 +182,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.2
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: Tenant_C_OP_Zone
     router_id: 192.168.255.7
     rd: 192.168.255.7:30
@@ -184,6 +201,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.2
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   vlan_aware_bundles:
   - name: Tenant_A_APP_Zone
     rd: 192.168.255.7:12
@@ -557,7 +576,6 @@ port_channel_interfaces:
   description: MLAG_PEER_DC1-LEAF2A_Po5
   type: switched
   shutdown: false
-  vlans: 2-4094
   mode: trunk
   trunk_groups:
   - LEAF_PEER_L3

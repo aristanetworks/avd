@@ -4,8 +4,5 @@
 type: dict
 keys:
   isis_advertise_passive_only:
-    documentation_options:
-      filename: Fabric Variables
-      table: ISIS Settings
     type: bool
     default: false

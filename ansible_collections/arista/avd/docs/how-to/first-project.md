@@ -191,8 +191,6 @@ spine:
     # Recommended for vEOS
     bgp_defaults:
       - 'distance bgp 20 200 200'
-      - 'graceful-restart restart-time 300'
-      - 'graceful-restart'
   nodes:
     AVD-SPINE1:
       id: 1

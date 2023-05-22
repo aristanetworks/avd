@@ -1,3 +1,3 @@
-from .avdstructuredconfig import AvdStructuredConfig
+from .avdstructuredconfig import AvdStructuredConfigInbandManagement
 
-__all__ = ["AvdStructuredConfig"]
+__all__ = ["AvdStructuredConfigInbandManagement"]

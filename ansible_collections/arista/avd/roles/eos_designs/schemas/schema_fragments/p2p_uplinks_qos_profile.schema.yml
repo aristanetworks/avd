@@ -4,8 +4,5 @@
 type: dict
 keys:
   p2p_uplinks_qos_profile:
-    documentation_options:
-      filename: Fabric Variables
-      table: Uplinks Settings
     description: QOS Profile assigned on all infrastructure links
     type: str

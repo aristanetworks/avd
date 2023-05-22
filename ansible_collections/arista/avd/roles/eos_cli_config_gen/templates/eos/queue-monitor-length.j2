@@ -1,5 +1,5 @@
-{# eos - queue monitor lenght #}
-{% if queue_monitor_length is arista.avd.defined and queue_monitor_length.enabled is not arista.avd.defined(false) %}
+{# eos - queue monitor length #}
+{% if queue_monitor_length.enabled is arista.avd.defined(true) %}
 !
 queue-monitor length
 {%     if queue_monitor_length.default_thresholds.high is arista.avd.defined %}

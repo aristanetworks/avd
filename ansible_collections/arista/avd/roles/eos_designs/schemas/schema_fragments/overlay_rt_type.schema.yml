@@ -4,9 +4,6 @@
 type: dict
 keys:
   overlay_rt_type:
-    documentation_options:
-      filename: Network Services
-      table: Global Network Services Settings
     type: dict
     description: |
       Specify RT type.

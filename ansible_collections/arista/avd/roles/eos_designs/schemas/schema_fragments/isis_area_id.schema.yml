@@ -4,9 +4,6 @@
 type: dict
 keys:
   isis_area_id:
-    documentation_options:
-      filename: Fabric Variables
-      table: ISIS Settings
     type: str
     default: "49.0001"
     convert_types:

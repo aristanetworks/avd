@@ -4,8 +4,6 @@
 type: dict
 keys:
   bgp_groups:
-    documentation_options:
-      filename: data_model/Maintenance Mode
     type: list
     primary_key: name
     convert_types:

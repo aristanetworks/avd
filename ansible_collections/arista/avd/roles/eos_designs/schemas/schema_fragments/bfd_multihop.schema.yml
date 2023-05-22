@@ -4,9 +4,6 @@
 type: dict
 keys:
   bfd_multihop:
-    documentation_options:
-      filename: Fabric Variables
-      table: BFD Settings
     type: dict
     description: BFD Multihop tuning
     keys:

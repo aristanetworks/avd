@@ -4,15 +4,11 @@
 type: dict
 keys:
   queue_monitor_length:
-    documentation_options:
-      filename: data_model/Quality of Service
     type: dict
     keys:
       enabled:
         type: bool
-        description: |
-          "enabled: true" will be required in AVD4.0.
-          In AVD3.x default is true as long as queue_monitor_length is defined and not None
+        required: true
       default_thresholds:
         type: dict
         keys:
@@ -37,7 +33,7 @@ keys:
         description: "Logging interval in seconds"
       notifying:
         type: bool
-        description: should only be used for platforms supporting the "queue-monitor length notifying" CLI
+        description: Should only be used for platforms supporting the "queue-monitor length notifying" CLI
       cpu:
         type: dict
         keys:
