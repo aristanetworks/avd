@@ -3,10 +3,17 @@ router_bgp:
   router_id: 192.168.255.10
   bgp_defaults:
   - distance bgp 20 200 200
-  - maximum-paths 10 ecmp 10
   bgp:
     default:
       ipv4_unicast: false
+  maximum_paths:
+    paths: 10
+    ecmp: 10
+  updates:
+    wait_install: true
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: EVPN-OVERLAY-PEERS
     type: evpn
@@ -131,7 +138,6 @@ port_channel_interfaces:
   description: MLAG_PEER_DC1-BL1B_Po5
   type: switched
   shutdown: false
-  vlans: 2-4094
   mode: trunk
   trunk_groups:
   - LEAF_PEER_L3

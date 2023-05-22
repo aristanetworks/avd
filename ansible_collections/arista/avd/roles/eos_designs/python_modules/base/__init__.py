@@ -1,3 +1,3 @@
-from .avdstructuredconfig import AvdStructuredConfig
+from .avdstructuredconfig import AvdStructuredConfigBase
 
-__all__ = ["AvdStructuredConfig"]
+__all__ = ["AvdStructuredConfigBase"]

@@ -1,11 +1,17 @@
 router_bgp:
   as: '65101'
   router_id: 192.168.255.22
-  bgp_defaults:
-  - maximum-paths 4 ecmp 4
   bgp:
     default:
       ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
@@ -71,6 +77,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.240.10
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   vlans:
   - id: 110
     tenant: CUSTOM_TEMPLATES_TENANT
@@ -134,14 +142,14 @@ vlan_interfaces:
 - name: Vlan4093
   description: MLAG_PEER_L3_PEERING
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.251.11/31
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
   ip_address: 10.255.252.11/31
   no_autostate: true
-  mtu: 9000
+  mtu: 9214
 - name: Vlan110
   tenant: CUSTOM_TEMPLATES_TENANT
   tags:
@@ -156,14 +164,13 @@ vlan_interfaces:
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf TEST_VRF'
   vrf: TEST_VRF
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.240.11/31
 port_channel_interfaces:
 - name: Port-Channel3
   description: TEST_CUSTOM_PREFIX_MLAG_PEER_CUSTOM-TEMPLATES-L3LEAF1A_Po3
   type: switched
   shutdown: false
-  vlans: 2-4094
   mode: trunk
   trunk_groups:
   - LEAF_PEER_L3
@@ -195,7 +202,7 @@ ethernet_interfaces:
   peer_type: spine
   description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-TEMPLATES-SPINE1_Ethernet2
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 172.31.255.23/31
 mlag_configuration:

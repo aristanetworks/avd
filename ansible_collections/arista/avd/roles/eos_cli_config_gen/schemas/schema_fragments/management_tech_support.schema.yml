@@ -4,8 +4,6 @@
 type: dict
 keys:
   management_tech_support:
-    documentation_options:
-      filename: data_model/Management
     type: dict
     keys:
       policy_show_tech_support:

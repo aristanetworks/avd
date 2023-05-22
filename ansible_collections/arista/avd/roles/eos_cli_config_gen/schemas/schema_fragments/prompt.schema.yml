@@ -4,6 +4,4 @@
 type: dict
 keys:
   prompt:
-    documentation_options:
-      filename: data_model/Prompt
     type: str

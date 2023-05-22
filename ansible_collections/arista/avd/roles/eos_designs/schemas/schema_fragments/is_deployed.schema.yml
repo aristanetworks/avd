@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  is_deployed:
+    description: |
+      Is device already deployed in the fabric
+      When set to false, interfaces toward this device may be shutdown depending on the `shutdown_interfaces_towards_undeployed_peers` setting.
+      Furthermore `eos_config_deploy_cvp` will not attempt to move or apply configurations to the device.
+    type: bool
+    default: true

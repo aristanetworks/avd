@@ -35,9 +35,9 @@ class RouterOspfMixin(UtilsMixin):
             "id": process_id,
             "passive_interface_default": True,
             "router_id": self.shared_utils.router_id,
-            "max_lsa": get(self._hostvars, "underlay_ospf_max_lsa"),
+            "max_lsa": get(self._hostvars, "underlay_ospf_max_lsa", default=12000),
             "no_passive_interfaces": no_passive_interfaces,
-            "bfd_enable": get(self._hostvars, "underlay_ospf_bfd_enable"),
+            "bfd_enable": get(self._hostvars, "underlay_ospf_bfd_enable", default=False),
         }
 
         if self.shared_utils.overlay_routing_protocol == "none":

@@ -6,5 +6,3 @@ keys:
   local_users:
     $ref: "eos_cli_config_gen#/keys/local_users"
     type: list
-    documentation_options:
-      filename: Input Variables

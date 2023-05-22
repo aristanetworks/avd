@@ -1,3 +1,3 @@
-from .avdstructuredconfig import AvdStructuredConfig
+from .avdstructuredconfig import AvdStructuredConfigMlag
 
-__all__ = ["AvdStructuredConfig"]
+__all__ = ["AvdStructuredConfigMlag"]

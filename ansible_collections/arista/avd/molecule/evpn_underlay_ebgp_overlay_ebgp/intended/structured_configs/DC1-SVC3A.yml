@@ -3,10 +3,17 @@ router_bgp:
   router_id: 192.168.255.12
   bgp_defaults:
   - distance bgp 20 200 200
-  - maximum-paths 4 ecmp 4
   bgp:
     default:
       ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: MLAG-PEERS
     type: ipv4
@@ -103,6 +110,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.252.7
       peer_group: MLAG-PEERS
+    updates:
+      wait_install: true
   - name: Tenant_A_DB_Zone
     router_id: 192.168.255.12
     rd: 192.168.255.12:13
@@ -120,6 +129,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.252.7
       peer_group: MLAG-PEERS
+    updates:
+      wait_install: true
   - name: Tenant_A_OP_Zone
     router_id: 192.168.255.12
     rd: 192.168.255.12:10
@@ -137,6 +148,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.252.7
       peer_group: MLAG-PEERS
+    updates:
+      wait_install: true
   - name: Tenant_A_WAN_Zone
     router_id: 192.168.255.12
     rd: 192.168.255.12:14
@@ -157,6 +170,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.252.7
       peer_group: MLAG-PEERS
+    updates:
+      wait_install: true
   - name: Tenant_A_WEB_Zone
     router_id: 192.168.255.12
     rd: 192.168.255.12:11
@@ -174,6 +189,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.252.7
       peer_group: MLAG-PEERS
+    updates:
+      wait_install: true
   - name: Tenant_B_OP_Zone
     router_id: 192.168.255.12
     rd: 192.168.255.12:20
@@ -191,6 +208,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.252.7
       peer_group: MLAG-PEERS
+    updates:
+      wait_install: true
   - name: Tenant_B_WAN_Zone
     router_id: 192.168.255.12
     rd: 192.168.255.12:21
@@ -208,6 +227,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.252.7
       peer_group: MLAG-PEERS
+    updates:
+      wait_install: true
   - name: Tenant_C_OP_Zone
     router_id: 192.168.255.12
     rd: 192.168.255.12:30
@@ -225,6 +246,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.252.7
       peer_group: MLAG-PEERS
+    updates:
+      wait_install: true
   - name: Tenant_C_WAN_Zone
     router_id: 192.168.255.12
     rd: 192.168.255.12:31
@@ -242,6 +265,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.252.7
       peer_group: MLAG-PEERS
+    updates:
+      wait_install: true
   vlan_aware_bundles:
   - name: Tenant_A_APP_Zone
     rd: 192.168.255.12:12
@@ -791,7 +816,6 @@ port_channel_interfaces:
   description: CUSTOM_MLAG_PEER_DC1-SVC3B_Po5
   type: switched
   shutdown: false
-  vlans: 2-4094
   mode: trunk
   trunk_groups:
   - LEAF_PEER_L3

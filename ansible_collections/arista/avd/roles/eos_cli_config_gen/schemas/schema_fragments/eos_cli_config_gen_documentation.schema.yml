@@ -4,8 +4,6 @@
 type: dict
 keys:
   eos_cli_config_gen_documentation:
-    documentation_options:
-      filename: inputs/Role Inputs
     type: dict
     keys:
       hide_passwords:

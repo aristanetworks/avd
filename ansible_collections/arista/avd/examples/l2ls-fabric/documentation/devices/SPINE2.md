@@ -287,8 +287,8 @@ vlan 4094
 | Ethernet3 | LEAF3_Ethernet2 | *trunk | *10,30 | *- | *- | 3 |
 | Ethernet4 | LEAF4_Ethernet2 | *trunk | *10,30 | *- | *- | 3 |
 | Ethernet5 | FIREWALL_Eth2 | *trunk | *10,20,30 | *- | *- | 5 |
-| Ethernet47 | MLAG_PEER_SPINE1_Ethernet47 | *trunk | *2-4094 | *- | *['MLAG'] | 47 |
-| Ethernet48 | MLAG_PEER_SPINE1_Ethernet48 | *trunk | *2-4094 | *- | *['MLAG'] | 47 |
+| Ethernet47 | MLAG_PEER_SPINE1_Ethernet47 | *trunk | *- | *- | *['MLAG'] | 47 |
+| Ethernet48 | MLAG_PEER_SPINE1_Ethernet48 | *trunk | *- | *- | *['MLAG'] | 47 |
 
 *Inherited from Port-Channel Interface
 
@@ -343,7 +343,7 @@ interface Ethernet48
 | Port-Channel1 | RACK1_Po1 | switched | trunk | 10,20 | - | - | - | - | 1 | - |
 | Port-Channel3 | RACK2_Po1 | switched | trunk | 10,30 | - | - | - | - | 3 | - |
 | Port-Channel5 | FIREWALL | switched | trunk | 10,20,30 | - | - | - | - | 5 | - |
-| Port-Channel47 | MLAG_PEER_SPINE1_Po47 | switched | trunk | 2-4094 | - | ['MLAG'] | - | - | - | - |
+| Port-Channel47 | MLAG_PEER_SPINE1_Po47 | switched | trunk | - | - | ['MLAG'] | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -377,7 +377,6 @@ interface Port-Channel47
    description MLAG_PEER_SPINE1_Po47
    no shutdown
    switchport
-   switchport trunk allowed vlan 2-4094
    switchport mode trunk
    switchport trunk group MLAG
 ```

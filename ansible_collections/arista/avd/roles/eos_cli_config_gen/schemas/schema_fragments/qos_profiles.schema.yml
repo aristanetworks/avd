@@ -4,8 +4,6 @@
 type: dict
 keys:
   qos_profiles:
-    documentation_options:
-      filename: data_model/Quality of Service
     type: list
     primary_key: name
     convert_types:

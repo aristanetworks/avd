@@ -8,7 +8,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import st
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
 
 
-class AvdStructuredConfig(AvdFacts):
+class AvdStructuredConfigMlag(AvdFacts):
     def render(self):
         """
         Wrap class render function with a check for mlag is True
@@ -34,20 +34,26 @@ class AvdStructuredConfig(AvdFacts):
         return {"no_spanning_tree_vlan": self.shared_utils.mlag_peer_vlan}
 
     @cached_property
-    def vlans(self):
-        vlans = {}
+    def vlans(self) -> list:
+        vlans = []
         if self.shared_utils.mlag_peer_l3_vlan is not None:
-            vlans[self.shared_utils.mlag_peer_l3_vlan] = {
-                "tenant": "system",
-                "name": "LEAF_PEER_L3",
-                "trunk_groups": [self._trunk_groups_mlag_l3_name],
-            }
+            vlans.append(
+                {
+                    "id": self.shared_utils.mlag_peer_l3_vlan,
+                    "tenant": "system",
+                    "name": "LEAF_PEER_L3",
+                    "trunk_groups": [self._trunk_groups_mlag_l3_name],
+                }
+            )
 
-        vlans[self.shared_utils.mlag_peer_vlan] = {
-            "tenant": "system",
-            "name": "MLAG_PEER",
-            "trunk_groups": [self._trunk_groups_mlag_name],
-        }
+        vlans.append(
+            {
+                "id": self.shared_utils.mlag_peer_vlan,
+                "tenant": "system",
+                "name": "MLAG_PEER",
+                "trunk_groups": [self._trunk_groups_mlag_name],
+            }
+        )
         return vlans
 
     @cached_property
@@ -139,7 +145,7 @@ class AvdStructuredConfig(AvdFacts):
             "description": self.shared_utils.interface_descriptions.mlag_port_channel_interfaces(),
             "type": "switched",
             "shutdown": False,
-            "vlans": get(self.shared_utils.switch_data_combined, "mlag_peer_link_allowed_vlans", default="2-4094"),
+            "vlans": get(self.shared_utils.switch_data_combined, "mlag_peer_link_allowed_vlans"),
             "mode": "trunk",
             "service_profile": self.shared_utils.p2p_uplinks_qos_profile,
             "trunk_groups": [self._trunk_groups_mlag_name],
@@ -165,9 +171,10 @@ class AvdStructuredConfig(AvdFacts):
         if not (mlag_interfaces := self.shared_utils.mlag_interfaces):
             return None
 
-        ethernet_interfaces = {}
+        ethernet_interfaces = []
         for mlag_interface in mlag_interfaces:
             ethernet_interface = {
+                "name": mlag_interface,
                 "peer": self.shared_utils.mlag_peer,
                 "peer_interface": mlag_interface,
                 "peer_type": "mlag_peer",
@@ -180,10 +187,9 @@ class AvdStructuredConfig(AvdFacts):
                 },
                 "speed": self.shared_utils.mlag_interfaces_speed,
             }
+            ethernet_interfaces.append(strip_empties_from_dict(ethernet_interface))
 
-            ethernet_interfaces[mlag_interface] = ethernet_interface
-
-        return strip_empties_from_dict(ethernet_interfaces)
+        return ethernet_interfaces
 
     @cached_property
     def mlag_configuration(self):
@@ -202,13 +208,13 @@ class AvdStructuredConfig(AvdFacts):
         if (
             get(self.shared_utils.switch_data_combined, "mlag_dual_primary_detection", default=False) is True
             and self.shared_utils.mlag_peer_mgmt_ip is not None
-            and (mgmt_interface_vrf := get(self._hostvars, "mgmt_interface_vrf")) is not None
+            and (self.shared_utils.mgmt_interface_vrf) is not None
         ):
             mlag_configuration.update(
                 {
                     "peer_address_heartbeat": {
                         "peer_ip": self.shared_utils.mlag_peer_mgmt_ip,
-                        "vrf": mgmt_interface_vrf,
+                        "vrf": self.shared_utils.mgmt_interface_vrf,
                     },
                     "dual_primary_detection_delay": 5,
                 }

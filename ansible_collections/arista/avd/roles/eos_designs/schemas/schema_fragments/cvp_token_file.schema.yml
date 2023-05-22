@@ -4,9 +4,6 @@
 type: dict
 keys:
   cvp_token_file:
-    documentation_options:
-      filename: Management Settings
-      table: CloudVision Settings
     type: str
     description: |-
       cvp_token_file is the path to the token file on the switch.

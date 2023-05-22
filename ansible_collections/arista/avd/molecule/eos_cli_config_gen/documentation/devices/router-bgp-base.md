@@ -47,6 +47,10 @@ interface Management1
 
 | BGP Tuning |
 | ---------- |
+| graceful-restart restart-time 555 |
+| graceful-restart stalepath-time 666 |
+| graceful-restart |
+| graceful-restart-helper restart-time 888 |
 | bgp bestpath d-path |
 | update wait-for-convergence |
 | update wait-install |

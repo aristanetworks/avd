@@ -3,12 +3,19 @@ router_bgp:
   router_id: 192.168.255.17
   bgp_defaults:
   - distance bgp 20 200 200
-  - maximum-paths 4 ecmp 4
   bgp:
     default:
       ipv4_unicast: false
     bestpath:
       d_path: true
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: UNDERLAY-PEERS
     type: ipv4
@@ -195,15 +202,16 @@ router_bgp:
     - ip_address: BEBA::C0CA:C07A
       peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
       description: test_ipv6
-    address_families:
-    - address_family: ipv4
+    address_family_ipv4:
       neighbors:
       - ip_address: 1.1.1.1
         activate: true
-    - address_family: ipv6
+    address_family_ipv6:
       neighbors:
       - ip_address: BEBA::C0CA:C07A
         activate: true
+    updates:
+      wait_install: true
   vlan_aware_bundles:
   - name: Tenant_A_WAN_Zone
     rd: 192.168.255.17:14

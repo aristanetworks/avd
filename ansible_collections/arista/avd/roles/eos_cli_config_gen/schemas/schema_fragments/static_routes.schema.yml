@@ -4,8 +4,6 @@
 type: dict
 keys:
   static_routes:
-    documentation_options:
-      filename: data_model/Routing
     type: list
     items:
       type: dict

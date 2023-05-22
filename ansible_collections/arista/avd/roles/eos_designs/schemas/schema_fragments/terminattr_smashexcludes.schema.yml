@@ -4,8 +4,5 @@
 type: dict
 keys:
   terminattr_smashexcludes:
-    documentation_options:
-      filename: Management Settings
-      table: CloudVision Settings
     type: str
     default: "ale,flexCounter,hardware,kni,pulse,strata"
