@@ -42,6 +42,22 @@ router_bgp:
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65102'
     description: sflow-tests-leaf2_Ethernet2
+  - ip_address: 10.254.2.17
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65105'
+    description: sflow-tests-leaf5_Ethernet1
+  - ip_address: 10.254.2.19
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65105'
+    description: sflow-tests-leaf5_Ethernet2
+  - ip_address: 10.254.2.21
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65105'
+    description: sflow-tests-leaf6_Ethernet1
+  - ip_address: 10.254.2.23
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65105'
+    description: sflow-tests-leaf6_Ethernet2
   - ip_address: 10.254.1.1
     peer_group: EVPN-OVERLAY-PEERS
     description: sflow-tests-leaf1
@@ -50,6 +66,14 @@ router_bgp:
     peer_group: EVPN-OVERLAY-PEERS
     description: sflow-tests-leaf2
     remote_as: '65102'
+  - ip_address: 10.254.1.5
+    peer_group: EVPN-OVERLAY-PEERS
+    description: sflow-tests-leaf5
+    remote_as: '65105'
+  - ip_address: 10.254.1.6
+    peer_group: EVPN-OVERLAY-PEERS
+    description: sflow-tests-leaf6
+    remote_as: '65105'
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -127,41 +151,55 @@ ethernet_interfaces:
   mtu: 9000
   type: routed
   ip_address: 10.254.2.6/31
+- name: Ethernet5
+  peer: sflow-tests-leaf5
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  description: P2P_LINK_TO_SFLOW-TESTS-LEAF5_Ethernet1
+  shutdown: false
+  sflow:
+    enable: true
+  mtu: 9000
+  type: routed
+  ip_address: 10.254.2.16/31
 - name: Ethernet6
   peer: sflow-tests-spine2
   peer_interface: Ethernet6
   peer_type: spine
   description: P2P_LINK_TO_sflow-tests-spine2_Ethernet6
-  type: routed
   shutdown: false
-  mtu: 9000
   sflow:
     enable: true
+  mtu: 9000
+  type: routed
+  ip_address: 10.254.2.18/31
 - name: Ethernet7
   peer: sflow-tests-spine2
   peer_interface: Ethernet7
   peer_type: spine
   description: P2P_LINK_TO_sflow-tests-spine2_Ethernet7
-  type: routed
   shutdown: false
-  mtu: 9000
   sflow:
     enable: false
-- name: Ethernet10
-  peer: sflow-tests-spine2
-  peer_interface: Ethernet10
-  peer_type: spine
-  description: P2P_LINK_TO_sflow-tests-spine2_Ethernet10
-  type: routed
-  shutdown: false
   mtu: 9000
-  sflow:
-    enable: true
+  type: routed
+  ip_address: 10.254.2.20/31
 - name: Ethernet8
   peer: sflow-tests-spine2
   peer_interface: Ethernet8
   peer_type: spine
   description: P2P_LINK_TO_sflow-tests-spine2_Ethernet8
+  shutdown: false
+  sflow:
+    enable: true
+  mtu: 9000
+  type: routed
+  ip_address: 10.254.2.22/31
+- name: Ethernet10
+  peer: sflow-tests-spine2
+  peer_interface: Ethernet10
+  peer_type: spine
+  description: P2P_LINK_TO_sflow-tests-spine2_Ethernet10
   type: routed
   shutdown: false
   mtu: 9000
