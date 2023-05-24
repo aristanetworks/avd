@@ -1,8 +1,15 @@
 router_bgp:
   as: '65106'
   router_id: 10.254.1.7
-  bgp_defaults:
-  - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
@@ -117,16 +124,16 @@ management_api_http:
   - name: MGMT
   enable_https: true
 vlans:
-- tenant: system
+- id: 4093
+  tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
   - LEAF_PEER_L3
-  id: 4093
-- tenant: system
+- id: 4094
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  id: 4094
 - id: 11
   name: VLAN11
   tenant: SFLOW
@@ -139,14 +146,14 @@ vlan_interfaces:
 - name: Vlan4093
   description: MLAG_PEER_L3_PEERING
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.254.1.108/31
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
   ip_address: 10.254.1.76/31
   no_autostate: true
-  mtu: 9000
+  mtu: 9214
 - name: Vlan11
   tenant: SFLOW
   description: VLAN11
@@ -158,14 +165,13 @@ vlan_interfaces:
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf VRF1'
   vrf: VRF1
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.254.1.108/31
 port_channel_interfaces:
 - name: Port-Channel11
   description: MLAG_PEER_sflow-tests-leaf8_Po11
   type: switched
   shutdown: false
-  vlans: 2-4094
   mode: trunk
   trunk_groups:
   - LEAF_PEER_L3
@@ -173,26 +179,26 @@ port_channel_interfaces:
   sflow:
     enable: false
 ethernet_interfaces:
-- peer: sflow-tests-leaf8
+- name: Ethernet11
+  peer: sflow-tests-leaf8
   peer_interface: Ethernet11
   peer_type: mlag_peer
   description: MLAG_PEER_sflow-tests-leaf8_Ethernet11
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 11
     mode: active
-  name: Ethernet11
-- peer: sflow-tests-leaf8
+- name: Ethernet12
+  peer: sflow-tests-leaf8
   peer_interface: Ethernet12
   peer_type: mlag_peer
   description: MLAG_PEER_sflow-tests-leaf8_Ethernet12
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 11
     mode: active
-  name: Ethernet12
 - name: Ethernet1
   peer: sflow-tests-spine3
   peer_interface: Ethernet7
@@ -201,7 +207,7 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 10.254.2.25/31
 - name: Ethernet2
@@ -212,7 +218,7 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 10.254.2.27/31
 mlag_configuration:

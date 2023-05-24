@@ -1,8 +1,15 @@
 router_bgp:
   as: '65103'
   router_id: 10.254.1.3
-  bgp_defaults:
-  - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -108,7 +115,7 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 10.254.2.9/31
 - name: Ethernet2
@@ -119,7 +126,7 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 10.254.2.11/31
 - name: Ethernet13
@@ -127,8 +134,8 @@ ethernet_interfaces:
   peer_interface: eth1
   peer_type: server
   description: default-single-interface-true_eth1
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '11'
   sflow:
@@ -138,11 +145,8 @@ ethernet_interfaces:
   peer_interface: PCI1
   peer_type: server
   description: default-port-channel-interface-true_PCI1
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '11'
-  spanning_tree_portfast: edge
+  type: port-channel-member
   channel_group:
     id: 14
     mode: 'on'
@@ -153,8 +157,8 @@ ethernet_interfaces:
   peer_interface: eth11
   peer_type: server
   description: default-single-interface-false_eth11
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '11'
   sflow:
@@ -164,11 +168,8 @@ ethernet_interfaces:
   peer_interface: PCI11
   peer_type: server
   description: default-port-channel-interface-false_PCI11
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '11'
-  spanning_tree_portfast: edge
+  type: port-channel-member
   channel_group:
     id: 16
     mode: 'on'
@@ -179,8 +180,8 @@ ethernet_interfaces:
   peer_interface: eth12
   peer_type: server
   description: default-single-interface-no-definition_eth12
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '11'
   sflow:
@@ -190,11 +191,8 @@ ethernet_interfaces:
   peer_interface: PCI13
   peer_type: server
   description: default-port-channel-interface-no-definition_PCI13
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '11'
-  spanning_tree_portfast: edge
+  type: port-channel-member
   channel_group:
     id: 18
     mode: 'on'
