@@ -15,18 +15,20 @@ router_bgp:
     remote_as: '65001'
     next_hop_self: true
     description: Description for mlag_ipv4_underlay_peer via structured_config
+    bfd: true
     maximum_routes: 12000
     send_community: all
     route_map_in: RM-MLAG-PEER-IN
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
+    bfd: true
     maximum_routes: 12000
     send_community: all
     description: Description for ipv4_underlay_peers via structured_config
   - name: EVPN-OVERLAY-PEERS
     type: evpn
     update_source: Loopback0
-    bfd: true
+    bfd: false
     send_community: all
     maximum_routes: 0
     remote_as: '65001'
@@ -42,10 +44,10 @@ router_bgp:
   neighbors:
   - ip_address: 192.168.253.205
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    description: bgp-peer-groups-structured-config-2
+    description: bgp-peer-groups-2
   - ip_address: 192.168.255.112
     peer_group: EVPN-OVERLAY-PEERS
-    description: bgp-peer-groups-structured-config-2
+    description: bgp-peer-groups-2
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
@@ -91,7 +93,7 @@ vlan_interfaces:
   mtu: 9214
 port_channel_interfaces:
 - name: Port-Channel3
-  description: MLAG_PEER_bgp-peer-groups-structured-config-2_Po3
+  description: MLAG_PEER_bgp-peer-groups-2_Po3
   type: switched
   shutdown: false
   mode: trunk
@@ -100,10 +102,10 @@ port_channel_interfaces:
   - MLAG
 ethernet_interfaces:
 - name: Ethernet3
-  peer: bgp-peer-groups-structured-config-2
+  peer: bgp-peer-groups-2
   peer_interface: Ethernet3
   peer_type: mlag_peer
-  description: MLAG_PEER_bgp-peer-groups-structured-config-2_Ethernet3
+  description: MLAG_PEER_bgp-peer-groups-2_Ethernet3
   type: port-channel-member
   shutdown: false
   channel_group:
@@ -174,7 +176,7 @@ ip_igmp_snooping:
   globally_enabled: true
 vxlan_interface:
   Vxlan1:
-    description: bgp-peer-groups-structured-config-1_VTEP
+    description: bgp-peer-groups-1_VTEP
     vxlan:
       udp_port: 4789
       source_interface: Loopback1

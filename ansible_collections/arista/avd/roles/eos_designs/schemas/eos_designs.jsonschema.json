@@ -177,6 +177,11 @@
               "description": "Type 7 encrypted password.",
               "title": "Password"
             },
+            "bfd": {
+              "type": "boolean",
+              "default": false,
+              "title": "BFD"
+            },
             "structured_config": {
               "type": "object",
               "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen.",
@@ -202,6 +207,11 @@
               "type": "string",
               "description": "Type 7 encrypted password.",
               "title": "Password"
+            },
+            "bfd": {
+              "type": "boolean",
+              "default": false,
+              "title": "BFD"
             },
             "structured_config": {
               "type": "object",
@@ -229,6 +239,11 @@
               "description": "Type 7 encrypted password.",
               "title": "Password"
             },
+            "bfd": {
+              "type": "boolean",
+              "default": true,
+              "title": "BFD"
+            },
             "structured_config": {
               "type": "object",
               "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen.",
@@ -254,6 +269,11 @@
               "type": "string",
               "description": "Type 7 encrypted password.",
               "title": "Password"
+            },
+            "bfd": {
+              "type": "boolean",
+              "default": true,
+              "title": "BFD"
             },
             "structured_config": {
               "type": "object",
@@ -281,6 +301,11 @@
               "description": "Type 7 encrypted password.",
               "title": "Password"
             },
+            "bfd": {
+              "type": "boolean",
+              "default": true,
+              "title": "BFD"
+            },
             "structured_config": {
               "type": "object",
               "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen.",
@@ -307,6 +332,11 @@
               "description": "Type 7 encrypted password.",
               "title": "Password"
             },
+            "bfd": {
+              "type": "boolean",
+              "default": true,
+              "title": "BFD"
+            },
             "structured_config": {
               "type": "object",
               "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen.",
@@ -332,6 +362,11 @@
               "type": "string",
               "description": "Type 7 encrypted password.",
               "title": "Password"
+            },
+            "bfd": {
+              "type": "boolean",
+              "default": true,
+              "title": "BFD"
             },
             "structured_config": {
               "type": "object",
