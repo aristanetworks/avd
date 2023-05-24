@@ -161,4 +161,5 @@ fabric_sflow:
   endpoints: < boolean | default -> false >
   l3_edge: < boolean | default -> false >
   core_interfaces: < boolean | default -> false >
+  mlag_interfaces: < boolean | default -> false >
 ```

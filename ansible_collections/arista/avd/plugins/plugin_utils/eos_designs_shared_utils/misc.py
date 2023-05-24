@@ -230,3 +230,7 @@ class MiscMixin:
     @cached_property
     def fabric_sflow_core_interfaces(self: SharedUtils) -> bool | None:
         return get(self.hostvars, "fabric_sflow.core_interfaces")
+
+    @cached_property
+    def fabric_sflow_mlag_interfaces(self: SharedUtils) -> bool | None:
+        return get(self.hostvars, "fabric_sflow.mlag_interfaces")
