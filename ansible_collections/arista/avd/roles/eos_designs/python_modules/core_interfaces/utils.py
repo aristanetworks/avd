@@ -247,10 +247,8 @@ class UtilsMixin:
                 "profile": p2p_link["macsec_profile"],
             }
 
-        if default(p2p_link.get("sflow"), self.shared_utils.fabric_sflow_core_interfaces) is not None:
-            interface_cfg["sflow"] = {
-                "enable": default(p2p_link.get("sflow"), self.shared_utils.fabric_sflow_core_interfaces),
-            }
+        if (p2p_link_sflow := get(p2p_link, "sflow", default=self.shared_utils.fabric_sflow_core_interfaces)) is not None:
+            interface_cfg["sflow"] = {"enable": p2p_link_sflow}
 
         if self.shared_utils.mpls_lsr and p2p_link.get("mpls_ip", True) is True:
             interface_cfg["mpls"] = {"ip": True}

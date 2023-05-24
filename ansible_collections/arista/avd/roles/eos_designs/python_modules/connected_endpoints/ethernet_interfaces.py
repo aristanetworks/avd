@@ -149,7 +149,7 @@ class EthernetInterfacesMixin(UtilsMixin):
         if (flowcontrol_received := get(adapter, "flowcontrol.received")) is not None:
             ethernet_interface["flowcontrol"] = {"received": flowcontrol_received}
 
-        if default(adapter.get("sflow"), self.shared_utils.fabric_sflow_endpoints) is not None:
-            ethernet_interface["sflow"] = {"enable": default(adapter.get("sflow"), self.shared_utils.fabric_sflow_endpoints)}
+        if (adapter_sflow := get(adapter, "sflow", default=self.shared_utils.fabric_sflow_endpoints)) is not None:
+            ethernet_interface["sflow"] = {"enable": adapter_sflow}
 
         return strip_null_from_data(ethernet_interface)
