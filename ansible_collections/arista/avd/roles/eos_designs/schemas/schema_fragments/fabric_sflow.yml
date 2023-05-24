@@ -20,8 +20,8 @@ keys:
         description: Enable sFlow on all endpoints ports.
         type: bool
       l3_edge:
-        description: Enable sFlow on all edge links.
+        description: Enable sFlow on all p2p_links defined under l3_edge.
         type: bool
       core_interfaces:
-        description: Enable sFlow on all edge links.
+        description: Enable sFlow on all p2p_links defined under core_interfaces.
         type: bool
