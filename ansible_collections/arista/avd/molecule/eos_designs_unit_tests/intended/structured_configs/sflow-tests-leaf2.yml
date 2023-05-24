@@ -1,8 +1,15 @@
 router_bgp:
   as: '65102'
   router_id: 10.254.1.2
-  bgp_defaults:
-  - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -108,7 +115,7 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: true
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 10.254.2.5/31
 - name: Ethernet2
@@ -119,7 +126,7 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: true
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 10.254.2.7/31
 - name: Ethernet5
@@ -127,11 +134,8 @@ ethernet_interfaces:
   peer_interface: PCI2
   peer_type: server
   description: port-channel-interface-true_PCI2
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '11'
-  spanning_tree_portfast: edge
+  type: port-channel-member
   channel_group:
     id: 5
     mode: 'on'
@@ -142,11 +146,8 @@ ethernet_interfaces:
   peer_interface: PCI12
   peer_type: server
   description: port-channel-interface-false_PCI12
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '11'
-  spanning_tree_portfast: edge
+  type: port-channel-member
   channel_group:
     id: 15
     mode: 'on'
@@ -157,11 +158,8 @@ ethernet_interfaces:
   peer_interface: PCI14
   peer_type: server
   description: port-channel-interface-no-definition_PCI14
-  type: switched
   shutdown: false
-  mode: access
-  vlans: '11'
-  spanning_tree_portfast: edge
+  type: port-channel-member
   channel_group:
     id: 17
     mode: 'on'

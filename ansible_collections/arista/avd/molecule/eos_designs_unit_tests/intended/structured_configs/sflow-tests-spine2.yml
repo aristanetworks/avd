@@ -1,8 +1,17 @@
 router_bgp:
   as: '65200'
   router_id: 10.255.0.2
-  bgp_defaults:
-  - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -87,7 +96,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_sflow-tests-spine1_Ethernet6
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   sflow:
     enable: true
 - name: Ethernet7
@@ -97,7 +106,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_sflow-tests-spine1_Ethernet7
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   sflow:
     enable: false
 - name: Ethernet10
@@ -107,7 +116,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_sflow-tests-spine1_Ethernet10
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   sflow:
     enable: true
 - name: Ethernet8
@@ -117,7 +126,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_sflow-tests-spine1_Ethernet8
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   sflow:
     enable: true
 - name: Ethernet9
@@ -127,7 +136,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_sflow-tests-spine1_Ethernet9
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   sflow:
     enable: false
 - name: Ethernet11
@@ -137,6 +146,6 @@ ethernet_interfaces:
   description: P2P_LINK_TO_sflow-tests-spine1_Ethernet11
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   sflow:
     enable: true

@@ -1,8 +1,17 @@
 router_bgp:
   as: '65200'
   router_id: 10.255.0.1
-  bgp_defaults:
-  - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -115,7 +124,7 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: true
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 10.254.2.0/31
 - name: Ethernet2
@@ -126,7 +135,7 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: true
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 10.254.2.2/31
 - name: Ethernet3
@@ -137,7 +146,7 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: true
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 10.254.2.4/31
 - name: Ethernet4
@@ -148,7 +157,7 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: true
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 10.254.2.6/31
 - name: Ethernet5
@@ -159,7 +168,7 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: true
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 10.254.2.16/31
 - name: Ethernet6
@@ -170,7 +179,7 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: true
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 10.254.2.18/31
 - name: Ethernet7
@@ -181,7 +190,7 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 10.254.2.20/31
 - name: Ethernet8
@@ -192,7 +201,7 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: true
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 10.254.2.22/31
 - name: Ethernet10
@@ -202,7 +211,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_sflow-tests-spine2_Ethernet10
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   sflow:
     enable: true
 - name: Ethernet9
@@ -212,7 +221,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_sflow-tests-spine2_Ethernet9
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   sflow:
     enable: false
 - name: Ethernet11
@@ -222,7 +231,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_sflow-tests-spine2_Ethernet11
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   sflow:
     enable: true
 loopback_interfaces:
