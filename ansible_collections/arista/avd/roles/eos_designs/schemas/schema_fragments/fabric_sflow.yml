@@ -25,3 +25,6 @@ keys:
       core_interfaces:
         description: Enable sFlow on all p2p_links defined under core_interfaces.
         type: bool
+      mlag_interfaces:
+        description: Enable sFlow on all MLAG peer interfaces.
+        type: bool
