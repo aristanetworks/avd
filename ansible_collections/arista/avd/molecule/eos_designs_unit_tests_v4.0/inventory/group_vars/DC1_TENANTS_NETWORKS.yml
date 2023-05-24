@@ -28,7 +28,7 @@ svi_profiles:
         source_interface: lo100
         source_vrf: TEST
     nodes:
-      - name: DC1-LEAF1A
+      - node: DC1-LEAF1A
         # Should take config from svis[svi].nodes[node]
         ip_address_virtual_secondaries:
           - 10.2.21.1/24
@@ -37,7 +37,7 @@ svi_profiles:
           - ip_helper: 1.1.1.1
             source_interface: lo101
             source_vrf: TEST
-      - name: DC1-LEAF2A
+      - node: DC1-LEAF2A
         # Should over-write the config from svi settings
         ip_address_virtual_secondaries:
           - 10.2.21.1/24

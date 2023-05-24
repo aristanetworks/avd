@@ -18,12 +18,8 @@ dependency:
 driver:
   name: delegated
 platforms:
-  - name: failure-port-channel
-    image: avdteam/base:3.8-v2.0
-    pre_build_image: true
+  - name: dummy
     managed: false
-    groups:
-      - EOS_DESIGNS_FAILURES
 provisioner:
   name: ansible
   config_options:

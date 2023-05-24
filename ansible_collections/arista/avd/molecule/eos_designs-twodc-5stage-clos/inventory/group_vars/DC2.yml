@@ -7,7 +7,7 @@ super_spine:
     platform: vEOS-LAB
     bgp_as: 65200
     loopback_ipv4_pool: 172.16.200.0/24
-    bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200', 'graceful-restart restart-time 300', 'graceful-restart']
+    bgp_defaults: ['distance bgp 20 200 200']
   nodes:
     DC2-SUPER-SPINE1:
       id: 1
@@ -29,10 +29,7 @@ overlay_controller:
     max_uplink_switches: 4
     uplink_ipv4_pool: 172.17.20.0/24
     bgp_defaults:
-      - 'no bgp default ipv4-unicast'
-      - 'distance bgp 20 200 200'
-      - 'graceful-restart restart-time 300'
-      - 'graceful-restart'
+      - distance bgp 20 200 200
     evpn_route_servers: [ DC1-RS1, DC1-SUPER-SPINE1, DC1-POD1-SPINE1, DC1-POD1-LEAF1A ]
     bgp_as: 65201
   nodes:

@@ -2,9 +2,18 @@ router_bgp:
   as: '65105'
   router_id: 192.168.255.11
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
-  - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: UNDERLAY_PEERS
     type: ipv4
@@ -115,17 +124,18 @@ router_bgp:
       route_map_out: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
     - ip_address: fd5a:fe45:8831:06c5::b
       remote_as: '12345'
-    address_families:
-    - address_family: ipv4
+    address_family_ipv4:
       neighbors:
       - ip_address: 123.1.1.10
         activate: true
-    - address_family: ipv6
+    address_family_ipv6:
       neighbors:
       - ip_address: fd5a:fe45:8831:06c5::a
         activate: true
       - ip_address: fd5a:fe45:8831:06c5::b
         activate: true
+    updates:
+      wait_install: true
   - name: Tenant_B_WAN_Zone
     router_id: 192.168.255.11
     rd: 192.168.255.11:21
@@ -308,7 +318,8 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   ipv6_enable: true
-- description: My test
+- name: Ethernet4000
+  description: My test
   ip_address: 10.1.2.3/12
   shutdown: false
   type: routed
@@ -316,7 +327,6 @@ ethernet_interfaces:
   peer: MY-own-peer
   peer_interface: Ethernet123
   peer_type: my_precious
-  name: Ethernet4000
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

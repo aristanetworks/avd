@@ -278,7 +278,7 @@ class UtilsMixin:
 
         ethernet_cfg = {"speed": p2p_link.get("speed")}
 
-        if p2p_link.get("ptp_enable") is not True:
+        if get(p2p_link, "ptp.enabled") is not True:
             return ethernet_cfg
 
         ptp_config = {}
@@ -305,6 +305,7 @@ class UtilsMixin:
         default_description = f"P2P_LINK_TO_{peer}_{peer_interface}"
         return {
             "name": interface_name,
+            "type": "port-channel-member",
             "peer": peer,
             "peer_interface": peer_interface,
             "peer_type": p2p_link["data"]["peer_type"],

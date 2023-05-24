@@ -46,5 +46,5 @@ interface Management1
 
 ```eos
 !
-boot secret 5 a153de6290ff1409257a
+boot secret 5 <removed>
 ```

@@ -351,11 +351,6 @@ spine:
     platform: vEOS-lab # (2)!
     loopback_ipv4_pool: 10.255.0.0/27 # (3)!
     bgp_as: 65100 # (4)!
-    bgp_defaults: # (5)!
-      - no bgp default ipv4-unicast
-      - distance bgp 20 200 200
-      - graceful-restart restart-time 300
-      - graceful-restart
 
   nodes: # (6)!
     dc1-spine1:
@@ -371,10 +366,9 @@ spine:
 2. `platform` references default settings defined in AVD specific to certain switch platforms.
 3. `loopback_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for Loopback0.
 4. `bgp_as` defines the BGP AS number.
-5. `bgp_defaults` defines generic BGP settings.
-6. `nodes` defines the actual spine switches, using the hostnames defined in the inventory.
-7. `id` is used to calculate the various IP addresses, for example, the IPv4 address for the Loopback0 interface. In this case, dc1-spine1 will get the IPv4 address 10.255.0.1/27 assigned to the Loopback0 interface.
-8. `mgmt_ip` defines the IPv4 address of the management interface. As stated earlier, Ansible will perform name lookups using the hostnames specified in the inventory unless using the `ansible_host` option. However, there is no automatic mechanism to grab the result of the name lookup and use that to generate the management interface configuration.
+5. `nodes` defines the actual spine switches, using the hostnames defined in the inventory.
+6. `id` is used to calculate the various IP addresses, for example, the IPv4 address for the Loopback0 interface. In this case, dc1-spine1 will get the IPv4 address 10.255.0.1/27 assigned to the Loopback0 interface.
+7. `mgmt_ip` defines the IPv4 address of the management interface. As stated earlier, Ansible will perform name lookups using the hostnames specified in the inventory unless using the `ansible_host` option. However, there is no automatic mechanism to grab the result of the name lookup and use that to generate the management interface configuration.
 
 The following section covers the L3 leaf switches. Significantly more settings need to be set compared to the spine switches:
 
@@ -391,11 +385,6 @@ l3leaf:
     mlag_interfaces: ['Ethernet3', 'Ethernet4'] # (8)!
     mlag_peer_ipv4_pool: 10.255.1.64/27 # (9)!
     mlag_peer_l3_ipv4_pool: 10.255.1.96/27 # (10)!
-    bgp_defaults:
-      - no bgp default ipv4-unicast
-      - distance bgp 20 200 200
-      - graceful-restart restart-time 300
-      - graceful-restart
     virtual_router_mac_address: 00:1c:73:00:00:99 # (11)!
     spanning_tree_priority: 4096 # (12)!
     spanning_tree_mode: mstp # (13)!

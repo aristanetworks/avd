@@ -7,8 +7,6 @@ keys:
     type: list
     description: |
       All switch_ports ranges are expanded into individual port configurations.
-    documentation_options:
-      filename: Connected Endpoints
     items:
       type: dict
       $ref: "#/$defs/adapter_config"

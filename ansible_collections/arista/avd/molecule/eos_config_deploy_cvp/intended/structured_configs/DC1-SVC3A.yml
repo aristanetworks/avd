@@ -2,9 +2,18 @@ router_bgp:
   as: '65103'
   router_id: 192.168.255.8
   bgp_defaults:
-  - no bgp default ipv4-unicast
   - distance bgp 20 200 200
-  - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
@@ -97,6 +106,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.7
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: Tenant_A_DB_Zone
     router_id: 192.168.255.8
     rd: 192.168.255.8:13
@@ -114,6 +125,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.7
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: Tenant_A_OP_Zone
     router_id: 192.168.255.8
     rd: 192.168.255.8:10
@@ -131,6 +144,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.7
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: Tenant_A_WAN_Zone
     router_id: 192.168.255.8
     rd: 192.168.255.8:14
@@ -148,6 +163,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.7
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: Tenant_A_WEB_Zone
     router_id: 192.168.255.8
     rd: 192.168.255.8:11
@@ -165,6 +182,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.7
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: Tenant_B_OP_Zone
     router_id: 192.168.255.8
     rd: 192.168.255.8:20
@@ -182,6 +201,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.7
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: Tenant_B_WAN_Zone
     router_id: 192.168.255.8
     rd: 192.168.255.8:21
@@ -199,6 +220,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.7
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: Tenant_C_OP_Zone
     router_id: 192.168.255.8
     rd: 192.168.255.8:30
@@ -216,6 +239,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.7
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: Tenant_C_WAN_Zone
     router_id: 192.168.255.8
     rd: 192.168.255.8:31
@@ -233,6 +258,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.7
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   vlan_aware_bundles:
   - name: Tenant_A_APP_Zone
     rd: 192.168.255.8:12
@@ -390,16 +417,16 @@ management_api_http:
   - name: MGMT
   enable_https: true
 vlans:
-- tenant: system
+- id: 4093
+  tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
   - LEAF_PEER_L3
-  id: 4093
-- tenant: system
+- id: 4094
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  id: 4094
 - id: 130
   name: Tenant_A_APP_Zone_1
   tenant: Tenant_A
@@ -711,7 +738,6 @@ port_channel_interfaces:
   description: MLAG_PEER_DC1-SVC3B_Po5
   type: switched
   shutdown: false
-  vlans: 2-4094
   mode: trunk
   trunk_groups:
   - LEAF_PEER_L3
@@ -734,26 +760,26 @@ port_channel_interfaces:
     route_target: 03:03:02:02:01:01
   lacp_id: 0303.0202.0101
 ethernet_interfaces:
-- peer: DC1-SVC3B
+- name: Ethernet5
+  peer: DC1-SVC3B
   peer_interface: Ethernet5
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-SVC3B_Ethernet5
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
     mode: active
-  name: Ethernet5
-- peer: DC1-SVC3B
+- name: Ethernet6
+  peer: DC1-SVC3B
   peer_interface: Ethernet6
   peer_type: mlag_peer
   description: MLAG_PEER_DC1-SVC3B_Ethernet6
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
     mode: active
-  name: Ethernet6
 - name: Ethernet1
   peer: DC1-SPINE1
   peer_interface: Ethernet4
@@ -796,7 +822,7 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-L2LEAF2A_Ethernet1
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 7
     mode: active
@@ -806,7 +832,7 @@ ethernet_interfaces:
   peer_type: l2leaf
   description: DC1-L2LEAF2B_Ethernet1
   shutdown: false
-  type: switched
+  type: port-channel-member
   channel_group:
     id: 7
     mode: active
@@ -816,10 +842,8 @@ ethernet_interfaces:
   peer_type: server
   port_profile: TENANT_A_B
   description: server03_ESI_Eth1
-  type: switched
   shutdown: false
-  mode: trunk
-  vlans: 110-111,210-211
+  type: port-channel-member
   channel_group:
     id: 10
     mode: active

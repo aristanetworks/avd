@@ -189,15 +189,15 @@ class UplinksMixin:
                     else:
                         uplink["peer_trunk_groups"] = [self.shared_utils.hostname]
 
-                switch_vlans = self._vlans
-                uplink_switch_vlans = uplink_switch_facts._vlans
-                uplink_vlans = list(set(switch_vlans).intersection(uplink_switch_vlans))
+                uplink_vlans = set(self._vlans)
+                uplink_vlans = uplink_vlans.intersection(uplink_switch_facts._vlans)
 
-                if self.shared_utils.inband_management_vlan is not None:
-                    uplink_vlans.append(self.shared_utils.inband_management_vlan)
+                if self.shared_utils.configure_inband_mgmt:
+                    # Always add inband_mgmt_vlan even if the uplink switch does not have this vlan defined
+                    uplink_vlans.add(self.shared_utils.inband_mgmt_vlan)
 
                 if uplink_vlans:
-                    uplink["vlans"] = list_compress(uplink_vlans)
+                    uplink["vlans"] = list_compress(list(uplink_vlans))
                 else:
                     uplink["vlans"] = "none"
 

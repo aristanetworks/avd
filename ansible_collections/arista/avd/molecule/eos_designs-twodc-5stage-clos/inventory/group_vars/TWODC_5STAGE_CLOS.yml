@@ -30,7 +30,8 @@ l3_edge:
     generic-profile:
       mtu: 1499
       bfd: false
-      ptp_enable: true
+      ptp:
+        enabled: true
   p2p_links:
     - nodes: [ DC1-SUPER-SPINE1, DC2-SUPER-SPINE1 ]
       id: 1

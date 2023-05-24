@@ -4,29 +4,17 @@
 type: dict
 keys:
   isis_ti_lfa:
-    documentation_options:
-      filename: Fabric Variables
-      table: ISIS Settings
     type: dict
     keys:
       enabled:
-        documentation_options:
-          filename: Fabric Variables
-          table: ISIS Settings
         type: bool
         default: false
       protection:
-        documentation_options:
-          filename: Fabric Variables
-          table: ISIS Settings
         type: str
         valid_values:
           - link
           - node
       local_convergence_delay:
-        documentation_options:
-          filename: Fabric Variables
-          table: ISIS Settings
         description: Local convergence delay in milliseconds
         type: int
         convert_types:

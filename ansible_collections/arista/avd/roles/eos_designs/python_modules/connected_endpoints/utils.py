@@ -201,7 +201,7 @@ class UtilsMixin:
         """
         Return ptp for one adapter
         """
-        if get(adapter, "ptp.enable") is not True:
+        if get(adapter, "ptp.enabled") is not True:
             return None
 
         ptp_config = {}

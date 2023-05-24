@@ -91,7 +91,6 @@ tenant_d:
           track_bfd: true
           nodes: [ DC1-LEAF2A ]
     Tenant_D_WAN_Zone:
-      ipv6_routing: false
       vrf_vni: 41
       svis:
         450:

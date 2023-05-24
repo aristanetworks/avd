@@ -3,8 +3,8 @@ daemon_terminattr:
   cvaddrs:
   - myonpremcvpserver:9910
   cvauth:
-    method: token-secure
-    token_file: /tmp/cv-onboarding-token
+    method: token
+    token_file: /tmp/token
   cvvrf: MGMT
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
   ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent

@@ -9,7 +9,7 @@ search:
 {% for table in documentation.tables %}
 
 ## {{ table.display_name }}
-{%     if table.description %}
+{%     if table.description is arista.avd.defined %}
 
 {{ table.description | trim }}
 {%     endif %}

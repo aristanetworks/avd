@@ -356,6 +356,9 @@ mac_address_table:
               - < IPv6_address/Mask >
               - < IPv6_address/Mask >
 
+            # ipv6_enable to explicitly enable/disable link-local IPv6 addressing | Optional
+            ipv6_enable: <true | false>
+
             # ip virtual-router address
             # note, also requires an IP address to be configured on the SVI where it is applied.
             # Optional

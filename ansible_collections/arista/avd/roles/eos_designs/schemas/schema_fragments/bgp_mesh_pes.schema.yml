@@ -4,9 +4,6 @@
 type: dict
 keys:
   bgp_mesh_pes:
-    documentation_options:
-      filename: Fabric Variables
-      table: BGP Settings
     type: bool
     default: false
     description: Whether to configure an iBGP full mesh between PEs, either because there is no RR used or other reasons.

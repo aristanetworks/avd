@@ -20,10 +20,7 @@ spine:
     uplink_macsec:
       profile: MACSEC_PROFILE
     bgp_defaults:
-      - "no bgp default ipv4-unicast"
       - "distance bgp 20 200 200"
-      - "graceful-restart restart-time 300"
-      - "graceful-restart"
   nodes:
     # Spine also working as EVPN RS
     DC1-POD1-SPINE1:
@@ -54,12 +51,11 @@ l3leaf:
     uplink_macsec:
       profile: MACSEC_PROFILE
     bgp_defaults:
-      - "no bgp default ipv4-unicast"
       - "distance bgp 20 200 200"
-      - "graceful-restart restart-time 300"
-      - "graceful-restart"
     mlag_peer_l3_ipv4_pool: 172.19.110.0/24
     mlag_peer_ipv4_pool: 172.20.110.0/24
+    inband_mgmt_description: L2LEAF_INBAND_MGMT
+    inband_mgmt_vlan_name: L2LEAF_INBAND_MGMT
   node_groups:
     # Single switch working as underlay L3 router and EVPN RS
     RACK1_SINGLE:
@@ -140,8 +136,10 @@ l3leaf:
 # In DC1 we define all variables on specific node / node_group
 l2leaf:
   defaults:
-    inband_management_subnet: 172.21.110.0/24
-    inband_management_vlan: 4085
+    inband_mgmt_subnet: 172.21.110.0/24
+    inband_mgmt_description: L2LEAF_INBAND_MGMT
+    inband_mgmt_vlan_name: L2LEAF_INBAND_MGMT
+    inband_mgmt_vlan: 4085
     mlag_peer_l3_ipv4_pool: 172.19.110.0/24
     mlag_peer_ipv4_pool: 172.20.110.0/24
   node_groups:

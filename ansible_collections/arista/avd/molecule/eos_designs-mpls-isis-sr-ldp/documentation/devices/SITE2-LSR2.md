@@ -173,7 +173,7 @@ interface Ethernet3
    no isis hello padding
    isis network point-to-point
    isis authentication mode md5
-   isis authentication key 7 asdadjiwtelogkkdng
+   isis authentication key 7 <removed>
    link-debounce time 1000
 
 !
@@ -231,7 +231,7 @@ interface Port-Channel12
    isis network point-to-point
    no isis hello padding
    isis authentication mode md5
-   isis authentication key 7 asdadjiwtelogkkdng
+   isis authentication key 7 <removed>
    link-debounce time 1600
 
 ```

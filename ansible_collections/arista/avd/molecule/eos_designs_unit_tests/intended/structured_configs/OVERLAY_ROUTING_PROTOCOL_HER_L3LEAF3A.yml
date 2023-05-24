@@ -1,8 +1,17 @@
 router_bgp:
   as: '65003'
   router_id: 192.168.254.3
-  bgp_defaults:
-  - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
@@ -49,16 +58,16 @@ management_api_http:
 spanning_tree:
   no_spanning_tree_vlan: 4093-4094
 vlans:
-- tenant: system
+- id: 4093
+  tenant: system
   name: LEAF_PEER_L3
   trunk_groups:
   - LEAF_PEER_L3
-  id: 4093
-- tenant: system
+- id: 4094
+  tenant: system
   name: MLAG_PEER
   trunk_groups:
   - MLAG
-  id: 4094
 - id: 3900
   name: SVI_ON_ALL_LEAFS
   tenant: TEST
@@ -80,14 +89,14 @@ vlan_interfaces:
 - name: Vlan4093
   description: MLAG_PEER_L3_PEERING
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ip_address: 192.168.253.4/31
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
   ip_address: 192.168.254.4/31
   no_autostate: true
-  mtu: 9000
+  mtu: 9214
 - name: Vlan3900
   tenant: TEST
   tags:
@@ -111,39 +120,38 @@ vlan_interfaces:
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf TEST'
   vrf: TEST
-  mtu: 9000
+  mtu: 9214
   ip_address: 192.168.253.4/31
 port_channel_interfaces:
 - name: Port-Channel1
   description: MLAG_PEER_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B_Po1
   type: switched
   shutdown: false
-  vlans: 2-4094
   mode: trunk
   trunk_groups:
   - LEAF_PEER_L3
   - MLAG
 ethernet_interfaces:
-- peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B
+- name: Eth1
+  peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B
   peer_interface: Eth1
   peer_type: mlag_peer
   description: MLAG_PEER_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B_Eth1
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  name: Eth1
-- peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B
+- name: Eth2
+  peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B
   peer_interface: Eth2
   peer_type: mlag_peer
   description: MLAG_PEER_OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B_Eth2
-  type: switched
+  type: port-channel-member
   shutdown: false
   channel_group:
     id: 1
     mode: active
-  name: Eth2
 mlag_configuration:
   domain_id: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3
   local_interface: Vlan4094

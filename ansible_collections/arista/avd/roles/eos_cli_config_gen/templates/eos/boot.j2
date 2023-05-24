@@ -5,6 +5,6 @@
 {%         if boot.secret.hash_algorithm is arista.avd.defined('md5') %}
 {%             set hash_algorithm = 5 %}
 {%         endif %}
-boot secret {{ hash_algorithm | arista.avd.default('sha512') }} {{ boot.secret.key }}
+boot secret {{ hash_algorithm | arista.avd.default('sha512') }} {{ boot.secret.key | arista.avd.hide_passwords(hide_passwords) }}
 {%     endif %}
 {% endif %}

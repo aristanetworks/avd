@@ -57,6 +57,27 @@ network_ports:
       channel_id: 42
       mode: "active"
 
+  # The next entries are used to test the duplicate check feature together with the
+  # CONNECTED_ENDPOINT_OVERWRITING_NETWORK_PORT below.
+  - switches:
+      - network-ports-tests.1
+    switch_ports:
+      - Ethernet11-14
+    description: Base config which may be overwritten
+
+  - switches:
+      - network-ports-tests.1
+    switch_ports:
+      - Ethernet12
+    description: Config overwriting base config
+
+servers:
+  CONNECTED_ENDPOINT_OVERWRITING_NETWORK_PORT:
+    adapters:
+      - endpoint_ports: [Eth42]
+        switch_ports: [Ethernet14]
+        switches: [network-ports-tests.1]
+
 # Only creating network services required to test the filter "only_vlans_in_use" combined with network ports
 tenants:
   TEST:

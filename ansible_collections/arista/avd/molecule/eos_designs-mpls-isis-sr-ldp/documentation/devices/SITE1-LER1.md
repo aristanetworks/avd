@@ -219,7 +219,7 @@ interface Ethernet1
    no isis hello padding
    isis network point-to-point
    isis authentication mode md5
-   isis authentication key 7 asdadjiwtelogkkdng
+   isis authentication key 7 <removed>
    link-debounce time 1000
 
 !
@@ -240,16 +240,18 @@ interface Ethernet2
    no isis hello padding
    isis network point-to-point
    isis authentication mode md5
-   isis authentication key 7 asdadjiwtelogkkdng
+   isis authentication key 7 <removed>
    link-debounce time 1500
 
 !
 interface Ethernet3
    no shutdown
+   switchport
    channel-group 3 mode active
 !
 interface Ethernet4
    no shutdown
+   switchport
    channel-group 3 mode active
 !
 interface Ethernet6
@@ -302,6 +304,7 @@ interface Ethernet8
 
 | Interface | Ethernet Segment Identifier | Multihoming Redundancy Mode | Route Target |
 | --------- | --------------------------- | --------------------------- | ------------ |
+| Port-Channel3 | 0000:0000:0102:0000:0034 | all-active | 01:02:00:00:00:34 |
 | Port-Channel8 | 0000:0000:0303:0202:0101 | all-active | 03:03:02:02:01:01 |
 | Port-Channel8.111 | 0000:0000:0303:0202:0111 | all-active | 03:03:02:02:01:11 |
 | Port-Channel8.222 | 0000:0000:0303:0202:0222 | all-active | 03:03:02:02:02:22 |
@@ -628,10 +631,11 @@ router isis CORE
 
 | BGP Tuning |
 | ---------- |
-| no bgp default ipv4-unicast |
 | distance bgp 20 200 200 |
 | graceful-restart restart-time 300 |
 | graceful-restart |
+| update wait-install |
+| no bgp default ipv4-unicast |
 | maximum-paths 4 ecmp 4 |
 
 #### Router BGP Peer Groups
@@ -699,16 +703,17 @@ router isis CORE
 !
 router bgp 65000
    router-id 100.70.0.5
-   no bgp default ipv4-unicast
-   distance bgp 20 200 200
    graceful-restart restart-time 300
    graceful-restart
    maximum-paths 4 ecmp 4
+   update wait-install
+   no bgp default ipv4-unicast
+   distance bgp 20 200 200
    neighbor MPLS-OVERLAY-PEERS peer group
    neighbor MPLS-OVERLAY-PEERS remote-as 65000
    neighbor MPLS-OVERLAY-PEERS update-source Loopback0
    neighbor MPLS-OVERLAY-PEERS bfd
-   neighbor MPLS-OVERLAY-PEERS password 7 SHsTgDgjVUU5a9blyxSt3Q==
+   neighbor MPLS-OVERLAY-PEERS password 7 <removed>
    neighbor MPLS-OVERLAY-PEERS send-community
    neighbor MPLS-OVERLAY-PEERS maximum-routes 0
    neighbor 100.70.0.8 peer group MPLS-OVERLAY-PEERS

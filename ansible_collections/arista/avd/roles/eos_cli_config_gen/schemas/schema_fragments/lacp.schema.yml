@@ -4,8 +4,6 @@
 type: dict
 keys:
   lacp:
-    documentation_options:
-      filename: data_model/LACP
     type: dict
     description: Set Link Aggregation Control Protocol (LACP) parameters.
     keys:

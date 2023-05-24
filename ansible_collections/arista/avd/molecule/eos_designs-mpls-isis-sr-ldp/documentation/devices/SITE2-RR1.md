@@ -166,7 +166,7 @@ interface Ethernet4
    no isis hello padding
    isis network point-to-point
    isis authentication mode md5
-   isis authentication key 7 asdadjiwtelogkkdng
+   isis authentication key 7 <removed>
    link-debounce time 1000
 
 ```
@@ -352,11 +352,12 @@ router isis CORE
 
 | BGP Tuning |
 | ---------- |
-| no bgp default ipv4-unicast |
 | distance bgp 20 200 200 |
+| bgp route-reflector preserve-attributes always |
 | graceful-restart restart-time 300 |
 | graceful-restart |
-| bgp route-reflector preserve-attributes always |
+| update wait-install |
+| no bgp default ipv4-unicast |
 | maximum-paths 4 ecmp 4 |
 
 #### Router BGP Peer Groups
@@ -432,26 +433,27 @@ router isis CORE
 !
 router bgp 65000
    router-id 100.70.0.9
-   bgp cluster-id 1.1.1.1
-   no bgp default ipv4-unicast
-   distance bgp 20 200 200
    graceful-restart restart-time 300
    graceful-restart
-   bgp route-reflector preserve-attributes always
    maximum-paths 4 ecmp 4
+   update wait-install
+   no bgp default ipv4-unicast
+   bgp cluster-id 1.1.1.1
+   distance bgp 20 200 200
+   bgp route-reflector preserve-attributes always
    neighbor MPLS-OVERLAY-PEERS peer group
    neighbor MPLS-OVERLAY-PEERS remote-as 65000
    neighbor MPLS-OVERLAY-PEERS update-source Loopback0
    neighbor MPLS-OVERLAY-PEERS route-reflector-client
    neighbor MPLS-OVERLAY-PEERS bfd
-   neighbor MPLS-OVERLAY-PEERS password 7 SHsTgDgjVUU5a9blyxSt3Q==
+   neighbor MPLS-OVERLAY-PEERS password 7 <removed>
    neighbor MPLS-OVERLAY-PEERS send-community
    neighbor MPLS-OVERLAY-PEERS maximum-routes 0
    neighbor RR-OVERLAY-PEERS peer group
    neighbor RR-OVERLAY-PEERS remote-as 65000
    neighbor RR-OVERLAY-PEERS update-source Loopback0
    neighbor RR-OVERLAY-PEERS bfd
-   neighbor RR-OVERLAY-PEERS password 7 04FdfTXWrEfpDTUc3mlSjg==
+   neighbor RR-OVERLAY-PEERS password 7 <removed>
    neighbor RR-OVERLAY-PEERS send-community
    neighbor RR-OVERLAY-PEERS maximum-routes 0
    neighbor 100.70.0.5 peer group MPLS-OVERLAY-PEERS

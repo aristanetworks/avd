@@ -1,8 +1,15 @@
 router_bgp:
   as: '65102'
   router_id: 10.254.1.2
-  bgp_defaults:
-  - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -102,11 +109,11 @@ management_api_http:
 ptp:
   mode: boundary
   forward_unicast: true
-  clock_identity: 00:1C:73:01:00:02
+  clock_identity: 00:1C:73:28:00:01
   source:
     ip: 10.254.1.2
-  priority1: 1
-  priority2: 2
+  priority1: 40
+  priority2: 1
   ttl: 16
   domain: 127
   message_type:
@@ -137,7 +144,7 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_PTP-TESTS-SPINE1_Ethernet3
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ptp:
     announce:
@@ -155,7 +162,7 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_PTP-TESTS-SPINE1_Ethernet4
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ptp:
     announce:
@@ -172,8 +179,8 @@ ethernet_interfaces:
   peer_interface: PCI2
   peer_type: server
   description: video-endpoint_PCI2
-  type: switched
   shutdown: false
+  type: switched
   mode: access
   vlans: '11'
   spanning_tree_portfast: edge

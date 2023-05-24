@@ -4,8 +4,6 @@
 type: dict
 keys:
   node_type_keys:
-    documentation_options:
-      filename: Node Types
     type: list
     description: |
       Define Node Type Keys, to specify the properties of each node type in the fabric.

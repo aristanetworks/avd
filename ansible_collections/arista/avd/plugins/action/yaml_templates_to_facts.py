@@ -83,6 +83,29 @@ class ActionModule(ActionBase):
                 except Exception as e:
                     raise AnsibleActionFail(f"Exception during templating of task_var '{var}'") from e
 
+        # Get updated templar instance to be passed along to our simplified "templater"
+        self.templar = get_templar(self, task_vars)
+
+        # If the argument 'root_key' is set, output will be assigned to this variable. If not set, the output will be set at as "root" variables.
+        # We use ChainMap to avoid copying large amounts of data around, mapping in
+        #  - output or { root_key: output }
+        #  - templated version of all other vars
+        # Any var assignments will end up in output, so all other objects are protected.
+        output = {}
+        if root_key:
+            template_vars = ChainMap({root_key: output}, task_vars)
+        else:
+            template_vars = ChainMap(output, task_vars)
+
+        # Initialize SharedUtils class to be passed to each python_module below.
+        shared_utils = SharedUtils(hostvars=template_vars, templar=self.templar)
+
+        # Insert dynamic keys into the input data if not set.
+        # These keys are required by the schema, but the default values are set inside shared_utils.
+        task_vars.setdefault("node_type_keys", shared_utils.node_type_keys)
+        task_vars.setdefault("connected_endpoint_keys", shared_utils.connected_endpoints_keys)
+        task_vars.setdefault("network_services_keys", shared_utils.network_services_keys)
+
         if schema or schema_id:
             # Load schema tools and perform conversion and validation
             avdschematools = AvdSchemaTools(
@@ -112,23 +135,6 @@ class ActionModule(ActionBase):
             output_avdschema = output_avdschematools.avdschema
         else:
             output_avdschema = None
-
-        # Get updated templar instance to be passed along to our simplified "templater"
-        self.templar = get_templar(self, task_vars)
-
-        # If the argument 'root_key' is set, output will be assigned to this variable. If not set, the output will be set at as "root" variables.
-        # We use ChainMap to avoid copying large amounts of data around, mapping in
-        #  - output or { root_key: output }
-        #  - templated version of all other vars
-        # Any var assignments will end up in output, so all other objects are protected.
-        output = {}
-        if root_key:
-            template_vars = ChainMap({root_key: output}, task_vars)
-        else:
-            template_vars = ChainMap(output, task_vars)
-
-        # Initialize SharedUtils class to be passed to each python_module below.
-        shared_utils = SharedUtils(hostvars=template_vars, templar=self.templar)
 
         # If the argument 'debug' is set, a 'avd_yaml_templates_to_facts_debug' list will be added to the output.
         # This list contains timestamps from every step for every template. This is useful for identifying slow templates.

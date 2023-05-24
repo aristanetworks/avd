@@ -21,6 +21,24 @@
 {%         for bgp_default in router_bgp.bgp_defaults | arista.avd.default([]) %}
 | {{ bgp_default }} |
 {%         endfor %}
+{%         if router_bgp.graceful_restart.enabled is arista.avd.defined(true) %}
+{%             if router_bgp.graceful_restart.restart_time is arista.avd.defined %}
+| graceful-restart restart-time {{ router_bgp.graceful_restart.restart_time }} |
+{%             endif %}
+{%             if router_bgp.graceful_restart.stalepath_time is arista.avd.defined %}
+| graceful-restart stalepath-time {{ router_bgp.graceful_restart.stalepath_time }} |
+{%             endif %}
+| graceful-restart |
+{%         endif %}
+{%         if router_bgp.graceful_restart_helper.enabled is arista.avd.defined(false) %}
+| no graceful-restart-helper |
+{%         elif router_bgp.graceful_restart_helper.enabled is arista.avd.defined(true) %}
+{%             if router_bgp.graceful_restart_helper.restart_time is arista.avd.defined %}
+| graceful-restart-helper restart-time {{ router_bgp.graceful_restart_helper.restart_time }} |
+{%             elif router_bgp.graceful_restart_helper.long_lived is arista.avd.defined(true) %}
+| graceful-restart-helper long-lived |
+{%             endif %}
+{%         endif %}
 {%         if router_bgp.bgp.bestpath.d_path is arista.avd.defined(true) %}
 | bgp bestpath d-path |
 {%         endif %}
@@ -29,6 +47,16 @@
 {%         endif %}
 {%         if router_bgp.updates.wait_install is arista.avd.defined(true) %}
 | update wait-install |
+{%         endif %}
+{%         if router_bgp.bgp.default.ipv4_unicast is arista.avd.defined(true) %}
+| bgp default ipv4-unicast |
+{%         elif router_bgp.bgp.default.ipv4_unicast is arista.avd.defined(false) %}
+| no bgp default ipv4-unicast |
+{%         endif %}
+{%         if router_bgp.bgp.default.ipv4_unicast_transport_ipv6 is arista.avd.defined(true) %}
+| bgp default ipv4-unicast transport ipv6 |
+{%         elif router_bgp.bgp.default.ipv4_unicast_transport_ipv6 is arista.avd.defined(false) %}
+| no bgp default ipv4-unicast transport ipv6 |
 {%         endif %}
 {%         if router_bgp.distance.external_routes is arista.avd.defined %}
 {%             set distance_cli = "distance bgp " ~ router_bgp.distance.external_routes %}

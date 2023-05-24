@@ -4,8 +4,6 @@
 type: dict
 keys:
   address_locking:
-    documentation_options:
-      filename: data_model/Address Locking
     type: dict
     keys:
       dhcp_servers_ipv4:

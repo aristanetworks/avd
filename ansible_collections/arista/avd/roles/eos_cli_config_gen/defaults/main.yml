@@ -28,3 +28,8 @@ avd_structured_config_file_format: "yml"
 # Input Variable Validation
 avd_data_conversion_mode: "debug"
 avd_data_validation_mode: "warning"
+
+eos_cli_config_gen_documentation:
+  hide_passwords: true
+eos_cli_config_gen_configuration:
+  hide_passwords: false

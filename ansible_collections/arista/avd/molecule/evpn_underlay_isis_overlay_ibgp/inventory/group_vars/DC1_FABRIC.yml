@@ -10,8 +10,8 @@ overlay_routing_protocol: ibgp
 bgp_as: 65000
 isis_area_id: "49.0001"
 
-# Enable vlan aware bundles using the old name of the setting (backwards compatible)
-vxlan_vlan_aware_bundles: true
+# Enable vlan aware bundles for EVPN MAC-VRF
+evpn_vlan_aware_bundles: true
 
 # bgp peer groups passwords
 bgp_peer_groups:
@@ -30,7 +30,6 @@ spine:
     bgp_as: 65001
     loopback_ipv4_pool: 192.168.255.0/24
     bgp_defaults:
-      - 'no bgp default ipv4-unicast'
       - 'distance bgp 20 200 200'
     isis_system_id_prefix: '0001.0000'
     isis_maximum_paths: 4
@@ -62,7 +61,7 @@ l3leaf:
     uplink_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4']
     uplink_switches: ['DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE3', 'DC1-SPINE4']
     uplink_ipv4_pool: 172.31.255.0/24
-    bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200']
+    bgp_defaults: ['distance bgp 20 200 200']
     isis_system_id_prefix: '0001.0001'
     isis_maximum_paths: 4
     platform: vEOS-LAB

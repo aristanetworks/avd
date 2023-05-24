@@ -10,7 +10,7 @@
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 {%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
-{%         if port_channel_interface.type is not defined or port_channel_interface.type not in ['routed', 'l3dot1q', 'l2dot1q'] %}
+{%         if port_channel_interface.type | arista.avd.default("switched") == 'switched' %}
 {%             set description = port_channel_interface.description | arista.avd.default("-") %}
 {%             set type = port_channel_interface.type | arista.avd.default("switched") %}
 {%             set mode = port_channel_interface.mode | arista.avd.default("access") %}
@@ -243,6 +243,9 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{# IP NAT Documentation #}
+{%     set ip_nat_interfaces = port_channel_interfaces %}
+{%     include 'documentation/interfaces-ip-nat.j2' %}
 {# IPv6 #}
 {%     set port_channel_interface_ipv6 = namespace() %}
 {%     set port_channel_interface_ipv6.configured = false %}

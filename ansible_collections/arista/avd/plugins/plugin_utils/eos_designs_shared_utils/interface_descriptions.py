@@ -5,12 +5,11 @@ from typing import TYPE_CHECKING
 
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, load_python_class
-from ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions.avdinterfacedescriptions import AvdInterfaceDescriptions
+from ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions import AvdInterfaceDescriptions
 
 if TYPE_CHECKING:
     from .shared_utils import SharedUtils
 
-DEFAULT_AVD_INTERFACE_DESCRIPTIONS_PYTHON_MODULE = "ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions"
 DEFAULT_AVD_INTERFACE_DESCRIPTIONS_PYTHON_CLASS_NAME = "AvdInterfaceDescriptions"
 
 
@@ -27,7 +26,10 @@ class InterfaceDescriptionsMixin:
         Load the python_module defined in `templates.interface_descriptions.python_module`
         Return an instance of the class defined by `templates.interface_descriptions.python_class_name` as cached_property
         """
-        module_path = self.interface_descriptions_templates.get("python_module", DEFAULT_AVD_INTERFACE_DESCRIPTIONS_PYTHON_MODULE)
+        module_path = self.interface_descriptions_templates.get("python_module")
+        if module_path is None:
+            return AvdInterfaceDescriptions(hostvars=self.hostvars, shared_utils=self)
+
         class_name = self.interface_descriptions_templates.get("python_class_name", DEFAULT_AVD_INTERFACE_DESCRIPTIONS_PYTHON_CLASS_NAME)
 
         cls = load_python_class(

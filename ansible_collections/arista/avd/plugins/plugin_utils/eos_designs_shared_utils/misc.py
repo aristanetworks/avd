@@ -66,7 +66,7 @@ class MiscMixin:
 
     @cached_property
     def igmp_snooping_enabled(self: SharedUtils) -> bool:
-        default_igmp_snooping_enabled = get(self.hostvars, "default_igmp_snooping_enabled")
+        default_igmp_snooping_enabled = get(self.hostvars, "default_igmp_snooping_enabled", default=True)
         return get(self.switch_data_combined, "igmp_snooping_enabled", default=default_igmp_snooping_enabled) is True
 
     @cached_property
@@ -115,27 +115,32 @@ class MiscMixin:
 
     @cached_property
     def p2p_uplinks_mtu(self: SharedUtils) -> int:
-        return get(self.hostvars, "p2p_uplinks_mtu", required=True)
+        return get(self.hostvars, "p2p_uplinks_mtu", default=9214)
 
     @cached_property
     def evpn_short_esi_prefix(self: SharedUtils) -> str:
-        return get(self.hostvars, "evpn_short_esi_prefix", required=True)
+        return get(self.hostvars, "evpn_short_esi_prefix", default="0000:0000:")
 
     @cached_property
     def shutdown_interfaces_towards_undeployed_peers(self: SharedUtils) -> bool:
         return get(self.hostvars, "shutdown_interfaces_towards_undeployed_peers") is True
 
     @cached_property
-    def bfd_multihop(self: SharedUtils) -> dict | None:
-        return get(self.hostvars, "bfd_multihop")
+    def bfd_multihop(self: SharedUtils) -> dict:
+        DEFAULT_BFD_MULTIHOP = {
+            "interval": 300,
+            "min_rx": 300,
+            "multiplier": 3,
+        }
+        return get(self.hostvars, "bfd_multihop", default=DEFAULT_BFD_MULTIHOP)
 
     @cached_property
-    def evpn_ebgp_multihop(self: SharedUtils) -> int | None:
-        return get(self.hostvars, "evpn_ebgp_multihop")
+    def evpn_ebgp_multihop(self: SharedUtils) -> int:
+        return get(self.hostvars, "evpn_ebgp_multihop", default=3)
 
     @cached_property
-    def evpn_ebgp_gateway_multihop(self: SharedUtils) -> int | None:
-        return get(self.hostvars, "evpn_ebgp_gateway_multihop")
+    def evpn_ebgp_gateway_multihop(self: SharedUtils) -> int:
+        return get(self.hostvars, "evpn_ebgp_gateway_multihop", default=15)
 
     @cached_property
     def evpn_overlay_bgp_rtc(self: SharedUtils) -> bool:
@@ -150,22 +155,14 @@ class MiscMixin:
         return get(self.hostvars, "dc_name")
 
     @cached_property
-    def connected_endpoints_keys(self: SharedUtils) -> list:
-        """
-        Return connected_endpoints_keys filtered for invalid entries and unused keys
-        """
-        connected_endpoints_keys = []
-        # Support legacy data model by converting nested dict to list of dict
-        connected_endpoints_keys = convert_dicts(get(self.hostvars, "connected_endpoints_keys", default=[]), "key")
-        connected_endpoints_keys = [entry for entry in connected_endpoints_keys if entry.get("key") is not None and self.hostvars.get(entry["key"]) is not None]
-        return connected_endpoints_keys
-
-    @cached_property
     def network_services_keys(self: SharedUtils) -> list[dict]:
         """
         Return sorted network_services_keys filtered for invalid entries and unused keys
+
+        NOTE: This method is called _before_ any schema validation, since we need to resolve network_services_keys dynamically
         """
-        network_services_keys = get(self.hostvars, "network_services_keys", required=True)
+        DEFAULT_NETWORK_SERVICES_KEYS = [{"name": "tenants"}]
+        network_services_keys = get(self.hostvars, "network_services_keys", default=DEFAULT_NETWORK_SERVICES_KEYS)
         network_services_keys = [entry for entry in network_services_keys if entry.get("name") is not None and self.hostvars.get(entry["name"]) is not None]
         return natural_sort(network_services_keys, "name")
 

@@ -1,5 +1,14 @@
 Node Type,Node,Node Interface,Peer Type,Peer Node,Peer Interface,Node Interface Enabled
-{% set node_types = node_type_keys | arista.avd.convert_dicts('key') | map(attribute="type") %}
+{% if node_type_keys is arista.avd.defined %}
+{%     set node_types = node_type_keys | arista.avd.convert_dicts('key') | map(attribute="type") %}
+{% else %}
+{%     set default_node_types = {
+           "l3ls-evpn": ["spine", "l3leaf", "l2leaf", "super-spine", "overlay-controller"],
+           "mpls": ["p", "pe", "rr"],
+           "l2ls": ["l3spine", "spine", "leaf"]
+       } %}
+{%     set node_types = default_node_types[design.type | arista.avd.default("l3ls-evpn")] %}
+{% endif %}
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {%     set node_hostvars = hostvars[node] %}
 {%     set node_facts = avd_switch_facts[node] %}

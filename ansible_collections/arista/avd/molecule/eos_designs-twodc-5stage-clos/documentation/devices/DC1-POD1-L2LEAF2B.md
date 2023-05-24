@@ -48,14 +48,12 @@
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 192.168.1.12/24 | 192.168.1.254 |
-| Vlan4085 | L2LEAF_INBAND_MGMT | inband | default | 172.21.110.6/24 | 172.21.110.1 |
 
 ##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
-| Vlan4085 | L2LEAF_INBAND_MGMT | inband | default | - | - |
 
 #### Management Interfaces Device Configuration
 
@@ -66,12 +64,6 @@ interface Management1
    no shutdown
    vrf MGMT
    ip address 192.168.1.12/24
-!
-interface Vlan4085
-   description L2LEAF_INBAND_MGMT
-   no shutdown
-   mtu 1500
-   ip address 172.21.110.6/24
 ```
 
 ### Management API HTTP
@@ -114,7 +106,7 @@ management api http-commands
 
 ```eos
 !
-username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
+username admin privilege 15 role network-admin secret sha512 <removed>
 ```
 
 ## Monitoring
@@ -270,8 +262,8 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | DC1.POD1.LEAF2A_Ethernet4 | *trunk | *110-113,1100-1102,2500,2600-2601,4085 | *- | *- | 1 |
 | Ethernet2 | DC1-POD1-LEAF2B_Ethernet4 | *trunk | *110-113,1100-1102,2500,2600-2601,4085 | *- | *- | 1 |
-| Ethernet3 | MLAG_PEER_DC1-POD1-L2LEAF2A_Ethernet3 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
-| Ethernet4 | MLAG_PEER_DC1-POD1-L2LEAF2A_Ethernet4 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
+| Ethernet3 | MLAG_PEER_DC1-POD1-L2LEAF2A_Ethernet3 | *trunk | *- | *- | *['MLAG'] | 3 |
+| Ethernet4 | MLAG_PEER_DC1-POD1-L2LEAF2A_Ethernet4 | *trunk | *- | *- | *['MLAG'] | 3 |
 
 *Inherited from Port-Channel Interface
 
@@ -309,7 +301,7 @@ interface Ethernet4
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | RACK2_MLAG_Po3 | switched | trunk | 110-113,1100-1102,2500,2600-2601,4085 | - | - | - | - | 1 | - |
-| Port-Channel3 | MLAG_PEER_DC1-POD1-L2LEAF2A_Po3 | switched | trunk | 2-4094 | - | ['MLAG'] | - | - | - | - |
+| Port-Channel3 | MLAG_PEER_DC1-POD1-L2LEAF2A_Po3 | switched | trunk | - | - | ['MLAG'] | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -328,7 +320,6 @@ interface Port-Channel3
    description MLAG_PEER_DC1-POD1-L2LEAF2A_Po3
    no shutdown
    switchport
-   switchport trunk allowed vlan 2-4094
    switchport mode trunk
    switchport trunk group MLAG
    service-profile QOS-PROFILE
@@ -340,17 +331,25 @@ interface Port-Channel3
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
+| Vlan4085 | L2LEAF_INBAND_MGMT | default | 1500 | False |
 | Vlan4094 | MLAG_PEER | default | 1500 | False |
 
 ##### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
+| Vlan4085 |  default  |  172.21.110.6/24  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  172.20.110.3/31  |  -  |  -  |  -  |  -  |  -  |
 
 #### VLAN Interfaces Device Configuration
 
 ```eos
+!
+interface Vlan4085
+   description L2LEAF_INBAND_MGMT
+   no shutdown
+   mtu 1500
+   ip address 172.21.110.6/24
 !
 interface Vlan4094
    description MLAG_PEER

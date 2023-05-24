@@ -4,6 +4,4 @@
 type: dict
 keys:
   ip_routing_ipv6_interfaces:
-    documentation_options:
-      filename: data_model/Routing
     type: bool

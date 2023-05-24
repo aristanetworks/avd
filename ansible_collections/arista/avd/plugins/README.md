@@ -245,6 +245,16 @@ Example usage for `arista.avd.encrypt` filter for OSPF is to use it in conjuncti
             key: "{{ ospf_vault_password | arista.avd.encrypt(passwd_type='ospf_message_digest', key='Ethernet1', hash_algorithm='md5', key_id='1') }}"
     ```
 
+### Hide Passwords filter
+
+This filter gives the capabilities to replace a value rendered in a Jinja Template by the string `<removed>` just like in an EOS `show run sanitized`.
+
+**example:**
+
+```jinja
+ip ospf authentication-key 7 {{ vlan_interface.ospf_authentication_key | arista.avd.hide_passwords(true) }}
+```
+
 ## Plugin Tests
 
 Arista AVD provides built-in test plugins to help verify data efficiently in jinja2 templates.
@@ -377,6 +387,66 @@ switch:
                         platform_settings | selectattr("platforms", "arista.avd.contains", "default") | first) }}
 ```
 
+## Vars Plugins
+
+### arista.avd.global_vars
+
+Loads variables from variable files specified in ansible.cfg or environment variable. Assign the loaded variables to the 'all' inventory group. Files are restricted by extension to one of .yaml, .json, .yml or no extension. Hidden files (starting with '.') and backup files (ending with '~') are ignored. Only applies to inventory sources that are existing paths.
+
+The `arista.avd.global_vars` vars plugin should run at the `inventory` stage (default) before all other variable plugins, to inject the variables before any group and host vars.
+
+**parameters:**
+
+```yaml
+- paths:
+        List of relative paths, relative to the inventory file.
+        If path is a directory, all the valid files inside are loaded in alphabetical order.
+        If the environment variable is set, it takes precedence over ansible.cfg.
+        set_via:
+          env:
+          - name: ARISTA_AVD_GLOBAL_VARS_PATHS
+          ini:
+          - key: paths
+            section: vars_global_vars
+        elements: string
+        type: list
+```
+
+**examples:**
+
+#### `ansible.cfg` only example
+
+1. Enable the plugin in `ansible.cfg` - DO NOT REMOVE host_group_vars.
+
+    ```ini
+    [defaults]
+    vars_plugins_enabled = arista.avd.global_vars, host_group_vars
+
+    [vars_global_vars]
+    paths = ../relative/path/to/my/global/vars/file/or/dir
+    ```
+
+2. Run your playbook
+
+    ```shell
+    ansible-playbook -i inventory.yml playbook.yml
+    ```
+
+##### `ansible.cfg` + environement variable example
+
+1. Enable the plugin in `ansible.cfg` - DO NOT REMOVE host_group_vars.
+
+    ```ini
+    [defaults]
+    vars_plugins_enabled = arista.avd.global_vars, host_group_vars
+    ```
+
+2. Run your playbook
+
+    ```shell
+    ARISTA_AVD_GLOBAL_VARS_PATHS=../relative/path/to/my/global/vars/file/or/dir ansible-playbook -i inventory.yml playbook.yml
+    ```
+
 ## Modules
 
 ### Inventory to CloudVision Containers
@@ -488,6 +558,11 @@ The `arista.avd.configlet_build_config` module provides the following capabiliti
 
 ### YAML Templates to Facts
 
+!!! Note
+
+    This plugin is no longer used by `eos_designs`. It is still being used by `eos_validate_state`.
+    This plugin may be deprecated in a future version of this collection and later removed.
+
 The `arista.avd.yaml_templates_to_facts` module is an Ansible Action Plugin providing the following capabilities:
 
 - Set Facts based on one or more Jinja2 templates producing YAML output.
@@ -495,8 +570,6 @@ The `arista.avd.yaml_templates_to_facts` module is an Ansible Action Plugin prov
 - Facts set by one template will be accessible by the following templates.
 - Returned facts can be set below a specific `root_key`.
 - Facts returned templates can be stripped for `null` values to avoid overwriting previous set facts.
-
-The module is used in `eos_designs` to generate the `structured_configuration` based on all the `eos_designs` templates.
 
 The module arguments are:
 
@@ -757,16 +830,16 @@ AVD version v4.0.0-dev5-25-g0233492b5
             "not_found": {},
             "valid": {
                 "arista.cvp": {
-                    "installed": "3.3.1",
+                    "installed": "3.6.1",
                     "required_version": null
                 },
                 "arista.eos": {
-                    "installed": "4.1.1",
+                    "installed": "6.0.0",
                     "required_version": null
                 },
-                "ansible.netcommon": {
-                    "installed": "3.0.1",
-                    "required_version": "!=2.6.0,>=2.4.0"
+                "ansible.utils": {
+                    "installed": "2.9.0",
+                    "required_version": ">=2.9.0"
                 }
             },
             "mismatched": {},

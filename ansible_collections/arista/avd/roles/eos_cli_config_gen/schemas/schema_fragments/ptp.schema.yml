@@ -4,8 +4,6 @@
 type: dict
 keys:
   ptp:
-    documentation_options:
-      filename: data_model/PTP
     type: dict
     keys:
       mode:

@@ -4,8 +4,6 @@
 type: dict
 keys:
   vlan_interfaces:
-    documentation_options:
-      filename: data_model/Interfaces
     type: list
     primary_key: name
     convert_types:
@@ -68,6 +66,12 @@ keys:
             description: IPv4_address/Mask
         ip_igmp:
           type: bool
+        ip_igmp_version:
+          type: int
+          convert_types:
+          - str
+          min: 1
+          max: 3
         ip_helpers:
           type: list
           description: List of DHCP servers
@@ -86,6 +90,8 @@ keys:
               vrf:
                 type: str
                 description: VRF where DHCP server can be reached
+        ip_nat:
+          $ref: "#/$defs/interface_ip_nat"
         ipv6_enable:
           type: bool
         ipv6_address:
