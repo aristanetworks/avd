@@ -33,3 +33,21 @@ l3leaf:
       uplink_switch_interfaces:
         - Ethernet3
         - Ethernet4
+
+
+  node_groups:
+    sflow-tests-leaf-mlag:
+      bgp_as: 65105
+      nodes:
+        sflow-tests-leaf5:
+          id: 5
+          mgmt_ip: 192.168.0.105/24
+          uplink_switch_interfaces:
+            - Ethernet5
+            - Ethernet6
+        sflow-tests-leaf6:
+          id: 6
+          mgmt_ip: 192.168.0.106/24
+          uplink_switch_interfaces:
+            - Ethernet7
+            - Ethernet8

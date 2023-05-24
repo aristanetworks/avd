@@ -7,6 +7,7 @@ fabric_sflow:
   endpoints: false
   l3_edge: false
   core_interfaces: false
+  mlag_interfaces: false
 
 spine:
   defaults:

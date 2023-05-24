@@ -11,6 +11,7 @@ fabric_sflow:
   endpoints: true
   l3_edge: true
   core_interfaces: true
+  mlag_interfaces: true
 
 # P2P links between spine switches.
 core_interfaces:

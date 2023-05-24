@@ -7,6 +7,7 @@ fabric_sflow:
   endpoints: false
   l3_edge: false
   core_interfaces: false
+  mlag_interfaces: false
 
 l3leaf:
   defaults:
@@ -40,3 +41,19 @@ l3leaf:
       uplink_switch_interfaces:
         - Ethernet3
         - Ethernet4
+  node_groups:
+    sflow-tests-leaf-mlag-default:
+      bgp_as: 65106
+      nodes:
+        sflow-tests-leaf7:
+          id: 7
+          mgmt_ip: 192.168.0.107/24
+          uplink_switch_interfaces:
+            - Ethernet7
+            - Ethernet8
+        sflow-tests-leaf8:
+          id: 8
+          mgmt_ip: 192.168.0.108/24
+          uplink_switch_interfaces:
+            - Ethernet9
+            - Ethernet10
