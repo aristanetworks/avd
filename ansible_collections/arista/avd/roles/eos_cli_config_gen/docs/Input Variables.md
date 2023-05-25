@@ -38,7 +38,6 @@ search:
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "aaa_accounting.commands.default.[].type") | String |  |  | Valid Values:<br>- none<br>- start-stop<br>- stop-only |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "aaa_accounting.commands.default.[].group") | String |  |  |  | Group Name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;logging</samp>](## "aaa_accounting.commands.default.[].logging") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;commands_default</samp>](## "aaa_accounting.commands.commands_default") | List |  |  |  | Deprecated and removed key from AVD 2.x |
 
 === "YAML"
 
@@ -70,7 +69,6 @@ search:
             type: <str>
             group: <str>
             logging: <bool>
-        commands_default: <list>
     ```
 
 ## AAA Authentication
@@ -5945,7 +5943,6 @@ Set Link Aggregation Control Protocol (LACP) parameters.
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;prefix_segments</samp>](## "router_isis.segment_routing_mpls.prefix_segments") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- prefix</samp>](## "router_isis.segment_routing_mpls.prefix_segments.[].prefix") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;index</samp>](## "router_isis.segment_routing_mpls.prefix_segments.[].index") | Integer |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;no_passive_interfaces</samp>](## "router_isis.no_passive_interfaces") | List |  |  |  | Unused key - to be removed from eos_designs. |
 
 === "YAML"
 
@@ -5999,7 +5996,6 @@ Set Link Aggregation Control Protocol (LACP) parameters.
         prefix_segments:
           - prefix: <str>
             index: <int>
-      no_passive_interfaces: <list>
     ```
 
 ## Router L2 VPN

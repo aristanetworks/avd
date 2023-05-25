@@ -106,9 +106,6 @@ keys:
                   type: str
                 logging:
                   type: bool
-          commands_default:
-            type: list
-            description: Deprecated and removed key from AVD 2.x
   aaa_authentication:
     type: dict
     keys:
@@ -9144,9 +9141,6 @@ keys:
                   type: int
                   convert_types:
                   - str
-      no_passive_interfaces:
-        type: list
-        description: Unused key - to be removed from eos_designs.
   router_l2_vpn:
     type: dict
     keys:
