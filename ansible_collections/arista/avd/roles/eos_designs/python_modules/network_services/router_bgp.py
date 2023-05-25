@@ -493,7 +493,7 @@ class RouterBgpMixin(UtilsMixin):
         """
         rd_override = default(vlan.get("rd_override"), vlan.get("rt_override"), vlan.get("vni_override"))
 
-        if rd_override is not None and ":" in rd_override:
+        if ":" in str(rd_override):
             return rd_override
 
         if rd_override is not None:
@@ -513,7 +513,7 @@ class RouterBgpMixin(UtilsMixin):
         """
         rt_override = default(vlan.get("rt_override"), vlan.get("vni_override"))
 
-        if rt_override is not None and ":" in rt_override:
+        if ":" in str(rt_override):
             return rt_override
 
         if self._rt_admin_subfield is not None:
