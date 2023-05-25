@@ -600,14 +600,16 @@ class RouterBgpMixin(UtilsMixin):
         """
         Return a string with the route-target for one VLAN Aware Bundle
         """
+        bundle_number = self.get_vrf_id(vrf) + int(get(tenant, "vlan_aware_bundle_number_base", default=0))
+
         if self._vrf_rt_admin_subfield is not None:
             admin_subfield = self._vrf_rt_admin_subfield
         elif self.shared_utils.overlay_rt_type["vrf_admin_subfield"] == "vrf_vni":
-            admin_subfield = self.get_vrf_vni(vrf) + int(get(tenant, "vlan_aware_bundle_number_base", default=0))
+            admin_subfield = self.get_vrf_vni(vrf)
         else:
-            admin_subfield = self.get_vrf_id(vrf) + int(get(tenant, "vlan_aware_bundle_number_base", default=0))
+            admin_subfield = bundle_number
 
-        return f"{admin_subfield}:{self.get_vrf_id(vrf)}"
+        return f"{admin_subfield}:{bundle_number}"
 
     @cached_property
     def _router_bgp_redistribute_routes(self) -> dict | None:
