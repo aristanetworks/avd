@@ -453,7 +453,7 @@ class RouterBgpMixin(UtilsMixin):
     @cached_property
     def _rt_admin_subfield(self) -> str | None:
         """
-        Return a string with the route-target admin subfield unless set to "vrf_id" or "vrf_vni".
+        Return a string with the route-target admin subfield unless set to "vrf_id" or "vrf_vni" or "id".
         Returns None if not set, since the calling functions will use
         per-vlan numbers by default.
         """
@@ -522,6 +522,8 @@ class RouterBgpMixin(UtilsMixin):
             admin_subfield = rt_override
         elif self.shared_utils.overlay_rt_type["admin_subfield"] == "vrf_vni":
             admin_subfield = self.get_vlan_mac_vrf_vni(vlan, tenant)
+        elif self.shared_utils.overlay_rt_type["admin_subfield"] == "id":
+            admin_subfield = vlan["id"]
         else:
             admin_subfield = self.get_vlan_mac_vrf_id(vlan, tenant)
 
@@ -539,7 +541,7 @@ class RouterBgpMixin(UtilsMixin):
     @cached_property
     def _vrf_rt_admin_subfield(self) -> str | None:
         """
-        Return a string with the VRF route-target admin subfield unless set to "vrf_id" or "vrf_vni".
+        Return a string with the VRF route-target admin subfield unless set to "vrf_id" or "vrf_vni" or "id".
         Returns None if not set, since the calling functions will use
         per-vrf numbers by default.
         """
@@ -582,6 +584,7 @@ class RouterBgpMixin(UtilsMixin):
         elif self.shared_utils.overlay_rt_type["vrf_admin_subfield"] == "vrf_vni":
             admin_subfield = self.get_vrf_vni(vrf)
         else:
+            # Both for 'id' and 'vrf_id' options.
             admin_subfield = self.get_vrf_id(vrf)
 
         return f"{admin_subfield}:{self.get_vrf_id(vrf)}"

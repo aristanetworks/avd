@@ -1643,6 +1643,8 @@ keys:
           - ''vrf_vni'' means `(mac_vrf_vni_base or mac_vrf_id_base) + vlan_id` for
           VLANs and `(vrf_vni or vrf_id)` for VRFs.
 
+          - ''id'' means `vlan_id` for VLANs and `(vrf_id or vrf_vni)` for VRFs.
+
           - ''bgp_as'' means the AS number of the device.
 
           - Integer between <0-65535>.
@@ -1661,6 +1663,8 @@ keys:
         - int
         description: 'The method for deriving RT Administrator subfield (first part
           of RT) for VRF services:
+
+          - ''id'' means `(vrf_id or vrf_vni)`.
 
           - ''vrf_id'' means `(vrf_id or vrf_vni)`.
 

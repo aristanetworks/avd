@@ -55,7 +55,7 @@ router_bgp:
     rd: 65535:10001
     route_targets:
       both:
-      - 10001:10001
+      - 1:10001
     redistribute_routes:
     - learned
   - id: 2
@@ -63,7 +63,7 @@ router_bgp:
     rd: 65535:10002
     route_targets:
       both:
-      - 10002:10002
+      - 2:10002
     redistribute_routes:
     - learned
   - id: 3
