@@ -401,7 +401,7 @@ jobs:
   # ----------------------------------- #
   galaxy_importer:
     name: Test galaxy-importer
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04 # Older version to be compatible with old python
     env:
       PY_COLORS: 1 # allows molecule colors to be passed to GitHub Actions
       ANSIBLE_FORCE_COLOR: 1 # allows ansible colors to be passed to GitHub Actions
