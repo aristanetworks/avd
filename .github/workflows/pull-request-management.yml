@@ -413,9 +413,11 @@ jobs:
       - uses: actions/checkout@v3
       - name: Install requirements
         # Install the specific version of galaxy-importer used on galaxy.ansible.com
+        # The old version conflicts with our versions of other tooling,
+        # so we let the galaxy-importer version resolve remaining requirements.
         run: |
           pip install -r ansible_collections/arista/avd/requirements.txt --upgrade
-          pip install -r ansible_collections/arista/avd/requirements-dev.txt --upgrade "galaxy-importer==0.4.0.post1"
+          pip install "galaxy-importer==0.4.0.post1"
       - name: 'Build ansible package'
         run: make collection-build
       - name: 'Run galaxy-importer checks'
