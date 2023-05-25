@@ -394,6 +394,8 @@ $defs:
                           description: |
                             Restrict configuration to specific nodes.
                             Will apply to all nodes with RP addresses configured if not set.
+                          items:
+                            type: str
                         transit:
                           type: bool
                           default: false
