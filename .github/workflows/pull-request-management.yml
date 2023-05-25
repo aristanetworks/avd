@@ -405,6 +405,7 @@ jobs:
     env:
       PY_COLORS: 1 # allows molecule colors to be passed to GitHub Actions
       ANSIBLE_FORCE_COLOR: 1 # allows ansible colors to be passed to GitHub Actions
+      GALAXY_IMPORTER_CONFIG: galaxy-importer/galaxy-importer.cfg
     steps:
       - name: 'Set environment variables'
         run: |
