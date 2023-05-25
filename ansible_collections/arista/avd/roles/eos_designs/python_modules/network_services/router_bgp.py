@@ -607,6 +607,7 @@ class RouterBgpMixin(UtilsMixin):
         elif self.shared_utils.overlay_rt_type["vrf_admin_subfield"] == "vrf_vni":
             admin_subfield = self.get_vrf_vni(vrf)
         else:
+            # Both for 'id' and 'vrf_id' options.
             admin_subfield = bundle_number
 
         return f"{admin_subfield}:{bundle_number}"
