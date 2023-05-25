@@ -38,7 +38,7 @@ class OverlayMixin:
         return None
 
     @cached_property
-    def overlay_rd_type(self: SharedUtils) -> str:
+    def overlay_rd_type(self: SharedUtils) -> dict:
         overlay_rd_type = get(self.hostvars, "overlay_rd_type", default={})
         admin_subfield = get(overlay_rd_type, "admin_subfield", default="overlay_loopback_ip")
         admin_subfield_offset = int(get(overlay_rd_type, "admin_subfield_offset", default=0))
@@ -51,7 +51,7 @@ class OverlayMixin:
         }
 
     @cached_property
-    def overlay_rt_type(self: SharedUtils) -> str:
+    def overlay_rt_type(self: SharedUtils) -> dict:
         overlay_rt_type = get(self.hostvars, "overlay_rt_type", default={})
         admin_subfield = get(overlay_rt_type, "admin_subfield", default="vrf_id")
         return {

@@ -1,6 +1,6 @@
 ---
 
-# Expected result: rd 1.1.1.1:*
+# Expected result: rd 1.1.1.1:<mac_vrf_id>
 overlay_rd_type:
   admin_subfield: 1.1.1.1
 

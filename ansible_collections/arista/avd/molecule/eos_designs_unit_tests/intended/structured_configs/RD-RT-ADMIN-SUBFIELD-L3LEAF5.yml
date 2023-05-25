@@ -52,7 +52,7 @@ router_bgp:
   vlans:
   - id: 1
     tenant: Tenant_A
-    rd: 1.1.1.1:1
+    rd: 1.1.1.1:10001
     route_targets:
       both:
       - '80001:1'
@@ -60,7 +60,7 @@ router_bgp:
     - learned
   - id: 2
     tenant: Tenant_A
-    rd: 1.1.1.1:2
+    rd: 1.1.1.1:10002
     route_targets:
       both:
       - '80002:2'

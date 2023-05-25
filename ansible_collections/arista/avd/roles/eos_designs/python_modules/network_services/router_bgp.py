@@ -498,9 +498,9 @@ class RouterBgpMixin(UtilsMixin):
 
         if rd_override is not None:
             assigned_number_subfield = rd_override
-        elif self.shared_utils.overlay_rt_type["vlan_assigned_number_subfield"] == "mac_vrf_vni":
+        elif self.shared_utils.overlay_rd_type["vlan_assigned_number_subfield"] == "mac_vrf_vni":
             assigned_number_subfield = self.get_vlan_mac_vrf_vni(vlan, tenant)
-        elif self.shared_utils.overlay_rt_type["vlan_assigned_number_subfield"] == "vlan_id":
+        elif self.shared_utils.overlay_rd_type["vlan_assigned_number_subfield"] == "vlan_id":
             assigned_number_subfield = vlan["id"]
         else:
             assigned_number_subfield = self.get_vlan_mac_vrf_id(vlan, tenant)
