@@ -6,7 +6,7 @@ from re import fullmatch
 from typing import TYPE_CHECKING
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 if TYPE_CHECKING:
     from .shared_utils import SharedUtils
@@ -38,29 +38,61 @@ class OverlayMixin:
         return None
 
     @cached_property
+    def overlay_rd_type(self: SharedUtils) -> str:
+        overlay_rd_type = get(self.hostvars, "overlay_rd_type", default={})
+        admin_subfield = get(overlay_rd_type, "admin_subfield", default="overlay_loopback_ip")
+        admin_subfield_offset = int(get(overlay_rd_type, "admin_subfield_offset", default=0))
+        return {
+            "admin_subfield": admin_subfield,
+            "admin_subfield_offset": admin_subfield_offset,
+            "vrf_admin_subfield": get(overlay_rd_type, "vrf_admin_subfield", default=admin_subfield),
+            "vrf_admin_subfield_offset": int(get(overlay_rd_type, "vrf_admin_subfield_offset", default=admin_subfield_offset)),
+            "vlan_assigned_number_subfield": get(overlay_rd_type, "vlan_assigned_number_subfield", default="mac_vrf_id"),
+        }
+
+    @cached_property
+    def overlay_rt_type(self: SharedUtils) -> str:
+        overlay_rt_type = get(self.hostvars, "overlay_rt_type", default={})
+        admin_subfield = get(overlay_rt_type, "admin_subfield", default="vrf_id")
+        return {
+            "admin_subfield": admin_subfield,
+            "vrf_admin_subfield": get(overlay_rt_type, "vrf_admin_subfield", default=admin_subfield),
+            "vlan_assigned_number_subfield": get(overlay_rt_type, "vlan_assigned_number_subfield", default="mac_vrf_id"),
+        }
+
+    @cached_property
     def overlay_rd_type_admin_subfield(self: SharedUtils) -> str:
-        tmp_overlay_rd_type_admin_subfield = get(self.hostvars, "overlay_rd_type.admin_subfield")
-        tmp_overlay_rd_type_admin_subfield_offset = int(default(get(self.hostvars, "overlay_rd_type.admin_subfield_offset"), 0))
-        if tmp_overlay_rd_type_admin_subfield is None:
+        admin_subfield = self.overlay_rd_type["admin_subfield"]
+        admin_subfield_offset = self.overlay_rd_type["admin_subfield_offset"]
+        return self.get_rd_admin_subfield_value(admin_subfield, admin_subfield_offset)
+
+    @cached_property
+    def overlay_rd_type_vrf_admin_subfield(self: SharedUtils) -> str:
+        vrf_admin_subfield = self.overlay_rd_type["vrf_admin_subfield"]
+        vrf_admin_subfield_offset = self.overlay_rd_type["vrf_admin_subfield_offset"]
+        return self.get_rd_admin_subfield_value(vrf_admin_subfield, vrf_admin_subfield_offset)
+
+    def get_rd_admin_subfield_value(self: SharedUtils, admin_subfield, admin_subfield_offset):
+        if admin_subfield == "overlay_loopback_ip":
             return self.router_id
 
-        if tmp_overlay_rd_type_admin_subfield == "vtep_loopback":
+        if admin_subfield == "vtep_loopback":
             return self.vtep_ip
 
-        if tmp_overlay_rd_type_admin_subfield == "bgp_as":
+        if admin_subfield == "bgp_as":
             return self.bgp_as
 
-        if tmp_overlay_rd_type_admin_subfield == "switch_id":
+        if admin_subfield == "switch_id":
             if self.id is None:
                 raise AristaAvdMissingVariableError(f"'id' is not set on '{self.hostname}' and 'overlay_rd_type_admin_subfield' is set to 'switch_id'")
-            return self.id + tmp_overlay_rd_type_admin_subfield_offset
+            return self.id + admin_subfield_offset
 
-        if fullmatch(r"[0-9]+", str(tmp_overlay_rd_type_admin_subfield)):
-            return str(int(tmp_overlay_rd_type_admin_subfield) + tmp_overlay_rd_type_admin_subfield_offset)
+        if fullmatch(r"[0-9]+", str(admin_subfield)):
+            return str(int(admin_subfield) + admin_subfield_offset)
 
         try:
-            ip_address(tmp_overlay_rd_type_admin_subfield)
-            return tmp_overlay_rd_type_admin_subfield
+            ip_address(admin_subfield)
+            return admin_subfield
         except ValueError:
             pass
 

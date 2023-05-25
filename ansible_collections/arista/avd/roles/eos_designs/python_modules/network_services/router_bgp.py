@@ -137,24 +137,20 @@ class RouterBgpMixin(UtilsMixin):
                     continue
 
                 vrf_name = vrf["name"]
-
-                if (bgp_vrf_id := vrf.get("vrf_id", vrf.get("vrf_vni"))) is None:
-                    raise AristaAvdMissingVariableError(f"'vrf_id' or 'vrf_vni' for VRF '{vrf_name}")
-
-                leaf_overlay_rt = f"{self._rt_admin_subfield or bgp_vrf_id}:{bgp_vrf_id}"
-
+                vrf_rd = self.get_vrf_rd(vrf)
+                vrf_rt = self.get_vrf_rt(vrf)
                 route_targets = {"import": [], "export": []}
 
                 for af in vrf_address_families:
                     if (target := get_item(route_targets["import"], "address_family", af)) is None:
-                        route_targets["import"].append({"address_family": af, "route_targets": [leaf_overlay_rt]})
+                        route_targets["import"].append({"address_family": af, "route_targets": [vrf_rt]})
                     else:
-                        target["route_targets"].append(leaf_overlay_rt)
+                        target["route_targets"].append(vrf_rt)
 
                     if (target := get_item(route_targets["export"], "address_family", af)) is None:
-                        route_targets["export"].append({"address_family": af, "route_targets": [leaf_overlay_rt]})
+                        route_targets["export"].append({"address_family": af, "route_targets": [vrf_rt]})
                     else:
-                        target["route_targets"].append(leaf_overlay_rt)
+                        target["route_targets"].append(vrf_rt)
 
                 for rt in vrf["additional_route_targets"]:
                     if (target := get_item(route_targets[rt["type"]], "address_family", rt["address_family"])) is None:
@@ -172,7 +168,7 @@ class RouterBgpMixin(UtilsMixin):
 
                     bgp_vrf = {
                         "name": vrf_name,
-                        "rd": f"{self.shared_utils.overlay_rd_type_admin_subfield}:{bgp_vrf_id}",
+                        "rd": vrf_rd,
                         "route_targets": route_targets,
                         "eos_cli": get(vrf, "bgp.raw_eos_cli"),
                         "struct_cfg": get(vrf, "bgp.structured_config"),
@@ -193,7 +189,7 @@ class RouterBgpMixin(UtilsMixin):
                 bgp_vrf = {
                     "name": vrf_name,
                     "router_id": self.shared_utils.router_id,
-                    "rd": f"{self.shared_utils.overlay_rd_type_admin_subfield}:{bgp_vrf_id}",
+                    "rd": vrf_rd,
                     "route_targets": route_targets,
                     "redistribute_routes": [{"source_protocol": "connected"}],
                     "eos_cli": get(vrf, "bgp.raw_eos_cli"),
@@ -348,21 +344,9 @@ class RouterBgpMixin(UtilsMixin):
         if vlan.get("vxlan") is False:
             return None
 
-        vlan_id = int(vlan["id"])
-        tenant_mac_vrf_id_base = default(tenant.get("mac_vrf_id_base"), tenant.get("mac_vrf_vni_base"))
-        rt_override = default(
-            vlan.get("rt_override"),
-            vlan.get("vni_override"),
-        )
-        if rt_override is None and tenant_mac_vrf_id_base is None:
-            raise AristaAvdMissingVariableError(
-                "'rt_override' or 'vni_override' or 'mac_vrf_id_base' or 'mac_vrf_vni_base' must be set. "
-                f"Unable to set EVPN RD/RT for vlan {vlan_id} in Tenant '{vlan['tenant']}'"
-            )
+        vlan_rd = self.get_vlan_rd(vlan, tenant)
+        vlan_rt = self.get_vlan_rt(vlan, tenant)
 
-        vlan_rt_id = default(rt_override, (tenant_mac_vrf_id_base + vlan_id))
-        vlan_rd = f"{self.shared_utils.overlay_rd_type_admin_subfield}:{vlan_rt_id}"
-        vlan_rt = f"{self._rt_admin_subfield or vlan_rt_id}:{vlan_rt_id}"
         bgp_vlan = {
             "tenant": vlan["tenant"],
             "rd": vlan_rd,
@@ -444,13 +428,9 @@ class RouterBgpMixin(UtilsMixin):
             return None
 
         vrf_name = vrf["name"]
-        if (bgp_vrf_id := vrf.get("vrf_id", vrf.get("vrf_vni"))) is None:
-            raise AristaAvdMissingVariableError(f"'vrf_id' or 'vrf_vni' for VRF '{vrf_name}")
 
-        bundle_number = int(bgp_vrf_id) + int(tenant.get("vlan_aware_bundle_number_base", 0))
-
-        bundle_rd = f"{self.shared_utils.overlay_rd_type_admin_subfield}:{bundle_number}"
-        bundle_rt = f"{self._rt_admin_subfield or bundle_number}:{bundle_number}"
+        bundle_rd = self.get_vlan_aware_bundle_rd(vrf, tenant)
+        bundle_rt = self.get_vlan_aware_bundle_rt(vrf, tenant)
         bundle = {
             "name": vrf_name,
             "rd": bundle_rd,
@@ -473,11 +453,11 @@ class RouterBgpMixin(UtilsMixin):
     @cached_property
     def _rt_admin_subfield(self) -> str | None:
         """
-        Return a string with the route-target admin subfield
+        Return a string with the route-target admin subfield unless set to "vrf_id" or "vrf_vni".
         Returns None if not set, since the calling functions will use
-        per-vlan or per-vrf numbers by default.
+        per-vlan numbers by default.
         """
-        admin_subfield = get(self._hostvars, "overlay_rt_type.admin_subfield")
+        admin_subfield = self.shared_utils.overlay_rt_type["admin_subfield"]
         if admin_subfield is None:
             return None
 
@@ -488,6 +468,143 @@ class RouterBgpMixin(UtilsMixin):
             return admin_subfield
 
         return None
+
+    def get_vlan_mac_vrf_id(self, vlan, tenant) -> int:
+        mac_vrf_id_base = default(tenant.get("mac_vrf_id_base"), tenant.get("mac_vrf_vni_base"))
+        if mac_vrf_id_base is None:
+            raise AristaAvdMissingVariableError(
+                "'rt_override' or 'vni_override' or 'mac_vrf_id_base' or 'mac_vrf_vni_base' must be set. "
+                f"Unable to set EVPN RD/RT for vlan {vlan['id']} in Tenant '{vlan['tenant']}'"
+            )
+        return mac_vrf_id_base + int(vlan["id"])
+
+    def get_vlan_mac_vrf_vni(self, vlan, tenant) -> int:
+        mac_vrf_vni_base = default(tenant.get("mac_vrf_vni_base"), tenant.get("mac_vrf_id_base"))
+        if mac_vrf_vni_base is None:
+            raise AristaAvdMissingVariableError(
+                "'rt_override' or 'vni_override' or 'mac_vrf_id_base' or 'mac_vrf_vni_base' must be set. "
+                f"Unable to set EVPN RD/RT for vlan {vlan['id']} in Tenant '{vlan['tenant']}'"
+            )
+        return mac_vrf_vni_base + int(vlan["id"])
+
+    def get_vlan_rd(self, vlan, tenant) -> str:
+        """
+        Return a string with the route-destinguisher for one VLAN
+        """
+        rd_override = default(vlan.get("rd_override"), vlan.get("rt_override"), vlan.get("vni_override"))
+
+        if rd_override is not None and ":" in rd_override:
+            return rd_override
+
+        if rd_override is not None:
+            assigned_number_subfield = rd_override
+        elif self.shared_utils.overlay_rt_type["vlan_assigned_number_subfield"] == "mac_vrf_vni":
+            assigned_number_subfield = self.get_vlan_mac_vrf_vni(vlan, tenant)
+        elif self.shared_utils.overlay_rt_type["vlan_assigned_number_subfield"] == "vlan_id":
+            assigned_number_subfield = vlan["id"]
+        else:
+            assigned_number_subfield = self.get_vlan_mac_vrf_id(vlan, tenant)
+
+        return f"{self.shared_utils.overlay_rd_type_admin_subfield}:{assigned_number_subfield}"
+
+    def get_vlan_rt(self, vlan: dict, tenant: dict) -> str:
+        """
+        Return a string with the route-target for one VLAN
+        """
+        rt_override = default(vlan.get("rt_override"), vlan.get("vni_override"))
+
+        if rt_override is not None and ":" in rt_override:
+            return rt_override
+
+        if self._rt_admin_subfield is not None:
+            admin_subfield = self._rt_admin_subfield
+        elif rt_override is not None:
+            admin_subfield = rt_override
+        elif self.shared_utils.overlay_rt_type["admin_subfield"] == "vrf_vni":
+            admin_subfield = self.get_vlan_mac_vrf_vni(vlan, tenant)
+        else:
+            admin_subfield = self.get_vlan_mac_vrf_id(vlan, tenant)
+
+        if rt_override is not None:
+            assigned_number_subfield = rt_override
+        elif self.shared_utils.overlay_rt_type["vlan_assigned_number_subfield"] == "mac_vrf_vni":
+            assigned_number_subfield = self.get_vlan_mac_vrf_vni(vlan, tenant)
+        elif self.shared_utils.overlay_rt_type["vlan_assigned_number_subfield"] == "vlan_id":
+            assigned_number_subfield = vlan["id"]
+        else:
+            assigned_number_subfield = self.get_vlan_mac_vrf_id(vlan, tenant)
+
+        return f"{admin_subfield}:{assigned_number_subfield}"
+
+    @cached_property
+    def _vrf_rt_admin_subfield(self) -> str | None:
+        """
+        Return a string with the VRF route-target admin subfield unless set to "vrf_id" or "vrf_vni".
+        Returns None if not set, since the calling functions will use
+        per-vrf numbers by default.
+        """
+        admin_subfield = self.shared_utils.overlay_rt_type["vrf_admin_subfield"]
+        if admin_subfield is None:
+            return None
+
+        if admin_subfield == "bgp_as":
+            return self.shared_utils.bgp_as
+
+        if re_fullmatch(r"[0-9]+", str(admin_subfield)):
+            return admin_subfield
+
+        return None
+
+    def get_vrf_id(self, vrf) -> int:
+        vrf_id = default(vrf.get("vrf_id"), vrf.get("vrf_vni"))
+        if vrf_id is None:
+            raise AristaAvdMissingVariableError(f"'vrf_id' or 'vrf_vni' for VRF '{vrf['name']} must be set.")
+        return int(vrf_id)
+
+    def get_vrf_vni(self, vrf) -> int:
+        vrf_vni = default(vrf.get("vrf_vni"), vrf.get("vrf_id"))
+        if vrf_vni is None:
+            raise AristaAvdMissingVariableError(f"'vrf_vni' or 'vrf_id' for VRF '{vrf['name']} must be set.")
+        return int(vrf_vni)
+
+    def get_vrf_rd(self, vrf) -> str:
+        """
+        Return a string with the route-destinguisher for one VRF
+        """
+        return f"{self.shared_utils.overlay_rd_type_vrf_admin_subfield}:{self.get_vrf_id(vrf)}"
+
+    def get_vrf_rt(self, vrf: dict) -> str:
+        """
+        Return a string with the route-target for one VRF
+        """
+        if self._vrf_rt_admin_subfield is not None:
+            admin_subfield = self._vrf_rt_admin_subfield
+        elif self.shared_utils.overlay_rt_type["vrf_admin_subfield"] == "vrf_vni":
+            admin_subfield = self.get_vrf_vni(vrf)
+        else:
+            admin_subfield = self.get_vrf_id(vrf)
+
+        return f"{admin_subfield}:{self.get_vrf_id(vrf)}"
+
+    def get_vlan_aware_bundle_rd(self, vrf: dict, tenant: dict) -> str:
+        """
+        Return a string with the route-destinguisher for one VLAN Aware Bundle
+        """
+        bundle_number = self.get_vrf_id(vrf) + int(get(tenant, "vlan_aware_bundle_number_base", default=0))
+        return f"{self.shared_utils.overlay_rd_type_vrf_admin_subfield}:{bundle_number}"
+
+    def get_vlan_aware_bundle_rt(self, vrf: dict, tenant: dict) -> str:
+        """
+        Return a string with the route-target for one VLAN Aware Bundle
+        """
+        if self._vrf_rt_admin_subfield is not None:
+            admin_subfield = self._vrf_rt_admin_subfield
+        elif self.shared_utils.overlay_rt_type["vrf_admin_subfield"] == "vrf_vni":
+            admin_subfield = self.get_vrf_vni(vrf) + int(get(tenant, "vlan_aware_bundle_number_base", default=0))
+        else:
+            admin_subfield = self.get_vrf_id(vrf) + int(get(tenant, "vlan_aware_bundle_number_base", default=0))
+
+        return f"{admin_subfield}:{self.get_vrf_id(vrf)}"
 
     @cached_property
     def _router_bgp_redistribute_routes(self) -> dict | None:
