@@ -412,9 +412,10 @@ jobs:
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - name: Install requirements
+        # Install the specific version of galaxy-importer used on galaxy.ansible.com
         run: |
           pip install -r ansible_collections/arista/avd/requirements.txt --upgrade
-          pip install -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt --upgrade "galaxy-importer==0.4.0.post1"
       - name: 'Build ansible package'
         run: make collection-build
       - name: 'Run galaxy-importer checks'
