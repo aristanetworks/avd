@@ -317,8 +317,8 @@ class AvdStructuredConfigBase(AvdFacts):
         if (queue_monitor_length := get(self._hostvars, "queue_monitor_length")) is None:
             return None
 
-        # Enforce platform feature support for notifying.
-        if get(queue_monitor_length, "notifying") is True and not self.shared_utils.platform_settings_feature_support_queue_monitor_length_notify:
+        # Remove notifying key if not supported by the platform settings.
+        if not self.shared_utils.platform_settings_feature_support_queue_monitor_length_notify:
             queue_monitor_length.pop("notifying", None)
 
         return queue_monitor_length
