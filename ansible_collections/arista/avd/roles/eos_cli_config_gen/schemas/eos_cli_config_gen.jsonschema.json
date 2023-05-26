@@ -8058,7 +8058,10 @@
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "VRFs"
         }
@@ -16297,7 +16300,10 @@
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "VRFs"
         }
@@ -17006,6 +17012,9 @@
                 "title": "IPv4"
               }
             },
+            "required": [
+              "name"
+            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
@@ -17878,7 +17887,10 @@
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "VRFs"
         }
