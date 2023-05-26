@@ -11616,6 +11616,24 @@
               },
               "title": "Default"
             },
+            "route_reflector_preserve_attributes": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "title": "Enabled"
+                },
+                "always": {
+                  "type": "boolean",
+                  "title": "Always"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Route Reflector Preserve Attributes"
+            },
             "bestpath": {
               "type": "object",
               "properties": {

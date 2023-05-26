@@ -126,6 +126,13 @@ keys:
               ipv4_unicast_transport_ipv6:
                 type: bool
                 description: Default activation of IPv4 unicast address-family on all IPv6 neighbors (EOS default == False).
+          route_reflector_preserve_attributes:
+            type: dict
+            keys:
+              enabled:
+                type: bool
+              always:
+                type: bool
           bestpath:
             type: dict
             keys:
