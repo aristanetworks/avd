@@ -2594,9 +2594,10 @@ Maximum Paths for BGP multi-path
     bgp_maximum_paths: <int>
     ```
 
-## BGP Mesh Pes
+## BGP Mesh PEs
 
-Whether to configure an iBGP full mesh between PEs, either because there is no RR used or other reasons.
+Configure an iBGP full mesh between PEs, either because there is no RR used or other reasons.
+Only supported in combination with MPLS overlay.
 
 === "Table"
 
