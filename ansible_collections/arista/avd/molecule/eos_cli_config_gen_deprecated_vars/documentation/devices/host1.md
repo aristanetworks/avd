@@ -7,7 +7,7 @@
   - [IP Name Servers](#ip-name-servers)
   - [Domain Lookup](#domain-lookup)
   - [Management SSH](#management-ssh)
-  - [Management API GNMI](#management-api-gnmi)
+  - [Management API gNMI](#management-api-gnmi)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
@@ -180,16 +180,16 @@ management ssh
       no shutdown
 ```
 
-### Management API GNMI
+### Management API gNMI
 
-#### Management API GNMI Summary
+#### Management API gNMI Summary
 
-| VRF with GNMI | OCTA |
+| VRF with gNMI | OCTA |
 | ------------- | ---- |
 | MGMT | enabled |
 | MONITORING | enabled |
 
-#### Management API gnmi configuration
+#### Management API gNMI configuration
 
 ```eos
 !

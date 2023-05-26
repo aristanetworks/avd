@@ -1292,7 +1292,7 @@
         },
         "cvgnmi": {
           "type": "boolean",
-          "description": "Stream states from EOS GNMI servers (Openconfig) to CloudVision. Available as of TerminAttr v1.13.1\n",
+          "description": "Stream states from EOS gNMI servers (Openconfig) to CloudVision. Available as of TerminAttr v1.13.1\n",
           "title": "Cvgnmi"
         },
         "disable_aaa": {
@@ -6944,7 +6944,7 @@
                       "send-time",
                       "last-change-time"
                     ],
-                    "description": "Per the GNMI specification, the default timestamp field of a notification message is set to be\nthe time at which the value of the underlying data source changes or when the reported event takes place.\nIn order to facilitate integration in legacy environments oriented around polling style operations,\nan option to support overriding the timestamp field to the send-time is available from EOS 4.27.0F.\n",
+                    "description": "Per the gNMI specification, the default timestamp field of a notification message is set to be\nthe time at which the value of the underlying data source changes or when the reported event takes place.\nIn order to facilitate integration in legacy environments oriented around polling style operations,\nan option to support overriding the timestamp field to the send-time is available from EOS 4.27.0F.\n",
                     "title": "Notification Timestamp"
                   },
                   "ip_access_group": {
@@ -6983,7 +6983,7 @@
                   "gnmi_ssl_profile": {
                     "type": "string",
                     "description": "gNMI SSL profile name",
-                    "title": "Gnmi SSL Profile"
+                    "title": "gNMI SSL Profile"
                   },
                   "vrf": {
                     "type": "string",
@@ -7085,7 +7085,8 @@
         },
         "enable_vrfs": {
           "type": "array",
-          "description": "Enable VRFs will be deprecated in AVD v4.0.\nThese should not be mixed with the new keys above.\n",
+          "description": "These should not be mixed with the new keys above.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>transport.grpc</samp> instead.",
+          "deprecated": true,
           "items": {
             "type": "object",
             "properties": {
@@ -7112,7 +7113,8 @@
         },
         "octa": {
           "type": "object",
-          "description": "Octa key will be deprecated in AVD v4.0.\nThese should not be mixed with the new keys above.\nOcta activates `eos-native` provider and it is the only provider currently supported by EOS.",
+          "description": "These should not be mixed with the new keys above.\nOcta activates `eos-native` provider and it is the only provider currently supported by EOS.\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>provider</samp> instead.",
+          "deprecated": true,
           "title": "Octa"
         }
       },
@@ -7120,7 +7122,7 @@
       "patternProperties": {
         "^_.+$": {}
       },
-      "title": "Management API Gnmi"
+      "title": "Management API gNMI"
     },
     "management_api_http": {
       "type": "object",
@@ -8058,7 +8060,10 @@
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "VRFs"
         }
@@ -11610,6 +11615,24 @@
                 "^_.+$": {}
               },
               "title": "Default"
+            },
+            "route_reflector_preserve_attributes": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "title": "Enabled"
+                },
+                "always": {
+                  "type": "boolean",
+                  "title": "Always"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Route Reflector Preserve Attributes"
             },
             "bestpath": {
               "type": "object",
@@ -16297,7 +16320,10 @@
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "VRFs"
         }
@@ -17006,6 +17032,9 @@
                 "title": "IPv4"
               }
             },
+            "required": [
+              "name"
+            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
@@ -17878,7 +17907,10 @@
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "VRFs"
         }
