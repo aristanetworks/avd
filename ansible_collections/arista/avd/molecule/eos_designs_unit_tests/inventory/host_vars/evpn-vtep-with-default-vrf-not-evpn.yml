@@ -1,4 +1,4 @@
-# Testing an EVPN VTEP where thed default VRF is _not_ EVPN enabled.
+# Testing an EVPN VTEP where the default VRF is _not_ EVPN enabled.
 # Make sure there is no route-map added to the underlay peer group filtering the evpn prefixes.
 # Also make sure the VRF is not configured under interface Vxlan 1
 # Minimum config to only test the specific feature.
