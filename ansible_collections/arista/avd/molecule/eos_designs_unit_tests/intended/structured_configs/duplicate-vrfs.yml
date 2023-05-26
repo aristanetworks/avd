@@ -62,7 +62,7 @@ router_bgp:
     redistribute_routes:
     - learned
   - id: 200
-    tenant: TENANT1
+    tenant: DUPLICATE_TENANT1
     rd: 192.168.255.101:10200
     route_targets:
       both:
@@ -80,7 +80,7 @@ vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF1
-  tenant: TENANT1
+  tenant: TENANT1,DUPLICATE_TENANT1
   ip_routing: true
 management_api_http:
   enable_vrfs:
@@ -117,10 +117,10 @@ router_bfd:
 vlans:
 - id: 100
   name: VLAN100
-  tenant: TENANT1,DUPLICATE_TENANT1
+  tenant: TENANT1
 - id: 200
   name: VLAN200
-  tenant: TENANT1,DUPLICATE_TENANT1
+  tenant: DUPLICATE_TENANT1
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
@@ -132,7 +132,7 @@ vlan_interfaces:
   ip_address_virtual: 10.0.100.1/24
   vrf: VRF1
 - name: Vlan200
-  tenant: TENANT1
+  tenant: DUPLICATE_TENANT1
   description: VLAN200
   shutdown: false
   ip_address_virtual: 10.0.200.1/24
