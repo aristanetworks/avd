@@ -401,20 +401,22 @@ jobs:
   # ----------------------------------- #
   galaxy_importer:
     name: Test galaxy-importer
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04 # Older version to be compatible with old python
     env:
       PY_COLORS: 1 # allows molecule colors to be passed to GitHub Actions
       ANSIBLE_FORCE_COLOR: 1 # allows ansible colors to be passed to GitHub Actions
+      GALAXY_IMPORTER_CONFIG: galaxy-importer/galaxy-importer.cfg
     steps:
-      - name: 'Set environment variables'
-        run: |
-          echo "PY_COLORS=1" >> $GITHUB_ENV
-          echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.6 # Ancient version to match galaxy.ansible.com.
       - uses: actions/checkout@v3
       - name: Install requirements
+        # Install the specific version of galaxy-importer used on galaxy.ansible.com
+        # The old version conflicts with our versions of other tooling,
+        # so we let the galaxy-importer version resolve remaining requirements.
         run: |
-          pip install -r ansible_collections/arista/avd/requirements.txt --upgrade
-          pip install -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
+          pip install "galaxy-importer==0.4.0.post1"
       - name: 'Build ansible package'
         run: make collection-build
       - name: 'Run galaxy-importer checks'
