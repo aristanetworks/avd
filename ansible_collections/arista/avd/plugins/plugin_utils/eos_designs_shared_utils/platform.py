@@ -162,3 +162,7 @@ class PlatformMixin:
     @cached_property
     def platform_settings_feature_support_interface_storm_control(self) -> bool:
         return get(self.platform_settings, "feature_support.interface_storm_control", default=True) is True
+
+    @cached_property
+    def platform_settings_feature_support_queue_monitor_length_notify(self) -> bool:
+        return get(self.platform_settings, "feature_support.queue_monitor_length_notify", default=True) is True

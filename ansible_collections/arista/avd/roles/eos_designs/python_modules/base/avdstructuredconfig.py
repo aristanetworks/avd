@@ -317,16 +317,11 @@ class AvdStructuredConfigBase(AvdFacts):
         if (queue_monitor_length := get(self._hostvars, "queue_monitor_length")) is None:
             return None
 
-        queue_monitor_length_dict = {"enabled": True}
-        queue_monitor_length_notifying = get(queue_monitor_length, "notifying")
-        notify_supported = get(self.shared_utils.platform_settings, "feature_support.queue_monitor_length_notify")
-        if queue_monitor_length_notifying is not None and notify_supported is not False:
-            queue_monitor_length_dict["notifying"] = queue_monitor_length_notifying
+        # Enforce platform feature support for notifying.
+        if get(queue_monitor_length, "notifying") is True and not self.shared_utils.platform_settings_feature_support_queue_monitor_length_notify:
+            queue_monitor_length.pop("notifying", None)
 
-        if get(queue_monitor_length, "log") is not None:
-            queue_monitor_length_dict["log"] = queue_monitor_length.get("log")
-
-        return queue_monitor_length_dict
+        return queue_monitor_length
 
     @cached_property
     def ip_name_servers(self) -> list | None:
