@@ -4696,7 +4696,7 @@
           },
           "nodes": {
             "type": "array",
-            "description": "Define node specific configuration, such as unique IP addresses.",
+            "description": "Define node specific configuration, such as unique IP addresses.\nAny keys set here will be merged onto the SVI config, except `structured_config` keys which will replace the `structured_config` set on SVI level.\n",
             "items": {
               "type": "object",
               "properties": {
@@ -5003,16 +5003,15 @@
                 },
                 "bgp": {
                   "type": "object",
-                  "description": "Structured configuration and EOS CLI commands rendered on router_bgp.vlans\nThis configuration will not be applied to vlan aware bundles\n",
                   "properties": {
                     "structured_config": {
                       "type": "object",
-                      "description": "Custom structured config added under vlan_interfaces.<interface> for eos_cli_config_gen.\nOverrides the setting on SVI level.\n",
+                      "description": "Structured configuration and EOS CLI commands rendered on router_bgp.vlans.\nThis configuration will not be applied to vlan aware bundles\n",
                       "title": "Structured Config"
                     },
                     "raw_eos_cli": {
                       "type": "string",
-                      "description": "EOS CLI rendered directly on the VLAN interface in the final EOS configuration\nOverrides the setting on SVI level.\n",
+                      "description": "EOS CLI rendered directly on the Router BGP, VLAN definition in the final EOS configuration\n",
                       "title": "Raw EOS CLI"
                     }
                   },
@@ -5024,12 +5023,12 @@
                 },
                 "raw_eos_cli": {
                   "type": "string",
-                  "description": "EOS CLI rendered directly on the VLAN interface in the final EOS configuration\nOverrides the setting on SVI level\n",
+                  "description": "EOS CLI rendered directly on the VLAN interface in the final EOS configuration\n",
                   "title": "Raw EOS CLI"
                 },
                 "structured_config": {
                   "type": "object",
-                  "description": "Custom structured config added under vlan_interfaces.<interface> for eos_cli_config_gen.\nOverrides the setting on SVI level.",
+                  "description": "Custom structured config added under vlan_interfaces.<interface> for eos_cli_config_gen.",
                   "title": "Structured Config"
                 }
               },
@@ -5341,16 +5340,15 @@
           },
           "bgp": {
             "type": "object",
-            "description": "Structured configuration and EOS CLI commands rendered on router_bgp.vlans\nThis configuration will not be applied to vlan aware bundles\n",
             "properties": {
               "structured_config": {
                 "type": "object",
-                "description": "Custom structured config added under vlan_interfaces.<interface> for eos_cli_config_gen.\nOverrides the setting on SVI level.\n",
+                "description": "Structured configuration and EOS CLI commands rendered on router_bgp.vlans.\nThis configuration will not be applied to vlan aware bundles\n",
                 "title": "Structured Config"
               },
               "raw_eos_cli": {
                 "type": "string",
-                "description": "EOS CLI rendered directly on the VLAN interface in the final EOS configuration\nOverrides the setting on SVI level.\n",
+                "description": "EOS CLI rendered directly on the Router BGP, VLAN definition in the final EOS configuration\n",
                 "title": "Raw EOS CLI"
               }
             },
@@ -5362,12 +5360,12 @@
           },
           "raw_eos_cli": {
             "type": "string",
-            "description": "EOS CLI rendered directly on the VLAN interface in the final EOS configuration\nOverrides the setting on SVI level\n",
+            "description": "EOS CLI rendered directly on the VLAN interface in the final EOS configuration\n",
             "title": "Raw EOS CLI"
           },
           "structured_config": {
             "type": "object",
-            "description": "Custom structured config added under vlan_interfaces.<interface> for eos_cli_config_gen.\nOverrides the setting on SVI level.",
+            "description": "Custom structured config added under vlan_interfaces.<interface> for eos_cli_config_gen.",
             "title": "Structured Config"
           }
         },

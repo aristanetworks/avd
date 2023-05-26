@@ -228,27 +228,21 @@ $defs:
                   description: Type 7 encrypted key
       bgp:
         type: dict
-        description: |
-          Structured configuration and EOS CLI commands rendered on router_bgp.vlans
-          This configuration will not be applied to vlan aware bundles
         keys:
           structured_config:
             type: dict
             description: |
-              Custom structured config added under vlan_interfaces.<interface> for eos_cli_config_gen.
-              Overrides the setting on SVI level.
+              Structured configuration and EOS CLI commands rendered on router_bgp.vlans.
+              This configuration will not be applied to vlan aware bundles
           raw_eos_cli:
             type: str
             description: |
-              EOS CLI rendered directly on the VLAN interface in the final EOS configuration
-              Overrides the setting on SVI level.
+              EOS CLI rendered directly on the Router BGP, VLAN definition in the final EOS configuration
       raw_eos_cli:
         type: str
         description: |
           EOS CLI rendered directly on the VLAN interface in the final EOS configuration
-          Overrides the setting on SVI level
       structured_config:
         type: dict
         description: |
           Custom structured config added under vlan_interfaces.<interface> for eos_cli_config_gen.
-          Overrides the setting on SVI level.
