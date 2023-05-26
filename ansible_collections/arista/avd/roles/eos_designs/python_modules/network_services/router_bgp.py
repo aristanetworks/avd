@@ -314,14 +314,14 @@ class RouterBgpMixin(UtilsMixin):
         if rt_override is None and tenant_mac_vrf_id_base is None:
             raise AristaAvdMissingVariableError(
                 "'rt_override' or 'vni_override' or 'mac_vrf_id_base' or 'mac_vrf_vni_base' must be set. "
-                f"Unable to set EVPN RD/RT for vlan {vlan_id} in Tenant '{tenant['name']}'"
+                f"Unable to set EVPN RD/RT for vlan {vlan_id} in Tenant '{vlan['tenant']}'"
             )
 
         vlan_rt_id = default(rt_override, (tenant_mac_vrf_id_base + vlan_id))
         vlan_rd = f"{self.shared_utils.overlay_rd_type_admin_subfield}:{vlan_rt_id}"
         vlan_rt = f"{self._rt_admin_subfield or vlan_rt_id}:{vlan_rt_id}"
         bgp_vlan = {
-            "tenant": tenant["name"],
+            "tenant": vlan["tenant"],
             "rd": vlan_rd,
             "route_targets": {"both": [vlan_rt]},
             "redistribute_routes": ["learned"],

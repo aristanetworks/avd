@@ -62,9 +62,9 @@ class VxlanInterfaceMixin(UtilsMixin):
                     if vlan := self._get_vxlan_interface_config_for_vlan(svi, tenant):
                         vlan_id = int(svi["id"])
                         if (vni := vlan["vni"]) in vnis:
-                            self._raise_duplicate_vni_error(vni, f"SVI '{vlan_id} in vrf '{vrf['name']}'", tenant["name"], vnis[vni])
+                            self._raise_duplicate_vni_error(vni, f"SVI '{vlan_id} in vrf '{vrf['name']}'", svi["tenant"], vnis[vni])
 
-                        vnis[vni] = tenant["name"]
+                        vnis[vni] = svi["tenant"]
                         vlans.append({"id": vlan_id, **vlan})
 
                 if self.shared_utils.network_services_l3 and self.shared_utils.overlay_evpn_vxlan:
@@ -81,10 +81,11 @@ class VxlanInterfaceMixin(UtilsMixin):
                     if vni is not None:
                         # Silently ignore if we cannot set a VNI
                         # This is legacy behavior so we will leave stricter enforcement to the schema
+                        vrf_tenant = ",".join(vrf["tenants"])
                         if vni in vnis:
-                            self._raise_duplicate_vni_error(vni, f"VRF '{vrf_name}'", tenant["name"], vnis[vni])
+                            self._raise_duplicate_vni_error(vni, f"VRF '{vrf_name}'", vrf_tenant, vnis[vni])
 
-                        vnis[vni] = tenant["name"]
+                        vnis[vni] = vrf_tenant
                         vrf_data = {"name": vrf_name, "vni": vni}
 
                         if get(vrf, "_evpn_l3_multicast_enabled"):
@@ -106,9 +107,9 @@ class VxlanInterfaceMixin(UtilsMixin):
                 if vlan := self._get_vxlan_interface_config_for_vlan(l2vlan, tenant):
                     vlan_id = int(l2vlan["id"])
                     if (vni := vlan["vni"]) in vnis:
-                        self._raise_duplicate_vni_error(vni, f"L2VLAN '{vlan_id}'", tenant["name"], vnis[vni])
+                        self._raise_duplicate_vni_error(vni, f"L2VLAN '{vlan_id}'", l2vlan["tenant"], vnis[vni])
 
-                    vnis[vni] = tenant["name"]
+                    vnis[vni] = l2vlan["tenant"]
                     vlans.append({"id": vlan_id, **vlan})
 
         if vlans:
@@ -211,10 +212,10 @@ class VxlanInterfaceMixin(UtilsMixin):
 
         return overlay_her_flood_lists
 
-    def _raise_duplicate_vni_error(self, vni: int, context: str, tenant_name: str, duplicate_vni_tenant: str) -> NoReturn:
-        msg = f"Duplicate VXLAN VNI '{vni}' found in Tenant '{tenant_name}' during configuration of {context}."
-        if duplicate_vni_tenant != tenant_name:
-            msg = f"{msg} Other VNI is in Tenant '{duplicate_vni_tenant}'."
+    def _raise_duplicate_vni_error(self, vni: int, context: str, tenant: str, duplicate_vni_tenant: str) -> NoReturn:
+        msg = f"Duplicate VXLAN VNI '{vni}' found in Tenant(s) '{tenant}' during configuration of {context}."
+        if duplicate_vni_tenant != tenant:
+            msg = f"{msg} Other VNI is in Tenant(s) '{duplicate_vni_tenant}'."
 
         raise AristaAvdError(msg)
 

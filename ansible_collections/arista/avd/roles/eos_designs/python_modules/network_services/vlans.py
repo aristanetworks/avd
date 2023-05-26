@@ -33,12 +33,13 @@ class VlansMixin(UtilsMixin):
         vlan_ids = []
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
+                vrf_tenant = ",".join(vrf["tenants"])
                 for svi in vrf["svis"]:
                     vlan_id = int(svi["id"])
                     if vlan_id in vlan_ids:
-                        self._raise_duplicate_vlan_error(vlan_id, f"SVI in VRF '{vrf['name']}'", tenant["name"], get_item(vlans, "id", vlan_id))
+                        self._raise_duplicate_vlan_error(f"SVI in VRF '{vrf['name']}'", svi, get_item(vlans, "id", vlan_id))
 
-                    vlans.append({"id": vlan_id, **self._get_vlan_config(svi, tenant)})
+                    vlans.append({"id": vlan_id, **self._get_vlan_config(svi)})
 
                     vlan_ids.append(vlan_id)
 
@@ -49,7 +50,9 @@ class VlansMixin(UtilsMixin):
 
                 if vlan_id in vlan_ids:
                     self._raise_duplicate_vlan_error(
-                        vlan_id, f"MLAG Peering VLAN in vrf '{vrf['name']}' (check for duplicate VRF VNI/ID)", tenant["name"], get_item(vlans, "id", vlan_id)
+                        f"MLAG Peering VLAN in vrf '{vrf['name']}' (check for duplicate VRF VNI/ID)",
+                        {"id": vlan_id, "tenant": vrf_tenant},
+                        get_item(vlans, "id", vlan_id),
                     )
 
                 vlans.append(
@@ -57,7 +60,7 @@ class VlansMixin(UtilsMixin):
                         "id": vlan_id,
                         "name": f"MLAG_iBGP_{vrf['name']}",
                         "trunk_groups": [self._trunk_groups_mlag_l3_name],
-                        "tenant": tenant["name"],
+                        "tenant": vrf_tenant,
                     }
                 )
 
@@ -67,9 +70,9 @@ class VlansMixin(UtilsMixin):
             for l2vlan in tenant["l2vlans"]:
                 vlan_id = int(l2vlan["id"])
                 if vlan_id in vlan_ids:
-                    self._raise_duplicate_vlan_error(vlan_id, "L2VLAN", tenant["name"], get_item(vlans, "id", vlan_id))
+                    self._raise_duplicate_vlan_error("L2VLAN", l2vlan, get_item(vlans, "id", vlan_id))
 
-                vlans.append({"id": vlan_id, **self._get_vlan_config(l2vlan, tenant)})
+                vlans.append({"id": vlan_id, **self._get_vlan_config(l2vlan)})
 
                 vlan_ids.append(vlan_id)
 
@@ -78,7 +81,7 @@ class VlansMixin(UtilsMixin):
 
         return None
 
-    def _get_vlan_config(self, vlan, tenant) -> dict:
+    def _get_vlan_config(self, vlan) -> dict:
         """
         Return structured config for one given vlan
 
@@ -86,7 +89,7 @@ class VlansMixin(UtilsMixin):
         """
         vlans_vlan = {
             "name": vlan["name"],
-            "tenant": tenant["name"],
+            "tenant": vlan["tenant"],
         }
         if self.shared_utils.enable_trunk_groups:
             trunk_groups = vlan.get("trunk_groups", [])
@@ -100,9 +103,9 @@ class VlansMixin(UtilsMixin):
 
         return vlans_vlan
 
-    def _raise_duplicate_vlan_error(self, vlan_id: int, context: str, tenant_name: str, duplicate_vlan_config: dict) -> NoReturn:
-        msg = f"Duplicate VLAN ID '{vlan_id}' found in Tenant '{tenant_name}' during configuration of {context}."
-        if (duplicate_vlan_tenant := duplicate_vlan_config["tenant"]) != tenant_name:
-            msg = f"{msg} Other VLAN is in Tenant '{duplicate_vlan_tenant}'."
+    def _raise_duplicate_vlan_error(self, context: str, vlan: dict, duplicate_vlan: dict) -> NoReturn:
+        msg = f"Duplicate VLAN ID '{vlan['id']}' found in Tenant(s) '{vlan['tenant']}' during configuration of {context}."
+        if duplicate_vlan["tenant"] != vlan["tenant"]:
+            msg = f"{msg} Other VLAN is in Tenant(s) '{duplicate_vlan['tenant']}'."
 
         raise AristaAvdError(msg)

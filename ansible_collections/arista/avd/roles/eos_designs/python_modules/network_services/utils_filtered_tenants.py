@@ -7,6 +7,7 @@ from ansible_collections.arista.avd.plugins.filter.default import default
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item, unique
 
@@ -41,6 +42,8 @@ class UtilsFilteredTenantsMixin(object):
                     tenant["vrfs"] = self._filtered_vrfs(tenant)
                     filtered_tenants.append(tenant)
 
+        self._handle_duplicate_vrfs(filtered_tenants)
+
         return natural_sort(filtered_tenants, "name")
 
     def _filtered_l2vlans(self, tenant: dict) -> list[dict]:
@@ -58,6 +61,10 @@ class UtilsFilteredTenantsMixin(object):
             if self._is_accepted_vlan(l2vlan)
             and ("all" in self.shared_utils.filter_tags or set(l2vlan.get("tags", ["all"])).intersection(self.shared_utils.filter_tags))
         ]
+        # Set tenant key on all l2vlans
+        for l2vlan in l2vlans:
+            l2vlan.update({"tenant": tenant["name"]})
+
         return l2vlans
 
     def _is_accepted_vlan(self, vlan: dict) -> bool:
@@ -120,6 +127,10 @@ class UtilsFilteredTenantsMixin(object):
 
         vrfs: list[dict] = natural_sort(convert_dicts(tenant.get("vrfs", []), "name"), "name")
         for vrf in vrfs:
+            # Storing tenants as a list for use in duplicate VRF detection
+            vrf["tenants"] = [tenant["name"]]
+            # Storing tenant as a single item for use by child objects like SVIs
+            vrf["tenant"] = tenant["name"]
             bgp_peers = natural_sort(convert_dicts(vrf.get("bgp_peers"), "ip_address"), "ip_address")
             vrf["bgp_peers"] = [bgp_peer for bgp_peer in bgp_peers if self.shared_utils.hostname in bgp_peer.get("nodes", [])]
             vrf["static_routes"] = [
@@ -184,12 +195,12 @@ class UtilsFilteredTenantsMixin(object):
         """
         Return list of svi_profiles
 
-        The key "node_config" is inserted with relevant dict from "nodes" or {}
+        The key "nodes" is filtered to only contain one item with the relevant dict from "nodes" or {}
         """
         svi_profiles = convert_dicts(get(self._hostvars, "svi_profiles", default=[]), "profile")
         for svi_profile in svi_profiles:
             svi_profile["nodes"] = convert_dicts(svi_profile.get("nodes", []), "node")
-            svi_profile["node_config"] = get_item(svi_profile["nodes"], "node", self.shared_utils.hostname, default={})
+            svi_profile["nodes"] = [get_item(svi_profile["nodes"], "node", self.shared_utils.hostname, default={})]
 
         return svi_profiles
 
@@ -207,11 +218,11 @@ class UtilsFilteredTenantsMixin(object):
         Then svi is updated with the result of merging svi_node_cfg over svi_cfg
         svi_node_cfg > svi_cfg --> svi
         """
-        svi_profile = {"node_config": {}}
-        svi_parent_profile = {"node_config": {}}
+        svi_profile = {"nodes": [{}]}
+        svi_parent_profile = {"nodes": [{}]}
 
         svi["nodes"] = convert_dicts(svi.get("nodes", []), "node")
-        svi_node_config = get_item(svi.get("nodes", []), "node", self.shared_utils.hostname, default={})
+        svi["nodes"] = [get_item(svi["nodes"], "node", self.shared_utils.hostname, default={})]
 
         if (svi_profile_name := svi.get("profile")) is not None:
             svi_profile = get_item(self._svi_profiles, "profile", svi_profile_name, default={})
@@ -226,18 +237,18 @@ class UtilsFilteredTenantsMixin(object):
             svi_parent_profile,
             svi_profile,
             svi,
-            svi_parent_profile["node_config"],
-            svi_profile["node_config"],
-            svi_node_config,
+            svi_parent_profile["nodes"][0],
+            svi_profile["nodes"][0],
+            svi["nodes"][0],
             list_merge="replace",
             destructive_merge=False,
         )
 
         # Override structured configs since we don't want to deep-merge those
         merged_svi["structured_config"] = default(
-            svi_node_config.get("structured_config"),
-            svi_profile["node_config"].get("structured_config"),
-            svi_parent_profile["node_config"].get("structured_config"),
+            svi["nodes"][0].get("structured_config"),
+            svi_profile["nodes"][0].get("structured_config"),
+            svi_parent_profile["nodes"][0].get("structured_config"),
             svi.get("structured_config"),
             svi_profile.get("structured_config"),
             svi_parent_profile.get("structured_config"),
@@ -245,9 +256,9 @@ class UtilsFilteredTenantsMixin(object):
 
         # Override bgp.structured configs since we don't want to deep-merge those
         merged_svi.setdefault("bgp", {})["structured_config"] = default(
-            get(svi_node_config, "bgp.structured_config"),
-            get(svi_profile["node_config"], "bgp.structured_config"),
-            get(svi_parent_profile["node_config"], "bgp.structured_config"),
+            get(svi["nodes"][0], "bgp.structured_config"),
+            get(svi_profile["nodes"][0], "bgp.structured_config"),
+            get(svi_parent_profile["nodes"][0], "bgp.structured_config"),
             get(svi, "bgp.structured_config"),
             get(svi_profile, "bgp.structured_config"),
             get(svi_parent_profile, "bgp.structured_config"),
@@ -269,4 +280,69 @@ class UtilsFilteredTenantsMixin(object):
         # Perform filtering on tags after merge of profiles, to support tags being set inside profiles.
         svis = [svi for svi in svis if "all" in self.shared_utils.filter_tags or set(svi.get("tags", ["all"])).intersection(self.shared_utils.filter_tags)]
 
+        # Set tenant key on all SVIs
+        for svi in svis:
+            svi.update({"tenant": vrf["tenant"]})
+
         return svis
+
+    def _handle_duplicate_vrfs(self, tenants: list[dict]):
+        """
+        Check for duplicate VRFs.
+        If any duplicates are found, perform inplace merge of the duplicate VRFs only to first instance. Remove the other instances.
+        Merge is done according to these rules:
+        - All lists like `svis`, `l3_interfaces`, `bgp_peers` etc. will be combined.
+          Duplicate items in the combined lists will raise an error.
+        - Settings only concerning other `nodes` are ignored. (they have already been filtered out by filtered_vrfs)
+        - All other settings are merged. If the same key is in multiple VRFs, they must match exactly or an error will be raised.
+        - All settings on the parent Tenants like `mac_vrf_vni_base` must match exactly or an error will be raised.
+        """
+        all_vrfs = []
+        for tenant in tenants:
+            tenant_vrf_indexes_to_be_removed = []
+            for index, vrf in enumerate(tenant["vrfs"]):
+                if (first_vrf := get_item(all_vrfs, "name", vrf["name"])) is None:
+                    all_vrfs.append(vrf)
+                    continue
+
+                # This is a duplicate VRF. Add to removal list and merge settings onto original.
+                tenant_vrf_indexes_to_be_removed.append(index)
+
+                # Update tenant key and _tenants list before merge and make sure they match (ignored from comparison).
+                first_vrf["tenants"].append(vrf["tenant"])
+                vrf["tenants"] = first_vrf["tenants"]
+                vrf["tenant"] = first_vrf["tenant"]
+
+                # Compare the original tenant and the duplicate tenant (any other duplicate tenants would already have been compared)
+                first_tenant = get_item(tenants, "name", first_vrf["tenant"], required=True)
+                if not self._compare_tenant_settings(first_tenant, tenant):
+                    raise AristaAvdError(
+                        f"Found duplicate VRF '{vrf['name']}' in Tenants '{', '.join(vrf['tenants'])}' but unable to merge since Tenant settings do not match."
+                    )
+
+                try:
+                    merge(first_vrf, vrf, list_merge="append_rp", same_key_strategy="must_match")
+                except ValueError as e:
+                    raise AristaAvdError(
+                        f"Found duplicate VRF '{vrf['name']}' in Tenants '{', '.join(vrf['tenants'])}' "
+                        f"but unable to merge since VRF settings do not match: {str(e)}"
+                    ) from e
+
+            if tenant_vrf_indexes_to_be_removed:
+                # Remove duplicate VRFs after succesful merge. Reverse list to not offset index.
+                tenant_vrf_indexes_to_be_removed.reverse()
+                for index in tenant_vrf_indexes_to_be_removed:
+                    tenant["vrfs"].pop(index)
+
+    def _compare_tenant_settings(self, base_tenant, duplicate_tenant) -> bool:
+        """
+        Comparison of tenant settings, to ensure that duplicate VRFs will not render different configurations.
+
+        Return True if tenant settings are matching and False if not.
+
+        'name', 'vrfs' and 'l2vlans' are excluded from the comparison, since they do not affect duplicate VRF configurations
+        """
+        EXCLUDE_KEYS = ["name", "vrfs", "l2vlans"]
+        return all(base_tenant.get(key) == duplicate_tenant.get(key) for key in base_tenant.keys() if key not in EXCLUDE_KEYS) and all(
+            base_tenant.get(key) == duplicate_tenant.get(key) for key in duplicate_tenant.keys() if key not in EXCLUDE_KEYS
+        )

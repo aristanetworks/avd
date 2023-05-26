@@ -2937,16 +2937,22 @@ $defs:
           primary_key: name
           convert_types:
           - dict
-          description: 'VRF "default" is supported under network-services. Currently
-            the supported options for "default" vrf are route-target,
-
-            route-distinguisher settings, structured_config, raw_eos_cli in bgp and
-            SVIs are the only supported interface type.
-
-            Vlan-aware-bundles are supported as well inside default vrf. OSPF is not
-            supported currently.
-
-            '
+          description: "VRFs will only be configured on a node if any of the underlying
+            objects like `svis` or `l3_interfaces` apply to the node.\n\nIt is recommended
+            to only define a VRF in one Tenant. If the same VRF name is used across
+            multiple tenants and those tenants\nare accepted by `filter.tenants` on
+            the node, the VRF definitions will be merged according to the following
+            guidelines:\n  - All lists like `svis`, `l3_interfaces`, `bgp_peers` etc.
+            will be combined.\n    Duplicate items in the combined lists will raise
+            an error.\n  - Settings only concerning other `nodes` are ignored.\n  -
+            All other settings are merged. If the same key is in multiple VRFs, they
+            must match exactly or an error will be raised.\n  - All settings on the
+            parent Tenants like `mac_vrf_vni_base` must match exactly or an error
+            will be raised.\n\nVRF \"default\" is partially supported under network-services.
+            Currently the supported options for \"default\" vrf are route-target,\nroute-distinguisher
+            settings, structured_config, raw_eos_cli in bgp and SVIs are the only
+            supported interface type.\nVlan-aware-bundles are supported as well inside
+            default vrf. OSPF is not supported currently.\n"
           items:
             type: dict
             keys:
