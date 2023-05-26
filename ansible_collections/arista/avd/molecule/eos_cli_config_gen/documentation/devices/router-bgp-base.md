@@ -58,6 +58,7 @@ interface Management1
 | no bgp default ipv4-unicast transport ipv6 |
 | distance bgp 20 200 200 |
 | maximum-paths 32 ecmp 32 |
+| bgp route-reflector preserve-attributes always |
 
 #### Router BGP Listen Ranges
 
@@ -140,6 +141,7 @@ router bgp 65101
    graceful-restart stalepath-time 666
    graceful-restart
    graceful-restart-helper restart-time 888
+   bgp route-reflector preserve-attributes always
    maximum-paths 32 ecmp 32
    update wait-for-convergence
    update wait-install

@@ -1,9 +1,9 @@
 {# doc - management api gnmi #}
 {% if management_api_gnmi is arista.avd.defined %}
 
-### Management API GNMI
+### Management API gNMI
 
-#### Management API GNMI Summary
+#### Management API gNMI Summary
 {# legacy table view that will be deprecated in future releases #}
 {%     if management_api_gnmi.enable_vrfs is defined %}
 {%         if management_api_gnmi.octa is defined  %}
@@ -12,7 +12,7 @@
 {%             set octa = 'disabled' %}
 {%         endif %}
 
-| VRF with GNMI | OCTA |
+| VRF with gNMI | OCTA |
 | ------------- | ---- |
 {%         for vrf in management_api_gnmi.enable_vrfs | arista.avd.natural_sort %}
 | {{ vrf.name }} | {{ octa }} |
@@ -61,7 +61,7 @@
 Provider {{ management_api_gnmi.provider }} is configured.
 {%     endif %}
 
-#### Management API gnmi configuration
+#### Management API gNMI configuration
 
 ```eos
 {%     include 'eos/management-api-gnmi.j2' %}

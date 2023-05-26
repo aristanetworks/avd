@@ -150,7 +150,7 @@ keys:
       cvgnmi:
         type: bool
         description: |
-          Stream states from EOS GNMI servers (Openconfig) to CloudVision. Available as of TerminAttr v1.13.1
+          Stream states from EOS gNMI servers (Openconfig) to CloudVision. Available as of TerminAttr v1.13.1
       disable_aaa:
         type: bool
         description: |
