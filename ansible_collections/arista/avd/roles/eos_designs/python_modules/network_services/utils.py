@@ -104,7 +104,6 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
             return []
         return [int(id) for id in range_expand(endpoint_vlans)]
 
-    @cached_property
     def _underlay_rfc5549(self) -> bool:
         return get(self._hostvars, "underlay_rfc5549") is True
 
@@ -173,6 +172,31 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
     @cached_property
     def _loopback_ipv4_offset(self) -> int:
         return int(get(self._hostvars, "switch.loopback_ipv4_offset", required=True))
+
+    @cached_property
+    def _evpn_encapsulation(self) -> str:
+        return get(self._hostvars, "switch.evpn_encapsulation")
+
+    @cached_property
+    def _overlay_evpn_vxlan(self) -> bool:
+        return self._overlay_evpn and self._evpn_encapsulation == "vxlan"
+
+    @cached_property
+    def _vrf_default_evpn(self) -> bool:
+        """
+        Return boolean telling if VRF "default" is running EVPN or not.
+        """
+        if not (self._network_services_l3 and self._overlay_vtep and self._overlay_evpn):
+            return False
+
+        for tenant in self._filtered_tenants:
+            if (vrf_default := get_item(tenant["vrfs"], "name", "default")) is None:
+                continue
+
+            if "evpn" in vrf_default.get("address_families", ["evpn"]):
+                return True
+
+        return False
 
     @cached_property
     def _vrf_default_ipv4_subnets(self) -> list[str]:
