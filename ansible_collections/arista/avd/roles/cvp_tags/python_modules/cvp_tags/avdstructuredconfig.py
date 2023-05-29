@@ -13,6 +13,13 @@ from ansible_collections.arista.avd.roles.eos_designs.python_modules.underlay.ut
 if TYPE_CHECKING:
     from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
 
+INVALID_CUSTOM_TAGS = [
+    "topology_hint_type",
+    "topology_hint_datacenter",
+    "topology_hint_rack",
+    "topology_role",
+]
+
 
 class AvdStructuredConfigTags(AvdFacts, UtilsMixin):
     """
@@ -49,6 +56,10 @@ class AvdStructuredConfigTags(AvdFacts, UtilsMixin):
             device_tags.append(self._topology_hint_rack)
         device_tags.append(self._topology_hint_dc)
 
+        for custom_tag in get(self.shared_utils.hostvars, "cvp_tags.custom_tags", []):
+            if custom_tag["name"] not in INVALID_CUSTOM_TAGS:
+                device_tags.append(custom_tag)
+
         interface_tags = []
         for link in self._underlay_links:
             interface_tags.append(self._interface_tags(link))
@@ -81,8 +92,14 @@ class AvdStructuredConfigTags(AvdFacts, UtilsMixin):
         """
         Retrun the topology hint type for the device.
         """
+        hint_type = get(self.shared_utils.node_type_key_data, "cvp_tags.topology_hint_type")
 
-        return self.tag_dict("topology_hint_type", get(self.shared_utils.node_type_key_data, "cvp_tag_topology_hint_type", default="endpoint"))
+        hint_type = get(self.shared_utils.hostvars, "cvp_tags.topology_hint_type", hint_type)
+
+        if not hint_type:
+            raise AristaAvdError(f"No topology hint type found for {self.shared_utils.hostname}")
+
+        return self.tag_dict("topology_hint_type", hint_type)
 
     @cached_property
     def _topology_hint_fabric(self) -> dict:

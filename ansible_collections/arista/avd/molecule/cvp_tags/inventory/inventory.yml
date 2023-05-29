@@ -24,9 +24,15 @@ all:
             DC1_L2_LEAVES:
               hosts:
                 dc1-leaf1c:
+                  cvp_tags:
+                    custom_tags:
+                      - name: custom_tag
+                        value: custom_value
                   ansible_host: 172.16.1.151
                 dc1-leaf2c:
                   ansible_host: 172.16.1.152
+                  cvp_tags:
+                    topology_hint_type: edge
 
     NETWORK_SERVICES:
       children:
