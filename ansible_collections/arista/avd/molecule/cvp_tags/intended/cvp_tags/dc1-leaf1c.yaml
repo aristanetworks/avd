@@ -11,6 +11,8 @@ cvp_tags:
     value: rack-1c
   - name: topology_hint_datacenter
     value: DC1
+  - name: custom_tag
+    value: custom_value
   inteface_tags:
   - interface: Ethernet1
     tags:

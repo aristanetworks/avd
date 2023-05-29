@@ -2,7 +2,7 @@ cvp_tags:
   device: dc1-leaf2c
   device_tags:
   - name: topology_hint_type
-    value: leaf
+    value: edge
   - name: topology_hint_fabric
     value: FABRIC
   - name: topology_hint_pod
