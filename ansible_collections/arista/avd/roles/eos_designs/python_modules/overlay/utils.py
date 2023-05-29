@@ -155,7 +155,7 @@ class UtilsMixin:
         if self.shared_utils.overlay_mpls is not True:
             return {}
 
-        if get(self._hostvars, "bgp_mesh_pe") is not True:
+        if get(self._hostvars, "bgp_mesh_pes") is not True:
             return {}
 
         mpls_mesh_pe = {}
