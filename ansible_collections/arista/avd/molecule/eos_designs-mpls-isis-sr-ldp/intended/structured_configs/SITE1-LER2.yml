@@ -46,6 +46,12 @@ router_bgp:
     100.70.0.9:
       peer_group: MPLS-OVERLAY-PEERS
       description: SITE2-RR1
+    100.70.0.5:
+      peer_group: MPLS-OVERLAY-PEERS
+      description: SITE1-LER1
+    100.70.0.7:
+      peer_group: MPLS-OVERLAY-PEERS
+      description: SITE2-LER1
   vrfs:
     TENANT_B_INTRA:
       router_id: 100.70.0.6
