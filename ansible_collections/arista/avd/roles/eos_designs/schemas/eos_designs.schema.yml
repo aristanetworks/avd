@@ -1580,6 +1580,18 @@ keys:
           type: str
           valid_values:
           - ipv4
+  queue_monitor_length:
+    $ref: eos_cli_config_gen#/keys/queue_monitor_length
+    type: dict
+    keys:
+      enabled:
+        type: bool
+      notifying:
+        type: bool
+        description: 'If True, `eos_designs` will configure `queue-monitor length
+          notifying` according to the
+
+          `platform_settings.[].feature_support.queue_monitor_length_notify` setting.'
   redundancy:
     type: dict
     description: Redundancy for chassis platforms with dual supervisors | Optional

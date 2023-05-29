@@ -4566,6 +4566,87 @@
       },
       "title": "PTP Profiles"
     },
+    "queue_monitor_length": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "Enabled"
+        },
+        "notifying": {
+          "type": "boolean",
+          "description": "If True, `eos_designs` will configure `queue-monitor length notifying` according to the\n`platform_settings.[].feature_support.queue_monitor_length_notify` setting.",
+          "title": "Notifying"
+        },
+        "default_thresholds": {
+          "type": "object",
+          "properties": {
+            "high": {
+              "type": "integer",
+              "description": "Default high threshold for Ethernet Interfaces.\n",
+              "title": "High"
+            },
+            "low": {
+              "type": "integer",
+              "description": "Default low threshold for Ethernet Interfaces.\nLow threshold support is platform dependent.\n",
+              "title": "Low"
+            }
+          },
+          "required": [
+            "high"
+          ],
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Default Thresholds"
+        },
+        "log": {
+          "type": "integer",
+          "description": "Logging interval in seconds",
+          "title": "Log"
+        },
+        "cpu": {
+          "type": "object",
+          "properties": {
+            "thresholds": {
+              "type": "object",
+              "properties": {
+                "high": {
+                  "type": "integer",
+                  "title": "High"
+                },
+                "low": {
+                  "type": "integer",
+                  "title": "Low"
+                }
+              },
+              "required": [
+                "high"
+              ],
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Thresholds"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "CPU"
+        }
+      },
+      "required": [
+        "enabled"
+      ],
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Queue Monitor Length"
+    },
     "redundancy": {
       "type": "object",
       "description": "Redundancy for chassis platforms with dual supervisors | Optional",

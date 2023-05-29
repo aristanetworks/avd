@@ -43,7 +43,8 @@ ntp:
       vrf: "{{ mgmt_interface_vrf | arista.avd.default('MGMT') }}"
 
 queue_monitor_length:
-  log: 5
+  enabled: true
   notifying: true
+  log: 5
   # Note "notifying" should only be rendered on 7280R since default
   # platform_settings for default has queue_monitor_length_notify_support: false
