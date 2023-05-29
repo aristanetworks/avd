@@ -155,6 +155,14 @@ class MiscMixin:
         return get(self.hostvars, "dc_name")
 
     @cached_property
+    def fabric_name(self: SharedUtils) -> str | None:
+        return get(self.hostvars, "fabric_name")
+
+    @cached_property
+    def rack(self: SharedUtils) -> str | None:
+        return get(self.switch_data_combined, "rack")
+
+    @cached_property
     def network_services_keys(self: SharedUtils) -> list[dict]:
         """
         Return sorted network_services_keys filtered for invalid entries and unused keys

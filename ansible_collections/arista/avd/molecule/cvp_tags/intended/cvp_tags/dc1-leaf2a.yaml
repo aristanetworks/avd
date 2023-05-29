@@ -1,0 +1,24 @@
+cvp_tags:
+  device: dc1-leaf2a
+  device_tags:
+  - name: topology_hint_type
+    value: leaf
+  - name: topology_hint_fabric
+    value: FABRIC
+  - name: topology_hint_pod
+    value: single_pod
+  - name: topology_hint_datacenter
+    value: DC1
+  inteface_tags:
+  - interface: Ethernet1
+    tags:
+    - name: interface_peer
+      value: dc1-spine1
+  - interface: Ethernet2
+    tags:
+    - name: interface_peer
+      value: dc1-spine2
+  - interface: Ethernet8
+    tags:
+    - name: interface_peer
+      value: dc1-leaf2c

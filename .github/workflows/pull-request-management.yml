@@ -303,6 +303,48 @@ jobs:
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts
       #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
+
+  # ----------------------------------- #
+  # CVP TAGS MOLECULE
+  # ----------------------------------- #
+  molecule_cvp_tags:
+    name: Validate cvp_tags
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        avd_scenario:
+          - 'cvp_tags'
+        ansible_version:
+          - 'ansible-core>=2.12.6,<2.15.0,!=2.13.0'
+        # Also test minimum ansible version for one scenario.
+        include:
+          - avd_scenario: 'cvp_tags'
+            ansible_version: 'ansible-core==2.12.6'
+    needs: [ pre_commit ]
+    if: needs.file-changes.outputs.config_gen == 'true'
+    steps:
+      - name: 'Set environment variables'
+        run: |
+          echo "PY_COLORS=1" >> $GITHUB_ENV
+          echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
+      - uses: actions/checkout@v3
+      - name: Run molecule action
+        uses: arista-netdevops-community/action-molecule-avd@v1.6
+        with:
+          molecule_parentdir: 'ansible_collections/arista/avd'
+          molecule_command: 'test'
+          molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
+          pip_file: ansible_collections/arista/avd/requirements.txt
+          galaxy_file: "ansible_collections/arista/avd/collections.yml"
+          ansible: ${{ matrix.ansible_version }}
+          check_git: true
+          check_git_enforced: true
+      # - uses: actions/upload-artifact@v3
+      #   with:
+      #     name: molecule-${{ matrix.avd_scenario }}-artifacts
+      #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
+
   # ----------------------------------- #
   # Ansible tests
   # ----------------------------------- #

@@ -1,0 +1,44 @@
+---
+scenario:
+  converge_sequence:
+    - syntax
+    - create
+    - converge
+    # - verify # No verification at the moment
+  test_sequence:
+    - syntax
+    - create
+    - converge
+    - idempotence
+    # - verify # No verification at the moment
+  cleanup_sequence:
+    - destroy
+dependency:
+  name: galaxy
+driver:
+  name: delegated
+platforms:
+  - name: dc1-spine1
+    image: avdteam/base:3.8-v2.0
+    pre_build_image: true
+    managed: false
+    groups:
+      - FABRIC
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      jinja2_extensions: 'jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n'
+      gathering: explicit
+  inventory:
+    links:
+      hosts: 'inventory/inventory.yml'
+      group_vars: 'inventory/group_vars/'
+  ansible_args:
+    - --skip-tags=documentation
+  env:
+    # Custom pythonpath to allow loading custom ip_addressing and descriptions modules.
+    # See CUSTOM_PYTHON_MODULES_TESTS group vars for details.
+    PYTHONPATH: ${PYTHONPATH}:${MOLECULE_SCENARIO_DIRECTORY}/custom_modules
+verifier:
+  name: ansible

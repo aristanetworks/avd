@@ -1,11 +1,29 @@
 ---
+- name: "Create folder {{ cvp_tags_dir_name }} for CVP structured YAML files for CVP Tags"
+  ansible.builtin.file:
+    path: "{{ cvp_tags_dir }}"
+    state: directory
+    mode: 0775
+  delegate_to: localhost
+  run_once: True
+
+- name: Set eos_designs facts
+  tags: [build, provision, facts]
+  arista.avd.eos_designs_facts:
+    avd_switch_facts: true
+    #cprofile_file: "eos_designs_facts.prof"
+    template_output: true
+    conversion_mode: "{{ avd_data_conversion_mode }}"
+    validation_mode: "{{ avd_data_validation_mode }}"
+  check_mode: false
+  run_once: true
 
 - name: Generate cvp_tags
   tags: [build, provision]
   arista.avd.yaml_templates_to_facts:
     templates:
       - python_module: "ansible_collections.arista.avd.roles.cvp_tags.python_modules.cvp_tags"
-        python_class_name: "AvdStructuredConfig"
+        python_class_name: "AvdStructuredConfigTags"
     dest: "{{ cvp_tags_dir }}/{{ inventory_hostname }}.yaml"
   delegate_to: localhost
   check_mode: false
