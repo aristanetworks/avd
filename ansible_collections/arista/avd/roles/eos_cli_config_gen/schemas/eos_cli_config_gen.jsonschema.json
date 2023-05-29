@@ -203,11 +203,6 @@
                 }
               },
               "title": "Default"
-            },
-            "commands_default": {
-              "type": "array",
-              "description": "Deprecated and removed key from AVD 2.x",
-              "title": "Commands Default"
             }
           },
           "additionalProperties": false,
@@ -15719,11 +15714,6 @@
             "^_.+$": {}
           },
           "title": "Segment Routing MPLS"
-        },
-        "no_passive_interfaces": {
-          "type": "array",
-          "description": "Unused key - to be removed from eos_designs.",
-          "title": "No Passive Interfaces"
         }
       },
       "additionalProperties": false,

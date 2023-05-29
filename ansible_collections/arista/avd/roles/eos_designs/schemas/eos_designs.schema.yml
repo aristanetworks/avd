@@ -3178,6 +3178,8 @@ $defs:
                             not set.
 
                             '
+                          items:
+                            type: str
                         transit:
                           type: bool
                           default: false

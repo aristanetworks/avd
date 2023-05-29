@@ -247,13 +247,6 @@ router_isis:
   address_family_ipv4:
     enabled: true
     maximum_paths: 4
-  no_passive_interfaces:
-  - Ethernet1
-  - Ethernet2
-  - Ethernet3
-  - Ethernet4
-  - Vlan4093
-  - Loopback1
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
