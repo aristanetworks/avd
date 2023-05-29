@@ -1,0 +1,12 @@
+---
+# This verification does not yet work
+- name: Verify tags on CVP
+  hosts: all
+  gather_facts: false
+  connection: local
+  tasks:
+
+    - name: Generate device intended config and documentation
+      delegate_to: 127.0.0.1
+      ansible.builtin.import_role:
+        name: arista.avd.eos_cli_config_gen

@@ -1,18 +1,20 @@
 from __future__ import annotations
 
 from functools import cached_property
-from hashlib import sha1
+from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
-from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
-from ansible_collections.arista.avd.plugins.filter.snmp_hash import hash_passphrase
+from ansible.utils.display import Display
+
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.roles.eos_designs.python_modules.underlay.utils import UtilsMixin
+
+if TYPE_CHECKING:
+    from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
 
 
-class AvdStructuredConfig(AvdFacts):
+class AvdStructuredConfigTags(AvdFacts, UtilsMixin):
     """
     This would return facts to ansible set at the rool-level of the host vars for the host calling this:
     {
@@ -25,6 +27,11 @@ class AvdStructuredConfig(AvdFacts):
     Missing fabric_name from shared_utils
     """
 
+    def __init__(self, hostvars: dict, shared_utils: SharedUtils):
+        # Init a display object in order to later issue warnings
+        self.ansible_display = Display()
+        super().__init__(hostvars=hostvars, shared_utils=shared_utils)
+
     @cached_property
     def cvp_tags(self) -> str:
         """
@@ -33,16 +40,89 @@ class AvdStructuredConfig(AvdFacts):
         Helper functions should be regular methods on the class (start with underscore)
         and if you need @cached_properties make sure to start the name with underscore.
         """
-        interface_peer_name = self._interface_peer_name
+        # interface_peer_name = self._interface_peer_name
+        device_tags = []
+        device_tags.append(self._topology_hint_type)
+        device_tags.append(self._topology_hint_fabric)
+        device_tags.append(self._topology_hint_pod)
+        if self._topology_hint_rack:
+            device_tags.append(self._topology_hint_rack)
+        device_tags.append(self._topology_hint_dc)
 
-        return {"topology_hint_type": self.shared_utils.cvp_tag_topology_hint_type}
+        interface_tags = []
+        for link in self._underlay_links:
+            interface_tags.append(self._interface_tags(link))
+
+        return {"device": self.shared_utils.hostname, "device_tags": device_tags, "inteface_tags": interface_tags}
+
+    # @cached_property
+    # def key2(self) -> str:
+    #     self.shared_utils.all_fabric_devices
+    #     return "bar"
+
+    # @cached_property
+    # def _interface_peer_name(self) -> str:
+    #     """The leading underscore signals that this key is not included in the output facts"""
+    #     return get(self._hostvars, "cvp_tags.interface_peer.name", default="peer")
+
+    # @cached_property
+    # def _device_topology_hint(self) -> str:
+    #     """
+    #     Retrun the topology hint type for the device.
+    #     """
+    #     return get(self.shared_utils.node_type_key_data, "cvp_tag_topology_hint_type", default='endpoint')
+
+    @staticmethod
+    def tag_dict(name, value):
+        return {"name": name, "value": value}
 
     @cached_property
-    def key2(self) -> str:
-        self.shared_utils.all_fabric_devices
-        return "bar"
+    def _topology_hint_type(self) -> dict:
+        """
+        Retrun the topology hint type for the device.
+        """
+
+        return self.tag_dict("topology_hint_type", get(self.shared_utils.node_type_key_data, "cvp_tag_topology_hint_type", default="endpoint"))
 
     @cached_property
-    def _interface_peer_name(self) -> str:
-        """The leading underscore signals that this key is not included in the output facts"""
-        return get(self._hostvars, "cvp_tags.interface_peer.name", default="peer")
+    def _topology_hint_fabric(self) -> dict:
+        """
+        Return the topology fabric hint tag.
+        """
+        if not self.shared_utils.fabric_name:
+            raise AristaAvdError(f"'pod_name' not found for {self.shared_utils.hostname}")
+
+        return self.tag_dict("topology_hint_fabric", self.shared_utils.fabric_name)
+
+    @cached_property
+    def _topology_hint_pod(self) -> dict:
+        """
+        Return the topology fabric hint tag.
+        """
+        if not self.shared_utils.pod_name:
+            raise AristaAvdError(f"'pod_name' not found for {self.shared_utils.hostname}")
+
+        return self.tag_dict("topology_hint_pod", self.shared_utils.pod_name)
+
+    @cached_property
+    def _topology_hint_dc(self) -> dict:
+        """
+        Return the topology fabric hint tag.
+        """
+        if not self.shared_utils.dc_name:
+            raise AristaAvdError(f"'dc_name' not found for {self.shared_utils.hostname}")
+        return self.tag_dict("topology_hint_datacenter", self.shared_utils.dc_name)
+
+    @cached_property
+    def _topology_hint_rack(self) -> dict | None:
+        """
+        Return the topology hint for the rack tag.
+        """
+        if not self.shared_utils.rack:
+            self.ansible_display.warning(msg=f"'rack' information not found for {self.shared_utils.hostname} ")
+            return None
+        return self.tag_dict("topology_hint_rack", self.shared_utils.rack)
+
+    @staticmethod
+    def _interface_tags(link):
+        return {"interface": link["interface"], "tags": [{"name": "interface_peer", "value": link["peer"]}]}
