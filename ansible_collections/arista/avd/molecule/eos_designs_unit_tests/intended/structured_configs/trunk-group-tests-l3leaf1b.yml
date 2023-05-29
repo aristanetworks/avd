@@ -1,11 +1,14 @@
 router_bgp:
   as: '65001'
   router_id: 192.168.250.10
-  bgp_defaults:
-  - maximum-paths 4 ecmp 4
   bgp:
     default:
       ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
   graceful_restart:
     enabled: true
     restart_time: 300
@@ -66,6 +69,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.247.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: TG_200
     router_id: 192.168.250.10
     rd: 192.168.250.10:200
@@ -83,6 +88,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.247.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: TG_300
     router_id: 192.168.250.10
     rd: 192.168.250.10:300
@@ -100,6 +107,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.247.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   vlans:
   - id: 100
     tenant: TRUNK_GROUP_TESTS

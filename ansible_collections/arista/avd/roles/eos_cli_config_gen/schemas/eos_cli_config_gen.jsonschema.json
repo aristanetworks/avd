@@ -1292,7 +1292,7 @@
         },
         "cvgnmi": {
           "type": "boolean",
-          "description": "Stream states from EOS GNMI servers (Openconfig) to CloudVision. Available as of TerminAttr v1.13.1\n",
+          "description": "Stream states from EOS gNMI servers (Openconfig) to CloudVision. Available as of TerminAttr v1.13.1\n",
           "title": "Cvgnmi"
         },
         "disable_aaa": {
@@ -1784,7 +1784,9 @@
                 "type": "string",
                 "enum": [
                   "tagged",
-                  "untagged"
+                  "tagged phone",
+                  "untagged",
+                  "untagged phone"
                 ],
                 "title": "Trunk"
               },
@@ -6942,7 +6944,7 @@
                       "send-time",
                       "last-change-time"
                     ],
-                    "description": "Per the GNMI specification, the default timestamp field of a notification message is set to be\nthe time at which the value of the underlying data source changes or when the reported event takes place.\nIn order to facilitate integration in legacy environments oriented around polling style operations,\nan option to support overriding the timestamp field to the send-time is available from EOS 4.27.0F.\n",
+                    "description": "Per the gNMI specification, the default timestamp field of a notification message is set to be\nthe time at which the value of the underlying data source changes or when the reported event takes place.\nIn order to facilitate integration in legacy environments oriented around polling style operations,\nan option to support overriding the timestamp field to the send-time is available from EOS 4.27.0F.\n",
                     "title": "Notification Timestamp"
                   },
                   "ip_access_group": {
@@ -6981,7 +6983,7 @@
                   "gnmi_ssl_profile": {
                     "type": "string",
                     "description": "gNMI SSL profile name",
-                    "title": "Gnmi SSL Profile"
+                    "title": "gNMI SSL Profile"
                   },
                   "vrf": {
                     "type": "string",
@@ -7083,7 +7085,8 @@
         },
         "enable_vrfs": {
           "type": "array",
-          "description": "Enable VRFs will be deprecated in AVD v4.0.\nThese should not be mixed with the new keys above.\n",
+          "description": "These should not be mixed with the new keys above.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>transport.grpc</samp> instead.",
+          "deprecated": true,
           "items": {
             "type": "object",
             "properties": {
@@ -7110,7 +7113,8 @@
         },
         "octa": {
           "type": "object",
-          "description": "Octa key will be deprecated in AVD v4.0.\nThese should not be mixed with the new keys above.\nOcta activates `eos-native` provider and it is the only provider currently supported by EOS.",
+          "description": "These should not be mixed with the new keys above.\nOcta activates `eos-native` provider and it is the only provider currently supported by EOS.\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>provider</samp> instead.",
+          "deprecated": true,
           "title": "Octa"
         }
       },
@@ -7118,7 +7122,7 @@
       "patternProperties": {
         "^_.+$": {}
       },
-      "title": "Management API Gnmi"
+      "title": "Management API gNMI"
     },
     "management_api_http": {
       "type": "object",
@@ -8056,7 +8060,10 @@
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "VRFs"
         }
@@ -10905,7 +10912,6 @@
       "properties": {
         "enabled": {
           "type": "boolean",
-          "description": "\"enabled: true\" will be required in AVD4.0.\nIn AVD3.x default is true as long as queue_monitor_length is defined and not None\n",
           "title": "Enabled"
         },
         "default_thresholds": {
@@ -10938,7 +10944,7 @@
         },
         "notifying": {
           "type": "boolean",
-          "description": "should only be used for platforms supporting the \"queue-monitor length notifying\" CLI",
+          "description": "Should only be used for platforms supporting the \"queue-monitor length notifying\" CLI",
           "title": "Notifying"
         },
         "cpu": {
@@ -10973,6 +10979,9 @@
           "title": "CPU"
         }
       },
+      "required": [
+        "enabled"
+      ],
       "additionalProperties": false,
       "patternProperties": {
         "^_.+$": {}
@@ -11460,6 +11469,11 @@
               "title": "Local Routes"
             }
           },
+          "required": [
+            "external_routes",
+            "internal_routes",
+            "local_routes"
+          ],
           "additionalProperties": false,
           "patternProperties": {
             "^_.+$": {}
@@ -11536,6 +11550,10 @@
               "title": "Ecmp"
             }
           },
+          "required": [
+            "paths",
+            "ecmp"
+          ],
           "additionalProperties": false,
           "patternProperties": {
             "^_.+$": {}
@@ -11547,10 +11565,12 @@
           "properties": {
             "wait_for_convergence": {
               "type": "boolean",
+              "description": "Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.\n",
               "title": "Wait For Convergence"
             },
             "wait_install": {
               "type": "boolean",
+              "description": "Do not advertise reachability to a prefix until that prefix has been installed in hardware.\nThis will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.\n",
               "title": "Wait Install"
             }
           },
@@ -11595,6 +11615,24 @@
                 "^_.+$": {}
               },
               "title": "Default"
+            },
+            "route_reflector_preserve_attributes": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "title": "Enabled"
+                },
+                "always": {
+                  "type": "boolean",
+                  "title": "Always"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Route Reflector Preserve Attributes"
             },
             "bestpath": {
               "type": "object",
@@ -13752,6 +13790,26 @@
                 },
                 "title": "Networks"
               },
+              "updates": {
+                "type": "object",
+                "properties": {
+                  "wait_for_convergence": {
+                    "type": "boolean",
+                    "description": "Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.\n",
+                    "title": "Wait For Convergence"
+                  },
+                  "wait_install": {
+                    "type": "boolean",
+                    "description": "Do not advertise reachability to a prefix until that prefix has been installed in hardware.\nThis will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.\n",
+                    "title": "Wait Install"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Updates"
+              },
               "listen_ranges": {
                 "type": "array",
                 "description": "Improved \"listen_ranges\" data model to support multiple listen ranges and additional filter capabilities\n",
@@ -14141,6 +14199,853 @@
                   ]
                 },
                 "title": "Aggregate Addresses"
+              },
+              "address_family_ipv4": {
+                "type": "object",
+                "properties": {
+                  "bgp": {
+                    "type": "object",
+                    "properties": {
+                      "missing_policy": {
+                        "type": "object",
+                        "properties": {
+                          "direction_in_action": {
+                            "type": "string",
+                            "enum": [
+                              "deny",
+                              "deny-in-out",
+                              "permit"
+                            ],
+                            "title": "Direction In Action"
+                          },
+                          "direction_out_action": {
+                            "type": "string",
+                            "enum": [
+                              "deny",
+                              "deny-in-out",
+                              "permit"
+                            ],
+                            "title": "Direction Out Action"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Missing Policy"
+                      },
+                      "additional_paths": {
+                        "type": "object",
+                        "properties": {
+                          "install": {
+                            "type": "boolean",
+                            "title": "Install"
+                          },
+                          "install_ecmp_primary": {
+                            "type": "boolean",
+                            "title": "Install Ecmp Primary"
+                          },
+                          "receive": {
+                            "type": "boolean",
+                            "title": "Receive"
+                          },
+                          "send": {
+                            "type": "object",
+                            "properties": {
+                              "any": {
+                                "type": "boolean",
+                                "title": "Any"
+                              },
+                              "backup": {
+                                "type": "boolean",
+                                "title": "Backup"
+                              },
+                              "ecmp": {
+                                "type": "boolean",
+                                "title": "Ecmp"
+                              },
+                              "ecmp_limit": {
+                                "type": "integer",
+                                "description": "Amount of ECMP paths to send",
+                                "minimum": 2,
+                                "maximum": 64,
+                                "title": "Ecmp Limit"
+                              },
+                              "limit": {
+                                "type": "integer",
+                                "description": "Amount of paths to send",
+                                "minimum": 2,
+                                "maximum": 64,
+                                "title": "Limit"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Send"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Additional Paths"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "BGP"
+                  },
+                  "neighbors": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "ip_address": {
+                          "type": "string",
+                          "title": "IP Address"
+                        },
+                        "activate": {
+                          "type": "boolean",
+                          "title": "Activate"
+                        },
+                        "route_map_in": {
+                          "type": "string",
+                          "description": "Inbound route-map name",
+                          "title": "Route Map In"
+                        },
+                        "route_map_out": {
+                          "type": "string",
+                          "description": "Outbound route-map name",
+                          "title": "Route Map Out"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "ip_address"
+                      ]
+                    },
+                    "title": "Neighbors"
+                  },
+                  "peer_groups": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Peer-group name",
+                          "title": "Name"
+                        },
+                        "activate": {
+                          "type": "boolean",
+                          "title": "Activate"
+                        },
+                        "next_hop": {
+                          "type": "object",
+                          "properties": {
+                            "address_family_ipv6": {
+                              "type": "object",
+                              "properties": {
+                                "enabled": {
+                                  "type": "boolean",
+                                  "title": "Enabled"
+                                },
+                                "originate": {
+                                  "type": "boolean",
+                                  "title": "Originate"
+                                }
+                              },
+                              "required": [
+                                "enabled"
+                              ],
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Address Family IPv6"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Next Hop"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "name"
+                      ]
+                    },
+                    "title": "Peer Groups"
+                  },
+                  "networks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "prefix": {
+                          "type": "string",
+                          "description": "IPv4 prefix \"A.B.C.D/E\"",
+                          "title": "Prefix"
+                        },
+                        "route_map": {
+                          "type": "string",
+                          "title": "Route Map"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "prefix"
+                      ]
+                    },
+                    "title": "Networks"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Address Family IPv4"
+              },
+              "address_family_ipv6": {
+                "type": "object",
+                "properties": {
+                  "bgp": {
+                    "type": "object",
+                    "properties": {
+                      "missing_policy": {
+                        "type": "object",
+                        "properties": {
+                          "direction_in_action": {
+                            "type": "string",
+                            "enum": [
+                              "deny",
+                              "deny-in-out",
+                              "permit"
+                            ],
+                            "title": "Direction In Action"
+                          },
+                          "direction_out_action": {
+                            "type": "string",
+                            "enum": [
+                              "deny",
+                              "deny-in-out",
+                              "permit"
+                            ],
+                            "title": "Direction Out Action"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Missing Policy"
+                      },
+                      "additional_paths": {
+                        "type": "object",
+                        "properties": {
+                          "install": {
+                            "type": "boolean",
+                            "title": "Install"
+                          },
+                          "install_ecmp_primary": {
+                            "type": "boolean",
+                            "title": "Install Ecmp Primary"
+                          },
+                          "receive": {
+                            "type": "boolean",
+                            "title": "Receive"
+                          },
+                          "send": {
+                            "type": "object",
+                            "properties": {
+                              "any": {
+                                "type": "boolean",
+                                "title": "Any"
+                              },
+                              "backup": {
+                                "type": "boolean",
+                                "title": "Backup"
+                              },
+                              "ecmp": {
+                                "type": "boolean",
+                                "title": "Ecmp"
+                              },
+                              "ecmp_limit": {
+                                "type": "integer",
+                                "description": "Amount of ECMP paths to send",
+                                "minimum": 2,
+                                "maximum": 64,
+                                "title": "Ecmp Limit"
+                              },
+                              "limit": {
+                                "type": "integer",
+                                "description": "Amount of paths to send",
+                                "minimum": 2,
+                                "maximum": 64,
+                                "title": "Limit"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Send"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Additional Paths"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "BGP"
+                  },
+                  "neighbors": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "ip_address": {
+                          "type": "string",
+                          "title": "IP Address"
+                        },
+                        "activate": {
+                          "type": "boolean",
+                          "title": "Activate"
+                        },
+                        "route_map_in": {
+                          "type": "string",
+                          "description": "Inbound route-map name",
+                          "title": "Route Map In"
+                        },
+                        "route_map_out": {
+                          "type": "string",
+                          "description": "Outbound route-map name",
+                          "title": "Route Map Out"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "ip_address"
+                      ]
+                    },
+                    "title": "Neighbors"
+                  },
+                  "peer_groups": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Peer-group name",
+                          "title": "Name"
+                        },
+                        "activate": {
+                          "type": "boolean",
+                          "title": "Activate"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "name"
+                      ]
+                    },
+                    "title": "Peer Groups"
+                  },
+                  "networks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "prefix": {
+                          "type": "string",
+                          "description": "IPv6 prefix \"A:B:C:D:E:F:G:H/I\"",
+                          "title": "Prefix"
+                        },
+                        "route_map": {
+                          "type": "string",
+                          "title": "Route Map"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "prefix"
+                      ]
+                    },
+                    "title": "Networks"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Address Family IPv6"
+              },
+              "address_family_ipv4_multicast": {
+                "type": "object",
+                "properties": {
+                  "bgp": {
+                    "type": "object",
+                    "properties": {
+                      "missing_policy": {
+                        "type": "object",
+                        "properties": {
+                          "direction_in_action": {
+                            "type": "string",
+                            "enum": [
+                              "deny",
+                              "deny-in-out",
+                              "permit"
+                            ],
+                            "title": "Direction In Action"
+                          },
+                          "direction_out_action": {
+                            "type": "string",
+                            "enum": [
+                              "deny",
+                              "deny-in-out",
+                              "permit"
+                            ],
+                            "title": "Direction Out Action"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Missing Policy"
+                      },
+                      "additional_paths": {
+                        "type": "object",
+                        "properties": {
+                          "receive": {
+                            "type": "boolean",
+                            "title": "Receive"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Additional Paths"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "BGP"
+                  },
+                  "neighbors": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "ip_address": {
+                          "type": "string",
+                          "title": "IP Address"
+                        },
+                        "activate": {
+                          "type": "boolean",
+                          "title": "Activate"
+                        },
+                        "route_map_in": {
+                          "type": "string",
+                          "description": "Inbound route-map name",
+                          "title": "Route Map In"
+                        },
+                        "route_map_out": {
+                          "type": "string",
+                          "description": "Outbound route-map name",
+                          "title": "Route Map Out"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "ip_address"
+                      ]
+                    },
+                    "title": "Neighbors"
+                  },
+                  "peer_groups": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Peer-group name",
+                          "title": "Name"
+                        },
+                        "activate": {
+                          "type": "boolean",
+                          "title": "Activate"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "name"
+                      ]
+                    },
+                    "title": "Peer Groups"
+                  },
+                  "networks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "prefix": {
+                          "type": "string",
+                          "description": "IPv6 prefix \"A.B.C.D/E\"",
+                          "title": "Prefix"
+                        },
+                        "route_map": {
+                          "type": "string",
+                          "title": "Route Map"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "prefix"
+                      ]
+                    },
+                    "title": "Networks"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Address Family IPv4 Multicast"
+              },
+              "address_family_ipv6_multicast": {
+                "type": "object",
+                "properties": {
+                  "bgp": {
+                    "type": "object",
+                    "properties": {
+                      "missing_policy": {
+                        "type": "object",
+                        "properties": {
+                          "direction_in_action": {
+                            "type": "string",
+                            "enum": [
+                              "deny",
+                              "deny-in-out",
+                              "permit"
+                            ],
+                            "title": "Direction In Action"
+                          },
+                          "direction_out_action": {
+                            "type": "string",
+                            "enum": [
+                              "deny",
+                              "deny-in-out",
+                              "permit"
+                            ],
+                            "title": "Direction Out Action"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Missing Policy"
+                      },
+                      "additional_paths": {
+                        "type": "object",
+                        "properties": {
+                          "receive": {
+                            "type": "boolean",
+                            "title": "Receive"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Additional Paths"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "BGP"
+                  },
+                  "neighbors": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "ip_address": {
+                          "type": "string",
+                          "title": "IP Address"
+                        },
+                        "activate": {
+                          "type": "boolean",
+                          "title": "Activate"
+                        },
+                        "route_map_in": {
+                          "type": "string",
+                          "description": "Inbound route-map name",
+                          "title": "Route Map In"
+                        },
+                        "route_map_out": {
+                          "type": "string",
+                          "description": "Outbound route-map name",
+                          "title": "Route Map Out"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "ip_address"
+                      ]
+                    },
+                    "title": "Neighbors"
+                  },
+                  "peer_groups": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Peer-group name",
+                          "title": "Name"
+                        },
+                        "activate": {
+                          "type": "boolean",
+                          "title": "Activate"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "name"
+                      ]
+                    },
+                    "title": "Peer Groups"
+                  },
+                  "networks": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "prefix": {
+                          "type": "string",
+                          "description": "IPv6 prefix \"A:B:C:D:E:F:G:H/I\"",
+                          "title": "Prefix"
+                        },
+                        "route_map": {
+                          "type": "string",
+                          "title": "Route Map"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "prefix"
+                      ]
+                    },
+                    "title": "Networks"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Address Family IPv6 Multicast"
+              },
+              "address_family_flow_spec_ipv4": {
+                "type": "object",
+                "properties": {
+                  "bgp": {
+                    "type": "object",
+                    "properties": {
+                      "missing_policy": {
+                        "type": "object",
+                        "properties": {
+                          "direction_in_action": {
+                            "type": "string",
+                            "enum": [
+                              "deny",
+                              "deny-in-out",
+                              "permit"
+                            ],
+                            "title": "Direction In Action"
+                          },
+                          "direction_out_action": {
+                            "type": "string",
+                            "enum": [
+                              "deny",
+                              "deny-in-out",
+                              "permit"
+                            ],
+                            "title": "Direction Out Action"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Missing Policy"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "BGP"
+                  },
+                  "neighbors": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "ip_address": {
+                          "type": "string",
+                          "title": "IP Address"
+                        },
+                        "activate": {
+                          "type": "boolean",
+                          "title": "Activate"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "ip_address"
+                      ]
+                    },
+                    "title": "Neighbors"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Address Family Flow Spec IPv4"
+              },
+              "address_family_flow_spec_ipv6": {
+                "type": "object",
+                "properties": {
+                  "bgp": {
+                    "type": "object",
+                    "properties": {
+                      "missing_policy": {
+                        "type": "object",
+                        "properties": {
+                          "direction_in_action": {
+                            "type": "string",
+                            "enum": [
+                              "deny",
+                              "deny-in-out",
+                              "permit"
+                            ],
+                            "title": "Direction In Action"
+                          },
+                          "direction_out_action": {
+                            "type": "string",
+                            "enum": [
+                              "deny",
+                              "deny-in-out",
+                              "permit"
+                            ],
+                            "title": "Direction Out Action"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Missing Policy"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "BGP"
+                  },
+                  "neighbors": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "ip_address": {
+                          "type": "string",
+                          "title": "IP Address"
+                        },
+                        "activate": {
+                          "type": "boolean",
+                          "title": "Activate"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "ip_address"
+                      ]
+                    },
+                    "title": "Neighbors"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Address Family Flow Spec IPv6"
               },
               "address_families": {
                 "type": "array",
@@ -15415,7 +16320,10 @@
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "VRFs"
         }
@@ -16124,6 +17032,9 @@
                 "title": "IPv4"
               }
             },
+            "required": [
+              "name"
+            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
@@ -16996,7 +17907,10 @@
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "VRFs"
         }

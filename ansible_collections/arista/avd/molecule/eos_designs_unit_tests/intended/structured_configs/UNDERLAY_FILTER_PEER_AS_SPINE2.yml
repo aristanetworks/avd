@@ -1,11 +1,14 @@
 router_bgp:
   as: '65000'
   router_id: 192.168.255.2
-  bgp_defaults:
-  - maximum-paths 4 ecmp 4
   bgp:
     default:
       ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
   graceful_restart:
     enabled: true
     restart_time: 300

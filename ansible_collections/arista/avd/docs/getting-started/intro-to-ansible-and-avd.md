@@ -214,9 +214,6 @@ spine:
     bgp_as: 65100
     # BGP configuration for fine tuning
     bgp_defaults:
-      # The two following commands must not be enabled when using vEOS-lab
-      # - update wait-for-convergence
-      # - update wait-install
       - distance bgp 20 200 200
 
   # Definition of nodes contained in this group.
@@ -444,7 +441,6 @@ If you want to push to switches in the entire fabric using CloudVision and your 
         configlets_prefix: 'AVD'
         execute_tasks: false
         state: present
-        cv_collection: v3
 ```
 
 You would execute it using the same command:

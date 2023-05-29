@@ -336,10 +336,11 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | BGP Tuning |
 | ---------- |
 | distance bgp 20 200 200 |
-| maximum-paths 4 ecmp 4 |
 | graceful-restart restart-time 300 |
 | graceful-restart |
+| update wait-install |
 | no bgp default ipv4-unicast |
+| maximum-paths 4 ecmp 4 |
 
 #### Router BGP Peer Groups
 
@@ -371,9 +372,10 @@ router bgp 65110.100
    router-id 172.16.110.2
    graceful-restart restart-time 300
    graceful-restart
+   maximum-paths 4 ecmp 4
+   update wait-install
    no bgp default ipv4-unicast
    distance bgp 20 200 200
-   maximum-paths 4 ecmp 4
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
    neighbor IPv4-UNDERLAY-PEERS send-community

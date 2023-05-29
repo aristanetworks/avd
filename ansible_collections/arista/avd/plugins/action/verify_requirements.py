@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 __metaclass__ = type
 
 import json
@@ -54,7 +52,7 @@ def _validate_python_version(result: dict) -> bool:
     return True
 
 
-def _validate_python_requirements(requirements: list[str], result: dict) -> bool:
+def _validate_python_requirements(requirements: list, result: dict) -> bool:
     """
     Validate python lib versions
 

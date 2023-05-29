@@ -72,6 +72,13 @@
 {%             endif %}
 | {{ paths_cli }} |
 {%         endif %}
+{%         if router_bgp.bgp.route_reflector_preserve_attributes.enabled is arista.avd.defined(true) %}
+{%             set rr_preserve_attributes_cli = 'bgp route-reflector preserve-attributes' %}
+{%             if router_bgp.bgp.route_reflector_preserve_attributes.always is arista.avd.defined(true) %}
+{%                 set rr_preserve_attributes_cli = rr_preserve_attributes_cli ~ ' always' %}
+{%             endif %}
+| {{ rr_preserve_attributes_cli }} |
+{%         endif %}
 {%     endif %}
 {# Check if listen_ranges exist under router_bgp.vrfs #}
 {%     set temp = namespace() %}

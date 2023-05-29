@@ -4,8 +4,6 @@
 type: dict
 keys:
   service_routing_configuration_bgp:
-    documentation_options:
-      filename: data_model/Routing
     type: dict
     keys:
       no_equals_default:

@@ -4,8 +4,6 @@
 type: dict
 keys:
   monitor_connectivity:
-    documentation_options:
-      filename: data_model/Monitoring
     type: dict
     keys:
       shutdown:
@@ -46,6 +44,7 @@ keys:
               type: str
       vrfs:
         type: list
+        primary_key: name
         items:
           type: dict
           keys:

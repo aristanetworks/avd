@@ -6,5 +6,3 @@ keys:
   event_handlers:
     $ref: "eos_cli_config_gen#/keys/event_handlers"
     type: list
-    documentation_options:
-      filename: Input Variables

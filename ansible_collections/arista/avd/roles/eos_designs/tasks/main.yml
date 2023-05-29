@@ -29,7 +29,6 @@
     avd_switch_facts: true
     #cprofile_file: "eos_designs_facts.prof"
     template_output: true
-    schema_id: "eos_designs"
     conversion_mode: "{{ avd_data_conversion_mode }}"
     validation_mode: "{{ avd_data_validation_mode }}"
   check_mode: false
@@ -46,11 +45,13 @@
 
 - name: Generate device configuration in structured format
   tags: [build, provision]
-  arista.avd.yaml_templates_to_facts:
-    templates:
-      - python_module: "ansible_collections.arista.avd.roles.cvp_tags.python_modules.cvp_tags"
-        python_class_name: "AvdStructuredConfig"
-    dest: "{{ cvp_tags_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
+  arista.avd.eos_designs_structured_config:
+    eos_designs_custom_templates: "{{ eos_designs_custom_templates | arista.avd.default([]) }}"
+    dest: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
+    #cprofile_file: "structured-{{inventory_hostname}}.prof"
+    template_output: true
+    conversion_mode: "{{ avd_data_conversion_mode }}"
+    validation_mode: "{{ avd_data_validation_mode }}"
   delegate_to: localhost
   check_mode: false
 

@@ -4,8 +4,6 @@
 type: dict
 keys:
   platform_settings:
-    documentation_options:
-      filename: Platform Specific Settings
     type: list
     items:
       type: dict
@@ -47,6 +45,19 @@ keys:
             interface_storm_control:
               type: bool
               default: true
+            bgp_update_wait_install:
+              type: bool
+              default: true
+              description: |
+                Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.
+                Can be overridden by setting "bgp_update_wait_install" host/group_vars
+            bgp_update_wait_for_convergence:
+              type: bool
+              default: true
+              description: |
+                Do not advertise reachability to a prefix until that prefix has been installed in hardware.
+                This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.
+                Can be overridden by setting "bgp_update_wait_for_convergence" host/group_vars
         management_interface:
           type: str
           default: Management1

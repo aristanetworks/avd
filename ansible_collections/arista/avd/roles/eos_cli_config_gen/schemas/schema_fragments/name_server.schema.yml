@@ -8,8 +8,6 @@ keys:
       warning: true
       new_key: ip_name_servers
       remove_in_version: v5.0.0
-    documentation_options:
-      filename: data_model/Management
     type: dict
     keys:
       source:

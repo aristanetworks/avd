@@ -188,3 +188,18 @@ class AvdSchemaTools:
                 # mode == "warning"
                 self.ansible_display.warning(message, False)
         return counter
+
+    def validate_schema(self) -> list:
+        """
+        Validate the loaded schema according to the meta-schema
+
+        Returns list[str] with one validation summary message if any validation errors was found
+        """
+        result_messages = []
+
+        # avd_schema.validate_schema returns a generator, which we iterate through in handle_exceptions to perform the actual conversions.
+        exceptions = self.avdschema.validate_schema(self.avdschema._schema)
+        if validation_counter := self.handle_validation_exceptions(exceptions, "error"):
+            result_messages.append(f"{validation_counter} errors found during meta-schema validation of the generated schema.")
+
+        return result_messages

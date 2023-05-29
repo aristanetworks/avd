@@ -3,10 +3,14 @@ router_bgp:
   router_id: 100.70.0.5
   bgp_defaults:
   - distance bgp 20 200 200
-  - maximum-paths 4 ecmp 4
   bgp:
     default:
       ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
   graceful_restart:
     enabled: true
     restart_time: 300
@@ -190,6 +194,11 @@ mpls:
     router_id: 100.70.0.5
     shutdown: false
     transport_address_interface: Loopback0
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
 ethernet_interfaces:
 - name: Ethernet1
   peer: SITE1-LSR1
@@ -243,17 +252,6 @@ ethernet_interfaces:
       interface: true
       igp_sync: true
   speed: forced 10000full
-- name: Ethernet8
-  peer: CPE_TENANT_A_SITE1
-  peer_interface: Ethernet1
-  peer_type: cpe
-  port_profile: TENANT_A_WAN_SERVICE_10
-  description: CPE_TENANT_A_SITE1_Ethernet1
-  shutdown: false
-  type: port-channel-member
-  channel_group:
-    id: 8
-    mode: active
 - name: Ethernet6.10
   peer_type: l3_interface
   ip_address: 123.1.1.0/31
@@ -282,114 +280,17 @@ ethernet_interfaces:
   channel_group:
     id: 3
     mode: active
-port_channel_interfaces:
-- name: Port-Channel8
-  description: CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel
-  type: routed
+- name: Ethernet8
+  peer: CPE_TENANT_A_SITE1
+  peer_interface: Ethernet1
+  peer_type: cpe
+  port_profile: TENANT_A_WAN_SERVICE_10
+  description: CPE_TENANT_A_SITE1_Ethernet1
   shutdown: false
-  evpn_ethernet_segment:
-    identifier: 0000:0000:0303:0202:0101
-    route_target: 03:03:02:02:01:01
-  lacp_id: 0303.0202.0101
-- name: Port-Channel8.111
-  type: l2dot1q
-  vlan_id: 111
-  encapsulation_vlan:
-    client:
-      dot1q:
-        vlan: 111
-    network:
-      client: true
-  evpn_ethernet_segment:
-    identifier: 0000:0000:0303:0202:0111
-    route_target: 03:03:02:02:01:11
-- name: Port-Channel8.222
-  type: l2dot1q
-  vlan_id: 222
-  encapsulation_vlan:
-    client:
-      dot1q:
-        vlan: 222
-    network:
-      client: true
-  evpn_ethernet_segment:
-    identifier: 0000:0000:0303:0202:0222
-    route_target: 03:03:02:02:02:22
-- name: Port-Channel8.333
-  type: l2dot1q
-  vlan_id: 434
-  encapsulation_vlan:
-    client:
-      dot1q:
-        vlan: 333
-    network:
-      client: true
-  evpn_ethernet_segment:
-    identifier: 0000:0000:0303:0202:0333
-    route_target: 03:03:02:02:03:33
-- name: Port-Channel3.1000
-  type: l2dot1q
-  encapsulation_vlan:
-    client:
-      dot1q:
-        vlan: 1000
-    network:
-      client: true
-  peer_type: l3_interface
-  shutdown: false
-- name: Port-Channel3.1001
-  type: l2dot1q
-  encapsulation_vlan:
-    client:
-      dot1q:
-        vlan: 1001
-    network:
-      client: true
-  peer_type: l3_interface
-  shutdown: false
-- name: Port-Channel3.1002
-  type: l2dot1q
-  encapsulation_vlan:
-    client:
-      dot1q:
-        vlan: 1002
-    network:
-      client: true
-  peer_type: l3_interface
-  shutdown: false
-- name: Port-Channel3.1003
-  type: l2dot1q
-  encapsulation_vlan:
-    client:
-      dot1q:
-        vlan: 1003
-    network:
-      client: true
-  peer_type: l3_interface
-  shutdown: false
-- name: Port-Channel3.1004
-  type: l2dot1q
-  encapsulation_vlan:
-    client:
-      dot1q:
-        vlan: 1004
-    network:
-      client: true
-  peer_type: l3_interface
-  shutdown: false
-- name: Port-Channel3
-  type: routed
-  peer_type: l3_interface
-  shutdown: false
-  evpn_ethernet_segment:
-    identifier: 0000:0000:0102:0000:0034
-    route_target: 01:02:00:00:00:34
-  lacp_id: 0102.0000.0034
-router_bfd:
-  multihop:
-    interval: 300
-    min_rx: 300
-    multiplier: 3
+  type: port-channel-member
+  channel_group:
+    id: 8
+    mode: active
 patch_panel:
   patches:
   - name: TEN_A_site2_site5_eline_port_based
@@ -467,6 +368,109 @@ vlan_interfaces:
   description: TENANT_B_INSIDE_FW
   shutdown: false
   vrf: TENANT_B_INTRA
+port_channel_interfaces:
+- name: Port-Channel3.1000
+  type: l2dot1q
+  encapsulation_vlan:
+    client:
+      dot1q:
+        vlan: 1000
+    network:
+      client: true
+  peer_type: l3_interface
+  shutdown: false
+- name: Port-Channel3.1001
+  type: l2dot1q
+  encapsulation_vlan:
+    client:
+      dot1q:
+        vlan: 1001
+    network:
+      client: true
+  peer_type: l3_interface
+  shutdown: false
+- name: Port-Channel3.1002
+  type: l2dot1q
+  encapsulation_vlan:
+    client:
+      dot1q:
+        vlan: 1002
+    network:
+      client: true
+  peer_type: l3_interface
+  shutdown: false
+- name: Port-Channel3.1003
+  type: l2dot1q
+  encapsulation_vlan:
+    client:
+      dot1q:
+        vlan: 1003
+    network:
+      client: true
+  peer_type: l3_interface
+  shutdown: false
+- name: Port-Channel3.1004
+  type: l2dot1q
+  encapsulation_vlan:
+    client:
+      dot1q:
+        vlan: 1004
+    network:
+      client: true
+  peer_type: l3_interface
+  shutdown: false
+- name: Port-Channel3
+  type: routed
+  peer_type: l3_interface
+  shutdown: false
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0102:0000:0034
+    route_target: 01:02:00:00:00:34
+  lacp_id: 0102.0000.0034
+- name: Port-Channel8
+  description: CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel
+  type: routed
+  shutdown: false
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0303:0202:0101
+    route_target: 03:03:02:02:01:01
+  lacp_id: 0303.0202.0101
+- name: Port-Channel8.111
+  type: l2dot1q
+  vlan_id: 111
+  encapsulation_vlan:
+    client:
+      dot1q:
+        vlan: 111
+    network:
+      client: true
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0303:0202:0111
+    route_target: 03:03:02:02:01:11
+- name: Port-Channel8.222
+  type: l2dot1q
+  vlan_id: 222
+  encapsulation_vlan:
+    client:
+      dot1q:
+        vlan: 222
+    network:
+      client: true
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0303:0202:0222
+    route_target: 03:03:02:02:02:22
+- name: Port-Channel8.333
+  type: l2dot1q
+  vlan_id: 434
+  encapsulation_vlan:
+    client:
+      dot1q:
+        vlan: 333
+    network:
+      client: true
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0303:0202:0333
+    route_target: 03:03:02:02:03:33
 router_ospf:
   process_ids:
   - id: 19

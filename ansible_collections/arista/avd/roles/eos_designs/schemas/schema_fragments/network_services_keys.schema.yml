@@ -4,8 +4,6 @@
 type: dict
 keys:
   network_services_keys:
-    documentation_options:
-      filename: Network Services
     type: list
     primary_key: name
     convert_types:

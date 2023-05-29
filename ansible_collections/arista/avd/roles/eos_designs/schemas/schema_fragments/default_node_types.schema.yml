@@ -5,8 +5,6 @@ type: dict
 keys:
   default_node_types:
     type: list
-    documentation_options:
-      filename: Node Types
     primary_key: node_type
     description: Uses hostname matches against a regular expression to determine the node type.
     items:

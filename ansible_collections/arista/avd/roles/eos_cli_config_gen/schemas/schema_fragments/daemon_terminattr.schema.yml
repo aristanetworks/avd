@@ -4,8 +4,6 @@
 type: dict
 keys:
   daemon_terminattr:
-    documentation_options:
-      filename: data_model/Monitoring
     type: dict
     description: |
       You can either provide a list of IPs/FQDNs to target on-premise Cloudvision cluster or use DNS name for your Cloudvision as a Service instance.
@@ -152,7 +150,7 @@ keys:
       cvgnmi:
         type: bool
         description: |
-          Stream states from EOS GNMI servers (Openconfig) to CloudVision. Available as of TerminAttr v1.13.1
+          Stream states from EOS gNMI servers (Openconfig) to CloudVision. Available as of TerminAttr v1.13.1
       disable_aaa:
         type: bool
         description: |

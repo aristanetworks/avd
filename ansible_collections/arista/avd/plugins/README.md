@@ -558,6 +558,11 @@ The `arista.avd.configlet_build_config` module provides the following capabiliti
 
 ### YAML Templates to Facts
 
+!!! Note
+
+    This plugin is no longer used by `eos_designs`. It is still being used by `eos_validate_state`.
+    This plugin may be deprecated in a future version of this collection and later removed.
+
 The `arista.avd.yaml_templates_to_facts` module is an Ansible Action Plugin providing the following capabilities:
 
 - Set Facts based on one or more Jinja2 templates producing YAML output.
@@ -565,8 +570,6 @@ The `arista.avd.yaml_templates_to_facts` module is an Ansible Action Plugin prov
 - Facts set by one template will be accessible by the following templates.
 - Returned facts can be set below a specific `root_key`.
 - Facts returned templates can be stripped for `null` values to avoid overwriting previous set facts.
-
-The module is used in `eos_designs` to generate the `structured_configuration` based on all the `eos_designs` templates.
 
 The module arguments are:
 

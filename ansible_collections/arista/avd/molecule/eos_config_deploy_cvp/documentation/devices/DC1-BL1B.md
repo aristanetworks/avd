@@ -629,10 +629,11 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | BGP Tuning |
 | ---------- |
 | distance bgp 20 200 200 |
-| maximum-paths 4 ecmp 4 |
 | graceful-restart restart-time 300 |
 | graceful-restart |
+| update wait-install |
 | no bgp default ipv4-unicast |
+| maximum-paths 4 ecmp 4 |
 
 #### Router BGP Peer Groups
 
@@ -714,9 +715,10 @@ router bgp 65104
    router-id 192.168.255.11
    graceful-restart restart-time 300
    graceful-restart
+   maximum-paths 4 ecmp 4
+   update wait-install
    no bgp default ipv4-unicast
    distance bgp 20 200 200
-   maximum-paths 4 ecmp 4
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
@@ -795,6 +797,7 @@ router bgp 65104
       route-target import evpn 14:14
       route-target export evpn 14:14
       router-id 192.168.255.11
+      update wait-install
       neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
    !
@@ -803,6 +806,7 @@ router bgp 65104
       route-target import evpn 21:21
       route-target export evpn 21:21
       router-id 192.168.255.11
+      update wait-install
       neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
    !
@@ -811,6 +815,7 @@ router bgp 65104
       route-target import evpn 31:31
       route-target export evpn 31:31
       router-id 192.168.255.11
+      update wait-install
       neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
 ```

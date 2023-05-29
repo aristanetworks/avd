@@ -856,10 +856,11 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | BGP Tuning |
 | ---------- |
 | distance bgp 20 200 200 |
-| maximum-paths 4 ecmp 4 |
 | graceful-restart restart-time 300 |
 | graceful-restart |
+| update wait-install |
 | no bgp default ipv4-unicast |
+| maximum-paths 4 ecmp 4 |
 
 #### Router BGP Peer Groups
 
@@ -950,9 +951,10 @@ router bgp 65102
    router-id 192.168.255.6
    graceful-restart restart-time 300
    graceful-restart
+   maximum-paths 4 ecmp 4
+   update wait-install
    no bgp default ipv4-unicast
    distance bgp 20 200 200
-   maximum-paths 4 ecmp 4
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
@@ -1049,6 +1051,7 @@ router bgp 65102
       route-target import evpn 12:12
       route-target export evpn 12:12
       router-id 192.168.255.6
+      update wait-install
       neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
    !
@@ -1057,6 +1060,7 @@ router bgp 65102
       route-target import evpn 13:13
       route-target export evpn 13:13
       router-id 192.168.255.6
+      update wait-install
       neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
    !
@@ -1065,6 +1069,7 @@ router bgp 65102
       route-target import evpn 10:10
       route-target export evpn 10:10
       router-id 192.168.255.6
+      update wait-install
       neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
    !
@@ -1073,6 +1078,7 @@ router bgp 65102
       route-target import evpn 11:11
       route-target export evpn 11:11
       router-id 192.168.255.6
+      update wait-install
       neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
    !
@@ -1081,6 +1087,7 @@ router bgp 65102
       route-target import evpn 20:20
       route-target export evpn 20:20
       router-id 192.168.255.6
+      update wait-install
       neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
    !
@@ -1089,6 +1096,7 @@ router bgp 65102
       route-target import evpn 30:30
       route-target export evpn 30:30
       router-id 192.168.255.6
+      update wait-install
       neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
 ```
