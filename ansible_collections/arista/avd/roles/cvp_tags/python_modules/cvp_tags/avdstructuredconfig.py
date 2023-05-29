@@ -123,6 +123,14 @@ class AvdStructuredConfigTags(AvdFacts, UtilsMixin):
             return None
         return self.tag_dict("topology_hint_rack", self.shared_utils.rack)
 
-    @staticmethod
-    def _interface_tags(link):
-        return {"interface": link["interface"], "tags": [{"name": "interface_peer", "value": link["peer"]}]}
+    def _interface_tags(self, link):
+        return {
+            "interface": link["interface"],
+            "tags": [
+                {"name": "interface_peer", "value": link["peer"]},
+                {
+                    "name": "interface_description",
+                    "value": self.shared_utils.interface_descriptions.underlay_ethernet_interfaces(link["type"], link["peer"], link["peer_interface"]),
+                },
+            ],
+        }
