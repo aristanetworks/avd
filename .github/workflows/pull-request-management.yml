@@ -46,6 +46,12 @@ jobs:
               - 'ansible_collections/arista/avd/molecule/cvp_configlet_upload/*'
               - 'ansible_collections/arista/avd/molecule/cvp_configlet_upload/**/*'
               - '.github/workflows/pull-request-management.yml'
+            cvp_tags:
+              - 'ansible_collections/arista/avd/roles/cvp_tags/*'
+              - 'ansible_collections/arista/avd/roles/cvp_tags/**/*'
+              - '.github/workflows/pull-request-management.yml'
+              - 'ansible_collections/arista/avd/molecule/cvp_tags/*'
+              - 'ansible_collections/arista/avd/molecule/cvp_tags/**/*'
             dhcp:
               - 'ansible_collections/arista/avd/roles/dhcp_provisioner/*'
               - 'ansible_collections/arista/avd/roles/dhcp_provisioner/**/*'
@@ -322,7 +328,7 @@ jobs:
           - avd_scenario: 'cvp_tags'
             ansible_version: 'ansible-core==2.12.6'
     needs: [ pre_commit ]
-    if: needs.file-changes.outputs.config_gen == 'true'
+    if: needs.file-changes.outputs.eos_designs == 'true' || needs.file-changes.outputs.cvp_tags == 'true'
     steps:
       - name: 'Set environment variables'
         run: |
@@ -344,6 +350,7 @@ jobs:
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts
       #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
+
 
   # ----------------------------------- #
   # Ansible tests

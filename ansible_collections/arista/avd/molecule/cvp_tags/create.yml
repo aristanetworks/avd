@@ -5,7 +5,10 @@
   connection: local
   tasks:
       - name: Nothing to create
-        debug: "Nothing to create"
+        debug:
+            msg: "Nothing to create"
+        run_once: true
+
     # - name: Create local output folders
     #   delegate_to: 127.0.0.1
     #   ansible.builtin.import_role:
