@@ -72,7 +72,7 @@ class RouteMapsMixin(UtilsMixin):
 
         Called from main route_maps function
         """
-        if not (self.shared_utils.overlay_vtep and self.shared_utils.overlay_evpn):
+        if not self._vrf_default_evpn:
             return None
 
         subnets = self._vrf_default_ipv4_subnets

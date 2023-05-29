@@ -18,7 +18,7 @@ class PrefixListsMixin(UtilsMixin):
 
         Only used for EVPN services in VRF "default"
         """
-        if not (self.shared_utils.network_services_l3 and self.shared_utils.overlay_vtep and self.shared_utils.overlay_evpn):
+        if not self._vrf_default_evpn:
             return None
 
         subnets = self._vrf_default_ipv4_subnets

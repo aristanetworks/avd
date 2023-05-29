@@ -49,6 +49,23 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         return [int(id) for id in range_expand(endpoint_vlans)]
 
     @cached_property
+    def _vrf_default_evpn(self) -> bool:
+        """
+        Return boolean telling if VRF "default" is running EVPN or not.
+        """
+        if not (self.shared_utils.network_services_l3 and self.shared_utils.overlay_vtep and self.shared_utils.overlay_evpn):
+            return False
+
+        for tenant in self._filtered_tenants:
+            if (vrf_default := get_item(tenant["vrfs"], "name", "default")) is None:
+                continue
+
+            if "evpn" in vrf_default.get("address_families", ["evpn"]):
+                return True
+
+        return False
+
+    @cached_property
     def _vrf_default_ipv4_subnets(self) -> list[str]:
         """
         Return list of ipv4 subnets in VRF "default"

@@ -67,8 +67,13 @@ class VxlanInterfaceMixin(UtilsMixin):
                         vnis[vni] = tenant["name"]
                         vlans.append({"id": vlan_id, **vlan})
 
-                if self.shared_utils.network_services_l3 and self.shared_utils.overlay_evpn:
+                if self.shared_utils.network_services_l3 and self.shared_utils.overlay_evpn_vxlan:
                     vrf_name = vrf["name"]
+
+                    # Only configure VNI for VRF if the VRF is EVPN enabled
+                    if "evpn" not in vrf.get("address_families", ["evpn"]):
+                        continue
+
                     vni = default(
                         vrf.get("vrf_vni"),
                         vrf.get("vrf_id"),
