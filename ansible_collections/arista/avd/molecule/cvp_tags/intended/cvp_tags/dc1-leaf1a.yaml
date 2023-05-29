@@ -14,11 +14,17 @@ cvp_tags:
     tags:
     - name: interface_peer
       value: dc1-spine1
+    - name: interface_description
+      value: P2P_LINK_TO_DC1-SPINE1_Ethernet1
   - interface: Ethernet2
     tags:
     - name: interface_peer
       value: dc1-spine2
+    - name: interface_description
+      value: P2P_LINK_TO_DC1-SPINE2_Ethernet1
   - interface: Ethernet8
     tags:
     - name: interface_peer
       value: dc1-leaf1c
+    - name: interface_description
+      value: DC1-LEAF1C_Ethernet1

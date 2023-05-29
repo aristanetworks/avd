@@ -14,6 +14,7 @@ jobs:
       eos_design: ${{ steps.filter.outputs.eos_design }}
       config_gen: ${{ steps.filter.outputs.config_gen }}
       cloudvision: ${{ steps.filter.outputs.cloudvision }}
+      cvp_tags: ${{ steps.filter.output.cvp_tags }}
       dhcp: ${{ steps.filter.outputs.dhcp }}
       plugins: ${{ steps.filter.outputs.plugins }}
       requirements: ${{ steps.filter.outputs.requirements }}
@@ -328,7 +329,7 @@ jobs:
           - avd_scenario: 'cvp_tags'
             ansible_version: 'ansible-core==2.12.6'
     needs: [ pre_commit ]
-    if: needs.file-changes.outputs.eos_designs == 'true' || needs.file-changes.outputs.cvp_tags == 'true'
+    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.cvp_tags == 'true'
     steps:
       - name: 'Set environment variables'
         run: |

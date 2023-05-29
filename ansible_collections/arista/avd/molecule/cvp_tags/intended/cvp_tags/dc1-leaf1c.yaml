@@ -16,7 +16,11 @@ cvp_tags:
     tags:
     - name: interface_peer
       value: dc1-leaf1a
+    - name: interface_description
+      value: DC1-LEAF1A_Ethernet8
   - interface: Ethernet2
     tags:
     - name: interface_peer
       value: dc1-leaf1b
+    - name: interface_description
+      value: DC1-LEAF1B_Ethernet8
