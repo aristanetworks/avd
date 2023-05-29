@@ -25,13 +25,17 @@ In order to follow the principle of network design using patterns, both DCs have
 There is, however, no hard requirement to have the exact same number of devices. For example, one DC could use 2 spines while the other could use 4 spines to comply with redundancy and bandwidth requirements.
 
 Integration with CloudVision is not included in this example to keep everything as simple as possible. In this case, the Ansible host will communicate directly with the switches using eAPI.
+There are two playbooks included in this example to show the following:
+
+- Building the intended configuration and documentation
+- Deploying the configuration directly to the switches using eAPI
 
 ## Installation
 
 Requirements to use this example:
 
 - Follow the installation guide for AVD found [here](../../docs/installation/collection-installation.md).
-- Run the following playbook to copy the examples to your current working directory, for example `ansible-avd-examples`:
+- Run the following playbook to copy the AVD **examples** to your current working directory, for example `ansible-avd-examples`:
 
 `ansible-playbook arista.avd.install_examples`
 
@@ -61,7 +65,8 @@ ansible-avd-examples/ (or wherever the playbook was run)
     ├── images
     ├── intended
     ├── inventory.yml
-    ├── playbook.yml
+    ├── build.yml
+    ├── deploy.yml
     ├── README.md
     └── switch-basic-configurations
 ```
@@ -234,7 +239,7 @@ In this section, only additions to the previous example will be discussed. The o
 
 ```yaml title="FABRIC.yml"
     --8<--
-    examples/dual-dc-l3ls/group_vars/FABRIC.yml:54:73
+    examples/dual-dc-l3ls/group_vars/FABRIC.yml:70:90
     --8<--
 ```
 
@@ -304,19 +309,13 @@ l3leaf:
         dc2-leaf1a:
           id: 11
           mgmt_ip: 172.16.2.201/24
-          uplink_switch_interfaces: # (16)!
-            - Ethernet1
-            - Ethernet1
         dc2-leaf1b:
           id: 12
           mgmt_ip: 172.16.2.202/24
-          uplink_switch_interfaces:
-            - Ethernet2
-            - Ethernet2
 
     DC2_L3_LEAF2:
       bgp_as: 65202
-      evpn_gateway: # (17)!
+      evpn_gateway: # (16)!
         evpn_l2:
           enabled: true
         evpn_l3:
@@ -326,18 +325,12 @@ l3leaf:
         dc2-leaf2a:
           id: 13
           mgmt_ip: 172.16.2.203/24
-          uplink_switch_interfaces:
-            - Ethernet3
-            - Ethernet3
           evpn_gateway:
-            remote_peers: # (18)!
+            remote_peers: # (17)!
               - hostname: dc1-leaf2a
         dc2-leaf2b:
           id: 14
           mgmt_ip: 172.16.2.204/24
-          uplink_switch_interfaces:
-            - Ethernet4
-            - Ethernet4
           evpn_gateway:
             remote_peers:
               - hostname: dc1-leaf2b
@@ -358,9 +351,8 @@ l3leaf:
 13. `spanning_tree_mode` defines the spanning tree mode. In this case, we are using MSTP, which is the default. However, other modes are supported should they be required, for example, for connectivity to legacy or third-party vendor environments.
 14. `node_groups` defines settings common to more than one node. For example, for leaf switches, when exactly two nodes are part of a node group, AVD will, by default, automatically generate MLAG configuration.
 15. `bgp_as` is defined once since an MLAG pair shares a single BGP AS number.
-16. `uplink_switch_interfaces` defines the interfaces used on the uplink switches (Ethernet1 on dc2-spine1 and dc2-spine2 in this example). Defining which spine interfaces the leaf is connected to under the leaf switch settings makes adding and removing leaf switches much easier. There is no need to add/remove any settings under the spine switch section; AVD takes care of that for you. This child device/parent device hierarchy also applies to L2 and L3 leaves.
-17. `evpn_gateway` configures the EVPN DC GW features that will be inherited by the children of this group, in this case dc2-leaf2a and dc2-leaf2b. `evpn_l2` configures EVPN DC GW for EVPN type 2 routes (MAC-IP) while `evpn_l3` configures the GW for EVPN type 5 routes (IP-PREFIX).
-18. `remote_peers` defines the RS for EVPN DC GW that will be configured on the device. This is a unique definition per device, and using the hostname, AVD can get all the information from the device in order to generate the configuration: Router ID to peer and BGP AS.
+16. `evpn_gateway` configures the EVPN DC GW features that will be inherited by the children of this group, in this case dc2-leaf2a and dc2-leaf2b. `evpn_l2` configures EVPN DC GW for EVPN type 2 routes (MAC-IP) while `evpn_l3` configures the GW for EVPN type 5 routes (IP-PREFIX).
+17. `remote_peers` defines the RS for EVPN DC GW that will be configured on the device. This is a unique definition per device, and using the hostname, AVD can get all the information from the device in order to generate the configuration: Router ID to peer and BGP AS.
 
 Since we are adding the EVPN DC GW functionality in DC2, we need to also add it in DC1. This is a snipped part of `ansible-avd-examples/dual-dc-l3ls/group_vars/DC1.yml` file where the changes need to occur:
 
@@ -369,7 +361,7 @@ Since we are adding the EVPN DC GW functionality in DC2, we need to also add it 
 
 ```yaml title="DC1.yml"
     --8<--
-    examples/dual-dc-l3ls/group_vars/DC1.yml:100:129
+    examples/dual-dc-l3ls/group_vars/DC1.yml:86:115
     --8<--
 ```
 
@@ -377,7 +369,7 @@ Finally, the definition in DC2 for the L2 leaf switches:
 
 ```yaml title="DC2.yml"
     --8<--
-    examples/dual-dc-l3ls/group_vars/DC2.yml:132:157
+    examples/dual-dc-l3ls/group_vars/DC2.yml:99:118
     --8<--
 ```
 
@@ -413,11 +405,11 @@ The playbook is also the same, as the actions to execute in the fabric are the s
 
 Example of using this playbook without devices (local tasks):
 
-=== "playbook.yml"
+=== "build.yml"
 
     ```yaml
     --8<--
-    examples/dual-dc-l3ls/playbook.yml
+    examples/dual-dc-l3ls/build.yml
     --8<--
     ```
 
@@ -430,12 +422,14 @@ Please look through the folders and files described above to learn more about th
 The execution of the playbook should produce the following output:
 
 ```shell
-user@ubuntu:~/Documents/git_projects/ansible-avd-examples/dual-dc-l3ls$ ansible-playbook playbook.yml
+user@ubuntu:~/Documents/git_projects/ansible-avd-examples/dual-dc-l3ls$ ansible-playbook build.yml
 
-PLAY [Run AVD] *****************************************************************************************************************************************************************************
+PLAY [Build Configs] ***************************************************************************************************************************************************************
 
-TASK [arista.avd.eos_designs : Collection arista.avd version 3.5.0 loaded from /home/user/.ansible/collections/ansible_collections] ******************************************************
-ok: [dc1-leaf1a]
+TASK [arista.avd.eos_designs : Verify Requirements] ********************************************************************************************************************************
+AVD version v4.0.0-rc1-8-ge1382fdb8
+Use -v for details.
+ok: [dc1-spine1 -> localhost]
 
 TASK [arista.avd.eos_designs : Create required output directories if not present] **********************************************************************************************************
 ok: [dc1-leaf1a -> localhost] => (item=/home/user/Documents/git_projects/ansible-avd-examples/dual-dc-l3ls/intended/structured_configs)
