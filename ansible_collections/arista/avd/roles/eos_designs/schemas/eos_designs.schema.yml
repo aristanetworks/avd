@@ -3371,18 +3371,14 @@ $defs:
                           type: bool
                     structured_config:
                       type: dict
-                      description: 'Custom structured config added under vlan_interfaces.<interface>
+                      description: 'Custom structured config added under ethernet_interfaces.<interface>
                         for eos_cli_config_gen.
-
-                        Overrides the setting on SVI level.
 
                         '
                     raw_eos_cli:
                       type: str
-                      description: 'EOS CLI rendered directly on the VLAN interface
-                        in the final EOS configuration
-
-                        Overrides the setting on SVI level.
+                      description: 'EOS CLI rendered directly on the Ethernet interface
+                        in the final EOS configuration.
 
                         '
               static_routes:
@@ -3618,18 +3614,14 @@ $defs:
                 keys:
                   raw_eos_cli:
                     type: str
-                    description: 'EOS CLI rendered directly on the VLAN interface
-                      in the final EOS configuration
-
-                      Overrides the setting on SVI level.
+                    description: 'EOS CLI rendered directly on the Router BGP, VRF
+                      definition in the final EOS configuration.
 
                       '
                   structured_config:
                     type: dict
-                    description: 'Custom structured config added under vlan_interfaces.<interface>
+                    description: 'Custom structured config added under router_bgp.vrfs.<vrf>
                       for eos_cli_config_gen.
-
-                      Overrides the setting on SVI level.
 
                       '
               bgp_peer_groups:
@@ -3689,18 +3681,13 @@ $defs:
                         '
               raw_eos_cli:
                 type: str
-                description: 'EOS CLI rendered directly on the VLAN interface in the
-                  final EOS configuration
-
-                  Overrides the setting on SVI level.
+                description: 'EOS CLI rendered directly on the root level of the final
+                  EOS configuration.
 
                   '
               structured_config:
                 type: dict
-                description: 'Custom structured config added under vlan_interfaces.<interface>
-                  for eos_cli_config_gen.
-
-                  Overrides the setting on SVI level.
+                description: 'Custom structured config for eos_cli_config_gen.
 
                   '
         l2vlans:
@@ -5211,7 +5198,12 @@ $defs:
         primary_key: node
         convert_types:
         - dict
-        description: Define node specific configuration, such as unique IP addresses.
+        description: 'Define node specific configuration, such as unique IP addresses.
+
+          Any keys set here will be merged onto the SVI config, except `structured_config`
+          keys which will replace the `structured_config` set on SVI level.
+
+          '
         items:
           type: dict
           $ref: '#/$defs/svi_settings'
@@ -5500,26 +5492,19 @@ $defs:
                   description: Type 7 encrypted key
       bgp:
         type: dict
-        description: 'Structured configuration and EOS CLI commands rendered on router_bgp.vlans
-
-          This configuration will not be applied to vlan aware bundles
-
-          '
         keys:
           structured_config:
             type: dict
-            description: 'Custom structured config added under vlan_interfaces.<interface>
-              for eos_cli_config_gen.
+            description: 'Structured configuration and EOS CLI commands rendered on
+              router_bgp.vlans.
 
-              Overrides the setting on SVI level.
+              This configuration will not be applied to vlan aware bundles
 
               '
           raw_eos_cli:
             type: str
-            description: 'EOS CLI rendered directly on the VLAN interface in the final
-              EOS configuration
-
-              Overrides the setting on SVI level.
+            description: 'EOS CLI rendered directly on the Router BGP, VLAN definition
+              in the final EOS configuration
 
               '
       raw_eos_cli:
@@ -5527,12 +5512,8 @@ $defs:
         description: 'EOS CLI rendered directly on the VLAN interface in the final
           EOS configuration
 
-          Overrides the setting on SVI level
-
           '
       structured_config:
         type: dict
-        description: 'Custom structured config added under vlan_interfaces.<interface>
+        description: Custom structured config added under vlan_interfaces.<interface>
           for eos_cli_config_gen.
-
-          Overrides the setting on SVI level.'
