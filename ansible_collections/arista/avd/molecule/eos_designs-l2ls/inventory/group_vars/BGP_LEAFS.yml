@@ -6,9 +6,9 @@ leaf:
     uplink_switches: [ BGP-SPINE1, BGP-SPINE2 ]
     uplink_interfaces: [ Ethernet1, Ethernet2 ]
   nodes:
-    BGP-LEAF1:
+    - name: BGP-LEAF1
       id: 1
       uplink_switch_interfaces: [ Ethernet1, Ethernet1 ]
-    BGP-LEAF2:
+    - name: BGP-LEAF2
       id: 2
       uplink_switch_interfaces: [ Ethernet2, Ethernet2 ]

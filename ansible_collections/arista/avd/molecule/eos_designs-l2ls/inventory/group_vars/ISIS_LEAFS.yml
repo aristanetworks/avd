@@ -10,10 +10,10 @@ leaf:
     isis_maximum_paths: 4
     platform: vEOS-LAB
   node_groups:
-    ISIS_LEAFS:
+    - group: ISIS_LEAFS
       vtep_loopback: Loopback0
       nodes:
-        ISIS-LEAF1:
+        - name: ISIS-LEAF1
           id: 1
           mgmt_ip: 192.168.200.105/24
           uplink_switch_interfaces: ['Ethernet1']

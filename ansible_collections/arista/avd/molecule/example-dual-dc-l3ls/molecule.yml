@@ -29,5 +29,7 @@ provisioner:
     - ${MOLECULE_SCENARIO_DIRECTORY}/../../examples/dual-dc-l3ls/inventory.yml
     - --extra-vars
     - "avd_data_validation_mode=error"
+    - --extra-vars
+    - "avd_data_conversion_mode=error"
 verifier:
   name: ansible
