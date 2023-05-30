@@ -19,19 +19,18 @@ p:
   # Specific configuration of device must take place under the node definition. Each node inherites all values defined under 'defaults'
   nodes:
     # Name of the node to be defined (must be consistent with definition in inventory)
-    p1:
+    - name: p1
       # Device ID definition. An integer number used for internal calculations (ie. IPv4 address of the loopback_ipv4_pool among others)
       id: 1
       # Management IP to be assigned to the management interface
       mgmt_ip: 172.16.1.11/24
-
-    p2:
+    - name: p2
       id: 2
       mgmt_ip: 172.16.1.12/24
-    p3:
+    - name: p3
       id: 3
       mgmt_ip: 172.16.1.13/24
-    p4:
+    - name: p4
       id: 4
       mgmt_ip: 172.16.1.14/24
 
@@ -59,19 +58,19 @@ pe:
   node_groups:
     # Definition of a node group that will include two devices in MLAG.
     # Definitions under the group will be inherited by both nodes in the group
-    WAN1-PE1-2:
+    - group: WAN1-PE1-2
       nodes:
         # Definition of hostnames under the node_group
-        pe1:
+        - name: pe1
           id: 1
           mgmt_ip: 172.16.1.101/24
-        pe2:
+        - name: pe2
           id: 2
           mgmt_ip: 172.16.1.102/24
 
-    WAN1-PE3:
+    - group: WAN1-PE3
       nodes:
-        pe3:
+        - name: pe3
           id: 3
           mgmt_ip: 172.16.1.103/24
 
@@ -93,12 +92,12 @@ rr:
       - graceful-restart
 
   node_groups:
-    WAN1_RR1-2:
+    - group: WAN1_RR1-2
       nodes:
-        rr1:
+        - name: rr1
           id: 1
           mgmt_ip: 172.16.1.151/24
-        rr2:
+        - name: rr2
           id: 2
           mgmt_ip: 172.16.1.152/24
 

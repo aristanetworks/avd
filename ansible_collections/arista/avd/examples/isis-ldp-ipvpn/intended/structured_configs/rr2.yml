@@ -6,7 +6,15 @@ router_bgp:
   - distance bgp 20 200 200
   - graceful-restart restart-time 300
   - graceful-restart
-  - maximum-paths 4 ecmp 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  graceful_restart:
+    enabled: true
+    restart_time: 300
   bgp_cluster_id: 10.255.2.2
   peer_groups:
   - name: MPLS-OVERLAY-PEERS
@@ -108,10 +116,9 @@ router_isis:
   net: 49.0001.0000.0002.0002.00
   router_id: 10.255.2.2
   is_type: level-2
-  address_family:
-  - ipv4 unicast
-  isis_af_defaults:
-  - maximum-paths 4
+  address_family_ipv4:
+    enabled: true
+    maximum_paths: 4
   mpls_ldp_sync_default: true
 mpls:
   ip: true
@@ -120,6 +127,11 @@ mpls:
     router_id: 10.255.2.2
     shutdown: false
     transport_address_interface: Loopback0
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
 ethernet_interfaces:
 - name: Ethernet4
   peer: rr1
@@ -184,8 +196,3 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
-router_bfd:
-  multihop:
-    interval: 300
-    min_rx: 300
-    multiplier: 3

@@ -2,15 +2,15 @@
 
 ## Introduction
 
-This example is meant to be used as the logical second step in introducing AVD to new users, directly following the [Introduction to Ansible and AVD](../../docs/getting-started/intro-to-ansible-and-avd.md) section. The idea is that new users with access to virtual routers (using Arista vEOS-lab or cEOS) can learn how to generate configuration and documentation for a complete fabric environment. Users with access to physical routers will have to adapt a few settings. This is all documented inline in the comments included in the YAML files. If a lab with virtual or physical routers is not accessible, this example can also be used to only generate the output from AVD if desired.
+This example is the logical second step in introducing AVD to new users, following the [Introduction to Ansible and AVD](../../docs/getting-started/intro-to-ansible-and-avd.md) section. New users with access to virtual routers (using Arista vEOS-lab or cEOS) can learn how to generate configuration and documentation for a complete fabric environment. Users with access to physical routers will have to adapt a few settings. This is all documented inline in the comments included in the YAML files. If a lab with virtual or physical routers is not accessible, this example can also be used to only generate the output from AVD if desired.
 
-The example includes and describes all the AVD files and their content used to build a MPLS-VPN WAN network covering two sites, using the following:
+The example includes and describes all the AVD files and their content used to build a MPLS-VPN WAN network covering two sites using the following:
 
 - Four (virtual) p routers.
-- Three (virtual) pe routers, serving aggregation devices and CPEs.
-- Two (virtual) route reflectors, acting as route servers for the WAN.
+- Three (virtual) pe routers serving aggregation devices and CPEs.
+- Two (virtual) route reflectors act as route servers for the WAN.
 
-Integration with CloudVision is not included in this example to keep everything as simple as possible. In this case, the Ansible host will communicate directly with the routers using eAPI.
+This example does not include Integration with CloudVision to keep everything as simple as possible. In this case, the Ansible host will communicate directly with the routers using eAPI.
 
 ## Installation
 
@@ -59,7 +59,7 @@ ansible-avd-examples/ (or wherever the playbook was run)
 
 ### Physical topology
 
-The drawing below shows the physical topology used in this example. The interface assignment shown here are referenced across the entire example, so keep that in mind if this example must be adapted to a different topology. Finally, the Ansible host is connected to the dedicated out-of-band management port (Ethernet0 when using vEOS-lab):
+The drawing below shows the physical topology used in this example. The interface assignment shown here is referenced across the entire example, so keep that in mind if this example must be adapted to a different topology. Finally, the Ansible host is connected to the dedicated out-of-band management port (Management1 when using vEOS-lab):
 
 ![Figure: Arista MPLS-VPN physical topology](images/avd-isis-ldp-ipvpn-example.svg)
 
@@ -103,7 +103,7 @@ The drawing below shows the physical topology used in this example. The interfac
 Basic connectivity between the Ansible host and the routers must be established before Ansible can be used to push configurations. You must configure the following on all routers:
 
 - A hostname configured purely for ease of understanding.
-- An IP enabled interface - in this example the dedicated out-of-band management interface is used.
+- An IP enabled interface - in this example, the dedicated out-of-band management interface is used.
 - A username and password with the proper access privileges.
 
 Below is the basic configuration file for `p1`:
@@ -117,7 +117,7 @@ examples/isis-ldp-ipvpn/switch-basic-configurations/p1-basic-configuration.txt
 !!! note
     The folder `isis-ldp-ipvpn/switch-basic-configurations/` contains a file per device for the initial configurations.
 
-## Ansible inventory, group vars and naming scheme
+## Ansible inventory, group vars, and naming scheme
 
 The following drawing shows a graphic overview of the Ansible inventory, group variables, and naming scheme used in this example:
 
@@ -142,7 +142,7 @@ All hostnames use lowercase, for example:
 
 The drawing also shows the relationships between groups and their children:
 
-- For example, `p1`, `p2`, `p3`, and `p4` are both children of the group called `WAN1_P_ROUTERS`.
+- For example, `p1`, `p2`, `p3`, and `p4` are all children of the group called `WAN1_P_ROUTERS`.
 
 Additionally, groups themselves can be children of another group, for example:
 
@@ -155,7 +155,7 @@ This naming convention makes it possible to extend anything easily, but as alway
 
 This section describes the entire `ansible-avd-examples/isis-ldp-ipvpn/inventory.yml` file used to represent the above topology.
 
-It is important that the hostnames specified in the inventory exist either in DNS or in the hosts file on your Ansible host to allow successful name lookup and be able to reach the routers directly. A successful ping from the Ansible host to each inventory host verifies name resolution(e.g., `ping p1`).
+The hostnames specified in the inventory must exist either in DNS or in the hosts file on your Ansible host to allow successful name lookup and be able to reach the routers directly. A successful ping from the Ansible host to each inventory host verifies name resolution(e.g., `ping p1`).
 
 Alternatively, if there is no DNS available, or if devices need to be reached using a fully qualified domain name (FQDN), define `ansible_host` to be an IP address or FQDN for each device - see below for an example:
 
@@ -197,7 +197,7 @@ all:
             WAN1_PE_ROUTERS:
 ```
 
-The above is what is included in this example, *purely* to make it as simple as possible to get started. However, in the future, please do not carry over this practice to a production environment, where an inventory file for an identical topology should look as follows when using DNS:
+The above is included in this example, *purely* to make it as simple as possible. However, in the future, please do not carry over this practice to a production environment, where an inventory file for an identical topology should look as follows when using DNS:
 
 ```yaml title="inventory.yml"
 ---
@@ -232,7 +232,7 @@ all:
 
     - Creates a group named `NETWORK_SERVICES`. Ansible variable resolution resolves this group name to the identically named group_vars file (`ansible-avd-examples/isis-ldp-ipvpn/group_vars/NETWORK_SERVICES.yml`).
 
-    - The file's contents, which in this case are specifications of tenant VRFs and their associated routed interfaces, BGP peers and OSPF interfaces, are then applied to the group's children. In this case, the group `WAN1_PE_ROUTERS`.
+    - The file's contents are specifications of tenant VRFs and their associated routed interfaces, BGP peers, and OSPF interfaces, then applied to the group's children. In this case, the group `WAN1_PE_ROUTERS`.
 
 ## Defining device types
 
@@ -284,7 +284,7 @@ ansible_httpapi_validate_certs: false # (6)!
 1. The Ansible host must use eAPI
 2. Network OS which in this case is Arista EOS
 3. The username/password combo
-4. How to escalate privileges to get write access
+4. How to escalate privileges for write access
 5. Use SSL
 6. Do not validate SSL certificates
 
@@ -297,11 +297,11 @@ underlay_routing_protocol: isis-ldp
 overlay_routing_protocol: ibgp
 
 local_users: # (2)!
-  ansible:
+  - name: ansible
     privilege: 15
     role: network-admin
-    sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
-  admin:
+    sha512_password: $6$QJUtFkyu9yoecsq.$ysGzlb2YXaIMvezqGEna7RE8CMALJHnv7Q1i.27VygyKUtSeX.n2xRTyOtCR8eOAl.4imBLyhXFc4o97P5n071
+  - name: admin
     privilege: 15
     role: network-admin
     no_password: true
@@ -314,13 +314,13 @@ p2p_uplinks_mtu: 1500 # (4)!
 ```
 
 1. The name of the fabric for internal AVD use. This name *must* match the name of an Ansible Group (and therefore a corresponding group_vars file) covering all network devices.
-2. Local users/passwords and their privilege levels. In this case, the `ansible` user is set with the password `ansible` and an `admin` user is set with no password.
+2. Local users/passwords and their privilege levels. In this case, the `ansible` user is set with the password `ansible`, and an `admin` user is set with no password.
 3. BGP peer groups and their passwords (all passwords are "arista").
 4. Point-to-point interface MTU, in this case, is set to 1500 since the example uses vEOS, but when using hardware, this should be set to 9214 instead.
 
-## Setting device specific configuration parameters
+## Setting device-specific configuration parameters
 
-The `ansible-avd-examples/isis-ldp-ipvpn/group_vars/WAN1.yml` file defines settings that apply to all children of the `WAN1` group as specified in the inventory described earlier. However, this time the settings defined are no longer fabric-wide but are limited to WAN1. In this example, this is of limited benefit with only a single data center. Still, it allows us to scale the configuration to a scenario with multiple data centers in the future.
+The `ansible-avd-examples/isis-ldp-ipvpn/group_vars/WAN1.yml` file defines settings that apply to all children of the `WAN1` group as specified in the inventory described earlier. However, this time the settings defined are no longer fabric-wide but are limited to WAN1. This example is of limited benefit with only a single data center. Still, it allows us to scale the configuration to a scenario with multiple data centers in the future.
 
 ```yaml title="WAN1.yml"
 ---
@@ -332,11 +332,11 @@ p:
     loopback_ipv4_pool: 10.255.0.0/27 # (3)!
 
   nodes: # (4)!
-    p1:
+    - name: p1
       id: 1 # (5)!
       mgmt_ip: 172.16.1.11/24 # (6)!
 
-    p2:
+    - name: p2
       id: 2
       mgmt_ip: 172.16.1.12/24
 ```
@@ -367,29 +367,29 @@ pe:
     spanning_tree_mode: none # (6)!
 
   node_groups: # (7)!
-    WAN1-PE1-2:
+    - group: WAN1-PE1-2
       nodes:
-        pe1:
+        - name: pe1
           id: 1
           mgmt_ip: 172.16.1.101/24
-        pe2:
+        - name: pe2
           id: 2
           mgmt_ip: 172.16.1.102/24
 
-    WAN1-PE3:
+    - group: WAN1-PE3
       nodes:
-        pe3:
+        - name: pe3
           id: 3
           mgmt_ip: 172.16.1.103/24
 ```
 
 1. `platform` references default settings defined in AVD specific to certain switch platforms.
-2. `loopback_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for Loopback0. Please note that this IP pool is different to the one used for the p routers in this example. If you want to reuse the same IP pool for multiple node types, to avoid setting the same IP addresses for several devices, we can define the option `loopback_ipv4_offset`.
-3. `virtual_router_mac_address` defines the MAC address used for the anycast gateway on the various subnets. This is the MAC address connected endpoints will learn when ARPing for their default gateway. It is not really relevant for the vpn-ipv4/6 services used in this example but it is still mandatory to set.
-4. `mpls_route_reflectors` defines which route reflectors that the pe nodes peer with for overlay route distribution.
-5. `isis_system_id_prefix` is mandatory to set when using ISIS for underlay routing protocol. It is used to calculate the ISIS NET ID.
+2. `loopback_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for Loopback0. Please note that this IP pool differs from the one used for the p routers in this example. If you want to reuse the same IP pool for multiple node types to avoid setting the same IP addresses for several devices, we can define the option `loopback_ipv4_offset`.
+3. `virtual_router_mac_address` defines the MAC address used for the anycast gateway on the various subnets. This is the MAC address connected endpoints will learn when ARPing for their default gateway. It is irrelevant for the vpn-ipv4/6 services used in this example but is still mandatory to set.
+4. `mpls_route_reflectors` defines which route reflectors the pe nodes peer with for overlay route distribution.
+5. `isis_system_id_prefix` is mandatory to set when using ISIS for the underlay routing protocol. It is used to calculate the ISIS NET ID.
 6. `spanning_tree_mode` defines the spanning tree mode. In this case, we are not using spanning tree since we have only routed interfaces on our pe routers.
-7. `node_groups` defines settings common to more than one node. In the l3ls-evpn design this has more utility than here, where it is used to define MLAG pairs. In the mpls design it is mostly used as a way to logically group devices for organizational purposes.
+7. `node_groups` defines settings common to more than one node. In the l3ls-evpn design this has more utility than here, which is used to define MLAG pairs. In the MPLS design, it is mainly used to logically group devices for organizational purposes.
 
 Finally, more of the same, but this time for the rr routers:
 
@@ -408,23 +408,21 @@ rr:
     spanning_tree_mode: none
 
   node_groups:
-    WAN1_RR1-2:
-      bgp_cluster_id: 1.2.1.2 # (2)!
+    - group: WAN1_RR1-2
       nodes:
-        rr1:
+        - name: rr1
           id: 1
           mgmt_ip: 172.16.1.151/24
-        rr2:
+        - name: rr2
           id: 2
           mgmt_ip: 172.16.1.152/24
 ```
 
 1. `mpls_route_reflectors` is used here to make the rr nodes peer with each other.
-2. `bgp_cluster_id` can be used to set a route reflector cluster ID for the rr nodes to use.
 
 ## Defining underlay connectivity between network nodes
 
-A free-standing list of `core_interfaces` dictionaries and their associated profiles and ip pools is used to define the underlay connectivity between nodes.
+A free-standing list of `core_interfaces` dictionaries and their associated profiles and ip pools defines the underlay connectivity between nodes.
 
 ```yaml title="WAN1.yml"
 
@@ -455,11 +453,11 @@ core_interfaces:
 ```
 
 1. The IP pool `name` is used to assign a name to the IP pool, this is later called in the profile to associate the pool to the profile.
-2. The profile `name` is used to assign a name to the link profile which is later called under the p2p link definitions to inherit settings from the profile.
-3. Each list item in `p2p_links` is a dictionary which defines one routed point-to-point underlay link and its associated parameters.
-4. `nodes` is used to identify which nodes are connecting to each other.
+2. The profile `name` is used to assign a name to the link profile, which is later called under the p2p link definitions to inherit settings from the profile.
+3. Each list item in `p2p_links` is a dictionary that defines one routed point-to-point underlay link and its associated parameters.
+4. `nodes` is used to identify which nodes are connecting.
 5. `profile` is used here to inherit common settings for the link from the profile.
-6. `id` is used to extract a single /31 subnet for the link from the IP pool mentioned by the profile. Each link that shares an IP pool must have a unique ID in order to prevent overlapping ip addressing.
+6. `id` is used to extract a single /31 subnet for the link from the IP pool mentioned by the profile. Each link that shares an IP pool must have a unique ID to prevent overlapping IP addressing.
 
 ## Specifying network services (VRFs and routed interfaces) and endpoint connectivity in the VPN-IPv4 fabric
 
@@ -471,7 +469,7 @@ examples/isis-ldp-ipvpn/group_vars/NETWORK_SERVICES.yml
 
 All tenant VRFs and routed interfaces for endpoint connectivity in the network are defined here.
 
-Two tenants called `CUSTOMER1` and `CUSTOMER2` are specified. Each of these tenants have a single VRF defined, and under those VRFs we define the routed interfaces, tenant (PE-CE) routing protocols and address families in use:
+Two tenants called `CUSTOMER1` and `CUSTOMER2` are specified. Each of these tenants has a single VRF defined, and under those VRFs, we define the routed interfaces, tenant (PE-CE) routing protocols and address families in use:
 
 ```yaml title="NETWORK_SERVICES.yml"
       C1_VRF1:
@@ -494,9 +492,9 @@ Two tenants called `CUSTOMER1` and `CUSTOMER2` are specified. Each of these tena
               enabled: true
 ```
 
-This defines `C1_VRF1`, with a VRF ID of `10`, enables OSPF routing for PE-CE connections inside the VRF on selected pe routers and defines routed interfaces that are used to connect to the CE devices/aggregation nodes. Each interface has an IP address assigned, a description and has ospf routing enabled.
+This defines `C1_VRF1`, with a VRF ID of `10`, enables OSPF routing for PE-CE connections inside the VRF on selected pe routers and defines routed interfaces that are used to connect to the CE devices/aggregation nodes. Each interface has an IP address assigned, a description, and has OSPF routing enabled.
 
-The lists of interfaces, nodes and ip_addresses used in the above definition of the l3 interface is read by the ansible logic as follows: interface `Ethernet3.10` belongs to the node `pe1` and has the ip address of `10.0.1.1/29`. In other words, the list indices are used to form the basic parameters for one interface.
+The lists of interfaces, nodes, and ip_addresses used in the above definition of the l3 interface are read by the ansible logic as follows: interface `Ethernet3.10` belongs to the node `pe1` and has the IP address of `10.0.1.1/29`. In other words, the list indices are used to form the basic parameters for one interface.
 
 ## The playbook
 
@@ -508,9 +506,9 @@ examples/isis-ldp-ipvpn/playbook.yml
 --8<--
 ```
 
-1. At the highest level, the name and scope of the playbook is set, which in this example is the entire fabric. For instance, `FABRIC` is a group name defined in the inventory. If the playbook should only apply to a subset of devices, it can be changed here.
+1. At the highest level, the name and scope of the playbook are set, which in this example is the entire fabric. For instance, `FABRIC` is a group name defined in the inventory. If the playbook should only apply to a subset of devices, it can be changed here.
 2. This task uses the role `arista.avd.eos_designs`, which generates structured configuration for each device. This structured configuration can be found in the `ansible-avd-examples/isis-ldp-ipvpn/intended/structured_configs` folder.
-3. This task uses the role `arista.avd.eos_cli_config_gen`, which generates the actual Arista EOS CLI configurations found in the `ansible-avd-examples/isis-ldp-ipvpn/intended/configs` folder, along with the device-specific and fabric wide documentation found in the `ansible-avd-examples/isis-ldp-ipvpn/documentation/` folder. It relies on the structured configuration generated by `arista.avd.eos_designs`.
+3. This task uses the role `arista.avd.eos_cli_config_gen`, which generates the actual Arista EOS CLI configurations found in the `ansible-avd-examples/isis-ldp-ipvpn/intended/configs` folder, along with the device-specific and fabric wide documentation found in the `ansible-avd-examples/isis-ldp-ipvpn/documentation/` folder. In addition, it relies on the structured configuration generated by `arista.avd.eos_designs`.
 4. This task uses the role `arista.avd.eos_config_deploy_eapi` that pushes the generated configuration to the devices in scope.
 
 ### Testing AVD output without a lab
@@ -533,7 +531,7 @@ Example of using this playbook without devices (local tasks):
     #      name: arista.avd.eos_config_deploy_eapi
 ```
 
-By simply commenting out (or deleting) the last task definition, the playbook will generate all of the output (variables, configurations, documentation), but will not attempt to communicate with any devices.
+By simply commenting out (or deleting) the last task definition, the playbook will generate all of the output (variables, configurations, documentation) but will not attempt to communicate with any devices.
 
 Please look through the folders and files described above to learn more about the output generated by AVD.
 
@@ -582,7 +580,7 @@ This is caused by AVD pushing the configuration line `service routing protocols 
 
 ### VPN-IPv4 Overlay in Arista Cloud Test (ACT)
 
-If you are running this lab in the Arista Cloud Test service and the overlay services are not working (no connectivity from CPE to CPE) after performing the steps outlined above, you may need to change the default forwarding engine of the vEOS nodes.
+Suppose you are running this lab in the Arista Cloud Test service, and the overlay services are not working (no connectivity from CPE to CPE) after performing the abovementioned steps. In that case, you may need to change the default forwarding engine of the vEOS nodes.
 
 Add the following line to the starting configurations for each node:
 
@@ -590,11 +588,11 @@ Add the following line to the starting configurations for each node:
 platform tfa personality arfa
 ```
 
-Currently, this command **must** be manually entered into the device configurations **before** trying to push the command with AVD. After you have entered it manually on each node, add the following yaml to group_vars/WAN1.yml and run the deployment playbook:
+Currently, this command **must** be manually entered into the device configurations **before** trying to push the command with AVD. After you have entered it manually on each node, add the following YAML to group_vars/WAN1.yml and run the deployment playbook:
 
 ```yaml
 eos_cli: |
   platform tfa personality arfa
 ```
 
-Retest the services, they should now be working provided the CPEs and aggregation node are properly configured.
+Retest the services. They should now work, provided the CPEs and aggregation node are correctly configured.
