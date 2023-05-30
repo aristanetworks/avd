@@ -2,7 +2,7 @@
 ### group_vars/DC2.yml
 
 # Default gateway used for the management interface
-mgmt_gateway: 172.16.2.1
+mgmt_gateway: 172.16.1.1
 
 # Spine switch group
 spine:
@@ -21,9 +21,9 @@ spine:
     # Name of the node to be defined (must be consistent with definition in inventory)
     - name: dc2-spine1
       # Device ID definition. An integer number used for internal calculations (ie. IPv4 address of the loopback_ipv4_pool among others)
-      id: 11
+      id: 1
       # Management IP to be assigned to the management interface
-      mgmt_ip: 172.16.2.21/24
+      mgmt_ip: 172.16.1.21/24
 
     - name: dc2-spine2
       id: 12
