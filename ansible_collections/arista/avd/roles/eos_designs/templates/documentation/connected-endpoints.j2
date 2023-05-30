@@ -15,14 +15,14 @@
     {"key": "generic_devices", "type": "generic_device", "description": "Generic Device"}] %}
 {% set all_connected_endpoints_keys = [] %}
 {% set all_connected_endpoints = {} %}
-{% set all_profiles = {} %}
+{% set all_profiles = [] %}
 {# This is a repeat of the loop in the main file so should probably do all at once.. or somewhere else? #}
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {%     set node_hostvars = hostvars[node] %}
 {%     set node_facts = avd_switch_facts[node] %}
 {%     do all_connected_endpoints_keys.extend(node_hostvars.connected_endpoints_keys | arista.avd.convert_dicts("key") | arista.avd.default(default_connected_endpoints_keys)) %}
 {# Populate profiles #}
-{%     do all_profiles.update(node_hostvars.port_profiles | arista.avd.default({})) %}
+{%     do all_profiles.extend(node_hostvars.port_profiles | arista.avd.convert_dicts("profile") | arista.avd.default([])) %}
 {# Populate endpoints #}
 {%     for ethernet_interface in node_hostvars.ethernet_interfaces | arista.avd.convert_dicts("name") | arista.avd.natural_sort("name") %}
 {%         set peer_type = ethernet_interface.peer_type | arista.avd.default('undefined') %}
@@ -92,8 +92,8 @@ No connected endpoint configured!
 
 | Profile Name | Parent Profile |
 | ------------ | -------------- |
-{%     for profile in all_profiles %}
+{%     for profile in all_profiles | unique %}
 {%         set parent = profile.parent_profile | arista.avd.default("-") %}
-| {{ profile }} | {{ parent }} |
+| {{ profile.profile }} | {{ parent }} |
 {%     endfor %}
 {% endif %}
