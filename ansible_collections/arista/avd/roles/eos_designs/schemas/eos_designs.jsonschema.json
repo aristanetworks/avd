@@ -922,6 +922,53 @@
       },
       "title": "CVP Instance Ips"
     },
+    "cvp_tags": {
+      "type": "object",
+      "properties": {
+        "topology_hint_type": {
+          "description": "Type that CloudVision should use when generating the Topology.\n",
+          "type": "string",
+          "enum": [
+            "leaf",
+            "spine",
+            "core",
+            "edge"
+          ],
+          "title": "Topology Hint Type"
+        },
+        "custom_keys": {
+          "description": "List of user defined tags and their values to be applied to this\ndevice on CVP.\n",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name"
+              },
+              "value": {
+                "type": "string",
+                "title": "Value"
+              }
+            },
+            "required": [
+              "name",
+              "value"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Custom Keys"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "CVP Tags"
+    },
     "cvp_token_file": {
       "type": "string",
       "description": "cvp_token_file is the path to the token file on the switch.\nIf not set the default locations for on-premise or CVaaS will be used.\nSee cvp_ingestauth_key for details.",
@@ -3369,6 +3416,53 @@
               "^_.+$": {}
             },
             "title": "Interface Descriptions"
+          },
+          "cvp_tags": {
+            "type": "object",
+            "properties": {
+              "topology_hint_type": {
+                "description": "Type that CloudVision should use when generating the Topology.\n",
+                "type": "string",
+                "enum": [
+                  "leaf",
+                  "spine",
+                  "core",
+                  "edge"
+                ],
+                "title": "Topology Hint Type"
+              },
+              "custom_keys": {
+                "description": "List of user defined tags and their values to be applied to this\ndevice on CVP.\n",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "title": "Name"
+                    },
+                    "value": {
+                      "type": "string",
+                      "title": "Value"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "value"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Custom Keys"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "CVP Tags"
           }
         },
         "additionalProperties": false,

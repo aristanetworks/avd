@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  cvp_tags:
+    type: dict
+    keys:
+      topology_hint_type:
+        description: |
+          Type that CloudVision should use when generating the Topology.
+        type: str
+        valid_values:
+          - "leaf"
+          - "spine"
+          - "core"
+          - "edge"
+      custom_keys:
+        description: |
+          List of user defined tags and their values to be applied to this
+          device on CVP.
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              required: true
+              type: str
+            value:
+              required: true
+              type: str
