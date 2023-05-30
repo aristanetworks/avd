@@ -8,21 +8,23 @@
 
 ## CVP Tags for {{ host }}
 
-### Device Tags
+### {{ host }} Device Tags
 
 | Tag Name | Tag Value |
 | -------- | --------- |
 {%     for tag in hostvars[host].cvp_tags[0].device_tags %}
 | {{ tag.name }} | {{ tag.value }} |
 {%     endfor %}
+{%     if hostvars[host].cvp_tags[0].interface_tags is arista.avd.defined %}
 
-### Interface Tags
+### {{ host }} Interface Tags
 
 | Interface | Tag Name | Tag Value |
 | --------- |-------- | --------- |
-{%     for interface in hostvars[host].cvp_tags[0].interface_tags %}
-{%         for tag in interface.tags %}
+{%         for interface in hostvars[host].cvp_tags[0].interface_tags %}
+{%             for tag in interface.tags %}
 | {{ interface.interface }} | {{ tag.name }} | {{ tag.value }} |
+{%             endfor %}
 {%         endfor %}
-{%     endfor %}
+{%     endif %}
 {% endfor %}

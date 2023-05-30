@@ -13,23 +13,31 @@
     tags:
     - name: interface_peer
       value: dc1-leaf1a
-    - name: interface_description
+    - name: interface_desc
       value: P2P_LINK_TO_DC1-LEAF1A_Ethernet1
+    - name: peer_int
+      value: Ethernet1
   - interface: Ethernet2
     tags:
     - name: interface_peer
       value: dc1-leaf1b
-    - name: interface_description
+    - name: interface_desc
       value: P2P_LINK_TO_DC1-LEAF1B_Ethernet1
+    - name: peer_int
+      value: Ethernet1
   - interface: Ethernet3
     tags:
     - name: interface_peer
       value: dc1-leaf2a
-    - name: interface_description
+    - name: interface_desc
       value: P2P_LINK_TO_DC1-LEAF2A_Ethernet1
+    - name: peer_int
+      value: Ethernet1
   - interface: Ethernet4
     tags:
     - name: interface_peer
       value: dc1-leaf2b
-    - name: interface_description
+    - name: interface_desc
       value: P2P_LINK_TO_DC1-LEAF2B_Ethernet1
+    - name: peer_int
+      value: Ethernet1

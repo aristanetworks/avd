@@ -5,6 +5,13 @@
   connection: local
   vars:
     root_dir: '{{ playbook_dir }}'
+    cvp_interface_tags:
+      - type: peer # The type of information in the tag
+        name: interface_peer # The name to be used for the tag
+      - type: description
+        name: interface_desc
+      - type: peer_interface
+        name: peer_int
   tasks:
     - name: Generate intended variables
       delegate_to: 127.0.0.1
