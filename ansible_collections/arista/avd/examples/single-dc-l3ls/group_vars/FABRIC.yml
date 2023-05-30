@@ -25,12 +25,12 @@ overlay_routing_protocol: ebgp
 # Local users
 local_users:
   # Define a new user, which is called "ansible"
-  ansible:
+  - name: ansible
     privilege: 15
     role: network-admin
     # Password set to "ansible". Same string as the device generates when configuring a username.
     sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
-  admin:
+  - name: admin
     privilege: 15
     role: network-admin
     no_password: true
