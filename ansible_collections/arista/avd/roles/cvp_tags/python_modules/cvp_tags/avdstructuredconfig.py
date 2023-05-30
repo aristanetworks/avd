@@ -83,7 +83,7 @@ class AvdStructuredConfigTags(AvdFacts, UtilsMixin):
         for link in self._underlay_links:
             interface_tags.append(self._interface_tags(link))
 
-        return [{"device": self.shared_utils.hostname, "device_tags": device_tags, "inteface_tags": interface_tags}]
+        return [{"device": self.shared_utils.hostname, "device_tags": device_tags, "interface_tags": interface_tags}]
 
     # @cached_property
     # def key2(self) -> str:

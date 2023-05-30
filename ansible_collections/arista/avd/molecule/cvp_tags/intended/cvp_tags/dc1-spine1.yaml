@@ -8,7 +8,7 @@
     value: single_pod
   - name: topology_hint_datacenter
     value: DC1
-  inteface_tags:
+  interface_tags:
   - interface: Ethernet1
     tags:
     - name: interface_peer
