@@ -20,3 +20,6 @@ avd_structured_config_file_format: "yml"
 # Input Variable Validation
 avd_data_conversion_mode: "debug"
 avd_data_validation_mode: "warning"
+
+# Skip actually pushing the changes to CVP
+skip_cvp: false

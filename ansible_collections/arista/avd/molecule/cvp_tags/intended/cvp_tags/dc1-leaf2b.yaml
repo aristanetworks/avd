@@ -1,5 +1,4 @@
-cvp_tags:
-  device: dc1-leaf2b
+- device: dc1-leaf2b
   device_tags:
   - name: topology_hint_type
     value: leaf

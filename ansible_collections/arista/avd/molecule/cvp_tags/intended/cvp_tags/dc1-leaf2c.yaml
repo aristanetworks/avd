@@ -1,5 +1,4 @@
-cvp_tags:
-  device: dc1-leaf2c
+- device: dc1-leaf2c
   device_tags:
   - name: topology_hint_type
     value: edge

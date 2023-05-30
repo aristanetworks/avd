@@ -1,6 +1,6 @@
 ---
 - name: Converge
-  hosts: all
+  hosts: FABRIC
   gather_facts: false
   connection: local
   vars:
@@ -10,3 +10,8 @@
       delegate_to: 127.0.0.1
       ansible.builtin.import_role:
         name: arista.avd.cvp_tags
+      vars:
+        cvp_node: cv_server
+        # skip_cvp: true
+      tags:
+        - debug

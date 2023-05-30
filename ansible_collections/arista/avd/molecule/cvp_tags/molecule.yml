@@ -35,7 +35,8 @@ provisioner:
       hosts: 'inventory/inventory.yml'
       group_vars: 'inventory/group_vars/'
   ansible_args:
-    - --skip-tags=documentation
+    # - --skip-tags=documentation
+    - --tags=debug
   env:
     # Custom pythonpath to allow loading custom ip_addressing and descriptions modules.
     # See CUSTOM_PYTHON_MODULES_TESTS group vars for details.
