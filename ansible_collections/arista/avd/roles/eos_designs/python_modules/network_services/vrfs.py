@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from functools import cached_property
 
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate
+
 from .utils import UtilsMixin
 
 
@@ -34,7 +36,7 @@ class VrfsMixin(UtilsMixin):
 
                 new_vrf = {
                     "name": vrf_name,
-                    "tenant": ",".join(vrf["tenants"]),
+                    "tenant": tenant["name"],
                 }
 
                 # MLAG IBGP Peering VLANs per VRF
@@ -49,7 +51,14 @@ class VrfsMixin(UtilsMixin):
                 if "description" in vrf:
                     new_vrf["description"] = vrf["description"]
 
-                vrfs.append(new_vrf)
+                append_if_not_duplicate(
+                    list_of_dicts=vrfs,
+                    primary_key="name",
+                    new_dict=new_vrf,
+                    context="VRFs defined under network services",
+                    context_keys=["name", "tenant"],
+                    ignore_keys={"tenant"},
+                )
 
         if vrfs:
             return vrfs

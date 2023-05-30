@@ -4,7 +4,7 @@ from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get
 
 from .utils import UtilsMixin
 
@@ -30,15 +30,30 @@ class VlanInterfacesMixin(UtilsMixin):
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
                 for svi in vrf["svis"]:
-                    vlan_id = int(svi["id"])
-                    vlan_interfaces.append({"name": f"Vlan{vlan_id}", **self._get_vlan_interface_config_for_svi(svi, vrf)})
+                    vlan_interface = self._get_vlan_interface_config_for_svi(svi, vrf)
+                    append_if_not_duplicate(
+                        list_of_dicts=vlan_interfaces,
+                        primary_key="name",
+                        new_dict=vlan_interface,
+                        context="VLAN Interfaces",
+                        context_keys=["name", "tenant"],
+                        ignore_keys={"tenant"},
+                    )
 
                 # MLAG IBGP Peering VLANs per VRF
                 # Continue to next VRF if mlag vlan_id is not set
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is None:
                     continue
 
-                vlan_interfaces.append({"name": f"Vlan{vlan_id}", **self._get_vlan_interface_config_for_mlag_peering(vrf)})
+                vlan_interface = {"name": f"Vlan{vlan_id}", **self._get_vlan_interface_config_for_mlag_peering(vrf)}
+                append_if_not_duplicate(
+                    list_of_dicts=vlan_interfaces,
+                    primary_key="name",
+                    new_dict=vlan_interface,
+                    context="MLAG iBGP Peering VLAN Interfaces",
+                    context_keys=["name", "tenant"],
+                    ignore_keys={"tenant"},
+                )
 
         if vlan_interfaces:
             return vlan_interfaces
@@ -58,6 +73,7 @@ class VlanInterfacesMixin(UtilsMixin):
                 )
 
         vlan_interface_config = {
+            "name": f"Vlan{int(svi['id'])}",
             "tenant": svi["tenant"],
             "tags": svi.get("tags"),
             "description": default(svi.get("description"), svi["name"]),
@@ -160,7 +176,7 @@ class VlanInterfacesMixin(UtilsMixin):
 
     def _get_vlan_interface_config_for_mlag_peering(self, vrf) -> dict:
         vlan_interface_config = {
-            "tenant": ",".join(vrf["tenants"]),
+            "tenant": vrf["tenant"],
             "type": "underlay_peering",
             "shutdown": False,
             "description": f"MLAG_PEER_L3_iBGP: vrf {vrf['name']}",

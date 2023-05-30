@@ -5,7 +5,7 @@ from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.esi_management import generate_esi, generate_lacp_id, generate_route_target
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get
 
 from .utils import UtilsMixin
 
@@ -54,7 +54,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                         parent_interface = {
                             "name": interface_name,
                             "type": "routed",
-                            "peer_type": "l3_interface",
+                            "peer_type": "system",
                             "shutdown": False,
                         }
                         if (short_esi := get(endpoint, "port_channel.short_esi")) is not None:
@@ -74,29 +74,40 @@ class PortChannelInterfacesMixin(UtilsMixin):
 
                         for subif in subifs:
                             subif_name = f"{interface_name}.{subif['number']}"
-                            port_channel_interfaces.append(
-                                {
-                                    "name": subif_name,
-                                    "type": "l2dot1q",
-                                    "encapsulation_vlan": {
-                                        "client": {
-                                            "dot1q": {
-                                                "vlan": subif["number"],
-                                            },
-                                        },
-                                        "network": {
-                                            "client": True,
+
+                            port_channel_interface = {
+                                "name": subif_name,
+                                "tenant": tenant["name"],
+                                "type": "l2dot1q",
+                                "peer_type": "point_to_point_service",
+                                "encapsulation_vlan": {
+                                    "client": {
+                                        "dot1q": {
+                                            "vlan": subif["number"],
                                         },
                                     },
-                                    "peer_type": "l3_interface",
-                                    "shutdown": False,
-                                }
+                                    "network": {
+                                        "client": True,
+                                    },
+                                },
+                                "shutdown": False,
+                            }
+
+                            append_if_not_duplicate(
+                                list_of_dicts=port_channel_interfaces,
+                                primary_key="name",
+                                new_dict=port_channel_interface,
+                                context="Port-Channel Interfaces defined under point_to_point_services",
+                                context_keys=["name", "tenant"],
+                                ignore_keys={"tenant"},
                             )
+
                     else:
                         interface = {
                             "name": interface_name,
+                            "tenant": tenant["name"],
                             "type": "routed",
-                            "peer_type": "l3_interface",
+                            "peer_type": "point_to_point_service",
                             "shutdown": False,
                         }
                         if point_to_point_service.get("lldp_disable") is True:
@@ -118,7 +129,14 @@ class PortChannelInterfacesMixin(UtilsMixin):
                                 if port_channel_mode == "active":
                                     interface["lacp_id"] = generate_lacp_id(short_esi)
 
-                        port_channel_interfaces.append(interface)
+                        append_if_not_duplicate(
+                            list_of_dicts=port_channel_interfaces,
+                            primary_key="name",
+                            new_dict=interface,
+                            context="Port-Channel Interfaces defined under point_to_point_services",
+                            context_keys=["name", "tenant"],
+                            ignore_keys={"tenant"},
+                        )
 
             port_channel_interfaces.extend(
                 subif_parent_interface for subif_parent_interface in subif_parent_interfaces if subif_parent_interface not in port_channel_interfaces

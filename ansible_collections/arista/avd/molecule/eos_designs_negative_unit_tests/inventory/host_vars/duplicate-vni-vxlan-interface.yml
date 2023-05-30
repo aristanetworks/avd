@@ -29,4 +29,4 @@ tenants:
             vni_override: 10110 #10111 would be the calculated value.
             name: Tenant_A_OP_Zone_2
 
-expected_error_message: "Duplicate VXLAN VNI '10110' found in Tenant(s) 'Tenant_A' during configuration of SVI '111 in vrf 'Tenant_A_OP_Zone'."
+expected_error_message: "Found duplicate objects with conflicting data while generating configuration for VXLAN VNIs for SVIs. {'id': 111, 'name': None, 'vni': 10110} conflicts with {'id': 110, 'name': None, 'vni': 10110}."

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get, get_item
 
 from .utils import UtilsMixin
 
@@ -47,14 +47,20 @@ class LoopbackInterfacesMixin(UtilsMixin):
                 # If we ended up here, it means we have a loopback_ipv4_pool set
                 interface_name = f"Loopback{loopback}"
                 offset = self.shared_utils.id + self.shared_utils.loopback_ipv4_offset
-                loopback_interfaces.append(
-                    {
-                        "name": interface_name,
-                        "description": get(vrf, "vtep_diagnostic.loopback_description", default=f"{vrf['name']}_VTEP_DIAGNOSTICS"),
-                        "shutdown": False,
-                        "vrf": vrf["name"],
-                        "ip_address": f"{self.shared_utils.ip_addressing._ip(loopback_ipv4_pool, 32, offset, 0)}/32",
-                    }
+                loopback_interface = {
+                    "name": interface_name,
+                    "description": get(vrf, "vtep_diagnostic.loopback_description", default=f"{vrf['name']}_VTEP_DIAGNOSTICS"),
+                    "shutdown": False,
+                    "vrf": vrf["name"],
+                    "ip_address": f"{self.shared_utils.ip_addressing._ip(loopback_ipv4_pool, 32, offset, 0)}/32",
+                }
+                append_if_not_duplicate(
+                    list_of_dicts=loopback_interfaces,
+                    primary_key="name",
+                    new_dict=loopback_interface,
+                    context="VTEP Diagnostic Loopback Interfaces",
+                    context_keys=["name", "vrf", "tenant"],
+                    ignore_keys={"tenant"},
                 )
         if loopback_interfaces:
             return loopback_interfaces

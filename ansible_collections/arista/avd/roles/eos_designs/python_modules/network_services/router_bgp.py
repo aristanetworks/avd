@@ -9,7 +9,7 @@ from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_s
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item, groupby
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, get_item, groupby
 
 from .utils import UtilsMixin
 
@@ -92,7 +92,13 @@ class RouterBgpMixin(UtilsMixin):
         if peer_groups:
             for peer_group in peer_groups:
                 peer_group.pop("nodes", None)
-                bgp_peer_groups.append(peer_group)
+                append_if_not_duplicate(
+                    list_of_dicts=bgp_peer_groups,
+                    primary_key="name",
+                    new_dict=peer_group,
+                    context="BGP Peer Groups defined under network services",
+                    context_keys=["name"],
+                )
 
         # router bgp default vrf configuration for evpn
         if self._vrf_default_evpn and (self._vrf_default_ipv4_subnets or self._vrf_default_ipv4_static_routes["static_routes"]):
@@ -171,9 +177,17 @@ class RouterBgpMixin(UtilsMixin):
                         "eos_cli": get(vrf, "bgp.raw_eos_cli"),
                         "struct_cfg": get(vrf, "bgp.structured_config"),
                     }
-                    # Strip None values from vlan before returning
+                    # Strip None values from vlan before appending
                     bgp_vrf = {key: value for key, value in bgp_vrf.items() if value is not None}
-                    vrfs.append(bgp_vrf)
+
+                    append_if_not_duplicate(
+                        list_of_dicts=vrfs,
+                        primary_key="name",
+                        new_dict=bgp_vrf,
+                        context="BGP VRFs defined under network services",
+                        context_keys=["name"],
+                    )
+
                     continue
 
                 bgp_vrf = {
@@ -256,9 +270,16 @@ class RouterBgpMixin(UtilsMixin):
                     if get(self._hostvars, "bgp_update_wait_install", default=True) is True and platform_bgp_update_wait_install:
                         bgp_vrf.setdefault("updates", {})["wait_install"] = True
 
-                # Strip None values from vlan before returning
+                # Strip None values from vlan before appending
                 bgp_vrf = {key: value for key, value in bgp_vrf.items() if value is not None}
-                vrfs.append(bgp_vrf)
+
+                append_if_not_duplicate(
+                    list_of_dicts=vrfs,
+                    primary_key="name",
+                    new_dict=bgp_vrf,
+                    context="BGP VRFs defined under network services",
+                    context_keys=["name"],
+                )
 
         if vrfs:
             return vrfs
@@ -285,13 +306,29 @@ class RouterBgpMixin(UtilsMixin):
                 for svi in vrf["svis"]:
                     if (vlan := self._router_bgp_vlans_vlan(svi, tenant, vrf)) is not None:
                         vlan_id = int(svi["id"])
-                        vlans.append({"id": vlan_id, **vlan})
+                        vlan = {"id": vlan_id, **vlan}
+                        append_if_not_duplicate(
+                            list_of_dicts=vlans,
+                            primary_key="id",
+                            new_dict=vlan,
+                            context="BGP VLANs defined under network services",
+                            context_keys=["id", "tenant"],
+                            ignore_keys={"tenant"},
+                        )
 
             # L2 Vlans per Tenant
             for l2vlan in tenant["l2vlans"]:
                 if (vlan := self._router_bgp_vlans_vlan(l2vlan, tenant, vrf={})) is not None:
                     vlan_id = int(l2vlan["id"])
-                    vlans.append({"id": vlan_id, **vlan})
+                    vlan = {"id": vlan_id, **vlan}
+                    append_if_not_duplicate(
+                        list_of_dicts=vlans,
+                        primary_key="id",
+                        new_dict=vlan,
+                        context="BGP VLANs defined under network services",
+                        context_keys=["id", "tenant"],
+                        ignore_keys={"tenant"},
+                    )
 
         if vlans:
             return vlans
@@ -363,7 +400,13 @@ class RouterBgpMixin(UtilsMixin):
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
                 if (bundle := self._router_bgp_vlan_aware_bundles_vrf(vrf, tenant)) is not None:
-                    bundles.append(bundle)
+                    append_if_not_duplicate(
+                        list_of_dicts=bundles,
+                        primary_key="name",
+                        new_dict=bundle,
+                        context="BGP VLAN-Aware Bundles defined under network services",
+                        context_keys=["name"],
+                    )
 
             # L2 Vlans per Tenant
             # If multiple L2 Vlans share the same name, they will be part of the same bundle
@@ -372,7 +415,14 @@ class RouterBgpMixin(UtilsMixin):
                 if (bundle := self._router_bgp_vlans_vlan(l2vlans[0], tenant, vrf={})) is not None:
                     # We are reusing the regular bgp vlan function so need to add vlan info
                     bundle["vlan"] = list_compress([int(l2vlan["id"]) for l2vlan in l2vlans])
-                    bundles.append({"name": bundle_name, **bundle})
+                    bundle = {"name": bundle_name, **bundle}
+                    append_if_not_duplicate(
+                        list_of_dicts=bundles,
+                        primary_key="name",
+                        new_dict=bundle,
+                        context="BGP VLAN-Aware Bundles defined under network services",
+                        context_keys=["name"],
+                    )
 
         if bundles:
             return bundles

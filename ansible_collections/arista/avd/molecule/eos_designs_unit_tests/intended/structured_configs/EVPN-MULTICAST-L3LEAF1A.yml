@@ -1400,51 +1400,51 @@ router_bfd:
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
-  - querier:
+  - id: 110
+    querier:
       enabled: true
       address: 192.168.255.3
-    id: 110
-  - querier:
+  - id: 111
+    querier:
       enabled: true
       address: 192.168.255.3
-    id: 111
-  - querier:
+  - id: 210
+    querier:
       enabled: true
       address: 192.168.255.3
-    id: 210
-  - querier:
+  - id: 257
+    querier:
       enabled: true
       address: 192.168.255.3
-    id: 257
-  - querier:
+  - id: 4092
+    querier:
       enabled: true
       address: 192.168.255.3
-    id: 4092
-  - querier:
+  - id: 1
+    querier:
       enabled: true
       address: 1.1.1.1
       version: 3
-    id: 1
-  - querier:
+  - id: 2
+    querier:
       enabled: true
       address: 1.1.1.1
       version: 3
-    id: 2
-  - querier:
+  - id: 3
+    querier:
       enabled: true
       address: 2.2.2.2
       version: 1
-    id: 3
-  - querier:
+  - id: 8
+    querier:
       enabled: true
       address: 1.1.1.1
       version: 3
-    id: 8
-  - querier:
+  - id: 9
+    querier:
       enabled: true
       address: 2.2.2.2
       version: 1
-    id: 9
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vxlan_interface:
   Vxlan1:

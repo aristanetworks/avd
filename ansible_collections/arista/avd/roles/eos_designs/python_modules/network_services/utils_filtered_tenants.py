@@ -7,7 +7,6 @@ from ansible_collections.arista.avd.plugins.filter.default import default
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item, unique
 
@@ -41,8 +40,6 @@ class UtilsFilteredTenantsMixin(object):
                     tenant["l2vlans"] = self._filtered_l2vlans(tenant)
                     tenant["vrfs"] = self._filtered_vrfs(tenant)
                     filtered_tenants.append(tenant)
-
-        self._handle_duplicate_vrfs(filtered_tenants)
 
         return natural_sort(filtered_tenants, "name")
 
@@ -127,9 +124,7 @@ class UtilsFilteredTenantsMixin(object):
 
         vrfs: list[dict] = natural_sort(convert_dicts(tenant.get("vrfs", []), "name"), "name")
         for vrf in vrfs:
-            # Storing tenants as a list for use in duplicate VRF detection
-            vrf["tenants"] = [tenant["name"]]
-            # Storing tenant as a single item for use by child objects like SVIs
+            # Storing tenant on VRF for use by child objects like SVIs
             vrf["tenant"] = tenant["name"]
             bgp_peers = natural_sort(convert_dicts(vrf.get("bgp_peers"), "ip_address"), "ip_address")
             vrf["bgp_peers"] = [bgp_peer for bgp_peer in bgp_peers if self.shared_utils.hostname in bgp_peer.get("nodes", [])]
@@ -285,64 +280,3 @@ class UtilsFilteredTenantsMixin(object):
             svi.update({"tenant": vrf["tenant"]})
 
         return svis
-
-    def _handle_duplicate_vrfs(self, tenants: list[dict]):
-        """
-        Check for duplicate VRFs.
-        If any duplicates are found, perform inplace merge of the duplicate VRFs only to first instance. Remove the other instances.
-        Merge is done according to these rules:
-        - All lists like `svis`, `l3_interfaces`, `bgp_peers` etc. will be combined.
-          Duplicate items in the combined lists will raise an error.
-        - Settings only concerning other `nodes` are ignored. (they have already been filtered out by filtered_vrfs)
-        - All other settings are merged. If the same key is in multiple VRFs, they must match exactly or an error will be raised.
-        - All settings on the parent Tenants like `mac_vrf_vni_base` must match exactly or an error will be raised.
-        """
-        all_vrfs = []
-        for tenant in tenants:
-            tenant_vrf_indexes_to_be_removed = []
-            for index, vrf in enumerate(tenant["vrfs"]):
-                if (first_vrf := get_item(all_vrfs, "name", vrf["name"])) is None:
-                    all_vrfs.append(vrf)
-                    continue
-
-                # This is a duplicate VRF. Add to removal list and merge settings onto original.
-                tenant_vrf_indexes_to_be_removed.append(index)
-
-                # Update tenant key and _tenants list before merge and make sure they match (ignored from comparison).
-                first_vrf["tenants"].append(vrf["tenant"])
-                vrf["tenants"] = first_vrf["tenants"]
-                vrf["tenant"] = first_vrf["tenant"]
-
-                # Compare the original tenant and the duplicate tenant (any other duplicate tenants would already have been compared)
-                first_tenant = get_item(tenants, "name", first_vrf["tenant"], required=True)
-                if not self._compare_tenant_settings(first_tenant, tenant):
-                    raise AristaAvdError(
-                        f"Found duplicate VRF '{vrf['name']}' in Tenants '{', '.join(vrf['tenants'])}' but unable to merge since Tenant settings do not match."
-                    )
-
-                try:
-                    merge(first_vrf, vrf, list_merge="append_rp", same_key_strategy="must_match")
-                except ValueError as e:
-                    raise AristaAvdError(
-                        f"Found duplicate VRF '{vrf['name']}' in Tenants '{', '.join(vrf['tenants'])}' "
-                        f"but unable to merge since VRF settings do not match: {str(e)}"
-                    ) from e
-
-            if tenant_vrf_indexes_to_be_removed:
-                # Remove duplicate VRFs after succesful merge. Reverse list to not offset index.
-                tenant_vrf_indexes_to_be_removed.reverse()
-                for index in tenant_vrf_indexes_to_be_removed:
-                    tenant["vrfs"].pop(index)
-
-    def _compare_tenant_settings(self, base_tenant, duplicate_tenant) -> bool:
-        """
-        Comparison of tenant settings, to ensure that duplicate VRFs will not render different configurations.
-
-        Return True if tenant settings are matching and False if not.
-
-        'name', 'vrfs' and 'l2vlans' are excluded from the comparison, since they do not affect duplicate VRF configurations
-        """
-        EXCLUDE_KEYS = ["name", "vrfs", "l2vlans"]
-        return all(base_tenant.get(key) == duplicate_tenant.get(key) for key in base_tenant.keys() if key not in EXCLUDE_KEYS) and all(
-            base_tenant.get(key) == duplicate_tenant.get(key) for key in duplicate_tenant.keys() if key not in EXCLUDE_KEYS
-        )

@@ -4,7 +4,7 @@ import re
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get
 
 from .utils import UtilsMixin
 
@@ -46,6 +46,7 @@ class PatchPanelMixin(UtilsMixin):
                         for subif in subifs:
                             patch = {
                                 "name": f"{point_to_point_service['name']}_{subif['number']}",
+                                "tenant": tenant["name"],
                                 "enabled": True,
                                 "connectors": [
                                     {
@@ -63,10 +64,18 @@ class PatchPanelMixin(UtilsMixin):
                                         "endpoint": f"bgp vpws {tenant['name']} pseudowire {point_to_point_service['name']}_{subif['number']}",
                                     }
                                 )
-                            patches.append(patch)
+                            append_if_not_duplicate(
+                                list_of_dicts=patches,
+                                primary_key="name",
+                                new_dict=patch,
+                                context="Patches defined under point_to_point_services",
+                                context_keys=["name", "tenant"],
+                                ignore_keys={"tenant"},
+                            )
                     else:
                         patch = {
                             "name": f"{point_to_point_service['name']}",
+                            "tenant": tenant["name"],
                             "enabled": True,
                             "connectors": [
                                 {
@@ -84,7 +93,14 @@ class PatchPanelMixin(UtilsMixin):
                                     "endpoint": f"bgp vpws {tenant['name']} pseudowire {point_to_point_service['name']}",
                                 }
                             )
-                        patches.append(patch)
+                        append_if_not_duplicate(
+                            list_of_dicts=patches,
+                            primary_key="name",
+                            new_dict=patch,
+                            context="Patches defined under point_to_point_services",
+                            context_keys=["name", "tenant"],
+                            ignore_keys={"tenant"},
+                        )
 
         if patches:
             return {"patches": patches}

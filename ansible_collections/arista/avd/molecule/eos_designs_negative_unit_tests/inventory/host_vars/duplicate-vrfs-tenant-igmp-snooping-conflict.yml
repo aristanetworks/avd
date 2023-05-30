@@ -2,12 +2,7 @@
 # Also see eos_designs_unit_tests for testing of the intended functionality.
 
 # It is recommended to only define a VRF in one Tenant. If the same VRF name is used across multiple tenants and those tenants
-# are accepted by `filter.tenants` on the node, the VRF definitions will be merged according to the following guidelines:
-#   - All lists like `svis`, `l3_interfaces`, `bgp_peers` etc. will be combined.
-#     Duplicate items in the combined lists will raise an error.
-#   - Settings only concerning other `nodes` are ignored.
-#   - All other settings are merged. If the same key is in multiple VRFs, they must match exactly or an error will be raised.
-#   - All settings on the parent Tenants like `mac_vrf_vni_base` must match exactly or an error will be raised.
+# are accepted by `filter.tenants` on the node, any object set under the duplicate VRFs must either be unique or be an exact match.
 
 type: l3leaf
 l3leaf:
@@ -16,7 +11,7 @@ l3leaf:
     vtep_loopback_ipv4_pool: 192.168.254.0/24
     virtual_router_mac_address: 00:dc:00:00:00:0a
   nodes:
-    duplicate-vrfs-tenant-setting-conflict:
+    duplicate-vrfs-tenant-igmp-snooping-conflict:
       id: 101
       bgp_as: 101
       filter:
@@ -26,6 +21,8 @@ l3leaf:
 
 tenants:
   - name: TENANT1
+    igmp_snooping_querier:
+      enabled: true
     mac_vrf_vni_base: 10000
     vrfs:
       - name: VRF1
@@ -37,8 +34,10 @@ tenants:
             ip_address_virtual: 10.0.100.1/24
 
   - name: DUPLICATE_TENANT1
-    # Conflicting setting on tenant so an error will be raised.
-    mac_vrf_vni_base: 20000
+    # Conflicting IGMP snooping setting on tenant so an error will be raised.
+    igmp_snooping_querier:
+      enabled: false
+    mac_vrf_vni_base: 10000
     vrfs:
       - name: VRF1
         vrf_id: 1
@@ -48,4 +47,4 @@ tenants:
             name: VLAN100
             ip_address_virtual: 10.0.100.1/24
 
-expected_error_message: "Found duplicate VRF 'VRF1' in Tenants 'TENANT1, DUPLICATE_TENANT1' but unable to merge since Tenant settings do not match."
+expected_error_message: "Found duplicate objects with conflicting data while generating configuration for IGMP snooping for SVIs in VRF 'VRF1'. {'id': 100, 'querier': {'enabled': True, 'address': '192.168.255.101'}} conflicts with {'id': 100, 'querier': {'enabled': False, 'address': '192.168.255.101'}}."
