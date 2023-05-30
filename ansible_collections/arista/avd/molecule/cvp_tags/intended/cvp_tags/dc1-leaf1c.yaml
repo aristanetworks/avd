@@ -12,7 +12,7 @@
     value: DC1
   - name: custom_tag
     value: custom_value
-  inteface_tags:
+  interface_tags:
   - interface: Ethernet1
     tags:
     - name: interface_peer

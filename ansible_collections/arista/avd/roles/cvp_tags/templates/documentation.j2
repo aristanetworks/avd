@@ -1,0 +1,28 @@
+# CloudVision Portal Tags
+
+## Table of Contents
+
+<!-- toc -->
+<!-- toc -->
+{% for host in ansible_play_batch %}
+
+## CVP Tags for {{ host }}
+
+### Device Tags
+
+| Tag Name | Tag Value |
+| -------- | --------- |
+{%     for tag in hostvars[host].cvp_tags[0].device_tags %}
+| {{ tag.name }} | {{ tag.value }} |
+{%     endfor %}
+
+### Interface Tags
+
+| Interface | Tag Name | Tag Value |
+| --------- |-------- | --------- |
+{%     for interface in hostvars[host].cvp_tags[0].interface_tags %}
+{%         for tag in interface.tags %}
+| {{ interface.interface }} | {{ tag.name }} | {{ tag.value }} |
+{%         endfor %}
+{%     endfor %}
+{% endfor %}

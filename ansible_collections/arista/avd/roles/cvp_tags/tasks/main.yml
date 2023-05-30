@@ -35,6 +35,23 @@
     dest: "{{ cvp_tags_dir }}/{{ inventory_hostname }}.yaml"
     mode: 0664
 
+- name: "Create folder {{ documentation_dir_name }} for documentation."
+  ansible.builtin.file:
+    path: "{{ documentation_dir }}"
+    state: directory
+    mode: 0775
+  delegate_to: localhost
+  run_once: True
+
+- name: Generate Documentation
+  delegate_to: localhost
+  check_mode: false
+  ansible.builtin.copy:
+    content: "{{ lookup('template', 'documentation.j2') | arista.avd.add_md_toc(skip_lines=3, toc_levels=2) }}"
+    dest: "{{ documentation_dir }}/cvp_tags.md"
+    mode: 0664
+  run_once: true
+
 - name: "Update tags on CVP"
   arista.cvp.cv_tag_v3:
     tags: "{{ cvp_tags }}"

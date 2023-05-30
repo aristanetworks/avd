@@ -13,7 +13,7 @@
         path: "{{ root_dir }}/{{ item }}"
         state: absent
       with_items:
-        - documentation
+        # - documentation
         - intended/structured_configs
         - config_backup
         - reports
