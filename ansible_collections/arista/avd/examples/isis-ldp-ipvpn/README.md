@@ -472,7 +472,7 @@ All tenant VRFs and routed interfaces for endpoint connectivity in the network a
 Two tenants called `CUSTOMER1` and `CUSTOMER2` are specified. Each of these tenants has a single VRF defined, and under those VRFs, we define the routed interfaces, tenant (PE-CE) routing protocols and address families in use:
 
 ```yaml title="NETWORK_SERVICES.yml"
-      C1_VRF1:
+      - name: C1_VRF1
         vrf_id: 10
         address_families:
           - vpn-ipv4
