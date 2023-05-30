@@ -118,7 +118,7 @@
 | Profile Name | Parent Profile |
 | ------------ | -------------- |
 | PP-DEFAULTS | - |
-| PP-BLUE | - |
-| PP-GREEN | - |
-| PP-ORANGE | - |
+| PP-BLUE | PP-DEFAULTS |
+| PP-GREEN | PP-DEFAULTS |
+| PP-ORANGE | PP-DEFAULTS |
 | PP-FIREWALL | - |
