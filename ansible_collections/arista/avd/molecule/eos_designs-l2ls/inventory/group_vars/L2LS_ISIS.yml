@@ -6,11 +6,11 @@ underlay_routing_protocol: isis
 isis_area_id: "49.0001"
 
 tenants:
-  L2LS_ISIS:
+  - name: L2LS_ISIS
     vrfs:
-      default:
+      - name: default
         svis:
-          110:
+          - id: 110
             name: SVI_110
             ip_address_virtual: 10.0.110.1/24
             enabled: true
