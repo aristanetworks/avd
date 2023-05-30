@@ -2,56 +2,55 @@
 ### group_vars/DC1_NETWORK_PORTS.yml
 
 connected_endpoints_keys:
-  servers:
+  - key: servers
     type: server
-  firewalls:
+  - key: firewalls
     type: firewall
-  routers:
+  - key: routers
     type: router
 
 port_profiles:
-  PP-DEFAULTS:
+  - profile: PP-DEFAULTS
     spanning_tree_portfast: edge
-  PP-BLUE:
+  - profile: PP-BLUE
     mode: access
     vlans: "10"
     parent_profile: PP-DEFAULTS
-  PP-GREEN:
+  - profile: PP-GREEN
     mode: access
     vlans: "20"
     parent_profile: PP-DEFAULTS
-  PP-ORANGE:
+  - profile: PP-ORANGE
     mode: access
     vlans: "30"
     parent_profile: PP-DEFAULTS
-  PP-FIREWALL:
+  - profile: PP-FIREWALL
     mode: trunk
     vlans: "10,20,30"
 
 servers:
-
-  HostA:
+  - name: HostA
     rack: POD1
     adapters:
       - endpoint_ports: [Eth1]
         switch_ports: [Ethernet3]
         switches: [LEAF1]
         profile: PP-BLUE
-  HostB:
+  - name: HostB
     rack: POD1
     adapters:
       - endpoint_ports: [Eth1]
         switch_ports: [Ethernet3]
         switches: [LEAF2]
         profile: PP-GREEN
-  HostC:
+  - name: HostC
     rack: POD2
     adapters:
       - endpoint_ports: [Eth1]
         switch_ports: [Ethernet3]
         switches: [LEAF3]
         profile: PP-BLUE
-  Host2:
+  - name: Host2
     rack: POD2
     adapters:
       - endpoint_ports: [Eth1]
@@ -61,7 +60,7 @@ servers:
 
 firewalls:
 
-  FIREWALL:
+  - name: FIREWALL
     adapters:
       - endpoint_ports: [Eth1, Eth2]
         switch_ports: [Ethernet5, Ethernet5]
