@@ -29,6 +29,8 @@ provisioner:
     - ${MOLECULE_SCENARIO_DIRECTORY}/../../examples/single-dc-l3ls/inventory.yml
     - --extra-vars
     - "avd_data_validation_mode=error"
+    - --extra-vars
+    - "avd_data_conversion_mode=error"
     # Running with tags build to avoid deploy_eapi to run.
     - --tags
     - build
