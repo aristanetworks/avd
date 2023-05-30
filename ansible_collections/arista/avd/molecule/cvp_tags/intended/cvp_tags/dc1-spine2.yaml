@@ -1,5 +1,4 @@
-cvp_tags:
-  device: dc1-spine2
+- device: dc1-spine2
   device_tags:
   - name: topology_hint_type
     value: spine

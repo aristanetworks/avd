@@ -1,5 +1,4 @@
-cvp_tags:
-  device: dc1-leaf1a
+- device: dc1-leaf1a
   device_tags:
   - name: topology_hint_type
     value: leaf
@@ -9,6 +8,8 @@ cvp_tags:
     value: single_pod
   - name: topology_hint_datacenter
     value: DC1
+  - name: custom_tag
+    value: custom_value
   inteface_tags:
   - interface: Ethernet1
     tags:
