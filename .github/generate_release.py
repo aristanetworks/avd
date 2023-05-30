@@ -11,6 +11,7 @@ import yaml
 SCOPES = [
     "build_output_folders",
     "cvp_configlet_upload",
+    "cvp_tags",
     "dhcp_provisioner",
     "eos_cli_config_gen",
     "eos_config_deploy_cvp",
