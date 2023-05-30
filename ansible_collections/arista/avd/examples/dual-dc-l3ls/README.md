@@ -95,14 +95,14 @@ The drawing below shows the physical topology used in this example. The interfac
 | dc1-leaf2b                                          | 172.16.1.104                |
 | dc1-leaf1c                                          | 172.16.1.151                |
 | dc1-leaf2c                                          | 172.16.1.152                |
-| dc2-spine1                                          | 172.16.2.21                 |
-| dc2-spine2                                          | 172.16.2.22                 |
-| dc2-leaf1a                                          | 172.16.2.111                |
-| dc2-leaf1b                                          | 172.16.2.112                |
-| dc2-leaf2a                                          | 172.16.2.113                |
-| dc2-leaf2b                                          | 172.16.2.114                |
-| dc2-leaf1c                                          | 172.16.2.161                |
-| dc2-leaf2c                                          | 172.16.2.162                |
+| dc2-spine1                                          | 172.16.1.21                 |
+| dc2-spine2                                          | 172.16.1.22                 |
+| dc2-leaf1a                                          | 172.16.1.111                |
+| dc2-leaf1b                                          | 172.16.1.112                |
+| dc2-leaf2a                                          | 172.16.1.113                |
+| dc2-leaf2b                                          | 172.16.1.114                |
+| dc2-leaf1c                                          | 172.16.1.161                |
+| dc2-leaf2c                                          | 172.16.1.162                |
 | **Point-to-point links between leaf and spine**     | **(Underlay)**              |
 | DC1                                                 | 10.255.255.0/26             |
 | DC2                                                 | 10.255.255.64/26            |
@@ -257,7 +257,7 @@ By changing only `DC2.yml` file, the defined settings are limited to DC2. In thi
 
 ```yaml title="DC2.yml"
 ---
-mgmt_gateway: 172.16.2.1 # (1)!
+mgmt_gateway: 172.16.1.1 # (1)!
 
 spine:
   defaults:
@@ -267,12 +267,12 @@ spine:
 
   nodes: # (5)!
     dc2-spine1:
-      id: 11 # (6)!
-      mgmt_ip: 172.16.2.21/24 # (7)!
+      id: 1 # (6)!
+      mgmt_ip: 172.16.1.21/24 # (7)!
 
     dc2-spine2:
-      id: 12
-      mgmt_ip: 172.16.2.22/24
+      id: 2
+      mgmt_ip: 172.16.1.22/24
 ```
 
 1. The default gateway for the management interface of all devices in DC2 is defined.
@@ -280,7 +280,7 @@ spine:
 3. `loopback_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for Loopback0.
 4. `bgp_as` defines the BGP AS number.
 5. `nodes` defines the actual spine switches, using the hostnames defined in the inventory.
-6. `id` is used to calculate the various IP addresses, for example, the IPv4 address for the Loopback0 interface. In this case, dc2-spine1 will get the IPv4 address 10.255.128.11/27 assigned to the Loopback0 interface.
+6. `id` is used to calculate the various IP addresses, for example, the IPv4 address for the Loopback0 interface. In this case, dc2-spine1 will get the IPv4 address 10.255.128.1/27 assigned to the Loopback0 interface.
 7. `mgmt_ip` defines the IPv4 address of the management interface. As stated earlier, Ansible will perform name lookups using the hostnames specified in the inventory unless using the `ansible_host` option. However, there is no automatic mechanism to grab the result of the name lookup and use that to generate the management interface configuration.
 
 The following section covers the L3 leaf switches. Significantly more settings need to be set compared to the spine switches:
@@ -292,30 +292,28 @@ l3leaf:
     loopback_ipv4_pool: 10.255.128.0/27 # (2)!
     loopback_ipv4_offset: 2 # (3)!
     vtep_loopback_ipv4_pool: 10.255.129.0/27 # (4)!
-    uplink_interfaces: ['Ethernet1', 'Ethernet2'] # (5)!
-    uplink_switches: ['dc2-spine1', 'dc2-spine2'] # (6)!
-    uplink_ipv4_pool: 10.255.255.64/26 # (7)!
-    mlag_interfaces: ['Ethernet3', 'Ethernet4'] # (8)!
-    mlag_peer_ipv4_pool: 10.255.129.64/27 # (9)!
-    mlag_peer_l3_ipv4_pool: 10.255.129.96/27 # (10)!
-    virtual_router_mac_address: 00:1c:73:00:00:99 # (11)!
-    spanning_tree_priority: 4096 # (12)!
-    spanning_tree_mode: mstp # (13)!
+    uplink_switches: ['dc2-spine1', 'dc2-spine2'] # (5)!
+    uplink_ipv4_pool: 10.255.255.64/26 # (6)!
+    mlag_peer_ipv4_pool: 10.255.129.64/27 # (7)!
+    mlag_peer_l3_ipv4_pool: 10.255.129.96/27 # (8)!
+    virtual_router_mac_address: 00:1c:73:00:00:99 # (9)!
+    spanning_tree_priority: 4096 # (10)!
+    spanning_tree_mode: mstp # (11)!
 
-  node_groups: # (14)!
+  node_groups: # (12)!
     DC2_L3_LEAF1:
-      bgp_as: 65201 # (15)!
+      bgp_as: 65201 # (13)!
       nodes:
         dc2-leaf1a:
-          id: 11
-          mgmt_ip: 172.16.2.201/24
+          id: 1
+          mgmt_ip: 172.16.1.111/24
         dc2-leaf1b:
-          id: 12
-          mgmt_ip: 172.16.2.202/24
+          id: 2
+          mgmt_ip: 172.16.1.112/24
 
     DC2_L3_LEAF2:
       bgp_as: 65202
-      evpn_gateway: # (16)!
+      evpn_gateway: # (14)!
         evpn_l2:
           enabled: true
         evpn_l3:
@@ -323,14 +321,14 @@ l3leaf:
           inter_domain: true
       nodes:
         dc2-leaf2a:
-          id: 13
-          mgmt_ip: 172.16.2.203/24
+          id: 3
+          mgmt_ip: 172.16.1.113/24
           evpn_gateway:
-            remote_peers: # (17)!
+            remote_peers: # (15)!
               - hostname: dc1-leaf2a
         dc2-leaf2b:
-          id: 14
-          mgmt_ip: 172.16.2.204/24
+          id: 4
+          mgmt_ip: 172.16.1.114/24
           evpn_gateway:
             remote_peers:
               - hostname: dc1-leaf2b
@@ -340,19 +338,17 @@ l3leaf:
 2. `loopback_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for Loopback0. This IP pool is identical to the one used for the spine switches in this example. To avoid setting the same IP addresses for several devices, we define the option `loopback_ipv4_offset`.
 3. `loopback_ipv4_offset` offsets all assigned loopback IP addresses counting from the beginning of the IP scope. This is required when the same IP pool is used for two different node_types (like spine and l3leaf in this example) to avoid overlapping IPs. For example, the offset is "2" in this case because each spine switch uses one loopback address.
 4. `vtep_loopback_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the VTEP (Loopback1).
-5. `uplink_interfaces` defines the interfaces used locally on the leaf switches.
-6. `uplink_switches` defines the uplink switches, which are dc2-spine1 and dc2-spine2. Note that the `uplink_interfaces` and `uplink_switches` are paired vertically.
-7. `uplink_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the uplink interfaces that were just defined.
-8. `mlag_interfaces` defines the MLAG interfaces used on each leaf switch, in this case, Ethernet3 and Ethernet4. These two interfaces will form PortChannel3 used for the MLAG peer link. Note that PortChannel3 is selected since the first interface is Ethernet3.
-9. `mlag_peer_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the MLAG peer link interface VLAN4094.
-10. `mlag_peer_l3_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the iBGP peering established between the two leaf switches via the SVI/IRB interface VLAN4093.
-11. `virtual_router_mac_address` defines the MAC address used for the anycast gateway on the various subnets. This is the MAC address connected endpoints will learn when ARPing for their default gateway.
-12. `spanning_tree_priority` sets the spanning tree priority. Since spanning tree in an L3LS network is effectively only running locally on the switch, the same priority across all L3 leaf switches can be re-used.
-13. `spanning_tree_mode` defines the spanning tree mode. In this case, we are using MSTP, which is the default. However, other modes are supported should they be required, for example, for connectivity to legacy or third-party vendor environments.
-14. `node_groups` defines settings common to more than one node. For example, for leaf switches, when exactly two nodes are part of a node group, AVD will, by default, automatically generate MLAG configuration.
-15. `bgp_as` is defined once since an MLAG pair shares a single BGP AS number.
-16. `evpn_gateway` configures the EVPN DC GW features that will be inherited by the children of this group, in this case dc2-leaf2a and dc2-leaf2b. `evpn_l2` configures EVPN DC GW for EVPN type 2 routes (MAC-IP) while `evpn_l3` configures the GW for EVPN type 5 routes (IP-PREFIX).
-17. `remote_peers` defines the RS for EVPN DC GW that will be configured on the device. This is a unique definition per device, and using the hostname, AVD can get all the information from the device in order to generate the configuration: Router ID to peer and BGP AS.
+5. `uplink_switches` defines the uplink switches, which are dc2-spine1 and dc2-spine2. Note that the `uplink_interfaces` and `uplink_switches` are paired vertically.
+6. `uplink_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the uplink interfaces that were just defined.
+7. `mlag_peer_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the MLAG peer link interface VLAN4094.
+8. `mlag_peer_l3_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the iBGP peering established between the two leaf switches via the SVI/IRB interface VLAN4093.
+9. `virtual_router_mac_address` defines the MAC address used for the anycast gateway on the various subnets. This is the MAC address connected endpoints will learn when ARPing for their default gateway.
+10. `spanning_tree_priority` sets the spanning tree priority. Since spanning tree in an L3LS network is effectively only running locally on the switch, the same priority across all L3 leaf switches can be re-used.
+11. `spanning_tree_mode` defines the spanning tree mode. In this case, we are using MSTP, which is the default. However, other modes are supported should they be required, for example, for connectivity to legacy or third-party vendor environments.
+12. `node_groups` defines settings common to more than one node. For example, for leaf switches, when exactly two nodes are part of a node group, AVD will, by default, automatically generate MLAG configuration.
+13. `bgp_as` is defined once since an MLAG pair shares a single BGP AS number.
+14. `evpn_gateway` configures the EVPN DC GW features that will be inherited by the children of this group, in this case dc2-leaf2a and dc2-leaf2b. `evpn_l2` configures EVPN DC GW for EVPN type 2 routes (MAC-IP) while `evpn_l3` configures the GW for EVPN type 5 routes (IP-PREFIX).
+15. `remote_peers` defines the RS for EVPN DC GW that will be configured on the device. This is a unique definition per device, and using the hostname, AVD can get all the information from the device in order to generate the configuration: Router ID to peer and BGP AS.
 
 Since we are adding the EVPN DC GW functionality in DC2, we need to also add it in DC1. This is a snipped part of `ansible-avd-examples/dual-dc-l3ls/group_vars/DC1.yml` file where the changes need to occur:
 
@@ -361,7 +357,7 @@ Since we are adding the EVPN DC GW functionality in DC2, we need to also add it 
 
 ```yaml title="DC1.yml"
     --8<--
-    examples/dual-dc-l3ls/group_vars/DC1.yml:86:115
+    examples/dual-dc-l3ls/group_vars/DC1.yml:74:97
     --8<--
 ```
 
