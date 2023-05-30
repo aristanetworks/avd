@@ -5,6 +5,7 @@
   connection: local
   vars:
     root_dir: '{{ playbook_dir }}'
+    skip_cvp: "{{ lookup('ansible.builtin.env', 'CVP_SKIP', default=true)}}"
     cvp_interface_tags:
       - type: peer # The type of information in the tag
         name: interface_peer # The name to be used for the tag

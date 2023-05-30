@@ -16,6 +16,7 @@
         python_class_name: "AvdStructuredConfigTags"
   delegate_to: localhost
   check_mode: false
+  changed_when: false
 
 - name: "Create folder {{ cvp_tags_dir_name }} for CVP structured YAML files for CVP Tags"
   tags: [debug, never]

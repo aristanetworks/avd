@@ -41,5 +41,9 @@ provisioner:
     # Custom pythonpath to allow loading custom ip_addressing and descriptions modules.
     # See CUSTOM_PYTHON_MODULES_TESTS group vars for details.
     PYTHONPATH: ${PYTHONPATH}:${MOLECULE_SCENARIO_DIRECTORY}/custom_modules
+    CVP_ADDRESS: ${CVP_ADDRESS}
+    CVP_USERNAME: ${CVP_USERNAME}
+    CVP_PASSWORD: ${CVP_PASSWORD}
+    CVP_SKIP: ${CVP_SKIP}
 verifier:
   name: ansible
