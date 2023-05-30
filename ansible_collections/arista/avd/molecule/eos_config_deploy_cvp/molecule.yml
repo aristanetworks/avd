@@ -37,5 +37,7 @@ provisioner:
   ansible_args:
     - --tags=generate,build
     - --skip-tags=online
+    - --extra-vars
+    - "avd_data_conversion_mode=error"
 verifier:
   name: ansible

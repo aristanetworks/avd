@@ -19,13 +19,13 @@ spine:
   # Specific configuration of device must take place under the node definition. Each node inherites all values defined under 'defaults'
   nodes:
     # Name of the node to be defined (must be consistent with definition in inventory)
-    dc1-spine1:
+    - name: dc1-spine1
       # Device ID definition. An integer number used for internal calculations (ie. IPv4 address of the loopback_ipv4_pool among others)
       id: 1
       # Management IP to be assigned to the management interface
       mgmt_ip: 172.16.1.11/24
 
-    dc1-spine2:
+    - name: dc1-spine2
       id: 2
       mgmt_ip: 172.16.1.12/24
 
@@ -63,12 +63,12 @@ l3leaf:
   node_groups:
     # Definition of a node group that will include two devices in MLAG.
     # Definitions under the group will be inherited by both nodes in the group
-    DC1_L3_LEAF1:
+    - group: DC1_L3_LEAF1
       # ASN to be used by BGP for the group. Both devices in the MLAG pair will use the same BGP ASN
       bgp_as: 65101
       nodes:
         # Definition of hostnames under the node_group
-        dc1-leaf1a:
+        - name: dc1-leaf1a
           id: 1
           mgmt_ip: 172.16.1.101/24
           # Definition of the port to be used in the uplink device facing this device.
@@ -76,14 +76,14 @@ l3leaf:
           uplink_switch_interfaces:
             - Ethernet1
             - Ethernet1
-        dc1-leaf1b:
+        - name: dc1-leaf1b
           id: 2
           mgmt_ip: 172.16.1.102/24
           uplink_switch_interfaces:
             - Ethernet2
             - Ethernet2
 
-    DC1_L3_LEAF2:
+    - group: DC1_L3_LEAF2
       bgp_as: 65102
       evpn_gateway:
         # Specific BGP EVPN Gateway functionality for route types 2 (MAC-IP), 3 (IMET) and 5 (IP-PREFIX) can be enabled separately as needed.
@@ -93,7 +93,7 @@ l3leaf:
           enabled: true
           inter_domain: true
       nodes:
-        dc1-leaf2a:
+        - name: dc1-leaf2a
           id: 3
           mgmt_ip: 172.16.1.103/24
           uplink_switch_interfaces:
@@ -103,7 +103,7 @@ l3leaf:
             # Define remote peers of the EVPN VXLAN Gateway. If the hostname can be found in the inventory, ip_address and BGP ASN will be automatically populated. Manual override takes precedence. If the peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
             remote_peers:
               - hostname: dc2-leaf2a
-        dc1-leaf2b:
+        - name: dc1-leaf2b
           id: 4
           mgmt_ip: 172.16.1.104/24
           uplink_switch_interfaces:
@@ -121,20 +121,20 @@ l2leaf:
     spanning_tree_mode: mstp
 
   node_groups:
-    DC1_L2_LEAF1:
+    - group: DC1_L2_LEAF1
       uplink_switches: ['dc1-leaf1a', 'dc1-leaf1b']
       nodes:
-        dc1-leaf1c:
+        - name: dc1-leaf1c
           id: 1
           mgmt_ip: 172.16.1.151/24
           uplink_switch_interfaces:
             - Ethernet8
             - Ethernet8
 
-    DC1_L2_LEAF2:
+    - group: DC1_L2_LEAF2
       uplink_switches: ['dc1-leaf2a', 'dc1-leaf2b']
       nodes:
-        dc1-leaf2c:
+        - name: dc1-leaf2c
           id: 2
           mgmt_ip: 172.16.1.152/24
           uplink_switch_interfaces:
