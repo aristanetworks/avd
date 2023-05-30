@@ -1,6 +1,23 @@
 ---
 all:
   children:
+    CVP:
+      hosts:
+        cv_server:
+          ansible_httpapi_host: "{{ lookup('ansible.builtin.env', 'CVP_ADDRESS') }}"
+          ansible_host: "{{ lookup('ansible.builtin.env', 'CVP_ADDRESS') }}"
+          ansible_user: "{{ lookup('ansible.builtin.env', 'CVP_USERNAME') }}"
+          ansible_password: "{{ lookup('ansible.builtin.env', 'CVP_PASSWORD') }}"
+          ansible_connection: httpapi
+          ansible_httpapi_use_ssl: true
+          ansible_httpapi_validate_certs: false
+          ansible_network_os: eos
+          ansible_httpapi_port: 443
+          # Configuration to get Virtual Env information
+          ansible_python_interpreter: $(which python3)
+          configlet_dir_var: 'configlets'
+          configlets_prefix_var: 'AVD'
+          configlet_file_extension: 'conf'
     FABRIC:
       children:
         DC1:
@@ -9,11 +26,17 @@ all:
               hosts:
                 dc1-spine1:
                   ansible_host: 172.16.1.11
+                  is_deployed: false
                 dc1-spine2:
                   ansible_host: 172.16.1.12
+                  is_deployed: false
             DC1_L3_LEAVES:
               hosts:
                 dc1-leaf1a:
+                  cvp_tags:
+                    custom_tags:
+                      - name: custom_tag
+                        value: custom_value
                   ansible_host: 172.16.1.101
                 dc1-leaf1b:
                   ansible_host: 172.16.1.102
