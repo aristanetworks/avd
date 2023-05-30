@@ -13,11 +13,28 @@ from ansible_collections.arista.avd.roles.eos_designs.python_modules.underlay.ut
 if TYPE_CHECKING:
     from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
 
-INVALID_CUSTOM_TAGS = [
+INVALID_CUSTOM_DEVICE_TAGS = [
     "topology_hint_type",
+    "topology_type",
     "topology_hint_datacenter",
+    "topology_datacenter",
     "topology_hint_rack",
-    "topology_role",
+    "topology_rack",
+    "topology_pod",
+    "topology_hint_pod",
+    "eos",
+    "eostrain",
+    "ztp",
+    "bgp",
+    "container",
+    "mpls",
+    "topology_network_type",
+    "model",
+    "systype",
+    "serialnumber",
+    "tapagg",
+    "hostname",
+    "terminattr",
 ]
 
 
@@ -57,8 +74,10 @@ class AvdStructuredConfigTags(AvdFacts, UtilsMixin):
         device_tags.append(self._topology_hint_dc)
 
         for custom_tag in get(self.shared_utils.hostvars, "cvp_tags.custom_tags", []):
-            if custom_tag["name"] not in INVALID_CUSTOM_TAGS:
+            if custom_tag["name"].lower() not in INVALID_CUSTOM_DEVICE_TAGS:
                 device_tags.append(custom_tag)
+            else:
+                raise AristaAvdError(f"{custom_tag['name']} is Invalid. System Tags cannot be overriden")
 
         interface_tags = []
         for link in self._underlay_links:
