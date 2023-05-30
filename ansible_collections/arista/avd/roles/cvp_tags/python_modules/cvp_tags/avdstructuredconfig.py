@@ -36,6 +36,31 @@ INVALID_CUSTOM_DEVICE_TAGS = [
     "hostname",
     "terminattr",
 ]
+SUPPORTED_INTERFACE_DATA = [
+    "interface",
+    "peer",
+    "peer_interface",
+    "peer_type",
+    "peer_is_deployed",
+    "peer_bgp_as",
+    "type",
+    "speed",
+    "ip_address",
+    "peer_ip_address",
+    "channel_group_id",
+    "peer_channel_group_id",
+    "channel_description",
+    "vlans",
+    "native_vlan",
+    "trunk_groups",
+    "bfd",
+    "ptp",
+    "mac_security",
+    "short_esi",
+    "underlay_multicast",
+    "ipv6_enable",
+    "structured_config",
+]
 
 
 class AvdStructuredConfigTags(AvdFacts, UtilsMixin):
@@ -81,9 +106,15 @@ class AvdStructuredConfigTags(AvdFacts, UtilsMixin):
 
         interface_tags = []
         for link in self._underlay_links:
-            interface_tags.append(self._interface_tags(link))
+            generated_tags = self._interface_tags(link)
+            if generated_tags["tags"]:
+                interface_tags.append(self._interface_tags(link))
 
-        return [{"device": self.shared_utils.hostname, "device_tags": device_tags, "interface_tags": interface_tags}]
+        result = {"device": self.shared_utils.hostname, "device_tags": device_tags}
+        if interface_tags:
+            result["interface_tags"] = interface_tags
+
+        return [result]
 
     # @cached_property
     # def key2(self) -> str:
@@ -160,13 +191,21 @@ class AvdStructuredConfigTags(AvdFacts, UtilsMixin):
         return self.tag_dict("topology_hint_rack", self.shared_utils.rack)
 
     def _interface_tags(self, link):
-        return {
-            "interface": link["interface"],
-            "tags": [
-                {"name": "interface_peer", "value": link["peer"]},
-                {
-                    "name": "interface_description",
-                    "value": self.shared_utils.interface_descriptions.underlay_ethernet_interfaces(link["type"], link["peer"], link["peer_interface"]),
-                },
-            ],
-        }
+        tags = []
+
+        # self.ansible_display.warning(f"{self._hostvars}")
+        tags_to_generate = get(self._hostvars, "cvp_interface_tags", [])
+
+        for tag_definition in tags_to_generate:
+            if tag_definition["type"] in SUPPORTED_INTERFACE_DATA:
+                if tag_definition["type"] in link:
+                    tags.append({"name": tag_definition["name"], "value": link[tag_definition["type"]]})
+            if tag_definition["type"] == "description":
+                tags.append(
+                    {
+                        "name": tag_definition["name"],
+                        "value": self.shared_utils.interface_descriptions.underlay_ethernet_interfaces(link["type"], link["peer"], link["peer_interface"]),
+                    }
+                )
+
+        return {"interface": link["interface"], "tags": tags}

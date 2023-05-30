@@ -17,11 +17,15 @@
     tags:
     - name: interface_peer
       value: dc1-leaf1a
-    - name: interface_description
+    - name: interface_desc
       value: DC1-LEAF1A_Ethernet8
+    - name: peer_int
+      value: Ethernet8
   - interface: Ethernet2
     tags:
     - name: interface_peer
       value: dc1-leaf1b
-    - name: interface_description
+    - name: interface_desc
       value: DC1-LEAF1B_Ethernet8
+    - name: peer_int
+      value: Ethernet8

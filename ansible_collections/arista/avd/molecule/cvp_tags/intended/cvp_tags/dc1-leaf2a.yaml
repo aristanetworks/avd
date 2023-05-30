@@ -13,17 +13,23 @@
     tags:
     - name: interface_peer
       value: dc1-spine1
-    - name: interface_description
+    - name: interface_desc
       value: P2P_LINK_TO_DC1-SPINE1_Ethernet3
+    - name: peer_int
+      value: Ethernet3
   - interface: Ethernet2
     tags:
     - name: interface_peer
       value: dc1-spine2
-    - name: interface_description
+    - name: interface_desc
       value: P2P_LINK_TO_DC1-SPINE2_Ethernet3
+    - name: peer_int
+      value: Ethernet3
   - interface: Ethernet8
     tags:
     - name: interface_peer
       value: dc1-leaf2c
-    - name: interface_description
+    - name: interface_desc
       value: DC1-LEAF2C_Ethernet1
+    - name: peer_int
+      value: Ethernet1

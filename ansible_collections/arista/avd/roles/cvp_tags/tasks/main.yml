@@ -58,4 +58,6 @@
     mode: assign
     auto_create: true
   delegate_to: "{{ cvp_node }}"
-  when: not skip_cvp
+  when:
+    - not skip_cvp
+    - not hostvars[inventory_hostname].is_deployed is arista.avd.defined(false)
