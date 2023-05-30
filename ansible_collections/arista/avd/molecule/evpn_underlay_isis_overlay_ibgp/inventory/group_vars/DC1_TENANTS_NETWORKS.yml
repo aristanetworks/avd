@@ -2,13 +2,13 @@
 # Documentation of Tenant specific information - Vlans/VRFs
 
 tenants:
-  fake_tenant:
+  - name: fake_tenant
     mac_vrf_vni_base: 20000
     vrfs:
-      Tenant_B_OP_Zone:
+      - name: Tenant_B_OP_Zone
         vrf_vni: 20
         svis:
-          210:
+          - id: 210
             name: Tenant_B_OP_Zone_1
             tags: ['opzone']
             enabled: True
