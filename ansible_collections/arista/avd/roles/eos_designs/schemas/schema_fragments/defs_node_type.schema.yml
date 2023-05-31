@@ -520,6 +520,12 @@ $defs:
             default: 4094
           mlag_peer_link_allowed_vlans:
             type: str
+          mlag_compact_addressing:
+            description: |
+              Generate MLAG ip addresses based on the odd ID of an ID pair, this a /31 per allocation
+              Requires MLAG pairs have nodes with an odd and even ID
+            default: false
+            type: bool
           mlag_peer_ipv4_pool:
             description: |
               IP address pool used for MLAG Peer Link (control link). IP is derived from the node id.

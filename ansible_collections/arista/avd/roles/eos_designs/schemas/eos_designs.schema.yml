@@ -4637,6 +4637,12 @@ $defs:
               '
             type: str
             format: ipv4_cidr
+          mlag_compact_addressing:
+            description: |
+              Generate MLAG ip addresses based on the odd ID of an ID pair, this a /31 per allocation
+              Requires MLAG pairs have nodes with an odd and even ID
+            default: false
+            type: bool
           mlag_port_channel_id:
             description: 'If not set, the mlag port-channel id is generated based
               on the digits of the first interface present in ''mlag_interfaces''.
