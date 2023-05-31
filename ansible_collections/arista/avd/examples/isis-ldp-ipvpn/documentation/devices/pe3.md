@@ -431,10 +431,7 @@ router isis CORE
 
 | BGP Tuning |
 | ---------- |
-| no bgp default ipv4-unicast |
 | distance bgp 20 200 200 |
-| graceful-restart restart-time 300 |
-| graceful-restart |
 | graceful-restart restart-time 300 |
 | graceful-restart |
 | no bgp default ipv4-unicast |
@@ -493,10 +490,7 @@ router bgp 65001
    graceful-restart
    maximum-paths 4 ecmp 4
    no bgp default ipv4-unicast
-   no bgp default ipv4-unicast
    distance bgp 20 200 200
-   graceful-restart restart-time 300
-   graceful-restart
    neighbor MPLS-OVERLAY-PEERS peer group
    neighbor MPLS-OVERLAY-PEERS remote-as 65001
    neighbor MPLS-OVERLAY-PEERS update-source Loopback0

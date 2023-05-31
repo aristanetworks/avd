@@ -45,13 +45,14 @@ pe:
     mpls_route_reflectors: [ rr1, rr2 ]
     # ISIS NET system id prefix
     isis_system_id_prefix: '0000.0001'
+    # bgp_distance:
+    #   # The following command must not be enabled when using vEOS-lab
+    #   # - update wait-install
+    #   external_routes: 20
+    #   internal_routes: 200
+    #   local_routes: 200
     bgp_defaults:
-      # The following command must not be enabled when using vEOS-lab
-      # - update wait-install
-      - no bgp default ipv4-unicast
       - distance bgp 20 200 200
-      - graceful-restart restart-time 300
-      - graceful-restart
     spanning_tree_mode: none
 
   # If two nodes (and only two) are in the same node_group, they will automatically form an MLAG pair
@@ -86,10 +87,7 @@ rr:
     bgp_defaults:
       # The following command must not be enabled when using vEOS-lab
       # - update wait-install
-      - no bgp default ipv4-unicast
       - distance bgp 20 200 200
-      - graceful-restart restart-time 300
-      - graceful-restart
 
   node_groups:
     - group: WAN1_RR1-2
