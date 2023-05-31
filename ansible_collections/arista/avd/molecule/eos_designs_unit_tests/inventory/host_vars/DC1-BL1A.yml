@@ -20,7 +20,7 @@ vtep_vvtep_ip: 192.168.255.255/32
 
 # Testing event_handlers
 event_handlers:
-  evpn-blacklist-recovery:
+  - name: evpn-blacklist-recovery
     action_type: bash
     action: FastCli -p 15 -c "clear bgp evpn host-flap"
     delay: 300
