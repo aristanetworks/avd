@@ -15,7 +15,7 @@ l2leaf:
     # - No multicast configuration
     DC1_LEAF1:
       nodes:
-        UNDERLAY-MULTICAST-L2LEAF1A:
+        - name: UNDERLAY-MULTICAST-L2LEAF1A
           id: 1
           mgmt_ip: 192.168.200.109/24
           uplink_switch_interfaces: [Ethernet6]

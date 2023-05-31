@@ -65,9 +65,9 @@ svi_profiles:
     parent_profile: GENERIC_DHCP
     enabled: true
 
-tenants:
-  # Tenant_A Specific Information - VRFs / VLANs
-  Tenant_A: "{{ tenant_a }}"
-  Tenant_B: "{{ tenant_b }}"
-  Tenant_C: "{{ tenant_c }}"
-  Tenant_D: "{{ tenant_d }}"
+network_services_keys:
+  - name: Tenant_A
+  - name: Tenant_B
+  - name: Tenant_C
+  - name: Tenant_D
+

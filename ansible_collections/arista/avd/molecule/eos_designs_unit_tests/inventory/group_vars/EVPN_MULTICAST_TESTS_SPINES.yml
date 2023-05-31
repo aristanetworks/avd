@@ -13,6 +13,6 @@ spine:
     # Expected results:
     # - router multicast enabled for ipv4
     # - p2p links configured with "pim ipv4 sparse-mode"
-    EVPN-MULTICAST-SPINE1:
+    - name: EVPN-MULTICAST-SPINE1
       id: 1
       mgmt_ip: 192.168.200.101/24
