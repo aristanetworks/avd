@@ -1,6 +1,6 @@
 ---
 node_type_keys:
-  spine:
+  - key: spine
     type: spine
     default_overlay_routing_protocol: cvx
 
@@ -9,7 +9,7 @@ spine:
     loopback_ipv4_pool: 192.168.0.0/24
     bgp_as: 65000
   nodes:
-    default_overlay_protocol_cvx:
+    - name: default_overlay_protocol_cvx
       id: 42
 
 type: spine
