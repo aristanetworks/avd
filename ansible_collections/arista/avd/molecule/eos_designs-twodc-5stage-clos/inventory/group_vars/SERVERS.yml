@@ -1,6 +1,6 @@
 ---
 port_profiles:
-  NESTED_TENANT_A:
+  - profile: NESTED_TENANT_A
     parent_profile: TENANT_A
     raw_eos_cli: |
       comment
@@ -12,7 +12,7 @@ port_profiles:
         Comment created from raw_eos_cli under port_channel on profile NESTED_TENANT_A
         EOF
 
-  TENANT_A:
+  - profile: TENANT_A
     mode: access
     vlans: "110"
     qos_profile: "foo"
@@ -24,7 +24,7 @@ port_profiles:
 
 servers:
 
-  server-1:
+  - name: server-1
     rack: RackB
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
