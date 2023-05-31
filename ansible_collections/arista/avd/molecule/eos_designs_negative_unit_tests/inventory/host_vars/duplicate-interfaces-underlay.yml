@@ -8,7 +8,7 @@ l2leaf:
     uplink_interfaces: ['Ethernet2', 'Ethernet2']
 
   nodes:
-    duplicate-interfaces-underlay:
+    - name: duplicate-interfaces-underlay
       id: 1
       mgmt_ip: 172.16.1.151/24
       uplink_switches: ['duplicate-interface-l3-edge', 'duplicate-vrfs']

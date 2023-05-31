@@ -4,7 +4,7 @@ type: l2leaf
 
 l2leaf:
   nodes:
-    duplicate-vlans-l2vlans:
+    - name: duplicate-vlans-l2vlans
       id: 1
 
 tenants:
