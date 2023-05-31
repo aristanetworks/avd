@@ -1,13 +1,17 @@
-# CVP Tags
+# cvp_tags
 
 ## Overview
 
-**cvp_tags** is a role that builds Tags to be added to Devices and Interfaces in CloudVision Portal.
+**cvp_tags** is a role that generates Tags to be added to Devices and Interfaces in CloudVision Portal.
 
-The **eos_config_deploy_cvp** role:
+The **cvp_tags** role:
 
-- Designed to configure CloudVision with fabric configlets & topology.
-- Deploy intended configlets to devices and execute pending tasks.
+- Generates `topology_hint` tags to assist CloudVision in generating a better
+ Topology layout.
+- Generates any custom CloudVision tags defined in the group vars.
+- Genereate tags for interfaces to asssit with filtering/searching with
+CloudVision dashboards.
+- Defines the generated tags on CloudVision via the API.
 
 ## Role requirements
 
@@ -19,18 +23,120 @@ ansible-galaxy collection install arista.cvp
 
 > **NOTE**: When using ansible-cvp modules, the user executing the Ansible playbook must have access to both CVP and the EOS CLI.
 
+## Managing Device Tags
+
+By default, the `cvp_tags` role generates the following CloudVision tags that are applied to each device.
+
+- **topology_hint_type**
+  - This tag indicates to CloudVision whether a device is acting as a leaf,spine,core or edge switch.
+  - This is defined for each `node_type` by default. The default values can be overriden by redefining the whole `node_type_keys`.
+  - When adding new `node_type_keys` it is important to define what `topology_hint_type` is the default for this node type. Example:
+
+    ```yaml
+        node_type_keys:
+        - border_leaf:
+            type: border_leaf
+            cvp_tags:
+              topology_hint_type: edge
+            connected_endpoints: True
+            default_evpn_role: "client"
+            mlag_support: True
+            network_services:
+              l2: True
+              l3: True
+            vtep: True
+    ```
+
+  - Overriding type on a particular device can be done using the `topology_hint_type` key in the `cvp_tags` dictionary. Example:
+
+    ```yaml
+                dc1-leaf2c:
+                  ansible_host: 172.16.1.152
+                  cvp_tags:
+                    topology_hint_type: edge
+    ```
+
+- **topology_hint_datacenter**
+  - This tag indicates to CloudVision the datacenter in which the device is located. This value is extracted from `dc_name`, refer to the `eos_designs` documentation for more information on this key.
+- **topology_hint_fabric**
+  - This tag indicates to CloudVision which fabric this device pertains to. This value is extracted from `fabric_name`, refer to the `eos_designs` documentation for more information on this key.
+- **topology_hint_pod**
+  - This tag indicates to CloudVision which pod this device is part of. This value is extracted from `pod_name`, refer to the `eos_designs` documentation for more information on this key.
+- **topology_hint_rack**
+  - This tag indicates to CloudVision in which physical rack the device is located. It is generated if the `rack` key is defined for a device node group. If `rack` is undefined, this tag is not added.
+
+Additionally, custom tags can be defined for devices by using the `cvp_tags` key.
+
+```yaml
+            DC1_L3_LEAVES:
+              hosts:
+                dc1-leaf1a:
+                  cvp_tags:
+                    custom_tags:
+                      - name: custom_tag
+                        value: custom_value
+                      - name: another_custom_tag
+                        value: another_custom_value
+```
+
+## Managing Interface Tags
+
+By default, no Interface Tags are added. However, it is possible to add a number of tags and specify the name to be used for these tags, by defining the `cvp_interface_tags` list.
+Each entry should define:
+
+- **type** : The type of information to be set in the tag value. Refer to the table below for all the options.
+- **name** : The
+
+Refer to the example below:
+
+```yaml
+cvp_interface_tags: []
+  - type: peer # The type of information in the tag
+    name: interface_peer # The name to be used for the tag in CVP
+  - type: description
+    name: interface_desc
+```
+
+The support `type` are listed below
+
+| Type | Description |
+| ---- | ----------- |
+| description  | adds the full interface desciption tag value |
+| peer  | adds the peer name as a value |
+| peer_interface  | interface name of the peer interface |
+| peer_type | the node type of the peer |
+| peer_is_deployed | true or false depending on whether peer is deployed |
+| peer_bgp_as | |
+| type | The type of this interface |
+| ip_address | IP address of this interface |
+| peer_ip_address | IP Address for the peer interface |
+| channel_group_id | For devices in PortChannel Groups, the ID of this interface |
+| peer_channel_group_id | The ID used locally on the Peer Device for PortChannel |
+| channel_description | Description on the port channel |
+| vlans | vlans allowed on this interface |
+| native_vlan | native vlan on this interface |
+| trunk_groups | Name of trunk groups | |
+| bfd | |
+| ptp | |
+| mac_security | |
+| short_esi | |
+| underlay_multicast | |
+| ipv6_enable | |
+
 ## Role Inputs and Outputs
 
 1. Read inventory
-   1. Build tags per device
-2. Use the CloudVision Portal API to
-   1. List configuration and build configlets list, one per device
+2. Build tags per device
+   1. Build interface tags for each device
+3. Apply tags per device on CloudVision Portal
 
 ### Inputs
 
 **Inventory configuration:**
 
 An entry must be part of the inventory to describe the CloudVision server. `arista.cvp` modules use the httpapi approach. The example below provides a framework to use in your inventory.
+
+> **NOTE**: When using this role, the `hosts` that the playbook should target are the EOS devices defined in the inventory. The CloudVision server should be passed to the role as a varaible. Refer to the [example below](#getting-started).
 
 ```yaml
 all:
@@ -55,54 +161,34 @@ For a complete list of authentication options available with CloudVision Ansible
 
 ### Role variables
 
-- **`example-here`**: Explain
+- **`skip_cvp`**: *Optional* When set to `true`, the role will run through the generation of CloudVision Tags but does not apply any changes to CloudVision. *Useful when troubleshooting/testing together with the `debug` ansible tag.*
+- **`cvp_node`**: *Required* The hostname as specified in the inventory for the CloudVision server.
+- **`cvp_tags_dir`**: *Optional* Define a custom directory where to store the generated tags when running with the `debug` ansible tag. By default it is `intended/cvp_tags/`.
+- **`cvp_interface_tags`**: *Optional* List the interfaces tags that are desired. Refer to the [Managing interface tags](#managing-interface-tags) for more information. By default this is an empty list.
+
+> **NOTE**: By default, the generated tags are not saved to files. To save tags in yaml files, use the `--tags debug` when calling the playbook. This will save the tags to the directory defined `cvp_tags_dir`.
 
 #### Getting Started
 
-Below is an example of how to use role with a single string as `device_filter`:
-
 ```yaml
-- name: Deploy Configs
-  hosts: CVP
+- name: Generate and push CVP Tags
+  hosts: FABRIC
   gather_facts: false
   tasks:
-    - name: Run CVP provisioning
+    - name: Generate CVP Tags
       ansible.builtin.import_role:
-          name: eos_config_deploy_cvp
+          name: arista.avd.cvp_tags
       vars:
-        container_root: 'DC1_FABRIC'
-        configlets_prefix: 'DC1-AVD'
-        device_filter: 'DC1'
-        state: present
-        execute_tasks: false
-```
-
-The following code block is an example of how to use this role with a list of strings to create `device_filter` entries:
-
-```yaml
-- name: Deploy Configs
-  hosts: CVP
-  gather_facts: false
-  tasks:
-    - name: Run CVP provisioning
-      ansible.builtin.import_role:
-          name: eos_config_deploy_cvp
-      vars:
-        container_root: 'DC1_FABRIC'
-        configlets_prefix: 'DC1-AVD'
-        device_filter:
-          - 'DC1'
-          - 'DC2'
-        state: present
-        execute_tasks: false
+        skip_cvp: false  # Set this to true to just generate YAML files with tags
+        cvp_node: <name of cvp node in the inventory>
 ```
 
 #### Ignore devices not provisioned in CloudVision
 
 When you want to provision a complete topology and devices aren't already in CloudVision, you can configure inventory to ignore these devices by using a host variable: `is_deployed`.
 
-- `is_deployed: true` or `is_deployed is not defined`: An entry in **cv_device** is generated and AVD will configure device on CloudVision. If device is undefined, an error is raised.
-- `is_deployed: false`: Device isn't configured in **cv_device** topology and only its configlet is uploaded on CloudVision.
+- `is_deployed: true` or `is_deployed is not defined`: Tags are generated and API calls are made to CloudVision to create the tags. If device is undefined, an error is raised.
+- `is_deployed: false`: Tags are generated in memory on the localhost, but not created on CloudVision. *The tags can be saved to file if the `debug` ansible tags is passed to the playbook.*
 
 Here is an overview with the key configured in the YAML inventory:
 
@@ -110,141 +196,22 @@ Here is an overview with the key configured in the YAML inventory:
   DC1_BL1:
     hosts:
       DC1-BL1A:
-        ansible_port: 8012
   DC1_BL2:
     hosts:
       DC1-BL2A:
-        ansible_port: 8012
-        # Device configuration is generated by AVD
-        # Device is not configured on Cloudvision (configlet is uploaded)
+        # Tags are generated in memory by role.
+        # Tags are not applied to CloudVision.
         is_deployed: false
 ```
-
-#### Deploy using device serial number as key instead of device hostname
-
-During configuration deployment, devices can be identified using their serial number instead of the hostname.
-This avoids the requirement of special DHCP reservations to get the correct hostname assigned for Zero Touch Provisioning (ZTP).
-
-To use serial number as the key, each device must have a hostvar `serial_number` set. This can be set as hostvars in the inventory like:
-
-```yaml
-  DC1_BL1:
-    hosts:
-      DC1-BL1A:
-        serial_number: ABCDEF0123456789
-```
-
-If using `arista.avd.eos_designs`, it is also possible to set `serial_number` under the fabric topology definitions like:
-
-```yaml
-spine:
-  nodes:
-    - name: DC1-SPINE1
-      serial_number: ABCDEF0123456789
-```
-
-Since `eos_designs` will output the `serial_number` as part of the `structured_config`, this config is only available within the same play as where `eos_designs` was run. If you wish to split Ansible playbooks, you can either add an `include_vars` task
-first, to import the `structured_config` file per host, or just set the `serial_number` in the inventory like in the first example above.
-
-To instruct the `arista.avd.eos_config_deploy_cvp` role to use the serial number as the identifier of devices, the playbook should be updates with `cv_collection: v3` and `device_search_key: serialNumber` similar to this example:
-
-```yaml
-- name: Deploy Configs
-  hosts: CVP
-  gather_facts: false
-  tasks:
-    - name: Deploy Configurations to Devices
-      ansible.builtin.import_role:
-        name: arista.avd.eos_config_deploy_cvp
-      vars:
-        container_root: 'DC1_FABRIC'
-        configlets_prefix: 'DC1-AVD'
-        state: present
-        execute_tasks: false
-        cv_collection: v3
-        device_search_key: serialNumber
-```
-
-If the `serial_number` variable is not set correctly, an error will be raised:
-
-```sh
-TASK [arista.avd.eos_config_deploy_cvp : Build DEVICES and CONTAINER definition for mycvpserver] ********************************************************************************************************************************************************************************************************
-An exception occurred during task execution. To see the full traceback, use -vvv. The error was: ansible.errors.AnsibleError: When using 'device_search_key: serialNumber', on device SPINE1 'serial_number' was expected but not set!
-fatal: [mycvpserver -> localhost]: FAILED! => {"changed": false, "msg": "AnsibleError: When using 'device_search_key: serialNumber', on device SPINE1 'serial_number' was expected but not set!"}
-```
-
-#### Add additional configlets
-
-This structure **must** be part of `group_vars` targeting `container_root`. Below is an example applied to `eos_l3_evpn`:
-
-```yaml
-# group_vars/DC1_FABRIC.yml
-
-# List of additional CVP configlets to bind to devices and containers
-# Configlets MUST be configured on CVP before running AVD playbooks.
-cv_configlets:
-  containers:
-    <name of container>:
-      - <First configlet to attach>
-      - <Second configlet to attach>
-      - <...>
-  devices:
-    <inventory_hostname>:
-      - <First configlet to attach>
-      - <Second configlet to attach>
-      - <...>
-    <inventory_hostname>:
-      - <First configlet to attach>
-      - <Second configlet to attach>
-      - <...>
-```
-
-Full example:
-
-```yaml
-# group_vars/DC1_FABRIC.yml
-
-# List of additional CVP configlets to bind to devices and containers
-# Configlets MUST be configured on CVP before running AVD playbooks.
-cv_configlets:
-  containers:
-    DC1_L3LEAFS:
-      - GLOBAL-ALIASES
-  devices:
-    DC1-L2LEAF2A:
-      - GLOBAL-ALIASES
-    DC1-L2LEAF2B:
-      - GLOBAL-ALIASES
-```
-
-*Notes:*
-
-- These configlets **must** be created previously on CloudVision server and won't be managed by AVD roles.
-- Current version **doesn't** support configlets unbound from container for safety reason. In such case, configlets should be removed from variables and manually unbind from containers on CloudVision.
 
 #### Run module with different tags
 
 This module also supports tags to run a subset of ansible tasks:
 
-- **`build`**: Generate Arista Validated Design configuration for EOS devices (structure_configs / configs / documentation) and CloudVision inputs.
-- **`provision`**: Run `build` tags + configure CloudVision with information generated in previous tasks
+- **`debug`**: Save the generated tags to separate YAML files in the `cvp_tags_dir`. By default `cvp_tags_dir` will be `intended/cvp_tags/`.
 
 ```shell
-ansible-playbook playbook.to.deploy.with.cvp.yml --tags "provision"
-```
-
-Other option to run a subset of ansible tasks is to use **`--skip-tags <tag>`**:
-
-- To run the module to update existing configlets only, we can use the following command:
-
-```shell
-ansible-playbook playbook.to.deploy.with.cvp.yml --skip-tags "containers"
-```
-
-- Skipping multiple tags could make the playbook even more lightweight. For example, the command below avoids CVP task execution.
-
-```shell
-ansible-playbook playbook.to.deploy.with.cvp.yml --skip-tags "containers,apply"
+ansible-playbook playbook.to.deploy.cvp.tags.yml --tags "debug"
 ```
 
 ### Outputs
