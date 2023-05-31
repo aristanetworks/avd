@@ -46,7 +46,6 @@ class PatchPanelMixin(UtilsMixin):
                         for subif in subifs:
                             patch = {
                                 "name": f"{point_to_point_service['name']}_{subif['number']}",
-                                "tenant": tenant["name"],
                                 "enabled": True,
                                 "connectors": [
                                     {
@@ -69,13 +68,11 @@ class PatchPanelMixin(UtilsMixin):
                                 primary_key="name",
                                 new_dict=patch,
                                 context="Patches defined under point_to_point_services",
-                                context_keys=["name", "tenant"],
-                                ignore_keys={"tenant"},
+                                context_keys=["name"],
                             )
                     else:
                         patch = {
                             "name": f"{point_to_point_service['name']}",
-                            "tenant": tenant["name"],
                             "enabled": True,
                             "connectors": [
                                 {
@@ -98,8 +95,7 @@ class PatchPanelMixin(UtilsMixin):
                             primary_key="name",
                             new_dict=patch,
                             context="Patches defined under point_to_point_services",
-                            context_keys=["name", "tenant"],
-                            ignore_keys={"tenant"},
+                            context_keys=["name"],
                         )
 
         if patches:

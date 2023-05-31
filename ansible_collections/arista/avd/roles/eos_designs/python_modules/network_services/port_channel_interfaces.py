@@ -77,7 +77,6 @@ class PortChannelInterfacesMixin(UtilsMixin):
 
                             port_channel_interface = {
                                 "name": subif_name,
-                                "tenant": tenant["name"],
                                 "type": "l2dot1q",
                                 "peer_type": "point_to_point_service",
                                 "encapsulation_vlan": {
@@ -98,14 +97,12 @@ class PortChannelInterfacesMixin(UtilsMixin):
                                 primary_key="name",
                                 new_dict=port_channel_interface,
                                 context="Port-Channel Interfaces defined under point_to_point_services",
-                                context_keys=["name", "tenant"],
-                                ignore_keys={"tenant"},
+                                context_keys=["name"],
                             )
 
                     else:
                         interface = {
                             "name": interface_name,
-                            "tenant": tenant["name"],
                             "type": "routed",
                             "peer_type": "point_to_point_service",
                             "shutdown": False,
@@ -134,8 +131,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                             primary_key="name",
                             new_dict=interface,
                             context="Port-Channel Interfaces defined under point_to_point_services",
-                            context_keys=["name", "tenant"],
-                            ignore_keys={"tenant"},
+                            context_keys=["name"],
                         )
 
             port_channel_interfaces.extend(

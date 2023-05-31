@@ -234,12 +234,10 @@ interface Ethernet1
 !
 interface Ethernet4
    no shutdown
-   switchport
    channel-group 4 mode active
 !
 interface Ethernet5
    no shutdown
-   switchport
    channel-group 4 mode active
 !
 interface Ethernet6
