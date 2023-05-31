@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This example includes and describes all the AVD files used to build a Layer 2 Leaf Spine (L2LS) Fabric with the following nodes:
+This example includes and describes all the AVD files used to build a Layer 2 Leaf Spine (L2LS) fabric with the following nodes:
 
 - Two spine nodes
 - Four leaf nodes
@@ -112,7 +112,7 @@ Now that we understand the physical L2LS topology, we must create the Ansible in
     - DC1_LEAFS
 ```
 
-DC1 represents the highest level within the hierarchy. Ansible variables defined at this level will be applied to all nodes in the Fabric. Ansible groups have parent-and-child relationships. For example, both DC1_SPINES and DC1_LEAFS are children of DC1_FABRIC. Groups of Groups are possible and allow variables to be shared at any level within the hierarchy. For example, DC1_NETWORK_SERVICES is a group with two other groups defined as children: DC1_SPINES and DC1_LEAFS. The same applies to the group named DC1_NETWORK_PORTS. You will see these groups listed at the bottom of the inventory file.
+DC1 represents the highest level within the hierarchy. Ansible variables defined at this level will be applied to all nodes in the fabric. Ansible groups have parent-and-child relationships. For example, both DC1_SPINES and DC1_LEAFS are children of DC1_FABRIC. Groups of Groups are possible and allow variables to be shared at any level within the hierarchy. For example, DC1_NETWORK_SERVICES is a group with two other groups defined as children: DC1_SPINES and DC1_LEAFS. The same applies to the group named DC1_NETWORK_PORTS. You will see these groups listed at the bottom of the inventory file.
 
 This naming convention makes it possible to extend anything quickly but can be changed based on your preferences. The names of all groups and hosts must be unique.
 
@@ -134,7 +134,7 @@ examples/l2ls-fabric/inventory.yml
 
 ## AVD Fabric Variables
 
-To apply AVD variables to the nodes in the Fabric, we make use of Ansible group_vars. How and where you define the variables is your choice. The group_vars table below is one example of AVD fabric variables.
+To apply AVD variables to the nodes in the fabric, we make use of Ansible group_vars. How and where you define the variables is your choice. The group_vars table below is one example of AVD fabric variables.
 
 | group_vars/              | Description                                   |
 | ------------------------ | --------------------------------------------- |
@@ -148,7 +148,7 @@ To apply AVD variables to the nodes in the Fabric, we make use of Ansible group_
 The tabs below show the Ansible **group_vars** used in this example.
 
 === "DC1"
-    At the top level (DC1), the following variables are defined in **group_vars/DC1.yml**. These Ansible variables apply to all Fabric nodes and are a common place to set AAA, users, NTP, and management interface settings. Update local_users and passwords for your environment.
+    At the top level (DC1), the following variables are defined in **group_vars/DC1.yml**. These Ansible variables apply to all fabric nodes and are a common place to set AAA, users, NTP, and management interface settings. Update local_users and passwords for your environment.
 
     You can create a sha512_password by creating a username and password on a switch and copy/paste it within double quotes here.
 
@@ -159,7 +159,7 @@ The tabs below show the Ansible **group_vars** used in this example.
     ```
 
 === "DC1_FABRIC"
-    At the Fabric level (DC1_FABRIC), the following variables are defined in **group_vars/DC1_FABRIC.yml**. In addition, the fabric name, design type (l2ls), spine and leaf defaults, ansible authentication, and interface links are defined at this level. Other variables you must supply include spanning-tree mode, priority, and an MLAG IP pool.
+    At the fabric level (DC1_FABRIC), the following variables are defined in **group_vars/DC1_FABRIC.yml**. In addition, the fabric name, design type (l2ls), spine and leaf defaults, ansible authentication, and interface links are defined at this level. Other variables you must supply include spanning-tree mode, priority, and an MLAG IP pool.
 
     Variables applied under the node key type (spine/leaf) defaults section are inherited by nodes under each type. These variables may be overwritten under the node itself.
 
@@ -190,7 +190,7 @@ The tabs below show the Ansible **group_vars** used in this example.
     ```
 
 === "DC1_NETWORK_SERVICES"
-    You add VLANs to the Fabric by updating the **group_vars/DC1_NETWORK_SERVICES.yml**. Each VLAN will be given a name and a list of tags. The tags filter the VLAN to specific leaf Pairs. These variables are applied to the spine and leaf nodes since they are a part of this group.
+    You add VLANs to the fabric by updating the **group_vars/DC1_NETWORK_SERVICES.yml**. Each VLAN will be given a name and a list of tags. The tags filter the VLAN to specific leaf Pairs. These variables are applied to the spine and leaf nodes since they are a part of this group.
 
     ``` yaml
     --8<--
@@ -199,7 +199,7 @@ The tabs below show the Ansible **group_vars** used in this example.
     ```
 
 === "DC1_NETWORK_PORTS"
-    Our Fabric would only be complete by connecting some devices to it. We define connected endpoints and port profiles in **group_vars/DC1_NETWORKS_PORTS.yml**. Each endpoint's adapter defines which switch port(s) and port profile to use. In our example, we have four hosts and a firewall connected to the Fabric. The connected endpoints keys are used for logical separation and apply to interface descriptions. These variables are applied to the spine and leaf nodes since they are a part of this inventory group.
+    Our fabric would only be complete by connecting some devices to it. We define connected endpoints and port profiles in **group_vars/DC1_NETWORKS_PORTS.yml**. Each endpoint's adapter defines which switch port(s) and port profile to use. In our example, we have four hosts and a firewall connected to the fabric. The connected endpoints keys are used for logical separation and apply to interface descriptions. These variables are applied to the spine and leaf nodes since they are a part of this inventory group.
 
     ``` yaml
     --8<--
