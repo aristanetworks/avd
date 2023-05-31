@@ -11,7 +11,3 @@
     - name: Generate Device Configurations and Documentation
       ansible.builtin.import_role:
         name: arista.avd.eos_cli_config_gen
-
-    - name: Deploy Configurations to Devices
-      ansible.builtin.import_role:
-        name: arista.avd.eos_config_deploy_eapi
