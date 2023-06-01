@@ -130,7 +130,7 @@ ethernet_interfaces:
   peer: peer5
   peer_interface: Port-Channel5
   peer_type: other
-  description: P2P_LINK_TO_peer5_Port-Channel5
+  description: P2P_LINK_TO_peer5_Ethernet5
   shutdown: false
   channel_group:
     id: 5
@@ -140,7 +140,7 @@ ethernet_interfaces:
   peer: peer5
   peer_interface: Port-Channel5
   peer_type: other
-  description: P2P_LINK_TO_peer5_Port-Channel5
+  description: P2P_LINK_TO_peer5_Ethernet6
   shutdown: false
   channel_group:
     id: 5
@@ -150,7 +150,7 @@ ethernet_interfaces:
   peer: peer6
   peer_interface: Port-Channel7
   peer_type: other
-  description: P2P_LINK_TO_peer6_Port-Channel7
+  description: P2P_LINK_TO_peer6_Ethernet7
   shutdown: false
   channel_group:
     id: 7
@@ -160,7 +160,7 @@ ethernet_interfaces:
   peer: peer6
   peer_interface: Port-Channel7
   peer_type: other
-  description: P2P_LINK_TO_peer6_Port-Channel7
+  description: P2P_LINK_TO_peer6_Ethernet8
   shutdown: false
   channel_group:
     id: 7

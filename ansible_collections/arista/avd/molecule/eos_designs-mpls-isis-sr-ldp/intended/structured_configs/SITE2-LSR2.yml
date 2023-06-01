@@ -107,7 +107,7 @@ ethernet_interfaces:
   peer: SITE2-LER1
   peer_interface: Port-Channel11
   peer_type: pe
-  description: P2P_LINK_TO_SITE2-LER1_Port-Channel11
+  description: P2P_LINK_TO_SITE2-LER1_Ethernet11
   shutdown: false
   channel_group:
     id: 12
@@ -118,7 +118,7 @@ ethernet_interfaces:
   peer: SITE2-LER1
   peer_interface: Port-Channel11
   peer_type: pe
-  description: P2P_LINK_TO_SITE2-LER1_Port-Channel11
+  description: P2P_LINK_TO_SITE2-LER1_Ethernet11
   shutdown: false
   channel_group:
     id: 12

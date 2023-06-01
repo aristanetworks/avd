@@ -176,7 +176,7 @@ ethernet_interfaces:
   peer: core-1-isis-sr-ldp
   peer_interface: Port-Channel12
   peer_type: core_router
-  description: P2P_LINK_TO_core-1-isis-sr-ldp_Port-Channel12
+  description: P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet12
   shutdown: false
   channel_group:
     id: 12
@@ -187,7 +187,7 @@ ethernet_interfaces:
   peer: core-1-isis-sr-ldp
   peer_interface: Port-Channel12
   peer_type: core_router
-  description: P2P_LINK_TO_core-1-isis-sr-ldp_Port-Channel12
+  description: P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet13
   shutdown: false
   channel_group:
     id: 12
