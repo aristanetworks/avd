@@ -16,7 +16,7 @@ Tenant_D:
             ipv6_address_virtuals:
               - 2001:db8:311::1/64
               - 2001:db8:312::1/64
-          - id:  411
+          - id: 411
             name: Tenant_D_v6_OP_Zone_2
             tags: ['v6opzone']
             enabled: True

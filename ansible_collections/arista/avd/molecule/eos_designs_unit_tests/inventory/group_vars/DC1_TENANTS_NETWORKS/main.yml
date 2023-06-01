@@ -38,7 +38,7 @@ svi_profiles:
         ipv6_address: 2012:db9:413::2/64
         ip_virtual_router_addresses: [ "12.4.13.1" ]
         ipv6_virtual_router_addresses: [ "2012:db9:413::1" ]
-  - profile:  GENERIC_DHCP
+  - profile: GENERIC_DHCP
     mtu: 1560
     enabled: false
     ip_helpers:
@@ -70,4 +70,3 @@ network_services_keys:
   - name: Tenant_B
   - name: Tenant_C
   - name: Tenant_D
-
