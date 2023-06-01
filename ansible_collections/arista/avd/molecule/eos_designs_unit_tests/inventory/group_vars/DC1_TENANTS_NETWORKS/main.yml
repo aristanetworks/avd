@@ -66,7 +66,7 @@ svi_profiles:
     enabled: true
 
 network_services_keys:
-  - name: Tenant_A
-  - name: Tenant_B
-  - name: Tenant_C
-  - name: Tenant_D
+  - name: tenant_a
+  - name: tenant_b
+  - name: tenant_c
+  - name: tenant_d

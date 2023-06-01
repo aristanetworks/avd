@@ -1,4 +1,4 @@
-Tenant_C:
+tenant_c:
   - name: Tenant_C
     mac_vrf_vni_base: 30000
     evpn_l2_multi_domain: false

@@ -1,4 +1,4 @@
-Tenant_A:
+tenant_a:
   - name: Tenant_A
     mac_vrf_vni_base: 10000
     mac_vrf_id_base: 20000
