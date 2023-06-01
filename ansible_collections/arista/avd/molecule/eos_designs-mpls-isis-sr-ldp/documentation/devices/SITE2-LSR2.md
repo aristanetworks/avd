@@ -130,8 +130,8 @@ vlan internal order ascending range 1006 1199
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet3 | P2P_LINK_TO_SITE1-LSR2_Ethernet3 | routed | - | 100.64.48.11/31 | default | 9178 | False | - | - |
-| Ethernet12 | P2P_LINK_TO_SITE2-LER1_Port-Channel11 | *routed | 12 | *100.64.49.1/30 | **default | *9178 | *False | **- | **- |
-| Ethernet13 | P2P_LINK_TO_SITE2-LER1_Port-Channel11 | *routed | 12 | *100.64.49.1/30 | **default | *9178 | *False | **- | **- |
+| Ethernet12 | P2P_LINK_TO_SITE2-LER1_Ethernet11 | *routed | 12 | *100.64.49.1/30 | **default | *9178 | *False | **- | **- |
+| Ethernet13 | P2P_LINK_TO_SITE2-LER1_Ethernet12 | *routed | 12 | *100.64.49.1/30 | **default | *9178 | *False | **- | **- |
 *Inherited from Port-Channel Interface
 
 ##### IPv6
@@ -139,8 +139,8 @@ vlan internal order ascending range 1006 1199
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
 | Ethernet3 | P2P_LINK_TO_SITE1-LSR2_Ethernet3 | routed | - | - | default | 9178 | False | - | - | - | - |
-| Ethernet12 | P2P_LINK_TO_SITE2-LER1_Port-Channel11 | *routed | 12 | *- | *default | *9178 | *False | *- | *- | *- | *- |
-| Ethernet13 | P2P_LINK_TO_SITE2-LER1_Port-Channel11 | *routed | 12 | *- | *default | *9178 | *False | *- | *- | *- | *- |
+| Ethernet12 | P2P_LINK_TO_SITE2-LER1_Ethernet11 | *routed | 12 | *- | *default | *9178 | *False | *- | *- | *- | *- |
+| Ethernet13 | P2P_LINK_TO_SITE2-LER1_Ethernet12 | *routed | 12 | *- | *default | *9178 | *False | *- | *- | *- | *- |
  *Inherited from Port-Channel Interface
 
 ##### ISIS
@@ -178,13 +178,13 @@ interface Ethernet3
 
 !
 interface Ethernet12
-   description P2P_LINK_TO_SITE2-LER1_Port-Channel11
+   description P2P_LINK_TO_SITE2-LER1_Ethernet11
    no shutdown
    speed forced 40gfull
    channel-group 12 mode active
 !
 interface Ethernet13
-   description P2P_LINK_TO_SITE2-LER1_Port-Channel11
+   description P2P_LINK_TO_SITE2-LER1_Ethernet12
    no shutdown
    speed forced 40gfull
    channel-group 12 mode active

@@ -16,28 +16,28 @@ l3leaf:
     uplink_interfaces: [Ethernet1]
     uplink_switches: [CUSTOM-PYTHON_MODULES-SPINE1]
   node_groups:
-    CUSTOM_PYTHON_MODULES_L3LEAF1:
+    - group: CUSTOM_PYTHON_MODULES_L3LEAF1
       bgp_as: 65101
       nodes:
-        CUSTOM-PYTHON_MODULES-L3LEAF1A:
+        - name: CUSTOM-PYTHON_MODULES-L3LEAF1A
           id: 1
           mgmt_ip: 192.168.200.101/24
           uplink_switch_interfaces: [Ethernet1]
-        CUSTOM-PYTHON_MODULES-L3LEAF1B:
+        - name: CUSTOM-PYTHON_MODULES-L3LEAF1B
           id: 2
           mgmt_ip: 192.168.200.102/24
           uplink_switch_interfaces: [Ethernet2]
 
 tenants:
-  CUSTOM_PYTHON_MODULES_TENANT:
+  - name: CUSTOM_PYTHON_MODULES_TENANT
     mac_vrf_vni_base: 11000
     vrfs:
-      TEST_VRF:
+      - name: TEST_VRF
         vrf_id: 1
         mlag_ibgp_peering_ipv4_pool: 10.255.240.0/24
         svis:
           # SVI as string
-          '110':
+          - id: 110
             name: Tenant_A_OP_Zone_1
             tags: ['opzone']
             enabled: True

@@ -3,7 +3,7 @@
 # Everything is tweaked to trigger config generation of all the different peer-groups
 
 node_type_keys:
-  l3leaf:
+  - key: l3leaf
     type: l3leaf
     connected_endpoints: true
     default_evpn_role: client
@@ -14,7 +14,7 @@ node_type_keys:
     vtep: true
     default_evpn_encapsulation: vxlan
     default_overlay_address_families: [ vpn-ipv4, evpn ]
-  pe:
+  - key: pe
     type: pe
     mpls_lsr: true
     default_mpls_overlay_role: client
@@ -72,9 +72,9 @@ l3leaf:
     mlag_peer_ipv4_pool: 192.168.253.0/24
     mlag_interfaces: [ Ethernet3 ]
   node_groups:
-    mlag:
+    - group: mlag
       nodes:
-        bgp-peer-groups-structured-config-1:
+        - name: bgp-peer-groups-structured-config-1
           id: 103
           bgp_as: 103
           evpn_route_servers: [ bgp-peer-groups-structured-config-2 ]
@@ -83,7 +83,7 @@ l3leaf:
           evpn_gateway:
             evpn_l3:
               enabled: true
-        bgp-peer-groups-structured-config-2:
+        - name: bgp-peer-groups-structured-config-2
           id: 104
           bgp_as: 104
           evpn_role: server
@@ -98,9 +98,9 @@ pe:
     node_sid_base: 100
     isis_system_id_prefix: '0000.0002'
   node_groups:
-    bgp-peer-groups-structured-config-3:
+    - group: bgp-peer-groups-structured-config-3
       nodes:
-        bgp-peer-groups-structured-config-3:
+        - name: bgp-peer-groups-structured-config-3
           id: 106
           bgp_as: 106
           evpn_role: client
@@ -111,7 +111,7 @@ pe:
 # MPLS Beta code is hardcoded to look for this dictionary.
 rr:
   node_groups:
-    dummy:
+    - group: dummy
       nodes:
-        bgp-peer-groups-structured-config-1:
-        bgp-peer-groups-structured-config-2:
+        - name: bgp-peer-groups-structured-config-1
+        - name: bgp-peer-groups-structured-config-2

@@ -1,10 +1,10 @@
 ---
 ### group_vars/DC1_FABRIC.yml
 
-# Set the Fabric Name - must match an Ansible Inventroy Group
+# Set the Fabric Name - must match an Ansible Inventory Group
 fabric_name: DC1_FABRIC
 
-# Set Design Type to L2ls
+# Set Design Type to l2ls
 design:
   type: l2ls
 

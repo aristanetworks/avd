@@ -281,9 +281,20 @@ ethernet_interfaces:
 - name: Ethernet11
   type: port-channel-member
   peer: SITE2-LSR2
-  peer_interface: Port-Channel12
+  peer_interface: Ethernet12
   peer_type: p
-  description: P2P_LINK_TO_SITE2-LSR2_Port-Channel12
+  description: P2P_LINK_TO_SITE2-LSR2_Ethernet12
+  shutdown: false
+  channel_group:
+    id: 11
+    mode: active
+  speed: forced 40gfull
+- name: Ethernet12
+  type: port-channel-member
+  peer: SITE2-LSR2
+  peer_interface: Ethernet13
+  peer_type: p
+  description: P2P_LINK_TO_SITE2-LSR2_Ethernet13
   shutdown: false
   channel_group:
     id: 11
