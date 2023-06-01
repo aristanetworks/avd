@@ -7,13 +7,13 @@ l3leaf:
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24
 
   node_groups:
-    duplicate-vlans-mlag:
+    - group: duplicate-vlans-mlag
       nodes:
-        duplicate-vlans-mlag-a:
+        - name: duplicate-vlans-mlag-a
           bgp_as: 42
           id: 42
 
-        duplicate-vlans-mlag-b:
+        - name: duplicate-vlans-mlag-b
           bgp_as: 6500
           id: 40
 

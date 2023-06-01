@@ -6,7 +6,7 @@ l3leaf:
     bgp_as: 42
     vtep_loopback_ipv4_pool: 10.43.0.0/24
   nodes:
-    duplicate-vni-l2vlans-vxlan-interface:
+    - name: duplicate-vni-l2vlans-vxlan-interface
       id: 42
 
 type: l3leaf
