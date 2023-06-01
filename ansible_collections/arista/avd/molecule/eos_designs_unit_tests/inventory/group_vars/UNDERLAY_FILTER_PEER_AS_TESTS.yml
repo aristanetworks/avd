@@ -5,7 +5,7 @@ l3leaf:
   defaults:
     evpn_role: none
   nodes:
-    UNDERLAY_FILTER_PEER_AS_L3LEAF1:
+    - name: UNDERLAY_FILTER_PEER_AS_L3LEAF1
       bgp_as: 65001
       uplink_switches: [ UNDERLAY_FILTER_PEER_AS_SPINE1, UNDERLAY_FILTER_PEER_AS_SPINE2 ]
       uplink_interfaces: [ Ethernet1, Ethernet2 ]
@@ -23,7 +23,7 @@ spine:
     loopback_ipv4_pool: 192.168.255.0/24
     bgp_as: 65000
   nodes:
-    UNDERLAY_FILTER_PEER_AS_SPINE1:
+    - name: UNDERLAY_FILTER_PEER_AS_SPINE1
       id: 1
-    UNDERLAY_FILTER_PEER_AS_SPINE2:
+    - name: UNDERLAY_FILTER_PEER_AS_SPINE2
       id: 2

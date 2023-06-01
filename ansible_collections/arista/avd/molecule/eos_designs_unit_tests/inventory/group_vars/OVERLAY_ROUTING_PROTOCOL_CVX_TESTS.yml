@@ -14,10 +14,10 @@ overlay_routing_protocol: CVX
 overlay_cvx_servers: [OVERLAY_ROUTING_PROTOCOL_CVX_SERVER1, OVERLAY_ROUTING_PROTOCOL_CVX_SERVER2]
 
 node_type_keys:
-  cvxserver:
+  - key: cvxserver
     type: cvxserver
     underlay_router: false
-  l3leaf:
+  - key: l3leaf
     type: l3leaf
     connected_endpoints: true
     default_evpn_role: client
@@ -30,10 +30,10 @@ node_type_keys:
 
 cvxserver:
   nodes:
-    OVERLAY_ROUTING_PROTOCOL_CVX_SERVER1:
+    - name: OVERLAY_ROUTING_PROTOCOL_CVX_SERVER1
       id: 1
       mgmt_ip: 192.168.254.254/23
-    OVERLAY_ROUTING_PROTOCOL_CVX_SERVER2:
+    - name: OVERLAY_ROUTING_PROTOCOL_CVX_SERVER2
       id: 2
       mgmt_ip: 192.168.254.255/23
 l3leaf:
@@ -41,26 +41,26 @@ l3leaf:
     loopback_ipv4_pool: 192.168.254.0/24
     vtep_loopback_ipv4_pool: 192.168.253.0/24
   nodes:
-    OVERLAY_ROUTING_PROTOCOL_CVX_L3LEAF1:
+    - name: OVERLAY_ROUTING_PROTOCOL_CVX_L3LEAF1
       bgp_as: 65001
       id: 1
-    OVERLAY_ROUTING_PROTOCOL_CVX_L3LEAF2:
+    - name: OVERLAY_ROUTING_PROTOCOL_CVX_L3LEAF2
       bgp_as: 65002
       id: 2
 
 tenants:
-  TEST:
+  - name: TEST
     mac_vrf_vni_base: 11000
     # Notice VRFs are not configured under interface vxlan1 when running with CVX.
     vrfs:
-      TEST:
+      - name: TEST
         # vrf_id: 1
         svis:
-          3910:
+          - id: 3910
             name: SVI_3910
 
     l2vlans:
-      2910:
+      - id: 2910
         name: L2VLAN_2910
-      2911:
+      - id: 2911
         name: L2VLAN_2911

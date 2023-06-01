@@ -1,6 +1,6 @@
 # Fabric node type keys
 node_type_keys:
-  core_router:
+  - key: core_router
     type: core_router
     default_evpn_role: none
     mpls_lsr: true
@@ -41,11 +41,11 @@ core_router:
     node_sid_base: 200
     isis_system_id_prefix: "0000.0001"
   nodes:
-    core-1-isis-sr-ldp:
+    - name: core-1-isis-sr-ldp
       id: 1
-    core-2-ospf-ldp:
+    - name: core-2-ospf-ldp
       id: 2
-    core-3-isis-sr-ldp:
+    - name: core-3-isis-sr-ldp
       id: 3
 
 core_interfaces:
@@ -138,8 +138,10 @@ core_interfaces:
       port_channel:
         mode: active
         nodes_child_interfaces:
-          core-1-isis-sr-ldp: [ Ethernet12, Ethernet13 ]
-          core-2-ospf-ldp: [ Ethernet12, Ethernet13 ]
+          - node: core-1-isis-sr-ldp
+            interfaces: [ Ethernet12, Ethernet13 ]
+          - node: core-2-ospf-ldp
+            interfaces: [ Ethernet12, Ethernet13 ]
       profile: isis_bb_profile
 
 
