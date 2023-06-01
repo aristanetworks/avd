@@ -19,13 +19,13 @@ spine:
         description Loopback created from raw_eos_cli under spine defaults in DC2 POD1
   nodes:
     # Spine also working as EVPN RS
-    DC2-POD1-SPINE1:
+    - name: DC2-POD1-SPINE1
       id: 1
       mgmt_ip: 192.168.1.20/24
       evpn_role: server
       uplink_switch_interfaces: ['Ethernet1', 'Ethernet1']
       evpn_route_servers: [ DC1-RS1, DC1-SUPER-SPINE1, DC1-POD1-SPINE1, DC1-POD1-LEAF1A ]
-    DC2-POD1-SPINE2:
+    - name: DC2-POD1-SPINE2
       id: 2
       evpn_role: none
       mgmt_ip: 192.168.1.21/24
@@ -61,22 +61,22 @@ l3leaf:
     mlag_peer_ipv4_pool: 172.20.120.0/24
   node_groups:
     # Single switch working as underlay L3 router and EVPN RS
-    RACK1_SINGLE:
+    - group: RACK1_SINGLE
       bgp_as: 65211
       nodes:
-        DC2-POD1-LEAF1A:
+        - name: DC2-POD1-LEAF1A
           id: 1
           mgmt_ip: 192.168.1.22/24
           uplink_switch_interfaces: ['Ethernet3', 'Ethernet3']
 
     # Single leaf with l2only combined with inband management parent
-    RACK2_SINGLE:
+    - group: RACK2_SINGLE
       evpn_role: client
       evpn_route_servers: [ DC2-POD1-LEAF1A ]
       bgp_as: 65212
       evpn_services_l2_only: true
       nodes:
-        DC2-POD1-LEAF2A:
+        - name: DC2-POD1-LEAF2A
           id: 2
           mgmt_ip: 192.168.1.24/24
           uplink_switch_interfaces: ['Ethernet4', 'Ethernet4']
@@ -94,17 +94,17 @@ l2leaf:
       interface Loopback1011
         description Loopback created from raw_eos_cli under l2leaf defaults in DC2 POD1
   node_groups:
-    RACK1_SINGLE:
+    - group: RACK1_SINGLE
       uplink_switches: ['DC2-POD1-LEAF1A']
       nodes:
-        DC2-POD1-L2LEAF1A:
+        - name: DC2-POD1-L2LEAF1A
           id: 1
           mgmt_ip: 192.168.1.23/24
           uplink_switch_interfaces: ['Ethernet3']
-    RACK2_SINGLE:
+    - group: RACK2_SINGLE
       uplink_switches: ['DC2-POD1-LEAF2A']
       nodes:
-        DC2-POD1-L2LEAF2A:
+        - name: DC2-POD1-L2LEAF2A
           id: 2
           mgmt_ip: 192.168.1.25/24
           uplink_switch_interfaces: ['Ethernet3']

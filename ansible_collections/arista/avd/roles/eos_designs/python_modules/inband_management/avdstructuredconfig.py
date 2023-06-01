@@ -87,11 +87,7 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
         if not self.shared_utils.underlay_bgp:
             return None
 
-        return {
-            "redistribute_routes": {
-                "attached-host": {},
-            }
-        }
+        return {"redistribute_routes": [{"source_protocol": "attached-host"}]}
 
     @cached_property
     def prefix_lists(self) -> list | None:
@@ -138,13 +134,14 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
         return [
             {
                 "name": "RM-CONN-2-BGP",
-                "sequence_numbers": {
-                    # sequence 10 is set in underlay so avoid setting it here
-                    20: {
+                "sequence_numbers": [
+                    {
+                        # sequence 10 is set in underlay so avoid setting it here
+                        "sequence": 20,
                         "type": "permit",
                         "match": ["ip address prefix-list PL-L2LEAF-INBAND-MGMT"],
                     }
-                },
+                ],
             }
         ]
 
