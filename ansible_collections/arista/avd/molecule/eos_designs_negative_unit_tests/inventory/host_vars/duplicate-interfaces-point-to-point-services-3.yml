@@ -48,4 +48,4 @@ tenants:
             nodes: [ "duplicate-interfaces-point-to-point-services-3" ]
             interfaces: [ "Ethernet6" ]
 
-expected_error_message: "Duplicate interface_name Ethernet6.1000 found while generating subinterfaces under port_to_point_services"
+expected_error_message: "Found duplicate objects with conflicting data while generating configuration for Ethernet Interfaces defined under point_to_point_services. {'name': 'Ethernet6.1000'} conflicts with {'name': 'Ethernet6.1000'}."

@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from functools import cached_property
 
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate
+
 from .utils import UtilsMixin
 
 
@@ -23,14 +25,21 @@ class StructCfgsMixin(UtilsMixin):
         if not self.shared_utils.network_services_l3:
             return None
 
-        structured_configs = []
-
+        vrf_struct_cfgs = []
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
                 if (structured_config := vrf.get("structured_config")) is not None:
-                    structured_configs.append(structured_config)
+                    # Inserting VRF into structured_config to perform duplication checks
+                    vrf_struct_cfg = {"vrf": vrf["name"], "struct_cfg": structured_config}
+                    append_if_not_duplicate(
+                        list_of_dicts=vrf_struct_cfgs,
+                        primary_key="vrf",
+                        new_dict=vrf_struct_cfg,
+                        context="Structured Config for VRF '{vrf['name']}'",
+                        context_keys=["vrf"],
+                    )
 
-        if structured_configs:
-            return structured_configs
+        if vrf_struct_cfgs:
+            return [vrf_struct_cfg["struct_cfg"] for vrf_struct_cfg in vrf_struct_cfgs]
 
         return None

@@ -336,17 +336,21 @@ ethernet_interfaces:
   vrf: TENANT_B_WAN
 - name: Ethernet7
   type: routed
-  peer_type: l3_interface
+  peer_type: point_to_point_service
   shutdown: false
   lldp:
     transmit: false
     receive: false
 - name: Ethernet4
+  type: port-channel-member
+  peer_type: point_to_point_service
   shutdown: false
   channel_group:
     id: 4
     mode: active
 - name: Ethernet5
+  type: port-channel-member
+  peer_type: point_to_point_service
   shutdown: false
   channel_group:
     id: 4
@@ -390,57 +394,57 @@ port_channel_interfaces:
       igp_sync: true
 - name: Port-Channel4.1000
   type: l2dot1q
+  peer_type: point_to_point_service
   encapsulation_vlan:
     client:
       dot1q:
         vlan: 1000
     network:
       client: true
-  peer_type: l3_interface
   shutdown: false
 - name: Port-Channel4.1001
   type: l2dot1q
+  peer_type: point_to_point_service
   encapsulation_vlan:
     client:
       dot1q:
         vlan: 1001
     network:
       client: true
-  peer_type: l3_interface
   shutdown: false
 - name: Port-Channel4.1002
   type: l2dot1q
+  peer_type: point_to_point_service
   encapsulation_vlan:
     client:
       dot1q:
         vlan: 1002
     network:
       client: true
-  peer_type: l3_interface
   shutdown: false
 - name: Port-Channel4.1003
   type: l2dot1q
+  peer_type: point_to_point_service
   encapsulation_vlan:
     client:
       dot1q:
         vlan: 1003
     network:
       client: true
-  peer_type: l3_interface
   shutdown: false
 - name: Port-Channel4.1004
   type: l2dot1q
+  peer_type: point_to_point_service
   encapsulation_vlan:
     client:
       dot1q:
         vlan: 1004
     network:
       client: true
-  peer_type: l3_interface
   shutdown: false
 - name: Port-Channel4
   type: routed
-  peer_type: l3_interface
+  peer_type: system
   shutdown: false
 patch_panel:
   patches:

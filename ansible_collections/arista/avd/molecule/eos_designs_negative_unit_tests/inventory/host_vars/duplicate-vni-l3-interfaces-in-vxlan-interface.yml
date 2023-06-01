@@ -33,4 +33,4 @@ tenants:
             enabled: True
             description: "test"
 
-expected_error_message: "Duplicate VXLAN VNI '1010' found in Tenant 'Tenant_A' during configuration of VRF 'Tenant_A_WAN_Zone'."
+expected_error_message: "Found duplicate objects with conflicting data while generating configuration for VXLAN VNIs for VRFs. {'id': None, 'name': 'Tenant_A_WAN_Zone', 'vni': 1010} conflicts with {'id': 10, 'name': None, 'vni': 1010}."

@@ -47,4 +47,6 @@ tenants:
             port_channel:
               mode: 'on'
 
-expected_error_message: "Duplicate interface_name Ethernet6 found while generating ethernet_interfaces for point_to_point_services node: duplicate-interfaces-point-to-point-services-2"
+expected_error_message: >-
+  Found duplicate objects with conflicting data while generating configuration for Ethernet Interfaces defined under point_to_point_services.
+  {'name': 'Ethernet6', 'channel_group': {'id': 6, 'mode': 'on'}} conflicts with {'name': 'Ethernet6', 'channel_group': {'id': 6, 'mode': 'active'}}.
