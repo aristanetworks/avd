@@ -14,10 +14,10 @@ overlay_routing_protocol: CVX
 overlay_cvx_servers: [OVERLAY_ROUTING_PROTOCOL_CVX_SERVER1, OVERLAY_ROUTING_PROTOCOL_CVX_SERVER2]
 
 node_type_keys:
-  cvxserver:
+  - key: cvxserver
     type: cvxserver
     underlay_router: false
-  l3leaf:
+  - key: l3leaf
     type: l3leaf
     connected_endpoints: true
     default_evpn_role: client

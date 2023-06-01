@@ -13,7 +13,7 @@ l2leaf:
     # Test scenario of child device with underlay_router: false (default for l2leaf).
     # Expected results:
     # - No multicast configuration
-    DC1_LEAF1:
+    - group: DC1_LEAF1
       nodes:
         - name: UNDERLAY-MULTICAST-L2LEAF1A
           id: 1

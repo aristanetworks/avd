@@ -26,7 +26,7 @@ l3leaf:
         tags: ["leaf2"]
   node_groups:
     # Testing MLAG in combination with HER to ensure no EVPN artifacts are generated
-    - group: VERLAY_ROUTING_PROTOCOL_HER_L3LEAF3
+    - group: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3
       bgp_as: 65003
       mlag_interfaces: [Eth1-2]
       mlag_peer_ipv4_pool: 192.168.254.0/24
@@ -43,7 +43,7 @@ tenants:
   - name: TEST
     mac_vrf_vni_base: 10000
     vrfs:
-      - id: TEST
+      - name: TEST
         vrf_id: 1
         svis:
           - id: 3900

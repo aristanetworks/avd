@@ -153,14 +153,13 @@ l3leaf:
         tenants: [ all ]
         tags: [ wan ]
         always_include_vrfs_in_tenants: [ 'Tenant_B' ]
-# Test cornercase in convert_dicts with keys that have no value
       structured_config:
         sflow:
           vrfs:
-            OOB:
+            - name: OOB
               destinations:
-                192.168.200.10:
-                10.0.200.90:
+                - destination: 192.168.200.10
+                - destination: 10.0.200.90
               # Testing custom_structured_configuration using inline jinja with switch.x facts.
               # Common customer use case, so we should make sure this does not break.
               source_interface: "{{ switch.mgmt_interface }}"

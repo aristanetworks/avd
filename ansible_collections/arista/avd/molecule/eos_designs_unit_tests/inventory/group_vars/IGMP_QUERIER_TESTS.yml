@@ -5,12 +5,12 @@
 mgmt_gateway: 192.168.200.5
 
 svi_profiles:
-  IGMP_QUERIER_PARENT:
+  - profile: IGMP_QUERIER_PARENT
     igmp_snooping_querier:
       enabled: true
-  IGMP_QUERIER_CHILD_1:
+  - profile: IGMP_QUERIER_CHILD_1
     parent_profile: "IGMP_QUERIER_PARENT"
-  IGMP_QUERIER_CHILD_2:
+  - profile: IGMP_QUERIER_CHILD_2
     parent_profile: "IGMP_QUERIER_PARENT"
     igmp_snooping_querier:
       enabled: true
