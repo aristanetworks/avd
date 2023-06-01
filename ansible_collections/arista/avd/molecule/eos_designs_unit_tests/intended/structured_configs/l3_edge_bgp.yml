@@ -128,7 +128,7 @@ ethernet_interfaces:
 - name: Ethernet5
   type: port-channel-member
   peer: peer5
-  peer_interface: Port-Channel5
+  peer_interface: Ethernet5
   peer_type: other
   description: P2P_LINK_TO_peer5_Ethernet5
   shutdown: false
@@ -138,7 +138,7 @@ ethernet_interfaces:
 - name: Ethernet6
   type: port-channel-member
   peer: peer5
-  peer_interface: Port-Channel5
+  peer_interface: Ethernet6
   peer_type: other
   description: P2P_LINK_TO_peer5_Ethernet6
   shutdown: false
@@ -148,7 +148,7 @@ ethernet_interfaces:
 - name: Ethernet7
   type: port-channel-member
   peer: peer6
-  peer_interface: Port-Channel7
+  peer_interface: Ethernet7
   peer_type: other
   description: P2P_LINK_TO_peer6_Ethernet7
   shutdown: false
@@ -158,7 +158,7 @@ ethernet_interfaces:
 - name: Ethernet8
   type: port-channel-member
   peer: peer6
-  peer_interface: Port-Channel7
+  peer_interface: Ethernet8
   peer_type: other
   description: P2P_LINK_TO_peer6_Ethernet8
   shutdown: false

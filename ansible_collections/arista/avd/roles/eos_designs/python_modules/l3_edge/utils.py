@@ -298,8 +298,8 @@ class UtilsMixin:
         TODO: Change description for members to be the physical peer interface instead of port-channel
         """
         peer = p2p_link["data"]["peer"]
-        peer_interface = p2p_link["data"]["peer_interface"]
-        default_description = f"P2P_LINK_TO_{peer}_{member['peer_interface']}"
+        peer_interface = member["peer_interface"]
+        default_description = f"P2P_LINK_TO_{peer}_{peer_interface}"
         return {
             "name": member["interface"],
             "type": "port-channel-member",

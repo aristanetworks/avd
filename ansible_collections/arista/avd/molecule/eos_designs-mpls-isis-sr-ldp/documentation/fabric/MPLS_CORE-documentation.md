@@ -46,10 +46,10 @@
 | p | SITE1-LSR1 | Ethernet3 | p | SITE2-LSR1 | Ethernet3 |
 | p | SITE1-LSR1 | Ethernet4 | rr | SITE1-RR1 | Ethernet4 |
 | p | SITE1-LSR2 | Ethernet3 | p | SITE2-LSR2 | Ethernet3 |
-| p | SITE2-LSR1 | Ethernet1 | pe | SITE2-LER1 | Ethernet1 |
+| pe | SITE2-LER1 | Ethernet1 | p | SITE2-LSR1 | Ethernet1 |
+| pe | SITE2-LER1 | Ethernet11 | p | SITE2-LSR2 | Ethernet12 |
+| pe | SITE2-LER1 | Ethernet12 | p | SITE2-LSR2 | Ethernet13 |
 | p | SITE2-LSR1 | Ethernet4 | rr | SITE2-RR1 | Ethernet4 |
-| p | SITE2-LSR2 | Ethernet12 | pe | SITE2-LER1 | Port-Channel11 |
-| p | SITE2-LSR2 | Ethernet13 | pe | SITE2-LER1 | Port-Channel11 |
 
 ## Fabric IP Allocation
 
@@ -68,13 +68,14 @@
 | SITE1-LSR1 | Ethernet3 | 100.64.48.8/31 | SITE2-LSR1 | Ethernet3 | 100.64.48.9/31 |
 | SITE1-LSR1 | Ethernet4 | 100.64.48.6/31 | SITE1-RR1 | Ethernet4 | 100.64.48.7/31 |
 | SITE1-LSR2 | Ethernet3 | 100.64.48.10/31 | SITE2-LSR2 | Ethernet3 | 100.64.48.11/31 |
+| SITE2-LER1 | Ethernet1 | 100.64.48.15/31 | SITE2-LSR1 | Ethernet1 | 100.64.48.14/31 |
 | SITE2-LSR1 | Ethernet4 | 100.64.48.12/31 | SITE2-RR1 | Ethernet4 | 100.64.48.13/31 |
 
 ### Loopback Interfaces (BGP EVPN Peering)
 
 | Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------- | ------------------- | ------------------ | ------------------ |
-| 100.70.0.0/24 | 256 | 9 | 3.52 % |
+| 100.70.0.0/24 | 256 | 10 | 3.91 % |
 
 ### Loopback0 Interfaces Node Allocation
 
@@ -85,6 +86,7 @@
 | MPLS_CORE | SITE1-LSR1 | 100.70.0.1/32 |
 | MPLS_CORE | SITE1-LSR2 | 100.70.0.2/32 |
 | MPLS_CORE | SITE1-RR1 | 100.70.0.8/32 |
+| MPLS_CORE | SITE2-LER1 | 100.70.0.7/32 |
 | MPLS_CORE | SITE2-LSR1 | 100.70.0.3/32 |
 | MPLS_CORE | SITE2-LSR2 | 100.70.0.4/32 |
 | MPLS_CORE | SITE2-RR1 | 100.70.0.9/32 |
@@ -99,6 +101,7 @@
 | MPLS_CORE | SITE1-LSR1 | 49.0001.0000.0000.0001.00 |
 | MPLS_CORE | SITE1-LSR2 | 49.0001.0000.0000.0002.00 |
 | MPLS_CORE | SITE1-RR1 | 49.0001.0000.0002.0008.00 |
+| MPLS_CORE | SITE2-LER1 | 49.0001.0000.0001.0007.00 |
 | MPLS_CORE | SITE2-LSR1 | 49.0001.0000.0000.0003.00 |
 | MPLS_CORE | SITE2-LSR2 | 49.0001.0000.0000.0004.00 |
 | MPLS_CORE | SITE2-RR1 | 49.0001.0000.0002.0009.00 |
