@@ -172,6 +172,20 @@ router_bgp:
           - ip_address: 10.2.3.5
             activate: true
             route_map_in: RM-10.2.3.5-SET-NEXT-HOP-IN
+          - ip_address: 10.2.3.6
+            next_hop:
+              address_family_ipv6:
+                enabled: true
+          - ip_address: 10.2.3.7
+            next_hop:
+              address_family_ipv6:
+                enabled: true
+                originate: true
+          - ip_address: 10.2.3.8
+            next_hop:
+              address_family_ipv6:
+                enabled: false
+                originate: true # this should not get added to the configuration
         networks:
           - prefix: 10.0.0.0/8
           - prefix: 100.64.0.0/10
