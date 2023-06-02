@@ -28,6 +28,10 @@ class UtilsMixin:
         return self.shared_utils.mlag_switch_ids["secondary"]
 
     @cached_property
+    def _ipaddress_mlag_algorithm(self: "AvdIpAddressing") -> str:
+        return self.shared_utils.ip_addressing_mlag_algorithm
+
+    @cached_property
     def _mlag_peer_ipv4_pool(self: "AvdIpAddressing") -> str:
         return self.shared_utils.mlag_peer_ipv4_pool
 

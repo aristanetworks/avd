@@ -737,6 +737,23 @@ keys:
             min: 2
             max: 4094
             required: true
+  ip_addressing:
+    type: dict
+    keys:
+      mlag:
+        type: dict
+        keys:
+          algorithm:
+            type: str
+            convert_to_lower_case: true
+            default: first_id
+            description: "- This variable defines the Multi-chassis Link Aggregation
+              (MLAG) algorithm used.\n- The following MLAG algorithms are supported:\n
+              \ - first_id\n  - odd_id\n- By default, the 'first_id' algorithm is
+              used.\n"
+            valid_values:
+            - first_id
+            - odd_id
   ipv6_mgmt_destination_networks:
     description: 'List of IPv6 prefixes to configure as static routes towards the
       OOB IPv6 Management interface gateway.

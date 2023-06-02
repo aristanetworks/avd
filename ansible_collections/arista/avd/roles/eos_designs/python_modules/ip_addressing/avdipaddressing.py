@@ -35,6 +35,33 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         template_vars = ChainMap(kwargs, self._hostvars)
         return self.shared_utils.template_var(template_path, template_vars)
 
+    def _mlag_ip(self, pool: str, ip_offset: int) -> str:
+        addressing_alg = self._ipaddress_mlag_algorithm
+
+        if addressing_alg == "odd_id":
+            offset = self._mlag_odd_id_based_offset()
+            return self._ip(pool, 31, offset, ip_offset)
+
+        offset = self._mlag_primary_id - 1
+        return self._ip(pool, 31, offset, ip_offset)
+
+    def _mlag_odd_id_based_offset(self) -> int:
+        """
+        Return the subnet offset for an MLAG pair based on odd id
+
+        Requires a pair of odd and even IDs
+        """
+
+        # Verify a mix of odd and even IDs
+        if (self._mlag_primary_id % 2) + (self._mlag_secondary_id % 2) != 1:
+            raise AristaAvdError("MLAG compact addressing mode requires all MLAG pairs to have a single odd and even ID")
+
+        odd_id = self._mlag_primary_id
+        if odd_id % 2 == 0:
+            odd_id = self._mlag_secondary_id
+
+        return int(((odd_id - 1) / 2))
+
     def mlag_ibgp_peering_ip_primary(self, mlag_ibgp_peering_ipv4_pool: str) -> str:
         """
         Return IP for L3 Peerings in VRFs for MLAG Primary
@@ -47,8 +74,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
                 vrf={"mlag_ibgp_peering_ipv4_pool": mlag_ibgp_peering_ipv4_pool},
             )
 
-        offset = self._mlag_primary_id - 1
-        return self._ip(mlag_ibgp_peering_ipv4_pool, 31, offset, 0)
+        return self._mlag_ip(mlag_ibgp_peering_ipv4_pool, 0)
 
     def mlag_ibgp_peering_ip_secondary(self, mlag_ibgp_peering_ipv4_pool: str) -> str:
         """
@@ -62,8 +88,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
                 vrf={"mlag_ibgp_peering_ipv4_pool": mlag_ibgp_peering_ipv4_pool},
             )
 
-        offset = self._mlag_primary_id - 1
-        return self._ip(mlag_ibgp_peering_ipv4_pool, 31, offset, 1)
+        return self._mlag_ip(mlag_ibgp_peering_ipv4_pool, 1)
 
     def mlag_ip_primary(self) -> str:
         """
@@ -80,8 +105,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
                 switch_data={"combined": {"mlag_peer_ipv4_pool": self._mlag_peer_ipv4_pool}},
             )
 
-        offset = self._mlag_primary_id - 1
-        return self._ip(self._mlag_peer_ipv4_pool, 31, offset, 0)
+        return self._mlag_ip(self._mlag_peer_ipv4_pool, 0)
 
     def mlag_ip_secondary(self) -> str:
         """
@@ -98,8 +122,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
                 switch_data={"combined": {"mlag_peer_ipv4_pool": self._mlag_peer_ipv4_pool}},
             )
 
-        offset = self._mlag_primary_id - 1
-        return self._ip(self._mlag_peer_ipv4_pool, 31, offset, 1)
+        return self._mlag_ip(self._mlag_peer_ipv4_pool, 1)
 
     def mlag_l3_ip_primary(self) -> str:
         """
@@ -116,8 +139,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
                 switch_data={"combined": {"mlag_peer_l3_ipv4_pool": self._mlag_peer_l3_ipv4_pool}},
             )
 
-        offset = self._mlag_primary_id - 1
-        return self._ip(self._mlag_peer_l3_ipv4_pool, 31, offset, 0)
+        return self._mlag_ip(self._mlag_peer_l3_ipv4_pool, 0)
 
     def mlag_l3_ip_secondary(self) -> str:
         """
@@ -134,8 +156,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
                 switch_data={"combined": {"mlag_peer_l3_ipv4_pool": self._mlag_peer_l3_ipv4_pool}},
             )
 
-        offset = self._mlag_primary_id - 1
-        return self._ip(self._mlag_peer_l3_ipv4_pool, 31, offset, 1)
+        return self._mlag_ip(self._mlag_peer_l3_ipv4_pool, 1)
 
     def p2p_uplinks_ip(self, uplink_switch_index: int) -> str:
         """

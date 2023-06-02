@@ -207,3 +207,11 @@ class MiscMixin:
     @cached_property
     def pod_name(self: SharedUtils) -> str | None:
         return get(self.hostvars, "pod_name")
+
+    @cached_property
+    def ip_addressing_mlag_algorithm(self: SharedUtils) -> str:
+        """
+        This method fetches the MLAG algorithm value from host variables.
+        It defaults to 'first_id' if the variable is not defined.
+        """
+        return get(self.hostvars, "ip_addressing.mlag.algorithm", default="first_id")

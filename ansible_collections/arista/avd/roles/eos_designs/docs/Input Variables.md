@@ -3583,6 +3583,24 @@ Internal vlan allocation order and range.
         ending: <int>
     ```
 
+## IP Addressing
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>ip_addressing</samp>](## "ip_addressing") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;mlag</samp>](## "ip_addressing.mlag") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;algorithm</samp>](## "ip_addressing.mlag.algorithm") | String |  | first_id | Value is converted to lower case<br>Valid Values:<br>- first_id<br>- odd_id | - This variable defines the Multi-chassis Link Aggregation (MLAG) algorithm used.<br>- The following MLAG algorithms are supported:<br>  - first_id<br>  - odd_id<br>- By default, the 'first_id' algorithm is used.<br> |
+
+=== "YAML"
+
+    ```yaml
+    ip_addressing:
+      mlag:
+        algorithm: <str>
+    ```
+
 ## IPv6 Management Destination Networks
 
 List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface gateway.
