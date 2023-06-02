@@ -1581,6 +1581,17 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name
+                      next_hop:
+                        type: dict
+                        keys:
+                          address_family_ipv6:
+                            type: dict
+                            keys:
+                              enabled:
+                                type: bool
+                                required: true
+                              originate:
+                                type: bool
                 peer_groups:
                   type: list
                   primary_key: name
