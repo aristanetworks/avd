@@ -113,11 +113,17 @@ router_bgp:
         - '12:12'
     redistribute_routes:
     - source_protocol: connected
-    neighbor_interfaces:
-    - name: Vlan3011
+    neighbors:
+    - ip_address: 10.255.251.3
       peer_group: MLAG_PEER
-      remote_as: '65102'
-      description: DC1-LEAF2B
+    address_family_ipv4:
+      neighbors:
+      - ip_address: 10.255.251.3
+        next_hop:
+          address_family_ipv6:
+            enabled: false
+    updates:
+      wait_install: true
   - name: Tenant_A_DB_Zone
     router_id: 192.168.255.6
     rd: 192.168.255.6:13
@@ -132,11 +138,17 @@ router_bgp:
         - '13:13'
     redistribute_routes:
     - source_protocol: connected
-    neighbor_interfaces:
-    - name: Vlan3012
+    neighbors:
+    - ip_address: 10.255.251.3
       peer_group: MLAG_PEER
-      remote_as: '65102'
-      description: DC1-LEAF2B
+    address_family_ipv4:
+      neighbors:
+      - ip_address: 10.255.251.3
+        next_hop:
+          address_family_ipv6:
+            enabled: false
+    updates:
+      wait_install: true
   - name: Tenant_A_OP_Zone
     router_id: 192.168.255.6
     rd: 192.168.255.6:10
@@ -151,11 +163,17 @@ router_bgp:
         - '10:10'
     redistribute_routes:
     - source_protocol: connected
-    neighbor_interfaces:
-    - name: Vlan3009
+    neighbors:
+    - ip_address: 10.255.251.3
       peer_group: MLAG_PEER
-      remote_as: '65102'
-      description: DC1-LEAF2B
+    address_family_ipv4:
+      neighbors:
+      - ip_address: 10.255.251.3
+        next_hop:
+          address_family_ipv6:
+            enabled: false
+    updates:
+      wait_install: true
   - name: Tenant_A_WEB_Zone
     router_id: 192.168.255.6
     rd: 192.168.255.6:11
@@ -170,11 +188,17 @@ router_bgp:
         - '11:11'
     redistribute_routes:
     - source_protocol: connected
-    neighbor_interfaces:
-    - name: Vlan3010
+    neighbors:
+    - ip_address: 10.255.251.3
       peer_group: MLAG_PEER
-      remote_as: '65102'
-      description: DC1-LEAF2B
+    address_family_ipv4:
+      neighbors:
+      - ip_address: 10.255.251.3
+        next_hop:
+          address_family_ipv6:
+            enabled: false
+    updates:
+      wait_install: true
   - name: Tenant_B_OP_Zone
     router_id: 192.168.255.6
     rd: 192.168.255.6:20
@@ -189,11 +213,17 @@ router_bgp:
         - '20:20'
     redistribute_routes:
     - source_protocol: connected
-    neighbor_interfaces:
-    - name: Vlan3019
+    neighbors:
+    - ip_address: 10.255.251.3
       peer_group: MLAG_PEER
-      remote_as: '65102'
-      description: DC1-LEAF2B
+    address_family_ipv4:
+      neighbors:
+      - ip_address: 10.255.251.3
+        next_hop:
+          address_family_ipv6:
+            enabled: false
+    updates:
+      wait_install: true
   - name: Tenant_C_OP_Zone
     router_id: 192.168.255.6
     rd: 192.168.255.6:30
@@ -208,11 +238,17 @@ router_bgp:
         - '30:30'
     redistribute_routes:
     - source_protocol: connected
-    neighbor_interfaces:
-    - name: Vlan2
+    neighbors:
+    - ip_address: 10.255.251.3
       peer_group: MLAG_PEER
-      remote_as: '65102'
-      description: DC1-LEAF2B
+    address_family_ipv4:
+      neighbors:
+      - ip_address: 10.255.251.3
+        next_hop:
+          address_family_ipv6:
+            enabled: false
+    updates:
+      wait_install: true
   vlan_aware_bundles:
   - name: Tenant_A_APP_Zone
     rd: 192.168.255.6:12
@@ -327,22 +363,22 @@ vrfs:
   ip_routing: false
 - name: Tenant_A_APP_Zone
   tenant: Tenant_A
-  ip_routing_ipv6_interfaces: true
+  ip_routing: true
 - name: Tenant_A_DB_Zone
   tenant: Tenant_A
-  ip_routing_ipv6_interfaces: true
+  ip_routing: true
 - name: Tenant_A_OP_Zone
   tenant: Tenant_A
-  ip_routing_ipv6_interfaces: true
+  ip_routing: true
 - name: Tenant_A_WEB_Zone
   tenant: Tenant_A
-  ip_routing_ipv6_interfaces: true
+  ip_routing: true
 - name: Tenant_B_OP_Zone
   tenant: Tenant_B
-  ip_routing_ipv6_interfaces: true
+  ip_routing: true
 - name: Tenant_C_OP_Zone
   tenant: Tenant_C
-  ip_routing_ipv6_interfaces: true
+  ip_routing: true
 management_interfaces:
 - name: Management1
   description: oob_management
@@ -480,7 +516,7 @@ vlan_interfaces:
   description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_APP_Zone'
   vrf: Tenant_A_APP_Zone
   mtu: 1500
-  ipv6_enable: true
+  ip_address: 10.255.251.2/31
 - name: Vlan140
   tenant: Tenant_A
   tags:
@@ -505,7 +541,7 @@ vlan_interfaces:
   description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_DB_Zone'
   vrf: Tenant_A_DB_Zone
   mtu: 1500
-  ipv6_enable: true
+  ip_address: 10.255.251.2/31
 - name: Vlan110
   tenant: Tenant_A
   tags:
@@ -533,7 +569,7 @@ vlan_interfaces:
   description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone'
   vrf: Tenant_A_OP_Zone
   mtu: 1500
-  ipv6_enable: true
+  ip_address: 10.255.251.2/31
 - name: Vlan120
   tenant: Tenant_A
   tags:
@@ -563,7 +599,7 @@ vlan_interfaces:
   description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_WEB_Zone'
   vrf: Tenant_A_WEB_Zone
   mtu: 1500
-  ipv6_enable: true
+  ip_address: 10.255.251.2/31
 - name: Vlan210
   tenant: Tenant_B
   tags:
@@ -587,7 +623,7 @@ vlan_interfaces:
   description: 'MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone'
   vrf: Tenant_B_OP_Zone
   mtu: 1500
-  ipv6_enable: true
+  ip_address: 10.255.251.2/31
 - name: Vlan310
   tenant: Tenant_C
   tags:
@@ -611,7 +647,7 @@ vlan_interfaces:
   description: 'MLAG_PEER_L3_iBGP: vrf Tenant_C_OP_Zone'
   vrf: Tenant_C_OP_Zone
   mtu: 1500
-  ipv6_enable: true
+  ip_address: 10.255.251.2/31
 port_channel_interfaces:
 - name: Port-Channel5
   description: MLAG_PEER_DC1-LEAF2B_Po5

@@ -90,15 +90,15 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     - source_protocol: ospf
+    address_family_ipv4:
+      neighbors:
+      - ip_address: 192.168.48.3
+        activate: true
     neighbors:
     - ip_address: 192.168.48.3
       description: TENANT_B_CPE_SITE5
       password: OajzUG59/YF0NkgvOQyRnQ==
       remote_as: '65202'
-    address_family_ipv4:
-      neighbors:
-      - ip_address: 192.168.48.3
-        activate: true
     updates:
       wait_install: true
   vlans:

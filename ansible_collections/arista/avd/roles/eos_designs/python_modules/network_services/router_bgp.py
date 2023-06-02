@@ -222,19 +222,28 @@ class RouterBgpMixin(UtilsMixin):
                             ip_address = self.shared_utils.mlag_peer_ibgp_ip
 
                         bgp_vrf.setdefault("neighbors", []).append(
-                            {"ip_address": ip_address, "peer_group": self.shared_utils.bgp_peer_groups["mlag_ipv4_underlay_peer"]["name"]}
+                            {
+                                "ip_address": ip_address,
+                                "peer_group": self.shared_utils.bgp_peer_groups["mlag_ipv4_underlay_peer"]["name"],
+                            }
                         )
+                        if self.shared_utils.underlay_rfc5549:
+                            bgp_vrf.setdefault("address_family_ipv4", {}).setdefault("neighbors", []).append(
+                                {
+                                    "ip_address": ip_address,
+                                    "next_hop": {
+                                        "address_family_ipv6": {
+                                            "enabled": False,
+                                        }
+                                    },
+                                }
+                            )
 
-                address_families = {}
                 for bgp_peer in vrf["bgp_peers"]:
                     peer_ip = bgp_peer.pop("ip_address")
                     address_family = f"address_family_ipv{ipaddress.ip_address(peer_ip).version}"
                     neighbor = {"ip_address": peer_ip, "activate": True}
-
-                    if address_family not in address_families:
-                        address_families[address_family] = {"neighbors": [neighbor]}
-                    else:
-                        address_families[address_family]["neighbors"].append(neighbor)
+                    bgp_vrf.setdefault(address_family, {}).setdefault("neighbors", []).append(neighbor)
 
                     if bgp_peer.get("set_ipv4_next_hop") is not None or bgp_peer.get("set_ipv6_next_hop") is not None:
                         route_map = f"RM-{vrf_name}-{peer_ip}-SET-NEXT-HOP-OUT"
@@ -258,9 +267,6 @@ class RouterBgpMixin(UtilsMixin):
                     and self.shared_utils.hostname in get(vrf, "ospf.nodes", default=[self.shared_utils.hostname])
                 ):
                     bgp_vrf["redistribute_routes"].append({"source_protocol": "ospf"})
-
-                if address_families:
-                    bgp_vrf.update(address_families)
 
                 if (evpn_multicast_transit_mode := get(vrf, "_evpn_l3_multicast_evpn_peg_transit")) is True:
                     bgp_vrf["evpn_multicast_address_family"] = {"ipv4": {"transit": evpn_multicast_transit_mode}}

@@ -14316,6 +14316,37 @@
                           "type": "string",
                           "description": "Outbound route-map name",
                           "title": "Route Map Out"
+                        },
+                        "next_hop": {
+                          "type": "object",
+                          "properties": {
+                            "address_family_ipv6": {
+                              "type": "object",
+                              "properties": {
+                                "enabled": {
+                                  "type": "boolean",
+                                  "title": "Enabled"
+                                },
+                                "originate": {
+                                  "type": "boolean",
+                                  "title": "Originate"
+                                }
+                              },
+                              "required": [
+                                "enabled"
+                              ],
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Address Family IPv6"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Next Hop"
                         }
                       },
                       "additionalProperties": false,
