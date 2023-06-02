@@ -1,26 +1,7 @@
 Node Type,Node,Node Interface,Peer Type,Peer Node,Peer Interface,Node Interface Enabled
-l3leaf,DC1-BL1A,Ethernet7,l3_interface,,,True
-l3leaf,DC1-BL1A,Ethernet8,l3_interface,,,True
-l3leaf,DC1-BL1A,Ethernet9,l3_interface,,,True
-l3leaf,DC1-BL1A,Ethernet10,l3_interface,,,True
-l3leaf,DC1-BL1A,Ethernet10.100,l3_interface,,,True
-l3leaf,DC1-BL1A,Ethernet10.200,l3_interface,,,True
-l3leaf,DC1-BL1A,Ethernet41,spine,DC1-SPINE1,Ethernet6,True
-l3leaf,DC1-BL1A,Ethernet42,spine,DC1-SPINE2,Ethernet6,True
-l3leaf,DC1-BL1A,Ethernet43,spine,DC1-SPINE3,Ethernet6,True
-l3leaf,DC1-BL1A,Ethernet44,spine,DC1-SPINE4,Ethernet6,True
-l3leaf,DC1-BL1A,Ethernet4000,my_precious,MY-own-peer,Ethernet123,True
-l3leaf,DC1-BL1B,Ethernet7,l3_interface,,,True
-l3leaf,DC1-BL1B,Ethernet8,l3_interface,,,True
-l3leaf,DC1-BL1B,Ethernet9,l3_interface,,,True
-l3leaf,DC1-BL1B,Ethernet10,l3_interface,,,True
-l3leaf,DC1-BL1B,Ethernet10.100,l3_interface,,,True
-l3leaf,DC1-BL1B,Ethernet10.200,l3_interface,,,True
-l3leaf,DC1-BL1B,Ethernet45,spine,DC1-SPINE1,Ethernet7,True
-l3leaf,DC1-BL1B,Ethernet46,spine,DC1-SPINE2,Ethernet7,True
-l3leaf,DC1-BL1B,Ethernet47,spine,DC1-SPINE3,Ethernet7,True
-l3leaf,DC1-BL1B,Ethernet48,spine,DC1-SPINE4,Ethernet7,True
-l3leaf,DC1-BL1B,Ethernet4000,my_precious,MY-own-peer,Ethernet123,True
+l3leaf,DC1-BL1A,{'name': 'Ethernet4000', 'description': 'My test', 'ip_address': '10.1.2.3/12', 'shutdown': False, 'type': 'routed', 'mtu': 1500, 'peer': 'MY-own-peer', 'peer_interface': 'Ethernet123', 'peer_type': 'my_precious'},,,,True
+l3leaf,DC1-BL1A,{'name': 'Ethernet4000', 'ip_address': '10.3.2.1/21'},,,,True
+l3leaf,DC1-BL1B,{'name': 'Ethernet4000', 'description': 'My second test'},,,,True
 l2leaf,DC1-L2LEAF1A,Ethernet1,l3leaf,DC1-LEAF2A,Ethernet7,True
 l2leaf,DC1-L2LEAF1A,Ethernet2,l3leaf,DC1-LEAF2B,Ethernet7,True
 l2leaf,DC1-L2LEAF1A,Ethernet3,mlag_peer,DC1-L2LEAF1B,Ethernet3,True

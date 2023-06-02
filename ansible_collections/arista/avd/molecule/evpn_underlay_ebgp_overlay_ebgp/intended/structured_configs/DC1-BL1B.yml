@@ -89,6 +89,12 @@ router_bgp:
       redistribute_routes:
       - connected
       - static
+      address_family_ipv4:
+        neighbors:
+        - ip_address: 123.1.1.10
+          activate: true
+        - ip_address: 123.1.1.11
+          activate: true
       neighbors:
         123.1.1.10:
           remote_as: 1234
@@ -123,19 +129,12 @@ router_bgp:
           route_map_out: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
         fd5a:fe45:8831:06c5::b:
           remote_as: 12345
-      address_families:
-        ipv4:
-          neighbors:
-            123.1.1.10:
-              activate: true
-            123.1.1.11:
-              activate: true
-        ipv6:
-          neighbors:
-            fd5a:fe45:8831:06c5::a:
-              activate: true
-            fd5a:fe45:8831:06c5::b:
-              activate: true
+      address_family_ipv6:
+        neighbors:
+        - ip_address: fd5a:fe45:8831:06c5::a
+          activate: true
+        - ip_address: fd5a:fe45:8831:06c5::b
+          activate: true
     Tenant_L3_VRF_Zone:
       router_id: 192.168.255.15
       rd: 192.168.255.15:15
@@ -314,101 +313,8 @@ management_api_http:
     MGMT: {}
   enable_https: true
 ethernet_interfaces:
-  Ethernet45:
-    peer: DC1-SPINE1
-    peer_interface: Ethernet7
-    peer_type: spine
-    description: CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet7
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.97/31
-  Ethernet46:
-    peer: DC1-SPINE2
-    peer_interface: Ethernet7
-    peer_type: spine
-    description: CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet7
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.99/31
-  Ethernet47:
-    peer: DC1-SPINE3
-    peer_interface: Ethernet7
-    peer_type: spine
-    description: CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet7
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.101/31
-  Ethernet48:
-    peer: DC1-SPINE4
-    peer_interface: Ethernet7
-    peer_type: spine
-    description: CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet7
-    speed: forced 100gfull
-    shutdown: false
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.103/31
-  Ethernet7:
-    peer_type: l3_interface
-    ip_address: 10.10.20.20/24
-    mtu: 9000
-    shutdown: false
-    description: test
-    type: routed
-    vrf: Tenant_A_WAN_Zone
-  Ethernet8:
-    peer_type: l3_interface
-    ip_address: 10.10.30.10/24
-    mtu: 9000
-    shutdown: false
-    description: test
-    type: routed
-    vrf: Tenant_L3_VRF_Zone
-  Ethernet9:
-    peer_type: l3_interface
-    ip_address: 10.10.40.20/24
-    mtu: 9000
-    shutdown: false
-    description: test
-    type: routed
-    vrf: Tenant_L3_VRF_Zone
-  Ethernet10.100:
-    peer_type: l3_interface
-    ip_address: 10.10.31.10/24
-    mtu: 9000
-    shutdown: false
-    description: subinterface test
-    type: l3dot1q
-    encapsulation_dot1q_vlan: 100
-    vrf: Tenant_L3_VRF_Zone
-  Ethernet10.200:
-    peer_type: l3_interface
-    ip_address: 10.10.41.10/24
-    mtu: 9000
-    shutdown: false
-    description: subinterface test with vlan override
-    type: l3dot1q
-    encapsulation_dot1q_vlan: 141
-    vrf: Tenant_L3_VRF_Zone
-  Ethernet10:
-    type: routed
-    peer_type: l3_interface
-    shutdown: false
-  Ethernet4000:
-    description: My second test
-    ip_address: 10.1.2.3/12
-    shutdown: false
-    type: routed
-    mtu: 1500
-    peer: MY-own-peer
-    peer_interface: Ethernet123
-    peer_type: my_precious
+- name: Ethernet4000
+  description: My second test
 loopback_interfaces:
   Loopback0:
     description: CUSTOM_EVPN_Overlay_Peering_L3LEAF

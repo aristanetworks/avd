@@ -56,8 +56,14 @@ router_bgp:
       redistribute_routes:
       - connected
       neighbors:
-        10.255.247.0:
-          peer_group: MLAG-IPv4-UNDERLAY-PEER
+      - ip_address: 10.255.247.0
+        peer_group: MLAG-IPv4-UNDERLAY-PEER
+      address_family_ipv4:
+        neighbors:
+        - ip_address: 10.255.247.0
+          next_hop:
+            address_family_ipv6:
+              enabled: false
     TG_200:
       router_id: 192.168.250.10
       rd: 192.168.250.10:200
@@ -71,8 +77,14 @@ router_bgp:
       redistribute_routes:
       - connected
       neighbors:
-        10.255.247.0:
-          peer_group: MLAG-IPv4-UNDERLAY-PEER
+      - ip_address: 10.255.247.0
+        peer_group: MLAG-IPv4-UNDERLAY-PEER
+      address_family_ipv4:
+        neighbors:
+        - ip_address: 10.255.247.0
+          next_hop:
+            address_family_ipv6:
+              enabled: false
     TG_300:
       router_id: 192.168.250.10
       rd: 192.168.250.10:300
@@ -86,8 +98,14 @@ router_bgp:
       redistribute_routes:
       - connected
       neighbors:
-        10.255.247.0:
-          peer_group: MLAG-IPv4-UNDERLAY-PEER
+      - ip_address: 10.255.247.0
+        peer_group: MLAG-IPv4-UNDERLAY-PEER
+      address_family_ipv4:
+        neighbors:
+        - ip_address: 10.255.247.0
+          next_hop:
+            address_family_ipv6:
+              enabled: false
   vlans:
     100:
       tenant: TRUNK_GROUP_TESTS

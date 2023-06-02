@@ -56,8 +56,14 @@ router_bgp:
       redistribute_routes:
       - connected
       neighbors:
-        10.255.247.5:
-          peer_group: MLAG-IPv4-UNDERLAY-PEER
+      - ip_address: 10.255.247.5
+        peer_group: MLAG-IPv4-UNDERLAY-PEER
+      address_family_ipv4:
+        neighbors:
+        - ip_address: 10.255.247.5
+          next_hop:
+            address_family_ipv6:
+              enabled: false
   vlans:
     200:
       tenant: TRUNK_GROUP_TESTS

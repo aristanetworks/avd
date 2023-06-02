@@ -793,6 +793,9 @@ router bgp 65104
       router-id 192.168.255.11
       neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
+      !
+      address-family ipv4
+         no neighbor 10.255.251.10 next-hop address-family ipv6
    !
    vrf Tenant_B_WAN_Zone
       rd 192.168.255.11:21
@@ -801,6 +804,9 @@ router bgp 65104
       router-id 192.168.255.11
       neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
+      !
+      address-family ipv4
+         no neighbor 10.255.251.10 next-hop address-family ipv6
    !
    vrf Tenant_C_WAN_Zone
       rd 192.168.255.11:31
@@ -809,6 +815,9 @@ router bgp 65104
       router-id 192.168.255.11
       neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
+      !
+      address-family ipv4
+         no neighbor 10.255.251.10 next-hop address-family ipv6
 ```
 
 # BFD

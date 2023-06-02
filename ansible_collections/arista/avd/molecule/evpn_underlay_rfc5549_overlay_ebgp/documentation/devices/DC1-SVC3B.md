@@ -1037,21 +1037,30 @@ ip routing ipv6 interfaces vrf Tenant_C_WAN_Zone
 | --- | --------------- |
 | default | True |
 | MGMT | false |
-| Tenant_A_APP_Zone | false |
-| Tenant_A_DB_Zone | false |
-| Tenant_A_OP_Zone | false |
-| Tenant_A_WAN_Zone | false |
-| Tenant_A_WEB_Zone | false |
-| Tenant_B_OP_Zone | false |
-| Tenant_B_WAN_Zone | false |
-| Tenant_C_OP_Zone | false |
-| Tenant_C_WAN_Zone | false |
+| Tenant_A_APP_Zone | true |
+| Tenant_A_DB_Zone | true |
+| Tenant_A_OP_Zone | true |
+| Tenant_A_WAN_Zone | true |
+| Tenant_A_WEB_Zone | true |
+| Tenant_B_OP_Zone | true |
+| Tenant_B_WAN_Zone | true |
+| Tenant_C_OP_Zone | true |
+| Tenant_C_WAN_Zone | true |
 
 ### IPv6 Routing Device Configuration
 
 ```eos
 !
 ipv6 unicast-routing
+ipv6 unicast-routing vrf Tenant_A_APP_Zone
+ipv6 unicast-routing vrf Tenant_A_DB_Zone
+ipv6 unicast-routing vrf Tenant_A_OP_Zone
+ipv6 unicast-routing vrf Tenant_A_WAN_Zone
+ipv6 unicast-routing vrf Tenant_A_WEB_Zone
+ipv6 unicast-routing vrf Tenant_B_OP_Zone
+ipv6 unicast-routing vrf Tenant_B_WAN_Zone
+ipv6 unicast-routing vrf Tenant_C_OP_Zone
+ipv6 unicast-routing vrf Tenant_C_WAN_Zone
 ```
 
 ## Static Routes

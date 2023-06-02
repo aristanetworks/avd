@@ -1047,6 +1047,9 @@ router bgp 65102
       router-id 192.168.255.6
       neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
+      !
+      address-family ipv4
+         no neighbor 10.255.251.3 next-hop address-family ipv6
    !
    vrf Tenant_A_DB_Zone
       rd 192.168.255.6:13
@@ -1055,6 +1058,9 @@ router bgp 65102
       router-id 192.168.255.6
       neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
+      !
+      address-family ipv4
+         no neighbor 10.255.251.3 next-hop address-family ipv6
    !
    vrf Tenant_A_OP_Zone
       rd 192.168.255.6:10
@@ -1063,6 +1069,9 @@ router bgp 65102
       router-id 192.168.255.6
       neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
+      !
+      address-family ipv4
+         no neighbor 10.255.251.3 next-hop address-family ipv6
    !
    vrf Tenant_A_WEB_Zone
       rd 192.168.255.6:11
@@ -1071,6 +1080,9 @@ router bgp 65102
       router-id 192.168.255.6
       neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
+      !
+      address-family ipv4
+         no neighbor 10.255.251.3 next-hop address-family ipv6
    !
    vrf Tenant_B_OP_Zone
       rd 192.168.255.6:20
@@ -1079,6 +1091,9 @@ router bgp 65102
       router-id 192.168.255.6
       neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
+      !
+      address-family ipv4
+         no neighbor 10.255.251.3 next-hop address-family ipv6
    !
    vrf Tenant_C_OP_Zone
       rd 192.168.255.6:30
@@ -1087,6 +1102,9 @@ router bgp 65102
       router-id 192.168.255.6
       neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
+      !
+      address-family ipv4
+         no neighbor 10.255.251.3 next-hop address-family ipv6
 ```
 
 # BFD

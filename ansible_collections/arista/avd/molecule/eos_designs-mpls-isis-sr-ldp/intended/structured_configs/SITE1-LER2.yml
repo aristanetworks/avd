@@ -81,16 +81,15 @@ router_bgp:
           - '65000:20'
       redistribute_routes:
       - connected
+      address_family_ipv4:
+        neighbors:
+        - ip_address: 192.168.48.1
+          activate: true
       neighbors:
         192.168.48.1:
           description: TENANT_B_CPE_SITE3
           password: toZKiUFLVUTU4hdS5V8F4Q==
           remote_as: '65201'
-      address_families:
-        ipv4:
-          neighbors:
-            192.168.48.1:
-              activate: true
   vlans:
     10:
       tenant: TENANT_A

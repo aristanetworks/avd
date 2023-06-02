@@ -105,8 +105,14 @@ router_bgp:
       redistribute_routes:
       - connected
       neighbors:
-        10.255.251.2:
-          peer_group: MLAG_PEER
+      - ip_address: 10.255.251.2
+        peer_group: MLAG_PEER
+      address_family_ipv4:
+        neighbors:
+        - ip_address: 10.255.251.2
+          next_hop:
+            address_family_ipv6:
+              enabled: false
     Tenant_A_DB_Zone:
       router_id: 192.168.255.7
       rd: 192.168.255.7:13
@@ -120,8 +126,14 @@ router_bgp:
       redistribute_routes:
       - connected
       neighbors:
-        10.255.251.2:
-          peer_group: MLAG_PEER
+      - ip_address: 10.255.251.2
+        peer_group: MLAG_PEER
+      address_family_ipv4:
+        neighbors:
+        - ip_address: 10.255.251.2
+          next_hop:
+            address_family_ipv6:
+              enabled: false
     Tenant_A_OP_Zone:
       router_id: 192.168.255.7
       rd: 192.168.255.7:10
@@ -135,8 +147,14 @@ router_bgp:
       redistribute_routes:
       - connected
       neighbors:
-        10.255.251.2:
-          peer_group: MLAG_PEER
+      - ip_address: 10.255.251.2
+        peer_group: MLAG_PEER
+      address_family_ipv4:
+        neighbors:
+        - ip_address: 10.255.251.2
+          next_hop:
+            address_family_ipv6:
+              enabled: false
     Tenant_A_WEB_Zone:
       router_id: 192.168.255.7
       rd: 192.168.255.7:11
@@ -150,8 +168,14 @@ router_bgp:
       redistribute_routes:
       - connected
       neighbors:
-        10.255.251.2:
-          peer_group: MLAG_PEER
+      - ip_address: 10.255.251.2
+        peer_group: MLAG_PEER
+      address_family_ipv4:
+        neighbors:
+        - ip_address: 10.255.251.2
+          next_hop:
+            address_family_ipv6:
+              enabled: false
     Tenant_B_OP_Zone:
       router_id: 192.168.255.7
       rd: 192.168.255.7:20
@@ -165,8 +189,14 @@ router_bgp:
       redistribute_routes:
       - connected
       neighbors:
-        10.255.251.2:
-          peer_group: MLAG_PEER
+      - ip_address: 10.255.251.2
+        peer_group: MLAG_PEER
+      address_family_ipv4:
+        neighbors:
+        - ip_address: 10.255.251.2
+          next_hop:
+            address_family_ipv6:
+              enabled: false
     Tenant_C_OP_Zone:
       router_id: 192.168.255.7
       rd: 192.168.255.7:30
@@ -180,8 +210,14 @@ router_bgp:
       redistribute_routes:
       - connected
       neighbors:
-        10.255.251.2:
-          peer_group: MLAG_PEER
+      - ip_address: 10.255.251.2
+        peer_group: MLAG_PEER
+      address_family_ipv4:
+        neighbors:
+        - ip_address: 10.255.251.2
+          next_hop:
+            address_family_ipv6:
+              enabled: false
   vlan_aware_bundles:
     Tenant_A_APP_Zone:
       rd: 192.168.255.7:12

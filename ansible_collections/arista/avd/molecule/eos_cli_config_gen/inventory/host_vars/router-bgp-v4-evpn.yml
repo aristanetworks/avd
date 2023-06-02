@@ -150,6 +150,7 @@ router_bgp:
             always: true
             route_map: RM-10.2.3.4-SET-NEXT-HOP-OUT
           route_map_out: RM-10.2.3.4-SET-NEXT-HOP-OUT
+<<<<<<< HEAD
       address_families:
         ipv4:
           bgp:
@@ -176,6 +177,50 @@ router_bgp:
               activate: true
               next_hop:
                 address_family_ipv6_originate: true
+=======
+      address_family_ipv4:
+        bgp:
+          missing_policy:
+            direction_in_action: permit
+            direction_out_action: deny
+          additional_paths:
+            install: true
+            receive: true
+            send:
+              ecmp: true
+        neighbors:
+          - ip_address: 10.2.3.4
+            activate: true
+            route_map_out: RM-10.2.3.4-SET-NEXT-HOP-OUT
+          - ip_address: 10.2.3.5
+            activate: true
+            route_map_in: RM-10.2.3.5-SET-NEXT-HOP-IN
+          - ip_address: 10.2.3.6
+            next_hop:
+              address_family_ipv6:
+                enabled: true
+          - ip_address: 10.2.3.7
+            next_hop:
+              address_family_ipv6:
+                enabled: true
+                originate: true
+          - ip_address: 10.2.3.8
+            next_hop:
+              address_family_ipv6:
+                enabled: false
+                originate: true # this should not get added to the configuration
+        networks:
+          - prefix: 10.0.0.0/8
+          - prefix: 100.64.0.0/10
+            route_map: RM-10.2.3.4
+        peer_groups:
+          - name: TEST_PEER_GRP
+            activate: true
+            next_hop:
+              address_family_ipv6:
+                enabled: true
+                originate: true
+>>>>>>> 2ff7eeaf1 (Fix(eos_designs): eBGP rfc5549 creates invalid configuration for MLAG scenarios (#2950))
       redistribute_routes:
         - connected
         - static

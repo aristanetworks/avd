@@ -107,14 +107,18 @@ CVP_CONFIGLETS:
     \   !\n   vrf Tenant_A_WAN_Zone\n      rd 192.168.255.10:14\n      route-target\
     \ import evpn 14:14\n      route-target export evpn 14:14\n      router-id 192.168.255.10\n\
     \      neighbor 10.255.251.11 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute\
-    \ connected\n   !\n   vrf Tenant_B_WAN_Zone\n      rd 192.168.255.10:21\n    \
-    \  route-target import evpn 21:21\n      route-target export evpn 21:21\n    \
-    \  router-id 192.168.255.10\n      neighbor 10.255.251.11 peer group MLAG-IPv4-UNDERLAY-PEER\n\
-    \      redistribute connected\n   !\n   vrf Tenant_C_WAN_Zone\n      rd 192.168.255.10:31\n\
-    \      route-target import evpn 31:31\n      route-target export evpn 31:31\n\
+    \ connected\n      !\n      address-family ipv4\n         no neighbor 10.255.251.11\
+    \ next-hop address-family ipv6\n   !\n   vrf Tenant_B_WAN_Zone\n      rd 192.168.255.10:21\n\
+    \      route-target import evpn 21:21\n      route-target export evpn 21:21\n\
     \      router-id 192.168.255.10\n      neighbor 10.255.251.11 peer group MLAG-IPv4-UNDERLAY-PEER\n\
-    \      redistribute connected\n!\nmanagement api http-commands\n   protocol https\n\
-    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
+    \      redistribute connected\n      !\n      address-family ipv4\n         no\
+    \ neighbor 10.255.251.11 next-hop address-family ipv6\n   !\n   vrf Tenant_C_WAN_Zone\n\
+    \      rd 192.168.255.10:31\n      route-target import evpn 31:31\n      route-target\
+    \ export evpn 31:31\n      router-id 192.168.255.10\n      neighbor 10.255.251.11\
+    \ peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n      !\n\
+    \      address-family ipv4\n         no neighbor 10.255.251.11 next-hop address-family\
+    \ ipv6\n!\nmanagement api http-commands\n   protocol https\n   no shutdown\n \
+    \  !\n   vrf MGMT\n      no shutdown\n!\nend\n"
   AVD_DC1-BL1B: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata\
     \ -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n\
@@ -223,14 +227,18 @@ CVP_CONFIGLETS:
     \   !\n   vrf Tenant_A_WAN_Zone\n      rd 192.168.255.11:14\n      route-target\
     \ import evpn 14:14\n      route-target export evpn 14:14\n      router-id 192.168.255.11\n\
     \      neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute\
-    \ connected\n   !\n   vrf Tenant_B_WAN_Zone\n      rd 192.168.255.11:21\n    \
-    \  route-target import evpn 21:21\n      route-target export evpn 21:21\n    \
-    \  router-id 192.168.255.11\n      neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER\n\
-    \      redistribute connected\n   !\n   vrf Tenant_C_WAN_Zone\n      rd 192.168.255.11:31\n\
-    \      route-target import evpn 31:31\n      route-target export evpn 31:31\n\
+    \ connected\n      !\n      address-family ipv4\n         no neighbor 10.255.251.10\
+    \ next-hop address-family ipv6\n   !\n   vrf Tenant_B_WAN_Zone\n      rd 192.168.255.11:21\n\
+    \      route-target import evpn 21:21\n      route-target export evpn 21:21\n\
     \      router-id 192.168.255.11\n      neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER\n\
-    \      redistribute connected\n!\nmanagement api http-commands\n   protocol https\n\
-    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
+    \      redistribute connected\n      !\n      address-family ipv4\n         no\
+    \ neighbor 10.255.251.10 next-hop address-family ipv6\n   !\n   vrf Tenant_C_WAN_Zone\n\
+    \      rd 192.168.255.11:31\n      route-target import evpn 31:31\n      route-target\
+    \ export evpn 31:31\n      router-id 192.168.255.11\n      neighbor 10.255.251.10\
+    \ peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n      !\n\
+    \      address-family ipv4\n         no neighbor 10.255.251.10 next-hop address-family\
+    \ ipv6\n!\nmanagement api http-commands\n   protocol https\n   no shutdown\n \
+    \  !\n   vrf MGMT\n      no shutdown\n!\nend\n"
   AVD_DC1-L2LEAF1A: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata\
     \ -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n\
@@ -575,24 +583,32 @@ CVP_CONFIGLETS:
     \ activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   vrf Tenant_A_APP_Zone\n\
     \      rd 192.168.255.6:12\n      route-target import evpn 12:12\n      route-target\
     \ export evpn 12:12\n      router-id 192.168.255.6\n      neighbor 10.255.251.3\
-    \ peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf\
-    \ Tenant_A_DB_Zone\n      rd 192.168.255.6:13\n      route-target import evpn\
-    \ 13:13\n      route-target export evpn 13:13\n      router-id 192.168.255.6\n\
+    \ peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n      !\n\
+    \      address-family ipv4\n         no neighbor 10.255.251.3 next-hop address-family\
+    \ ipv6\n   !\n   vrf Tenant_A_DB_Zone\n      rd 192.168.255.6:13\n      route-target\
+    \ import evpn 13:13\n      route-target export evpn 13:13\n      router-id 192.168.255.6\n\
     \      neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute\
-    \ connected\n   !\n   vrf Tenant_A_OP_Zone\n      rd 192.168.255.6:10\n      route-target\
-    \ import evpn 10:10\n      route-target export evpn 10:10\n      router-id 192.168.255.6\n\
-    \      neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute\
-    \ connected\n   !\n   vrf Tenant_A_WEB_Zone\n      rd 192.168.255.6:11\n     \
-    \ route-target import evpn 11:11\n      route-target export evpn 11:11\n     \
-    \ router-id 192.168.255.6\n      neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER\n\
-    \      redistribute connected\n   !\n   vrf Tenant_B_OP_Zone\n      rd 192.168.255.6:20\n\
-    \      route-target import evpn 20:20\n      route-target export evpn 20:20\n\
+    \ connected\n      !\n      address-family ipv4\n         no neighbor 10.255.251.3\
+    \ next-hop address-family ipv6\n   !\n   vrf Tenant_A_OP_Zone\n      rd 192.168.255.6:10\n\
+    \      route-target import evpn 10:10\n      route-target export evpn 10:10\n\
     \      router-id 192.168.255.6\n      neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER\n\
-    \      redistribute connected\n   !\n   vrf Tenant_C_OP_Zone\n      rd 192.168.255.6:30\n\
+    \      redistribute connected\n      !\n      address-family ipv4\n         no\
+    \ neighbor 10.255.251.3 next-hop address-family ipv6\n   !\n   vrf Tenant_A_WEB_Zone\n\
+    \      rd 192.168.255.6:11\n      route-target import evpn 11:11\n      route-target\
+    \ export evpn 11:11\n      router-id 192.168.255.6\n      neighbor 10.255.251.3\
+    \ peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n      !\n\
+    \      address-family ipv4\n         no neighbor 10.255.251.3 next-hop address-family\
+    \ ipv6\n   !\n   vrf Tenant_B_OP_Zone\n      rd 192.168.255.6:20\n      route-target\
+    \ import evpn 20:20\n      route-target export evpn 20:20\n      router-id 192.168.255.6\n\
+    \      neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute\
+    \ connected\n      !\n      address-family ipv4\n         no neighbor 10.255.251.3\
+    \ next-hop address-family ipv6\n   !\n   vrf Tenant_C_OP_Zone\n      rd 192.168.255.6:30\n\
     \      route-target import evpn 30:30\n      route-target export evpn 30:30\n\
     \      router-id 192.168.255.6\n      neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER\n\
-    \      redistribute connected\n!\nmanagement api http-commands\n   protocol https\n\
-    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
+    \      redistribute connected\n      !\n      address-family ipv4\n         no\
+    \ neighbor 10.255.251.3 next-hop address-family ipv6\n!\nmanagement api http-commands\n\
+    \   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\n\
+    end\n"
   AVD_DC1-LEAF2B: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata\
     \ -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n\
@@ -754,24 +770,32 @@ CVP_CONFIGLETS:
     \ activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   vrf Tenant_A_APP_Zone\n\
     \      rd 192.168.255.7:12\n      route-target import evpn 12:12\n      route-target\
     \ export evpn 12:12\n      router-id 192.168.255.7\n      neighbor 10.255.251.2\
-    \ peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf\
-    \ Tenant_A_DB_Zone\n      rd 192.168.255.7:13\n      route-target import evpn\
-    \ 13:13\n      route-target export evpn 13:13\n      router-id 192.168.255.7\n\
+    \ peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n      !\n\
+    \      address-family ipv4\n         no neighbor 10.255.251.2 next-hop address-family\
+    \ ipv6\n   !\n   vrf Tenant_A_DB_Zone\n      rd 192.168.255.7:13\n      route-target\
+    \ import evpn 13:13\n      route-target export evpn 13:13\n      router-id 192.168.255.7\n\
     \      neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute\
-    \ connected\n   !\n   vrf Tenant_A_OP_Zone\n      rd 192.168.255.7:10\n      route-target\
-    \ import evpn 10:10\n      route-target export evpn 10:10\n      router-id 192.168.255.7\n\
-    \      neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute\
-    \ connected\n   !\n   vrf Tenant_A_WEB_Zone\n      rd 192.168.255.7:11\n     \
-    \ route-target import evpn 11:11\n      route-target export evpn 11:11\n     \
-    \ router-id 192.168.255.7\n      neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER\n\
-    \      redistribute connected\n   !\n   vrf Tenant_B_OP_Zone\n      rd 192.168.255.7:20\n\
-    \      route-target import evpn 20:20\n      route-target export evpn 20:20\n\
+    \ connected\n      !\n      address-family ipv4\n         no neighbor 10.255.251.2\
+    \ next-hop address-family ipv6\n   !\n   vrf Tenant_A_OP_Zone\n      rd 192.168.255.7:10\n\
+    \      route-target import evpn 10:10\n      route-target export evpn 10:10\n\
     \      router-id 192.168.255.7\n      neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER\n\
-    \      redistribute connected\n   !\n   vrf Tenant_C_OP_Zone\n      rd 192.168.255.7:30\n\
+    \      redistribute connected\n      !\n      address-family ipv4\n         no\
+    \ neighbor 10.255.251.2 next-hop address-family ipv6\n   !\n   vrf Tenant_A_WEB_Zone\n\
+    \      rd 192.168.255.7:11\n      route-target import evpn 11:11\n      route-target\
+    \ export evpn 11:11\n      router-id 192.168.255.7\n      neighbor 10.255.251.2\
+    \ peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n      !\n\
+    \      address-family ipv4\n         no neighbor 10.255.251.2 next-hop address-family\
+    \ ipv6\n   !\n   vrf Tenant_B_OP_Zone\n      rd 192.168.255.7:20\n      route-target\
+    \ import evpn 20:20\n      route-target export evpn 20:20\n      router-id 192.168.255.7\n\
+    \      neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute\
+    \ connected\n      !\n      address-family ipv4\n         no neighbor 10.255.251.2\
+    \ next-hop address-family ipv6\n   !\n   vrf Tenant_C_OP_Zone\n      rd 192.168.255.7:30\n\
     \      route-target import evpn 30:30\n      route-target export evpn 30:30\n\
     \      router-id 192.168.255.7\n      neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER\n\
-    \      redistribute connected\n!\nmanagement api http-commands\n   protocol https\n\
-    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
+    \      redistribute connected\n      !\n      address-family ipv4\n         no\
+    \ neighbor 10.255.251.2 next-hop address-family ipv6\n!\nmanagement api http-commands\n\
+    \   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\n\
+    end\n"
   AVD_DC1-SPINE1: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata\
     \ -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n\
@@ -1246,32 +1270,44 @@ CVP_CONFIGLETS:
     \ activate\n   !\n   vrf Tenant_A_APP_Zone\n      rd 192.168.255.8:12\n      route-target\
     \ import evpn 12:12\n      route-target export evpn 12:12\n      router-id 192.168.255.8\n\
     \      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute\
-    \ connected\n   !\n   vrf Tenant_A_DB_Zone\n      rd 192.168.255.8:13\n      route-target\
-    \ import evpn 13:13\n      route-target export evpn 13:13\n      router-id 192.168.255.8\n\
+    \ connected\n      !\n      address-family ipv4\n         no neighbor 10.255.251.7\
+    \ next-hop address-family ipv6\n   !\n   vrf Tenant_A_DB_Zone\n      rd 192.168.255.8:13\n\
+    \      route-target import evpn 13:13\n      route-target export evpn 13:13\n\
+    \      router-id 192.168.255.8\n      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n\
+    \      redistribute connected\n      !\n      address-family ipv4\n         no\
+    \ neighbor 10.255.251.7 next-hop address-family ipv6\n   !\n   vrf Tenant_A_OP_Zone\n\
+    \      rd 192.168.255.8:10\n      route-target import evpn 10:10\n      route-target\
+    \ export evpn 10:10\n      router-id 192.168.255.8\n      neighbor 10.255.251.7\
+    \ peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n      !\n\
+    \      address-family ipv4\n         no neighbor 10.255.251.7 next-hop address-family\
+    \ ipv6\n   !\n   vrf Tenant_A_WAN_Zone\n      rd 192.168.255.8:14\n      route-target\
+    \ import evpn 14:14\n      route-target export evpn 14:14\n      router-id 192.168.255.8\n\
     \      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute\
-    \ connected\n   !\n   vrf Tenant_A_OP_Zone\n      rd 192.168.255.8:10\n      route-target\
-    \ import evpn 10:10\n      route-target export evpn 10:10\n      router-id 192.168.255.8\n\
-    \      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute\
-    \ connected\n   !\n   vrf Tenant_A_WAN_Zone\n      rd 192.168.255.8:14\n     \
-    \ route-target import evpn 14:14\n      route-target export evpn 14:14\n     \
-    \ router-id 192.168.255.8\n      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n\
-    \      redistribute connected\n   !\n   vrf Tenant_A_WEB_Zone\n      rd 192.168.255.8:11\n\
+    \ connected\n      !\n      address-family ipv4\n         no neighbor 10.255.251.7\
+    \ next-hop address-family ipv6\n   !\n   vrf Tenant_A_WEB_Zone\n      rd 192.168.255.8:11\n\
     \      route-target import evpn 11:11\n      route-target export evpn 11:11\n\
     \      router-id 192.168.255.8\n      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n\
-    \      redistribute connected\n   !\n   vrf Tenant_B_OP_Zone\n      rd 192.168.255.8:20\n\
-    \      route-target import evpn 20:20\n      route-target export evpn 20:20\n\
-    \      router-id 192.168.255.8\n      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n\
-    \      redistribute connected\n   !\n   vrf Tenant_B_WAN_Zone\n      rd 192.168.255.8:21\n\
-    \      route-target import evpn 21:21\n      route-target export evpn 21:21\n\
-    \      router-id 192.168.255.8\n      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n\
-    \      redistribute connected\n   !\n   vrf Tenant_C_OP_Zone\n      rd 192.168.255.8:30\n\
+    \      redistribute connected\n      !\n      address-family ipv4\n         no\
+    \ neighbor 10.255.251.7 next-hop address-family ipv6\n   !\n   vrf Tenant_B_OP_Zone\n\
+    \      rd 192.168.255.8:20\n      route-target import evpn 20:20\n      route-target\
+    \ export evpn 20:20\n      router-id 192.168.255.8\n      neighbor 10.255.251.7\
+    \ peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n      !\n\
+    \      address-family ipv4\n         no neighbor 10.255.251.7 next-hop address-family\
+    \ ipv6\n   !\n   vrf Tenant_B_WAN_Zone\n      rd 192.168.255.8:21\n      route-target\
+    \ import evpn 21:21\n      route-target export evpn 21:21\n      router-id 192.168.255.8\n\
+    \      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute\
+    \ connected\n      !\n      address-family ipv4\n         no neighbor 10.255.251.7\
+    \ next-hop address-family ipv6\n   !\n   vrf Tenant_C_OP_Zone\n      rd 192.168.255.8:30\n\
     \      route-target import evpn 30:30\n      route-target export evpn 30:30\n\
     \      router-id 192.168.255.8\n      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n\
-    \      redistribute connected\n   !\n   vrf Tenant_C_WAN_Zone\n      rd 192.168.255.8:31\n\
-    \      route-target import evpn 31:31\n      route-target export evpn 31:31\n\
-    \      router-id 192.168.255.8\n      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n\
-    \      redistribute connected\n!\nmanagement api http-commands\n   protocol https\n\
-    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
+    \      redistribute connected\n      !\n      address-family ipv4\n         no\
+    \ neighbor 10.255.251.7 next-hop address-family ipv6\n   !\n   vrf Tenant_C_WAN_Zone\n\
+    \      rd 192.168.255.8:31\n      route-target import evpn 31:31\n      route-target\
+    \ export evpn 31:31\n      router-id 192.168.255.8\n      neighbor 10.255.251.7\
+    \ peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n      !\n\
+    \      address-family ipv4\n         no neighbor 10.255.251.7 next-hop address-family\
+    \ ipv6\n!\nmanagement api http-commands\n   protocol https\n   no shutdown\n \
+    \  !\n   vrf MGMT\n      no shutdown\n!\nend\n"
   AVD_DC1-SVC3B: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata\
     \ -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n\
@@ -1458,32 +1494,44 @@ CVP_CONFIGLETS:
     \ activate\n   !\n   vrf Tenant_A_APP_Zone\n      rd 192.168.255.9:12\n      route-target\
     \ import evpn 12:12\n      route-target export evpn 12:12\n      router-id 192.168.255.9\n\
     \      neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute\
-    \ connected\n   !\n   vrf Tenant_A_DB_Zone\n      rd 192.168.255.9:13\n      route-target\
-    \ import evpn 13:13\n      route-target export evpn 13:13\n      router-id 192.168.255.9\n\
+    \ connected\n      !\n      address-family ipv4\n         no neighbor 10.255.251.6\
+    \ next-hop address-family ipv6\n   !\n   vrf Tenant_A_DB_Zone\n      rd 192.168.255.9:13\n\
+    \      route-target import evpn 13:13\n      route-target export evpn 13:13\n\
+    \      router-id 192.168.255.9\n      neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER\n\
+    \      redistribute connected\n      !\n      address-family ipv4\n         no\
+    \ neighbor 10.255.251.6 next-hop address-family ipv6\n   !\n   vrf Tenant_A_OP_Zone\n\
+    \      rd 192.168.255.9:10\n      route-target import evpn 10:10\n      route-target\
+    \ export evpn 10:10\n      router-id 192.168.255.9\n      neighbor 10.255.251.6\
+    \ peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n      !\n\
+    \      address-family ipv4\n         no neighbor 10.255.251.6 next-hop address-family\
+    \ ipv6\n   !\n   vrf Tenant_A_WAN_Zone\n      rd 192.168.255.9:14\n      route-target\
+    \ import evpn 14:14\n      route-target export evpn 14:14\n      router-id 192.168.255.9\n\
     \      neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute\
-    \ connected\n   !\n   vrf Tenant_A_OP_Zone\n      rd 192.168.255.9:10\n      route-target\
-    \ import evpn 10:10\n      route-target export evpn 10:10\n      router-id 192.168.255.9\n\
-    \      neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute\
-    \ connected\n   !\n   vrf Tenant_A_WAN_Zone\n      rd 192.168.255.9:14\n     \
-    \ route-target import evpn 14:14\n      route-target export evpn 14:14\n     \
-    \ router-id 192.168.255.9\n      neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER\n\
-    \      redistribute connected\n   !\n   vrf Tenant_A_WEB_Zone\n      rd 192.168.255.9:11\n\
+    \ connected\n      !\n      address-family ipv4\n         no neighbor 10.255.251.6\
+    \ next-hop address-family ipv6\n   !\n   vrf Tenant_A_WEB_Zone\n      rd 192.168.255.9:11\n\
     \      route-target import evpn 11:11\n      route-target export evpn 11:11\n\
     \      router-id 192.168.255.9\n      neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER\n\
-    \      redistribute connected\n   !\n   vrf Tenant_B_OP_Zone\n      rd 192.168.255.9:20\n\
-    \      route-target import evpn 20:20\n      route-target export evpn 20:20\n\
-    \      router-id 192.168.255.9\n      neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER\n\
-    \      redistribute connected\n   !\n   vrf Tenant_B_WAN_Zone\n      rd 192.168.255.9:21\n\
-    \      route-target import evpn 21:21\n      route-target export evpn 21:21\n\
-    \      router-id 192.168.255.9\n      neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER\n\
-    \      redistribute connected\n   !\n   vrf Tenant_C_OP_Zone\n      rd 192.168.255.9:30\n\
+    \      redistribute connected\n      !\n      address-family ipv4\n         no\
+    \ neighbor 10.255.251.6 next-hop address-family ipv6\n   !\n   vrf Tenant_B_OP_Zone\n\
+    \      rd 192.168.255.9:20\n      route-target import evpn 20:20\n      route-target\
+    \ export evpn 20:20\n      router-id 192.168.255.9\n      neighbor 10.255.251.6\
+    \ peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n      !\n\
+    \      address-family ipv4\n         no neighbor 10.255.251.6 next-hop address-family\
+    \ ipv6\n   !\n   vrf Tenant_B_WAN_Zone\n      rd 192.168.255.9:21\n      route-target\
+    \ import evpn 21:21\n      route-target export evpn 21:21\n      router-id 192.168.255.9\n\
+    \      neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute\
+    \ connected\n      !\n      address-family ipv4\n         no neighbor 10.255.251.6\
+    \ next-hop address-family ipv6\n   !\n   vrf Tenant_C_OP_Zone\n      rd 192.168.255.9:30\n\
     \      route-target import evpn 30:30\n      route-target export evpn 30:30\n\
     \      router-id 192.168.255.9\n      neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER\n\
-    \      redistribute connected\n   !\n   vrf Tenant_C_WAN_Zone\n      rd 192.168.255.9:31\n\
-    \      route-target import evpn 31:31\n      route-target export evpn 31:31\n\
-    \      router-id 192.168.255.9\n      neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER\n\
-    \      redistribute connected\n!\nmanagement api http-commands\n   protocol https\n\
-    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
+    \      redistribute connected\n      !\n      address-family ipv4\n         no\
+    \ neighbor 10.255.251.6 next-hop address-family ipv6\n   !\n   vrf Tenant_C_WAN_Zone\n\
+    \      rd 192.168.255.9:31\n      route-target import evpn 31:31\n      route-target\
+    \ export evpn 31:31\n      router-id 192.168.255.9\n      neighbor 10.255.251.6\
+    \ peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n      !\n\
+    \      address-family ipv4\n         no neighbor 10.255.251.6 next-hop address-family\
+    \ ipv6\n!\nmanagement api http-commands\n   protocol https\n   no shutdown\n \
+    \  !\n   vrf MGMT\n      no shutdown\n!\nend\n"
 CVP_TOPOLOGY:
   DC1_BL1:
     devices:
