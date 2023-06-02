@@ -1,0 +1,12 @@
+fabric_name: fabric_invalid_schema
+
+type: l2leaf
+l2leaf:
+  nodes:
+    - node: invalid-schema
+      id: 1
+
+expected_error_message: >-
+  "'Validation Error: l2leaf.nodes': Primary key 'name' is not set on all items as required."
+  "'Validation Error: l2leaf.nodes[0]': Unexpected key(s) 'node' found in dict."
+  "'Validation Error: l2leaf.nodes[0]': Required key 'name' is not set in dict."

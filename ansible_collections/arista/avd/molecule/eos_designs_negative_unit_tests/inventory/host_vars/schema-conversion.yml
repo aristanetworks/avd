@@ -1,0 +1,10 @@
+fabric_name: fabric_schema_conversion
+
+type: l2leaf
+l2leaf:
+  nodes:
+    schema-conversion:
+      id: 1
+
+
+expected_error_message: "'Data Type Converted: l2leaf.nodes from 'dict' to 'list'"
