@@ -1,10 +1,8 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import NoReturn
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate
 
 from .utils import UtilsMixin
 
@@ -30,17 +28,11 @@ class VrfsMixin(UtilsMixin):
             return None
 
         vrfs = []
-        vrf_names = []
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
                 vrf_name = vrf["name"]
                 if vrf_name == "default":
                     continue
-
-                if vrf_name in vrf_names:
-                    self._raise_duplicate_vrf_error(vrf_name, tenant["name"], get_item(vrfs, "name", vrf_name))
-
-                vrf_names.append(vrf_name)
 
                 new_vrf = {
                     "name": vrf_name,
@@ -59,7 +51,14 @@ class VrfsMixin(UtilsMixin):
                 if "description" in vrf:
                     new_vrf["description"] = vrf["description"]
 
-                vrfs.append(new_vrf)
+                append_if_not_duplicate(
+                    list_of_dicts=vrfs,
+                    primary_key="name",
+                    new_dict=new_vrf,
+                    context="VRFs defined under network services",
+                    context_keys=["name", "tenant"],
+                    ignore_keys={"tenant"},
+                )
 
         if vrfs:
             return vrfs
@@ -83,10 +82,3 @@ class VrfsMixin(UtilsMixin):
                 return True
 
         return False
-
-    def _raise_duplicate_vrf_error(self, vrf_name: str, tenant_name: str, duplicate_vrf_config: dict) -> NoReturn:
-        msg = f"Duplicate VRF '{vrf_name}' found in Tenant '{tenant_name}'."
-        if (duplicate_vlan_tenant := duplicate_vrf_config["tenant"]) != tenant_name:
-            msg = f"{msg} Other VRF is in Tenant '{duplicate_vlan_tenant}'."
-
-        raise AristaAvdError(msg)

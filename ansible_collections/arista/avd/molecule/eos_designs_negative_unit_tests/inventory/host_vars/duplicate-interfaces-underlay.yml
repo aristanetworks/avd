@@ -11,9 +11,9 @@ l2leaf:
     - name: duplicate-interfaces-underlay
       id: 1
       mgmt_ip: 172.16.1.151/24
-      uplink_switches: ['duplicate-interface-l3-edge', 'duplicate-vrfs']
+      uplink_switches: ['duplicate-interface-l3-edge', 'duplicate-vlans-svi-id']
       uplink_switch_interfaces:
         - Ethernet8
         - Ethernet8
 
-expected_error_message: "Duplicate interface name Ethernet2 found while generating ethernet_interfaces for underlay peer: duplicate-vrfs, peer_interface: Ethernet8. Description on duplicate interface name: DUPLICATE-INTERFACE-L3-EDGE_Ethernet8"
+expected_error_message: "Duplicate interface name Ethernet2 found while generating ethernet_interfaces for underlay peer: duplicate-vlans-svi-id, peer_interface: Ethernet8. Description on duplicate interface name: DUPLICATE-INTERFACE-L3-EDGE_Ethernet8"

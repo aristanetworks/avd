@@ -1,3 +1,5 @@
+from .append_if_not_duplicate import append_if_not_duplicate
+from .compare_dicts import compare_dicts
 from .compile_searchpath import compile_searchpath
 from .default import default
 from .get import get
@@ -12,6 +14,8 @@ from .template_var import template_var
 from .unique import unique
 
 __all__ = [
+    "append_if_not_duplicate",
+    "compare_dicts",
     "compile_searchpath",
     "default",
     "get",

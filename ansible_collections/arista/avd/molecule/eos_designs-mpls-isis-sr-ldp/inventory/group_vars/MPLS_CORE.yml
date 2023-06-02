@@ -233,7 +233,7 @@ core_interfaces:
           - node: SITE2-LSR2
             interfaces: [ Ethernet12, Ethernet13 ]
           - node: SITE2-LER1
-            interfaces: [ Ethernet11, Ethernet11 ]
+            interfaces: [ Ethernet11, Ethernet12 ]
       profile: default_bb_profile
       raw_eos_cli: |
         link-debounce time 1600

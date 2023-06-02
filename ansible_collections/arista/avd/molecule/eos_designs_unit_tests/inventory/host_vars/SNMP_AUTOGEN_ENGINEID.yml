@@ -5,7 +5,7 @@ type: l2leaf
 
 l2leaf:
   nodes:
-    SNMP_AUTOGEN_ENGINEID:
+    - name: SNMP_AUTOGEN_ENGINEID
       id: 43
 
 mgmt_interface_vrf: MGMT

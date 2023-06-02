@@ -36,4 +36,4 @@ tenants:
           - id: 350
             name: Tenant_C_WAN_Zone_1
 
-expected_error_message: "Duplicate VLAN ID '2' found in Tenant 'Tenant_C' during configuration of MLAG Peering VLAN in vrf 'Tenant_C_WAN_Zone' (check for duplicate VRF VNI/ID)."
+expected_error_message: "Found duplicate objects with conflicting data while generating configuration for MLAG Peering VLAN in VRF 'Tenant_C_WAN_Zone' (check for duplicate VRF VNI/ID). {'id': 2, 'name': 'MLAG_iBGP_Tenant_C_WAN_Zone', 'tenant': 'Tenant_C'} conflicts with {'id': 2, 'name': 'MLAG_iBGP_Tenant_C_OP_Zone', 'tenant': 'Tenant_C'}."

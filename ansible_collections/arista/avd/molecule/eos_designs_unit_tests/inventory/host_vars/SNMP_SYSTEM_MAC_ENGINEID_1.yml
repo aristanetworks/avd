@@ -9,7 +9,7 @@ type: l2leaf
 
 l2leaf:
   nodes:
-    SNMP_SYSTEM_MAC_ENGINEID_1:
+    - name: SNMP_SYSTEM_MAC_ENGINEID_1
       id: 42
       system_mac_address: "42:42:42:42:42:42"
       serial_number: A37383692F12C7DE733D9A9B8E2B37AE

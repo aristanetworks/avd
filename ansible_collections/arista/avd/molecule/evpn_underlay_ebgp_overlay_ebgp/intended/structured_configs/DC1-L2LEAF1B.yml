@@ -174,9 +174,9 @@ mlag_configuration:
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
-  - enabled: false
-    id: 120
-  - enabled: true
-    id: 160
-  - enabled: false
-    id: 161
+  - id: 120
+    enabled: false
+  - id: 160
+    enabled: true
+  - id: 161
+    enabled: false

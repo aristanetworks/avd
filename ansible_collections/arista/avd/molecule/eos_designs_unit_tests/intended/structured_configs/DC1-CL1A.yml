@@ -435,8 +435,8 @@ router_bfd:
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
-  - enabled: false
-    id: 120
+  - id: 120
+    enabled: false
 vxlan_interface:
   Vxlan1:
     description: DC1-CL1A_VTEP
