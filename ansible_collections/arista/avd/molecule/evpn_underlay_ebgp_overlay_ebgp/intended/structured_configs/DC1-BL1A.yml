@@ -102,6 +102,12 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     - source_protocol: static
+    address_family_ipv4:
+      neighbors:
+      - ip_address: 123.1.1.10
+        activate: true
+      - ip_address: 123.1.1.11
+        activate: true
     neighbors:
     - ip_address: 123.1.1.10
       remote_as: '1234'
@@ -136,12 +142,6 @@ router_bgp:
       route_map_out: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
     - ip_address: fd5a:fe45:8831:06c5::b
       remote_as: '12345'
-    address_family_ipv4:
-      neighbors:
-      - ip_address: 123.1.1.10
-        activate: true
-      - ip_address: 123.1.1.11
-        activate: true
     address_family_ipv6:
       neighbors:
       - ip_address: fd5a:fe45:8831:06c5::a
