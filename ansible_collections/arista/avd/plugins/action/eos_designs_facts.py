@@ -40,9 +40,10 @@ class ActionModule(ActionBase):
         # Check if fabric_name is set and that all play hosts are part Ansible group set in "fabric_name"
         if fabric_name is None or not set(ansible_play_hosts_all).issubset(fabric_hosts):
             raise AnsibleActionFail(
-                "Invalid/missing 'fabric_name' variable."
+                "Invalid/missing 'fabric_name' variable. "
                 "All hosts in the play must have the same 'fabric_name' value "
                 "which must point to an Ansible Group containing the hosts."
+                f"play_hosts: {ansible_play_hosts_all}"
             )
 
         # This is not all the hostvars, but just the Ansible Hostvars Manager object where we can retrieve hostvars for each host on-demand.
