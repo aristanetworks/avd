@@ -51,10 +51,9 @@ class ActionModule(ActionBase):
         # Get updated templar instance to be passed along to our simplified "templater"
         self.templar = get_templar(self, task_vars)
 
-        avd_switch_facts_instances = self.create_avd_switch_facts_instances(fabric_hosts, hostvars)
-        if avd_switch_facts_instances is None:
+        avd_switch_facts_instances = self.create_avd_switch_facts_instances(fabric_hosts, hostvars, result)
+        if result.get("failed"):
             # Stop here if any of the devices failed input data validation
-            result["failed"] = True
             return result
 
         avd_switch_facts = self.render_avd_switch_facts(avd_switch_facts_instances)
@@ -88,11 +87,11 @@ class ActionModule(ActionBase):
 
         return result
 
-    def create_avd_switch_facts_instances(self, fabric_hosts: list, hostvars: object):
+    def create_avd_switch_facts_instances(self, fabric_hosts: list, hostvars: object, result: dict) -> dict:
         """
         Fetch hostvars for all hosts and perform data conversion & validation.
         Initialize all instances of EosDesignsFacts and insert various references into the variable space.
-        Returns dict with avd_switch_facts_instances or None if data conversion/validation failed.
+        Returns dict with avd_switch_facts_instances.
 
         Parameters
         ----------
@@ -100,6 +99,10 @@ class ActionModule(ActionBase):
             List of hostnames
         hostvars : object
             Ansible "hostvars" object
+        result : dict
+            Ansible Action result dict which is inplace updated.
+            failure : bool
+            msg : str
 
         Returns
         -------
@@ -121,7 +124,8 @@ class ActionModule(ActionBase):
         )
 
         avd_switch_facts = {}
-        failed = False
+        data_conversions = 0
+        data_validation_errors = 0
         for host in fabric_hosts:
             # Fetch all templated Ansible vars for this host
             host_hostvars = dict(hostvars.get(host))
@@ -137,11 +141,14 @@ class ActionModule(ActionBase):
 
             # Set correct hostname in schema tools and perform conversion and validation
             avdschematools.hostname = host
-            result = avdschematools.convert_and_validate_data(host_hostvars)
-            failed = failed or result.get("failed", False)
+            host_result = avdschematools.convert_and_validate_data(host_hostvars, return_counters=True)
 
-            # Quickly continue if data conversion/validation failed
-            if failed:
+            data_conversions += host_result["conversions"]
+            data_validation_errors += host_result["validation_errors"]
+
+            if host_result.get("failed"):
+                # Quickly continue if data conversion/validation failed
+                result["failed"] = True
                 continue
 
             # Add reference to dict "avd_switch_facts".
@@ -155,8 +162,8 @@ class ActionModule(ActionBase):
             # to allow `shared_utils` to work the same when they are called from `EosDesignsFacts` or from `AvdStructuredConfig`.
             host_hostvars["switch"] = avd_switch_facts[host]["switch"]
 
-        if failed:
-            return None
+        # Build result message
+        result["msg"] = avdschematools.build_result_message(conversions=data_conversions, validation_errors=data_validation_errors)
 
         return avd_switch_facts
 
