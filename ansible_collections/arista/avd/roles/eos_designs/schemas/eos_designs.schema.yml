@@ -697,6 +697,23 @@ keys:
     - mpls
     default: vxlan
     type: str
+  fabric_ip_addressing:
+    type: dict
+    keys:
+      mlag:
+        type: dict
+        keys:
+          algorithm:
+            type: str
+            default: first_id
+            description: "This variable defines the Multi-chassis Link Aggregation
+              (MLAG) algorithm used.\nThe following MLAG algorithms are supported:\n
+              \ - first_id - offset from pool is `(mlag_primary_id - 1) * 2`\n  -
+              odd_id - offset from pool is `(odd_id - 1) * 2`. Requires MLAG pair
+              to have a node with odd and a node with an even ID\n"
+            valid_values:
+            - first_id
+            - odd_id
   fabric_name:
     description: Fabric Name, required to match Ansible Group name covering all devices
       in the Fabric, **must** be an inventory group name.
@@ -737,23 +754,6 @@ keys:
             min: 2
             max: 4094
             required: true
-  ip_addressing:
-    type: dict
-    keys:
-      mlag:
-        type: dict
-        keys:
-          algorithm:
-            type: str
-            convert_to_lower_case: true
-            default: first_id
-            description: "- This variable defines the Multi-chassis Link Aggregation
-              (MLAG) algorithm used.\n- The following MLAG algorithms are supported:\n
-              \ - first_id\n  - odd_id\n- By default, the 'first_id' algorithm is
-              used.\n"
-            valid_values:
-            - first_id
-            - odd_id
   ipv6_mgmt_destination_networks:
     description: 'List of IPv6 prefixes to configure as static routes towards the
       OOB IPv6 Management interface gateway.

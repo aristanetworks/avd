@@ -3,7 +3,7 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  ip_addressing:
+  fabric_ip_addressing:
     type: dict
     keys:
       mlag:
@@ -11,14 +11,12 @@ keys:
         keys:
           algorithm:
             type: str
-            convert_to_lower_case: true
             default: "first_id"
             description: |
-              - This variable defines the Multi-chassis Link Aggregation (MLAG) algorithm used.
-              - The following MLAG algorithms are supported:
-                - first_id
-                - odd_id
-              - By default, the 'first_id' algorithm is used.
+              This variable defines the Multi-chassis Link Aggregation (MLAG) algorithm used.
+              The following MLAG algorithms are supported:
+                - first_id: offset from pool is `(mlag_primary_id - 1) * 2`
+                - odd_id: offset from pool is `(odd_id - 1) * 2`. Requires MLAG pair to have a node with odd and a node with an even ID
             valid_values:
               - "first_id"
               - "odd_id"

@@ -1276,6 +1276,36 @@
       "type": "string",
       "title": "Fabric EVPN Encapsulation"
     },
+    "fabric_ip_addressing": {
+      "type": "object",
+      "properties": {
+        "mlag": {
+          "type": "object",
+          "properties": {
+            "algorithm": {
+              "type": "string",
+              "default": "first_id",
+              "description": "This variable defines the Multi-chassis Link Aggregation (MLAG) algorithm used.\nThe following MLAG algorithms are supported:\n  - first_id - offset from pool is `(mlag_primary_id - 1) * 2`\n  - odd_id - offset from pool is `(odd_id - 1) * 2`. Requires MLAG pair to have a node with odd and a node with an even ID\n",
+              "enum": [
+                "first_id",
+                "odd_id"
+              ],
+              "title": "Algorithm"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "MLAG"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Fabric IP Addressing"
+    },
     "fabric_name": {
       "description": "Fabric Name, required to match Ansible Group name covering all devices in the Fabric, **must** be an inventory group name.",
       "type": "string",
@@ -1431,36 +1461,6 @@
         "^_.+$": {}
       },
       "title": "Internal VLAN Order"
-    },
-    "ip_addressing": {
-      "type": "object",
-      "properties": {
-        "mlag": {
-          "type": "object",
-          "properties": {
-            "algorithm": {
-              "type": "string",
-              "default": "first_id",
-              "description": "- This variable defines the Multi-chassis Link Aggregation (MLAG) algorithm used.\n- The following MLAG algorithms are supported:\n  - first_id\n  - odd_id\n- By default, the 'first_id' algorithm is used.\n",
-              "enum": [
-                "first_id",
-                "odd_id"
-              ],
-              "title": "Algorithm"
-            }
-          },
-          "additionalProperties": false,
-          "patternProperties": {
-            "^_.+$": {}
-          },
-          "title": "MLAG"
-        }
-      },
-      "additionalProperties": false,
-      "patternProperties": {
-        "^_.+$": {}
-      },
-      "title": "IP Addressing"
     },
     "ipv6_mgmt_destination_networks": {
       "description": "List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface gateway.\nReplaces the default route.\n",

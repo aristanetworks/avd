@@ -3513,6 +3513,24 @@ Should be set to mpls for evpn-mpls scenario.
     fabric_evpn_encapsulation: <str>
     ```
 
+## Fabric IP Addressing
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>fabric_ip_addressing</samp>](## "fabric_ip_addressing") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;mlag</samp>](## "fabric_ip_addressing.mlag") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;algorithm</samp>](## "fabric_ip_addressing.mlag.algorithm") | String |  | first_id | Valid Values:<br>- first_id<br>- odd_id | This variable defines the Multi-chassis Link Aggregation (MLAG) algorithm used.<br>The following MLAG algorithms are supported:<br>  - first_id - offset from pool is `(mlag_primary_id - 1) * 2`<br>  - odd_id - offset from pool is `(odd_id - 1) * 2`. Requires MLAG pair to have a node with odd and a node with an even ID<br> |
+
+=== "YAML"
+
+    ```yaml
+    fabric_ip_addressing:
+      mlag:
+        algorithm: <str>
+    ```
+
 ## Fabric Name
 
 Fabric Name, required to match Ansible Group name covering all devices in the Fabric, **must** be an inventory group name.
@@ -3581,24 +3599,6 @@ Internal vlan allocation order and range.
       range:
         beginning: <int>
         ending: <int>
-    ```
-
-## IP Addressing
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ip_addressing</samp>](## "ip_addressing") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;mlag</samp>](## "ip_addressing.mlag") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;algorithm</samp>](## "ip_addressing.mlag.algorithm") | String |  | first_id | Value is converted to lower case<br>Valid Values:<br>- first_id<br>- odd_id | - This variable defines the Multi-chassis Link Aggregation (MLAG) algorithm used.<br>- The following MLAG algorithms are supported:<br>  - first_id<br>  - odd_id<br>- By default, the 'first_id' algorithm is used.<br> |
-
-=== "YAML"
-
-    ```yaml
-    ip_addressing:
-      mlag:
-        algorithm: <str>
     ```
 
 ## IPv6 Management Destination Networks
