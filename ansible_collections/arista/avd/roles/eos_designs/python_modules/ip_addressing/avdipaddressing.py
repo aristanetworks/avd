@@ -36,9 +36,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         return self.shared_utils.template_var(template_path, template_vars)
 
     def _mlag_ip(self, pool: str, ip_offset: int) -> str:
-        addressing_alg = self._ipaddress_mlag_algorithm
-
-        if addressing_alg == "odd_id":
+        if self._ipaddress_mlag_algorithm == "odd_id":
             offset = self._mlag_odd_id_based_offset()
             return self._ip(pool, 31, offset, ip_offset)
 
