@@ -1,2 +1,9 @@
 ---
 type: l3leaf
+
+default_interfaces:
+  - types: [ l3leaf ]
+    platforms: [ vEOS.* ]
+    mlag_interfaces: [ Ethernet3-4 ]
+    downlink_interfaces: [ Ethernet8, Ethernet8 ]
+    uplink_interfaces: [ Ethernet1-2 ]

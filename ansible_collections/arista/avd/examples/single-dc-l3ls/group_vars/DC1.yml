@@ -14,7 +14,7 @@ spine:
     bgp_as: 65100
 
   # Definition of nodes contained in this group.
-  # Specific configuration of device must take place under the node definition. Each node inherites all values defined under 'defaults'
+  # Specific configuration of device must take place under the node definition. Each node inherits all values defined under 'defaults'
   nodes:
     # Name of the node to be defined (must be consistent with definition in inventory)
     - name: dc1-spine1
@@ -73,6 +73,9 @@ l3leaf:
         - name: dc1-leaf1b
           id: 2
           mgmt_ip: 172.16.1.102/24
+          uplink_switch_interfaces:
+            - Ethernet2
+            - Ethernet2
 
     - group: DC1_L3_LEAF2
       bgp_as: 65102
@@ -86,6 +89,9 @@ l3leaf:
         - name: dc1-leaf2b
           id: 4
           mgmt_ip: 172.16.1.104/24
+          uplink_switch_interfaces:
+            - Ethernet4
+            - Ethernet4
 
 
 # L2 Leaf switch group
