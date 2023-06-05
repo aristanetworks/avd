@@ -51,7 +51,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         """
 
         # Verify a mix of odd and even IDs
-        if (self._mlag_primary_id % 2) + (self._mlag_secondary_id % 2) != 1:
+        if (self._mlag_primary_id % 2) == (self._mlag_secondary_id % 2):
             raise AristaAvdError("MLAG compact addressing mode requires all MLAG pairs to have a single odd and even ID")
 
         odd_id = self._mlag_primary_id
