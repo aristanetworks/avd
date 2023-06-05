@@ -58,7 +58,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         if odd_id % 2 == 0:
             odd_id = self._mlag_secondary_id
 
-        return int(((odd_id - 1) / 2))
+        return int((odd_id - 1) / 2)
 
     def mlag_ibgp_peering_ip_primary(self, mlag_ibgp_peering_ipv4_pool: str) -> str:
         """
