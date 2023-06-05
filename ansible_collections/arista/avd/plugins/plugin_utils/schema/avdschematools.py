@@ -69,51 +69,38 @@ class AvdSchemaTools:
 
         self.validation_mode = validation_mode
 
-    def convert_data(self, data: dict) -> list[str]:
+    def convert_data(self, data: dict) -> int:
         """
         Convert data according to the schema (convert_types)
         The data conversion is done in-place (updating the original "data" dict).
 
-        Returns list[str] with one conversion summary message if any conversions were performed
+        Returns
+        -------
+        int : number of conversions done
         """
         if self.conversion_mode == "disabled":
-            return []
-
-        result_messages = []
+            return 0
 
         # avd_schema.convert returns a generator, which we iterate through in handle_exceptions to perform the actual conversions.
         exceptions = self.avdschema.convert(data)
-        if conversion_counter := self.handle_validation_exceptions(exceptions, self.conversion_mode):
-            if self.conversion_mode == "error":
-                result_messages.append(f"{conversion_counter} errors raised during conversion of input vars.")
-            else:
-                result_messages.append(f"{conversion_counter} data conversions done to conform to schema.")
-            if self.conversion_mode == "debug":
-                result_messages.append("Run with -v to see details")
+        return self.handle_validation_exceptions(exceptions, self.conversion_mode)
 
-        return result_messages
-
-    def validate_data(self, data: dict) -> list:
+    def validate_data(self, data: dict) -> int:
         """
         Validate data according to the schema
 
-        Returns list[str] with one validation summary message if any validation errors was found
+        Returns
+        -------
+        int : number of validation errors
         """
         if self.validation_mode == "disabled":
-            return []
-
-        result_messages = []
+            return 0
 
         # avd_schema.validate returns a generator, which we iterate through in handle_exceptions to perform the actual conversions.
         exceptions = self.avdschema.validate(data)
-        if validation_counter := self.handle_validation_exceptions(exceptions, self.validation_mode):
-            result_messages.append(f"{validation_counter} errors found during schema validation of input vars.")
-            if self.validation_mode == "debug":
-                result_messages.append("Run with -v to see details")
+        return self.handle_validation_exceptions(exceptions, self.validation_mode)
 
-        return result_messages
-
-    def convert_and_validate_data(self, data: dict) -> dict:
+    def convert_and_validate_data(self, data: dict, return_counters: bool = False) -> dict:
         """
         Convert & Validate data according to the schema
 
@@ -122,27 +109,27 @@ class AvdSchemaTools:
         Returns dict which can contain either or both of the following keys:
         - failed: <bool>
         - msg: <str with concatenated summarys messages from conversion and validation>
-
+        - conversions: <int with number of conversion messages - returned if return_counters is set>
+        - validation_errors: <int with number of validation errors - returned if return_counters is set>
         The return value should be applied on Ansible Action "result" dictionary
         """
         result = {}
-        result_messages = []
 
         # Perform data conversions
-        result_messages.extend(self.convert_data(data))
-        if result_messages:
-            if self.conversion_mode == "error":
-                result["failed"] = True
+        conversions = self.convert_data(data)
+        if conversions and self.conversion_mode == "error":
+            result["failed"] = True
 
         # Perform validation
-        validation_messages = self.validate_data(data)
-        if validation_messages:
-            result_messages.extend(validation_messages)
-            if self.validation_mode == "error":
-                result["failed"] = True
+        validation_errors = self.validate_data(data)
+        if validation_errors and self.validation_mode == "error":
+            result["failed"] = True
 
-        if result_messages:
-            result["msg"] = " ".join(result_messages)
+        result["msg"] = self.build_result_message(conversions=conversions, validation_errors=validation_errors)
+
+        if return_counters:
+            result["conversions"] = conversions
+            result["validation_errors"] = validation_errors
 
         return result
 
@@ -189,17 +176,36 @@ class AvdSchemaTools:
                 self.ansible_display.warning(message, False)
         return counter
 
-    def validate_schema(self) -> list:
+    def validate_schema(self) -> int:
         """
         Validate the loaded schema according to the meta-schema
 
-        Returns list[str] with one validation summary message if any validation errors was found
+        Returns int with number of validation errors
         """
-        result_messages = []
 
         # avd_schema.validate_schema returns a generator, which we iterate through in handle_exceptions to perform the actual conversions.
         exceptions = self.avdschema.validate_schema(self.avdschema._schema)
-        if validation_counter := self.handle_validation_exceptions(exceptions, "error"):
-            result_messages.append(f"{validation_counter} errors found during meta-schema validation of the generated schema.")
+        return self.handle_validation_exceptions(exceptions, "error")
 
-        return result_messages
+    def build_result_message(self, conversions: int = 0, validation_errors: int = 0, schema_validation_errors: int = 0):
+        result_messages = []
+
+        if conversions:
+            if self.conversion_mode == "error":
+                result_messages.append(f"{conversions} errors raised during conversion of input vars.")
+            else:
+                result_messages.append(f"{conversions} data conversions done to conform to schema.")
+
+        if validation_errors:
+            result_messages.append(f"{validation_errors} errors found during schema validation of input vars.")
+
+        if schema_validation_errors:
+            result_messages.append(f"{schema_validation_errors} errors found during meta-schema validation of the generated schema.")
+
+        if result_messages:
+            if self.conversion_mode == "debug" or self.validation_mode == "debug":
+                result_messages.append("Run with -v to see details")
+
+            return " ".join(result_messages)
+
+        return None
