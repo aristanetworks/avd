@@ -83,8 +83,9 @@ classDiagram
     - Verify devices are in one fabric group
     - Read and template default role_vars
     - Read and validate Hostvars for all devices
-    - Instantiate EosDesignsFacts class per device
-    - Update hostvars with reference to all EosDesignsFacts instances
+    - Instantiate SharedUtils and EosDesignsFacts classes per device
+    - Set "avd_switch_facts" referencing all EosDesignsFacts instances
+    - Set "switch" referencing the device's own EosDesignsFacts instance
     - Run "render" method on all EosDesignsFacts instances
     - Build facts from data returned by "render"
   }
@@ -140,9 +141,6 @@ TODO
 
 The class is instantiated once per device. Methods may use references to other device instances using `hostvars.avd_switch_facts`,
 which is a dict of `EosDesignsfacts` instances covering all devices.
-
-hostvars["switch"] is set to self, to allow `shared_utils` to work the same when they are called from `EosDesignsFacts` or from
-`AvdStructuredConfig`.
 
 See the source code [here](../../plugins/plugin_utils/eos_designs_facts/)
 
