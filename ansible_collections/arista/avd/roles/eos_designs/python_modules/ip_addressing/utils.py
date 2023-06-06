@@ -3,7 +3,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors.errors import AristaAvdMissingVariableError, AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.errors.errors import AristaAvdError, AristaAvdMissingVariableError
 
 if TYPE_CHECKING:
     from .avdipaddressing import AvdIpAddressing
@@ -78,7 +78,7 @@ class UtilsMixin:
     @cached_property
     def _vtep_loopback_ipv4_pool(self: "AvdIpAddressing") -> str:
         return self.shared_utils.vtep_loopback_ipv4_pool
-    
+
     @cached_property
     def _mlag_odd_id_based_offset(self: "AvdIpAddressing") -> int:
         """
