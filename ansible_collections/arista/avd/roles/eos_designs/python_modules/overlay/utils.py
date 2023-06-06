@@ -236,5 +236,5 @@ class UtilsMixin:
         bgp_as = peer_facts.get("bgp_as")
         peers_dict[peer_name] = {
             "bgp_as": str(bgp_as) if bgp_as is not None else None,
-            "ip_address": get(peer_facts, "overlay.peering_address", required=True),
+            "ip_address": get(peer_facts, "overlay.peering_address", required=True, org_key=f"switch.overlay.peering_address for {peer_name}"),
         }

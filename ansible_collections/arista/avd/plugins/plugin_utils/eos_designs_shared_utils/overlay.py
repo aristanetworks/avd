@@ -153,9 +153,13 @@ class OverlayMixin:
         )
 
     @cached_property
-    def overlay_peering_address(self: SharedUtils) -> str:
+    def overlay_peering_address(self: SharedUtils) -> str | None:
+        if not self.underlay_router:
+            return None
+
         if self.overlay_routing_protocol_address_family == "ipv6":
             return self.ipv6_router_id
+
         return self.router_id
 
     @cached_property
