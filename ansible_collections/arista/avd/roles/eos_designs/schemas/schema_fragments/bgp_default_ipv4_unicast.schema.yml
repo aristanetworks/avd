@@ -4,6 +4,9 @@
 type: dict
 keys:
   bgp_default_ipv4_unicast:
+    documentation_options:
+      filename: Input Variables
+      table: BGP Settings
     description: |
       Default activation of IPv4 unicast address-family on all IPv4 neighbors.
       It is best practice to disable activation.

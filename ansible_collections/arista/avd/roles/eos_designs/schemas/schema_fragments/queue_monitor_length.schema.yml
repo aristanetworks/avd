@@ -4,6 +4,9 @@
 type: dict
 keys:
   queue_monitor_length:
+    documentation_options:
+      filename: Input Variables
+      table: System Settings
     $ref: "eos_cli_config_gen#/keys/queue_monitor_length"
     type: dict
     keys:

@@ -5,7 +5,180 @@ search:
 
 # Input Variables
 
-## <Connected Endpoints Keys.Key>
+## BFD Settings
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>bfd_multihop</samp>](## "bfd_multihop") | Dictionary |  |  |  | BFD Multihop tuning |
+    | [<samp>&nbsp;&nbsp;interval</samp>](## "bfd_multihop.interval") | Integer |  | 300 | Min: 50<br>Max: 60000 |  |
+    | [<samp>&nbsp;&nbsp;min_rx</samp>](## "bfd_multihop.min_rx") | Integer |  | 300 | Min: 50<br>Max: 60000 |  |
+    | [<samp>&nbsp;&nbsp;multiplier</samp>](## "bfd_multihop.multiplier") | Integer |  | 3 | Min: 3<br>Max: 50 |  |
+
+=== "YAML"
+
+    ```yaml
+    bfd_multihop:
+      interval: <int>
+      min_rx: <int>
+      multiplier: <int>
+    ```
+
+## BGP Settings
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>bgp_as</samp>](## "bgp_as") | String |  |  |  | AS number to use to configure overlay when "overlay_routing_protocol" == ibgp |
+    | [<samp>bgp_default_ipv4_unicast</samp>](## "bgp_default_ipv4_unicast") | Boolean |  | False |  | Default activation of IPv4 unicast address-family on all IPv4 neighbors.<br>It is best practice to disable activation.<br> |
+    | [<samp>bgp_distance</samp>](## "bgp_distance") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;external_routes</samp>](## "bgp_distance.external_routes") | Integer | Required |  | Min: 1<br>Max: 255 |  |
+    | [<samp>&nbsp;&nbsp;internal_routes</samp>](## "bgp_distance.internal_routes") | Integer | Required |  | Min: 1<br>Max: 255 |  |
+    | [<samp>&nbsp;&nbsp;local_routes</samp>](## "bgp_distance.local_routes") | Integer | Required |  | Min: 1<br>Max: 255 |  |
+    | [<samp>bgp_ecmp</samp>](## "bgp_ecmp") | Integer |  | 4 |  | Maximum ECMP for BGP multi-path |
+    | [<samp>bgp_graceful_restart</samp>](## "bgp_graceful_restart") | Dictionary |  |  |  | Graceful BGP restart allows a BGP speaker with separate control plane and data plane processing to continue forwarding traffic during a BGP restart.<br>Its neighbors (receiving speakers) may retain routing information from the restarting speaker while a BGP session with it is being re-established, reducing route flapping.<br> |
+    | [<samp>&nbsp;&nbsp;enabled</samp>](## "bgp_graceful_restart.enabled") | Boolean |  | True |  | Enable or disable graceful restart helper mode for all BGP peers. |
+    | [<samp>&nbsp;&nbsp;restart_time</samp>](## "bgp_graceful_restart.restart_time") | Integer |  | 300 | Min: 1<br>Max: 3600 | Restart time in seconds. |
+    | [<samp>bgp_maximum_paths</samp>](## "bgp_maximum_paths") | Integer |  | 4 | Min: 1<br>Max: 512 | Maximum Paths for BGP multi-path |
+    | [<samp>bgp_peer_groups</samp>](## "bgp_peer_groups") | Dictionary |  |  |  | Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.<br>Note that the name of the peer groups use '-' instead of '_' in EOS configuration.<br> |
+    | [<samp>&nbsp;&nbsp;ipv4_underlay_peers</samp>](## "bgp_peer_groups.ipv4_underlay_peers") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.ipv4_underlay_peers.name") | String |  | IPv4-UNDERLAY-PEERS |  | Name of peer group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.ipv4_underlay_peers.password") | String |  |  |  | Type 7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.ipv4_underlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen |
+    | [<samp>&nbsp;&nbsp;mlag_ipv4_underlay_peer</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer.name") | String |  | MLAG-IPv4-UNDERLAY-PEER |  | Name of peer group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer.password") | String |  |  |  | Type 7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen |
+    | [<samp>&nbsp;&nbsp;evpn_overlay_peers</samp>](## "bgp_peer_groups.evpn_overlay_peers") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.evpn_overlay_peers.name") | String |  | EVPN-OVERLAY-PEERS |  | Name of peer group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.evpn_overlay_peers.password") | String |  |  |  | Type 7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.evpn_overlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen |
+    | [<samp>&nbsp;&nbsp;evpn_overlay_core</samp>](## "bgp_peer_groups.evpn_overlay_core") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.evpn_overlay_core.name") | String |  | EVPN-OVERLAY-CORE |  | Name of peer group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.evpn_overlay_core.password") | String |  |  |  | Type 7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.evpn_overlay_core.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen |
+    | [<samp>&nbsp;&nbsp;mpls_overlay_peers</samp>](## "bgp_peer_groups.mpls_overlay_peers") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.mpls_overlay_peers.name") | String |  | MPLS-OVERLAY-PEERS |  | Name of peer group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.mpls_overlay_peers.password") | String |  |  |  | Type 7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.mpls_overlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen |
+    | [<samp>&nbsp;&nbsp;rr_overlay_peers</samp>](## "bgp_peer_groups.rr_overlay_peers") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.rr_overlay_peers.name") | String |  | RR-OVERLAY-PEERS |  | Name of peer group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.rr_overlay_peers.password") | String |  |  |  | Type 7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.rr_overlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen |
+    | [<samp>&nbsp;&nbsp;ipvpn_gateway_peers</samp>](## "bgp_peer_groups.ipvpn_gateway_peers") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.ipvpn_gateway_peers.name") | String |  | IPVPN-GATEWAY-PEERS |  | Name of peer group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.ipvpn_gateway_peers.password") | String |  |  |  | Type 7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.ipvpn_gateway_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen |
+    | [<samp>&nbsp;&nbsp;IPv4_UNDERLAY_PEERS</samp>](## "bgp_peer_groups.IPv4_UNDERLAY_PEERS") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 4.0.0. Use <samp>bgp_peer_groups.ipv4_underlay_peers</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;MLAG_IPv4_UNDERLAY_PEER</samp>](## "bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 4.0.0. Use <samp>bgp_peer_groups.mlag_ipv4_underlay_peer</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;EVPN_OVERLAY_PEERS</samp>](## "bgp_peer_groups.EVPN_OVERLAY_PEERS") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 4.0.0. Use <samp>bgp_peer_groups.evpn_overlay_peers</samp> instead.</span> |
+    | [<samp>bgp_update_wait_install</samp>](## "bgp_update_wait_install") | Boolean |  |  |  | Do not advertise reachability to a prefix until that prefix has been installed in hardware.<br>This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.<br> |
+    | [<samp>bgp_update_wait_for_convergence</samp>](## "bgp_update_wait_for_convergence") | Boolean |  |  |  | Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.<br> |
+
+=== "YAML"
+
+    ```yaml
+    bgp_as: <str>
+    bgp_default_ipv4_unicast: <bool>
+    bgp_distance:
+      external_routes: <int>
+      internal_routes: <int>
+      local_routes: <int>
+    bgp_ecmp: <int>
+    bgp_graceful_restart:
+      enabled: <bool>
+      restart_time: <int>
+    bgp_maximum_paths: <int>
+    bgp_peer_groups:
+      ipv4_underlay_peers:
+        name: <str>
+        password: <str>
+        structured_config: <dict>
+      mlag_ipv4_underlay_peer:
+        name: <str>
+        password: <str>
+        structured_config: <dict>
+      evpn_overlay_peers:
+        name: <str>
+        password: <str>
+        structured_config: <dict>
+      evpn_overlay_core:
+        name: <str>
+        password: <str>
+        structured_config: <dict>
+      mpls_overlay_peers:
+        name: <str>
+        password: <str>
+        structured_config: <dict>
+      rr_overlay_peers:
+        name: <str>
+        password: <str>
+        structured_config: <dict>
+      ipvpn_gateway_peers:
+        name: <str>
+        password: <str>
+        structured_config: <dict>
+    bgp_update_wait_install: <bool>
+    bgp_update_wait_for_convergence: <bool>
+    ```
+
+## CloudVision Settings
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>cvp_ingestauth_key</samp>](## "cvp_ingestauth_key") | String |  |  |  | On-premise CVP ingest auth key. If set, TerminAttr will be configured with key-based authentication for on-premise CVP.<br>If not set, TerminAttr will be configured with certificate based authentication:<br>- On-premise using token onboarding. Default token path is '/tmp/token'.<br>- CVaaS using token-secure onboarding. Default token path is '/tmp/cv-onboarding-token'.<br>Token must be copied to the device first. |
+    | [<samp>cvp_instance_ip</samp>](## "cvp_instance_ip") | String |  |  |  | IPv4 address or DNS name for CloudVision.<br>This variable only supports an on-premise single-node cluster or the DNS name of a CloudVision as a Service instance. |
+    | [<samp>cvp_instance_ips</samp>](## "cvp_instance_ips") | List, items: String |  |  |  | List of IPv4 addresses or DNS names for CloudVision.<br>For on-premise CloudVision enter all the nodes of the cluster.<br>For CloudVision as a Service enter the DNS name of the instance.<br>`eos_designs` only supports one CloudVision cluster.<br> |
+    | [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "cvp_instance_ips.[].&lt;str&gt;") | String |  |  |  | IPv4 address or DNS name for CloudVision |
+    | [<samp>cvp_token_file</samp>](## "cvp_token_file") | String |  |  |  | cvp_token_file is the path to the token file on the switch.<br>If not set the default locations for on-premise or CVaaS will be used.<br>See cvp_ingestauth_key for details. |
+    | [<samp>terminattr_disable_aaa</samp>](## "terminattr_disable_aaa") | Boolean |  | False |  |  |
+    | [<samp>terminattr_ingestexclude</samp>](## "terminattr_ingestexclude") | String |  | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent |  |  |
+    | [<samp>terminattr_ingestgrpcurl_port</samp>](## "terminattr_ingestgrpcurl_port") | Integer |  | 9910 |  | Port number used for Terminattr connection to an on-premise CloudVision cluster.<br>The port number is always 443 when using CloudVision as a Service, so this value is ignored. |
+    | [<samp>terminattr_smashexcludes</samp>](## "terminattr_smashexcludes") | String |  | ale,flexCounter,hardware,kni,pulse,strata |  |  |
+
+=== "YAML"
+
+    ```yaml
+    cvp_ingestauth_key: <str>
+    cvp_instance_ip: <str>
+    cvp_instance_ips:
+      - <str>
+    cvp_token_file: <str>
+    terminattr_disable_aaa: <bool>
+    terminattr_ingestexclude: <str>
+    terminattr_ingestgrpcurl_port: <int>
+    terminattr_smashexcludes: <str>
+    ```
+
+## Connected Endpoints Keys
+
+Define connected endpoints keys to define the grouping of endpoints connecting to the fabric.
+This lets you specify various keys to better organize/group your data.
+The connected endpoints keys should be defined in the top level group_var for the fabric.
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>connected_endpoints_keys</samp>](## "connected_endpoints_keys") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;- key</samp>](## "connected_endpoints_keys.[].key") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "connected_endpoints_keys.[].type") | String |  |  |  | Type used for documentation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "connected_endpoints_keys.[].description") | String |  |  |  | Description used for documentation. |
+
+=== "YAML"
+
+    ```yaml
+    connected_endpoints_keys:
+      - key: <str>
+        type: <str>
+        description: <str>
+    ```
+
+## Connected Endpoints
 
 This should be applied to group_vars or host_vars where endpoints are connecting.
 `connected_endpoints_keys.key` is one of the keys under "connected_endpoints_keys".
@@ -266,7 +439,1014 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
             structured_config: <dict>
     ```
 
-## <Network Services Keys.Name>
+## Core Interfaces
+
+The `core_interfaces` data model can be used to configure L3 P2P links anywhere in the fabric.
+It can be between two switches that are already part of the fabric inventory, or it can be towards another device,
+where only one end of the link is on a switch in the fabric.
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>core_interfaces</samp>](## "core_interfaces") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;p2p_links_ip_pools</samp>](## "core_interfaces.p2p_links_ip_pools") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "core_interfaces.p2p_links_ip_pools.[].name") | String | Required, Unique |  |  | P2P pool name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_pool</samp>](## "core_interfaces.p2p_links_ip_pools.[].ipv4_pool") | String |  |  |  | IPv4 address/Mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_size</samp>](## "core_interfaces.p2p_links_ip_pools.[].prefix_size") | Integer |  | 31 | Min: 8<br>Max: 31 | Subnet mask size. |
+    | [<samp>&nbsp;&nbsp;p2p_links_profiles</samp>](## "core_interfaces.p2p_links_profiles") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "core_interfaces.p2p_links_profiles.[].name") | String | Required, Unique |  |  | P2P profile name. Any variable supported under p2p_links can be inherited from a profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "core_interfaces.p2p_links_profiles.[].id") | Integer |  |  |  | Unique id per subnet_summary. Used to calculate ip addresses.<br>Required with ip_pool. ID starting from 1.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "core_interfaces.p2p_links_profiles.[].speed") | String |  |  |  | The values can be speed or auto speed or forced speed. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_pool</samp>](## "core_interfaces.p2p_links_profiles.[].ip_pool") | String |  |  |  | P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subnet</samp>](## "core_interfaces.p2p_links_profiles.[].subnet") | String |  |  |  | IPv4 address/Mask. Subnet used on this P2P link. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "core_interfaces.p2p_links_profiles.[].ip") | List, items: String |  |  |  | Specific IP addresses used on this P2P link. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "core_interfaces.p2p_links_profiles.[].ip.[].&lt;str&gt;") | String |  |  |  | Node IPv4 address/Mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "core_interfaces.p2p_links_profiles.[].ipv6_enable") | Boolean |  | False |  | Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "core_interfaces.p2p_links_profiles.[].nodes") | List, items: String |  |  |  | Nodes where this link should be configured. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "core_interfaces.p2p_links_profiles.[].nodes.[].&lt;str&gt;") | String |  |  |  | The values can be < node_a >, < node_b >.<br>ex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "core_interfaces.p2p_links_profiles.[].interfaces") | List, items: String |  |  |  | Interfaces where this link should be configured and Required unless using port-channels. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "core_interfaces.p2p_links_profiles.[].interfaces.[].&lt;str&gt;") | String |  |  |  | The value can be like < node_a_interface >, < node_b_interface >.<br>ex. - [ Ethernet2, Ethernet2 ].<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as</samp>](## "core_interfaces.p2p_links_profiles.[].as") | List, items: String |  |  |  | AS numbers for BGP.<br>Required with bgp peering.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "core_interfaces.p2p_links_profiles.[].as.[].&lt;str&gt;") | String |  |  |  | The values can be like ["node_a_as", "node_b_as"]. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;descriptions</samp>](## "core_interfaces.p2p_links_profiles.[].descriptions") | List, items: String |  |  |  | Interface description. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "core_interfaces.p2p_links_profiles.[].descriptions.[].&lt;str&gt;") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_in_underlay_protocol</samp>](## "core_interfaces.p2p_links_profiles.[].include_in_underlay_protocol") | Boolean |  | True |  | Add this interface to underlay routing protocol. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_hello_padding</samp>](## "core_interfaces.p2p_links_profiles.[].isis_hello_padding") | Boolean |  | False |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_metric</samp>](## "core_interfaces.p2p_links_profiles.[].isis_metric") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_circuit_type</samp>](## "core_interfaces.p2p_links_profiles.[].isis_circuit_type") | String |  |  | Valid Values:<br>- level-1<br>- level-2<br>- level-1-2 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_mode</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_mode") | String |  |  | Valid Values:<br>- md5<br>- text |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_key</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_key") | String |  |  |  | Type-7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ip</samp>](## "core_interfaces.p2p_links_profiles.[].mpls_ip") | Boolean |  |  |  | MPLS parameters. Default value is true if switch.mpls_lsr is true. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ldp</samp>](## "core_interfaces.p2p_links_profiles.[].mpls_ldp") | Boolean |  |  |  | MPLS parameters. Default value is true for ldp underlay variants, otherwise false. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "core_interfaces.p2p_links_profiles.[].mtu") | Integer |  |  |  | MTU for this P2P link. Default value same as p2p_uplinks_mtu. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "core_interfaces.p2p_links_profiles.[].bfd") | Boolean |  | False |  | Enable BFD (only considered for BGP). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ptp</samp>](## "core_interfaces.p2p_links_profiles.[].ptp") | Dictionary |  |  |  | PTP parameters. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "core_interfaces.p2p_links_profiles.[].ptp.enabled") | Boolean |  | False |  | Enable PTP |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "core_interfaces.p2p_links_profiles.[].qos_profile") | String |  |  |  | QOS service profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;macsec_profile</samp>](## "core_interfaces.p2p_links_profiles.[].macsec_profile") | String |  |  |  | MAC security profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_channel</samp>](## "core_interfaces.p2p_links_profiles.[].port_channel") | Dictionary |  |  |  | Port-channel parameters. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "core_interfaces.p2p_links_profiles.[].port_channel.mode") | String |  | active |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes_child_interfaces</samp>](## "core_interfaces.p2p_links_profiles.[].port_channel.nodes_child_interfaces") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- node</samp>](## "core_interfaces.p2p_links_profiles.[].port_channel.nodes_child_interfaces.[].node") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "core_interfaces.p2p_links_profiles.[].port_channel.nodes_child_interfaces.[].interfaces") | List, items: String |  |  |  | List of node interfaces. Ex.- [ 'node1 interface1', 'node1 interface2' ]. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "core_interfaces.p2p_links_profiles.[].port_channel.nodes_child_interfaces.[].interfaces.[].&lt;str&gt;") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "core_interfaces.p2p_links_profiles.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the point-to-point interface in the final EOS configuration. |
+    | [<samp>&nbsp;&nbsp;p2p_links</samp>](## "core_interfaces.p2p_links") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- nodes</samp>](## "core_interfaces.p2p_links.[].nodes") | List, items: String | Required |  |  | Nodes where this link should be configured. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "core_interfaces.p2p_links.[].nodes.[].&lt;str&gt;") | String |  |  |  | The values can be < node_a >, < node_b >.<br>ex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "core_interfaces.p2p_links.[].profile") | String |  |  |  | P2P profile name. Profile defined under p2p_profiles. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "core_interfaces.p2p_links.[].id") | Integer |  |  |  | Unique id per subnet_summary. Used to calculate ip addresses.<br>Required with ip_pool. ID starting from 1.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "core_interfaces.p2p_links.[].speed") | String |  |  |  | The values can be speed or auto speed or forced speed. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_pool</samp>](## "core_interfaces.p2p_links.[].ip_pool") | String |  |  |  | P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subnet</samp>](## "core_interfaces.p2p_links.[].subnet") | String |  |  |  | IPv4 address/Mask. Subnet used on this P2P link. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "core_interfaces.p2p_links.[].ip") | List, items: String |  |  |  | Specific IP addresses used on this P2P link. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "core_interfaces.p2p_links.[].ip.[].&lt;str&gt;") | String |  |  |  | Node IPv4 address/Mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "core_interfaces.p2p_links.[].ipv6_enable") | Boolean |  | False |  | Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "core_interfaces.p2p_links.[].interfaces") | List, items: String |  |  |  | Interfaces where this link should be configured and Required unless using port-channels. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "core_interfaces.p2p_links.[].interfaces.[].&lt;str&gt;") | String |  |  |  | The value can be like < node_a_interface >, < node_b_interface >.<br>ex. - [ Ethernet2, Ethernet2 ].<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as</samp>](## "core_interfaces.p2p_links.[].as") | List, items: String |  |  |  | AS numbers for BGP.<br>Required with bgp peering.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "core_interfaces.p2p_links.[].as.[].&lt;str&gt;") | String |  |  |  | The values can be like ["node_a_as", "node_b_as"]. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;descriptions</samp>](## "core_interfaces.p2p_links.[].descriptions") | List, items: String |  |  |  | Interface description. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "core_interfaces.p2p_links.[].descriptions.[].&lt;str&gt;") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_in_underlay_protocol</samp>](## "core_interfaces.p2p_links.[].include_in_underlay_protocol") | Boolean |  | True |  | Add this interface to underlay routing protocol. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_hello_padding</samp>](## "core_interfaces.p2p_links.[].isis_hello_padding") | Boolean |  | False |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_metric</samp>](## "core_interfaces.p2p_links.[].isis_metric") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_circuit_type</samp>](## "core_interfaces.p2p_links.[].isis_circuit_type") | String |  |  | Valid Values:<br>- level-1<br>- level-2<br>- level-1-2 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_mode</samp>](## "core_interfaces.p2p_links.[].isis_authentication_mode") | String |  |  | Valid Values:<br>- md5<br>- text |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_key</samp>](## "core_interfaces.p2p_links.[].isis_authentication_key") | String |  |  |  | Type-7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ip</samp>](## "core_interfaces.p2p_links.[].mpls_ip") | Boolean |  |  |  | MPLS parameters. Default value is true if switch.mpls_lsr is true. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ldp</samp>](## "core_interfaces.p2p_links.[].mpls_ldp") | Boolean |  |  |  | MPLS parameters. Default value is true for ldp underlay variants, otherwise false. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "core_interfaces.p2p_links.[].mtu") | Integer |  |  |  | MTU for this P2P link. Default value same as p2p_uplinks_mtu. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "core_interfaces.p2p_links.[].bfd") | Boolean |  | False |  | Enable BFD (only considered for BGP). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ptp</samp>](## "core_interfaces.p2p_links.[].ptp") | Dictionary |  |  |  | PTP parameters. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "core_interfaces.p2p_links.[].ptp.enabled") | Boolean |  | False |  | Enable PTP |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "core_interfaces.p2p_links.[].qos_profile") | String |  |  |  | QOS service profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;macsec_profile</samp>](## "core_interfaces.p2p_links.[].macsec_profile") | String |  |  |  | MAC security profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_channel</samp>](## "core_interfaces.p2p_links.[].port_channel") | Dictionary |  |  |  | Port-channel parameters. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "core_interfaces.p2p_links.[].port_channel.mode") | String |  | active |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes_child_interfaces</samp>](## "core_interfaces.p2p_links.[].port_channel.nodes_child_interfaces") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- node</samp>](## "core_interfaces.p2p_links.[].port_channel.nodes_child_interfaces.[].node") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "core_interfaces.p2p_links.[].port_channel.nodes_child_interfaces.[].interfaces") | List, items: String |  |  |  | List of node interfaces. Ex.- [ 'node1 interface1', 'node1 interface2' ]. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "core_interfaces.p2p_links.[].port_channel.nodes_child_interfaces.[].interfaces.[].&lt;str&gt;") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "core_interfaces.p2p_links.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the point-to-point interface in the final EOS configuration. |
+
+=== "YAML"
+
+    ```yaml
+    core_interfaces:
+      p2p_links_ip_pools:
+        - name: <str>
+          ipv4_pool: <str>
+          prefix_size: <int>
+      p2p_links_profiles:
+        - name: <str>
+          id: <int>
+          speed: <str>
+          ip_pool: <str>
+          subnet: <str>
+          ip:
+            - <str>
+          ipv6_enable: <bool>
+          nodes:
+            - <str>
+          interfaces:
+            - <str>
+          as:
+            - <str>
+          descriptions:
+            - <str>
+          include_in_underlay_protocol: <bool>
+          isis_hello_padding: <bool>
+          isis_metric: <int>
+          isis_circuit_type: <str>
+          isis_authentication_mode: <str>
+          isis_authentication_key: <str>
+          mpls_ip: <bool>
+          mpls_ldp: <bool>
+          mtu: <int>
+          bfd: <bool>
+          ptp:
+            enabled: <bool>
+          qos_profile: <str>
+          macsec_profile: <str>
+          port_channel:
+            mode: <str>
+            nodes_child_interfaces:
+              - node: <str>
+                interfaces:
+                  - <str>
+          raw_eos_cli: <str>
+      p2p_links:
+        - nodes:
+            - <str>
+          profile: <str>
+          id: <int>
+          speed: <str>
+          ip_pool: <str>
+          subnet: <str>
+          ip:
+            - <str>
+          ipv6_enable: <bool>
+          interfaces:
+            - <str>
+          as:
+            - <str>
+          descriptions:
+            - <str>
+          include_in_underlay_protocol: <bool>
+          isis_hello_padding: <bool>
+          isis_metric: <int>
+          isis_circuit_type: <str>
+          isis_authentication_mode: <str>
+          isis_authentication_key: <str>
+          mpls_ip: <bool>
+          mpls_ldp: <bool>
+          mtu: <int>
+          bfd: <bool>
+          ptp:
+            enabled: <bool>
+          qos_profile: <str>
+          macsec_profile: <str>
+          port_channel:
+            mode: <str>
+            nodes_child_interfaces:
+              - node: <str>
+                interfaces:
+                  - <str>
+          raw_eos_cli: <str>
+    ```
+
+## Custom Structured Configuration
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>custom_structured_configuration_list_merge</samp>](## "custom_structured_configuration_list_merge") | String |  | append_rp | Valid Values:<br>- replace<br>- append<br>- keep<br>- prepend<br>- append_rp<br>- prepend_rp | The List-merge strategy used when merging custom structured configurations.<br><br>This applies to all vars prefixed by prefixes in `custom_structured_configuration_prefix`<br>and all data under the various `structured_config` options.<br><br>The available list merge strategies:<br>- `replace`:<br>  - Any list will be replaced with the list defined in custom structured configurations.<br>- `append`:<br>  - Existing list items with the same "Primary key"-value will be updated.<br>  - New items will be appended to the existing list (including duplicates).<br>- `keep`:<br>  - Only set list if there is no existing list or existing list is `None`.<br>- `prepend`:<br>  - Existing list items with the same "Primary key"-value will be updated.<br>  - New items will be prepended to the existing list (including duplicates).<br>- `append_rp`:<br>  - Existing list items with the same "Primary key"-value will be updated.<br>  - New unique items will be appended to the existing list.<br>- `prepend_rp`:<br>  - Existing list items with the same "Primary key"-value will be updated.<br>  - New unique items will be prepended to the existing list.<br> |
+    | [<samp>custom_structured_configuration_prefix</samp>](## "custom_structured_configuration_prefix") | List, items: String |  | ['custom_structured_configuration_'] |  | Custom EOS Structured Configuration keys can be set on any group or host_var level using the name<br>of the corresponding `eos_cli_config_gen` key prefixed with content of `custom_structured_configuration_prefix`.<br><br>The content of Custom Structured Configuration variables will be merged with the structured config generated by the eos_designs role.<br><br>The merge is done recursively, so it is possible to update a sub-key of a variable set by `eos_designs` role already.<br><br>The merge follow these recursive merge strategies:<br>- New keys will be added for all types.<br>- Existing keys of type "List" with a "Primary key" set in the schema:<br>  - Strategy can be changed with `custom_structured_configuration_list_merge`. Default strategy:<br>    - Existing list items with the same "Primary key"-value will be updated.<br>    - New unique items will be appended to the existing list<br>- Other keys of type "List" will have new unique items appended the the existing list.<br>- Existing keys of type "Dictionary" will recursively merge<br>- Other existing keys will be replaced.<br> |
+    | [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "custom_structured_configuration_prefix.[].&lt;str&gt;") | String |  |  |  |  |
+
+=== "YAML"
+
+    ```yaml
+    custom_structured_configuration_list_merge: <str>
+    custom_structured_configuration_prefix:
+      - <str>
+    ```
+
+## Default Interfaces
+
+- Set default uplink, downlink, and MLAG interfaces, which will be used if these interfaces are not defined on a device (either directly or through inheritance).
+- These are defined based on the combination of node_type (e.g., l3leaf or spine) and a regex for matching the platform.
+- A list of interfaces or interface ranges can be specified.
+- Each list item supports range syntax that can be expanded into a list of interfaces. Interface range examples:
+  - Ethernet49-52/1: Expands to [ Ethernet49/1, Ethernet50/1, Ethernet51/1, Ethernet52/1 ]
+  - Ethernet1/31-34/1: Expands to [ Ethernet1/31/1, Ethernet1/32/1, Ethernet1/33/1, Ethernet1/34/1 ]
+  - Ethernet49-50,53-54: Expands to [ Ethernet49, Ethernet50, Ethernet53, Ethernet54 ]
+  - Ethernet1-2/1-4: Expands to [ Ethernet1/1, Ethernet1/2, Ethernet1/3, Ethernet1/4, Ethernet2/1, Ethernet2/2, Ethernet2/3, Ethernet2/4 ]
+- `uplink_interfaces` and `mlag_interfaces` under `default_interfaces` are directly inherited by `uplink_interfaces` and `mlag_interfaces`.
+- `downlink_interfaces` are referenced by the child switch (e.g., the leaf in a leaf/spine network). The child switch leverages an upstream switch's `default_downlink_interfaces` using the child switch ID.  This is then used to build `uplink_switch_interfaces` for that child.
+  - In the case of `max_parallel_uplinks` > 1 the `default_downlink_interfaces` are mapped with consecutive downlinks per child ID.
+  - Example for `max_parallel_uplinks: 2`, downlink interfaces will be mapped as `[ <downlink1 to leaf-id1>, <downlink2 to leaf-id1>, <downlink1 to leaf-id2>, <downlink2 to leaf-id2> ...]`
+- Please note that no default interfaces are defined in AVD itself. You will need to create your own based on the example below.
+
+Example:
+
+```yaml
+default_interfaces:
+  - types: [ spine, l3leaf ]
+    platforms: [ "7050[SC]X3", vEOS.*, default ]
+    uplink_interfaces: [ Ethernet49-54/1 ]
+    mlag_interfaces: [ Ethernet55-56/1 ]
+    downlink_interfaces: [ Ethernet1-32/1 ]
+```
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>default_interfaces</samp>](## "default_interfaces") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;- types</samp>](## "default_interfaces.[].types") | List, items: String | Required |  |  | List of node type keys. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "default_interfaces.[].types.[].&lt;str&gt;") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;platforms</samp>](## "default_interfaces.[].platforms") | List, items: String | Required |  |  | List of platform families.<br>This is defined as a Python regular expression that matches the full platform type.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "default_interfaces.[].platforms.[].&lt;str&gt;") | String |  |  |  | Arista platform family regular expression. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "default_interfaces.[].uplink_interfaces") | List, items: String |  |  |  | List of uplink interfaces or uplink interface ranges. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "default_interfaces.[].uplink_interfaces.[].&lt;str&gt;") | String |  |  |  | Interface range or interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_interfaces</samp>](## "default_interfaces.[].mlag_interfaces") | List, items: String |  |  |  | List of MLAG interfaces or MLAG interface ranges. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "default_interfaces.[].mlag_interfaces.[].&lt;str&gt;") | String |  |  |  | Interface range or interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;downlink_interfaces</samp>](## "default_interfaces.[].downlink_interfaces") | List, items: String |  |  |  | List of downlink interfaces or downlink interface ranges. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "default_interfaces.[].downlink_interfaces.[].&lt;str&gt;") | String |  |  |  | Interface range or interface. |
+
+=== "YAML"
+
+    ```yaml
+    default_interfaces:
+      - types:
+          - <str>
+        platforms:
+          - <str>
+        uplink_interfaces:
+          - <str>
+        mlag_interfaces:
+          - <str>
+        downlink_interfaces:
+          - <str>
+    ```
+
+## Default Node Types
+
+Uses hostname matches against a regular expression to determine the node type.
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>default_node_types</samp>](## "default_node_types") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;- node_type</samp>](## "default_node_types.[].node_type") | String | Required, Unique |  |  | Resulting node type when regex matches. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;match_hostnames</samp>](## "default_node_types.[].match_hostnames") | List, items: String | Required |  |  | Regular expressions to match against hostnames. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "default_node_types.[].match_hostnames.[].&lt;str&gt;") | String | Required |  |  | Regex needs to match full hostname (i.e. is bounded by ^ and $ elements). |
+
+=== "YAML"
+
+    ```yaml
+    default_node_types:
+      - node_type: <str>
+        match_hostnames:
+          - <str>
+    ```
+
+## EVPN Settings
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>evpn_ebgp_gateway_inter_domain</samp>](## "evpn_ebgp_gateway_inter_domain") | Boolean |  |  |  |  |
+    | [<samp>evpn_ebgp_gateway_multihop</samp>](## "evpn_ebgp_gateway_multihop") | Integer |  | 15 |  | Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI networks.<br>Adapt the value for your specific topology.<br> |
+    | [<samp>evpn_ebgp_multihop</samp>](## "evpn_ebgp_multihop") | Integer |  | 3 |  | Default of 3, the recommended value for a 3 stage spine and leaf topology.<br>Set to a higher value to allow for very large and complex topologies.<br> |
+    | [<samp>evpn_hostflap_detection</samp>](## "evpn_hostflap_detection") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;enabled</samp>](## "evpn_hostflap_detection.enabled") | Boolean |  | True |  | If set to false it will disable EVPN host-flap detection |
+    | [<samp>&nbsp;&nbsp;threshold</samp>](## "evpn_hostflap_detection.threshold") | Integer |  | 5 |  | Minimum number of MAC moves that indicate a MAC duplication issue |
+    | [<samp>&nbsp;&nbsp;window</samp>](## "evpn_hostflap_detection.window") | Integer |  | 180 |  | Time (in seconds) to detect a MAC duplication issue |
+    | [<samp>&nbsp;&nbsp;expiry_timeout</samp>](## "evpn_hostflap_detection.expiry_timeout") | Integer |  |  |  | Time (in seconds) to purge a MAC duplication issue |
+    | [<samp>evpn_import_pruning</samp>](## "evpn_import_pruning") | Boolean |  | False |  | Enable VPN import pruning (Min. EOS 4.24.2F)<br>The Route Target extended communities carried by incoming VPN paths will<br>be examined. If none of those Route Targets have been configured for import,<br>the path will be immediately discarded<br> |
+    | [<samp>evpn_multicast</samp>](## "evpn_multicast") | Boolean |  | False |  | General Configuration required for EVPN Multicast. "evpn_l2_multicast" or "evpn_l3_multicast" must also be configured under the Network Services (tenants).<br>Requires "underlay_multicast: true" and IGMP snooping enabled globally (default).<br>For MLAG devices Route Distinguisher must be unique since this feature will create multi-vtep configuration.<br>Warning !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP and 722XP<br>  The Following default platform setting will be configured: "platform trident forwarding-table partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072"<br>  All forwarding agents will be restarted when this configuration is applied.<br>  You can tune the settings by overridding the default variable: "platform_settings[platforms].trident_forwarding_table_partition:"<br>  Please contact an Arista representative for help with determining the appropriate values for your environment.<br> |
+    | [<samp>evpn_overlay_bgp_rtc</samp>](## "evpn_overlay_bgp_rtc") | Boolean |  | False |  | Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)<br>Requires use eBGP as overlay protocol.<br> |
+    | [<samp>evpn_prevent_readvertise_to_server</samp>](## "evpn_prevent_readvertise_to_server") | Boolean |  | False |  | Configure route-map on eBGP sessions towards route-servers, where prefixes with the peer's ASN in the AS Path are filtered away.<br>This is very useful in large-scale networks, where convergence will be quicker by not returning all updates received<br>from Route-server-1 to Router-server-2 just for Route-server-2 to throw them away because of AS Path loop detection.<br> |
+    | [<samp>evpn_rd_type</samp>](## "evpn_rd_type") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 4.0.0. Use <samp>overlay_rd_type</samp> instead.</span> |
+    | [<samp>evpn_rt_type</samp>](## "evpn_rt_type") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 4.0.0. Use <samp>overlay_rt_type</samp> instead.</span> |
+    | [<samp>evpn_short_esi_prefix</samp>](## "evpn_short_esi_prefix") | String |  | 0000:0000: |  | Configure prefix for "short_esi" values |
+    | [<samp>evpn_vlan_aware_bundles</samp>](## "evpn_vlan_aware_bundles") | Boolean |  | False |  | Enable vlan aware bundles for EVPN MAC-VRF<br> |
+    | [<samp>fabric_evpn_encapsulation</samp>](## "fabric_evpn_encapsulation") | String |  | vxlan | Valid Values:<br>- vxlan<br>- mpls | Should be set to mpls for evpn-mpls scenario. |
+    | [<samp>vxlan_vlan_aware_bundles</samp>](## "vxlan_vlan_aware_bundles") <span style="color:red">removed</span> | Boolean |  | False |  | <span style="color:red">This key was removed. Support was removed in AVD version 4.0.0. Use <samp>evpn_vlan_aware_bundles</samp> instead.</span> |
+
+=== "YAML"
+
+    ```yaml
+    evpn_ebgp_gateway_inter_domain: <bool>
+    evpn_ebgp_gateway_multihop: <int>
+    evpn_ebgp_multihop: <int>
+    evpn_hostflap_detection:
+      enabled: <bool>
+      threshold: <int>
+      window: <int>
+      expiry_timeout: <int>
+    evpn_import_pruning: <bool>
+    evpn_multicast: <bool>
+    evpn_overlay_bgp_rtc: <bool>
+    evpn_prevent_readvertise_to_server: <bool>
+    evpn_short_esi_prefix: <str>
+    evpn_vlan_aware_bundles: <bool>
+    fabric_evpn_encapsulation: <str>
+    ```
+
+## Fabric Settings
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>design</samp>](## "design") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;type</samp>](## "design.type") | String |  | l3ls-evpn | Valid Values:<br>- l3ls-evpn<br>- mpls<br>- l2ls | By setting the design.type variable, the default node-types and templates described in these documents will be used.<br> |
+    | [<samp>enable_trunk_groups</samp>](## "enable_trunk_groups") | Boolean |  | False |  | Enable Trunk Group support across eos_designs<br>Warning: Because of the nature of the EOS Trunk Group feature, enabling this is "all or nothing".<br>*All* vlans and *all* trunks towards connected endpoints must be using trunk groups as well.<br>If trunk groups are not assigned to a trunk, no vlans will be enabled on that trunk.<br>See "Details on enable_trunk_groups" below before enabling this feature.<br> |
+    | [<samp>is_deployed</samp>](## "is_deployed") | Boolean |  | True |  | Is device already deployed in the fabric<br>When set to false, interfaces toward this device may be shutdown depending on the `shutdown_interfaces_towards_undeployed_peers` setting.<br>Furthermore `eos_config_deploy_cvp` will not attempt to move or apply configurations to the device.<br> |
+    | [<samp>only_local_vlan_trunk_groups</samp>](## "only_local_vlan_trunk_groups") | Boolean |  | False |  | A vlan can have many trunk_groups assigned. To avoid unneeded configuration changes on all leaf<br>switches when a new trunk group is added, this feature will only configure the vlan trunk groups<br>matched with local connected_endpoints.<br>See "Details on only_local_vlan_trunk_groups" below.<br>Requires "enable_trunk_groups: true"<br> |
+    | [<samp>p2p_uplinks_mtu</samp>](## "p2p_uplinks_mtu") | Integer |  | 9214 | Min: 68<br>Max: 65535 | Point to Point Links MTU |
+    | [<samp>p2p_uplinks_qos_profile</samp>](## "p2p_uplinks_qos_profile") | String |  |  |  | QOS Profile assigned on all infrastructure links |
+    | [<samp>shutdown_interfaces_towards_undeployed_peers</samp>](## "shutdown_interfaces_towards_undeployed_peers") | Boolean |  | False |  | - It is possible to provision configurations for a complete topology but flag devices as undeployed using the host level variable `is_deployed: false`.<br><br>```yaml<br># Use at the host level<br>is_deployed: < true or false or default -> true ><br>```<br><br>- By default, this will have no impact within the `eos_designs` role. Configs will still be generated by the `eos_cli_config_gen` role and will still be pushed by the `eos_config_deploy_eapi` directly to devices if used.<br>- However, if the `eos_config_deploy_cvp` role is used to push configurations, CloudVision will ignore the devices flagged  as `is_deployed: false` and not attempt to configure them.<br>- If the device is not present in the network due to CloudVision not configuring the device, `eos_validate_state` role will fail tests on peers of the undeployed device trying to verify that interfaces are up.<br>- To overcome this and shutdown interfaces towards undeployed peers, the variable `shutdown_interfaces_towards_undeployed_peers` can be used, satisfying the `eos_validate_state` role interface tests.<br>- Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices are not present in the network. |
+    | [<samp>trunk_groups</samp>](## "trunk_groups") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;mlag</samp>](## "trunk_groups.mlag") | Dictionary |  |  |  | Trunk Group used for MLAG VLAN (Typically VLAN 4094)<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "trunk_groups.mlag.name") | String |  | MLAG |  |  |
+    | [<samp>&nbsp;&nbsp;mlag_l3</samp>](## "trunk_groups.mlag_l3") | Dictionary |  |  |  | Trunk Group used for MLAG L3 peering VLAN and for VRF L3 peering VLANs (Typically VLAN 4093)<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "trunk_groups.mlag_l3.name") | String |  | LEAF_PEER_L3 |  |  |
+    | [<samp>&nbsp;&nbsp;uplink</samp>](## "trunk_groups.uplink") | Dictionary |  |  |  | Trunk Group used on L2 Leaf switches when "enable_trunk_groups" is set<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "trunk_groups.uplink.name") | String |  | UPLINK |  |  |
+    | [<samp>underlay_filter_peer_as</samp>](## "underlay_filter_peer_as") | Boolean |  | False |  | Configure route-map on eBGP sessions towards underlay peers, where prefixes with the peer's ASN in the AS Path are filtered away.<br>This is very useful in very large scale networks not using EVPN overlays, where convergence will be quicker by not having to return<br>all updates received from Spine-1 to Spine-2 just for Spine-2 to throw them away because of AS Path loop detection.<br>Note this key is ignored when EVPN is configured.<br> |
+    | [<samp>underlay_filter_redistribute_connected</samp>](## "underlay_filter_redistribute_connected") | Boolean |  | True |  | Filter redistribution of connected into the underlay routing protocol.<br>Only applicable when overlay_routing_protocol != 'none' and underlay_routing_protocol == BGP.<br>Creates a route-map and prefix-list assigned to redistribute connected permitting only loopbacks and inband management subnets.<br> |
+    | [<samp>underlay_ipv6</samp>](## "underlay_ipv6") | Boolean |  | False |  | This feature allows IPv6 underlay routing protocol with RFC5549 addresses to be used along with IPv4 advertisements as VXLAN tunnel endpoints.<br>Requires "underlay_rfc5549: true" and "loopback_ipv6_pool" under the "Fabric Topology"<br> |
+    | [<samp>underlay_multicast</samp>](## "underlay_multicast") | Boolean |  | False |  | Enable Multicast in the underlay on all p2p uplink interfaces and mlag l3 peer interface.<br>Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.<br>No other configuration is added, so the underlay will only support Source-Specific Multicast (SSM)<br>The configuration is intended to be used as multicast underlay for EVPN OISM overlay<br> |
+    | [<samp>underlay_rfc5549</samp>](## "underlay_rfc5549") | Boolean |  | False |  | Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered<br>Requires "underlay_routing_protocol: ebgp"<br> |
+    | [<samp>underlay_routing_protocol</samp>](## "underlay_routing_protocol") | String |  |  | Value is converted to lower case<br>Valid Values:<br>- ebgp<br>- ospf<br>- isis<br>- isis-sr<br>- isis-ldp<br>- isis-sr-ldp<br>- ospf-ldp | - The following underlay routing protocols are supported:<br>  - EBGP (default for l3ls-evpn)<br>  - OSPF.<br>  - ISIS.<br>  - ISIS-SR*.<br>  - ISIS-LDP*.<br>  - ISIS-SR-LDP*.<br>  - OSPF-LDP*.<br>- The variables should be applied to all devices in the fabric.<br>*Only supported with core_interfaces data model.<br> |
+    | [<samp>uplink_ptp</samp>](## "uplink_ptp") | Dictionary |  |  |  | Enable PTP on all infrastructure links |
+    | [<samp>&nbsp;&nbsp;enable</samp>](## "uplink_ptp.enable") | Boolean |  | False |  |  |
+
+=== "YAML"
+
+    ```yaml
+    design:
+      type: <str>
+    enable_trunk_groups: <bool>
+    is_deployed: <bool>
+    only_local_vlan_trunk_groups: <bool>
+    p2p_uplinks_mtu: <int>
+    p2p_uplinks_qos_profile: <str>
+    shutdown_interfaces_towards_undeployed_peers: <bool>
+    trunk_groups:
+      mlag:
+        name: <str>
+      mlag_l3:
+        name: <str>
+      uplink:
+        name: <str>
+    underlay_filter_peer_as: <bool>
+    underlay_filter_redistribute_connected: <bool>
+    underlay_ipv6: <bool>
+    underlay_multicast: <bool>
+    underlay_rfc5549: <bool>
+    underlay_routing_protocol: <str>
+    uplink_ptp:
+      enable: <bool>
+    ```
+
+## Fabric Topology
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>dc_name</samp>](## "dc_name") | String |  |  |  | DC Name, required to match Ansible Group name covering all devices in the DC.<br>Required for 5-stage CLOS (Super-spines).<br> |
+    | [<samp>fabric_name</samp>](## "fabric_name") | String | Required |  |  | Fabric Name, required to match Ansible Group name covering all devices in the Fabric, **must** be an inventory group name. |
+    | [<samp>pod_name</samp>](## "pod_name") | String |  |  |  | POD Name, only used in Fabric Documentation (Optional), fallback to dc_name and then to fabric_name.<br>Recommended to be common between Spines and Leafs within a POD (One l3ls topology).<br> |
+
+=== "YAML"
+
+    ```yaml
+    dc_name: <str>
+    fabric_name: <str>
+    pod_name: <str>
+    ```
+
+## ISIS Settings
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>isis_advertise_passive_only</samp>](## "isis_advertise_passive_only") | Boolean |  | False |  |  |
+    | [<samp>isis_area_id</samp>](## "isis_area_id") | String |  | 49.0001 |  |  |
+    | [<samp>isis_default_circuit_type</samp>](## "isis_default_circuit_type") | String |  | level-2 | Valid Values:<br>- level-1-2<br>- level-1<br>- level-2 | These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden on link profile or link level. |
+    | [<samp>isis_default_is_type</samp>](## "isis_default_is_type") | String |  | level-2 | Valid Values:<br>- level-1-2<br>- level-1<br>- level-2 |  |
+    | [<samp>isis_default_metric</samp>](## "isis_default_metric") | Integer |  | 50 |  | These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden at link profile or link level. |
+    | [<samp>isis_maximum_paths</samp>](## "isis_maximum_paths") | Integer |  |  |  | Number of path to configure in ECMP for ISIS. |
+    | [<samp>isis_ti_lfa</samp>](## "isis_ti_lfa") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;enabled</samp>](## "isis_ti_lfa.enabled") | Boolean |  | False |  |  |
+    | [<samp>&nbsp;&nbsp;protection</samp>](## "isis_ti_lfa.protection") | String |  |  | Valid Values:<br>- link<br>- node |  |
+    | [<samp>&nbsp;&nbsp;local_convergence_delay</samp>](## "isis_ti_lfa.local_convergence_delay") | Integer |  | 10000 |  | Local convergence delay in milliseconds |
+    | [<samp>underlay_isis_instance_name</samp>](## "underlay_isis_instance_name") | String |  |  |  | Default -> "EVPN_UNDERLAY" for l3ls, "CORE" for mpls |
+
+=== "YAML"
+
+    ```yaml
+    isis_advertise_passive_only: <bool>
+    isis_area_id: <str>
+    isis_default_circuit_type: <str>
+    isis_default_is_type: <str>
+    isis_default_metric: <int>
+    isis_maximum_paths: <int>
+    isis_ti_lfa:
+      enabled: <bool>
+      protection: <str>
+      local_convergence_delay: <int>
+    underlay_isis_instance_name: <str>
+    ```
+
+## L3 Edge
+
+The `l3_edge` data model can be used to configure extra L3 P2P links anywhere in the fabric.
+It can be between two switches that are already part of the fabric inventory, or it can be towards another device, where only one end of the link is on a switch in the fabric.
+Fabric switches can be types `l3leaf`, `spine` or `super-spine`.
+
+The data model supports using IP pools, Subnet per link or specifying the IP addresses manually.
+For BGP peerings the AS number must be specified.
+If the AS number is different than the AS number configured for the node, the local-as will be replaced on this BGP peering (`neighbor <ip> local-as <as> no-prepend replace-as`).
+
+Make sure to configure the variables in a group_vars file covering all devices mentioned in the data model.
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>l3_edge</samp>](## "l3_edge") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;p2p_links_ip_pools</samp>](## "l3_edge.p2p_links_ip_pools") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "l3_edge.p2p_links_ip_pools.[].name") | String | Required, Unique |  |  | P2P pool name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_pool</samp>](## "l3_edge.p2p_links_ip_pools.[].ipv4_pool") | String |  |  |  | IPv4 address/Mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_size</samp>](## "l3_edge.p2p_links_ip_pools.[].prefix_size") | Integer |  | 31 | Min: 8<br>Max: 31 | Subnet mask size. |
+    | [<samp>&nbsp;&nbsp;p2p_links_profiles</samp>](## "l3_edge.p2p_links_profiles") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "l3_edge.p2p_links_profiles.[].name") | String | Required, Unique |  |  | P2P profile name. Any variable supported under p2p_links can be inherited from a profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "l3_edge.p2p_links_profiles.[].id") | Integer |  |  |  | Unique id per subnet_summary. Used to calculate ip addresses.<br>Required with ip_pool. ID starting from 1.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "l3_edge.p2p_links_profiles.[].speed") | String |  |  |  | The values can be speed or auto speed or forced speed. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_pool</samp>](## "l3_edge.p2p_links_profiles.[].ip_pool") | String |  |  |  | P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subnet</samp>](## "l3_edge.p2p_links_profiles.[].subnet") | String |  |  |  | IPv4 address/Mask. Subnet used on this P2P link. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "l3_edge.p2p_links_profiles.[].ip") | List, items: String |  |  |  | Specific IP addresses used on this P2P link. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "l3_edge.p2p_links_profiles.[].ip.[].&lt;str&gt;") | String |  |  |  | Node IPv4 address/Mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "l3_edge.p2p_links_profiles.[].ipv6_enable") | Boolean |  | False |  | Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "l3_edge.p2p_links_profiles.[].nodes") | List, items: String |  |  |  | Nodes where this link should be configured. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "l3_edge.p2p_links_profiles.[].nodes.[].&lt;str&gt;") | String |  |  |  | The values can be < node_a >, < node_b >.<br>ex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "l3_edge.p2p_links_profiles.[].interfaces") | List, items: String |  |  |  | Interfaces where this link should be configured and Required unless using port-channels. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "l3_edge.p2p_links_profiles.[].interfaces.[].&lt;str&gt;") | String |  |  |  | The value can be like < node_a_interface >, < node_b_interface >.<br>ex. - [ Ethernet2, Ethernet2 ].<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as</samp>](## "l3_edge.p2p_links_profiles.[].as") | List, items: String |  |  |  | AS numbers for BGP.<br>Required with bgp peering.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "l3_edge.p2p_links_profiles.[].as.[].&lt;str&gt;") | String |  |  |  | The values can be like ["node_a_as", "node_b_as"]. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;descriptions</samp>](## "l3_edge.p2p_links_profiles.[].descriptions") | List, items: String |  |  |  | Interface description. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "l3_edge.p2p_links_profiles.[].descriptions.[].&lt;str&gt;") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_in_underlay_protocol</samp>](## "l3_edge.p2p_links_profiles.[].include_in_underlay_protocol") | Boolean |  | True |  | Add this interface to underlay routing protocol. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_hello_padding</samp>](## "l3_edge.p2p_links_profiles.[].isis_hello_padding") | Boolean |  | False |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_metric</samp>](## "l3_edge.p2p_links_profiles.[].isis_metric") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_circuit_type</samp>](## "l3_edge.p2p_links_profiles.[].isis_circuit_type") | String |  |  | Valid Values:<br>- level-1<br>- level-2<br>- level-1-2 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_mode</samp>](## "l3_edge.p2p_links_profiles.[].isis_authentication_mode") | String |  |  | Valid Values:<br>- md5<br>- text |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_key</samp>](## "l3_edge.p2p_links_profiles.[].isis_authentication_key") | String |  |  |  | Type-7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ip</samp>](## "l3_edge.p2p_links_profiles.[].mpls_ip") | Boolean |  |  |  | MPLS parameters. Default value is true if switch.mpls_lsr is true. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ldp</samp>](## "l3_edge.p2p_links_profiles.[].mpls_ldp") | Boolean |  |  |  | MPLS parameters. Default value is true for ldp underlay variants, otherwise false. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "l3_edge.p2p_links_profiles.[].mtu") | Integer |  |  |  | MTU for this P2P link. Default value same as p2p_uplinks_mtu. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "l3_edge.p2p_links_profiles.[].bfd") | Boolean |  | False |  | Enable BFD (only considered for BGP). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ptp</samp>](## "l3_edge.p2p_links_profiles.[].ptp") | Dictionary |  |  |  | PTP parameters. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "l3_edge.p2p_links_profiles.[].ptp.enabled") | Boolean |  | False |  | Enable PTP |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "l3_edge.p2p_links_profiles.[].qos_profile") | String |  |  |  | QOS service profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;macsec_profile</samp>](## "l3_edge.p2p_links_profiles.[].macsec_profile") | String |  |  |  | MAC security profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_channel</samp>](## "l3_edge.p2p_links_profiles.[].port_channel") | Dictionary |  |  |  | Port-channel parameters. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "l3_edge.p2p_links_profiles.[].port_channel.mode") | String |  | active |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes_child_interfaces</samp>](## "l3_edge.p2p_links_profiles.[].port_channel.nodes_child_interfaces") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- node</samp>](## "l3_edge.p2p_links_profiles.[].port_channel.nodes_child_interfaces.[].node") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "l3_edge.p2p_links_profiles.[].port_channel.nodes_child_interfaces.[].interfaces") | List, items: String |  |  |  | List of node interfaces. Ex.- [ 'node1 interface1', 'node1 interface2' ]. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "l3_edge.p2p_links_profiles.[].port_channel.nodes_child_interfaces.[].interfaces.[].&lt;str&gt;") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "l3_edge.p2p_links_profiles.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the point-to-point interface in the final EOS configuration. |
+    | [<samp>&nbsp;&nbsp;p2p_links</samp>](## "l3_edge.p2p_links") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- nodes</samp>](## "l3_edge.p2p_links.[].nodes") | List, items: String | Required |  |  | Nodes where this link should be configured. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "l3_edge.p2p_links.[].nodes.[].&lt;str&gt;") | String |  |  |  | The values can be < node_a >, < node_b >.<br>ex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "l3_edge.p2p_links.[].profile") | String |  |  |  | P2P profile name. Profile defined under p2p_profiles. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "l3_edge.p2p_links.[].id") | Integer |  |  |  | Unique id per subnet_summary. Used to calculate ip addresses.<br>Required with ip_pool. ID starting from 1.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "l3_edge.p2p_links.[].speed") | String |  |  |  | The values can be speed or auto speed or forced speed. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_pool</samp>](## "l3_edge.p2p_links.[].ip_pool") | String |  |  |  | P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subnet</samp>](## "l3_edge.p2p_links.[].subnet") | String |  |  |  | IPv4 address/Mask. Subnet used on this P2P link. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "l3_edge.p2p_links.[].ip") | List, items: String |  |  |  | Specific IP addresses used on this P2P link. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "l3_edge.p2p_links.[].ip.[].&lt;str&gt;") | String |  |  |  | Node IPv4 address/Mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "l3_edge.p2p_links.[].ipv6_enable") | Boolean |  | False |  | Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "l3_edge.p2p_links.[].interfaces") | List, items: String |  |  |  | Interfaces where this link should be configured and Required unless using port-channels. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "l3_edge.p2p_links.[].interfaces.[].&lt;str&gt;") | String |  |  |  | The value can be like < node_a_interface >, < node_b_interface >.<br>ex. - [ Ethernet2, Ethernet2 ].<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as</samp>](## "l3_edge.p2p_links.[].as") | List, items: String |  |  |  | AS numbers for BGP.<br>Required with bgp peering.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "l3_edge.p2p_links.[].as.[].&lt;str&gt;") | String |  |  |  | The values can be like ["node_a_as", "node_b_as"]. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;descriptions</samp>](## "l3_edge.p2p_links.[].descriptions") | List, items: String |  |  |  | Interface description. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "l3_edge.p2p_links.[].descriptions.[].&lt;str&gt;") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_in_underlay_protocol</samp>](## "l3_edge.p2p_links.[].include_in_underlay_protocol") | Boolean |  | True |  | Add this interface to underlay routing protocol. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_hello_padding</samp>](## "l3_edge.p2p_links.[].isis_hello_padding") | Boolean |  | False |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_metric</samp>](## "l3_edge.p2p_links.[].isis_metric") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_circuit_type</samp>](## "l3_edge.p2p_links.[].isis_circuit_type") | String |  |  | Valid Values:<br>- level-1<br>- level-2<br>- level-1-2 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_mode</samp>](## "l3_edge.p2p_links.[].isis_authentication_mode") | String |  |  | Valid Values:<br>- md5<br>- text |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_key</samp>](## "l3_edge.p2p_links.[].isis_authentication_key") | String |  |  |  | Type-7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ip</samp>](## "l3_edge.p2p_links.[].mpls_ip") | Boolean |  |  |  | MPLS parameters. Default value is true if switch.mpls_lsr is true. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ldp</samp>](## "l3_edge.p2p_links.[].mpls_ldp") | Boolean |  |  |  | MPLS parameters. Default value is true for ldp underlay variants, otherwise false. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "l3_edge.p2p_links.[].mtu") | Integer |  |  |  | MTU for this P2P link. Default value same as p2p_uplinks_mtu. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "l3_edge.p2p_links.[].bfd") | Boolean |  | False |  | Enable BFD (only considered for BGP). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ptp</samp>](## "l3_edge.p2p_links.[].ptp") | Dictionary |  |  |  | PTP parameters. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "l3_edge.p2p_links.[].ptp.enabled") | Boolean |  | False |  | Enable PTP |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "l3_edge.p2p_links.[].qos_profile") | String |  |  |  | QOS service profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;macsec_profile</samp>](## "l3_edge.p2p_links.[].macsec_profile") | String |  |  |  | MAC security profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_channel</samp>](## "l3_edge.p2p_links.[].port_channel") | Dictionary |  |  |  | Port-channel parameters. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "l3_edge.p2p_links.[].port_channel.mode") | String |  | active |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes_child_interfaces</samp>](## "l3_edge.p2p_links.[].port_channel.nodes_child_interfaces") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- node</samp>](## "l3_edge.p2p_links.[].port_channel.nodes_child_interfaces.[].node") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "l3_edge.p2p_links.[].port_channel.nodes_child_interfaces.[].interfaces") | List, items: String |  |  |  | List of node interfaces. Ex.- [ 'node1 interface1', 'node1 interface2' ]. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "l3_edge.p2p_links.[].port_channel.nodes_child_interfaces.[].interfaces.[].&lt;str&gt;") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "l3_edge.p2p_links.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the point-to-point interface in the final EOS configuration. |
+
+=== "YAML"
+
+    ```yaml
+    l3_edge:
+      p2p_links_ip_pools:
+        - name: <str>
+          ipv4_pool: <str>
+          prefix_size: <int>
+      p2p_links_profiles:
+        - name: <str>
+          id: <int>
+          speed: <str>
+          ip_pool: <str>
+          subnet: <str>
+          ip:
+            - <str>
+          ipv6_enable: <bool>
+          nodes:
+            - <str>
+          interfaces:
+            - <str>
+          as:
+            - <str>
+          descriptions:
+            - <str>
+          include_in_underlay_protocol: <bool>
+          isis_hello_padding: <bool>
+          isis_metric: <int>
+          isis_circuit_type: <str>
+          isis_authentication_mode: <str>
+          isis_authentication_key: <str>
+          mpls_ip: <bool>
+          mpls_ldp: <bool>
+          mtu: <int>
+          bfd: <bool>
+          ptp:
+            enabled: <bool>
+          qos_profile: <str>
+          macsec_profile: <str>
+          port_channel:
+            mode: <str>
+            nodes_child_interfaces:
+              - node: <str>
+                interfaces:
+                  - <str>
+          raw_eos_cli: <str>
+      p2p_links:
+        - nodes:
+            - <str>
+          profile: <str>
+          id: <int>
+          speed: <str>
+          ip_pool: <str>
+          subnet: <str>
+          ip:
+            - <str>
+          ipv6_enable: <bool>
+          interfaces:
+            - <str>
+          as:
+            - <str>
+          descriptions:
+            - <str>
+          include_in_underlay_protocol: <bool>
+          isis_hello_padding: <bool>
+          isis_metric: <int>
+          isis_circuit_type: <str>
+          isis_authentication_mode: <str>
+          isis_authentication_key: <str>
+          mpls_ip: <bool>
+          mpls_ldp: <bool>
+          mtu: <int>
+          bfd: <bool>
+          ptp:
+            enabled: <bool>
+          qos_profile: <str>
+          macsec_profile: <str>
+          port_channel:
+            mode: <str>
+            nodes_child_interfaces:
+              - node: <str>
+                interfaces:
+                  - <str>
+          raw_eos_cli: <str>
+    ```
+
+## Management Interface Settings
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>mgmt_destination_networks</samp>](## "mgmt_destination_networks") | List, items: String |  |  |  | List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.<br>Replaces the default route. |
+    | [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "mgmt_destination_networks.[].&lt;str&gt;") | String |  |  |  | IPv4_address/Mask |
+    | [<samp>mgmt_gateway</samp>](## "mgmt_gateway") | String |  |  |  | OOB Management interface gateway in IPv4 format.<br>Used as next-hop for default gateway or static routes defined under 'mgmt_destination_networks' |
+    | [<samp>mgmt_interface</samp>](## "mgmt_interface") | String |  | Management1 |  | OOB Management interface. |
+    | [<samp>mgmt_interface_description</samp>](## "mgmt_interface_description") | String |  | oob_management |  | Management interface description<br> |
+    | [<samp>mgmt_interface_vrf</samp>](## "mgmt_interface_vrf") | String |  | MGMT |  | OOB Management VRF. |
+    | [<samp>mgmt_vrf_routing</samp>](## "mgmt_vrf_routing") | Boolean |  | False |  | Configure IP routing for the OOB Management VRF. |
+
+=== "YAML"
+
+    ```yaml
+    mgmt_destination_networks:
+      - <str>
+    mgmt_gateway: <str>
+    mgmt_interface: <str>
+    mgmt_interface_description: <str>
+    mgmt_interface_vrf: <str>
+    mgmt_vrf_routing: <bool>
+    ```
+
+## Management Settings
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>event_handlers</samp>](## "event_handlers") | List, items: Dictionary |  |  |  | Gives the ability to monitor and react to Syslog messages.<br>Event Handlers provide a powerful and flexible tool that can be used to apply self-healing actions,<br>customize the system behavior, and implement workarounds to problems discovered in the field.<br> |
+    | [<samp>&nbsp;&nbsp;- name</samp>](## "event_handlers.[].name") | String | Required, Unique |  |  | Event Handler Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;action_type</samp>](## "event_handlers.[].action_type") | String |  |  | Valid Values:<br>- bash<br>- increment<br>- log |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "event_handlers.[].action") | String |  |  |  | Command to execute<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "event_handlers.[].delay") | Integer |  |  |  | Event-handler delay in seconds<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trigger</samp>](## "event_handlers.[].trigger") | String |  |  | Valid Values:<br>- on-logging<br>- on-startup-config | Configure event trigger condition.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;regex</samp>](## "event_handlers.[].regex") | String |  |  |  | Regular expression to use for searching log messages. Required for on-logging trigger<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous</samp>](## "event_handlers.[].asynchronous") | Boolean |  | False |  | Set the action to be non-blocking. |
+    | [<samp>ipv6_mgmt_destination_networks</samp>](## "ipv6_mgmt_destination_networks") | List, items: String |  |  |  | List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface gateway.<br>Replaces the default route.<br> |
+    | [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "ipv6_mgmt_destination_networks.[].&lt;str&gt;") | String |  |  |  | IPv6_network/Mask |
+    | [<samp>ipv6_mgmt_gateway</samp>](## "ipv6_mgmt_gateway") | String |  |  | Format: ipv6 | OOB Management interface gateway in IPv6 format.<br>Used as next-hop for default gateway or static routes defined under 'ipv6_mgmt_destination_networks' |
+    | [<samp>local_users</samp>](## "local_users") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;- name</samp>](## "local_users.[].name") | String | Required, Unique |  |  | Username |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "local_users.[].disabled") | Boolean |  |  |  | If true, the user will be removed and all other settings are ignored.<br>Useful for removing the default "admin" user.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;privilege</samp>](## "local_users.[].privilege") | Integer |  |  | Min: 0<br>Max: 15 | Initial privilege level with local EXEC authorization.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;role</samp>](## "local_users.[].role") | String |  |  |  | EOS RBAC Role to be assigned to the user such as "network-admin" or "network-operator"<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sha512_password</samp>](## "local_users.[].sha512_password") | String |  |  |  | SHA512 Hash of Password<br>Must be the hash of the password. By default EOS salts the password with the username, so the simplest is to generate the hash on an EOS device using the same username.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;no_password</samp>](## "local_users.[].no_password") | Boolean |  |  |  | If set a password will not be configured for this user. "sha512_password" MUST not be defined for this user.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ssh_key</samp>](## "local_users.[].ssh_key") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shell</samp>](## "local_users.[].shell") | String |  |  | Valid Values:<br>- /bin/bash<br>- /bin/sh<br>- /sbin/nologin | Specify shell for the user<br> |
+    | [<samp>management_eapi</samp>](## "management_eapi") | Dictionary |  |  |  | Default is HTTPS management eAPI enabled.<br>The VRF is set to < mgmt_interface_vrf >.<br> |
+    | [<samp>&nbsp;&nbsp;enable_http</samp>](## "management_eapi.enable_http") | Boolean |  | False |  |  |
+    | [<samp>&nbsp;&nbsp;enable_https</samp>](## "management_eapi.enable_https") | Boolean |  | True |  |  |
+    | [<samp>&nbsp;&nbsp;default_services</samp>](## "management_eapi.default_services") | Boolean |  |  |  |  |
+    | [<samp>name_servers</samp>](## "name_servers") | List, items: String |  |  |  | List of DNS servers. The VRF is set to < mgmt_interface_vrf >. |
+    | [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "name_servers.[].&lt;str&gt;") | String |  |  |  | IPv4 address |
+    | [<samp>snmp_settings</samp>](## "snmp_settings") | Dictionary |  |  |  | Set SNMP settings (optional). |
+    | [<samp>&nbsp;&nbsp;contact</samp>](## "snmp_settings.contact") | String |  |  |  | SNMP contact. |
+    | [<samp>&nbsp;&nbsp;location</samp>](## "snmp_settings.location") | Boolean |  | False |  | Set SNMP location. Formatted as {{ fabric_name }} {{ dc_name }} {{ pod_name }} {{ switch_rack }} {{ inventory_hostname }}. |
+    | [<samp>&nbsp;&nbsp;compute_local_engineid</samp>](## "snmp_settings.compute_local_engineid") | Boolean |  | False |  | Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.<br> |
+    | [<samp>&nbsp;&nbsp;compute_local_engineid_source</samp>](## "snmp_settings.compute_local_engineid_source") | String |  | hostname_and_ip | Valid Values:<br>- hostname_and_ip<br>- system_mac | `compute_local_engineid_source` supports:<br>- `hostname_and_ip` generate a local engineId for SNMP by hashing via SHA1<br>  the string generated via the concatenation of the hostname plus the management IP.<br>  {{ inventory_hostname }} + {{ switch.mgmt_ip }}<br>- `system_mac` generate the switch default engine id for AVD usage<br>  To use this, `system_mac_address` MUST be set for the device<br>  The formula is f5717f + system_mac_address + 00<br> |
+    | [<samp>&nbsp;&nbsp;compute_v3_user_localized_key</samp>](## "snmp_settings.compute_v3_user_localized_key") | Boolean |  | False |  | Requires compute_local_engineid to be `true`.<br>If enabled, the SNMPv3 passphrases for auth and priv are transformed using RFC 2574, matching the value they would take in EOS CLI.<br>The algorithm requires a local engineId, which is unknown to AVD, hence the necessity to generate one beforehand.<br> |
+    | [<samp>&nbsp;&nbsp;users</samp>](## "snmp_settings.users") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "snmp_settings.users.[].name") | String |  |  |  | Username |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "snmp_settings.users.[].group") | String |  |  |  | Configuration of the SNMP User Groups are currently only possible using `structured_config`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "snmp_settings.users.[].version") | String |  |  | Valid Values:<br>- v1<br>- v2c<br>- v3 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth</samp>](## "snmp_settings.users.[].auth") | String |  |  | Valid Values:<br>- md5<br>- sha<br>- sha256<br>- sha384<br>- sha512 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_passphrase</samp>](## "snmp_settings.users.[].auth_passphrase") | String |  |  |  | Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv</samp>](## "snmp_settings.users.[].priv") | String |  |  | Valid Values:<br>- des<br>- aes<br>- aes192<br>- aes256 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv_passphrase</samp>](## "snmp_settings.users.[].priv_passphrase") | String |  |  |  | Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set. |
+    | [<samp>timezone</samp>](## "timezone") | String |  |  |  | Clock timezone like "CET" or "US/Pacific". |
+
+=== "YAML"
+
+    ```yaml
+    event_handlers:
+      - name: <str>
+        action_type: <str>
+        action: <str>
+        delay: <int>
+        trigger: <str>
+        regex: <str>
+        asynchronous: <bool>
+    ipv6_mgmt_destination_networks:
+      - <str>
+    ipv6_mgmt_gateway: <str>
+    local_users:
+      - name: <str>
+        disabled: <bool>
+        privilege: <int>
+        role: <str>
+        sha512_password: <str>
+        no_password: <bool>
+        ssh_key: <str>
+        shell: <str>
+    management_eapi:
+      enable_http: <bool>
+      enable_https: <bool>
+      default_services: <bool>
+    name_servers:
+      - <str>
+    snmp_settings:
+      contact: <str>
+      location: <bool>
+      compute_local_engineid: <bool>
+      compute_local_engineid_source: <str>
+      compute_v3_user_localized_key: <bool>
+      users:
+        - name: <str>
+          group: <str>
+          version: <str>
+          auth: <str>
+          auth_passphrase: <str>
+          priv: <str>
+          priv_passphrase: <str>
+    timezone: <str>
+    ```
+
+## Network Ports
+
+All switch_ports ranges are expanded into individual port configurations.
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>network_ports</samp>](## "network_ports") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;- switches</samp>](## "network_ports.[].switches") | List, items: String |  |  |  | Regex matching the full hostname of one or more switches.<br>The regular expression must match the full hostname.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "network_ports.[].switches.[].&lt;str&gt;") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;switch_ports</samp>](## "network_ports.[].switch_ports") | List, items: String |  |  |  | List of ranges using AVD range_expand syntax.<br>For example:<br><br>switch_ports:<br>  - Ethernet1<br>  - Ethernet2-48<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "network_ports.[].switch_ports.[].&lt;str&gt;") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "network_ports.[].description") | String |  |  |  | Description to be used on all ports. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;endpoint_ports</samp>](## "network_ports.[].endpoint_ports") | List, items: String |  |  |  | Endpoint ports is used for description, required unless description is set.<br>The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.<br>Each list item is one switchport.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "network_ports.[].endpoint_ports.[].&lt;str&gt;") | String |  |  |  | Interface name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "network_ports.[].speed") | String |  |  |  | Set adapter speed: `< interface_speed >`, `forced < interface_speed >`, `auto < interface_speed >`.<br>If not specified will be auto.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "network_ports.[].profile") | String |  |  |  | Port-profile name to inherit configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_ports.[].enabled") | Boolean |  | True |  | Administrative state, setting to false will set the port to 'shutdown' in the intended configuration.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "network_ports.[].mode") | String |  |  | Valid Values:<br>- access<br>- dot1q-tunnel<br>- trunk<br>- trunk phone | Interface mode. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "network_ports.[].mtu") | Integer |  |  | Min: 68<br>Max: 65535 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l2_mtu</samp>](## "network_ports.[].l2_mtu") | Integer |  |  | Min: 68<br>Max: 9416 | This should only be defined for platforms supporting the "l2 mtu" CLI command. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;native_vlan</samp>](## "network_ports.[].native_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Native VLAN for a trunk port.<br>If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;native_vlan_tag</samp>](## "network_ports.[].native_vlan_tag") | Boolean |  | False |  | If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trunk_groups</samp>](## "network_ports.[].trunk_groups") | List, items: String |  |  |  | Required with `enable_trunk_groups: true`.<br>Trunk Groups are used for limiting VLANs on trunk ports to VLANs with the same Trunk Group.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "network_ports.[].trunk_groups.[].&lt;str&gt;") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vlans</samp>](## "network_ports.[].vlans") | String |  |  |  | Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and VLAN 1 will be used for access ports. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_portfast</samp>](## "network_ports.[].spanning_tree_portfast") | String |  |  | Valid Values:<br>- edge<br>- network |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_bpdufilter</samp>](## "network_ports.[].spanning_tree_bpdufilter") | String |  |  | Valid Values:<br>- enabled<br>- disabled<br>- True<br>- False<br>- true<br>- false |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_bpduguard</samp>](## "network_ports.[].spanning_tree_bpduguard") | String |  |  | Valid Values:<br>- enabled<br>- disabled<br>- True<br>- False<br>- true<br>- false |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;flowcontrol</samp>](## "network_ports.[].flowcontrol") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;received</samp>](## "network_ports.[].flowcontrol.received") | String |  |  | Valid Values:<br>- received<br>- send<br>- on |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "network_ports.[].qos_profile") | String |  |  |  | QOS profile name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ptp</samp>](## "network_ports.[].ptp") | Dictionary |  |  |  | The global PTP profile parameters will be applied to all connected endpoints where `ptp` is manually enabled.<br>`ptp role master` is set to ensure control over the PTP topology.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_ports.[].ptp.enabled") | Boolean |  | False |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;endpoint_role</samp>](## "network_ports.[].ptp.endpoint_role") | String |  | follower | Valid Values:<br>- bmca<br>- default<br>- follower |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "network_ports.[].ptp.profile") | String |  | aes67-r16-2016 | Valid Values:<br>- aes67<br>- aes67-r16-2016<br>- smpte2059-2 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;link_tracking</samp>](## "network_ports.[].link_tracking") | Dictionary |  |  |  | Configure the downstream interfaces of a respective Link Tracking Group.<br>If `port_channel` is defined in an adapter, then the port-channel interface is configured to be the downstream.<br>Else all the ethernet interfaces will be configured as downstream -> to configure single-active EVPN multihomed networks.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_ports.[].link_tracking.enabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "network_ports.[].link_tracking.name") | String |  |  |  | Tracking group name.<br>The default group name is taken from fabric variable of the switch, `link_tracking.groups[0].name` with default value being "LT_GROUP1".<br>Optional if default link_tracking settings are configured on the node.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dot1x</samp>](## "network_ports.[].dot1x") | Dictionary |  |  |  | 802.1x |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_control</samp>](## "network_ports.[].dot1x.port_control") | String |  |  | Valid Values:<br>- auto<br>- force-authorized<br>- force-unauthorized |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_control_force_authorized_phone</samp>](## "network_ports.[].dot1x.port_control_force_authorized_phone") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reauthentication</samp>](## "network_ports.[].dot1x.reauthentication") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pae</samp>](## "network_ports.[].dot1x.pae") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "network_ports.[].dot1x.pae.mode") | String |  |  | Valid Values:<br>- authenticator |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;authentication_failure</samp>](## "network_ports.[].dot1x.authentication_failure") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "network_ports.[].dot1x.authentication_failure.action") | String |  |  | Valid Values:<br>- allow<br>- drop |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_vlan</samp>](## "network_ports.[].dot1x.authentication_failure.allow_vlan") | Integer |  |  | Min: 1<br>Max: 4094 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;host_mode</samp>](## "network_ports.[].dot1x.host_mode") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "network_ports.[].dot1x.host_mode.mode") | String |  |  | Valid Values:<br>- multi-host<br>- single-host |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multi_host_authenticated</samp>](## "network_ports.[].dot1x.host_mode.multi_host_authenticated") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_based_authentication</samp>](## "network_ports.[].dot1x.mac_based_authentication") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_ports.[].dot1x.mac_based_authentication.enabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;always</samp>](## "network_ports.[].dot1x.mac_based_authentication.always") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;host_mode_common</samp>](## "network_ports.[].dot1x.mac_based_authentication.host_mode_common") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout</samp>](## "network_ports.[].dot1x.timeout") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;idle_host</samp>](## "network_ports.[].dot1x.timeout.idle_host") | Integer |  |  | Min: 10<br>Max: 65535 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;quiet_period</samp>](## "network_ports.[].dot1x.timeout.quiet_period") | Integer |  |  | Min: 1<br>Max: 65535 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reauth_period</samp>](## "network_ports.[].dot1x.timeout.reauth_period") | String |  |  |  | Range 60-4294967295 or "server". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reauth_timeout_ignore</samp>](## "network_ports.[].dot1x.timeout.reauth_timeout_ignore") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tx_period</samp>](## "network_ports.[].dot1x.timeout.tx_period") | Integer |  |  | Min: 1<br>Max: 65535 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reauthorization_request_limit</samp>](## "network_ports.[].dot1x.reauthorization_request_limit") | Integer |  |  | Min: 1<br>Max: 10 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;storm_control</samp>](## "network_ports.[].storm_control") | Dictionary |  |  |  | Storm control settings applied on port toward the endpoint. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all</samp>](## "network_ports.[].storm_control.all") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level</samp>](## "network_ports.[].storm_control.all.level") | Integer |  |  |  | Configure maximum storm-control level. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit</samp>](## "network_ports.[].storm_control.all.unit") | String |  | percent | Valid Values:<br>- percent<br>- pps | Optional variable and is hardware dependent. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;broadcast</samp>](## "network_ports.[].storm_control.broadcast") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level</samp>](## "network_ports.[].storm_control.broadcast.level") | Integer |  |  |  | Configure maximum storm-control level. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit</samp>](## "network_ports.[].storm_control.broadcast.unit") | String |  | percent | Valid Values:<br>- percent<br>- pps | Optional variable and is hardware dependent. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast</samp>](## "network_ports.[].storm_control.multicast") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level</samp>](## "network_ports.[].storm_control.multicast.level") | Integer |  |  |  | Configure maximum storm-control level. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit</samp>](## "network_ports.[].storm_control.multicast.unit") | String |  | percent | Valid Values:<br>- percent<br>- pps | Optional variable and is hardware dependent. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unknown_unicast</samp>](## "network_ports.[].storm_control.unknown_unicast") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level</samp>](## "network_ports.[].storm_control.unknown_unicast.level") | Integer |  |  |  | Configure maximum storm-control level. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit</samp>](## "network_ports.[].storm_control.unknown_unicast.unit") | String |  | percent | Valid Values:<br>- percent<br>- pps | Optional variable and is hardware dependent. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;monitor_sessions</samp>](## "network_ports.[].monitor_sessions") | List, items: Dictionary |  |  |  | Used to define switchports as source or destination for monitoring sessions. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "network_ports.[].monitor_sessions.[].name") | String | Required |  |  | Session name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;role</samp>](## "network_ports.[].monitor_sessions.[].role") | String |  |  | Valid Values:<br>- source<br>- destination |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_settings</samp>](## "network_ports.[].monitor_sessions.[].source_settings") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction</samp>](## "network_ports.[].monitor_sessions.[].source_settings.direction") | String |  |  | Valid Values:<br>- rx<br>- tx<br>- both |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_group</samp>](## "network_ports.[].monitor_sessions.[].source_settings.access_group") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "network_ports.[].monitor_sessions.[].source_settings.access_group.type") | String |  |  | Valid Values:<br>- ip<br>- ipv6<br>- mac |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "network_ports.[].monitor_sessions.[].source_settings.access_group.name") | String |  |  |  | ACL name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "network_ports.[].monitor_sessions.[].source_settings.access_group.priority") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;session_settings</samp>](## "network_ports.[].monitor_sessions.[].session_settings") | Dictionary |  |  |  | Session settings are defined per session name.<br>Different session_settings for the same session name will be combined/merged.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_gre_metadata_tx</samp>](## "network_ports.[].monitor_sessions.[].session_settings.encapsulation_gre_metadata_tx") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;header_remove_size</samp>](## "network_ports.[].monitor_sessions.[].session_settings.header_remove_size") | Integer |  |  |  | Number of bytes to remove from header. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_group</samp>](## "network_ports.[].monitor_sessions.[].session_settings.access_group") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "network_ports.[].monitor_sessions.[].session_settings.access_group.type") | String |  |  | Valid Values:<br>- ip<br>- ipv6<br>- mac |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "network_ports.[].monitor_sessions.[].session_settings.access_group.name") | String |  |  |  | ACL name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rate_limit_per_ingress_chip</samp>](## "network_ports.[].monitor_sessions.[].session_settings.rate_limit_per_ingress_chip") | String |  |  |  | Ratelimit and unit as string.<br>Examples:<br>  "100000 bps"<br>  "100 kbps"<br>  "10 mbps"<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rate_limit_per_egress_chip</samp>](## "network_ports.[].monitor_sessions.[].session_settings.rate_limit_per_egress_chip") | String |  |  |  | Ratelimit and unit as string.<br>Examples:<br>  "100000 bps"<br>  "100 kbps"<br>  "10 mbps"<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sample</samp>](## "network_ports.[].monitor_sessions.[].session_settings.sample") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;truncate</samp>](## "network_ports.[].monitor_sessions.[].session_settings.truncate") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_ports.[].monitor_sessions.[].session_settings.truncate.enabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "network_ports.[].monitor_sessions.[].session_settings.truncate.size") | Integer |  |  |  | Size in bytes |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ethernet_segment</samp>](## "network_ports.[].ethernet_segment") | Dictionary |  |  |  | Settings for all or single-active EVPN multihoming. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "network_ports.[].ethernet_segment.short_esi") | String | Required |  |  | In format xxxx:xxxx:xxxx or "auto".<br>Define a manual short-esi (be careful using this on profiles) or set the value to "auto" to automatically generate the value.<br>Please see the notes under "EVPN A/A ESI dual and single-attached endpoint scenarios" before setting `short_esi: auto`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redundancy</samp>](## "network_ports.[].ethernet_segment.redundancy") | String |  |  | Valid Values:<br>- all-active<br>- single-active | If omitted, Port-Channels use the EOS default of all-active.<br>If omitted, Ethernet interfaces are configured as single-active.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;designated_forwarder_algorithm</samp>](## "network_ports.[].ethernet_segment.designated_forwarder_algorithm") | String |  |  | Valid Values:<br>- auto<br>- modulus<br>- preference | Configure DF algorithm and preferences.<br>- auto: Use preference-based algorithm and assign preference based on position of device in the 'switches' list,<br>  e.g., assuming a list of three switches, this would assign a preference of 200 to the first switch, 100 to the 2nd, and 0 to the third.<br>- preference: Set preference for each switch manually using designated_forwarder_preferences key.<br>- modulus: Use the default modulus-based algorithm.<br>If omitted, Port-Channels use the EOS default of modulus.<br>If omitted, Ethernet interfaces default to the 'auto' mechanism detailed above.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;designated_forwarder_preferences</samp>](## "network_ports.[].ethernet_segment.designated_forwarder_preferences") | List, items: String |  |  |  | Manual preference as described above, required only for preference algorithm. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "network_ports.[].ethernet_segment.designated_forwarder_preferences.[].&lt;str&gt;") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dont_preempt</samp>](## "network_ports.[].ethernet_segment.dont_preempt") | Boolean |  |  |  | Disable preemption for single-active forwarding when auto/manual DF preference is configured. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;port_channel</samp>](## "network_ports.[].port_channel") | Dictionary |  |  |  | Used for port-channel adapter. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "network_ports.[].port_channel.mode") | String |  |  | Valid Values:<br>- active<br>- passive<br>- on | Port-Channel Mode. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;channel_id</samp>](## "network_ports.[].port_channel.channel_id") | Integer |  |  |  | Port-Channel ID.<br>If no channel_id is specified, an id is generated from the first switch port in the port channel.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "network_ports.[].port_channel.description") | String |  |  |  | By default the description is built leveraging `<peer>` name or `adapter.description` when defined.<br>When this key is defined, it will append its content to the physical port description.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_ports.[].port_channel.enabled") | Boolean |  | True |  | Port-Channel administrative state.<br>Setting to false will set port to 'shutdown' in intended configuration.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;esi</samp>](## "network_ports.[].port_channel.esi") <span style="color:red">removed</span> | String |  |  |  | Format xxxx:xxxx:xxxx.<span style="color:red">This key was removed. Support was removed in AVD version 4.0.0. Use <samp>short_esi</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "network_ports.[].port_channel.short_esi") | String |  |  |  | In format xxxx:xxxx:xxxx or "auto". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lacp_fallback</samp>](## "network_ports.[].port_channel.lacp_fallback") | Dictionary |  |  |  | LACP fallback configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "network_ports.[].port_channel.lacp_fallback.mode") | String |  |  | Valid Values:<br>- static | Currently only static mode is supported. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout</samp>](## "network_ports.[].port_channel.lacp_fallback.timeout") | Integer |  |  |  | Timeout in seconds. EOS default is 90 seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lacp_timer</samp>](## "network_ports.[].port_channel.lacp_timer") | Dictionary |  |  |  | LACP timer configuration. Applies only when Port-channel mode is not "on". |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "network_ports.[].port_channel.lacp_timer.mode") | String |  |  | Valid Values:<br>- normal<br>- fast | LACP mode for interface members. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "network_ports.[].port_channel.lacp_timer.multiplier") | Integer |  |  |  | Number of LACP BPDUs lost before deeming the peer down. EOS default is 3. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterfaces</samp>](## "network_ports.[].port_channel.subinterfaces") | List, items: Dictionary |  |  |  | Port-Channel L2 Subinterfaces<br>Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.<br>Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.<br>Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- number</samp>](## "network_ports.[].port_channel.subinterfaces.[].number") | Integer |  |  |  | Subinterface number |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "network_ports.[].port_channel.subinterfaces.[].short_esi") | String |  |  |  | In format xxxx:xxxx:xxxx or "auto"<br>Required for multihomed port-channels with subinterfaces<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_id</samp>](## "network_ports.[].port_channel.subinterfaces.[].vlan_id") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID to bridge.<br>Default is subinterface number.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_vlan</samp>](## "network_ports.[].port_channel.subinterfaces.[].encapsulation_vlan") | Dictionary |  |  |  | Client VLAN ID encapsulation.<br>Default is subinterface number.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client_dot1q</samp>](## "network_ports.[].port_channel.subinterfaces.[].encapsulation_vlan.client_dot1q") | Integer |  |  | Min: 1<br>Max: 4094 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "network_ports.[].port_channel.raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the port-channel interface in the final EOS configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "network_ports.[].port_channel.structured_config") | Dictionary |  |  |  | Custom structured config added under port_channel_interfaces.<interface> for eos_cli_config_gen. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "network_ports.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the ethernet interface in the final EOS configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "network_ports.[].structured_config") | Dictionary |  |  |  | Custom structured config added under ethernet_interfaces.<interface> for eos_cli_config_gen. |
+
+=== "YAML"
+
+    ```yaml
+    network_ports:
+      - switches:
+          - <str>
+        switch_ports:
+          - <str>
+        description: <str>
+        endpoint_ports:
+          - <str>
+        speed: <str>
+        profile: <str>
+        enabled: <bool>
+        mode: <str>
+        mtu: <int>
+        l2_mtu: <int>
+        native_vlan: <int>
+        native_vlan_tag: <bool>
+        trunk_groups:
+          - <str>
+        vlans: <str>
+        spanning_tree_portfast: <str>
+        spanning_tree_bpdufilter: <str>
+        spanning_tree_bpduguard: <str>
+        flowcontrol:
+          received: <str>
+        qos_profile: <str>
+        ptp:
+          enabled: <bool>
+          endpoint_role: <str>
+          profile: <str>
+        link_tracking:
+          enabled: <bool>
+          name: <str>
+        dot1x:
+          port_control: <str>
+          port_control_force_authorized_phone: <bool>
+          reauthentication: <bool>
+          pae:
+            mode: <str>
+          authentication_failure:
+            action: <str>
+            allow_vlan: <int>
+          host_mode:
+            mode: <str>
+            multi_host_authenticated: <bool>
+          mac_based_authentication:
+            enabled: <bool>
+            always: <bool>
+            host_mode_common: <bool>
+          timeout:
+            idle_host: <int>
+            quiet_period: <int>
+            reauth_period: <str>
+            reauth_timeout_ignore: <bool>
+            tx_period: <int>
+          reauthorization_request_limit: <int>
+        storm_control:
+          all:
+            level: <int>
+            unit: <str>
+          broadcast:
+            level: <int>
+            unit: <str>
+          multicast:
+            level: <int>
+            unit: <str>
+          unknown_unicast:
+            level: <int>
+            unit: <str>
+        monitor_sessions:
+          - name: <str>
+            role: <str>
+            source_settings:
+              direction: <str>
+              access_group:
+                type: <str>
+                name: <str>
+                priority: <int>
+            session_settings:
+              encapsulation_gre_metadata_tx: <bool>
+              header_remove_size: <int>
+              access_group:
+                type: <str>
+                name: <str>
+              rate_limit_per_ingress_chip: <str>
+              rate_limit_per_egress_chip: <str>
+              sample: <int>
+              truncate:
+                enabled: <bool>
+                size: <int>
+        ethernet_segment:
+          short_esi: <str>
+          redundancy: <str>
+          designated_forwarder_algorithm: <str>
+          designated_forwarder_preferences:
+            - <str>
+          dont_preempt: <bool>
+        port_channel:
+          mode: <str>
+          channel_id: <int>
+          description: <str>
+          enabled: <bool>
+          short_esi: <str>
+          lacp_fallback:
+            mode: <str>
+            timeout: <int>
+          lacp_timer:
+            mode: <str>
+            multiplier: <int>
+          subinterfaces:
+            - number: <int>
+              short_esi: <str>
+              vlan_id: <int>
+              encapsulation_vlan:
+                client_dot1q: <int>
+          raw_eos_cli: <str>
+          structured_config: <dict>
+        raw_eos_cli: <str>
+        structured_config: <dict>
+    ```
+
+## Network Services Keys
+
+Define network services keys, to define grouping of network services.
+This provides the ability to define various keys of your choice to better organize/group your data.
+This should be defined in top level group_var for the fabric.
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>network_services_keys</samp>](## "network_services_keys") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;- name</samp>](## "network_services_keys.[].name") | String | Required, Unique |  |  |  |
+
+=== "YAML"
+
+    ```yaml
+    network_services_keys:
+      - name: <str>
+    ```
+
+## Network Services
 
 === "Table"
 
@@ -1112,12 +2292,123 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
             lldp_disable: <bool>
     ```
 
-## <Node Type Keys.Key>
+## Node Type Keys
+
+Define Node Type Keys, to specify the properties of each node type in the fabric.
+This allows for complete customization of the fabric layout.
+This should be defined in top level group_var for the fabric.
 
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>node_type_keys</samp>](## "node_type_keys") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;- key</samp>](## "node_type_keys.[].key") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "node_type_keys.[].type") | String |  |  |  | Type value matching this node_type_key. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;connected_endpoints</samp>](## "node_type_keys.[].connected_endpoints") | Boolean |  | False |  | Are endpoints connected to this node type. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_evpn_role</samp>](## "node_type_keys.[].default_evpn_role") | String |  | none | Valid Values:<br>- none<br>- client<br>- server | Default evpn_role. Can be overridden in topology vars. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_ptp_priority1</samp>](## "node_type_keys.[].default_ptp_priority1") | Integer |  | 127 | Min: 0<br>Max: 255 | Default PTP priority 1 |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_underlay_routing_protocol</samp>](## "node_type_keys.[].default_underlay_routing_protocol") | String |  | ebgp | Value is converted to lower case<br>Valid Values:<br>- ebgp<br>- ibgp<br>- ospf<br>- ospf-ldp<br>- isis<br>- isis-sr<br>- isis-ldp<br>- isis-sr-ldp<br>- none | Set the default underlay routing_protocol.<br>Can be overridden by setting "underlay_routing_protocol" host/group_vars.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_overlay_routing_protocol</samp>](## "node_type_keys.[].default_overlay_routing_protocol") | String |  | ebgp | Value is converted to lower case<br>Valid Values:<br>- ebgp<br>- ibgp<br>- her<br>- cvx<br>- none | Set the default overlay routing_protocol.<br>Can be overridden by setting "overlay_routing_protocol" host/group_vars.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_mpls_overlay_role</samp>](## "node_type_keys.[].default_mpls_overlay_role") | String |  |  | Valid Values:<br>- client<br>- server<br>- none | Set the default mpls overlay role.<br>Acting role in overlay control plane.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_overlay_address_families</samp>](## "node_type_keys.[].default_overlay_address_families") | List, items: String |  |  |  | Set the default overlay address families.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "node_type_keys.[].default_overlay_address_families.[].&lt;str&gt;") | String |  |  | Value is converted to lower case<br>Valid Values:<br>- evpn<br>- vpn-ipv4<br>- vpn-ipv6 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_evpn_encapsulation</samp>](## "node_type_keys.[].default_evpn_encapsulation") | String |  |  | Value is converted to lower case<br>Valid Values:<br>- mpls<br>- vxlan | Set the default evpn encapsulation.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_support</samp>](## "node_type_keys.[].mlag_support") | Boolean |  | False |  | Can this node type support mlag. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;network_services</samp>](## "node_type_keys.[].network_services") | Dictionary |  |  |  | Will network services be deployed on this node type. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l1</samp>](## "node_type_keys.[].network_services.l1") | Boolean |  | False |  | ?? |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l2</samp>](## "node_type_keys.[].network_services.l2") | Boolean |  | False |  | Vlans |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l3</samp>](## "node_type_keys.[].network_services.l3") | Boolean |  | False |  | VRFs, SVIs (if l2 is true).<br>Only supported with underlay_router.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;underlay_router</samp>](## "node_type_keys.[].underlay_router") | Boolean |  | True |  | Is this node type a L3 device. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "node_type_keys.[].uplink_type") | String |  | p2p | Valid Values:<br>- p2p<br>- port-channel | Uplinks must be p2p if "vtep" or "underlay_router" is true. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vtep</samp>](## "node_type_keys.[].vtep") | Boolean |  | False |  | Is this switch an EVPN VTEP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mpls_lsr</samp>](## "node_type_keys.[].mpls_lsr") | Boolean |  | False |  | Is this switch an MPLS LSR. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_addressing</samp>](## "node_type_keys.[].ip_addressing") | Dictionary |  |  |  | Override ip_addressing templates. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python_module</samp>](## "node_type_keys.[].ip_addressing.python_module") | String |  |  |  | Python Module to import for IP addressing - default inherited from templates.ip_addressing.python_module |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python_class_name</samp>](## "node_type_keys.[].ip_addressing.python_class_name") | String |  |  |  | Name of Python Class to import for IP addressing  - default inherited from templates.ip_addressing.python_class_name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "node_type_keys.[].ip_addressing.router_id") | String |  |  |  | Path to J2 template - default inherited from templates.ip_addressing.router_id. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id_ipv6</samp>](## "node_type_keys.[].ip_addressing.router_id_ipv6") | String |  |  |  | Path to J2 template - default inherited from templates.ip_addressing.router_id_ipv6. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ip_primary</samp>](## "node_type_keys.[].ip_addressing.mlag_ip_primary") | String |  |  |  | Path to J2 template - default inherited from templates.ip_addressing.mlag_ip_primary. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ip_secondary</samp>](## "node_type_keys.[].ip_addressing.mlag_ip_secondary") | String |  |  |  | Path to J2 template - default inherited from templates.ip_addressing.mlag_ip_secondary. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_l3_ip_primary</samp>](## "node_type_keys.[].ip_addressing.mlag_l3_ip_primary") | String |  |  |  | Path to J2 template - default inherited from templates.ip_addressing.mlag_l3_ip_primary. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_l3_ip_secondary</samp>](## "node_type_keys.[].ip_addressing.mlag_l3_ip_secondary") | String |  |  |  | Path to J2 template - default inherited from templates.ip_addressing.mlag_l3_ip_secondary. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_peering_ip_primary</samp>](## "node_type_keys.[].ip_addressing.mlag_ibgp_peering_ip_primary") | String |  |  |  | Path to J2 template - default inherited from templates.ip_addressing.mlag_ibgp_peering_ip_primary. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_peering_ip_secondary</samp>](## "node_type_keys.[].ip_addressing.mlag_ibgp_peering_ip_secondary") | String |  |  |  | Path to J2 template - default inherited from templates.ip_addressing.mlag_ibgp_peering_ip_secondary. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p2p_uplinks_ip</samp>](## "node_type_keys.[].ip_addressing.p2p_uplinks_ip") | String |  |  |  | Path to J2 template - default inherited from templates.ip_addressing.p2p_uplinks_ip. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p2p_uplinks_peer_ip</samp>](## "node_type_keys.[].ip_addressing.p2p_uplinks_peer_ip") | String |  |  |  | Path to J2 template - default inherited from templates.ip_addressing.p2p_uplinks_peer_ip. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_ip_mlag</samp>](## "node_type_keys.[].ip_addressing.vtep_ip_mlag") | String |  |  |  | Path to J2 template - default inherited from templates.ip_addressing.vtep_ip_mlag. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_ip</samp>](## "node_type_keys.[].ip_addressing.vtep_ip") | String |  |  |  | Path to J2 template - default inherited from templates.ip_addressing.vtep_ip. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interface_descriptions</samp>](## "node_type_keys.[].interface_descriptions") | Dictionary |  |  |  | Override interface_descriptions templates<br>If description templates use Jinja2, they have to strip whitespaces using {%- -%} on any code blocks.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python_module</samp>](## "node_type_keys.[].interface_descriptions.python_module") | String |  |  |  | Python Module to import for interface descriptions - default inherited from templates.interface_descriptions.python_module |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python_class_name</samp>](## "node_type_keys.[].interface_descriptions.python_class_name") | String |  |  |  | Name of Python Class to import for interface descriptions - default inherited from templates.interface_descriptions.python_class_name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;underlay_ethernet_interfaces</samp>](## "node_type_keys.[].interface_descriptions.underlay_ethernet_interfaces") | String |  |  |  | Path to J2 template - default inherited from templates.interface_descriptions.underlay_ethernet_interfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;underlay_port_channel_interfaces</samp>](## "node_type_keys.[].interface_descriptions.underlay_port_channel_interfaces") | String |  |  |  | Path to J2 template - default inherited from templates.interface_descriptions.underlay_port_channel_interfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ethernet_interfaces</samp>](## "node_type_keys.[].interface_descriptions.mlag_ethernet_interfaces") | String |  |  |  | Path to J2 template - default inherited from templates.interface_descriptions.mlag_ethernet_interfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_interfaces</samp>](## "node_type_keys.[].interface_descriptions.mlag_port_channel_interfaces") | String |  |  |  | Path to J2 template - default inherited from templates.interface_descriptions.mlag_port_channel_interfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected_endpoints_ethernet_interfaces</samp>](## "node_type_keys.[].interface_descriptions.connected_endpoints_ethernet_interfaces") | String |  |  |  | Path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_ethernet_interfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected_endpoints_port_channel_interfaces</samp>](## "node_type_keys.[].interface_descriptions.connected_endpoints_port_channel_interfaces") | String |  |  |  | Path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_port_channel_interfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;overlay_loopback_interface</samp>](## "node_type_keys.[].interface_descriptions.overlay_loopback_interface") | String |  |  |  | Path to J2 template - default inherited from templates.interface_descriptions.overlay_loopback_interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_loopback_interface</samp>](## "node_type_keys.[].interface_descriptions.vtep_loopback_interface") | String |  |  |  | Path to J2 template - default inherited from templates.interface_descriptions.vtep_loopback_interface. |
+
+=== "YAML"
+
+    ```yaml
+    node_type_keys:
+      - key: <str>
+        type: <str>
+        connected_endpoints: <bool>
+        default_evpn_role: <str>
+        default_ptp_priority1: <int>
+        default_underlay_routing_protocol: <str>
+        default_overlay_routing_protocol: <str>
+        default_mpls_overlay_role: <str>
+        default_overlay_address_families:
+          - <str>
+        default_evpn_encapsulation: <str>
+        mlag_support: <bool>
+        network_services:
+          l1: <bool>
+          l2: <bool>
+          l3: <bool>
+        underlay_router: <bool>
+        uplink_type: <str>
+        vtep: <bool>
+        mpls_lsr: <bool>
+        ip_addressing:
+          python_module: <str>
+          python_class_name: <str>
+          router_id: <str>
+          router_id_ipv6: <str>
+          mlag_ip_primary: <str>
+          mlag_ip_secondary: <str>
+          mlag_l3_ip_primary: <str>
+          mlag_l3_ip_secondary: <str>
+          mlag_ibgp_peering_ip_primary: <str>
+          mlag_ibgp_peering_ip_secondary: <str>
+          p2p_uplinks_ip: <str>
+          p2p_uplinks_peer_ip: <str>
+          vtep_ip_mlag: <str>
+          vtep_ip: <str>
+        interface_descriptions:
+          python_module: <str>
+          python_class_name: <str>
+          underlay_ethernet_interfaces: <str>
+          underlay_port_channel_interfaces: <str>
+          mlag_ethernet_interfaces: <str>
+          mlag_port_channel_interfaces: <str>
+          connected_endpoints_ethernet_interfaces: <str>
+          connected_endpoints_port_channel_interfaces: <str>
+          overlay_loopback_interface: <str>
+          vtep_loopback_interface: <str>
+    ```
+
+## Node Type Settings
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>type</samp>](## "type") | String |  |  | Valid Values:<br>- <value(s) of node_type_keys.type> | The `type:` variable needs to be defined for each device in the fabric.<br>This is leveraged to load the appropriate template to generate the configuration. |
     | [<samp>&lt;node_type_keys.key&gt;</samp>](## "&lt;node_type_keys.key&gt;") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;defaults</samp>](## "&lt;node_type_keys.key&gt;.defaults") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "&lt;node_type_keys.key&gt;.defaults.id") | Integer |  |  |  | Unique identifier used for IP addressing and other algorithms. |
@@ -1770,6 +3061,7 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
 === "YAML"
 
     ```yaml
+    type: <str>
     <node_type_keys.key>:
       defaults:
         id: <int>
@@ -2420,2338 +3712,70 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
                   sync: <int>
     ```
 
-## AVD Data Conversion Mode
-
-Conversion Mode for AVD input data conversion.
-Input data conversion will perform type conversion of input variables as defined in the schema.
-The type conversion is intended to help the user to identify minor issues with the input data, while still allowing the data to be validated.
-During conversion, messages will generated with information about the host(s) and key(s) which required conversion.
-"disabled" means that conversion will not run - avoid this since conversion is also handling data deprecation and upgrade.
-"error" will produce error messages and fail the task.
-"warning" will produce warning messages.
-"info" will produce regular log messages.
-"debug" will produce hidden debug messages viewable with -v.
-"quiet" will not produce any messages
+## OSPF Settings
 
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>avd_data_conversion_mode</samp>](## "avd_data_conversion_mode") | String |  | debug | Valid Values:<br>- disabled<br>- error<br>- warning<br>- info<br>- debug<br>- quiet |  |
+    | [<samp>underlay_ospf_area</samp>](## "underlay_ospf_area") | String |  | 0.0.0.0 | Format: ipv4 |  |
+    | [<samp>underlay_ospf_bfd_enable</samp>](## "underlay_ospf_bfd_enable") | Boolean |  | False |  |  |
+    | [<samp>underlay_ospf_max_lsa</samp>](## "underlay_ospf_max_lsa") | Integer |  | 12000 |  |  |
+    | [<samp>underlay_ospf_process_id</samp>](## "underlay_ospf_process_id") | Integer |  | 100 |  |  |
 
 === "YAML"
 
     ```yaml
-    avd_data_conversion_mode: <str>
+    underlay_ospf_area: <str>
+    underlay_ospf_bfd_enable: <bool>
+    underlay_ospf_max_lsa: <int>
+    underlay_ospf_process_id: <int>
     ```
 
-## AVD Data Validation Mode
-
-Validation Mode for AVD input data validation.
-Input data validation will validate the input variables according to the schema.
-During validation, messages will generated with information about the host(s) and key(s) which failed validation.
-"disabled" means that validation will not run.
-"error" will produce error messages and fail the task.
-"warning" will produce warning messages.
-"info" will produce regular log messages.
-"debug" will produce hidden debug messages viewable with -v.
+## Overlay Settings
 
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>avd_data_validation_mode</samp>](## "avd_data_validation_mode") | String |  | warning | Valid Values:<br>- disabled<br>- error<br>- warning<br>- info<br>- debug |  |
-
-=== "YAML"
-
-    ```yaml
-    avd_data_validation_mode: <str>
-    ```
-
-## BFD Multihop
-
-BFD Multihop tuning
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>bfd_multihop</samp>](## "bfd_multihop") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;interval</samp>](## "bfd_multihop.interval") | Integer |  | 300 | Min: 50<br>Max: 60000 |  |
-    | [<samp>&nbsp;&nbsp;min_rx</samp>](## "bfd_multihop.min_rx") | Integer |  | 300 | Min: 50<br>Max: 60000 |  |
-    | [<samp>&nbsp;&nbsp;multiplier</samp>](## "bfd_multihop.multiplier") | Integer |  | 3 | Min: 3<br>Max: 50 |  |
-
-=== "YAML"
-
-    ```yaml
-    bfd_multihop:
-      interval: <int>
-      min_rx: <int>
-      multiplier: <int>
-    ```
-
-## BGP As
-
-AS number to use to configure overlay when "overlay_routing_protocol" == ibgp
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>bgp_as</samp>](## "bgp_as") | String |  |  |  |  |
-
-=== "YAML"
-
-    ```yaml
-    bgp_as: <str>
-    ```
-
-## BGP Default IPv4 Unicast
-
-Default activation of IPv4 unicast address-family on all IPv4 neighbors.
-It is best practice to disable activation.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>bgp_default_ipv4_unicast</samp>](## "bgp_default_ipv4_unicast") | Boolean |  | False |  |  |
-
-=== "YAML"
-
-    ```yaml
-    bgp_default_ipv4_unicast: <bool>
-    ```
-
-## BGP Distance
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>bgp_distance</samp>](## "bgp_distance") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;external_routes</samp>](## "bgp_distance.external_routes") | Integer | Required |  | Min: 1<br>Max: 255 |  |
-    | [<samp>&nbsp;&nbsp;internal_routes</samp>](## "bgp_distance.internal_routes") | Integer | Required |  | Min: 1<br>Max: 255 |  |
-    | [<samp>&nbsp;&nbsp;local_routes</samp>](## "bgp_distance.local_routes") | Integer | Required |  | Min: 1<br>Max: 255 |  |
-
-=== "YAML"
-
-    ```yaml
-    bgp_distance:
-      external_routes: <int>
-      internal_routes: <int>
-      local_routes: <int>
-    ```
-
-## BGP Ecmp
-
-Maximum ECMP for BGP multi-path
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>bgp_ecmp</samp>](## "bgp_ecmp") | Integer |  | 4 |  |  |
-
-=== "YAML"
-
-    ```yaml
-    bgp_ecmp: <int>
-    ```
-
-## BGP Graceful Restart
-
-Graceful BGP restart allows a BGP speaker with separate control plane and data plane processing to continue forwarding traffic during a BGP restart.
-Its neighbors (receiving speakers) may retain routing information from the restarting speaker while a BGP session with it is being re-established, reducing route flapping.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>bgp_graceful_restart</samp>](## "bgp_graceful_restart") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;enabled</samp>](## "bgp_graceful_restart.enabled") | Boolean |  | True |  | Enable or disable graceful restart helper mode for all BGP peers. |
-    | [<samp>&nbsp;&nbsp;restart_time</samp>](## "bgp_graceful_restart.restart_time") | Integer |  | 300 | Min: 1<br>Max: 3600 | Restart time in seconds. |
-
-=== "YAML"
-
-    ```yaml
-    bgp_graceful_restart:
-      enabled: <bool>
-      restart_time: <int>
-    ```
-
-## BGP Maximum Paths
-
-Maximum Paths for BGP multi-path
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>bgp_maximum_paths</samp>](## "bgp_maximum_paths") | Integer |  | 4 | Min: 1<br>Max: 512 |  |
-
-=== "YAML"
-
-    ```yaml
-    bgp_maximum_paths: <int>
-    ```
-
-## BGP Mesh PEs
-
-Configure an iBGP full mesh between PEs, either because there is no RR used or other reasons.
-Only supported in combination with MPLS overlay.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>bgp_mesh_pes</samp>](## "bgp_mesh_pes") | Boolean |  | False |  |  |
+    | [<samp>bgp_mesh_pes</samp>](## "bgp_mesh_pes") | Boolean |  | False |  | Configure an iBGP full mesh between PEs, either because there is no RR used or other reasons.<br>Only supported in combination with MPLS overlay. |
+    | [<samp>mlag_ibgp_peering_vrfs</samp>](## "mlag_ibgp_peering_vrfs") | Dictionary |  |  |  | On mlag leafs, an SVI interface is defined per vrf, to establish iBGP peering (required when there are MLAG leafs in topology)<br>The SVI id will be derived from the base vlan defined: mlag_ibgp_peering_vrfs.base_vlan + (vrf_id or vrf_vni) - 1<br>Depending on the values of vrf_id / vrf_vni it may be required to adjust the base_vlan to avoid overlaps or invalid vlan ids.<br>The SVI ip address derived from mlag_l3_peer_ipv4_pool is re-used across all iBGP peerings.<br> |
+    | [<samp>&nbsp;&nbsp;base_vlan</samp>](## "mlag_ibgp_peering_vrfs.base_vlan") | Integer |  | 3000 | Min: 1<br>Max: 4093 |  |
+    | [<samp>overlay_cvx_servers</samp>](## "overlay_cvx_servers") | List, items: String |  |  |  | List of CVX vxlan overlay controllers.<br>Required if overlay_routing_protocol == CVX.<br>CVX servers (VMs) are peering using their management interface, so mgmt_ip must be set for all CVX servers.<br> |
+    | [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "overlay_cvx_servers.[].&lt;str&gt;") | String |  |  |  | 'inventory_hostname' of CVX server |
+    | [<samp>overlay_her_flood_list_per_vni</samp>](## "overlay_her_flood_list_per_vni") | Boolean |  | False |  | When using Head-End Replication, configure flood-lists per VNI.<br>By default HER will be configured with a common flood-list containing all VTEPs.<br>This behavior can be changed to per-VNI flood-lists by setting `overlay_her_flood_list_per_vni: true`.<br>This will make `eos_designs` consider configured VLANs per VTEP, and only include the relevant VTEPs to each VNI's flood-list.<br> |
+    | [<samp>overlay_her_flood_list_scope</samp>](## "overlay_her_flood_list_scope") | String |  | fabric | Valid Values:<br>- fabric<br>- dc | When using Head-End Replication, set the scope of flood-lists to Fabric or DC.<br>By default all VTEPs in the Fabric (part of the inventory group referenced by "fabric_name") are added to the flood-lists.<br>This can be changed to all VTEPs in the DC (part of the inventory group referenced by "dc_name").<br>This is useful if Border Leaf switches are dividing the VXLAN overlay into separate domains.<br> |
+    | [<samp>overlay_loopback_description</samp>](## "overlay_loopback_description") | String |  |  |  | Customize the description on overlay interface Loopback0. |
+    | [<samp>overlay_mlag_rfc5549</samp>](## "overlay_mlag_rfc5549") | Boolean |  | False |  | IPv6 Unnumbered for MLAG iBGP connections.<br>Requires "underlay_rfc5549: true".<br> |
+    | [<samp>overlay_rd_type</samp>](## "overlay_rd_type") | Dictionary |  |  |  | Specify RD type.<br>Route Distinguisher (RD) for L2 / L3 services is set to <overlay_loopback>:<vni> per default.<br>By configuring overlay_rd_type the Administrator subfield (first part of RD) can be set to other values.<br>Note:<br>RD is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.<br>For loopback or 32-bit ASN/number the VNI can only be a 16-bit number.<br>For 16-bit ASN/number the VNI can be a 32-bit number.<br> |
+    | [<samp>&nbsp;&nbsp;admin_subfield</samp>](## "overlay_rd_type.admin_subfield") | String |  | overlay_loopback_ip |  | "vtep_loopback" or "bgp_as" or <IPv4 Address> or interger between <0-65535> or integer between <0-4294967295> or "overlay_loopback_ip".<br> |
+    | [<samp>&nbsp;&nbsp;admin_subfield_offset</samp>](## "overlay_rd_type.admin_subfield_offset") | String |  |  |  | Offset can only be used if admin_subfield is an interger between <0-4294967295> or "switch_id".<br>Total value of admin_subfield + admin_subfield_offset must be <= 4294967295. |
+    | [<samp>overlay_routing_protocol</samp>](## "overlay_routing_protocol") | String |  | ebgp | Value is converted to lower case<br>Valid Values:<br>- ebgp<br>- ibgp<br>- cvx<br>- her<br>- none | - The following overlay routing protocols are supported:<br>  - eBGP: Configures fabric with eBGP, default for l3ls-evpn design.<br>  - iBGP: Configured fabric with iBGP, only supported with OSPF or ISIS variants in underlay, default for mpls design.<br>  - CVX: Configures fabric to leverage CloudVision eXchange as the overlay controller.<br>  - HER: Configures fabric with Head-End Replication, configures static VXLAN flood-lists instead of using a dynamic overlay protocol.<br>  - none: No overlay configuration will be generated, default for l2ls design.<br> |
+    | [<samp>overlay_routing_protocol_address_family</samp>](## "overlay_routing_protocol_address_family") | String |  | ipv4 | Valid Values:<br>- ipv4<br>- ipv6 | When set to `ipv6`, enable overlay EVPN peering with IPv6 addresses.<br>This feature depends on underlay_ipv6 variable. As of today, only RFC5549 is capable to transport IPv6 in the underlay.<br> |
+    | [<samp>overlay_rt_type</samp>](## "overlay_rt_type") | Dictionary |  |  |  | Specify RT type.<br>Route Target (RT) for L2 / L3 services is set to <vni>:<vni> per default.<br>By configuring overlay_rt_type the Administrator subfield (first part of RT) can be set to other values.<br>Notes:<br>RT is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.<br>For 32-bit ASN/number the VNI can only be a 16-bit number.<br>For 16-bit ASN/number the VNI can be a 32-bit number.<br> |
+    | [<samp>&nbsp;&nbsp;admin_subfield</samp>](## "overlay_rt_type.admin_subfield") | String |  | mac_vrf_id |  | "bgp_as" or interger between <0-65535> or integer between <0-4294967295>.<br> |
+    | [<samp>vtep_vvtep_ip</samp>](## "vtep_vvtep_ip") | String |  |  |  | IP Address used as Virtual VTEP. Will be configured as secondary IP on Loopback1.<br>This is only needed for centralized routing designs.<br> |
 
 === "YAML"
 
     ```yaml
     bgp_mesh_pes: <bool>
-    ```
-
-## BGP Peer Groups
-
-Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.
-Note that the name of the peer groups use '-' instead of '_' in EOS configuration.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>bgp_peer_groups</samp>](## "bgp_peer_groups") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;ipv4_underlay_peers</samp>](## "bgp_peer_groups.ipv4_underlay_peers") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.ipv4_underlay_peers.name") | String |  | IPv4-UNDERLAY-PEERS |  | Name of peer group. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.ipv4_underlay_peers.password") | String |  |  |  | Type 7 encrypted password. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.ipv4_underlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen |
-    | [<samp>&nbsp;&nbsp;mlag_ipv4_underlay_peer</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer.name") | String |  | MLAG-IPv4-UNDERLAY-PEER |  | Name of peer group. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer.password") | String |  |  |  | Type 7 encrypted password. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen |
-    | [<samp>&nbsp;&nbsp;evpn_overlay_peers</samp>](## "bgp_peer_groups.evpn_overlay_peers") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.evpn_overlay_peers.name") | String |  | EVPN-OVERLAY-PEERS |  | Name of peer group. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.evpn_overlay_peers.password") | String |  |  |  | Type 7 encrypted password. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.evpn_overlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen |
-    | [<samp>&nbsp;&nbsp;evpn_overlay_core</samp>](## "bgp_peer_groups.evpn_overlay_core") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.evpn_overlay_core.name") | String |  | EVPN-OVERLAY-CORE |  | Name of peer group. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.evpn_overlay_core.password") | String |  |  |  | Type 7 encrypted password. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.evpn_overlay_core.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen |
-    | [<samp>&nbsp;&nbsp;mpls_overlay_peers</samp>](## "bgp_peer_groups.mpls_overlay_peers") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.mpls_overlay_peers.name") | String |  | MPLS-OVERLAY-PEERS |  | Name of peer group. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.mpls_overlay_peers.password") | String |  |  |  | Type 7 encrypted password. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.mpls_overlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen |
-    | [<samp>&nbsp;&nbsp;rr_overlay_peers</samp>](## "bgp_peer_groups.rr_overlay_peers") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.rr_overlay_peers.name") | String |  | RR-OVERLAY-PEERS |  | Name of peer group. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.rr_overlay_peers.password") | String |  |  |  | Type 7 encrypted password. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.rr_overlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen |
-    | [<samp>&nbsp;&nbsp;ipvpn_gateway_peers</samp>](## "bgp_peer_groups.ipvpn_gateway_peers") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.ipvpn_gateway_peers.name") | String |  | IPVPN-GATEWAY-PEERS |  | Name of peer group. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.ipvpn_gateway_peers.password") | String |  |  |  | Type 7 encrypted password. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.ipvpn_gateway_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen |
-    | [<samp>&nbsp;&nbsp;IPv4_UNDERLAY_PEERS</samp>](## "bgp_peer_groups.IPv4_UNDERLAY_PEERS") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 4.0.0. Use <samp>bgp_peer_groups.ipv4_underlay_peers</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;MLAG_IPv4_UNDERLAY_PEER</samp>](## "bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 4.0.0. Use <samp>bgp_peer_groups.mlag_ipv4_underlay_peer</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;EVPN_OVERLAY_PEERS</samp>](## "bgp_peer_groups.EVPN_OVERLAY_PEERS") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 4.0.0. Use <samp>bgp_peer_groups.evpn_overlay_peers</samp> instead.</span> |
-
-=== "YAML"
-
-    ```yaml
-    bgp_peer_groups:
-      ipv4_underlay_peers:
-        name: <str>
-        password: <str>
-        structured_config: <dict>
-      mlag_ipv4_underlay_peer:
-        name: <str>
-        password: <str>
-        structured_config: <dict>
-      evpn_overlay_peers:
-        name: <str>
-        password: <str>
-        structured_config: <dict>
-      evpn_overlay_core:
-        name: <str>
-        password: <str>
-        structured_config: <dict>
-      mpls_overlay_peers:
-        name: <str>
-        password: <str>
-        structured_config: <dict>
-      rr_overlay_peers:
-        name: <str>
-        password: <str>
-        structured_config: <dict>
-      ipvpn_gateway_peers:
-        name: <str>
-        password: <str>
-        structured_config: <dict>
-    ```
-
-## BGP Update Wait For Convergence
-
-Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>bgp_update_wait_for_convergence</samp>](## "bgp_update_wait_for_convergence") | Boolean |  |  |  |  |
-
-=== "YAML"
-
-    ```yaml
-    bgp_update_wait_for_convergence: <bool>
-    ```
-
-## BGP Update Wait Install
-
-Do not advertise reachability to a prefix until that prefix has been installed in hardware.
-This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>bgp_update_wait_install</samp>](## "bgp_update_wait_install") | Boolean |  |  |  |  |
-
-=== "YAML"
-
-    ```yaml
-    bgp_update_wait_install: <bool>
-    ```
-
-## Connected Endpoints Keys
-
-Define connected endpoints keys to define the grouping of endpoints connecting to the fabric.
-This lets you specify various keys to better organize/group your data.
-The connected endpoints keys should be defined in the top level group_var for the fabric.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>connected_endpoints_keys</samp>](## "connected_endpoints_keys") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- key</samp>](## "connected_endpoints_keys.[].key") | String | Required, Unique |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "connected_endpoints_keys.[].type") | String |  |  |  | Type used for documentation. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "connected_endpoints_keys.[].description") | String |  |  |  | Description used for documentation. |
-
-=== "YAML"
-
-    ```yaml
-    connected_endpoints_keys:
-      - key: <str>
-        type: <str>
-        description: <str>
-    ```
-
-## Core Interfaces
-
-The `core_interfaces` data model can be used to configure L3 P2P links anywhere in the fabric.
-It can be between two switches that are already part of the fabric inventory, or it can be towards another device,
-where only one end of the link is on a switch in the fabric.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>core_interfaces</samp>](## "core_interfaces") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;p2p_links_ip_pools</samp>](## "core_interfaces.p2p_links_ip_pools") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "core_interfaces.p2p_links_ip_pools.[].name") | String | Required, Unique |  |  | P2P pool name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_pool</samp>](## "core_interfaces.p2p_links_ip_pools.[].ipv4_pool") | String |  |  |  | IPv4 address/Mask. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_size</samp>](## "core_interfaces.p2p_links_ip_pools.[].prefix_size") | Integer |  | 31 | Min: 8<br>Max: 31 | Subnet mask size. |
-    | [<samp>&nbsp;&nbsp;p2p_links_profiles</samp>](## "core_interfaces.p2p_links_profiles") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "core_interfaces.p2p_links_profiles.[].name") | String | Required, Unique |  |  | P2P profile name. Any variable supported under p2p_links can be inherited from a profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "core_interfaces.p2p_links_profiles.[].id") | Integer |  |  |  | Unique id per subnet_summary. Used to calculate ip addresses.<br>Required with ip_pool. ID starting from 1.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "core_interfaces.p2p_links_profiles.[].speed") | String |  |  |  | The values can be speed or auto speed or forced speed. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_pool</samp>](## "core_interfaces.p2p_links_profiles.[].ip_pool") | String |  |  |  | P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subnet</samp>](## "core_interfaces.p2p_links_profiles.[].subnet") | String |  |  |  | IPv4 address/Mask. Subnet used on this P2P link. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "core_interfaces.p2p_links_profiles.[].ip") | List, items: String |  |  |  | Specific IP addresses used on this P2P link. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "core_interfaces.p2p_links_profiles.[].ip.[].&lt;str&gt;") | String |  |  |  | Node IPv4 address/Mask. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "core_interfaces.p2p_links_profiles.[].ipv6_enable") | Boolean |  | False |  | Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "core_interfaces.p2p_links_profiles.[].nodes") | List, items: String |  |  |  | Nodes where this link should be configured. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "core_interfaces.p2p_links_profiles.[].nodes.[].&lt;str&gt;") | String |  |  |  | The values can be < node_a >, < node_b >.<br>ex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "core_interfaces.p2p_links_profiles.[].interfaces") | List, items: String |  |  |  | Interfaces where this link should be configured and Required unless using port-channels. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "core_interfaces.p2p_links_profiles.[].interfaces.[].&lt;str&gt;") | String |  |  |  | The value can be like < node_a_interface >, < node_b_interface >.<br>ex. - [ Ethernet2, Ethernet2 ].<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as</samp>](## "core_interfaces.p2p_links_profiles.[].as") | List, items: String |  |  |  | AS numbers for BGP.<br>Required with bgp peering.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "core_interfaces.p2p_links_profiles.[].as.[].&lt;str&gt;") | String |  |  |  | The values can be like ["node_a_as", "node_b_as"]. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;descriptions</samp>](## "core_interfaces.p2p_links_profiles.[].descriptions") | List, items: String |  |  |  | Interface description. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "core_interfaces.p2p_links_profiles.[].descriptions.[].&lt;str&gt;") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_in_underlay_protocol</samp>](## "core_interfaces.p2p_links_profiles.[].include_in_underlay_protocol") | Boolean |  | True |  | Add this interface to underlay routing protocol. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_hello_padding</samp>](## "core_interfaces.p2p_links_profiles.[].isis_hello_padding") | Boolean |  | False |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_metric</samp>](## "core_interfaces.p2p_links_profiles.[].isis_metric") | Integer |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_circuit_type</samp>](## "core_interfaces.p2p_links_profiles.[].isis_circuit_type") | String |  |  | Valid Values:<br>- level-1<br>- level-2<br>- level-1-2 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_mode</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_mode") | String |  |  | Valid Values:<br>- md5<br>- text |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_key</samp>](## "core_interfaces.p2p_links_profiles.[].isis_authentication_key") | String |  |  |  | Type-7 encrypted password. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ip</samp>](## "core_interfaces.p2p_links_profiles.[].mpls_ip") | Boolean |  |  |  | MPLS parameters. Default value is true if switch.mpls_lsr is true. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ldp</samp>](## "core_interfaces.p2p_links_profiles.[].mpls_ldp") | Boolean |  |  |  | MPLS parameters. Default value is true for ldp underlay variants, otherwise false. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "core_interfaces.p2p_links_profiles.[].mtu") | Integer |  |  |  | MTU for this P2P link. Default value same as p2p_uplinks_mtu. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "core_interfaces.p2p_links_profiles.[].bfd") | Boolean |  | False |  | Enable BFD (only considered for BGP). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ptp</samp>](## "core_interfaces.p2p_links_profiles.[].ptp") | Dictionary |  |  |  | PTP parameters. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "core_interfaces.p2p_links_profiles.[].ptp.enabled") | Boolean |  | False |  | Enable PTP |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "core_interfaces.p2p_links_profiles.[].qos_profile") | String |  |  |  | QOS service profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;macsec_profile</samp>](## "core_interfaces.p2p_links_profiles.[].macsec_profile") | String |  |  |  | MAC security profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_channel</samp>](## "core_interfaces.p2p_links_profiles.[].port_channel") | Dictionary |  |  |  | Port-channel parameters. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "core_interfaces.p2p_links_profiles.[].port_channel.mode") | String |  | active |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes_child_interfaces</samp>](## "core_interfaces.p2p_links_profiles.[].port_channel.nodes_child_interfaces") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- node</samp>](## "core_interfaces.p2p_links_profiles.[].port_channel.nodes_child_interfaces.[].node") | String | Required, Unique |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "core_interfaces.p2p_links_profiles.[].port_channel.nodes_child_interfaces.[].interfaces") | List, items: String |  |  |  | List of node interfaces. Ex.- [ 'node1 interface1', 'node1 interface2' ]. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "core_interfaces.p2p_links_profiles.[].port_channel.nodes_child_interfaces.[].interfaces.[].&lt;str&gt;") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "core_interfaces.p2p_links_profiles.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the point-to-point interface in the final EOS configuration. |
-    | [<samp>&nbsp;&nbsp;p2p_links</samp>](## "core_interfaces.p2p_links") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- nodes</samp>](## "core_interfaces.p2p_links.[].nodes") | List, items: String | Required |  |  | Nodes where this link should be configured. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "core_interfaces.p2p_links.[].nodes.[].&lt;str&gt;") | String |  |  |  | The values can be < node_a >, < node_b >.<br>ex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "core_interfaces.p2p_links.[].profile") | String |  |  |  | P2P profile name. Profile defined under p2p_profiles. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "core_interfaces.p2p_links.[].id") | Integer |  |  |  | Unique id per subnet_summary. Used to calculate ip addresses.<br>Required with ip_pool. ID starting from 1.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "core_interfaces.p2p_links.[].speed") | String |  |  |  | The values can be speed or auto speed or forced speed. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_pool</samp>](## "core_interfaces.p2p_links.[].ip_pool") | String |  |  |  | P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subnet</samp>](## "core_interfaces.p2p_links.[].subnet") | String |  |  |  | IPv4 address/Mask. Subnet used on this P2P link. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "core_interfaces.p2p_links.[].ip") | List, items: String |  |  |  | Specific IP addresses used on this P2P link. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "core_interfaces.p2p_links.[].ip.[].&lt;str&gt;") | String |  |  |  | Node IPv4 address/Mask. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "core_interfaces.p2p_links.[].ipv6_enable") | Boolean |  | False |  | Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "core_interfaces.p2p_links.[].interfaces") | List, items: String |  |  |  | Interfaces where this link should be configured and Required unless using port-channels. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "core_interfaces.p2p_links.[].interfaces.[].&lt;str&gt;") | String |  |  |  | The value can be like < node_a_interface >, < node_b_interface >.<br>ex. - [ Ethernet2, Ethernet2 ].<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as</samp>](## "core_interfaces.p2p_links.[].as") | List, items: String |  |  |  | AS numbers for BGP.<br>Required with bgp peering.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "core_interfaces.p2p_links.[].as.[].&lt;str&gt;") | String |  |  |  | The values can be like ["node_a_as", "node_b_as"]. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;descriptions</samp>](## "core_interfaces.p2p_links.[].descriptions") | List, items: String |  |  |  | Interface description. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "core_interfaces.p2p_links.[].descriptions.[].&lt;str&gt;") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_in_underlay_protocol</samp>](## "core_interfaces.p2p_links.[].include_in_underlay_protocol") | Boolean |  | True |  | Add this interface to underlay routing protocol. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_hello_padding</samp>](## "core_interfaces.p2p_links.[].isis_hello_padding") | Boolean |  | False |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_metric</samp>](## "core_interfaces.p2p_links.[].isis_metric") | Integer |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_circuit_type</samp>](## "core_interfaces.p2p_links.[].isis_circuit_type") | String |  |  | Valid Values:<br>- level-1<br>- level-2<br>- level-1-2 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_mode</samp>](## "core_interfaces.p2p_links.[].isis_authentication_mode") | String |  |  | Valid Values:<br>- md5<br>- text |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_key</samp>](## "core_interfaces.p2p_links.[].isis_authentication_key") | String |  |  |  | Type-7 encrypted password. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ip</samp>](## "core_interfaces.p2p_links.[].mpls_ip") | Boolean |  |  |  | MPLS parameters. Default value is true if switch.mpls_lsr is true. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ldp</samp>](## "core_interfaces.p2p_links.[].mpls_ldp") | Boolean |  |  |  | MPLS parameters. Default value is true for ldp underlay variants, otherwise false. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "core_interfaces.p2p_links.[].mtu") | Integer |  |  |  | MTU for this P2P link. Default value same as p2p_uplinks_mtu. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "core_interfaces.p2p_links.[].bfd") | Boolean |  | False |  | Enable BFD (only considered for BGP). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ptp</samp>](## "core_interfaces.p2p_links.[].ptp") | Dictionary |  |  |  | PTP parameters. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "core_interfaces.p2p_links.[].ptp.enabled") | Boolean |  | False |  | Enable PTP |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "core_interfaces.p2p_links.[].qos_profile") | String |  |  |  | QOS service profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;macsec_profile</samp>](## "core_interfaces.p2p_links.[].macsec_profile") | String |  |  |  | MAC security profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_channel</samp>](## "core_interfaces.p2p_links.[].port_channel") | Dictionary |  |  |  | Port-channel parameters. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "core_interfaces.p2p_links.[].port_channel.mode") | String |  | active |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes_child_interfaces</samp>](## "core_interfaces.p2p_links.[].port_channel.nodes_child_interfaces") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- node</samp>](## "core_interfaces.p2p_links.[].port_channel.nodes_child_interfaces.[].node") | String | Required, Unique |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "core_interfaces.p2p_links.[].port_channel.nodes_child_interfaces.[].interfaces") | List, items: String |  |  |  | List of node interfaces. Ex.- [ 'node1 interface1', 'node1 interface2' ]. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "core_interfaces.p2p_links.[].port_channel.nodes_child_interfaces.[].interfaces.[].&lt;str&gt;") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "core_interfaces.p2p_links.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the point-to-point interface in the final EOS configuration. |
-
-=== "YAML"
-
-    ```yaml
-    core_interfaces:
-      p2p_links_ip_pools:
-        - name: <str>
-          ipv4_pool: <str>
-          prefix_size: <int>
-      p2p_links_profiles:
-        - name: <str>
-          id: <int>
-          speed: <str>
-          ip_pool: <str>
-          subnet: <str>
-          ip:
-            - <str>
-          ipv6_enable: <bool>
-          nodes:
-            - <str>
-          interfaces:
-            - <str>
-          as:
-            - <str>
-          descriptions:
-            - <str>
-          include_in_underlay_protocol: <bool>
-          isis_hello_padding: <bool>
-          isis_metric: <int>
-          isis_circuit_type: <str>
-          isis_authentication_mode: <str>
-          isis_authentication_key: <str>
-          mpls_ip: <bool>
-          mpls_ldp: <bool>
-          mtu: <int>
-          bfd: <bool>
-          ptp:
-            enabled: <bool>
-          qos_profile: <str>
-          macsec_profile: <str>
-          port_channel:
-            mode: <str>
-            nodes_child_interfaces:
-              - node: <str>
-                interfaces:
-                  - <str>
-          raw_eos_cli: <str>
-      p2p_links:
-        - nodes:
-            - <str>
-          profile: <str>
-          id: <int>
-          speed: <str>
-          ip_pool: <str>
-          subnet: <str>
-          ip:
-            - <str>
-          ipv6_enable: <bool>
-          interfaces:
-            - <str>
-          as:
-            - <str>
-          descriptions:
-            - <str>
-          include_in_underlay_protocol: <bool>
-          isis_hello_padding: <bool>
-          isis_metric: <int>
-          isis_circuit_type: <str>
-          isis_authentication_mode: <str>
-          isis_authentication_key: <str>
-          mpls_ip: <bool>
-          mpls_ldp: <bool>
-          mtu: <int>
-          bfd: <bool>
-          ptp:
-            enabled: <bool>
-          qos_profile: <str>
-          macsec_profile: <str>
-          port_channel:
-            mode: <str>
-            nodes_child_interfaces:
-              - node: <str>
-                interfaces:
-                  - <str>
-          raw_eos_cli: <str>
-    ```
-
-## Custom Structured Configuration List Merge
-
-The List-merge strategy used when merging custom structured configurations.
-
-This applies to all vars prefixed by prefixes in `custom_structured_configuration_prefix`
-and all data under the various `structured_config` options.
-
-The available list merge strategies:
-- `replace`:
-  - Any list will be replaced with the list defined in custom structured configurations.
-- `append`:
-  - Existing list items with the same "Primary key"-value will be updated.
-  - New items will be appended to the existing list (including duplicates).
-- `keep`:
-  - Only set list if there is no existing list or existing list is `None`.
-- `prepend`:
-  - Existing list items with the same "Primary key"-value will be updated.
-  - New items will be prepended to the existing list (including duplicates).
-- `append_rp`:
-  - Existing list items with the same "Primary key"-value will be updated.
-  - New unique items will be appended to the existing list.
-- `prepend_rp`:
-  - Existing list items with the same "Primary key"-value will be updated.
-  - New unique items will be prepended to the existing list.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>custom_structured_configuration_list_merge</samp>](## "custom_structured_configuration_list_merge") | String |  | append_rp | Valid Values:<br>- replace<br>- append<br>- keep<br>- prepend<br>- append_rp<br>- prepend_rp |  |
-
-=== "YAML"
-
-    ```yaml
-    custom_structured_configuration_list_merge: <str>
-    ```
-
-## Custom Structured Configuration Prefix
-
-Custom EOS Structured Configuration keys can be set on any group or host_var level using the name
-of the corresponding `eos_cli_config_gen` key prefixed with content of `custom_structured_configuration_prefix`.
-
-The content of Custom Structured Configuration variables will be merged with the structured config generated by the eos_designs role.
-
-The merge is done recursively, so it is possible to update a sub-key of a variable set by `eos_designs` role already.
-
-The merge follow these recursive merge strategies:
-- New keys will be added for all types.
-- Existing keys of type "List" with a "Primary key" set in the schema:
-  - Strategy can be changed with `custom_structured_configuration_list_merge`. Default strategy:
-    - Existing list items with the same "Primary key"-value will be updated.
-    - New unique items will be appended to the existing list
-- Other keys of type "List" will have new unique items appended the the existing list.
-- Existing keys of type "Dictionary" will recursively merge
-- Other existing keys will be replaced.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>custom_structured_configuration_prefix</samp>](## "custom_structured_configuration_prefix") | List, items: String |  | ['custom_structured_configuration_'] |  |  |
-    | [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "custom_structured_configuration_prefix.[].&lt;str&gt;") | String |  |  |  |  |
-
-=== "YAML"
-
-    ```yaml
-    custom_structured_configuration_prefix:
-      - <str>
-    ```
-
-## CVP Ingestauth Key
-
-On-premise CVP ingest auth key. If set, TerminAttr will be configured with key-based authentication for on-premise CVP.
-If not set, TerminAttr will be configured with certificate based authentication:
-- On-premise using token onboarding. Default token path is '/tmp/token'.
-- CVaaS using token-secure onboarding. Default token path is '/tmp/cv-onboarding-token'.
-Token must be copied to the device first.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>cvp_ingestauth_key</samp>](## "cvp_ingestauth_key") | String |  |  |  |  |
-
-=== "YAML"
-
-    ```yaml
-    cvp_ingestauth_key: <str>
-    ```
-
-## CVP Instance IP
-
-IPv4 address or DNS name for CloudVision.
-This variable only supports an on-premise single-node cluster or the DNS name of a CloudVision as a Service instance.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>cvp_instance_ip</samp>](## "cvp_instance_ip") | String |  |  |  |  |
-
-=== "YAML"
-
-    ```yaml
-    cvp_instance_ip: <str>
-    ```
-
-## CVP Instance Ips
-
-List of IPv4 addresses or DNS names for CloudVision.
-For on-premise CloudVision enter all the nodes of the cluster.
-For CloudVision as a Service enter the DNS name of the instance.
-`eos_designs` only supports one CloudVision cluster.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>cvp_instance_ips</samp>](## "cvp_instance_ips") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "cvp_instance_ips.[].&lt;str&gt;") | String |  |  |  | IPv4 address or DNS name for CloudVision |
-
-=== "YAML"
-
-    ```yaml
-    cvp_instance_ips:
-      - <str>
-    ```
-
-## CVP Token File
-
-cvp_token_file is the path to the token file on the switch.
-If not set the default locations for on-premise or CVaaS will be used.
-See cvp_ingestauth_key for details.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>cvp_token_file</samp>](## "cvp_token_file") | String |  |  |  |  |
-
-=== "YAML"
-
-    ```yaml
-    cvp_token_file: <str>
-    ```
-
-## DC Name
-
-DC Name, required to match Ansible Group name covering all devices in the DC.
-Required for 5-stage CLOS (Super-spines).
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>dc_name</samp>](## "dc_name") | String |  |  |  |  |
-
-=== "YAML"
-
-    ```yaml
-    dc_name: <str>
-    ```
-
-## Default IGMP Snooping Enabled
-
-When set to false, disables IGMP snooping at fabric level and overrides per vlan settings.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>default_igmp_snooping_enabled</samp>](## "default_igmp_snooping_enabled") | Boolean |  | True |  |  |
-
-=== "YAML"
-
-    ```yaml
-    default_igmp_snooping_enabled: <bool>
-    ```
-
-## Default Interfaces
-
-- Set default uplink, downlink, and MLAG interfaces, which will be used if these interfaces are not defined on a device (either directly or through inheritance).
-- These are defined based on the combination of node_type (e.g., l3leaf or spine) and a regex for matching the platform.
-- A list of interfaces or interface ranges can be specified.
-- Each list item supports range syntax that can be expanded into a list of interfaces. Interface range examples:
-  - Ethernet49-52/1: Expands to [ Ethernet49/1, Ethernet50/1, Ethernet51/1, Ethernet52/1 ]
-  - Ethernet1/31-34/1: Expands to [ Ethernet1/31/1, Ethernet1/32/1, Ethernet1/33/1, Ethernet1/34/1 ]
-  - Ethernet49-50,53-54: Expands to [ Ethernet49, Ethernet50, Ethernet53, Ethernet54 ]
-  - Ethernet1-2/1-4: Expands to [ Ethernet1/1, Ethernet1/2, Ethernet1/3, Ethernet1/4, Ethernet2/1, Ethernet2/2, Ethernet2/3, Ethernet2/4 ]
-- `uplink_interfaces` and `mlag_interfaces` under `default_interfaces` are directly inherited by `uplink_interfaces` and `mlag_interfaces`.
-- `downlink_interfaces` are referenced by the child switch (e.g., the leaf in a leaf/spine network). The child switch leverages an upstream switch's `default_downlink_interfaces` using the child switch ID.  This is then used to build `uplink_switch_interfaces` for that child.
-  - In the case of `max_parallel_uplinks` > 1 the `default_downlink_interfaces` are mapped with consecutive downlinks per child ID.
-  - Example for `max_parallel_uplinks: 2`, downlink interfaces will be mapped as `[ <downlink1 to leaf-id1>, <downlink2 to leaf-id1>, <downlink1 to leaf-id2>, <downlink2 to leaf-id2> ...]`
-- Please note that no default interfaces are defined in AVD itself. You will need to create your own based on the example below.
-
-Example:
-
-```yaml
-default_interfaces:
-  - types: [ spine, l3leaf ]
-    platforms: [ "7050[SC]X3", vEOS.*, default ]
-    uplink_interfaces: [ Ethernet49-54/1 ]
-    mlag_interfaces: [ Ethernet55-56/1 ]
-    downlink_interfaces: [ Ethernet1-32/1 ]
-```
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>default_interfaces</samp>](## "default_interfaces") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- types</samp>](## "default_interfaces.[].types") | List, items: String | Required |  |  | List of node type keys. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "default_interfaces.[].types.[].&lt;str&gt;") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;platforms</samp>](## "default_interfaces.[].platforms") | List, items: String | Required |  |  | List of platform families.<br>This is defined as a Python regular expression that matches the full platform type.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "default_interfaces.[].platforms.[].&lt;str&gt;") | String |  |  |  | Arista platform family regular expression. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "default_interfaces.[].uplink_interfaces") | List, items: String |  |  |  | List of uplink interfaces or uplink interface ranges. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "default_interfaces.[].uplink_interfaces.[].&lt;str&gt;") | String |  |  |  | Interface range or interface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_interfaces</samp>](## "default_interfaces.[].mlag_interfaces") | List, items: String |  |  |  | List of MLAG interfaces or MLAG interface ranges. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "default_interfaces.[].mlag_interfaces.[].&lt;str&gt;") | String |  |  |  | Interface range or interface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;downlink_interfaces</samp>](## "default_interfaces.[].downlink_interfaces") | List, items: String |  |  |  | List of downlink interfaces or downlink interface ranges. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "default_interfaces.[].downlink_interfaces.[].&lt;str&gt;") | String |  |  |  | Interface range or interface. |
-
-=== "YAML"
-
-    ```yaml
-    default_interfaces:
-      - types:
-          - <str>
-        platforms:
-          - <str>
-        uplink_interfaces:
-          - <str>
-        mlag_interfaces:
-          - <str>
-        downlink_interfaces:
-          - <str>
-    ```
-
-## Default Node Types
-
-Uses hostname matches against a regular expression to determine the node type.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>default_node_types</samp>](## "default_node_types") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- node_type</samp>](## "default_node_types.[].node_type") | String | Required, Unique |  |  | Resulting node type when regex matches. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;match_hostnames</samp>](## "default_node_types.[].match_hostnames") | List, items: String | Required |  |  | Regular expressions to match against hostnames. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "default_node_types.[].match_hostnames.[].&lt;str&gt;") | String | Required |  |  | Regex needs to match full hostname (i.e. is bounded by ^ and $ elements). |
-
-=== "YAML"
-
-    ```yaml
-    default_node_types:
-      - node_type: <str>
-        match_hostnames:
-          - <str>
-    ```
-
-## Design
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>design</samp>](## "design") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;type</samp>](## "design.type") | String |  | l3ls-evpn | Valid Values:<br>- l3ls-evpn<br>- mpls<br>- l2ls | By setting the design.type variable, the default node-types and templates described in these documents will be used.<br> |
-
-=== "YAML"
-
-    ```yaml
-    design:
-      type: <str>
-    ```
-
-## Enable Trunk Groups
-
-Enable Trunk Group support across eos_designs
-Warning: Because of the nature of the EOS Trunk Group feature, enabling this is "all or nothing".
-*All* vlans and *all* trunks towards connected endpoints must be using trunk groups as well.
-If trunk groups are not assigned to a trunk, no vlans will be enabled on that trunk.
-See "Details on enable_trunk_groups" below before enabling this feature.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>enable_trunk_groups</samp>](## "enable_trunk_groups") | Boolean |  | False |  |  |
-
-=== "YAML"
-
-    ```yaml
-    enable_trunk_groups: <bool>
-    ```
-
-## EOS Designs Custom Templates
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>eos_designs_custom_templates</samp>](## "eos_designs_custom_templates") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- template</samp>](## "eos_designs_custom_templates.[].template") | String | Required |  |  | Template file. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;options</samp>](## "eos_designs_custom_templates.[].options") | Dictionary |  |  |  | Template options |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;list_merge</samp>](## "eos_designs_custom_templates.[].options.list_merge") | String |  | append_rp |  | Merge strategy for lists |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;strip_empty_keys</samp>](## "eos_designs_custom_templates.[].options.strip_empty_keys") | Boolean |  | True |  | Filter out keys from the generated output if value is null/none/undefined |
-
-=== "YAML"
-
-    ```yaml
-    eos_designs_custom_templates:
-      - template: <str>
-        options:
-          list_merge: <str>
-          strip_empty_keys: <bool>
-    ```
-
-## EOS Designs Documentation
-
-Control fabric documentation generation.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>eos_designs_documentation</samp>](## "eos_designs_documentation") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;connected_endpoints</samp>](## "eos_designs_documentation.connected_endpoints") | Boolean |  | False |  | Generate fabric-wide documentation for connected endpoints.<br> |
-
-=== "YAML"
-
-    ```yaml
-    eos_designs_documentation:
-      connected_endpoints: <bool>
-    ```
-
-## Event Handlers
-
-Gives the ability to monitor and react to Syslog messages.
-Event Handlers provide a powerful and flexible tool that can be used to apply self-healing actions,
-customize the system behavior, and implement workarounds to problems discovered in the field.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>event_handlers</samp>](## "event_handlers") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- name</samp>](## "event_handlers.[].name") | String | Required, Unique |  |  | Event Handler Name |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;action_type</samp>](## "event_handlers.[].action_type") | String |  |  | Valid Values:<br>- bash<br>- increment<br>- log |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "event_handlers.[].action") | String |  |  |  | Command to execute<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "event_handlers.[].delay") | Integer |  |  |  | Event-handler delay in seconds<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trigger</samp>](## "event_handlers.[].trigger") | String |  |  | Valid Values:<br>- on-logging<br>- on-startup-config | Configure event trigger condition.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;regex</samp>](## "event_handlers.[].regex") | String |  |  |  | Regular expression to use for searching log messages. Required for on-logging trigger<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;asynchronous</samp>](## "event_handlers.[].asynchronous") | Boolean |  | False |  | Set the action to be non-blocking. |
-
-=== "YAML"
-
-    ```yaml
-    event_handlers:
-      - name: <str>
-        action_type: <str>
-        action: <str>
-        delay: <int>
-        trigger: <str>
-        regex: <str>
-        asynchronous: <bool>
-    ```
-
-## EVPN Ebgp Gateway Inter Domain
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>evpn_ebgp_gateway_inter_domain</samp>](## "evpn_ebgp_gateway_inter_domain") | Boolean |  |  |  |  |
-
-=== "YAML"
-
-    ```yaml
-    evpn_ebgp_gateway_inter_domain: <bool>
-    ```
-
-## EVPN Ebgp Gateway Multihop
-
-Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI networks.
-Adapt the value for your specific topology.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>evpn_ebgp_gateway_multihop</samp>](## "evpn_ebgp_gateway_multihop") | Integer |  | 15 |  |  |
-
-=== "YAML"
-
-    ```yaml
-    evpn_ebgp_gateway_multihop: <int>
-    ```
-
-## EVPN Ebgp Multihop
-
-Default of 3, the recommended value for a 3 stage spine and leaf topology.
-Set to a higher value to allow for very large and complex topologies.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>evpn_ebgp_multihop</samp>](## "evpn_ebgp_multihop") | Integer |  | 3 |  |  |
-
-=== "YAML"
-
-    ```yaml
-    evpn_ebgp_multihop: <int>
-    ```
-
-## EVPN Hostflap Detection
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>evpn_hostflap_detection</samp>](## "evpn_hostflap_detection") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;enabled</samp>](## "evpn_hostflap_detection.enabled") | Boolean |  | True |  | If set to false it will disable EVPN host-flap detection |
-    | [<samp>&nbsp;&nbsp;threshold</samp>](## "evpn_hostflap_detection.threshold") | Integer |  | 5 |  | Minimum number of MAC moves that indicate a MAC duplication issue |
-    | [<samp>&nbsp;&nbsp;window</samp>](## "evpn_hostflap_detection.window") | Integer |  | 180 |  | Time (in seconds) to detect a MAC duplication issue |
-    | [<samp>&nbsp;&nbsp;expiry_timeout</samp>](## "evpn_hostflap_detection.expiry_timeout") | Integer |  |  |  | Time (in seconds) to purge a MAC duplication issue |
-
-=== "YAML"
-
-    ```yaml
-    evpn_hostflap_detection:
-      enabled: <bool>
-      threshold: <int>
-      window: <int>
-      expiry_timeout: <int>
-    ```
-
-## EVPN Import Pruning
-
-Enable VPN import pruning (Min. EOS 4.24.2F)
-The Route Target extended communities carried by incoming VPN paths will
-be examined. If none of those Route Targets have been configured for import,
-the path will be immediately discarded
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>evpn_import_pruning</samp>](## "evpn_import_pruning") | Boolean |  | False |  |  |
-
-=== "YAML"
-
-    ```yaml
-    evpn_import_pruning: <bool>
-    ```
-
-## EVPN Multicast
-
-General Configuration required for EVPN Multicast. "evpn_l2_multicast" must also be configured under the Network Services (tenants).
-Requires "underlay_multicast: true" and IGMP snooping enabled globally (default).
-For MLAG devices Route Distinguisher must be unique since this feature will create multi-vtep configuration.
-Warning !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP and 722XP
-  The Following default platform setting will be configured: "platform trident forwarding-table partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072"
-  All forwarding agents will be restarted when this configuration is applied.
-  You can tune the settings by overridding the default variable: "platform_settings[platforms].trident_forwarding_table_partition:"
-  Please contact an Arista representative for help with determining the appropriate values for your environment.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>evpn_multicast</samp>](## "evpn_multicast") | Boolean |  | False |  |  |
-
-=== "YAML"
-
-    ```yaml
-    evpn_multicast: <bool>
-    ```
-
-## EVPN Overlay BGP Rtc
-
-Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)
-Requires use eBGP as overlay protocol.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>evpn_overlay_bgp_rtc</samp>](## "evpn_overlay_bgp_rtc") | Boolean |  | False |  |  |
-
-=== "YAML"
-
-    ```yaml
-    evpn_overlay_bgp_rtc: <bool>
-    ```
-
-## EVPN Prevent Readvertise To Server
-
-Configure route-map on eBGP sessions towards route-servers, where prefixes with the peer's ASN in the AS Path are filtered away.
-This is very useful in large-scale networks, where convergence will be quicker by not returning all updates received
-from Route-server-1 to Router-server-2 just for Route-server-2 to throw them away because of AS Path loop detection.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>evpn_prevent_readvertise_to_server</samp>](## "evpn_prevent_readvertise_to_server") | Boolean |  | False |  |  |
-
-=== "YAML"
-
-    ```yaml
-    evpn_prevent_readvertise_to_server: <bool>
-    ```
-
-## EVPN Rd Type
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>evpn_rd_type</samp>](## "evpn_rd_type") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 4.0.0. Use <samp>overlay_rd_type</samp> instead.</span> |
-
-=== "YAML"
-
-    ```yaml
-    ```
-
-## EVPN Rt Type
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>evpn_rt_type</samp>](## "evpn_rt_type") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 4.0.0. Use <samp>overlay_rt_type</samp> instead.</span> |
-
-=== "YAML"
-
-    ```yaml
-    ```
-
-## EVPN Short Esi Prefix
-
-Configure prefix for "short_esi" values
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>evpn_short_esi_prefix</samp>](## "evpn_short_esi_prefix") | String |  | 0000:0000: |  |  |
-
-=== "YAML"
-
-    ```yaml
-    evpn_short_esi_prefix: <str>
-    ```
-
-## EVPN VLAN Aware Bundles
-
-Enable vlan aware bundles for EVPN MAC-VRF
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>evpn_vlan_aware_bundles</samp>](## "evpn_vlan_aware_bundles") | Boolean |  | False |  |  |
-
-=== "YAML"
-
-    ```yaml
-    evpn_vlan_aware_bundles: <bool>
-    ```
-
-## Fabric EVPN Encapsulation
-
-Should be set to mpls for evpn-mpls scenario.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>fabric_evpn_encapsulation</samp>](## "fabric_evpn_encapsulation") | String |  | vxlan | Valid Values:<br>- vxlan<br>- mpls |  |
-
-=== "YAML"
-
-    ```yaml
-    fabric_evpn_encapsulation: <str>
-    ```
-
-## Fabric Name
-
-Fabric Name, required to match Ansible Group name covering all devices in the Fabric, **must** be an inventory group name.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>fabric_name</samp>](## "fabric_name") | String | Required |  |  |  |
-
-=== "YAML"
-
-    ```yaml
-    fabric_name: <str>
-    ```
-
-## Hardware Counters
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>hardware_counters</samp>](## "hardware_counters") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;features</samp>](## "hardware_counters.features") | List, items: Dictionary |  |  |  | This data model allows to configure the list of hardware counters feature<br>available on Arista platforms.<br><br>The `name` key accepts a list of valid_values which MUST be updated to support<br>new feature as they are released in EOS.<br><br>The available values of the different keys like 'direction' or 'address_type'<br>are feature and hardware dependent and this model DOES NOT validate that the<br>combinations are valid. It is the responsability of the user of this data model<br>to make sure that the rendered CLI is accepted by the targeted device.<br><br>Examples:<br><br>  * Use:<br>    ```yaml<br>    hardware_counters:<br>      features:<br>        - name: ip<br>          direction: out<br>          layer3: true<br>          units_packets: true<br>    ```<br><br>    to render:<br>    ```eos<br>    hardware counter feature ip out layer3 units packets<br>    ```<br>  * Use:<br>    ```yaml<br>    hardware_counters:<br>      features:<br>        - name: route<br>          address_type: ipv4<br>          vrf: test<br>          prefix: 192.168.0.0/24<br>    ```<br><br>    to render:<br>    ```eos<br>    hardware counter feature route ipv4 vrf test 192.168.0.0/24<br>    ```<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "hardware_counters.features.[].name") | String |  |  | Valid Values:<br>- acl<br>- decap-group<br>- directflow<br>- ecn<br>- flow-spec<br>- gre tunnel interface<br>- ip<br>- mpls interface<br>- mpls lfib<br>- mpls tunnel<br>- multicast<br>- nexthop<br>- pbr<br>- pdp<br>- policing interface<br>- qos<br>- qos dual-rate-policer<br>- route<br>- routed-port<br>- subinterface<br>- tapagg<br>- traffic-class<br>- traffic-policy<br>- vlan<br>- vlan-interface<br>- vni decap<br>- vni encap<br>- vtep decap<br>- vtep encap |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction</samp>](## "hardware_counters.features.[].direction") | String |  |  | Valid Values:<br>- in<br>- out<br>- cpu | Most features support only 'in' and 'out'. Some like traffic-policy support 'cpu'.<br>Some features DO NOT have any direction.<br>This validation IS NOT made by the schemas.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_type</samp>](## "hardware_counters.features.[].address_type") | String |  |  | Valid Values:<br>- ipv4<br>- ipv6<br>- mac | Supported only for the following features:<br>- acl: [ipv4, ipv6, mac] if direction is 'out'<br>- multicast: [ipv4, ipv6]<br>- route: [ipv4, ipv6]<br>This validation IS NOT made by the schemas.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;layer3</samp>](## "hardware_counters.features.[].layer3") | Boolean |  |  |  | Supported only for the 'ip' feature<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "hardware_counters.features.[].vrf") | String |  |  |  | Supported only for the 'route' feature.<br>This validation IS NOT made by the schemas.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix</samp>](## "hardware_counters.features.[].prefix") | String |  |  |  | Supported only for the 'route' feature.<br>Mandatory for the 'route' feature.<br>This validation IS NOT made by the schemas.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;units_packets</samp>](## "hardware_counters.features.[].units_packets") | Boolean |  |  |  |  |
-
-=== "YAML"
-
-    ```yaml
-    hardware_counters:
-      features:
-        - name: <str>
-          direction: <str>
-          address_type: <str>
-          layer3: <bool>
-          vrf: <str>
-          prefix: <str>
-          units_packets: <bool>
-    ```
-
-## Internal VLAN Order
-
-Internal vlan allocation order and range.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>internal_vlan_order</samp>](## "internal_vlan_order") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;allocation</samp>](## "internal_vlan_order.allocation") | String | Required | ascending | Valid Values:<br>- ascending<br>- descending |  |
-    | [<samp>&nbsp;&nbsp;range</samp>](## "internal_vlan_order.range") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;beginning</samp>](## "internal_vlan_order.range.beginning") | Integer | Required | 1006 | Min: 2<br>Max: 4094 | First VLAN ID. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ending</samp>](## "internal_vlan_order.range.ending") | Integer | Required | 1199 | Min: 2<br>Max: 4094 | Last VLAN ID. |
-
-=== "YAML"
-
-    ```yaml
-    internal_vlan_order:
-      allocation: <str>
-      range:
-        beginning: <int>
-        ending: <int>
-    ```
-
-## IPv6 Management Destination Networks
-
-List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface gateway.
-Replaces the default route.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ipv6_mgmt_destination_networks</samp>](## "ipv6_mgmt_destination_networks") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "ipv6_mgmt_destination_networks.[].&lt;str&gt;") | String |  |  |  | IPv6_network/Mask |
-
-=== "YAML"
-
-    ```yaml
-    ipv6_mgmt_destination_networks:
-      - <str>
-    ```
-
-## IPv6 Management Gateway
-
-OOB Management interface gateway in IPv6 format.
-Used as next-hop for default gateway or static routes defined under 'ipv6_mgmt_destination_networks'
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ipv6_mgmt_gateway</samp>](## "ipv6_mgmt_gateway") | String |  |  | Format: ipv6 |  |
-
-=== "YAML"
-
-    ```yaml
-    ipv6_mgmt_gateway: <str>
-    ```
-
-## IS Deployed
-
-Is device already deployed in the fabric
-When set to false, interfaces toward this device may be shutdown depending on the `shutdown_interfaces_towards_undeployed_peers` setting.
-Furthermore `eos_config_deploy_cvp` will not attempt to move or apply configurations to the device.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>is_deployed</samp>](## "is_deployed") | Boolean |  | True |  |  |
-
-=== "YAML"
-
-    ```yaml
-    is_deployed: <bool>
-    ```
-
-## ISIS Advertise Passive Only
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>isis_advertise_passive_only</samp>](## "isis_advertise_passive_only") | Boolean |  | False |  |  |
-
-=== "YAML"
-
-    ```yaml
-    isis_advertise_passive_only: <bool>
-    ```
-
-## ISIS Area ID
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>isis_area_id</samp>](## "isis_area_id") | String |  | 49.0001 |  |  |
-
-=== "YAML"
-
-    ```yaml
-    isis_area_id: <str>
-    ```
-
-## ISIS Default Circuit Type
-
-These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden on link profile or link level.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>isis_default_circuit_type</samp>](## "isis_default_circuit_type") | String |  | level-2 | Valid Values:<br>- level-1-2<br>- level-1<br>- level-2 |  |
-
-=== "YAML"
-
-    ```yaml
-    isis_default_circuit_type: <str>
-    ```
-
-## ISIS Default IS Type
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>isis_default_is_type</samp>](## "isis_default_is_type") | String |  | level-2 | Valid Values:<br>- level-1-2<br>- level-1<br>- level-2 |  |
-
-=== "YAML"
-
-    ```yaml
-    isis_default_is_type: <str>
-    ```
-
-## ISIS Default Metric
-
-These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden at link profile or link level.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>isis_default_metric</samp>](## "isis_default_metric") | Integer |  | 50 |  |  |
-
-=== "YAML"
-
-    ```yaml
-    isis_default_metric: <int>
-    ```
-
-## ISIS Maximum Paths
-
-Number of path to configure in ECMP for ISIS.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>isis_maximum_paths</samp>](## "isis_maximum_paths") | Integer |  |  |  |  |
-
-=== "YAML"
-
-    ```yaml
-    isis_maximum_paths: <int>
-    ```
-
-## ISIS TI LFA
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>isis_ti_lfa</samp>](## "isis_ti_lfa") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;enabled</samp>](## "isis_ti_lfa.enabled") | Boolean |  | False |  |  |
-    | [<samp>&nbsp;&nbsp;protection</samp>](## "isis_ti_lfa.protection") | String |  |  | Valid Values:<br>- link<br>- node |  |
-    | [<samp>&nbsp;&nbsp;local_convergence_delay</samp>](## "isis_ti_lfa.local_convergence_delay") | Integer |  | 10000 |  | Local convergence delay in milliseconds |
-
-=== "YAML"
-
-    ```yaml
-    isis_ti_lfa:
-      enabled: <bool>
-      protection: <str>
-      local_convergence_delay: <int>
-    ```
-
-## L3 Edge
-
-The `l3_edge` data model can be used to configure extra L3 P2P links anywhere in the fabric.
-It can be between two switches that are already part of the fabric inventory, or it can be towards another device, where only one end of the link is on a switch in the fabric.
-Fabric switches can be types `l3leaf`, `spine` or `super-spine`.
-
-The data model supports using IP pools, Subnet per link or specifying the IP addresses manually.
-For BGP peerings the AS number must be specified.
-If the AS number is different than the AS number configured for the node, the local-as will be replaced on this BGP peering (`neighbor <ip> local-as <as> no-prepend replace-as`).
-
-Make sure to configure the variables in a group_vars file covering all devices mentioned in the data model.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>l3_edge</samp>](## "l3_edge") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;p2p_links_ip_pools</samp>](## "l3_edge.p2p_links_ip_pools") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "l3_edge.p2p_links_ip_pools.[].name") | String | Required, Unique |  |  | P2P pool name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_pool</samp>](## "l3_edge.p2p_links_ip_pools.[].ipv4_pool") | String |  |  |  | IPv4 address/Mask. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_size</samp>](## "l3_edge.p2p_links_ip_pools.[].prefix_size") | Integer |  | 31 | Min: 8<br>Max: 31 | Subnet mask size. |
-    | [<samp>&nbsp;&nbsp;p2p_links_profiles</samp>](## "l3_edge.p2p_links_profiles") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "l3_edge.p2p_links_profiles.[].name") | String | Required, Unique |  |  | P2P profile name. Any variable supported under p2p_links can be inherited from a profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "l3_edge.p2p_links_profiles.[].id") | Integer |  |  |  | Unique id per subnet_summary. Used to calculate ip addresses.<br>Required with ip_pool. ID starting from 1.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "l3_edge.p2p_links_profiles.[].speed") | String |  |  |  | The values can be speed or auto speed or forced speed. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_pool</samp>](## "l3_edge.p2p_links_profiles.[].ip_pool") | String |  |  |  | P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subnet</samp>](## "l3_edge.p2p_links_profiles.[].subnet") | String |  |  |  | IPv4 address/Mask. Subnet used on this P2P link. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "l3_edge.p2p_links_profiles.[].ip") | List, items: String |  |  |  | Specific IP addresses used on this P2P link. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "l3_edge.p2p_links_profiles.[].ip.[].&lt;str&gt;") | String |  |  |  | Node IPv4 address/Mask. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "l3_edge.p2p_links_profiles.[].ipv6_enable") | Boolean |  | False |  | Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "l3_edge.p2p_links_profiles.[].nodes") | List, items: String |  |  |  | Nodes where this link should be configured. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "l3_edge.p2p_links_profiles.[].nodes.[].&lt;str&gt;") | String |  |  |  | The values can be < node_a >, < node_b >.<br>ex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "l3_edge.p2p_links_profiles.[].interfaces") | List, items: String |  |  |  | Interfaces where this link should be configured and Required unless using port-channels. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "l3_edge.p2p_links_profiles.[].interfaces.[].&lt;str&gt;") | String |  |  |  | The value can be like < node_a_interface >, < node_b_interface >.<br>ex. - [ Ethernet2, Ethernet2 ].<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as</samp>](## "l3_edge.p2p_links_profiles.[].as") | List, items: String |  |  |  | AS numbers for BGP.<br>Required with bgp peering.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "l3_edge.p2p_links_profiles.[].as.[].&lt;str&gt;") | String |  |  |  | The values can be like ["node_a_as", "node_b_as"]. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;descriptions</samp>](## "l3_edge.p2p_links_profiles.[].descriptions") | List, items: String |  |  |  | Interface description. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "l3_edge.p2p_links_profiles.[].descriptions.[].&lt;str&gt;") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_in_underlay_protocol</samp>](## "l3_edge.p2p_links_profiles.[].include_in_underlay_protocol") | Boolean |  | True |  | Add this interface to underlay routing protocol. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_hello_padding</samp>](## "l3_edge.p2p_links_profiles.[].isis_hello_padding") | Boolean |  | False |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_metric</samp>](## "l3_edge.p2p_links_profiles.[].isis_metric") | Integer |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_circuit_type</samp>](## "l3_edge.p2p_links_profiles.[].isis_circuit_type") | String |  |  | Valid Values:<br>- level-1<br>- level-2<br>- level-1-2 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_mode</samp>](## "l3_edge.p2p_links_profiles.[].isis_authentication_mode") | String |  |  | Valid Values:<br>- md5<br>- text |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_key</samp>](## "l3_edge.p2p_links_profiles.[].isis_authentication_key") | String |  |  |  | Type-7 encrypted password. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ip</samp>](## "l3_edge.p2p_links_profiles.[].mpls_ip") | Boolean |  |  |  | MPLS parameters. Default value is true if switch.mpls_lsr is true. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ldp</samp>](## "l3_edge.p2p_links_profiles.[].mpls_ldp") | Boolean |  |  |  | MPLS parameters. Default value is true for ldp underlay variants, otherwise false. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "l3_edge.p2p_links_profiles.[].mtu") | Integer |  |  |  | MTU for this P2P link. Default value same as p2p_uplinks_mtu. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "l3_edge.p2p_links_profiles.[].bfd") | Boolean |  | False |  | Enable BFD (only considered for BGP). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ptp</samp>](## "l3_edge.p2p_links_profiles.[].ptp") | Dictionary |  |  |  | PTP parameters. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "l3_edge.p2p_links_profiles.[].ptp.enabled") | Boolean |  | False |  | Enable PTP |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "l3_edge.p2p_links_profiles.[].qos_profile") | String |  |  |  | QOS service profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;macsec_profile</samp>](## "l3_edge.p2p_links_profiles.[].macsec_profile") | String |  |  |  | MAC security profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_channel</samp>](## "l3_edge.p2p_links_profiles.[].port_channel") | Dictionary |  |  |  | Port-channel parameters. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "l3_edge.p2p_links_profiles.[].port_channel.mode") | String |  | active |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes_child_interfaces</samp>](## "l3_edge.p2p_links_profiles.[].port_channel.nodes_child_interfaces") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- node</samp>](## "l3_edge.p2p_links_profiles.[].port_channel.nodes_child_interfaces.[].node") | String | Required, Unique |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "l3_edge.p2p_links_profiles.[].port_channel.nodes_child_interfaces.[].interfaces") | List, items: String |  |  |  | List of node interfaces. Ex.- [ 'node1 interface1', 'node1 interface2' ]. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "l3_edge.p2p_links_profiles.[].port_channel.nodes_child_interfaces.[].interfaces.[].&lt;str&gt;") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "l3_edge.p2p_links_profiles.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the point-to-point interface in the final EOS configuration. |
-    | [<samp>&nbsp;&nbsp;p2p_links</samp>](## "l3_edge.p2p_links") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- nodes</samp>](## "l3_edge.p2p_links.[].nodes") | List, items: String | Required |  |  | Nodes where this link should be configured. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "l3_edge.p2p_links.[].nodes.[].&lt;str&gt;") | String |  |  |  | The values can be < node_a >, < node_b >.<br>ex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "l3_edge.p2p_links.[].profile") | String |  |  |  | P2P profile name. Profile defined under p2p_profiles. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "l3_edge.p2p_links.[].id") | Integer |  |  |  | Unique id per subnet_summary. Used to calculate ip addresses.<br>Required with ip_pool. ID starting from 1.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "l3_edge.p2p_links.[].speed") | String |  |  |  | The values can be speed or auto speed or forced speed. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_pool</samp>](## "l3_edge.p2p_links.[].ip_pool") | String |  |  |  | P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subnet</samp>](## "l3_edge.p2p_links.[].subnet") | String |  |  |  | IPv4 address/Mask. Subnet used on this P2P link. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "l3_edge.p2p_links.[].ip") | List, items: String |  |  |  | Specific IP addresses used on this P2P link. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "l3_edge.p2p_links.[].ip.[].&lt;str&gt;") | String |  |  |  | Node IPv4 address/Mask. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "l3_edge.p2p_links.[].ipv6_enable") | Boolean |  | False |  | Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "l3_edge.p2p_links.[].interfaces") | List, items: String |  |  |  | Interfaces where this link should be configured and Required unless using port-channels. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "l3_edge.p2p_links.[].interfaces.[].&lt;str&gt;") | String |  |  |  | The value can be like < node_a_interface >, < node_b_interface >.<br>ex. - [ Ethernet2, Ethernet2 ].<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as</samp>](## "l3_edge.p2p_links.[].as") | List, items: String |  |  |  | AS numbers for BGP.<br>Required with bgp peering.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "l3_edge.p2p_links.[].as.[].&lt;str&gt;") | String |  |  |  | The values can be like ["node_a_as", "node_b_as"]. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;descriptions</samp>](## "l3_edge.p2p_links.[].descriptions") | List, items: String |  |  |  | Interface description. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "l3_edge.p2p_links.[].descriptions.[].&lt;str&gt;") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_in_underlay_protocol</samp>](## "l3_edge.p2p_links.[].include_in_underlay_protocol") | Boolean |  | True |  | Add this interface to underlay routing protocol. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_hello_padding</samp>](## "l3_edge.p2p_links.[].isis_hello_padding") | Boolean |  | False |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_metric</samp>](## "l3_edge.p2p_links.[].isis_metric") | Integer |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_circuit_type</samp>](## "l3_edge.p2p_links.[].isis_circuit_type") | String |  |  | Valid Values:<br>- level-1<br>- level-2<br>- level-1-2 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_mode</samp>](## "l3_edge.p2p_links.[].isis_authentication_mode") | String |  |  | Valid Values:<br>- md5<br>- text |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_authentication_key</samp>](## "l3_edge.p2p_links.[].isis_authentication_key") | String |  |  |  | Type-7 encrypted password. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ip</samp>](## "l3_edge.p2p_links.[].mpls_ip") | Boolean |  |  |  | MPLS parameters. Default value is true if switch.mpls_lsr is true. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ldp</samp>](## "l3_edge.p2p_links.[].mpls_ldp") | Boolean |  |  |  | MPLS parameters. Default value is true for ldp underlay variants, otherwise false. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "l3_edge.p2p_links.[].mtu") | Integer |  |  |  | MTU for this P2P link. Default value same as p2p_uplinks_mtu. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "l3_edge.p2p_links.[].bfd") | Boolean |  | False |  | Enable BFD (only considered for BGP). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ptp</samp>](## "l3_edge.p2p_links.[].ptp") | Dictionary |  |  |  | PTP parameters. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "l3_edge.p2p_links.[].ptp.enabled") | Boolean |  | False |  | Enable PTP |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "l3_edge.p2p_links.[].qos_profile") | String |  |  |  | QOS service profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;macsec_profile</samp>](## "l3_edge.p2p_links.[].macsec_profile") | String |  |  |  | MAC security profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_channel</samp>](## "l3_edge.p2p_links.[].port_channel") | Dictionary |  |  |  | Port-channel parameters. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "l3_edge.p2p_links.[].port_channel.mode") | String |  | active |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes_child_interfaces</samp>](## "l3_edge.p2p_links.[].port_channel.nodes_child_interfaces") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- node</samp>](## "l3_edge.p2p_links.[].port_channel.nodes_child_interfaces.[].node") | String | Required, Unique |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "l3_edge.p2p_links.[].port_channel.nodes_child_interfaces.[].interfaces") | List, items: String |  |  |  | List of node interfaces. Ex.- [ 'node1 interface1', 'node1 interface2' ]. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "l3_edge.p2p_links.[].port_channel.nodes_child_interfaces.[].interfaces.[].&lt;str&gt;") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "l3_edge.p2p_links.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the point-to-point interface in the final EOS configuration. |
-
-=== "YAML"
-
-    ```yaml
-    l3_edge:
-      p2p_links_ip_pools:
-        - name: <str>
-          ipv4_pool: <str>
-          prefix_size: <int>
-      p2p_links_profiles:
-        - name: <str>
-          id: <int>
-          speed: <str>
-          ip_pool: <str>
-          subnet: <str>
-          ip:
-            - <str>
-          ipv6_enable: <bool>
-          nodes:
-            - <str>
-          interfaces:
-            - <str>
-          as:
-            - <str>
-          descriptions:
-            - <str>
-          include_in_underlay_protocol: <bool>
-          isis_hello_padding: <bool>
-          isis_metric: <int>
-          isis_circuit_type: <str>
-          isis_authentication_mode: <str>
-          isis_authentication_key: <str>
-          mpls_ip: <bool>
-          mpls_ldp: <bool>
-          mtu: <int>
-          bfd: <bool>
-          ptp:
-            enabled: <bool>
-          qos_profile: <str>
-          macsec_profile: <str>
-          port_channel:
-            mode: <str>
-            nodes_child_interfaces:
-              - node: <str>
-                interfaces:
-                  - <str>
-          raw_eos_cli: <str>
-      p2p_links:
-        - nodes:
-            - <str>
-          profile: <str>
-          id: <int>
-          speed: <str>
-          ip_pool: <str>
-          subnet: <str>
-          ip:
-            - <str>
-          ipv6_enable: <bool>
-          interfaces:
-            - <str>
-          as:
-            - <str>
-          descriptions:
-            - <str>
-          include_in_underlay_protocol: <bool>
-          isis_hello_padding: <bool>
-          isis_metric: <int>
-          isis_circuit_type: <str>
-          isis_authentication_mode: <str>
-          isis_authentication_key: <str>
-          mpls_ip: <bool>
-          mpls_ldp: <bool>
-          mtu: <int>
-          bfd: <bool>
-          ptp:
-            enabled: <bool>
-          qos_profile: <str>
-          macsec_profile: <str>
-          port_channel:
-            mode: <str>
-            nodes_child_interfaces:
-              - node: <str>
-                interfaces:
-                  - <str>
-          raw_eos_cli: <str>
-    ```
-
-## Local Users
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>local_users</samp>](## "local_users") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- name</samp>](## "local_users.[].name") | String | Required, Unique |  |  | Username |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;disabled</samp>](## "local_users.[].disabled") | Boolean |  |  |  | If true, the user will be removed and all other settings are ignored.<br>Useful for removing the default "admin" user.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;privilege</samp>](## "local_users.[].privilege") | Integer |  |  | Min: 0<br>Max: 15 | Initial privilege level with local EXEC authorization.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;role</samp>](## "local_users.[].role") | String |  |  |  | EOS RBAC Role to be assigned to the user such as "network-admin" or "network-operator"<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sha512_password</samp>](## "local_users.[].sha512_password") | String |  |  |  | SHA512 Hash of Password<br>Must be the hash of the password. By default EOS salts the password with the username, so the simplest is to generate the hash on an EOS device using the same username.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;no_password</samp>](## "local_users.[].no_password") | Boolean |  |  |  | If set a password will not be configured for this user. "sha512_password" MUST not be defined for this user.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ssh_key</samp>](## "local_users.[].ssh_key") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shell</samp>](## "local_users.[].shell") | String |  |  | Valid Values:<br>- /bin/bash<br>- /bin/sh<br>- /sbin/nologin | Specify shell for the user<br> |
-
-=== "YAML"
-
-    ```yaml
-    local_users:
-      - name: <str>
-        disabled: <bool>
-        privilege: <int>
-        role: <str>
-        sha512_password: <str>
-        no_password: <bool>
-        ssh_key: <str>
-        shell: <str>
-    ```
-
-## MAC Address Table
-
-MAC address-table aging time
-Use to change the EOS default of 300.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>mac_address_table</samp>](## "mac_address_table") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;aging_time</samp>](## "mac_address_table.aging_time") | Integer |  |  | Min: 0<br>Max: 1000000 | Aging time in seconds 10-1000000.<br>Enter 0 to disable aging.<br> |
-
-=== "YAML"
-
-    ```yaml
-    mac_address_table:
-      aging_time: <int>
-    ```
-
-## Management Destination Networks
-
-List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.
-Replaces the default route.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>mgmt_destination_networks</samp>](## "mgmt_destination_networks") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "mgmt_destination_networks.[].&lt;str&gt;") | String |  |  |  | IPv4_address/Mask |
-
-=== "YAML"
-
-    ```yaml
-    mgmt_destination_networks:
-      - <str>
-    ```
-
-## Management Eapi
-
-Default is HTTPS management eAPI enabled.
-The VRF is set to < mgmt_interface_vrf >.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>management_eapi</samp>](## "management_eapi") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;enable_http</samp>](## "management_eapi.enable_http") | Boolean |  | False |  |  |
-    | [<samp>&nbsp;&nbsp;enable_https</samp>](## "management_eapi.enable_https") | Boolean |  | True |  |  |
-    | [<samp>&nbsp;&nbsp;default_services</samp>](## "management_eapi.default_services") | Boolean |  |  |  |  |
-
-=== "YAML"
-
-    ```yaml
-    management_eapi:
-      enable_http: <bool>
-      enable_https: <bool>
-      default_services: <bool>
-    ```
-
-## Management Gateway
-
-OOB Management interface gateway in IPv4 format.
-Used as next-hop for default gateway or static routes defined under 'mgmt_destination_networks'
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>mgmt_gateway</samp>](## "mgmt_gateway") | String |  |  |  |  |
-
-=== "YAML"
-
-    ```yaml
-    mgmt_gateway: <str>
-    ```
-
-## Management Interface Description
-
-Management interface description
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>mgmt_interface_description</samp>](## "mgmt_interface_description") | String |  | oob_management |  |  |
-
-=== "YAML"
-
-    ```yaml
-    mgmt_interface_description: <str>
-    ```
-
-## Management Interface VRF
-
-OOB Management VRF.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>mgmt_interface_vrf</samp>](## "mgmt_interface_vrf") | String |  | MGMT |  |  |
-
-=== "YAML"
-
-    ```yaml
-    mgmt_interface_vrf: <str>
-    ```
-
-## Management Interface
-
-OOB Management interface.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>mgmt_interface</samp>](## "mgmt_interface") | String |  | Management1 |  |  |
-
-=== "YAML"
-
-    ```yaml
-    mgmt_interface: <str>
-    ```
-
-## Management VRF Routing
-
-Configure IP routing for the OOB Management VRF.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>mgmt_vrf_routing</samp>](## "mgmt_vrf_routing") | Boolean |  | False |  |  |
-
-=== "YAML"
-
-    ```yaml
-    mgmt_vrf_routing: <bool>
-    ```
-
-## MLAG Ibgp Peering VRFs
-
-On mlag leafs, an SVI interface is defined per vrf, to establish iBGP peering (required when there are MLAG leafs in topology)
-The SVI id will be derived from the base vlan defined: mlag_ibgp_peering_vrfs.base_vlan + (vrf_id or vrf_vni) - 1
-Depending on the values of vrf_id / vrf_vni it may be required to adjust the base_vlan to avoid overlaps or invalid vlan ids.
-The SVI ip address derived from mlag_l3_peer_ipv4_pool is re-used across all iBGP peerings.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>mlag_ibgp_peering_vrfs</samp>](## "mlag_ibgp_peering_vrfs") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;base_vlan</samp>](## "mlag_ibgp_peering_vrfs.base_vlan") | Integer |  | 3000 | Min: 1<br>Max: 4093 |  |
-
-=== "YAML"
-
-    ```yaml
     mlag_ibgp_peering_vrfs:
       base_vlan: <int>
-    ```
-
-## Name Servers
-
-List of DNS servers. The VRF is set to < mgmt_interface_vrf >.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>name_servers</samp>](## "name_servers") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "name_servers.[].&lt;str&gt;") | String |  |  |  | IPv4 address |
-
-=== "YAML"
-
-    ```yaml
-    name_servers:
-      - <str>
-    ```
-
-## Network Ports
-
-All switch_ports ranges are expanded into individual port configurations.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>network_ports</samp>](## "network_ports") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- switches</samp>](## "network_ports.[].switches") | List, items: String |  |  |  | Regex matching the full hostname of one or more switches.<br>The regular expression must match the full hostname.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "network_ports.[].switches.[].&lt;str&gt;") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;switch_ports</samp>](## "network_ports.[].switch_ports") | List, items: String |  |  |  | List of ranges using AVD range_expand syntax.<br>For example:<br><br>switch_ports:<br>  - Ethernet1<br>  - Ethernet2-48<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "network_ports.[].switch_ports.[].&lt;str&gt;") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "network_ports.[].description") | String |  |  |  | Description to be used on all ports. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;endpoint_ports</samp>](## "network_ports.[].endpoint_ports") | List, items: String |  |  |  | Endpoint ports is used for description, required unless description is set.<br>The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.<br>Each list item is one switchport.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "network_ports.[].endpoint_ports.[].&lt;str&gt;") | String |  |  |  | Interface name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "network_ports.[].speed") | String |  |  |  | Set adapter speed: `< interface_speed >`, `forced < interface_speed >`, `auto < interface_speed >`.<br>If not specified will be auto.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "network_ports.[].profile") | String |  |  |  | Port-profile name to inherit configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_ports.[].enabled") | Boolean |  | True |  | Administrative state, setting to false will set the port to 'shutdown' in the intended configuration.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "network_ports.[].mode") | String |  |  | Valid Values:<br>- access<br>- dot1q-tunnel<br>- trunk<br>- trunk phone | Interface mode. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "network_ports.[].mtu") | Integer |  |  | Min: 68<br>Max: 65535 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;l2_mtu</samp>](## "network_ports.[].l2_mtu") | Integer |  |  | Min: 68<br>Max: 9416 | This should only be defined for platforms supporting the "l2 mtu" CLI command. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;native_vlan</samp>](## "network_ports.[].native_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Native VLAN for a trunk port.<br>If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;native_vlan_tag</samp>](## "network_ports.[].native_vlan_tag") | Boolean |  | False |  | If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trunk_groups</samp>](## "network_ports.[].trunk_groups") | List, items: String |  |  |  | Required with `enable_trunk_groups: true`.<br>Trunk Groups are used for limiting VLANs on trunk ports to VLANs with the same Trunk Group.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "network_ports.[].trunk_groups.[].&lt;str&gt;") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vlans</samp>](## "network_ports.[].vlans") | String |  |  |  | Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and VLAN 1 will be used for access ports. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_portfast</samp>](## "network_ports.[].spanning_tree_portfast") | String |  |  | Valid Values:<br>- edge<br>- network |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_bpdufilter</samp>](## "network_ports.[].spanning_tree_bpdufilter") | String |  |  | Valid Values:<br>- enabled<br>- disabled<br>- True<br>- False<br>- true<br>- false |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;spanning_tree_bpduguard</samp>](## "network_ports.[].spanning_tree_bpduguard") | String |  |  | Valid Values:<br>- enabled<br>- disabled<br>- True<br>- False<br>- true<br>- false |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;flowcontrol</samp>](## "network_ports.[].flowcontrol") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;received</samp>](## "network_ports.[].flowcontrol.received") | String |  |  | Valid Values:<br>- received<br>- send<br>- on |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "network_ports.[].qos_profile") | String |  |  |  | QOS profile name |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ptp</samp>](## "network_ports.[].ptp") | Dictionary |  |  |  | The global PTP profile parameters will be applied to all connected endpoints where `ptp` is manually enabled.<br>`ptp role master` is set to ensure control over the PTP topology.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_ports.[].ptp.enabled") | Boolean |  | False |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;endpoint_role</samp>](## "network_ports.[].ptp.endpoint_role") | String |  | follower | Valid Values:<br>- bmca<br>- default<br>- follower |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "network_ports.[].ptp.profile") | String |  | aes67-r16-2016 | Valid Values:<br>- aes67<br>- aes67-r16-2016<br>- smpte2059-2 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;link_tracking</samp>](## "network_ports.[].link_tracking") | Dictionary |  |  |  | Configure the downstream interfaces of a respective Link Tracking Group.<br>If `port_channel` is defined in an adapter, then the port-channel interface is configured to be the downstream.<br>Else all the ethernet interfaces will be configured as downstream -> to configure single-active EVPN multihomed networks.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_ports.[].link_tracking.enabled") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "network_ports.[].link_tracking.name") | String |  |  |  | Tracking group name.<br>The default group name is taken from fabric variable of the switch, `link_tracking.groups[0].name` with default value being "LT_GROUP1".<br>Optional if default link_tracking settings are configured on the node.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dot1x</samp>](## "network_ports.[].dot1x") | Dictionary |  |  |  | 802.1x |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_control</samp>](## "network_ports.[].dot1x.port_control") | String |  |  | Valid Values:<br>- auto<br>- force-authorized<br>- force-unauthorized |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_control_force_authorized_phone</samp>](## "network_ports.[].dot1x.port_control_force_authorized_phone") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reauthentication</samp>](## "network_ports.[].dot1x.reauthentication") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pae</samp>](## "network_ports.[].dot1x.pae") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "network_ports.[].dot1x.pae.mode") | String |  |  | Valid Values:<br>- authenticator |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;authentication_failure</samp>](## "network_ports.[].dot1x.authentication_failure") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "network_ports.[].dot1x.authentication_failure.action") | String |  |  | Valid Values:<br>- allow<br>- drop |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow_vlan</samp>](## "network_ports.[].dot1x.authentication_failure.allow_vlan") | Integer |  |  | Min: 1<br>Max: 4094 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;host_mode</samp>](## "network_ports.[].dot1x.host_mode") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "network_ports.[].dot1x.host_mode.mode") | String |  |  | Valid Values:<br>- multi-host<br>- single-host |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multi_host_authenticated</samp>](## "network_ports.[].dot1x.host_mode.multi_host_authenticated") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_based_authentication</samp>](## "network_ports.[].dot1x.mac_based_authentication") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_ports.[].dot1x.mac_based_authentication.enabled") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;always</samp>](## "network_ports.[].dot1x.mac_based_authentication.always") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;host_mode_common</samp>](## "network_ports.[].dot1x.mac_based_authentication.host_mode_common") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout</samp>](## "network_ports.[].dot1x.timeout") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;idle_host</samp>](## "network_ports.[].dot1x.timeout.idle_host") | Integer |  |  | Min: 10<br>Max: 65535 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;quiet_period</samp>](## "network_ports.[].dot1x.timeout.quiet_period") | Integer |  |  | Min: 1<br>Max: 65535 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reauth_period</samp>](## "network_ports.[].dot1x.timeout.reauth_period") | String |  |  |  | Range 60-4294967295 or "server". |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reauth_timeout_ignore</samp>](## "network_ports.[].dot1x.timeout.reauth_timeout_ignore") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tx_period</samp>](## "network_ports.[].dot1x.timeout.tx_period") | Integer |  |  | Min: 1<br>Max: 65535 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reauthorization_request_limit</samp>](## "network_ports.[].dot1x.reauthorization_request_limit") | Integer |  |  | Min: 1<br>Max: 10 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;storm_control</samp>](## "network_ports.[].storm_control") | Dictionary |  |  |  | Storm control settings applied on port toward the endpoint. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all</samp>](## "network_ports.[].storm_control.all") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level</samp>](## "network_ports.[].storm_control.all.level") | Integer |  |  |  | Configure maximum storm-control level. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit</samp>](## "network_ports.[].storm_control.all.unit") | String |  | percent | Valid Values:<br>- percent<br>- pps | Optional variable and is hardware dependent. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;broadcast</samp>](## "network_ports.[].storm_control.broadcast") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level</samp>](## "network_ports.[].storm_control.broadcast.level") | Integer |  |  |  | Configure maximum storm-control level. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit</samp>](## "network_ports.[].storm_control.broadcast.unit") | String |  | percent | Valid Values:<br>- percent<br>- pps | Optional variable and is hardware dependent. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast</samp>](## "network_ports.[].storm_control.multicast") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level</samp>](## "network_ports.[].storm_control.multicast.level") | Integer |  |  |  | Configure maximum storm-control level. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit</samp>](## "network_ports.[].storm_control.multicast.unit") | String |  | percent | Valid Values:<br>- percent<br>- pps | Optional variable and is hardware dependent. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unknown_unicast</samp>](## "network_ports.[].storm_control.unknown_unicast") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level</samp>](## "network_ports.[].storm_control.unknown_unicast.level") | Integer |  |  |  | Configure maximum storm-control level. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit</samp>](## "network_ports.[].storm_control.unknown_unicast.unit") | String |  | percent | Valid Values:<br>- percent<br>- pps | Optional variable and is hardware dependent. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;monitor_sessions</samp>](## "network_ports.[].monitor_sessions") | List, items: Dictionary |  |  |  | Used to define switchports as source or destination for monitoring sessions. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "network_ports.[].monitor_sessions.[].name") | String | Required |  |  | Session name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;role</samp>](## "network_ports.[].monitor_sessions.[].role") | String |  |  | Valid Values:<br>- source<br>- destination |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_settings</samp>](## "network_ports.[].monitor_sessions.[].source_settings") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction</samp>](## "network_ports.[].monitor_sessions.[].source_settings.direction") | String |  |  | Valid Values:<br>- rx<br>- tx<br>- both |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_group</samp>](## "network_ports.[].monitor_sessions.[].source_settings.access_group") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "network_ports.[].monitor_sessions.[].source_settings.access_group.type") | String |  |  | Valid Values:<br>- ip<br>- ipv6<br>- mac |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "network_ports.[].monitor_sessions.[].source_settings.access_group.name") | String |  |  |  | ACL name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "network_ports.[].monitor_sessions.[].source_settings.access_group.priority") | Integer |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;session_settings</samp>](## "network_ports.[].monitor_sessions.[].session_settings") | Dictionary |  |  |  | Session settings are defined per session name.<br>Different session_settings for the same session name will be combined/merged.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_gre_metadata_tx</samp>](## "network_ports.[].monitor_sessions.[].session_settings.encapsulation_gre_metadata_tx") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;header_remove_size</samp>](## "network_ports.[].monitor_sessions.[].session_settings.header_remove_size") | Integer |  |  |  | Number of bytes to remove from header. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_group</samp>](## "network_ports.[].monitor_sessions.[].session_settings.access_group") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "network_ports.[].monitor_sessions.[].session_settings.access_group.type") | String |  |  | Valid Values:<br>- ip<br>- ipv6<br>- mac |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "network_ports.[].monitor_sessions.[].session_settings.access_group.name") | String |  |  |  | ACL name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rate_limit_per_ingress_chip</samp>](## "network_ports.[].monitor_sessions.[].session_settings.rate_limit_per_ingress_chip") | String |  |  |  | Ratelimit and unit as string.<br>Examples:<br>  "100000 bps"<br>  "100 kbps"<br>  "10 mbps"<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rate_limit_per_egress_chip</samp>](## "network_ports.[].monitor_sessions.[].session_settings.rate_limit_per_egress_chip") | String |  |  |  | Ratelimit and unit as string.<br>Examples:<br>  "100000 bps"<br>  "100 kbps"<br>  "10 mbps"<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sample</samp>](## "network_ports.[].monitor_sessions.[].session_settings.sample") | Integer |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;truncate</samp>](## "network_ports.[].monitor_sessions.[].session_settings.truncate") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_ports.[].monitor_sessions.[].session_settings.truncate.enabled") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "network_ports.[].monitor_sessions.[].session_settings.truncate.size") | Integer |  |  |  | Size in bytes |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ethernet_segment</samp>](## "network_ports.[].ethernet_segment") | Dictionary |  |  |  | Settings for all or single-active EVPN multihoming. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "network_ports.[].ethernet_segment.short_esi") | String | Required |  |  | In format xxxx:xxxx:xxxx or "auto".<br>Define a manual short-esi (be careful using this on profiles) or set the value to "auto" to automatically generate the value.<br>Please see the notes under "EVPN A/A ESI dual and single-attached endpoint scenarios" before setting `short_esi: auto`.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redundancy</samp>](## "network_ports.[].ethernet_segment.redundancy") | String |  |  | Valid Values:<br>- all-active<br>- single-active | If omitted, Port-Channels use the EOS default of all-active.<br>If omitted, Ethernet interfaces are configured as single-active.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;designated_forwarder_algorithm</samp>](## "network_ports.[].ethernet_segment.designated_forwarder_algorithm") | String |  |  | Valid Values:<br>- auto<br>- modulus<br>- preference | Configure DF algorithm and preferences.<br>- auto: Use preference-based algorithm and assign preference based on position of device in the 'switches' list,<br>  e.g., assuming a list of three switches, this would assign a preference of 200 to the first switch, 100 to the 2nd, and 0 to the third.<br>- preference: Set preference for each switch manually using designated_forwarder_preferences key.<br>- modulus: Use the default modulus-based algorithm.<br>If omitted, Port-Channels use the EOS default of modulus.<br>If omitted, Ethernet interfaces default to the 'auto' mechanism detailed above.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;designated_forwarder_preferences</samp>](## "network_ports.[].ethernet_segment.designated_forwarder_preferences") | List, items: String |  |  |  | Manual preference as described above, required only for preference algorithm. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "network_ports.[].ethernet_segment.designated_forwarder_preferences.[].&lt;str&gt;") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dont_preempt</samp>](## "network_ports.[].ethernet_segment.dont_preempt") | Boolean |  |  |  | Disable preemption for single-active forwarding when auto/manual DF preference is configured. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;port_channel</samp>](## "network_ports.[].port_channel") | Dictionary |  |  |  | Used for port-channel adapter. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "network_ports.[].port_channel.mode") | String |  |  | Valid Values:<br>- active<br>- passive<br>- on | Port-Channel Mode. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;channel_id</samp>](## "network_ports.[].port_channel.channel_id") | Integer |  |  |  | Port-Channel ID.<br>If no channel_id is specified, an id is generated from the first switch port in the port channel.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "network_ports.[].port_channel.description") | String |  |  |  | By default the description is built leveraging `<peer>` name or `adapter.description` when defined.<br>When this key is defined, it will append its content to the physical port description.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_ports.[].port_channel.enabled") | Boolean |  | True |  | Port-Channel administrative state.<br>Setting to false will set port to 'shutdown' in intended configuration.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;esi</samp>](## "network_ports.[].port_channel.esi") <span style="color:red">removed</span> | String |  |  |  | Format xxxx:xxxx:xxxx.<span style="color:red">This key was removed. Support was removed in AVD version 4.0.0. Use <samp>short_esi</samp> instead.</span> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "network_ports.[].port_channel.short_esi") | String |  |  |  | In format xxxx:xxxx:xxxx or "auto". |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lacp_fallback</samp>](## "network_ports.[].port_channel.lacp_fallback") | Dictionary |  |  |  | LACP fallback configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "network_ports.[].port_channel.lacp_fallback.mode") | String |  |  | Valid Values:<br>- static | Currently only static mode is supported. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout</samp>](## "network_ports.[].port_channel.lacp_fallback.timeout") | Integer |  |  |  | Timeout in seconds. EOS default is 90 seconds. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lacp_timer</samp>](## "network_ports.[].port_channel.lacp_timer") | Dictionary |  |  |  | LACP timer configuration. Applies only when Port-channel mode is not "on". |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "network_ports.[].port_channel.lacp_timer.mode") | String |  |  | Valid Values:<br>- normal<br>- fast | LACP mode for interface members. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "network_ports.[].port_channel.lacp_timer.multiplier") | Integer |  |  |  | Number of LACP BPDUs lost before deeming the peer down. EOS default is 3. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterfaces</samp>](## "network_ports.[].port_channel.subinterfaces") | List, items: Dictionary |  |  |  | Port-Channel L2 Subinterfaces<br>Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.<br>Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.<br>Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- number</samp>](## "network_ports.[].port_channel.subinterfaces.[].number") | Integer |  |  |  | Subinterface number |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "network_ports.[].port_channel.subinterfaces.[].short_esi") | String |  |  |  | In format xxxx:xxxx:xxxx or "auto"<br>Required for multihomed port-channels with subinterfaces<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_id</samp>](## "network_ports.[].port_channel.subinterfaces.[].vlan_id") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID to bridge.<br>Default is subinterface number.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_vlan</samp>](## "network_ports.[].port_channel.subinterfaces.[].encapsulation_vlan") | Dictionary |  |  |  | Client VLAN ID encapsulation.<br>Default is subinterface number.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;client_dot1q</samp>](## "network_ports.[].port_channel.subinterfaces.[].encapsulation_vlan.client_dot1q") | Integer |  |  | Min: 1<br>Max: 4094 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "network_ports.[].port_channel.raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the port-channel interface in the final EOS configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "network_ports.[].port_channel.structured_config") | Dictionary |  |  |  | Custom structured config added under port_channel_interfaces.<interface> for eos_cli_config_gen. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "network_ports.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the ethernet interface in the final EOS configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "network_ports.[].structured_config") | Dictionary |  |  |  | Custom structured config added under ethernet_interfaces.<interface> for eos_cli_config_gen. |
-
-=== "YAML"
-
-    ```yaml
-    network_ports:
-      - switches:
-          - <str>
-        switch_ports:
-          - <str>
-        description: <str>
-        endpoint_ports:
-          - <str>
-        speed: <str>
-        profile: <str>
-        enabled: <bool>
-        mode: <str>
-        mtu: <int>
-        l2_mtu: <int>
-        native_vlan: <int>
-        native_vlan_tag: <bool>
-        trunk_groups:
-          - <str>
-        vlans: <str>
-        spanning_tree_portfast: <str>
-        spanning_tree_bpdufilter: <str>
-        spanning_tree_bpduguard: <str>
-        flowcontrol:
-          received: <str>
-        qos_profile: <str>
-        ptp:
-          enabled: <bool>
-          endpoint_role: <str>
-          profile: <str>
-        link_tracking:
-          enabled: <bool>
-          name: <str>
-        dot1x:
-          port_control: <str>
-          port_control_force_authorized_phone: <bool>
-          reauthentication: <bool>
-          pae:
-            mode: <str>
-          authentication_failure:
-            action: <str>
-            allow_vlan: <int>
-          host_mode:
-            mode: <str>
-            multi_host_authenticated: <bool>
-          mac_based_authentication:
-            enabled: <bool>
-            always: <bool>
-            host_mode_common: <bool>
-          timeout:
-            idle_host: <int>
-            quiet_period: <int>
-            reauth_period: <str>
-            reauth_timeout_ignore: <bool>
-            tx_period: <int>
-          reauthorization_request_limit: <int>
-        storm_control:
-          all:
-            level: <int>
-            unit: <str>
-          broadcast:
-            level: <int>
-            unit: <str>
-          multicast:
-            level: <int>
-            unit: <str>
-          unknown_unicast:
-            level: <int>
-            unit: <str>
-        monitor_sessions:
-          - name: <str>
-            role: <str>
-            source_settings:
-              direction: <str>
-              access_group:
-                type: <str>
-                name: <str>
-                priority: <int>
-            session_settings:
-              encapsulation_gre_metadata_tx: <bool>
-              header_remove_size: <int>
-              access_group:
-                type: <str>
-                name: <str>
-              rate_limit_per_ingress_chip: <str>
-              rate_limit_per_egress_chip: <str>
-              sample: <int>
-              truncate:
-                enabled: <bool>
-                size: <int>
-        ethernet_segment:
-          short_esi: <str>
-          redundancy: <str>
-          designated_forwarder_algorithm: <str>
-          designated_forwarder_preferences:
-            - <str>
-          dont_preempt: <bool>
-        port_channel:
-          mode: <str>
-          channel_id: <int>
-          description: <str>
-          enabled: <bool>
-          short_esi: <str>
-          lacp_fallback:
-            mode: <str>
-            timeout: <int>
-          lacp_timer:
-            mode: <str>
-            multiplier: <int>
-          subinterfaces:
-            - number: <int>
-              short_esi: <str>
-              vlan_id: <int>
-              encapsulation_vlan:
-                client_dot1q: <int>
-          raw_eos_cli: <str>
-          structured_config: <dict>
-        raw_eos_cli: <str>
-        structured_config: <dict>
-    ```
-
-## Network Services Keys
-
-Define network services keys, to define grouping of network services.
-This provides the ability to define various keys of your choice to better organize/group your data.
-This should be defined in top level group_var for the fabric.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>network_services_keys</samp>](## "network_services_keys") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- name</samp>](## "network_services_keys.[].name") | String | Required, Unique |  |  |  |
-
-=== "YAML"
-
-    ```yaml
-    network_services_keys:
-      - name: <str>
-    ```
-
-## Node Type Keys
-
-Define Node Type Keys, to specify the properties of each node type in the fabric.
-This allows for complete customization of the fabric layout.
-This should be defined in top level group_var for the fabric.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>node_type_keys</samp>](## "node_type_keys") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- key</samp>](## "node_type_keys.[].key") | String | Required, Unique |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "node_type_keys.[].type") | String |  |  |  | Type value matching this node_type_key. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;connected_endpoints</samp>](## "node_type_keys.[].connected_endpoints") | Boolean |  | False |  | Are endpoints connected to this node type. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_evpn_role</samp>](## "node_type_keys.[].default_evpn_role") | String |  | none | Valid Values:<br>- none<br>- client<br>- server | Default evpn_role. Can be overridden in topology vars. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_ptp_priority1</samp>](## "node_type_keys.[].default_ptp_priority1") | Integer |  | 127 | Min: 0<br>Max: 255 | Default PTP priority 1 |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_underlay_routing_protocol</samp>](## "node_type_keys.[].default_underlay_routing_protocol") | String |  | ebgp | Value is converted to lower case<br>Valid Values:<br>- ebgp<br>- ibgp<br>- ospf<br>- ospf-ldp<br>- isis<br>- isis-sr<br>- isis-ldp<br>- isis-sr-ldp<br>- none | Set the default underlay routing_protocol.<br>Can be overridden by setting "underlay_routing_protocol" host/group_vars.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_overlay_routing_protocol</samp>](## "node_type_keys.[].default_overlay_routing_protocol") | String |  | ebgp | Value is converted to lower case<br>Valid Values:<br>- ebgp<br>- ibgp<br>- her<br>- cvx<br>- none | Set the default overlay routing_protocol.<br>Can be overridden by setting "overlay_routing_protocol" host/group_vars.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_mpls_overlay_role</samp>](## "node_type_keys.[].default_mpls_overlay_role") | String |  |  | Valid Values:<br>- client<br>- server<br>- none | Set the default mpls overlay role.<br>Acting role in overlay control plane.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_overlay_address_families</samp>](## "node_type_keys.[].default_overlay_address_families") | List, items: String |  |  |  | Set the default overlay address families.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "node_type_keys.[].default_overlay_address_families.[].&lt;str&gt;") | String |  |  | Value is converted to lower case<br>Valid Values:<br>- evpn<br>- vpn-ipv4<br>- vpn-ipv6 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_evpn_encapsulation</samp>](## "node_type_keys.[].default_evpn_encapsulation") | String |  |  | Value is converted to lower case<br>Valid Values:<br>- mpls<br>- vxlan | Set the default evpn encapsulation.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_support</samp>](## "node_type_keys.[].mlag_support") | Boolean |  | False |  | Can this node type support mlag. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;network_services</samp>](## "node_type_keys.[].network_services") | Dictionary |  |  |  | Will network services be deployed on this node type. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l1</samp>](## "node_type_keys.[].network_services.l1") | Boolean |  | False |  | ?? |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l2</samp>](## "node_type_keys.[].network_services.l2") | Boolean |  | False |  | Vlans |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l3</samp>](## "node_type_keys.[].network_services.l3") | Boolean |  | False |  | VRFs, SVIs (if l2 is true).<br>Only supported with underlay_router.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;underlay_router</samp>](## "node_type_keys.[].underlay_router") | Boolean |  | True |  | Is this node type a L3 device. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "node_type_keys.[].uplink_type") | String |  | p2p | Valid Values:<br>- p2p<br>- port-channel | Uplinks must be p2p if "vtep" or "underlay_router" is true. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vtep</samp>](## "node_type_keys.[].vtep") | Boolean |  | False |  | Is this switch an EVPN VTEP. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mpls_lsr</samp>](## "node_type_keys.[].mpls_lsr") | Boolean |  | False |  | Is this switch an MPLS LSR. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_addressing</samp>](## "node_type_keys.[].ip_addressing") | Dictionary |  |  |  | Override ip_addressing templates. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python_module</samp>](## "node_type_keys.[].ip_addressing.python_module") | String |  |  |  | Python Module to import for IP addressing - default inherited from templates.ip_addressing.python_module |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python_class_name</samp>](## "node_type_keys.[].ip_addressing.python_class_name") | String |  |  |  | Name of Python Class to import for IP addressing  - default inherited from templates.ip_addressing.python_class_name |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "node_type_keys.[].ip_addressing.router_id") | String |  |  |  | Path to J2 template - default inherited from templates.ip_addressing.router_id. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id_ipv6</samp>](## "node_type_keys.[].ip_addressing.router_id_ipv6") | String |  |  |  | Path to J2 template - default inherited from templates.ip_addressing.router_id_ipv6. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ip_primary</samp>](## "node_type_keys.[].ip_addressing.mlag_ip_primary") | String |  |  |  | Path to J2 template - default inherited from templates.ip_addressing.mlag_ip_primary. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ip_secondary</samp>](## "node_type_keys.[].ip_addressing.mlag_ip_secondary") | String |  |  |  | Path to J2 template - default inherited from templates.ip_addressing.mlag_ip_secondary. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_l3_ip_primary</samp>](## "node_type_keys.[].ip_addressing.mlag_l3_ip_primary") | String |  |  |  | Path to J2 template - default inherited from templates.ip_addressing.mlag_l3_ip_primary. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_l3_ip_secondary</samp>](## "node_type_keys.[].ip_addressing.mlag_l3_ip_secondary") | String |  |  |  | Path to J2 template - default inherited from templates.ip_addressing.mlag_l3_ip_secondary. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_peering_ip_primary</samp>](## "node_type_keys.[].ip_addressing.mlag_ibgp_peering_ip_primary") | String |  |  |  | Path to J2 template - default inherited from templates.ip_addressing.mlag_ibgp_peering_ip_primary. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_peering_ip_secondary</samp>](## "node_type_keys.[].ip_addressing.mlag_ibgp_peering_ip_secondary") | String |  |  |  | Path to J2 template - default inherited from templates.ip_addressing.mlag_ibgp_peering_ip_secondary. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p2p_uplinks_ip</samp>](## "node_type_keys.[].ip_addressing.p2p_uplinks_ip") | String |  |  |  | Path to J2 template - default inherited from templates.ip_addressing.p2p_uplinks_ip. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p2p_uplinks_peer_ip</samp>](## "node_type_keys.[].ip_addressing.p2p_uplinks_peer_ip") | String |  |  |  | Path to J2 template - default inherited from templates.ip_addressing.p2p_uplinks_peer_ip. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_ip_mlag</samp>](## "node_type_keys.[].ip_addressing.vtep_ip_mlag") | String |  |  |  | Path to J2 template - default inherited from templates.ip_addressing.vtep_ip_mlag. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_ip</samp>](## "node_type_keys.[].ip_addressing.vtep_ip") | String |  |  |  | Path to J2 template - default inherited from templates.ip_addressing.vtep_ip. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interface_descriptions</samp>](## "node_type_keys.[].interface_descriptions") | Dictionary |  |  |  | Override interface_descriptions templates<br>If description templates use Jinja2, they have to strip whitespaces using {%- -%} on any code blocks.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python_module</samp>](## "node_type_keys.[].interface_descriptions.python_module") | String |  |  |  | Python Module to import for interface descriptions - default inherited from templates.interface_descriptions.python_module |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python_class_name</samp>](## "node_type_keys.[].interface_descriptions.python_class_name") | String |  |  |  | Name of Python Class to import for interface descriptions - default inherited from templates.interface_descriptions.python_class_name |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;underlay_ethernet_interfaces</samp>](## "node_type_keys.[].interface_descriptions.underlay_ethernet_interfaces") | String |  |  |  | Path to J2 template - default inherited from templates.interface_descriptions.underlay_ethernet_interfaces. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;underlay_port_channel_interfaces</samp>](## "node_type_keys.[].interface_descriptions.underlay_port_channel_interfaces") | String |  |  |  | Path to J2 template - default inherited from templates.interface_descriptions.underlay_port_channel_interfaces. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ethernet_interfaces</samp>](## "node_type_keys.[].interface_descriptions.mlag_ethernet_interfaces") | String |  |  |  | Path to J2 template - default inherited from templates.interface_descriptions.mlag_ethernet_interfaces. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_port_channel_interfaces</samp>](## "node_type_keys.[].interface_descriptions.mlag_port_channel_interfaces") | String |  |  |  | Path to J2 template - default inherited from templates.interface_descriptions.mlag_port_channel_interfaces. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected_endpoints_ethernet_interfaces</samp>](## "node_type_keys.[].interface_descriptions.connected_endpoints_ethernet_interfaces") | String |  |  |  | Path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_ethernet_interfaces. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected_endpoints_port_channel_interfaces</samp>](## "node_type_keys.[].interface_descriptions.connected_endpoints_port_channel_interfaces") | String |  |  |  | Path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_port_channel_interfaces. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;overlay_loopback_interface</samp>](## "node_type_keys.[].interface_descriptions.overlay_loopback_interface") | String |  |  |  | Path to J2 template - default inherited from templates.interface_descriptions.overlay_loopback_interface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_loopback_interface</samp>](## "node_type_keys.[].interface_descriptions.vtep_loopback_interface") | String |  |  |  | Path to J2 template - default inherited from templates.interface_descriptions.vtep_loopback_interface. |
-
-=== "YAML"
-
-    ```yaml
-    node_type_keys:
-      - key: <str>
-        type: <str>
-        connected_endpoints: <bool>
-        default_evpn_role: <str>
-        default_ptp_priority1: <int>
-        default_underlay_routing_protocol: <str>
-        default_overlay_routing_protocol: <str>
-        default_mpls_overlay_role: <str>
-        default_overlay_address_families:
-          - <str>
-        default_evpn_encapsulation: <str>
-        mlag_support: <bool>
-        network_services:
-          l1: <bool>
-          l2: <bool>
-          l3: <bool>
-        underlay_router: <bool>
-        uplink_type: <str>
-        vtep: <bool>
-        mpls_lsr: <bool>
-        ip_addressing:
-          python_module: <str>
-          python_class_name: <str>
-          router_id: <str>
-          router_id_ipv6: <str>
-          mlag_ip_primary: <str>
-          mlag_ip_secondary: <str>
-          mlag_l3_ip_primary: <str>
-          mlag_l3_ip_secondary: <str>
-          mlag_ibgp_peering_ip_primary: <str>
-          mlag_ibgp_peering_ip_secondary: <str>
-          p2p_uplinks_ip: <str>
-          p2p_uplinks_peer_ip: <str>
-          vtep_ip_mlag: <str>
-          vtep_ip: <str>
-        interface_descriptions:
-          python_module: <str>
-          python_class_name: <str>
-          underlay_ethernet_interfaces: <str>
-          underlay_port_channel_interfaces: <str>
-          mlag_ethernet_interfaces: <str>
-          mlag_port_channel_interfaces: <str>
-          connected_endpoints_ethernet_interfaces: <str>
-          connected_endpoints_port_channel_interfaces: <str>
-          overlay_loopback_interface: <str>
-          vtep_loopback_interface: <str>
-    ```
-
-## Only Local VLAN Trunk Groups
-
-A vlan can have many trunk_groups assigned. To avoid unneeded configuration changes on all leaf
-switches when a new trunk group is added, this feature will only configure the vlan trunk groups
-matched with local connected_endpoints.
-See "Details on only_local_vlan_trunk_groups" below.
-Requires "enable_trunk_groups: true"
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>only_local_vlan_trunk_groups</samp>](## "only_local_vlan_trunk_groups") | Boolean |  | False |  |  |
-
-=== "YAML"
-
-    ```yaml
-    only_local_vlan_trunk_groups: <bool>
-    ```
-
-## Overlay CVX Servers
-
-List of CVX vxlan overlay controllers.
-Required if overlay_routing_protocol == CVX.
-CVX servers (VMs) are peering using their management interface, so mgmt_ip must be set for all CVX servers.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>overlay_cvx_servers</samp>](## "overlay_cvx_servers") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "overlay_cvx_servers.[].&lt;str&gt;") | String |  |  |  | 'inventory_hostname' of CVX server |
-
-=== "YAML"
-
-    ```yaml
     overlay_cvx_servers:
       - <str>
-    ```
-
-## Overlay Her Flood List Per Vni
-
-When using Head-End Replication, configure flood-lists per VNI.
-By default HER will be configured with a common flood-list containing all VTEPs.
-This behavior can be changed to per-VNI flood-lists by setting `overlay_her_flood_list_per_vni: true`.
-This will make `eos_designs` consider configured VLANs per VTEP, and only include the relevant VTEPs to each VNI's flood-list.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>overlay_her_flood_list_per_vni</samp>](## "overlay_her_flood_list_per_vni") | Boolean |  | False |  |  |
-
-=== "YAML"
-
-    ```yaml
     overlay_her_flood_list_per_vni: <bool>
-    ```
-
-## Overlay Her Flood List Scope
-
-When using Head-End Replication, set the scope of flood-lists to Fabric or DC.
-By default all VTEPs in the Fabric (part of the inventory group referenced by "fabric_name") are added to the flood-lists.
-This can be changed to all VTEPs in the DC (part of the inventory group referenced by "dc_name").
-This is useful if Border Leaf switches are dividing the VXLAN overlay into separate domains.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>overlay_her_flood_list_scope</samp>](## "overlay_her_flood_list_scope") | String |  | fabric | Valid Values:<br>- fabric<br>- dc |  |
-
-=== "YAML"
-
-    ```yaml
     overlay_her_flood_list_scope: <str>
-    ```
-
-## Overlay Loopback Description
-
-Customize the description on overlay interface Loopback0.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>overlay_loopback_description</samp>](## "overlay_loopback_description") | String |  |  |  |  |
-
-=== "YAML"
-
-    ```yaml
     overlay_loopback_description: <str>
-    ```
-
-## Overlay MLAG Rfc5549
-
-IPv6 Unnumbered for MLAG iBGP connections.
-Requires "underlay_rfc5549: true".
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>overlay_mlag_rfc5549</samp>](## "overlay_mlag_rfc5549") | Boolean |  | False |  |  |
-
-=== "YAML"
-
-    ```yaml
     overlay_mlag_rfc5549: <bool>
-    ```
-
-## Overlay Rd Type
-
-Specify RD type.
-Route Distinguisher (RD) for L2 / L3 services is set to <overlay_loopback>:<vni> per default.
-By configuring overlay_rd_type the Administrator subfield (first part of RD) can be set to other values.
-Note:
-RD is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
-For loopback or 32-bit ASN/number the VNI can only be a 16-bit number.
-For 16-bit ASN/number the VNI can be a 32-bit number.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>overlay_rd_type</samp>](## "overlay_rd_type") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;admin_subfield</samp>](## "overlay_rd_type.admin_subfield") | String |  | overlay_loopback_ip |  | "vtep_loopback" or "bgp_as" or <IPv4 Address> or interger between <0-65535> or integer between <0-4294967295> or "overlay_loopback_ip".<br> |
-    | [<samp>&nbsp;&nbsp;admin_subfield_offset</samp>](## "overlay_rd_type.admin_subfield_offset") | String |  |  |  | Offset can only be used if admin_subfield is an interger between <0-4294967295> or "switch_id".<br>Total value of admin_subfield + admin_subfield_offset must be <= 4294967295. |
-
-=== "YAML"
-
-    ```yaml
     overlay_rd_type:
       admin_subfield: <str>
       admin_subfield_offset: <str>
-    ```
-
-## Overlay Routing Protocol Address Family
-
-When set to `ipv6`, enable overlay EVPN peering with IPv6 addresses.
-This feature depends on underlay_ipv6 variable. As of today, only RFC5549 is capable to transport IPv6 in the underlay.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>overlay_routing_protocol_address_family</samp>](## "overlay_routing_protocol_address_family") | String |  | ipv4 | Valid Values:<br>- ipv4<br>- ipv6 |  |
-
-=== "YAML"
-
-    ```yaml
-    overlay_routing_protocol_address_family: <str>
-    ```
-
-## Overlay Routing Protocol
-
-- The following overlay routing protocols are supported:
-  - eBGP: Configures fabric with eBGP, default for l3ls-evpn design.
-  - iBGP: Configured fabric with iBGP, only supported with OSPF or ISIS variants in underlay, default for mpls design.
-  - CVX: Configures fabric to leverage CloudVision eXchange as the overlay controller.
-  - HER: Configures fabric with Head-End Replication, configures static VXLAN flood-lists instead of using a dynamic overlay protocol.
-  - none: No overlay configuration will be generated, default for l2ls design.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>overlay_routing_protocol</samp>](## "overlay_routing_protocol") | String |  | ebgp | Value is converted to lower case<br>Valid Values:<br>- ebgp<br>- ibgp<br>- cvx<br>- her<br>- none |  |
-
-=== "YAML"
-
-    ```yaml
     overlay_routing_protocol: <str>
-    ```
-
-## Overlay Rt Type
-
-Specify RT type.
-Route Target (RT) for L2 / L3 services is set to <vni>:<vni> per default.
-By configuring overlay_rt_type the Administrator subfield (first part of RT) can be set to other values.
-Notes:
-RT is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
-For 32-bit ASN/number the VNI can only be a 16-bit number.
-For 16-bit ASN/number the VNI can be a 32-bit number.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>overlay_rt_type</samp>](## "overlay_rt_type") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;admin_subfield</samp>](## "overlay_rt_type.admin_subfield") | String |  | mac_vrf_id |  | "bgp_as" or interger between <0-65535> or integer between <0-4294967295>.<br> |
-
-=== "YAML"
-
-    ```yaml
+    overlay_routing_protocol_address_family: <str>
     overlay_rt_type:
       admin_subfield: <str>
-    ```
-
-## P2P Uplinks MTU
-
-Point to Point Links MTU
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>p2p_uplinks_mtu</samp>](## "p2p_uplinks_mtu") | Integer |  | 9214 | Min: 68<br>Max: 65535 |  |
-
-=== "YAML"
-
-    ```yaml
-    p2p_uplinks_mtu: <int>
-    ```
-
-## P2P Uplinks QOS Profile
-
-QOS Profile assigned on all infrastructure links
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>p2p_uplinks_qos_profile</samp>](## "p2p_uplinks_qos_profile") | String |  |  |  |  |
-
-=== "YAML"
-
-    ```yaml
-    p2p_uplinks_qos_profile: <str>
+    vtep_vvtep_ip: <str>
     ```
 
 ## Platform Settings
@@ -4776,6 +3800,12 @@ QOS Profile assigned on all infrastructure links
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_update_wait_for_convergence</samp>](## "platform_settings.[].feature_support.bgp_update_wait_for_convergence") | Boolean |  | True |  | Do not advertise reachability to a prefix until that prefix has been installed in hardware.<br>This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.<br>Can be overridden by setting "bgp_update_wait_for_convergence" host/group_vars<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;management_interface</samp>](## "platform_settings.[].management_interface") | String |  | Management1 |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "platform_settings.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration |
+    | [<samp>platform_speed_groups</samp>](## "platform_speed_groups") | List, items: Dictionary |  |  |  | Set Hardware Speed Groups per Platform |
+    | [<samp>&nbsp;&nbsp;- platform</samp>](## "platform_speed_groups.[].platform") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;speeds</samp>](## "platform_speed_groups.[].speeds") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- speed</samp>](## "platform_speed_groups.[].speeds.[].speed") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed_groups</samp>](## "platform_speed_groups.[].speeds.[].speed_groups") | List, items: Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;int&gt;</samp>](## "platform_speed_groups.[].speeds.[].speed_groups.[].&lt;int&gt;") | Integer |  |  |  |  |
 
 === "YAML"
 
@@ -4796,49 +3826,12 @@ QOS Profile assigned on all infrastructure links
           bgp_update_wait_for_convergence: <bool>
         management_interface: <str>
         raw_eos_cli: <str>
-    ```
-
-## Platform Speed Groups
-
-Set Hardware Speed Groups per Platform
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>platform_speed_groups</samp>](## "platform_speed_groups") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- platform</samp>](## "platform_speed_groups.[].platform") | String | Required, Unique |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;speeds</samp>](## "platform_speed_groups.[].speeds") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- speed</samp>](## "platform_speed_groups.[].speeds.[].speed") | String | Required, Unique |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed_groups</samp>](## "platform_speed_groups.[].speeds.[].speed_groups") | List, items: Integer |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;int&gt;</samp>](## "platform_speed_groups.[].speeds.[].speed_groups.[].&lt;int&gt;") | Integer |  |  |  |  |
-
-=== "YAML"
-
-    ```yaml
     platform_speed_groups:
       - platform: <str>
         speeds:
           - speed: <str>
             speed_groups:
               - <int>
-    ```
-
-## Pod Name
-
-POD Name, only used in Fabric Documentation (Optional), fallback to dc_name and then to fabric_name.
-Recommended to be common between Spines and Leafs within a POD (One l3ls topology).
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>pod_name</samp>](## "pod_name") | String |  |  |  |  |
-
-=== "YAML"
-
-    ```yaml
-    pod_name: <str>
     ```
 
 ## Port Profiles
@@ -5117,147 +4110,7 @@ Keys are the same used under endpoints adapters. Keys defined under endpoints ad
         transport: <str>
     ```
 
-## Queue Monitor Length
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>queue_monitor_length</samp>](## "queue_monitor_length") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;enabled</samp>](## "queue_monitor_length.enabled") | Boolean | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;notifying</samp>](## "queue_monitor_length.notifying") | Boolean |  |  |  | If True, `eos_designs` will configure `queue-monitor length notifying` according to the<br>`platform_settings.[].feature_support.queue_monitor_length_notify` setting. |
-    | [<samp>&nbsp;&nbsp;default_thresholds</samp>](## "queue_monitor_length.default_thresholds") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;high</samp>](## "queue_monitor_length.default_thresholds.high") | Integer | Required |  |  | Default high threshold for Ethernet Interfaces.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;low</samp>](## "queue_monitor_length.default_thresholds.low") | Integer |  |  |  | Default low threshold for Ethernet Interfaces.<br>Low threshold support is platform dependent.<br> |
-    | [<samp>&nbsp;&nbsp;log</samp>](## "queue_monitor_length.log") | Integer |  |  |  | Logging interval in seconds |
-    | [<samp>&nbsp;&nbsp;cpu</samp>](## "queue_monitor_length.cpu") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;thresholds</samp>](## "queue_monitor_length.cpu.thresholds") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;high</samp>](## "queue_monitor_length.cpu.thresholds.high") | Integer | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;low</samp>](## "queue_monitor_length.cpu.thresholds.low") | Integer |  |  |  |  |
-
-=== "YAML"
-
-    ```yaml
-    queue_monitor_length:
-      enabled: <bool>
-      notifying: <bool>
-      default_thresholds:
-        high: <int>
-        low: <int>
-      log: <int>
-      cpu:
-        thresholds:
-          high: <int>
-          low: <int>
-    ```
-
-## Redundancy
-
-Redundancy for chassis platforms with dual supervisors | Optional
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>redundancy</samp>](## "redundancy") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;protocol</samp>](## "redundancy.protocol") | String |  |  | Valid Values:<br>- sso<br>- rpr |  |
-
-=== "YAML"
-
-    ```yaml
-    redundancy:
-      protocol: <str>
-    ```
-
-## Serial Number
-
-Serial Number of the device.
-Used for documentation purpose in the fabric documentation as can also be used by the 'eos_config_deploy_cvp' role.
-"serial_number" can also be set directly under "Fabric Topology".
-If both are set, the setting under "Fabric Topology" takes precedence.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>serial_number</samp>](## "serial_number") | String |  |  |  |  |
-
-=== "YAML"
-
-    ```yaml
-    serial_number: <str>
-    ```
-
-## Shutdown Interfaces Towards Undeployed Peers
-
-- It is possible to provision configurations for a complete topology but flag devices as undeployed using the host level variable `is_deployed: false`.
-
-```yaml
-# Use at the host level
-is_deployed: < true or false or default -> true >
-```
-
-- By default, this will have no impact within the `eos_designs` role. Configs will still be generated by the `eos_cli_config_gen` role and will still be pushed by the `eos_config_deploy_eapi` directly to devices if used.
-- However, if the `eos_config_deploy_cvp` role is used to push configurations, CloudVision will ignore the devices flagged  as `is_deployed: false` and not attempt to configure them.
-- If the device is not present in the network due to CloudVision not configuring the device, `eos_validate_state` role will fail tests on peers of the undeployed device trying to verify that interfaces are up.
-- To overcome this and shutdown interfaces towards undeployed peers, the variable `shutdown_interfaces_towards_undeployed_peers` can be used, satisfying the `eos_validate_state` role interface tests.
-- Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices are not present in the network.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>shutdown_interfaces_towards_undeployed_peers</samp>](## "shutdown_interfaces_towards_undeployed_peers") | Boolean |  | False |  |  |
-
-=== "YAML"
-
-    ```yaml
-    shutdown_interfaces_towards_undeployed_peers: <bool>
-    ```
-
-## Snmp Settings
-
-Set SNMP settings (optional).
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>snmp_settings</samp>](## "snmp_settings") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;contact</samp>](## "snmp_settings.contact") | String |  |  |  | SNMP contact. |
-    | [<samp>&nbsp;&nbsp;location</samp>](## "snmp_settings.location") | Boolean |  | False |  | Set SNMP location. Formatted as {{ fabric_name }} {{ dc_name }} {{ pod_name }} {{ switch_rack }} {{ inventory_hostname }}. |
-    | [<samp>&nbsp;&nbsp;compute_local_engineid</samp>](## "snmp_settings.compute_local_engineid") | Boolean |  | False |  | Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.<br> |
-    | [<samp>&nbsp;&nbsp;compute_local_engineid_source</samp>](## "snmp_settings.compute_local_engineid_source") | String |  | hostname_and_ip | Valid Values:<br>- hostname_and_ip<br>- system_mac | `compute_local_engineid_source` supports:<br>- `hostname_and_ip` generate a local engineId for SNMP by hashing via SHA1<br>  the string generated via the concatenation of the hostname plus the management IP.<br>  {{ inventory_hostname }} + {{ switch.mgmt_ip }}<br>- `system_mac` generate the switch default engine id for AVD usage<br>  To use this, `system_mac_address` MUST be set for the device<br>  The formula is f5717f + system_mac_address + 00<br> |
-    | [<samp>&nbsp;&nbsp;compute_v3_user_localized_key</samp>](## "snmp_settings.compute_v3_user_localized_key") | Boolean |  | False |  | Requires compute_local_engineid to be `true`.<br>If enabled, the SNMPv3 passphrases for auth and priv are transformed using RFC 2574, matching the value they would take in EOS CLI.<br>The algorithm requires a local engineId, which is unknown to AVD, hence the necessity to generate one beforehand.<br> |
-    | [<samp>&nbsp;&nbsp;users</samp>](## "snmp_settings.users") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "snmp_settings.users.[].name") | String |  |  |  | Username |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group</samp>](## "snmp_settings.users.[].group") | String |  |  |  | Configuration of the SNMP User Groups are currently only possible using `structured_config`.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "snmp_settings.users.[].version") | String |  |  | Valid Values:<br>- v1<br>- v2c<br>- v3 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth</samp>](## "snmp_settings.users.[].auth") | String |  |  | Valid Values:<br>- md5<br>- sha<br>- sha256<br>- sha384<br>- sha512 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_passphrase</samp>](## "snmp_settings.users.[].auth_passphrase") | String |  |  |  | Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv</samp>](## "snmp_settings.users.[].priv") | String |  |  | Valid Values:<br>- des<br>- aes<br>- aes192<br>- aes256 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priv_passphrase</samp>](## "snmp_settings.users.[].priv_passphrase") | String |  |  |  | Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set. |
-
-=== "YAML"
-
-    ```yaml
-    snmp_settings:
-      contact: <str>
-      location: <bool>
-      compute_local_engineid: <bool>
-      compute_local_engineid_source: <str>
-      compute_v3_user_localized_key: <bool>
-      users:
-        - name: <str>
-          group: <str>
-          version: <str>
-          auth: <str>
-          auth_passphrase: <str>
-          priv: <str>
-          priv_passphrase: <str>
-    ```
-
-## Svi Profiles
+## SVI Profiles
 
 Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.
 Keys are the same used under SVIs. Keys defined under SVIs take precedence.
@@ -5501,373 +4354,78 @@ Note: structured configuration is not merged recursively and will be taken direc
         structured_config: <dict>
     ```
 
-## System MAC Address
-
-Set to the same MAC address as available in "show version" on the device.
-"system_mac_address" can also be set under "Fabric Topology".
-If both are set, the setting under "Fabric Topology" takes precedence.
+## System Settings
 
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>system_mac_address</samp>](## "system_mac_address") | String |  |  |  |  |
+    | [<samp>default_igmp_snooping_enabled</samp>](## "default_igmp_snooping_enabled") | Boolean |  | True |  | When set to false, disables IGMP snooping at fabric level and overrides per vlan settings.<br> |
+    | [<samp>hardware_counters</samp>](## "hardware_counters") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;features</samp>](## "hardware_counters.features") | List, items: Dictionary |  |  |  | This data model allows to configure the list of hardware counters feature<br>available on Arista platforms.<br><br>The `name` key accepts a list of valid_values which MUST be updated to support<br>new feature as they are released in EOS.<br><br>The available values of the different keys like 'direction' or 'address_type'<br>are feature and hardware dependent and this model DOES NOT validate that the<br>combinations are valid. It is the responsability of the user of this data model<br>to make sure that the rendered CLI is accepted by the targeted device.<br><br>Examples:<br><br>  * Use:<br>    ```yaml<br>    hardware_counters:<br>      features:<br>        - name: ip<br>          direction: out<br>          layer3: true<br>          units_packets: true<br>    ```<br><br>    to render:<br>    ```eos<br>    hardware counter feature ip out layer3 units packets<br>    ```<br>  * Use:<br>    ```yaml<br>    hardware_counters:<br>      features:<br>        - name: route<br>          address_type: ipv4<br>          vrf: test<br>          prefix: 192.168.0.0/24<br>    ```<br><br>    to render:<br>    ```eos<br>    hardware counter feature route ipv4 vrf test 192.168.0.0/24<br>    ```<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "hardware_counters.features.[].name") | String |  |  | Valid Values:<br>- acl<br>- decap-group<br>- directflow<br>- ecn<br>- flow-spec<br>- gre tunnel interface<br>- ip<br>- mpls interface<br>- mpls lfib<br>- mpls tunnel<br>- multicast<br>- nexthop<br>- pbr<br>- pdp<br>- policing interface<br>- qos<br>- qos dual-rate-policer<br>- route<br>- routed-port<br>- subinterface<br>- tapagg<br>- traffic-class<br>- traffic-policy<br>- vlan<br>- vlan-interface<br>- vni decap<br>- vni encap<br>- vtep decap<br>- vtep encap |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction</samp>](## "hardware_counters.features.[].direction") | String |  |  | Valid Values:<br>- in<br>- out<br>- cpu | Most features support only 'in' and 'out'. Some like traffic-policy support 'cpu'.<br>Some features DO NOT have any direction.<br>This validation IS NOT made by the schemas.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_type</samp>](## "hardware_counters.features.[].address_type") | String |  |  | Valid Values:<br>- ipv4<br>- ipv6<br>- mac | Supported only for the following features:<br>- acl: [ipv4, ipv6, mac] if direction is 'out'<br>- multicast: [ipv4, ipv6]<br>- route: [ipv4, ipv6]<br>This validation IS NOT made by the schemas.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;layer3</samp>](## "hardware_counters.features.[].layer3") | Boolean |  |  |  | Supported only for the 'ip' feature<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "hardware_counters.features.[].vrf") | String |  |  |  | Supported only for the 'route' feature.<br>This validation IS NOT made by the schemas.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix</samp>](## "hardware_counters.features.[].prefix") | String |  |  |  | Supported only for the 'route' feature.<br>Mandatory for the 'route' feature.<br>This validation IS NOT made by the schemas.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;units_packets</samp>](## "hardware_counters.features.[].units_packets") | Boolean |  |  |  |  |
+    | [<samp>internal_vlan_order</samp>](## "internal_vlan_order") | Dictionary |  |  |  | Internal vlan allocation order and range. |
+    | [<samp>&nbsp;&nbsp;allocation</samp>](## "internal_vlan_order.allocation") | String | Required | ascending | Valid Values:<br>- ascending<br>- descending |  |
+    | [<samp>&nbsp;&nbsp;range</samp>](## "internal_vlan_order.range") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;beginning</samp>](## "internal_vlan_order.range.beginning") | Integer | Required | 1006 | Min: 2<br>Max: 4094 | First VLAN ID. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ending</samp>](## "internal_vlan_order.range.ending") | Integer | Required | 1199 | Min: 2<br>Max: 4094 | Last VLAN ID. |
+    | [<samp>mac_address_table</samp>](## "mac_address_table") | Dictionary |  |  |  | MAC address-table aging time<br>Use to change the EOS default of 300.<br> |
+    | [<samp>&nbsp;&nbsp;aging_time</samp>](## "mac_address_table.aging_time") | Integer |  |  | Min: 0<br>Max: 1000000 | Aging time in seconds 10-1000000.<br>Enter 0 to disable aging.<br> |
+    | [<samp>queue_monitor_length</samp>](## "queue_monitor_length") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;enabled</samp>](## "queue_monitor_length.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;notifying</samp>](## "queue_monitor_length.notifying") | Boolean |  |  |  | If True, `eos_designs` will configure `queue-monitor length notifying` according to the<br>`platform_settings.[].feature_support.queue_monitor_length_notify` setting. |
+    | [<samp>&nbsp;&nbsp;default_thresholds</samp>](## "queue_monitor_length.default_thresholds") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;high</samp>](## "queue_monitor_length.default_thresholds.high") | Integer | Required |  |  | Default high threshold for Ethernet Interfaces.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;low</samp>](## "queue_monitor_length.default_thresholds.low") | Integer |  |  |  | Default low threshold for Ethernet Interfaces.<br>Low threshold support is platform dependent.<br> |
+    | [<samp>&nbsp;&nbsp;log</samp>](## "queue_monitor_length.log") | Integer |  |  |  | Logging interval in seconds |
+    | [<samp>&nbsp;&nbsp;cpu</samp>](## "queue_monitor_length.cpu") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;thresholds</samp>](## "queue_monitor_length.cpu.thresholds") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;high</samp>](## "queue_monitor_length.cpu.thresholds.high") | Integer | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;low</samp>](## "queue_monitor_length.cpu.thresholds.low") | Integer |  |  |  |  |
+    | [<samp>redundancy</samp>](## "redundancy") | Dictionary |  |  |  | Redundancy for chassis platforms with dual supervisors | Optional |
+    | [<samp>&nbsp;&nbsp;protocol</samp>](## "redundancy.protocol") | String |  |  | Valid Values:<br>- sso<br>- rpr |  |
+    | [<samp>serial_number</samp>](## "serial_number") | String |  |  |  | Serial Number of the device.<br>Used for documentation purpose in the fabric documentation as can also be used by the 'eos_config_deploy_cvp' role.<br>"serial_number" can also be set directly under "Fabric Topology".<br>If both are set, the setting under "Fabric Topology" takes precedence.<br> |
+    | [<samp>system_mac_address</samp>](## "system_mac_address") | String |  |  |  | Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set under "Fabric Topology".<br>If both are set, the setting under "Fabric Topology" takes precedence. |
 
 === "YAML"
 
     ```yaml
+    default_igmp_snooping_enabled: <bool>
+    hardware_counters:
+      features:
+        - name: <str>
+          direction: <str>
+          address_type: <str>
+          layer3: <bool>
+          vrf: <str>
+          prefix: <str>
+          units_packets: <bool>
+    internal_vlan_order:
+      allocation: <str>
+      range:
+        beginning: <int>
+        ending: <int>
+    mac_address_table:
+      aging_time: <int>
+    queue_monitor_length:
+      enabled: <bool>
+      notifying: <bool>
+      default_thresholds:
+        high: <int>
+        low: <int>
+      log: <int>
+      cpu:
+        thresholds:
+          high: <int>
+          low: <int>
+    redundancy:
+      protocol: <str>
+    serial_number: <str>
     system_mac_address: <str>
-    ```
-
-## TerminAttr Disable AAA
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>terminattr_disable_aaa</samp>](## "terminattr_disable_aaa") | Boolean |  | False |  |  |
-
-=== "YAML"
-
-    ```yaml
-    terminattr_disable_aaa: <bool>
-    ```
-
-## TerminAttr Ingestexclude
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>terminattr_ingestexclude</samp>](## "terminattr_ingestexclude") | String |  | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent |  |  |
-
-=== "YAML"
-
-    ```yaml
-    terminattr_ingestexclude: <str>
-    ```
-
-## TerminAttr Ingestgrpcurl Port
-
-Port number used for Terminattr connection to an on-premise CloudVision cluster.
-The port number is always 443 when using CloudVision as a Service, so this value is ignored.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>terminattr_ingestgrpcurl_port</samp>](## "terminattr_ingestgrpcurl_port") | Integer |  | 9910 |  |  |
-
-=== "YAML"
-
-    ```yaml
-    terminattr_ingestgrpcurl_port: <int>
-    ```
-
-## TerminAttr Smashexcludes
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>terminattr_smashexcludes</samp>](## "terminattr_smashexcludes") | String |  | ale,flexCounter,hardware,kni,pulse,strata |  |  |
-
-=== "YAML"
-
-    ```yaml
-    terminattr_smashexcludes: <str>
-    ```
-
-## Timezone
-
-Clock timezone like "CET" or "US/Pacific".
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>timezone</samp>](## "timezone") | String |  |  |  |  |
-
-=== "YAML"
-
-    ```yaml
-    timezone: <str>
-    ```
-
-## Trunk Groups
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>trunk_groups</samp>](## "trunk_groups") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;mlag</samp>](## "trunk_groups.mlag") | Dictionary |  |  |  | Trunk Group used for MLAG VLAN (Typically VLAN 4094)<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "trunk_groups.mlag.name") | String |  | MLAG |  |  |
-    | [<samp>&nbsp;&nbsp;mlag_l3</samp>](## "trunk_groups.mlag_l3") | Dictionary |  |  |  | Trunk Group used for MLAG L3 peering VLAN and for VRF L3 peering VLANs (Typically VLAN 4093)<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "trunk_groups.mlag_l3.name") | String |  | LEAF_PEER_L3 |  |  |
-    | [<samp>&nbsp;&nbsp;uplink</samp>](## "trunk_groups.uplink") | Dictionary |  |  |  | Trunk Group used on L2 Leaf switches when "enable_trunk_groups" is set<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "trunk_groups.uplink.name") | String |  | UPLINK |  |  |
-
-=== "YAML"
-
-    ```yaml
-    trunk_groups:
-      mlag:
-        name: <str>
-      mlag_l3:
-        name: <str>
-      uplink:
-        name: <str>
-    ```
-
-## Type
-
-The `type:` variable needs to be defined for each device in the fabric.
-This is leveraged to load the appropriate template to generate the configuration.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>type</samp>](## "type") | String |  |  | Valid Values:<br>- <value(s) of node_type_keys.type> |  |
-
-=== "YAML"
-
-    ```yaml
-    type: <str>
-    ```
-
-## Underlay Filter Peer As
-
-Configure route-map on eBGP sessions towards underlay peers, where prefixes with the peer's ASN in the AS Path are filtered away.
-This is very useful in very large scale networks not using EVPN overlays, where convergence will be quicker by not having to return
-all updates received from Spine-1 to Spine-2 just for Spine-2 to throw them away because of AS Path loop detection.
-Note this key is ignored when EVPN is configured.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>underlay_filter_peer_as</samp>](## "underlay_filter_peer_as") | Boolean |  | False |  |  |
-
-=== "YAML"
-
-    ```yaml
-    underlay_filter_peer_as: <bool>
-    ```
-
-## Underlay Filter Redistribute Connected
-
-Filter redistribution of connected into the underlay routing protocol.
-Only applicable when overlay_routing_protocol != 'none' and underlay_routing_protocol == BGP.
-Creates a route-map and prefix-list assigned to redistribute connected permitting only loopbacks and inband management subnets.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>underlay_filter_redistribute_connected</samp>](## "underlay_filter_redistribute_connected") | Boolean |  | True |  |  |
-
-=== "YAML"
-
-    ```yaml
-    underlay_filter_redistribute_connected: <bool>
-    ```
-
-## Underlay IPv6
-
-This feature allows IPv6 underlay routing protocol with RFC5549 addresses to be used along with IPv4 advertisements as VXLAN tunnel endpoints.
-Requires "underlay_rfc5549: true" and "loopback_ipv6_pool" under the "Fabric Topology"
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>underlay_ipv6</samp>](## "underlay_ipv6") | Boolean |  | False |  |  |
-
-=== "YAML"
-
-    ```yaml
-    underlay_ipv6: <bool>
-    ```
-
-## Underlay ISIS Instance Name
-
-Default -> "EVPN_UNDERLAY" for l3ls, "CORE" for mpls
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>underlay_isis_instance_name</samp>](## "underlay_isis_instance_name") | String |  |  |  |  |
-
-=== "YAML"
-
-    ```yaml
-    underlay_isis_instance_name: <str>
-    ```
-
-## Underlay Multicast
-
-Enable Multicast in the underlay on all p2p uplink interfaces and mlag l3 peer interface.
-Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.
-No other configuration is added, so the underlay will only support Source-Specific Multicast (SSM)
-The configuration is intended to be used as multicast underlay for EVPN OISM overlay
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>underlay_multicast</samp>](## "underlay_multicast") | Boolean |  | False |  |  |
-
-=== "YAML"
-
-    ```yaml
-    underlay_multicast: <bool>
-    ```
-
-## Underlay OSPF Area
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>underlay_ospf_area</samp>](## "underlay_ospf_area") | String |  | 0.0.0.0 | Format: ipv4 |  |
-
-=== "YAML"
-
-    ```yaml
-    underlay_ospf_area: <str>
-    ```
-
-## Underlay OSPF BFD Enable
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>underlay_ospf_bfd_enable</samp>](## "underlay_ospf_bfd_enable") | Boolean |  | False |  |  |
-
-=== "YAML"
-
-    ```yaml
-    underlay_ospf_bfd_enable: <bool>
-    ```
-
-## Underlay OSPF Max LSA
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>underlay_ospf_max_lsa</samp>](## "underlay_ospf_max_lsa") | Integer |  | 12000 |  |  |
-
-=== "YAML"
-
-    ```yaml
-    underlay_ospf_max_lsa: <int>
-    ```
-
-## Underlay OSPF Process ID
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>underlay_ospf_process_id</samp>](## "underlay_ospf_process_id") | Integer |  | 100 |  |  |
-
-=== "YAML"
-
-    ```yaml
-    underlay_ospf_process_id: <int>
-    ```
-
-## Underlay Rfc5549
-
-Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered
-Requires "underlay_routing_protocol: ebgp"
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>underlay_rfc5549</samp>](## "underlay_rfc5549") | Boolean |  | False |  |  |
-
-=== "YAML"
-
-    ```yaml
-    underlay_rfc5549: <bool>
-    ```
-
-## Underlay Routing Protocol
-
-- The following underlay routing protocols are supported:
-  - EBGP (default for l3ls-evpn)
-  - OSPF.
-  - ISIS.
-  - ISIS-SR*.
-  - ISIS-LDP*.
-  - ISIS-SR-LDP*.
-  - OSPF-LDP*.
-- The variables should be applied to all devices in the fabric.
-*Only supported with core_interfaces data model.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>underlay_routing_protocol</samp>](## "underlay_routing_protocol") | String |  |  | Value is converted to lower case<br>Valid Values:<br>- ebgp<br>- ospf<br>- isis<br>- isis-sr<br>- isis-ldp<br>- isis-sr-ldp<br>- ospf-ldp |  |
-
-=== "YAML"
-
-    ```yaml
-    underlay_routing_protocol: <str>
-    ```
-
-## Uplink PTP
-
-Enable PTP on all infrastructure links
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>uplink_ptp</samp>](## "uplink_ptp") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;enable</samp>](## "uplink_ptp.enable") | Boolean |  | False |  |  |
-
-=== "YAML"
-
-    ```yaml
-    uplink_ptp:
-      enable: <bool>
-    ```
-
-## Vtep Vvtep IP
-
-IP Address used as Virtual VTEP. Will be configured as secondary IP on Loopback1.
-This is only needed for centralized routing designs.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>vtep_vvtep_ip</samp>](## "vtep_vvtep_ip") | String |  |  |  |  |
-
-=== "YAML"
-
-    ```yaml
-    vtep_vvtep_ip: <str>
-    ```
-
-## VxLAN VLAN Aware Bundles
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>vxlan_vlan_aware_bundles</samp>](## "vxlan_vlan_aware_bundles") <span style="color:red">removed</span> | Boolean |  | False |  | <span style="color:red">This key was removed. Support was removed in AVD version 4.0.0. Use <samp>evpn_vlan_aware_bundles</samp> instead.</span> |
-
-=== "YAML"
-
-    ```yaml
     ```

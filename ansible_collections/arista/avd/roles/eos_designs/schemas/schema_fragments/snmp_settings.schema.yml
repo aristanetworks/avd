@@ -4,6 +4,9 @@
 type: dict
 keys:
   snmp_settings:
+    documentation_options:
+      filename: Input Variables
+      table: Management Settings
     type: dict
     description: Set SNMP settings (optional).
     keys:

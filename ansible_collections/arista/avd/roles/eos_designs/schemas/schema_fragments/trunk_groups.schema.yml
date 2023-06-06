@@ -4,6 +4,9 @@
 type: dict
 keys:
   trunk_groups:
+    documentation_options:
+      filename: Input Variables
+      table: Fabric Settings
     type: dict
     keys:
       mlag:

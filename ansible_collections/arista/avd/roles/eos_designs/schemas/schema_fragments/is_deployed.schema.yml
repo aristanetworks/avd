@@ -4,6 +4,9 @@
 type: dict
 keys:
   is_deployed:
+    documentation_options:
+      filename: Input Variables
+      table: Fabric Settings
     description: |
       Is device already deployed in the fabric
       When set to false, interfaces toward this device may be shutdown depending on the `shutdown_interfaces_towards_undeployed_peers` setting.

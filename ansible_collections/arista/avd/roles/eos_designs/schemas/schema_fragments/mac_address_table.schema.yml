@@ -4,6 +4,9 @@
 type: dict
 keys:
   mac_address_table:
+    documentation_options:
+      filename: Input Variables
+      table: System Settings
     type: dict
     description: |
       MAC address-table aging time

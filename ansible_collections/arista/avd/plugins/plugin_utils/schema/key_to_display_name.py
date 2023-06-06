@@ -73,6 +73,7 @@ WORDLIST = {
     "srlg": "SRLG",
     "ssh": "SSH",
     "ssl": "SSL",
+    "svi": "SVI",
     "tcam": "TCAM",
     "tcp": "TCP",
     "terminattr": "TerminAttr",
