@@ -14,9 +14,11 @@ keys:
             default: "first_id"
             description: |
               This variable defines the Multi-chassis Link Aggregation (MLAG) algorithm used.
-              The following MLAG algorithms are supported:
-                - first_id: offset from pool is `(mlag_primary_id - 1) * 2`
-                - odd_id: offset from pool is `(odd_id - 1) * 2`. Requires MLAG pair to have a node with odd and a node with an even ID
+              Each MLAG link will have a /31 subnet with each subnet allocated from the relevent MLAG pool via a calculated offset.
+              The offset is calculated using one of the following algorithms:
+                - first_id: `(mlag_primary_id - 1) * 2` where `mlag_primary_id` is the ID of the first node defined under the node_group. 
+                  This allocation method will skip every other /31 subnet making it less space efficient than `odd_id`.
+                - odd_id: `(odd_id - 1) / 2`. Requires the node_group to have a node with an odd ID and a node with an even ID.
             valid_values:
               - "first_id"
               - "odd_id"

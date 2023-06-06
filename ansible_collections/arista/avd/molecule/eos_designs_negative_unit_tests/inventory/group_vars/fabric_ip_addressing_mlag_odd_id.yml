@@ -1,5 +1,5 @@
 ---
-fabric_name: fabric_ip_addressing_mlag_odd_id_oddodd
+fabric_name: fabric_ip_addressing_mlag_odd_id
 mlag_support: true
 type: l3leaf
 fabric_ip_addressing:
