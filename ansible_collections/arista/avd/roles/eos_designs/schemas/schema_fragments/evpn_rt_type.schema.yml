@@ -4,6 +4,9 @@
 type: dict
 keys:
   evpn_rt_type:
+    documentation_options:
+      filename: Input Variables
+      table: EVPN Settings
     type: dict
     deprecation:
       warning: true

@@ -4,6 +4,9 @@
 type: dict
 keys:
   avd_data_conversion_mode:
+    documentation_options:
+      filename: EOS Designs Role Variables
+      table: Input Validation
     type: str
     valid_values: ["disabled", "error", "warning", "info", "debug", "quiet"]
     default: "debug"

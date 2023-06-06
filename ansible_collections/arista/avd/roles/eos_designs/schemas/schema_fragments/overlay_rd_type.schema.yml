@@ -4,6 +4,9 @@
 type: dict
 keys:
   overlay_rd_type:
+    documentation_options:
+      filename: Input Variables
+      table: Overlay Settings
     type: dict
     description: |
       Specify RD type.

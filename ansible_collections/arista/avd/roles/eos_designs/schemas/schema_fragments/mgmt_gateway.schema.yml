@@ -4,6 +4,9 @@
 type: dict
 keys:
   mgmt_gateway:
+    documentation_options:
+      filename: Input Variables
+      table: Management Interface Settings
     type: str
     description: |
       OOB Management interface gateway in IPv4 format.

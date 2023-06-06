@@ -4,5 +4,8 @@
 type: dict
 keys:
   bgp_update_wait_install:
+    documentation_options:
+      filename: Input Variables
+      table: BGP Settings
     type: bool
     $ref: "eos_cli_config_gen#/keys/router_bgp/keys/updates/keys/wait_install"

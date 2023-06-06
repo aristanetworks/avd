@@ -5,6 +5,7 @@ type: dict
 $defs:
   node_type:
     type: dict
+    # description: TODO
     keys:
       defaults:
         type: dict
