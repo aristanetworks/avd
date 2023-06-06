@@ -111,13 +111,13 @@
       "title": "BGP Ecmp"
     },
     "bgp_graceful_restart": {
-      "description": "Graceful BGP restart allows a BGP speaker with separate control plane and data plane processing to continue forwarding traffic during a BGP restart.\nIts neighbors (receiving speakers) may retain routing information from the restarting speaker while a BGP session with it is being re-established, reducing route flapping.\n",
+      "description": "BGP graceful-restart allows a BGP speaker with separate control plane and data plane processing to continue forwarding traffic during a BGP restart.\nIts neighbors (receiving speakers) may retain routing information from the restarting speaker while a BGP session with it is being re-established, reducing route flapping.\n",
       "type": "object",
       "properties": {
         "enabled": {
           "type": "boolean",
-          "default": true,
-          "description": "Enable or disable graceful restart helper mode for all BGP peers.",
+          "default": false,
+          "description": "Enable or disable graceful-restart for all BGP peers.",
           "title": "Enabled"
         },
         "restart_time": {
@@ -129,6 +129,9 @@
           "title": "Restart Time"
         }
       },
+      "required": [
+        "enabled"
+      ],
       "additionalProperties": false,
       "patternProperties": {
         "^_.+$": {}

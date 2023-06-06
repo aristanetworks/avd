@@ -1115,8 +1115,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | BGP Tuning |
 | ---------- |
 | distance bgp 20 200 200 |
-| graceful-restart restart-time 300 |
-| graceful-restart |
 | update wait-install |
 | no bgp default ipv4-unicast |
 | maximum-paths 4 ecmp 4 |
@@ -1230,8 +1228,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 !
 router bgp 65103
    router-id 192.168.255.8
-   graceful-restart restart-time 300
-   graceful-restart
    maximum-paths 4 ecmp 4
    update wait-install
    no bgp default ipv4-unicast

@@ -146,8 +146,9 @@ keys:
     keys:
       enabled:
         type: bool
-        default: true
-        description: Enable or disable graceful restart helper mode for all BGP peers.
+        default: false
+        required: true
+        description: Enable or disable graceful-restart for all BGP peers.
       restart_time:
         type: int
         convert_types:
