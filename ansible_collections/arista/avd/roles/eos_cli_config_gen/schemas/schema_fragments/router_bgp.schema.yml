@@ -224,8 +224,12 @@ keys:
               type: str
               description: |
                 Peer-filter name
-                note: `bgp_listen_range_prefix` and `peer_filter` will be deprecated in AVD v4.0
-                These should not be mixed with the new `listen_ranges` key above to avoid conflicts.
+                note: `bgp_listen_range_prefix` and `peer_filter` should not be mixed with
+                the new `listen_ranges` key above to avoid conflicts.
+              deprecation:
+                warning: true
+                remove_in_version: 5.0.0
+                new_key: listen_ranges
             next_hop_unchanged:
               type: bool
             update_source:
@@ -323,8 +327,12 @@ keys:
               type: str
               description: |
                 IP prefix range
-                note: `bgp_listen_range_prefix` and `peer_filter` will be deprecated in AVD v4.0
-                These should not be mixed with the new `listen_ranges` key above to avoid conflicts.
+                note: `bgp_listen_range_prefix` and `peer_filter` should not be mixed with
+                the new `listen_ranges` key above to avoid conflicts.
+              deprecation:
+                warning: true
+                remove_in_version: 5.0.0
+                new_key: listen_ranges
             session_tracker:
               type: str
       neighbors:

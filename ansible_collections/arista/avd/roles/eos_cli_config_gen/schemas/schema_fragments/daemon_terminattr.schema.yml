@@ -210,24 +210,3 @@ keys:
         description: |
           The default compression scheme when streaming to CloudVision is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.
           There is no need to change the compression scheme.
-      ingestauth_key:
-        type: str
-        description: |
-          Deprecated key. Use `cvauth` instead.
-      ingestgrpcurl:
-        type: dict
-        description: |
-          Deprecated key. Use `cvaddrs` instead.
-        keys:
-          ips:
-            type: list
-            items:
-              type: str
-          port:
-            type: int
-            convert_types:
-            - str
-      ingestvrf:
-        description: |
-          Deprecated key. Use `cvvrf` instead.
-        type: str

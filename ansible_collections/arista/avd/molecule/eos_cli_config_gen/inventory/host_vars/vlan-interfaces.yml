@@ -203,7 +203,8 @@ vlan_interfaces:
         valid_lifetime: infinite
         preferred_lifetime: infinite
         no_autoconfig_flag: true
-    ipv6_virtual_router_address: 1b11:3a00:22b0:6::1
+    ipv6_virtual_router_addresses:
+      - 1b11:3a00:22b0:6::1
 
   - name: Vlan25
     description: SVI Description
@@ -237,7 +238,8 @@ vlan_interfaces:
         valid_lifetime: infinite
         preferred_lifetime: infinite
         no_autoconfig_flag: true
-    ipv6_virtual_router_address: 1b11:3a00:22b0:1000::1
+    ipv6_virtual_router_addresses:
+      - 1b11:3a00:22b0:1000::1
     multicast:
       ipv4:
         static: true
@@ -265,7 +267,8 @@ vlan_interfaces:
         valid_lifetime: infinite
         preferred_lifetime: infinite
         no_autoconfig_flag: true
-    ipv6_virtual_router_address: 1b11:3a00:22b0:5200::3
+    ipv6_virtual_router_addresses:
+      - 1b11:3a00:22b0:5200::3
     ip_helpers:
       - ip_helper: 10.10.96.101
         source_interface: Loopback0

@@ -4848,7 +4848,8 @@
                 },
                 "ipv6_address_virtual": {
                   "type": "string",
-                  "description": "IPv6_address/Mask\nipv6 address virtuals to configure VXLAN Anycast IP address (Optional)\nThe below \"ipv6_address_virtual\" key will be deprecated in AVD v4.0 in favor of the new \"ipv6_address_virtuals\"\nIf both \"ipv6_address_virtual\" and \"ipv6_address_virtuals\" are set, all addresses will be configured\n",
+                  "description": "IPv6_address/Mask\nipv6 address virtuals to configure VXLAN Anycast IP address (Optional)\nIf both \"ipv6_address_virtual\" and \"ipv6_address_virtuals\" are set, all addresses will be configured\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>ipv6_address_virtuals</samp> instead.",
+                  "deprecated": true,
                   "title": "IPv6 Address Virtual"
                 },
                 "ipv6_address_virtuals": {
@@ -5185,7 +5186,8 @@
           },
           "ipv6_address_virtual": {
             "type": "string",
-            "description": "IPv6_address/Mask\nipv6 address virtuals to configure VXLAN Anycast IP address (Optional)\nThe below \"ipv6_address_virtual\" key will be deprecated in AVD v4.0 in favor of the new \"ipv6_address_virtuals\"\nIf both \"ipv6_address_virtual\" and \"ipv6_address_virtuals\" are set, all addresses will be configured\n",
+            "description": "IPv6_address/Mask\nipv6 address virtuals to configure VXLAN Anycast IP address (Optional)\nIf both \"ipv6_address_virtual\" and \"ipv6_address_virtuals\" are set, all addresses will be configured\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>ipv6_address_virtuals</samp> instead.",
+            "deprecated": true,
             "title": "IPv6 Address Virtual"
           },
           "ipv6_address_virtuals": {
