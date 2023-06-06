@@ -4,6 +4,9 @@
 type: dict
 keys:
   redundancy:
+    documentation_options:
+      filename: Input Variables
+      table: System Settings
     type: dict
     description: Redundancy for chassis platforms with dual supervisors | Optional
     keys:

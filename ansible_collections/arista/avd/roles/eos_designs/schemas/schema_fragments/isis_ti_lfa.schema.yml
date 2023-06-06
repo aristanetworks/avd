@@ -4,6 +4,9 @@
 type: dict
 keys:
   isis_ti_lfa:
+    documentation_options:
+      filename: Input Variables
+      table: ISIS Settings
     type: dict
     keys:
       enabled:

@@ -4,6 +4,9 @@
 type: dict
 keys:
   bgp_graceful_restart:
+    documentation_options:
+      filename: Input Variables
+      table: BGP Settings
     description: |
       Graceful BGP restart allows a BGP speaker with separate control plane and data plane processing to continue forwarding traffic during a BGP restart.
       Its neighbors (receiving speakers) may retain routing information from the restarting speaker while a BGP session with it is being re-established, reducing route flapping.

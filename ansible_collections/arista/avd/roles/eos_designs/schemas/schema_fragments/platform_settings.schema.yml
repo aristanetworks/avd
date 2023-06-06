@@ -4,6 +4,9 @@
 type: dict
 keys:
   platform_settings:
+    documentation_options:
+      filename: Input Variables
+      table: Platform Settings
     type: list
     items:
       type: dict

@@ -4,6 +4,9 @@
 type: dict
 keys:
   mgmt_interface_vrf:
+    documentation_options:
+      filename: Input Variables
+      table: Management Interface Settings
     type: str
     default: MGMT
     description: OOB Management VRF.

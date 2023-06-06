@@ -4,5 +4,8 @@
 type: dict
 keys:
   overlay_loopback_description:
+    documentation_options:
+      filename: Input Variables
+      table: Overlay Settings
     description: Customize the description on overlay interface Loopback0.
     type: str

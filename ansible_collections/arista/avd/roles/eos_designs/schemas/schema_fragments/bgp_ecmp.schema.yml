@@ -4,6 +4,9 @@
 type: dict
 keys:
   bgp_ecmp:
+    documentation_options:
+      filename: Input Variables
+      table: BGP Settings
     description: Maximum ECMP for BGP multi-path
     type: int
     convert_types:
