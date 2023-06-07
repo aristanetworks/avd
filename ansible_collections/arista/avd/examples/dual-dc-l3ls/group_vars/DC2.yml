@@ -66,7 +66,7 @@ l3leaf:
         # Definition of hostnames under the node_group
         - name: dc2-leaf1a
           id: 11
-          mgmt_ip: 172.16.2.201/24
+          mgmt_ip: 172.16.1.111/24
           # Definition of the port to be used in the uplink device facing this device.
           # Note that the number of elements in this list must match the length of 'uplink_switches' as well as 'uplink_interfaces'
           uplink_switch_interfaces:
@@ -74,7 +74,7 @@ l3leaf:
             - Ethernet1
         - name: dc2-leaf1b
           id: 12
-          mgmt_ip: 172.16.2.202/24
+          mgmt_ip: 172.16.1.112/24
           uplink_switch_interfaces:
             - Ethernet2
             - Ethernet2
@@ -91,7 +91,7 @@ l3leaf:
       nodes:
         - name: dc2-leaf2a
           id: 13
-          mgmt_ip: 172.16.2.203/24
+          mgmt_ip: 172.16.1.113/24
           uplink_switch_interfaces:
             - Ethernet3
             - Ethernet3
@@ -101,7 +101,7 @@ l3leaf:
               - hostname: dc1-leaf2a
         - name: dc2-leaf2b
           id: 14
-          mgmt_ip: 172.16.2.204/24
+          mgmt_ip: 172.16.1.114/24
           uplink_switch_interfaces:
             - Ethernet4
             - Ethernet4
@@ -122,7 +122,7 @@ l2leaf:
       nodes:
         - name: dc2-leaf1c
           id: 11
-          mgmt_ip: 172.16.2.251/24
+          mgmt_ip: 172.16.1.161/24
           uplink_switch_interfaces:
             - Ethernet8
             - Ethernet8
@@ -132,7 +132,7 @@ l2leaf:
       nodes:
         - name: dc2-leaf2c
           id: 12
-          mgmt_ip: 172.16.2.252/24
+          mgmt_ip: 172.16.1.162/24
           uplink_switch_interfaces:
             - Ethernet8
             - Ethernet8
