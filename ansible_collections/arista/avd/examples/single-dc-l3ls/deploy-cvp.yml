@@ -10,3 +10,4 @@
         name: arista.avd.eos_config_deploy_cvp
       vars:
         cv_collection: v3 # (3)!
+        fabric_name: FABRIC # (4)!
