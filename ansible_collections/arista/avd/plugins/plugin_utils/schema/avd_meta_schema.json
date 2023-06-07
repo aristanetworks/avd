@@ -315,7 +315,7 @@
                 },
                 "section": {
                     "type": "string",
-                    "description": "Setting 'filename' will allow for custom grouping of schema tables in the documentation.\nBy default all tables will be part of the same 'Input Variables' section. By setting 'section' the tables for one or more keys can be moved to separate section.\nThe 'section' option is inherited to all child keys, unless specifically set on the child.",
+                    "description": "Setting 'section' will allow for custom grouping of schema tables in the documentation.\nBy default all tables will be part of the same 'Input Variables' section. By setting 'section' the tables for one or more keys can be moved to separate section.\nThe 'section' option is inherited to all child keys, unless specifically set on the child.",
                     "default": "Input Variables"
                 },
                 "table": {
