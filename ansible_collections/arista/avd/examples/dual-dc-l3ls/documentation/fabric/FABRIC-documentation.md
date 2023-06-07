@@ -32,7 +32,7 @@
 | FABRIC | l3leaf | dc2-leaf2b | 172.16.1.114/24 | vEOS-lab | Provisioned | - |
 | FABRIC | l2leaf | dc2-leaf2c | 172.16.1.162/24 | vEOS-lab | Provisioned | - |
 | FABRIC | spine | dc2-spine1 | 172.16.1.21/24 | vEOS-lab | Provisioned | - |
-| FABRIC | spine | dc2-spine2 | 172.16.2.22/24 | vEOS-lab | Provisioned | - |
+| FABRIC | spine | dc2-spine2 | 172.16.1.22/24 | vEOS-lab | Provisioned | - |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 

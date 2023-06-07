@@ -27,7 +27,7 @@ spine:
 
     - name: dc2-spine2
       id: 12
-      mgmt_ip: 172.16.2.22/24
+      mgmt_ip: 172.16.1.22/24
 
 # L3 Leaf switch group
 l3leaf:
