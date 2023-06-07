@@ -3427,10 +3427,10 @@ $defs:
               endpoint_ports:
                 type: list
                 description: 'Endpoint ports is used for description, required unless
-                  description is set.
+                  `description` or `descriptions` is set.
 
-                  The lists `endpoint_ports`, `switch_ports`, and `switches` must
-                  have the same length.
+                  The lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches`
+                  must have the same length.
 
                   Each list item is one switchport.
 
@@ -3438,6 +3438,12 @@ $defs:
                 items:
                   type: str
                   description: Interface name.
+              descriptions:
+                type: list
+                description: 'Unique description per port. When set, takes priority
+                  over description.
+
+                  '
               server_ports:
                 type: list
                 deprecation:

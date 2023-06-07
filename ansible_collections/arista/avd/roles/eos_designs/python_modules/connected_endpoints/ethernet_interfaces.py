@@ -8,6 +8,7 @@ from collections import ChainMap
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, replace_or_append_item
 
@@ -97,7 +98,7 @@ class EthernetInterfacesMixin(UtilsMixin):
             "peer_interface": peer_interface,
             "peer_type": connected_endpoint["type"],
             "port_profile": adapter.get("profile"),
-            "description": self.shared_utils.interface_descriptions.connected_endpoints_ethernet_interfaces(peer, peer_interface, adapter.get("description")),
+            "description": self.shared_utils.interface_descriptions.connected_endpoints_ethernet_interfaces(peer, peer_interface, interface_description),
             "speed": adapter.get("speed"),
             "shutdown": not adapter.get("enabled", True),
             "eos_cli": adapter.get("raw_eos_cli"),
