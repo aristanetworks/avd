@@ -2578,9 +2578,10 @@ $defs:
             type: dict
             keys:
               level:
-                type: int
+                type: str
                 convert_types:
-                - str
+                - int
+                - float
                 description: Configure maximum storm-control level.
               unit:
                 type: str

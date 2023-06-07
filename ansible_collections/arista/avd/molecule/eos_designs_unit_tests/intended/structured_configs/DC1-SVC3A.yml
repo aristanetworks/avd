@@ -1123,16 +1123,16 @@ ethernet_interfaces:
   spanning_tree_bpduguard: disabled
   storm_control:
     all:
-      level: '10'
+      level: '10.0'
       unit: percent
     broadcast:
-      level: '100'
+      level: '100.0'
       unit: pps
     multicast:
-      level: '1'
+      level: '1.5'
       unit: percent
     unknown_unicast:
-      level: '2'
+      level: '2.8'
       unit: percent
 - name: Ethernet12
   peer: server05_no_profile
