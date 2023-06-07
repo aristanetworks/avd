@@ -48,7 +48,7 @@ Ansible galaxy hosts all stable versions of the `arista.avd` collection. Install
 - [Getting started](./docs/getting-started/intro-to-ansible-and-avd.md)
 - [Arista NetDevOps GitHub repository](https://github.com/aristanetworks/netdevops-examples)
 
-## Custom plugins & modules
+### Custom plugins & modules
 
 This repository provides custom plugins for Arista's AVD collection:
 
