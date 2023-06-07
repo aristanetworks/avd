@@ -5,7 +5,9 @@ search:
 
 # EOS Designs Role Variables
 
-## Custom Templates
+## Input Variables
+
+### Custom Templates
 
 === "Table"
 
@@ -27,7 +29,7 @@ search:
           strip_empty_keys: <bool>
     ```
 
-## Documentation Output Settings
+### Documentation Output Settings
 
 === "Table"
 
@@ -43,7 +45,7 @@ search:
       connected_endpoints: <bool>
     ```
 
-## Input Validation
+### Input Validation
 
 === "Table"
 

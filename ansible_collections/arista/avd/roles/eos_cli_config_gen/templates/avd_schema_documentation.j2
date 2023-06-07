@@ -6,32 +6,51 @@ search:
 ---
 
 # {{ filename.split("/")[-1] }}
-{% for table in documentation.tables %}
+{% set filename_description = lookup("ansible.builtin.file", role_schema_docs_fragments_dir ~ "/" ~ filename ~ ".md", errors='ignore') %}
+{% if filename_description is arista.avd.defined %}
 
-## {{ table.display_name }}
-{%     if table.description is arista.avd.defined %}
+{{ filename_description }}
+{% endif %}
+{% for section in documentation.sections | arista.avd.natural_sort("name") %}
+
+## {{ section.name }}
+{%     set section_description = lookup("ansible.builtin.file", role_schema_docs_fragments_dir ~ "/" ~ filename ~ "/" ~ section.name ~ ".md", errors='ignore') %}
+{%     if section_description is arista.avd.defined %}
+
+{{ section_description }}
+{%     endif %}
+{%     for table in section.tables | arista.avd.natural_sort("display_name") %}
+
+### {{ table.display_name }}
+{%         set table_description = lookup("ansible.builtin.file", role_schema_docs_fragments_dir ~ "/" ~ filename ~ "/" ~ section.name ~ "/" ~ table.display_name ~ ".md", errors='ignore') %}
+{%         if table_description is arista.avd.defined %}
+
+{{ table_description }}
+{%         endif %}
+{%         if table.description is arista.avd.defined %}
 
 {{ table.description | trim }}
-{%     endif %}
+{%         endif %}
 
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-{%     for row in table.table %}
-{%         set variable = row.variable | e | regex_replace('  ','&nbsp;&nbsp;') %}
-{%         if row.deprecation is arista.avd.defined %}
-{%             set deprecation = '<span style="color:red">' ~ row.deprecation ~ '</span>' %}
-{%             set deprecation_label = ' <span style="color:red">' ~ row.deprecation_label ~ '</span>' %}
-{%         endif %}
+{%         for row in table.table %}
+{%             set variable = row.variable | e | regex_replace('  ','&nbsp;&nbsp;') %}
+{%             if row.deprecation is arista.avd.defined %}
+{%                 set deprecation = '<span style="color:red">' ~ row.deprecation ~ '</span>' %}
+{%                 set deprecation_label = ' <span style="color:red">' ~ row.deprecation_label ~ '</span>' %}
+{%             endif %}
     | [<samp>{{ variable }}</samp>](## "{{ row.var_path | e }}"){{ deprecation_label | arista.avd.default }} | {{ row.type }} | {{ row.required | arista.avd.default }} | {{ row.default | arista.avd.default }} | {{ row.restrictions | arista.avd.default }} | {{ row.description | arista.avd.default }}{{ deprecation | arista.avd.default }} |
-{%     endfor %}
+{%         endfor %}
 
 === "YAML"
 
     ```yaml
-{%     for row in table.yaml %}
+{%         for row in table.yaml %}
     {{ row }}
-{%     endfor %}
+{%         endfor %}
     ```
+{%     endfor %}
 {% endfor %}
