@@ -1,0 +1,17 @@
+- name: Test with template_output true
+  ignore_errors: no
+  register: result
+  vars:
+    custom_structured_configuration_inline_jinja_value: "test"
+    custom_structured_configuration_inline_jinja: "{{ inline_jinja_value }}"
+
+  arista.avd.eos_designs_structured_config:
+    template_output: true
+
+- assert:
+    that:
+      - result is success
+      - result.ansible_facts is defined
+      - result.ansible_facts.inline_jinja_value == "test"
+      - result.ansible_facts.inline_jinja is defined
+      - result.ansible_facts.inline_jinja == "test"
