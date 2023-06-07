@@ -1352,40 +1352,8 @@
         },
         "cvcompression": {
           "type": "string",
-          "description": "The default compression scheme when streaming to CloudVision is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.\nThere is no need to change the compression scheme.\n",
+          "description": "The default compression scheme when streaming to CloudVision is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.\nThere is no need to change the compression scheme.",
           "title": "Cvcompression"
-        },
-        "ingestauth_key": {
-          "type": "string",
-          "description": "Deprecated key. Use `cvauth` instead.\n",
-          "title": "Ingestauth Key"
-        },
-        "ingestgrpcurl": {
-          "type": "object",
-          "description": "Deprecated key. Use `cvaddrs` instead.\n",
-          "properties": {
-            "ips": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "title": "Ips"
-            },
-            "port": {
-              "type": "integer",
-              "title": "Port"
-            }
-          },
-          "additionalProperties": false,
-          "patternProperties": {
-            "^_.+$": {}
-          },
-          "title": "Ingestgrpcurl"
-        },
-        "ingestvrf": {
-          "description": "Deprecated key. Use `cvvrf` instead.\n",
-          "type": "string",
-          "title": "Ingestvrf"
         }
       },
       "additionalProperties": false,
@@ -11786,7 +11754,8 @@
               },
               "peer_filter": {
                 "type": "string",
-                "description": "Peer-filter name\nnote: `bgp_listen_range_prefix` and `peer_filter` will be deprecated in AVD v4.0\nThese should not be mixed with the new `listen_ranges` key above to avoid conflicts.\n",
+                "description": "Peer-filter name\nnote: `bgp_listen_range_prefix` and `peer_filter` should not be mixed with\nthe new `listen_ranges` key above to avoid conflicts.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>listen_ranges</samp> instead.",
+                "deprecated": true,
                 "title": "Peer Filter"
               },
               "next_hop_unchanged": {
@@ -11950,7 +11919,8 @@
               },
               "bgp_listen_range_prefix": {
                 "type": "string",
-                "description": "IP prefix range\nnote: `bgp_listen_range_prefix` and `peer_filter` will be deprecated in AVD v4.0\nThese should not be mixed with the new `listen_ranges` key above to avoid conflicts.\n",
+                "description": "IP prefix range\nnote: `bgp_listen_range_prefix` and `peer_filter` should not be mixed with\nthe new `listen_ranges` key above to avoid conflicts.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>listen_ranges</samp> instead.",
+                "deprecated": true,
                 "title": "BGP Listen Range Prefix"
               },
               "session_tracker": {
@@ -19642,7 +19612,8 @@
           },
           "ipv6_virtual_router_address": {
             "type": "string",
-            "description": "\"ipv6_virtual_router_address\" key will be deprecated in AVD v4.0\nThis should not be mixed with the new \"ipv6_virtual_router_addresses\" key below to avoid conflicts.\n",
+            "description": "\"ipv6_virtual_router_address\" should not be mixed with\nthe new \"ipv6_virtual_router_addresses\" key below to avoid conflicts.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>ipv6_virtual_router_addresses</samp> instead.",
+            "deprecated": true,
             "title": "IPv6 Virtual Router Address"
           },
           "ipv6_virtual_router_addresses": {
@@ -20193,7 +20164,8 @@
           },
           "vrrp": {
             "type": "object",
-            "description": "\"vrrp\" key will be deprecated in AVD v4.0\nThis should not be mixed with the new \"vrrp_ids\" key above to avoid conflicts.\n",
+            "description": "\"vrrp\" should not be mixed with the new \"vrrp_ids\" key above to avoid conflicts.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>vrrp_ids</samp> instead.",
+            "deprecated": true,
             "properties": {
               "virtual_router": {
                 "type": "string",

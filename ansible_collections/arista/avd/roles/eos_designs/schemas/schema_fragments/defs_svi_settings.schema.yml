@@ -36,8 +36,11 @@ $defs:
         description: |
           IPv6_address/Mask
           ipv6 address virtuals to configure VXLAN Anycast IP address (Optional)
-          The below "ipv6_address_virtual" key will be deprecated in AVD v4.0 in favor of the new "ipv6_address_virtuals"
           If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all addresses will be configured
+        deprecation:
+          warning: true
+          remove_in_version: 5.0.0
+          new_key: ipv6_address_virtuals
       ipv6_address_virtuals:
         type: list
         description: |

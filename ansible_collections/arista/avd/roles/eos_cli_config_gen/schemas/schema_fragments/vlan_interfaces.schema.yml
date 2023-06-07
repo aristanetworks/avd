@@ -118,8 +118,12 @@ keys:
         ipv6_virtual_router_address:
           type: str
           description: |
-            "ipv6_virtual_router_address" key will be deprecated in AVD v4.0
-            This should not be mixed with the new "ipv6_virtual_router_addresses" key below to avoid conflicts.
+            "ipv6_virtual_router_address" should not be mixed with
+            the new "ipv6_virtual_router_addresses" key below to avoid conflicts.
+          deprecation:
+            warning: true
+            remove_in_version: 5.0.0
+            new_key: ipv6_virtual_router_addresses
         ipv6_virtual_router_addresses:
           type: list
           description: Improved "VARPv6" data model to support multiple VARPv6 addresses.
@@ -418,8 +422,11 @@ keys:
         vrrp:
           type: dict
           description: |
-            "vrrp" key will be deprecated in AVD v4.0
-            This should not be mixed with the new "vrrp_ids" key above to avoid conflicts.
+            "vrrp" should not be mixed with the new "vrrp_ids" key above to avoid conflicts.
+          deprecation:
+            warning: true
+            remove_in_version: 5.0.0
+            new_key: vrrp_ids
           keys:
             virtual_router:
               type: str

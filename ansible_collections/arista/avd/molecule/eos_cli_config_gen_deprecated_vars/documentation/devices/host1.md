@@ -775,6 +775,7 @@ interface Tunnel4
 | --------- | ----------- | --- | ---- | -------- |
 | Vlan1 | test ipv6_address_virtual | default | - | - |
 | Vlan2 | test ipv6_address_virtual and ipv6_address_virtuals | default | - | - |
+| Vlan3 | test ipv6_address_virtual | default | - | - |
 | Vlan42 | SVI Description | default | - | False |
 
 ##### IPv4
@@ -783,6 +784,7 @@ interface Tunnel4
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
 | Vlan1 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan2 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan3 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan42 |  default  |  -  |  10.10.42.1/24  |  -  |  -  |  -  |  -  |
 
 ##### IPv6
@@ -791,6 +793,7 @@ interface Tunnel4
 | --------- | --- | ------------ | -------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------- | ------------ |
 | Vlan1 | default | - | fc00:10:10:1::1/64 | - | - | - | - | - | - |
 | Vlan2 | default | 1b11:3a00:22b0:5200::15/64 | fc00:10:10:2::1/64, fc00:10:11:2::1/64, fc00:10:12:2::1/64 | - | - | - | True | - | - |
+| Vlan3 | default | 1b11:3a00:22b3:5200::15/64 | - | fc00:10:10:3::1/64 | - | - | - | - | - |
 
 #### VLAN Interfaces Device Configuration
 
@@ -810,6 +813,12 @@ interface Vlan2
    ipv6 address virtual fc00:10:12:2::1/64
    ipv6 nd managed-config-flag
    ipv6 nd prefix 1b11:3a00:22b0:5200::/64 infinite infinite no-autoconfig
+!
+interface Vlan3
+   description test ipv6_address_virtual
+   ipv6 enable
+   ipv6 address 1b11:3a00:22b3:5200::15/64
+   ipv6 virtual-router address fc00:10:10:3::1/64
 !
 interface Vlan42
    description SVI Description
@@ -988,6 +997,7 @@ router isis EVPN_UNDERLAY
 | -------- | ----- |
 | Address Family | evpn |
 | Remote AS | 65001 |
+| Listen range prefix | 10.10.10.0/24 |
 | Source | Loopback0 |
 
 #### BGP Neighbors
@@ -1072,6 +1082,7 @@ router isis EVPN_UNDERLAY
 !
 router bgp 65101
    router-id 192.168.255.3
+   bgp listen range 10.10.10.0/24 peer-group EVPN-OVERLAY-PEERS peer-filter myfilter
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS remote-as 65001
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0

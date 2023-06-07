@@ -10,6 +10,9 @@ router_bgp:
       type: evpn
       remote_as: 65001
       update_source: Loopback0
+      # Testing peer_filter & bgp_listen_range_prefix which were deprecated in 4.0.0. To be removed in 5.0.0
+      peer_filter: myfilter
+      bgp_listen_range_prefix: 10.10.10.0/24
   # Testing neighbors as dict of dict
   # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
   neighbors:
