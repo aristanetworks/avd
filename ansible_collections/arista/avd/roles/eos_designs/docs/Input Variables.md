@@ -5,7 +5,11 @@ search:
 
 # Input Variables
 
+Markdown to be rendered at the top of the file "Input Variables"
+
 ## Input Variables
+
+Markdown to be rendered at the top of the section "Input Variables"
 
 ### BFD Settings
 
@@ -2405,6 +2409,8 @@ This should be defined in top level group_var for the fabric.
     ```
 
 ### Node Type Settings
+
+Markdown to be rendered at the top of the Table "Node Type Settings"
 
 === "Table"
 

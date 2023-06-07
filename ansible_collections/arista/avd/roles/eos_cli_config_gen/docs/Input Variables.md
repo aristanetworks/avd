@@ -5,7 +5,11 @@ search:
 
 # Input Variables
 
+Markdown to be rendered at the top of the file "Input Variables"
+
 ## Input Variables
+
+Markdown to be rendered at the top of the section "Input Variables"
 
 ### AAA Accounting
 

@@ -2,11 +2,6 @@
 # Root directory where to build output structure
 root_dir: '{{ inventory_dir }}'
 
-# Documentation folders
-# Main documentation folder
-documentation_dir_name: 'documentation'
-documentation_dir: '{{ root_dir }}/{{ documentation_dir_name }}'
-
 # Fabric documentation
 fabric_dir_name: 'fabric'
 fabric_dir: '{{ documentation_dir }}/{{ fabric_dir_name }}'

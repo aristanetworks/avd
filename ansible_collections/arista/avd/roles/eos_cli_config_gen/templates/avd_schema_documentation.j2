@@ -6,16 +6,27 @@ search:
 ---
 
 # {{ filename.split("/")[-1] }}
+{% set filename_description = lookup("ansible.builtin.file", role_schema_docs_fragments_dir ~ "/" ~ filename ~ ".md", errors='ignore') %}
+{% if filename_description is arista.avd.defined %}
+
+{{ filename_description }}
+{% endif %}
 {% for section in documentation.sections | arista.avd.natural_sort("name") %}
 
 ## {{ section.name }}
-{%     if section.description is arista.avd.defined %}
+{%     set section_description = lookup("ansible.builtin.file", role_schema_docs_fragments_dir ~ "/" ~ filename ~ "/" ~ section.name ~ ".md", errors='ignore') %}
+{%     if section_description is arista.avd.defined %}
 
-{{ section.description | trim }}
+{{ section_description }}
 {%     endif %}
 {%     for table in section.tables | arista.avd.natural_sort("display_name") %}
 
 ### {{ table.display_name }}
+{%         set table_description = lookup("ansible.builtin.file", role_schema_docs_fragments_dir ~ "/" ~ filename ~ "/" ~ section.name ~ "/" ~ table.display_name ~ ".md", errors='ignore') %}
+{%         if table_description is arista.avd.defined %}
+
+{{ table_description }}
+{%         endif %}
 {%         if table.description is arista.avd.defined %}
 
 {{ table.description | trim }}
