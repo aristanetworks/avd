@@ -21,7 +21,7 @@ Arista Validated Designs (AVD) is an extensible data model that defines Arista's
 Full documentation for the collection:
 
 - [stable version](https://www.avd.sh/en/stable/)
-- [collection development version](https://www.avd.sh/en/devel/)
+- [development version](https://www.avd.sh/en/devel/)
 
 ### Roles overview
 
@@ -64,6 +64,10 @@ This repository provides custom plugins for Arista's AVD collection:
 ## Ask a question
 
 Support for the `arista.avd` collection is provided by the community directly in this repository. If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/ansible-avd/discussions).
+
+### Official Arista support
+
+AVD version 4.x releases with full support from Arista TAC. If your organization has the appropriate support agreement, please don't hesitate to contact TAC with any questions or issues.
 
 ## Contributing
 
