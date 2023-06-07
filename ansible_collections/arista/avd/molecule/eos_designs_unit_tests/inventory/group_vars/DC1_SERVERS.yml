@@ -18,7 +18,6 @@ port_profiles:
 
   - profile: ALL_WITH_SECURITY
     parent_profile: NON_EXISTING_PROFILE #Test that pointing to a nonexisting profile won't break templates.
-    endpoint_ports: [ Eth1, Eth2 ]
     mode: trunk
     vlans: "1-4094"
     spanning_tree_bpdufilter: disabled
@@ -27,16 +26,16 @@ port_profiles:
     l2_mtu: 8000
     storm_control:
       all:
-        level: 10
+        level: 10.0
         unit: percent
       broadcast:
-        level: 100
+        level: 100.0
         unit: pps
       multicast:
-        level: 1
+        level: 1.5
         unit: percent
       unknown_unicast:
-        level: 2
+        level: 2.8
         unit: percent
 
   - profile: ALL_WITH_SECURITY_PORT_CHANNEL
@@ -209,6 +208,7 @@ servers:
     rack: RackC
     adapters:
       - switch_ports: [ Ethernet11, Ethernet11 ]
+        endpoint_ports: [ Eth1, Eth2 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: ALL_WITH_SECURITY
 

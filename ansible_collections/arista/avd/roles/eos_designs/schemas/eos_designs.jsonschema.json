@@ -2219,15 +2219,6 @@
             "description": "Description to be used on all ports.",
             "title": "Description"
           },
-          "endpoint_ports": {
-            "type": "array",
-            "description": "Endpoint ports is used for description, required unless description is set.\nThe lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.\nEach list item is one switchport.\n",
-            "items": {
-              "type": "string",
-              "description": "Interface name."
-            },
-            "title": "Endpoint Ports"
-          },
           "speed": {
             "type": "string",
             "description": "Set adapter speed: `< interface_speed >`, `forced < interface_speed >`, `auto < interface_speed >`.\nIf not specified will be auto.\n",
@@ -2570,7 +2561,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level.",
                     "title": "Level"
                   },
@@ -2595,7 +2586,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level.",
                     "title": "Level"
                   },
@@ -2620,7 +2611,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level.",
                     "title": "Level"
                   },
@@ -2645,7 +2636,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level.",
                     "title": "Level"
                   },
@@ -3669,15 +3660,6 @@
             "description": "Parent profile is optional.\nPort_profiles can refer to another port_profile to inherit settings in up to two levels (adapter->profile->parent_profile).",
             "title": "Parent Profile"
           },
-          "endpoint_ports": {
-            "type": "array",
-            "description": "Endpoint ports is used for description, required unless description is set.\nThe lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.\nEach list item is one switchport.\n",
-            "items": {
-              "type": "string",
-              "description": "Interface name."
-            },
-            "title": "Endpoint Ports"
-          },
           "speed": {
             "type": "string",
             "description": "Set adapter speed: `< interface_speed >`, `forced < interface_speed >`, `auto < interface_speed >`.\nIf not specified will be auto.\n",
@@ -4020,7 +4002,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level.",
                     "title": "Level"
                   },
@@ -4045,7 +4027,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level.",
                     "title": "Level"
                   },
@@ -4070,7 +4052,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level.",
                     "title": "Level"
                   },
@@ -4095,7 +4077,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level.",
                     "title": "Level"
                   },
