@@ -47,6 +47,15 @@ $defs:
                 items:
                   type: str
                   description: Device
+              endpoint_ports:
+                type: list
+                description: |
+                  Endpoint ports is used for description, required unless description is set.
+                  The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.
+                  Each list item is one switchport.
+                items:
+                  type: str
+                  description: Interface name.
               server_ports:
                 type: list
                 deprecation:
