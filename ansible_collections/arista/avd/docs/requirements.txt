@@ -3,6 +3,7 @@ mkdocs-material==9.0.15
 mkdocs-material-extensions
 pymdown-extensions
 mdx_truly_sane_lists
+mike
 mkdocs-git-revision-date-localized-plugin
 mkdocs-git-revision-date-plugin
 mkdocs-exclude
