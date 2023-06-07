@@ -111,13 +111,13 @@
       "title": "BGP Ecmp"
     },
     "bgp_graceful_restart": {
-      "description": "Graceful BGP restart allows a BGP speaker with separate control plane and data plane processing to continue forwarding traffic during a BGP restart.\nIts neighbors (receiving speakers) may retain routing information from the restarting speaker while a BGP session with it is being re-established, reducing route flapping.\n",
+      "description": "BGP graceful-restart allows a BGP speaker with separate control plane and data plane processing to continue forwarding traffic during a BGP restart.\nIts neighbors (receiving speakers) may retain routing information from the restarting speaker while a BGP session with it is being re-established, reducing route flapping.\n",
       "type": "object",
       "properties": {
         "enabled": {
           "type": "boolean",
-          "default": true,
-          "description": "Enable or disable graceful restart helper mode for all BGP peers.",
+          "default": false,
+          "description": "Enable or disable graceful-restart for all BGP peers.",
           "title": "Enabled"
         },
         "restart_time": {
@@ -129,6 +129,9 @@
           "title": "Restart Time"
         }
       },
+      "required": [
+        "enabled"
+      ],
       "additionalProperties": false,
       "patternProperties": {
         "^_.+$": {}
@@ -1238,7 +1241,7 @@
     },
     "evpn_multicast": {
       "type": "boolean",
-      "description": "General Configuration required for EVPN Multicast. \"evpn_l2_multicast\" must also be configured under the Network Services (tenants).\nRequires \"underlay_multicast: true\" and IGMP snooping enabled globally (default).\nFor MLAG devices Route Distinguisher must be unique since this feature will create multi-vtep configuration.\nWarning !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP and 722XP\n  The Following default platform setting will be configured: \"platform trident forwarding-table partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072\"\n  All forwarding agents will be restarted when this configuration is applied.\n  You can tune the settings by overridding the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n  Please contact an Arista representative for help with determining the appropriate values for your environment.\n",
+      "description": "General Configuration required for EVPN Multicast. \"evpn_l2_multicast\" or \"evpn_l3_multicast\" must also be configured under the Network Services (tenants).\nRequires \"underlay_multicast: true\" and IGMP snooping enabled globally (default).\nFor MLAG devices Route Distinguisher must be unique since this feature will create multi-vtep configuration.\nWarning !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP and 722XP\n  The Following default platform setting will be configured: \"platform trident forwarding-table partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072\"\n  All forwarding agents will be restarted when this configuration is applied.\n  You can tune the settings by overridding the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n  Please contact an Arista representative for help with determining the appropriate values for your environment.\n",
       "default": false,
       "title": "EVPN Multicast"
     },
@@ -2216,15 +2219,6 @@
             "description": "Description to be used on all ports.",
             "title": "Description"
           },
-          "endpoint_ports": {
-            "type": "array",
-            "description": "Endpoint ports is used for description, required unless description is set.\nThe lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.\nEach list item is one switchport.\n",
-            "items": {
-              "type": "string",
-              "description": "Interface name."
-            },
-            "title": "Endpoint Ports"
-          },
           "speed": {
             "type": "string",
             "description": "Set adapter speed: `< interface_speed >`, `forced < interface_speed >`, `auto < interface_speed >`.\nIf not specified will be auto.\n",
@@ -2567,7 +2561,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level.",
                     "title": "Level"
                   },
@@ -2592,7 +2586,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level.",
                     "title": "Level"
                   },
@@ -2617,7 +2611,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level.",
                     "title": "Level"
                   },
@@ -2642,7 +2636,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level.",
                     "title": "Level"
                   },
@@ -3666,15 +3660,6 @@
             "description": "Parent profile is optional.\nPort_profiles can refer to another port_profile to inherit settings in up to two levels (adapter->profile->parent_profile).",
             "title": "Parent Profile"
           },
-          "endpoint_ports": {
-            "type": "array",
-            "description": "Endpoint ports is used for description, required unless description is set.\nThe lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.\nEach list item is one switchport.\n",
-            "items": {
-              "type": "string",
-              "description": "Interface name."
-            },
-            "title": "Endpoint Ports"
-          },
           "speed": {
             "type": "string",
             "description": "Set adapter speed: `< interface_speed >`, `forced < interface_speed >`, `auto < interface_speed >`.\nIf not specified will be auto.\n",
@@ -4017,7 +4002,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level.",
                     "title": "Level"
                   },
@@ -4042,7 +4027,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level.",
                     "title": "Level"
                   },
@@ -4067,7 +4052,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level.",
                     "title": "Level"
                   },
@@ -4092,7 +4077,7 @@
                 "type": "object",
                 "properties": {
                   "level": {
-                    "type": "integer",
+                    "type": "string",
                     "description": "Configure maximum storm-control level.",
                     "title": "Level"
                   },
@@ -4848,7 +4833,8 @@
                 },
                 "ipv6_address_virtual": {
                   "type": "string",
-                  "description": "IPv6_address/Mask\nipv6 address virtuals to configure VXLAN Anycast IP address (Optional)\nThe below \"ipv6_address_virtual\" key will be deprecated in AVD v4.0 in favor of the new \"ipv6_address_virtuals\"\nIf both \"ipv6_address_virtual\" and \"ipv6_address_virtuals\" are set, all addresses will be configured\n",
+                  "description": "IPv6_address/Mask\nipv6 address virtuals to configure VXLAN Anycast IP address (Optional)\nIf both \"ipv6_address_virtual\" and \"ipv6_address_virtuals\" are set, all addresses will be configured\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>ipv6_address_virtuals</samp> instead.",
+                  "deprecated": true,
                   "title": "IPv6 Address Virtual"
                 },
                 "ipv6_address_virtuals": {
@@ -5185,7 +5171,8 @@
           },
           "ipv6_address_virtual": {
             "type": "string",
-            "description": "IPv6_address/Mask\nipv6 address virtuals to configure VXLAN Anycast IP address (Optional)\nThe below \"ipv6_address_virtual\" key will be deprecated in AVD v4.0 in favor of the new \"ipv6_address_virtuals\"\nIf both \"ipv6_address_virtual\" and \"ipv6_address_virtuals\" are set, all addresses will be configured\n",
+            "description": "IPv6_address/Mask\nipv6 address virtuals to configure VXLAN Anycast IP address (Optional)\nIf both \"ipv6_address_virtual\" and \"ipv6_address_virtuals\" are set, all addresses will be configured\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>ipv6_address_virtuals</samp> instead.",
+            "deprecated": true,
             "title": "IPv6 Address Virtual"
           },
           "ipv6_address_virtuals": {
@@ -5483,7 +5470,7 @@
           "profile"
         ]
       },
-      "title": "Svi Profiles"
+      "title": "SVI Profiles"
     },
     "system_mac_address": {
       "type": "string",

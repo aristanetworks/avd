@@ -4,6 +4,9 @@
 type: dict
 keys:
   dc_name:
+    documentation_options:
+      filename: Input Variables
+      table: Fabric Topology
     description: |
       DC Name, required to match Ansible Group name covering all devices in the DC.
       Required for 5-stage CLOS (Super-spines).

@@ -4,6 +4,9 @@
 type: dict
 keys:
   management_eapi:
+    documentation_options:
+      filename: Input Variables
+      table: Management Settings
     description: |
       Default is HTTPS management eAPI enabled.
       The VRF is set to < mgmt_interface_vrf >.

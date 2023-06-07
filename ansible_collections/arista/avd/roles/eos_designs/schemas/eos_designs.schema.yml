@@ -3,6 +3,9 @@ type: dict
 allow_other_keys: true
 keys:
   avd_data_conversion_mode:
+    documentation_options:
+      filename: EOS Designs Role Variables
+      table: Input Validation
     type: str
     valid_values:
     - disabled
@@ -36,6 +39,9 @@ keys:
 
       "quiet" will not produce any messages'
   avd_data_validation_mode:
+    documentation_options:
+      filename: EOS Designs Role Variables
+      table: Input Validation
     type: str
     valid_values:
     - disabled
@@ -61,6 +67,9 @@ keys:
 
       "debug" will produce hidden debug messages viewable with -v.'
   bfd_multihop:
+    documentation_options:
+      filename: Input Variables
+      table: BFD Settings
     type: dict
     description: BFD Multihop tuning
     keys:
@@ -86,12 +95,18 @@ keys:
         min: 3
         max: 50
   bgp_as:
+    documentation_options:
+      filename: Input Variables
+      table: BGP Settings
     description: AS number to use to configure overlay when "overlay_routing_protocol"
       == ibgp
     type: str
     convert_types:
     - int
   bgp_default_ipv4_unicast:
+    documentation_options:
+      filename: Input Variables
+      table: BGP Settings
     description: 'Default activation of IPv4 unicast address-family on all IPv4 neighbors.
 
       It is best practice to disable activation.
@@ -100,16 +115,25 @@ keys:
     type: bool
     default: false
   bgp_distance:
+    documentation_options:
+      filename: Input Variables
+      table: BGP Settings
     type: dict
     $ref: eos_cli_config_gen#/keys/router_bgp/keys/distance
   bgp_ecmp:
+    documentation_options:
+      filename: Input Variables
+      table: BGP Settings
     description: Maximum ECMP for BGP multi-path
     type: int
     convert_types:
     - str
     default: 4
   bgp_graceful_restart:
-    description: 'Graceful BGP restart allows a BGP speaker with separate control
+    documentation_options:
+      filename: Input Variables
+      table: BGP Settings
+    description: 'BGP graceful-restart allows a BGP speaker with separate control
       plane and data plane processing to continue forwarding traffic during a BGP
       restart.
 
@@ -122,8 +146,9 @@ keys:
     keys:
       enabled:
         type: bool
-        default: true
-        description: Enable or disable graceful restart helper mode for all BGP peers.
+        default: false
+        required: true
+        description: Enable or disable graceful-restart for all BGP peers.
       restart_time:
         type: int
         convert_types:
@@ -133,6 +158,9 @@ keys:
         default: 300
         description: Restart time in seconds.
   bgp_maximum_paths:
+    documentation_options:
+      filename: Input Variables
+      table: BGP Settings
     description: Maximum Paths for BGP multi-path
     type: int
     convert_types:
@@ -141,6 +169,9 @@ keys:
     min: 1
     max: 512
   bgp_mesh_pes:
+    documentation_options:
+      filename: Input Variables
+      table: Overlay Settings
     type: bool
     default: false
     description: 'Configure an iBGP full mesh between PEs, either because there is
@@ -148,6 +179,9 @@ keys:
 
       Only supported in combination with MPLS overlay.'
   bgp_peer_groups:
+    documentation_options:
+      filename: Input Variables
+      table: BGP Settings
     description: 'Leverage an Arista EOS switch to generate the encrypted password
       using the correct peer group name.
 
@@ -276,9 +310,15 @@ keys:
           removed: true
           remove_in_version: 4.0.0
   bgp_update_wait_install:
+    documentation_options:
+      filename: Input Variables
+      table: BGP Settings
     type: bool
     $ref: eos_cli_config_gen#/keys/router_bgp/keys/updates/keys/wait_install
   bgp_update_wait_for_convergence:
+    documentation_options:
+      filename: Input Variables
+      table: BGP Settings
     type: bool
     $ref: eos_cli_config_gen#/keys/router_bgp/keys/updates/keys/wait_for_convergence
   connected_endpoints_keys:
@@ -317,6 +357,9 @@ keys:
 
       where only one end of the link is on a switch in the fabric.'
   custom_structured_configuration_list_merge:
+    documentation_options:
+      filename: Input Variables
+      table: Custom Structured Configuration
     type: str
     description: "The List-merge strategy used when merging custom structured configurations.\n\nThis
       applies to all vars prefixed by prefixes in `custom_structured_configuration_prefix`\nand
@@ -341,6 +384,9 @@ keys:
     - prepend_rp
     default: append_rp
   custom_structured_configuration_prefix:
+    documentation_options:
+      filename: Input Variables
+      table: Custom Structured Configuration
     type: list
     convert_types:
     - str
@@ -363,6 +409,9 @@ keys:
     default:
     - custom_structured_configuration_
   cvp_ingestauth_key:
+    documentation_options:
+      filename: Input Variables
+      table: CloudVision Settings
     type: str
     description: 'On-premise CVP ingest auth key. If set, TerminAttr will be configured
       with key-based authentication for on-premise CVP.
@@ -375,12 +424,18 @@ keys:
 
       Token must be copied to the device first.'
   cvp_instance_ip:
+    documentation_options:
+      filename: Input Variables
+      table: CloudVision Settings
     type: str
     description: 'IPv4 address or DNS name for CloudVision.
 
       This variable only supports an on-premise single-node cluster or the DNS name
       of a CloudVision as a Service instance.'
   cvp_instance_ips:
+    documentation_options:
+      filename: Input Variables
+      table: CloudVision Settings
     type: list
     description: 'List of IPv4 addresses or DNS names for CloudVision.
 
@@ -395,6 +450,9 @@ keys:
       type: str
       description: IPv4 address or DNS name for CloudVision
   cvp_token_file:
+    documentation_options:
+      filename: Input Variables
+      table: CloudVision Settings
     type: str
     description: 'cvp_token_file is the path to the token file on the switch.
 
@@ -402,6 +460,9 @@ keys:
 
       See cvp_ingestauth_key for details.'
   dc_name:
+    documentation_options:
+      filename: Input Variables
+      table: Fabric Topology
     description: 'DC Name, required to match Ansible Group name covering all devices
       in the DC.
 
@@ -410,6 +471,9 @@ keys:
       '
     type: str
   default_igmp_snooping_enabled:
+    documentation_options:
+      filename: Input Variables
+      table: System Settings
     description: 'When set to false, disables IGMP snooping at fabric level and overrides
       per vlan settings.
 
@@ -504,6 +568,9 @@ keys:
             description: Regex needs to match full hostname (i.e. is bounded by ^
               and $ elements).
   design:
+    documentation_options:
+      filename: Input Variables
+      table: Fabric Settings
     type: dict
     keys:
       type:
@@ -518,6 +585,9 @@ keys:
         - l2ls
         default: l3ls-evpn
   enable_trunk_groups:
+    documentation_options:
+      filename: Input Variables
+      table: Fabric Settings
     type: bool
     description: 'Enable Trunk Group support across eos_designs
 
@@ -535,6 +605,9 @@ keys:
       '
     default: false
   eos_designs_custom_templates:
+    documentation_options:
+      filename: EOS Designs Role Variables
+      table: Custom Templates
     type: list
     items:
       type: dict
@@ -556,6 +629,9 @@ keys:
               description: Filter out keys from the generated output if value is null/none/undefined
               default: true
   eos_designs_documentation:
+    documentation_options:
+      filename: EOS Designs Role Variables
+      table: Documentation Output Settings
     description: 'Control fabric documentation generation.
 
       '
@@ -569,10 +645,19 @@ keys:
         default: false
   event_handlers:
     $ref: eos_cli_config_gen#/keys/event_handlers
+    documentation_options:
+      filename: Input Variables
+      table: Management Settings
     type: list
   evpn_ebgp_gateway_inter_domain:
+    documentation_options:
+      filename: Input Variables
+      table: EVPN Settings
     type: bool
   evpn_ebgp_gateway_multihop:
+    documentation_options:
+      filename: Input Variables
+      table: EVPN Settings
     description: 'Default of 15, considering a large value to avoid BGP reachability
       issues in very complex DCI networks.
 
@@ -584,6 +669,9 @@ keys:
     - str
     default: 15
   evpn_ebgp_multihop:
+    documentation_options:
+      filename: Input Variables
+      table: EVPN Settings
     description: 'Default of 3, the recommended value for a 3 stage spine and leaf
       topology.
 
@@ -595,6 +683,9 @@ keys:
     - str
     default: 3
   evpn_hostflap_detection:
+    documentation_options:
+      filename: Input Variables
+      table: EVPN Settings
     type: dict
     keys:
       enabled:
@@ -619,6 +710,9 @@ keys:
         convert_types:
         - str
   evpn_import_pruning:
+    documentation_options:
+      filename: Input Variables
+      table: EVPN Settings
     description: 'Enable VPN import pruning (Min. EOS 4.24.2F)
 
       The Route Target extended communities carried by incoming VPN paths will
@@ -631,20 +725,27 @@ keys:
     type: bool
     default: false
   evpn_multicast:
+    documentation_options:
+      filename: Input Variables
+      table: EVPN Settings
     type: bool
     description: "General Configuration required for EVPN Multicast. \"evpn_l2_multicast\"
-      must also be configured under the Network Services (tenants).\nRequires \"underlay_multicast:
-      true\" and IGMP snooping enabled globally (default).\nFor MLAG devices Route
-      Distinguisher must be unique since this feature will create multi-vtep configuration.\nWarning
-      !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP and 722XP\n  The
-      Following default platform setting will be configured: \"platform trident forwarding-table
-      partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072\"\n  All
-      forwarding agents will be restarted when this configuration is applied.\n  You
-      can tune the settings by overridding the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n
+      or \"evpn_l3_multicast\" must also be configured under the Network Services
+      (tenants).\nRequires \"underlay_multicast: true\" and IGMP snooping enabled
+      globally (default).\nFor MLAG devices Route Distinguisher must be unique since
+      this feature will create multi-vtep configuration.\nWarning !!! For Trident3
+      based platforms i.e 7050X3, 7300X3, 720XP and 722XP\n  The Following default
+      platform setting will be configured: \"platform trident forwarding-table partition
+      flexible exact-match 16384 l2-shared 98304 l3-shared 131072\"\n  All forwarding
+      agents will be restarted when this configuration is applied.\n  You can tune
+      the settings by overridding the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n
       \ Please contact an Arista representative for help with determining the appropriate
       values for your environment.\n"
     default: false
   evpn_overlay_bgp_rtc:
+    documentation_options:
+      filename: Input Variables
+      table: EVPN Settings
     description: 'Enable Route Target Membership Constraint Address Family on EVPN
       overlay BGP peerings (Min. EOS 4.25.1F)
 
@@ -654,6 +755,9 @@ keys:
     type: bool
     default: false
   evpn_prevent_readvertise_to_server:
+    documentation_options:
+      filename: Input Variables
+      table: EVPN Settings
     description: 'Configure route-map on eBGP sessions towards route-servers, where
       prefixes with the peer''s ASN in the AS Path are filtered away.
 
@@ -667,6 +771,9 @@ keys:
     type: bool
     default: false
   evpn_rd_type:
+    documentation_options:
+      filename: Input Variables
+      table: EVPN Settings
     type: dict
     deprecation:
       warning: true
@@ -674,6 +781,9 @@ keys:
       removed: true
       remove_in_version: 4.0.0
   evpn_rt_type:
+    documentation_options:
+      filename: Input Variables
+      table: EVPN Settings
     type: dict
     deprecation:
       warning: true
@@ -681,16 +791,25 @@ keys:
       removed: true
       remove_in_version: 4.0.0
   evpn_short_esi_prefix:
+    documentation_options:
+      filename: Input Variables
+      table: EVPN Settings
     description: Configure prefix for "short_esi" values
     type: str
     default: '0000:0000:'
   evpn_vlan_aware_bundles:
+    documentation_options:
+      filename: Input Variables
+      table: EVPN Settings
     description: 'Enable vlan aware bundles for EVPN MAC-VRF
 
       '
     type: bool
     default: false
   fabric_evpn_encapsulation:
+    documentation_options:
+      filename: Input Variables
+      table: EVPN Settings
     description: Should be set to mpls for evpn-mpls scenario.
     valid_values:
     - vxlan
@@ -698,14 +817,23 @@ keys:
     default: vxlan
     type: str
   fabric_name:
+    documentation_options:
+      filename: Input Variables
+      table: Fabric Topology
     description: Fabric Name, required to match Ansible Group name covering all devices
       in the Fabric, **must** be an inventory group name.
     type: str
     required: true
   hardware_counters:
+    documentation_options:
+      filename: Input Variables
+      table: System Settings
     $ref: eos_cli_config_gen#/keys/hardware_counters
     type: dict
   internal_vlan_order:
+    documentation_options:
+      filename: Input Variables
+      table: System Settings
     type: dict
     description: Internal vlan allocation order and range.
     keys:
@@ -738,6 +866,9 @@ keys:
             max: 4094
             required: true
   ipv6_mgmt_destination_networks:
+    documentation_options:
+      filename: Input Variables
+      table: Management Settings
     description: 'List of IPv6 prefixes to configure as static routes towards the
       OOB IPv6 Management interface gateway.
 
@@ -749,12 +880,18 @@ keys:
       type: str
       description: IPv6_network/Mask
   ipv6_mgmt_gateway:
+    documentation_options:
+      filename: Input Variables
+      table: Management Settings
     type: str
     format: ipv6
     description: 'OOB Management interface gateway in IPv6 format.
 
       Used as next-hop for default gateway or static routes defined under ''ipv6_mgmt_destination_networks'''
   is_deployed:
+    documentation_options:
+      filename: Input Variables
+      table: Fabric Settings
     description: 'Is device already deployed in the fabric
 
       When set to false, interfaces toward this device may be shutdown depending on
@@ -767,15 +904,24 @@ keys:
     type: bool
     default: true
   isis_advertise_passive_only:
+    documentation_options:
+      filename: Input Variables
+      table: ISIS Settings
     type: bool
     default: false
   isis_area_id:
+    documentation_options:
+      filename: Input Variables
+      table: ISIS Settings
     type: str
     default: '49.0001'
     convert_types:
     - int
     - float
   isis_default_circuit_type:
+    documentation_options:
+      filename: Input Variables
+      table: ISIS Settings
     type: str
     valid_values:
     - level-1-2
@@ -785,6 +931,9 @@ keys:
     description: These fabric level parameters can be used with core_interfaces running
       ISIS, and may be overridden on link profile or link level.
   isis_default_is_type:
+    documentation_options:
+      filename: Input Variables
+      table: ISIS Settings
     type: str
     valid_values:
     - level-1-2
@@ -792,6 +941,9 @@ keys:
     - level-2
     default: level-2
   isis_default_metric:
+    documentation_options:
+      filename: Input Variables
+      table: ISIS Settings
     type: int
     convert_types:
     - str
@@ -799,11 +951,17 @@ keys:
     description: These fabric level parameters can be used with core_interfaces running
       ISIS, and may be overridden at link profile or link level.
   isis_maximum_paths:
+    documentation_options:
+      filename: Input Variables
+      table: ISIS Settings
     description: Number of path to configure in ECMP for ISIS.
     type: int
     convert_types:
     - str
   isis_ti_lfa:
+    documentation_options:
+      filename: Input Variables
+      table: ISIS Settings
     type: dict
     keys:
       enabled:
@@ -846,9 +1004,15 @@ keys:
       Make sure to configure the variables in a group_vars file covering all devices
       mentioned in the data model.'
   local_users:
+    documentation_options:
+      filename: Input Variables
+      table: Management Settings
     $ref: eos_cli_config_gen#/keys/local_users
     type: list
   mac_address_table:
+    documentation_options:
+      filename: Input Variables
+      table: System Settings
     type: dict
     description: 'MAC address-table aging time
 
@@ -868,6 +1032,9 @@ keys:
         min: 0
         max: 1000000
   management_eapi:
+    documentation_options:
+      filename: Input Variables
+      table: Management Settings
     description: 'Default is HTTPS management eAPI enabled.
 
       The VRF is set to < mgmt_interface_vrf >.
@@ -884,6 +1051,9 @@ keys:
       default_services:
         type: bool
   mgmt_destination_networks:
+    documentation_options:
+      filename: Input Variables
+      table: Management Interface Settings
     type: list
     description: 'List of IPv4 prefixes to configure as static routes towards the
       OOB Management interface gateway.
@@ -893,29 +1063,47 @@ keys:
       type: str
       description: IPv4_address/Mask
   mgmt_gateway:
+    documentation_options:
+      filename: Input Variables
+      table: Management Interface Settings
     type: str
     description: 'OOB Management interface gateway in IPv4 format.
 
       Used as next-hop for default gateway or static routes defined under ''mgmt_destination_networks'''
   mgmt_interface:
+    documentation_options:
+      filename: Input Variables
+      table: Management Interface Settings
     type: str
     default: Management1
     description: OOB Management interface.
   mgmt_interface_description:
+    documentation_options:
+      filename: Input Variables
+      table: Management Interface Settings
     type: str
     description: 'Management interface description
 
       '
     default: oob_management
   mgmt_interface_vrf:
+    documentation_options:
+      filename: Input Variables
+      table: Management Interface Settings
     type: str
     default: MGMT
     description: OOB Management VRF.
   mgmt_vrf_routing:
+    documentation_options:
+      filename: Input Variables
+      table: Management Interface Settings
     type: bool
     default: false
     description: Configure IP routing for the OOB Management VRF.
   mlag_ibgp_peering_vrfs:
+    documentation_options:
+      filename: Input Variables
+      table: Overlay Settings
     type: dict
     description: 'On mlag leafs, an SVI interface is defined per vrf, to establish
       iBGP peering (required when there are MLAG leafs in topology)
@@ -939,6 +1127,9 @@ keys:
         max: 4093
         default: 3000
   name_servers:
+    documentation_options:
+      filename: Input Variables
+      table: Management Settings
     type: list
     description: List of DNS servers. The VRF is set to < mgmt_interface_vrf >.
     items:
@@ -1229,6 +1420,9 @@ keys:
               type: str
               description: Path to J2 template - default inherited from templates.interface_descriptions.vtep_loopback_interface.
   only_local_vlan_trunk_groups:
+    documentation_options:
+      filename: Input Variables
+      table: Fabric Settings
     type: bool
     description: 'A vlan can have many trunk_groups assigned. To avoid unneeded configuration
       changes on all leaf
@@ -1245,6 +1439,9 @@ keys:
       '
     default: false
   overlay_cvx_servers:
+    documentation_options:
+      filename: Input Variables
+      table: Overlay Settings
     description: 'List of CVX vxlan overlay controllers.
 
       Required if overlay_routing_protocol == CVX.
@@ -1258,6 +1455,9 @@ keys:
       type: str
       description: '''inventory_hostname'' of CVX server'
   overlay_her_flood_list_per_vni:
+    documentation_options:
+      filename: Input Variables
+      table: Overlay Settings
     type: bool
     description: 'When using Head-End Replication, configure flood-lists per VNI.
 
@@ -1272,6 +1472,9 @@ keys:
       '
     default: false
   overlay_her_flood_list_scope:
+    documentation_options:
+      filename: Input Variables
+      table: Overlay Settings
     type: str
     description: 'When using Head-End Replication, set the scope of flood-lists to
       Fabric or DC.
@@ -1291,9 +1494,15 @@ keys:
     - dc
     default: fabric
   overlay_loopback_description:
+    documentation_options:
+      filename: Input Variables
+      table: Overlay Settings
     description: Customize the description on overlay interface Loopback0.
     type: str
   overlay_mlag_rfc5549:
+    documentation_options:
+      filename: Input Variables
+      table: Overlay Settings
     description: 'IPv6 Unnumbered for MLAG iBGP connections.
 
       Requires "underlay_rfc5549: true".
@@ -1302,6 +1511,9 @@ keys:
     type: bool
     default: false
   overlay_rd_type:
+    documentation_options:
+      filename: Input Variables
+      table: Overlay Settings
     type: dict
     description: 'Specify RD type.
 
@@ -1339,6 +1551,9 @@ keys:
 
           Total value of admin_subfield + admin_subfield_offset must be <= 4294967295.'
   overlay_routing_protocol:
+    documentation_options:
+      filename: Input Variables
+      table: Overlay Settings
     description: "- The following overlay routing protocols are supported:\n  - eBGP:
       Configures fabric with eBGP, default for l3ls-evpn design.\n  - iBGP: Configured
       fabric with iBGP, only supported with OSPF or ISIS variants in underlay, default
@@ -1356,6 +1571,9 @@ keys:
     default: ebgp
     convert_to_lower_case: true
   overlay_routing_protocol_address_family:
+    documentation_options:
+      filename: Input Variables
+      table: Overlay Settings
     type: str
     description: 'When set to `ipv6`, enable overlay EVPN peering with IPv6 addresses.
 
@@ -1368,6 +1586,9 @@ keys:
     - ipv6
     default: ipv4
   overlay_rt_type:
+    documentation_options:
+      filename: Input Variables
+      table: Overlay Settings
     type: dict
     description: 'Specify RT type.
 
@@ -1395,6 +1616,9 @@ keys:
           '
         default: mac_vrf_id
   p2p_uplinks_mtu:
+    documentation_options:
+      filename: Input Variables
+      table: Fabric Settings
     description: Point to Point Links MTU
     type: int
     convert_types:
@@ -1403,9 +1627,15 @@ keys:
     max: 65535
     default: 9214
   p2p_uplinks_qos_profile:
+    documentation_options:
+      filename: Input Variables
+      table: Fabric Settings
     description: QOS Profile assigned on all infrastructure links
     type: str
   platform_settings:
+    documentation_options:
+      filename: Input Variables
+      table: Platform Settings
     type: list
     items:
       type: dict
@@ -1477,6 +1707,9 @@ keys:
           description: EOS CLI rendered directly on the root level of the final EOS
             configuration
   platform_speed_groups:
+    documentation_options:
+      filename: Input Variables
+      table: Platform Settings
     type: list
     primary_key: platform
     secondary_key: speeds
@@ -1506,6 +1739,9 @@ keys:
                   convert_types:
                   - str
   pod_name:
+    documentation_options:
+      filename: Input Variables
+      table: Fabric Topology
     description: 'POD Name, only used in Fabric Documentation (Optional), fallback
       to dc_name and then to fabric_name.
 
@@ -1583,6 +1819,9 @@ keys:
           valid_values:
           - ipv4
   queue_monitor_length:
+    documentation_options:
+      filename: Input Variables
+      table: System Settings
     $ref: eos_cli_config_gen#/keys/queue_monitor_length
     type: dict
     keys:
@@ -1595,6 +1834,9 @@ keys:
 
           `platform_settings.[].feature_support.queue_monitor_length_notify` setting.'
   redundancy:
+    documentation_options:
+      filename: Input Variables
+      table: System Settings
     type: dict
     description: Redundancy for chassis platforms with dual supervisors | Optional
     keys:
@@ -1604,6 +1846,9 @@ keys:
         - sso
         - rpr
   serial_number:
+    documentation_options:
+      filename: Input Variables
+      table: System Settings
     description: 'Serial Number of the device.
 
       Used for documentation purpose in the fabric documentation as can also be used
@@ -1618,6 +1863,9 @@ keys:
     convert_types:
     - int
   shutdown_interfaces_towards_undeployed_peers:
+    documentation_options:
+      filename: Input Variables
+      table: Fabric Settings
     type: bool
     default: false
     description: '- It is possible to provision configurations for a complete topology
@@ -1652,6 +1900,9 @@ keys:
       - Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices
       are not present in the network.'
   snmp_settings:
+    documentation_options:
+      filename: Input Variables
+      table: Management Settings
     type: dict
     description: Set SNMP settings (optional).
     keys:
@@ -1776,6 +2027,9 @@ keys:
             svi_profiles can refer to another svi_profile to inherit settings in up
             to two levels (svi -> svi_profile -> svi_parent_profile).'
   system_mac_address:
+    documentation_options:
+      filename: Input Variables
+      table: System Settings
     type: str
     description: 'Set to the same MAC address as available in "show version" on the
       device.
@@ -1784,12 +2038,21 @@ keys:
 
       If both are set, the setting under "Fabric Topology" takes precedence.'
   terminattr_disable_aaa:
+    documentation_options:
+      filename: Input Variables
+      table: CloudVision Settings
     type: bool
     default: false
   terminattr_ingestexclude:
+    documentation_options:
+      filename: Input Variables
+      table: CloudVision Settings
     type: str
     default: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
   terminattr_ingestgrpcurl_port:
+    documentation_options:
+      filename: Input Variables
+      table: CloudVision Settings
     type: int
     convert_types:
     - str
@@ -1800,12 +2063,21 @@ keys:
       The port number is always 443 when using CloudVision as a Service, so this value
       is ignored.'
   terminattr_smashexcludes:
+    documentation_options:
+      filename: Input Variables
+      table: CloudVision Settings
     type: str
     default: ale,flexCounter,hardware,kni,pulse,strata
   timezone:
+    documentation_options:
+      filename: Input Variables
+      table: Management Settings
     type: str
     description: Clock timezone like "CET" or "US/Pacific".
   trunk_groups:
+    documentation_options:
+      filename: Input Variables
+      table: Fabric Settings
     type: dict
     keys:
       mlag:
@@ -1838,6 +2110,9 @@ keys:
             type: str
             default: UPLINK
   type:
+    documentation_options:
+      filename: Input Variables
+      table: Node Type Settings
     type: str
     dynamic_valid_values: node_type_keys.type
     description: 'The `type:` variable needs to be defined for each device in the
@@ -1845,6 +2120,9 @@ keys:
 
       This is leveraged to load the appropriate template to generate the configuration.'
   underlay_filter_peer_as:
+    documentation_options:
+      filename: Input Variables
+      table: Fabric Settings
     type: bool
     description: 'Configure route-map on eBGP sessions towards underlay peers, where
       prefixes with the peer''s ASN in the AS Path are filtered away.
@@ -1860,6 +2138,9 @@ keys:
       '
     default: false
   underlay_filter_redistribute_connected:
+    documentation_options:
+      filename: Input Variables
+      table: Fabric Settings
     description: 'Filter redistribution of connected into the underlay routing protocol.
 
       Only applicable when overlay_routing_protocol != ''none'' and underlay_routing_protocol
@@ -1872,6 +2153,9 @@ keys:
     default: true
     type: bool
   underlay_ipv6:
+    documentation_options:
+      filename: Input Variables
+      table: Fabric Settings
     description: 'This feature allows IPv6 underlay routing protocol with RFC5549
       addresses to be used along with IPv4 advertisements as VXLAN tunnel endpoints.
 
@@ -1882,9 +2166,15 @@ keys:
     type: bool
     default: false
   underlay_isis_instance_name:
+    documentation_options:
+      filename: Input Variables
+      table: ISIS Settings
     description: Default -> "EVPN_UNDERLAY" for l3ls, "CORE" for mpls
     type: str
   underlay_multicast:
+    documentation_options:
+      filename: Input Variables
+      table: Fabric Settings
     type: bool
     description: 'Enable Multicast in the underlay on all p2p uplink interfaces and
       mlag l3 peer interface.
@@ -1900,25 +2190,40 @@ keys:
       '
     default: false
   underlay_ospf_area:
+    documentation_options:
+      filename: Input Variables
+      table: OSPF Settings
     type: str
     convert_types:
     - int
     format: ipv4
     default: 0.0.0.0
   underlay_ospf_bfd_enable:
+    documentation_options:
+      filename: Input Variables
+      table: OSPF Settings
     type: bool
     default: false
   underlay_ospf_max_lsa:
+    documentation_options:
+      filename: Input Variables
+      table: OSPF Settings
     type: int
     convert_types:
     - str
     default: 12000
   underlay_ospf_process_id:
+    documentation_options:
+      filename: Input Variables
+      table: OSPF Settings
     type: int
     convert_types:
     - str
     default: 100
   underlay_rfc5549:
+    documentation_options:
+      filename: Input Variables
+      table: Fabric Settings
     description: 'Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered
 
       Requires "underlay_routing_protocol: ebgp"
@@ -1927,6 +2232,9 @@ keys:
     type: bool
     default: false
   underlay_routing_protocol:
+    documentation_options:
+      filename: Input Variables
+      table: Fabric Settings
     type: str
     convert_to_lower_case: true
     description: "- The following underlay routing protocols are supported:\n  - EBGP
@@ -1942,6 +2250,9 @@ keys:
     - isis-sr-ldp
     - ospf-ldp
   uplink_ptp:
+    documentation_options:
+      filename: Input Variables
+      table: Fabric Settings
     description: Enable PTP on all infrastructure links
     type: dict
     keys:
@@ -1949,6 +2260,9 @@ keys:
         type: bool
         default: false
   vtep_vvtep_ip:
+    documentation_options:
+      filename: Input Variables
+      table: Overlay Settings
     description: 'IP Address used as Virtual VTEP. Will be configured as secondary
       IP on Loopback1.
 
@@ -1957,6 +2271,9 @@ keys:
       '
     type: str
   vxlan_vlan_aware_bundles:
+    documentation_options:
+      filename: Input Variables
+      table: EVPN Settings
     deprecation:
       warning: true
       new_key: evpn_vlan_aware_bundles
@@ -1967,28 +2284,22 @@ keys:
 dynamic_keys:
   connected_endpoints_keys.key:
     $ref: '#/$defs/connected_endpoints'
+    type: list
+    display_name: Connected Endpoints
   network_services_keys.name:
     $ref: '#/$defs/network_services'
+    type: list
+    display_name: Network Services
   node_type_keys.key:
     $ref: '#/$defs/node_type'
+    type: dict
+    documentation_options:
+      filename: Input Variables
+      table: Node Type Settings
 $defs:
   adapter_config:
     type: dict
     keys:
-      endpoint_ports:
-        type: list
-        description: 'Endpoint ports is used for description, required unless description
-          is set.
-
-          The lists `endpoint_ports`, `switch_ports`, and `switches` must have the
-          same length.
-
-          Each list item is one switchport.
-
-          '
-        items:
-          type: str
-          description: Interface name.
       speed:
         type: str
         description: 'Set adapter speed: `< interface_speed >`, `forced < interface_speed
@@ -2254,9 +2565,10 @@ $defs:
             type: dict
             keys:
               level:
-                type: int
+                type: str
                 convert_types:
-                - str
+                - int
+                - float
                 description: Configure maximum storm-control level.
               unit:
                 type: str
@@ -2619,6 +2931,20 @@ $defs:
                 items:
                   type: str
                   description: Device
+              endpoint_ports:
+                type: list
+                description: 'Endpoint ports is used for description, required unless
+                  description is set.
+
+                  The lists `endpoint_ports`, `switch_ports`, and `switches` must
+                  have the same length.
+
+                  Each list item is one switchport.
+
+                  '
+                items:
+                  type: str
+                  description: Interface name.
               server_ports:
                 type: list
                 deprecation:
@@ -2937,7 +3263,18 @@ $defs:
           primary_key: name
           convert_types:
           - dict
-          description: 'VRF "default" is supported under network-services. Currently
+          description: 'VRFs will only be configured on a node if any of the underlying
+            objects like `svis` or `l3_interfaces` apply to the node.
+
+
+            It is recommended to only define a VRF in one Tenant. If the same VRF
+            name is used across multiple tenants and those tenants
+
+            are accepted by `filter.tenants` on the node, any object set under the
+            duplicate VRFs must either be unique or be an exact match.
+
+
+            VRF "default" is partially supported under network-services. Currently
             the supported options for "default" vrf are route-target,
 
             route-distinguisher settings, structured_config, raw_eos_cli in bgp and
@@ -5268,13 +5605,14 @@ $defs:
 
           ipv6 address virtuals to configure VXLAN Anycast IP address (Optional)
 
-          The below "ipv6_address_virtual" key will be deprecated in AVD v4.0 in favor
-          of the new "ipv6_address_virtuals"
-
           If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all
           addresses will be configured
 
           '
+        deprecation:
+          warning: true
+          remove_in_version: 5.0.0
+          new_key: ipv6_address_virtuals
       ipv6_address_virtuals:
         type: list
         description: 'IPv6 VXLAN Anycast IP addresses

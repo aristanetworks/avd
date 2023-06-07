@@ -56,14 +56,16 @@ class OverlayMixin:
         return None
 
     @cached_property
-    def overlay(self: EosDesignsFacts) -> dict:
+    def overlay(self: EosDesignsFacts) -> dict | None:
         """
         Exposed in avd_switch_facts
         """
-        return {
-            "peering_address": self.shared_utils.overlay_peering_address,
-            "evpn_mpls": self.shared_utils.overlay_evpn_mpls,
-        }
+        if self.shared_utils.underlay_router is True:
+            return {
+                "peering_address": self.shared_utils.overlay_peering_address,
+                "evpn_mpls": self.shared_utils.overlay_evpn_mpls,
+            }
+        return None
 
     @cached_property
     def vtep_ip(self: EosDesignsFacts) -> str | None:

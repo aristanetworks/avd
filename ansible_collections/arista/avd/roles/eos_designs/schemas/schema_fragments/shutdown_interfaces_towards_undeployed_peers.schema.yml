@@ -4,6 +4,9 @@
 type: dict
 keys:
   shutdown_interfaces_towards_undeployed_peers:
+    documentation_options:
+      filename: Input Variables
+      table: Fabric Settings
     type: bool
     default: false
     description: |

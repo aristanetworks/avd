@@ -943,33 +943,7 @@ keys:
         description: 'The default compression scheme when streaming to CloudVision
           is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.
 
-          There is no need to change the compression scheme.
-
-          '
-      ingestauth_key:
-        type: str
-        description: 'Deprecated key. Use `cvauth` instead.
-
-          '
-      ingestgrpcurl:
-        type: dict
-        description: 'Deprecated key. Use `cvaddrs` instead.
-
-          '
-        keys:
-          ips:
-            type: list
-            items:
-              type: str
-          port:
-            type: int
-            convert_types:
-            - str
-      ingestvrf:
-        description: 'Deprecated key. Use `cvvrf` instead.
-
-          '
-        type: str
+          There is no need to change the compression scheme.'
   daemons:
     type: list
     primary_key: name
@@ -7056,13 +7030,16 @@ keys:
               type: str
               description: 'Peer-filter name
 
-                note: `bgp_listen_range_prefix` and `peer_filter` will be deprecated
-                in AVD v4.0
+                note: `bgp_listen_range_prefix` and `peer_filter` should not be mixed
+                with
 
-                These should not be mixed with the new `listen_ranges` key above to
-                avoid conflicts.
+                the new `listen_ranges` key above to avoid conflicts.
 
                 '
+              deprecation:
+                warning: true
+                remove_in_version: 5.0.0
+                new_key: listen_ranges
             next_hop_unchanged:
               type: bool
             update_source:
@@ -7166,13 +7143,16 @@ keys:
               type: str
               description: 'IP prefix range
 
-                note: `bgp_listen_range_prefix` and `peer_filter` will be deprecated
-                in AVD v4.0
+                note: `bgp_listen_range_prefix` and `peer_filter` should not be mixed
+                with
 
-                These should not be mixed with the new `listen_ranges` key above to
-                avoid conflicts.
+                the new `listen_ranges` key above to avoid conflicts.
 
                 '
+              deprecation:
+                warning: true
+                remove_in_version: 5.0.0
+                new_key: listen_ranges
             session_tracker:
               type: str
       neighbors:
@@ -8462,6 +8442,17 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name
+                      next_hop:
+                        type: dict
+                        keys:
+                          address_family_ipv6:
+                            type: dict
+                            keys:
+                              enabled:
+                                type: bool
+                                required: true
+                              originate:
+                                type: bool
                 peer_groups:
                   type: list
                   primary_key: name
@@ -11251,13 +11242,15 @@ keys:
           description: IPv6_address/Mask
         ipv6_virtual_router_address:
           type: str
-          description: '"ipv6_virtual_router_address" key will be deprecated in AVD
-            v4.0
+          description: '"ipv6_virtual_router_address" should not be mixed with
 
-            This should not be mixed with the new "ipv6_virtual_router_addresses"
-            key below to avoid conflicts.
+            the new "ipv6_virtual_router_addresses" key below to avoid conflicts.
 
             '
+          deprecation:
+            warning: true
+            remove_in_version: 5.0.0
+            new_key: ipv6_virtual_router_addresses
         ipv6_virtual_router_addresses:
           type: list
           description: Improved "VARPv6" data model to support multiple VARPv6 addresses.
@@ -11562,11 +11555,14 @@ keys:
                     description: Virtual IPv6 address
         vrrp:
           type: dict
-          description: '"vrrp" key will be deprecated in AVD v4.0
-
-            This should not be mixed with the new "vrrp_ids" key above to avoid conflicts.
+          description: '"vrrp" should not be mixed with the new "vrrp_ids" key above
+            to avoid conflicts.
 
             '
+          deprecation:
+            warning: true
+            remove_in_version: 5.0.0
+            new_key: vrrp_ids
           keys:
             virtual_router:
               type: str

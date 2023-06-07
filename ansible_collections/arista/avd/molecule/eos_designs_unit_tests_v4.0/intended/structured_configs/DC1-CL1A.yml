@@ -11,9 +11,6 @@ router_bgp:
     ecmp: 4
   updates:
     wait_install: true
-  graceful_restart:
-    enabled: true
-    restart_time: 300
   peer_groups:
   - name: MLAG-PEERS
     type: ipv4
@@ -442,8 +439,8 @@ router_bfd:
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
-  - enabled: false
-    id: 120
+  - id: 120
+    enabled: false
 vxlan_interface:
   Vxlan1:
     description: DC1-CL1A_VTEP

@@ -14,7 +14,7 @@ spine:
 
   nodes:
     # This is the uplink switch for node-group "duplicate-ip-address-router-bgp"
-    duplicate-ip-address-uplink-switch-router-bgp:
+    - name: duplicate-ip-address-uplink-switch-router-bgp
       id: 1
       mgmt_ip: 172.16.1.11/24
 

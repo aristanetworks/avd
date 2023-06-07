@@ -10,13 +10,13 @@ spine:
       enabled: true
 
   nodes:
-    ptp-tests-spine1:
+    - name: ptp-tests-spine1
       id: 1
       mgmt_ip: 192.168.0.11/24
       ptp:
         clock_identity: "00:00:00:00:00:00"
 
-    ptp-tests-spine2:
+    - name: ptp-tests-spine2
       id: 2
       mgmt_ip: 192.168.0.21/24
       ptp:
@@ -47,7 +47,7 @@ spine:
         priority1: 20
         priority2: 10
     # Test with "auto_clock_identity: false"
-    ptp-tests-spine3:
+    - name: ptp-tests-spine3
       id: 3
       mgmt_ip: 192.168.0.31/24
       ptp:

@@ -11,9 +11,6 @@ router_bgp:
     ecmp: 4
   updates:
     wait_install: true
-  graceful_restart:
-    enabled: true
-    restart_time: 300
   peer_groups:
   - name: MPLS-OVERLAY-PEERS
     type: mpls
@@ -94,15 +91,15 @@ router_bgp:
         - '65000:20'
     redistribute_routes:
     - source_protocol: connected
+    address_family_ipv4:
+      neighbors:
+      - ip_address: 192.168.48.1
+        activate: true
     neighbors:
     - ip_address: 192.168.48.1
       description: TENANT_B_CPE_SITE3
       password: toZKiUFLVUTU4hdS5V8F4Q==
       remote_as: '65201'
-    address_family_ipv4:
-      neighbors:
-      - ip_address: 192.168.48.1
-        activate: true
     updates:
       wait_install: true
   vlans:
@@ -304,11 +301,15 @@ ethernet_interfaces:
   encapsulation_dot1q_vlan: 100
   vrf: TENANT_B_WAN
 - name: Ethernet3
+  type: port-channel-member
+  peer_type: point_to_point_service
   shutdown: false
   channel_group:
     id: 3
     mode: active
 - name: Ethernet4
+  type: port-channel-member
+  peer_type: point_to_point_service
   shutdown: false
   channel_group:
     id: 3
@@ -399,57 +400,57 @@ vlan_interfaces:
 port_channel_interfaces:
 - name: Port-Channel3.1000
   type: l2dot1q
+  peer_type: point_to_point_service
   encapsulation_vlan:
     client:
       dot1q:
         vlan: 1000
     network:
       client: true
-  peer_type: l3_interface
   shutdown: false
 - name: Port-Channel3.1001
   type: l2dot1q
+  peer_type: point_to_point_service
   encapsulation_vlan:
     client:
       dot1q:
         vlan: 1001
     network:
       client: true
-  peer_type: l3_interface
   shutdown: false
 - name: Port-Channel3.1002
   type: l2dot1q
+  peer_type: point_to_point_service
   encapsulation_vlan:
     client:
       dot1q:
         vlan: 1002
     network:
       client: true
-  peer_type: l3_interface
   shutdown: false
 - name: Port-Channel3.1003
   type: l2dot1q
+  peer_type: point_to_point_service
   encapsulation_vlan:
     client:
       dot1q:
         vlan: 1003
     network:
       client: true
-  peer_type: l3_interface
   shutdown: false
 - name: Port-Channel3.1004
   type: l2dot1q
+  peer_type: point_to_point_service
   encapsulation_vlan:
     client:
       dot1q:
         vlan: 1004
     network:
       client: true
-  peer_type: l3_interface
   shutdown: false
 - name: Port-Channel3
   type: routed
-  peer_type: l3_interface
+  peer_type: system
   shutdown: false
   evpn_ethernet_segment:
     identifier: 0000:0000:0102:0000:0034
