@@ -133,7 +133,7 @@ keys:
     documentation_options:
       filename: Input Variables
       table: BGP Settings
-    description: 'Graceful BGP restart allows a BGP speaker with separate control
+    description: 'BGP graceful-restart allows a BGP speaker with separate control
       plane and data plane processing to continue forwarding traffic during a BGP
       restart.
 
