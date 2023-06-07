@@ -191,12 +191,6 @@ keys:
             Override interface_descriptions templates
             If description templates use Jinja2, they have to strip whitespaces using {%- -%} on any code blocks.
           keys:
-            python_module:
-              type: str
-              description: Python Module to import for interface descriptions - default inherited from templates.interface_descriptions.python_module
-            python_class_name:
-              type: str
-              description: Name of Python Class to import for interface descriptions - default inherited from templates.interface_descriptions.python_class_name
             underlay_ethernet_interfaces:
               type: str
               description: Path to J2 template - default inherited from templates.interface_descriptions.underlay_ethernet_interfaces.
