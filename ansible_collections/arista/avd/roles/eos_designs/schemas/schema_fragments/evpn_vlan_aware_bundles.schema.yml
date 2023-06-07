@@ -5,9 +5,7 @@ type: dict
 keys:
   evpn_vlan_aware_bundles:
     documentation_options:
-      filename: Input Variables
       table: EVPN Settings
-    description: |
-      Enable vlan aware bundles for EVPN MAC-VRF
+    description: Enable vlan aware bundles for EVPN MAC-VRF.
     type: bool
     default: false

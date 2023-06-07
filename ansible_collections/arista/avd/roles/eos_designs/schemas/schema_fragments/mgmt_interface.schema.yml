@@ -5,7 +5,6 @@ type: dict
 keys:
   mgmt_interface:
     documentation_options:
-      filename: Input Variables
       table: Management Interface Settings
     type: str
     default: Management1

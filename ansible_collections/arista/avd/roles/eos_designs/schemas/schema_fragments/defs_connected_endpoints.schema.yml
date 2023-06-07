@@ -65,5 +65,4 @@ $defs:
                   remove_in_version: "4.0.0"
                 items:
                   type: str
-                  description: |
-                    Used for documentation purposes
+                  description: Used for documentation purposes.

@@ -5,7 +5,6 @@ type: dict
 keys:
   fabric_evpn_encapsulation:
     documentation_options:
-      filename: Input Variables
       table: EVPN Settings
     description: Should be set to mpls for evpn-mpls scenario.
     valid_values: ["vxlan", "mpls"]

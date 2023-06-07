@@ -5,9 +5,8 @@ type: dict
 keys:
   p2p_uplinks_mtu:
     documentation_options:
-      filename: Input Variables
       table: Fabric Settings
-    description: Point to Point Links MTU
+    description: Point to Point Links MTU.
     type: int
     convert_types:
       - str

@@ -5,7 +5,6 @@ type: dict
 keys:
   type:
     documentation_options:
-      filename: Input Variables
       table: Node Type Settings
     type: str
     dynamic_valid_values: "node_type_keys.type"

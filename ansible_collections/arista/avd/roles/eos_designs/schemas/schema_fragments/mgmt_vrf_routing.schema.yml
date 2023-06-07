@@ -5,7 +5,6 @@ type: dict
 keys:
   mgmt_vrf_routing:
     documentation_options:
-      filename: Input Variables
       table: Management Interface Settings
     type: bool
     default: False

@@ -5,7 +5,6 @@ type: dict
 keys:
   overlay_her_flood_list_per_vni:
     documentation_options:
-      filename: Input Variables
       table: Overlay Settings
     type: bool
     description: |

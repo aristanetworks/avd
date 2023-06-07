@@ -5,7 +5,6 @@ type: dict
 keys:
   custom_structured_configuration_list_merge:
     documentation_options:
-      filename: Input Variables
       table: Custom Structured Configuration
     type: str
     description: |

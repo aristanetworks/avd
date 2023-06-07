@@ -5,7 +5,6 @@ type: dict
 keys:
   internal_vlan_order:
     documentation_options:
-      filename: Input Variables
       table: System Settings
     type: dict
     description: Internal vlan allocation order and range.
@@ -13,8 +12,8 @@ keys:
       allocation:
         type: str
         valid_values:
-        - ascending
-        - descending
+          - ascending
+          - descending
         default: ascending
         required: true
       range:
@@ -23,7 +22,7 @@ keys:
           beginning:
             type: int
             convert_types:
-            - str
+              - str
             description: First VLAN ID.
             default: 1006
             min: 2
@@ -32,7 +31,7 @@ keys:
           ending:
             type: int
             convert_types:
-            - str
+              - str
             description: Last VLAN ID.
             default: 1199
             min: 2

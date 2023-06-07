@@ -5,7 +5,6 @@ type: dict
 keys:
   overlay_routing_protocol_address_family:
     documentation_options:
-      filename: Input Variables
       table: Overlay Settings
     type: str
     description: |

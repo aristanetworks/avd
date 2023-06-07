@@ -5,7 +5,6 @@ type: dict
 keys:
   overlay_cvx_servers:
     documentation_options:
-      filename: Input Variables
       table: Overlay Settings
     description: |
       List of CVX vxlan overlay controllers.

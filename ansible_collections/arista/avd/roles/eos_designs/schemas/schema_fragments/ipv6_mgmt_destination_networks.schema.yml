@@ -5,7 +5,6 @@ type: dict
 keys:
   ipv6_mgmt_destination_networks:
     documentation_options:
-      filename: Input Variables
       table: Management Settings
     description: |
       List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface gateway.
@@ -13,4 +12,4 @@ keys:
     type: list
     items:
       type: str
-      description: IPv6_network/Mask
+      description: IPv6_network/Mask.

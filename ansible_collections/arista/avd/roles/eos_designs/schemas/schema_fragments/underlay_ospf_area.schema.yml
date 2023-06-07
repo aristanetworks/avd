@@ -5,7 +5,6 @@ type: dict
 keys:
   underlay_ospf_area:
     documentation_options:
-      filename: Input Variables
       table: OSPF Settings
     type: str
     convert_types:

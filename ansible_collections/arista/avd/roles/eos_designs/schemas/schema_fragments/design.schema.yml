@@ -5,7 +5,6 @@ type: dict
 keys:
   design:
     documentation_options:
-      filename: Input Variables
       table: Fabric Settings
     type: dict
     keys:

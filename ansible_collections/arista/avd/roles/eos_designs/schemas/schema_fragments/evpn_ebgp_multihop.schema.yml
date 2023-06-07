@@ -5,7 +5,6 @@ type: dict
 keys:
   evpn_ebgp_multihop:
     documentation_options:
-      filename: Input Variables
       table: EVPN Settings
     description: |
       Default of 3, the recommended value for a 3 stage spine and leaf topology.

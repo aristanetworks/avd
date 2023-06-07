@@ -28,15 +28,14 @@ $defs:
               System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".
               Set to the same MAC address as available in "show version" on the device.
               "system_mac_address" can also be set directly as a hostvar.
-              If both are set, the setting under "Fabric Topology" takes precedence.
+              If both are set, the setting under node type settings takes precedence.
           serial_number:
             type: str
             description: |
-              Set to the Serial Number of the device
-              For  now only used for documentation purpose in the fabric documentation
-              and part of the structured_config
+              Set to the Serial Number of the device.
+              Only used for documentation purpose in the fabric documentation and part of the structured_config.
               "serial_number" can also be set directly as a hostvar.
-              If both are set, the setting under "Fabric Topology" takes precedence.
+              If both are set, the setting under node type settings takes precedence.
           rack:
             description: Rack that the switch is located in (only used in snmp_settings location).
             type: str
@@ -139,7 +138,7 @@ $defs:
               type: str
               pattern: "Ethernet[\\d/]+"
           uplink_switch_interfaces:
-            description: Interfaces located on uplink switches
+            description: Interfaces located on uplink switches.
             type: list
             items:
               type: str
@@ -344,7 +343,7 @@ $defs:
                   - all
               always_include_vrfs_in_tenants:
                 description: |
-                  List of tenants where VRFs will be configured even if VLANs are not included in tags
+                  List of tenants where VRFs will be configured even if VLANs are not included in tags.
                   Useful for L3 "border" leaf.
                 type: list
                 items:

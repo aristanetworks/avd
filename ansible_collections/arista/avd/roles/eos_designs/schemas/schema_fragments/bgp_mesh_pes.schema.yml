@@ -5,7 +5,6 @@ type: dict
 keys:
   bgp_mesh_pes:
     documentation_options:
-      filename: Input Variables
       table: Overlay Settings
     type: bool
     default: false

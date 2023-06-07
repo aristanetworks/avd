@@ -5,7 +5,6 @@ type: dict
 keys:
   default_igmp_snooping_enabled:
     documentation_options:
-      filename: Input Variables
       table: System Settings
     description: |
       When set to false, disables IGMP snooping at fabric level and overrides per vlan settings.

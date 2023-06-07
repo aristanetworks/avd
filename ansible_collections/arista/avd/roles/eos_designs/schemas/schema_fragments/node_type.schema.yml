@@ -7,5 +7,4 @@ dynamic_keys:
     $ref: "#/$defs/node_type"
     type: dict
     documentation_options:
-      filename: Input Variables
       table: Node Type Settings

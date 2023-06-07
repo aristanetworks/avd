@@ -5,7 +5,6 @@ type: dict
 keys:
   evpn_prevent_readvertise_to_server:
     documentation_options:
-      filename: Input Variables
       table: EVPN Settings
     description: |
       Configure route-map on eBGP sessions towards route-servers, where prefixes with the peer's ASN in the AS Path are filtered away.

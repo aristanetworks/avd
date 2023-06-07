@@ -30,7 +30,7 @@
     },
     "bfd_multihop": {
       "type": "object",
-      "description": "BFD Multihop tuning",
+      "description": "BFD Multihop tuning.",
       "properties": {
         "interval": {
           "type": "integer",
@@ -61,7 +61,7 @@
       "title": "BFD Multihop"
     },
     "bgp_as": {
-      "description": "AS number to use to configure overlay when \"overlay_routing_protocol\" == ibgp",
+      "description": "AS number to use to configure overlay when \"overlay_routing_protocol\" == ibgp.",
       "type": "string",
       "title": "BGP As"
     },
@@ -105,7 +105,7 @@
       "title": "BGP Distance"
     },
     "bgp_ecmp": {
-      "description": "Maximum ECMP for BGP multi-path",
+      "description": "Maximum ECMP for BGP multi-path.",
       "type": "integer",
       "default": 4,
       "title": "BGP Ecmp"
@@ -139,7 +139,7 @@
       "title": "BGP Graceful Restart"
     },
     "bgp_maximum_paths": {
-      "description": "Maximum Paths for BGP multi-path",
+      "description": "Maximum Paths for BGP multi-path.",
       "type": "integer",
       "default": 4,
       "minimum": 1,
@@ -172,7 +172,7 @@
             },
             "structured_config": {
               "type": "object",
-              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
+              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen.",
               "title": "Structured Config"
             }
           },
@@ -198,7 +198,7 @@
             },
             "structured_config": {
               "type": "object",
-              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
+              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen.",
               "title": "Structured Config"
             }
           },
@@ -224,7 +224,7 @@
             },
             "structured_config": {
               "type": "object",
-              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
+              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen.",
               "title": "Structured Config"
             }
           },
@@ -250,7 +250,7 @@
             },
             "structured_config": {
               "type": "object",
-              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
+              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen.",
               "title": "Structured Config"
             }
           },
@@ -276,7 +276,7 @@
             },
             "structured_config": {
               "type": "object",
-              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
+              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen.",
               "title": "Structured Config"
             }
           },
@@ -302,7 +302,7 @@
             },
             "structured_config": {
               "type": "object",
-              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
+              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen.",
               "title": "Structured Config"
             }
           },
@@ -328,7 +328,7 @@
             },
             "structured_config": {
               "type": "object",
-              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen",
+              "description": "Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen.",
               "title": "Structured Config"
             }
           },
@@ -446,7 +446,7 @@
               },
               "ip_pool": {
                 "type": "string",
-                "description": "P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link",
+                "description": "P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link.",
                 "title": "IP Pool"
               },
               "subnet": {
@@ -569,7 +569,7 @@
                   "enabled": {
                     "type": "boolean",
                     "default": false,
-                    "description": "Enable PTP",
+                    "description": "Enable PTP.",
                     "title": "Enabled"
                   }
                 },
@@ -680,7 +680,7 @@
               },
               "ip_pool": {
                 "type": "string",
-                "description": "P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link",
+                "description": "P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link.",
                 "title": "IP Pool"
               },
               "subnet": {
@@ -794,7 +794,7 @@
                   "enabled": {
                     "type": "boolean",
                     "default": false,
-                    "description": "Enable PTP",
+                    "description": "Enable PTP.",
                     "title": "Enabled"
                   }
                 },
@@ -1058,7 +1058,7 @@
     },
     "enable_trunk_groups": {
       "type": "boolean",
-      "description": "Enable Trunk Group support across eos_designs\nWarning: Because of the nature of the EOS Trunk Group feature, enabling this is \"all or nothing\".\n*All* vlans and *all* trunks towards connected endpoints must be using trunk groups as well.\nIf trunk groups are not assigned to a trunk, no vlans will be enabled on that trunk.\nSee \"Details on enable_trunk_groups\" below before enabling this feature.\n",
+      "description": "Enable Trunk Group support across eos_designs.\nWarning: Because of the nature of the EOS Trunk Group feature, enabling this is \"all or nothing\".\n*All* vlans and *all* trunks towards connected endpoints must be using trunk groups as well.\nIf trunk groups are not assigned to a trunk, no vlans will be enabled on that trunk.\nSee \"Details on enable_trunk_groups\" below before enabling this feature.\n",
       "default": false,
       "title": "Enable Trunk Groups"
     },
@@ -1073,18 +1073,18 @@
             "title": "Template"
           },
           "options": {
-            "description": "Template options",
+            "description": "Template options.",
             "type": "object",
             "properties": {
               "list_merge": {
                 "type": "string",
-                "description": "Merge strategy for lists",
+                "description": "Merge strategy for lists.",
                 "default": "append_rp",
                 "title": "List Merge"
               },
               "strip_empty_keys": {
                 "type": "boolean",
-                "description": "Filter out keys from the generated output if value is null/none/undefined",
+                "description": "Filter out keys from the generated output if value is null/none/undefined.",
                 "default": true,
                 "title": "Strip Empty Keys"
               }
@@ -1204,25 +1204,25 @@
       "type": "object",
       "properties": {
         "enabled": {
-          "description": "If set to false it will disable EVPN host-flap detection",
+          "description": "If set to false it will disable EVPN host-flap detection.",
           "type": "boolean",
           "default": true,
           "title": "Enabled"
         },
         "threshold": {
-          "description": "Minimum number of MAC moves that indicate a MAC duplication issue",
+          "description": "Minimum number of MAC moves that indicate a MAC duplication issue.",
           "type": "integer",
           "default": 5,
           "title": "Threshold"
         },
         "window": {
-          "description": "Time (in seconds) to detect a MAC duplication issue",
+          "description": "Time (in seconds) to detect a MAC duplication issue.",
           "type": "integer",
           "default": 180,
           "title": "Window"
         },
         "expiry_timeout": {
-          "description": "Time (in seconds) to purge a MAC duplication issue",
+          "description": "Time (in seconds) to purge a MAC duplication issue.",
           "type": "integer",
           "title": "Expiry Timeout"
         }
@@ -1234,7 +1234,7 @@
       "title": "EVPN Hostflap Detection"
     },
     "evpn_import_pruning": {
-      "description": "Enable VPN import pruning (Min. EOS 4.24.2F)\nThe Route Target extended communities carried by incoming VPN paths will\nbe examined. If none of those Route Targets have been configured for import,\nthe path will be immediately discarded\n",
+      "description": "Enable VPN import pruning (Min. EOS 4.24.2F).\nThe Route Target extended communities carried by incoming VPN paths will be examined.\nIf none of those Route Targets have been configured for import, the path will be immediately discarded.\n",
       "type": "boolean",
       "default": false,
       "title": "EVPN Import Pruning"
@@ -1246,7 +1246,7 @@
       "title": "EVPN Multicast"
     },
     "evpn_overlay_bgp_rtc": {
-      "description": "Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)\nRequires use eBGP as overlay protocol.\n",
+      "description": "Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F).\nRequires use eBGP as overlay protocol.\n",
       "type": "boolean",
       "default": false,
       "title": "EVPN Overlay BGP Rtc"
@@ -1258,13 +1258,13 @@
       "title": "EVPN Prevent Readvertise To Server"
     },
     "evpn_short_esi_prefix": {
-      "description": "Configure prefix for \"short_esi\" values",
+      "description": "Configure prefix for \"short_esi\" values.",
       "type": "string",
       "default": "0000:0000:",
       "title": "EVPN Short Esi Prefix"
     },
     "evpn_vlan_aware_bundles": {
-      "description": "Enable vlan aware bundles for EVPN MAC-VRF\n",
+      "description": "Enable vlan aware bundles for EVPN MAC-VRF.",
       "type": "boolean",
       "default": false,
       "title": "EVPN VLAN Aware Bundles"
@@ -1440,18 +1440,18 @@
       "type": "array",
       "items": {
         "type": "string",
-        "description": "IPv6_network/Mask"
+        "description": "IPv6_network/Mask."
       },
       "title": "IPv6 Management Destination Networks"
     },
     "ipv6_mgmt_gateway": {
       "type": "string",
       "format": "ipv6",
-      "description": "OOB Management interface gateway in IPv6 format.\nUsed as next-hop for default gateway or static routes defined under 'ipv6_mgmt_destination_networks'",
+      "description": "OOB Management interface gateway in IPv6 format.\nUsed as next-hop for default gateway or static routes defined under 'ipv6_mgmt_destination_networks'.",
       "title": "IPv6 Management Gateway"
     },
     "is_deployed": {
-      "description": "Is device already deployed in the fabric\nWhen set to false, interfaces toward this device may be shutdown depending on the `shutdown_interfaces_towards_undeployed_peers` setting.\nFurthermore `eos_config_deploy_cvp` will not attempt to move or apply configurations to the device.\n",
+      "description": "Is device already deployed in the fabric.\nWhen set to false, interfaces toward this device may be shutdown depending on the `shutdown_interfaces_towards_undeployed_peers` setting.\nFurthermore `eos_config_deploy_cvp` will not attempt to move or apply configurations to the device.\n",
       "type": "boolean",
       "default": true,
       "title": "IS Deployed"
@@ -1515,7 +1515,7 @@
           "title": "Protection"
         },
         "local_convergence_delay": {
-          "description": "Local convergence delay in milliseconds",
+          "description": "Local convergence delay in milliseconds.",
           "type": "integer",
           "default": 10000,
           "title": "Local Convergence Delay"
@@ -1587,7 +1587,7 @@
               },
               "ip_pool": {
                 "type": "string",
-                "description": "P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link",
+                "description": "P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link.",
                 "title": "IP Pool"
               },
               "subnet": {
@@ -1710,7 +1710,7 @@
                   "enabled": {
                     "type": "boolean",
                     "default": false,
-                    "description": "Enable PTP",
+                    "description": "Enable PTP.",
                     "title": "Enabled"
                   }
                 },
@@ -1821,7 +1821,7 @@
               },
               "ip_pool": {
                 "type": "string",
-                "description": "P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link",
+                "description": "P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link.",
                 "title": "IP Pool"
               },
               "subnet": {
@@ -1935,7 +1935,7 @@
                   "enabled": {
                     "type": "boolean",
                     "default": false,
-                    "description": "Enable PTP",
+                    "description": "Enable PTP.",
                     "title": "Enabled"
                   }
                 },
@@ -2086,7 +2086,7 @@
     },
     "mac_address_table": {
       "type": "object",
-      "description": "MAC address-table aging time\nUse to change the EOS default of 300.\n",
+      "description": "MAC address-table aging time.\nUse to change the EOS default of 300.\n",
       "properties": {
         "aging_time": {
           "type": "integer",
@@ -2132,13 +2132,13 @@
       "description": "List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.\nReplaces the default route.",
       "items": {
         "type": "string",
-        "description": "IPv4_address/Mask"
+        "description": "IPv4_address/Mask."
       },
       "title": "Management Destination Networks"
     },
     "mgmt_gateway": {
       "type": "string",
-      "description": "OOB Management interface gateway in IPv4 format.\nUsed as next-hop for default gateway or static routes defined under 'mgmt_destination_networks'",
+      "description": "OOB Management interface gateway in IPv4 format.\nUsed as next-hop for default gateway or static routes defined under 'mgmt_destination_networks'.",
       "title": "Management Gateway"
     },
     "mgmt_interface": {
@@ -2149,7 +2149,7 @@
     },
     "mgmt_interface_description": {
       "type": "string",
-      "description": "Management interface description\n",
+      "description": "Management interface description.\n",
       "default": "oob_management",
       "title": "Management Interface Description"
     },
@@ -2167,7 +2167,7 @@
     },
     "mlag_ibgp_peering_vrfs": {
       "type": "object",
-      "description": "On mlag leafs, an SVI interface is defined per vrf, to establish iBGP peering (required when there are MLAG leafs in topology)\nThe SVI id will be derived from the base vlan defined: mlag_ibgp_peering_vrfs.base_vlan + (vrf_id or vrf_vni) - 1\nDepending on the values of vrf_id / vrf_vni it may be required to adjust the base_vlan to avoid overlaps or invalid vlan ids.\nThe SVI ip address derived from mlag_l3_peer_ipv4_pool is re-used across all iBGP peerings.\n",
+      "description": "On mlag leafs, an SVI interface is defined per vrf, to establish iBGP peering (required when there are MLAG leafs in topology).\nThe SVI id will be derived from the base vlan defined: mlag_ibgp_peering_vrfs.base_vlan + (vrf_id or vrf_vni) - 1.\nDepending on the values of vrf_id / vrf_vni it may be required to adjust the base_vlan to avoid overlaps or invalid vlan ids.\nThe SVI ip address derived from mlag_l3_peer_ipv4_pool is re-used across all iBGP peerings.\n",
       "properties": {
         "base_vlan": {
           "type": "integer",
@@ -3367,7 +3367,7 @@
     },
     "only_local_vlan_trunk_groups": {
       "type": "boolean",
-      "description": "A vlan can have many trunk_groups assigned. To avoid unneeded configuration changes on all leaf\nswitches when a new trunk group is added, this feature will only configure the vlan trunk groups\nmatched with local connected_endpoints.\nSee \"Details on only_local_vlan_trunk_groups\" below.\nRequires \"enable_trunk_groups: true\"\n",
+      "description": "A vlan can have many trunk_groups assigned.\nTo avoid unneeded configuration changes on all leaf switches when a new trunk group is added,\nthis feature will only configure the vlan trunk groups matched with local connected_endpoints.\nSee \"Details on only_local_vlan_trunk_groups\" below.\nRequires \"enable_trunk_groups: true\".\n",
       "default": false,
       "title": "Only Local VLAN Trunk Groups"
     },
@@ -3470,7 +3470,7 @@
       "title": "Overlay Rt Type"
     },
     "p2p_uplinks_mtu": {
-      "description": "Point to Point Links MTU",
+      "description": "Point to Point Links MTU.",
       "type": "integer",
       "minimum": 68,
       "maximum": 65535,
@@ -3478,7 +3478,7 @@
       "title": "P2P Uplinks MTU"
     },
     "p2p_uplinks_qos_profile": {
-      "description": "QOS Profile assigned on all infrastructure links",
+      "description": "QOS Profile assigned on all infrastructure links.",
       "type": "string",
       "title": "P2P Uplinks QOS Profile"
     },
@@ -3496,7 +3496,7 @@
           },
           "trident_forwarding_table_partition": {
             "type": "string",
-            "description": "Only applied when evpn_multicast is true",
+            "description": "Only applied when evpn_multicast is true.",
             "title": "Trident Forwarding Table Partition"
           },
           "reload_delay": {
@@ -3506,14 +3506,14 @@
                 "type": "integer",
                 "minimum": 0,
                 "maximum": 86400,
-                "description": "In seconds",
+                "description": "In seconds.",
                 "title": "MLAG"
               },
               "non_mlag": {
                 "type": "integer",
                 "minimum": 0,
                 "maximum": 86400,
-                "description": "In seconds",
+                "description": "In seconds.",
                 "title": "Non MLAG"
               }
             },
@@ -3547,13 +3547,13 @@
               "bgp_update_wait_install": {
                 "type": "boolean",
                 "default": true,
-                "description": "Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.\nCan be overridden by setting \"bgp_update_wait_install\" host/group_vars\n",
+                "description": "Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.\nCan be overridden by setting \"bgp_update_wait_install\" host/group_vars.\n",
                 "title": "BGP Update Wait Install"
               },
               "bgp_update_wait_for_convergence": {
                 "type": "boolean",
                 "default": true,
-                "description": "Do not advertise reachability to a prefix until that prefix has been installed in hardware.\nThis will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.\nCan be overridden by setting \"bgp_update_wait_for_convergence\" host/group_vars\n",
+                "description": "Do not advertise reachability to a prefix until that prefix has been installed in hardware.\nThis will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.\nCan be overridden by setting \"bgp_update_wait_for_convergence\" host/group_vars.\n",
                 "title": "BGP Update Wait For Convergence"
               }
             },
@@ -3570,7 +3570,7 @@
           },
           "raw_eos_cli": {
             "type": "string",
-            "description": "EOS CLI rendered directly on the root level of the final EOS configuration",
+            "description": "EOS CLI rendered directly on the root level of the final EOS configuration.",
             "title": "Raw EOS CLI"
           }
         },
@@ -3583,7 +3583,7 @@
     },
     "platform_speed_groups": {
       "type": "array",
-      "description": "Set Hardware Speed Groups per Platform",
+      "description": "Set Hardware Speed Groups per Platform.",
       "items": {
         "type": "object",
         "properties": {
@@ -4624,7 +4624,7 @@
     },
     "redundancy": {
       "type": "object",
-      "description": "Redundancy for chassis platforms with dual supervisors | Optional",
+      "description": "Redundancy for chassis platforms with dual supervisors | Optional.",
       "properties": {
         "protocol": {
           "type": "string",
@@ -4642,7 +4642,7 @@
       "title": "Redundancy"
     },
     "serial_number": {
-      "description": "Serial Number of the device.\nUsed for documentation purpose in the fabric documentation as can also be used by the 'eos_config_deploy_cvp' role.\n\"serial_number\" can also be set directly under \"Fabric Topology\".\nIf both are set, the setting under \"Fabric Topology\" takes precedence.\n",
+      "description": "Serial Number of the device.\nUsed for documentation purpose in the fabric documentation as can also be used by the 'eos_config_deploy_cvp' role.\n\"serial_number\" can also be set directly under node type settings.\nIf both are set, the value under node type settings takes precedence.\n",
       "type": "string",
       "title": "Serial Number"
     },
@@ -4676,7 +4676,7 @@
         "compute_local_engineid_source": {
           "type": "string",
           "default": "hostname_and_ip",
-          "description": "`compute_local_engineid_source` supports:\n- `hostname_and_ip` generate a local engineId for SNMP by hashing via SHA1\n  the string generated via the concatenation of the hostname plus the management IP.\n  {{ inventory_hostname }} + {{ switch.mgmt_ip }}\n- `system_mac` generate the switch default engine id for AVD usage\n  To use this, `system_mac_address` MUST be set for the device\n  The formula is f5717f + system_mac_address + 00\n",
+          "description": "`compute_local_engineid_source` supports:\n- `hostname_and_ip` generate a local engineId for SNMP by hashing via SHA1\n  the string generated via the concatenation of the hostname plus the management IP.\n  {{ inventory_hostname }} + {{ switch.mgmt_ip }}.\n- `system_mac` generate the switch default engine id for AVD usage.\n  To use this, `system_mac_address` MUST be set for the device.\n  The formula is f5717f + system_mac_address + 00.\n",
           "enum": [
             "hostname_and_ip",
             "system_mac"
@@ -4899,25 +4899,25 @@
                   "type": "integer",
                   "minimum": 1,
                   "maximum": 16777215,
-                  "description": "By default the VNI will be derived from \"mac_vrf_vni_base\"\nThe vni_override allows us to override this value and statically define it (optional)\n",
+                  "description": "By default the VNI will be derived from \"mac_vrf_vni_base\".\nThe vni_override allows us to override this value and statically define it (optional).\n",
                   "title": "Vni Override"
                 },
                 "rt_override": {
                   "type": "integer",
                   "minimum": 1,
                   "maximum": 16777215,
-                  "description": "By default the MAC VRF RD/RT ID will be derived from \"mac_vrf_id_base\"\nThe rt_override allows us to override this value and statically define it (optional)\nIf not set, vni_override will be used.\n",
+                  "description": "By default the MAC VRF RD/RT ID will be derived from \"mac_vrf_id_base\".\nThe rt_override allows us to override this value and statically define it (optional).\nIf not set, vni_override will be used.\n",
                   "title": "Rt Override"
                 },
                 "tags": {
                   "type": "array",
-                  "description": "Tags leveraged for networks services filtering\nTags are matched against \"filter.tags\" defined under Fabric Topology variables\nTags are also matched against the \"node_group\" name under Fabric Topology variables\n",
+                  "description": "Tags leveraged for networks services filtering.\nTags are matched against \"filter.tags\" defined under node type settings.\nTags are also matched against the \"node_group\" name under node type settings.\n",
                   "default": [
                     "all"
                   ],
                   "items": {
                     "type": "string",
-                    "description": "Tag value"
+                    "description": "Tag value."
                   },
                   "title": "Tags"
                 },
@@ -4925,7 +4925,7 @@
                   "type": "array",
                   "items": {
                     "type": "string",
-                    "description": "Trunk groups are used for limiting vlans to trunk ports assigned to the same trunk group\nRequires \"enable_trunk_groups: true\"\n"
+                    "description": "Trunk groups are used for limiting vlans to trunk ports assigned to the same trunk group.\nRequires \"enable_trunk_groups: true\".\n"
                   },
                   "title": "Trunk Groups"
                 },
@@ -4961,7 +4961,7 @@
                 },
                 "igmp_snooping_enabled": {
                   "type": "boolean",
-                  "description": "Enable IGMP Snooping (Enabled by default on EOS)",
+                  "description": "Enable IGMP Snooping (Enabled by default on EOS).",
                   "title": "IGMP Snooping Enabled"
                 },
                 "igmp_snooping_querier": {
@@ -4979,7 +4979,7 @@
                     },
                     "version": {
                       "type": "integer",
-                      "description": "IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)",
+                      "description": "IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).",
                       "enum": [
                         1,
                         2,
@@ -4997,17 +4997,17 @@
                 "vxlan": {
                   "type": "boolean",
                   "default": true,
-                  "description": "Extend this SVI over VXLAN",
+                  "description": "Extend this SVI over VXLAN.",
                   "title": "VxLAN"
                 },
                 "mtu": {
                   "type": "integer",
-                  "description": "Interface MTU",
+                  "description": "Interface MTU.",
                   "title": "MTU"
                 },
                 "ospf": {
                   "type": "object",
-                  "description": "OSPF interface configuration",
+                  "description": "OSPF interface configuration.",
                   "properties": {
                     "enabled": {
                       "type": "boolean",
@@ -5020,13 +5020,13 @@
                     },
                     "area": {
                       "type": "string",
-                      "description": "OSPF area ID",
+                      "description": "OSPF area ID.",
                       "default": "0",
                       "title": "Area"
                     },
                     "cost": {
                       "type": "integer",
-                      "description": "OSPF link cost",
+                      "description": "OSPF link cost.",
                       "title": "Cost"
                     },
                     "authentication": {
@@ -5039,7 +5039,7 @@
                     },
                     "simple_auth_key": {
                       "type": "string",
-                      "description": "Password used with simple authentication",
+                      "description": "Password used with simple authentication.",
                       "title": "Simple Auth Key"
                     },
                     "message_digest_keys": {
@@ -5065,7 +5065,7 @@
                           },
                           "key": {
                             "type": "string",
-                            "description": "Type 7 encrypted key",
+                            "description": "Type 7 encrypted key.",
                             "title": "Key"
                           }
                         },
@@ -5093,7 +5093,7 @@
                     },
                     "raw_eos_cli": {
                       "type": "string",
-                      "description": "EOS CLI rendered directly on the Router BGP, VLAN definition in the final EOS configuration\n",
+                      "description": "EOS CLI rendered directly on the Router BGP, VLAN definition in the final EOS configuration.\n",
                       "title": "Raw EOS CLI"
                     }
                   },
@@ -5105,7 +5105,7 @@
                 },
                 "raw_eos_cli": {
                   "type": "string",
-                  "description": "EOS CLI rendered directly on the VLAN interface in the final EOS configuration\n",
+                  "description": "EOS CLI rendered directly on the VLAN interface in the final EOS configuration.\n",
                   "title": "Raw EOS CLI"
                 },
                 "structured_config": {
@@ -5237,25 +5237,25 @@
             "type": "integer",
             "minimum": 1,
             "maximum": 16777215,
-            "description": "By default the VNI will be derived from \"mac_vrf_vni_base\"\nThe vni_override allows us to override this value and statically define it (optional)\n",
+            "description": "By default the VNI will be derived from \"mac_vrf_vni_base\".\nThe vni_override allows us to override this value and statically define it (optional).\n",
             "title": "Vni Override"
           },
           "rt_override": {
             "type": "integer",
             "minimum": 1,
             "maximum": 16777215,
-            "description": "By default the MAC VRF RD/RT ID will be derived from \"mac_vrf_id_base\"\nThe rt_override allows us to override this value and statically define it (optional)\nIf not set, vni_override will be used.\n",
+            "description": "By default the MAC VRF RD/RT ID will be derived from \"mac_vrf_id_base\".\nThe rt_override allows us to override this value and statically define it (optional).\nIf not set, vni_override will be used.\n",
             "title": "Rt Override"
           },
           "tags": {
             "type": "array",
-            "description": "Tags leveraged for networks services filtering\nTags are matched against \"filter.tags\" defined under Fabric Topology variables\nTags are also matched against the \"node_group\" name under Fabric Topology variables\n",
+            "description": "Tags leveraged for networks services filtering.\nTags are matched against \"filter.tags\" defined under node type settings.\nTags are also matched against the \"node_group\" name under node type settings.\n",
             "default": [
               "all"
             ],
             "items": {
               "type": "string",
-              "description": "Tag value"
+              "description": "Tag value."
             },
             "title": "Tags"
           },
@@ -5263,7 +5263,7 @@
             "type": "array",
             "items": {
               "type": "string",
-              "description": "Trunk groups are used for limiting vlans to trunk ports assigned to the same trunk group\nRequires \"enable_trunk_groups: true\"\n"
+              "description": "Trunk groups are used for limiting vlans to trunk ports assigned to the same trunk group.\nRequires \"enable_trunk_groups: true\".\n"
             },
             "title": "Trunk Groups"
           },
@@ -5299,7 +5299,7 @@
           },
           "igmp_snooping_enabled": {
             "type": "boolean",
-            "description": "Enable IGMP Snooping (Enabled by default on EOS)",
+            "description": "Enable IGMP Snooping (Enabled by default on EOS).",
             "title": "IGMP Snooping Enabled"
           },
           "igmp_snooping_querier": {
@@ -5317,7 +5317,7 @@
               },
               "version": {
                 "type": "integer",
-                "description": "IGMP Version (By default EOS uses IGMP version 2 for IGMP querier)",
+                "description": "IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).",
                 "enum": [
                   1,
                   2,
@@ -5335,17 +5335,17 @@
           "vxlan": {
             "type": "boolean",
             "default": true,
-            "description": "Extend this SVI over VXLAN",
+            "description": "Extend this SVI over VXLAN.",
             "title": "VxLAN"
           },
           "mtu": {
             "type": "integer",
-            "description": "Interface MTU",
+            "description": "Interface MTU.",
             "title": "MTU"
           },
           "ospf": {
             "type": "object",
-            "description": "OSPF interface configuration",
+            "description": "OSPF interface configuration.",
             "properties": {
               "enabled": {
                 "type": "boolean",
@@ -5358,13 +5358,13 @@
               },
               "area": {
                 "type": "string",
-                "description": "OSPF area ID",
+                "description": "OSPF area ID.",
                 "default": "0",
                 "title": "Area"
               },
               "cost": {
                 "type": "integer",
-                "description": "OSPF link cost",
+                "description": "OSPF link cost.",
                 "title": "Cost"
               },
               "authentication": {
@@ -5377,7 +5377,7 @@
               },
               "simple_auth_key": {
                 "type": "string",
-                "description": "Password used with simple authentication",
+                "description": "Password used with simple authentication.",
                 "title": "Simple Auth Key"
               },
               "message_digest_keys": {
@@ -5403,7 +5403,7 @@
                     },
                     "key": {
                       "type": "string",
-                      "description": "Type 7 encrypted key",
+                      "description": "Type 7 encrypted key.",
                       "title": "Key"
                     }
                   },
@@ -5431,7 +5431,7 @@
               },
               "raw_eos_cli": {
                 "type": "string",
-                "description": "EOS CLI rendered directly on the Router BGP, VLAN definition in the final EOS configuration\n",
+                "description": "EOS CLI rendered directly on the Router BGP, VLAN definition in the final EOS configuration.\n",
                 "title": "Raw EOS CLI"
               }
             },
@@ -5443,7 +5443,7 @@
           },
           "raw_eos_cli": {
             "type": "string",
-            "description": "EOS CLI rendered directly on the VLAN interface in the final EOS configuration\n",
+            "description": "EOS CLI rendered directly on the VLAN interface in the final EOS configuration.\n",
             "title": "Raw EOS CLI"
           },
           "structured_config": {
@@ -5464,7 +5464,7 @@
     },
     "system_mac_address": {
       "type": "string",
-      "description": "Set to the same MAC address as available in \"show version\" on the device.\n\"system_mac_address\" can also be set under \"Fabric Topology\".\nIf both are set, the setting under \"Fabric Topology\" takes precedence.",
+      "description": "Set to the same MAC address as available in \"show version\" on the device.\n\"system_mac_address\" can also be set under node type settings.\nIf both are set, the value under node type settings takes precedence.",
       "title": "System MAC Address"
     },
     "terminattr_disable_aaa": {
@@ -5498,7 +5498,7 @@
       "properties": {
         "mlag": {
           "type": "object",
-          "description": "Trunk Group used for MLAG VLAN (Typically VLAN 4094)\n",
+          "description": "Trunk Group used for MLAG VLAN (Typically VLAN 4094).\n",
           "properties": {
             "name": {
               "type": "string",
@@ -5514,7 +5514,7 @@
         },
         "mlag_l3": {
           "type": "object",
-          "description": "Trunk Group used for MLAG L3 peering VLAN and for VRF L3 peering VLANs (Typically VLAN 4093)\n",
+          "description": "Trunk Group used for MLAG L3 peering VLAN and for VRF L3 peering VLANs (Typically VLAN 4093).\n",
           "properties": {
             "name": {
               "type": "string",
@@ -5530,7 +5530,7 @@
         },
         "uplink": {
           "type": "object",
-          "description": "Trunk Group used on L2 Leaf switches when \"enable_trunk_groups\" is set\n",
+          "description": "Trunk Group used on L2 Leaf switches when \"enable_trunk_groups\" is set.\n",
           "properties": {
             "name": {
               "type": "string",
@@ -5569,19 +5569,19 @@
       "title": "Underlay Filter Redistribute Connected"
     },
     "underlay_ipv6": {
-      "description": "This feature allows IPv6 underlay routing protocol with RFC5549 addresses to be used along with IPv4 advertisements as VXLAN tunnel endpoints.\nRequires \"underlay_rfc5549: true\" and \"loopback_ipv6_pool\" under the \"Fabric Topology\"\n",
+      "description": "This feature allows IPv6 underlay routing protocol with RFC5549 addresses to be used along with IPv4 advertisements as VXLAN tunnel endpoints.\nRequires \"underlay_rfc5549: true\" and \"loopback_ipv6_pool\" under the node type settings.\n",
       "type": "boolean",
       "default": false,
       "title": "Underlay IPv6"
     },
     "underlay_isis_instance_name": {
-      "description": "Default -> \"EVPN_UNDERLAY\" for l3ls, \"CORE\" for mpls",
+      "description": "Default -> \"EVPN_UNDERLAY\" for l3ls, \"CORE\" for mpls.",
       "type": "string",
       "title": "Underlay ISIS Instance Name"
     },
     "underlay_multicast": {
       "type": "boolean",
-      "description": "Enable Multicast in the underlay on all p2p uplink interfaces and mlag l3 peer interface.\nSpecifically PIM Sparse-Mode will be configured on all routed underlay interfaces.\nNo other configuration is added, so the underlay will only support Source-Specific Multicast (SSM)\nThe configuration is intended to be used as multicast underlay for EVPN OISM overlay\n",
+      "description": "Enable Multicast in the underlay on all p2p uplink interfaces and mlag l3 peer interface.\nSpecifically PIM Sparse-Mode will be configured on all routed underlay interfaces.\nNo other configuration is added, so the underlay will only support Source-Specific Multicast (SSM).\nThe configuration is intended to be used as multicast underlay for EVPN OISM overlay.\n",
       "default": false,
       "title": "Underlay Multicast"
     },
@@ -5607,7 +5607,7 @@
       "title": "Underlay OSPF Process ID"
     },
     "underlay_rfc5549": {
-      "description": "Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered\nRequires \"underlay_routing_protocol: ebgp\"\n",
+      "description": "Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.\nRequires \"underlay_routing_protocol: ebgp\".\n",
       "type": "boolean",
       "default": false,
       "title": "Underlay Rfc5549"
@@ -5627,7 +5627,7 @@
       "title": "Underlay Routing Protocol"
     },
     "uplink_ptp": {
-      "description": "Enable PTP on all infrastructure links",
+      "description": "Enable PTP on all infrastructure links.",
       "type": "object",
       "properties": {
         "enable": {

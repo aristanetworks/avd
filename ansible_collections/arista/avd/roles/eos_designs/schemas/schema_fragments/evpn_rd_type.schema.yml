@@ -5,7 +5,6 @@ type: dict
 keys:
   evpn_rd_type:
     documentation_options:
-      filename: Input Variables
       table: EVPN Settings
     type: dict
     deprecation:

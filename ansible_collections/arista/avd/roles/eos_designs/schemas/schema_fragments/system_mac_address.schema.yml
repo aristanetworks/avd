@@ -5,10 +5,9 @@ type: dict
 keys:
   system_mac_address:
     documentation_options:
-      filename: Input Variables
       table: System Settings
     type: str
     description: |
       Set to the same MAC address as available in "show version" on the device.
-      "system_mac_address" can also be set under "Fabric Topology".
-      If both are set, the setting under "Fabric Topology" takes precedence.
+      "system_mac_address" can also be set under node type settings.
+      If both are set, the value under node type settings takes precedence.
