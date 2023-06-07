@@ -667,7 +667,7 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 | 10.255.0.1 | 65100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
 | 10.255.0.2 | 65100 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
 | 10.255.1.101 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - |
-| 10.255.128.5 | 65202 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | Inherited from peer group EVPN-OVERLAY-CORE | - | - | - |
+| 10.255.128.15 | 65202 | default | - | Inherited from peer group EVPN-OVERLAY-CORE | Inherited from peer group EVPN-OVERLAY-CORE | - | Inherited from peer group EVPN-OVERLAY-CORE | - | - | - |
 | 10.255.255.8 | 65100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 | 10.255.255.10 | 65100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 | 172.100.100.1 | 65202 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
@@ -750,9 +750,9 @@ router bgp 65102
    neighbor 10.255.0.2 description dc1-spine2
    neighbor 10.255.1.101 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 10.255.1.101 description dc1-leaf2b
-   neighbor 10.255.128.5 peer group EVPN-OVERLAY-CORE
-   neighbor 10.255.128.5 remote-as 65202
-   neighbor 10.255.128.5 description dc2-leaf2a
+   neighbor 10.255.128.15 peer group EVPN-OVERLAY-CORE
+   neighbor 10.255.128.15 remote-as 65202
+   neighbor 10.255.128.15 description dc2-leaf2a
    neighbor 10.255.255.8 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.255.255.8 remote-as 65100
    neighbor 10.255.255.8 description dc1-spine1_Ethernet3

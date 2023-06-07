@@ -1,6 +1,6 @@
 router_bgp:
   as: '65200'
-  router_id: 10.255.128.2
+  router_id: 10.255.128.12
   bgp:
     default:
       ipv4_unicast: false
@@ -32,35 +32,35 @@ router_bgp:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
   neighbors:
-  - ip_address: 10.255.255.67
+  - ip_address: 10.255.255.107
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65201'
     description: dc2-leaf1a_Ethernet2
-  - ip_address: 10.255.255.71
+  - ip_address: 10.255.255.111
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65201'
     description: dc2-leaf1b_Ethernet2
-  - ip_address: 10.255.255.75
+  - ip_address: 10.255.255.115
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65202'
     description: dc2-leaf2a_Ethernet2
-  - ip_address: 10.255.255.79
+  - ip_address: 10.255.255.119
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65202'
     description: dc2-leaf2b_Ethernet2
-  - ip_address: 10.255.128.3
+  - ip_address: 10.255.128.13
     peer_group: EVPN-OVERLAY-PEERS
     description: dc2-leaf1a
     remote_as: '65201'
-  - ip_address: 10.255.128.4
+  - ip_address: 10.255.128.14
     peer_group: EVPN-OVERLAY-PEERS
     description: dc2-leaf1b
     remote_as: '65201'
-  - ip_address: 10.255.128.5
+  - ip_address: 10.255.128.15
     peer_group: EVPN-OVERLAY-PEERS
     description: dc2-leaf2a
     remote_as: '65202'
-  - ip_address: 10.255.128.6
+  - ip_address: 10.255.128.16
     peer_group: EVPN-OVERLAY-PEERS
     description: dc2-leaf2b
     remote_as: '65202'
@@ -98,7 +98,7 @@ management_interfaces:
   description: oob_management
   shutdown: false
   vrf: MGMT
-  ip_address: 172.16.1.22/24
+  ip_address: 172.16.2.22/24
   gateway: 172.16.1.1
   type: oob
 management_api_http:
@@ -114,7 +114,7 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   type: routed
-  ip_address: 10.255.255.66/31
+  ip_address: 10.255.255.106/31
 - name: Ethernet2
   peer: dc2-leaf1b
   peer_interface: Ethernet2
@@ -123,7 +123,7 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   type: routed
-  ip_address: 10.255.255.70/31
+  ip_address: 10.255.255.110/31
 - name: Ethernet3
   peer: dc2-leaf2a
   peer_interface: Ethernet2
@@ -132,7 +132,7 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   type: routed
-  ip_address: 10.255.255.74/31
+  ip_address: 10.255.255.114/31
 - name: Ethernet4
   peer: dc2-leaf2b
   peer_interface: Ethernet2
@@ -141,12 +141,12 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1500
   type: routed
-  ip_address: 10.255.255.78/31
+  ip_address: 10.255.255.118/31
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
   shutdown: false
-  ip_address: 10.255.128.2/32
+  ip_address: 10.255.128.12/32
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
