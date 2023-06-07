@@ -5,7 +5,9 @@ search:
 
 # Input Variables
 
-## AAA Accounting
+## Input Variables
+
+### AAA Accounting
 
 === "Table"
 
@@ -71,7 +73,7 @@ search:
             logging: <bool>
     ```
 
-## AAA Authentication
+### AAA Authentication
 
 === "Table"
 
@@ -117,7 +119,7 @@ search:
           window: <int>
     ```
 
-## AAA Authorization
+### AAA Authorization
 
 === "Table"
 
@@ -159,7 +161,7 @@ search:
             default: <str>
     ```
 
-## AAA Root
+### AAA Root
 
 === "Table"
 
@@ -177,7 +179,7 @@ search:
         sha512_password: <str>
     ```
 
-## AAA Server Groups
+### AAA Server Groups
 
 === "Table"
 
@@ -201,41 +203,7 @@ search:
             vrf: <str>
     ```
 
-## IP Extended Access-Lists (legacy model)
-
-AVD currently supports 2 different data models for extended ACLs:
-
-- The legacy `access_lists` data model, for compatibility with existing deployments
-- The improved `ip_access_lists` data model, for access to more EOS features
-
-Both data models can coexists without conflicts, as different keys are used: `access_lists` vs `ip_access_lists`.
-Access list names must be unique.
-
-The legacy data model supports simplified ACL definition with `sequence` to `action` mapping:
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>access_lists</samp>](## "access_lists") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- name</samp>](## "access_lists.[].name") | String | Required, Unique |  |  | Access-list Name |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counters_per_entry</samp>](## "access_lists.[].counters_per_entry") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sequence_numbers</samp>](## "access_lists.[].sequence_numbers") | List, items: Dictionary | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- sequence</samp>](## "access_lists.[].sequence_numbers.[].sequence") | Integer | Required, Unique |  |  | Sequence ID |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "access_lists.[].sequence_numbers.[].action") | String | Required |  |  | Action as string<br>Example: "deny ip any any" |
-
-=== "YAML"
-
-    ```yaml
-    access_lists:
-      - name: <str>
-        counters_per_entry: <bool>
-        sequence_numbers:
-          - sequence: <int>
-            action: <str>
-    ```
-
-## Address Locking
+### Address Locking
 
 === "Table"
 
@@ -271,7 +239,7 @@ The legacy data model supports simplified ACL definition with `sequence` to `act
         ipv6_enforcement_disabled: <bool>
     ```
 
-## Aliases
+### Aliases
 
 Multi-line string with one or more alias commands.
 
@@ -295,7 +263,7 @@ aliases: |
     aliases: <str>
     ```
 
-## ARP
+### ARP
 
 === "Table"
 
@@ -313,7 +281,7 @@ aliases: |
         timeout_default: <int>
     ```
 
-## As Path
+### As Path
 
 === "Table"
 
@@ -341,7 +309,7 @@ aliases: |
               origin: <str>
     ```
 
-## Banners
+### Banners
 
 === "Table"
 
@@ -359,7 +327,7 @@ aliases: |
       motd: <str>
     ```
 
-## BGP Groups
+### BGP Groups
 
 === "Table"
 
@@ -385,67 +353,7 @@ aliases: |
           - <str>
     ```
 
-## System Boot Settings
-
-Set the Aboot password
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>boot</samp>](## "boot") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;secret</samp>](## "boot.secret") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "boot.secret.hash_algorithm") | String |  | sha512 | Valid Values:<br>- md5<br>- sha512 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "boot.secret.key") | String |  |  |  | Hashed Password |
-
-=== "YAML"
-
-    ```yaml
-    boot:
-      secret:
-        hash_algorithm: <str>
-        key: <str>
-    ```
-
-## QOS Class-maps
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>class_maps</samp>](## "class_maps") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;pbr</samp>](## "class_maps.pbr") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "class_maps.pbr.[].name") | String | Required, Unique |  |  | Class-Map Name |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "class_maps.pbr.[].ip") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_group</samp>](## "class_maps.pbr.[].ip.access_group") | String |  |  |  | Standard Access-List Name |
-    | [<samp>&nbsp;&nbsp;qos</samp>](## "class_maps.qos") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "class_maps.qos.[].name") | String | Required, Unique |  |  | Class-Map Name |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "class_maps.qos.[].vlan") | Integer |  |  |  | VLAN value(s) or range(s) of VLAN values |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cos</samp>](## "class_maps.qos.[].cos") | Integer |  |  |  | CoS value(s) or range(s) of CoS values |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "class_maps.qos.[].ip") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_group</samp>](## "class_maps.qos.[].ip.access_group") | String |  |  |  | IPv4 Access-List Name |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "class_maps.qos.[].ipv6") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_group</samp>](## "class_maps.qos.[].ipv6.access_group") | String |  |  |  | IPv6 Access-List Name |
-
-=== "YAML"
-
-    ```yaml
-    class_maps:
-      pbr:
-        - name: <str>
-          ip:
-            access_group: <str>
-      qos:
-        - name: <str>
-          vlan: <int>
-          cos: <int>
-          ip:
-            access_group: <str>
-          ipv6:
-            access_group: <str>
-    ```
-
-## Clock
+### Clock
 
 === "Table"
 
@@ -461,7 +369,7 @@ Set the Aboot password
       timezone: <str>
     ```
 
-## Community Lists (legacy model)
+### Community Lists (legacy model)
 
 AVD supports 2 different data models for community lists:
 
@@ -489,37 +397,27 @@ The legacy data model supports simplified community list definition that only al
         action: <str>
     ```
 
-## Extensibility with Custom Templates
-
-- Custom templates can be added below the playbook directory.
-- If a location above the directory is desired, a symbolic link can be used.
-- Example under the `playbooks` directory create symbolic link with the following command:
-
-  ```bash
-  ln -s ../../shared_repo/custom_avd_templates/ ./custom_avd_templates
-  ```
-
-- The output will be rendered at the end of the configuration.
-- The order of custom templates in the list can be important if they overlap.
-- It is recommended to use a `!` delimiter at the top of each custom template.
-
-Add `custom_templates` to group/host variables:
+### Custom Daemons
 
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>custom_templates</samp>](## "custom_templates") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "custom_templates.[].&lt;str&gt;") | String |  |  |  | Template relative path below playbook directory |
+    | [<samp>daemons</samp>](## "daemons") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;- name</samp>](## "daemons.[].name") | String | Required, Unique |  |  | Daemon Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;exec</samp>](## "daemons.[].exec") | String | Required |  |  | command to run as a daemon<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "daemons.[].enabled") | Boolean |  | True |  |  |
 
 === "YAML"
 
     ```yaml
-    custom_templates:
-      - <str>
+    daemons:
+      - name: <str>
+        exec: <str>
+        enabled: <bool>
     ```
 
-## CVX
+### CVX
 
 CVX server features are not supported on physical switches. See `management_cvx` for client configurations.
 
@@ -559,7 +457,7 @@ CVX server features are not supported on physical switches. See `management_cvx`
           vtep_mac_learning: <str>
     ```
 
-## Daemon TerminAttr
+### Daemon TerminAttr
 
 You can either provide a list of IPs/FQDNs to target on-premise Cloudvision cluster or use DNS name for your Cloudvision as a Service instance.
 Streaming to multiple clusters both on-prem and cloud service is supported.
@@ -680,27 +578,7 @@ Streaming to multiple clusters both on-prem and cloud service is supported.
       ingestvrf: <str>
     ```
 
-## Custom Daemons
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>daemons</samp>](## "daemons") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- name</samp>](## "daemons.[].name") | String | Required, Unique |  |  | Daemon Name |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;exec</samp>](## "daemons.[].exec") | String | Required |  |  | command to run as a daemon<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "daemons.[].enabled") | Boolean |  | True |  |  |
-
-=== "YAML"
-
-    ```yaml
-    daemons:
-      - name: <str>
-        exec: <str>
-        enabled: <bool>
-    ```
-
-## DHCP Relay
+### DHCP Relay
 
 === "Table"
 
@@ -720,7 +598,7 @@ Streaming to multiple clusters both on-prem and cloud service is supported.
       tunnel_requests_disabled: <bool>
     ```
 
-## DNS Domain
+### DNS Domain
 
 Domain Name
 
@@ -736,7 +614,7 @@ Domain Name
     dns_domain: <str>
     ```
 
-## Domain List
+### Domain List
 
 Search list of DNS domains
 
@@ -754,39 +632,7 @@ Search list of DNS domains
       - <str>
     ```
 
-## Global 802.1x Authentication
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>dot1x</samp>](## "dot1x") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;system_auth_control</samp>](## "dot1x.system_auth_control") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;protocol_lldp_bypass</samp>](## "dot1x.protocol_lldp_bypass") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;dynamic_authorization</samp>](## "dot1x.dynamic_authorization") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;mac_based_authentication</samp>](## "dot1x.mac_based_authentication") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "dot1x.mac_based_authentication.delay") | Integer |  |  | Min: 0<br>Max: 300 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hold_period</samp>](## "dot1x.mac_based_authentication.hold_period") | Integer |  |  | Min: 1<br>Max: 300 |  |
-    | [<samp>&nbsp;&nbsp;radius_av_pair</samp>](## "dot1x.radius_av_pair") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;service_type</samp>](## "dot1x.radius_av_pair.service_type") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;framed_mtu</samp>](## "dot1x.radius_av_pair.framed_mtu") | Integer |  |  | Min: 68<br>Max: 9236 |  |
-
-=== "YAML"
-
-    ```yaml
-    dot1x:
-      system_auth_control: <bool>
-      protocol_lldp_bypass: <bool>
-      dynamic_authorization: <bool>
-      mac_based_authentication:
-        delay: <int>
-        hold_period: <int>
-      radius_av_pair:
-        service_type: <bool>
-        framed_mtu: <int>
-    ```
-
-## Dynamic Prefix Lists
+### Dynamic Prefix Lists
 
 === "Table"
 
@@ -810,7 +656,7 @@ Search list of DNS domains
           ipv6: <str>
     ```
 
-## Enable Password
+### Enable Password
 
 === "Table"
 
@@ -828,7 +674,7 @@ Search list of DNS domains
       key: <str>
     ```
 
-## EOS CLI
+### EOS CLI
 
 Multiline string with EOS CLI rendered directly on the root level of the final EOS configuration
 
@@ -844,7 +690,7 @@ Multiline string with EOS CLI rendered directly on the root level of the final E
     eos_cli: <str>
     ```
 
-## EOS CLI Config Gen Configuration
+### EOS CLI Config Gen Configuration
 
 === "Table"
 
@@ -860,7 +706,7 @@ Multiline string with EOS CLI rendered directly on the root level of the final E
       hide_passwords: <bool>
     ```
 
-## EOS CLI Config Gen Documentation
+### EOS CLI Config Gen Documentation
 
 === "Table"
 
@@ -876,7 +722,7 @@ Multiline string with EOS CLI rendered directly on the root level of the final E
       hide_passwords: <bool>
     ```
 
-## Errdisable
+### Errdisable
 
 === "Table"
 
@@ -904,7 +750,7 @@ Multiline string with EOS CLI rendered directly on the root level of the final E
         interval: <int>
     ```
 
-## Ethernet Interfaces
+### Ethernet Interfaces
 
 === "Table"
 
@@ -1532,7 +1378,7 @@ Multiline string with EOS CLI rendered directly on the root level of the final E
         eos_cli: <str>
     ```
 
-## Event Handlers
+### Event Handlers
 
 Gives the ability to monitor and react to Syslog messages.
 Event Handlers provide a powerful and flexible tool that can be used to apply self-healing actions,
@@ -1564,7 +1410,7 @@ customize the system behavior, and implement workarounds to problems discovered 
         asynchronous: <bool>
     ```
 
-## Event Monitor
+### Event Monitor
 
 === "Table"
 
@@ -1580,7 +1426,37 @@ customize the system behavior, and implement workarounds to problems discovered 
       enabled: <bool>
     ```
 
-## Flow Trackings
+### Extensibility with Custom Templates
+
+- Custom templates can be added below the playbook directory.
+- If a location above the directory is desired, a symbolic link can be used.
+- Example under the `playbooks` directory create symbolic link with the following command:
+
+  ```bash
+  ln -s ../../shared_repo/custom_avd_templates/ ./custom_avd_templates
+  ```
+
+- The output will be rendered at the end of the configuration.
+- The order of custom templates in the list can be important if they overlap.
+- It is recommended to use a `!` delimiter at the top of each custom template.
+
+Add `custom_templates` to group/host variables:
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>custom_templates</samp>](## "custom_templates") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "custom_templates.[].&lt;str&gt;") | String |  |  |  | Template relative path below playbook directory |
+
+=== "YAML"
+
+    ```yaml
+    custom_templates:
+      - <str>
+    ```
+
+### Flow Trackings
 
 === "Table"
 
@@ -1630,7 +1506,7 @@ customize the system behavior, and implement workarounds to problems discovered 
         shutdown: <bool>
     ```
 
-## Generate Default Config
+### Generate Default Config
 
 The `generate_default_config` knob allows to omit default EOS configuration.
 This can be useful when leveraging `eos_cli_config_gen` to generate configlets with CloudVision.
@@ -1656,7 +1532,7 @@ The following commands will be omitted when `generate_default_config` is set to 
     generate_default_config: <bool>
     ```
 
-## Generate Device Documentation
+### Generate Device Documentation
 
 === "Table"
 
@@ -1670,7 +1546,39 @@ The following commands will be omitted when `generate_default_config` is set to 
     generate_device_documentation: <bool>
     ```
 
-## Hardware
+### Global 802.1x Authentication
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>dot1x</samp>](## "dot1x") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;system_auth_control</samp>](## "dot1x.system_auth_control") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;protocol_lldp_bypass</samp>](## "dot1x.protocol_lldp_bypass") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;dynamic_authorization</samp>](## "dot1x.dynamic_authorization") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;mac_based_authentication</samp>](## "dot1x.mac_based_authentication") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "dot1x.mac_based_authentication.delay") | Integer |  |  | Min: 0<br>Max: 300 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hold_period</samp>](## "dot1x.mac_based_authentication.hold_period") | Integer |  |  | Min: 1<br>Max: 300 |  |
+    | [<samp>&nbsp;&nbsp;radius_av_pair</samp>](## "dot1x.radius_av_pair") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;service_type</samp>](## "dot1x.radius_av_pair.service_type") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;framed_mtu</samp>](## "dot1x.radius_av_pair.framed_mtu") | Integer |  |  | Min: 68<br>Max: 9236 |  |
+
+=== "YAML"
+
+    ```yaml
+    dot1x:
+      system_auth_control: <bool>
+      protocol_lldp_bypass: <bool>
+      dynamic_authorization: <bool>
+      mac_based_authentication:
+        delay: <int>
+        hold_period: <int>
+      radius_av_pair:
+        service_type: <bool>
+        framed_mtu: <int>
+    ```
+
+### Hardware
 
 === "Table"
 
@@ -1694,7 +1602,7 @@ The following commands will be omitted when `generate_default_config` is set to 
           serdes: <str>
     ```
 
-## Hardware Counters
+### Hardware Counters
 
 === "Table"
 
@@ -1724,7 +1632,29 @@ The following commands will be omitted when `generate_default_config` is set to 
           units_packets: <bool>
     ```
 
-## Interface Defaults
+### Hardware TCAM Profiles
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>tcam_profile</samp>](## "tcam_profile") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;system</samp>](## "tcam_profile.system") | String |  |  |  | TCAM profile name to activate<br> |
+    | [<samp>&nbsp;&nbsp;profiles</samp>](## "tcam_profile.profiles") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "tcam_profile.profiles.[].name") | String | Required, Unique |  |  | Tcam-Profile Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config</samp>](## "tcam_profile.profiles.[].config") | String | Required |  |  | TCAM Profile Config. Since these can be very long, it is often a good idea to import the config from a file.<br>Example: "{{ lookup('file', 'TCAM_TRAFFIC_POLICY.conf') }}" |
+
+=== "YAML"
+
+    ```yaml
+    tcam_profile:
+      system: <str>
+      profiles:
+        - name: <str>
+          config: <str>
+    ```
+
+### Interface Defaults
 
 === "Table"
 
@@ -1744,35 +1674,7 @@ The following commands will be omitted when `generate_default_config` is set to 
       mtu: <int>
     ```
 
-## Maintenance Interface Groups
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>interface_groups</samp>](## "interface_groups") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- name</samp>](## "interface_groups.[].name") | String | Required, Unique |  |  | Interface-Group name |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "interface_groups.[].interfaces") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "interface_groups.[].interfaces.[].&lt;str&gt;") | String |  |  |  | Interface Name |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp_maintenance_profiles</samp>](## "interface_groups.[].bgp_maintenance_profiles") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "interface_groups.[].bgp_maintenance_profiles.[].&lt;str&gt;") | String |  |  |  | Name of BGP Maintenance Profile |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interface_maintenance_profiles</samp>](## "interface_groups.[].interface_maintenance_profiles") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "interface_groups.[].interface_maintenance_profiles.[].&lt;str&gt;") | String |  |  |  | Name of Interface Maintenance Profile |
-
-=== "YAML"
-
-    ```yaml
-    interface_groups:
-      - name: <str>
-        interfaces:
-          - <str>
-        bgp_maintenance_profiles:
-          - <str>
-        interface_maintenance_profiles:
-          - <str>
-    ```
-
-## Interface Profiles
+### Interface Profiles
 
 === "Table"
 
@@ -1792,7 +1694,109 @@ The following commands will be omitted when `generate_default_config` is set to 
           - <str>
     ```
 
-## IP Extended Access-Lists (improved model)
+### IP Access Lists Max Entries
+
+The `ip_access_lists` data model allows to limit the number of ACL entries that AVD is allowed to generate by defining `ip_access_lists_max_entries`.
+Only normal entries under `ip_access_lists` will be counted, remarks will be ignored.
+If the number is above the limit, the playbook will fail. This provides a simplified control over hardware utilization.
+The numbers must be based on the hardware tests and AVD does not provide any guidance. Note that other EOS features may use the same hardware resources and affect the supported scale.
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>ip_access_lists_max_entries</samp>](## "ip_access_lists_max_entries") | Integer |  |  |  |  |
+
+=== "YAML"
+
+    ```yaml
+    ip_access_lists_max_entries: <int>
+    ```
+
+### IP Community Lists
+
+AVD supports 2 different data models for community lists:
+
+- The legacy `community_lists` data model that can be used for compatibility with the existing deployments.
+- The improved `ip_community_lists` data model.
+
+Both data models can coexist without conflicts, as different keys are used: `community_lists` vs `ip_community_lists`.
+Community list names must be unique.
+
+The improved data model has a better design documented below:
+
+communities and regexp MUST not be configured together in the same entry
+possible community strings are (case insensitive):
+
+- GSHUT
+- internet
+- local-as
+- no-advertise
+- no-export
+- <1-4294967040>
+- aa:nn
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>ip_community_lists</samp>](## "ip_community_lists") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;- name</samp>](## "ip_community_lists.[].name") | String | Required, Unique |  |  | IP Community-list Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;entries</samp>](## "ip_community_lists.[].entries") | List, items: Dictionary | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- action</samp>](## "ip_community_lists.[].entries.[].action") | String | Required |  | Valid Values:<br>- permit<br>- deny |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;communities</samp>](## "ip_community_lists.[].entries.[].communities") | List, items: String |  |  |  | If defined, a standard community-list will be configured |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "ip_community_lists.[].entries.[].communities.[].&lt;str&gt;") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;regexp</samp>](## "ip_community_lists.[].entries.[].regexp") | String |  |  |  | Regular Expression<br>If defined, a regex community-list will be configured |
+
+=== "YAML"
+
+    ```yaml
+    ip_community_lists:
+      - name: <str>
+        entries:
+          - action: <str>
+            communities:
+              - <str>
+            regexp: <str>
+    ```
+
+### IP DHCP Relay
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>ip_dhcp_relay</samp>](## "ip_dhcp_relay") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;information_option</samp>](## "ip_dhcp_relay.information_option") | Boolean |  |  |  | Insert Option-82 information |
+
+=== "YAML"
+
+    ```yaml
+    ip_dhcp_relay:
+      information_option: <bool>
+    ```
+
+### IP Domain Lookup
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>ip_domain_lookup</samp>](## "ip_domain_lookup") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;source_interfaces</samp>](## "ip_domain_lookup.source_interfaces") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "ip_domain_lookup.source_interfaces.[].name") | String | Required, Unique |  |  | Source Interface<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "ip_domain_lookup.source_interfaces.[].vrf") | String |  |  |  |  |
+
+=== "YAML"
+
+    ```yaml
+    ip_domain_lookup:
+      source_interfaces:
+        - name: <str>
+          vrf: <str>
+    ```
+
+### IP Extended Access-Lists (improved model)
 
 AVD currently supports 2 different data models for extended ACLs:
 
@@ -1874,109 +1878,41 @@ The improved data model has a more sophisticated design documented below:
             vlan_mask: <str>
     ```
 
-## IP Access Lists Max Entries
+### IP Extended Access-Lists (legacy model)
 
-The `ip_access_lists` data model allows to limit the number of ACL entries that AVD is allowed to generate by defining `ip_access_lists_max_entries`.
-Only normal entries under `ip_access_lists` will be counted, remarks will be ignored.
-If the number is above the limit, the playbook will fail. This provides a simplified control over hardware utilization.
-The numbers must be based on the hardware tests and AVD does not provide any guidance. Note that other EOS features may use the same hardware resources and affect the supported scale.
+AVD currently supports 2 different data models for extended ACLs:
 
-=== "Table"
+- The legacy `access_lists` data model, for compatibility with existing deployments
+- The improved `ip_access_lists` data model, for access to more EOS features
 
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ip_access_lists_max_entries</samp>](## "ip_access_lists_max_entries") | Integer |  |  |  |  |
+Both data models can coexists without conflicts, as different keys are used: `access_lists` vs `ip_access_lists`.
+Access list names must be unique.
 
-=== "YAML"
-
-    ```yaml
-    ip_access_lists_max_entries: <int>
-    ```
-
-## IP Community Lists
-
-AVD supports 2 different data models for community lists:
-
-- The legacy `community_lists` data model that can be used for compatibility with the existing deployments.
-- The improved `ip_community_lists` data model.
-
-Both data models can coexist without conflicts, as different keys are used: `community_lists` vs `ip_community_lists`.
-Community list names must be unique.
-
-The improved data model has a better design documented below:
-
-communities and regexp MUST not be configured together in the same entry
-possible community strings are (case insensitive):
-
-- GSHUT
-- internet
-- local-as
-- no-advertise
-- no-export
-- <1-4294967040>
-- aa:nn
+The legacy data model supports simplified ACL definition with `sequence` to `action` mapping:
 
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ip_community_lists</samp>](## "ip_community_lists") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- name</samp>](## "ip_community_lists.[].name") | String | Required, Unique |  |  | IP Community-list Name |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;entries</samp>](## "ip_community_lists.[].entries") | List, items: Dictionary | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- action</samp>](## "ip_community_lists.[].entries.[].action") | String | Required |  | Valid Values:<br>- permit<br>- deny |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;communities</samp>](## "ip_community_lists.[].entries.[].communities") | List, items: String |  |  |  | If defined, a standard community-list will be configured |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "ip_community_lists.[].entries.[].communities.[].&lt;str&gt;") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;regexp</samp>](## "ip_community_lists.[].entries.[].regexp") | String |  |  |  | Regular Expression<br>If defined, a regex community-list will be configured |
+    | [<samp>access_lists</samp>](## "access_lists") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;- name</samp>](## "access_lists.[].name") | String | Required, Unique |  |  | Access-list Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counters_per_entry</samp>](## "access_lists.[].counters_per_entry") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sequence_numbers</samp>](## "access_lists.[].sequence_numbers") | List, items: Dictionary | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- sequence</samp>](## "access_lists.[].sequence_numbers.[].sequence") | Integer | Required, Unique |  |  | Sequence ID |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "access_lists.[].sequence_numbers.[].action") | String | Required |  |  | Action as string<br>Example: "deny ip any any" |
 
 === "YAML"
 
     ```yaml
-    ip_community_lists:
+    access_lists:
       - name: <str>
-        entries:
-          - action: <str>
-            communities:
-              - <str>
-            regexp: <str>
+        counters_per_entry: <bool>
+        sequence_numbers:
+          - sequence: <int>
+            action: <str>
     ```
 
-## IP DHCP Relay
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ip_dhcp_relay</samp>](## "ip_dhcp_relay") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;information_option</samp>](## "ip_dhcp_relay.information_option") | Boolean |  |  |  | Insert Option-82 information |
-
-=== "YAML"
-
-    ```yaml
-    ip_dhcp_relay:
-      information_option: <bool>
-    ```
-
-## IP Domain Lookup
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ip_domain_lookup</samp>](## "ip_domain_lookup") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;source_interfaces</samp>](## "ip_domain_lookup.source_interfaces") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "ip_domain_lookup.source_interfaces.[].name") | String | Required, Unique |  |  | Source Interface<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "ip_domain_lookup.source_interfaces.[].vrf") | String |  |  |  |  |
-
-=== "YAML"
-
-    ```yaml
-    ip_domain_lookup:
-      source_interfaces:
-        - name: <str>
-          vrf: <str>
-    ```
-
-## IP Extended Community Lists
+### IP Extended Community Lists
 
 === "Table"
 
@@ -1998,7 +1934,7 @@ possible community strings are (case insensitive):
             extcommunities: <str>
     ```
 
-## IP Extended Community Lists RegExp
+### IP Extended Community Lists RegExp
 
 === "Table"
 
@@ -2020,7 +1956,7 @@ possible community strings are (case insensitive):
             regexp: <str>
     ```
 
-## IP Hardware
+### IP Hardware
 
 === "Table"
 
@@ -2042,7 +1978,7 @@ possible community strings are (case insensitive):
             profile: <str>
     ```
 
-## IP HTTP Client Source Interfaces
+### IP HTTP Client Source Interfaces
 
 === "Table"
 
@@ -2060,7 +1996,7 @@ possible community strings are (case insensitive):
         vrf: <str>
     ```
 
-## IP ICMP Redirect
+### IP ICMP Redirect
 
 === "Table"
 
@@ -2074,7 +2010,7 @@ possible community strings are (case insensitive):
     ip_icmp_redirect: <bool>
     ```
 
-## IP IGMP Snooping
+### IP IGMP Snooping
 
 === "Table"
 
@@ -2152,7 +2088,7 @@ possible community strings are (case insensitive):
           proxy: <bool>
     ```
 
-## IP Name Servers
+### IP Name Servers
 
 === "Table"
 
@@ -2172,7 +2108,7 @@ possible community strings are (case insensitive):
         priority: <int>
     ```
 
-## IP Nat
+### IP Nat
 
 === "Table"
 
@@ -2260,7 +2196,7 @@ possible community strings are (case insensitive):
             timeout: <int>
     ```
 
-## IP Radius Source Interfaces
+### IP Radius Source Interfaces
 
 === "Table"
 
@@ -2278,7 +2214,7 @@ possible community strings are (case insensitive):
         vrf: <str>
     ```
 
-## IP Routing
+### IP Routing
 
 === "Table"
 
@@ -2292,7 +2228,7 @@ possible community strings are (case insensitive):
     ip_routing: <bool>
     ```
 
-## IP Routing IPv6 Interfaces
+### IP Routing IPv6 Interfaces
 
 === "Table"
 
@@ -2306,7 +2242,7 @@ possible community strings are (case insensitive):
     ip_routing_ipv6_interfaces: <bool>
     ```
 
-## IP SSH Client Source Interfaces
+### IP SSH Client Source Interfaces
 
 === "Table"
 
@@ -2324,7 +2260,7 @@ possible community strings are (case insensitive):
         vrf: <str>
     ```
 
-## IP Tacacs Source Interfaces
+### IP Tacacs Source Interfaces
 
 === "Table"
 
@@ -2342,7 +2278,7 @@ possible community strings are (case insensitive):
         vrf: <str>
     ```
 
-## IP Virtual Router MAC Address
+### IP Virtual Router MAC Address
 
 MAC address (hh:hh:hh:hh:hh:hh)
 
@@ -2358,7 +2294,7 @@ MAC address (hh:hh:hh:hh:hh:hh)
     ip_virtual_router_mac_address: <str>
     ```
 
-## IPv6 Extended Access-Lists
+### IPv6 Extended Access-Lists
 
 === "Table"
 
@@ -2382,7 +2318,7 @@ MAC address (hh:hh:hh:hh:hh:hh)
             action: <str>
     ```
 
-## IPv6 Hardware
+### IPv6 Hardware
 
 === "Table"
 
@@ -2404,7 +2340,7 @@ MAC address (hh:hh:hh:hh:hh:hh)
             profile: <str>
     ```
 
-## IPv6 ICMP Redirect
+### IPv6 ICMP Redirect
 
 === "Table"
 
@@ -2418,7 +2354,7 @@ MAC address (hh:hh:hh:hh:hh:hh)
     ipv6_icmp_redirect: <bool>
     ```
 
-## IPv6 Prefix Lists
+### IPv6 Prefix Lists
 
 === "Table"
 
@@ -2440,7 +2376,7 @@ MAC address (hh:hh:hh:hh:hh:hh)
             action: <str>
     ```
 
-## IPv6 Standard Access Lists
+### IPv6 Standard Access Lists
 
 === "Table"
 
@@ -2464,7 +2400,7 @@ MAC address (hh:hh:hh:hh:hh:hh)
             action: <str>
     ```
 
-## IPv6 Static Routes
+### IPv6 Static Routes
 
 === "Table"
 
@@ -2496,7 +2432,7 @@ MAC address (hh:hh:hh:hh:hh:hh)
         metric: <int>
     ```
 
-## IPv6 Unicast Routing
+### IPv6 Unicast Routing
 
 === "Table"
 
@@ -2510,7 +2446,7 @@ MAC address (hh:hh:hh:hh:hh:hh)
     ipv6_unicast_routing: <bool>
     ```
 
-## L2 Protocol
+### L2 Protocol
 
 === "Table"
 
@@ -2538,7 +2474,7 @@ MAC address (hh:hh:hh:hh:hh:hh)
               untagged_forward: <bool>
     ```
 
-## LACP
+### LACP
 
 Set Link Aggregation Control Protocol (LACP) parameters.
 
@@ -2568,7 +2504,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
       system_priority: <int>
     ```
 
-## Link Tracking Groups
+### Link Tracking Groups
 
 === "Table"
 
@@ -2588,7 +2524,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
         recovery_delay: <int>
     ```
 
-## LLDP
+### LLDP
 
 === "Table"
 
@@ -2622,7 +2558,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
       run: <bool>
     ```
 
-## Load Interval
+### Load Interval
 
 === "Table"
 
@@ -2638,7 +2574,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
       default: <int>
     ```
 
-## Local Users
+### Local Users
 
 === "Table"
 
@@ -2668,7 +2604,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
         shell: <str>
     ```
 
-## Logging
+### Logging
 
 === "Table"
 
@@ -2736,7 +2672,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
               action: <str>
     ```
 
-## Loopback Interfaces
+### Loopback Interfaces
 
 === "Table"
 
@@ -2794,7 +2730,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
         eos_cli: <str>
     ```
 
-## MAC Access Lists
+### MAC Access Lists
 
 === "Table"
 
@@ -2818,7 +2754,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
             action: <str>
     ```
 
-## MAC Address Table
+### MAC Address Table
 
 === "Table"
 
@@ -2844,7 +2780,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
           moves: <int>
     ```
 
-## MAC Security (MACsec)
+### MAC Security (MACsec)
 
 === "Table"
 
@@ -2900,7 +2836,35 @@ Set Link Aggregation Control Protocol (LACP) parameters.
               mode: <str>
     ```
 
-## Maintenance Mode
+### Maintenance Interface Groups
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>interface_groups</samp>](## "interface_groups") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;- name</samp>](## "interface_groups.[].name") | String | Required, Unique |  |  | Interface-Group name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "interface_groups.[].interfaces") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "interface_groups.[].interfaces.[].&lt;str&gt;") | String |  |  |  | Interface Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp_maintenance_profiles</samp>](## "interface_groups.[].bgp_maintenance_profiles") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "interface_groups.[].bgp_maintenance_profiles.[].&lt;str&gt;") | String |  |  |  | Name of BGP Maintenance Profile |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interface_maintenance_profiles</samp>](## "interface_groups.[].interface_maintenance_profiles") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "interface_groups.[].interface_maintenance_profiles.[].&lt;str&gt;") | String |  |  |  | Name of Interface Maintenance Profile |
+
+=== "YAML"
+
+    ```yaml
+    interface_groups:
+      - name: <str>
+        interfaces:
+          - <str>
+        bgp_maintenance_profiles:
+          - <str>
+        interface_maintenance_profiles:
+          - <str>
+    ```
+
+### Maintenance Mode
 
 === "Table"
 
@@ -2968,7 +2932,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
               - <str>
     ```
 
-## Management API gNMI
+### Management API gNMI
 
 === "Table"
 
@@ -3038,7 +3002,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
       octa: <dict>
     ```
 
-## Management API HTTP
+### Management API HTTP
 
 === "Table"
 
@@ -3074,7 +3038,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
         private_key: <str>
     ```
 
-## Management API Models
+### Management API Models
 
 === "Table"
 
@@ -3098,7 +3062,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
               disabled: <bool>
     ```
 
-## Management Console
+### Management Console
 
 === "Table"
 
@@ -3114,7 +3078,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
       idle_timeout: <int>
     ```
 
-## Management CVX
+### Management CVX
 
 === "Table"
 
@@ -3138,7 +3102,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
       vrf: <str>
     ```
 
-## Management Defaults
+### Management Defaults
 
 === "Table"
 
@@ -3156,7 +3120,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
         hash: <str>
     ```
 
-## Management Interfaces
+### Management Interfaces
 
 === "Table"
 
@@ -3196,7 +3160,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
         eos_cli: <str>
     ```
 
-## Management Security
+### Management Security
 
 === "Table"
 
@@ -3234,7 +3198,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
             key: <str>
     ```
 
-## Management SSH
+### Management SSH
 
 === "Table"
 
@@ -3296,7 +3260,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
       log_level: <str>
     ```
 
-## Management Tech Support
+### Management Tech Support
 
 === "Table"
 
@@ -3322,7 +3286,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
           - command: <str>
     ```
 
-## Match Lists
+### Match Lists
 
 === "Table"
 
@@ -3346,7 +3310,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
               match_regex: <str>
     ```
 
-## MCS Client
+### MCS Client
 
 === "Table"
 
@@ -3372,47 +3336,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
           - <str>
     ```
 
-## Multi-Chassis Link Aggregation (MLAG) Configuration
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>mlag_configuration</samp>](## "mlag_configuration") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;domain_id</samp>](## "mlag_configuration.domain_id") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;heartbeat_interval</samp>](## "mlag_configuration.heartbeat_interval") | Integer |  |  |  | Heartbeat interval in milliseconds |
-    | [<samp>&nbsp;&nbsp;local_interface</samp>](## "mlag_configuration.local_interface") | String |  |  |  | Local Interface Name |
-    | [<samp>&nbsp;&nbsp;peer_address</samp>](## "mlag_configuration.peer_address") | String |  |  |  | IPv4 Address |
-    | [<samp>&nbsp;&nbsp;peer_address_heartbeat</samp>](## "mlag_configuration.peer_address_heartbeat") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "mlag_configuration.peer_address_heartbeat.peer_ip") | String |  |  |  | IPv4 Address |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "mlag_configuration.peer_address_heartbeat.vrf") | String |  |  |  | VRF Name |
-    | [<samp>&nbsp;&nbsp;dual_primary_detection_delay</samp>](## "mlag_configuration.dual_primary_detection_delay") | Integer |  |  | Min: 0<br>Max: 86400 | Delay in seconds |
-    | [<samp>&nbsp;&nbsp;dual_primary_recovery_delay_mlag</samp>](## "mlag_configuration.dual_primary_recovery_delay_mlag") | Integer |  |  | Min: 0<br>Max: 86400 | Delay in seconds |
-    | [<samp>&nbsp;&nbsp;dual_primary_recovery_delay_non_mlag</samp>](## "mlag_configuration.dual_primary_recovery_delay_non_mlag") | Integer |  |  | Min: 0<br>Max: 86400 | Delay in seconds |
-    | [<samp>&nbsp;&nbsp;peer_link</samp>](## "mlag_configuration.peer_link") | String |  |  |  | Port-Channel interface name |
-    | [<samp>&nbsp;&nbsp;reload_delay_mlag</samp>](## "mlag_configuration.reload_delay_mlag") | String |  |  |  | Delay in seconds <0-86400> or 'infinity' |
-    | [<samp>&nbsp;&nbsp;reload_delay_non_mlag</samp>](## "mlag_configuration.reload_delay_non_mlag") | String |  |  |  | Delay in seconds <0-86400> or 'infinity' |
-
-=== "YAML"
-
-    ```yaml
-    mlag_configuration:
-      domain_id: <str>
-      heartbeat_interval: <int>
-      local_interface: <str>
-      peer_address: <str>
-      peer_address_heartbeat:
-        peer_ip: <str>
-        vrf: <str>
-      dual_primary_detection_delay: <int>
-      dual_primary_recovery_delay_mlag: <int>
-      dual_primary_recovery_delay_non_mlag: <int>
-      peer_link: <str>
-      reload_delay_mlag: <str>
-      reload_delay_non_mlag: <str>
-    ```
-
-## Monitor Connectivity
+### Monitor Connectivity
 
 === "Table"
 
@@ -3476,7 +3400,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
               url: <str>
     ```
 
-## Monitor Sessions
+### Monitor Sessions
 
 === "Table"
 
@@ -3532,7 +3456,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
           size: <int>
     ```
 
-## MPLS
+### MPLS
 
 === "Table"
 
@@ -3558,7 +3482,47 @@ Set Link Aggregation Control Protocol (LACP) parameters.
         transport_address_interface: <str>
     ```
 
-## Name Server
+### Multi-Chassis Link Aggregation (MLAG) Configuration
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>mlag_configuration</samp>](## "mlag_configuration") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;domain_id</samp>](## "mlag_configuration.domain_id") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;heartbeat_interval</samp>](## "mlag_configuration.heartbeat_interval") | Integer |  |  |  | Heartbeat interval in milliseconds |
+    | [<samp>&nbsp;&nbsp;local_interface</samp>](## "mlag_configuration.local_interface") | String |  |  |  | Local Interface Name |
+    | [<samp>&nbsp;&nbsp;peer_address</samp>](## "mlag_configuration.peer_address") | String |  |  |  | IPv4 Address |
+    | [<samp>&nbsp;&nbsp;peer_address_heartbeat</samp>](## "mlag_configuration.peer_address_heartbeat") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "mlag_configuration.peer_address_heartbeat.peer_ip") | String |  |  |  | IPv4 Address |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "mlag_configuration.peer_address_heartbeat.vrf") | String |  |  |  | VRF Name |
+    | [<samp>&nbsp;&nbsp;dual_primary_detection_delay</samp>](## "mlag_configuration.dual_primary_detection_delay") | Integer |  |  | Min: 0<br>Max: 86400 | Delay in seconds |
+    | [<samp>&nbsp;&nbsp;dual_primary_recovery_delay_mlag</samp>](## "mlag_configuration.dual_primary_recovery_delay_mlag") | Integer |  |  | Min: 0<br>Max: 86400 | Delay in seconds |
+    | [<samp>&nbsp;&nbsp;dual_primary_recovery_delay_non_mlag</samp>](## "mlag_configuration.dual_primary_recovery_delay_non_mlag") | Integer |  |  | Min: 0<br>Max: 86400 | Delay in seconds |
+    | [<samp>&nbsp;&nbsp;peer_link</samp>](## "mlag_configuration.peer_link") | String |  |  |  | Port-Channel interface name |
+    | [<samp>&nbsp;&nbsp;reload_delay_mlag</samp>](## "mlag_configuration.reload_delay_mlag") | String |  |  |  | Delay in seconds <0-86400> or 'infinity' |
+    | [<samp>&nbsp;&nbsp;reload_delay_non_mlag</samp>](## "mlag_configuration.reload_delay_non_mlag") | String |  |  |  | Delay in seconds <0-86400> or 'infinity' |
+
+=== "YAML"
+
+    ```yaml
+    mlag_configuration:
+      domain_id: <str>
+      heartbeat_interval: <int>
+      local_interface: <str>
+      peer_address: <str>
+      peer_address_heartbeat:
+        peer_ip: <str>
+        vrf: <str>
+      dual_primary_detection_delay: <int>
+      dual_primary_recovery_delay_mlag: <int>
+      dual_primary_recovery_delay_non_mlag: <int>
+      peer_link: <str>
+      reload_delay_mlag: <str>
+      reload_delay_non_mlag: <str>
+    ```
+
+### Name Server
 
 === "Table"
 
@@ -3580,7 +3544,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
         - <str>
     ```
 
-## NTP
+### NTP
 
 === "Table"
 
@@ -3638,7 +3602,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
       trusted_keys: <str>
     ```
 
-## Patch Panel
+### Patch Panel
 
 === "Table"
 
@@ -3666,7 +3630,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
               endpoint: <str>
     ```
 
-## Peer Filters
+### Peer Filters
 
 === "Table"
 
@@ -3688,7 +3652,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
             match: <str>
     ```
 
-## Platform
+### Platform
 
 === "Table"
 
@@ -3726,7 +3690,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
           default: <str>
     ```
 
-## PoE
+### PoE
 
 === "Table"
 
@@ -3748,7 +3712,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
         action: <str>
     ```
 
-## Policy Maps
+### Policy Maps
 
 === "Table"
 
@@ -3800,7 +3764,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
                 drop_precedence: <int>
     ```
 
-## Port Channel Interfaces
+### Port Channel Interfaces
 
 === "Table"
 
@@ -4234,7 +4198,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
         eos_cli: <str>
     ```
 
-## Prefix Lists
+### Prefix Lists
 
 === "Table"
 
@@ -4256,7 +4220,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
             action: <str>
     ```
 
-## Prompt
+### Prompt
 
 === "Table"
 
@@ -4270,7 +4234,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
     prompt: <str>
     ```
 
-## PTP
+### PTP
 
 === "Table"
 
@@ -4350,7 +4314,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
             sync: <int>
     ```
 
-## QOS
+### QOS
 
 === "Table"
 
@@ -4380,7 +4344,45 @@ Set Link Aggregation Control Protocol (LACP) parameters.
       rewrite_dscp: <bool>
     ```
 
-## QOS Profiles
+### QOS Class-maps
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>class_maps</samp>](## "class_maps") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;pbr</samp>](## "class_maps.pbr") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "class_maps.pbr.[].name") | String | Required, Unique |  |  | Class-Map Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "class_maps.pbr.[].ip") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_group</samp>](## "class_maps.pbr.[].ip.access_group") | String |  |  |  | Standard Access-List Name |
+    | [<samp>&nbsp;&nbsp;qos</samp>](## "class_maps.qos") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "class_maps.qos.[].name") | String | Required, Unique |  |  | Class-Map Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "class_maps.qos.[].vlan") | Integer |  |  |  | VLAN value(s) or range(s) of VLAN values |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cos</samp>](## "class_maps.qos.[].cos") | Integer |  |  |  | CoS value(s) or range(s) of CoS values |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "class_maps.qos.[].ip") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_group</samp>](## "class_maps.qos.[].ip.access_group") | String |  |  |  | IPv4 Access-List Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "class_maps.qos.[].ipv6") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_group</samp>](## "class_maps.qos.[].ipv6.access_group") | String |  |  |  | IPv6 Access-List Name |
+
+=== "YAML"
+
+    ```yaml
+    class_maps:
+      pbr:
+        - name: <str>
+          ip:
+            access_group: <str>
+      qos:
+        - name: <str>
+          vlan: <int>
+          cos: <int>
+          ip:
+            access_group: <str>
+          ipv6:
+            access_group: <str>
+    ```
+
+### QOS Profiles
 
 === "Table"
 
@@ -4454,7 +4456,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
               rate: <str>
     ```
 
-## Queue Monitor Length
+### Queue Monitor Length
 
 === "Table"
 
@@ -4488,7 +4490,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
           low: <int>
     ```
 
-## Queue Monitor Streaming
+### Queue Monitor Streaming
 
 === "Table"
 
@@ -4512,7 +4514,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
       vrf: <str>
     ```
 
-## Radius Server
+### Radius Server
 
 === "Table"
 
@@ -4550,7 +4552,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
           key: <str>
     ```
 
-## Radius Servers
+### Radius Servers
 
 === "Table"
 
@@ -4570,7 +4572,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
         key: <str>
     ```
 
-## Redundancy
+### Redundancy
 
 === "Table"
 
@@ -4586,7 +4588,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
       protocol: <str>
     ```
 
-## Roles
+### Roles
 
 === "Table"
 
@@ -4612,7 +4614,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
             command: <str>
     ```
 
-## Route Maps
+### Route Maps
 
 === "Table"
 
@@ -4652,7 +4654,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
               sequence_number: <int>
     ```
 
-## Router BFD
+### Router BFD
 
 === "Table"
 
@@ -4702,7 +4704,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
           local_discriminator: <str>
     ```
 
-## Router BGP
+### Router BGP
 
 === "Table"
 
@@ -5848,7 +5850,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
           recovery_delay: <int>
     ```
 
-## Router General configuration
+### Router General configuration
 
 === "Table"
 
@@ -5886,7 +5888,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
               - name: <str>
     ```
 
-## Router IGMP Configuration
+### Router IGMP Configuration
 
 === "Table"
 
@@ -5902,7 +5904,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
       ssm_aware: <bool>
     ```
 
-## Router ISIS
+### Router ISIS
 
 === "Table"
 
@@ -6012,7 +6014,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
             index: <int>
     ```
 
-## Router L2 VPN
+### Router L2 VPN
 
 === "Table"
 
@@ -6044,7 +6046,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
       virtual_router_nd_ra_flooding_disabled: <bool>
     ```
 
-## Router Msdp
+### Router Msdp
 
 === "Table"
 
@@ -6158,7 +6160,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
                 out_list: <str>
     ```
 
-## Router Multicast
+### Router Multicast
 
 === "Table"
 
@@ -6204,7 +6206,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
             routing: <bool>
     ```
 
-## Router OSPF Configuration
+### Router OSPF Configuration
 
 === "Table"
 
@@ -6360,7 +6362,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
           mpls_ldp_sync_default: <bool>
     ```
 
-## Router PIM Sparse Mode
+### Router PIM Sparse Mode
 
 === "Table"
 
@@ -6434,7 +6436,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
                 override: <bool>
     ```
 
-## Router Traffic Engineering
+### Router Traffic Engineering
 
 === "Table"
 
@@ -6488,7 +6490,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
                         index: <int>
     ```
 
-## Service Routing Configuration BGP
+### Service Routing Configuration BGP
 
 === "Table"
 
@@ -6504,7 +6506,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
       no_equals_default: <bool>
     ```
 
-## Service Routing Protocols Model
+### Service Routing Protocols Model
 
 === "Table"
 
@@ -6518,7 +6520,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
     service_routing_protocols_model: <str>
     ```
 
-## Service Unsupported Transceiver
+### Service Unsupported Transceiver
 
 === "Table"
 
@@ -6536,7 +6538,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
       license_key: <str>
     ```
 
-## Sflow
+### Sflow
 
 === "Table"
 
@@ -6606,7 +6608,7 @@ Set Link Aggregation Control Protocol (LACP) parameters.
             enabled: <bool>
     ```
 
-## Snmp Server
+### Snmp Server
 
 SNMP settings
 
@@ -6750,7 +6752,7 @@ SNMP settings
           enable: <bool>
     ```
 
-## Spanning Tree
+### Spanning Tree
 
 === "Table"
 
@@ -6812,7 +6814,7 @@ SNMP settings
           priority: <int>
     ```
 
-## Standard Access Lists
+### Standard Access Lists
 
 === "Table"
 
@@ -6836,7 +6838,7 @@ SNMP settings
             action: <str>
     ```
 
-## Static Routes
+### Static Routes
 
 === "Table"
 
@@ -6868,7 +6870,7 @@ SNMP settings
         metric: <int>
     ```
 
-## Switchport Default
+### Switchport Default
 
 === "Table"
 
@@ -6892,7 +6894,7 @@ SNMP settings
         vlan: <int>
     ```
 
-## System
+### System
 
 === "Table"
 
@@ -6926,7 +6928,29 @@ SNMP settings
             vrf: <str>
     ```
 
-## Tacacs Servers
+### System Boot Settings
+
+Set the Aboot password
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>boot</samp>](## "boot") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;secret</samp>](## "boot.secret") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "boot.secret.hash_algorithm") | String |  | sha512 | Valid Values:<br>- md5<br>- sha512 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "boot.secret.key") | String |  |  |  | Hashed Password |
+
+=== "YAML"
+
+    ```yaml
+    boot:
+      secret:
+        hash_algorithm: <str>
+        key: <str>
+    ```
+
+### Tacacs Servers
 
 === "Table"
 
@@ -6956,7 +6980,7 @@ SNMP settings
       policy_unknown_mandatory_attribute_ignore: <bool>
     ```
 
-## Tap Aggregation
+### Tap Aggregation
 
 === "Table"
 
@@ -7006,29 +7030,7 @@ SNMP settings
         fcs_error: <str>
     ```
 
-## Hardware TCAM Profiles
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>tcam_profile</samp>](## "tcam_profile") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;system</samp>](## "tcam_profile.system") | String |  |  |  | TCAM profile name to activate<br> |
-    | [<samp>&nbsp;&nbsp;profiles</samp>](## "tcam_profile.profiles") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "tcam_profile.profiles.[].name") | String | Required, Unique |  |  | Tcam-Profile Name |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;config</samp>](## "tcam_profile.profiles.[].config") | String | Required |  |  | TCAM Profile Config. Since these can be very long, it is often a good idea to import the config from a file.<br>Example: "{{ lookup('file', 'TCAM_TRAFFIC_POLICY.conf') }}" |
-
-=== "YAML"
-
-    ```yaml
-    tcam_profile:
-      system: <str>
-      profiles:
-        - name: <str>
-          config: <str>
-    ```
-
-## Terminal Settings
+### Terminal Settings
 
 === "Table"
 
@@ -7046,7 +7048,7 @@ SNMP settings
       width: <int>
     ```
 
-## Trackers
+### Trackers
 
 === "Table"
 
@@ -7066,7 +7068,7 @@ SNMP settings
         tracked_property: <str>
     ```
 
-## Traffic Policies
+### Traffic Policies
 
 === "Table"
 
@@ -7202,7 +7204,7 @@ SNMP settings
               log: <bool>
     ```
 
-## Tunnel Interfaces
+### Tunnel Interfaces
 
 === "Table"
 
@@ -7256,7 +7258,7 @@ SNMP settings
         eos_cli: <str>
     ```
 
-## Virtual Source Nat VRFs
+### Virtual Source Nat VRFs
 
 === "Table"
 
@@ -7274,7 +7276,7 @@ SNMP settings
         ip_address: <str>
     ```
 
-## VLAN Interfaces
+### VLAN Interfaces
 
 === "Table"
 
@@ -7624,7 +7626,7 @@ SNMP settings
         eos_cli: <str>
     ```
 
-## VLAN Internal Order
+### VLAN Internal Order
 
 === "Table"
 
@@ -7646,7 +7648,7 @@ SNMP settings
         ending: <int>
     ```
 
-## VLANs
+### VLANs
 
 === "Table"
 
@@ -7678,7 +7680,7 @@ SNMP settings
         tenant: <str>
     ```
 
-## VMTracer Sessions
+### VMTracer Sessions
 
 === "Table"
 
@@ -7704,7 +7706,7 @@ SNMP settings
         source_interface: <str>
     ```
 
-## VRFs
+### VRFs
 
 These keys are ignored if the name of the vrf is 'default'
 
@@ -7732,7 +7734,7 @@ These keys are ignored if the name of the vrf is 'default'
         tenant: <str>
     ```
 
-## VxLAN Interface
+### VxLAN Interface
 
 === "Table"
 

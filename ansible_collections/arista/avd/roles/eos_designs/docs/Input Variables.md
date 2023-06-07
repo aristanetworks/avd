@@ -5,7 +5,9 @@ search:
 
 # Input Variables
 
-## BFD Settings
+## Input Variables
+
+### BFD Settings
 
 === "Table"
 
@@ -25,7 +27,7 @@ search:
       multiplier: <int>
     ```
 
-## BGP Settings
+### BGP Settings
 
 === "Table"
 
@@ -124,7 +126,7 @@ search:
     bgp_update_wait_for_convergence: <bool>
     ```
 
-## CloudVision Settings
+### CloudVision Settings
 
 === "Table"
 
@@ -154,31 +156,7 @@ search:
     terminattr_smashexcludes: <str>
     ```
 
-## Connected Endpoints Keys
-
-Define connected endpoints keys to define the grouping of endpoints connecting to the fabric.
-This lets you specify various keys to better organize/group your data.
-The connected endpoints keys should be defined in the top level group_var for the fabric.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>connected_endpoints_keys</samp>](## "connected_endpoints_keys") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- key</samp>](## "connected_endpoints_keys.[].key") | String | Required, Unique |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "connected_endpoints_keys.[].type") | String |  |  |  | Type used for documentation. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "connected_endpoints_keys.[].description") | String |  |  |  | Description used for documentation. |
-
-=== "YAML"
-
-    ```yaml
-    connected_endpoints_keys:
-      - key: <str>
-        type: <str>
-        description: <str>
-    ```
-
-## Connected Endpoints
+### Connected Endpoints
 
 This should be applied to group_vars or host_vars where endpoints are connecting.
 `connected_endpoints_keys.key` is one of the keys under "connected_endpoints_keys".
@@ -439,7 +417,31 @@ The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `s
             structured_config: <dict>
     ```
 
-## Core Interfaces
+### Connected Endpoints Keys
+
+Define connected endpoints keys to define the grouping of endpoints connecting to the fabric.
+This lets you specify various keys to better organize/group your data.
+The connected endpoints keys should be defined in the top level group_var for the fabric.
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>connected_endpoints_keys</samp>](## "connected_endpoints_keys") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;- key</samp>](## "connected_endpoints_keys.[].key") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "connected_endpoints_keys.[].type") | String |  |  |  | Type used for documentation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "connected_endpoints_keys.[].description") | String |  |  |  | Description used for documentation. |
+
+=== "YAML"
+
+    ```yaml
+    connected_endpoints_keys:
+      - key: <str>
+        type: <str>
+        description: <str>
+    ```
+
+### Core Interfaces
 
 The `core_interfaces` data model can be used to configure L3 P2P links anywhere in the fabric.
 It can be between two switches that are already part of the fabric inventory, or it can be towards another device,
@@ -617,7 +619,7 @@ where only one end of the link is on a switch in the fabric.
           raw_eos_cli: <str>
     ```
 
-## Custom Structured Configuration
+### Custom Structured Configuration
 
 === "Table"
 
@@ -635,7 +637,7 @@ where only one end of the link is on a switch in the fabric.
       - <str>
     ```
 
-## Default Interfaces
+### Default Interfaces
 
 - Set default uplink, downlink, and MLAG interfaces, which will be used if these interfaces are not defined on a device (either directly or through inheritance).
 - These are defined based on the combination of node_type (e.g., l3leaf or spine) and a regex for matching the platform.
@@ -694,7 +696,7 @@ default_interfaces:
           - <str>
     ```
 
-## Default Node Types
+### Default Node Types
 
 Uses hostname matches against a regular expression to determine the node type.
 
@@ -716,7 +718,7 @@ Uses hostname matches against a regular expression to determine the node type.
           - <str>
     ```
 
-## EVPN Settings
+### EVPN Settings
 
 === "Table"
 
@@ -761,7 +763,7 @@ Uses hostname matches against a regular expression to determine the node type.
     fabric_evpn_encapsulation: <str>
     ```
 
-## Fabric Settings
+### Fabric Settings
 
 === "Table"
 
@@ -819,7 +821,7 @@ Uses hostname matches against a regular expression to determine the node type.
       enable: <bool>
     ```
 
-## Fabric Topology
+### Fabric Topology
 
 === "Table"
 
@@ -837,7 +839,7 @@ Uses hostname matches against a regular expression to determine the node type.
     pod_name: <str>
     ```
 
-## ISIS Settings
+### ISIS Settings
 
 === "Table"
 
@@ -871,7 +873,7 @@ Uses hostname matches against a regular expression to determine the node type.
     underlay_isis_instance_name: <str>
     ```
 
-## L3 Edge
+### L3 Edge
 
 The `l3_edge` data model can be used to configure extra L3 P2P links anywhere in the fabric.
 It can be between two switches that are already part of the fabric inventory, or it can be towards another device, where only one end of the link is on a switch in the fabric.
@@ -1055,7 +1057,7 @@ Make sure to configure the variables in a group_vars file covering all devices m
           raw_eos_cli: <str>
     ```
 
-## Management Interface Settings
+### Management Interface Settings
 
 === "Table"
 
@@ -1081,7 +1083,7 @@ Make sure to configure the variables in a group_vars file covering all devices m
     mgmt_vrf_routing: <bool>
     ```
 
-## Management Settings
+### Management Settings
 
 === "Table"
 
@@ -1175,7 +1177,7 @@ Make sure to configure the variables in a group_vars file covering all devices m
     timezone: <str>
     ```
 
-## Network Ports
+### Network Ports
 
 All switch_ports ranges are expanded into individual port configurations.
 
@@ -1426,27 +1428,7 @@ All switch_ports ranges are expanded into individual port configurations.
         structured_config: <dict>
     ```
 
-## Network Services Keys
-
-Define network services keys, to define grouping of network services.
-This provides the ability to define various keys of your choice to better organize/group your data.
-This should be defined in top level group_var for the fabric.
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>network_services_keys</samp>](## "network_services_keys") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- name</samp>](## "network_services_keys.[].name") | String | Required, Unique |  |  |  |
-
-=== "YAML"
-
-    ```yaml
-    network_services_keys:
-      - name: <str>
-    ```
-
-## Network Services
+### Network Services
 
 === "Table"
 
@@ -2292,7 +2274,27 @@ This should be defined in top level group_var for the fabric.
             lldp_disable: <bool>
     ```
 
-## Node Type Keys
+### Network Services Keys
+
+Define network services keys, to define grouping of network services.
+This provides the ability to define various keys of your choice to better organize/group your data.
+This should be defined in top level group_var for the fabric.
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>network_services_keys</samp>](## "network_services_keys") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;- name</samp>](## "network_services_keys.[].name") | String | Required, Unique |  |  |  |
+
+=== "YAML"
+
+    ```yaml
+    network_services_keys:
+      - name: <str>
+    ```
+
+### Node Type Keys
 
 Define Node Type Keys, to specify the properties of each node type in the fabric.
 This allows for complete customization of the fabric layout.
@@ -2402,7 +2404,7 @@ This should be defined in top level group_var for the fabric.
           vtep_loopback_interface: <str>
     ```
 
-## Node Type Settings
+### Node Type Settings
 
 === "Table"
 
@@ -3712,7 +3714,7 @@ This should be defined in top level group_var for the fabric.
                   sync: <int>
     ```
 
-## OSPF Settings
+### OSPF Settings
 
 === "Table"
 
@@ -3732,7 +3734,7 @@ This should be defined in top level group_var for the fabric.
     underlay_ospf_process_id: <int>
     ```
 
-## Overlay Settings
+### Overlay Settings
 
 === "Table"
 
@@ -3778,7 +3780,7 @@ This should be defined in top level group_var for the fabric.
     vtep_vvtep_ip: <str>
     ```
 
-## Platform Settings
+### Platform Settings
 
 === "Table"
 
@@ -3834,7 +3836,7 @@ This should be defined in top level group_var for the fabric.
               - <int>
     ```
 
-## Port Profiles
+### Port Profiles
 
 Optional profiles to share common settings for connected_endpoints and/or network_ports.
 Keys are the same used under endpoints adapters. Keys defined under endpoints adapters take precedence.
@@ -4080,7 +4082,7 @@ Keys are the same used under endpoints adapters. Keys defined under endpoints ad
         structured_config: <dict>
     ```
 
-## PTP Profiles
+### PTP Profiles
 
 === "Table"
 
@@ -4110,7 +4112,7 @@ Keys are the same used under endpoints adapters. Keys defined under endpoints ad
         transport: <str>
     ```
 
-## SVI Profiles
+### SVI Profiles
 
 Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.
 Keys are the same used under SVIs. Keys defined under SVIs take precedence.
@@ -4354,7 +4356,7 @@ Note: structured configuration is not merged recursively and will be taken direc
         structured_config: <dict>
     ```
 
-## System Settings
+### System Settings
 
 === "Table"
 

@@ -63,25 +63,28 @@ class AvdToDocumentationSchemaConverter:
     more suited for creating tables in markdown documentation
 
     By default all keys will be documented in a single file using the default filename from the meta-schema
+    By default all keys will be documented in a single section (markdown heading) using the default section name from the meta-schema
     By default a table will be created per root-key, containing all keys below.
     These default behaviors can be overridden by setting "documentation_options.filename" and "documentation_options.table"
     in the schema. See the schema documentation for details.
 
     Example:
     "myfile":
-      tables:
-        - display_name: Foo
-          description: "foo is an example of a schema key"
-          table:
-            - variable: "foo"
-              type: "List, Items: Dictionary"
-            - variable: "  - bar"
-              type: "String"
-              required: "Yes, Unique"
-              description: "Description of foo.bar"
-          yaml:
-            - 'foo:'
-            - '  - bar: "<str>"'
+      sections:
+      - name: "mysection"
+        tables:
+          - display_name: Foo
+            description: "foo is an example of a schema key"
+            table:
+                - variable: "foo"
+                type: "List, Items: Dictionary"
+                - variable: "  - bar"
+                type: "String"
+                required: "Yes, Unique"
+                description: "Description of foo.bar"
+            yaml:
+                - 'foo:'
+                - '  - bar: "<str>"'
     """
 
     def __init__(self, avdschema: AvdSchema):
@@ -89,6 +92,7 @@ class AvdToDocumentationSchemaConverter:
         meta_schema = self._avdschema._validator.META_SCHEMA
         documentation_options_schema = meta_schema["$defs"]["documentation_options"]
         self._default_filename = documentation_options_schema["properties"]["filename"]["default"]
+        self._default_section = documentation_options_schema["properties"]["section"]["default"]
 
     def convert_schema(self):
         schema = {}
@@ -100,11 +104,20 @@ class AvdToDocumentationSchemaConverter:
         filenames = self._get_filenames(schema)
 
         for filename in filenames:
-            output[filename] = {"tables": self.build_tables(schema=schema, filter_filename=filename)}
+            sections = self._get_sections(schema)
+            built_sections = []
+            for section in sections:
+                built_tables = self.build_tables(schema=schema, filter_section=section, filter_filename=filename)
+                if built_tables:
+                    # Only add section if it contains any tables
+                    built_sections.append({"name": section, "tables": built_tables})
+            if built_sections:
+                # Only add filename if it contains any sections
+                output[filename] = {"sections": built_sections}
 
         return output
 
-    def build_tables(self, schema: dict, filter_filename: str = None):
+    def build_tables(self, schema: dict, filter_section: str = None, filter_filename: str = None):
         tables = self._get_tables(schema)
 
         # Skip the default table, since we want a unique table per root key if table is not set.
@@ -114,7 +127,7 @@ class AvdToDocumentationSchemaConverter:
         output = []
         # Build tables for keys where "documentation_options.table" is set in their schema
         for table in tables:
-            built_table = self.build_table(table=table, schema=schema, filter_filename=filter_filename)
+            built_table = self.build_table(table=table, schema=schema, filter_section=filter_section, filter_filename=filter_filename)
             # Only append if the table contain rows
             if built_table["table"]:
                 output.append(built_table)
@@ -123,14 +136,14 @@ class AvdToDocumentationSchemaConverter:
         schema_keys = self._get_keys(schema)
         for key, childschema in schema_keys.items():
             table_schema = {"keys": {key: childschema}}
-            built_table = self.build_table(table=DEFAULT_TABLE, schema=table_schema, filter_filename=filter_filename)
+            built_table = self.build_table(table=DEFAULT_TABLE, schema=table_schema, filter_section=filter_section, filter_filename=filter_filename)
             # Only append if the table contain rows
             if built_table["table"]:
                 output.append(built_table)
 
         return output
 
-    def build_table(self, table: str, schema: dict, filter_filename: str = None):
+    def build_table(self, table: str, schema: dict, filter_section: str = None, filter_filename: str = None):
         built_table = {}
 
         if table == DEFAULT_TABLE:
@@ -150,6 +163,9 @@ class AvdToDocumentationSchemaConverter:
         for key, childschema in schema_keys.items():
             if filter_filename is not None and filter_filename not in self._get_filenames(childschema):
                 # Skip key if none of the underlying keys have the relevant filename
+                continue
+            if filter_section is not None and filter_section not in self._get_sections(childschema):
+                # Skip key if none of the underlying keys have the relevant section
                 continue
             if table not in self._get_tables(childschema):
                 # Skip key if none of the underlying keys have the relevant table
@@ -422,6 +438,27 @@ class AvdToDocumentationSchemaConverter:
 
         # Return sorted list of unique tables
         return sorted(tables)
+
+    def _get_sections(self, schema: dict, parent_section: str = None):
+        if parent_section is None:
+            parent_section = self._default_section
+
+        section = schema.setdefault("documentation_options", {}).setdefault("section", parent_section)
+        sections = {section}
+
+        if "keys" in schema:
+            for key, childschema in schema["keys"].items():
+                sections.update(self._get_sections(childschema, parent_section=section))
+
+        if "dynamic_keys" in schema:
+            for key, childschema in schema["dynamic_keys"].items():
+                sections.update(self._get_sections(childschema, parent_section=section))
+
+        if "items" in schema:
+            sections.update(self._get_sections(schema["items"], parent_section=section))
+
+        # Return sorted list of unique sections
+        return sorted(sections)
 
     def _get_filenames(self, schema: dict, parent_filename: str = None):
         if parent_filename is None:
