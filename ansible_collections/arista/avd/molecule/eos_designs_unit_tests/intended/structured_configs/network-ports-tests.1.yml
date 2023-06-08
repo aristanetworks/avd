@@ -694,3 +694,128 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 ip_igmp_snooping:
   globally_enabled: true
+cloudvision_tags:
+  device_tags:
+  - label: topology_hint_fabric
+    value: EOS_DESIGNS_UNIT_TESTS
+  - label: topology_hint_type
+    value: leaf
+  interface_tags:
+  - interface: Ethernet10/1
+    tags: []
+  - interface: Ethernet1
+    tags: []
+  - interface: Ethernet2
+    tags: []
+  - interface: Ethernet3
+    tags: []
+  - interface: Ethernet4
+    tags: []
+  - interface: Ethernet2/1
+    tags: []
+  - interface: Ethernet2/2
+    tags: []
+  - interface: Ethernet2/3
+    tags: []
+  - interface: Ethernet2/4
+    tags: []
+  - interface: Ethernet2/5
+    tags: []
+  - interface: Ethernet2/6
+    tags: []
+  - interface: Ethernet2/7
+    tags: []
+  - interface: Ethernet2/8
+    tags: []
+  - interface: Ethernet2/9
+    tags: []
+  - interface: Ethernet2/10
+    tags: []
+  - interface: Ethernet2/11
+    tags: []
+  - interface: Ethernet2/12
+    tags: []
+  - interface: Ethernet2/13
+    tags: []
+  - interface: Ethernet2/14
+    tags: []
+  - interface: Ethernet2/15
+    tags: []
+  - interface: Ethernet2/16
+    tags: []
+  - interface: Ethernet2/17
+    tags: []
+  - interface: Ethernet2/18
+    tags: []
+  - interface: Ethernet2/19
+    tags: []
+  - interface: Ethernet2/20
+    tags: []
+  - interface: Ethernet2/21
+    tags: []
+  - interface: Ethernet2/22
+    tags: []
+  - interface: Ethernet2/23
+    tags: []
+  - interface: Ethernet2/24
+    tags: []
+  - interface: Ethernet2/25
+    tags: []
+  - interface: Ethernet2/26
+    tags: []
+  - interface: Ethernet2/27
+    tags: []
+  - interface: Ethernet2/28
+    tags: []
+  - interface: Ethernet2/29
+    tags: []
+  - interface: Ethernet2/30
+    tags: []
+  - interface: Ethernet2/31
+    tags: []
+  - interface: Ethernet2/32
+    tags: []
+  - interface: Ethernet2/33
+    tags: []
+  - interface: Ethernet2/34
+    tags: []
+  - interface: Ethernet2/35
+    tags: []
+  - interface: Ethernet2/36
+    tags: []
+  - interface: Ethernet2/37
+    tags: []
+  - interface: Ethernet2/38
+    tags: []
+  - interface: Ethernet2/39
+    tags: []
+  - interface: Ethernet2/40
+    tags: []
+  - interface: Ethernet2/41
+    tags: []
+  - interface: Ethernet2/42
+    tags: []
+  - interface: Ethernet2/43
+    tags: []
+  - interface: Ethernet2/44
+    tags: []
+  - interface: Ethernet2/45
+    tags: []
+  - interface: Ethernet2/46
+    tags: []
+  - interface: Ethernet2/47
+    tags: []
+  - interface: Ethernet2/48
+    tags: []
+  - interface: Ethernet5
+    tags: []
+  - interface: Ethernet6
+    tags: []
+  - interface: Ethernet11
+    tags: []
+  - interface: Ethernet12
+    tags: []
+  - interface: Ethernet13
+    tags: []
+  - interface: Ethernet14
+    tags: []

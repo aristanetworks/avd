@@ -92,3 +92,18 @@ ethernet_interfaces:
   isis_network_point_to_point: true
   isis_hello_padding: true
   isis_circuit_type: level-2
+cloudvision_tags:
+  device_tags:
+  - label: topology_hint_fabric
+    value: EOS_DESIGNS_UNIT_TESTS
+  - label: topology_hint_type
+    value: spine
+  interface_tags:
+  - interface: ethernet1
+    tags: []
+  - interface: ethernet2
+    tags: []
+  - interface: ethernet3
+    tags: []
+  - interface: ethernet4
+    tags: []

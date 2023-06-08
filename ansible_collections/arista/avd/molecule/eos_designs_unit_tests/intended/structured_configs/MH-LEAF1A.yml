@@ -576,3 +576,40 @@ port_channel_interfaces:
   evpn_ethernet_segment:
     identifier: 0000:0000:5c8e:1f50:9fc4
     route_target: 5c:8e:1f:50:9f:c4
+cloudvision_tags:
+  device_tags:
+  - label: topology_hint_fabric
+    value: EOS_DESIGNS_UNIT_TESTS
+  - label: topology_hint_type
+    value: leaf
+  interface_tags:
+  - interface: Ethernet1
+    tags: []
+  - interface: Ethernet10
+    tags: []
+  - interface: Ethernet12
+    tags: []
+  - interface: Ethernet13
+    tags: []
+  - interface: Ethernet14
+    tags: []
+  - interface: Ethernet15
+    tags: []
+  - interface: Ethernet16
+    tags: []
+  - interface: Ethernet17
+    tags: []
+  - interface: Ethernet18
+    tags: []
+  - interface: Ethernet19
+    tags: []
+  - interface: Ethernet20
+    tags: []
+  - interface: Ethernet21
+    tags: []
+  - interface: Ethernet22
+    tags: []
+  - interface: Ethernet23
+    tags: []
+  - interface: Ethernet11
+    tags: []

@@ -17,3 +17,9 @@ management_api_http:
   enable_https: true
 ip_igmp_snooping:
   globally_enabled: true
+cloudvision_tags:
+  device_tags:
+  - label: topology_hint_fabric
+    value: EOS_DESIGNS_UNIT_TESTS
+  - label: topology_hint_type
+    value: leaf

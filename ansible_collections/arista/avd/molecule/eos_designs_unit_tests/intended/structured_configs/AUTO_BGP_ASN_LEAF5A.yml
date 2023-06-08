@@ -107,3 +107,9 @@ vxlan_interface:
     vxlan:
       udp_port: 4789
       source_interface: Loopback1
+cloudvision_tags:
+  device_tags:
+  - label: topology_hint_fabric
+    value: EOS_DESIGNS_UNIT_TESTS
+  - label: topology_hint_type
+    value: leaf

@@ -15,6 +15,7 @@ from ..base import AvdStructuredConfigBase
 from ..connected_endpoints import AvdStructuredConfigConnectedEndpoints
 from ..core_interfaces_and_l3_edge import AvdStructuredConfigCoreInterfacesAndL3Edge
 from ..custom_structured_configuration import AvdStructuredConfigCustomStructuredConfiguration
+from ..cvp_tags import AvdStructuredConfigTags
 from ..inband_management import AvdStructuredConfigInbandManagement
 from ..mlag import AvdStructuredConfigMlag
 from ..network_services import AvdStructuredConfigNetworkServices
@@ -31,6 +32,7 @@ AVD_STRUCTURED_CONFIG_CLASSES = [
     AvdStructuredConfigConnectedEndpoints,
     AvdStructuredConfigInbandManagement,
     AvdStructuredConfigCustomStructuredConfiguration,
+    AvdStructuredConfigTags,
 ]
 """
 AVD_STRUCTURED_CONFIG contains a list of AvdStructuredConfig classes which generate the complete structured config.
