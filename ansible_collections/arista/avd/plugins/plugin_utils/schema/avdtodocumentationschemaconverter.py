@@ -252,12 +252,18 @@ class AvdToDocumentationSchemaConverter:
             output.append(row)
             schema_items_type = schema_items.get("type")
             if schema_items_type == "dict" and "keys" in schema_items:
+                schema_primary_key = schema.get("primary_key")
                 schema_keys = self._get_keys(schema_items)
                 first = True
+                included_primary_key = False
                 for key, childschema in schema_keys.items():
                     if table not in self._get_tables(childschema):
-                        # Skip key if none of the underlying keys have the relevant table
-                        continue
+                        if key == schema_primary_key:
+                            # Include the primary key even if it was not assigned to this table.
+                            included_primary_key = True
+                        else:
+                            # Skip key if none of the underlying keys have the relevant table
+                            continue
 
                     rows = self.build_yaml_row(
                         var_name=key,
@@ -268,6 +274,11 @@ class AvdToDocumentationSchemaConverter:
                     )
                     output.extend(rows)
                     first = False
+
+                if included_primary_key and len(output) == 1:
+                    # return no rows if output only contains the included primary key
+                    return []
+
             else:
                 row_indentation = " " * indentation
                 row = f"{row_indentation}  - <{schema_items_type}>"
@@ -332,14 +343,20 @@ class AvdToDocumentationSchemaConverter:
     def items(self, schema: dict, indentation: int, var_path: list, table: str):
         output = []
         schema_items = schema.get("items", {})
+        schema_primary_key = schema.get("primary_key")
         schema_items_type = schema_items.get("type")
         if schema_items_type == "dict":
             schema_keys = self._get_keys(schema_items)
             first = True
+            included_primary_key = False
             for key, childschema in schema_keys.items():
                 if table not in self._get_tables(childschema):
-                    # Skip key if none of the underlying keys have the relevant table
-                    continue
+                    if key == schema_primary_key:
+                        # Include the primary key even if it was not assigned to this table.
+                        included_primary_key = True
+                    else:
+                        # Skip key if none of the underlying keys have the relevant table
+                        continue
 
                 rows = self.build_table_row(
                     var_name=key,
@@ -352,6 +369,11 @@ class AvdToDocumentationSchemaConverter:
                 )
                 output.extend(rows)
                 first = False
+
+            if included_primary_key and len(output) == 1:
+                # return no rows if output only contains the included primary key
+                return []
+
         else:
             output = self.build_table_row(
                 var_name=f"<{schema_items_type}>",
