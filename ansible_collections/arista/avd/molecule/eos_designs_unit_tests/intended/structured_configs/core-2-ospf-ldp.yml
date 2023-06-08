@@ -211,3 +211,26 @@ port_channel_interfaces:
     ldp:
       interface: true
       igp_sync: true
+cloudvision_tags:
+  device_tags:
+  - label: topology_hint_fabric
+    value: EOS_DESIGNS_UNIT_TESTS
+  interface_tags:
+  - interface: Ethernet1
+    tags: []
+  - interface: Ethernet2
+    tags: []
+  - interface: Ethernet3
+    tags: []
+  - interface: Ethernet4
+    tags: []
+  - interface: Ethernet5
+    tags: []
+  - interface: Ethernet6
+    tags: []
+  - interface: Ethernet10
+    tags: []
+  - interface: Ethernet12
+    tags: []
+  - interface: Ethernet13
+    tags: []

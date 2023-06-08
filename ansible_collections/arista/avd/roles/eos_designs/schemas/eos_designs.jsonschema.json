@@ -922,52 +922,94 @@
       },
       "title": "CVP Instance Ips"
     },
-    "cvp_tags": {
-      "type": "object",
-      "properties": {
-        "topology_hint_type": {
-          "description": "Type that CloudVision should use when generating the Topology.\n",
-          "type": "string",
-          "enum": [
-            "leaf",
-            "spine",
-            "core",
-            "edge"
-          ],
-          "title": "Topology Hint Type"
-        },
-        "custom_keys": {
-          "description": "List of user defined tags and their values to be applied to this\ndevice on CVP.\n",
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string",
-                "title": "Name"
-              },
-              "value": {
-                "type": "string",
-                "title": "Value"
-              }
-            },
-            "required": [
-              "name",
-              "value"
-            ],
-            "additionalProperties": false,
-            "patternProperties": {
-              "^_.+$": {}
-            }
+    "cloudvision_tags_topology_type": {
+      "description": "Type that CloudVision should use when generating the Topology.\n",
+      "type": "string",
+      "enum": [
+        "leaf",
+        "spine",
+        "core",
+        "edge"
+      ],
+      "title": "Cloudvision Tags Topology Type"
+    },
+    "cloudvision_tags_interface_generate": {
+      "description": "List of device tags that should be generated from\nstructured configuration.\n",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "title": "Label"
           },
-          "title": "Custom Keys"
+          "field": {
+            "type": "string",
+            "title": "Field"
+          }
+        },
+        "required": [
+          "label",
+          "field"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
         }
       },
-      "additionalProperties": false,
-      "patternProperties": {
-        "^_.+$": {}
+      "title": "Cloudvision Tags Interface Generate"
+    },
+    "cloudvision_tags_device_generate": {
+      "description": "List of device tags that should be generated from\nstructured configuration.\n",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "field": {
+            "type": "string",
+            "title": "Field"
+          }
+        },
+        "required": [
+          "label",
+          "field"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
       },
-      "title": "CVP Tags"
+      "title": "Cloudvision Tags Device Generate"
+    },
+    "cloudvision_tags_device_custom": {
+      "description": "List of user defined tags and their values to be applied to this\ndevice on CVP.\n",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value"
+          }
+        },
+        "required": [
+          "label",
+          "value"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "Cloudvision Tags Device Custom"
     },
     "cvp_token_file": {
       "type": "string",
@@ -3417,52 +3459,16 @@
             },
             "title": "Interface Descriptions"
           },
-          "cvp_tags": {
-            "type": "object",
-            "properties": {
-              "topology_hint_type": {
-                "description": "Type that CloudVision should use when generating the Topology.\n",
-                "type": "string",
-                "enum": [
-                  "leaf",
-                  "spine",
-                  "core",
-                  "edge"
-                ],
-                "title": "Topology Hint Type"
-              },
-              "custom_keys": {
-                "description": "List of user defined tags and their values to be applied to this\ndevice on CVP.\n",
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "type": "string",
-                      "title": "Name"
-                    },
-                    "value": {
-                      "type": "string",
-                      "title": "Value"
-                    }
-                  },
-                  "required": [
-                    "name",
-                    "value"
-                  ],
-                  "additionalProperties": false,
-                  "patternProperties": {
-                    "^_.+$": {}
-                  }
-                },
-                "title": "Custom Keys"
-              }
-            },
-            "additionalProperties": false,
-            "patternProperties": {
-              "^_.+$": {}
-            },
-            "title": "CVP Tags"
+          "cloudvision_tags_topology_type": {
+            "description": "Type that CloudVision should use when generating the Topology.\n",
+            "type": "string",
+            "enum": [
+              "leaf",
+              "spine",
+              "core",
+              "edge"
+            ],
+            "title": "Cloudvision Tags Topology Type"
           }
         },
         "additionalProperties": false,

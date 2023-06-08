@@ -34,3 +34,12 @@ ethernet_interfaces:
   type: switched
   mode: trunk
   vlans: 1-2
+cloudvision_tags:
+  device_tags:
+  - label: topology_hint_fabric
+    value: EOS_DESIGNS_UNIT_TESTS
+  - label: topology_hint_type
+    value: leaf
+  interface_tags:
+  - interface: Ethernet1
+    tags: []

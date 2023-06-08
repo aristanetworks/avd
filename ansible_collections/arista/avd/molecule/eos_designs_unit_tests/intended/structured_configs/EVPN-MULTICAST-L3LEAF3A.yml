@@ -1321,3 +1321,20 @@ router_pim_sparse_mode:
       - address: 10.1.50.100
         groups:
         - 232.0.112.0/21
+cloudvision_tags:
+  device_tags:
+  - label: topology_hint_fabric
+    value: EOS_DESIGNS_UNIT_TESTS
+  - label: topology_hint_type
+    value: leaf
+  interface_tags:
+  - interface: Ethernet1
+    tags: []
+  - interface: Ethernet9
+    tags: []
+  - interface: Ethernet7.10
+    tags: []
+  - interface: Ethernet8
+    tags: []
+  - interface: Ethernet7
+    tags: []

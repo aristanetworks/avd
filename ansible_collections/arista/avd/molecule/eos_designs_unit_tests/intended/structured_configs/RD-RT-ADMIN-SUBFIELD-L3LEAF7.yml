@@ -168,3 +168,9 @@ vxlan_interface:
       vrfs:
       - name: TEST1
         vni: 11
+cloudvision_tags:
+  device_tags:
+  - label: topology_hint_fabric
+    value: EOS_DESIGNS_UNIT_TESTS
+  - label: topology_hint_type
+    value: leaf

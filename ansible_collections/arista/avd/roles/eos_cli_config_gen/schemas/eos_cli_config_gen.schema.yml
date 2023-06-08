@@ -565,6 +565,42 @@ keys:
     keys:
       timezone:
         type: str
+  cloudvision_tags:
+    required: false
+    type: dict
+    keys:
+      device_tags:
+        required: false
+        type: list
+        items:
+          type: dict
+          keys:
+            label:
+              type: str
+              required: true
+            value:
+              type: str
+              required: true
+      interface_tags:
+        required: false
+        type: list
+        items:
+          type: dict
+          keys:
+            interface:
+              type: str
+              required: true
+            tags:
+              type: list
+              items:
+                type: dict
+                keys:
+                  label:
+                    type: str
+                    required: true
+                  value:
+                    type: str
+                    required: true
   community_lists:
     type: list
     primary_key: name

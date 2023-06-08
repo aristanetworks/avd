@@ -144,3 +144,11 @@ vxlan_interface:
         vni: 12903
         flood_vteps:
         - 192.168.253.3
+cloudvision_tags:
+  device_tags:
+  - label: topology_hint_datacenter
+    value: OVERLAY_ROUTING_PROTOCOL_HER_TESTS
+  - label: topology_hint_fabric
+    value: EOS_DESIGNS_UNIT_TESTS
+  - label: topology_hint_type
+    value: leaf

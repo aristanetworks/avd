@@ -198,3 +198,16 @@ vxlan_interface:
       vrfs:
       - name: INBANDMGMT
         vni: 1
+cloudvision_tags:
+  device_tags:
+  - label: topology_hint_fabric
+    value: EOS_DESIGNS_UNIT_TESTS
+  - label: topology_hint_type
+    value: leaf
+  interface_tags:
+  - interface: Ethernet21
+    tags: []
+  - interface: Ethernet22
+    tags: []
+  - interface: Ethernet23
+    tags: []

@@ -119,3 +119,18 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 ip_igmp_snooping:
   globally_enabled: true
+cloudvision_tags:
+  device_tags:
+  - label: topology_hint_fabric
+    value: EOS_DESIGNS_UNIT_TESTS
+  - label: topology_hint_type
+    value: leaf
+  interface_tags:
+  - interface: Ethernet3
+    tags: []
+  - interface: Ethernet4
+    tags: []
+  - interface: Ethernet1
+    tags: []
+  - interface: Ethernet2
+    tags: []

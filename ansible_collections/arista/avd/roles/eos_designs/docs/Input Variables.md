@@ -2719,6 +2719,85 @@ This will eliminate any temporary black holes due to a BGP speaker advertising r
     bgp_update_wait_install: <bool>
     ```
 
+## Cloudvision Tags Device Custom
+
+List of user defined tags and their values to be applied to this
+device on CVP.
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>cloudvision_tags_device_custom</samp>](## "cloudvision_tags_device_custom") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;- label</samp>](## "cloudvision_tags_device_custom.[].label") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;value</samp>](## "cloudvision_tags_device_custom.[].value") | String | Required |  |  |  |
+
+=== "YAML"
+
+    ```yaml
+    cloudvision_tags_device_custom:
+      - label: <str>
+        value: <str>
+    ```
+
+## Cloudvision Tags Device Generate
+
+List of device tags that should be generated from
+structured configuration.
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>cloudvision_tags_device_generate</samp>](## "cloudvision_tags_device_generate") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;- label</samp>](## "cloudvision_tags_device_generate.[].label") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;field</samp>](## "cloudvision_tags_device_generate.[].field") | String | Required |  |  |  |
+
+=== "YAML"
+
+    ```yaml
+    cloudvision_tags_device_generate:
+      - label: <str>
+        field: <str>
+    ```
+
+## Cloudvision Tags Interface Generate
+
+List of device tags that should be generated from
+structured configuration.
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>cloudvision_tags_interface_generate</samp>](## "cloudvision_tags_interface_generate") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;- label</samp>](## "cloudvision_tags_interface_generate.[].label") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;field</samp>](## "cloudvision_tags_interface_generate.[].field") | String | Required |  |  |  |
+
+=== "YAML"
+
+    ```yaml
+    cloudvision_tags_interface_generate:
+      - label: <str>
+        field: <str>
+    ```
+
+## Cloudvision Tags Topology Type
+
+Type that CloudVision should use when generating the Topology.
+
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>cloudvision_tags_topology_type</samp>](## "cloudvision_tags_topology_type") | String |  |  | Valid Values:<br>- leaf<br>- spine<br>- core<br>- edge |  |
+
+=== "YAML"
+
+    ```yaml
+    cloudvision_tags_topology_type: <str>
+    ```
+
 ## Connected Endpoints Keys
 
 Define connected endpoints keys to define the grouping of endpoints connecting to the fabric.
@@ -3047,28 +3126,6 @@ For CloudVision as a Service enter the DNS name of the instance.
     ```yaml
     cvp_instance_ips:
       - <str>
-    ```
-
-## CVP Tags
-
-=== "Table"
-
-    | Variable | Type | Required | Default | Value Restrictions | Description |
-    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>cvp_tags</samp>](## "cvp_tags") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;topology_hint_type</samp>](## "cvp_tags.topology_hint_type") | String |  |  | Valid Values:<br>- leaf<br>- spine<br>- core<br>- edge | Type that CloudVision should use when generating the Topology.<br> |
-    | [<samp>&nbsp;&nbsp;custom_keys</samp>](## "cvp_tags.custom_keys") | List, items: Dictionary |  |  |  | List of user defined tags and their values to be applied to this<br>device on CVP.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "cvp_tags.custom_keys.[].name") | String | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value</samp>](## "cvp_tags.custom_keys.[].value") | String | Required |  |  |  |
-
-=== "YAML"
-
-    ```yaml
-    cvp_tags:
-      topology_hint_type: <str>
-      custom_keys:
-        - name: <str>
-          value: <str>
     ```
 
 ## CVP Token File
@@ -4489,11 +4546,7 @@ This should be defined in top level group_var for the fabric.
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected_endpoints_port_channel_interfaces</samp>](## "node_type_keys.[].interface_descriptions.connected_endpoints_port_channel_interfaces") | String |  |  |  | Path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_port_channel_interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;overlay_loopback_interface</samp>](## "node_type_keys.[].interface_descriptions.overlay_loopback_interface") | String |  |  |  | Path to J2 template - default inherited from templates.interface_descriptions.overlay_loopback_interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_loopback_interface</samp>](## "node_type_keys.[].interface_descriptions.vtep_loopback_interface") | String |  |  |  | Path to J2 template - default inherited from templates.interface_descriptions.vtep_loopback_interface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cvp_tags</samp>](## "node_type_keys.[].cvp_tags") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;topology_hint_type</samp>](## "node_type_keys.[].cvp_tags.topology_hint_type") | String |  |  | Valid Values:<br>- leaf<br>- spine<br>- core<br>- edge | Type that CloudVision should use when generating the Topology.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;custom_keys</samp>](## "node_type_keys.[].cvp_tags.custom_keys") | List, items: Dictionary |  |  |  | List of user defined tags and their values to be applied to this<br>device on CVP.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "node_type_keys.[].cvp_tags.custom_keys.[].name") | String | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value</samp>](## "node_type_keys.[].cvp_tags.custom_keys.[].value") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cloudvision_tags_topology_type</samp>](## "node_type_keys.[].cloudvision_tags_topology_type") | String |  |  | Valid Values:<br>- leaf<br>- spine<br>- core<br>- edge | Type that CloudVision should use when generating the Topology.<br> |
 
 === "YAML"
 
@@ -4545,11 +4598,7 @@ This should be defined in top level group_var for the fabric.
           connected_endpoints_port_channel_interfaces: <str>
           overlay_loopback_interface: <str>
           vtep_loopback_interface: <str>
-        cvp_tags:
-          topology_hint_type: <str>
-          custom_keys:
-            - name: <str>
-              value: <str>
+        cloudvision_tags_topology_type: <str>
     ```
 
 ## Only Local VLAN Trunk Groups

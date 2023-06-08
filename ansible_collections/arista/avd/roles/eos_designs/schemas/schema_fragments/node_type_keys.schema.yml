@@ -221,29 +221,12 @@ keys:
             vtep_loopback_interface:
               type: str
               description: Path to J2 template - default inherited from templates.interface_descriptions.vtep_loopback_interface.
-        cvp_tags:
-          type: dict
-          keys:
-            topology_hint_type:
-              description: |
-                Type that CloudVision should use when generating the Topology.
-              type: str
-              valid_values:
-              - "leaf"
-              - "spine"
-              - "core"
-              - "edge"
-            custom_keys:
-              description: |
-                List of user defined tags and their values to be applied to this
-                device on CVP.
-              type: list
-              items:
-                type: dict
-                keys:
-                  name:
-                    required: true
-                    type: str
-                  value:
-                    required: true
-                    type: str
+        cloudvision_tags_topology_type:
+          description: |
+            Type that CloudVision should use when generating the Topology.
+          type: str
+          valid_values:
+          - "leaf"
+          - "spine"
+          - "core"
+          - "edge"

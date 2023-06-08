@@ -18,7 +18,7 @@ dependency:
 driver:
   name: delegated
 platforms:
-  - name: dc1-spine1
+  - name: dc1-super-spine1
     image: avdteam/base:3.8-v2.0
     pre_build_image: true
     managed: false
@@ -34,9 +34,9 @@ provisioner:
     links:
       hosts: 'inventory/inventory.yml'
       group_vars: 'inventory/group_vars/'
-  ansible_args:
-    # - --skip-tags=documentation
-    - --tags=debug
+  # ansible_args:
+  #   # - --skip-tags=documentation
+  #   # - --tags=debug
   env:
     # Custom pythonpath to allow loading custom ip_addressing and descriptions modules.
     # See CUSTOM_PYTHON_MODULES_TESTS group vars for details.

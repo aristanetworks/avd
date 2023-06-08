@@ -6,20 +6,28 @@
   vars:
     root_dir: '{{ playbook_dir }}'
     skip_cvp: "{{ lookup('ansible.builtin.env', 'CVP_SKIP', default=true)}}"
-    cvp_interface_tags:
-      - type: peer # The type of information in the tag
-        name: interface_peer # The name to be used for the tag
-      - type: description
-        name: interface_desc
-      - type: peer_interface
-        name: peer_int
+    # cloudvision_device_tags:
+    #   - type: "router.maximum_paths.max"
+    #     label: MaximumPaths
+    # cvp_interface_tags:
+    #   - type: peer # The type of information in the tag
+    #     name: interface_peer # The name to be used for the tag
+    #   - type: description
+    #     name: interface_desc
+    #   - type: peer_interface
+    #     name: peer_int
   tasks:
     - name: Generate intended variables
       delegate_to: 127.0.0.1
       ansible.builtin.import_role:
-        name: arista.avd.cvp_tags
-      vars:
-        cvp_node: cv_server
-        # skip_cvp: true
-      tags:
-        - debug
+        name: arista.avd.eos_designs
+
+    # - name: Generate intended variables
+    #   delegate_to: 127.0.0.1
+    #   ansible.builtin.import_role:
+    #     name: arista.avd.cvp_tags
+    #   vars:
+    #     cvp_node: cv_server
+    #     # skip_cvp: true
+    #   tags:
+    #     - debug

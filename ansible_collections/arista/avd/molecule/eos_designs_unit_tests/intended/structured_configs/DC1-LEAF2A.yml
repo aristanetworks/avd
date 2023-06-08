@@ -1170,3 +1170,58 @@ vxlan_interface:
 virtual_source_nat_vrfs:
 - name: Tenant_A_OP_Zone
   ip_address: 10.255.1.10
+cloudvision_tags:
+  device_tags:
+  - label: topology_hint_fabric
+    value: EOS_DESIGNS_UNIT_TESTS
+  - label: topology_hint_type
+    value: leaf
+  - label: topology_hint_rack
+    value: rackC
+  interface_tags:
+  - interface: Ethernet7
+    tags: []
+  - interface: Ethernet8
+    tags: []
+  - interface: Ethernet9
+    tags: []
+  - interface: Ethernet13
+    tags: []
+  - interface: Ethernet14/1
+    tags: []
+  - interface: Ethernet15/1
+    tags: []
+  - interface: Ethernet49/1
+    tags: []
+  - interface: Ethernet50/1
+    tags: []
+  - interface: Ethernet51/1
+    tags: []
+  - interface: Ethernet52/1
+    tags: []
+  - interface: Ethernet53/1
+    tags: []
+  - interface: Ethernet54/1
+    tags: []
+  - interface: Ethernet55/1
+    tags: []
+  - interface: Ethernet56/1
+    tags: []
+  - interface: Ethernet22
+    tags: []
+  - interface: Ethernet23
+    tags: []
+  - interface: Ethernet24
+    tags: []
+  - interface: Ethernet25
+    tags: []
+  - interface: Ethernet10
+    tags: []
+  - interface: Ethernet11
+    tags: []
+  - interface: Ethernet12
+    tags: []
+  - interface: Ethernet20
+    tags: []
+  - interface: Ethernet21
+    tags: []

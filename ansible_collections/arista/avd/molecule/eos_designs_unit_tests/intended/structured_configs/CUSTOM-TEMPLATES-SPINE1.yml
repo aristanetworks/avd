@@ -124,3 +124,12 @@ router_bfd:
     interval: 300
     min_rx: 300
     multiplier: 3
+cloudvision_tags:
+  device_tags:
+  - label: topology_hint_fabric
+    value: EOS_DESIGNS_UNIT_TESTS
+  interface_tags:
+  - interface: Ethernet1
+    tags: []
+  - interface: Ethernet2
+    tags: []

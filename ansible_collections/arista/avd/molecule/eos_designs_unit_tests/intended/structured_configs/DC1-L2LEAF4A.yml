@@ -120,3 +120,16 @@ ip_igmp_snooping:
   vlans:
   - enabled: false
     id: 120
+cloudvision_tags:
+  device_tags:
+  - label: topology_hint_fabric
+    value: EOS_DESIGNS_UNIT_TESTS
+  - label: topology_hint_type
+    value: leaf
+  - label: topology_hint_rack
+    value: rackE
+  interface_tags:
+  - interface: Ethernet1
+    tags: []
+  - interface: Ethernet2
+    tags: []

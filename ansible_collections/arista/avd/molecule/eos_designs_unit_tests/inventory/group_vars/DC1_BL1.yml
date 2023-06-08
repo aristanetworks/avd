@@ -27,3 +27,5 @@ overlay_rd_type:
 
 overlay_rt_type:
   admin_subfield: "bgp_as"
+
+cloudvision_tags_topology_type: edge

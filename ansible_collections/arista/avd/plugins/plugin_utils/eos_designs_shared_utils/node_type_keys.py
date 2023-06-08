@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 # NOTE: There is a static list of default node_type_keys in the fabric documentation templates
 DEFAULT_NODE_TYPE_KEYS = {
     "l3ls-evpn": [
-        {"key": "spine", "type": "spine", "default_evpn_role": "server", "default_ptp_priority1": 20, "cvp_tags": {"topology_hint_type": "spine"}},
+        {"key": "spine", "type": "spine", "default_evpn_role": "server", "default_ptp_priority1": 20, "cloudvision_tags_topology_type": "spine"},
         {
             "key": "l3leaf",
             "type": "l3leaf",
@@ -26,7 +26,7 @@ DEFAULT_NODE_TYPE_KEYS = {
             },
             "vtep": True,
             "default_ptp_priority1": 30,
-            "cvp_tags": {"topology_hint_type": "leaf"},
+            "cloudvision_tags_topology_type": "leaf",
         },
         {
             "key": "l2leaf",
@@ -38,10 +38,10 @@ DEFAULT_NODE_TYPE_KEYS = {
             },
             "underlay_router": False,
             "uplink_type": "port-channel",
-            "cvp_tags": {"topology_hint_type": "leaf"},
+            "cloudvision_tags_topology_type": "leaf",
         },
-        {"key": "super_spine", "type": "super-spine", "cvp_tags": {"topology_hint_type": "core"}},
-        {"key": "overlay_controller", "type": "overlay-controller", "default_evpn_role": "server", "cvp_tags": {"topology_hint_type": "spine"}},
+        {"key": "super_spine", "type": "super-spine", "cloudvision_tags_topology_type": "core"},
+        {"key": "overlay_controller", "type": "overlay-controller", "default_evpn_role": "server", "cloudvision_tags_topology_type": "spine"},
     ],
     "mpls": [
         {
