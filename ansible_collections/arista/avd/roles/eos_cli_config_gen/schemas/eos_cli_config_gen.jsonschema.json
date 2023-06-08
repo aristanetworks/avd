@@ -13030,9 +13030,23 @@
                   "next_hop": {
                     "type": "object",
                     "properties": {
-                      "address_family_ipv6_originate": {
-                        "type": "boolean",
-                        "title": "Address Family IPv6 Originate"
+                      "address_family_ipv6": {
+                        "type": "object",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean",
+                            "title": "Enabled"
+                          },
+                          "originate": {
+                            "type": "boolean",
+                            "title": "Originate"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Address Family IPv6"
                       }
                     },
                     "additionalProperties": false,
@@ -13382,6 +13396,346 @@
             "^_.+$": {}
           },
           "title": "Address Family IPv6"
+        },
+        "address_family_ipv6_multicast": {
+          "type": "object",
+          "properties": {
+            "bgp": {
+              "type": "object",
+              "properties": {
+                "missing_policy": {
+                  "type": "object",
+                  "properties": {
+                    "direction_in_action": {
+                      "type": "string",
+                      "enum": [
+                        "deny",
+                        "deny-in-out",
+                        "permit"
+                      ],
+                      "title": "Direction In Action"
+                    },
+                    "direction_out_action": {
+                      "type": "string",
+                      "enum": [
+                        "deny",
+                        "deny-in-out",
+                        "permit"
+                      ],
+                      "title": "Direction Out Action"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Missing Policy"
+                },
+                "additional_paths": {
+                  "type": "object",
+                  "properties": {
+                    "receive": {
+                      "type": "boolean",
+                      "title": "Receive"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Additional Paths"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "BGP"
+            },
+            "neighbors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "ip_address": {
+                    "type": "string",
+                    "title": "IP Address"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  },
+                  "route_map_in": {
+                    "type": "string",
+                    "description": "Inbound route-map name",
+                    "title": "Route Map In"
+                  },
+                  "route_map_out": {
+                    "type": "string",
+                    "description": "Outbound route-map name",
+                    "title": "Route Map Out"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "ip_address"
+                ]
+              },
+              "title": "Neighbors"
+            },
+            "peer_groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Peer-group name",
+                    "title": "Name"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "Peer Groups"
+            },
+            "networks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "prefix": {
+                    "type": "string",
+                    "description": "IPv6 prefix \"A:B:C:D:E:F:G:H/I\"",
+                    "title": "Prefix"
+                  },
+                  "route_map": {
+                    "type": "string",
+                    "title": "Route Map"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "prefix"
+                ]
+              },
+              "title": "Networks"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Address Family IPv6 Multicast"
+        },
+        "address_family_flow_spec_ipv4": {
+          "type": "object",
+          "properties": {
+            "bgp": {
+              "type": "object",
+              "properties": {
+                "missing_policy": {
+                  "type": "object",
+                  "properties": {
+                    "direction_in_action": {
+                      "type": "string",
+                      "enum": [
+                        "deny",
+                        "deny-in-out",
+                        "permit"
+                      ],
+                      "title": "Direction In Action"
+                    },
+                    "direction_out_action": {
+                      "type": "string",
+                      "enum": [
+                        "deny",
+                        "deny-in-out",
+                        "permit"
+                      ],
+                      "title": "Direction Out Action"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Missing Policy"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "BGP"
+            },
+            "neighbors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "ip_address": {
+                    "type": "string",
+                    "title": "IP Address"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "ip_address"
+                ]
+              },
+              "title": "Neighbors"
+            },
+            "peer_groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Peer-group name",
+                    "title": "Name"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "Peer Groups"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Address Family Flow Spec IPv4"
+        },
+        "address_family_flow_spec_ipv6": {
+          "type": "object",
+          "properties": {
+            "bgp": {
+              "type": "object",
+              "properties": {
+                "missing_policy": {
+                  "type": "object",
+                  "properties": {
+                    "direction_in_action": {
+                      "type": "string",
+                      "enum": [
+                        "deny",
+                        "deny-in-out",
+                        "permit"
+                      ],
+                      "title": "Direction In Action"
+                    },
+                    "direction_out_action": {
+                      "type": "string",
+                      "enum": [
+                        "deny",
+                        "deny-in-out",
+                        "permit"
+                      ],
+                      "title": "Direction Out Action"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Missing Policy"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "BGP"
+            },
+            "neighbors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "ip_address": {
+                    "type": "string",
+                    "title": "IP Address"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "ip_address"
+                ]
+              },
+              "title": "Neighbors"
+            },
+            "peer_groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Peer-group name",
+                    "title": "Name"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "Peer Groups"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Address Family Flow Spec IPv6"
         },
         "address_family_vpn_ipv4": {
           "type": "object",
@@ -14302,9 +14656,6 @@
                                   "title": "Originate"
                                 }
                               },
-                              "required": [
-                                "enabled"
-                              ],
                               "additionalProperties": false,
                               "patternProperties": {
                                 "^_.+$": {}
@@ -14328,62 +14679,6 @@
                       ]
                     },
                     "title": "Neighbors"
-                  },
-                  "peer_groups": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "name": {
-                          "type": "string",
-                          "description": "Peer-group name",
-                          "title": "Name"
-                        },
-                        "activate": {
-                          "type": "boolean",
-                          "title": "Activate"
-                        },
-                        "next_hop": {
-                          "type": "object",
-                          "properties": {
-                            "address_family_ipv6": {
-                              "type": "object",
-                              "properties": {
-                                "enabled": {
-                                  "type": "boolean",
-                                  "title": "Enabled"
-                                },
-                                "originate": {
-                                  "type": "boolean",
-                                  "title": "Originate"
-                                }
-                              },
-                              "required": [
-                                "enabled"
-                              ],
-                              "additionalProperties": false,
-                              "patternProperties": {
-                                "^_.+$": {}
-                              },
-                              "title": "Address Family IPv6"
-                            }
-                          },
-                          "additionalProperties": false,
-                          "patternProperties": {
-                            "^_.+$": {}
-                          },
-                          "title": "Next Hop"
-                        }
-                      },
-                      "additionalProperties": false,
-                      "patternProperties": {
-                        "^_.+$": {}
-                      },
-                      "required": [
-                        "name"
-                      ]
-                    },
-                    "title": "Peer Groups"
                   },
                   "networks": {
                     "type": "array",
@@ -14550,31 +14845,6 @@
                     },
                     "title": "Neighbors"
                   },
-                  "peer_groups": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "name": {
-                          "type": "string",
-                          "description": "Peer-group name",
-                          "title": "Name"
-                        },
-                        "activate": {
-                          "type": "boolean",
-                          "title": "Activate"
-                        }
-                      },
-                      "additionalProperties": false,
-                      "patternProperties": {
-                        "^_.+$": {}
-                      },
-                      "required": [
-                        "name"
-                      ]
-                    },
-                    "title": "Peer Groups"
-                  },
                   "networks": {
                     "type": "array",
                     "items": {
@@ -14696,31 +14966,6 @@
                     },
                     "title": "Neighbors"
                   },
-                  "peer_groups": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "name": {
-                          "type": "string",
-                          "description": "Peer-group name",
-                          "title": "Name"
-                        },
-                        "activate": {
-                          "type": "boolean",
-                          "title": "Activate"
-                        }
-                      },
-                      "additionalProperties": false,
-                      "patternProperties": {
-                        "^_.+$": {}
-                      },
-                      "required": [
-                        "name"
-                      ]
-                    },
-                    "title": "Peer Groups"
-                  },
                   "networks": {
                     "type": "array",
                     "items": {
@@ -14841,31 +15086,6 @@
                       ]
                     },
                     "title": "Neighbors"
-                  },
-                  "peer_groups": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "name": {
-                          "type": "string",
-                          "description": "Peer-group name",
-                          "title": "Name"
-                        },
-                        "activate": {
-                          "type": "boolean",
-                          "title": "Activate"
-                        }
-                      },
-                      "additionalProperties": false,
-                      "patternProperties": {
-                        "^_.+$": {}
-                      },
-                      "required": [
-                        "name"
-                      ]
-                    },
-                    "title": "Peer Groups"
                   },
                   "networks": {
                     "type": "array",
