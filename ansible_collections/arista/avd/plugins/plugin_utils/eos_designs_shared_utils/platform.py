@@ -29,8 +29,16 @@ DEFAULT_PLATFORM_SETTINGS = [
         },
     },
     {
-        "platforms": ["720XP", "722XP", "750", "755", "758"],
+        "platforms": ["720XP", "722XP"],
         "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072",
+        "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330,
+        },
+        "feature_support": {"queue_monitor_length_notify": False, "poe": True},
+    },
+    {
+        "platforms": ["750", "755", "758"],
         "reload_delay": {
             "mlag": 300,
             "non_mlag": 330,
