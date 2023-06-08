@@ -5,7 +5,7 @@ type: dict
 keys:
   evpn_short_esi_prefix:
     documentation_options:
-      table: EVPN Settings
+      table: evpn-settings
     description: Configure prefix for "short_esi" values.
     type: str
     default: "0000:0000:"

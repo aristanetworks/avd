@@ -5,7 +5,7 @@ type: dict
 keys:
   default_interfaces:
     documentation_options:
-      section: Fabric Topology
+      table: default-interfaces
     type: list
     description: |
       Default uplink, downlink, and MLAG interfaces, which will be used if these interfaces are not defined on a device (either directly or through inheritance).

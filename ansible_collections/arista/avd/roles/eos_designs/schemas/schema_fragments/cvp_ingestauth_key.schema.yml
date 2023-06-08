@@ -5,7 +5,7 @@ type: dict
 keys:
   cvp_ingestauth_key:
     documentation_options:
-      table: CloudVision Settings
+      table: cloudvision-settings
     type: str
     description: |-
       On-premise CVP ingest auth key. If set, TerminAttr will be configured with key-based authentication for on-premise CVP.

@@ -5,7 +5,7 @@ type: dict
 keys:
   enable_trunk_groups:
     documentation_options:
-      table: Fabric Settings
+      table: fabric-settings
     type: bool
     description: |
       Enable Trunk Group support across eos_designs.

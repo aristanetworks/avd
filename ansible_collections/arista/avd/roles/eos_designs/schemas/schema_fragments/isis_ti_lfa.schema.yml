@@ -5,7 +5,7 @@ type: dict
 keys:
   isis_ti_lfa:
     documentation_options:
-      table: ISIS Settings
+      table: isis-settings
     type: dict
     keys:
       enabled:

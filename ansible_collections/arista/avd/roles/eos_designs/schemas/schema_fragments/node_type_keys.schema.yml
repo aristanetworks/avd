@@ -4,16 +4,13 @@
 type: dict
 keys:
   node_type_keys:
-    documentation_options:
-      section: Fabric Topology
-      table: Node type keys customization
     type: list
     description: |
       Define Node Type Keys, to specify the properties of each node type in the fabric.
       This allows for complete customization of the fabric layout.
       This should be defined in top level group_var for the fabric.
     convert_types:
-    - dict
+      - dict
     primary_key: key
     items:
       type: dict
@@ -30,9 +27,9 @@ keys:
         default_evpn_role:
           type: str
           valid_values:
-          - none
-          - client
-          - server
+            - none
+            - client
+            - server
           default: none
           description: Default evpn_role. Can be overridden in topology vars.
         default_ptp_priority1:
@@ -46,15 +43,15 @@ keys:
           default: "ebgp"
           convert_to_lower_case: true
           valid_values:
-          - "ebgp"
-          - "ibgp"
-          - "ospf"
-          - "ospf-ldp"
-          - "isis"
-          - "isis-sr"
-          - "isis-ldp"
-          - "isis-sr-ldp"
-          - "none"
+            - "ebgp"
+            - "ibgp"
+            - "ospf"
+            - "ospf-ldp"
+            - "isis"
+            - "isis-sr"
+            - "isis-ldp"
+            - "isis-sr-ldp"
+            - "none"
           description: |
             Set the default underlay routing_protocol.
             Can be overridden by setting "underlay_routing_protocol" host/group_vars.
@@ -63,42 +60,42 @@ keys:
           default: "ebgp"
           convert_to_lower_case: true
           valid_values:
-          - "ebgp"
-          - "ibgp"
-          - "her"
-          - "cvx"
-          - "none"
+            - "ebgp"
+            - "ibgp"
+            - "her"
+            - "cvx"
+            - "none"
           description: |
             Set the default overlay routing_protocol.
             Can be overridden by setting "overlay_routing_protocol" host/group_vars.
         default_mpls_overlay_role:
           type: str
           valid_values:
-          - "client"
-          - "server"
-          - "none"
+            - "client"
+            - "server"
+            - "none"
           description: |
             Set the default mpls overlay role.
             Acting role in overlay control plane.
         default_overlay_address_families:
           type: list
           convert_types:
-          - "str"
+            - "str"
           items:
             type: str
             convert_to_lower_case: true
             valid_values:
-            - "evpn"
-            - "vpn-ipv4"
-            - "vpn-ipv6"
+              - "evpn"
+              - "vpn-ipv4"
+              - "vpn-ipv6"
           description: |
             Set the default overlay address families.
         default_evpn_encapsulation:
           type: str
           convert_to_lower_case: true
           valid_values:
-          - "mpls"
-          - "vxlan"
+            - "mpls"
+            - "vxlan"
           description: |
             Set the default evpn encapsulation.
         mlag_support:
@@ -130,8 +127,8 @@ keys:
         uplink_type:
           type: str
           valid_values:
-          - "p2p"
-          - "port-channel"
+            - "p2p"
+            - "port-channel"
           default: "p2p"
           description: Uplinks must be p2p if "vtep" or "underlay_router" is true.
         vtep:

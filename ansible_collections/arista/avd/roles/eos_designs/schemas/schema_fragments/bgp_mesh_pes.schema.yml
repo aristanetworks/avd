@@ -5,7 +5,7 @@ type: dict
 keys:
   bgp_mesh_pes:
     documentation_options:
-      table: Overlay Settings
+      table: overlay-settings
     type: bool
     default: false
     description: |

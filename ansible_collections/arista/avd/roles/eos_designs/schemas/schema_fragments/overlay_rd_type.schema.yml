@@ -5,7 +5,7 @@ type: dict
 keys:
   overlay_rd_type:
     documentation_options:
-      table: Overlay Settings
+      table: overlay-settings
     type: dict
     description: |
       Specify RD type.

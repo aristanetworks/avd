@@ -5,7 +5,7 @@ type: dict
 keys:
   isis_area_id:
     documentation_options:
-      table: ISIS Settings
+      table: isis-settings
     type: str
     default: "49.0001"
     convert_types:

@@ -5,7 +5,7 @@ type: dict
 keys:
   platform_settings:
     documentation_options:
-      table: Platform Settings
+      table: platform-settings
     type: list
     items:
       type: dict

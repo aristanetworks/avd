@@ -4,10 +4,6 @@
 type: dict
 keys:
   network_ports:
-    documentation_options:
-      filename: Input Variables
-      section: Endpoint Connectivity
-      table: 2 - Network Ports
     type: list
     items:
       type: dict

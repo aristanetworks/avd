@@ -5,7 +5,7 @@ type: dict
 keys:
   trunk_groups:
     documentation_options:
-      table: Fabric Settings
+      table: fabric-settings
     type: dict
     keys:
       mlag:

@@ -5,7 +5,7 @@ type: dict
 keys:
   mgmt_interface_description:
     documentation_options:
-      table: Management Interface Settings
+      table: management-interface-settings
     type: str
     description: |
       Management interface description.

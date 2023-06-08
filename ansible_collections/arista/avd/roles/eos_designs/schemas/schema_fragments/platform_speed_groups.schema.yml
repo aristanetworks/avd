@@ -5,7 +5,7 @@ type: dict
 keys:
   platform_speed_groups:
     documentation_options:
-      table: Platform Settings
+      table: platform-settings
     type: list
     primary_key: platform
     secondary_key: speeds

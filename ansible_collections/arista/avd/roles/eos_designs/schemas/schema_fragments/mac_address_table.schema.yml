@@ -5,7 +5,7 @@ type: dict
 keys:
   mac_address_table:
     documentation_options:
-      table: System Settings
+      table: system-settings
     type: dict
     description: |
       MAC address-table aging time.

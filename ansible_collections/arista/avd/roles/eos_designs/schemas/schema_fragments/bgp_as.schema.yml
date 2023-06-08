@@ -5,7 +5,7 @@ type: dict
 keys:
   bgp_as:
     documentation_options:
-      table: BGP Settings
+      table: bgp-settings
     description: AS number to use to configure overlay when "overlay_routing_protocol" == ibgp.
     type: str
     convert_types:

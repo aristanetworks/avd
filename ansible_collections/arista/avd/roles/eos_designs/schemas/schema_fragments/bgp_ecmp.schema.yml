@@ -5,7 +5,7 @@ type: dict
 keys:
   bgp_ecmp:
     documentation_options:
-      table: BGP Settings
+      table: bgp-settings
     description: Maximum ECMP for BGP multi-path.
     type: int
     convert_types:

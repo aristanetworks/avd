@@ -5,7 +5,7 @@ type: dict
 keys:
   mgmt_destination_networks:
     documentation_options:
-      table: Management Interface Settings
+      table: management-interface-settings
     type: list
     description: |-
       List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.

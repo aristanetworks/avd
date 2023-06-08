@@ -5,7 +5,7 @@ type: dict
 keys:
   underlay_routing_protocol:
     documentation_options:
-      table: Fabric Settings
+      table: fabric-settings
     type: str
     convert_to_lower_case: true
     description: |

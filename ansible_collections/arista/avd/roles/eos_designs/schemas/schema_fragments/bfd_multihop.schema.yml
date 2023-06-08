@@ -5,7 +5,7 @@ type: dict
 keys:
   bfd_multihop:
     documentation_options:
-      table: BFD Settings
+      table: bfd-settings
     type: dict
     description: BFD Multihop tuning.
     keys:

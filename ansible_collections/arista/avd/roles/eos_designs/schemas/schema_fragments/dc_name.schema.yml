@@ -5,7 +5,7 @@ type: dict
 keys:
   dc_name:
     documentation_options:
-      table: Fabric Topology
+      table: fabric-topology
     description: |
       DC Name, required to match Ansible Group name covering all devices in the DC.
       Required for 5-stage CLOS (Super-spines).

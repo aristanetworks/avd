@@ -5,7 +5,7 @@ type: dict
 keys:
   internal_vlan_order:
     documentation_options:
-      table: System Settings
+      table: system-settings
     type: dict
     description: Internal vlan allocation order and range.
     keys:

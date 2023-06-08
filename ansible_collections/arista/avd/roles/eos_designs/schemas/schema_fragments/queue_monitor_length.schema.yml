@@ -5,7 +5,7 @@ type: dict
 keys:
   queue_monitor_length:
     documentation_options:
-      table: System Settings
+      table: system-settings
     $ref: "eos_cli_config_gen#/keys/queue_monitor_length"
     type: dict
     keys:

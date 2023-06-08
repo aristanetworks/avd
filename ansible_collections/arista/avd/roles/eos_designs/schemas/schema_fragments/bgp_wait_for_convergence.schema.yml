@@ -5,6 +5,6 @@ type: dict
 keys:
   bgp_update_wait_for_convergence:
     documentation_options:
-      table: BGP Settings
+      table: bgp-settings
     type: bool
     $ref: "eos_cli_config_gen#/keys/router_bgp/keys/updates/keys/wait_for_convergence"

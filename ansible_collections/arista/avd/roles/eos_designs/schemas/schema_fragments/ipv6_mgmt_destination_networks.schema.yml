@@ -5,7 +5,7 @@ type: dict
 keys:
   ipv6_mgmt_destination_networks:
     documentation_options:
-      table: Management Settings
+      table: management-settings
     description: |
       List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface gateway.
       Replaces the default route.

@@ -5,7 +5,7 @@ type: dict
 keys:
   only_local_vlan_trunk_groups:
     documentation_options:
-      table: Fabric Settings
+      table: fabric-settings
     type: bool
     description: |
       A vlan can have many trunk_groups assigned.

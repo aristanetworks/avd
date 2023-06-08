@@ -7,5 +7,4 @@ dynamic_keys:
     $ref: "#/$defs/node_type"
     type: dict
     documentation_options:
-      table: 1 - Node type structure
-      section: Fabric Topology
+      table: node-type-structure

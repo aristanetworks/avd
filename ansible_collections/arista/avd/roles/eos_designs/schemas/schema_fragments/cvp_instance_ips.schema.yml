@@ -5,7 +5,7 @@ type: dict
 keys:
   cvp_instance_ips:
     documentation_options:
-      table: CloudVision Settings
+      table: cloudvision-settings
     type: list
     description: |
       List of IPv4 addresses or DNS names for CloudVision.

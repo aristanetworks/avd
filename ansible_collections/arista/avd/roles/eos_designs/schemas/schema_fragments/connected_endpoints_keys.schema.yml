@@ -5,9 +5,7 @@ type: dict
 keys:
   connected_endpoints_keys:
     documentation_options:
-      filename: Input Variables
-      section: Endpoint Connectivity
-      table: 4 - Connected Endpoints Keys
+      table: connected-endpoints-keys
     type: list
     primary_key: key
     convert_types:

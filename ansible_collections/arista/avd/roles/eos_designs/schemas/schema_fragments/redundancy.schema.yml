@@ -5,7 +5,7 @@ type: dict
 keys:
   redundancy:
     documentation_options:
-      table: System Settings
+      table: system-settings
     type: dict
     description: Redundancy for chassis platforms with dual supervisors | Optional.
     keys:

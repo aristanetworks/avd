@@ -5,7 +5,7 @@ type: dict
 keys:
   design:
     documentation_options:
-      table: Fabric Settings
+      table: fabric-settings
     type: dict
     keys:
       type:

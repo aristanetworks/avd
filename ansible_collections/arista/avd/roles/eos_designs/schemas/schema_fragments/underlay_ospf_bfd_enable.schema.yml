@@ -5,6 +5,6 @@ type: dict
 keys:
   underlay_ospf_bfd_enable:
     documentation_options:
-      table: OSPF Settings
+      table: ospf-settings
     type: bool
     default: false

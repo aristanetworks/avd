@@ -5,7 +5,7 @@ type: dict
 keys:
   custom_structured_configuration_list_merge:
     documentation_options:
-      table: Custom Structured Configuration
+      table: custom-structured-configuration
     type: str
     description: |
       The List-merge strategy used when merging custom structured configurations.

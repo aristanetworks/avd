@@ -5,7 +5,7 @@ type: dict
 keys:
   terminattr_ingestgrpcurl_port:
     documentation_options:
-      table: CloudVision Settings
+      table: cloudvision-settings
     type: int
     convert_types:
       - str

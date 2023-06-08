@@ -5,7 +5,7 @@ type: dict
 keys:
   bgp_maximum_paths:
     documentation_options:
-      table: BGP Settings
+      table: bgp-settings
     description: Maximum Paths for BGP multi-path.
     type: int
     convert_types:

@@ -5,7 +5,7 @@ type: dict
 keys:
   system_mac_address:
     documentation_options:
-      table: System Settings
+      table: system-settings
     type: str
     description: |
       Set to the same MAC address as available in "show version" on the device.

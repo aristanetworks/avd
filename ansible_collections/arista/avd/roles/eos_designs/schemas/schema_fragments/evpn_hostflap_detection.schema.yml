@@ -5,7 +5,7 @@ type: dict
 keys:
   evpn_hostflap_detection:
     documentation_options:
-      table: EVPN Settings
+      table: evpn-settings
     type: dict
     keys:
       enabled:

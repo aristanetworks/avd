@@ -5,8 +5,7 @@ type: dict
 keys:
   eos_designs_custom_templates:
     documentation_options:
-      filename: EOS Designs Role Variables
-      table: Custom Templates
+      table: role-custom-templates
     type: list
     items:
       type: dict

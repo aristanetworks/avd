@@ -5,6 +5,6 @@ type: dict
 keys:
   terminattr_disable_aaa:
     documentation_options:
-      table: CloudVision Settings
+      table: cloudvision-settings
     type: bool
     default: False

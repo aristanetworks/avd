@@ -5,7 +5,7 @@ type: dict
 keys:
   overlay_mlag_rfc5549:
     documentation_options:
-      table: Overlay Settings
+      table: overlay-settings
     description: |
       IPv6 Unnumbered for MLAG iBGP connections.
       Requires "underlay_rfc5549: true".
