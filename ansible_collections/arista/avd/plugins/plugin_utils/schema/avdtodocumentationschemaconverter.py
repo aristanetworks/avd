@@ -1,10 +1,8 @@
 from __future__ import absolute_import, annotations, division, print_function
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.schema.key_to_display_name import key_to_display_name
-
 __metaclass__ = type
 
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema
 
 # The DEFAULT_TABLE value is only used a dummy value for unset "table" value.
@@ -56,37 +54,6 @@ def get_deprecation(schema: dict) -> tuple[str, str]:
 
 
 class AvdToDocumentationSchemaConverter:
-    """
-    This converter will convert a regular avdschema to a documentation schema.
-
-    The documentation schema is a flatter representation of the AVD schema
-    more suited for creating tables in markdown documentation
-
-    By default all keys will be documented in a single file using the default filename from the meta-schema
-    By default all keys will be documented in a single section (markdown heading) using the default section name from the meta-schema
-    By default a table will be created per root-key, containing all keys below.
-    These default behaviors can be overridden by setting "documentation_options.filename" and "documentation_options.table"
-    in the schema. See the schema documentation for details.
-
-    Example:
-    "myfile":
-      sections:
-      - name: "mysection"
-        tables:
-          - display_name: Foo
-            description: "foo is an example of a schema key"
-            table:
-                - variable: "foo"
-                type: "List, Items: Dictionary"
-                - variable: "  - bar"
-                type: "String"
-                required: "Yes, Unique"
-                description: "Description of foo.bar"
-            yaml:
-                - 'foo:'
-                - '  - bar: "<str>"'
-    """
-
     def __init__(self, avdschema: AvdSchema):
         self._avdschema = avdschema
         meta_schema = self._avdschema._validator.META_SCHEMA
@@ -95,6 +62,36 @@ class AvdToDocumentationSchemaConverter:
         self._default_section = documentation_options_schema["properties"]["section"]["default"]
 
     def convert_schema(self):
+        """
+        This converter will convert a regular avdschema to a documentation schema.
+
+        The documentation schema is a flatter representation of the AVD schema
+        more suited for creating tables in markdown documentation
+
+        By default all keys will be documented in a single file using the default filename from the meta-schema
+        By default all keys will be documented in a single section (markdown heading) using the default section name from the meta-schema
+        By default a table will be created per root-key, containing all keys below.
+        These default behaviors can be overridden by setting "documentation_options.filename" and "documentation_options.table"
+        in the schema. See the schema documentation for details.
+
+        Example:
+        "myfile":
+        sections:
+        - name: "mysection"
+            tables:
+            - display_name: Foo
+                description: "foo is an example of a schema key"
+                table:
+                    - variable: "foo"
+                    type: "List, Items: Dictionary"
+                    - variable: "  - bar"
+                    type: "String"
+                    required: "Yes, Unique"
+                    description: "Description of foo.bar"
+                yaml:
+                    - 'foo:'
+                    - '  - bar: "<str>"'
+        """
         schema = {}
         output = {}
 
@@ -116,6 +113,38 @@ class AvdToDocumentationSchemaConverter:
                 output[filename] = {"sections": built_sections}
 
         return output
+
+    def convert_schema_to_tables(self) -> dict:
+        """
+        This converter will convert the schema to a dict of tables
+
+        By default a table will be created per root-key, containing all keys below.
+        This default behaviors can be overridden by setting "documentation_options.table"
+        in the schema. See the schema documentation for details.
+
+        Example:
+        {
+            "MyTable": {
+                "display_name": "MyTable",
+                "table": [{
+                  "variable": "foo",
+                  "type": "List, Items: Dictionary",
+                },{
+                  "variable": "  - bar",
+                  "type": "String",
+                  "required": "Yes, Unique",
+                  "description": "Description of foo.bar",
+                }]
+                "yaml": ['foo:', "  - bar: "<str>"']
+            }
+        }
+        """
+
+        # Get fully resolved schema (where all $ref has been expanded recursively)
+        schema = self._avdschema.resolved_schema
+
+        built_tables = self.build_tables(schema=schema)
+        return {table["display_name"]: table for table in built_tables}
 
     def build_tables(self, schema: dict, filter_section: str = None, filter_filename: str = None):
         tables = self._get_tables(schema)
@@ -149,8 +178,7 @@ class AvdToDocumentationSchemaConverter:
         if table == DEFAULT_TABLE:
             # Single key table
             main_key = list(schema["keys"].keys())[0]
-            main_key_schema = schema["keys"][main_key]
-            built_table["display_name"] = main_key_schema.get("display_name", key_to_display_name(main_key))
+            built_table["display_name"] = str(main_key).lower().replace("_", "-")
         else:
             # Combined table
             built_table["display_name"] = table
