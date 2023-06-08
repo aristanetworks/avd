@@ -1,0 +1,9 @@
+The `core_interfaces` data model can be used to configure L3 P2P links anywhere in the fabric.
+It can be between two switches that are already part of the fabric inventory, or it can be towards another device,
+where only one end of the link is on a switch in the fabric.
+
+The data model supports using IP pools, Subnet per link or specifying the IP addresses manually.
+For BGP peerings the AS number must be specified.
+If the AS number is different than the AS number configured for the node, the local-as will be replaced on this BGP peering (`neighbor <ip> local-as <as> no-prepend replace-as`).
+
+Make sure to configure the variables in a group_vars file covering all devices mentioned in the data model.

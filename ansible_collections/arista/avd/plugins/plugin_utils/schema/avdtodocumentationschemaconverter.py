@@ -151,7 +151,6 @@ class AvdToDocumentationSchemaConverter:
             main_key = list(schema["keys"].keys())[0]
             main_key_schema = schema["keys"][main_key]
             built_table["display_name"] = main_key_schema.get("display_name", key_to_display_name(main_key))
-            built_table["description"] = main_key_schema.get("description")
         else:
             # Combined table
             built_table["display_name"] = table
@@ -201,7 +200,7 @@ class AvdToDocumentationSchemaConverter:
         if restrictions is not None:
             row["restrictions"] = restrictions
 
-        description = self.description(schema, indentation, table)
+        description = self.description(schema)
         if description is not None:
             row["description"] = description
 
@@ -427,16 +426,9 @@ class AvdToDocumentationSchemaConverter:
             return "<br>".join(restrictions)
         return None
 
-    def description(self, schema: dict, indentation: str, table: str):
-        descriptions = []
+    def description(self, schema: dict):
         if schema.get("description"):
-            # Only append schema description field to the description if this is a combined table or if it is not the first row
-            # For the first row in a single-key table / DEFAULT_TABLE we will print the description as the table description.
-            if indentation or table != DEFAULT_TABLE:
-                descriptions.append(str(schema["description"]).replace("\n", "<br>"))
-
-        if descriptions:
-            return "<br>".join(descriptions)
+            return str(schema["description"]).replace("\n", "<br>")
         return None
 
     def _get_tables(self, schema: dict, parent_table: str = DEFAULT_TABLE):

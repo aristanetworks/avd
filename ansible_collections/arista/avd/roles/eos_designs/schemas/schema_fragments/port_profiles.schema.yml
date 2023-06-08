@@ -4,6 +4,10 @@
 type: dict
 keys:
   port_profiles:
+    documentation_options:
+      filename: Input Variables
+      section: Endpoint Connectivity
+      table: 3 - Port Profiles
     type: list
     primary_key: profile
     convert_types:

@@ -245,21 +245,11 @@ Markdown to be rendered at the top of the section "Input Variables"
 
 ### Aliases
 
-Multi-line string with one or more alias commands.
-
-Example:
-
-```yaml
-aliases: |
-  alias wr copy running-config startup-config
-  alias siib show ip interface brief
-```
-
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>aliases</samp>](## "aliases") | String |  |  |  |  |
+    | [<samp>aliases</samp>](## "aliases") | String |  |  |  | Multi-line string with one or more alias commands.<br><br>Example:<br><br>```yaml<br>aliases: |<br>  alias wr copy running-config startup-config<br>  alias siib show ip interface brief<br>``` |
 
 === "YAML"
 
@@ -375,21 +365,11 @@ aliases: |
 
 ### Community Lists (legacy model)
 
-AVD supports 2 different data models for community lists:
-
-- The legacy `community_lists` data model that can be used for compatibility with the existing deployments.
-- The improved `ip_community_lists` data model.
-
-Both data models can coexist without conflicts, as different keys are used: `community_lists` vs `ip_community_lists`.
-Community list names must be unique.
-
-The legacy data model supports simplified community list definition that only allows a single action to be defined as string:
-
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>community_lists</samp>](## "community_lists") | List, items: Dictionary |  |  |  |  |
+    | [<samp>community_lists</samp>](## "community_lists") | List, items: Dictionary |  |  |  | AVD supports 2 different data models for community lists:<br><br>- The legacy `community_lists` data model that can be used for compatibility with the existing deployments.<br>- The improved `ip_community_lists` data model.<br><br>Both data models can coexist without conflicts, as different keys are used: `community_lists` vs `ip_community_lists`.<br>Community list names must be unique.<br><br>The legacy data model supports simplified community list definition that only allows a single action to be defined as string:<br> |
     | [<samp>&nbsp;&nbsp;- name</samp>](## "community_lists.[].name") | String | Required, Unique |  |  | Community-list Name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "community_lists.[].action") | String | Required |  |  | Action as string<br>Example: "permit GSHUT 65123:123" |
 
@@ -423,13 +403,11 @@ The legacy data model supports simplified community list definition that only al
 
 ### CVX
 
-CVX server features are not supported on physical switches. See `management_cvx` for client configurations.
-
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>cvx</samp>](## "cvx") | Dictionary |  |  |  |  |
+    | [<samp>cvx</samp>](## "cvx") | Dictionary |  |  |  | CVX server features are not supported on physical switches. See `management_cvx` for client configurations. |
     | [<samp>&nbsp;&nbsp;shutdown</samp>](## "cvx.shutdown") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;peer_hosts</samp>](## "cvx.peer_hosts") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "cvx.peer_hosts.[].&lt;str&gt;") | String |  |  |  | IP address or hostname |
@@ -463,18 +441,11 @@ CVX server features are not supported on physical switches. See `management_cvx`
 
 ### Daemon TerminAttr
 
-You can either provide a list of IPs/FQDNs to target on-premise Cloudvision cluster or use DNS name for your Cloudvision as a Service instance.
-Streaming to multiple clusters both on-prem and cloud service is supported.
-
-!!! note
-    For TerminAttr version recommendation and EOS compatibility matrix, please refer to the latest TerminAttr Release Notes
-    which always contain the latest recommended versions and minimum required versions per EOS release.
-
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>daemon_terminattr</samp>](## "daemon_terminattr") | Dictionary |  |  |  |  |
+    | [<samp>daemon_terminattr</samp>](## "daemon_terminattr") | Dictionary |  |  |  | You can either provide a list of IPs/FQDNs to target on-premise Cloudvision cluster or use DNS name for your Cloudvision as a Service instance.<br>Streaming to multiple clusters both on-prem and cloud service is supported.<br><br>!!! note<br>    For TerminAttr version recommendation and EOS compatibility matrix, please refer to the latest TerminAttr Release Notes<br>    which always contain the latest recommended versions and minimum required versions per EOS release.<br> |
     | [<samp>&nbsp;&nbsp;cvaddrs</samp>](## "daemon_terminattr.cvaddrs") | List, items: String |  |  |  | Streaming address(es) for CloudVision single cluster<br>- TCP 9910 is used for CV on-prem<br>- TCP 443 is used for CV as a Service<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "daemon_terminattr.cvaddrs.[].&lt;str&gt;") | String |  |  |  | Server address in the format `<ip/fqdn>:<port>` |
     | [<samp>&nbsp;&nbsp;clusters</samp>](## "daemon_terminattr.clusters") | List, items: Dictionary |  |  |  | Multiple CloudVision clusters<br> |
@@ -592,13 +563,11 @@ Streaming to multiple clusters both on-prem and cloud service is supported.
 
 ### DNS Domain
 
-Domain Name
-
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>dns_domain</samp>](## "dns_domain") | String |  |  |  |  |
+    | [<samp>dns_domain</samp>](## "dns_domain") | String |  |  |  | Domain Name |
 
 === "YAML"
 
@@ -608,13 +577,11 @@ Domain Name
 
 ### Domain List
 
-Search list of DNS domains
-
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>domain_list</samp>](## "domain_list") | List, items: String |  |  |  |  |
+    | [<samp>domain_list</samp>](## "domain_list") | List, items: String |  |  |  | Search list of DNS domains |
     | [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "domain_list.[].&lt;str&gt;") | String |  |  |  | Domain name |
 
 === "YAML"
@@ -668,13 +635,11 @@ Search list of DNS domains
 
 ### EOS CLI
 
-Multiline string with EOS CLI rendered directly on the root level of the final EOS configuration
-
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>eos_cli</samp>](## "eos_cli") | String |  |  |  |  |
+    | [<samp>eos_cli</samp>](## "eos_cli") | String |  |  |  | Multiline string with EOS CLI rendered directly on the root level of the final EOS configuration |
 
 === "YAML"
 
@@ -1372,15 +1337,11 @@ Multiline string with EOS CLI rendered directly on the root level of the final E
 
 ### Event Handlers
 
-Gives the ability to monitor and react to Syslog messages.
-Event Handlers provide a powerful and flexible tool that can be used to apply self-healing actions,
-customize the system behavior, and implement workarounds to problems discovered in the field.
-
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>event_handlers</samp>](## "event_handlers") | List, items: Dictionary |  |  |  |  |
+    | [<samp>event_handlers</samp>](## "event_handlers") | List, items: Dictionary |  |  |  | Gives the ability to monitor and react to Syslog messages.<br>Event Handlers provide a powerful and flexible tool that can be used to apply self-healing actions,<br>customize the system behavior, and implement workarounds to problems discovered in the field.<br> |
     | [<samp>&nbsp;&nbsp;- name</samp>](## "event_handlers.[].name") | String | Required, Unique |  |  | Event Handler Name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;action_type</samp>](## "event_handlers.[].action_type") | String |  |  | Valid Values:<br>- bash<br>- increment<br>- log |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "event_handlers.[].action") | String |  |  |  | Command to execute<br> |
@@ -1420,25 +1381,11 @@ customize the system behavior, and implement workarounds to problems discovered 
 
 ### Extensibility with Custom Templates
 
-- Custom templates can be added below the playbook directory.
-- If a location above the directory is desired, a symbolic link can be used.
-- Example under the `playbooks` directory create symbolic link with the following command:
-
-  ```bash
-  ln -s ../../shared_repo/custom_avd_templates/ ./custom_avd_templates
-  ```
-
-- The output will be rendered at the end of the configuration.
-- The order of custom templates in the list can be important if they overlap.
-- It is recommended to use a `!` delimiter at the top of each custom template.
-
-Add `custom_templates` to group/host variables:
-
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>custom_templates</samp>](## "custom_templates") | List, items: String |  |  |  |  |
+    | [<samp>custom_templates</samp>](## "custom_templates") | List, items: String |  |  |  | - Custom templates can be added below the playbook directory.<br>- If a location above the directory is desired, a symbolic link can be used.<br>- Example under the `playbooks` directory create symbolic link with the following command:<br><br>  ```bash<br>  ln -s ../../shared_repo/custom_avd_templates/ ./custom_avd_templates<br>  ```<br><br>- The output will be rendered at the end of the configuration.<br>- The order of custom templates in the list can be important if they overlap.<br>- It is recommended to use a `!` delimiter at the top of each custom template.<br><br>Add `custom_templates` to group/host variables:<br> |
     | [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "custom_templates.[].&lt;str&gt;") | String |  |  |  | Template relative path below playbook directory |
 
 === "YAML"
@@ -1500,23 +1447,11 @@ Add `custom_templates` to group/host variables:
 
 ### Generate Default Config
 
-The `generate_default_config` knob allows to omit default EOS configuration.
-This can be useful when leveraging `eos_cli_config_gen` to generate configlets with CloudVision.
-
-The following commands will be omitted when `generate_default_config` is set to `false`:
-
-- RANCID Content Type
-- Hostname
-- Default configuration for `aaa`
-- Default configuration for `enable password`
-- Transceiver qsfp default mode
-- End of configuration delimiter
-
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>generate_default_config</samp>](## "generate_default_config") | Boolean |  | True |  |  |
+    | [<samp>generate_default_config</samp>](## "generate_default_config") | Boolean |  | True |  | The `generate_default_config` knob allows to omit default EOS configuration.<br>This can be useful when leveraging `eos_cli_config_gen` to generate configlets with CloudVision.<br><br>The following commands will be omitted when `generate_default_config` is set to `false`:<br><br>- RANCID Content Type<br>- Hostname<br>- Default configuration for `aaa`<br>- Default configuration for `enable password`<br>- Transceiver qsfp default mode<br>- End of configuration delimiter |
 
 === "YAML"
 
@@ -1688,16 +1623,11 @@ The following commands will be omitted when `generate_default_config` is set to 
 
 ### IP Access Lists Max Entries
 
-The `ip_access_lists` data model allows to limit the number of ACL entries that AVD is allowed to generate by defining `ip_access_lists_max_entries`.
-Only normal entries under `ip_access_lists` will be counted, remarks will be ignored.
-If the number is above the limit, the playbook will fail. This provides a simplified control over hardware utilization.
-The numbers must be based on the hardware tests and AVD does not provide any guidance. Note that other EOS features may use the same hardware resources and affect the supported scale.
-
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ip_access_lists_max_entries</samp>](## "ip_access_lists_max_entries") | Integer |  |  |  |  |
+    | [<samp>ip_access_lists_max_entries</samp>](## "ip_access_lists_max_entries") | Integer |  |  |  | The `ip_access_lists` data model allows to limit the number of ACL entries that AVD is allowed to generate by defining `ip_access_lists_max_entries`.<br>Only normal entries under `ip_access_lists` will be counted, remarks will be ignored.<br>If the number is above the limit, the playbook will fail. This provides a simplified control over hardware utilization.<br>The numbers must be based on the hardware tests and AVD does not provide any guidance. Note that other EOS features may use the same hardware resources and affect the supported scale. |
 
 === "YAML"
 
@@ -1707,32 +1637,11 @@ The numbers must be based on the hardware tests and AVD does not provide any gui
 
 ### IP Community Lists
 
-AVD supports 2 different data models for community lists:
-
-- The legacy `community_lists` data model that can be used for compatibility with the existing deployments.
-- The improved `ip_community_lists` data model.
-
-Both data models can coexist without conflicts, as different keys are used: `community_lists` vs `ip_community_lists`.
-Community list names must be unique.
-
-The improved data model has a better design documented below:
-
-communities and regexp MUST not be configured together in the same entry
-possible community strings are (case insensitive):
-
-- GSHUT
-- internet
-- local-as
-- no-advertise
-- no-export
-- <1-4294967040>
-- aa:nn
-
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ip_community_lists</samp>](## "ip_community_lists") | List, items: Dictionary |  |  |  |  |
+    | [<samp>ip_community_lists</samp>](## "ip_community_lists") | List, items: Dictionary |  |  |  | AVD supports 2 different data models for community lists:<br><br>- The legacy `community_lists` data model that can be used for compatibility with the existing deployments.<br>- The improved `ip_community_lists` data model.<br><br>Both data models can coexist without conflicts, as different keys are used: `community_lists` vs `ip_community_lists`.<br>Community list names must be unique.<br><br>The improved data model has a better design documented below:<br><br>communities and regexp MUST not be configured together in the same entry<br>possible community strings are (case insensitive):<br><br>- GSHUT<br>- internet<br>- local-as<br>- no-advertise<br>- no-export<br>- <1-4294967040><br>- aa:nn<br> |
     | [<samp>&nbsp;&nbsp;- name</samp>](## "ip_community_lists.[].name") | String | Required, Unique |  |  | IP Community-list Name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;entries</samp>](## "ip_community_lists.[].entries") | List, items: Dictionary | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- action</samp>](## "ip_community_lists.[].entries.[].action") | String | Required |  | Valid Values:<br>- permit<br>- deny |  |
@@ -1790,21 +1699,11 @@ possible community strings are (case insensitive):
 
 ### IP Extended Access-Lists (improved model)
 
-AVD currently supports 2 different data models for extended ACLs:
-
-- The legacy `access_lists` data model, for compatibility with existing deployments
-- The improved `ip_access_lists` data model, for access to more EOS features
-
-Both data models can coexists without conflicts, as different keys are used: `access_lists` vs `ip_access_lists`.
-Access list names must be unique.
-
-The improved data model has a more sophisticated design documented below:
-
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ip_access_lists</samp>](## "ip_access_lists") | List, items: Dictionary |  |  |  |  |
+    | [<samp>ip_access_lists</samp>](## "ip_access_lists") | List, items: Dictionary |  |  |  | AVD currently supports 2 different data models for extended ACLs:<br><br>- The legacy `access_lists` data model, for compatibility with existing deployments<br>- The improved `ip_access_lists` data model, for access to more EOS features<br><br>Both data models can coexists without conflicts, as different keys are used: `access_lists` vs `ip_access_lists`.<br>Access list names must be unique.<br><br>The improved data model has a more sophisticated design documented below:<br> |
     | [<samp>&nbsp;&nbsp;- name</samp>](## "ip_access_lists.[].name") | String | Required, Unique |  |  | Access-list Name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counters_per_entry</samp>](## "ip_access_lists.[].counters_per_entry") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;entries</samp>](## "ip_access_lists.[].entries") | List, items: Dictionary |  |  |  | ACL Entries |
@@ -1872,21 +1771,11 @@ The improved data model has a more sophisticated design documented below:
 
 ### IP Extended Access-Lists (legacy model)
 
-AVD currently supports 2 different data models for extended ACLs:
-
-- The legacy `access_lists` data model, for compatibility with existing deployments
-- The improved `ip_access_lists` data model, for access to more EOS features
-
-Both data models can coexists without conflicts, as different keys are used: `access_lists` vs `ip_access_lists`.
-Access list names must be unique.
-
-The legacy data model supports simplified ACL definition with `sequence` to `action` mapping:
-
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>access_lists</samp>](## "access_lists") | List, items: Dictionary |  |  |  |  |
+    | [<samp>access_lists</samp>](## "access_lists") | List, items: Dictionary |  |  |  | AVD currently supports 2 different data models for extended ACLs:<br><br>- The legacy `access_lists` data model, for compatibility with existing deployments<br>- The improved `ip_access_lists` data model, for access to more EOS features<br><br>Both data models can coexists without conflicts, as different keys are used: `access_lists` vs `ip_access_lists`.<br>Access list names must be unique.<br><br>The legacy data model supports simplified ACL definition with `sequence` to `action` mapping:<br> |
     | [<samp>&nbsp;&nbsp;- name</samp>](## "access_lists.[].name") | String | Required, Unique |  |  | Access-list Name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counters_per_entry</samp>](## "access_lists.[].counters_per_entry") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sequence_numbers</samp>](## "access_lists.[].sequence_numbers") | List, items: Dictionary | Required |  |  |  |
@@ -2272,13 +2161,11 @@ The legacy data model supports simplified ACL definition with `sequence` to `act
 
 ### IP Virtual Router MAC Address
 
-MAC address (hh:hh:hh:hh:hh:hh)
-
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ip_virtual_router_mac_address</samp>](## "ip_virtual_router_mac_address") | String |  |  |  |  |
+    | [<samp>ip_virtual_router_mac_address</samp>](## "ip_virtual_router_mac_address") | String |  |  |  | MAC address (hh:hh:hh:hh:hh:hh) |
 
 === "YAML"
 
@@ -2468,13 +2355,11 @@ MAC address (hh:hh:hh:hh:hh:hh)
 
 ### LACP
 
-Set Link Aggregation Control Protocol (LACP) parameters.
-
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>lacp</samp>](## "lacp") | Dictionary |  |  |  |  |
+    | [<samp>lacp</samp>](## "lacp") | Dictionary |  |  |  | Set Link Aggregation Control Protocol (LACP) parameters. |
     | [<samp>&nbsp;&nbsp;port_id</samp>](## "lacp.port_id") | Dictionary |  |  |  | LACP port-ID range configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;range</samp>](## "lacp.port_id.range") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;begin</samp>](## "lacp.port_id.range.begin") | Integer |  |  |  | Minimum LACP port-ID range. |
@@ -6656,13 +6541,11 @@ Set Link Aggregation Control Protocol (LACP) parameters.
 
 ### Snmp Server
 
-SNMP settings
-
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>snmp_server</samp>](## "snmp_server") | Dictionary |  |  |  |  |
+    | [<samp>snmp_server</samp>](## "snmp_server") | Dictionary |  |  |  | SNMP settings |
     | [<samp>&nbsp;&nbsp;engine_ids</samp>](## "snmp_server.engine_ids") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;local</samp>](## "snmp_server.engine_ids.local") | String |  |  |  | Engine ID in hexadecimal<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;remotes</samp>](## "snmp_server.engine_ids.remotes") | List, items: Dictionary |  |  |  |  |
@@ -6976,13 +6859,11 @@ SNMP settings
 
 ### System Boot Settings
 
-Set the Aboot password
-
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>boot</samp>](## "boot") | Dictionary |  |  |  |  |
+    | [<samp>boot</samp>](## "boot") | Dictionary |  |  |  | Set the Aboot password<br> |
     | [<samp>&nbsp;&nbsp;secret</samp>](## "boot.secret") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "boot.secret.hash_algorithm") | String |  | sha512 | Valid Values:<br>- md5<br>- sha512 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "boot.secret.key") | String |  |  |  | Hashed Password |
@@ -7754,13 +7635,11 @@ Set the Aboot password
 
 ### VRFs
 
-These keys are ignored if the name of the vrf is 'default'
-
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>vrfs</samp>](## "vrfs") | List, items: Dictionary |  |  |  |  |
+    | [<samp>vrfs</samp>](## "vrfs") | List, items: Dictionary |  |  |  | These keys are ignored if the name of the vrf is 'default'<br> |
     | [<samp>&nbsp;&nbsp;- name</samp>](## "vrfs.[].name") | String | Required, Unique |  |  | VRF Name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "vrfs.[].description") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_routing</samp>](## "vrfs.[].ip_routing") | Boolean |  |  |  |  |
