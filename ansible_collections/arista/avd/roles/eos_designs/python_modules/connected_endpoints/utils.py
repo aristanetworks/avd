@@ -218,3 +218,12 @@ class UtilsMixin:
         ptp_config.pop("profile", None)
 
         return ptp_config
+
+    def _get_adapter_poe(self, adapter: dict) -> dict | None:
+        """
+        Return poe settings for one adapter
+        """
+        if self.shared_utils.platform_settings_feature_support_poe:
+            return get(adapter, "poe")
+
+        return None
