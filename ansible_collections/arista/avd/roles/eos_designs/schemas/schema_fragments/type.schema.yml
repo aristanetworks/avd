@@ -5,7 +5,8 @@ type: dict
 keys:
   type:
     documentation_options:
-      table: Node Type Settings
+      table: 0 - Type setting
+      section: Fabric Topology
     type: str
     dynamic_valid_values: "node_type_keys.type"
     description: |
