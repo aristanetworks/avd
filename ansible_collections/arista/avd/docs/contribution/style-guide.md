@@ -213,7 +213,7 @@ Configurations for the above tools can be found in:
   ```
 
   !!! info
-      [PLUGIN-2](#plugin-2-test-if-variable-exists-with-a-given-value) can do a test if the variable is defined and has a specific value
+      [PLUGIN-2](#plugin-2-test-if-a-variable-exists-with-a-given-value) can do a test if the variable is defined and has a specific value
 
 ### VAR-8 - String comparison
 
