@@ -38,6 +38,8 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
+        next_hop:
+          address_family_ipv6_originate: true
     # Testing networks as dict of dict
     # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
     networks:

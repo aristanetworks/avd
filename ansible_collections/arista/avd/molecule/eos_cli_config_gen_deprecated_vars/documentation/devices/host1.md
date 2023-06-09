@@ -1110,6 +1110,7 @@ router bgp 65101
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4
+      neighbor EVPN-OVERLAY-PEERS next-hop address-family ipv6 originate
       neighbor EVPN-OVERLAY-PEERS activate
       neighbor 192.0.2.1 prefix-list PL-FOO-v4-IN in
       neighbor 192.0.2.1 prefix-list PL-FOO-v4-OUT out

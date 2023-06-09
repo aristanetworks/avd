@@ -7759,8 +7759,16 @@ keys:
                       keys:
                         enabled:
                           type: bool
+                          required: true
                         originate:
                           type: bool
+                    address_family_ipv6_originate:
+                      type: bool
+                      deprecation:
+                        warning: true
+                        removed: false
+                        new_key: address_family_ipv6
+                        remove_in_version: 5.0.0
                 prefix_list_in:
                   type: str
                   description: Inbound prefix-list name
@@ -8591,6 +8599,13 @@ keys:
                               - str
                               min: 2
                               max: 64
+                peer_groups:
+                  type: list
+                  deprecation:
+                    warning: true
+                    removed: true
+                    new_key: router_bgp.peer_groups
+                    remove_in_version: 4.0.0
                 neighbors:
                   type: list
                   primary_key: ip_address
@@ -8617,6 +8632,7 @@ keys:
                             keys:
                               enabled:
                                 type: bool
+                                required: true
                               originate:
                                 type: bool
                 networks:
@@ -8685,6 +8701,13 @@ keys:
                               - str
                               min: 2
                               max: 64
+                peer_groups:
+                  type: list
+                  deprecation:
+                    warning: true
+                    removed: true
+                    new_key: router_bgp.peer_groups
+                    remove_in_version: 4.0.0
                 neighbors:
                   type: list
                   primary_key: ip_address
@@ -8742,6 +8765,13 @@ keys:
                       keys:
                         receive:
                           type: bool
+                peer_groups:
+                  type: list
+                  deprecation:
+                    warning: true
+                    removed: true
+                    new_key: router_bgp.peer_groups
+                    remove_in_version: 4.0.0
                 neighbors:
                   type: list
                   primary_key: ip_address
@@ -8799,6 +8829,13 @@ keys:
                       keys:
                         receive:
                           type: bool
+                peer_groups:
+                  type: list
+                  deprecation:
+                    warning: true
+                    removed: true
+                    new_key: router_bgp.peer_groups
+                    remove_in_version: 4.0.0
                 neighbors:
                   type: list
                   primary_key: ip_address

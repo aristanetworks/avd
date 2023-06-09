@@ -13042,11 +13042,18 @@
                             "title": "Originate"
                           }
                         },
+                        "required": [
+                          "enabled"
+                        ],
                         "additionalProperties": false,
                         "patternProperties": {
                           "^_.+$": {}
                         },
                         "title": "Address Family IPv6"
+                      },
+                      "address_family_ipv6_originate": {
+                        "type": "boolean",
+                        "title": "Address Family IPv6 Originate"
                       }
                     },
                     "additionalProperties": false,
@@ -14656,6 +14663,9 @@
                                   "title": "Originate"
                                 }
                               },
+                              "required": [
+                                "enabled"
+                              ],
                               "additionalProperties": false,
                               "patternProperties": {
                                 "^_.+$": {}

@@ -664,6 +664,8 @@ router bgp {{ router_bgp.as }}
 {%                     set nexthop_v6_cli = nexthop_v6_cli ~ " originate" %}
 {%                 endif %}
       {{ nexthop_v6_cli }}
+{%             elif peer_group.next_hop.address_family_ipv6_originate is arista.avd.defined(true) %}
+      neighbor {{ peer_group.name }} next-hop address-family ipv6 originate
 {%             endif %}
 {%             if peer_group.activate is arista.avd.defined(true) %}
       neighbor {{ peer_group.name }} activate
