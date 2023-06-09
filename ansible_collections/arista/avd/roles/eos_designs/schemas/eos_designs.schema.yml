@@ -3681,8 +3681,6 @@ $defs:
 
                         '
               static_routes:
-                documentation_options:
-                  table: network-services-vrfs-static-routes-settings
                 type: list
                 description: 'List of static routes for v4 and/or v6.
 
@@ -3738,8 +3736,6 @@ $defs:
                       items:
                         type: str
               ipv6_static_routes:
-                documentation_options:
-                  table: network-services-vrfs-static-routes-settings
                 type: list
                 items:
                   type: dict
@@ -3780,8 +3776,6 @@ $defs:
                       items:
                         type: str
               redistribute_static:
-                documentation_options:
-                  table: network-services-vrfs-static-routes-settings
                 type: bool
                 description: Non-selectively enabling or disabling redistribute static
                   inside the VRF.
