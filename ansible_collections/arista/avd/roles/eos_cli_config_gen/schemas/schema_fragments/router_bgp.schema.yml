@@ -934,6 +934,13 @@ keys:
                           required: true
                         originate:
                           type: bool
+                    address_family_ipv6_originate:
+                      type: bool
+                      deprecation:
+                        warning: true
+                        removed: true
+                        new_key: address_family_ipv6
+                        remove_in_version: 4.0.0
                 prefix_list_in:
                   type: str
                   description: Inbound prefix-list name
