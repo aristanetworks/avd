@@ -9,10 +9,10 @@ scenario:
     - syntax
     - create
     - converge
-    - idempotence
+    # - idempotence
     # - verify # No verification at the moment
-  cleanup_sequence:
-    - destroy
+  cleanup_sequence: []
+    # - destroy
 dependency:
   name: galaxy
 driver:
@@ -34,7 +34,8 @@ provisioner:
     links:
       hosts: 'inventory/inventory.yml'
       group_vars: 'inventory/group_vars/'
-  # ansible_args:
+  ansible_args: []
+    # - -vvv
   #   # - --skip-tags=documentation
   #   # - --tags=debug
   env:

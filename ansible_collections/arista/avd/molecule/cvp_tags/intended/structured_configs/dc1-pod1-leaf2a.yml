@@ -469,42 +469,44 @@ cloudvision_tags:
     value: pod1
   - label: topology_hint_type
     value: leaf
-  - label: spanning_tree_mode
-    value: mstp
+  - label: topology_hint_rack
+    value: rack-2c
+  - label: layer3_routing
+    value: 'True'
   interface_tags:
   - interface: Ethernet3
     tags:
-    - label: node_peer_name
+    - label: peer_device_name
       value: dc1-pod1-leaf2b
-    - label: node_peer_interface
+    - label: peer_device_interface
       value: Ethernet3
   - interface: Ethernet4
     tags:
-    - label: node_peer_name
+    - label: peer_device_name
       value: dc1-pod1-leaf2b
-    - label: node_peer_interface
+    - label: peer_device_interface
       value: Ethernet4
   - interface: Ethernet1
     tags:
-    - label: node_peer_name
+    - label: peer_device_name
       value: dc1-pod1-spine1
-    - label: node_peer_interface
+    - label: peer_device_interface
       value: Ethernet3
   - interface: Ethernet2
     tags:
-    - label: node_peer_name
+    - label: peer_device_name
       value: dc1-pod1-spine2
-    - label: node_peer_interface
+    - label: peer_device_interface
       value: Ethernet3
   - interface: Ethernet8
     tags:
-    - label: node_peer_name
+    - label: peer_device_name
       value: dc1-pod1-leaf2c
-    - label: node_peer_interface
+    - label: peer_device_interface
       value: Ethernet1
   - interface: Ethernet5
     tags:
-    - label: node_peer_name
+    - label: peer_device_name
       value: dc1-pod1-leaf2-server1
-    - label: node_peer_interface
+    - label: peer_device_interface
       value: PCI1

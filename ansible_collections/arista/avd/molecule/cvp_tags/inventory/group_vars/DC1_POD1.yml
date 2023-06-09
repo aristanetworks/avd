@@ -2,13 +2,9 @@
 # Default gateway used for the management interface
 mgmt_gateway: 172.16.1.1
 
-# Specify the name of the Datacenter
-dc_name: DC1
-
 # Specify the name of the pod. For this 3 clos network
 # we will just have 1 pod
 pod_name: pod1
-
 
 # Spine switch group
 spine:
@@ -19,6 +15,9 @@ spine:
     # Pool of IPv4 addresses to configure interface Loopback0 used for BGP EVPN sessions
     loopback_ipv4_pool: 10.255.0.0/27
     # ASN to be used by BGP
+    uplink_switches: [ dc1-super-spine1, dc1-super-spine2 ]
+    uplink_interfaces: [ Ethernet10, Ethernet11 ]
+    uplink_ipv4_pool: 10.255.253.0/26
 
   # Definition of nodes contained in this group.
   # Specific configuration of device must take place under the node definition. Each node inherites all values defined under 'defaults'
@@ -30,11 +29,17 @@ spine:
       # Management IP to be assigned to the management interface
       mgmt_ip: 172.16.1.11/24
       bgp_as: 65101
+      uplink_switch_interfaces:
+        - Ethernet1
+        - Ethernet1
 
     dc1-pod1-spine2:
       id: 2
       mgmt_ip: 172.16.1.12/24
       bgp_as: 65101
+      uplink_switch_interfaces:
+        - Ethernet2
+        - Ethernet2
 
 # L3 Leaf switch group
 l3leaf:
@@ -73,6 +78,7 @@ l3leaf:
     DC1_POD1_L3_LEAF1:
       # ASN to be used by BGP for the group. Both devices in the MLAG pair will use the same BGP ASN
       bgp_as: 65102
+      rack: rack-1c
       nodes:
         # Definition of hostnames under the node_group
         dc1-pod1-leaf1a:
@@ -92,6 +98,7 @@ l3leaf:
 
     DC1_POD1_L3_LEAF2:
       bgp_as: 65103
+      rack: rack-2c
       nodes:
         dc1-pod1-leaf2a:
           id: 3
