@@ -4,6 +4,8 @@
 type: dict
 $defs:
   network_services:
+    documentation_options:
+      table: network-services-common-settings
     type: list
     primary_key: name
     convert_types:
@@ -48,6 +50,8 @@ $defs:
             Base number for VLAN aware bundle RD/RT.
             The "Assigned Number" part of RD/RT is derived from vrf_vni + vlan_aware_bundle_number_base.
         pseudowire_rt_base:
+          documentation_options:
+            table: network-services-point-to-point-services-settings
           type: int
           description: |
             Pseudowire RT base, used to generate route targets for VPWS services.
@@ -55,6 +59,8 @@ $defs:
           convert_types:
             - str
         enable_mlag_ibgp_peering_vrfs:
+          documentation_options:
+            table: network-services-vrfs-settings
           type: bool
           description: |
             MLAG iBGP peering per VRF.
@@ -62,6 +68,8 @@ $defs:
             Setting enable_mlag_ibgp_peering_vrfs: false under tenant will change this default to prevent configuration of these peerings and VLANs for all VRFs in the tenant.
             This setting can be overridden per VRF.
         bgp_peer_groups:
+          documentation_options:
+            table: network-services-vrfs-bgp-settings
           type: list
           primary_key: name
           convert_types:
@@ -86,6 +94,8 @@ $defs:
                   Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
                   If not set the peer-group is created on devices which have a bgp_peer mapped to the corresponding peer_group.
         evpn_l2_multicast:
+          documentation_options:
+            table: network-services-multicast-settings
           description: |
             Enable EVPN L2 Multicast for all SVIs and l2vlans within Tenant.
             - Multicast group binding is created only for Multicast traffic. BULL traffic will use ingress-replication.
@@ -106,6 +116,8 @@ $defs:
               convert_types:
                 - str
         evpn_l3_multicast:
+          documentation_options:
+            table: network-services-multicast-settings
           description: |
             Enable L3 Multicast for all SVIs and l3vlans within Tenant.
             - In the evpn-l3ls design type, this enables L3 EVPN Multicast (aka OISM)'.
@@ -148,6 +160,8 @@ $defs:
                     description: Enable EVPN PEG transit mode.
                     type: bool
         pim_rp_addresses:
+          documentation_options:
+            table: network-services-multicast-settings
           description: |
             For each group of nodes, allow configuration of RP Addresses & associated groups.
           type: list
@@ -174,6 +188,8 @@ $defs:
                   type: str
                   description: Group_prefix/mask.
         igmp_snooping_querier:
+          documentation_options:
+            table: network-services-multicast-settings
           description: |
             Enable IGMP snooping querier for each SVI/l2vlan within tenant, by default using IP address of Loopback 0.
             When enabled, IGMP snooping querier will only be configured on L3 devices, i.e., uplink_type: p2p.
@@ -200,6 +216,8 @@ $defs:
           default: true
           description: Explicitly extend all VLANs/VLAN-Aware Bundles inside the tenant to remote EVPN domains.
         vrfs:
+          documentation_options:
+            table: network-services-vrfs-settings
           type: list
           primary_key: name
           convert_types:
@@ -333,6 +351,8 @@ $defs:
                           type: str
                           description: IPv4_address/Mask.
               ospf:
+                documentation_options:
+                  table: network-services-vrfs-ospf-settings
                 type: dict
                 description: |
                   Router OSPF configuration.
@@ -381,10 +401,14 @@ $defs:
                       type: str
                       description: Hostname.
               redistribute_ospf:
+                documentation_options:
+                  table: network-services-vrfs-ospf-settings
                 type: bool
                 default: true
                 description: Non-selectively enabling or disabling redistribute ospf inside the VRF.
               evpn_l3_multicast:
+                documentation_options:
+                  table: network-services-multicast-settings
                 type: dict
                 description: |
                   Explicitly enable or disable evpn_l3_multicast to override setting of `<network_services_key>.[].evpn_l3_multicast.enabled`.
@@ -410,6 +434,8 @@ $defs:
                           default: false
                           description: Enable EVPN PEG transit mode.
               pim_rp_addresses:
+                documentation_options:
+                  table: network-services-multicast-settings
                 description: |
                   For each group of nodes, allow configuration of RP Addresses & associated groups.
                 type: list
@@ -435,11 +461,15 @@ $defs:
                         type: str
                         description: Group_prefix/mask.
               evpn_l2_multi_domain:
+                documentation_options:
+                  table: network-services-multicast-settings
                 type: bool
                 description: |
                   Explicitly extend all VLANs/VLAN-Aware Bundles inside the VRF to remote EVPN domains.
                   Overrides `<network_services_key>.[].evpn_l2_multi_domain`.
               svis:
+                documentation_options:
+                  table: network-services-vrfs-svis-settings
                 type: list
                 primary_key: id
                 convert_types:
@@ -468,6 +498,8 @@ $defs:
                         SVI profile name to apply.
                         SVI can refer to one svi_profile which again can refer to another svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).
               l3_interfaces:
+                documentation_options:
+                  table: network-services-vrfs-l3-interfaces-settings
                 type: list
                 description: |
                   List of L3 interfaces.
@@ -580,6 +612,8 @@ $defs:
                       description: |
                         EOS CLI rendered directly on the Ethernet interface in the final EOS configuration.
               static_routes:
+                documentation_options:
+                  table: network-services-vrfs-static-routes-settings
                 type: list
                 description: |
                   List of static routes for v4 and/or v6.
@@ -627,6 +661,8 @@ $defs:
                       items:
                         type: str
               ipv6_static_routes:
+                documentation_options:
+                  table: network-services-vrfs-static-routes-settings
                 type: list
                 items:
                   type: dict
@@ -667,9 +703,13 @@ $defs:
                       items:
                         type: str
               redistribute_static:
+                documentation_options:
+                  table: network-services-vrfs-static-routes-settings
                 type: bool
                 description: Non-selectively enabling or disabling redistribute static inside the VRF.
               bgp_peers:
+                documentation_options:
+                  table: network-services-vrfs-bgp-settings
                 type: list
                 primary_key: ip_address
                 convert_types:
@@ -785,6 +825,8 @@ $defs:
                     description: |
                       Custom structured config added under router_bgp.vrfs.<vrf> for eos_cli_config_gen.
               bgp_peer_groups:
+                documentation_options:
+                  table: network-services-vrfs-bgp-settings
                 type: list
                 description: |
                   List of BGP peer groups definitions.
@@ -806,6 +848,8 @@ $defs:
                         Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
                         If not set the peer-group is created on devices which have a bgp_peer mapped to the corresponding peer_group.
               additional_route_targets:
+                documentation_options:
+                  table: network-services-vrfs-settings
                 type: list
                 description: Configuration of extra route-targets for this VRF. Useful for route-leaking or gateway between address families.
                 items:
@@ -832,6 +876,8 @@ $defs:
                 type: dict
                 description: Custom structured config for eos_cli_config_gen.
         l2vlans:
+          documentation_options:
+            table: network-services-l2vlans-settings
           type: list
           primary_key: id
           convert_types:
@@ -890,6 +936,8 @@ $defs:
                     Trunk groups are used for limiting vlans to trunk ports assigned to the same trunk group.
                     Requires enable_trunk_groups: true.
               evpn_l2_multicast:
+                documentation_options:
+                  table: network-services-multicast-settings
                 type: dict
                 description: |
                   Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.
@@ -898,10 +946,14 @@ $defs:
                   enabled:
                     type: bool
               igmp_snooping_enabled:
+                documentation_options:
+                  table: network-services-multicast-settings
                 type: bool
                 default: true
                 description: Activate or deactivate IGMP snooping.
               igmp_snooping_querier:
+                documentation_options:
+                  table: network-services-multicast-settings
                 type: dict
                 description: |
                   Enable igmp snooping querier, by default using IP address of Loopback 0.
@@ -938,6 +990,8 @@ $defs:
                       EOS cli commands rendered on router_bgp.vlans.
                       This configuration will not be applied to vlan aware bundles.
         point_to_point_services:
+          documentation_options:
+            table: network-services-point-to-point-services-settings
           type: list
           primary_key: name
           description: |
