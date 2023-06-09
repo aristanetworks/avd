@@ -3292,72 +3292,72 @@
             "properties": {
               "python_module": {
                 "type": "string",
-                "description": "Python Module to import for IP addressing - default inherited from templates.ip_addressing.python_module",
+                "description": "Custom Python Module to import for IP addressing.",
                 "title": "Python Module"
               },
               "python_class_name": {
                 "type": "string",
-                "description": "Name of Python Class to import for IP addressing  - default inherited from templates.ip_addressing.python_class_name",
+                "description": "Name of Custom Python Class to import for IP addressing.",
                 "title": "Python Class Name"
               },
               "router_id": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.ip_addressing.router_id.",
+                "description": "Path to Custom J2 template.",
                 "title": "Router ID"
               },
               "router_id_ipv6": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.ip_addressing.router_id_ipv6.",
+                "description": "Path to Custom J2 template.",
                 "title": "Router ID IPv6"
               },
               "mlag_ip_primary": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_ip_primary.",
+                "description": "Path to Custom J2 template.",
                 "title": "MLAG IP Primary"
               },
               "mlag_ip_secondary": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_ip_secondary.",
+                "description": "Path to Custom J2 template.",
                 "title": "MLAG IP Secondary"
               },
               "mlag_l3_ip_primary": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_l3_ip_primary.",
+                "description": "Path to Custom J2 template.",
                 "title": "MLAG L3 IP Primary"
               },
               "mlag_l3_ip_secondary": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_l3_ip_secondary.",
+                "description": "Path to Custom J2 template.",
                 "title": "MLAG L3 IP Secondary"
               },
               "mlag_ibgp_peering_ip_primary": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_ibgp_peering_ip_primary.",
+                "description": "Path to Custom J2 template.",
                 "title": "MLAG Ibgp Peering IP Primary"
               },
               "mlag_ibgp_peering_ip_secondary": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.ip_addressing.mlag_ibgp_peering_ip_secondary.",
+                "description": "Path to Custom J2 template.",
                 "title": "MLAG Ibgp Peering IP Secondary"
               },
               "p2p_uplinks_ip": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.ip_addressing.p2p_uplinks_ip.",
+                "description": "Path to Custom J2 template.",
                 "title": "P2P Uplinks IP"
               },
               "p2p_uplinks_peer_ip": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.ip_addressing.p2p_uplinks_peer_ip.",
+                "description": "Path to Custom J2 template.",
                 "title": "P2P Uplinks Peer IP"
               },
               "vtep_ip_mlag": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.ip_addressing.vtep_ip_mlag.",
+                "description": "Path to Custom J2 template.",
                 "title": "Vtep IP MLAG"
               },
               "vtep_ip": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.ip_addressing.vtep_ip.",
+                "description": "Path to Custom J2 template.",
                 "title": "Vtep IP"
               }
             },
@@ -3371,44 +3371,54 @@
             "type": "object",
             "description": "Override interface_descriptions templates\nIf description templates use Jinja2, they have to strip whitespaces using {%- -%} on any code blocks.\n",
             "properties": {
+              "python_module": {
+                "type": "string",
+                "description": "Custom Python Module to import for interface descriptions.",
+                "title": "Python Module"
+              },
+              "python_class_name": {
+                "type": "string",
+                "description": "Name of Custom Python Class to import for interface descriptions.",
+                "title": "Python Class Name"
+              },
               "underlay_ethernet_interfaces": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.interface_descriptions.underlay_ethernet_interfaces.",
+                "description": "Path to Custom J2 template.",
                 "title": "Underlay Ethernet Interfaces"
               },
               "underlay_port_channel_interfaces": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.interface_descriptions.underlay_port_channel_interfaces.",
+                "description": "Path to Custom J2 template.",
                 "title": "Underlay Port Channel Interfaces"
               },
               "mlag_ethernet_interfaces": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.interface_descriptions.mlag_ethernet_interfaces.",
+                "description": "Path to Custom J2 template.",
                 "title": "MLAG Ethernet Interfaces"
               },
               "mlag_port_channel_interfaces": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.interface_descriptions.mlag_port_channel_interfaces.",
+                "description": "Path to Custom J2 template.",
                 "title": "MLAG Port Channel Interfaces"
               },
               "connected_endpoints_ethernet_interfaces": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_ethernet_interfaces.",
+                "description": "Path to Custom J2 template.",
                 "title": "Connected Endpoints Ethernet Interfaces"
               },
               "connected_endpoints_port_channel_interfaces": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_port_channel_interfaces.",
+                "description": "Path to Custom J2 template.",
                 "title": "Connected Endpoints Port Channel Interfaces"
               },
               "overlay_loopback_interface": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.interface_descriptions.overlay_loopback_interface.",
+                "description": "Path to Custom J2 template.",
                 "title": "Overlay Loopback Interface"
               },
               "vtep_loopback_interface": {
                 "type": "string",
-                "description": "Path to J2 template - default inherited from templates.interface_descriptions.vtep_loopback_interface.",
+                "description": "Path to Custom J2 template.",
                 "title": "Vtep Loopback Interface"
               }
             },

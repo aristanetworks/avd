@@ -146,73 +146,79 @@ keys:
           keys:
             python_module:
               type: str
-              description: Python Module to import for IP addressing - default inherited from templates.ip_addressing.python_module
+              description: Custom Python Module to import for IP addressing.
             python_class_name:
               type: str
-              description: Name of Python Class to import for IP addressing  - default inherited from templates.ip_addressing.python_class_name
+              description: Name of Custom Python Class to import for IP addressing.
             router_id:
               type: str
-              description: Path to J2 template - default inherited from templates.ip_addressing.router_id.
+              description: Path to Custom J2 template.
             router_id_ipv6:
               type: str
-              description: Path to J2 template - default inherited from templates.ip_addressing.router_id_ipv6.
+              description: Path to Custom J2 template.
             mlag_ip_primary:
               type: str
-              description: Path to J2 template - default inherited from templates.ip_addressing.mlag_ip_primary.
+              description: Path to Custom J2 template.
             mlag_ip_secondary:
               type: str
-              description: Path to J2 template - default inherited from templates.ip_addressing.mlag_ip_secondary.
+              description: Path to Custom J2 template.
             mlag_l3_ip_primary:
               type: str
-              description: Path to J2 template - default inherited from templates.ip_addressing.mlag_l3_ip_primary.
+              description: Path to Custom J2 template.
             mlag_l3_ip_secondary:
               type: str
-              description: Path to J2 template - default inherited from templates.ip_addressing.mlag_l3_ip_secondary.
+              description: Path to Custom J2 template.
             mlag_ibgp_peering_ip_primary:
               type: str
-              description: Path to J2 template - default inherited from templates.ip_addressing.mlag_ibgp_peering_ip_primary.
+              description: Path to Custom J2 template.
             mlag_ibgp_peering_ip_secondary:
               type: str
-              description: Path to J2 template - default inherited from templates.ip_addressing.mlag_ibgp_peering_ip_secondary.
+              description: Path to Custom J2 template.
             p2p_uplinks_ip:
               type: str
-              description: Path to J2 template - default inherited from templates.ip_addressing.p2p_uplinks_ip.
+              description: Path to Custom J2 template.
             p2p_uplinks_peer_ip:
               type: str
-              description: Path to J2 template - default inherited from templates.ip_addressing.p2p_uplinks_peer_ip.
+              description: Path to Custom J2 template.
             vtep_ip_mlag:
               type: str
-              description: Path to J2 template - default inherited from templates.ip_addressing.vtep_ip_mlag.
+              description: Path to Custom J2 template.
             vtep_ip:
               type: str
-              description: Path to J2 template - default inherited from templates.ip_addressing.vtep_ip.
+              description: Path to Custom J2 template.
         interface_descriptions:
           type: dict
           description: |
             Override interface_descriptions templates
             If description templates use Jinja2, they have to strip whitespaces using {%- -%} on any code blocks.
           keys:
+            python_module:
+              type: str
+              description: Custom Python Module to import for interface descriptions.
+            python_class_name:
+              type: str
+              description: Name of Custom Python Class to import for interface descriptions.
             underlay_ethernet_interfaces:
               type: str
-              description: Path to J2 template - default inherited from templates.interface_descriptions.underlay_ethernet_interfaces.
+              description: Path to Custom J2 template.
             underlay_port_channel_interfaces:
               type: str
-              description: Path to J2 template - default inherited from templates.interface_descriptions.underlay_port_channel_interfaces.
+              description: Path to Custom J2 template.
             mlag_ethernet_interfaces:
               type: str
-              description: Path to J2 template - default inherited from templates.interface_descriptions.mlag_ethernet_interfaces.
+              description: Path to Custom J2 template.
             mlag_port_channel_interfaces:
               type: str
-              description: Path to J2 template - default inherited from templates.interface_descriptions.mlag_port_channel_interfaces.
+              description: Path to Custom J2 template.
             connected_endpoints_ethernet_interfaces:
               type: str
-              description: Path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_ethernet_interfaces.
+              description: Path to Custom J2 template.
             connected_endpoints_port_channel_interfaces:
               type: str
-              description: Path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_port_channel_interfaces.
+              description: Path to Custom J2 template.
             overlay_loopback_interface:
               type: str
-              description: Path to J2 template - default inherited from templates.interface_descriptions.overlay_loopback_interface.
+              description: Path to Custom J2 template.
             vtep_loopback_interface:
               type: str
-              description: Path to J2 template - default inherited from templates.interface_descriptions.vtep_loopback_interface.
+              description: Path to Custom J2 template.
