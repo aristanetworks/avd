@@ -862,7 +862,7 @@ keys:
       Used as next-hop for default gateway or static routes defined under ''ipv6_mgmt_destination_networks''.'
   is_deployed:
     documentation_options:
-      table: fabric-settings
+      table: is-deployed
     description: 'Is device already deployed in the fabric.
 
       When set to false, interfaces toward this device may be shutdown depending on
@@ -2182,6 +2182,8 @@ dynamic_keys:
     $ref: '#/$defs/network_services'
     type: list
     display_name: Network Services
+    documentation_options:
+      table: network-services
   node_type_keys.key:
     $ref: '#/$defs/node_type'
     type: dict

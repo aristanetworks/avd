@@ -5,7 +5,6 @@
     | [<samp>design</samp>](## "design") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;type</samp>](## "design.type") | String |  | `l3ls-evpn` | Valid Values:<br>- l3ls-evpn<br>- mpls<br>- l2ls | By setting the design.type variable, the default node-types and templates described in these documents will be used.<br> |
     | [<samp>enable_trunk_groups</samp>](## "enable_trunk_groups") | Boolean |  | `False` |  | Enable Trunk Group support across eos_designs.<br>Warning: Because of the nature of the EOS Trunk Group feature, enabling this is "all or nothing".<br>*All* vlans and *all* trunks towards connected endpoints must be using trunk groups as well.<br>If trunk groups are not assigned to a trunk, no vlans will be enabled on that trunk.<br>See "Details on enable_trunk_groups" below before enabling this feature.<br> |
-    | [<samp>is_deployed</samp>](## "is_deployed") | Boolean |  | `True` |  | Is device already deployed in the fabric.<br>When set to false, interfaces toward this device may be shutdown depending on the `shutdown_interfaces_towards_undeployed_peers` setting.<br>Furthermore `eos_config_deploy_cvp` will not attempt to move or apply configurations to the device.<br> |
     | [<samp>only_local_vlan_trunk_groups</samp>](## "only_local_vlan_trunk_groups") | Boolean |  | `False` |  | A vlan can have many trunk_groups assigned.<br>To avoid unneeded configuration changes on all leaf switches when a new trunk group is added,<br>this feature will only configure the vlan trunk groups matched with local connected_endpoints.<br>See "Details on only_local_vlan_trunk_groups" below.<br>Requires "enable_trunk_groups: true".<br> |
     | [<samp>p2p_uplinks_mtu</samp>](## "p2p_uplinks_mtu") | Integer |  | `9214` | Min: 68<br>Max: 65535 | Point to Point Links MTU. |
     | [<samp>p2p_uplinks_qos_profile</samp>](## "p2p_uplinks_qos_profile") | String |  |  |  | QOS Profile assigned on all infrastructure links. |
@@ -32,7 +31,6 @@
     design:
       type: <str>
     enable_trunk_groups: <bool>
-    is_deployed: <bool>
     only_local_vlan_trunk_groups: <bool>
     p2p_uplinks_mtu: <int>
     p2p_uplinks_qos_profile: <str>

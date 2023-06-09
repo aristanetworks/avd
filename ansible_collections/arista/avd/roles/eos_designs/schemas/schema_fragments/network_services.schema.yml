@@ -7,3 +7,5 @@ dynamic_keys:
     $ref: "#/$defs/network_services"
     type: list
     display_name: Network Services
+    documentation_options:
+      table: network-services

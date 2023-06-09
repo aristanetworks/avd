@@ -139,8 +139,8 @@ nav:
   - Roles Documentation:
       - eos_designs:
           - Overview: roles/eos_designs/README.md
-          - Role Variables: roles/eos_designs/docs/EOS Designs Role Variables.md
-          - Input Variables: roles/eos_designs/docs/Input Variables.md
+          - Role Variables: roles/eos_designs/doc/role-input-variables.md
+          - Input Variables: roles/eos_designs/doc/designs-input-variables.md
           # - Connected Endpoints: roles/eos_designs/doc/connected-endpoints.md
           # - DCI & L3 Edge: roles/eos_designs/doc/l3-edge.md
           # - Fabric Topology: roles/eos_designs/doc/fabric-topology.md
