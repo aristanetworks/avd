@@ -6,7 +6,7 @@ keys:
   ptp:
     type: dict
     keys:
-      enable:
+      enabled:
         type: bool
       profile:
         type: str

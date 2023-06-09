@@ -4680,9 +4680,9 @@
     "ptp": {
       "type": "object",
       "properties": {
-        "enable": {
+        "enabled": {
           "type": "boolean",
-          "title": "Enable"
+          "title": "Enabled"
         },
         "profile": {
           "type": "string",
