@@ -2,7 +2,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>platform_settings</samp>](## "platform_settings") | List, items: Dictionary |  |  |  |  |
+    | [<samp>platform_settings</samp>](## "platform_settings") | List, items: Dictionary |  | See (+) on YAML tab |  |  |
     | [<samp>&nbsp;&nbsp;- platforms</samp>](## "platform_settings.[].platforms") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "platform_settings.[].platforms.[].&lt;str&gt;") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trident_forwarding_table_partition</samp>](## "platform_settings.[].trident_forwarding_table_partition") | String |  |  |  | Only applied when evpn_multicast is true. |
@@ -28,7 +28,7 @@
 === "YAML"
 
     ```yaml
-    platform_settings:
+    platform_settings: # (1)!
       - platforms:
           - <str>
         trident_forwarding_table_partition: <str>
@@ -51,3 +51,99 @@
             speed_groups:
               - <int>
     ```
+
+    1. Default Value
+
+        ```yaml
+        platform_settings:
+        - feature_support:
+            queue_monitor_length_notify: false
+          platforms:
+          - default
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+        - feature_support:
+            queue_monitor_length_notify: false
+          platforms:
+          - 7050X3
+          - 720XP
+          - 722XP
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+          trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared
+            131072
+        - lag_hardware_only: true
+          platforms:
+          - 7280R
+          - 7280R2
+          - 7020R
+          reload_delay:
+            mlag: 900
+            non_mlag: 1020
+          tcam_profile: vxlan-routing
+        - platforms:
+          - 7280R3
+          reload_delay:
+            mlag: 900
+            non_mlag: 1020
+        - lag_hardware_only: true
+          management_interface: Management0
+          platforms:
+          - 7500R
+          - 7500R2
+          reload_delay:
+            mlag: 900
+            non_mlag: 1020
+          tcam_profile: vxlan-routing
+        - management_interface: Management0
+          platforms:
+          - 7500R3
+          - 7800R3
+          reload_delay:
+            mlag: 900
+            non_mlag: 1020
+        - management_interface: Management0
+          platforms:
+          - 7368X4
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+        - management_interface: Management0
+          platforms:
+          - 7300X3
+          reload_delay:
+            mlag: 1200
+            non_mlag: 1320
+          trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared
+            131072
+        - feature_support:
+            bgp_update_wait_for_convergence: false
+            bgp_update_wait_install: false
+            interface_storm_control: false
+            queue_monitor_length_notify: false
+          platforms:
+          - VEOS
+          - VEOS-LAB
+          - vEOS
+          - vEOS-lab
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+        - feature_support:
+            bgp_update_wait_for_convergence: false
+            bgp_update_wait_install: false
+            interface_storm_control: false
+            queue_monitor_length_notify: false
+          management_interface: Management0
+          platforms:
+          - CEOS
+          - cEOS
+          - ceos
+          - cEOSLab
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+
+        ```

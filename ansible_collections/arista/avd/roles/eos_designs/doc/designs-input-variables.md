@@ -782,7 +782,9 @@ Endpoints connecting to the fabric can be grouped by using separate keys.
 The keys can be customized to provide a better better organization or grouping of your data.
 
 `connected_endpoints_keys` should be defined in the top level group_vars for the fabric.
-The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.
+
+!!! note
+    The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.
 
 --8<--
 roles/eos_designs/docs/tables/connected-endpoints-keys.md
@@ -891,15 +893,30 @@ roles/eos_designs/docs/tables/svi-profiles.md
 ### Network services keys settings
 
 Network Services can be grouped by using separate keys.
+
 The keys can be customized to provide a better better organization or grouping of your data.
 `network_services_keys` should be defined in the top level group_vars for the fabric.
-The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.
+
+!!! note
+    The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.
 
 --8<--
 roles/eos_designs/docs/tables/network-services-keys.md
 --8<--
 
 ## Platform settings
+
+Set platform specific settings like TCAM profile and reload delay.
+
+If the platform is not defined, it will load parameters from the platform tagged `default`.
+
+Management interface is modified for specific platforms like modular platforms with dual supervisor support and container EOS.
+
+!!! note
+    The reload delay values should be reviewed and tuned to the specific environment.
+
+!!! note
+    The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.
 
 --8<--
 roles/eos_designs/docs/tables/platform-settings.md

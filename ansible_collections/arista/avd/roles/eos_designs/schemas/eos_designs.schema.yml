@@ -1629,6 +1629,96 @@ keys:
           type: str
           description: EOS CLI rendered directly on the root level of the final EOS
             configuration.
+    default:
+    - platforms:
+      - default
+      feature_support:
+        queue_monitor_length_notify: false
+      reload_delay:
+        mlag: 300
+        non_mlag: 330
+    - platforms:
+      - 7050X3
+      - 720XP
+      - 722XP
+      feature_support:
+        queue_monitor_length_notify: false
+      reload_delay:
+        mlag: 300
+        non_mlag: 330
+      trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304
+        l3-shared 131072
+    - platforms:
+      - 7280R
+      - 7280R2
+      - 7020R
+      lag_hardware_only: true
+      reload_delay:
+        mlag: 900
+        non_mlag: 1020
+      tcam_profile: vxlan-routing
+    - platforms:
+      - 7280R3
+      reload_delay:
+        mlag: 900
+        non_mlag: 1020
+    - platforms:
+      - 7500R
+      - 7500R2
+      lag_hardware_only: true
+      management_interface: Management0
+      reload_delay:
+        mlag: 900
+        non_mlag: 1020
+      tcam_profile: vxlan-routing
+    - platforms:
+      - 7500R3
+      - 7800R3
+      management_interface: Management0
+      reload_delay:
+        mlag: 900
+        non_mlag: 1020
+    - platforms:
+      - 7368X4
+      management_interface: Management0
+      reload_delay:
+        mlag: 300
+        non_mlag: 330
+    - platforms:
+      - 7300X3
+      management_interface: Management0
+      reload_delay:
+        mlag: 1200
+        non_mlag: 1320
+      trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304
+        l3-shared 131072
+    - platforms:
+      - VEOS
+      - VEOS-LAB
+      - vEOS
+      - vEOS-lab
+      feature_support:
+        bgp_update_wait_for_convergence: false
+        bgp_update_wait_install: false
+        interface_storm_control: false
+        queue_monitor_length_notify: false
+      reload_delay:
+        mlag: 300
+        non_mlag: 330
+    - platforms:
+      - CEOS
+      - cEOS
+      - ceos
+      - cEOSLab
+      feature_support:
+        bgp_update_wait_for_convergence: false
+        bgp_update_wait_install: false
+        interface_storm_control: false
+        queue_monitor_length_notify: false
+      management_interface: Management0
+      reload_delay:
+        mlag: 300
+        non_mlag: 330
   platform_speed_groups:
     documentation_options:
       table: platform-settings
