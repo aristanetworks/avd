@@ -356,6 +356,7 @@
       "title": "BGP Update Wait For Convergence"
     },
     "connected_endpoints_keys": {
+      "description": "Endpoints connecting to the fabric can be grouped by using separate keys.\nThe keys can be customized to provide a better better organization or grouping of your data.\n`connected_endpoints_keys` should be defined in the top level group_vars for the fabric.\nThe default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.\n",
       "type": "array",
       "items": {
         "type": "object",
@@ -3096,7 +3097,7 @@
     },
     "network_services_keys": {
       "type": "array",
-      "description": "Define network services keys, to define grouping of network services.\nThis provides the ability to define various keys of your choice to better organize/group your data.\nThis should be defined in top level group_var for the fabric.\n",
+      "description": "Network Services can be grouped by using separate keys.\nThe keys can be customized to provide a better better organization or grouping of your data.\n`network_services_keys` should be defined in the top level group_vars for the fabric.\nThe default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.\n",
       "items": {
         "type": "object",
         "properties": {
@@ -3113,11 +3114,16 @@
           "name"
         ]
       },
+      "default": [
+        {
+          "name": "tenants"
+        }
+      ],
       "title": "Network Services Keys"
     },
     "node_type_keys": {
       "type": "array",
-      "description": "Define Node Type Keys, to specify the properties of each node type in the fabric.\nThis allows for complete customization of the fabric layout.\nThis should be defined in top level group_var for the fabric.\n",
+      "description": "Define Node Type Keys, to specify the properties of each node type in the fabric.\nThis allows for complete customization of the fabric layout and functionality.\n`node_type_keys` should be defined in top level group_var for the fabric.\nThe default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.\n",
       "items": {
         "type": "object",
         "properties": {

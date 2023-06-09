@@ -2,7 +2,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>network_services_keys</samp>](## "network_services_keys") | List, items: Dictionary |  |  |  | Define network services keys, to define grouping of network services.<br>This provides the ability to define various keys of your choice to better organize/group your data.<br>This should be defined in top level group_var for the fabric.<br> |
+    | [<samp>network_services_keys</samp>](## "network_services_keys") | List, items: Dictionary |  | `[{'name': 'tenants'}]` |  | Network Services can be grouped by using separate keys.<br>The keys can be customized to provide a better better organization or grouping of your data.<br>`network_services_keys` should be defined in the top level group_vars for the fabric.<br>The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.<br> |
     | [<samp>&nbsp;&nbsp;- name</samp>](## "network_services_keys.[].name") | String | Required, Unique |  |  |  |
 
 === "YAML"

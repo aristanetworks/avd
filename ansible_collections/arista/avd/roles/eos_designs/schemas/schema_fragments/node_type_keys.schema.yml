@@ -7,8 +7,9 @@ keys:
     type: list
     description: |
       Define Node Type Keys, to specify the properties of each node type in the fabric.
-      This allows for complete customization of the fabric layout.
-      This should be defined in top level group_var for the fabric.
+      This allows for complete customization of the fabric layout and functionality.
+      `node_type_keys` should be defined in top level group_var for the fabric.
+      The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.
     convert_types:
       - dict
     primary_key: key

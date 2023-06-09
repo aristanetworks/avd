@@ -11,7 +11,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "&lt;node_type_keys.key&gt;.defaults.ipvpn_gateway.enable_d_path") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "&lt;node_type_keys.key&gt;.defaults.ipvpn_gateway.maximum_routes") | Integer |  | `0` |  | Maximum routes to accept from IPVPN remote peers. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_as</samp>](## "&lt;node_type_keys.key&gt;.defaults.ipvpn_gateway.local_as") | String |  | `none` |  | Apply local-as to peering with IPVPN remote peers. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_families</samp>](## "&lt;node_type_keys.key&gt;.defaults.ipvpn_gateway.address_families") | List, items: String |  | See (+) on YAML tab |  | IPVPN address families to enable for remote peers. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_families</samp>](## "&lt;node_type_keys.key&gt;.defaults.ipvpn_gateway.address_families") | List, items: String |  | `['vpn-ipv4']` |  | IPVPN address families to enable for remote peers. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "&lt;node_type_keys.key&gt;.defaults.ipvpn_gateway.address_families.[].&lt;str&gt;") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_peers</samp>](## "&lt;node_type_keys.key&gt;.defaults.ipvpn_gateway.remote_peers") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- hostname</samp>](## "&lt;node_type_keys.key&gt;.defaults.ipvpn_gateway.remote_peers.[].hostname") | String | Required |  |  | Hostname of remote IPVPN Peer. |
@@ -28,7 +28,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].nodes.[].ipvpn_gateway.enable_d_path") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].nodes.[].ipvpn_gateway.maximum_routes") | Integer |  | `0` |  | Maximum routes to accept from IPVPN remote peers. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_as</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].nodes.[].ipvpn_gateway.local_as") | String |  | `none` |  | Apply local-as to peering with IPVPN remote peers. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_families</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].nodes.[].ipvpn_gateway.address_families") | List, items: String |  | See (+) on YAML tab |  | IPVPN address families to enable for remote peers. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_families</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].nodes.[].ipvpn_gateway.address_families") | List, items: String |  | `['vpn-ipv4']` |  | IPVPN address families to enable for remote peers. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].nodes.[].ipvpn_gateway.address_families.[].&lt;str&gt;") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_peers</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].nodes.[].ipvpn_gateway.remote_peers") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- hostname</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].nodes.[].ipvpn_gateway.remote_peers.[].hostname") | String | Required |  |  | Hostname of remote IPVPN Peer. |
@@ -41,7 +41,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].ipvpn_gateway.enable_d_path") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].ipvpn_gateway.maximum_routes") | Integer |  | `0` |  | Maximum routes to accept from IPVPN remote peers. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_as</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].ipvpn_gateway.local_as") | String |  | `none` |  | Apply local-as to peering with IPVPN remote peers. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_families</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].ipvpn_gateway.address_families") | List, items: String |  | See (+) on YAML tab |  | IPVPN address families to enable for remote peers. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_families</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].ipvpn_gateway.address_families") | List, items: String |  | `['vpn-ipv4']` |  | IPVPN address families to enable for remote peers. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].ipvpn_gateway.address_families.[].&lt;str&gt;") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_peers</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].ipvpn_gateway.remote_peers") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- hostname</samp>](## "&lt;node_type_keys.key&gt;.node_groups.[].ipvpn_gateway.remote_peers.[].hostname") | String | Required |  |  | Hostname of remote IPVPN Peer. |
@@ -56,7 +56,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_d_path</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].ipvpn_gateway.enable_d_path") | Boolean |  | `True` |  | Enable D-path for use with BGP bestpath selection algorithm. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_routes</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].ipvpn_gateway.maximum_routes") | Integer |  | `0` |  | Maximum routes to accept from IPVPN remote peers. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_as</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].ipvpn_gateway.local_as") | String |  | `none` |  | Apply local-as to peering with IPVPN remote peers. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_families</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].ipvpn_gateway.address_families") | List, items: String |  | See (+) on YAML tab |  | IPVPN address families to enable for remote peers. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_families</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].ipvpn_gateway.address_families") | List, items: String |  | `['vpn-ipv4']` |  | IPVPN address families to enable for remote peers. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].ipvpn_gateway.address_families.[].&lt;str&gt;") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remote_peers</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].ipvpn_gateway.remote_peers") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- hostname</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].ipvpn_gateway.remote_peers.[].hostname") | String | Required |  |  | Hostname of remote IPVPN Peer. |
@@ -75,7 +75,7 @@
           enable_d_path: <bool>
           maximum_routes: <int>
           local_as: <str>
-    1 # (10)!
+          address_families:
             - <str>
           remote_peers:
             - hostname: <str>
@@ -92,7 +92,7 @@
                 enable_d_path: <bool>
                 maximum_routes: <int>
                 local_as: <str>
-    2 # (27)!
+                address_families:
                   - <str>
                 remote_peers:
                   - hostname: <str>
@@ -105,7 +105,7 @@
             enable_d_path: <bool>
             maximum_routes: <int>
             local_as: <str>
-    3 # (40)!
+            address_families:
               - <str>
             remote_peers:
               - hostname: <str>
@@ -120,39 +120,10 @@
             enable_d_path: <bool>
             maximum_routes: <int>
             local_as: <str>
-    4 # (55)!
+            address_families:
               - <str>
             remote_peers:
               - hostname: <str>
                 ip_address: <str>
                 bgp_as: <str>
     ```
-
-    0. Default Value
-
-        ```yaml
-        '      address_families':
-        - vpn-ipv4
-
-        ```
-    0. Default Value
-
-        ```yaml
-        '            address_families':
-        - vpn-ipv4
-
-        ```
-    0. Default Value
-
-        ```yaml
-        '        address_families':
-        - vpn-ipv4
-
-        ```
-    0. Default Value
-
-        ```yaml
-        '        address_families':
-        - vpn-ipv4
-
-        ```
