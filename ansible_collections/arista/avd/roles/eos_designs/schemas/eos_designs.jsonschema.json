@@ -4544,6 +4544,36 @@
       },
       "title": "Port Profiles"
     },
+    "ptp": {
+      "type": "object",
+      "properties": {
+        "enable": {
+          "type": "boolean",
+          "title": "Enable"
+        },
+        "profile": {
+          "type": "string",
+          "enum": [
+            "aes67",
+            "smpte2059-2",
+            "aes67-r16-2016"
+          ],
+          "default": "aes67-r16-2016",
+          "title": "Profile"
+        },
+        "domain": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255,
+          "title": "Domain"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "PTP"
+    },
     "ptp_profiles": {
       "type": "array",
       "items": {

@@ -1695,6 +1695,20 @@ keys:
 
             Port_profiles can refer to another port_profile to inherit settings in
             up to two levels (adapter->profile->parent_profile).'
+  ptp:
+    type: dict
+    keys:
+      enable:
+        type: bool
+      profile:
+        type: str
+        valid_values:
+        - aes67
+        - smpte2059-2
+        - aes67-r16-2016
+        default: aes67-r16-2016
+      domain:
+        $ref: eos_cli_config_gen#/keys/ptp/keys/domain
   ptp_profiles:
     type: list
     items:
