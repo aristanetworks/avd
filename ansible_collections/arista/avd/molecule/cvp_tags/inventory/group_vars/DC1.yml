@@ -5,20 +5,6 @@ mgmt_gateway: 172.16.1.1
 # Specify the name of the Datacenter
 dc_name: DC1
 
-# Specify cloudvision tags to be generated for every device
-cloudvision_tags_device_generate:
-  - field: 'spanning_tree.mode' # This is the field to be picked from structured configuration
-    label: 'spanning_tree_mode' # This is the label that will appear in CloudVision
-  # - field: 'local_users' # list fields are not supported, this should error
-  #   label: 'local_users' # This is the label that will appear in CloudVision
-
-cloudvision_tags_interface_generate:
-  - field: peer
-    label: node_peer_name
-  - field: peer_interface
-    label: node_peer_interface
-
-
 # Specify the name of the pod. For this 3 clos network
 # we will just have 1 pod
 

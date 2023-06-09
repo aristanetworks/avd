@@ -192,7 +192,7 @@ management_interfaces:
   description: oob_management
   shutdown: false
   vrf: MGMT
-  ip_address: 172.16.2.101/24
+  ip_address: 172.16.1.121/24
   gateway: 172.16.1.1
   type: oob
 management_api_http:
@@ -433,32 +433,32 @@ cloudvision_tags:
     value: pod2
   - label: topology_hint_type
     value: leaf
-  - label: custom_tag
-    value: custom_value
-  - label: spanning_tree_mode
-    value: mstp
+  - label: topology_hint_rack
+    value: RackB
+  - label: layer3_routing
+    value: 'True'
   interface_tags:
   - interface: Ethernet3
     tags:
-    - label: node_peer_name
+    - label: peer_device_name
       value: dc1-pod2-leaf1b
-    - label: node_peer_interface
+    - label: peer_device_interface
       value: Ethernet3
   - interface: Ethernet4
     tags:
-    - label: node_peer_name
+    - label: peer_device_name
       value: dc1-pod2-leaf1b
-    - label: node_peer_interface
+    - label: peer_device_interface
       value: Ethernet4
   - interface: Ethernet1
     tags:
-    - label: node_peer_name
+    - label: peer_device_name
       value: dc1-pod2-spine1
-    - label: node_peer_interface
+    - label: peer_device_interface
       value: Ethernet1
   - interface: Ethernet2
     tags:
-    - label: node_peer_name
+    - label: peer_device_name
       value: dc1-pod2-spine2
-    - label: node_peer_interface
+    - label: peer_device_interface
       value: Ethernet1

@@ -2,3 +2,32 @@
 type: super-spine
 
 pod_name: superspines
+
+# Spine switch group
+super_spines:
+  # Definition of default values that will be configured to all nodes defined in this group
+  defaults:
+    # Set the relevant platform as each platform has different default values in Ansible AVD
+    platform: vEOS-lab
+    # Pool of IPv4 addresses to configure interface Loopback0 used for BGP EVPN sessions
+    loopback_ipv4_pool: 10.255.0.0/27
+    # ASN to be used by BGP
+
+  # Definition of nodes contained in this group.
+  # Specific configuration of device must take place under the node definition. Each node inherites all values defined under 'defaults'
+  nodes:
+    # Name of the node to be defined (must be consistent with definition in inventory)
+
+    dc1-super-spine1:
+      # Device ID definition. An integer number used for internal calculations (ie. IPv4 address of the loopback_ipv4_pool among others)
+      id: 1
+      rack: rack-3ss
+      # Management IP to be assigned to the management interface
+      mgmt_ip: 172.16.1.211/24
+      bgp_as: 65000
+
+    dc1-super-spine2:
+      id: 2
+      rack: rack-4ss
+      mgmt_ip: 172.16.1.212/24
+      bgp_as: 65000

@@ -108,24 +108,22 @@ cloudvision_tags:
     value: edge
   - label: topology_hint_rack
     value: rack-2c
-  - label: spanning_tree_mode
-    value: mstp
   interface_tags:
   - interface: Ethernet1
     tags:
-    - label: node_peer_name
+    - label: peer_device_name
       value: dc1-pod1-leaf2a
-    - label: node_peer_interface
+    - label: peer_device_interface
       value: Ethernet8
   - interface: Ethernet2
     tags:
-    - label: node_peer_name
+    - label: peer_device_name
       value: dc1-pod1-leaf2b
-    - label: node_peer_interface
+    - label: peer_device_interface
       value: Ethernet8
   - interface: Ethernet5
     tags:
-    - label: node_peer_name
+    - label: peer_device_name
       value: dc1-pod1-leaf2-server1
-    - label: node_peer_interface
+    - label: peer_device_interface
       value: iLO

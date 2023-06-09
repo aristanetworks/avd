@@ -51,6 +51,14 @@ router_bgp:
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65103'
     description: dc1-pod1-leaf2b_Ethernet1
+  - ip_address: 10.255.253.0
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65100'
+    description: dc1-super-spine1_Ethernet1
+  - ip_address: 10.255.253.2
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65100'
+    description: dc1-super-spine2_Ethernet1
   - ip_address: 10.255.0.3
     peer_group: EVPN-OVERLAY-PEERS
     description: dc1-pod1-leaf1a
@@ -145,6 +153,24 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 10.255.255.12/31
+- name: Ethernet10
+  peer: dc1-super-spine1
+  peer_interface: Ethernet1
+  peer_type: super-spine
+  description: P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet1
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.255.253.1/31
+- name: Ethernet11
+  peer: dc1-super-spine2
+  peer_interface: Ethernet1
+  peer_type: super-spine
+  description: P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet1
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.255.253.3/31
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
@@ -177,30 +203,42 @@ cloudvision_tags:
     value: pod1
   - label: topology_hint_type
     value: spine
-  - label: spanning_tree_mode
-    value: none
+  - label: layer3_routing
+    value: 'True'
   interface_tags:
   - interface: Ethernet1
     tags:
-    - label: node_peer_name
+    - label: peer_device_name
       value: dc1-pod1-leaf1a
-    - label: node_peer_interface
+    - label: peer_device_interface
       value: Ethernet1
   - interface: Ethernet2
     tags:
-    - label: node_peer_name
+    - label: peer_device_name
       value: dc1-pod1-leaf1b
-    - label: node_peer_interface
+    - label: peer_device_interface
       value: Ethernet1
   - interface: Ethernet3
     tags:
-    - label: node_peer_name
+    - label: peer_device_name
       value: dc1-pod1-leaf2a
-    - label: node_peer_interface
+    - label: peer_device_interface
       value: Ethernet1
   - interface: Ethernet4
     tags:
-    - label: node_peer_name
+    - label: peer_device_name
       value: dc1-pod1-leaf2b
-    - label: node_peer_interface
+    - label: peer_device_interface
+      value: Ethernet1
+  - interface: Ethernet10
+    tags:
+    - label: peer_device_name
+      value: dc1-super-spine1
+    - label: peer_device_interface
+      value: Ethernet1
+  - interface: Ethernet11
+    tags:
+    - label: peer_device_name
+      value: dc1-super-spine2
+    - label: peer_device_interface
       value: Ethernet1

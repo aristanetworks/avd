@@ -2,13 +2,9 @@
 # Default gateway used for the management interface
 mgmt_gateway: 172.16.1.1
 
-# Specify the name of the Datacenter
-dc_name: DC1
-
 # Specify the name of the pod. For this 3 clos network
 # we will just have 1 pod
 pod_name: pod2
-
 
 # Spine switch group
 spine:
@@ -18,7 +14,10 @@ spine:
     platform: vEOS-lab
     # Pool of IPv4 addresses to configure interface Loopback0 used for BGP EVPN sessions
     loopback_ipv4_pool: 10.255.0.0/27
-    # ASN to be used by BGP
+    # ASN to be used by
+    uplink_switches: [ dc1-super-spine1, dc1-super-spine2 ]
+    uplink_interfaces: [ Ethernet10, Ethernet11 ]
+    uplink_ipv4_pool: 10.255.254.0/26
 
   # Definition of nodes contained in this group.
   # Specific configuration of device must take place under the node definition. Each node inherites all values defined under 'defaults'
@@ -29,14 +28,20 @@ spine:
       # Device ID definition. An integer number used for internal calculations (ie. IPv4 address of the loopback_ipv4_pool among others)
       id: 1
       # Management IP to be assigned to the management interface
-      mgmt_ip: 172.16.2.11/24
+      rack: RackA
+      mgmt_ip: 172.16.1.111/24
       bgp_as: 65121
-
+      uplink_switch_interfaces:
+        - Ethernet3
+        - Ethernet3
     dc1-pod2-spine2:
       id: 2
-      mgmt_ip: 172.16.2.12/24
+      rack: RackA
+      mgmt_ip: 172.16.1.112/24
       bgp_as: 65121
-
+      uplink_switch_interfaces:
+        - Ethernet4
+        - Ethernet4
 
 # L3 Leaf switch group
 l3leaf:
@@ -75,11 +80,12 @@ l3leaf:
     DC1_POD2_L3_LEAF1:
       # ASN to be used by BGP for the group. Both devices in the MLAG pair will use the same BGP ASN
       bgp_as: 65122
+      rack: RackB
       nodes:
         # Definition of hostnames under the node_group
         dc1-pod2-leaf1a:
           id: 1
-          mgmt_ip: 172.16.2.101/24
+          mgmt_ip: 172.16.1.121/24
           # Definition of the port to be used in the uplink device facing this device.
           # Note that the number of elements in this list must match the length of 'uplink_switches' as well as 'uplink_interfaces'
           uplink_switch_interfaces:
@@ -87,7 +93,7 @@ l3leaf:
             - Ethernet1
         dc1-pod2-leaf1b:
           id: 2
-          mgmt_ip: 172.16.2.102/24
+          mgmt_ip: 172.16.1.122/24
           uplink_switch_interfaces:
             - Ethernet2
             - Ethernet2

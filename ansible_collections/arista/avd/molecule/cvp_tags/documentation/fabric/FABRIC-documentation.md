@@ -23,12 +23,12 @@
 | pod1 | l3leaf | dc1-pod1-leaf2a | 172.16.1.103/24 | vEOS-lab | Provisioned | - |
 | pod1 | l3leaf | dc1-pod1-leaf2b | 172.16.1.104/24 | vEOS-lab | Provisioned | - |
 | pod1 | l2leaf | dc1-pod1-leaf2c | 172.16.1.152/24 | vEOS-lab | Provisioned | - |
-| pod1 | spine | dc1-pod1-spine1 | 172.16.1.11/24 | vEOS-lab | Not Available | - |
-| pod1 | spine | dc1-pod1-spine2 | 172.16.1.12/24 | vEOS-lab | Not Available | - |
-| pod2 | l3leaf | dc1-pod2-leaf1a | 172.16.2.101/24 | vEOS-lab | Provisioned | - |
-| pod2 | l3leaf | dc1-pod2-leaf1b | 172.16.2.102/24 | vEOS-lab | Provisioned | - |
-| pod2 | spine | dc1-pod2-spine1 | 172.16.2.11/24 | vEOS-lab | Not Available | - |
-| pod2 | spine | dc1-pod2-spine2 | 172.16.2.12/24 | vEOS-lab | Not Available | - |
+| pod1 | spine | dc1-pod1-spine1 | 172.16.1.11/24 | vEOS-lab | Provisioned | - |
+| pod1 | spine | dc1-pod1-spine2 | 172.16.1.12/24 | vEOS-lab | Provisioned | - |
+| pod2 | l3leaf | dc1-pod2-leaf1a | 172.16.1.121/24 | vEOS-lab | Provisioned | - |
+| pod2 | l3leaf | dc1-pod2-leaf1b | 172.16.1.122/24 | vEOS-lab | Provisioned | - |
+| pod2 | spine | dc1-pod2-spine1 | 172.16.1.111/24 | vEOS-lab | Provisioned | - |
+| pod2 | spine | dc1-pod2-spine2 | 172.16.1.112/24 | vEOS-lab | Provisioned | - |
 | superspines | super-spine | dc1-super-spine1 | 172.16.1.1/24 | vEOS-lab | Provisioned | - |
 | superspines | super-spine | dc1-super-spine2 | 172.16.1.2/24 | vEOS-lab | Provisioned | - |
 
@@ -59,12 +59,20 @@
 | l3leaf | dc1-pod1-leaf2b | Ethernet1 | spine | dc1-pod1-spine1 | Ethernet4 |
 | l3leaf | dc1-pod1-leaf2b | Ethernet2 | spine | dc1-pod1-spine2 | Ethernet4 |
 | l3leaf | dc1-pod1-leaf2b | Ethernet8 | l2leaf | dc1-pod1-leaf2c | Ethernet2 |
+| spine | dc1-pod1-spine1 | Ethernet10 | super-spine | dc1-super-spine1 | Ethernet1 |
+| spine | dc1-pod1-spine1 | Ethernet11 | super-spine | dc1-super-spine2 | Ethernet1 |
+| spine | dc1-pod1-spine2 | Ethernet10 | super-spine | dc1-super-spine1 | Ethernet2 |
+| spine | dc1-pod1-spine2 | Ethernet11 | super-spine | dc1-super-spine2 | Ethernet2 |
 | l3leaf | dc1-pod2-leaf1a | Ethernet1 | spine | dc1-pod2-spine1 | Ethernet1 |
 | l3leaf | dc1-pod2-leaf1a | Ethernet2 | spine | dc1-pod2-spine2 | Ethernet1 |
 | l3leaf | dc1-pod2-leaf1a | Ethernet3 | mlag_peer | dc1-pod2-leaf1b | Ethernet3 |
 | l3leaf | dc1-pod2-leaf1a | Ethernet4 | mlag_peer | dc1-pod2-leaf1b | Ethernet4 |
 | l3leaf | dc1-pod2-leaf1b | Ethernet1 | spine | dc1-pod2-spine1 | Ethernet2 |
 | l3leaf | dc1-pod2-leaf1b | Ethernet2 | spine | dc1-pod2-spine2 | Ethernet2 |
+| spine | dc1-pod2-spine1 | Ethernet10 | super-spine | dc1-super-spine1 | Ethernet3 |
+| spine | dc1-pod2-spine1 | Ethernet11 | super-spine | dc1-super-spine2 | Ethernet3 |
+| spine | dc1-pod2-spine2 | Ethernet10 | super-spine | dc1-super-spine1 | Ethernet4 |
+| spine | dc1-pod2-spine2 | Ethernet11 | super-spine | dc1-super-spine2 | Ethernet4 |
 
 ## Fabric IP Allocation
 
@@ -72,6 +80,8 @@
 
 | Uplink IPv4 Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ---------------- | ------------------- | ------------------ | ------------------ |
+| 10.255.253.0/26 | 64 | 8 | 12.5 % |
+| 10.255.254.0/26 | 64 | 8 | 12.5 % |
 | 10.255.255.0/26 | 64 | 24 | 37.5 % |
 
 ### Point-To-Point Links Node Allocation
@@ -86,10 +96,18 @@
 | dc1-pod1-leaf2a | Ethernet2 | 10.255.255.11/31 | dc1-pod1-spine2 | Ethernet3 | 10.255.255.10/31 |
 | dc1-pod1-leaf2b | Ethernet1 | 10.255.255.13/31 | dc1-pod1-spine1 | Ethernet4 | 10.255.255.12/31 |
 | dc1-pod1-leaf2b | Ethernet2 | 10.255.255.15/31 | dc1-pod1-spine2 | Ethernet4 | 10.255.255.14/31 |
+| dc1-pod1-spine1 | Ethernet10 | 10.255.253.1/31 | dc1-super-spine1 | Ethernet1 | 10.255.253.0/31 |
+| dc1-pod1-spine1 | Ethernet11 | 10.255.253.3/31 | dc1-super-spine2 | Ethernet1 | 10.255.253.2/31 |
+| dc1-pod1-spine2 | Ethernet10 | 10.255.253.5/31 | dc1-super-spine1 | Ethernet2 | 10.255.253.4/31 |
+| dc1-pod1-spine2 | Ethernet11 | 10.255.253.7/31 | dc1-super-spine2 | Ethernet2 | 10.255.253.6/31 |
 | dc1-pod2-leaf1a | Ethernet1 | 10.255.255.1/31 | dc1-pod2-spine1 | Ethernet1 | 10.255.255.0/31 |
 | dc1-pod2-leaf1a | Ethernet2 | 10.255.255.3/31 | dc1-pod2-spine2 | Ethernet1 | 10.255.255.2/31 |
 | dc1-pod2-leaf1b | Ethernet1 | 10.255.255.5/31 | dc1-pod2-spine1 | Ethernet2 | 10.255.255.4/31 |
 | dc1-pod2-leaf1b | Ethernet2 | 10.255.255.7/31 | dc1-pod2-spine2 | Ethernet2 | 10.255.255.6/31 |
+| dc1-pod2-spine1 | Ethernet10 | 10.255.254.1/31 | dc1-super-spine1 | Ethernet3 | 10.255.254.0/31 |
+| dc1-pod2-spine1 | Ethernet11 | 10.255.254.3/31 | dc1-super-spine2 | Ethernet3 | 10.255.254.2/31 |
+| dc1-pod2-spine2 | Ethernet10 | 10.255.254.5/31 | dc1-super-spine1 | Ethernet4 | 10.255.254.4/31 |
+| dc1-pod2-spine2 | Ethernet11 | 10.255.254.7/31 | dc1-super-spine2 | Ethernet4 | 10.255.254.6/31 |
 
 ### Loopback Interfaces (BGP EVPN Peering)
 

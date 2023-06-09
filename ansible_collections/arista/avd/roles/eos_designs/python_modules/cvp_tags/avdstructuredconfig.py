@@ -36,30 +36,6 @@ INVALID_CUSTOM_DEVICE_TAGS = [
     "hostname",
     "terminattr",
 ]
-SUPPORTED_INTERFACE_DATA = [
-    "interface",
-    "peer",
-    "peer_interface",
-    "peer_type",
-    "peer_is_deployed",
-    "peer_bgp_as",
-    "type",
-    "speed",
-    "ip_address",
-    "peer_ip_address",
-    "channel_group_id",
-    "peer_channel_group_id",
-    "channel_description",
-    "vlans",
-    "native_vlan",
-    "trunk_groups",
-    "bfd",
-    "ptp",
-    "mac_security",
-    "short_esi",
-    "underlay_multicast",
-    "ipv6_enable",
-]
 
 
 class AvdStructuredConfigTags(AvdFacts, UtilsMixin):
@@ -109,7 +85,7 @@ class AvdStructuredConfigTags(AvdFacts, UtilsMixin):
             if type(value) in [list, dict]:
                 raise AristaAvdError(f"The field {generate_tag['field']} appears to be a {type(value).__name__}. This is not supported for cloudvision fields.")
             if value:
-                device_tags.append({"label": generate_tag["label"], "value": value})
+                device_tags.append({"label": generate_tag["label"], "value": str(value)})
             else:
                 self.ansible_display.warning(msg=f"{generate_tag['field']} not found for {self.shared_utils.hostname}")
 
@@ -190,7 +166,7 @@ class AvdStructuredConfigTags(AvdFacts, UtilsMixin):
             return None
         return self.tag_dict("topology_hint_rack", self.shared_utils.rack)
 
-    def _interface_tags(self, link):
+    def _interface_tags(self, link) -> dict | None:
         tags = []
 
         for generate_tag in get(self.shared_utils.hostvars, "cloudvision_tags_interface_generate", []):
@@ -200,8 +176,10 @@ class AvdStructuredConfigTags(AvdFacts, UtilsMixin):
             if type(value) in [list, dict]:
                 raise AristaAvdError(f"The field {generate_tag['field']} appears to be a {type(value).__name__}. This is not supported for cloudvision fields.")
             if value:
-                tags.append({"label": generate_tag["label"], "value": value})
+                tags.append({"label": generate_tag["label"], "value": str(value)})
             else:
                 self.ansible_display.warning(msg=f"{generate_tag['field']} not found for {self.shared_utils.hostname}")
-
-        return {"interface": link["name"], "tags": tags}
+        if tags:
+            return {"interface": link["name"], "tags": tags}
+        self.ansible_display.warning(msg=f"No tags for {link['name']}")
+        return None
