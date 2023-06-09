@@ -122,6 +122,7 @@ nav:
       - Example for Dual DC L3LS: examples/dual-dc-l3ls/README.md
       - Example for L2LS Fabric: examples/l2ls-fabric/README.md
       - Example for Campus Fabric: examples/campus-fabric/README.md
+      - Example for ISIS-LDP IPVPN: examples/isis-ldp-ipvpn/README.md
   - Installation:
       - Collection Installation: docs/installation/collection-installation.md
   - How-To:
