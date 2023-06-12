@@ -1,8 +1,0 @@
-# Minimum config to only test the specific feature.
-l2leaf:
-  defaults:
-  nodes:
-    - name: mgmt_interface_platform
-      platform: 7500R2
-      mgmt_ip: 1.1.1.2
-      id: 105
