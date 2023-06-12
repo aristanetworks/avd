@@ -38,6 +38,9 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
+        next_hop:
+          # Testing address_family_ipv6_originate which is deprecated in 4.0.0. To be removed in 5.0.0
+          address_family_ipv6_originate: true
     # Testing networks as dict of dict
     # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
     networks:
@@ -161,7 +164,7 @@ router_bgp:
           remote_as: 1
       # Testing address_families as dict of dict
       # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
-      # address_families format itself deprecated in 4.0.0. To be removed in 5.0.0.
+      # address_families itself is deprecated in 4.0.0. To be removed in 5.0.0.
       address_families:
         ipv4:
           # Testing neighbors as dict of dict

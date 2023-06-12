@@ -7754,8 +7754,21 @@ keys:
                 next_hop:
                   type: dict
                   keys:
+                    address_family_ipv6:
+                      type: dict
+                      keys:
+                        enabled:
+                          type: bool
+                          required: true
+                        originate:
+                          type: bool
                     address_family_ipv6_originate:
                       type: bool
+                      deprecation:
+                        warning: true
+                        removed: false
+                        new_key: address_family_ipv6
+                        remove_in_version: 5.0.0
                 prefix_list_in:
                   type: str
                   description: Inbound prefix-list name
@@ -7923,6 +7936,168 @@ keys:
                   type: str
                 route_map:
                   type: str
+      address_family_ipv6_multicast:
+        type: dict
+        keys:
+          bgp:
+            type: dict
+            keys:
+              missing_policy:
+                type: dict
+                keys:
+                  direction_in_action:
+                    type: str
+                    valid_values:
+                    - deny
+                    - deny-in-out
+                    - permit
+                  direction_out_action:
+                    type: str
+                    valid_values:
+                    - deny
+                    - deny-in-out
+                    - permit
+              additional_paths:
+                type: dict
+                keys:
+                  receive:
+                    type: bool
+          neighbors:
+            type: list
+            primary_key: ip_address
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                activate:
+                  type: bool
+                route_map_in:
+                  type: str
+                  description: Inbound route-map name
+                route_map_out:
+                  type: str
+                  description: Outbound route-map name
+          peer_groups:
+            type: list
+            primary_key: name
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Peer-group name
+                activate:
+                  type: bool
+          networks:
+            type: list
+            primary_key: prefix
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                prefix:
+                  type: str
+                  description: IPv6 prefix "A:B:C:D:E:F:G:H/I"
+                route_map:
+                  type: str
+      address_family_flow_spec_ipv4:
+        type: dict
+        keys:
+          bgp:
+            type: dict
+            keys:
+              missing_policy:
+                type: dict
+                keys:
+                  direction_in_action:
+                    type: str
+                    valid_values:
+                    - deny
+                    - deny-in-out
+                    - permit
+                  direction_out_action:
+                    type: str
+                    valid_values:
+                    - deny
+                    - deny-in-out
+                    - permit
+          neighbors:
+            type: list
+            primary_key: ip_address
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                activate:
+                  type: bool
+          peer_groups:
+            type: list
+            primary_key: name
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Peer-group name
+                activate:
+                  type: bool
+      address_family_flow_spec_ipv6:
+        type: dict
+        keys:
+          bgp:
+            type: dict
+            keys:
+              missing_policy:
+                type: dict
+                keys:
+                  direction_in_action:
+                    type: str
+                    valid_values:
+                    - deny
+                    - deny-in-out
+                    - permit
+                  direction_out_action:
+                    type: str
+                    valid_values:
+                    - deny
+                    - deny-in-out
+                    - permit
+          neighbors:
+            type: list
+            primary_key: ip_address
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                activate:
+                  type: bool
+          peer_groups:
+            type: list
+            primary_key: name
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Peer-group name
+                activate:
+                  type: bool
       address_family_vpn_ipv4:
         type: dict
         keys:
@@ -8453,30 +8628,6 @@ keys:
                                 required: true
                               originate:
                                 type: bool
-                peer_groups:
-                  type: list
-                  primary_key: name
-                  convert_types:
-                  - dict
-                  items:
-                    type: dict
-                    keys:
-                      name:
-                        type: str
-                        description: Peer-group name
-                      activate:
-                        type: bool
-                      next_hop:
-                        type: dict
-                        keys:
-                          address_family_ipv6:
-                            type: dict
-                            keys:
-                              enabled:
-                                type: bool
-                                required: true
-                              originate:
-                                type: bool
                 networks:
                   type: list
                   primary_key: prefix
@@ -8561,19 +8712,6 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name
-                peer_groups:
-                  type: list
-                  primary_key: name
-                  convert_types:
-                  - dict
-                  items:
-                    type: dict
-                    keys:
-                      name:
-                        type: str
-                        description: Peer-group name
-                      activate:
-                        type: bool
                 networks:
                   type: list
                   primary_key: prefix
@@ -8631,19 +8769,6 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name
-                peer_groups:
-                  type: list
-                  primary_key: name
-                  convert_types:
-                  - dict
-                  items:
-                    type: dict
-                    keys:
-                      name:
-                        type: str
-                        description: Peer-group name
-                      activate:
-                        type: bool
                 networks:
                   type: list
                   primary_key: prefix
@@ -8701,19 +8826,6 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name
-                peer_groups:
-                  type: list
-                  primary_key: name
-                  convert_types:
-                  - dict
-                  items:
-                    type: dict
-                    keys:
-                      name:
-                        type: str
-                        description: Peer-group name
-                      activate:
-                        type: bool
                 networks:
                   type: list
                   primary_key: prefix

@@ -328,7 +328,7 @@ class AvdStructuredConfigMlag(AvdFacts):
 
         address_family_ipv4_peer_group = {"name": peer_group_name, "activate": True}
         if self.shared_utils.underlay_rfc5549:
-            address_family_ipv4_peer_group["next_hop"] = {"address_family_ipv6_originate": True}
+            address_family_ipv4_peer_group["next_hop"] = {"address_family_ipv6": {"enabled": True, "originate": True}}
 
         router_bgp["address_family_ipv4"] = {"peer_groups": [address_family_ipv4_peer_group]}
 
