@@ -16,6 +16,8 @@ keys:
         name:
           type: str
           description: VRF Name
+          convert_types:
+            - int
         description:
           type: str
         ip_routing:

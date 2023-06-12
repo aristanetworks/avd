@@ -193,6 +193,20 @@ router_bgp:
         - '100000:30'
     redistribute_routes:
     - source_protocol: connected
+  - name: '12345678'
+    router_id: 192.168.255.10
+    rd: '65001:41'
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '100000:41'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '100000:41'
+    redistribute_routes:
+    - source_protocol: connected
   - name: Tenant_D_OP_Zone
     router_id: 192.168.255.10
     rd: '65001:40'
@@ -208,20 +222,6 @@ router_bgp:
     redistribute_routes:
     - source_protocol: connected
     - source_protocol: static
-  - name: Tenant_D_WAN_Zone
-    router_id: 192.168.255.10
-    rd: '65001:41'
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - '100000:41'
-      export:
-      - address_family: evpn
-        route_targets:
-        - '100000:41'
-    redistribute_routes:
-    - source_protocol: connected
   vlan_aware_bundles:
   - name: Tenant_A_APP_Zone
     rd: '65001:12'
@@ -289,6 +289,14 @@ router_bgp:
     redistribute_routes:
     - learned
     vlan: 310-311
+  - name: '12345678'
+    rd: '65001:41'
+    route_targets:
+      both:
+      - '100000:41'
+    redistribute_routes:
+    - learned
+    vlan: 450-452
   - name: Tenant_D_OP_Zone
     rd: '65001:40'
     route_targets:
@@ -297,14 +305,6 @@ router_bgp:
     redistribute_routes:
     - learned
     vlan: 410-413
-  - name: Tenant_D_WAN_Zone
-    rd: '65001:41'
-    route_targets:
-      both:
-      - '100000:41'
-    redistribute_routes:
-    - learned
-    vlan: 450-452
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -399,11 +399,11 @@ vrfs:
 - name: Tenant_C_OP_Zone
   tenant: Tenant_C
   ip_routing: true
-- name: Tenant_D_OP_Zone
+- name: '12345678'
   tenant: Tenant_D
   ip_routing: true
   ipv6_routing: true
-- name: Tenant_D_WAN_Zone
+- name: Tenant_D_OP_Zone
   tenant: Tenant_D
   ip_routing: true
   ipv6_routing: true
@@ -836,6 +836,15 @@ vlans:
 - id: 311
   name: Tenant_C_OP_Zone_2
   tenant: Tenant_C
+- id: 450
+  name: Tenant_D_v6_WAN_Zone_1
+  tenant: Tenant_D
+- id: 451
+  name: Tenant_D_v6_WAN_Zone_2
+  tenant: Tenant_D
+- id: 452
+  name: Tenant_D_v6_WAN_Zone_3
+  tenant: Tenant_D
 - id: 410
   name: Tenant_D_v6_OP_Zone_1
   tenant: Tenant_D
@@ -847,15 +856,6 @@ vlans:
   tenant: Tenant_D
 - id: 413
   name: Tenant_D_v6_OP_Zone_3
-  tenant: Tenant_D
-- id: 450
-  name: Tenant_D_v6_WAN_Zone_1
-  tenant: Tenant_D
-- id: 451
-  name: Tenant_D_v6_WAN_Zone_2
-  tenant: Tenant_D
-- id: 452
-  name: Tenant_D_v6_WAN_Zone_3
   tenant: Tenant_D
 ip_igmp_snooping:
   globally_enabled: true
@@ -987,6 +987,39 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.3.11.1/24
   vrf: Tenant_C_OP_Zone
+- name: Vlan450
+  tenant: Tenant_D
+  tags:
+  - v6wan
+  description: Tenant_D_v6_WAN_Zone_1
+  shutdown: false
+  ipv6_enable: true
+  ipv6_address_virtuals:
+  - 2001:db8:355::1/64
+  vrf: '12345678'
+- name: Vlan451
+  tenant: Tenant_D
+  tags:
+  - v6wan
+  description: Tenant_D_v6_WAN_Zone_2
+  shutdown: false
+  ipv6_enable: true
+  mtu: 1560
+  ipv6_address_virtuals:
+  - 2001:db8:451::1/64
+  vrf: '12345678'
+- name: Vlan452
+  tenant: Tenant_D
+  tags:
+  - v6wan
+  description: Tenant_D_v6_WAN_Zone_3
+  shutdown: false
+  ipv6_enable: false
+  mtu: 1560
+  ip_address_virtual: 10.4.12.254/24
+  ipv6_address_virtuals:
+  - 2001:db8:412::1/64
+  vrf: '12345678'
 - name: Vlan410
   tenant: Tenant_D
   tags:
@@ -1043,39 +1076,6 @@ vlan_interfaces:
   - ip_helper: 1.1.1.1
     source_interface: lo101
     vrf: TEST
-- name: Vlan450
-  tenant: Tenant_D
-  tags:
-  - v6wan
-  description: Tenant_D_v6_WAN_Zone_1
-  shutdown: false
-  ipv6_enable: true
-  ipv6_address_virtuals:
-  - 2001:db8:355::1/64
-  vrf: Tenant_D_WAN_Zone
-- name: Vlan451
-  tenant: Tenant_D
-  tags:
-  - v6wan
-  description: Tenant_D_v6_WAN_Zone_2
-  shutdown: false
-  ipv6_enable: true
-  mtu: 1560
-  ipv6_address_virtuals:
-  - 2001:db8:451::1/64
-  vrf: Tenant_D_WAN_Zone
-- name: Vlan452
-  tenant: Tenant_D
-  tags:
-  - v6wan
-  description: Tenant_D_v6_WAN_Zone_3
-  shutdown: false
-  ipv6_enable: false
-  mtu: 1560
-  ip_address_virtual: 10.4.12.254/24
-  ipv6_address_virtuals:
-  - 2001:db8:412::1/64
-  vrf: Tenant_D_WAN_Zone
 ipv6_static_routes:
 - destination_address_prefix: ::/0
   gateway: 2001:db8:311::4
@@ -1134,6 +1134,12 @@ vxlan_interface:
         vni: 30310
       - id: 311
         vni: 30311
+      - id: 450
+        vni: 40450
+      - id: 451
+        vni: 40451
+      - id: 452
+        vni: 40452
       - id: 410
         vni: 40410
       - id: 411
@@ -1142,12 +1148,6 @@ vxlan_interface:
         vni: 40412
       - id: 413
         vni: 40413
-      - id: 450
-        vni: 40450
-      - id: 451
-        vni: 40451
-      - id: 452
-        vni: 40452
       vrfs:
       - name: Tenant_A_APP_Zone
         vni: 12
@@ -1163,10 +1163,10 @@ vxlan_interface:
         vni: 20
       - name: Tenant_C_OP_Zone
         vni: 30
+      - name: '12345678'
+        vni: 41
       - name: Tenant_D_OP_Zone
         vni: 40
-      - name: Tenant_D_WAN_Zone
-        vni: 41
 virtual_source_nat_vrfs:
 - name: Tenant_A_OP_Zone
   ip_address: 10.255.1.10

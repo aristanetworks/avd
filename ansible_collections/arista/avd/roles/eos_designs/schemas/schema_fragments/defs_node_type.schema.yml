@@ -630,6 +630,8 @@ $defs:
               This setting is only applied on the devices where it is set, it does not automatically affect any parent/child devices configuration, so it must be set on each applicable node/node-group/node-type as needed.
             type: str
             default: "default"
+            convert_types:
+              - int
           inband_mgmt_mtu:
             description: |-
               MTU configured on the Inband Management Interface.
