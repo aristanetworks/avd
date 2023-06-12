@@ -163,7 +163,7 @@ nav:
           - Overview: roles/eos_cli_config_gen/README.md
           # - Role Inputs: roles/eos_cli_config_gen/docs/inputs/Role Inputs.md
           # - Data Model: roles/eos_cli_config_gen/docs/data_model
-          - Input Variables: roles/eos_cli_config_gen/docs/Input Variables.md
+          - Input Variables: roles/eos_cli_config_gen/doc/input-variables.md
       - cvp_configlet_upload: roles/cvp_configlet_upload/README.md
       - eos_config_deploy_cvp: roles/eos_config_deploy_cvp/README.md
       - eos_config_deploy_eapi: roles/eos_config_deploy_eapi/README.md
