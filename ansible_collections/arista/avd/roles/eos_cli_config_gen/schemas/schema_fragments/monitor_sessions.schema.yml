@@ -1,0 +1,91 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  monitor_sessions:
+    type: list
+    convert_types:
+    - dict
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          description: Session Name
+        sources:
+          type: list
+          items:
+            type: dict
+            keys:
+              name:
+                type: str
+                description: Interface name, range or comma separated list
+              direction:
+                type: str
+                valid_values: ["rx", "tx", "both"]
+              access_group:
+                type: dict
+                keys:
+                  type:
+                    type: str
+                    valid_values: ["ip", "ipv6", "mac"]
+                  name:
+                    description: ACL Name
+                    type: str
+                  priority:
+                    type: int
+                    convert_types:
+                    - str
+        destinations:
+          type: list
+          items:
+            type: str
+            description: "'cpu' or interface name, range or comma separated list"
+        encapsulation_gre_metadata_tx:
+          type: bool
+        header_remove_size:
+          type: int
+          description: Number of bytes to remove from header
+          convert_types:
+          - str
+        access_group:
+          type: dict
+          keys:
+            type:
+              type: str
+              valid_values: ["ip", "ipv6", "mac"]
+            name:
+              description: ACL Name
+              type: str
+        rate_limit_per_ingress_chip:
+          type: str
+          description: |
+            Ratelimit and unit as string.
+            Examples:
+              "100000 bps"
+              "100 kbps"
+              "10 mbps"
+        rate_limit_per_egress_chip:
+          type: str
+          description: |
+            Ratelimit and unit as string.
+            Examples:
+              "100000 bps"
+              "100 kbps"
+              "10 mbps"
+        sample:
+          type: int
+          convert_types:
+          - str
+        truncate:
+          type: dict
+          keys:
+            enabled:
+              type: bool
+            size:
+              type: int
+              description: Size in bytes
+              convert_types:
+              - str

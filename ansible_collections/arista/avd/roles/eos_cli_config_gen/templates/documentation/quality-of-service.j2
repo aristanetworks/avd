@@ -1,0 +1,33 @@
+{% set ethernet_interfaces_qos = [] %}
+{% set port_channel_interfaces_qos = [] %}
+{% for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
+{%     if ethernet_interface.shape is arista.avd.defined or
+          ethernet_interface.qos is arista.avd.defined %}
+{%         do ethernet_interfaces_qos.append(ethernet_interface) %}
+{%     endif %}
+{% endfor %}
+{% for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
+{%     if port_channel_interface.shape is arista.avd.defined or
+          port_channel_interface.qos is arista.avd.defined %}
+{%         do port_channel_interfaces_qos.append(port_channel_interface) %}
+{%     endif %}
+{% endfor %}
+{% if qos is arista.avd.defined
+       or class_maps.qos is arista.avd.defined
+       or policy_maps.qos is arista.avd.defined
+       or qos_profiles is arista.avd.defined
+       or ethernet_interfaces_qos | length > 0 is arista.avd.defined
+       or port_channel_interfaces_qos | length > 0 %}
+
+## Quality Of Service
+{## QOS #}
+{%     include 'documentation/qos.j2' %}
+{## QOS Class Maps #}
+{%     include 'documentation/class-maps.j2' %}
+{## QOS Policy Maps #}
+{%     include 'documentation/policy-maps-qos.j2' %}
+{## QOS Profiles #}
+{%     include 'documentation/qos-profiles.j2' %}
+{## QOS Interfaces #}
+{%     include 'documentation/qos-interfaces.j2' %}
+{% endif %}

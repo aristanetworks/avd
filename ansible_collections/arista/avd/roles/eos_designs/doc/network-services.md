@@ -5,11 +5,12 @@
   - e.g. Tenants can be organizations or departments.
 - The tenant shares a common vni range for mac vrf assignment.
 - The filtering model allows for granular deployment of network service to the fabric leveraging the tenant name and tags applied to the service definition.
-  - This allows for the re-use of SVIs and VLANs across the fabric.
+  - This allows for the re-use of SVI/VLAN IDs across the fabric.
+  - An error will be returned at runtime in case of duplicate SVI/VLAN IDs, VRF names or VNIs targeted towards the same device.
 
 ## Variables and Options
 
-### Tenants Keys
+### Global Network Services Parameters
 
 ```yaml
 # Define network services keys, to define grouping of network services.
@@ -43,9 +44,11 @@ mlag_ibgp_peering_vrfs:
 # RD is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
 # For loopback or 32-bit ASN/number the VNI can only be a 16-bit number.
 # For 16-bit ASN/number the VNI can be a 32-bit number.
-# Old variable name "evpn_rd_type", supported for backward-compatibility.
 overlay_rd_type:
-  admin_subfield: < "vtep_loopback" | "bgp_as" | < IPv4 Address > | <0-65535> | <0-4294967295> | default -> <overlay_loopback_ip> >
+  admin_subfield: < "vtep_loopback" | "bgp_as" | "switch_id" | < IPv4_address > | <0-65535> | <0-4294967295> | default -> <overlay_loopback_ip> >
+  # Offset can only be used if admin_subfield is an interger between <0-4294967295> or "switch_id".
+  # Total value of admin_subfield + admin_subfield_offset must be <= 4294967295.
+  admin_subfield_offset: < int > | default -> 0 >
 
 # Specify RT type | Optional
 # Route Target (RT) for L2 / L3 services is set to <vni>:<vni> per default
@@ -55,7 +58,6 @@ overlay_rd_type:
 # RT is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
 # For 32-bit ASN/number the VNI can only be a 16-bit number.
 # For 16-bit ASN/number the VNI can be a 32-bit number.
-# Old variable name "evpn_rt_type", supported for backward-compatibility.
 overlay_rt_type:
   admin_subfield: < "bgp_as" | <0-65535> | <0-4294967295> | default -> <mac_vrf_id> >
 
@@ -70,28 +72,11 @@ internal_vlan_order:
 # Use to change the EOS default of 300
 mac_address_table:
   aging_time: < time_in_seconds >
+```
 
-# Optional profiles to apply on SVI interfaces
-# Each profile can support all or some of the following keys according to your own needs.
-# Keys are the same used under SVI.
-# Svi_profiles can refer to another svi_profiles to inherit settings in up to two levels (svi->profile->parent_profile).
-svi_profiles:
-  < profile_name >:
-    parent_profile: < svi_profile_name >
-    mtu: < mtu >
-    enabled: < true | false >
-    ip_virtual_router_addresses:
-      - < IPv4_address/Mask | IPv4_address >
-    ip_address_virtual: < IPv4_address/Mask >
-    ipv6_address_virtual: < IPv6_address/Mask >
-    ip_address_virtual_secondaries:
-      - < IPv4_address/Mask >
-    igmp_snooping_enabled: < true | false | default true (eos) >
-    ip_helpers:
-      < IPv4 dhcp server IP >:
-        source_interface: < interface-name >
-        source_vrf: < VRF to originate DHCP relay packets to DHCP server >
+### Tenant Network Service Definitions
 
+```yaml
 # Dictionary of network services: L3 VRFs and L2 VLANS.
 # The network service key from network_services_keys
 < network_services_keys.key_1 >:
@@ -120,12 +105,86 @@ svi_profiles:
     # This setting can be overridden per VRF.
     enable_mlag_ibgp_peering_vrfs: < true | false >
 
+    # Dictionary of BGP peer groups definitions | Optional.
+    # This will configure BGP peer groups to be used inside the tenant for peering with external devices.
+    # Since BGP peer groups are configured at higher BGP level, shared between VRFs,
+    # peer_group names should not overlap between VRFs.
+    bgp_peer_groups:
+      - name: < BGP peer group name >
+        remote_as: < bgp_as >
+        description: "< description as string >"
+        send_community: < standard | extended | large | all >
+        next_hop_self: < true | false >
+        maximum_routes: < 0-4294967294 >
+        default_originate:
+          enabled: < true | false >
+          always: < true | false >
+        # Nodes is required to restrict configuration of BGP peer groups to certain nodes in the network.
+        # If not set the peer-group is created on the device which has a bgp_peer mapped to corresponding peer_group.
+        nodes: [ < node_1 >, < node_2 > ]
+        update_source: < interface >
+        bfd: < true | false >
+        ebgp_multihop: < 1-255 >
+        route_map_out: < route-map name >
+        route_map_in: < route-map name >
+        local_as: < local BGP ASN >
+
+    # Enable EVPN L2 Multicast for all SVIs and l2vlans within Tenant | Optional
+    # - Multicast group binding is created only for Multicast traffic. BULL traffic will use ingress-replication
+    # - Configures binding between VXLAN, VLAN, and multicast group IPv4 address using the following formula:
+    #   < evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool > + < vlan_id - 1 > + < evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool_offset >.
+    # - The recommendation is to assign a /20 block within the 232.0.0.0/8 Source-Specific Multicast range.
+    # - Enables `redistribute igmp` on the router bgp MAC VRF.
+    # - When evpn_l2_multicast.enabled is true for a VLAN or a tenant, "igmp snooping" and "igmp snooping querier" will always be enabled - overriding those individual settings.
+    evpn_l2_multicast:
+      enabled: < true | false >
+      underlay_l2_multicast_group_ipv4_pool: < IPv4_address/Mask >
+      underlay_l2_multicast_group_ipv4_pool_offset: < int >
+
+    # Enable L3 Multicast for all SVIs and l3vlans within Tenant | Optional
+    # - In the evpn-l3ls design type, this enables L3 EVPN Multicast (aka OISM)
+    # - Multicast group binding for VRF is created only for Multicast traffic. BULL traffic will use ingress-replication
+    # - Configures binding between VXLAN, VLAN, and multicast group IPv4 address using the following formula:
+    #   < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool > + < vrf_vni - 1 > + < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset >.
+    # - The recommendation is to assign a /20 block within the 232.0.0.0/8 Source-Specific Multicast range.
+    # - If enabled on an SVI using the anycast default gateway feature, a diagnostic loopback (see below) MUST be configured to source IGMP traffic.
+    # - Enables `evpn multicast` on the router bgp VRF.
+    # - When enabled on an SVI:
+    #     - If switch is part of an MLAG pair, enables "pim ipv4 sparse-mode" on the SVI.
+    #     - If switch is standalone or A-A MH, enables "ip igmp" on the SVI.
+    #     - If "ip address virtual" is configured, enables "pim ipv4 local-interface" and uses the diagnostic Loopback defined in the VRF
+    evpn_l3_multicast:
+      enabled: < true | false >
+      evpn_underlay_l3_multicast_group_ipv4_pool: < IPv4_address/Mask > # Required
+      evpn_underlay_l3_multicast_group_ipv4_pool_offset: < int > # Optional
+      evpn_peg:
+        # For each group of nodes, allow configuration of EVPN PEG options | Optional
+        # The first group of settings where the device's hostname is present in the 'nodes' list will be used.
+        - nodes: [ < node_1 >, < node_2 >, < node_N > ]                # Optional - will apply to all nodes with RP addresses configured if not set.
+          transit: < true | false >                    # Enable EVPN PEG transit mode
+    pim_rp_addresses:
+      # For each group of nodes, allow configuration of RP Addresses & associated groups
+      - rps: [ < rp_address_1 >, < rp_address_2 > ]                  # A minimum of one RP must be specified
+        nodes: [ < node_1 >, < node_2 >, < node_N > ]                # Optional - will apply to all nodes if not set.
+        groups: [ < group_prefix_1/mask >, < group_prefix_1/mask > ] # Optional
+
+    # Enable IGMP snooping querier for each SVI/l2vlan within tenant, by default using IP address of Loopback 0.
+    # When enabled, IGMP snooping querier will only be configured on L3 devices, i.e., uplink_type: p2p.
+    igmp_snooping_querier:
+      # Will be enabled automatically if "evpn_l2_multicast" is enabled.
+       enabled: < true | false >
+       source_address: < ipv4_address -> default ip address of Loopback0 >
+       version: < 1, 2, 3 -> default 2 (EOS) >
+
+    # Explicitly extend all VLANs/VLAN-Aware Bundles inside the tenant to remote EVPN domains.
+    evpn_l2_multi_domain: < true | false | default --> true >
+
     # Define L3 network services organized by vrf.
     vrfs:
       # VRF name | Required
       # vrf "default" is supported under network-services. Currently the supported options for "default" vrf are route-target,
       # route-distinguisher settings, structured_config, raw_eos_cli in bgp and SVIs are the only supported interface type.
-      # Vlan-aware-bundles are supported as well inside default vrf. OSPF is not supported currently.
+      # Static-routes and vlan-aware-bundles are supported as well inside default vrf. OSPF is not supported currently.
       < tenant_a_vrf_1 >:
 
         # Optional
@@ -142,6 +201,12 @@ svi_profiles:
         # "vrf_id" is preferred over "vrf_vni" for VRF RD/RT ID before vrf_vni
         # "vrf_id" is preferred over "vrf_vni" for MLAG IBGP peering vlan, see "mlag_ibgp_peering_vrfs.base_vlan" for details
         vrf_id: < 1-1024 >
+
+        # MLAG IBGP Peering IPv4 Pool | Optional
+        # The subnet used for iBGP peering in the VRF.
+        # Each MLAG pair will be assigned a subnet based on the ID of the primary MLAG switch
+        # If not set, "mlag_peer_l3_ipv4_pool" or "mlag_peer_ipv4_pool" will be used
+        mlag_ibgp_peering_ipv4_pool: < IPv4_address/Mask >
 
         # IP Helper for DHCP relay
         ip_helpers:
@@ -162,7 +227,7 @@ svi_profiles:
         # This will create a loopback with virtual source-nat enable to perform diagnostics from the switch.
         vtep_diagnostic:
 
-          # Loopback interface number | Required (when vtep_diagnotics defined)
+          # Loopback interface number | Required (when vtep_diagnostic defined)
           loopback: < 2-2100 >
 
           # Loopback ip range, a unique ip is derived from this ranged and assigned
@@ -188,15 +253,36 @@ svi_profiles:
           redistribute_bgp:
             enabled: < true | false, Default -> true >
             route_map: < route-map name >
+          redistribute_connected:
+            enabled: < true | false, Default -> false >
+            route_map: < route-map name >
           nodes:
             - < hostname1 >
             - < hostname2 >
 
+        # Explicitly enable or disable evpn_l3_multicast to override setting of tenants.<tenant>.evpn_l3_multicast.enabled.
+        # Allow override of tenants.<tenant>.evpn_l3_multicast.node_settings
+        evpn_l3_multicast:
+          enabled: < true | false >
+          evpn_peg:
+            # For each group of nodes, allow configuration of EVPN PEG features | Optional
+            - nodes: [ < node_1 >, < node_2 >, < node_N > ]                # Optional - will apply to all nodes with RP addresses configured if not set.
+              transit: < true | false | default false >                    # Enable EVPN PEG transit mode
+        pim_rp_addresses:                                                  # For each group of nodes, allow configuration of RP Addresses & associated groups
+          - rps: [ < rp_address_1 >, < rp_address_2 > ]                    # A minimum of one RP must be specified
+            nodes: [ < node_1 >, < node_2 >, < node_N > ]                  # Optional - will apply to all nodes if not set.
+            groups: [ < group_prefix_1/mask >, < group_prefix_1/mask > ]   # Optional
+
         # Non-selectively enabling or disabling redistribute ospf inside the VRF | Optional.
         redistribute_ospf: < true | false, Default -> true >
 
+        # Explicitly extend all VLANs/VLAN-Aware Bundles inside the VRF to remote EVPN domains.
+        # Overrides tenants.<tenant>.evpn_l2_multi_domain.
+        evpn_l2_multi_domain: < true | false >
+
         # Dictionary of SVIs | Required.
         # This will create both the L3 SVI and L2 VLAN based on filters applied to l3leaf and l2leaf.
+        # Any SVI setting, defined under svis[svi] can also be defined under the svis[svi].nodes[node]
         svis:
 
           # SVI interface id and VLAN id. | Required
@@ -228,8 +314,31 @@ svi_profiles:
             # Enable or disable interface
             enabled: < true | false >
 
+            # Trunk Groups | optional
+            # Trunk groups are used for limiting vlans to trunk ports assigned to the same trunk group
+            # Requires "enable_trunk_groups: true"
+            trunk_groups: [ < trunk_group_1 >, < trunk_group_2 > ]
+
+            # Explicitly enable or disable evpn_l2_multicast to override setting of tenants.<tenant>.evpn_l2_multicast.enabled.
+            # When evpn_l2_multicast.enabled is set to true for a vlan or a tenant, "igmp snooping" and "igmp snooping querier" will always be enabled - overriding those individual settings.
+            evpn_l2_multicast:
+              enabled: < true | false >
+
+            # Explicitly enable or disable evpn_l3_multicast to override setting of tenants <tenant>.evpn_l3_multicast.enabled and
+            # tenants.<tenant>.vrfs.<vrf>.evpn_l3_multicast.enabled
+            evpn_l3_multicast:
+              enabled: < true | false >
+
             # Enable IGMP Snooping
-            igmp_snooping_enabled: < true | false | default true (eos) >
+            igmp_snooping_enabled: < true | false | default true (EOS) >
+
+            # Enable igmp snooping querier, by default using IP address of Loopback 0.
+            # When enabled, igmp snooping querier will only be configured on l3 devices, i.e., uplink_type: p2p.
+            igmp_snooping_querier:
+              # Will be enabled automatically if "evpn_l2_multicast" is enabled.
+              enabled: < true | false | default false >
+              source_address: < ipv4_address -> default ip address of Loopback0 >
+              version: < 1, 2, 3 -> default 2 (EOS) >
 
             # ip address virtual to configure VXLAN Anycast IP address
             # Conserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.
@@ -238,23 +347,33 @@ svi_profiles:
             ip_address_virtual_secondaries:
               - < IPv4_address/Mask >
 
-            # ipv6 address virtual to configure VXLAN Anycast IP address
-            # Optional
+            # ipv6 address virtuals to configure VXLAN Anycast IP address | Optional
+            # The below "ipv6_address_virtual" key will be deprecated in AVD v4.0 in favor of the new "ipv6_address_virtuals"
+            # If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all addresses will be configured
             ipv6_address_virtual: < IPv6_address/Mask >
-            ipv6_address_virtual_secondaries:
+            # The new "ipv6_address_virtuals" key support multiple virtual ip addresses.
+            ipv6_address_virtuals:
               - < IPv6_address/Mask >
+              - < IPv6_address/Mask >
+
+            # ipv6_enable to explicitly enable/disable link-local IPv6 addressing | Optional
+            ipv6_enable: <true | false>
 
             # ip virtual-router address
             # note, also requires an IP address to be configured on the SVI where it is applied.
             # Optional
+            # When ip_address_virtual and ip_virtual_router_addresses are defined in an SVI the node that was defined with the ip_address
+            # will be configured with ip_virtual_router_addresses. For ip_virtual_router_addresses to be configured, ip_address must be defined
             ip_virtual_router_addresses:
               - < IPv4_address/Mask | IPv4_address >
 
             # ipv6 virtual-router address
             # note, also requires an IPv6 address to be configured on the SVI where it is applied.
             # Optional
+            # When ipv6_address_virtual and ipv6_virtual_router_addresses are defined in an SVI the node that was defined with the ipv6_address
+            # will be configured with ipv6_virtual_router_addresses. For ipv6_virtual_router_addresses to be configured, ipv6_address must be defined
             ipv6_virtual_router_addresses:
-              - < IPv6_address/Mask | IPv6_address >
+              - < IPv6_address >
 
             # IP Helper for DHCP relay
             ip_helpers:
@@ -265,6 +384,11 @@ svi_profiles:
             # VXLAN | Optional - default true
             # Extend this SVI over VXLAN
             vxlan: < true | false | default -> true >
+
+            # Explicitly extend this VLAN to remote EVPN domains.
+            # Overrides tenants.<tenant>.evpn_l2_multi_domain.
+            # Overrides tenants.<tenant>.vrf.<vrf>.evpn_l2_multi_domain.
+            evpn_l2_multi_domain: < true | false >
 
             # Define node specific configuration, such as unique IP addresses.
             nodes:
@@ -303,6 +427,13 @@ svi_profiles:
                   hash_algorithm: < md5 | sha1 | sha256 | sha384 | sha512, Default -> sha512 >
                   key: < key password >
 
+            # Structured configuration and eos cli commands rendered on router_bgp.vlans
+            # This configuration will not be applied to vlan aware bundles
+            bgp:
+              raw_eos_cli: |
+                < multiline eos cli >
+              structured_config: < dictionary >
+
             # EOS CLI rendered directly on the VLAN interface in the final EOS configuration
             raw_eos_cli: |
               < multiline eos cli >
@@ -315,15 +446,16 @@ svi_profiles:
             tags: [ < tag_1 >, < tag_2 > ]
             enabled: < true | false >
             ip_address_virtual: < IPv4_address/Mask >
-            ipv6_address_virtual: < IPv6_address/Mask >
 
         # List of L3 interfaces | Optional.
-        # This will create IP routed interface inside VRF. Length of interfaces, nodes and ip_addresses must match.
+        # This will create IP routed interface inside VRF. Length of interfaces, nodes and ip_addresses and descriptions (if used) must match.
         l3_interfaces:
           - interfaces: [ <interface_name1>, <interface_name2>, <interface_name3> ]
             ip_addresses: [ <IPv4_address/Mask>, <IPv4_address/Mask>, <IPv4_address/Mask> ]
             nodes: [ < node_1 >, < node_2 >, < node_1 > ]
             description: < description >
+            # `descriptions` has precedence over `description`
+            descriptions: [ <description1>, <description2>, description3> ]
             enabled: < true | false >
             mtu: < mtu >
             # EOS CLI rendered directly on the Ethernet interface in the final EOS configuration
@@ -344,6 +476,12 @@ svi_profiles:
                   hash_algorithm: < md5 | sha1 | sha256 | sha384 | sha512, Default -> sha512 >
                   key: < key password >
 
+            # Enable PIM sparse-mode on the interface; requires "evpn_l3_multicast" to be enabled on the VRF/Tenant
+            # Enabling this implicitly makes the device a PIM External Gateway (PEG) in EVPN designs only.
+            # At least one RP address must be configured for EVPN PEG to be configured.
+            pim:
+              enabled: true
+
           # For sub-interfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
           - interfaces: [ <interface_name1.sub-if-id>, <interface_name2.sub-if-id> ]
             encapsulation_dot1q_vlan: [ <vlan id>, <vlan id> ]
@@ -361,6 +499,7 @@ svi_profiles:
         static_routes:
           - destination_address_prefix: < IPv4_address/Mask >
             gateway: < IPv4_address >
+            track_bfd: < boolean >
             distance: < 1-255 >
             tag: < 0-4294967295 >
             name: < description >
@@ -371,6 +510,7 @@ svi_profiles:
         ipv6_static_routes:
           - destination_address_prefix: < IPv6_address/Mask >
             gateway: < IPv6_address >
+            track_bfd: < boolean >
             distance: < 1-255 >
             tag: < 0-4294967295 >
             name: < description >
@@ -388,6 +528,7 @@ svi_profiles:
         # For other address families, use custom_structured configuration with eos_cli_config_gen.
         bgp_peers:
           < IPv4_address or IPv6_address >:
+            peer_group: < peer_group_name >
             remote_as: < remote ASN >
             description: < description >
             password: < encrypted password >
@@ -400,7 +541,7 @@ svi_profiles:
             update_source: < interface >
             ebgp_multihop: < 1-255 >
             # Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
-            nodes: [ < node_1 >, < node_2> ]
+            nodes: [ < node_1 >, < node_2 > ]
             # Next hop settings can be either ipv4 or ipv6 for one neighbor, this will be applied by a uniquely generated route-map per neighbor.
             # Next hop takes precedence over route_map_out.
             set_ipv4_next_hop: < IPv4_address >
@@ -413,6 +554,29 @@ svi_profiles:
             weight: < 0-65535>
             bfd: < true | false >
 
+        # Dictionary of BGP peer groups definitions | Optional.
+        # This will configure BGP peer groups to be used inside the tenant VRF for peering with external devices.
+        # Since BGP peer groups are configured at higher BGP level, shared between VRFs,
+        # peer_group names should not overlap between VRFs.
+        bgp_peer_groups:
+          - name: < BGP peer group name >
+            remote_as: < bgp_as >
+            description: "< description as string >"
+            send_community: < standard | extended | large | all >
+            next_hop_self: < true | false >
+            maximum_routes: < 0-4294967294 >
+            default_originate:
+              enabled: < true | false >
+              always: < true | false >
+            # Nodes is required to restrict configuration of BGP peer groups to certain nodes in the network.
+            # If not set the peer-group is created on the device which has a bgp_peer mapped to corresponding peer_group.
+            nodes: [ < node_1 >, < node_2 > ]
+            update_source: < interface >
+            bfd: < true | false >
+            ebgp_multihop: < 1-255 >
+            route_map_out: < route-map name >
+            route_map_in: < route-map name >
+            local_as: < local BGP ASN >
         bgp:
           # EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration
           raw_eos_cli: |
@@ -469,6 +633,8 @@ svi_profiles:
         rt_override: < 1-16777215 | default -> vni_override >
 
         # VLAN name | Required
+        # For EVPN vlan-aware-bundles the VLAN name is also used as the bundle name for l2vlans.
+        # If the same name is used on multiple VLANs they will be added to the same bundle.
         name: < description >
 
         # Tags leveraged for network services filtering. | Optional
@@ -476,15 +642,41 @@ svi_profiles:
         # Tags are also matched against the "node_group" name under Fabric Topology variables
         tags: [ < tag_1 >, < tag_2 > | default -> all ]
 
+        # Trunk Groups | optional
+        # Trunk groups are used for limiting vlans to trunk ports assigned to the same trunk group
+        # Requires "enable_trunk_groups: true"
+        trunk_groups: [ < trunk_group_1 >, < trunk_group_2 > ]
+
         # VXLAN | Optional - default true
         # Extend this L2VLAN over VXLAN
         vxlan: < true | false | default -> true >
 
-      < 1-4096 >:
-        name: < description >
-        tags: [ < tag_1 >, < tag_2 > ]
+        # Explicitly enable or disable evpn_l2_multicast to override setting of tenants.<tenant>.evpn_l2_multicast.enabled.
+        # When evpn_l2_multicast.enabled is set to true for a vlan or a tenant, "igmp snooping" and "igmp snooping querier" will always be enabled - overriding those individual settings.
+        evpn_l2_multicast:
+          enabled: < true | false >
+
         # Activate or deactivate IGMP snooping | Optional, default is true
-        igmp_snooping_enabled: < true | false >
+        igmp_snooping_enabled: < true | false | default true (EOS) >
+
+        # Enable igmp snooping querier, by default using IP address of Loopback 0.
+        # When enabled, igmp snooping querier will only be configured on l3 devices, i.e., uplink_type: p2p.
+        igmp_snooping_querier:
+          # Will be enabled automatically if "evpn_l2_multicast" is enabled.
+          enabled: < true | false | default false >
+          source_address: < ipv4_address -> default ip address of Loopback0 >
+          version: < 1, 2, 3 -> default 2 (EOS) >
+
+        # Explicitly extend this VLAN to remote EVPN domains.
+        # Overrides tenants.<tenant>.evpn_l2_multi_domain.
+        evpn_l2_multi_domain: < true | false >
+
+        # Structured configuration and eos cli commands rendered on router_bgp.vlans
+        # This configuration will not be applied to vlan aware bundles
+        bgp:
+          raw_eos_cli: |
+            < multiline eos cli >
+          structured_config: < dictionary >
 
   < tenant_b >:
     mac_vrf_vni_base: < 10000-16770000 >
@@ -545,6 +737,25 @@ svi_profiles:
       < 1-4096 >:
         name: < description >
         tags: [ < tag_1 >, < tag_2 > ]
+```
+
+### SVI Profiles
+
+```yaml
+# Optional profiles to share common settings for SVIs
+# Keys are the same used under SVIs. Keys defined under SVIs take precedence.
+# Note: structured configuration is not merged recursively and will be taken directly from the most specific level in the following order:
+# 1. svi.nodes[inventory_hostname].structured_config
+# 2. svi_profile.nodes[inventory_hostname].structured_config
+# 3. svi_parent_profile.nodes[inventory_hostname].structured_config
+# 4. svi.structured_config
+# 5. svi_profile.structured_config
+# 6. svi_parent_profile.structured_config
+svi_profiles:
+  < profile_name >:
+    # Parent Profile | Optional
+    # svi_profiles can refer to another svi_profile to inherit settings in up to two levels (adapter->svi_profile->svi_parent_profile).
+    parent_profile: < svi_profile_name >
 ```
 
 ## Examples
@@ -695,7 +906,7 @@ dc1_tenants:
             tags: [ DC1_BL1, DC1_BL2 ]
             enabled: true
             ipv6_virtual_router_addresses:
-              - 2001:db8:253::/64
+              - 2001:db8:253::1
             nodes:
               DC1-BL1A:
                 ip_address: 2001:db8:253::2/64

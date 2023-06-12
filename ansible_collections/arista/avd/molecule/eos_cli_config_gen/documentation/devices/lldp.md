@@ -1,44 +1,34 @@
 # lldp
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Authentication](#authentication)
-- [Monitoring](#monitoring)
 - [LLDP](#lldp)
   - [LLDP Summary](#lldp-summary)
   - [LLDP Device Configuration](#lldp-device-configuration)
-- [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
-  - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
-- [Routing](#routing)
-  - [IP Routing](#ip-routing)
-  - [IPv6 Routing](#ipv6-routing)
-- [Multicast](#multicast)
-- [Filters](#filters)
-- [ACL](#acl)
-- [Quality Of Service](#quality-of-service)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | -  | - |
+| Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -48,28 +38,24 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Authentication
+## LLDP
 
-# Monitoring
+### LLDP Summary
 
-# LLDP
-
-## LLDP Summary
-
-### LLDP Global Settings
+#### LLDP Global Settings
 
 | Enabled | Management Address | Management VRF | Timer | Hold-Time | Re-initialization Timer | Drop Received Tagged Packets |
 | ------- | ------------------ | -------------- | ----- | --------- | ----------------------- | ---------------------------- |
 | False | 192.168.1.1/24 | Management | 30 | 90 | 2 | - |
 
-### LLDP Explicit TLV Transmit Settings
+#### LLDP Explicit TLV Transmit Settings
 
 | TLV | Transmit |
 | --- | -------- |
 | system-capabilities | False |
 | system-description | True |
 
-### LLDP Interface Settings
+#### LLDP Interface Settings
 
 LLDP is **disabled** globally. Local interface configs will not apply.
 
@@ -79,7 +65,7 @@ LLDP is **disabled** globally. Local interface configs will not apply.
 | Ethernet2 | False | True |
 | Ethernet4 | True | False |
 
-## LLDP Device Configuration
+### LLDP Device Configuration
 
 ```eos
 !
@@ -92,23 +78,13 @@ no lldp tlv transmit system-capabilities
 lldp tlv transmit system-description
 ```
 
-# Internal VLAN Allocation Policy
+## Interfaces
 
-## Internal VLAN Allocation Policy Summary
+### Ethernet Interfaces
 
-**Default Allocation Policy**
+#### Ethernet Interfaces Summary
 
-| Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
-| ascending | 1006 | 4094 |
-
-# Interfaces
-
-## Ethernet Interfaces
-
-### Ethernet Interfaces Summary
-
-#### L2
+##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
@@ -117,7 +93,7 @@ lldp tlv transmit system-description
 
 *Inherited from Port-Channel Interface
 
-### Ethernet Interfaces Device Configuration
+#### Ethernet Interfaces Device Configuration
 
 ```eos
 !
@@ -145,33 +121,3 @@ interface Ethernet4
    no switchport
    no lldp receive
 ```
-
-# Routing
-
-## IP Routing
-
-### IP Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | false |
-
-### IP Routing Device Configuration
-
-```eos
-```
-## IPv6 Routing
-
-### IPv6 Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | false |
-
-# Multicast
-
-# Filters
-
-# ACL
-
-# Quality Of Service

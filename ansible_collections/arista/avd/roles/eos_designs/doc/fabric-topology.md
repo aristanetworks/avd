@@ -16,13 +16,13 @@ fabric_name > dc_name > pod_name
 fabric_name: < Fabric_Name >
 ```
 
-- DC Name, required to match Ansible Group name covering all devices in the DC | Required for 5-stage CLOS (Super-spines)
+- DC Name, required to match Ansible Group name covering all devices in the DC | Required for 5-stage Clos (Super-spines)
 
 ```yaml
 dc_name: < DC_Name >
 ```
 
-- POD Name, only used in Fabric Documentation | Optional, fallback to dc_name and then to fabric_name. Recommended to be common between Spines, Leafs within a POD (One l3ls topology)
+- POD Name (optional), fallback to dc_name and then to fabric_name. Recommended to be common between Spines, Leafs within a POD (One l3ls topology)
 
 ```yaml
 pod_name: < POD_Name >
@@ -38,23 +38,43 @@ pod_name: < POD_Name >
 
 ## Supported designs
 
-`eos_designs` supports multiple flavors of L3LS-EVPN topology such as 3-stage CLOS and 5-stage CLOS. Sections below highlight these 2 topologies, but you can extend `eos_designs` to support your own topology by using [`node_type_keys`](node-types.html) to create your own node type
+`eos_designs` supports multiple options such as L3LS-EVPN with 3-stage or 5-stage, and L2LS. The sections below highlight these 2 topologies, but you can extend `eos_designs` to support your own topology by using [`node_type_keys`](node-types.md) to create your own node type.
 
-### 3-stage CLOS Topology Support (Leaf & Spine)
+## Design type
 
-- The **eos_designs** role support various deployments with layer 3 leaf and spine (3-stage CLOS) and optionally, with dedicated overlay controllers.
-- 3 stage CLOS fabric can be represented as spines, L3 leafs and L2 leafs, and also referred to as a "POD".
+By setting the `design.type` variable, the default node-types and templates described in these documents will be used.
 
-### 5-stage CLOS Topology Support (Super Spine)
+!!! note
+    Please note, MPLS is currently in beta. For full node type information, see [MPLS Design](./fabric-topology-mpls-BETA.md) section.
 
-- The **eos_designs** role support lager deployments with super-spines (5-stage CLOS) and optionally, with dedicated overlay controllers.
-- 5 stage CLOS fabric can be represented as multiple leaf-spine structures (called PODs - Point of Delivery) interconnected by super-spines.
+```yaml
+# AVD Design | Optional
+design:
+  type: < "l3ls-evpn" | "l2ls" | "mpls" | default -> "l3ls-evpn" >
+```
+
+### 3-stage Clos Topology Support (Leaf & Spine)
+
+- The **eos_designs** role support various deployments with layer 3 leaf and spine (3-stage Clos) and optionally, with dedicated overlay controllers.
+- 3 stage Clos fabric can be represented as spines, L3 leafs and L2 leafs, and also referred to as a "POD".
+
+### 5-stage Clos Topology Support (Super Spine)
+
+- The **eos_designs** role support lager deployments with super-spines (5-stage Clos) and optionally, with dedicated overlay controllers.
+- 5 stage Clos fabric can be represented as multiple leaf-spine structures (called PODs - Point of Delivery) interconnected by super-spines.
 - The logic to deploy every leaf-spine POD fabric remains unchanged.
 - Super-spines can be deployed as a single plane (typically chassis switches) or multiple planes.
+
+### Layer 2 Leaf Spine
+
+- The **eos_designs** role support various deployments with layer 2 leaf and spine. For example, routing may terminate at the spine level or an external L3 device.
+- The Clos fabric can be represented as L3 spines, spines, and leafs.
 
 ## Node Type Variables
 
 The following table provide information on the default node types that have been pre-defined in [`eos_designs/defaults/main/defaults-node-type-keys.yml`](https://github.com/aristanetworks/ansible-avd/tree/devel/ansible_collections/arista/avd/roles/eos_designs/defaults). To customize or create new node types, please refer to [node types definition](node-types.md)
+
+### L3LS
 
 | Node Type Key      | Underlay Router | Uplink Type | Default EVPN Role  | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
 | ------------------ | --------------- | ------------ | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- |
@@ -63,6 +83,14 @@ The following table provide information on the default node types that have been
 | l3leaf             | ✅              | p2p          | client            | ✅                 | ✅                  | ✅  | ✅           | ✅                 |
 | l2leaf             | ✘               | port-channel | none              | ✅                 | ✘                   | ✘   | ✅           | ✅                 |
 | overlay_controller | ✅              | p2p          | server            | ✘                  | ✘                   | ✘   | ✘            | ✘                  |
+
+### L2LS
+
+| Node Type Key      | Underlay Router | Uplink Type | Default EVPN Role  | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
+| ------------------ | --------------- | ------------ | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- |
+| l3spine              | ✅              | p2p          | none            | ✅                  | ✅                   | ✘   | ✅            | ✅                  |
+| spine             | ✘              | port-channel | none            | ✅                 | ✘                  | ✘  | ✅           | ✅                 |
+| leaf             | ✘               | port-channel | none              | ✅                 | ✘                   | ✘   | ✅           | ✅                 |
 
 The variables should be applied to all devices in the fabric.
 
@@ -127,11 +155,30 @@ defaults <- node_group <- node_group.node <- node
     <node inventory hostname>:
       # Vars defined per node
 
-      # Unique identifier | Required.
+      # Unique identifier per node_type | Required.
       id: < integer >
 
       # Node management IP address | Optional.
       mgmt_ip: < IPv4_address/Mask >
+
+      # Node management IPv6 address | Optional.
+      ipv6_mgmt_ip: < IPv6_address/Mask >
+
+      # System Mac Address | Optional
+      # Set to the same MAC address as available in "show version" on the device.
+      # NOTE: the "mac_address" variable used in dhcp_provisioner role is
+      # different from this variable
+      # "system_mac_address" can also be set directly as a hostvar.
+      # If both are set, the setting under "Fabric Topology" takes precedence.
+      system_mac_address: < "xx:xx:xx:xx:xx:xx" >
+      # Serial Number | Optional
+      # Set to the Serial Number of the device
+      # For  now only used for documentation purpose in the fabric
+      # documentation.
+      # "serial_number" can also be set directly as a hostvar.
+      # If both are set, the setting under "Fabric Topology" takes precedence.
+      serial_number: < string >
+
 ```
 
 ## Node Variables details
@@ -173,6 +220,10 @@ defaults <- node_group <- node_group.node <- node
       # Useful when a "connected-endpoint" is connected to switches in different "node_groups".
       offset: < offset_for_lacp_port_id_range | default -> 0 >
 
+    # Force configuration of "ip routing" even on L2 devices | Optional
+    # Use this to retain behavior of AVD versions below 4.0.0.
+    always_configure_ip_routing: < true | false | default -> false >
+
     # EOS CLI rendered directly on the root level of the final EOS configuration | Optional
     raw_eos_cli: |
       < multiline eos cli >
@@ -190,11 +241,22 @@ defaults <- node_group <- node_group.node <- node
     # IPv4 subnet to use to connect to uplink switches.
     uplink_ipv4_pool: < IPv4_address/Mask  >
 
-    # Local uplink interfaces (list). | Required.
+    # Local uplink interfaces (list). | Optional
+    # If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.
+    # Please note that default_interfaces are not defined by default - you should define these yourself.
     uplink_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
 
     # Uplink switches (list). | Required.
+    # If parallel uplinks are in use, update max_parallel_uplinks below and specify each uplink switch multiple times
+    # e.g. uplink_switches: [ 'DC1-SPINE1', 'DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE2' ]
     uplink_switches: [ < uplink_switch_inventory_hostname 01 >, < uplink_switch_inventory_hostname 02 > ]
+
+    # Uplink native vlan | Optional
+    # Only applicable to switches with layer-2 port-channel uplinks
+    # A suspended (disabled) vlan will be created in both ends of the link unless the vlan
+    # is defined under network services.
+    # By default the uplink will not have a native_vlan configured, so EOS defaults to vlan 1.
+    uplink_native_vlan: < vlan_id >
 
     # Maximum number of uplink switches. | Optional
     # Changing this value may change IP Addressing on uplinks.
@@ -202,6 +264,8 @@ defaults <- node_group <- node_group.node <- node
     max_uplink_switches: < integer >
 
     # Number of parallel links towards uplink switches | Optional
+    # Changing this value may change interface naming on uplinks (and corresponding downlinks)
+    # Can be used to reserve interfaces for future parallel uplinks
     max_parallel_uplinks: < integer >
 
     # Enable PTP on uplink links | Optional
@@ -215,11 +279,21 @@ defaults <- node_group <- node_group.node <- node
     # Point-to-Point interface speed - will apply to uplinks on both ends | Optional.
     uplink_interface_speed: < interface_speed | forced interface_speed | auto interface_speed >
 
+    # Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces"
+    # When uplink_type == "p2p", custom structured config added under ethernet_interfaces.<interface> for eos_cli_config_gen
+    # Overrides the settings on the ethernet interface level.
+    # When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.<interface> for eos_cli_config_gen
+    # Overrides the settings on the port-channel interface level.
+    # "uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
+    uplink_structured_config: < dictionary >
+
   # When nodes are part of node group
   node_groups:
     < node-group-name >:
       nodes:
-        # Uplink switches interfaces (list), interface located on uplink switch. | Required.
+        # Uplink switches interfaces (list), interface located on uplink switch. | Optional
+        # If uplink_switch_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.
+        # Please note that default_interfaces are not defined by default - you should define these yourself.
         uplink_switch_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
         # short_esi only valid for l2leaf devices using port-channel uplink
         # Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.
@@ -230,6 +304,45 @@ defaults <- node_group <- node_group.node <- node
     <node inventory hostname>:
       # Uplink switches interfaces (list), interface located on uplink switch. | Required.
       uplink_switch_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
+```
+
+#### Default Interfaces
+
+- Set default uplink, downlink and mlag interfaces which will be used if these interfaces are not defined on a device (either directly or through inheritance).
+- These are defined based on the combination of node_type (e.g. l3leaf or spine) and a regex for matching the platform.
+- A list of interfaces or interface ranges can be specified.
+- Each list item supports range syntax that can be expanded into a list of interfaces. Interface range examples:
+  - Ethernet49-52/1: Expands to [ Ethernet49/1, Ethernet50/1, Ethernet51/1, Ethernet52/1 ]
+  - Ethernet1/31-34/1: Expands to [ Ethernet1/31/1, Ethernet1/32/1, Ethernet1/33/1, Ethernet1/34/1 ]
+  - Ethernet49-50,53-54: Expands to [ Ethernet49, Ethernet50, Ethernet53, Ethernet54 ]
+  - Ethernet1-2/1-4: Expands to [ Ethernet1/1, Ethernet1/2, Ethernet1/3, Ethernet1/4, Ethernet2/1, Ethernet2/2, Ethernet2/3, Ethernet2/4 ]
+- `uplink_interfaces` and `mlag_interfaces` under `default_interfaces` are directly inherited by `uplink_interfaces` and `mlag_interfaces`.
+- `downlink_interfaces` are referenced by the child switch (e.g. the leaf in a leaf/spine network). Essentially the child switch indexes into an upstream switch's `default_downlink_interfaces` using the child switch ID.  This is then used to build `uplink_switch_interfaces` for that child.
+  - In the case of `max_parallel_uplinks` > 1 the `default_downlink_interfaces` are mapped with consecutive downlinks per child ID.
+  - Example for `max_parallel_uplinks: 2`, downlink interfaces will be mapped as `[ <downlink1 to leaf-id1>, <downlink2 to leaf-id1>, <downlink1 to leaf-id2>, <downlink2 to leaf-id2> ...]`
+- Please note that no default interfaces are defined in AVD itself. You will need to create your own based on the example below.
+
+```yaml
+default_interfaces:
+
+    # List of node type keys | Required
+  - types: [ < node_type_key >, < node_type_key > ]
+
+    # List of platform families  | Required
+    # This is defined as a Python regular expression that matches the full platform type
+    platforms: [ < Arista platform family regex >, < Arista platform family regex > ]
+
+    # List of interfaces or interfaces ranges for each type of default interface | Required
+    uplink_interfaces: [ < interface_range | interface >, < interface_range | interface > ]
+    mlag_interfaces: [ < interface_range | interface >, < interface_range | interface > ]
+    downlink_interfaces: [ < interface_range | interface >, < interface_range | interface > ]
+
+    # Example
+  - types: [ spine, l3leaf ]
+    platforms: [ "7050[SC]X3", vEOS.*, default ]
+    uplink_interfaces: [ Ethernet49-54/1 ]
+    mlag_interfaces: [ Ethernet55-56/1 ]
+    downlink_interfaces: [ Ethernet1-32/1 ]
 ```
 
 #### ISIS underlay protocol management
@@ -278,7 +391,18 @@ defaults <- node_group <- node_group.node <- node
 < node_type_key >:
 
   defaults:
-    # node BGP AS | Required.
+    # Node BGP AS | Required.
+    # For eBGP topologies, bgp_as can be defined as a range of ASNs.  This range will be expanded and ASNs allocated
+    # according to the following rules:
+    #  - Standalone nodes and Non-MLAG (i.e. EVPN A/A multi-homing) node groups will be allocated unique ASNs from the range based on
+    #    the node's ID.
+    #  - Switches in MLAG pairs will be allocated a single ASN for both, based on the node ID of the first node in the node group.
+    # Examples:
+    # bgp_as: 65101-65110                 Contiguous range of ASNs.
+    # bgp_as: 65001,65010,65020,65030     Non-contiguous range of ASNs.
+    # bgp_as: 65000.101-125               Contiguous range of 4-byte ASNs, increment in the last 2 bytes.
+    # bgp_as: 64512                       Single AS, no range.
+    # Commas and hyphens can be combined in more or less any combination.
     bgp_as: < bgp_as >
 
     # List of EOS command to apply to BGP daemon | Optional
@@ -314,11 +438,17 @@ defaults <- node_group <- node_group.node <- node
       # Useful for "border" leaf.
       always_include_vrfs_in_tenants: [ < tenant_1 >, < tenant_2 >, "all" ]
 
+      # Only configure VLANs, SVIs, VRFs in use by connected endpoints or downstream L2 switches.
+      # Note! This feature only considers configuration managed by eos_designs.
+      # This excludes structured_config, custom_structured_configuration_, raw_eos_cli, eos_cli, custom templates, configlets etc.
+      only_vlans_in_use: < true | false | default -> false >
+
     # Activate or deactivate IGMP snooping | Optional, default is true
     igmp_snooping_enabled: < true | false >
 ```
 
 ### BGP & EVPN Multi-Domain Gateway
+
 ```yaml
 < node_type_key >:
 
@@ -345,6 +475,44 @@ defaults <- node_group <- node_group.node <- node
         inter_domain: < true | false | Default -> True >
 ```
 
+### BGP & IP-VPN Gateway
+
+```yaml
+< node_type_key >:
+
+  defaults:
+    # Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking | Optional.
+    # The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".
+    # L3 Reachability is required for this to work, the preferred method to establish underlay connectivity is to use core_interfaces.
+    ipvpn_gateway:
+        enabled: < true | false | default -> False >
+
+        # Domain IDs are required to perform D-Path lookups for loop prevention. If omitted, the defaults are used.
+        evpn_domain_id: < "nn:nn" | default -> "65535:1" >
+        ipvpn_domain_id: < "nn:nn" | default -> "65535:2" >
+
+        # D-path can be turned off for the inter-vpn export if desired.
+        enable_d_path: < true | false | default -> true >
+
+        # Maximum number of routes to allow from the MPLS domain.
+        maximum_routes: < integer | default -> 0 >
+
+        # Optional local-as to use when peering to the MPLS domain.
+        local_as: < bgp_asn >
+
+        # Address families in which to perform interworking.
+        address_families: < List of address families | default -> [ vpn-ipv4 ] >
+
+        # Define remote peers of the EVPN to IP-VPN Gateway. The hostname, ip_address and bgp_asn variables must be defined for each remote peer.
+        remote_peers:
+          - hostname: < Hostname of remote mpls-vpn peer >
+            ip_address: < Peering IP of remote mpls-vpn peer >
+            bgp_as: < bgp_asn of remote mpls-vpn peer >
+          - hostname: < Hostname of remote mpls-vpn peer >
+            ip_address: < Peering IP of remote mpls-vpn peer >
+            bgp_as: < bgp_asn of remote mpls-vpn peer >
+```
+
 ### MLAG configuration management
 
 ```yaml
@@ -357,7 +525,13 @@ defaults <- node_group <- node_group.node <- node
     # Enable / Disable MLAG dual primary detection
     mlag_dual_primary_detection: < true | false -> default false >
 
-    # MLAG interfaces (list) | Required when MLAG leafs present in topology.
+    # Set origin of routes received from MLAG iBGP peer to incomplete. The purpose is to optimize routing for leaf
+    # loopbacks from spine perspective and avoid suboptimal routing via peerlink for control plane traffic.
+    mlag_ibgp_origin_incomplete: < true | false | default -> true >
+
+    # MLAG interfaces (list) | Optional, even when MLAG leafs present in topology.
+    # If mlag_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.
+    # Please note that default_interfaces are not defined by default - you should define these yourself.
     mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 > ]
 
     # MLAG interfaces speed | Optional and depends on mlag_interfaces to be defined
@@ -373,18 +547,36 @@ defaults <- node_group <- node_group.node <- node
     mlag_peer_l3_vlan: < 0-4094 | false | default -> 4093 >
 
     # IP address pool used for MLAG underlay L3 peering | *Required when MLAG leafs present in topology.
-    # IP is derived from the node id.
+    # IP is derived from the node id. Assign a prefix that can accomodate n * /31 subnets, where n is the highest id assigned to an MLAG switch.
     mlag_peer_l3_ipv4_pool: < IPv4_network/Mask >
 
-    # MLAG Peer Link (control link) SVI interface id
+    # MLAG Peer Link (control link) SVI interface id.
     mlag_peer_vlan: < 0-4094 | default -> 4094 >
 
     # MLAG Peer Link allowed VLANs
-    mlag_peer_link_allowed_vlans: < vlans as string | default -> "2-4094" >
+    mlag_peer_link_allowed_vlans: < vlans as string >
 
     # IP address pool used for MLAG Peer Link (control link) | *Required when MLAG leafs present in topology.
-    # IP is derived from the node id.
+    # IP is derived from the node id. Assign a prefix that can accomodate n * /31 subnets, where n is the highest id assigned to an MLAG switch.
     mlag_peer_ipv4_pool: < IPv4_network/Mask >
+
+    # Custom structured config applied to MLAG peer link port-channel id.
+    # Added under port_channel_interfaces.<interface> for eos_cli_config_gen.
+    # Overrides the settings on the port-channel interface level.
+    # "mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
+    mlag_port_channel_structured_config: < dictionary >
+
+    # Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
+    # Added under vlan_interfaces.<interface> for eos_cli_config_gen.
+    # Overrides the settings on the vlan interface level.
+    # "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
+    mlag_peer_vlan_structured_config: < dictionary >
+
+    # Custom structured config applied to MLAG underlay L3 peering SVI interface id.
+    # Added under vlan_interfaces.<interface> for eos_cli_config_gen.
+    # Overrides the settings on the vlan interface level.
+    # "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
+    mlag_peer_l3_vlan_structured_config: < dictionary >
 
     # Spanning tree mode | Required.
     spanning_tree_mode: < mstp | rstp | rapid-pvst | none >
@@ -395,7 +587,7 @@ defaults <- node_group <- node_group.node <- node
     # Spanning tree priority.
     spanning_tree_root_super: < true | false  >
 
-    # Virtual router mac address for anycast gateway | Required.
+    # Virtual router mac address for anycast gateway | Required when using VARP or Anycast IP on SVIs.
     virtual_router_mac_address: < mac address >
 ```
 

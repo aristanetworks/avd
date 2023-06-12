@@ -1,0 +1,6 @@
+---
+# This device is a EVPN client by default, so we will not see any changes from "underlay_filter_peer_as"
+type: l3leaf
+
+# Test removing redistribute connected route-map and prefix-list (default true)
+underlay_filter_redistribute_connected: false

@@ -15,7 +15,7 @@ mlag configuration
    peer-address {{ mlag_configuration.peer_address }}
 {%     endif %}
 {%     if mlag_configuration.peer_address_heartbeat.peer_ip is arista.avd.defined %}
-{%         if mlag_configuration.peer_address_heartbeat.vrf is arista.avd.defined and mlag_configuration.peer_address_heartbeat.vrf is ne 'default' %}
+{%         if mlag_configuration.peer_address_heartbeat.vrf is arista.avd.defined and mlag_configuration.peer_address_heartbeat.vrf != 'default' %}
    peer-address heartbeat {{ mlag_configuration.peer_address_heartbeat.peer_ip }} vrf {{ mlag_configuration.peer_address_heartbeat.vrf }}
 {# using the default VRF #}
 {%         else %}

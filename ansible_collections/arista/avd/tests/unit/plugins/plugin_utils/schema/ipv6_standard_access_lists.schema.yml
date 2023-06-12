@@ -1,0 +1,37 @@
+type: dict
+allow_other_keys: true
+keys:
+  ipv6_standard_access_lists:
+    type: list
+    primary_key: name
+    convert_types:
+      - dict
+    display_name: IPv6 Standard Access-Lists
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          display_name: ipv6_access_list_name
+        counters_per_entry:
+          type: bool
+        sequence_numbers:
+          required: true
+          type: list
+          primary_key: sequence
+          convert_types:
+            - dict
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                convert_types:
+                  - str
+                required: true
+                display_name: sequence_id
+              action:
+                type: str
+                required: true
+                display_name: action as string

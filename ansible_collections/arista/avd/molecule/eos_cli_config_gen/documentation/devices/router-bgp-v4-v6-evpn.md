@@ -1,41 +1,31 @@
 # router-bgp-v4-v6-evpn
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Authentication](#authentication)
-- [Monitoring](#monitoring)
-- [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
-  - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
-- [Interfaces](#interfaces)
 - [Routing](#routing)
-  - [IP Routing](#ip-routing)
-  - [IPv6 Routing](#ipv6-routing)
   - [Router BGP](#router-bgp)
-- [Multicast](#multicast)
-- [Filters](#filters)
-- [ACL](#acl)
-- [Quality Of Service](#quality-of-service)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | -  | - |
+| Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -45,47 +35,11 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Authentication
+## Routing
 
-# Monitoring
+### Router BGP
 
-# Internal VLAN Allocation Policy
-
-## Internal VLAN Allocation Policy Summary
-
-**Default Allocation Policy**
-
-| Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
-| ascending | 1006 | 4094 |
-
-# Interfaces
-
-# Routing
-
-## IP Routing
-
-### IP Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | false |
-
-### IP Routing Device Configuration
-
-```eos
-```
-## IPv6 Routing
-
-### IPv6 Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | false |
-
-## Router BGP
-
-### Router BGP Summary
+#### Router BGP Summary
 
 | BGP AS | Router ID |
 | ------ | --------- |
@@ -98,9 +52,9 @@ interface Management1
 | distance bgp 20 200 200 |
 | maximum-paths 4 ecmp 4 |
 
-### Router BGP Peer Groups
+#### Router BGP Peer Groups
 
-#### EVPN-OVERLAY
+##### EVPN-OVERLAY
 
 | Settings | Value |
 | -------- | ----- |
@@ -112,7 +66,7 @@ interface Management1
 | Send community | all |
 | Maximum routes | 0 (no limit) |
 
-#### IPV4-UNDERLAY
+##### IPV4-UNDERLAY
 
 | Settings | Value |
 | -------- | ----- |
@@ -120,7 +74,7 @@ interface Management1
 | Send community | all |
 | Maximum routes | 12000 |
 
-#### IPV4-UNDERLAY-MLAG
+##### IPV4-UNDERLAY-MLAG
 
 | Settings | Value |
 | -------- | ----- |
@@ -129,7 +83,7 @@ interface Management1
 | Send community | all |
 | Maximum routes | 12000 |
 
-#### IPV6-UNDERLAY
+##### IPV6-UNDERLAY
 
 | Settings | Value |
 | -------- | ----- |
@@ -137,7 +91,7 @@ interface Management1
 | Send community | all |
 | Maximum routes | 12000 |
 
-#### IPV6-UNDERLAY-MLAG
+##### IPV6-UNDERLAY-MLAG
 
 | Settings | Value |
 | -------- | ----- |
@@ -146,32 +100,32 @@ interface Management1
 | Send community | all |
 | Maximum routes | 12000 |
 
-### BGP Neighbors
+#### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
-| 1.1.1.1 | 1 | default | False | - | - | - | - | - |
-| 1b11:3a00:22b0:0088::1 | Inherited from peer group IPV6-UNDERLAY | default | - | Inherited from peer group IPV6-UNDERLAY | Inherited from peer group IPV6-UNDERLAY | - | - | - |
-| 1b11:3a00:22b0:0088::3 | Inherited from peer group IPV6-UNDERLAY | default | - | Inherited from peer group IPV6-UNDERLAY | Inherited from peer group IPV6-UNDERLAY | - | - | - |
-| 1b11:3a00:22b0:0088::5 | Inherited from peer group IPV6-UNDERLAY | default | - | Inherited from peer group IPV6-UNDERLAY | Inherited from peer group IPV6-UNDERLAY | - | - | - |
-| 10.50.2.1 | Inherited from peer group IPV4-UNDERLAY | default | - | Inherited from peer group IPV4-UNDERLAY | Inherited from peer group IPV4-UNDERLAY | - | - | - |
-| 10.50.2.3 | Inherited from peer group IPV4-UNDERLAY | default | - | Inherited from peer group IPV4-UNDERLAY | Inherited from peer group IPV4-UNDERLAY | - | - | - |
-| 10.50.2.5 | Inherited from peer group IPV4-UNDERLAY | default | - | Inherited from peer group IPV4-UNDERLAY | Inherited from peer group IPV4-UNDERLAY | - | - | - |
-| 10.50.64.11 | Inherited from peer group EVPN-OVERLAY | default | - | Inherited from peer group EVPN-OVERLAY | Inherited from peer group EVPN-OVERLAY | - | Inherited from peer group EVPN-OVERLAY | - |
-| 10.50.64.12 | Inherited from peer group EVPN-OVERLAY | default | - | Inherited from peer group EVPN-OVERLAY | Inherited from peer group EVPN-OVERLAY | - | Inherited from peer group EVPN-OVERLAY | - |
-| 10.50.64.13 | Inherited from peer group EVPN-OVERLAY | default | - | Inherited from peer group EVPN-OVERLAY | Inherited from peer group EVPN-OVERLAY | - | Inherited from peer group EVPN-OVERLAY | - |
-| 169.254.252.1 | Inherited from peer group IPV4-UNDERLAY-MLAG | default | - | Inherited from peer group IPV4-UNDERLAY-MLAG | Inherited from peer group IPV4-UNDERLAY-MLAG | - | - | - |
-| fe80::b%Vl4094 | Inherited from peer group IPV6-UNDERLAY-MLAG | default | - | Inherited from peer group IPV6-UNDERLAY-MLAG | Inherited from peer group IPV6-UNDERLAY-MLAG | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
+| 1.1.1.1 | 1 | default | False | - | - | - | - | - | - | - |
+| 1b11:3a00:22b0:0088::1 | Inherited from peer group IPV6-UNDERLAY | default | - | Inherited from peer group IPV6-UNDERLAY | Inherited from peer group IPV6-UNDERLAY | - | - | - | - | - |
+| 1b11:3a00:22b0:0088::3 | Inherited from peer group IPV6-UNDERLAY | default | - | Inherited from peer group IPV6-UNDERLAY | Inherited from peer group IPV6-UNDERLAY | - | - | - | - | - |
+| 1b11:3a00:22b0:0088::5 | Inherited from peer group IPV6-UNDERLAY | default | - | Inherited from peer group IPV6-UNDERLAY | Inherited from peer group IPV6-UNDERLAY | - | - | - | - | - |
+| 10.50.2.1 | Inherited from peer group IPV4-UNDERLAY | default | - | Inherited from peer group IPV4-UNDERLAY | Inherited from peer group IPV4-UNDERLAY | - | - | - | - | - |
+| 10.50.2.3 | Inherited from peer group IPV4-UNDERLAY | default | - | Inherited from peer group IPV4-UNDERLAY | Inherited from peer group IPV4-UNDERLAY | - | - | - | - | - |
+| 10.50.2.5 | Inherited from peer group IPV4-UNDERLAY | default | - | Inherited from peer group IPV4-UNDERLAY | Inherited from peer group IPV4-UNDERLAY | - | - | - | - | - |
+| 10.50.64.11 | Inherited from peer group EVPN-OVERLAY | default | - | Inherited from peer group EVPN-OVERLAY | Inherited from peer group EVPN-OVERLAY | - | Inherited from peer group EVPN-OVERLAY | - | - | - |
+| 10.50.64.12 | Inherited from peer group EVPN-OVERLAY | default | - | Inherited from peer group EVPN-OVERLAY | Inherited from peer group EVPN-OVERLAY | - | Inherited from peer group EVPN-OVERLAY | - | - | - |
+| 10.50.64.13 | Inherited from peer group EVPN-OVERLAY | default | - | Inherited from peer group EVPN-OVERLAY | Inherited from peer group EVPN-OVERLAY | - | Inherited from peer group EVPN-OVERLAY | - | - | - |
+| 169.254.252.1 | Inherited from peer group IPV4-UNDERLAY-MLAG | default | - | Inherited from peer group IPV4-UNDERLAY-MLAG | Inherited from peer group IPV4-UNDERLAY-MLAG | - | - | - | - | - |
+| fe80::b%Vl4094 | Inherited from peer group IPV6-UNDERLAY-MLAG | default | - | Inherited from peer group IPV6-UNDERLAY-MLAG | Inherited from peer group IPV6-UNDERLAY-MLAG | - | - | - | - | - |
 
-### Router BGP EVPN Address Family
+#### Router BGP EVPN Address Family
 
-#### EVPN Peer Groups
+##### EVPN Peer Groups
 
-| Peer Group | Activate |
-| ---------- | -------- |
-| EVPN-OVERLAY | True |
+| Peer Group | Activate | Encapsulation |
+| ---------- | -------- | ------------- |
+| EVPN-OVERLAY | True | default |
 
-### Router BGP VLANs
+#### Router BGP VLANs
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
@@ -180,14 +134,14 @@ interface Management1
 | 42 | 10.50.64.15:10042 | 1:10042 | - | - | learned |
 | 65 | 10.50.64.15:10065 | 1:10065 | - | - | learned |
 
-### Router BGP VRFs
+#### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
 | Tenant_A | 10.50.64.15:30001 | connected |
 | Tenant_B | 10.50.64.15:30002 | - |
 
-### Router BGP Device Configuration
+#### Router BGP Device Configuration
 
 ```eos
 !
@@ -203,29 +157,29 @@ router bgp 65100
    neighbor EVPN-OVERLAY update-source Loopback0
    neighbor EVPN-OVERLAY bfd
    neighbor EVPN-OVERLAY ebgp-multihop 5
-   neighbor EVPN-OVERLAY password 7 $1c$G8BQN0ezkiJOX2cuAYpsEA==
+   neighbor EVPN-OVERLAY password 7 <removed>
    neighbor EVPN-OVERLAY send-community
    neighbor EVPN-OVERLAY maximum-routes 0
    neighbor IPV4-UNDERLAY peer group
    neighbor IPV4-UNDERLAY remote-as 65000
-   neighbor IPV4-UNDERLAY password 7 $1c$G8BQN0ezkiJOX2cuAYpsEA==
+   neighbor IPV4-UNDERLAY password 7 <removed>
    neighbor IPV4-UNDERLAY send-community
    neighbor IPV4-UNDERLAY maximum-routes 12000
    neighbor IPV4-UNDERLAY-MLAG peer group
    neighbor IPV4-UNDERLAY-MLAG remote-as 65100
    neighbor IPV4-UNDERLAY-MLAG next-hop-self
-   neighbor IPV4-UNDERLAY-MLAG password 7 $1c$G8BQN0ezkiJOX2cuAYpsEA==
+   neighbor IPV4-UNDERLAY-MLAG password 7 <removed>
    neighbor IPV4-UNDERLAY-MLAG send-community
    neighbor IPV4-UNDERLAY-MLAG maximum-routes 12000
    neighbor IPV6-UNDERLAY peer group
    neighbor IPV6-UNDERLAY remote-as 65000
-   neighbor IPV6-UNDERLAY password 7 $1c$G8BQN0ezkiJOX2cuAYpsEA==
+   neighbor IPV6-UNDERLAY password 7 <removed>
    neighbor IPV6-UNDERLAY send-community
    neighbor IPV6-UNDERLAY maximum-routes 12000
    neighbor IPV6-UNDERLAY-MLAG peer group
    neighbor IPV6-UNDERLAY-MLAG remote-as 65100
    neighbor IPV6-UNDERLAY-MLAG next-hop-self
-   neighbor IPV6-UNDERLAY-MLAG password 7 $1c$G8BQN0ezkiJOX2cuAYpsEA==
+   neighbor IPV6-UNDERLAY-MLAG password 7 <removed>
    neighbor IPV6-UNDERLAY-MLAG send-community
    neighbor IPV6-UNDERLAY-MLAG maximum-routes 12000
    neighbor 1.1.1.1 remote-as 1
@@ -297,11 +251,3 @@ router bgp 65100
       route-target import evpn 1:30002
       route-target export evpn 1:30002
 ```
-
-# Multicast
-
-# Filters
-
-# ACL
-
-# Quality Of Service

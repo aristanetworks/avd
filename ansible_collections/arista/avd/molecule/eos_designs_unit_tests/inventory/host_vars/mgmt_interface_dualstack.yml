@@ -1,0 +1,20 @@
+# Minimum config to only test the specific feature.
+mgmt_interface_vrf: MGMT
+type: l2leaf
+ipv6_mgmt_gateway: 0200::1
+mgmt_gateway: 192.168.200.5
+l2leaf:
+  defaults:
+  nodes:
+    - name: mgmt_interface_dualstack
+      ipv6_mgmt_ip: 0200::105/64
+      mgmt_ip: 192.168.200.105
+      id: 105
+
+ipv6_mgmt_destination_networks:
+  - 0200:1::/64
+  - 0200:2::/64
+
+mgmt_destination_networks:
+  - 10.0.10.0/24
+  - 172.16.254.0/23

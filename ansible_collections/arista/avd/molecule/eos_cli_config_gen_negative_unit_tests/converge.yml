@@ -1,0 +1,17 @@
+---
+- name: Converge Negative tests
+  hosts: EOS_CLI_CONFIG_GEN_NEGATIVE_TESTS
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Run failure scenario Test
+      block:
+        - name: Trigger Error
+          ansible.builtin.import_role:
+            name: arista.avd.eos_cli_config_gen
+      rescue:
+        - name: Assert eos_cli_config_gen failed with the expected error message
+          ansible.builtin.assert:
+            that:
+              - ansible_failed_result is defined
+              - ansible_failed_result.msg == expected_error_message

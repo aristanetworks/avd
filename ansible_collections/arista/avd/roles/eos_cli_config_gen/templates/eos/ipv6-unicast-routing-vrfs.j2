@@ -1,0 +1,9 @@
+{# eos - ipv6 unicast routing vrfs #}
+{% for vrf in vrfs | arista.avd.natural_sort('name') %}
+{%     if vrf.ipv6_routing is arista.avd.defined(true) and vrf.name != 'default' %}
+{%         if loop.first %}
+!
+{%         endif %}
+ipv6 unicast-routing vrf {{ vrf.name }}
+{%     endif %}
+{% endfor %}

@@ -1,43 +1,35 @@
 # vlan-interfaces
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Authentication](#authentication)
-- [Monitoring](#monitoring)
-- [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
-  - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [Interfaces](#interfaces)
   - [VLAN Interfaces](#vlan-interfaces)
-- [Routing](#routing)
-  - [IP Routing](#ip-routing)
-  - [IPv6 Routing](#ipv6-routing)
 - [BFD](#bfd)
   - [BFD Interfaces](#bfd-interfaces)
 - [Multicast](#multicast)
-- [Filters](#filters)
-- [ACL](#acl)
-- [Quality Of Service](#quality-of-service)
+  - [PIM Sparse Mode](#pim-sparse-mode)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | -  | - |
+| Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -47,60 +39,50 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Authentication
+## Interfaces
 
-# Monitoring
+### VLAN Interfaces
 
-# Internal VLAN Allocation Policy
-
-## Internal VLAN Allocation Policy Summary
-
-**Default Allocation Policy**
-
-| Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
-| ascending | 1006 | 4094 |
-
-# Interfaces
-
-## VLAN Interfaces
-
-### VLAN Interfaces Summary
+#### VLAN Interfaces Summary
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan24 | SVI Description | default | - | false |
-| Vlan25 | SVI Description | default | - | false |
-| Vlan41 | SVI Description | default | - | false |
-| Vlan42 | SVI Description | default | - | false |
-| Vlan75 | SVI Description | default | - | false |
+| Vlan24 | SVI Description | default | - | False |
+| Vlan25 | SVI Description | default | - | False |
+| Vlan41 | SVI Description | default | - | False |
+| Vlan42 | SVI Description | default | - | False |
+| Vlan43 | SVI Description | default | - | False |
+| Vlan44 | SVI Description | default | - | False |
+| Vlan50 | IP NAT Testing | default | - | - |
+| Vlan75 | SVI Description | default | - | False |
 | Vlan81 | IPv6 Virtual Address | Tenant_C | - | - |
-| Vlan83 | SVI Description | default | - | false |
+| Vlan83 | SVI Description | default | - | False |
 | Vlan84 | SVI Description | default | - | - |
 | Vlan85 | SVI Description | default | - | - |
 | Vlan86 | SVI Description | default | - | - |
-| Vlan87 | SVI Description | default | - | true |
-| Vlan88 | SVI Description | default | - | true |
-| Vlan89 | SVI Description | default | - | false |
+| Vlan87 | SVI Description | default | - | True |
+| Vlan88 | SVI Description | default | - | True |
+| Vlan89 | SVI Description | default | - | False |
 | Vlan90 | SVI Description | default | - | - |
-| Vlan91 | PBR Description | default | - | true |
-| Vlan110 | PVLAN Primary with vlan mapping | Tenant_A | - | false |
-| Vlan333 | Multiple VRIDs and tracking | default | - | false |
-| Vlan501 | SVI Description | default | - | false |
-| Vlan667 | Multiple VRIDs | default | - | false |
-| Vlan1001 | SVI Description | Tenant_A | - | false |
-| Vlan1002 | SVI Description | Tenant_A | - | false |
+| Vlan91 | PBR Description | default | - | True |
+| Vlan92 | SVI Description | default | - | - |
+| Vlan110 | PVLAN Primary with vlan mapping | Tenant_A | - | False |
+| Vlan333 | Multiple VRIDs and tracking | default | - | False |
+| Vlan501 | SVI Description | default | - | False |
+| Vlan667 | Multiple VRIDs | default | - | False |
+| Vlan1001 | SVI Description | Tenant_A | - | False |
+| Vlan1002 | SVI Description | Tenant_A | - | False |
 | Vlan2001 | SVI Description | Tenant_B | - | - |
 | Vlan2002 | SVI Description | Tenant_B | - | - |
 | Vlan4094 | SVI Description | default | 9214 | - |
 
-#### Private VLAN
+##### Private VLAN
 
 | Interface | PVLAN Mapping |
 | --------- | ------------- |
 | Vlan110 | 111-112 |
 
-#### IPv4
+##### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
@@ -108,6 +90,9 @@ interface Management1
 | Vlan25 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan41 |  default  |  -  |  10.10.41.1/24  |  -  |  -  |  -  |  -  |
 | Vlan42 |  default  |  -  |  10.10.42.1/24  |  -  |  -  |  -  |  -  |
+| Vlan43 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan44 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan50 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan75 |  default  |  -  |  10.10.75.1/24  |  -  |  -  |  -  |  -  |
 | Vlan81 |  Tenant_C  |  -  |  10.10.81.1/24  |  -  |  -  |  -  |  -  |
 | Vlan83 |  default  |  -  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |
@@ -119,6 +104,7 @@ interface Management1
 | Vlan89 |  default  |  -  |  10.10.144.3/20  |  -  |  -  |  -  |  -  |
 | Vlan90 |  default  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |  -  |
 | Vlan91 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan92 |  default  |  10.10.92.1/24  |  -  |  -  |  -  |  -  |  -  |
 | Vlan110 |  Tenant_A  |  10.0.101.1/24  |  -  |  -  |  -  |  -  |  -  |
 | Vlan333 |  default  |  192.0.2.2/25  |  -  |  -  |  -  |  -  |  -  |
 | Vlan501 |  default  |  10.50.26.29/27  |  -  |  -  |  -  |  -  |  -  |
@@ -129,22 +115,48 @@ interface Management1
 | Vlan2002 |  Tenant_B  |  -  |  10.2.2.1/24  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  169.254.252.0/31  |  -  |  -  |  -  |  -  |  -  |
 
-#### IPv6
+##### IP NAT: Source Static
 
-| Interface | VRF | IPv6 Address | IPv6 Virtual Address | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| Interface | Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
+| --------- | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
+| Vlan50 | - | 3.0.0.1 | - | - | 4.0.0.1 | - | - | - | 0 | - |
+
+##### IP NAT: Source Dynamic
+
+| Interface | Access List | NAT Type | Pool Name | Priority | Comment |
+| --------- | ----------- | -------- | --------- | -------- | ------- |
+| Vlan50 | ACL2 | pool | POOL2 | 0 | - |
+
+##### IP NAT: Destination Static
+
+| Interface | Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
+| --------- | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
+| Vlan50 | - | 1.0.0.1 | - | - | 2.0.0.1 | - | - | - | 0 | - |
+
+##### IP NAT: Destination Dynamic
+
+| Interface | Access List | Pool Name | Priority | Comment |
+| --------- | ----------- | --------- | -------- | ------- |
+| Vlan50 | ACL1 | POOL1 | 0 | - |
+
+##### IPv6
+
+| Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | --- | ------------ | -------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------- | ------------ |
-| Vlan24 | default | 1b11:3a00:22b0:6::15/64 | - | 1b11:3a00:22b0:6::1 | - | - | true | - | - |
-| Vlan25 | default | 1b11:3a00:22b0:16::16/64 | - | 1b11:3a00:22b0:16::15, 1b11:3a00:22b0:17::15/64 | - | - | - | - | - |
-| Vlan75 | default | 1b11:3a00:22b0:1000::15/64 | - | 1b11:3a00:22b0:1000::1 | - | - | true | - | - |
-| Vlan81 | Tenant_C | - | fc00:10:10:81::1/64 | - | - | - | - | - | - |
-| Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | - | true | - | - |
+| Vlan24 | default | 1b11:3a00:22b0:6::15/64 | - | 1b11:3a00:22b0:6::1 | - | - | True | - | - |
+| Vlan25 | default | 1b11:3a00:22b0:16::16/64 | - | 1b11:3a00:22b0:16::15, 1b11:3a00:22b0:16::14 | - | - | - | - | - |
+| Vlan43 | default | a0::1/64 | - | - | - | - | - | - | - |
+| Vlan44 | default | a0::4/64 | - | - | - | - | - | - | - |
+| Vlan75 | default | 1b11:3a00:22b0:1000::15/64 | - | 1b11:3a00:22b0:1000::1 | - | - | True | - | - |
+| Vlan81 | Tenant_C | - | fc00:10:10:81::1/64, fc00:10:11:81::1/64, fc00:10:12:81::1/64 | - | - | - | - | - | - |
+| Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | - | True | - | - |
 | Vlan333 | default | 2001:db8::2/64 | - | - | - | - | - | - | - |
-| Vlan501 | default | 1b11:3a00:22b0:0088::207/127 | - | - | - | true | - | - | - |
+| Vlan501 | default | 1b11:3a00:22b0:0088::207/127 | - | - | - | True | - | - | - |
 | Vlan667 | default | 2001:db8::2/64 | - | - | - | - | - | - | - |
-| Vlan1001 | Tenant_A | a1::1/64 | - | - | - | - | true | - | - |
-| Vlan1002 | Tenant_A | a2::1/64 | - | - | - | true | true | - | - |
+| Vlan1001 | Tenant_A | a1::1/64 | - | - | - | - | True | - | - |
+| Vlan1002 | Tenant_A | a2::1/64 | - | - | - | True | True | - | - |
 
-#### VRRP Details
+##### VRRP Details
 
 | Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IP | IPv4 VRRP Version | IPv6 Virtual IP |
 | --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | --------------- | ----------------- | --------------- |
@@ -154,7 +166,24 @@ interface Management1
 | Vlan667 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1 | 2 | - |
 | Vlan667 | 2 | - | - | Enabled | - | - | - | 2 | 2001:db8::1 |
 
-### VLAN Interfaces Device Configuration
+##### ISIS
+
+| Interface | ISIS Instance | ISIS Metric | Mode |
+| --------- | ------------- | ----------- | ---- |
+| Vlan2002 | EVPN_UNDERLAY | - | - |
+
+##### Multicast Routing
+
+| Interface | IP Version | Static Routes Allowed | Multicast Boundaries | Export Host Routes For Multicast Sources |
+| --------- | ---------- | --------------------- | -------------------- | ---------------------------------------- |
+| Vlan75 | IPv4 | True | 224.0.1.0/24, 224.0.2.0/24 | - |
+| Vlan75 | IPv6 | - | ff00::/16, ff01::/16 | - |
+| Vlan89 | IPv4 | - | ACL_MULTICAST | True |
+| Vlan89 | IPv6 | True | ACL_V6_MULTICAST_WITH_OUT | - |
+| Vlan110 | IPv4 | True | ACL_MULTICAST | - |
+| Vlan110 | IPv6 | - | - | True |
+
+#### VLAN Interfaces Device Configuration
 
 ```eos
 !
@@ -172,7 +201,7 @@ interface Vlan25
    no shutdown
    ipv6 address 1b11:3a00:22b0:16::16/64
    ipv6 virtual-router address 1b11:3a00:22b0:16::15
-   ipv6 virtual-router address 1b11:3a00:22b0:17::15/64
+   ipv6 virtual-router address 1b11:3a00:22b0:16::14
 !
 interface Vlan41
    description SVI Description
@@ -190,12 +219,37 @@ interface Vlan42
    ip helper-address 10.10.96.151 source-interface Loopback0
    ip address virtual 10.10.42.1/24
 !
+interface Vlan43
+   description SVI Description
+   no shutdown
+   ipv6 dhcp relay destination a0::2 vrf TEST local-interface Loopback44 link-address a0::4
+   ipv6 address a0::1/64
+!
+interface Vlan44
+   description SVI Description
+   no shutdown
+   ipv6 dhcp relay destination a0::5 vrf TEST source-address a0::6 link-address a0::7
+   ipv6 dhcp relay destination a0::8
+   ipv6 address a0::4/64
+!
+interface Vlan50
+   description IP NAT Testing
+   ip nat source static 3.0.0.1 4.0.0.1
+   ip nat source dynamic access-list ACL2 pool POOL2
+   ip nat destination static 1.0.0.1 2.0.0.1
+   ip nat destination dynamic access-list ACL1 pool POOL1
+!
 interface Vlan75
    description SVI Description
    no shutdown
    ipv6 address 1b11:3a00:22b0:1000::15/64
    ipv6 nd managed-config-flag
    ipv6 nd prefix 1b11:3a00:22b0:1000::/64 infinite infinite no-autoconfig
+   multicast ipv4 boundary 224.0.1.0/24 out
+   multicast ipv4 boundary 224.0.2.0/24
+   multicast ipv6 boundary ff00::/16 out
+   multicast ipv6 boundary ff01::/16 out
+   multicast ipv4 static
    ipv6 virtual-router address 1b11:3a00:22b0:1000::1
    ip address virtual 10.10.75.1/24
 !
@@ -204,6 +258,8 @@ interface Vlan81
    vrf Tenant_C
    ipv6 enable
    ipv6 address virtual fc00:10:10:81::1/64
+   ipv6 address virtual fc00:10:11:81::1/64
+   ipv6 address virtual fc00:10:12:81::1/64
    ip address virtual 10.10.81.1/24
 !
 interface Vlan83
@@ -253,10 +309,14 @@ interface Vlan89
    ip helper-address 10.10.96.150 source-interface Loopback0
    ip helper-address 10.10.96.151 source-interface Loopback0
    ip igmp
+   ip igmp version 2
    ipv6 address 1b11:3a00:22b0:5200::15/64
    ipv6 nd managed-config-flag
    ipv6 nd prefix 1b11:3a00:22b0:5200::/64 infinite infinite no-autoconfig
+   multicast ipv4 boundary ACL_MULTICAST
+   multicast ipv6 boundary ACL_V6_MULTICAST_WITH_OUT out
    multicast ipv4 source route export
+   multicast ipv6 static
    pim ipv4 sparse-mode
    pim ipv4 local-interface Loopback0
    ipv6 virtual-router address 1b11:3a00:22b0:5200::3
@@ -272,11 +332,20 @@ interface Vlan91
    shutdown
    service-policy type pbr input MyServicePolicy
 !
+interface Vlan92
+   description SVI Description
+   ip proxy-arp
+   ip directed-broadcast
+   ip address 10.10.92.1/24
+!
 interface Vlan110
    description PVLAN Primary with vlan mapping
    no shutdown
    vrf Tenant_A
    ip address 10.0.101.1/24
+   multicast ipv4 boundary ACL_MULTICAST out
+   multicast ipv6 source route export 20
+   multicast ipv4 static
    pvlan mapping 111-112
 !
 interface Vlan333
@@ -353,6 +422,7 @@ interface Vlan2002
    description SVI Description
    no autostate
    vrf Tenant_B
+   isis enable EVPN_UNDERLAY
    ip address virtual 10.2.2.1/24
 !
 interface Vlan4094
@@ -364,40 +434,21 @@ interface Vlan4094
    pim ipv4 dr-priority 200
 ```
 
-# Routing
+## BFD
 
-## IP Routing
-
-### IP Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | false |
-
-### IP Routing Device Configuration
-
-```eos
-```
-## IPv6 Routing
-
-### IPv6 Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | false |
-
-# BFD
-
-## BFD Interfaces
+### BFD Interfaces
 
 | Interface | Interval | Minimum RX | Multiplier | Echo |
 | --------- | -------- | ---------- | ---------- | ---- |
 | Vlan85 | 500 | 500 | 5 | True |
 
-# Multicast
+## Multicast
 
-# Filters
+### PIM Sparse Mode
 
-# ACL
+#### PIM Sparse Mode enabled interfaces
 
-# Quality Of Service
+| Interface Name | VRF Name | IP Version | DR Priority | Local Interface |
+| -------------- | -------- | ---------- | ----------- | --------------- |
+| Vlan89 | - | IPv4 | - | Loopback0 |
+| Vlan4094 | - | IPv4 | 200 | - |

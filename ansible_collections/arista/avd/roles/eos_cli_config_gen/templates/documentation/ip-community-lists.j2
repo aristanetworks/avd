@@ -1,8 +1,9 @@
+{# doc - ip community lists #}
 {% if ip_community_lists is arista.avd.defined %}
 
-## IP Community-lists
+### IP Community-lists
 
-### IP Community-lists Summary
+#### IP Community-lists Summary
 
 | Name | Action | Communities / Regexp |
 | ---- | ------ | -------------------- |
@@ -22,7 +23,7 @@
 {%         endif %}
 {%     endfor %}
 
-### IP Community-lists Device Configuration
+#### IP Community-lists Device Configuration
 
 ```eos
 {%     include 'eos/ip-community-lists.j2' %}

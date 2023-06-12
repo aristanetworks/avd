@@ -1,42 +1,32 @@
 # management-api-http
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [Management API HTTP](#management-api-http)
-- [Authentication](#authentication)
-- [Monitoring](#monitoring)
-- [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
-  - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
-- [Interfaces](#interfaces)
-- [Routing](#routing)
-  - [IP Routing](#ip-routing)
-  - [IPv6 Routing](#ipv6-routing)
-- [Multicast](#multicast)
-- [Filters](#filters)
 - [ACL](#acl)
   - [Standard Access-lists](#standard-access-lists)
-- [Quality Of Service](#quality-of-service)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | -  | - |
+| Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -46,9 +36,9 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-## Management API HTTP
+### Management API HTTP
 
-### Management API HTTP Summary
+#### Management API HTTP Summary
 
 | HTTP | HTTPS | Default Services |
 | ---- | ----- | ---------------- |
@@ -56,14 +46,14 @@ interface Management1
 
 Management HTTPS is using the SSL profile SSL_PROFILE
 
-### Management API VRF Access
+#### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
 | default | ACL-API | - |
 | MGMT | ACL-API | - |
 
-### Management API HTTP Configuration
+#### Management API HTTP Configuration
 
 ```eos
 !
@@ -83,62 +73,20 @@ management api http-commands
       ip access-group ACL-API
 ```
 
-# Authentication
+## ACL
 
-# Monitoring
+### Standard Access-lists
 
-# Internal VLAN Allocation Policy
+#### Standard Access-lists Summary
 
-## Internal VLAN Allocation Policy Summary
-
-**Default Allocation Policy**
-
-| Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
-| ascending | 1006 | 4094 |
-
-# Interfaces
-
-# Routing
-
-## IP Routing
-
-### IP Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | false |
-
-### IP Routing Device Configuration
-
-```eos
-```
-## IPv6 Routing
-
-### IPv6 Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | false |
-
-# Multicast
-
-# Filters
-
-# ACL
-
-## Standard Access-lists
-
-### Standard Access-lists Summary
-
-#### ACL-API
+##### ACL-API
 
 | Sequence | Action |
 | -------- | ------ |
 | 10 | permit 10.0.0.0/8 |
 | 20 | permit 100.0.0.0/8 |
 
-### Standard Access-lists Device Configuration
+#### Standard Access-lists Device Configuration
 
 ```eos
 !
@@ -146,5 +94,3 @@ ip access-list standard ACL-API
    10 permit 10.0.0.0/8
    20 permit 100.0.0.0/8
 ```
-
-# Quality Of Service

@@ -1,11 +1,10 @@
 # SITE2-LSR1
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [Management API HTTP](#management-api-http)
-- [Authentication](#authentication)
-- [Monitoring](#monitoring)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
@@ -24,34 +23,30 @@
 - [MPLS](#mpls)
   - [MPLS and LDP](#mpls-and-ldp)
   - [MPLS Interfaces](#mpls-interfaces)
-- [Multicast](#multicast)
-- [Filters](#filters)
-- [ACL](#acl)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
-- [Quality Of Service](#quality-of-service)
 - [EOS CLI](#eos-cli)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 192.168.200.103/24 | 192.168.200.5 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | -  | - |
+| Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -62,21 +57,21 @@ interface Management1
    ip address 192.168.200.103/24
 ```
 
-## Management API HTTP
+### Management API HTTP
 
-### Management API HTTP Summary
+#### Management API HTTP Summary
 
 | HTTP | HTTPS | Default Services |
 | ---- | ----- | ---------------- |
 | False | True | - |
 
-### Management API VRF Access
+#### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
 | MGMT | - | - |
 
-### Management API HTTP Configuration
+#### Management API HTTP Configuration
 
 ```eos
 !
@@ -88,68 +83,64 @@ management api http-commands
       no shutdown
 ```
 
-# Authentication
+## Spanning Tree
 
-# Monitoring
-
-# Spanning Tree
-
-## Spanning Tree Summary
+### Spanning Tree Summary
 
 STP mode: **none**
 
-## Spanning Tree Device Configuration
+### Spanning Tree Device Configuration
 
 ```eos
 !
 spanning-tree mode none
 ```
 
-# Internal VLAN Allocation Policy
+## Internal VLAN Allocation Policy
 
-## Internal VLAN Allocation Policy Summary
+### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
-## Internal VLAN Allocation Policy Configuration
+### Internal VLAN Allocation Policy Configuration
 
 ```eos
 !
 vlan internal order ascending range 1006 1199
 ```
 
-# Interfaces
+## Interfaces
 
-## Ethernet Interfaces
+### Ethernet Interfaces
 
-### Ethernet Interfaces Summary
+#### Ethernet Interfaces Summary
 
-#### L2
+##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 
 *Inherited from Port-Channel Interface
 
-#### IPv4
+##### IPv4
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_SITE2-LER1_Ethernet1 | routed | - | 100.64.48.14/31 | default | 9178 | false | - | - |
-| Ethernet3 | P2P_LINK_TO_SITE1-LSR1_Ethernet3 | routed | - | 100.64.48.9/31 | default | 9178 | false | - | - |
-| Ethernet4 | P2P_LINK_TO_SITE2-RR1_Ethernet4 | routed | - | 100.64.48.12/31 | default | 9178 | false | - | - |
+| Ethernet1 | P2P_LINK_TO_SITE2-LER1_Ethernet1 | routed | - | 100.64.48.14/31 | default | 9178 | False | - | - |
+| Ethernet3 | P2P_LINK_TO_SITE1-LSR1_Ethernet3 | routed | - | 100.64.48.9/31 | default | 9178 | False | - | - |
+| Ethernet4 | P2P_LINK_TO_SITE2-RR1_Ethernet4 | routed | - | 100.64.48.12/31 | default | 9178 | False | - | - |
 
-#### IPv6
+##### IPv6
 
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_SITE2-LER1_Ethernet1 | routed | - | - | default | 9178 | false | - | - | - | - |
-| Ethernet3 | P2P_LINK_TO_SITE1-LSR1_Ethernet3 | routed | - | - | default | 9178 | false | - | - | - | - |
-| Ethernet4 | P2P_LINK_TO_SITE2-RR1_Ethernet4 | routed | - | - | default | 9178 | false | - | - | - | - |
+| Ethernet1 | P2P_LINK_TO_SITE2-LER1_Ethernet1 | routed | - | - | default | 9178 | False | - | - | - | - |
+| Ethernet3 | P2P_LINK_TO_SITE1-LSR1_Ethernet3 | routed | - | - | default | 9178 | False | - | - | - | - |
+| Ethernet4 | P2P_LINK_TO_SITE2-RR1_Ethernet4 | routed | - | - | default | 9178 | False | - | - | - | - |
 
-#### ISIS
+##### ISIS
 
 | Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
 | --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
@@ -157,7 +148,7 @@ vlan internal order ascending range 1006 1199
 | Ethernet3 | - | CUSTOM_NAME | 60 | point-to-point | level-2 | False | md5 |
 | Ethernet4 | - | CUSTOM_NAME | 60 | point-to-point | level-2 | False | md5 |
 
-### Ethernet Interfaces Device Configuration
+#### Ethernet Interfaces Device Configuration
 
 ```eos
 !
@@ -178,7 +169,9 @@ interface Ethernet1
    no isis hello padding
    isis network point-to-point
    isis authentication mode md5
-   isis authentication key 7 asdadjiwtelogkkdng
+   isis authentication key 7 <removed>
+   link-debounce time 1000
+
 !
 interface Ethernet3
    description P2P_LINK_TO_SITE1-LSR1_Ethernet3
@@ -197,7 +190,9 @@ interface Ethernet3
    no isis hello padding
    isis network point-to-point
    isis authentication mode md5
-   isis authentication key 7 asdadjiwtelogkkdng
+   isis authentication key 7 <removed>
+   link-debounce time 1000
+
 !
 interface Ethernet4
    description P2P_LINK_TO_SITE2-RR1_Ethernet4
@@ -216,32 +211,34 @@ interface Ethernet4
    no isis hello padding
    isis network point-to-point
    isis authentication mode md5
-   isis authentication key 7 asdadjiwtelogkkdng
+   isis authentication key 7 <removed>
+   link-debounce time 1000
+
 ```
 
-## Loopback Interfaces
+### Loopback Interfaces
 
-### Loopback Interfaces Summary
+#### Loopback Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | LSR_Router_ID | default | 100.70.0.3/32 |
 
-#### IPv6
+##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | LSR_Router_ID | default | 2000:1234:ffff:ffff::3/128 |
 
-#### ISIS
+##### ISIS
 
 | Interface | ISIS instance | ISIS metric | Interface mode |
 | --------- | ------------- | ----------- | -------------- |
 | Loopback0 | CUSTOM_NAME | - | passive |
 
-### Loopback Interfaces Device Configuration
+#### Loopback Interfaces Device Configuration
 
 ```eos
 !
@@ -257,8 +254,9 @@ interface Loopback0
    node-segment ipv6 index 303
 ```
 
-# Routing
-## Service Routing Protocols Model
+## Routing
+
+### Service Routing Protocols Model
 
 Multi agent routing protocol model enabled
 
@@ -267,63 +265,63 @@ Multi agent routing protocol model enabled
 service routing protocols model multi-agent
 ```
 
-## IP Routing
+### IP Routing
 
-### IP Routing Summary
+#### IP Routing Summary
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true |
-| MGMT | false |
+| default | True |
+| MGMT | False |
 
-### IP Routing Device Configuration
+#### IP Routing Device Configuration
 
 ```eos
 !
 ip routing
 no ip routing vrf MGMT
 ```
-## IPv6 Routing
 
-### IPv6 Routing Summary
+### IPv6 Routing
+
+#### IPv6 Routing Summary
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true |
+| default | True |
 | MGMT | false |
 
-### IPv6 Routing Device Configuration
+#### IPv6 Routing Device Configuration
 
 ```eos
 !
 ipv6 unicast-routing
 ```
 
-## Static Routes
+### Static Routes
 
-### Static Routes Summary
+#### Static Routes Summary
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
 | MGMT | 0.0.0.0/0 | 192.168.200.5 | - | 1 | - | - | - |
 
-### Static Routes Device Configuration
+#### Static Routes Device Configuration
 
 ```eos
 !
 ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ```
 
-## Router ISIS
+### Router ISIS
 
-### Router ISIS Summary
+#### Router ISIS Summary
 
 | Settings | Value |
 | -------- | ----- |
 | Instance | CUSTOM_NAME |
 | Net-ID | 49.0001.0000.0000.0003.00 |
 | Type | level-2 |
-| Address Family | ipv4 unicast, ipv6 unicast |
 | Router-ID | 100.70.0.3 |
 | Log Adjacency Changes | True |
 | MPLS LDP Sync Default | True |
@@ -331,7 +329,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Advertise Passive-only | True |
 | SR MPLS Enabled | True |
 
-### ISIS Interfaces Summary
+#### ISIS Interfaces Summary
 
 | Interface | ISIS Instance | ISIS Metric | Interface Mode |
 | --------- | ------------- | ----------- | -------------- |
@@ -340,13 +338,29 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Ethernet4 | CUSTOM_NAME | 60 | point-to-point |
 | Loopback0 | CUSTOM_NAME | - | passive |
 
-### ISIS Segment-routing Node-SID
+#### ISIS Segment-routing Node-SID
 
 | Loopback | IPv4 Index | IPv6 Index |
 | -------- | ---------- | ---------- |
 | Loopback0 | 303 | 303 |
 
-### Router ISIS Device Configuration
+#### ISIS IPv4 Address Family Summary
+
+| Settings | Value |
+| -------- | ----- |
+| IPv4 Address-family Enabled | True |
+| Maximum-paths | 4 |
+| TI-LFA Mode | link-protection |
+
+#### ISIS IPv6 Address Family Summary
+
+| Settings | Value |
+| -------- | ----- |
+| IPv6 Address-family Enabled | True |
+| Maximum-paths | 4 |
+| TI-LFA Mode | link-protection |
+
+#### Router ISIS Device Configuration
 
 ```eos
 !
@@ -362,6 +376,7 @@ router isis CUSTOM_NAME
    address-family ipv4 unicast
       maximum-paths 4
       fast-reroute ti-lfa mode link-protection
+   !
    address-family ipv6 unicast
       maximum-paths 4
       fast-reroute ti-lfa mode link-protection
@@ -370,11 +385,11 @@ router isis CUSTOM_NAME
       no shutdown
 ```
 
-# MPLS
+## MPLS
 
-## MPLS and LDP
+### MPLS and LDP
 
-### MPLS and LDP Summary
+#### MPLS and LDP Summary
 
 | Setting | Value |
 | -------- | ---- |
@@ -384,7 +399,7 @@ router isis CUSTOM_NAME
 | LDP Interface Disabled Default | True |
 | LDP Transport-Address Interface | Loopback0 |
 
-### MPLS and LDP Configuration
+#### MPLS and LDP Configuration
 
 ```eos
 !
@@ -397,7 +412,7 @@ mpls ldp
    transport-address interface Loopback0
 ```
 
-## MPLS Interfaces
+### MPLS Interfaces
 
 | Interface | MPLS IP Enabled | LDP Enabled | IGP Sync |
 | --------- | --------------- | ----------- | -------- |
@@ -406,30 +421,22 @@ mpls ldp
 | Ethernet4 | True | True | True |
 | Loopback0 | - | True | - |
 
-# Multicast
+## VRF Instances
 
-# Filters
-
-# ACL
-
-# VRF Instances
-
-## VRF Instances Summary
+### VRF Instances Summary
 
 | VRF Name | IP Routing |
 | -------- | ---------- |
 | MGMT | disabled |
 
-## VRF Instances Device Configuration
+### VRF Instances Device Configuration
 
 ```eos
 !
 vrf instance MGMT
 ```
 
-# Quality Of Service
-
-# EOS CLI
+## EOS CLI
 
 ```eos
 !

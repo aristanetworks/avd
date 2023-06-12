@@ -1,0 +1,41 @@
+name: "rn-pr-labeler"
+author: "@gmuloc"
+description: "Parse a conventional commit compliant PR title and add it as a label to the PR with the prefix 'rn: '"
+inputs:
+  auto_create_label:
+    description: "Boolean to indicate if the label should be auto created"
+    required: false
+    default: false
+runs:
+  using: "composite"
+  steps:
+    - name: 'Looking up existing "rn:" label'
+      run: |
+        echo "OLD_LABEL=$(gh pr view ${{ github.event.pull_request.number }} --json labels -q .labels[].name | grep 'rn: ')" >> $GITHUB_ENV
+      shell: bash
+    - name: 'Delete existing "rn:" label if found'
+      run: gh pr edit ${{ github.event.pull_request.number }} --remove-label "${{ env.OLD_LABEL }}"
+      shell: bash
+      if: ${{ env.OLD_LABEL }}
+    - name: Set Label
+      # Using toJSON to support ' and " in commit messages
+      # https://stackoverflow.com/questions/73363167/github-actions-how-to-escape-characters-in-commit-message
+      run: echo "LABEL=$(echo ${{ toJSON(github.event.pull_request.title) }} | cut -d ':' -f 1 | tr -d ' ' | tr ',' '|')" >> $GITHUB_ENV
+      shell: bash
+      # an alternative to verifying if the target label already exist is to
+      # create the label with --force in the next step, it will keep on changing
+      # the color of the label though so it may not be desirable.
+    - name: Check if label exist
+      run: |
+        EXIST=$(gh label list -L 100 --search "rn:" --json name -q '.[] | select(.name=="rn: ${{ env.LABEL }}").name')
+        echo "EXIST=$EXIST" >> $GITHUB_ENV
+      shell: bash
+    - name: Create Label if auto-create and label does not exist already
+      run: |
+        gh label create "rn: ${{ env.LABEL }}"
+      shell: bash
+      if: ${{ inputs.auto_create_label  && ! env.EXIST }}
+    - name: Labelling PR
+      run: |
+        gh pr edit ${{ github.event.pull_request.number }} --add-label "rn: ${{ env.LABEL }}"
+      shell: bash

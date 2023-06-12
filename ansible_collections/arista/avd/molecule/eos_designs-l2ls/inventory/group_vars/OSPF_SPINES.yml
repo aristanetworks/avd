@@ -1,0 +1,18 @@
+---
+type: l3spine
+
+l3spine:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    mlag_peer_ipv4_pool: 192.168.254.0/24
+    mlag_peer_l3_vlan: 4094
+    mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    spanning_tree_priority: 4096
+  node_groups:
+    - group: OSPF_SPINES
+      nodes:
+        - name: OSPF-SPINE1
+          id: 1
+        - name: OSPF-SPINE2
+          id: 2

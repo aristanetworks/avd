@@ -1,0 +1,28 @@
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: uplink-native-vlan-grandparent
+      id: 1
+    - name: uplink-native-vlan-parent
+      id: 2
+      # vlan 100 is also in network services vlans, so we test that both ends have vlan 100 configured
+      # with name NETWORK_SERVICES_VLAN and configured as native-vlan as well as permitted vlan on uplink port-channel.
+      uplink_native_vlan: 100
+      uplink_switches: [ uplink-native-vlan-grandparent ]
+      uplink_interfaces: [ Ethernet1 ]
+      uplink_switch_interfaces: [ Ethernet1 ]
+    - name: uplink-native-vlan-child
+      id: 3
+      # vlan 200 is not in network services vlans, so we test that both ends have vlan 200 configured
+      # with name NATIVE and configured as native-vlan on uplink port-channel. Vlan 200 should _not_ be permitted on the trunk.
+      uplink_native_vlan: 200
+      uplink_switches: [ uplink-native-vlan-parent ]
+      uplink_interfaces: [ Ethernet2 ]
+      uplink_switch_interfaces: [ Ethernet2 ]
+
+tenants:
+  - name: test
+    l2vlans:
+      - id: 100
+        name: NETWORK_SERVICES_VLAN

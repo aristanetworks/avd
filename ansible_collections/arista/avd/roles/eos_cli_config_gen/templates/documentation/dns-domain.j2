@@ -1,10 +1,11 @@
-{% if dns_domain is defined and dns_domain is not none %}
+{# doc - dns domain #}
+{% if dns_domain is arista.avd.defined %}
 
-## DNS Domain
+### DNS Domain
 
-### DNS domain: {{ dns_domain }}
+#### DNS domain: {{ dns_domain }}
 
-### DNS Domain Device Configuration
+#### DNS Domain Device Configuration
 
 ```eos
 {%     include 'eos/dns-domain.j2' %}

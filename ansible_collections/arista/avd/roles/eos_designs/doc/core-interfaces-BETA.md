@@ -2,7 +2,7 @@
 
 The Core Interfaces feature is in BETA until the release of AVD 4.0.0. Changes to data models and default behavior for the Core Interfaces should be expected.
 
-# Core Interfaces
+## Core Interfaces
 
 The `core_interfaces` data model can be used to configure L3 P2P links anywhere in the fabric. It can be between two switches that are already part of the fabric inventory, or it can be towards another device, where only one end of the link is on a switch in the fabric.
 
@@ -16,6 +16,7 @@ core_interfaces:
   p2p_links_ip_pools:
     - name: < p2p_pool_name_1 >
       ipv4_pool: < IPv4_address/Mask >
+      prefix_size: < subnet mask size | default -> 31 >
   p2p_links_profiles:
     - name: < p2p_profile_name >
       < any variable supported under p2p_links can be inherited from a profile >
@@ -47,15 +48,18 @@ core_interfaces:
       # AS Numbers for BGP | Required with bgp peering
       as: [ < node_a_as >, < node_b_as > ]
 
+      # Interface Description | Optional
+      descriptions: [ < node_a_description >, < node_b_description > ]
+
       # Add this interface to underlay routing protocol | Optional
       include_in_underlay_protocol: < true | false | default -> true >
 
       # IS-IS parameters
-      isis_hello_padding: false
-      isis_metric: 60
-      isis_circuit_type: level-2
-      isis_authentication_mode: md5
-      isis_authentication_key: $1c$sTNAlR6rKSw=
+      isis_hello_padding: < true | false >
+      isis_metric: < integer >
+      isis_circuit_type: < level-1-2 | level-1 | level-2 >
+      isis_authentication_mode: < text | md5 >
+      isis_authentication_key: < type-7 encrypted password >
 
       # MPLS Parameters
       mpls_ip: < true | false | default -> true if switch.mpls_lsr is true >
@@ -68,7 +72,8 @@ core_interfaces:
       bfd: < true | false | default -> false >
 
       # Enable PTP | Optional
-      ptp_enable: < true | false | default -> false >
+      ptp:
+        enabled: < true | false | default -> false >
 
       # QOS Service Profile | Optional
       qos_profile: < qos_profile_name >
@@ -79,6 +84,10 @@ core_interfaces:
       # Profile defined under p2p_profiles | Optional
       profile: < p2p_profile_name >
 
+      # EOS CLI rendered directly on the point-to-point interface in the final EOS configuration
+      raw_eos_cli: |
+        < multiline eos cli >
+
       # Port-channel parameters
       port_channel:
         mode: active
@@ -87,7 +96,7 @@ core_interfaces:
           < node2 >: [ '< node2 interface1 >', '< node2 interface2 >' ]
 ```
 
-# Fabric Level Variables
+## Fabric Level Variables
 
 These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden on link profile or link level:
 

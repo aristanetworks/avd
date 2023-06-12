@@ -1,41 +1,31 @@
 # router-bgp-evpn-mpls
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Authentication](#authentication)
-- [Monitoring](#monitoring)
-- [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
-  - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
-- [Interfaces](#interfaces)
 - [Routing](#routing)
-  - [IP Routing](#ip-routing)
-  - [IPv6 Routing](#ipv6-routing)
   - [Router BGP](#router-bgp)
-- [Multicast](#multicast)
-- [Filters](#filters)
-- [ACL](#acl)
-- [Quality Of Service](#quality-of-service)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | -  | - |
+| Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -45,47 +35,11 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Authentication
+## Routing
 
-# Monitoring
+### Router BGP
 
-# Internal VLAN Allocation Policy
-
-## Internal VLAN Allocation Policy Summary
-
-**Default Allocation Policy**
-
-| Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
-| ascending | 1006 | 4094 |
-
-# Interfaces
-
-# Routing
-
-## IP Routing
-
-### IP Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | false |
-
-### IP Routing Device Configuration
-
-```eos
-```
-## IPv6 Routing
-
-### IPv6 Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | false |
-
-## Router BGP
-
-### Router BGP Summary
+#### Router BGP Summary
 
 | BGP AS | Router ID |
 | ------ | --------- |
@@ -99,9 +53,9 @@ interface Management1
 | graceful-restart |
 | maximum-paths 2 ecmp 2 |
 
-### Router BGP Peer Groups
+#### Router BGP Peer Groups
 
-#### EVPN-OVERLAY-PEERS
+##### EVPN-OVERLAY-PEERS
 
 | Settings | Value |
 | -------- | ----- |
@@ -115,35 +69,35 @@ interface Management1
 | Send community | all |
 | Maximum routes | 0 (no limit) |
 
-#### MLAG-IPv4-UNDERLAY-PEER
+##### MLAG-IPv4-UNDERLAY-PEER
 
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
 | Remote AS | 65101 |
 
-### BGP Neighbors
+#### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
-| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
+| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - |
+| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - |
 
-### Router BGP EVPN Address Family
+#### Router BGP EVPN Address Family
 
-#### EVPN Peer Groups
+##### EVPN Peer Groups
 
-| Peer Group | Activate |
-| ---------- | -------- |
-| EVPN-OVERLAY-PEERS | True |
+| Peer Group | Activate | Encapsulation |
+| ---------- | -------- | ------------- |
+| EVPN-OVERLAY-PEERS | True | default |
 
-#### EVPN Neighbor Default Encapsulation
+##### EVPN Neighbor Default Encapsulation
 
 | Neighbor Default Encapsulation | Next-hop-self Source Interface |
 | ------------------------------ | ------------------------------ |
 | mpls | Loopback0 |
 
-### Router BGP Device Configuration
+#### Router BGP Device Configuration
 
 ```eos
 !
@@ -160,7 +114,7 @@ router bgp 65101
    neighbor EVPN-OVERLAY-PEERS bfd
    neighbor EVPN-OVERLAY-PEERS rib-in pre-policy retain all
    neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3
-   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
+   neighbor EVPN-OVERLAY-PEERS password 7 <removed>
    neighbor EVPN-OVERLAY-PEERS default-originate route-map RM-FOO always
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
@@ -173,11 +127,3 @@ router bgp 65101
       neighbor default encapsulation mpls next-hop-self source-interface Loopback0
       neighbor EVPN-OVERLAY-PEERS activate
 ```
-
-# Multicast
-
-# Filters
-
-# ACL
-
-# Quality Of Service

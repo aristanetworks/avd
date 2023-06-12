@@ -1,0 +1,14 @@
+---
+type: l3spine
+
+l3spine:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.255.0/24
+    isis_system_id_prefix: '0001.0000'
+    isis_maximum_paths: 4
+    virtual_router_mac_address: 00:1c:73:00:00:9A
+  nodes:
+    - name: ISIS-SPINE1
+      id: 1
+      mgmt_ip: 192.168.200.101/24

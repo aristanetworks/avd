@@ -1,0 +1,36 @@
+type: l2leaf
+
+l2leaf:
+  defaults:
+    platform: vEOS-LAB
+    uplink_switches: [ UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A, UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B ]
+    uplink_interfaces: [ Ethernet1, Ethernet2 ]
+    uplink_structured_config:
+      storm_control:
+        broadcast:
+          level: 25
+        unknown_unicast:
+          level: 25
+      native_vlan_tag: true
+    mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+    mlag_port_channel_structured_config:
+      storm_control:
+        broadcast:
+          level: 25
+        unknown_unicast:
+          level: 25
+      native_vlan_tag: true
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 16384
+  node_groups:
+    - group: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1
+      nodes:
+        - name: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1A
+          id: 1
+          mgmt_ip: 192.168.201.201/24
+          uplink_switch_interfaces: [ Ethernet5, Ethernet5 ]
+        - name: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1B
+          id: 2
+          mgmt_ip: 192.168.201.201/24
+          uplink_switch_interfaces: [ Ethernet6, Ethernet6 ]

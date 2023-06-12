@@ -1,0 +1,50 @@
+---
+# Minimum config to only test the specific feature.
+# This tests the SNMP auto engine ID
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: SNMP_AUTOGEN_ENGINEID
+      id: 43
+
+mgmt_interface_vrf: MGMT
+mgmt_gateway: 1.1.1.1
+
+snmp_settings:
+  contact: example@example.com
+  location: true
+  compute_local_engineid: true
+  # The default value is hostname_and_ip
+  # compute_local_engineid_source: hostname_and_ip
+  compute_v3_user_localized_key: true
+  users:
+    - name: usertest-auth-priv
+      group: usergroup
+      version: v3
+      auth: sha
+      auth_passphrase: clearauth # to get from vault in real life
+      priv: aes192
+      priv_passphrase: clearpriv # to get from vault in real life
+    - name: usertest-auth-no-priv
+      group: usergroup
+      version: v3
+      auth: sha512
+      auth_passphrase: clearauth # to get from vault in real life
+    - name: usertest-no-auth-no-priv
+      group: usergroup
+      version: v3
+      # For now, not possible to run tests that raise
+      # exceptions
+      # - name: usertest-wrong-cipher
+      #   group: usergroup
+      #   version: v3
+      #   auth: toto
+      #   auth_passphrase: clearauth
+    - name: usertest-v2c
+      group: usergroup
+      version: v2c # v2c so the passphrases are not needed
+      auth: md5
+      auth_passphrase: clearauth # to get from vault in real life
+      priv: des
+      priv_passphrase: clearpriv # to get from vault in real life

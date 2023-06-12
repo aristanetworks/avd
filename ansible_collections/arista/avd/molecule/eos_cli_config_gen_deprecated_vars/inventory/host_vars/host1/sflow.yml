@@ -1,0 +1,20 @@
+### Sflow ###
+
+sflow:
+  # Testing destinations as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  destinations:
+    10.6.75.62:
+      port: 123
+    10.6.75.61:
+  # Testing vrfs as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  vrfs:
+    MGMT:
+      # Testing destinations as dict of dict
+      # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+      destinations:
+        10.6.75.62:
+          port: 123
+        10.6.75.59:
+      source_interface: Ethernet3

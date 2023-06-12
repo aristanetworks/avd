@@ -1,0 +1,12 @@
+---
+### 802.1x Global ###
+dot1x:
+  system_auth_control: true
+  protocol_lldp_bypass: true
+  dynamic_authorization: true
+  mac_based_authentication:
+    delay: 300
+    hold_period: 300
+  radius_av_pair:
+    service_type: true
+    framed_mtu: 1500

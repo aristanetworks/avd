@@ -4,15 +4,6 @@
 
 :root {
   /* Color schema based on Arista Color Schema */
-  /* Default color shades */
-  --md-default-fg-color:               #000000;
-  --md-default-fg-color--light:        #a1a0a0;
-  --md-default-fg-color--lighter:      #FFFFFF;
-  --md-default-fg-color--lightest:     #FFFFFF;
-  --md-default-bg-color:               #FFFFFF;
-  --md-default-bg-color--light:        #FFFFFF;
-  --md-default-bg-color--lighter:      #FFFFFF;
-  --md-default-bg-color--lightest:     #FFFFFF;
 
   /* Primary color shades */
   --md-primary-fg-color:               #27569B;
@@ -37,7 +28,7 @@
   --block-code-bg-color:               #e4e4e4;
   /* --md-code-fg-color:                  ...; */
 
-  font-size: 1rem;
+  /* font-size: 1rem; */
   /* min-height: 100%;
   position: relative;
   width: 100%; */
@@ -58,6 +49,30 @@
   /* --md-code-bg-color:                  #E6E6E6; */
   --md-code-border-color:              #aec6db4f;
   /* --block-code-bg-color:               #e4e4e4; */
+}
+
+[data-md-color-scheme="default"] {
+  /* Primary color shades */
+  --md-primary-fg-color:               #27569B;
+  --md-primary-fg-color--light:        #FFFFFF;
+  --md-primary-fg-color--dark:         #27569B;
+  --md-primary-bg-color:               #FFFFFF;
+  --md-primary-bg-color--light:        #FFFFFF;
+
+  /* Accent color shades */
+  --md-accent-fg-color:                #27569B;
+  --md-accent-bg-color:                #27569B;
+  --md-accent-bg-color--light:         #27569B;
+
+  /* Link color */
+  --md-typeset-a-color:                #27569B;
+  --md-typeset-a-color-fg:             #FFFFFF;
+  --md-typeset-a-color-bg:             #27569B;
+
+  /* Code block color shades */
+  --md-code-bg-color:                  #E6E6E6;
+  --md-code-border-color:              #0000004f;
+  --block-code-bg-color:               #e4e4e4;
 }
 
 @media only screen and (min-width: 76.25em) {

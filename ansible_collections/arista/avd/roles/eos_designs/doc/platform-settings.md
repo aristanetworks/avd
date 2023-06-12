@@ -1,4 +1,4 @@
-# Platform Specific settings
+# Platform Specific Settings
 
 - Set platform specific settings, TCAM profile and reload delay.
 - The reload delay values should be reviewed and tuned to the specific environment.
@@ -14,6 +14,8 @@ platform_settings:
       mlag: < seconds >
       non_mlag: < seconds >
   - platforms: [ < Arista Platform Family >, < Arista Platform Family > ]
+    # "trident_forwarding_table_partition" only applied when evpn_multicast is true
+    trident_forwarding_table_partition: < partition >
     tcam_profile: < tcam_profile >
     lag_hardware_only: < true | false >
     feature_support:
@@ -44,49 +46,64 @@ The reload delay values should be reviewed and tuned to the specific environment
 ## Default Values
 
 ```yaml
-platform_settings:
-  - platforms: [ 'default' ]
+default_platform_settings:
+  - platforms: ['default']
     reload_delay:
       mlag: 300
       non_mlag: 330
     feature_support:
       # "queue-monitor length notify" is only valid for R-Series so should be disabled on default platform.
       queue_monitor_length_notify: false
-  - platforms: [ '7280R', '7280R2' ]
+  - platforms: ['7050X3', '720XP', '722XP']
+    # Only applied when enabling EVPN multicast
+    trident_forwarding_table_partition: "flexible exact-match 16384 l2-shared 98304 l3-shared 131072"
+    reload_delay:
+      mlag: 300
+      non_mlag: 330
+    feature_support:
+      queue_monitor_length_notify: false
+  - platforms: ['7280R', '7280R2', '7020R']
     tcam_profile: vxlan-routing
     lag_hardware_only: true
     reload_delay:
       mlag: 900
       non_mlag: 1020
-  - platforms: [ '7280R3' ]
+  - platforms: ['7280R3']
     reload_delay:
       mlag: 900
       non_mlag: 1020
-  - platforms: [ '7500R', '7500R2' ]
+  - platforms: ['7500R', '7500R2']
     tcam_profile: vxlan-routing
     lag_hardware_only: true
     management_interface: Management0
     reload_delay:
       mlag: 900
       non_mlag: 1020
-  - platforms: [ '7500R3', '7800R3' ]
+  - platforms: ['7500R3', '7800R3']
     management_interface: Management0
     reload_delay:
       mlag: 900
       non_mlag: 1020
-  - platforms: [ '7368X4' ]
+  - platforms: ['7368X4']
     management_interface: Management0
     reload_delay:
       mlag: 300
       non_mlag: 330
-  - platforms: [ 'VEOS', 'VEOS-LAB', 'vEOS', 'vEOS-lab' ]
+  - platforms: ['7300X3']
+    management_interface: Management0
+    # Only applied when enabling EVPN multicast
+    trident_forwarding_table_partition: "flexible exact-match 16384 l2-shared 98304 l3-shared 131072"
+    reload_delay:
+      mlag: 1200
+      non_mlag: 1320
+  - platforms: ['VEOS', 'VEOS-LAB', 'vEOS', 'vEOS-lab']
     reload_delay:
       mlag: 300
       non_mlag: 330
     feature_support:
       queue_monitor_length_notify: false
       interface_storm_control: false
-  - platforms: [ 'CEOS', 'cEOS', 'ceos', 'cEOSLab' ]
+  - platforms: ['CEOS', 'cEOS', 'ceos', 'cEOSLab']
     management_interface: Management0
     reload_delay:
       mlag: 300

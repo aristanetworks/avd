@@ -1,9 +1,10 @@
+{# doc - router traffic engineering #}
 {% if router_traffic_engineering is arista.avd.defined %}
 
-## Router Traffic-Engineering
+### Router Traffic-Engineering
 {%     if router_traffic_engineering.segment_routing is arista.avd.defined %}
 
-### Segment Routing Summary
+#### Segment Routing Summary
 
 - SRTE is enabled.
 {%         if router_traffic_engineering.segment_routing.colored_tunnel_rib is arista.avd.defined(true) %}
@@ -12,14 +13,15 @@
 {%         endif %}
 {%         if router_traffic_engineering.segment_routing.policy_endpoints is arista.avd.defined %}
 
-#### SRTE Policies
+##### SRTE Policies
 
-| Endpoint | Color | Preference | Name | Description | Label Stack | Index  | Weight | Explicit Null |
-| -------- | ----- | ---------- | ---- | ----------- | ----------- | ------ | ------ | ------------- |
+| Endpoint | Color | Preference | Name | Description | SBFD Remote Discriminator | Label Stack | Index  | Weight | Explicit Null |
+| -------- | ----- | ---------- | ---- | ----------- | ------------------------- | ----------- | ------ | ------ | ------------- |
 {%             for endpoint in router_traffic_engineering.segment_routing.policy_endpoints | arista.avd.natural_sort('address') %}
 {%                 for color in endpoint.colors | arista.avd.natural_sort('value') %}
 {%                     set name = color.name | arista.avd.default('-') %}
 {%                     set description = color.description | arista.avd.default('-') %}
+{%                     set sbfd_remote = color.sbfd_remote_discriminator | arista.avd.default('-') %}
 {%                     for pathgroup in color.path_group | arista.avd.natural_sort('preference') %}
 {%                         set pathgroup_preference = pathgroup.preference | arista.avd.default('-') %}
 {%                         set expnull = pathgroup.explicit_null | arista.avd.default('-') %}
@@ -27,7 +29,7 @@
 {%                             set stack = labelstack.label_stack %}
 {%                             set index = labelstack.index | arista.avd.default('-') %}
 {%                             set weight = labelstack.weight | arista.avd.default('-') %}
-| {{ endpoint.address }} | {{ color.value }} | {{ pathgroup_preference }} | {{ name }} | {{ description }} | {{ stack }} | {{ index }} | {{ weight }} | {{ expnull }} |
+| {{ endpoint.address }} | {{ color.value }} | {{ pathgroup_preference }} | {{ name }} | {{ description }} | {{ sbfd_remote }} | {{ stack }} | {{ index }} | {{ weight }} | {{ expnull }} |
 {%                         endfor %}
 {%                     endfor %}
 {%                 endfor %}
@@ -35,7 +37,7 @@
 {%         endif %}
 {%     endif %}
 
-### Router Traffic Engineering Device Configuration
+#### Router Traffic Engineering Device Configuration
 
 ```eos
 {%     include 'eos/router-traffic-engineering.j2' %}

@@ -1,0 +1,9 @@
+{# doc - pim sparse mode #}
+{% if router_pim_sparse_mode is arista.avd.defined or pim_interfaces | length > 0 %}
+
+### PIM Sparse Mode
+{## Router pim sparse-mode #}
+{%     include 'documentation/router-pim-sparse-mode.j2' %}
+{## PIM Sparse Mode Interfaces #}
+{%     include 'documentation/pim-sparse-mode-interfaces.j2' %}
+{% endif %}

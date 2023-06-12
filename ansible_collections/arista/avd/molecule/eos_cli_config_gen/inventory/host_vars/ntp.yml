@@ -20,8 +20,13 @@ ntp:
   authentication_keys:
     - id: 1
       hash_algorithm: "md5"
-      key: "044F0E151B"
+      key: "7 044F0E151B"
     - id: 2
+      hash_algorithm: "md5"
+      key: "044F0E151B"
+      key_type: 7
+    - id: 3
       hash_algorithm: "sha1"
-      key: "15060E1F10"
-  trusted_keys: "1-2"
+      key: "$BYk2Sjahe+D9T7uDgIItSA==$JTw5JOAPcYEo0O2hsvsxFQ==$C7wmpXOo"
+      key_type: 8a
+  trusted_keys: "1-3"

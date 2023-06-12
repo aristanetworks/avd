@@ -1,0 +1,9 @@
+---
+
+# Expected result: rd 192.168.254.2:*
+overlay_rd_type:
+  admin_subfield: vtep_loopback
+
+# Expected result: rt 65002:*
+overlay_rt_type:
+  admin_subfield: bgp_as

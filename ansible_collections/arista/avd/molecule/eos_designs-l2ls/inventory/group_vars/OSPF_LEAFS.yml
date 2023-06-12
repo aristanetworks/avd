@@ -1,0 +1,14 @@
+---
+type: leaf
+
+leaf:
+  defaults:
+    uplink_switches: [ OSPF-SPINE1, OSPF-SPINE2 ]
+    uplink_interfaces: [ Ethernet1, Ethernet2 ]
+  nodes:
+    - name: OSPF-LEAF1
+      id: 1
+      uplink_switch_interfaces: [ Ethernet1, Ethernet1 ]
+    - name: OSPF-LEAF2
+      id: 2
+      uplink_switch_interfaces: [ Ethernet2, Ethernet2 ]

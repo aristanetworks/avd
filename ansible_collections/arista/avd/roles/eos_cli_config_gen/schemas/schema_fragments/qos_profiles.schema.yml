@@ -1,0 +1,144 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  qos_profiles:
+    type: list
+    primary_key: name
+    convert_types:
+      - dict
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          description: Profile-Name
+        trust:
+          type: str
+          valid_values: ["cos", "dscp", "disabled"]
+        cos:
+          type: int
+          convert_types:
+            - str
+        dscp:
+          type: int
+          convert_types:
+            - str
+        shape:
+          type: dict
+          keys:
+            rate:
+              type: str
+              description: |
+                Supported options are platform dependent
+                Example: "< rate > kbps", "1-100 percent", "< rate > pps"
+        service_policy:
+          type: dict
+          keys:
+            type:
+              type: dict
+              keys:
+                qos_input:
+                  type: str
+                  description: Policy-map name
+        tx_queues:
+          type: list
+          primary_key: id
+          convert_types:
+            - dict
+          items:
+            type: dict
+            keys:
+              id:
+                type: int
+                convert_types:
+                  - str
+                required: true
+                description: TX-Queue ID
+              bandwidth_percent:
+                type: int
+                convert_types:
+                  - str
+              bandwidth_guaranteed_percent:
+                type: int
+                convert_types:
+                  - str
+              priority:
+                type: str
+                valid_values: ["priority strict", "no priority"]
+              shape:
+                type: dict
+                keys:
+                  rate:
+                    type: str
+                    description: |
+                      Supported options are platform dependent
+                      Example: "< rate > kbps", "1-100 percent", "< rate > pps"
+        uc_tx_queues:
+          type: list
+          primary_key: id
+          convert_types:
+            - dict
+          items:
+            type: dict
+            keys:
+              id:
+                type: int
+                convert_types:
+                  - str
+                required: true
+                description: UC TX queue ID
+              bandwidth_percent:
+                type: int
+                convert_types:
+                  - str
+              bandwidth_guaranteed_percent:
+                type: int
+                convert_types:
+                  - str
+              priority:
+                type: str
+                valid_values: ["priority strict", "no priority"]
+              shape:
+                type: dict
+                keys:
+                  rate:
+                    type: str
+                    description: |
+                      Supported options are platform dependent
+                      Example: "< rate > kbps", "1-100 percent", "< rate > pps"
+        mc_tx_queues:
+          type: list
+          primary_key: id
+          convert_types:
+            - dict
+          items:
+            type: dict
+            keys:
+              id:
+                type: int
+                convert_types:
+                  - str
+                required: true
+                description: MC TX queue ID
+              bandwidth_percent:
+                type: int
+                convert_types:
+                  - str
+              bandwidth_guaranteed_percent:
+                type: int
+                convert_types:
+                  - str
+              priority:
+                type: str
+                valid_values: ["priority strict", "no priority"]
+              shape:
+                type: dict
+                keys:
+                  rate:
+                    type: str
+                    description: |
+                      Supported options are platform dependent
+                      Example: "< rate > kbps", "1-100 percent", "< rate > pps"

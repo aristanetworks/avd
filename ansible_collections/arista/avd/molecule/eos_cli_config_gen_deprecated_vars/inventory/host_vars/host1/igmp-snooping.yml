@@ -1,0 +1,12 @@
+### IGMP snooping
+
+ip_igmp_snooping:
+  # Testing vlans as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  vlans:
+    10:
+      enabled: true
+    20:
+      enabled: false
+    30:
+      enabled: false

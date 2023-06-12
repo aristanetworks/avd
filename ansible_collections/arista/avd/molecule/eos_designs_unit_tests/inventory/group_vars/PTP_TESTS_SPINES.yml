@@ -1,0 +1,55 @@
+---
+type: spine
+
+spine:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 10.255.0.0/27
+    bgp_as: 65200
+    ptp:
+      enabled: true
+
+  nodes:
+    - name: ptp-tests-spine1
+      id: 1
+      mgmt_ip: 192.168.0.11/24
+      ptp:
+        clock_identity: "00:00:00:00:00:00"
+
+    - name: ptp-tests-spine2
+      id: 2
+      mgmt_ip: 192.168.0.21/24
+      ptp:
+        enabled: true
+        source_ip: 10.255.0.1
+        ttl: 128
+        forward_unicast: true
+        dscp:
+          general_messages: 46
+          event_messages: 48
+        monitor:
+          enabled: true
+          threshold:
+            offset_from_master: 1234
+            mean_path_delay: 4567
+          missing_message:
+            intervals:
+              sync: 8
+              follow_up: 9
+              announce: 10
+            sequence_ids:
+              enabled: true
+              announce: 11
+              delay_resp: 12
+              follow_up: 13
+              sync: 14
+        clock_identity_prefix: "01:02:03"
+        priority1: 20
+        priority2: 10
+    # Test with "auto_clock_identity: false"
+    - name: ptp-tests-spine3
+      id: 3
+      mgmt_ip: 192.168.0.31/24
+      ptp:
+        enabled: true
+        auto_clock_identity: false

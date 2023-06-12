@@ -1,0 +1,98 @@
+---
+# Common AVD group variables
+
+fabric_name: PTP_TESTS
+
+mgmt_gateway: 192.168.0.1
+
+# P2P links between spine switches, connecting to the PTP Grandmaster.
+# Note that the config below will result in interfaces being configured as "no switchport", without an IP address.
+# This makes it possible to only forward PTP packets and nothing more.
+core_interfaces:
+  p2p_links:
+    - nodes: [ ptp-tests-spine1, ptp-tests-spine2 ]
+      interfaces: [ Ethernet6, Ethernet6 ]
+      ptp:
+        enabled: true
+      include_in_underlay_protocol: false
+    - nodes: [ ptp-tests-spine1, ptp-tests-spine2 ]
+      interfaces: [ Ethernet7, Ethernet7 ]
+      ptp:
+        enabled: true
+      include_in_underlay_protocol: false
+
+# Testing the same as above with l3_edge
+l3_edge:
+  p2p_links:
+    - nodes: [ ptp-tests-spine1, ptp-tests-spine2 ]
+      interfaces: [ Ethernet8, Ethernet8 ]
+      ptp:
+        enabled: true
+      include_in_underlay_protocol: false
+    - nodes: [ ptp-tests-spine1, ptp-tests-spine2 ]
+      interfaces: [ Ethernet9, Ethernet9 ]
+      ptp:
+        enabled: true
+      include_in_underlay_protocol: false
+
+ptp:
+  enabled: true
+  # profile: < aes67 | smpte2059-2 | aes67-r16-2016 | default -> aes67-r16-2016  >
+  # domain: < 0-255 | default -> 127 >
+
+tenants:
+  - name: PTP
+    mac_vrf_vni_base: 10000
+    vrfs:
+      # VRF definitions inside the tenant.
+      - name: VRF1
+        # VRF VNI definition.
+        vrf_vni: 1
+        svis:
+          - id: 11
+            name: VLAN11
+            enabled: true
+            nodes:
+              - node: ptp-tests-leaf1
+                ip_address: 172.16.11.1/24
+              - node: ptp-tests-leaf2
+                ip_address: 172.17.11.1/24
+
+port_profiles:
+  - profile: PTP-profile-BMCA
+    vlans: 11
+    mode: access
+    ptp:
+      enabled: true
+      endpoint_role: bmca
+
+servers:
+  - name: bmca-endpoint
+    adapters:
+      - endpoint_ports: [ eth1 ]
+        switch_ports: [ Ethernet13 ]
+        switches: [ ptp-tests-leaf1 ]
+        profile: PTP-profile-BMCA
+
+  - name: video-endpoint
+    adapters:
+      - endpoint_ports: [ PCI1, PCI2 ]
+        switch_ports: [ Ethernet5, Ethernet5 ]
+        switches: [ ptp-tests-leaf1, ptp-tests-leaf2 ]
+        vlans: 11
+        mode: access
+        spanning_tree_portfast: edge
+        ptp:
+          enabled: true
+          endpoint_role: follower
+
+  - name: Endpoint-with-specific-PTP-profile
+    adapters:
+      - endpoint_ports: [ eth3 ]
+        switch_ports: [ Ethernet3 ]
+        switches: [ ptp-tests-leaf1 ]
+        vlans: 11
+        mode: access
+        ptp:
+          enabled: true
+          profile: smpte2059-2

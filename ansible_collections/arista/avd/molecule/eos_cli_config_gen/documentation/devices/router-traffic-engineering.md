@@ -1,41 +1,31 @@
 # router-traffic-engineering
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Authentication](#authentication)
-- [Monitoring](#monitoring)
-- [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
-  - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
-- [Interfaces](#interfaces)
 - [Routing](#routing)
-  - [IP Routing](#ip-routing)
-  - [IPv6 Routing](#ipv6-routing)
   - [Router Traffic-Engineering](#router-traffic-engineering)
-- [Multicast](#multicast)
-- [Filters](#filters)
-- [ACL](#acl)
-- [Quality Of Service](#quality-of-service)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | -  | - |
+| Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -45,64 +35,28 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Authentication
+## Routing
 
-# Monitoring
+### Router Traffic-Engineering
 
-# Internal VLAN Allocation Policy
-
-## Internal VLAN Allocation Policy Summary
-
-**Default Allocation Policy**
-
-| Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
-| ascending | 1006 | 4094 |
-
-# Interfaces
-
-# Routing
-
-## IP Routing
-
-### IP Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | false |
-
-### IP Routing Device Configuration
-
-```eos
-```
-## IPv6 Routing
-
-### IPv6 Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | false |
-
-## Router Traffic-Engineering
-
-### Segment Routing Summary
+#### Segment Routing Summary
 
 - SRTE is enabled.
 
 - system-colored-tunnel-rib is enabled
 
-#### SRTE Policies
+##### SRTE Policies
 
-| Endpoint | Color | Preference | Name | Description | Label Stack | Index  | Weight | Explicit Null |
-| -------- | ----- | ---------- | ---- | ----------- | ----------- | ------ | ------ | ------------- |
-| 1.2.3.4 | 70810 | 180 | SRTE-1.2.3.4-70810 | SRTE POLICY FOR 1.2.3.4 COLOR 70810 | 900002 900003 900005 900006 | 200 | - | ipv4 ipv6 |
-| 1.2.3.4 | 80810 | 100 | SRTE-1.2.3.4-80810 | SRTE POLICY FOR 1.2.3.4 COLOR 80810 | 900002 900008 900007 900006 | 100 | 20 | none |
-| 5.6.7.8 | 20320 | 80 | - | - | 900002 900003 900005 900006 | 300 | 120 | ipv4 |
-| 5.6.7.8 | 20320 | 80 | - | - | 900002 900004 900007 900006 | 400 | 220 | ipv4 |
-| 5.6.7.8 | 20320 | 120 | - | - | 900002 900008 900009 900006 | - | - | ipv6 |
-| 5.6.7.8 | 20320 | 120 | - | - | 900002 900010 900011 900012 | - | - | ipv6 |
+| Endpoint | Color | Preference | Name | Description | SBFD Remote Discriminator | Label Stack | Index  | Weight | Explicit Null |
+| -------- | ----- | ---------- | ---- | ----------- | ------------------------- | ----------- | ------ | ------ | ------------- |
+| 1.2.3.4 | 70810 | 180 | SRTE-1.2.3.4-70810 | SRTE POLICY FOR 1.2.3.4 COLOR 70810 | 155.2.1.1 | 900002 900003 900005 900006 | 200 | - | ipv4 ipv6 |
+| 1.2.3.4 | 80810 | 100 | SRTE-1.2.3.4-80810 | SRTE POLICY FOR 1.2.3.4 COLOR 80810 | - | 900002 900008 900007 900006 | 100 | 20 | none |
+| 5.6.7.8 | 20320 | 80 | - | - | 2600599809 | 900002 900003 900005 900006 | 300 | 120 | ipv4 |
+| 5.6.7.8 | 20320 | 80 | - | - | 2600599809 | 900002 900004 900007 900006 | 400 | 220 | ipv4 |
+| 5.6.7.8 | 20320 | 120 | - | - | 2600599809 | 900002 900008 900009 900006 | - | - | ipv6 |
+| 5.6.7.8 | 20320 | 120 | - | - | 2600599809 | 900002 900010 900011 900012 | - | - | ipv6 |
 
-### Router Traffic Engineering Device Configuration
+#### Router Traffic Engineering Device Configuration
 
 ```eos
 !
@@ -114,6 +68,7 @@ router traffic-engineering
          binding-sid 970810
          name SRTE-1.2.3.4-70810
          description SRTE POLICY FOR 1.2.3.4 COLOR 70810
+         sbfd remote-discriminator 155.2.1.1
          !
          path-group preference 180
             explicit-null ipv4 ipv6
@@ -129,6 +84,7 @@ router traffic-engineering
       !
       policy endpoint 5.6.7.8 color 20320
          binding-sid 978320
+         sbfd remote-discriminator 2600599809
          !
          path-group preference 80
             explicit-null ipv4
@@ -142,11 +98,3 @@ router traffic-engineering
    router-id ipv4 10.0.0.1
    router-id ipv6 2001:beef:cafe::1
 ```
-
-# Multicast
-
-# Filters
-
-# ACL
-
-# Quality Of Service

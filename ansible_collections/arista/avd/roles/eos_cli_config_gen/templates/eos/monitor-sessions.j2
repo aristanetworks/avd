@@ -1,3 +1,4 @@
+{# eos - monitor sessions #}
 {% if monitor_sessions is arista.avd.defined %}
 !
 {%     for monitor_session in monitor_sessions | arista.avd.natural_sort('name') if monitor_session.name is arista.avd.defined %}

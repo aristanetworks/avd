@@ -1,0 +1,58 @@
+---
+### Tunnel Interfaces ###
+tunnel_interfaces:
+  - name: Tunnel1
+    description: test ipv4 only
+    shutdown: false
+    vrf: Tunnel-VRF
+    mtu: 1500
+    ip_address: 42.42.42.42/24
+    access_group_in: test-in
+    access_group_out: test-out
+    tcp_mss_ceiling:
+      ipv4: 666
+      direction: ingress
+    source_interface: Ethernet42
+    destination: 6.6.6.6
+    path_mtu_discovery: true
+    eos_cli: |
+      comment
+      Comment created from eos_cli under tunnel_interfaces.Tunnel1
+      EOF
+  - name: Tunnel2
+    description: test ipv6 only
+    shutdown: true
+    ipv6_enable: true
+    ipv6_address: cafe::1/64
+    ipv6_access_group_in: test-in
+    ipv6_access_group_out: test-out
+    tcp_mss_ceiling:
+      ipv6: 666
+      direction: egress
+    source_interface: Ethernet42
+    destination: dead:beef::1
+    path_mtu_discovery: false
+
+  - name: Tunnel3
+    description: test dual stack
+    mtu: 1500
+    ip_address: 64.64.64.64/24
+    ipv6_enable: true
+    ipv6_address: beef::64/64
+    # no direction this time
+    tcp_mss_ceiling:
+      ipv4: 666
+      ipv6: 666
+    source_interface: Ethernet42
+    destination: 1.1.1.1
+    # no PMTU
+
+  - name: Tunnel4
+    description: test no tcp_mss
+    mtu: 1500
+    ip_address: 64.64.64.64/24
+    ipv6_enable: true
+    ipv6_address: beef::64/64
+    # no tcp_mss_ceiling
+    source_interface: Ethernet42
+    destination: 1.1.1.1

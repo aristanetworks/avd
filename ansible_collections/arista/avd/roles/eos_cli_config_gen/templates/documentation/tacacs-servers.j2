@@ -1,8 +1,9 @@
-{% if tacacs_servers.hosts is defined and tacacs_servers.hosts is not none %}
-
-## TACACS Servers
+{# doc - tacacs servers #}
+{% if tacacs_servers.hosts is arista.avd.defined %}
 
 ### TACACS Servers
+
+#### TACACS Servers
 
 | VRF | TACACS Servers | Single-Connection |
 | --- | -------------- | ----------------- |
@@ -15,7 +16,7 @@
 Policy unknown-mandatory-attribute ignore is configured
 
 {%     endif %}
-### TACACS Servers Device Configuration
+#### TACACS Servers Device Configuration
 
 ```eos
 {%     include 'eos/tacacs-servers.j2' %}

@@ -1,0 +1,15 @@
+type: l3leaf
+
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+  nodes:
+    - name: IGMP-QUERIER-L3LEAF1A
+      bgp_as: 65101
+      id: 1
+      mgmt_ip: 192.168.200.101/24

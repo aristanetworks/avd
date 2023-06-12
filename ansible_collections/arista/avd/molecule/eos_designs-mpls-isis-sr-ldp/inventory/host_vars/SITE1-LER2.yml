@@ -1,0 +1,3 @@
+# Hostvars for this node has bgp_mesh_pes: true so this device will setup BGP peerings to all other PEs as well as the RRs.
+# Should always be set fabric-wide but in this case we just need to test if it works.
+bgp_mesh_pes: true

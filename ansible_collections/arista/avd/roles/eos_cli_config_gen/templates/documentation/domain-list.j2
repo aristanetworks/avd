@@ -1,13 +1,14 @@
-{% if domain_list is defined and domain_list is not none %}
+{# doc - domain list #}
+{% if domain_list is arista.avd.defined %}
 
-## Domain-list
+### Domain-list
 
-### Domain-list:
+#### Domain-list:
 {%     for domain in domain_list | sort %}
  - {{ domain }}
 {%     endfor %}
 
-### Domain-list Device Configuration
+#### Domain-list Device Configuration
 
 ```eos
 {%     include 'eos/domain-list.j2' %}

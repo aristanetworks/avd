@@ -1,0 +1,27 @@
+# This workflow is triggered after a PR is merged or when the title of a PR is
+# changed post merge
+name: "Label for Release Notes"
+
+
+on:
+  pull_request_target:
+    types:
+      - closed
+      - edited # interested in post merge title changes
+
+jobs:
+  ###################################################
+  # Assign labels on merge to generate Release Notes
+  # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#running-your-workflow-when-a-pull-request-merges
+  ###################################################
+  if_merged:
+    name: "PR was merged"
+    if: (github.event.pull_request.merged == true) && ( github.event.action == 'closed' || (github.event.action == 'edited' && github.event.changes.title != null) )
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/rn-pr-labeler-action
+        with:
+          auto_create_label: true

@@ -1,0 +1,12 @@
+---
+# Testing "only_local_vlan_trunk_groups: true" set in hostvars to see
+# that only TG_200 and UPLINK are set on vlans 2xx
+only_local_vlan_trunk_groups: true
+
+# Test using the same custom name on mlag & mlag_l3
+trunk_groups:
+  mlag:
+    name: "CUSTOM_MLAG_TG_NAME"
+  mlag_l3:
+    # Testing using the same name on mlag & mlag_l3
+    name: "CUSTOM_MLAG_TG_NAME"

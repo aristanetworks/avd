@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+allow_other_keys: true
+keys:
+  standard_access_lists:
+    type: list
+    primary_key: name
+    convert_types:
+      - dict
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          required: true
+          description: Access-list Name
+        counters_per_entry:
+          type: bool
+        sequence_numbers:
+          type: list
+          required: true
+          primary_key: sequence
+          convert_types:
+            - dict
+          items:
+            type: dict
+            keys:
+              sequence:
+                type: int
+                required: true
+                description: Sequence ID
+                convert_types:
+                  - str
+              action:
+                type: str
+                required: true
+                description: |
+                  Action as string
+                  Example: "deny ip any any"

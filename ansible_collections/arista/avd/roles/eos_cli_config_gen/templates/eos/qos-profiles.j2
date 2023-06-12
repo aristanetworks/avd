@@ -1,5 +1,5 @@
 {# eos - qos profiles #}
-{% for profile in qos_profiles | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{% for profile in qos_profiles | arista.avd.natural_sort('name') %}
 !
 qos profile {{ profile.name }}
 {%     if profile.trust is arista.avd.defined %}
@@ -21,7 +21,7 @@ qos profile {{ profile.name }}
 {%     if profile.service_policy.type.qos_input is arista.avd.defined %}
    service-policy type qos input {{ profile.service_policy.type.qos_input }}
 {%     endif %}
-{%     for tx_queue in profile.tx_queues | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%     for tx_queue in profile.tx_queues | arista.avd.natural_sort('id') %}
    !
    tx-queue {{ tx_queue.id }}
 {%         if tx_queue.bandwidth_percent is arista.avd.defined %}
@@ -36,7 +36,7 @@ qos profile {{ profile.name }}
       shape rate {{ tx_queue.shape.rate }}
 {%         endif %}
 {%     endfor %}
-{%     for uc_tx_queue in profile.uc_tx_queues | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%     for uc_tx_queue in profile.uc_tx_queues | arista.avd.natural_sort('id') %}
    !
    uc-tx-queue {{ uc_tx_queue.id }}
 {%         if uc_tx_queue.bandwidth_percent is arista.avd.defined %}
@@ -51,7 +51,7 @@ qos profile {{ profile.name }}
       shape rate {{ uc_tx_queue.shape.rate }}
 {%         endif %}
 {%     endfor %}
-{%     for mc_tx_queue in profile.mc_tx_queues | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%     for mc_tx_queue in profile.mc_tx_queues | arista.avd.natural_sort('id') %}
    !
    mc-tx-queue {{ mc_tx_queue.id }}
 {%         if mc_tx_queue.bandwidth_percent is arista.avd.defined %}

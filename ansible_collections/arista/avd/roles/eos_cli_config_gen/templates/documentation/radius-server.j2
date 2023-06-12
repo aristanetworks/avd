@@ -1,0 +1,52 @@
+{# doc - radius servers #}
+{% if radius_servers is arista.avd.defined or radius_server is arista.avd.defined %}
+
+### RADIUS Server
+{%     if radius_server.attribute_32_include_in_access_req is arista.avd.defined %}
+{%         set doc_line = "- Attribute 32 is included in access requests" %}
+{%         if radius_server.attribute_32_include_in_access_req.hostname is arista.avd.defined(true) %}
+{%             set doc_line = doc_line ~ " using hostname" %}
+{%         elif radius_server.attribute_32_include_in_access_req.format is arista.avd.defined %}
+{%             set doc_line = doc_line ~ " using format '" ~ attribute_32_include_in_access_req.format ~ "'" %}
+{%         endif %}
+
+{{ doc_line }}
+{%     endif %}
+{%     if radius_server.dynamic_authorization is arista.avd.defined %}
+{%         set doc_line = "- Dynamic Authorization is enabled" %}
+{%         if radius_server.dynamic_authorization.port is arista.avd.defined %}
+{%             set doc_line = doc_line ~ " on port "~ radius_server.dynamic_authorization.port %}
+{%         endif %}
+{%         if radius_server.dynamic_authorization.tls_ssl_profile is arista.avd.defined %}
+{%             set doc_line = doc_line ~ " with SSL profile " ~ radius_server.dynamic_authorization.tls_ssl_profile %}
+{%         endif %}
+
+{{ doc_line }}
+{%     endif %}
+
+#### RADIUS Server Hosts
+
+| VRF | RADIUS Servers | Timeout | Retransmit |
+| --- | -------------- | ------- | ---------- |
+{#     Old data model #}
+{%     for radius_server in radius_servers | arista.avd.default([]) %}
+{%         set vrf = radius_server.vrf | arista.avd.default('default') %}
+{%         set timeout = radius_server.timeout | arista.avd.default('-') %}
+{%         set retransmit = radius_server.retransmit | arista.avd.default('-') %}
+| {{ vrf }} | {{ radius_server.host }} | {{ timeout }} | {{ retransmit }} |
+{%     endfor %}
+{#     New data model #}
+{%     for host in radius_server.hosts | arista.avd.default([]) %}
+{%         set vrf = host.vrf | arista.avd.default('default') %}
+{%         set timeout = host.timeout | arista.avd.default('-') %}
+{%         set retransmit = host.retransmit | arista.avd.default('-') %}
+| {{ vrf }} | {{ host.host }} | {{ timeout }} | {{ retransmit }} |
+{%     endfor %}
+
+#### RADIUS Server Device Configuration
+
+```eos
+{%     include 'eos/radius-servers.j2' %}
+{%     include 'eos/radius-server.j2' %}
+```
+{% endif %}

@@ -1,49 +1,51 @@
 ---
 - name: "Load CVP device information for {{ inventory_hostname }}"
   tags: [build, provision, online]
-  include_vars: "{{ structured_cvp_dir }}/{{ inventory_hostname }}.yml"
+  ansible.builtin.include_vars: "{{ structured_cvp_dir }}/{{ inventory_hostname }}.yml"
 
 - name: "Create configlets on CVP {{ inventory_hostname }}."
   tags: [provision]
   arista.cvp.cv_configlet_v3:
-    configlets: "{{ CVP_VARS.CVP_CONFIGLETS }}"
-  register: CVP_CONFIGLETS_STATUS
+    configlets: "{{ cvp_vars.cvp_configlets }}"
+  register: cvp_configlets_status
 
 - name: "Execute any configlet generated tasks to update configuration on {{ inventory_hostname }}"
   tags: [apply]
   arista.cvp.cv_task_v3:
-    tasks: "{{ CVP_CONFIGLETS_STATUS.taskIds }}"
+    tasks: "{{ cvp_configlets_status.taskIds }}"
   when:
-    - CVP_CONFIGLETS_STATUS.taskIds | length > 0
+    - cvp_configlets_status.taskIds | length > 0
     - execute_tasks|bool
 
 - name: "Building Containers topology on {{ inventory_hostname }}"
   tags: [provision, containers]
   arista.cvp.cv_container_v3:
-    topology: "{{ CVP_CONTAINERS }}"
+    topology: "{{ cvp_containers }}"
     state: present
-    apply_mode: loose
-  register: CVP_CONTAINER_RESULTS
+    apply_mode: "{{ container_apply_mode }}"
+  register: cvp_container_results
 
 - name: "Execute pending tasks on {{ inventory_hostname }}"
   tags: [apply]
   arista.cvp.cv_task_v3:
-    tasks: "{{ CVP_CONTAINER_RESULTS.taskIds }}"
+    tasks: "{{ cvp_container_results.taskIds }}"
   when:
-    - CVP_CONTAINER_RESULTS.taskIds | length > 0
+    - cvp_container_results.taskIds | length > 0
     - execute_tasks|bool
 
 - name: "Configure devices on {{ inventory_hostname }}"
   tags: [provision, apply]
   arista.cvp.cv_device_v3:
-    devices: "{{ CVP_DEVICES }}"
+    devices: "{{ cvp_devices }}"  # noqa: args[module]
     state: present
-  register: CVP_DEVICES_RESULTS
+    apply_mode: "{{ device_apply_mode }}"
+    search_key: "{{ device_search_key }}"
+  register: cvp_devices_results
 
 - name: "Execute pending tasks on {{ inventory_hostname }}"
   tags: [apply]
   arista.cvp.cv_task_v3:
-    tasks: "{{ CVP_DEVICES_RESULTS.taskIds }}"
+    tasks: "{{ cvp_devices_results.taskIds }}"
   when:
-    - CVP_DEVICES_RESULTS.taskIds | length > 0
+    - cvp_devices_results.taskIds | length > 0
     - execute_tasks|bool

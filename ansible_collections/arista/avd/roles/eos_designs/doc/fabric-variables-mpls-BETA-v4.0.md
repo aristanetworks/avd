@@ -2,7 +2,7 @@
 
 The MPLS design feature is in BETA until the release of AVD 4.0.0. Changes to data models and default behavior for the MPLS design should be expected.
 
-# Fabric Variables for MPLS Design
+## Fabric Variables for MPLS Design
 
 - The MPLS design supports any fabric variables already supported by l3ls-evpn, barring the exceptions outlined in this document.
 - Additionally the MPLS design supports several new fabric variables that are outlined in this document.
@@ -28,6 +28,9 @@ fabric_name: < Fabric_Name >
 # Underlay routing protocol | Required.
 underlay_routing_protocol: < isis-sr | isis-ldp | isis-sr-ldp | ospf-ldp | default -> isis-sr >
 overlay_routing_protocol: < ibgp | default -> ibgp >
+
+# Fabric EVPN encapsulation, should be set to mpls for evpn-mpls scenario
+fabric_evpn_encapsulation: < vxlan | mpls | default -> vxlan >
 
 # Underlay ISIS parameters
 isis_default_is_type: < level-1 | level-2 | level-1-2 | default -> level-1-2 >

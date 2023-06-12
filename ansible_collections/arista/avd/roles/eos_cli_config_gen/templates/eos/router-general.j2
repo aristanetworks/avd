@@ -18,7 +18,7 @@ router general
 {%     if delimiter is arista.avd.defined(true) and router_general.vrfs is arista.avd.defined %}
    !
 {%     endif %}
-{%     for vrf in router_general.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for vrf in router_general.vrfs | arista.avd.natural_sort('name') %}
    vrf {{ vrf.name }}
 {%         for leak_route in vrf.leak_routes | arista.avd.natural_sort %}
 {%             if leak_route.source_vrf is arista.avd.defined and leak_route.subscribe_policy is arista.avd.defined %}
@@ -30,6 +30,10 @@ router general
       routes dynamic prefix-list {{ dynamic_prefix_list.name }}
 {%             endif %}
 {%         endfor %}
+{#    EOS issue #}
+      exit
    !
 {%     endfor %}
+{#    EOS issue #}
+   exit
 {% endif %}

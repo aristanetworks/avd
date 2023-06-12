@@ -1,16 +1,23 @@
 {# eos - local users #}
 {% if local_users is arista.avd.defined %}
 !
-{%     for local_user in local_users | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for local_user in local_users | arista.avd.natural_sort('name') %}
 {%         set local_user_cli = "username " ~ local_user.name %}
+{%         if local_user.disabled is arista.avd.defined(true) %}
+no {{ local_user_cli }}
+{%             continue %}
+{%         endif %}
 {%         if local_user.privilege is arista.avd.defined %}
 {%             set local_user_cli = local_user_cli ~ " privilege " ~ local_user.privilege %}
 {%         endif %}
 {%         if local_user.role is arista.avd.defined %}
 {%             set local_user_cli = local_user_cli ~ " role " ~ local_user.role %}
 {%         endif %}
+{%         if local_user.shell is arista.avd.defined %}
+{%             set local_user_cli = local_user_cli ~ " shell " ~ local_user.shell %}
+{%         endif %}
 {%         if local_user.sha512_password is arista.avd.defined %}
-{%             set local_user_cli = local_user_cli ~ " secret sha512 " ~ local_user.sha512_password %}
+{%             set local_user_cli = local_user_cli ~ " secret sha512 " ~ local_user.sha512_password | arista.avd.hide_passwords(hide_passwords) %}
 {%         elif local_user.no_password is arista.avd.defined(true) %}
 {%             set local_user_cli = local_user_cli ~ " nopassword" %}
 {%         endif %}

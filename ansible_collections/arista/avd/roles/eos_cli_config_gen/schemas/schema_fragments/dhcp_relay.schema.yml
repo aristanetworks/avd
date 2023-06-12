@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  dhcp_relay:
+    type: dict
+    keys:
+      servers:
+        type: list
+        items:
+          type: str
+          description: Server IP or Hostname
+      tunnel_requests_disabled:
+        type: bool

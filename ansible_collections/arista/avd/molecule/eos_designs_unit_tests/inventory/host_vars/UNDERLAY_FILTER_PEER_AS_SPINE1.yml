@@ -1,0 +1,3 @@
+---
+# This device is not participating in EVPN, so we _will_ see a RM added to underlay from "underlay_filter_peer_as"
+type: spine

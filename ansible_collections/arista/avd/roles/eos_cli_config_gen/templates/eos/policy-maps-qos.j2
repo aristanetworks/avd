@@ -1,8 +1,8 @@
-{# QOS policy-map #}
-{% for policy_map in policy_maps.qos | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{# eos - policy map qos #}
+{% for policy_map in policy_maps.qos | arista.avd.natural_sort('name') %}
 !
 policy-map type quality-of-service {{ policy_map.name }}
-{%     for class in policy_map.classes | arista.avd.convert_dicts('name') | arista.avd.default([]) %}
+{%     for class in policy_map.classes | arista.avd.default([]) %}
 {%         if loop.index > 1 %}
    !
 {%         endif %}

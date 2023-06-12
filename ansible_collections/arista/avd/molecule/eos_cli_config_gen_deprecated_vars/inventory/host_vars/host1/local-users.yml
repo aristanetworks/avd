@@ -1,0 +1,9 @@
+### Local Users ###
+
+# Testing local_users as dict of dict
+# Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    no_password: true

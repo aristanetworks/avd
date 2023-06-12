@@ -22,5 +22,4 @@ a python script to generate the toc (table of contents) of markdown
   - [Ussage xx](#ussage-xx)
   - [todo2](#todo2)
 - [todo3](#todo3)
-
 <avd_unit_test_tag_end>

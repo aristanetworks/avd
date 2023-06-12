@@ -1,4 +1,4 @@
-{# eos - domain-list #}
+{# eos - domain list #}
 {% if domain_list is arista.avd.defined %}
 {%     for domain in domain_list | arista.avd.natural_sort %}
 ip domain-list {{ domain }}

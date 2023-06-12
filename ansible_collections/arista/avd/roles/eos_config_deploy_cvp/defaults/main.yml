@@ -32,8 +32,20 @@ configlets_prefix: 'AVD-{{ fabric_name }}-'
 # State management to know if module should create/update or delete fabric
 state: 'present'
 
-# CVP Deployment methodology, whether to exectute or stage tasks
+# CVP Deployment methodology, whether to execute or stage tasks
 execute_tasks: false
 
 # Version of the Cloudvision collection to use for upload
-cv_collection: v1
+cv_collection: v3
+
+# For "inventory_to_container" the inventory is read from memory unless 'avd_inventory_to_container_file' is set
+avd_inventory_to_container_file: null
+
+# Apply mode for cv_container_v3
+container_apply_mode: "loose"
+
+# Apply mode for cv_device_v3
+device_apply_mode: "loose"
+
+# Search key for cv_device_v3 - 'fqdn', 'hostname', 'serialNumber'
+device_search_key: "hostname"

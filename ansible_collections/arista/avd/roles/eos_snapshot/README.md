@@ -1,41 +1,27 @@
-# Ansible Role: eos_snapshot
-
-**Table of Contents:**
-
-- [Ansible Role: eos_snapshot](#ansible-role-eos_snapshot)
-  - [Overview](#overview)
-  - [Role Inputs and Outputs](#role-inputs-and-outputs)
-  - [Default Variables](#default-variables)
-  - [Requirements](#requirements)
-  - [Example Playbook](#example-playbook)
-  - [Input example](#input-example)
-    - [inventory/inventory.ini](#inventoryinventoryini)
-    - [inventory/group_vars/DC1.yml](#inventorygroup_varsdc1yml)
-  - [Usage example](#usage-example)
-  - [License](#license)
+# eos_snapshot
 
 ## Overview
 
 **eos_snapshot** is a role leveraged to collect commands on Arista EOS devices and generate a report.
-It supports reports with the following format: text, markdown, json and yaml.
+It supports reports with the following format: text, markdown, JSON, and YAML.
 
 ## Role Inputs and Outputs
 
-Figure 1 below provides a visualization of the roles inputs, and outputs and tasks.
+Figure 1 below visualizes the role's inputs, outputs, and tasks.
 
-![Figure 1: Ansible Role eos_snapshot](media/role_eos_snapshot.png)
+![Figure 1: Ansible Role eos_snapshot](../../docs/_media/eos_snapshot_dark.svg#only-dark)
+![Figure 1: Ansible Role eos_snapshot](../../docs/_media/eos_snapshot_light.svg#only-light)
 
 **Inputs:**
 
-Ansible inventory to connect to EOS devices.
-The default variables can be changed to select a report format and include others commands.
+Ansible inventory to connect to EOS devices. The default variables can be changed to select a report format and include others commands.
 
 **Outputs:**
 
-- text files: one file per device and show command
-- markdown file: one report per device. There is a table of content at the begining of the file.
-- json file: one report per fabric
-- yaml file: one report per fabric
+- Text files: one file per device and show command
+- Markdown file: one report per device
+- JSON file: one report per fabric
+- YAML file: one report per fabric
 
 **Tasks:**
 
@@ -92,7 +78,7 @@ Requirements are located here: [avd-requirements](../../README.md#Requirements)
     - arista.avd
   tasks:
     - name: Collect commands
-      import_role:
+      ansible.builtin.import_role:
         name: eos_snapshot
 ```
 
@@ -141,7 +127,7 @@ output_format:
  # - json
  # - yaml
 
-commands_to_collect:
+commands_list:
   - show lldp neighbors
   - show ip interface brief
   - show interfaces description

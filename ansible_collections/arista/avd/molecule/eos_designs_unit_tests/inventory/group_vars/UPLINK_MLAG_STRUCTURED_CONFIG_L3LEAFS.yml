@@ -1,0 +1,38 @@
+type: l3leaf
+
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 2
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    uplink_interfaces: ['Ethernet1']
+    uplink_switches: ['UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1']
+    uplink_ipv4_pool: 172.31.255.0/24
+    uplink_structured_config:
+      pim:
+        ipv4:
+          sparse_mode: true
+    mlag_peer_vlan_structured_config:
+      description: "mlag_peer_vlan_structured_config_override"
+    mlag_peer_l3_vlan_structured_config:
+      pim:
+        ipv4:
+          sparse_mode: true
+    mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 4096
+  node_groups:
+    - group: DC1_LEAF1
+      bgp_as: 65101
+      nodes:
+        - name: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A
+          id: 1
+          mgmt_ip: 192.168.200.105/24
+          uplink_switch_interfaces: [ Ethernet1 ]
+        - name: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B
+          id: 2
+          mgmt_ip: 192.168.200.107/24
+          uplink_switch_interfaces: [ Ethernet2 ]

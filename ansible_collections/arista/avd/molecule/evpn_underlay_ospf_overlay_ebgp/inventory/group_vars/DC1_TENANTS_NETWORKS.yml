@@ -5,13 +5,13 @@ network_services_keys:
   - name: tenant_group1
 
 tenant_group1:
-  fake_tenant:
+  - name: Tenant_A
     mac_vrf_vni_base: 20000
     vrfs:
-      Tenant_B_OP_Zone:
+      - name: Tenant_B_OP_Zone
         vrf_vni: 20
         svis:
-          210:
+          - id: 210
             name: Tenant_B_OP_Zone_1
             tags: ['opzone']
             enabled: True

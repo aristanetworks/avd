@@ -1,0 +1,107 @@
+---
+### group_vars/DC1_NETWORK_SERVICES.yml
+
+tenants:
+  - name: MY_FABRIC
+    vrfs:
+      - name: default
+        svis:
+          - id: 110
+            name: 'IDF1-Data'
+            tags: ["110"]
+            enabled: true
+            ip_virtual_router_addresses:
+              - 10.1.10.1
+            nodes:
+              - node: SPINE1
+                ip_address: 10.1.10.2/23
+              - node: SPINE2
+                ip_address: 10.1.10.3/23
+          - id: 120
+            name: 'IDF1-Voice'
+            tags: ["120"]
+            enabled: true
+            ip_virtual_router_addresses:
+              - 10.1.20.1
+            nodes:
+              - node: SPINE1
+                ip_address: 10.1.20.2/23
+              - node: SPINE2
+                ip_address: 10.1.20.3/23
+          - id: 130
+            name: 'IDF1-Guest'
+            tags: ["130"]
+            enabled: true
+            ip_virtual_router_addresses:
+              - 10.1.30.1
+            nodes:
+              - node: SPINE1
+                ip_address: 10.1.30.2/23
+              - node: SPINE2
+                ip_address: 10.1.30.3/23
+          - id: 210
+            name: 'IDF2-Data'
+            tags: ["210"]
+            enabled: true
+            ip_virtual_router_addresses:
+              - 10.2.10.1
+            nodes:
+              - node: SPINE1
+                ip_address: 10.2.10.2/23
+              - node: SPINE2
+                ip_address: 10.2.10.3/23
+          - id: 220
+            name: 'IDF2-Voice'
+            tags: ["220"]
+            enabled: true
+            ip_virtual_router_addresses:
+              - 10.2.20.1
+            nodes:
+              - node: SPINE1
+                ip_address: 10.2.20.2/23
+              - node: SPINE2
+                ip_address: 10.2.20.3/23
+          - id: 230
+            name: 'IDF2-Guest'
+            tags: ["230"]
+            enabled: true
+            ip_virtual_router_addresses:
+              - 10.2.30.1
+            nodes:
+              - node: SPINE1
+                ip_address: 10.2.30.2/23
+              - node: SPINE2
+                ip_address: 10.2.30.3/23
+          - id: 310
+            name: 'IDF3-Data'
+            tags: ["310"]
+            enabled: true
+            ip_virtual_router_addresses:
+              - 10.3.10.1
+            nodes:
+              - node: SPINE1
+                ip_address: 10.3.10.2/23
+              - node: SPINE2
+                ip_address: 10.3.10.3/23
+          - id: 320
+            name: 'IDF3-Voice'
+            tags: ["320"]
+            enabled: true
+            ip_virtual_router_addresses:
+              - 10.3.20.1
+            nodes:
+              - node: SPINE1
+                ip_address: 10.3.20.2/23
+              - node: SPINE2
+                ip_address: 10.3.20.3/23
+          - id: 330
+            name: 'IDF3-Guest'
+            tags: ["330"]
+            enabled: true
+            ip_virtual_router_addresses:
+              - 10.3.30.1
+            nodes:
+              - node: SPINE1
+                ip_address: 10.3.30.2/23
+              - node: SPINE2
+                ip_address: 10.3.30.3/23

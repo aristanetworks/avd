@@ -1,0 +1,49 @@
+---
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.250.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.249.0/24
+    mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    mlag_peer_l3_ipv4_pool: 10.255.247.0/24
+    mlag_peer_ipv4_pool: 10.255.248.0/24
+  node_groups:
+    # Testing regular trunk groups behavior
+    # Vlans are filtered with tags using node_group name
+    # enable_trunk_groups: true is set in TRUNK_GROUP_TESTS.yml
+    - group: TRUNK_GROUP_TESTS_L3LEAF1
+      filter:
+        tags: []
+        # Since this group does not have filter.only_vlans_in_use, we have to avoid the TENANT_WITH_DUPLICATE_VLANS tenant.
+        tenants: [TRUNK_GROUP_TESTS]
+      nodes:
+        - name: trunk-group-tests-l3leaf1a
+          id: 1
+          bgp_as: 65001
+
+        # Also testing "only_local_vlan_trunk_groups: true" set in hostvars to see that only
+        # locally used trunk-groups are set on vlans even without "filter.only_vlans_in_use: true"
+        - name: trunk-group-tests-l3leaf1b
+          id: 2
+          bgp_as: 65001
+
+    # Testing "only_vlans_in_use" filter in combination with trunk groups
+    # l3leaf will only get the vlans configured which are being used by local ports or on a downstream l2leaf.
+    # To see the full effect, the downstream l2leafs have also been configured with "only_vlans_in_use"
+    # No endpoints are connected directly to the l3leaf, so only the vlans 2xx used on the l2leaf will be configured
+    - group: TRUNK_GROUP_TESTS_L3LEAF2
+      filter:
+        only_vlans_in_use: true
+      nodes:
+        - name: trunk-group-tests-l3leaf2a
+          id: 3
+          bgp_as: 65002
+
+        # Also Testing "only_local_vlan_trunk_groups: true" set in hostvars to see
+        # that only TG_200 and UPLINK are set on vlans 2xx
+        - name: trunk-group-tests-l3leaf2b
+          id: 4
+          bgp_as: 65002

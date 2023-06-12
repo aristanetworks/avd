@@ -1,0 +1,1 @@
+{{ switch_vtep_loopback_ipv4_pool | ansible.utils.ipaddr('network') | ansible.utils.ipmath(mlag_primary_id + loopback_ipv4_offset + ip_offset_20) }}

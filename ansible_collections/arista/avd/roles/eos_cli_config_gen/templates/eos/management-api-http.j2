@@ -1,4 +1,4 @@
-{# Management API HTTP #}
+{# eos - management api http #}
 {% if management_api_http is arista.avd.defined %}
 !
 management api http-commands
@@ -21,7 +21,7 @@ management api http-commands
    no default-services
 {%     endif %}
    no shutdown
-{%     for vrf in management_api_http.enable_vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for vrf in management_api_http.enable_vrfs | arista.avd.natural_sort('name') %}
    !
    vrf {{ vrf.name }}
       no shutdown

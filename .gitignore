@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+.j2cache/
 
 # C extensions
 *.so
@@ -119,7 +120,6 @@ examples/evpn-l3ls-cvp-deployment/collections
 # DS_Store
 *.DS_Store
 
-
 # mkdocs process
 ansible_collections/arista/avd/docs/_build/*.rst
 ansible_collections/arista/avd/docs/media/*
@@ -129,5 +129,11 @@ ansible_collections/arista/avd/docs/*.rst
 # Molecule AVD build folders
 ansible_collections/arista/avd/molecule/*/config_backup
 
+# Examples config-backup folder
+ansible_collections/arista/avd/examples/*/config_backup
+
 # Ignore TAR GZ files
 *.tar.gz
+
+# Ansible galaxy-importer
+importer_result.json

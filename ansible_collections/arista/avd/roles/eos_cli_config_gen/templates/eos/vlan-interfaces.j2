@@ -1,5 +1,5 @@
-{# eos - VLAN Interfaces #}
-{% for vlan_interface in vlan_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{# eos - vlan interfaces #}
+{% for vlan_interface in vlan_interfaces | arista.avd.natural_sort('name') %}
 !
 interface {{ vlan_interface.name }}
 {%     if vlan_interface.description is arista.avd.defined %}
@@ -34,6 +34,9 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.ip_proxy_arp is arista.avd.defined(true) %}
    ip proxy-arp
 {%     endif %}
+{%     if vlan_interface.ip_directed_broadcast is arista.avd.defined(true) %}
+   ip directed-broadcast
+{%     endif %}
 {%     if vlan_interface.ip_address is arista.avd.defined %}
    ip address {{ vlan_interface.ip_address }}
 {%         if vlan_interface.ip_address_secondaries is arista.avd.defined %}
@@ -42,7 +45,7 @@ interface {{ vlan_interface.name }}
 {%             endfor %}
 {%         endif %}
 {%     endif %}
-{%     for ip_helper in vlan_interface.ip_helpers | arista.avd.convert_dicts('ip_helper') | arista.avd.natural_sort('ip_helper') %}
+{%     for ip_helper in vlan_interface.ip_helpers | arista.avd.natural_sort('ip_helper') %}
 {%         set ip_helper_cli = "ip helper-address " ~ ip_helper.ip_helper %}
 {%         if ip_helper.vrf is arista.avd.defined %}
 {%             set ip_helper_cli = ip_helper_cli ~ " vrf " ~ ip_helper.vrf %}
@@ -52,8 +55,26 @@ interface {{ vlan_interface.name }}
 {%         endif %}
    {{ ip_helper_cli }}
 {%     endfor %}
+{%     for destination in vlan_interface.ipv6_dhcp_relay_destinations | arista.avd.natural_sort('address') %}
+{%         set destination_cli = "ipv6 dhcp relay destination " ~ destination.address %}
+{%         if destination.vrf is arista.avd.defined %}
+{%             set destination_cli = destination_cli ~ " vrf " ~ destination.vrf %}
+{%         endif %}
+{%         if destination.local_interface is arista.avd.defined %}
+{%             set destination_cli = destination_cli ~ " local-interface " ~ destination.local_interface %}
+{%         elif destination.source_address is arista.avd.defined %}
+{%             set destination_cli = destination_cli ~ " source-address " ~ destination.source_address %}
+{%         endif %}
+{%         if destination.link_address is arista.avd.defined %}
+{%             set destination_cli = destination_cli ~ " link-address " ~ destination.link_address %}
+{%         endif %}
+   {{ destination_cli }}
+{%     endfor %}
 {%     if vlan_interface.ip_igmp is arista.avd.defined(true) %}
    ip igmp
+{%     endif %}
+{%     if vlan_interface.ip_igmp_version is arista.avd.defined %}
+   ip igmp version {{ vlan_interface.ip_igmp_version }}
 {%     endif %}
 {%     if vlan_interface.ipv6_enable is arista.avd.defined(true) %}
    ipv6 enable
@@ -67,6 +88,9 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.ipv6_address_virtual is arista.avd.defined %}
    ipv6 address virtual {{ vlan_interface.ipv6_address_virtual }}
 {%     endif %}
+{%     for ipv6_address_virtual in vlan_interface.ipv6_address_virtuals | arista.avd.natural_sort %}
+   ipv6 address virtual {{ ipv6_address_virtual }}
+{%     endfor %}
 {%     if vlan_interface.ipv6_nd_ra_disabled is arista.avd.defined(true) %}
    ipv6 nd ra disabled
 {%     endif %}
@@ -74,7 +98,7 @@ interface {{ vlan_interface.name }}
    ipv6 nd managed-config-flag
 {%     endif %}
 {%     if vlan_interface.ipv6_nd_prefixes is arista.avd.defined %}
-{%         for prefix in vlan_interface.ipv6_nd_prefixes | arista.avd.convert_dicts('ipv6_prefix') %}
+{%         for prefix in vlan_interface.ipv6_nd_prefixes %}
 {%             set ipv6_nd_prefix_cli = "ipv6 nd prefix " ~ prefix.ipv6_prefix %}
 {%             if prefix.valid_lifetime is arista.avd.defined %}
 {%                 set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " " ~ prefix.valid_lifetime %}
@@ -88,12 +112,45 @@ interface {{ vlan_interface.name }}
    {{ ipv6_nd_prefix_cli }}
 {%         endfor %}
 {%     endif %}
-{%     if vlan_interface.multicast.ipv4.source_route_export.enabled is arista.avd.defined(true) %}
-{%         if vlan_interface.multicast.ipv4.source_route_export.administrative_distance is arista.avd.defined %}
-   multicast ipv4 source route export {{ vlan_interface.multicast.ipv4.source_route_export.administrative_distance }}
-{%         else %}
-   multicast ipv4 source route export
+{%     if vlan_interface.multicast is arista.avd.defined %}
+{%         if vlan_interface.multicast.ipv4.boundaries is arista.avd.defined %}
+{%             for boundary in vlan_interface.multicast.ipv4.boundaries %}
+{%                 set boundary_cli = "multicast ipv4 boundary " ~ boundary.boundary %}
+{%                 if boundary.out is arista.avd.defined(true) %}
+{%                     set boundary_cli = boundary_cli ~ " out" %}
+{%                 endif %}
+   {{ boundary_cli }}
+{%             endfor %}
 {%         endif %}
+{%         if vlan_interface.multicast.ipv6.boundaries is arista.avd.defined %}
+{%             for boundary in vlan_interface.multicast.ipv6.boundaries %}
+   multicast ipv6 boundary {{ boundary.boundary }} out
+{%             endfor %}
+{%         endif %}
+{%         if vlan_interface.multicast.ipv4.source_route_export.enabled is arista.avd.defined(true) %}
+{%             if vlan_interface.multicast.ipv4.source_route_export.administrative_distance is arista.avd.defined %}
+   multicast ipv4 source route export {{ vlan_interface.multicast.ipv4.source_route_export.administrative_distance }}
+{%             else %}
+   multicast ipv4 source route export
+{%             endif %}
+{%         endif %}
+{%         if vlan_interface.multicast.ipv6.source_route_export.enabled is arista.avd.defined(true) %}
+{%             if vlan_interface.multicast.ipv6.source_route_export.administrative_distance is arista.avd.defined %}
+   multicast ipv6 source route export {{ vlan_interface.multicast.ipv6.source_route_export.administrative_distance }}
+{%             else %}
+   multicast ipv6 source route export
+{%             endif %}
+{%         endif %}
+{%         if vlan_interface.multicast.ipv4.static is arista.avd.defined(true) %}
+   multicast ipv4 static
+{%         endif %}
+{%         if vlan_interface.multicast.ipv6.static is arista.avd.defined(true) %}
+   multicast ipv6 static
+{%         endif %}
+{%     endif %}
+{%     if vlan_interface.ip_nat is arista.avd.defined %}
+{%         set interface_ip_nat = vlan_interface.ip_nat %}
+{%         include 'eos/interface-ip-nat.j2' %}
 {%     endif %}
 {%     if vlan_interface.access_group_in is arista.avd.defined %}
    ip access-group {{ vlan_interface.access_group_in }} in
@@ -124,12 +181,12 @@ interface {{ vlan_interface.name }}
 {%         endif %}
 {%     endif %}
 {%     if vlan_interface.ospf_authentication_key is arista.avd.defined %}
-   ip ospf authentication-key 7 {{ vlan_interface.ospf_authentication_key }}
+   ip ospf authentication-key 7 {{ vlan_interface.ospf_authentication_key | arista.avd.hide_passwords(hide_passwords) }}
 {%     endif %}
-{%     for ospf_message_digest_key in vlan_interface.ospf_message_digest_keys | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%     for ospf_message_digest_key in vlan_interface.ospf_message_digest_keys | arista.avd.natural_sort('id') %}
 {%         if ospf_message_digest_key.hash_algorithm is arista.avd.defined and
               ospf_message_digest_key.key is arista.avd.defined %}
-   ip ospf message-digest-key {{ ospf_message_digest_key.id }} {{ ospf_message_digest_key.hash_algorithm }} 7 {{ ospf_message_digest_key.key }}
+   ip ospf message-digest-key {{ ospf_message_digest_key.id }} {{ ospf_message_digest_key.hash_algorithm }} 7 {{ ospf_message_digest_key.key | arista.avd.hide_passwords(hide_passwords) }}
 {%         endif %}
 {%     endfor %}
 {%     if vlan_interface.pim.ipv4.sparse_mode is arista.avd.defined(true) %}
@@ -228,10 +285,12 @@ interface {{ vlan_interface.name }}
 {%             endfor %}
 {%         endfor %}
 {%     endif %}
-{%     if vlan_interface.ip_attached_host_route_export.distance is arista.avd.defined %}
-   ip attached-host route export {{ vlan_interface.ip_attached_host_route_export.distance }}
-{%     elif vlan_interface.ip_attached_host_route_export is arista.avd.defined %}
-   ip attached-host route export
+{%     if vlan_interface.ip_attached_host_route_export.enabled is arista.avd.defined(true) %}
+{%         set ip_attached_host_route_export_cli = "ip attached-host route export" %}
+{%         if vlan_interface.ip_attached_host_route_export.distance is arista.avd.defined %}
+{%             set ip_attached_host_route_export_cli = ip_attached_host_route_export_cli ~ " " ~ vlan_interface.ip_attached_host_route_export.distance %}
+{%         endif %}
+   {{ ip_attached_host_route_export_cli }}
 {%     endif %}
 {%     if vlan_interface.bfd.interval is arista.avd.defined and
           vlan_interface.bfd.min_rx is arista.avd.defined and

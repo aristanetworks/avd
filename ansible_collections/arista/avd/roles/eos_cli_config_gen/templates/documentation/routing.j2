@@ -1,0 +1,46 @@
+{% if service_routing_configuration_bgp is arista.avd.defined
+       or service_routing_protocols_model is arista.avd.defined
+       or ip_virtual_router_mac_address is arista.avd.defined
+       or ip_routing is arista.avd.defined
+       or vrfs is arista.avd.defined
+       or ipv6_unicast_routing is arista.avd.defined
+       or static_routes is arista.avd.defined
+       or ipv6_static_routes is arista.avd.defined
+       or arp is arista.avd.defined
+       or router_general is arista.avd.defined
+       or router_traffic_engineering is arista.avd.defined
+       or router_ospf is arista.avd.defined
+       or router_isis is arista.avd.defined
+       or router_bgp is arista.avd.defined
+       or policy_maps.pbr is arista.avd.defined %}
+
+## Routing
+{## Service Routing Configuration #}
+{%     include 'documentation/service-routing-configuration-bgp.j2' %}
+{## Service Routing Protocols Model #}
+{%     include 'documentation/service-routing-protocols-model.j2' %}
+{## Virtual Router MAC Address #}
+{%     include 'documentation/ip-virtual-router-mac-address.j2' %}
+{## IP Routing #}
+{%     include 'documentation/ip-routing.j2' %}
+{## IPv6 Routing #}
+{%     include 'documentation/ipv6-unicast-routing.j2' %}
+{## Static Routes #}
+{%     include 'documentation/static-routes.j2' %}
+{## IPv6 Static Routes #}
+{%     include 'documentation/ipv6-static-routes.j2' %}
+{## ARP #}
+{%     include 'documentation/arp.j2' %}
+{## Router General #}
+{%     include 'documentation/router-general.j2' %}
+{## Router Traffic Engineering #}
+{%     include 'documentation/router-traffic-engineering.j2' %}
+{## Router OSPF #}
+{%     include 'documentation/router-ospf.j2' %}
+{## Router ISIS #}
+{%     include 'documentation/router-isis.j2' %}
+{## Router BGP #}
+{%     include 'documentation/router-bgp.j2' %}
+{## PBR Policy Maps ##}
+{%     include 'documentation/policy-maps-pbr.j2' %}
+{% endif %}

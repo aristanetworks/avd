@@ -1,17 +1,18 @@
+{# doc - router bgp #}
 {% if router_bgp is arista.avd.defined %}
 
-## Router BGP
+### Router BGP
 
-### Router BGP Summary
+#### Router BGP Summary
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| {{ router_bgp.as }}|  {{ router_bgp.router_id | arista.avd.default('-') }} |
+| {{ router_bgp.as | arista.avd.default('-') }}|  {{ router_bgp.router_id | arista.avd.default('-') }} |
 {%     if router_bgp.bgp_cluster_id is arista.avd.defined %}
 
 | BGP AS | Cluster ID |
 | ------ | --------- |
-| {{ router_bgp.as }}|  {{ router_bgp.bgp_cluster_id }} |
+| {{ router_bgp.as | arista.avd.default('-') }}|  {{ router_bgp.bgp_cluster_id }} |
 {%     endif %}
 {%     if router_bgp.bgp_defaults is arista.avd.defined or router_bgp.bgp is arista.avd.defined %}
 
@@ -20,6 +21,24 @@
 {%         for bgp_default in router_bgp.bgp_defaults | arista.avd.default([]) %}
 | {{ bgp_default }} |
 {%         endfor %}
+{%         if router_bgp.graceful_restart.enabled is arista.avd.defined(true) %}
+{%             if router_bgp.graceful_restart.restart_time is arista.avd.defined %}
+| graceful-restart restart-time {{ router_bgp.graceful_restart.restart_time }} |
+{%             endif %}
+{%             if router_bgp.graceful_restart.stalepath_time is arista.avd.defined %}
+| graceful-restart stalepath-time {{ router_bgp.graceful_restart.stalepath_time }} |
+{%             endif %}
+| graceful-restart |
+{%         endif %}
+{%         if router_bgp.graceful_restart_helper.enabled is arista.avd.defined(false) %}
+| no graceful-restart-helper |
+{%         elif router_bgp.graceful_restart_helper.enabled is arista.avd.defined(true) %}
+{%             if router_bgp.graceful_restart_helper.restart_time is arista.avd.defined %}
+| graceful-restart-helper restart-time {{ router_bgp.graceful_restart_helper.restart_time }} |
+{%             elif router_bgp.graceful_restart_helper.long_lived is arista.avd.defined(true) %}
+| graceful-restart-helper long-lived |
+{%             endif %}
+{%         endif %}
 {%         if router_bgp.bgp.bestpath.d_path is arista.avd.defined(true) %}
 | bgp bestpath d-path |
 {%         endif %}
@@ -28,6 +47,16 @@
 {%         endif %}
 {%         if router_bgp.updates.wait_install is arista.avd.defined(true) %}
 | update wait-install |
+{%         endif %}
+{%         if router_bgp.bgp.default.ipv4_unicast is arista.avd.defined(true) %}
+| bgp default ipv4-unicast |
+{%         elif router_bgp.bgp.default.ipv4_unicast is arista.avd.defined(false) %}
+| no bgp default ipv4-unicast |
+{%         endif %}
+{%         if router_bgp.bgp.default.ipv4_unicast_transport_ipv6 is arista.avd.defined(true) %}
+| bgp default ipv4-unicast transport ipv6 |
+{%         elif router_bgp.bgp.default.ipv4_unicast_transport_ipv6 is arista.avd.defined(false) %}
+| no bgp default ipv4-unicast transport ipv6 |
 {%         endif %}
 {%         if router_bgp.distance.external_routes is arista.avd.defined %}
 {%             set distance_cli = "distance bgp " ~ router_bgp.distance.external_routes %}
@@ -43,12 +72,19 @@
 {%             endif %}
 | {{ paths_cli }} |
 {%         endif %}
+{%         if router_bgp.bgp.route_reflector_preserve_attributes.enabled is arista.avd.defined(true) %}
+{%             set rr_preserve_attributes_cli = 'bgp route-reflector preserve-attributes' %}
+{%             if router_bgp.bgp.route_reflector_preserve_attributes.always is arista.avd.defined(true) %}
+{%                 set rr_preserve_attributes_cli = rr_preserve_attributes_cli ~ ' always' %}
+{%             endif %}
+| {{ rr_preserve_attributes_cli }} |
+{%         endif %}
 {%     endif %}
 {# Check if listen_ranges exist under router_bgp.vrfs #}
 {%     set temp = namespace() %}
 {%     set temp.bgp_vrf_listen_ranges = false %}
 {%     if router_bgp.vrfs is arista.avd.defined %}
-{%         for vrf in router_bgp.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         for vrf in router_bgp.vrfs | arista.avd.natural_sort('name') %}
 {%             if vrf.listen_ranges is arista.avd.defined %}
 {%                 set temp.bgp_vrf_listen_ranges = true %}
 {%                 break %}
@@ -57,7 +93,7 @@
 {%     endif %}
 {%     if router_bgp.listen_ranges is arista.avd.defined or temp.bgp_vrf_listen_ranges is arista.avd.defined(true) %}
 
-### Router BGP Listen Ranges
+#### Router BGP Listen Ranges
 
 | Prefix | Peer-ID Include Router ID | Peer Group | Peer-Filter | Remote-AS | VRF |
 | ------ | ------------------------- | ---------- | ----------- | --------- | --- |
@@ -74,7 +110,7 @@
 {%             endfor %}
 {%         endif %}
 {# listen_ranges under router_bgp.vrfs #}
-{%         for vrf in router_bgp.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         for vrf in router_bgp.vrfs | arista.avd.natural_sort('name') %}
 {%             if vrf.listen_ranges is arista.avd.defined %}
 {%                 for listen_range in vrf.listen_ranges | arista.avd.natural_sort('peer_group') if listen_range.peer_group is arista.avd.defined and listen_range.prefix is arista.avd.defined
                    and (listen_range.peer_filter is arista.avd.defined or listen_range.remote_as is arista.avd.defined) %}
@@ -90,10 +126,10 @@
 {%     endif %}
 {%     if router_bgp.peer_groups is arista.avd.defined %}
 
-### Router BGP Peer Groups
-{%         for peer_group in router_bgp.peer_groups | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+#### Router BGP Peer Groups
+{%         for peer_group in router_bgp.peer_groups | arista.avd.natural_sort('name') %}
 
-#### {{ peer_group.name }}
+##### {{ peer_group.name }}
 
 | Settings | Value |
 | -------- | ----- |
@@ -160,6 +196,9 @@
 {%             if peer_group.default_originate.enabled is arista.avd.defined(true) %}
 | Default originate | True |
 {%             endif %}
+{%             if peer_group.session_tracker is arista.avd.defined %}
+| Session tracker | {{ peer_group.session_tracker }} |
+{%             endif %}
 {%             if peer_group.send_community is arista.avd.defined %}
 | Send community | {{ peer_group.send_community }} |
 {%             endif %}
@@ -185,12 +224,22 @@
 {%                 endif %}
 | Maximum routes | {{ value }} |
 {%             endif %}
+{%             if peer_group.link_bandwidth.enabled is arista.avd.defined(true) %}
+{%                 set value = "enabled" %}
+{%                 if peer_group.link_bandwidth.default is arista.avd.defined %}
+{%                     set value = "default " ~ peer_group.link_bandwidth.default %}
+{%                 endif %}
+| Link-Bandwidth | {{ value }} |
+{%             endif %}
+{%             if peer_group.passive is arista.avd.defined(true) %}
+| Passive | True |
+{%             endif %}
 {%         endfor %}
 {%     endif %}
 {%     set temp = namespace() %}
 {%     set temp.bgp_vrf_neighbors = false %}
 {%     if router_bgp.vrfs is arista.avd.defined %}
-{%         for vrf in router_bgp.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         for vrf in router_bgp.vrfs | arista.avd.natural_sort('name') %}
 {%             if vrf.neighbors is arista.avd.defined %}
 {%                 set temp.bgp_vrf_neighbors = true %}
 {%                 break %}
@@ -199,16 +248,15 @@
 {%     endif %}
 {%     if router_bgp.neighbors is arista.avd.defined or temp.bgp_vrf_neighbors is arista.avd.defined(true) %}
 
-### BGP Neighbors
+#### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- |
-{%         for neighbor in router_bgp.neighbors | arista.avd.convert_dicts('ip_address') | arista.avd.natural_sort('ip_address') %}
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
+{%         for neighbor in router_bgp.neighbors | arista.avd.natural_sort('ip_address') %}
 {%             if neighbor.peer_group is arista.avd.defined %}
 {%                 set inherited = namespace() %}
 {%                 set neighbor_peer_group = neighbor.peer_group %}
 {%                 set peer_group = router_bgp.peer_groups | arista.avd.default([]) |
-                                                             arista.avd.convert_dicts('name') |
                                                              selectattr('name', 'arista.avd.defined', neighbor_peer_group) |
                                                              first %}
 {%                 if peer_group.remote_as is arista.avd.defined %}
@@ -235,6 +283,12 @@
 {%                 if peer_group.rib_in_pre_policy_retain.enabled is arista.avd.defined(true) %}
 {%                     set inherited.rib_in_pre_policy_retain = "Inherited from peer group " ~ neighbor.peer_group %}
 {%                 endif %}
+{%                 if peer_group.route_reflector_client is arista.avd.defined(true) %}
+{%                     set inherited.route_reflector_client = "Inherited from peer group " ~ neighbor.peer_group %}
+{%                 endif %}
+{%                 if peer_group.passive is arista.avd.defined(true) %}
+{%                     set inherited.passive = "Inherited from peer group " ~ neighbor.peer_group %}
+{%                 endif %}
 {%             endif %}
 {%             set active_parameter = namespace() %}
 {%             set active_parameter.remote_as = neighbor.remote_as | arista.avd.default(inherited.remote_as, '-') %}
@@ -242,6 +296,7 @@
 {%             set active_parameter.send_community = neighbor.send_community | arista.avd.default(inherited.send_community, '-') %}
 {%             set active_parameter.bfd = neighbor.bfd | arista.avd.default(inherited.bfd, '-') %}
 {%             set active_parameter.shutdown = neighbor.shutdown | arista.avd.default(inherited.shutdown, '-') %}
+{%             set active_parameter.route_reflector_client = neighbor.route_reflector_client | arista.avd.default(inherited.route_reflector_client, '-') %}
 {%             if neighbor.rib_in_pre_policy_retain.enabled is arista.avd.defined() %}
 {%                 set neighbor_rib_in_pre_policy_retain = neighbor.rib_in_pre_policy_retain.enabled %}
 {%                 if neighbor.rib_in_pre_policy_retain.enabled is arista.avd.defined(true) and neighbor.rib_in_pre_policy_retain.all is arista.avd.defined(true) %}
@@ -249,6 +304,7 @@
 {%                 endif %}
 {%             endif %}
 {%             set active_parameter.rib_in_pre_policy_retain = neighbor_rib_in_pre_policy_retain | arista.avd.default(inherited.rib_in_pre_policy_retain, '-') %}
+{%             set active_parameter.passive = neighbor.passive | arista.avd.default(inherited.passive, '-') %}
 {%             if neighbor.maximum_routes is arista.avd.defined %}
 {%                 if neighbor.maximum_routes == 0 %}
 {%                     set value = "0 (no limit)" %}
@@ -279,16 +335,15 @@
 {%                 endif %}
 {%             endif %}
 {%             set active_parameter.allowas_in = value_allowas | arista.avd.default(inherited.allowas_in, '-') %}
-| {{ neighbor.ip_address }} | {{ active_parameter.remote_as }} | {{ active_parameter.vrf }} | {{ active_parameter.shutdown }} | {{ active_parameter.send_community }} | {{ active_parameter.maximum_routes }} | {{ active_parameter.allowas_in }} | {{ active_parameter.bfd }} | {{ active_parameter.rib_in_pre_policy_retain }} |
+| {{ neighbor.ip_address }} | {{ active_parameter.remote_as }} | {{ active_parameter.vrf }} | {{ active_parameter.shutdown }} | {{ active_parameter.send_community }} | {{ active_parameter.maximum_routes }} | {{ active_parameter.allowas_in }} | {{ active_parameter.bfd }} | {{ active_parameter.rib_in_pre_policy_retain }} | {{ active_parameter.route_reflector_client }} | {{ active_parameter.passive }} |
 {%         endfor %}
-{%         for vrf in router_bgp.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         for vrf in router_bgp.vrfs | arista.avd.natural_sort('name') %}
 {%             if vrf.neighbors is arista.avd.defined %}
-{%                 for neighbor in vrf.neighbors | arista.avd.convert_dicts('ip_address') %}
+{%                 for neighbor in vrf.neighbors %}
 {%                     set inherited_vrf = namespace() %}
 {%                     if neighbor.peer_group is arista.avd.defined %}
 {%                         set neighbor_peer_group = neighbor.peer_group %}
 {%                         set peer_group = router_bgp.peer_groups | arista.avd.default([]) |
-                                                                     arista.avd.convert_dicts('name') |
                                                                      selectattr('name', 'arista.avd.defined', neighbor_peer_group) |
                                                                      first %}
 {%                         if peer_group.remote_as is arista.avd.defined %}
@@ -312,12 +367,20 @@
 {%                         if peer_group.rib_in_pre_policy_retain.enabled is arista.avd.defined(true) %}
 {%                             set inherited_vrf.rib_in_pre_policy_retain = "Inherited from peer group " ~ neighbor.peer_group %}
 {%                         endif %}
+{%                         if peer_group.route_reflector_client is arista.avd.defined(true) %}
+{%                             set inherited_vrf.route_reflector_client = "Inherited from peer group " ~ neighbor.peer_group %}
+{%                         endif %}
+{%                         if peer_group.passive is arista.avd.defined(true) %}
+{%                             set inherited_vrf.passive = "Inherited from peer group " ~ neighbor.peer_group %}
+{%                         endif %}
 {%                     endif %}
 {%                     set active_parameter_vrf = namespace() %}
 {%                     set active_parameter_vrf.remote_as = neighbor.remote_as | arista.avd.default(inherited_vrf.remote_as, '-') %}
 {%                     set active_parameter_vrf.send_community = neighbor.send_community | arista.avd.default(inherited_vrf.send_community, '-') %}
 {%                     set active_parameter_vrf.bfd = neighbor.bfd | arista.avd.default(inherited_vrf.bfd, '-') %}
 {%                     set active_parameter_vrf.shutdown = neighbor.shutdown | arista.avd.default(inherited_vrf.shutdown, '-') %}
+{%                     set active_parameter_vrf.route_reflector_client = neighbor.route_reflector_client | arista.avd.default(inherited_vrf.route_reflector_client, '-') %}
+{%                     set active_parameter_vrf.passive = neighbor.passive | arista.avd.default(inherited_vrf.passive, '-') %}
 {%                     if neighbor.maximum_routes is arista.avd.defined %}
 {%                         if neighbor.maximum_routes == 0 %}
 {%                             set value = "0 (no limit)" %}
@@ -355,24 +418,24 @@
 {%                         endif %}
 {%                     endif %}
 {%                     set active_parameter_vrf.rib_in_pre_policy_retain = neighbor_rib_in_pre_policy_retain | arista.avd.default(inherited_vrf.rib_in_pre_policy_retain, '-') %}
-| {{ neighbor.ip_address }} | {{ active_parameter_vrf.remote_as }} | {{ vrf.name }} | {{ active_parameter_vrf.shutdown }} | {{ active_parameter_vrf.send_community }} | {{ active_parameter_vrf.maximum_routes }} | {{ active_parameter_vrf.allowas_in }} | {{ active_parameter_vrf.bfd }} | {{ active_parameter_vrf.rib_in_pre_policy_retain }} |
+| {{ neighbor.ip_address }} | {{ active_parameter_vrf.remote_as }} | {{ vrf.name }} | {{ active_parameter_vrf.shutdown }} | {{ active_parameter_vrf.send_community }} | {{ active_parameter_vrf.maximum_routes }} | {{ active_parameter_vrf.allowas_in }} | {{ active_parameter_vrf.bfd }} | {{ active_parameter_vrf.rib_in_pre_policy_retain }} | {{ active_parameter_vrf.route_reflector_client }} | {{ active_parameter_vrf.passive }} |
 {%                 endfor %}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
 {%     set neighbor_interfaces = [] %}
-{%     for neighbor_interface in router_bgp.neighbor_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for neighbor_interface in router_bgp.neighbor_interfaces | arista.avd.natural_sort('name') %}
 {%         do neighbor_interfaces.append(neighbor_interface) %}
 {%     endfor %}
-{%     for vrf in router_bgp.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
-{%         for neighbor_interface in vrf.neighbor_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for vrf in router_bgp.vrfs | arista.avd.natural_sort('name') %}
+{%         for neighbor_interface in vrf.neighbor_interfaces | arista.avd.natural_sort('name') %}
 {%             do neighbor_interface.update({"vrf": vrf.name}) %}
 {%             do neighbor_interfaces.append(neighbor_interface) %}
 {%         endfor %}
 {%     endfor %}
 {%     if neighbor_interfaces | length > 0 %}
 
-### BGP Neighbor Interfaces
+#### BGP Neighbor Interfaces
 
 | Neighbor Interface | VRF | Peer Group | Remote AS | Peer Filter |
 | ------------------ | --- | ---------- | --------- | ----------- |
@@ -386,11 +449,11 @@
 {%     endif %}
 {%     if router_bgp.aggregate_addresses is arista.avd.defined %}
 
-### BGP Route Aggregation
+#### BGP Route Aggregation
 
 | Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
 | ------ | ------ | ------------ | ------------- | --------- | -------------- |
-{%         for aggregate_address in router_bgp.aggregate_addresses | arista.avd.convert_dicts('prefix') | arista.avd.natural_sort('prefix') %}
+{%         for aggregate_address in router_bgp.aggregate_addresses | arista.avd.natural_sort('prefix') %}
 {%             if aggregate_address.as_set is arista.avd.defined(true) %}
 {%                 set as_set = true %}
 {%             else %}
@@ -413,24 +476,24 @@
 {%     endif %}
 {%     if router_bgp.address_family_evpn is arista.avd.defined %}
 
-### Router BGP EVPN Address Family
+#### Router BGP EVPN Address Family
 {%         if router_bgp.address_family_evpn.route.import_match_failure_action is arista.avd.defined('discard') %}
 
 - VPN import pruning is __enabled__
 {%         endif %}
 {%         if router_bgp.address_family_evpn.peer_groups is arista.avd.defined %}
 
-#### EVPN Peer Groups
+##### EVPN Peer Groups
 
-| Peer Group | Activate |
-| ---------- | -------- |
-{%             for peer_group in router_bgp.address_family_evpn.peer_groups | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
-| {{ peer_group.name }} | {{ peer_group.activate | arista.avd.default(false) }} |
+| Peer Group | Activate | Encapsulation |
+| ---------- | -------- | ------------- |
+{%             for peer_group in router_bgp.address_family_evpn.peer_groups | arista.avd.natural_sort('name') %}
+| {{ peer_group.name }} | {{ peer_group.activate | arista.avd.default(false) }} | {{ peer_group.encapsulation | arista.avd.default("default") }} |
 {%             endfor %}
 {%         endif %}
 {%         if router_bgp.address_family_evpn.neighbor_default.encapsulation is arista.avd.defined %}
 
-#### EVPN Neighbor Default Encapsulation
+##### EVPN Neighbor Default Encapsulation
 
 | Neighbor Default Encapsulation | Next-hop-self Source Interface |
 | ------------------------------ | ------------------------------ |
@@ -440,7 +503,7 @@
 {%         endif %}
 {%         if router_bgp.address_family_evpn.evpn_hostflap_detection is arista.avd.defined %}
 
-#### EVPN Host Flapping Settings
+##### EVPN Host Flapping Settings
 
 | State | Window | Threshold | Expiry Timeout |
 | ----- | ------ | --------- | -------------- |
@@ -463,10 +526,9 @@
 {%         endif %}
 {%     endif %}
 {%     set evpn_gw_config = namespace(peer_groups = [], configured = false) %}
-{%     for peer_group in router_bgp.peer_groups | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for peer_group in router_bgp.peer_groups | arista.avd.natural_sort('name') %}
 {%         if router_bgp.address_family_evpn is arista.avd.defined and router_bgp.address_family_evpn.peer_groups is arista.avd.defined %}
 {%             set address_family_evpn_peer_group = router_bgp.address_family_evpn.peer_groups | arista.avd.default([]) |
-                                                                      arista.avd.convert_dicts('name') |
                                                                       selectattr('name', 'arista.avd.defined', peer_group.name) %}
 {%             if address_family_evpn_peer_group[0].domain_remote is arista.avd.defined(true) %}
 {%                 do evpn_gw_config.peer_groups.append(peer_group.name) %}
@@ -482,7 +544,7 @@
 {%     endif %}
 {%     if evpn_gw_config.configured is arista.avd.defined(true) %}
 
-#### EVPN DCI Gateway Summary
+##### EVPN DCI Gateway Summary
 
 | Settings | Value |
 | -------- | ----- |
@@ -496,13 +558,77 @@
 | L3 Gateway Inter-domain | True |
 {%         endif %}
 {%     endif %}
+{%     if router_bgp.address_family_vpn_ipv4 is arista.avd.defined %}
+
+#### Router BGP VPN-IPv4 Address Family
+{%         if router_bgp.address_family_vpn_ipv4.route.import_match_failure_action is arista.avd.defined('discard') %}
+
+- VPN import pruning is __enabled__
+{%         endif %}
+{%         if router_bgp.address_family_vpn_ipv4.neighbors is arista.avd.defined %}
+
+##### VPN-IPv4 Neighbors
+
+| Neighbor | Activate | Route-map In | Route-map Out |
+| -------- | -------- | ------------ | ------------- |
+{%             for neighbor in router_bgp.address_family_vpn_ipv4.neighbors | arista.avd.natural_sort('ip_address') %}
+{%                 set route_map_in = neighbor.route_map_in | arista.avd.default("-") %}
+{%                 set route_map_out = neighbor.route_map_out | arista.avd.default("-") %}
+| {{ neighbor.ip_address }} | {{ neighbor.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} |
+{%             endfor %}
+{%         endif %}
+{%         if router_bgp.address_family_vpn_ipv4.peer_groups is arista.avd.defined %}
+
+##### VPN-IPv4 Peer Groups
+
+| Peer Group | Activate | Route-map In | Route-map Out |
+| ---------- | -------- | ------------ | ------------- |
+{%             for peer_group in router_bgp.address_family_vpn_ipv4.peer_groups | arista.avd.natural_sort('name') %}
+{%                 set route_map_in = peer_group.route_map_in | arista.avd.default("-") %}
+{%                 set route_map_out = peer_group.route_map_out | arista.avd.default("-") %}
+| {{ peer_group.name }} | {{ peer_group.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} |
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+{%     if router_bgp.address_family_vpn_ipv6 is arista.avd.defined %}
+
+#### Router BGP VPN-IPv6 Address Family
+{%         if router_bgp.address_family_vpn_ipv6.route.import_match_failure_action is arista.avd.defined('discard') %}
+
+- VPN import pruning is __enabled__
+{%         endif %}
+{%         if router_bgp.address_family_vpn_ipv6.neighbors is arista.avd.defined %}
+
+##### VPN-IPv6 Neighbors
+
+| Neighbor | Activate | Route-map In | Route-map Out |
+| -------- | -------- | ------------ | ------------- |
+{%             for neighbor in router_bgp.address_family_vpn_ipv6.neighbors | arista.avd.natural_sort('ip_address') %}
+{%                 set route_map_in = neighbor.route_map_in | arista.avd.default("-") %}
+{%                 set route_map_out = neighbor.route_map_out | arista.avd.default("-") %}
+| {{ neighbor.ip_address }} | {{ neighbor.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} |
+{%             endfor %}
+{%         endif %}
+{%         if router_bgp.address_family_vpn_ipv6.peer_groups is arista.avd.defined %}
+
+##### VPN-IPv6 Peer Groups
+
+| Peer Group | Activate | Route-map In | Route-map Out |
+| ---------- | -------- | ------------ | ------------- |
+{%             for peer_group in router_bgp.address_family_vpn_ipv6.peer_groups | arista.avd.natural_sort('name') %}
+{%                 set route_map_in = peer_group.route_map_in | arista.avd.default("-") %}
+{%                 set route_map_out = peer_group.route_map_out | arista.avd.default("-") %}
+| {{ peer_group.name }} | {{ peer_group.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} |
+{%             endfor %}
+{%         endif %}
+{%     endif %}
 {%     if router_bgp.vlan_aware_bundles is arista.avd.defined %}
 
-### Router BGP VLAN Aware Bundles
+#### Router BGP VLAN Aware Bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-{%         for vlan_aware_bundle in router_bgp.vlan_aware_bundles | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         for vlan_aware_bundle in router_bgp.vlan_aware_bundles | arista.avd.natural_sort('name') %}
 {%             set route_distinguisher = vlan_aware_bundle.rd | arista.avd.default("-") %}
 {%             set vlans = vlan_aware_bundle.vlan | arista.avd.default("-") %}
 {%             if vlan_aware_bundle.route_targets.both is arista.avd.defined or vlan_aware_bundle.route_targets.import_export_evpn_domains is arista.avd.defined %}
@@ -531,11 +657,11 @@
 {%     endif %}
 {%     if router_bgp.vlans is arista.avd.defined %}
 
-### Router BGP VLANs
+#### Router BGP VLANs
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
-{%         for vlan in router_bgp.vlans | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%         for vlan in router_bgp.vlans | arista.avd.natural_sort('id') %}
 {%             set route_distinguisher = vlan.rd | arista.avd.default("-") %}
 {%             if vlan.route_targets.both is arista.avd.defined or vlan.route_targets.import_export_evpn_domains is arista.avd.defined %}
 {%                 set both_route_target = vlan.route_targets.both | arista.avd.default([]) %}
@@ -563,7 +689,7 @@
 {%     endif %}
 {%     if router_bgp.vpws is arista.avd.defined %}
 
-### Router BGP VPWS Instances
+#### Router BGP VPWS Instances
 
 | Instance | Route-Distinguisher | Both Route-Target | MPLS Control Word | Label Flow | MTU | Pseudowire | Local ID | Remote ID |
 | -------- | ------------------- | ----------------- | ----------------- | -----------| --- | ---------- | -------- | --------- |
@@ -582,18 +708,42 @@
 {%     endif %}
 {%     if router_bgp.vrfs is arista.avd.defined %}
 
-### Router BGP VRFs
+#### Router BGP VRFs
 
+{%         if router_bgp.vrfs | selectattr('evpn_multicast', 'arista.avd.defined', true) %}
+| VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
+| --- | ------------------- | ------------ | -------------- |
+{%         else %}
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-{%         for vrf in router_bgp.vrfs | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         endif %}
+{%         for vrf in router_bgp.vrfs | arista.avd.natural_sort('name') %}
 {%             set route_distinguisher = vrf.rd | arista.avd.default("-") %}
-{%             set redistribute = vrf.redistribute_routes | arista.avd.convert_dicts('source_protocol') | arista.avd.default([{'source_protocol':'-'}]) | map(attribute='source_protocol') %}
+{%             set redistribute = vrf.redistribute_routes | arista.avd.default([{'source_protocol':'-'}]) | map(attribute='source_protocol') %}
+{%             set multicast = vrf.evpn_multicast | arista.avd.default(false) %}
+{%             set multicast_transit = vrf.evpn_multicast_address_family.ipv4.transit | arista.avd.default(false) %}
+{%             set multicast_out = [] %}
+{%             do multicast_out.append("IPv4: " ~ multicast) %}
+{%             do multicast_out.append("Transit: " ~ multicast_transit) %}
+{%             if router_bgp.vrfs | selectattr('evpn_multicast', 'arista.avd.defined', true) %}
+| {{ vrf.name }} | {{ route_distinguisher }} | {{ redistribute | join("<br>") }} | {{ multicast_out | join("<br>") }} |
+{%             else %}
 | {{ vrf.name }} | {{ route_distinguisher }} | {{ redistribute | join("<br>") }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     if router_bgp.session_trackers is arista.avd.defined %}
+
+#### Router BGP Session Trackers
+
+| Session Tracker Name | Recovery Delay (in seconds) |
+| -------------------- | --------------------------- |
+{%         for session_tracker in router_bgp.session_trackers | arista.avd.natural_sort('name') %}
+| {{ session_tracker.name }} | {{ session_tracker.recovery_delay }} |
 {%         endfor %}
 {%     endif %}
 
-### Router BGP Device Configuration
+#### Router BGP Device Configuration
 
 ```eos
 {%     include 'eos/router-bgp.j2' %}

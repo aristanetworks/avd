@@ -1,8 +1,9 @@
-{% if daemons is arista.avd.defined() %}
+{# doc - daemons #}
+{% if daemons is arista.avd.defined %}
 
-## Custom daemons
+### Custom daemons
 
-### Custom Daemons Device Configuration
+#### Custom Daemons Device Configuration
 
 ```eos
 {%     include 'eos/daemons.j2' %}

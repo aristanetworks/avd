@@ -1,4 +1,4 @@
-# Platform Specific settings
+# Platform Specific Settings
 
 - Set platform specific settings, TCAM profile and reload delay.
 - The reload delay values should be reviewed and tuned to the specific environment.
@@ -54,7 +54,7 @@ platform_settings:
     feature_support:
       # "queue-monitor length notify" is only valid for R-Series so should be disabled on default platform.
       queue_monitor_length_notify: false
-  - platforms: [ '7280R', '7280R2' ]
+  - platforms: [ '7280R', '7280R2', '7020R' ]
     tcam_profile: vxlan-routing
     lag_hardware_only: true
     reload_delay:

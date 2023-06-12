@@ -1,5 +1,5 @@
-{# eos - VLANs #}
-{% for vlan in vlans | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{# eos - vlans #}
+{% for vlan in vlans | arista.avd.natural_sort('id') %}
 !
 vlan {{ vlan.id }}
 {%     if vlan.name is arista.avd.defined %}

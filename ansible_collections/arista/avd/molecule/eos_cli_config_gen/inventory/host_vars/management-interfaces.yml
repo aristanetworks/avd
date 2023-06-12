@@ -1,14 +1,21 @@
 ### Management Interfaces ###
 management_interfaces:
-  Management1:
+  - name: Management1
     description: oob_management
     vrf: MGMT
     ip_address: 10.73.255.122/24
     gateway: 10.73.255.2
     type: oob
-  Vlan123:
+  - name: Management0
+    ip_address: 10.0.0.0
+    mac_address: 00:1c:73:00:00:aa
+  - name: Vlan123
     description: inband_management
     vrf: default
     ip_address: 10.73.0.123/24
     gateway: 10.73.0.1
     type: inband
+    mtu: 1500
+    eos_cli: "ip virtual-router address 10.73.0.1"
+  - name: Management42
+    shutdown: true

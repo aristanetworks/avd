@@ -1,4 +1,4 @@
-CVP_TOPOLOGY:
+cvp_topology:
   DC1_FABRIC:
     parent_container: Tenant
   DC1_L2LEAF1:
@@ -24,4 +24,3 @@ CVP_TOPOLOGY:
   DC1_SPINES:
     devices: []
     parent_container: DC1_FABRIC
-changed: false

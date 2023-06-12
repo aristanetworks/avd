@@ -1,41 +1,31 @@
 # monitor-sessions
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Authentication](#authentication)
 - [Monitoring](#monitoring)
   - [Monitor Sessions](#monitor-sessions)
-- [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
-  - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
-- [Interfaces](#interfaces)
-- [Routing](#routing)
-  - [IP Routing](#ip-routing)
-  - [IPv6 Routing](#ipv6-routing)
-- [Multicast](#multicast)
-- [Filters](#filters)
-- [ACL](#acl)
-- [Quality Of Service](#quality-of-service)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | -  | - |
+| Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -45,24 +35,22 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Authentication
+## Monitoring
 
-# Monitoring
+### Monitor Sessions
 
-## Monitor Sessions
+#### Monitor Sessions Summary
 
-### Monitor Sessions Summary
+##### myMonitoringSession1
 
-#### myMonitoringSession1
-
-##### myMonitoringSession1 Sources
+####### myMonitoringSession1 Sources
 
 | Sources | Direction | Access Group Type | Access Group Name | Access Group Priority |
 | ------- | --------- | ----------------- | ----------------- | --------------------- |
 | Ethernet0 | both | ipv6 | ipv6ACL | - |
 | Ethernet5 | both | ip | ipv4ACL | 10 |
 
-##### myMonitoringSession1 Destinations and Session Settings
+####### myMonitoringSession1 Destinations and Session Settings
 
 | Settings | Values |
 | -------- | ------ |
@@ -71,9 +59,9 @@ interface Management1
 | Header Remove Size | 32 |
 | Truncate Enabled | True |
 
-#### myMonitoringSession2
+##### myMonitoringSession2
 
-##### myMonitoringSession2 Sources
+####### myMonitoringSession2 Sources
 
 | Sources | Direction | Access Group Type | Access Group Name | Access Group Priority |
 | ------- | --------- | ----------------- | ----------------- | --------------------- |
@@ -82,7 +70,7 @@ interface Management1
 | Ethernet12 | rx | - | - | - |
 | Ethernet18 | tx | mac | macACL | 100 |
 
-##### myMonitoringSession2 Destinations and Session Settings
+####### myMonitoringSession2 Destinations and Session Settings
 
 | Settings | Values |
 | -------- | ------ |
@@ -92,7 +80,7 @@ interface Management1
 | Access Group Name | ipv4ACL |
 | Sample | 50 |
 
-### Monitor Sessions Configuration
+#### Monitor Sessions Configuration
 
 ```eos
 !
@@ -112,45 +100,3 @@ monitor session myMonitoringSession2 encapsulation gre metadata tx
 monitor session myMonitoringSession2 ip access-group ipv4ACL
 monitor session myMonitoringSession2 sample 50
 ```
-
-# Internal VLAN Allocation Policy
-
-## Internal VLAN Allocation Policy Summary
-
-**Default Allocation Policy**
-
-| Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
-| ascending | 1006 | 4094 |
-
-# Interfaces
-
-# Routing
-
-## IP Routing
-
-### IP Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | false |
-
-### IP Routing Device Configuration
-
-```eos
-```
-## IPv6 Routing
-
-### IPv6 Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | false |
-
-# Multicast
-
-# Filters
-
-# ACL
-
-# Quality Of Service

@@ -1,21 +1,44 @@
 ---
 port_profiles:
-  Tenant_X:
+  - profile: Tenant_X
     mode: access
     vlans: "310"
     link_tracking:
       enabled: true
 
-  Tenant_X_LT:
+  - profile: Tenant_ESI_Auto
+    parent_profile: Tenant_X
+    port_channel:
+      short_esi: auto
+
+  - profile: Tenant_X_LT
     mode: access
     vlans: "310"
     link_tracking:
       enabled: true
       name: Eth-conn-to-router
 
+  - profile: Tenant_X_Trunk
+    mode: trunk
+    vlans: "310"
+
+  - profile: Tenant_X_Trunk_Auto
+    parent_profile: Tenant_X_Trunk
+    port_channel:
+      mode: active
+    ethernet_segment:
+      short_esi: auto
+      redundancy: single-active
+      designated_forwarder_algorithm: auto
+
+  - profile: Tenant_X_Trunk_Auto_Eth
+    parent_profile: Tenant_X_Trunk
+    ethernet_segment:
+      short_esi: auto
+
 servers:
   # Connected to MH_L3LEAF1
-  server01_ES1:
+  - name: server01_ES1
     rack: RackA
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
@@ -27,7 +50,7 @@ servers:
           mode: active
           short_esi: 0001:1010:1010
 
-  server02:
+  - name: server02
     rack: RackA
     adapters:
       - endpoint_ports: [ Eth1 ]
@@ -37,7 +60,7 @@ servers:
           enabled: true
           name: l2leaf-server02
 
-  server03_AUTO_ESI:
+  - name: server03_AUTO_ESI
     rack: RackA
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
@@ -49,8 +72,161 @@ servers:
           mode: active
           short_esi: auto
 
+  - name: server04_AUTO_ESI_Profile
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet13, Ethernet13 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_ESI_Auto
+        port_channel:
+          description: Auto-ESI PortChannel from profile
+          mode: active
+
+  - name: server05_AUTO_ESI_Profile_Override
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet14, Ethernet14 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_ESI_Auto
+        port_channel:
+          description: Auto-ESI PortChannel overridden on server
+          mode: active
+          short_esi: 010a:010a:010a
+
+  - name: server06_Single_Active_Port_Channel
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet15, Ethernet15 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_X_Trunk_Auto
+        # All ethernet_segment settings from profile
+        port_channel:
+          description: Single-Active ESI
+
+  - name: server07_Single_Active_Port_Channel_Manual_DF
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet16, Ethernet16 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_X_Trunk
+        port_channel:
+          description: Single-Active ESI with Manual DF
+          mode: active
+          # This should be overridden by short_esi under ethernet_segment
+          short_esi: 0042:0042:0042
+        ethernet_segment:
+          short_esi: auto
+          redundancy: single-active
+          designated_forwarder_algorithm: preference
+          designated_forwarder_preferences: [250, 200]
+
+  - name: server08_Single_Active_Ethernet
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet17, Ethernet17 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_X_Trunk_Auto_Eth
+
+  # Single-Active is the default for Ethernet interfaces in AVD
+  # This test just verifies they can be overridden
+  - name: server09_All_Active_Ethernet
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet18, Ethernet18 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_X_Trunk
+        ethernet_segment:
+          short_esi: 00dd:00dd:00dd
+          redundancy: all-active
+          designated_forwarder_algorithm: modulus
+
+  - name: server10_Single_Active_Ethernet_Manual_DF
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet19, Ethernet19 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_X_Trunk
+        ethernet_segment:
+          short_esi: auto
+          redundancy: single-active
+          designated_forwarder_algorithm: preference
+          designated_forwarder_preferences: [500, 250]
+
+  - name: server11_Single_Active_Port_Channel_Manual_DF_Dont_Preempt
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet20, Ethernet20 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_X_Trunk
+        port_channel:
+          description: Single-Active ESI with Manual DF
+          mode: active
+          # This should be overridden by short_esi under ethernet_segment
+          short_esi: 0042:0042:0042
+        ethernet_segment:
+          short_esi: auto
+          redundancy: single-active
+          dont_preempt: true
+          designated_forwarder_algorithm: preference
+          designated_forwarder_preferences: [100, 0]
+
+  - name: server12_Single_Active_Ethernet_Manual_DF_Dont_Preempt
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet21, Ethernet21 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_X_Trunk
+        ethernet_segment:
+          short_esi: auto
+          redundancy: single-active
+          dont_preempt: true
+          designated_forwarder_algorithm: preference
+          designated_forwarder_preferences: [500, 250]
+
+  # This should not configure preempt because algorithm is modulus
+  - name: server13_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_modulus
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet22, Ethernet22 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_X_Trunk
+        port_channel:
+          description: Single-Active ESI with Manual DF
+          mode: active
+          # This should be overridden by short_esi under ethernet_segment
+          short_esi: 0042:0042:0042
+        ethernet_segment:
+          short_esi: auto
+          redundancy: single-active
+          dont_preempt: true
+          designated_forwarder_algorithm: modulus
+
+  # This should not configure preempt because algorithm is modulus
+  - name: server14_Single_Active_Ethernet_Manual_DF_Dont_Preempt_modulus
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet23, Ethernet23 ]
+        switches: [ MH-LEAF1A, MH-LEAF1B ]
+        profile: Tenant_X_Trunk
+        ethernet_segment:
+          short_esi: auto
+          redundancy: single-active
+          dont_preempt: true
+          designated_forwarder_algorithm: modulus
+
 routers:
-  ROUTER01:
+  - name: ROUTER01
     rack: RackB
     adapters:
       - endpoint_ports: [ Eth1 ]
@@ -58,7 +234,7 @@ routers:
         switches: [ MH-LEAF2A ]
         profile: Tenant_X_LT
 
-  ROUTER02_WITH_SUBIF:
+  - name: ROUTER02_WITH_SUBIF
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet11, Ethernet11 ]

@@ -1,8 +1,9 @@
+{# doc - maintenance mode #}
 {% if bgp_groups is arista.avd.defined or
       interface_groups is arista.avd.defined or
       maintenance is arista.avd.defined %}
 
-# Maintenance Mode
+## Maintenance Mode
 {## BGP Groups #}
 {%     include 'documentation/bgp-groups.j2' %}
 {## Interface Groups #}

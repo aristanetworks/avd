@@ -1,0 +1,18 @@
+# EVPN_MULTICAST_TESTS
+
+type: spine
+
+# Spine Switches
+spine:
+  defaults:
+    platform: vEOS-LAB
+    bgp_as: 65001
+    loopback_ipv4_pool: 192.168.255.0/24
+  nodes:
+    # Test multicast configuration on parent device.
+    # Expected results:
+    # - router multicast enabled for ipv4
+    # - p2p links configured with "pim ipv4 sparse-mode"
+    - name: EVPN-MULTICAST-SPINE1
+      id: 1
+      mgmt_ip: 192.168.200.101/24

@@ -1,0 +1,186 @@
+---
+
+# IGMP_QUERIER_TESTS
+
+mgmt_gateway: 192.168.200.5
+
+svi_profiles:
+  - profile: IGMP_QUERIER_PARENT
+    igmp_snooping_querier:
+      enabled: true
+  - profile: IGMP_QUERIER_CHILD_1
+    parent_profile: "IGMP_QUERIER_PARENT"
+  - profile: IGMP_QUERIER_CHILD_2
+    parent_profile: "IGMP_QUERIER_PARENT"
+    igmp_snooping_querier:
+      enabled: true
+      source_address: 1.1.1.1
+      version: 3
+
+tenants:
+# igmp_snooping_querier enable on Tenant
+  - name: Tenant_A
+    mac_vrf_vni_base: 10000
+    igmp_snooping_querier:
+      enabled: true
+    vrfs:
+      - name: IGMP_QUERIER_TEST_1
+        description: "IGMP_QUERIER_TEST_1"
+        vrf_vni: 11
+        svis:
+        # Expected results:
+        # igmp querier enable, querier address set to loopback 0 address 192.168.255.1, and version not set (would default to EOS default -> 2)
+          - id: 1
+            name: "VLAN_1"
+            tags: ['test_l3']
+            enabled: True
+            ip_address_virtual: 10.0.1.1/24
+        # Expected results:
+        # igmp querier enable, querier address set to loopback 0 address 192.168.255.1, and version not set to 3
+          - id: 2
+            name: "VLAN_2"
+            tags: ['test_l3']
+            enabled: True
+            ip_address_virtual: 10.0.2.1/24
+            igmp_snooping_querier:
+              version: 3
+        # Expected results:
+        # igmp querier disabled, querier address set to loopback 0 address 192.168.255.1, and version not set (would default to EOS default -> 2)
+          - id: 3
+            name: "VLAN_3"
+            tags: ['test_l3']
+            enabled: True
+            ip_address_virtual: 10.0.3.1/24
+            igmp_snooping_querier:
+              enabled: false
+    l2vlans:
+      # Expected results:
+      # igmp querier enabled, querier address set to loopback 0 address 192.168.255.1,
+      - id: 101
+        name: "VLAN_101"
+        tags: ['test_l2']
+      # Expected results:
+      # igmp querier enable, querier address set to loopback 0 address 192.168.255.1, and version not set to 3
+      - id: 102
+        name: "VLAN_102"
+        tags: ['test_l2']
+        igmp_snooping_querier:
+          version: 3
+      # Expected results:
+      # igmp querier disable querier address set to loopback 0 address 192.168.255.1, and version not set (would default to EOS default -> 2)
+      - id: 103
+        name: "VLAN_103"
+        tags: ['test_l2']
+        igmp_snooping_querier:
+          enabled: false
+
+# Test setting source address and version at tenant level
+  - name: Tenant_B
+    mac_vrf_vni_base: 20000
+    igmp_snooping_querier:
+      enabled: true
+      source_address: 1.1.1.1
+      version: 3
+    vrfs:
+      - name: IGMP_QUERIER_TEST_2
+        description: "IGMP_QUERIER_TEST_2"
+        vrf_vni: 21
+        svis:
+        # Expected results:
+        # igmp querier enable, querier address set to 1.1.1.1, and version set to 3
+          - id: 11
+            name: "VLAN_11"
+            tags: ['test_l3']
+            enabled: True
+            ip_address_virtual: 10.0.11.1/24
+        # Expected results:
+        # igmp querier enable, querier address set to 1.1.1.1, and version set to 2
+          - id: 12
+            name: "VLAN_12"
+            tags: ['test_l3']
+            enabled: True
+            ip_address_virtual: 10.0.12.1/24
+            igmp_snooping_querier:
+              version: 2
+    l2vlans:
+      # Expected results:
+      # igmp querier enable, querier address set to 1.1.1.1, and version set to 3
+      - id: 111
+        name: "VLAN_111"
+        tags: ['test_l2']
+      # Expected results:
+      # igmp querier enable, querier address set to 1.1.1.1, and version set to 2
+      - id: 112
+        name: "VLAN_112"
+        tags: ['test_l2']
+        igmp_snooping_querier:
+          version: 2
+      - id: 113
+        name: "VLAN_113"
+        tags: ['test_l2']
+      # Expected results:
+      # igmp querier disabled, querier address set to 1.1.1.1, and version set to 3
+        igmp_snooping_querier:
+          enabled: false
+
+# Tests with setting igmp_snooping_querier at SVI level with profiles
+  - name: Tenant_D
+    mac_vrf_vni_base: 40000
+    vrfs:
+      - name: IGMP_QUERIER_TEST_3
+        description: "IGMP_QUERIER_TEST_3"
+        vrf_vni: 41
+        svis:
+          # Expected results:
+          # igmp querier enabled, querier address set to loopback 0 address 192.168.255.1, and version not set (would default to EOS default -> 2)
+          - id: 21
+            name: "VLAN_21"
+            tags: ['test_l3']
+            enabled: True
+            ip_address_virtual: 10.0.21.1/24
+            profile: IGMP_QUERIER_CHILD_1
+          # Expected results:
+          # igmp querier enable, querier address set to 1.1.1.1, and version set to 3
+          - id: 22
+            name: "VLAN_22"
+            tags: ['test_l3']
+            enabled: True
+            ip_address_virtual: 10.0.22.1/24
+            profile: IGMP_QUERIER_CHILD_2
+          # Expected results:
+          # igmp querier enable, querier address set to 2.2.2.2, and version set to 1
+          - id: 23
+            name: "VLAN_23"
+            tags: ['test_l3']
+            enabled: True
+            ip_address_virtual: 10.0.23.1/24
+            igmp_snooping_querier:
+              enabled: true
+              source_address: 2.2.2.2
+              version: 1
+            profile: IGMP_QUERIER_CHILD_2
+
+    l2vlans:
+      # Expected results:
+      # igmp querier enable, querier address set to 2.2.2.2, and version set to 1
+      - id: 121
+        name: "VLAN_121"
+        tags: ['test_l2']
+        igmp_snooping_querier:
+          enabled: true
+          source_address: 2.2.2.2
+          version: 1
+      # Expected results:
+      # igmp querier enable, querier address set to loopback 0 address 192.168.255.1, and version not set (would default to EOS default -> 2)
+      - id: 122
+        name: "VLAN_122"
+        tags: ['test_l2']
+        igmp_snooping_querier:
+          enabled: true
+      # Expected results:
+      # igmp querier disabled, querier address set to loopback 0 address 192.168.255.1, and version not set (would default to EOS default -> 2)
+      - id: 123
+        name: "VLAN_123"
+        tags: ['test_l2']
+        igmp_snooping_querier:
+          enabled: false

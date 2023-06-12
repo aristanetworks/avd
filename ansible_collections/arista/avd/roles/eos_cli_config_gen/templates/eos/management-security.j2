@@ -19,6 +19,9 @@ management security
 {%         if ssl_profile.tls_versions is arista.avd.defined %}
       tls versions {{ ssl_profile.tls_versions }}
 {%         endif  %}
+{%         if ssl_profile.cipher_list is arista.avd.defined %}
+      cipher-list {{ ssl_profile.cipher_list }}
+{%         endif  %}
 {%         if ssl_profile.certificate is arista.avd.defined %}
       certificate {{ ssl_profile.certificate.file }} key {{ ssl_profile.certificate.key }}
 {%         endif  %}

@@ -3,7 +3,7 @@ hardware:
   access_list:
     mechanism: tcam
   speed_groups:
-    1:
+    - speed_group: 1
       serdes: 10g
-    2:
+    - speed_group: 2
       serdes: 25g

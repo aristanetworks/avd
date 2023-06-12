@@ -3,6 +3,9 @@ pod_name: DC1_POD1
 
 max_l3leaf_to_spine_links: 2
 
+# Test removing redistribute connected route-map and prefix-list (default true) in combination with inband_management
+underlay_filter_redistribute_connected: false
+
 spine:
   defaults:
     platform: vEOS-LAB
@@ -17,24 +20,22 @@ spine:
     uplink_macsec:
       profile: MACSEC_PROFILE
     bgp_defaults:
-      - "no bgp default ipv4-unicast"
       - "distance bgp 20 200 200"
-      - "graceful-restart restart-time 300"
-      - "graceful-restart"
   nodes:
     # Spine also working as EVPN RS
-    DC1-POD1-SPINE1:
+    - name: DC1-POD1-SPINE1
       id: 1
       # mgmt_ip: 192.168.1.5/24 Test without management IP
       evpn_role: server
       uplink_switch_interfaces: ["Ethernet1", "Ethernet1"]
       evpn_route_servers:
         [DC2-RS1, DC2-SUPER-SPINE1, DC2-POD1-SPINE1, DC2-POD1-LEAF1A]
-    DC1-POD1-SPINE2:
+    - name: DC1-POD1-SPINE2
       id: 2
       evpn_role: none
       mgmt_ip: 192.168.1.6/24
       uplink_switch_interfaces: ["Ethernet2", "Ethernet2"]
+      serial_number: "DEADBEEFC0FFEE"
 
 # In DC1 we define all variables on specific node / node_group
 l3leaf:
@@ -47,18 +48,17 @@ l3leaf:
     uplink_ipv4_pool: 172.17.110.0/24
     uplink_ptp:
       enable: True
-    mac_security:
+    uplink_macsec:
       profile: MACSEC_PROFILE
     bgp_defaults:
-      - "no bgp default ipv4-unicast"
       - "distance bgp 20 200 200"
-      - "graceful-restart restart-time 300"
-      - "graceful-restart"
     mlag_peer_l3_ipv4_pool: 172.19.110.0/24
     mlag_peer_ipv4_pool: 172.20.110.0/24
+    inband_mgmt_description: L2LEAF_INBAND_MGMT
+    inband_mgmt_vlan_name: L2LEAF_INBAND_MGMT
   node_groups:
     # Single switch working as underlay L3 router and EVPN RS
-    RACK1_SINGLE:
+    - group: RACK1_SINGLE
       platform: vEOS-LAB
       uplink_interfaces: ["Ethernet1", "Ethernet2"]
       uplink_switches: ["DC1-POD1-SPINE1", "DC1-POD1-SPINE2"]
@@ -77,7 +77,7 @@ l3leaf:
         interface Loopback1001
           description Loopback created from raw_eos_cli under node-group RACK1_SINGLE
       nodes:
-        DC1-POD1-LEAF1A:
+        - name: DC1-POD1-LEAF1A
           id: 1
           # mgmt_ip: 192.168.1.7/24 Test without management IP
           uplink_switch_interfaces: ["Ethernet3", "Ethernet3"]
@@ -86,7 +86,7 @@ l3leaf:
               description Loopback created from raw_eos_cli under node DC1-POD1-LEAF1A
 
     # Regular MLAG pair
-    RACK2_MLAG:
+    - group: RACK2_MLAG
       platform: vEOS-LAB
       uplink_interfaces: [Ethernet1, Ethernet2, Ethernet11, Ethernet12]
       uplink_switches:
@@ -103,7 +103,7 @@ l3leaf:
         interface Loopback1002
           description Loopback created from raw_eos_cli under l3leaf node-group RACK2_MLAG
       nodes:
-        DC1.POD1.LEAF2A:
+        - name: DC1.POD1.LEAF2A
           structured_config:
             domain_list:
               - structured-config.set.on.node
@@ -118,7 +118,7 @@ l3leaf:
             evpn_l3:
               enabled: true
               inter_domain: true
-        DC1-POD1-LEAF2B:
+        - name: DC1-POD1-LEAF2B
           id: 3
           mgmt_ip: 192.168.1.9/16
           uplink_switch_interfaces: [Ethernet5, Ethernet5, Ethernet8, Ethernet8]
@@ -136,12 +136,14 @@ l3leaf:
 # In DC1 we define all variables on specific node / node_group
 l2leaf:
   defaults:
-    inband_management_subnet: 172.21.110.0/24
-    inband_management_vlan: 4085
+    inband_mgmt_subnet: 172.21.110.0/24
+    inband_mgmt_description: L2LEAF_INBAND_MGMT
+    inband_mgmt_vlan_name: L2LEAF_INBAND_MGMT
+    inband_mgmt_vlan: 4085
     mlag_peer_l3_ipv4_pool: 172.19.110.0/24
     mlag_peer_ipv4_pool: 172.20.110.0/24
   node_groups:
-    RACK2_SINGLE:
+    - group: RACK2_SINGLE
       platform: vEOS-LAB
       uplink_switches: ["DC1-POD1-LEAF1A"]
       uplink_interfaces: [Ethernet1]
@@ -149,11 +151,11 @@ l2leaf:
       spanning_tree_priority: 8192
       mlag: false
       nodes:
-        DC1-POD1-L2LEAF1A:
+        - name: DC1-POD1-L2LEAF1A
           id: 1
           # mgmt_ip: 192.168.1.10/24 Test without management IP
           uplink_switch_interfaces: ["Ethernet3"]
-    RACK2_MLAG:
+    - group: RACK2_MLAG
       platform: vEOS-LAB
       uplink_switches: ["DC1.POD1.LEAF2A", "DC1-POD1-LEAF2B"]
       uplink_interfaces: [Ethernet1, Ethernet2]
@@ -164,11 +166,11 @@ l2leaf:
         interface Loopback1002
           description Loopback created from raw_eos_cli under l2leaf node-group RACK2_MLAG
       nodes:
-        DC1-POD1-L2LEAF2A:
+        - name: DC1-POD1-L2LEAF2A
           id: 2
           # mgmt_ip: 192.168.1.11/24 Test without management IP
           uplink_switch_interfaces: ["Ethernet3", "Ethernet3"]
-        DC1-POD1-L2LEAF2B:
+        - name: DC1-POD1-L2LEAF2B
           id: 3
           mgmt_ip: 192.168.1.12/24
           uplink_switch_interfaces: ["Ethernet4", "Ethernet4"]

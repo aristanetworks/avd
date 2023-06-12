@@ -1,0 +1,57 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+$defs:
+  l3_edge:
+    type: dict
+    keys:
+      p2p_links_ip_pools:
+        type: list
+        convert_types:
+          - dict
+        primary_key: name
+        secondary_key: ipv4_pool
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              description: P2P pool name.
+            ipv4_pool:
+              type: str
+              description: IPv4 address/Mask.
+            prefix_size:
+              type: int
+              convert_types:
+                - str
+              description: Subnet mask size.
+              default: 31
+              min: 8
+              max: 31
+      p2p_links_profiles:
+        type: list
+        convert_types:
+          - dict
+        primary_key: name
+        $ref: '#/$defs/p2p_links'
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              description: P2P profile name. Any variable supported under p2p_links can be inherited from a profile.
+      p2p_links:
+        type: list
+        $ref: '#/$defs/p2p_links'
+        items:
+          type: dict
+          keys:
+            nodes:
+              type: list
+              required: true
+            profile:
+              type: str
+              description: P2P profile name. Profile defined under p2p_profiles.

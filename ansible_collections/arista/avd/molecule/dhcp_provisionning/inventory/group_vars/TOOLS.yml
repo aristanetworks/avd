@@ -1,8 +1,0 @@
----
-root_dir: '{{playbook_dir}}'
-# ZTP & DHCP configuration section
-ztp_network_summary: 172.17.0.0/16
-ztp_pool_start: 172.17.255.200
-ztp_pool_end: 172.17.255.210
-ztp_lease_time: 300
-ztp_mode: offline

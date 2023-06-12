@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  lacp:
+    type: dict
+    description: Set Link Aggregation Control Protocol (LACP) parameters.
+    keys:
+      port_id:
+        type: dict
+        description: LACP port-ID range configuration.
+        keys:
+          range:
+            type: dict
+            keys:
+              begin:
+                type: int
+                description: Minimum LACP port-ID range.
+              end:
+                type: int
+                description: Maximum LACP port-ID range.
+      rate_limit:
+        type: dict
+        description: Set LACPDU rate limit options.
+        keys:
+          default:
+            type: bool
+            description: Enable LACPDU rate limiting by default on all ports.
+      system_priority:
+        type: int
+        description: Set local system LACP priority.
+        min: 0
+        max: 65535

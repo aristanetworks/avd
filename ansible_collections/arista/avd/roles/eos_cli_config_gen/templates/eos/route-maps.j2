@@ -1,6 +1,6 @@
-{# eos - Route Maps #}
-{% for route_map in route_maps | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
-{%     for sequence in route_map.sequence_numbers | arista.avd.convert_dicts('sequence') | arista.avd.natural_sort('sequence') %}
+{# eos - route maps #}
+{% for route_map in route_maps | arista.avd.natural_sort('name') %}
+{%     for sequence in route_map.sequence_numbers | arista.avd.natural_sort('sequence') %}
 {%         if sequence.type is arista.avd.defined %}
 !
 route-map {{ route_map.name }} {{ sequence.type }} {{ sequence.sequence }}
@@ -11,6 +11,16 @@ route-map {{ route_map.name }} {{ sequence.type }} {{ sequence.sequence }}
 {%         for match_rule in sequence.match | arista.avd.natural_sort %}
    match {{ match_rule }}
 {%         endfor %}
+{%         if sequence.sub_route_map is arista.avd.defined %}
+   sub-route-map {{ sequence.sub_route_map }}
+{%         endif %}
+{%         if sequence.continue.enabled is arista.avd.defined(true) %}
+{%             set continue_cli = "continue" %}
+{%             if sequence.continue.sequence_number is arista.avd.defined %}
+{%                 set continue_cli = continue_cli ~ " " ~ sequence.continue.sequence_number %}
+{%             endif %}
+   {{ continue_cli }}
+{%         endif %}
 {%         for set_rule in sequence.set | arista.avd.natural_sort %}
    set {{ set_rule }}
 {%         endfor %}

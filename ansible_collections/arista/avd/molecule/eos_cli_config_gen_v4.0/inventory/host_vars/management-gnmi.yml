@@ -1,6 +1,0 @@
-management_api_gnmi:
-  enable_vrfs:
-    MGMT:
-      access_group: ACL-GNMI
-    MONITORING:
-  octa:

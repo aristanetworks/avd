@@ -1,8 +1,0 @@
-{# prefix-lists #}
-prefix_lists:
-  PL-L2LEAF-INBAND-MGMT:
-    sequence_numbers:
-{% for subnet in inband_management_data.subnets %}
-      {{ loop.index * 10 }}:
-        action: "permit {{ subnet }}"
-{% endfor %}

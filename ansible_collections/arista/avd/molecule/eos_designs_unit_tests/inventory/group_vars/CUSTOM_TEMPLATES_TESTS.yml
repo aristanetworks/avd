@@ -1,0 +1,55 @@
+---
+
+mgmt_gateway: 192.168.200.1
+
+node_type_keys:
+  - key: spine
+    type: spine
+    default_evpn_role: server
+    interface_descriptions:
+      # Override interface description templates with our custom templates
+      underlay_ethernet_interfaces: 'custom_templates/interface_descriptions/underlay/ethernet-interfaces.j2'
+      underlay_port_channel_interfaces: 'custom_templates/interface_descriptions/underlay/port-channel-interfaces.j2'
+      mlag_ethernet_interfaces: 'custom_templates/interface_descriptions/mlag/ethernet-interfaces.j2'
+      mlag_port_channel_interfaces: 'custom_templates/interface_descriptions/mlag/port-channel-interfaces.j2'
+      connected_endpoints_ethernet_interfaces: 'custom_templates/interface_descriptions/connected_endpoints/ethernet-interfaces.j2'
+      connected_endpoints_port_channel_interfaces: 'custom_templates/interface_descriptions/connected_endpoints/port-channel-interfaces.j2'
+      overlay_loopback_interface: 'custom_templates/interface_descriptions/loopbacks/overlay-loopback.j2'
+      vtep_loopback_interface: 'custom_templates/interface_descriptions/loopbacks/vtep-loopback.j2'
+  - key: l3leaf
+    type: l3leaf
+    connected_endpoints: true
+    default_evpn_role: client
+    mlag_support: true
+    network_services:
+      l2: true
+      l3: true
+    vtep: true
+    ip_addressing:
+      router_id: 'custom_templates/ip_addressing/router-id.j2'
+      router_id_ipv6: 'custom_templates/ip_addressing/router-id-ipv6.j2'
+      mlag_ip_primary: 'custom_templates/ip_addressing/mlag-ip-primary.j2'
+      mlag_ip_secondary: 'custom_templates/ip_addressing/mlag-ip-secondary.j2'
+      mlag_l3_ip_primary: 'custom_templates/ip_addressing/mlag-l3-ip-primary.j2'
+      mlag_l3_ip_secondary: 'custom_templates/ip_addressing/mlag-l3-ip-secondary.j2'
+      p2p_uplinks_ip: 'custom_templates/ip_addressing/p2p-uplinks-ip.j2'
+      p2p_uplinks_peer_ip: 'custom_templates/ip_addressing/p2p-uplinks-peer-ip.j2'
+      vtep_ip_mlag: 'custom_templates/ip_addressing/vtep-ip-mlag.j2'
+      vtep_ip: 'custom_templates/ip_addressing/vtep-ip.j2'
+      mlag_ibgp_peering_ip_primary: 'custom_templates/ip_addressing/mlag-ibgp-peering-ip-primary.j2'
+      mlag_ibgp_peering_ip_secondary: 'custom_templates/ip_addressing/mlag-ibgp-peering-ip-secondary.j2'
+    interface_descriptions:
+      # Override interface description templates with our custom templates
+      underlay_ethernet_interfaces: 'custom_templates/interface_descriptions/underlay/ethernet-interfaces.j2'
+      underlay_port_channel_interfaces: 'custom_templates/interface_descriptions/underlay/port-channel-interfaces.j2'
+      mlag_ethernet_interfaces: 'custom_templates/interface_descriptions/mlag/ethernet-interfaces.j2'
+      mlag_port_channel_interfaces: 'custom_templates/interface_descriptions/mlag/port-channel-interfaces.j2'
+      connected_endpoints_ethernet_interfaces: 'custom_templates/interface_descriptions/connected_endpoints/ethernet-interfaces.j2'
+      connected_endpoints_port_channel_interfaces: 'custom_templates/interface_descriptions/connected_endpoints/port-channel-interfaces.j2'
+      overlay_loopback_interface: 'custom_templates/interface_descriptions/loopbacks/overlay-loopback.j2'
+      vtep_loopback_interface: 'custom_templates/interface_descriptions/loopbacks/vtep-loopback.j2'
+
+ip_offset_10: 10
+ip_offset_20: 20
+
+description_prefix: "TEST_CUSTOM_PREFIX"

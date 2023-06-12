@@ -3,14 +3,15 @@
 # NTP Status Tests
 
 - name: Gather ntp status
-  eos_command:
+  arista.eos.eos_command:
     commands: "show ntp status"
   register: ntp_status
   tags:
     - ntp
 
 - name: Validate ntp status
-  assert:
+  delegate_to: localhost
+  ansible.builtin.assert:
     that:
       - ntp_status.stdout[0] | regex_search('synchronised to NTP server')
     fail_msg: "Not synchronised to NTP server"

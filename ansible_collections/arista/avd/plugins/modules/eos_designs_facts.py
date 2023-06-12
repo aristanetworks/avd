@@ -1,5 +1,3 @@
-# GNU General Public License v3.0+
-#
 # Copyright 2022 Arista Networks
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +13,7 @@
 # limitations under the License.
 #
 
-DOCUMENTATION = r'''
+DOCUMENTATION = r"""
 ---
 module: eos_designs_facts
 version_added: "3.5.0"
@@ -32,20 +30,64 @@ description:
     so all devices can lookup values of any other device without using the slower `hostvars`.
   - The facts can also be copied to the "root" `switch` in a task run per-device (see example below)
   - The module is used in `arista.avd.eos_designs` to set facts for devices, which are then used by jinja templates
-    in `arista.avd.eos_designs` to generate the `structured_configuration`.
+    and python module in `arista.avd.eos_designs` to generate the `structured_configuration`.
 options:
-  avd_switch_facts:
+  template_output:
     description: |
-      - Calculate and set 'avd_switch_facts.<devices>.switch', 'avd_overlay_peers' and 'avd_topology_peers' facts
-    required: False
+      If true the output data will be run through another jinja2 rendering before returning.
+      This is to resolve any input values with inline jinja using variables/facts set by the input templates.
+    required: false
     type: bool
-'''
+  conversion_mode:
+    description:
+      - Run data conversion in either "error", "warning", "info", "debug", "quiet" or "disabled" mode.
+      - Conversion will perform type conversion of input variables as defined in the schema.
+      - Conversion is intended to help the user to identify minor issues with the input data, while still allowing the data to be validated.
+      - During conversion, messages will be generated with information about the host(s) and key(s) which required conversion.
+      - conversion_mode:disabled means that conversion will not run.
+      - conversion_mode:error will produce error messages and fail the task.
+      - conversion_mode:warning will produce warning messages.
+      - conversion_mode:info will produce regular log messages.
+      - conversion_mode:debug will produce hidden messages viewable with -v.
+      - conversion_mode:quiet will not produce any messages.
+    required: false
+    default: "debug"
+    type: str
+    choices: [ "error", "warning", "info", "debug", "quiet", "disabled" ]
+  validation_mode:
+    description:
+      - Run validation in either "error", "warning", "info", "debug" or "disabled" mode.
+      - Validation will validate the input variables according to the schema.
+      - During validation, messages will be generated with information about the host(s) and key(s) which failed validation.
+      - validation_mode:disabled means that validation will not run.
+      - validation_mode:error will produce error messages and fail the task.
+      - validation_mode:warning will produce warning messages.
+      - validation_mode:info will produce regular log messages.
+      - validation_mode:debug will produce hidden messages viewable with -v.
+    required: false
+    default: "warning"
+    type: str
+    choices: [ "error", "warning", "info", "debug", "disabled" ]
+  cprofile_file:
+    description:
+      - Filename for storing cprofile data used to debug performance issues.
+      - Running cprofile will slow down performance in it self, so only set this while troubleshooting.
+    required: false
+    type: str
+"""
 
-EXAMPLES = r'''
+EXAMPLES = r"""
 - name: Set eos_designs facts
   tags: [build, provision, facts]
   arista.avd.eos_designs_facts:
-    avd_switch_facts: True
+    schema_id: eos_designs
   check_mode: False
   run_once: True
-'''
+
+- name: Set eos_designs facts per device
+  tags: [build, provision, facts]
+  ansible.builtin.set_fact:
+    switch: "{{ avd_switch_facts[inventory_hostname].switch }}"
+  delegate_to: localhost
+  changed_when: false
+"""

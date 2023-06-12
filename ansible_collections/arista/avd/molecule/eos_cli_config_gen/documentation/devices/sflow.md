@@ -1,41 +1,31 @@
 # sflow
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Authentication](#authentication)
 - [Monitoring](#monitoring)
   - [SFlow](#sflow)
-- [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
-  - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
-- [Interfaces](#interfaces)
-- [Routing](#routing)
-  - [IP Routing](#ip-routing)
-  - [IPv6 Routing](#ipv6-routing)
-- [Multicast](#multicast)
-- [Filters](#filters)
-- [ACL](#acl)
-- [Quality Of Service](#quality-of-service)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | -  | - |
+| Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -45,19 +35,21 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Authentication
+## Monitoring
 
-# Monitoring
+### SFlow
 
-## SFlow
+#### SFlow Summary
 
-### SFlow Summary
-
-| VRF | SFlow Source Interface | SFlow Destination | Port |
-| --- | ---------------------- | ----------------- | ---- |
+| VRF | SFlow Source | SFlow Destination | Port |
+| --- | ------------ | ----------------- | ---- |
 | AAA | - | 10.6.75.62 | 123 |
 | AAA | - | 10.6.75.63 | 333 |
 | AAA | Ethernet2 | - | - |
+| BBB | - | 10.6.75.62 | 6343 |
+| BBB | 1.1.1.1 | - | - |
+| CCC | - | 10.6.75.62 | 6343 |
+| CCC | Management1 | - | - |
 | MGMT | - | 10.6.75.59 | 6343 |
 | MGMT | - | 10.6.75.62 | 123 |
 | MGMT | - | 10.6.75.63 | 333 |
@@ -68,6 +60,8 @@ interface Management1
 
 sFlow Sample Rate: 1000
 
+sFlow Polling Interval: 10
+
 sFlow is enabled.
 
 sFlow is disabled on all interfaces by default.
@@ -76,7 +70,7 @@ sFlow hardware acceleration is enabled.
 
 sFlow hardware accelerated Sample Rate: 1024
 
-### SFlow Hardware Accelerated Modules
+#### SFlow Hardware Accelerated Modules
 
 | Module | Acceleration Enabled |
 | ------ | -------------------- |
@@ -84,14 +78,28 @@ sFlow hardware accelerated Sample Rate: 1024
 | Linecard2 | True |
 | Linecard3 | False |
 
-### SFlow Device Configuration
+#### SFlow Extensions
+
+| Extension | Enabled |
+| --------- | ------- |
+| bgp | True |
+| router | True |
+| switch | False |
+| tunnel | False |
+
+#### SFlow Device Configuration
 
 ```eos
 !
 sflow sample dangerous 1000
+sflow polling-interval 10
 sflow vrf AAA destination 10.6.75.62 123
 sflow vrf AAA destination 10.6.75.63 333
 sflow vrf AAA source-interface Ethernet2
+sflow vrf BBB destination 10.6.75.62
+sflow vrf BBB source 1.1.1.1
+sflow vrf CCC destination 10.6.75.62
+sflow vrf CCC source-interface Management1
 sflow vrf MGMT destination 10.6.75.59
 sflow vrf MGMT destination 10.6.75.62 123
 sflow vrf MGMT destination 10.6.75.63 333
@@ -99,53 +107,15 @@ sflow vrf MGMT source-interface Ethernet3
 sflow destination 10.6.75.61
 sflow destination 10.6.75.62 123
 sflow source-interface Management0
-sflow run
+sflow extension bgp
+sflow extension router
+no sflow extension switch
+no sflow extension tunnel
 sflow interface disable default
+sflow run
 sflow hardware acceleration
 sflow hardware acceleration sample 1024
 sflow hardware acceleration module Linecard1
 sflow hardware acceleration module Linecard2
 no sflow hardware acceleration module Linecard3
 ```
-
-# Internal VLAN Allocation Policy
-
-## Internal VLAN Allocation Policy Summary
-
-**Default Allocation Policy**
-
-| Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
-| ascending | 1006 | 4094 |
-
-# Interfaces
-
-# Routing
-
-## IP Routing
-
-### IP Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | false |
-
-### IP Routing Device Configuration
-
-```eos
-```
-## IPv6 Routing
-
-### IPv6 Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | false |
-
-# Multicast
-
-# Filters
-
-# ACL
-
-# Quality Of Service

@@ -23,6 +23,9 @@ aaa accounting exec default {{ aaa_accounting.exec.default.type }} group {{ aaa_
 {%     if aaa_accounting.system.default.type is arista.avd.defined and aaa_accounting.system.default.group is arista.avd.defined %}
 aaa accounting system default {{ aaa_accounting.system.default.type }} group {{ aaa_accounting.system.default.group }}
 {%     endif %}
+{%     if aaa_accounting.dot1x.default.type is arista.avd.defined and aaa_accounting.dot1x.default.group is arista.avd.defined %}
+aaa accounting dot1x default {{ aaa_accounting.dot1x.default.type }} group {{ aaa_accounting.dot1x.default.group }}
+{%     endif %}
 {%     if aaa_accounting.commands.default is arista.avd.defined %}
 {%         for command_default in aaa_accounting.commands.default %}
 {%             if command_default.commands is arista.avd.defined and command_default.type is arista.avd.defined %}

@@ -1,0 +1,94 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  policy_maps:
+    type: dict
+    keys:
+      pbr:
+        type: list
+        description: PBR Policy-Maps
+        primary_key: name
+        convert_types:
+          - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Policy-Map Name
+            classes:
+              type: list
+              primary_key: name
+              convert_types:
+                - dict
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Class Name
+                  index:
+                    type: int
+                    convert_types:
+                      - str
+                  drop:
+                    description: "'drop' and 'set' are mutually exclusive"
+                    type: bool
+                  set:
+                    description: |
+                      Set Nexthop
+                      'drop' and 'set' are mutually exclusive
+                    type: dict
+                    keys:
+                      nexthop:
+                        type: dict
+                        keys:
+                          ip_address:
+                            type: str
+                            description: IPv4 or IPv6 Address
+                          recursive:
+                            type: bool
+      qos:
+        type: list
+        description: QOS Policy-Maps
+        primary_key: name
+        convert_types:
+          - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Policy-Map Name
+            classes:
+              type: list
+              primary_key: name
+              convert_types:
+                - dict
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Class Name
+                  set:
+                    type: dict
+                    keys:
+                      cos:
+                        type: int
+                        convert_types:
+                          - str
+                      dscp:
+                        type: str
+                        convert_types:
+                          - int
+                      traffic_class:
+                        type: int
+                        convert_types:
+                          - str
+                      drop_precedence:
+                        type: int
+                        convert_types:
+                          - str

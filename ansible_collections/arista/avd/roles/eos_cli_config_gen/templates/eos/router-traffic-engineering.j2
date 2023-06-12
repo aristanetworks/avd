@@ -1,4 +1,4 @@
-{# eos - Router Traffic Engineering #}
+{# eos - router traffic engineering #}
 {% if router_traffic_engineering is arista.avd.defined %}
 !
 router traffic-engineering
@@ -25,6 +25,9 @@ router traffic-engineering
 {%                     endif %}
 {%                     if color.description is arista.avd.defined %}
          description {{ color.description }}
+{%                     endif %}
+{%                     if color.sbfd_remote_discriminator is arista.avd.defined %}
+         sbfd remote-discriminator {{ color.sbfd_remote_discriminator }}
 {%                     endif %}
 {%                     for pathgroup in color.path_group | arista.avd.natural_sort('preference') %}
          !

@@ -1,10 +1,11 @@
+{# doc - qos profiles #}
 {% if qos_profiles is arista.avd.defined %}
 
-## QOS Profiles
+### QOS Profiles
 
-### QOS Profiles Summary
+#### QOS Profiles Summary
 
-{%     for profile in qos_profiles | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for profile in qos_profiles | arista.avd.natural_sort('name') %}
 
 QOS Profile: **{{ profile.name }}**
 
@@ -27,7 +28,7 @@ QOS Profile: **{{ profile.name }}**
 | TX queue | Type | Bandwidth | Priority | Shape Rate |
 | -------- | ---- | --------- | -------- | ---------- |
 {%             if profile.tx_queues is arista.avd.defined %}
-{%                 for tx_queue in profile.tx_queues | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%                 for tx_queue in profile.tx_queues | arista.avd.natural_sort('id') %}
 {%                     set type = "All" %}
 {%                     set bw_percent = tx_queue.bandwidth_percent | arista.avd.default(
                                         tx_queue.bandwidth_guaranteed_percent,
@@ -38,7 +39,7 @@ QOS Profile: **{{ profile.name }}**
 {%                 endfor %}
 {%             endif %}
 {%             if profile.uc_tx_queues is arista.avd.defined %}
-{%                 for uc_tx_queue in profile.uc_tx_queues | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%                 for uc_tx_queue in profile.uc_tx_queues | arista.avd.natural_sort('id') %}
 {%                     set type = "Unicast" %}
 {%                     set bw_percent = uc_tx_queue.bandwidth_percent | arista.avd.default(
                                         uc_tx_queue.bandwidth_guaranteed_percent,
@@ -49,7 +50,7 @@ QOS Profile: **{{ profile.name }}**
 {%                 endfor %}
 {%             endif %}
 {%             if profile.mc_tx_queues is arista.avd.defined %}
-{%                 for mc_tx_queue in profile.mc_tx_queues | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
+{%                 for mc_tx_queue in profile.mc_tx_queues | arista.avd.natural_sort('id') %}
 {%                     set type = "Multicast" %}
 {%                     set bw_percent = mc_tx_queue.bandwidth_percent | arista.avd.default(
                                         mc_tx_queue.bandwidth_guaranteed_percent,
@@ -62,7 +63,7 @@ QOS Profile: **{{ profile.name }}**
 {%         endif %}
 {%     endfor %}
 
-### QOS Profile Device Configuration
+#### QOS Profile Device Configuration
 
 ```eos
 {%     include 'eos/qos-profiles.j2' %}

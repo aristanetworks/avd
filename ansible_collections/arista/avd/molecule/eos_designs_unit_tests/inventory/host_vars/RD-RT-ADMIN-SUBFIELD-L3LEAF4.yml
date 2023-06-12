@@ -1,0 +1,10 @@
+---
+
+# Expected result: rd 5004:*
+overlay_rd_type:
+  admin_subfield: switch_id
+  admin_subfield_offset: 5000
+
+# Expected result: rt 4294967295:*
+overlay_rt_type:
+  admin_subfield: 4294967295

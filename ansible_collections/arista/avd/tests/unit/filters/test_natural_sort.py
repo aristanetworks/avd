@@ -1,19 +1,21 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
-from ansible_collections.arista.avd.plugins.filter.natural_sort import FilterModule, convert, natural_sort as _natural_sort
-from jinja2.runtime import Undefined
-from ansible_collections.arista.avd.tests.unit.filters.filter_utils import natural_sort
 import pytest
+from jinja2.runtime import Undefined
+
+from ansible_collections.arista.avd.plugins.filter.natural_sort import FilterModule, convert
+from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort as _natural_sort
+from ansible_collections.arista.avd.tests.unit.filters.filter_utils import natural_sort
 
 f = FilterModule()
 
 STRINGS_VALID = ["100", "200", "ABC"]
-ITEMS_TO_NATURAL_SORT = [None, [], {}, "", ["1,2,3,4", "11,2,3,4", "5.6.7.8"], {
-    'a1': 123, 'a2': 2, 'a10': 333, 'a11': 4456}]
+ITEMS_TO_NATURAL_SORT = [None, [], {}, "", ["1,2,3,4", "11,2,3,4", "5.6.7.8"], {"a1": 123, "a2": 2, "a10": 333, "a11": 4456}]
 
 
-class TestNaturalSortFilter():
+class TestNaturalSortFilter:
     @pytest.mark.parametrize("STRING_VALID", STRINGS_VALID)
     def test_convert_function(self, STRING_VALID):
         resp = convert(STRING_VALID)
@@ -34,4 +36,4 @@ class TestNaturalSortFilter():
     def test_natural_sort_filter(self):
         resp = f.filters()
         assert isinstance(resp, dict)
-        assert 'natural_sort' in resp.keys()
+        assert "natural_sort" in resp.keys()

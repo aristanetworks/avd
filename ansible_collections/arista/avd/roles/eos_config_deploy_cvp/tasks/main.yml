@@ -1,7 +1,7 @@
 ---
 - name: Create required output directories if not present
   tags: [always]
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
     mode: 0775
@@ -10,6 +10,18 @@
   delegate_to: localhost
   run_once: true
 
+- name: Verify Requirements
+  tags: [always, avd_req]
+  delegate_to: localhost
+  when: avd_requirements is not defined
+  arista.avd.verify_requirements:
+    requirements: "{{ lookup('file', requirements_path ~ '/requirements.txt').splitlines() }}"
+    avd_ignore_requirements: "{{ avd_ignore_requirements | default(false) }}"
+  vars:
+    requirements_path: "{{ (role_path | split('/'))[0:-2] | join('/') }}"
+  run_once: true
+  register: avd_requirements
+
 - name: Start creation/update process.
   tags: [always]
-  include_tasks: "{{ cv_collection }}/main.yml"
+  ansible.builtin.include_tasks: "{{ cv_collection }}/main.yml"

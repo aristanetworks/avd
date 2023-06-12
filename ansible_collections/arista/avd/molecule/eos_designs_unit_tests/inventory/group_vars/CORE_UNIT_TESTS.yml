@@ -1,6 +1,6 @@
 # Fabric node type keys
 node_type_keys:
-  core_router:
+  - key: core_router
     type: core_router
     default_evpn_role: none
     mpls_lsr: true
@@ -40,12 +40,13 @@ core_router:
     loopback_ipv6_pool: "2000:1234:ffff:ffff::/64"
     node_sid_base: 200
     isis_system_id_prefix: "0000.0001"
-    core_interface_speed: "forced 100gfull"
   nodes:
-    core-1-isis-sr-ldp:
+    - name: core-1-isis-sr-ldp
       id: 1
-    core-2-ospf-ldp:
+    - name: core-2-ospf-ldp
       id: 2
+    - name: core-3-isis-sr-ldp
+      id: 3
 
 core_interfaces:
   p2p_links_ip_pools:
@@ -123,6 +124,7 @@ core_interfaces:
       isis_circuit_type: level-1-2
       isis_metric: 70
       qos_profile: test_qos_profile
+      descriptions: ["Custom description on core-1-isis-sr-ldp eth6", "Custom description on core-2-ospf-ldp eth6"]
 
     # Different link profile
     - nodes: [ core-1-isis-sr-ldp, core-2-ospf-ldp ]
@@ -136,6 +138,44 @@ core_interfaces:
       port_channel:
         mode: active
         nodes_child_interfaces:
-          core-1-isis-sr-ldp: [ Ethernet12, Ethernet13 ]
-          core-2-ospf-ldp: [ Ethernet12, Ethernet13 ]
+          - node: core-1-isis-sr-ldp
+            interfaces: [ Ethernet12, Ethernet13 ]
+          - node: core-2-ospf-ldp
+            interfaces: [ Ethernet12, Ethernet13 ]
       profile: isis_bb_profile
+
+
+l3_edge:
+  p2p_links_ip_pools:
+    - name: pool_default_mask
+      ipv4_pool: 172.16.0.0/24
+    - name: pool_29_mask
+      ipv4_pool: 172.16.1.0/24
+      prefix_size: 29
+  p2p_links:
+      # P2P link with mpls_ip and mpls_ldp set to false.
+    - nodes: [core-1-isis-sr-ldp, peer2]
+      interfaces: [ethernet21, ethernet21]
+      ip: [192.168.0.2/31, 192.168.0.3/31]
+      mpls_ip: false
+      mpls_ldp: false
+    - nodes: [core-1-isis-sr-ldp, peer3]
+      interfaces: [ethernet22, ethernet22]
+      include_in_underlay_protocol: false
+      ip_pool: pool_default_mask
+      id: 1
+    - nodes: [core-1-isis-sr-ldp, peer4]
+      interfaces: [ethernet23, ethernet23]
+      include_in_underlay_protocol: false
+      ip_pool: pool_default_mask
+      id: 2
+    - nodes: [core-1-isis-sr-ldp, peer5]
+      interfaces: [ethernet24, ethernet22]
+      include_in_underlay_protocol: false
+      ip_pool: pool_29_mask
+      id: 1
+    - nodes: [core-1-isis-sr-ldp, peer6]
+      interfaces: [ethernet25, ethernet23]
+      include_in_underlay_protocol: false
+      ip_pool: pool_29_mask
+      id: 2

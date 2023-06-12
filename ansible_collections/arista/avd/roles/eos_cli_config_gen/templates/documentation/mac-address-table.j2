@@ -1,8 +1,9 @@
+{# doc - mac address table #}
 {% if mac_address_table is arista.avd.defined %}
 
-# MAC Address Table
+## MAC Address Table
 
-## MAC Address Table Summary
+### MAC Address Table Summary
 {%     if mac_address_table.aging_time is arista.avd.defined %}
 
 - MAC address table entry maximum age: {{ mac_address_table.aging_time }} seconds
@@ -23,7 +24,7 @@
 - Size of the flap detection time window: {{ mac_address_table.notification_host_flap.detection.window }} seconds
 {%     endif %}
 
-## MAC Address Table Device Configuration
+### MAC Address Table Device Configuration
 
 ```eos
 {%     include 'eos/mac-address-table-aging-time.j2' %}

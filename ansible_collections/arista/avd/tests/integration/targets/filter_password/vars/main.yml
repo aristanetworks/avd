@@ -1,0 +1,20 @@
+---
+bgp:
+  neighbor_ip: 42.42.42.42
+  peer_group: AVD-TEST
+  neighbor_encrypted_password: 3QGcqpU2YTwKh2jVQ4Vj/A==
+  peer_group_encrypted_password: bM7t58t04qSqLHAfZR/Szg==
+  clear_password: arista
+  non_string_clear_password: 42
+  expected_non_string_pg_encrypted_password: "njKpGaHRjn8="
+
+ospf:
+  # common values
+  interface_name: Ethernet42
+  clear_password: arista
+  # simple authentication
+  expected_ospf_simple_auth_encrypted_password: CCWomIssEBxlSKwscoXVqw==
+  # message digest keys value
+  key_id: 42
+  hash_algorithm: sha384
+  expected_ospf_message_digest_encrypted_password: kkUHfrLewxAxiqER3KUSFQ==

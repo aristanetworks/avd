@@ -1,0 +1,12 @@
+type: spine
+
+# Spine Switches
+spine:
+  defaults:
+    platform: vEOS-LAB
+    bgp_as: 65001
+    loopback_ipv4_pool: 192.168.255.0/24
+  nodes:
+    - name: UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1
+      id: 1
+      mgmt_ip: 192.168.200.101/24

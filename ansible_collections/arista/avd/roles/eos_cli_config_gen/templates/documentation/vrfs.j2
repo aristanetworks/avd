@@ -1,0 +1,26 @@
+{# doc - vrfs #}
+{% if vrfs is arista.avd.defined %}
+
+## VRF Instances
+
+### VRF Instances Summary
+
+| VRF Name | IP Routing |
+| -------- | ---------- |
+{%     for vrf in vrfs | arista.avd.default([]) | rejectattr("name", "arista.avd.defined", "default") | arista.avd.natural_sort('name') %}
+{%         if vrf.ip_routing_ipv6_interfaces is arista.avd.defined(true) %}
+{%             set ip_routing = "enabled (ipv6 interface)" %}
+{%         elif vrf.ip_routing is arista.avd.defined(true) %}
+{%             set ip_routing = 'enabled' %}
+{%         else %}
+{%             set ip_routing = 'disabled' %}
+{%         endif %}
+| {{ vrf.name }} | {{ ip_routing }} |
+{%     endfor %}
+
+### VRF Instances Device Configuration
+
+```eos
+{%     include 'eos/vrfs.j2' %}
+```
+{% endif %}

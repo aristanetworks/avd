@@ -1,0 +1,54 @@
+mgmt_gateway: 192.168.203.1
+default_node_types:
+  - match_hostnames:
+      - AUTO_NODE_TYPE_LEAF.*
+      - AUTO_NODE_TYPE_UNGROUPED_.*
+    node_type: l3leaf
+  - match_hostnames:
+      - AUTO_NODE_TYPE_SPINE.*
+    node_type: spine
+
+spine:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.255.0/24
+    bgp_defaults: ['distance bgp 20 200 200']
+    bgp_as: 65100
+  node_groups:
+    - group: AUTO_NODE_TYPE_SPINE
+      nodes:
+        - name: AUTO_NODE_TYPE_SPINE01
+          id: 1
+          mgmt_ip: 192.168.203.10
+        - name: AUTO_NODE_TYPE_SPINE02
+          id: 2
+          mgmt_ip: 192.168.203.11
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 2
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    uplink_interfaces: [Ethernet1, Ethernet2]
+    uplink_switches: [AUTO_NODE_TYPE_SPINE01, AUTO_NODE_TYPE_SPINE02]
+    uplink_ipv4_pool: 172.31.255.0/24
+    bgp_defaults: ['distance bgp 20 200 200']
+    mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 4096
+    bgp_as: 65101-65110
+  node_groups:
+    - group: AUTO_NODE_TYPE_LEAF1
+      mlag: false
+      nodes:
+        - name: AUTO_NODE_TYPE_LEAF01
+          id: 1
+          mgmt_ip: 192.168.203.12/24
+          uplink_switch_interfaces: [Ethernet1, Ethernet1]
+  nodes:
+    - name: AUTO_NODE_TYPE_UNGROUPED_LEAF02
+      id: 2
+      mgmt_ip: 192.168.203.13/24
+      uplink_switch_interfaces: [Ethernet2, Ethernet2]

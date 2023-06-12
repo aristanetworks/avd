@@ -1,22 +1,26 @@
 ---
 
 - name: Gather ip reachability state between devices (loopback0 <-> loopback0)
-  eos_command:
-    commands: "ping {{ loopback0_address | ansible.netcommon.ipaddr('address') }} source {{ loopback_interfaces.Loopback0.ip_address | ansible.netcommon.ipaddr('address') }} repeat 1"
+  arista.eos.eos_command:
+    commands: "ping {{ loopback0_address | ansible.utils.ipaddr('address') }} source {{ source_ip_address | ansible.utils.ipaddr('address') }} repeat 1"  # noqa: jinja[invalid]
   loop: "{{ loopback0_reachability.loopback0_range }}"
   loop_control:
     loop_var: loopback0_address
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  vars:
+    # Vars are not rendered when being evaluated by "when" condition so we cannot use this var for that.
+    source_ip_address: "{{ (loopback_interfaces | arista.avd.default({}) | arista.avd.convert_dicts('name') | selectattr('name', 'eq', 'Loopback0') | map(attribute='ip_address'))[0] | arista.avd.default }}"
   when: |
-    (loopback0_reachability.loopback0_range is arista.avd.defined) and
-    (loopback_interfaces.Loopback0.ip_address is arista.avd.defined) and
-    (type is arista.avd.defined('l3leaf'))
+    loopback0_reachability.loopback0_range is arista.avd.defined and
+    (loopback_interfaces | arista.avd.default({}) | arista.avd.convert_dicts('name') | selectattr('name', 'eq', 'Loopback0') | map(attribute='ip_address'))[0] is arista.avd.defined and
+    type is arista.avd.defined('l3leaf')
   register: loopback0_reachability_state
   tags:
     - loopback0_reachability
 
 - name: Validate ip reachability between devices (loopback0 <-> loopback0)
-  assert:
+  delegate_to: localhost
+  ansible.builtin.assert:
     that:
       - loopback0_reachability_test.stdout[0] | regex_search("1 received")
     fail_msg: "100% packet loss"
@@ -30,8 +34,9 @@
   tags:
     - loopback0_reachability
 
-- include_tasks: ping_inband.yml
-  loop: "{{ management_interfaces | default({}, true) | dict2items }}"
+- name: Ping inband management interfaces
+  ansible.builtin.include_tasks: ping_inband.yml
+  loop: "{{ management_interfaces | arista.avd.default({}) | arista.avd.convert_dicts('name') }}"
   loop_control:
     loop_var: management_interface
   when: |
@@ -41,7 +46,8 @@
     - optional
 
 - name: Validate ip reachability from Inband Management to loopback0 in fabric
-  assert:
+  delegate_to: localhost
+  ansible.builtin.assert:
     that:
       - inb_mgmt_loopback0_reachability_test.stdout[0] | regex_search('1 received')
     fail_msg: "100% packet loss"

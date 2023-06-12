@@ -1,0 +1,27 @@
+# UNDERLAY_MULTICAST_TESTS
+
+# Test underlay_multicast and validate that multicast configuration on p2p links and router_multicast based on child configuration.
+underlay_multicast: true
+
+type: spine
+
+# Spine Switches
+spine:
+  defaults:
+    platform: vEOS-LAB
+    bgp_as: 65001
+    loopback_ipv4_pool: 192.168.255.0/24
+  nodes:
+    # Test multicast configuration on parent device.
+    # Expected results:
+    # - router multicast enabled for ipv4
+    # - p2p links configured with "pim ipv4 sparse-mode"
+    - name: UNDERLAY-MULTICAST-SPINE1
+      id: 1
+      mgmt_ip: 192.168.200.101/24
+    # Test scenario of parent device with "underlay_multicast: false" in host_vars.
+    # Expected results:
+    # - No multicast configuration
+    - name: UNDERLAY-MULTICAST-SPINE2
+      id: 2
+      mgmt_ip: 192.168.200.102/24

@@ -1,0 +1,9 @@
+---
+- name: Converge - generate DHCP configuration offline
+  hosts: TOOLS
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Generate intended configuration
+      ansible.builtin.import_role:
+        name: arista.avd.dhcp_provisioner

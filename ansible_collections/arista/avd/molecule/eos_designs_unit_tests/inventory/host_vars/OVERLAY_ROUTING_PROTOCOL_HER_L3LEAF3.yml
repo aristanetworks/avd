@@ -1,0 +1,9 @@
+---
+# This will create per-vni flood-lists. Set to true for leaf 1-2 and to false (in hostvars) for leaf3.
+overlay_her_flood_list_per_vni: false
+# Expectation is to see per-vni flood-lists on leaf 1-2 and a single flood-list on leaf3
+
+# This will limit the potential flood-list entries to those in the Inventory Group referenced in dc_name
+overlay_her_flood_list_scope: dc
+# By default the single flood list would contain all the vteps under unit_tests since they use the same fabric_name.
+# This would mean that every addition to unit_tests would change this config, so to avoid confusion, the scope is limited to the "dc".

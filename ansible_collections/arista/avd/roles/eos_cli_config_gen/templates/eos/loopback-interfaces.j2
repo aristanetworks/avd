@@ -1,5 +1,5 @@
-{# eos- Loopback Interfaces #}
-{% for loopback_interface in loopback_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{# eos - loopback interfaces #}
+{% for loopback_interface in loopback_interfaces | arista.avd.natural_sort('name') %}
 !
 interface {{ loopback_interface.name }}
 {%     if loopback_interface.description is arista.avd.defined %}

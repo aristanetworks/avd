@@ -1,8 +1,9 @@
+{# doc - aaa accounting #}
 {% if aaa_accounting is arista.avd.defined %}
 
-## AAA Accounting
+### AAA Accounting
 
-### AAA Accounting Summary
+#### AAA Accounting Summary
 
 | Type | Commands | Record type | Group | Logging |
 | ---- | -------- | ----------- | ----- | ------- |
@@ -24,6 +25,9 @@
 {%     if aaa_accounting.system.default.type is arista.avd.defined and aaa_accounting.system.default.group is arista.avd.defined  %}
 | System - Default | - | {{ aaa_accounting.system.default.type }} | {{ aaa_accounting.system.default.group }} | - |
 {%     endif %}
+{%     if aaa_accounting.dot1x.default.type is arista.avd.defined and aaa_accounting.dot1x.default.group is arista.avd.defined %}
+| Dot1x - Default  | - | {{ aaa_accounting.dot1x.default.type }} | {{ aaa_accounting.dot1x.default.group }} | - |
+{%     endif %}
 {%     if aaa_accounting.commands.default is arista.avd.defined %}
 {%         for command_default in aaa_accounting.commands.default %}
 {%             if command_default.logging is arista.avd.defined(true) %}
@@ -35,7 +39,7 @@
 {%         endfor %}
 {%     endif %}
 
-### AAA Accounting Device Configuration
+#### AAA Accounting Device Configuration
 
 ```eos
 {%     include 'eos/aaa-accounting.j2' %}

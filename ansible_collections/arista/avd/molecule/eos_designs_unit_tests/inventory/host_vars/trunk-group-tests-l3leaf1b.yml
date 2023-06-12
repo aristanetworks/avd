@@ -1,0 +1,13 @@
+---
+# Testing "only_local_vlan_trunk_groups: true" set in hostvars to see that only
+# locally used trunk-groups are set on vlans even without "filter.only_vlans_in_use: true"
+only_local_vlan_trunk_groups: true
+
+# Testing custom Trunk Group names on l2leaf1b and l3leaf1b.
+trunk_groups:
+  mlag:
+    name: "CUSTOM_MLAG_TG_NAME"
+  mlag_l3:
+    name: "CUSTOM_LEAF_PEER_L3_TG_NAME"
+  uplink:
+    name: "CUSTOM_UPLINK_TG_NAME"

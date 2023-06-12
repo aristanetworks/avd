@@ -5,7 +5,7 @@
   connection: local
   tasks:
 
-    - name: generate device intended config and documention
+    - name: Generate device intended config and documentation
       delegate_to: 127.0.0.1
-      import_role:
+      ansible.builtin.import_role:
         name: arista.avd.eos_cli_config_gen

@@ -1,0 +1,23 @@
+# Schema folders
+# Main schemas folder
+role_schema_dir_name: "schemas"
+role_schema_dir: "{{ role_path }}/{{ role_schema_dir_name }}"
+# Main Schema file
+role_schema_file_name: "{{ role_name }}.schema.yml"
+role_schema_path: "{{ role_schema_dir }}/{{ role_schema_file_name }}"
+# Schema fragments folder
+role_schema_fragments_dir_name: "schema_fragments"
+role_schema_fragments_dir: "{{ role_schema_dir }}/{{ role_schema_fragments_dir_name }}"
+# Schema fragments glob
+role_schema_fragments_file_glob: "*.schema.yml"
+role_schema_fragments_glob: "{{ role_schema_fragments_dir }}/{{ role_schema_fragments_file_glob }}"
+# JSON Schema file
+role_schema_json_schema_file_name: "{{ role_name }}.jsonschema.json"
+role_schema_json_schema_path: "{{ role_schema_dir }}/{{ role_schema_json_schema_file_name }}"
+
+# Documentation folder
+role_documentation_dir_name: "docs"
+role_documentation_dir: "{{ role_path }}/{{ role_documentation_dir_name }}"
+
+# Schema Docs fragments folder
+role_schema_docs_fragments_dir: "{{ role_schema_dir }}/doc_fragments"

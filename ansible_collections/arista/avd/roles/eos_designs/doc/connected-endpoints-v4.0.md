@@ -50,7 +50,9 @@ port_profiles:
     mode: < access | dot1q-tunnel | trunk >
     mtu: < mtu >
     l2_mtu: < l2_mtu - if defined this profile should only be used for platforms supporting the "l2 mtu" CLI >
-    native_vlan: <native vlan number>
+    # If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence
+    native_vlan: < native_vlan_number >
+    native_vlan_tag: < boolean | default -> false >
     vlans: < vlans as string >
     spanning_tree_portfast: < edge | network >
     spanning_tree_bpdufilter: < "enabled" | true | "disabled" >
@@ -59,7 +61,7 @@ port_profiles:
       received: < "received" | "send" | "on" >
     qos_profile: < qos_profile_name >
     ptp:
-      enable: < true | false >
+      enabled: < true | false >
     storm_control:
       all:
         level: < Configure maximum storm-control level >
@@ -98,29 +100,31 @@ port_profiles:
         # Adapter speed - if not specified will be auto.
       - speed: < interface_speed | forced interface_speed | auto interface_speed >
 
-        # Local endpoint port(s) | required
+        # Local endpoint port(s) | Required
         endpoint_ports: [ < interface_name > ]
 
-        # List of port(s) connected to switches | required
+        # List of port(s) connected to switches | Required
         switch_ports: [ < switchport_interface > ]
 
-        # List of switch(es) | required
+        # List of switch(es) | Required
         switches: [ < device > ]
 
         # Port-profile name, to inherit configuration.
         profile: < port_profile_name >
 
-        # Administrative state | optional - default is true
+        # Administrative state | Optional - default is true
         # setting to false will set port to 'shutdown' in intended configuration
         enabled: < true | false >
 
-        # Interface mode | required
+        # Interface mode | Optional
         mode: < access | dot1q-tunnel | trunk >
 
-        # Native VLAN for a trunk port | optional
-        native_vlan: <native vlan number>
+        # Native VLAN for a trunk port | Optional
+        # If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence
+        native_vlan: < native_vlan_number >
+        native_vlan_tag: < boolean | default -> false >
 
-        # Interface vlans | required
+        # Interface vlans | Required
         vlans: < vlans as string >
 
         # Spanning Tree
@@ -137,7 +141,7 @@ port_profiles:
 
         # PTP Enable | Optional
         ptp:
-          enable: < true | false >
+          enabled: < true | false >
 
         # Configure the downstream interfaces of a respective Link Tracking Group | Optional
         # If port_channel is defined in an adapter then port-channel interface is configured to be the downstream
@@ -206,7 +210,11 @@ port_profiles:
           # Port-Channel Description.
           description: < port_channel_description >
 
-          # Port-Channel administrative state | optional - default is true
+          # Port-Channel ID | Optional
+          # If no channel_id is specified, an id is generated from the first switch port in the port channel
+          channel_id : < port_channel_id >
+
+          # Port-Channel administrative state | Optional - default is true
           # setting to false will set port to 'shutdown' in intended configuration
           enabled: < true | false >
 
@@ -384,9 +392,9 @@ To help provide consistency when configuring EVPN A/A ESI values, arista.avd pro
 `short_esi` is an abbreviated 3 octets value to encode [Ethernet Segment ID](https://tools.ietf.org/html/rfc7432#section-8.3.1) and LACP ID.
 Transformation from abstraction to network values is managed by a [filter_plugin](../../../plugins/README.md) and provides following result:
 
-- _EVPN ESI_: 000:000:0303:0202:0101
-- _LACP ID_: 0303.0202.0101
-- _Route Target_: 03:03:02:02:01:01
+- *EVPN ESI*: 000:000:0303:0202:0101
+- *LACP ID*: 0303.0202.0101
+- *Route Target*: 03:03:02:02:01:01
 
 Active/Active multihoming connections:
 

@@ -8,7 +8,7 @@ router_bgp:
     - graceful-restart
     - maximum-paths 2 ecmp 2
   peer_groups:
-    EVPN-OVERLAY-PEERS:
+    - name: EVPN-OVERLAY-PEERS
       type: evpn
       remote_as: 65001
       update_source: Loopback0
@@ -24,7 +24,7 @@ router_bgp:
       rib_in_pre_policy_retain:
         enabled: true
         all: true
-    MLAG-IPv4-UNDERLAY-PEER:
+    - name: MLAG-IPv4-UNDERLAY-PEER
       type: ipv4
       remote_as: 65101
       # Test no config generation
@@ -32,14 +32,14 @@ router_bgp:
       # Test no config generation
       rib_in_pre_policy_retain:
   neighbors:
-    192.168.255.1:
+    - ip_address: 192.168.255.1
       peer_group: EVPN-OVERLAY-PEERS
-    192.168.255.2:
+    - ip_address: 192.168.255.2
       peer_group: EVPN-OVERLAY-PEERS
   address_family_evpn:
     neighbor_default:
       encapsulation: mpls
       next_hop_self_source_interface: Loopback0
     peer_groups:
-      EVPN-OVERLAY-PEERS:
+      - name: EVPN-OVERLAY-PEERS
         activate: true

@@ -1,0 +1,74 @@
+---
+type: l3leaf
+
+dc_name: OVERLAY_ROUTING_PROTOCOL_HER_TESTS
+
+overlay_routing_protocol: HER
+# This will create per-vni flood-lists. Set to true for leaf 1-2 and to false (in hostvars) for leaf3.
+overlay_her_flood_list_per_vni: true
+# Expectation is to see per-vni flood-lists on leaf 1-2 and a single flood-list on leaf3
+# (the single flood list will contain all the vteps under unit_tests since they use a single fabric name)
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.254.0/24
+    vtep_loopback_ipv4_pool: 192.168.253.0/24
+  nodes:
+    - name: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF1
+      bgp_as: 65001
+      id: 1
+      filter:
+        tags: ["leaf1"]
+    - name: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF2
+      bgp_as: 65002
+      id: 2
+      filter:
+        tags: ["leaf2"]
+  node_groups:
+    # Testing MLAG in combination with HER to ensure no EVPN artifacts are generated
+    - group: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3
+      bgp_as: 65003
+      mlag_interfaces: [Eth1-2]
+      mlag_peer_ipv4_pool: 192.168.254.0/24
+      mlag_peer_l3_ipv4_pool: 192.168.253.0/24
+      filter:
+        tags: ["leaf3"]
+      nodes:
+        - name: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A
+          id: 3
+        - name: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B
+          id: 4
+
+tenants:
+  - name: TEST
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: TEST
+        vrf_id: 1
+        svis:
+          - id: 3900
+            name: SVI_ON_ALL_LEAFS
+            tags: ["leaf1", "leaf2", "leaf3"]
+          - id: 3901
+            name: SVI_ON_LEAF1
+            tags: ["leaf1"]
+          - id: 3902
+            name: SVI_ON_LEAF1-2
+            tags: ["leaf1", "leaf2"]
+          - id: 3903
+            name: SVI_ON_LEAF2-3
+            tags: ["leaf2", "leaf3"]
+
+    l2vlans:
+      - id: 2900
+        name: L2VLAN_ON_ALL_LEAFS
+        tags: ["leaf1", "leaf2", "leaf3"]
+      - id: 2901
+        name: L2VLAN_ON_LEAF1
+        tags: ["leaf1"]
+      - id: 2902
+        name: L2VLAN_ON_LEAF1-2
+        tags: ["leaf1", "leaf2"]
+      - id: 2903
+        name: L2VLAN_ON_LEAF2-3
+        tags: ["leaf2", "leaf3"]

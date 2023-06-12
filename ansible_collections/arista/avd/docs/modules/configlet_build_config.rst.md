@@ -10,7 +10,7 @@ Module added in version 2.9
 
 ## Synopsis
 
-Build configuration to publish configlets on Cloudvision.
+Build configuration to publish configlets on CloudVision.
 
 ## Module-specific Options
 
@@ -45,7 +45,7 @@ The following options may be specified for this module:
 <td>conf</td>
 <td></td>
 <td>
-    <div>File extensio to look for.</div>
+    <div>File extension to look for.</div>
 </td>
 </tr>
 
@@ -74,21 +74,23 @@ The following options may be specified for this module:
 </table>
 </br>
 
-## Examples:
+## Examples
 
-    # tasks file for cvp_configlet_upload
-    - name: generate intented variables
-      tags: [build, provision]
-      configlet_build_config:
-        configlet_dir: '{{ configlet_dir }}'
-        configlet_prefix: '{{ configlets_prefix }}'
-        configlet_extension: '{{configlet_extension}}'
+```yaml
+# tasks file for cvp_configlet_upload
+- name: Generate intended variables
+    tags: [build, provision]
+    configlet_build_config:
+    configlet_dir: '{{ configlet_dir }}'
+    configlet_prefix: '{{ configlets_prefix }}'
+    configlet_extension: '{{configlet_extension}}'
+```
 
 ### Author
 
-  - EMEA AS Team (@aristanetworks)
+- EMEA AS Team (@aristanetworks)
 
 ### Status
 
-This module is flagged as **preview** which means that it is not
+This module is flagged as **preview** which means that it's not
 guaranteed to have a backwards compatible interface.

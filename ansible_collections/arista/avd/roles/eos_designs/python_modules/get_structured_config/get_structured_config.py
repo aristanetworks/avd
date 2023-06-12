@@ -1,0 +1,89 @@
+from __future__ import annotations
+
+from collections import ChainMap
+
+from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
+from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
+from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+
+from ..base import AvdStructuredConfigBase
+from ..connected_endpoints import AvdStructuredConfigConnectedEndpoints
+from ..core_interfaces import AvdStructuredConfigCoreInterfaces
+from ..custom_structured_configuration import AvdStructuredConfigCustomStructuredConfiguration
+from ..inband_management import AvdStructuredConfigInbandManagement
+from ..l3_edge import AvdStructuredConfigL3Edge
+from ..mlag import AvdStructuredConfigMlag
+from ..network_services import AvdStructuredConfigNetworkServices
+from ..overlay import AvdStructuredConfigOverlay
+from ..underlay import AvdStructuredConfigUnderlay
+
+AVD_STRUCTURED_CONFIG_CLASSES = [
+    AvdStructuredConfigBase,
+    AvdStructuredConfigMlag,
+    AvdStructuredConfigUnderlay,
+    AvdStructuredConfigOverlay,
+    AvdStructuredConfigCoreInterfaces,
+    AvdStructuredConfigL3Edge,
+    AvdStructuredConfigNetworkServices,
+    AvdStructuredConfigConnectedEndpoints,
+    AvdStructuredConfigInbandManagement,
+    AvdStructuredConfigCustomStructuredConfiguration,
+]
+"""
+AVD_STRUCTURED_CONFIG contains a list of AvdStructuredConfig classes which generate the complete structured config.
+The order is important, since later modules can overwrite or read config created by earlier ones.
+"""
+
+
+def get_structured_config(
+    vars: dict,
+    input_schema_tools: AvdSchemaTools,
+    output_schema_tools: AvdSchemaTools,
+    result: dict,
+    templar: object | None = None,
+) -> dict:
+    structured_config = {}
+    module_vars = ChainMap(
+        structured_config,
+        vars,
+    )
+
+    # Initialize SharedUtils class to be passed to each python_module below.
+    shared_utils = SharedUtils(module_vars, templar)
+
+    # Insert dynamic keys into the input data if not set.
+    # These keys are required by the schema, but the default values are set inside shared_utils.
+    vars.setdefault("node_type_keys", shared_utils.node_type_keys)
+    vars.setdefault("connected_endpoint_keys", shared_utils.connected_endpoints_keys)
+    vars.setdefault("network_services_keys", shared_utils.network_services_keys)
+
+    # Validate input data
+    result.update(input_schema_tools.convert_and_validate_data(vars))
+    if result.get("failed"):
+        # Input data validation failed so return empty dict. Calling function should check result.get("failed").
+        return {}
+
+    for cls in AVD_STRUCTURED_CONFIG_CLASSES:
+        eos_designs_module: AvdFacts = cls(module_vars, shared_utils)
+        results = eos_designs_module.render()
+
+        # Modules can return a dict or a list of dicts
+        if not isinstance(results, list):
+            results = [results]
+
+        for result in results:
+            output_schema_tools.convert_data(result)
+
+        # All lists will be merged with "append" except for custom structured configuration where
+        # the default list merge is "append_rp" and can be overridden.
+        # TODO: Each dict entry can contain a list_merge key, which will be picked up by the merge function for all underlying lists.
+        if issubclass(cls, AvdStructuredConfigCustomStructuredConfiguration):
+            list_merge = get(module_vars, "custom_structured_configuration_list_merge", default="append_rp")
+        else:
+            list_merge = "append"
+
+        merge(structured_config, *results, list_merge=list_merge, schema=output_schema_tools.avdschema)
+
+    return structured_config

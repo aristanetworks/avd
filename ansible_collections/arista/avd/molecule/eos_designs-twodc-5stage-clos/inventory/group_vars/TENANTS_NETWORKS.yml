@@ -1,40 +1,72 @@
 ---
+svi_profiles:
+  - profile: PARENT_PROFILE_STRUCT_CFG
+    bgp:
+      structured_config:
+        redistribute_routes:
+          - router-mac system
+      raw_eos_cli: |
+        comment
+        comment created from raw_eos_cli under router bgp svis inherited from svi parent profile
+        EOF
+  - profile: TEST_PARENT_PROFILE_STRUCT_CFG
+    parent_profile: PARENT_PROFILE_STRUCT_CFG
+  - profile: TEST_PROFILE_STRUCT_CFG
+    bgp:
+      structured_config:
+        redistribute_routes:
+          - router-mac system
+      raw_eos_cli: |
+        comment
+        comment created from raw_eos_cli under router bgp svis inherited from svi profile
+        EOF
 # DC Tenants
 # Documentation of Tenant specific information - Vlans/VRFs
 tenants:
   # Tenant A Specific Information - VRFs / VLANs
-  Tenant_A:
+  - name: Tenant_A
     mac_vrf_vni_base: 10000
     mac_vrf_id_base: 20000
     enable_mlag_ibgp_peering_vrfs: false
     vrfs:
-      Common_VRF:
+      - name: Common_VRF
         vrf_vni: 1025
         svis:
-          "110":
+          - id: 110
             name: Tenant_A_OP_Zone_1
             tags: [opzone]
             enabled: true
             rt_override: 99110 # RT would have been 20000 + 110.
             ip_address_virtual: 10.1.10.1/24
+            profile: TEST_PROFILE_STRUCT_CFG
             structured_config:
               description: set from structured_config on svi (was Tenant_A_OP_Zone_1)
             nodes:
-              DC1.POD1.LEAF2A:
+              - node: DC1.POD1.LEAF2A
                 structured_config:
                   description: set from structured_config on svi for DC1.POD1.LEAF2A (was Tenant_A_OP_Zone_1)
-          "111":
+          - id: 111
             vni_override: 50111
             name: Tenant_A_OP_Zone_2
             tags: [opzone]
             ip_address_virtual: 10.1.11.1/24
-          "112":
+            bgp:
+              structured_config:
+                # Will be merged with 'redistribute routes learned'
+                redistribute_routes:
+                  - router-mac system
+              raw_eos_cli: |
+                comment
+                comment created from raw_eos_cli under router bgp svi 111
+                EOF
+          - id: 112
             name: Tenant_A_OP_Zone_3
             tags: [opzone]
             enabled: true
             ip_address_virtual: 10.1.12.1/24
+            profile: TEST_PARENT_PROFILE_STRUCT_CFG
             nodes:
-              DC1-POD1-LEAF1A:
+              - node: DC1-POD1-LEAF1A
                 raw_eos_cli: |
                   comment
                   Comment created from raw_eos_cli under SVI 112 in VRF Common_VRF overridden on DC1-POD1-LEAF1A
@@ -43,7 +75,7 @@ tenants:
               comment
               Comment created from raw_eos_cli under SVI 112 in VRF Common_VRF
               EOF
-          113:
+          - id: 113
             name: SVI_with_no_vxlan
             tags: [opzone]
             enabled: True
@@ -60,7 +92,7 @@ tenants:
             comment
             Comment created from raw_eos_cli under BGP for VRF Common_VRF
             EOF
-      vrf_with_loopbacks_from_overlapping_pool:
+      - name: vrf_with_loopbacks_from_overlapping_pool
         vrf_vni: 1100
         vtep_diagnostic:
           loopback: 100
@@ -69,13 +101,13 @@ tenants:
             - pod: DC1_POD1
               ipv4_pool: 10.101.101.0/24
         svis:
-          1100:
+          - id: 1100
             name: test_svi
             tags: [opzone, web]
             enabled: True
             ip_address_virtual: 10.100.100.1/24
             vxlan: False
-      vrf_with_loopbacks_from_pod_pools:
+      - name: vrf_with_loopbacks_from_pod_pools
         vrf_vni: 1101
         vtep_diagnostic:
           loopback: 101
@@ -87,13 +119,13 @@ tenants:
             - pod: DC2_POD1
               ipv4_pool: 10.101.201.0/24
         svis:
-          1101:
+          - id: 1101
             name: test_svi
             tags: [opzone, web]
             enabled: True
             ip_address_virtual: 10.101.100.1/24
             vxlan: False
-      vrf_with_loopbacks_dc1_pod1_only:
+      - name: vrf_with_loopbacks_dc1_pod1_only
         vrf_vni: 1102
         vtep_diagnostic:
           loopback: 102
@@ -101,7 +133,7 @@ tenants:
             - pod: DC1_POD1
               ipv4_pool: 10.102.101.0/24
         svis:
-          1102:
+          - id: 1102
             name: test_svi
             tags: [opzone, web]
             enabled: True
@@ -110,15 +142,23 @@ tenants:
 
     # These are pure L2 vlans - so no SVI on l3leafs
     l2vlans:
-      "2500":
+      - id: 2500
         vni_override: 2500
         name: web-l2-vlan
         tags: [web]
-      "2600":
+      - id: 2600
         rt_override: 32600
         name: web-l2-vlan-2
         tags: [web]
-      2601:
+        bgp:
+          structured_config:
+            redistribute_routes:
+              - router-mac system
+          raw_eos_cli: |
+            comment
+            comment created from raw_eos_cli under router bgp l2vlan 2600
+            EOF
+      - id: 2601
         name: l2vlan_with_no_vxlan
         tags: [web]
         vxlan: False

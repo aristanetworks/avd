@@ -1,8 +1,9 @@
+{# doc - aaa authentication #}
 {% if aaa_authentication is arista.avd.defined %}
 
-## AAA Authentication
+### AAA Authentication
 
-### AAA Authentication Summary
+#### AAA Authentication Summary
 
 | Type | Sub-type | User Stores |
 | ---- | -------- | ---------- |
@@ -33,7 +34,7 @@ Policy lockout has been enabled. After **{{ aaa_authentication.policies.lockout.
 {%         endif %}
 {%     endif %}
 
-### AAA Authentication Device Configuration
+#### AAA Authentication Device Configuration
 
 ```eos
 {%     include 'eos/aaa-authentication.j2' %}

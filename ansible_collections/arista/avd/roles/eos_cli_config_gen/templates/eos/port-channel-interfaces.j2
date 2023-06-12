@@ -1,5 +1,5 @@
-{# eos- Port-Channel Interfaces #}
-{% for port_channel_interface in port_channel_interfaces | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{# eos - port channel interfaces #}
+{% for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
 !
 interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.description is arista.avd.defined %}
@@ -17,6 +17,9 @@ interface {{ port_channel_interface.name }}
 {%     endif %}
 {%     if port_channel_interface.mtu is arista.avd.defined %}
    mtu {{ port_channel_interface.mtu }}
+{%     endif %}
+{%     if port_channel_interface.bgp.session_tracker is arista.avd.defined %}
+   bgp session tracker {{ port_channel_interface.bgp.session_tracker }}
 {%     endif %}
 {%     if port_channel_interface.type is arista.avd.defined("routed") %}
    no switchport
@@ -48,20 +51,21 @@ interface {{ port_channel_interface.name }}
    encapsulation vlan
       {{ encapsulation_cli }}
 {%         endif %}
-{%     else %}
+{%     elif port_channel_interface.type | arista.avd.default("switched") == 'switched' %}
    switchport
 {%     endif %}
-{%     if port_channel_interface.mode is arista.avd.defined("access") %}
+{%     if port_channel_interface.vlans is arista.avd.defined and port_channel_interface.mode is arista.avd.defined("access") %}
    switchport access vlan {{ port_channel_interface.vlans }}
 {%     endif %}
 {%     if port_channel_interface.vlans is arista.avd.defined and port_channel_interface.mode is arista.avd.defined("trunk") %}
    switchport trunk allowed vlan {{ port_channel_interface.vlans }}
 {%     endif %}
-{%     if port_channel_interface.native_vlan is arista.avd.defined and port_channel_interface.mode is arista.avd.defined("trunk") %}
+{%     if port_channel_interface.mode is arista.avd.defined and port_channel_interface.mode in ['trunk', 'trunk phone'] %}
+{%         if port_channel_interface.native_vlan_tag is arista.avd.defined(true) %}
+   switchport trunk native vlan tag
+{%         elif port_channel_interface.native_vlan is arista.avd.defined %}
    switchport trunk native vlan {{ port_channel_interface.native_vlan }}
-{%     endif %}
-{%     if port_channel_interface.mode is arista.avd.defined("trunk phone") and port_channel_interface.native_vlan %}
-   switchport trunk native vlan {{ port_channel_interface.native_vlan }}
+{%         endif %}
 {%     endif %}
 {%     if port_channel_interface.phone.vlan is arista.avd.defined %}
    switchport phone vlan {{ port_channel_interface.phone.vlan }}
@@ -96,6 +100,12 @@ interface {{ port_channel_interface.name }}
 {%     endfor %}
 {%     if port_channel_interface.l2_protocol.encapsulation_dot1q_vlan is arista.avd.defined %}
    l2-protocol encapsulation dot1q vlan {{ port_channel_interface.l2_protocol.encapsulation_dot1q_vlan }}
+{%     endif %}
+{%     if port_channel_interface.l2_protocol.forwarding_profile is arista.avd.defined %}
+   l2-protocol forwarding profile {{ port_channel_interface.l2_protocol.forwarding_profile }}
+{%     endif %}
+{%     if port_channel_interface.flow_tracker.sampled is arista.avd.defined %}
+   flow tracker sampled {{ port_channel_interface.flow_tracker.sampled }}
 {%     endif %}
 {%     if port_channel_interface.evpn_ethernet_segment.identifier | arista.avd.default(port_channel_interface.esi) is arista.avd.defined or port_channel_interface.evpn_ethernet_segment is arista.avd.defined %}
    evpn ethernet-segment
@@ -176,12 +186,12 @@ interface {{ port_channel_interface.name }}
 {%     elif port_channel_interface.spanning_tree_portfast is arista.avd.defined("network") %}
    spanning-tree portfast network
 {%     endif %}
-{%     if port_channel_interface.spanning_tree_bpduguard is arista.avd.defined(true) or port_channel_interface.spanning_tree_bpduguard is arista.avd.defined("enabled") %}
+{%     if port_channel_interface.spanning_tree_bpduguard is arista.avd.defined and port_channel_interface.spanning_tree_bpduguard in [True, "True", "enabled"] %}
    spanning-tree bpduguard enable
 {%     elif port_channel_interface.spanning_tree_bpduguard is arista.avd.defined("disabled") %}
    spanning-tree bpduguard disable
 {%     endif %}
-{%     if port_channel_interface.spanning_tree_bpdufilter is arista.avd.defined(true) or port_channel_interface.spanning_tree_bpdufilter is arista.avd.defined("enabled") %}
+{%     if port_channel_interface.spanning_tree_bpdufilter is arista.avd.defined and port_channel_interface.spanning_tree_bpdufilter in [True, "True", "enabled"] %}
    spanning-tree bpdufilter enable
 {%     elif port_channel_interface.spanning_tree_bpdufilter is arista.avd.defined("disabled") %}
    spanning-tree bpdufilter disable
@@ -265,11 +275,11 @@ interface {{ port_channel_interface.name }}
    ip ospf authentication message-digest
 {%     endif %}
 {%     if port_channel_interface.ospf_authentication_key is arista.avd.defined %}
-   ip ospf authentication-key 7 {{ port_channel_interface.ospf_authentication_key }}
+   ip ospf authentication-key 7 {{ port_channel_interface.ospf_authentication_key | arista.avd.hide_passwords(hide_passwords) }}
 {%     endif %}
 {%     for ospf_message_digest_key in port_channel_interface.ospf_message_digest_keys | arista.avd.convert_dicts('id') | arista.avd.natural_sort('id') %}
 {%         if ospf_message_digest_key.hash_algorithm is arista.avd.defined and ospf_message_digest_key.key is arista.avd.defined %}
-   ip ospf message-digest-key {{ ospf_message_digest_key.id }} {{ ospf_message_digest_key.hash_algorithm }} 7 {{ ospf_message_digest_key.key }}
+   ip ospf message-digest-key {{ ospf_message_digest_key.id }} {{ ospf_message_digest_key.hash_algorithm }} 7 {{ ospf_message_digest_key.key | arista.avd.hide_passwords(hide_passwords) }}
 {%         endif %}
 {%     endfor %}
 {%     if port_channel_interface.pim.ipv4.sparse_mode is arista.avd.defined(true) %}
@@ -336,6 +346,9 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.service_policy.pbr.input is arista.avd.defined %}
    service-policy type pbr input {{ port_channel_interface.service_policy.pbr.input }}
 {%     endif %}
+{%     if port_channel_interface.service_policy.qos.input is arista.avd.defined %}
+   service-policy type qos input {{ port_channel_interface.service_policy.qos.input }}
+{%     endif %}
 {%     if port_channel_interface.mpls.ip is arista.avd.defined(true) %}
    mpls ip
 {%     elif port_channel_interface.mpls.ip is arista.avd.defined(false) %}
@@ -348,6 +361,10 @@ interface {{ port_channel_interface.name }}
 {%     endif %}
 {%     if port_channel_interface.mpls.ldp.igp_sync is arista.avd.defined(true) %}
    mpls ldp igp sync
+{%     endif %}
+{%     if port_channel_interface.ip_nat is arista.avd.defined %}
+{%         set interface_ip_nat = port_channel_interface.ip_nat %}
+{%         include 'eos/interface-ip-nat.j2' %}
 {%     endif %}
 {%     if port_channel_interface.isis_enable is arista.avd.defined %}
    isis enable {{ port_channel_interface.isis_enable }}
@@ -374,13 +391,30 @@ interface {{ port_channel_interface.name }}
    isis authentication mode {{ port_channel_interface.isis_authentication_mode }}
 {%     endif %}
 {%     if port_channel_interface.isis_authentication_key is arista.avd.defined %}
-   isis authentication key 7 {{ port_channel_interface.isis_authentication_key }}
+   isis authentication key 7 {{ port_channel_interface.isis_authentication_key | arista.avd.hide_passwords(hide_passwords) }}
 {%     endif %}
 {%     if port_channel_interface.traffic_policy.input is arista.avd.defined %}
    traffic-policy input {{ port_channel_interface.traffic_policy.input }}
 {%     endif %}
 {%     if port_channel_interface.traffic_policy.output is arista.avd.defined %}
    traffic-policy output {{ port_channel_interface.traffic_policy.output }}
+{%     endif %}
+{%     if port_channel_interface.sflow is arista.avd.defined %}
+{%         if port_channel_interface.sflow.enable is arista.avd.defined(true) %}
+   sflow enable
+{%         elif port_channel_interface.sflow.enable is arista.avd.defined(false) %}
+   no sflow enable
+{%         endif %}
+{%         if port_channel_interface.sflow.egress.enable is arista.avd.defined(true) %}
+   sflow egress enable
+{%         elif port_channel_interface.sflow.egress.enable is arista.avd.defined(false) %}
+   no sflow egress enable
+{%         endif %}
+{%         if port_channel_interface.sflow.egress.unmodified_enable is arista.avd.defined(true) %}
+   sflow egress unmodified enable
+{%         elif port_channel_interface.sflow.egress.unmodified_enable is arista.avd.defined(false) %}
+   no sflow egress unmodified enable
+{%         endif %}
 {%     endif %}
 {%     if port_channel_interface.eos_cli is arista.avd.defined %}
    {{ port_channel_interface.eos_cli | indent(3, false) }}

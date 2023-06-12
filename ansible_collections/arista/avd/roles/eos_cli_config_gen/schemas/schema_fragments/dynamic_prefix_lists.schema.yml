@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  dynamic_prefix_lists:
+    type: list
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Dynamic prefix-list name
+        match_map:
+          type: str
+          description: Route-map name
+        prefix_list:
+          type: dict
+          keys:
+            ipv4:
+              type: str
+              description: Prefix-list name
+            ipv6:
+              type: str
+              description: Prefix-list name

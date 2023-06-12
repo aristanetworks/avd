@@ -1,8 +1,9 @@
-{% if ip_tacacs_source_interfaces is defined and ip_tacacs_source_interfaces is not none %}
-
-## IP TACACS Source Interfaces
+{# doc - ip tacacs source interfaces #}
+{% if ip_tacacs_source_interfaces is arista.avd.defined %}
 
 ### IP TACACS Source Interfaces
+
+#### IP TACACS Source Interfaces
 
 | VRF | Source Interface Name |
 | --- | --------------- |
@@ -11,7 +12,7 @@
 | {{ vrf }} | {{ ip_tacacs_source_interface.name }} |
 {%     endfor %}
 
-### IP TACACS Source Interfaces Device Configuration
+#### IP TACACS Source Interfaces Device Configuration
 
 ```eos
 {%     include 'eos/ip-tacacs-source-interfaces.j2' %}

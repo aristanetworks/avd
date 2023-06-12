@@ -1,0 +1,62 @@
+type: l3leaf
+
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 2
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    uplink_interfaces: [ Ethernet1 ]
+    uplink_switches: [ EVPN-MULTICAST-SPINE1 ]
+    uplink_ipv4_pool: 172.31.255.0/24
+    mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+    bgp_as: 65101-65105
+  node_groups:
+  # Tests:
+  #  - MLAG pair
+  #  - evpn_vlan_aware_bundles: true
+  # Expected results:
+  # - router multicast enabled for ipv4
+  # - p2p links configured with "pim ipv4 sparse-mode"
+  # - Multi vtep configuration
+  # - proper configuration of vlan-aware bundles (igmp redistribution)
+    - group: EVPN_MULTICAST_L3LEAF1
+      nodes:
+        - name: EVPN-MULTICAST-L3LEAF1A
+          id: 1
+          mgmt_ip: 192.168.200.105/24
+          uplink_switch_interfaces: [ Ethernet1 ]
+        - name: EVPN-MULTICAST-L3LEAF1B
+          id: 2
+          mgmt_ip: 192.168.200.106/24
+          uplink_switch_interfaces: [ Ethernet2 ]
+    # Tests
+    # - single node, 7050X3 platform
+    # Test evpn_vlan_aware_bundles: false
+    # Expected results:
+    # - router multicast enabled for ipv4
+    # - p2p links configured with "pim ipv4 sparse-mode"
+    # - no changes to vxlan source VTEP configuration since this is non-mlag
+    # - proper configuration of bgp vlans (igmp redistribution)
+    # - platform trident * configuration
+    - group: EVPN-MULTICAST-L3LEAF2
+      platform: "7050X3"
+      nodes:
+        - name: EVPN-MULTICAST-L3LEAF2A
+          id: 3
+          mgmt_ip: 192.168.200.107/24
+          uplink_switch_interfaces: [ Ethernet3 ]
+    - group: EVPN_MULTICAST_L3LEAF3
+      mlag: false
+      nodes:
+        - name: EVPN-MULTICAST-L3LEAF3A
+          id: 4
+          mgmt_ip: 192.168.200.108/24
+          uplink_switch_interfaces: [ Ethernet4 ]
+        - name: EVPN-MULTICAST-L3LEAF3B
+          id: 5
+          mgmt_ip: 192.168.200.109/24
+          uplink_switch_interfaces: [ Ethernet5 ]

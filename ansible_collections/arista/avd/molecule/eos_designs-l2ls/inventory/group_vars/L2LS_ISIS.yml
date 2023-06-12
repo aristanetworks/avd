@@ -1,0 +1,29 @@
+---
+
+pod_name: L2LS_ISIS
+
+underlay_routing_protocol: isis
+isis_area_id: "49.0001"
+
+tenants:
+  - name: L2LS_ISIS
+    vrfs:
+      - name: default
+        svis:
+          - id: 110
+            name: SVI_110
+            ip_address_virtual: 10.0.110.1/24
+            enabled: true
+        static_routes: # Testing creation of static route in default VRF including redistribute static under the underlay protocol
+          - destination_address_prefix: 10.1.0.0/16
+            gateway: 10.1.100.100
+            nodes: [ ISIS-SPINE1 ]
+
+network_ports:
+  - switches:
+      - "ISIS-SPINE[1]"
+    switch_ports:
+      - "Ethernet10"
+    vlans: 110
+    mode: access
+    description: Endpoint

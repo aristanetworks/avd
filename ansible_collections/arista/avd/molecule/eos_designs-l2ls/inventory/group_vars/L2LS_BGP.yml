@@ -1,0 +1,39 @@
+---
+
+pod_name: L2LS_BGP
+
+underlay_routing_protocol: ebgp
+
+tenants:
+  - name: L2LS_BGP
+    vrfs:
+      - name: default
+        svis:
+          - id: 100
+            name: SVI_100
+            ip_address_virtual: 10.1.100.1/24
+            enabled: true
+        static_routes: # Testing creation of static route in default VRF including redistribute static under the underlay protocol
+          - destination_address_prefix: 10.0.0.0/8
+            gateway: 10.1.100.100
+            nodes: [ BGP-SPINE2 ]
+
+network_ports:
+  - switches:
+      - "BGP-LEAF[1-2]"
+    switch_ports:
+      - "Ethernet10-11"
+    vlans: 100
+    mode: access
+    description: Endpoint
+
+core_interfaces:
+  p2p_links:
+    - subnet: 192.168.253.4/31
+      nodes: [ BGP-SPINE1, DUMMY-CORE ]
+      interfaces: [ Ethernet5, Ethernet1/3 ]
+      as: [ 65001, 65000 ]
+    - subnet: 192.168.253.6/31
+      nodes: [ BGP-SPINE2, DUMMY-CORE ]
+      interfaces: [ Ethernet5, Ethernet1/4 ]
+      as: [ 65001, 65000 ]

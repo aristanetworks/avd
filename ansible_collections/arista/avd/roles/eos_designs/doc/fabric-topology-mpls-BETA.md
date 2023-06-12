@@ -2,7 +2,7 @@
 
 The MPLS design feature is in BETA until the release of AVD 4.0.0. Changes to data models and default behavior for the MPLS design should be expected.
 
-# Fabric Topology Variables for MPLS Design
+## Fabric Topology Variables for MPLS Design
 
 The fabric topology variables define the connectivity between the various node types, as well as override the default switch properties.
 
@@ -17,7 +17,7 @@ The fabric topology variables define the connectivity between the various node t
 
 ## Supported designs
 
-`eos_designs` with the `mpls` design type supports any arbitrary physical mesh topology by combining and interconnecting different node types with the core_interfaces dictionary. You can also extend `eos_designs` to support your own topology by using [`node_type_keys`](node-types.html) to create your own node type
+`eos_designs` with the `mpls` design type supports any arbitrary physical mesh topology by combining and interconnecting different node types with the core_interfaces dictionary. You can also extend `eos_designs` to support your own topology by using [`node_type_keys`](node-types.md) to create your own node type
 
 ### Arbitrary Mesh or L3LS Topology
 
@@ -31,7 +31,7 @@ By setting the `design.type` to `mpls`, the default node-types and templates des
 ```yaml
 # AVD Design | Optional
 design:
-  type: < "l3ls-evpn" | "mpls" | default -> "l3ls-evpn" >
+  type: < "l3ls-evpn" | "mpls" | l2ls | default -> "l3ls-evpn" >
 ```
 
 ## Node Type Variables
@@ -137,7 +137,7 @@ Unlike with the l3ls-evpn design type, underlay p2p links are built using the `c
     mlag_peer_l3_vlan: < 0-4094 | false | default -> 4093 >
     mlag_peer_l3_ipv4_pool: < IPv4_network/Mask >
     mlag_peer_vlan: < 0-4094 | default -> 4094 >
-    mlag_peer_link_allowed_vlans: < vlans as string | default -> "2-4094" >
+    mlag_peer_link_allowed_vlans: < vlans as string >
     mlag_peer_ipv4_pool: < IPv4_network/Mask >
     uplink_ipv4_pool: < IPv4_address/Mask  >
     uplink_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]

@@ -1,24 +1,17 @@
+{# doc - vlan internal order #}
+{% if vlan_internal_order is arista.avd.defined %}
 
-# Internal VLAN Allocation Policy
+## Internal VLAN Allocation Policy
 
-{% if vlan_internal_order is defined and vlan_internal_order is not none %}
-## Internal VLAN Allocation Policy Summary
+### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
 | ------------------| --------------- | ------------ |
 | {{ vlan_internal_order.allocation }} | {{ vlan_internal_order.range.beginning }} | {{ vlan_internal_order.range.ending }} |
 
-## Internal VLAN Allocation Policy Configuration
+### Internal VLAN Allocation Policy Configuration
 
 ```eos
 {%     include 'eos/vlan-internal-order.j2' %}
 ```
-{% else %}
-## Internal VLAN Allocation Policy Summary
-
-**Default Allocation Policy**
-
-| Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
-| ascending | 1006 | 4094 |
 {% endif %}

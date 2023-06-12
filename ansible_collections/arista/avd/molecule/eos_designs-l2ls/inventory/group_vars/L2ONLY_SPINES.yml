@@ -1,0 +1,17 @@
+---
+type: spine
+
+spine:
+  defaults:
+    mlag_peer_ipv4_pool: 192.168.254.0/24
+    mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    spanning_tree_priority: 4096
+    # Test always_configure_ip_routing on an ipv4 topology
+    always_configure_ip_routing: true
+  node_groups:
+    - group: L2ONLY_SPINES
+      nodes:
+        - name: L2ONLY-SPINE1
+          id: 1
+        - name: L2ONLY-SPINE2
+          id: 2

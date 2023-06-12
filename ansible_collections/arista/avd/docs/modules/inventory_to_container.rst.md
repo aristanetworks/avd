@@ -98,39 +98,37 @@ The following options may be specified for this module:
 </table>
 </br>
 
-## Examples:
+## Examples
 
-    - name: generate intented variables
-      inventory_to_container:
-        inventory: 'inventory.yml'
-        container_root: 'DC1_FABRIC'
-        configlet_dir: 'intended_configs'
-        configlet_prefix: 'AVD'
-        device_filter: ['DC1-LE']
-        # destination: 'generated_vars/{{inventory_hostname}}.yml'
-      register: CVP_VARS
+```yaml
+- name: Generate intended variables
+  arista.avd.inventory_to_container:
+    inventory: 'inventory.yml'
+    container_root: 'DC1_FABRIC'
+    configlet_dir: 'intended_configs'
+    configlet_prefix: 'AVD'
+    device_filter: ['DC1-LE']
+    # destination: 'generated_vars/{{inventory_hostname}}.yml'
+  register: cvp_vars
 
-    - name: 'Collecting facts from CVP {{inventory_hostname}}.'
-      arista.cvp.cv_facts:
-      register: CVP_FACTS
+- name: 'Collecting facts from CVP {{ inventory_hostname }}.'
+  arista.cvp.cv_facts:
+  register: cvp_facts
 
-    - name: 'Create configlets on CVP {{inventory_hostname}}.'
-      arista.cvp.cv_configlet:
-        cvp_facts: "{{CVP_FACTS.ansible_facts}}"
-        configlets: "{{CVP_VARS.CVP_CONFIGLETS}}"
-        configlet_filter: ["AVD"]
+- name: 'Create configlets on CVP {{ inventory_hostname }}.'
+  arista.cvp.cv_configlet:
+    cvp_facts: "{{ cvp_facts.ansible_facts }}"
+    configlets: "{{ cvp_vars.cvp_configlets }}"
+    configlet_filter: ["AVD"]
 
-    - name: "Building Container topology on {{inventory_hostname}}"
-      arista.cvp.cv_container:
-        topology: '{{CVP_VARS.CVP_TOPOLOGY}}'
-        cvp_facts: '{{CVP_FACTS.ansible_facts}}'
-        save_topology: true
-
-### Author
-
-  - Ansible Arista Team (@aristanetworks)
+- name: "Building Container topology on {{ inventory_hostname }}"
+  arista.cvp.cv_container:
+    topology: '{{ cvp_vars.cvp_topology }}'
+    cvp_facts: '{{ cvp_facts.ansible_facts }}'
+    save_topology: true
+- Ansible Arista Team (@aristanetworks)
 
 ### Status
 
-This module is flagged as **preview** which means that it is not
+This module is flagged as **preview** which means that it's not
 guaranteed to have a backwards compatible interface.

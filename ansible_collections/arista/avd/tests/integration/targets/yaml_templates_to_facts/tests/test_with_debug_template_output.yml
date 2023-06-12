@@ -1,7 +1,7 @@
 - name: Test with debug and template_output
   ignore_errors: no
   register: result
-  yaml_templates_to_facts:
+  arista.avd.yaml_templates_to_facts:
     template_output: true
     debug: true
     templates:
@@ -20,6 +20,5 @@
       - result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].action is defined
       - result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].action == 'template_output'
       - result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].timestamps is defined
-      - result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].timestamps.combine_data is defined
       - result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].timestamps.templating is defined
       - result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].timestamps.done is defined

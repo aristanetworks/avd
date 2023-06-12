@@ -48,8 +48,8 @@ $ molecule cleanup --scenario-name <scenario-name>
 
 Testing for `eos_cli_config_gen` is part of [scenario `eos_cli_config_gen`](./eos_cli_config_gen/molecule.yml). It is based on a in flat inventory with 1 host covering a specific section of templates like:
 
-- Ethernet Interfaces defined in [host_vars/ethernet_interfaces](./eos_cli_config_gen/inventory/host_vars/ethernet_interfaces.yml)
-- Loopback Interfaces defined in [host_vars/loopback-interfaces](./eos_cli_config_gen/inventory/host_vars/loopbacks.yml)
+- Ethernet Interfaces defined in [host_vars/ethernet_interfaces](./eos_cli_config_gen/inventory/host_vars/ethernet-interfaces.yml)
+- Loopback Interfaces defined in [host_vars/loopback-interfaces](./eos_cli_config_gen/inventory/host_vars/loopbacks-interfaces.yml)
 - Vlans defined in [host_vars/vlans](./eos_cli_config_gen/inventory/host_vars/vlans.yml)
 
 When you update a template in `eos_cli_config_gen`, you should report a test case in molecule scenario [`ansible_collections/arista/avd/molecule/eos_cli_config_gen`](./eos_cli_config_gen/).

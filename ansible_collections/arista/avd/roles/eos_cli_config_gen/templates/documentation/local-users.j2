@@ -1,18 +1,21 @@
-{# eos - local users #}
+{# doc - local users #}
 {% if local_users is arista.avd.defined %}
 
-## Local Users
+### Local Users
 
-### Local Users Summary
+#### Local Users Summary
 
-| User | Privilege | Role |
-| ---- | --------- | ---- |
-{%     for local_user in local_users | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
-{%         set role = local_user.role | arista.avd.default('-') %}
-| {{ local_user.name }} | {{ local_user.privilege }} | {{ role }} |
+| User | Privilege | Role | Disabled | Shell |
+| ---- | --------- | ---- | -------- | ----- |
+{%     for local_user in local_users | arista.avd.natural_sort('name') %}
+{%         set role = local_user.role | arista.avd.default("-") %}
+{%         set privilege = local_user.privilege | arista.avd.default("-") %}
+{%         set disabled = local_user.disabled | arista.avd.default(false) %}
+{%         set shell = local_user.shell | arista.avd.default("-") %}
+| {{ local_user.name }} | {{ privilege }} | {{ role }} | {{ disabled }} | {{ shell }} |
 {%     endfor %}
 
-### Local Users Device Configuration
+#### Local Users Device Configuration
 
 ```eos
 {%     include 'eos/local-users.j2' %}

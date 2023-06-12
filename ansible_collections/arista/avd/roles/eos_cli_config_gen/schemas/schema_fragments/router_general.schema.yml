@@ -1,0 +1,54 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  router_general:
+    type: dict
+    display_name: Router General configuration
+    keys:
+      router_id:
+        type: dict
+        keys:
+          ipv4:
+            type: str
+            description: IPv4 Address
+          ipv6:
+            type: str
+            description: IPv6 Address
+      nexthop_fast_failover:
+        type: bool
+        default: false
+      vrfs:
+        type: list
+        primary_key: name
+        convert_types:
+          - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              required: true
+              description: Destination-VRF
+            leak_routes:
+              type: list
+              items:
+                type: dict
+                keys:
+                  source_vrf:
+                    type: str
+                  subscribe_policy:
+                    type: str
+                    description: Route-Map Policy
+            routes:
+              type: dict
+              keys:
+                dynamic_prefix_lists:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+                        description: Dynamic Prefix List Name

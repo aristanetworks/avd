@@ -1,10 +1,12 @@
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
-from ansible_collections.arista.avd.plugins.filter.range_expand import FilterModule, AnsibleFilterError, range_expand
 import pytest
 
-RANGE_TO_EXPAND_INVALID_VALUES = ["1-3", {"key": "value"}, 33]
+from ansible_collections.arista.avd.plugins.filter.range_expand import AnsibleFilterError, FilterModule, range_expand
+
+RANGE_TO_EXPAND_INVALID_VALUES = [True, {"key": "value"}, 33]
 RANGE_TO_EXPAND_VALID_VALUES = [
     "Ethernet1",
     "Ethernet1-2",
@@ -19,6 +21,10 @@ RANGE_TO_EXPAND_VALID_VALUES = [
     ["1", "2", "3"],
     "vlan1-3",
     "Et1-2/3-4/5-6",
+    "65100.0",
+    "65100.0-4",
+    "65100.0-2,65200.1-2",
+    "1-2.0-1",
 ]
 
 EXPECTED_RESULT_VALID_VALUES = [
@@ -35,25 +41,28 @@ EXPECTED_RESULT_VALID_VALUES = [
     ["1", "2", "3"],
     ["vlan1", "vlan2", "vlan3"],
     ["Et1/3/5", "Et1/3/6", "Et1/4/5", "Et1/4/6", "Et2/3/5", "Et2/3/6", "Et2/4/5", "Et2/4/6"],
+    ["65100.0"],
+    ["65100.0", "65100.1", "65100.2", "65100.3", "65100.4"],
+    ["65100.0", "65100.1", "65100.2", "65200.1", "65200.2"],
+    ["1.0", "1.1", "2.0", "2.1"],
 ]
 
 f = FilterModule()
 
 
-class TestListCompressFilter():
+class TestListCompressFilter:
     @pytest.mark.parametrize("RANGE_TO_EXPAND_INVALID", RANGE_TO_EXPAND_INVALID_VALUES)
-    def test_range_expand(self, RANGE_TO_EXPAND_INVALID):
+    def test_range_expand_invalid(self, RANGE_TO_EXPAND_INVALID):
         with pytest.raises(AnsibleFilterError) as exc_info:
             range_expand(RANGE_TO_EXPAND_INVALID)
-        assert str(
-            exc_info.value) == f"value must be of type list or str, got {type(RANGE_TO_EXPAND_INVALID)}"
+        assert str(exc_info.value) == f"value must be of type list or str, got {type(RANGE_TO_EXPAND_INVALID)}"
 
     @pytest.mark.parametrize("RANGE_TO_EXPAND_VALID", RANGE_TO_EXPAND_VALID_VALUES)
-    def test_range_expand(self, RANGE_TO_EXPAND_VALID):
+    def test_range_expand_valid(self, RANGE_TO_EXPAND_VALID):
         resp = range_expand(RANGE_TO_EXPAND_VALID)
         assert resp in EXPECTED_RESULT_VALID_VALUES
 
     def test_range_expand_filter(self):
         resp = f.filters()
         assert isinstance(resp, dict)
-        assert 'range_expand' in resp.keys()
+        assert "range_expand" in resp.keys()

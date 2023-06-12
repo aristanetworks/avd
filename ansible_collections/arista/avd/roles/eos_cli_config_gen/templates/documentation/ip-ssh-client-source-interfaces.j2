@@ -1,8 +1,9 @@
+{# doc - ip ssh client source interfaces #}
 {% if ip_ssh_client_source_interfaces is arista.avd.defined %}
 
-## IP SSH Client Source Interfaces
-
 ### IP SSH Client Source Interfaces
+
+#### IP SSH Client Source Interfaces
 
 | VRF | Source Interface Name |
 | --- | --------------- |
@@ -12,7 +13,7 @@
 {%         endif %}
 {%     endfor %}
 
-### IP SSH Client Source Interfaces Device Configuration
+#### IP SSH Client Source Interfaces Device Configuration
 
 ```eos
 {%     include 'eos/ip-ssh-client-source-interfaces.j2' %}

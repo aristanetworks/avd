@@ -1,0 +1,35 @@
+---
+type: l2leaf
+mgmt_gateway: 10.0.0.1
+
+l2leaf:
+  nodes:
+    - name: filter.only_vlans_in_use
+      id: 1
+      filter:
+        only_vlans_in_use: true
+
+servers:
+  - name: testserver
+    adapters:
+      - switches: [ filter.only_vlans_in_use ]
+        switch_ports: [ Ethernet1 ]
+        endpoint_ports: [ Nic1 ]
+        vlans: 1-2
+        mode: trunk
+
+tenants:
+  - name: test
+    vrfs:
+      - name: testvrf
+        svis:
+          - id: 2
+            name: vlan2
+            ip_address_virtual: 10.10.10.1/24
+          - id: 4
+            name: this_svi_will_not_be_configured_because_it_is_not_in_use
+    l2vlans:
+      - id: 1
+        name: vlan1
+      - id: 3
+        name: this_vlan_will_not_be_configured_because_it_is_not_in_use

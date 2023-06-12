@@ -1,6 +1,6 @@
 {# eos - daemons #}
 {% if daemons is arista.avd.defined %}
-{%     for daemon in daemons | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for daemon in daemons | arista.avd.natural_sort('name') %}
 !
 daemon {{ daemon.name }}
 {%         if daemon.exec is arista.avd.defined %}

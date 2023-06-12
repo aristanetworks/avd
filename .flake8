@@ -1,0 +1,7 @@
+[flake8]
+ignore = E402,W503,W504,E741
+
+# Required for compatibility with Black
+extend-ignore = E203
+
+max-line-length = 160

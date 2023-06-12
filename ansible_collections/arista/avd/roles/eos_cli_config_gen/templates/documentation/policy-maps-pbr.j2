@@ -1,16 +1,17 @@
+{# doc - policy map pbr #}
 {% if policy_maps.pbr is arista.avd.defined %}
 
-## PBR Policy Maps
+### PBR Policy Maps
 
-### PBR Policy Maps Summary
-{%     for policy_map in policy_maps.pbr | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+#### PBR Policy Maps Summary
+{%     for policy_map in policy_maps.pbr | arista.avd.natural_sort('name') %}
 
-#### {{ policy_map.name }}
+##### {{ policy_map.name }}
 {%         if policy_map.classes is arista.avd.defined %}
 
 | Class | Index | Drop | Nexthop | Recursive |
 | ----- | ----- | ---- | ------- | --------- |
-{%             for class in policy_map.classes | arista.avd.convert_dicts('name') %}
+{%             for class in policy_map.classes %}
 {%                 set index = class.index | arista.avd.default('-') %}
 {%                 set drop = class.drop | arista.avd.default('-') %}
 {%                 set nexthop = class.set.nexthop.ip_address | arista.avd.default('-') %}
@@ -20,7 +21,7 @@
 {%         endif %}
 {%     endfor %}
 
-### PBR Policy Maps Configuration
+#### PBR Policy Maps Configuration
 
 ```eos
 {%     include 'eos/policy-maps-pbr.j2' %}

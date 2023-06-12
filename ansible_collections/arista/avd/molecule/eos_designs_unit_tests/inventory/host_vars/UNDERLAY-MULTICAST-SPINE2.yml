@@ -1,0 +1,8 @@
+# UNDERLAY_MULTICAST_TESTS
+
+# Test to disable Multicast on a parent device, where child nodes have underlay_multicast: true
+# Expected results:
+# - UNDERLAY-MULTICAST-SPINE2 will not generate any multicast configuration
+# - Child devices in group UNDERLAY_MULTICAST_L3LEAFS will not generate multicast configuration on p2p links towards UNDERLAY-MULTICAST-SPINE2
+
+underlay_multicast: false

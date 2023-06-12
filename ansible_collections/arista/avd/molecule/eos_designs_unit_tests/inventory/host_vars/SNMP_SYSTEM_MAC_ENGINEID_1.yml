@@ -1,0 +1,55 @@
+---
+# Minimum config to only test the specific feature.
+# This tests the SNMP engineID using system MAC
+# As well as the fact that default_engineid_from_system_mac has precedence over compute_local_engineid
+# Setting system_mac_address as a topology variable and host variable, topology
+# should have precedence
+
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: SNMP_SYSTEM_MAC_ENGINEID_1
+      id: 42
+      system_mac_address: "42:42:42:42:42:42"
+      serial_number: A37383692F12C7DE733D9A9B8E2B37AE
+# This variable below won't have precedence
+system_mac_address: "66:66:66:66:66:66"
+serial_number: 66666666666666666666666666666666
+
+snmp_settings:
+  contact: example@example.com
+  location: true
+  compute_local_engineid: true
+  compute_local_engineid_source: system_mac
+  compute_v3_user_localized_key: true
+  users:
+    - name: usertest-auth-priv
+      group: usergroup
+      version: v3
+      auth: sha
+      auth_passphrase: clearauth # to get from vault in real life
+      priv: aes192
+      priv_passphrase: clearpriv # to get from vault in real life
+    - name: usertest-auth-no-priv
+      group: usergroup
+      version: v3
+      auth: sha512
+      auth_passphrase: clearauth # to get from vault in real life
+    - name: usertest-no-auth-no-priv
+      group: usergroup
+      version: v3
+      # For now, not possible to run tests that raise
+      # exceptions
+      # - name: usertest-wrong-cipher
+      #   group: usergroup
+      #   version: v3
+      #   auth: toto
+      #   auth_passphrase: clearauth
+    - name: usertest-v2c
+      group: usergroup
+      version: v2c # v2c so the passphrases are not needed
+      auth: md5
+      auth_passphrase: clearauth # to get from vault in real life
+      priv: des
+      priv_passphrase: clearpriv # to get from vault in real life

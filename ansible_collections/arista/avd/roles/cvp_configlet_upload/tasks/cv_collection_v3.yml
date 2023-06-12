@@ -1,11 +1,11 @@
-- name: "create configlets on CVP {{ inventory_hostname }}."
+- name: "Create configlets on CVP {{ inventory_hostname }}"
   tags: [provision, apply]
   arista.cvp.cv_configlet_v3:
-    configlets: "{{ CVP_VARS.CVP_CONFIGLETS }}"
+    configlets: "{{ cvp_vars.cvp_configlets }}"
 
 - name: "Execute pending tasks on {{ inventory_hostname }}"
   tags: [apply]
   arista.cvp.cv_task_v3:
-    tasks: "{{ CVP_DEVICES_RESULTS.tasks }}"
+    tasks: "{{ cvp_devices_results.tasks }}"
   when:
-    - execute_tasks|bool
+    - execute_tasks | bool

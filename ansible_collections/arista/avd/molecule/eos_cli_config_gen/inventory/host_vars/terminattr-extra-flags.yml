@@ -17,3 +17,5 @@ daemon_terminattr:
   grpcaddr: "mgmt/0.0.0.0:6042"
   cvcompression: gzip
   grpcreadonly: true
+  cvconfig: true
+  cvsourceintf: Vlan100

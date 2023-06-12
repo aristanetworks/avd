@@ -4,7 +4,7 @@
   vars:
     timezone: "test"
     hours: 84
-  yaml_templates_to_facts:
+  arista.avd.yaml_templates_to_facts:
     templates:
       - template: "templates/template.j2"
       - template: "templates/template1.j2"

@@ -1,4 +1,4 @@
-# Custom AVD Structured Configuration
+# Custom Structured Configuration
 
 With Custom Structured Configuration the user can override built-in `eos_designs` functionality or add extra knobs to be picked up by `eos_cli_config_gen` role.
 There are multiple ways of supplying Custom Structured Configuration and they can all be combined.
@@ -35,15 +35,15 @@ Only the most specific `structured_config` key will be used
     # Custom structured config for eos_cli_config_gen
     structured_config: < dictionary >
   nodes:
-    < node >:
+    - name: < node >
       # Custom structured config for eos_cli_config_gen
       structured_config: < dictionary >
   node_groups:
-    < node_group >:
+    - group: < node_group >
       # Custom structured config for eos_cli_config_gen
       structured_config: < dictionary >
       nodes:
-        < node >:
+        - name: < node >
           # Custom structured config for eos_cli_config_gen
           # Overrides the setting on node_group level.
           structured_config: < dictionary >
@@ -103,9 +103,10 @@ custom_structured_configuration_list_merge: < replace (default) | append | keep 
 #### Example using default prefix
 
 ```yaml
-custom_structured_configuration_name_server:
-  nodes:
-    - 10.2.3.4
+custom_structured_configuration_ip_name_servers:
+  - ip_address: 10.2.3.4
+    vrf: MGMT
+
 custom_structured_configuration_ethernet_interfaces:
   Ethernet4000:
     description: My test
@@ -118,7 +119,7 @@ custom_structured_configuration_ethernet_interfaces:
     peer_type: my_precious
 ```
 
-In this example the contents of the `name_server.nodes` variable in the Structured Configuration will be replaced by the list `[ 10.2.3.4 ]`
+In this example the contents of the `ip_name_servers` variable in the Structured Configuration will be replaced by the list `[ 10.2.3.4 ]`
 and `Ethernet4000` will be added to the `ethernet_interfaces` dictionary in the Structured Configuration.
 
 `custom_structured_configuration_prefix` allows the user to customize the prefix for Custom Structured Configuration variables.
@@ -162,32 +163,31 @@ name_servers:
   - 10.10.10.11
 
 custom_structured_configuration_list_merge: append
-custom_structured_configuration_list_prefix: [ override_ ]
+custom_structured_configuration_prefix: [ override_ ]
 
-override_name_server:
-  nodes:
-  - 10.10.10.12
+override_ip_name_servers:
+  - ip_address: 10.10.10.12
+    vrf: MGMT
 ```
 
-In this example the `name_servers` variable will be read by `eos_designs` templates and the `name_server` structured configuration will be generated accordingly:
+In this example the `name_servers` variable will be read by `eos_designs` templates and the `ip_name_servers` structured configuration will be generated accordingly:
 
 ```yaml
-name_server:
-  source:
+ip_name_servers:
+  - ip_address: 10.10.10.10
     vrf: MGMT
-  nodes:
-  - 10.10.10.10
-  - 10.10.10.11
+  - ip_address: 10.10.10.11
+    vrf: MGMT
 ```
 
-The `override_name_server.nodes` list will be `appended` to `name_server.nodes` list resulting in:
+The `override_ip_name_servers` list will be `appended` to `ip_name_servers` list resulting in:
 
 ```yaml
-name_server:
-  source:
+ip_name_servers:
+  - ip_address: 10.10.10.10
     vrf: MGMT
-  nodes:
-  - 10.10.10.10
-  - 10.10.10.11
-  - 10.10.10.12
+  - ip_address: 10.10.10.11
+    vrf: MGMT
+  - ip_address: 10.10.10.12
+    vrf: MGMT
 ```

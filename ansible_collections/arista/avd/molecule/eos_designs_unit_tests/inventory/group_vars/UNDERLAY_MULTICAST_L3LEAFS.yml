@@ -1,0 +1,53 @@
+# UNDERLAY_MULTICAST_TESTS
+
+# Test underlay multicast configuration on underlay router + mlag
+type: l3leaf
+
+underlay_multicast: true
+
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 2
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    uplink_interfaces: [Ethernet1, Ethernet2]
+    uplink_switches: ['UNDERLAY-MULTICAST-SPINE1', 'UNDERLAY-MULTICAST-SPINE2']
+    uplink_ipv4_pool: 172.31.255.0/24
+    mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+  node_groups:
+    # Test multicast configuration with mlag pair.
+    # Expected results:
+    # - router multicast enabled for ipv4
+    # - p2p links configured with "pim ipv4 sparse-mode"
+    # - VLAN 4093 configured with "pim ipv4 sparse-mode"
+    - group: DC1_LEAF1
+      bgp_as: 65101
+      nodes:
+        - name: UNDERLAY-MULTICAST-L3LEAF1A
+          id: 1
+          mgmt_ip: 192.168.200.105/24
+          uplink_switch_interfaces: [Ethernet1, Ethernet1]
+        - name: UNDERLAY-MULTICAST-L3LEAF1B
+          id: 2
+          mgmt_ip: 192.168.200.106/24
+          uplink_switch_interfaces: [Ethernet2, Ethernet2]
+    # Test multicast configuration with mlag pair sharing same vlan for l3 peering (4094)
+    # Expected results:
+    # - router multicast enabled for ipv4
+    # - p2p links configured with "pim ipv4 sparse-mode"
+    # - VLAN 4094 configured with "pim ipv4 sparse-mode"
+    - group: DC1_LEAF2
+      bgp_as: 65102
+      mlag_peer_l3_vlan: 4094
+      nodes:
+        - name: UNDERLAY-MULTICAST-L3LEAF2A
+          id: 3
+          mgmt_ip: 192.168.200.107/24
+          uplink_switch_interfaces: [Ethernet3, Ethernet3]
+        - name: UNDERLAY-MULTICAST-L3LEAF2B
+          id: 4
+          mgmt_ip: 192.168.200.108/24
+          uplink_switch_interfaces: [Ethernet4, Ethernet4]

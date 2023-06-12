@@ -1,0 +1,87 @@
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 172.31.0.1
+- destination_address_prefix: 10.1.0.0/16
+  gateway: 10.1.100.100
+  vrf: default
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+management_interfaces:
+- name: Management1
+  description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.200.101/24
+  gateway: 172.31.0.1
+  type: oob
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+ethernet_interfaces:
+- name: Ethernet1
+  peer: ISIS-LEAF1
+  peer_interface: Ethernet1
+  peer_type: leaf
+  description: ISIS-LEAF1_Ethernet1
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 1
+    mode: active
+- name: Ethernet10
+  peer: Endpoint
+  peer_type: network_port
+  description: Endpoint
+  shutdown: false
+  type: switched
+  mode: access
+  vlans: '110'
+port_channel_interfaces:
+- name: Port-Channel1
+  description: ISIS-LEAF1_Po1
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: '110'
+loopback_interfaces:
+- name: Loopback0
+  description: Router_ID
+  shutdown: false
+  ip_address: 192.168.255.1/32
+  isis_enable: EVPN_UNDERLAY
+  isis_passive: true
+router_isis:
+  instance: EVPN_UNDERLAY
+  log_adjacency_changes: true
+  net: 49.0001.0001.0000.0001.00
+  router_id: 192.168.255.1
+  is_type: level-2
+  address_family_ipv4:
+    enabled: true
+    maximum_paths: 4
+  redistribute_routes:
+  - source_protocol: connected
+  - source_protocol: static
+vlans:
+- id: 110
+  name: SVI_110
+  tenant: L2LS_ISIS
+ip_igmp_snooping:
+  globally_enabled: true
+ip_virtual_router_mac_address: 00:1c:73:00:00:9a
+vlan_interfaces:
+- name: Vlan110
+  tenant: L2LS_ISIS
+  description: SVI_110
+  shutdown: false
+  ip_address_virtual: 10.0.110.1/24

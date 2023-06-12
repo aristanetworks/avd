@@ -1,11 +1,7 @@
 ---
 name: "Collection code testing"
 
-on:
-  # For a pull_request event, only branches and tags on the base are evaluated.
-  pull_request:
-    branches-ignore:
-      - releases/**
+on: pull_request
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref }}
@@ -13,7 +9,7 @@ concurrency:
 
 jobs:
   file-changes:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     outputs:
       eos_design: ${{ steps.filter.outputs.eos_design }}
       config_gen: ${{ steps.filter.outputs.config_gen }}
@@ -23,7 +19,7 @@ jobs:
       requirements: ${{ steps.filter.outputs.requirements }}
       docs: ${{ steps.filter.outputs.docs }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v2
         id: filter
         with:
@@ -42,10 +38,8 @@ jobs:
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/*'
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/**/*'
               - '.github/workflows/pull-request-management.yml'
-              - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen/*'
-              - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen/**/*'
-              - 'ansible_collections/arista/avd/molecule/upgrade_eos_cli_config_gen/*'
-              - 'ansible_collections/arista/avd/molecule/upgrade_eos_cli_config_gen/**/*'
+              - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen*/*'
+              - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen*/**/*'
             cloudvision:
               - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/*'
               - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*'
@@ -71,21 +65,21 @@ jobs:
               - 'ansible_collections/arista/avd/roles/**/*.md'
               - 'ansible_collections/arista/avd/**/*.md'
               - 'ansible_collections/arista/avd/README.md'
+              - 'ansible_collections/arista/avd/**/*.schema.yml'
   # ----------------------------------- #
   # Pre Commit code validation
   # ----------------------------------- #
   pre_commit:
     name: Run pre-commit validation hooks
-    runs-on: ubuntu-20.04
-    container: avdteam/base:3.8-v2.0
+    runs-on: ubuntu-latest
     needs: file-changes
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install requirements
         run: |
-          pip install -r ansible_collections/arista/avd/requirements-dev.txt
-          pip install -r ansible_collections/arista/avd/requirements.txt
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
+          pip install -r ansible_collections/arista/avd/requirements.txt --upgrade
       - name: Run pre-commit
         run: |
           pre-commit run --all-files --color always
@@ -95,32 +89,32 @@ jobs:
   # ----------------------------------- #
   offline_link_check:
     name: 'Validate mkdoc content'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs: [ file-changes ]
     if: needs.file-changes.outputs.docs == 'true'
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@master
-      - name: 'start docker-compose stack'
+      - uses: actions/checkout@v3
+      - name: 'Start docker-compose stack'
         run: |
-          cp development/docker-compose.yml .
-          sed -i 's/cd\sansible-avd\/\s\&\&//g' docker-compose.yml
-          docker-compose -f docker-compose.yml up -d webdoc_avd
-          docker-compose -f docker-compose.yml ps
-      - name: 'test connectivity to mkdoc server'
+          docker-compose -f development/docker-compose.yml up -d webdoc_avd
+          docker-compose -f development/docker-compose.yml ps
+      - name: 'Test connectivity to mkdoc server'
         run: |
-          until docker exec webdoc_avd curl -s -I http://localhost:8000/ ; do sleep 2; done
-      - name: check links for 404
+          bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' 127.0.0.1:8000)" != "200" ]]; do sleep 5; done'
+      - name: Check links for 404
         run: |
-          docker run --network container:webdoc_avd raviqqe/muffet:1.5.7 http://127.0.0.1:8000/ -e ".*fonts.googleapis.com.*" -e ".*fonts.gstatic.com.*" -e ".*tools.ietf.org.*" -e ".*edit.*" -e ".*docs.github.com.*" -f --limit-redirections=3 --timeout=30
-      - name: 'stop docker-compose stack'
+          docker run --network container:webdoc_avd raviqqe/muffet:2.6.1 http://127.0.0.1:8000/ -e ".*fonts.googleapis.com.*" -e ".*fonts.gstatic.com.*" -e ".*tools.ietf.org.*" -e ".*edit.*" -e ".*docs.github.com.*" -e "twitter.com" -e "www.docker.com" -f --max-redirections=3 --timeout=30 --rate-limit=1
+      - name: 'Stop docker-compose stack'
         run: |
-          docker-compose -f docker-compose.yml down
+          docker-compose -f development/docker-compose.yml down
+
   # ----------------------------------- #
   # Test Requirements
   # ----------------------------------- #
   python_requirements:
     name: Test Python requirements installation
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.requirements == 'true'
     strategy:
@@ -128,41 +122,49 @@ jobs:
       matrix:
         python_version: [ "3.8", "3.9", "3.10" ]
     steps:
-      - name: 'set environment variables'
+      - name: 'Set environment variables'
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python 3
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python_version }}
       - name: 'Install Python requirements'
         run: |
-          pip install -r ansible_collections/arista/avd/requirements.txt
-          pip install -r ansible_collections/arista/avd/requirements-dev.txt
+          pip install -r ansible_collections/arista/avd/requirements.txt --upgrade
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
 
   # ----------------------------------- #
   # EOS CLI CONFIG GEN MOLECULE
   # ----------------------------------- #
   molecule_eos_cli_config_gen:
     name: Validate eos_cli_config_gen
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: true
       matrix:
-        avd_scenario: ['eos_cli_config_gen', 'upgrade_eos_cli_config_gen', 'eos_cli_config_gen_v4.0']
-        ansible_version: ['ansible-core==2.11.3', 'ansible-core>=2.11.3,<2.13.0']
+        avd_scenario:
+          - 'eos_cli_config_gen'
+          - 'eos_cli_config_gen_deprecated_vars'
+          - 'eos_cli_config_gen_negative_unit_tests'
+        ansible_version:
+          - 'ansible-core>=2.12.6,<2.15.0,!=2.13.0'
+        # Also test minimum ansible version for one scenario.
+        include:
+          - avd_scenario: 'eos_cli_config_gen'
+            ansible_version: 'ansible-core==2.12.6'
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.config_gen == 'true'
     steps:
-      - name: 'set environment variables'
+      - name: 'Set environment variables'
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.3
+        uses: arista-netdevops-community/action-molecule-avd@v1.6
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
@@ -172,7 +174,7 @@ jobs:
           ansible: ${{ matrix.ansible_version }}
           check_git: true
           check_git_enforced: true
-      # - uses: actions/upload-artifact@v2
+      # - uses: actions/upload-artifact@v3
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts
       #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
@@ -182,22 +184,22 @@ jobs:
   # ----------------------------------- #
   molecule_dhcp_provisionner:
     name: Validate DHCP configuration
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: true
       matrix:
-        avd_scenario: ['dhcp_configuration', 'dhcp_provisionning']
-        ansible_version: ['ansible-core==2.11.3', 'ansible-core>=2.11.3,<2.13.0']
+        avd_scenario: ['dhcp_configuration', 'dhcp_provisioning']
+        ansible_version: ['ansible-core>=2.12.6,<2.15.0,!=2.13.0']
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.dhcp == 'true'
     steps:
-      - name: 'set environment variables'
+      - name: 'Set environment variables'
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.3
+        uses: arista-netdevops-community/action-molecule-avd@v1.6
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
@@ -207,7 +209,7 @@ jobs:
           ansible: ${{ matrix.ansible_version }}
           check_git: true
           check_git_enforced: true
-      # - uses: actions/upload-artifact@v2
+      # - uses: actions/upload-artifact@v3
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts
       #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
@@ -217,35 +219,42 @@ jobs:
   # ----------------------------------- #
   molecule_eos_designs:
     name: Validate eos_designs
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: true
       matrix:
         avd_scenario:
           - 'eos_designs_unit_tests'
-          - 'eos_designs_unit_tests_v4.0'
+          - 'eos_designs_negative_unit_tests'
           - 'evpn_underlay_ebgp_overlay_ebgp'
           - 'evpn_underlay_ospf_overlay_ebgp'
           - 'evpn_underlay_isis_overlay_ibgp'
           - 'eos_designs-twodc-5stage-clos'
           - 'evpn_underlay_rfc5549_overlay_ebgp'
+          - 'eos_designs-l2ls'
           - 'eos_designs-mpls-isis-sr-ldp'
-          - 'upgrade_v2.x_to_v3.0_evpn_underlay_ebgp_overlay_ebgp'
-          - 'upgrade_v2.x_to_v3.0_evpn_underlay_ospf_overlay_ebgp'
-          - 'upgrade_v2.x_to_v3.0_evpn_underlay_isis_overlay_ibgp'
-          - 'upgrade_v2.x_to_v3.0_eos_designs-twodc-5stage-clos'
-          - 'upgrade_v2.x_to_v3.0_evpn_underlay_rfc5549_overlay_ebgp'
-        ansible_version: ['ansible-core==2.11.3', 'ansible-core>=2.11.3,<2.13.0']
+          - 'example-campus-fabric'
+          - 'example-l2ls-fabric'
+          - 'example-single-dc-l3ls'
+          - 'example-dual-dc-l3ls'
+        ansible_version:
+          - 'ansible-core>=2.12.6,<2.15.0,!=2.13.0'
+        # Also test minimum ansible version for one scenario.
+        include:
+          - avd_scenario: 'eos_designs_unit_tests'
+            ansible_version: 'ansible-core==2.12.6'
+          - avd_scenario: 'eos_designs_unit_tests'
+            ansible_version: 'ansible-core>=2.13.1,<2.14.0'
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true'
     steps:
-      - name: 'set environment variables'
+      - name: 'Set environment variables'
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.3
+        uses: arista-netdevops-community/action-molecule-avd@v1.6
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
@@ -255,7 +264,7 @@ jobs:
           ansible: ${{ matrix.ansible_version }}
           check_git: true
           check_git_enforced: true
-      # - uses: actions/upload-artifact@v2
+      # - uses: actions/upload-artifact@v3
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts
       #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
@@ -264,22 +273,22 @@ jobs:
   # ----------------------------------- #
   molecule_cloudvision:
     name: Validate cvp_collection
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: true
       matrix:
         avd_scenario: ['eos_config_deploy_cvp']
-        ansible_version: ['ansible-core==2.11.3', 'ansible-core>=2.11.3,<2.13.0']
+        ansible_version: ['ansible-core==2.12.6', 'ansible-core>=2.12.6,<2.15.0,!=2.13.0']
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.cloudvision == 'true'
     steps:
-      - name: 'set environment variables'
+      - name: 'Set environment variables'
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.3
+        uses: arista-netdevops-community/action-molecule-avd@v1.6
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
@@ -289,7 +298,7 @@ jobs:
           ansible: ${{ matrix.ansible_version }}
           check_git: true
           check_git_enforced: true
-      # - uses: actions/upload-artifact@v2
+      # - uses: actions/upload-artifact@v3
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts
       #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
@@ -298,123 +307,120 @@ jobs:
   # ----------------------------------- #
   ansible_test_sanity:
     name: Run ansible-test sanity validation
-    runs-on: ubuntu-20.04
-    needs: [ ]
+    runs-on: ubuntu-latest
+    needs: [ pre_commit ]
     #needs: [ molecule_eos_designs, molecule_cloudvision ]
     #if: needs.cloudvision.status != 'failed' && needs.molecule_eos_designs.status != 'failed' && needs.file-changes.outputs.plugins == 'true'
-    strategy:
-      fail-fast: true
-      matrix:
-        python_version: [ "3.8", "3.9", "3.10" ]
     steps:
-      - name: 'set environment variables'
+      - name: 'Set environment variables'
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python 3
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python_version }}
+          python-version: "3.10"
       - name: 'Install Python requirements'
         run: |
-          pip install -r ansible_collections/arista/avd/requirements.txt
-          pip install -r ansible_collections/arista/avd/requirements-dev.txt
-      - name: 'run ansible-test sanity'
+          pip install -r ansible_collections/arista/avd/requirements.txt --upgrade
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
+      - name: 'Run ansible-test sanity'
         run: |
           cd ansible_collections/arista/avd/
-          ansible-test sanity --color yes -v --requirements --docker --python ${{ matrix.python_version }}
+          ansible-test sanity --color yes -v --requirements --docker
 
   ansible_test_units:
     name: Run ansible-test units test cases
-    runs-on: ubuntu-20.04
-    needs: [ ]
-    strategy:
-      fail-fast: true
-      matrix:
-        python_version: [ "3.8", "3.9", "3.10" ]
+    runs-on: ubuntu-latest
+    needs: [ pre_commit ]
     steps:
-      - name: 'set environment variables'
+      - name: 'Set environment variables'
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python 3
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python_version }}
+          python-version: "3.10"
       - name: 'Install Python requirements'
         run: |
-          pip install -r ansible_collections/arista/avd/requirements.txt
-          pip install -r ansible_collections/arista/avd/requirements-dev.txt
-      - name: 'run ansible-test units test cases'
+          pip install -r ansible_collections/arista/avd/requirements.txt --upgrade
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
+      - name: 'Run ansible-test units test cases'
         run: |
           cd ansible_collections/arista/avd/
-          ansible-test units --requirements --docker --python ${{ matrix.python_version }} -vv
+          ansible-test units --requirements --docker -vv
 
   ansible_test_integration:
-    name: Run ansible-test intergration test cases
-    runs-on: ubuntu-20.04
-    needs: [ ]
-    strategy:
-      fail-fast: true
-      matrix:
-        python_version: [ "3.8", "3.9", "3.10" ]
+    name: Run ansible-test integration test cases
+    runs-on: ubuntu-latest
+    needs: [ pre_commit ]
     steps:
-      - name: 'set environment variables'
+      - name: 'Set environment variables'
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Set up Python 3
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python_version }}
+          python-version: "3.10"
       - name: 'Install Python requirements'
         run: |
-          pip install -r ansible_collections/arista/avd/requirements.txt
-          pip install -r ansible_collections/arista/avd/requirements-dev.txt
-      - name: 'run ansible-test integration test cases'
+          pip install -r ansible_collections/arista/avd/requirements.txt --upgrade
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
+      - name: 'Run ansible-test integration test cases'
         run: |
           cd ansible_collections/arista/avd/
-          ansible-test integration --requirements --docker --python ${{ matrix.python_version }} -vv
+          ansible-test integration --requirements --docker -vv
+
+  ansible_lint:
+    name: Run ansible-lint test case
+    runs-on: ubuntu-latest
+    needs: [ pre_commit ]
+    steps:
+      - name: 'Set environment variables'
+        run: |
+          echo "PY_COLORS=1" >> $GITHUB_ENV
+      - uses: actions/checkout@v3
+      - name: Set up Python 3
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - name: 'Install Python & Ansible requirements'
+        run: |
+          pip install -r ansible_collections/arista/avd/requirements.txt --upgrade
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
+          ansible-galaxy collection install -r ansible_collections/arista/avd/collections.yml
+      - name: 'Run ansible-test integration test cases'
+        run: |
+          cd ansible_collections/arista/avd/
+          ansible-lint --force-color --strict -v
   # ----------------------------------- #
   # Galaxy Importer
   # ----------------------------------- #
   galaxy_importer:
     name: Test galaxy-importer
-    runs-on: ubuntu-latest
-    container: avdteam/base:3.8-v2.0
+    runs-on: ubuntu-20.04 # Older version to be compatible with old python
     env:
       PY_COLORS: 1 # allows molecule colors to be passed to GitHub Actions
       ANSIBLE_FORCE_COLOR: 1 # allows ansible colors to be passed to GitHub Actions
+      GALAXY_IMPORTER_CONFIG: galaxy-importer/galaxy-importer.cfg
     steps:
-      - name: 'set environment variables'
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.6 # Ancient version to match galaxy.ansible.com.
+      - uses: actions/checkout@v3
+      - name: Install requirements
+        # Install the specific version of galaxy-importer used on galaxy.ansible.com
+        # The old version conflicts with our versions of other tooling,
+        # so we let the galaxy-importer version resolve remaining requirements.
         run: |
-          echo "PY_COLORS=1" >> $GITHUB_ENV
-          echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v2
-      - name: install requirements
-        run: |
-          pip install -r ansible_collections/arista/avd/requirements.txt
-          pip install -r ansible_collections/arista/avd/requirements-dev.txt
-      - name: 'build ansible package'
+          pip install "galaxy-importer==0.4.0.post1"
+      - name: 'Build ansible package'
         run: make collection-build
-      - name: 'run galaxy-importer checks'
+      - name: 'Run galaxy-importer checks'
         run: python -m galaxy_importer.main *.tar.gz
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: importer-logs
           path: ./importer_result.json
-
-  j2lint:
-    name: Validate j2 files
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-        timeout-minutes: 2
-      - name: Setup J2Lint
-        timeout-minutes: 2
-        run: |
-          pip install git+https://github.com/aristanetworks/j2lint.git
-      - name: Run J2lint
-        timeout-minutes: 2
-        run: |
-          j2lint $GITHUB_WORKSPACE

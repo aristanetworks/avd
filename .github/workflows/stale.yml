@@ -8,24 +8,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Issue stale management
-    - uses: actions/stale@v4
+    - uses: actions/stale@v6
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         days-before-stale: 90
-        days-before-close: 15
-        stale-issue-message: 'This issue is stale because it has been open 90 days with no activity. Remove stale label or comment or this will be closed in 15 days'
+        days-before-close: -1
+        stale-issue-message: 'This issue is stale because it has been open 90 days with no activity. The issue will be reviewed by a maintainer and may be closed'
         stale-issue-label: 'state: stale'
         exempt-issue-labels: 'state: accepted, state: in-progress'
-        stale-pr-message: 'This PR is stale because it has been open 30 days with no activity. Remove stale label or comment or this will be closed in 15 days'
+        stale-pr-message: 'This PR is stale because it has been open 30 days with no activity. The PR will be reviewed by a maintainer and may be closed'
         stale-pr-label: 'state: stale'
         exempt-pr-labels: 'state: accepted, state: in-progress'
-
-    #   # PR Stale Management
-    # - uses: actions/stale@v4
-    #   with:
-    #     repo-token: ${{ secrets.GITHUB_TOKEN }}
-    #     days-before-stale: 30
-    #     days-before-close: 15
-    #     stale-pr-message: 'This PR is stale because it has been open 30 days with no activity. Remove stale label or comment or this will be closed in 15 days'
-    #     stale-pr-label: 'state: stale'
-    #     exempt-pr-labels: 'state: accepted, state: in-progress'

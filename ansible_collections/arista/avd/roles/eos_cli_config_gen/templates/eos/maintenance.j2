@@ -1,9 +1,9 @@
-{# maintenance #}
+{# eos - maintenance #}
 {% set first_line = {'flag': True} %}
 {% if maintenance is arista.avd.defined %}
 !
 maintenance
-{%     for bgp_profile in maintenance.bgp_profiles | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for bgp_profile in maintenance.bgp_profiles | arista.avd.natural_sort('name') %}
 {%         if loop.index0 > 0 %}
    !
 {%         endif %}
@@ -25,7 +25,7 @@ maintenance
 {%         set first_line = {'flag': False} %}
    profile unit {{ maintenance.default_unit_profile }} default
 {%     endif %}
-{%     for interface_profile in maintenance.interface_profiles | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for interface_profile in maintenance.interface_profiles | arista.avd.natural_sort('name') %}
 {%         if not first_line.flag %}
    !
 {%         endif %}
@@ -41,7 +41,7 @@ maintenance
       shutdown max-delay {{ interface_profile.shutdown.max_delay }}
 {%         endif %}
 {%     endfor %}
-{%     for unit_profile in maintenance.unit_profiles | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for unit_profile in maintenance.unit_profiles | arista.avd.natural_sort('name') %}
 {%         if not first_line.flag %}
    !
 {%         endif %}
@@ -51,7 +51,7 @@ maintenance
       on-boot duration {{ unit_profile.on_boot.duration }}
 {%         endif %}
 {%     endfor %}
-{%     for unit in maintenance.units | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%     for unit in maintenance.units | arista.avd.natural_sort('name') %}
 {%         if not first_line.flag %}
    !
 {%         endif %}

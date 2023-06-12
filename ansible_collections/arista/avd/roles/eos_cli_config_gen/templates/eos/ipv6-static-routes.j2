@@ -1,4 +1,4 @@
-{# eos - IPV6 static routes#}
+{# eos - ipv6 static routes #}
 {% if ipv6_static_routes is arista.avd.defined %}
 !
 {%     for ipv6_static_route in ipv6_static_routes %}
@@ -16,6 +16,9 @@
 {%         endif %}
 {%         if ipv6_static_route.gateway is arista.avd.defined %}
 {%             set ipv6_static_route_cli = ipv6_static_route_cli ~ " " ~ ipv6_static_route.gateway %}
+{%             if ipv6_static_route.track_bfd is arista.avd.defined(true) %}
+{%                 set ipv6_static_route_cli = ipv6_static_route_cli ~ " track bfd" %}
+{%             endif %}
 {%         endif %}
 {%         if ipv6_static_route.distance is arista.avd.defined %}
 {%             set ipv6_static_route_cli = ipv6_static_route_cli ~ " " ~ ipv6_static_route.distance %}

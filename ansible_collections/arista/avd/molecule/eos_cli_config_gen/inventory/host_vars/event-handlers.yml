@@ -1,6 +1,13 @@
 event_handlers:
-  tracking:
+  - name: evpn-blacklist-recovery
     action_type: bash
-    action: /mnt/flash/tracking.sh
+    action: FastCli -p 15 -c "clear bgp evpn host-flap"
     delay: 300
-    trigger: on-boot
+    trigger: on-logging
+    regex: EVPN-3-BLACKLISTED_DUPLICATE_MAC
+    asynchronous: true
+  - name: CONFIG_VERSIONING
+    action_type: bash
+    action: FN=/mnt/flash/startup-config; LFN="`ls -1 $FN.*-* | tail -n 1`"; if [ -z "$LFN" -o -n "`diff -I 'last modified' $FN $LFN`" ]; then cp $FN $FN.`date +%Y%m%d-%H%M%S`; ls -1r $FN.*-* | tail -n +11 | xargs -I % rm %; fi
+    delay: 0
+    trigger: on-startup-config

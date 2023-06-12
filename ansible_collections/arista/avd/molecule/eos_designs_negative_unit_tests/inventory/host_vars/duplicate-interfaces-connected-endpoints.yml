@@ -1,0 +1,28 @@
+---
+# Minimum config to only test the specific feature.
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.42.0.0/24
+    bgp_as: 42
+    vtep_loopback_ipv4_pool: 10.43.0.0/24
+  nodes:
+    - name: duplicate-interfaces-connected-endpoints
+      id: 42
+
+type: l3leaf
+
+servers:
+  - name: server01_ES1
+    adapters:
+      - endpoint_ports: [ Eth1 ]
+        switch_ports: [ Ethernet10 ]
+        switches: [ duplicate-interfaces-connected-endpoints ]
+
+  - name: server02
+    adapters:
+      - endpoint_ports: [ Eth2 ]
+        switch_ports: [ Ethernet10 ]
+        switches: [ duplicate-interfaces-connected-endpoints ]
+
+
+expected_error_message: "Duplicate interface name Ethernet10 found while generating ethernet_interfaces for connected_endpoint: server02, endpoint_interface: Eth2. Description on duplicate interface: server01_ES1_Eth1"

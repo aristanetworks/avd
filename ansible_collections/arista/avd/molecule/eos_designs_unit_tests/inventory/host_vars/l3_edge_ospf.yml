@@ -1,0 +1,51 @@
+underlay_routing_protocol: ospf
+
+type: spine
+spine:
+  nodes:
+    - name: l3_edge_ospf
+      id: 1
+      evpn_role: "none"
+      loopback_ipv4_pool: 1.2.3.4/24
+      bgp_as: 65000
+
+l3_edge:
+  p2p_links_profiles:
+    - name: profile1
+      ip_pool: pool1
+      speed: "forced 10000full"
+      mtu: 2000
+      bfd: true
+      ptp:
+        enabled: true
+      qos_profile: TEST-QOS-PROFILE
+      macsec_profile: TEST-MACSEC-PROFILE
+
+  p2p_links_ip_pools:
+    - name: pool1
+      ipv4_pool: 192.168.0.0/24
+
+  p2p_links:
+      # P2P link without routing. Settings set via profile
+    - nodes: [l3_edge_ospf, peer1]
+      interfaces: [ethernet1, ethernet1]
+      id: 1
+      profile: profile1
+      include_in_underlay_protocol: false
+
+      # P2P link with underlay routing and IP set manually.
+    - nodes: [l3_edge_ospf, peer2]
+      interfaces: [ethernet2, ethernet2]
+      ip: [192.168.0.2/31, 192.168.0.3/31]
+
+      # P2P link with underlay routing and IP set as subnet.
+    - nodes: [l3_edge_ospf, peer3]
+      interfaces: [ethernet3, ethernet3]
+      subnet: 192.168.0.4/31
+
+      # P2P link with underlay routing and IP set via ip_pool and id.
+    - nodes: [l3_edge_ospf, peer4]
+      interfaces: [ethernet4, ethernet4]
+      ip_pool: pool1
+      id: 4
+      include_in_underlay_protocol: true

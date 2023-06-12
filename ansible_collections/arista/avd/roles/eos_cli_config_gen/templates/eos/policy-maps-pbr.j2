@@ -1,8 +1,8 @@
-{# PBR policy-map #}
-{% for policy_map in policy_maps.pbr | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{# eos - policy map pbr #}
+{% for policy_map in policy_maps.pbr | arista.avd.natural_sort('name') %}
 !
 policy-map type pbr {{ policy_map.name }}
-{%     for class in policy_map.classes | arista.avd.convert_dicts('name') | arista.avd.default([]) %}
+{%     for class in policy_map.classes | arista.avd.default([]) %}
 {%         set class_cli = 'class ' ~ class.name %}
 {%         if class.index is arista.avd.defined %}
 {%             set class_cli = class.index ~ ' ' ~ class_cli %}

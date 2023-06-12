@@ -1,0 +1,13 @@
+### Management API gNMI ###
+
+management_api_gnmi:
+  # Testing enable_vrfs. The key "enable_vrfs" is deprecated in 4.0.0. To be removed in 5.0.0
+  # Testing enable_vrfs as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  enable_vrfs:
+    MGMT:
+      access_group: ACL-GNMI
+    MONITORING:
+  # Testing octa
+  # octa is deprecated in 4.0.0. To be removed in 5.0.0
+  octa:

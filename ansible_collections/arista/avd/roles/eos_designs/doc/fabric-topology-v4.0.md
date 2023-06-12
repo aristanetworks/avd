@@ -38,7 +38,7 @@ pod_name: < POD_Name >
 
 ## Supported designs
 
-`eos_designs` supports multiple flavors of L3LS-EVPN topology such as 3-stage CLOS and 5-stage CLOS. Sections below highlight these 2 topologies, but you can extend `eos_designs` to support your own topology by using [`node_type_keys`](node-types.html) to create your own node type
+`eos_designs` supports multiple flavors of L3LS-EVPN topology such as 3-stage CLOS and 5-stage CLOS. Sections below highlight these 2 topologies, but you can extend `eos_designs` to support your own topology by using [`node_type_keys`](node-types.md) to create your own node type
 
 ### 3-stage CLOS Topology Support (Leaf & Spine)
 
@@ -118,16 +118,16 @@ defaults <- node_group <- node_group.node <- node
   defaults:
     # Define vars for all nodes of this type
   node_groups:
-    <node group name>:
+    - group: <node group name>
     # Vars related to all nodes part of this group
       nodes:
-        <node inventory hostname>:
+        - name: <node inventory hostname>
           # Vars defined per node
   nodes:
-    <node inventory hostname>:
+    - name: <node inventory hostname>
       # Vars defined per node
 
-      # Unique identifier | Required.
+      # Unique identifier per node_type | Required.
       id: < integer >
 
       # Node management IP address | Optional.
@@ -215,14 +215,14 @@ defaults <- node_group <- node_group.node <- node
 
   # When nodes are part of node group
   node_groups:
-    < node-group-name >:
+    - group: < node-group-name >
       nodes:
         # Uplink switches interfaces (list), interface located on uplink switch. | Required.
         uplink_switch_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
 
   # When nodes are not in node_group
   nodes:
-    <node inventory hostname>:
+    - name: <node inventory hostname>
       # Uplink switches interfaces (list), interface located on uplink switch. | Required.
       uplink_switch_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
 ```
@@ -343,7 +343,7 @@ defaults <- node_group <- node_group.node <- node
     mlag_peer_vlan: < 0-4094 | default -> 4094 >
 
     # MLAG Peer Link allowed VLANs
-    mlag_peer_link_allowed_vlans: < vlans as string | default -> "2-4094" >
+    mlag_peer_link_allowed_vlans: < vlans as string >
 
     # IP address pool used for MLAG Peer Link (control link) | *Required when MLAG leafs present in topology.
     # IP is derived from the node id.

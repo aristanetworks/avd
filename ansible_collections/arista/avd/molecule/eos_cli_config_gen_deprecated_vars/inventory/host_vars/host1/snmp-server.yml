@@ -1,0 +1,32 @@
+### Snmp Settings ####
+
+snmp_server:
+  # Testing communities as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  communities:
+    SNMP-COMMUNITY-1:
+      access: ro
+      access_list_ipv4:
+        name: onur
+    SNMP-COMMUNITY-2:
+      access: rw
+      access_list_ipv4:
+        name: SNMP-MGMT
+      access_list_ipv6:
+        name: SNMP-MGMT
+      view: VW-READ
+    SNMP-COMMUNITY-3:
+  # Testing local_interfaces as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  local_interfaces:
+    Management1:
+      vrf: MGMT
+    Loopback0:
+    Loopback12:
+      vrf: Tenant_A_APP_Zone
+  views:
+    - name: VW-WRITE
+      # Testing deprecated upper-case key name
+      # Deprecated in 4.0.0 in favor of lower case variant. To be removed in 5.0.0
+      MIB_family_name: iso
+      included: true

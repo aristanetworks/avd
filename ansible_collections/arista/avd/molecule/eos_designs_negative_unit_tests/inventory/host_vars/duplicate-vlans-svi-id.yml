@@ -1,0 +1,26 @@
+---
+# Minimum config to only test the specific feature.
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: duplicate-vlans-svi-id
+      id: 1
+
+tenants:
+  - name: TenantA
+    vrfs:
+      - name: Tenant_A_OP_Zone
+        svis:
+          - id: 2
+            name: vlan1
+  - name: TenantB
+    vrfs:
+      - name: Tenant_B_OP_Zone
+        svis:
+          # duplicate vlan_id
+          - id: 2
+            name: vlan2
+
+
+expected_error_message: "Found duplicate objects with conflicting data while generating configuration for SVIs in VRF 'Tenant_B_OP_Zone'. {'id': 2, 'name': 'vlan2', 'tenant': 'TenantB'} conflicts with {'id': 2, 'name': 'vlan1', 'tenant': 'TenantA'}."

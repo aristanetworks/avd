@@ -1,0 +1,3 @@
+from .avdstructuredconfig import AvdStructuredConfigCustomStructuredConfiguration
+
+__all__ = ["AvdStructuredConfigCustomStructuredConfiguration"]

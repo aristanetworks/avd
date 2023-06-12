@@ -2,7 +2,7 @@
 
 The MPLS design feature is in BETA until the release of AVD 4.0.0. Changes to data models and default behavior for the MPLS design should be expected.
 
-# Fabric Variables for MPLS Design
+## Fabric Variables for MPLS Design
 
 - The MPLS design supports any fabric variables already supported by l3ls-evpn, barring the exceptions outlined in this document.
 - Additionally the MPLS design supports several new fabric variables that are outlined in this document.
@@ -57,9 +57,13 @@ bgp_peer_groups:
   mpls_overlay_peers:
     name: < name of peer group | default -> MPLS-OVERLAY-PEERS >
     password: "< encrypted password >"
+    # Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
+    structured_config: < dictionary >
   rr_overlay_peers:
     name: < name of peer group | default -> RR-OVERLAY-PEERS >
     password: "< encrypted password >"
+    # Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
+    structured_config: < dictionary >
 ```
 
 ## Unsupported Fabric Variables

@@ -1,0 +1,11 @@
+# Minimum config to only test the specific feature.
+type: l2leaf
+mgmt_interface_vrf: MGMT
+mgmt_interface_description: "Custom Management Interface Description"
+mgmt_gateway: 1.1.1.1
+l2leaf:
+  defaults:
+  nodes:
+    - name: mgmt_interface_description
+      mgmt_ip: 1.1.1.2
+      id: 102

@@ -1,28 +1,44 @@
 ### ptp
 
 ptp:
-  clock_identity: 123.123.123.123
+  clock_identity: "11:11:11:11:11:11"
   source:
-    ip: 1.1.1.1
-  priority1: 1
-  priority2: 2
-  ttl: 200
-  domain: 1
+    ip: 1.1.2.3
+  priority1: 101
+  priority2: 102
+  ttl: 12
+  domain: 17
   message_type:
     general:
-      dscp: 4
+      dscp: 36
     event:
-      dscp: 8
-  monitor:
-    threshold:
-      offset_from_master: 1234
-      mean_path_delay: 4321
+      dscp: 46
   mode: boundary
   forward_unicast: true
+  monitor:
+    # enabled: true (default)
+    threshold:
+      offset_from_master: 11
+      mean_path_delay: 12
+      drop:
+        offset_from_master: 13
+        mean_path_delay: 14
+    missing_message:
+      intervals:
+        announce: 101
+        follow_up: 102
+        sync: 103
+      sequence_ids:
+        enabled: true
+        announce: 201
+        delay_resp: 202
+        follow_up: 203
+        sync: 204
 
 # port-channels
 port_channel_interfaces:
-  Port-Channel5:
+  - name: Port-Channel5
+    type: switched
     description: DC1_L2LEAF1_Po1
     vlans: 110,201
     mode: trunk
@@ -38,7 +54,7 @@ port_channel_interfaces:
 
 ### interface
 ethernet_interfaces:
-  Ethernet3:
+  - name: Ethernet3
     peer: DC1-SPINE2
     peer_interface: Ethernet5
     peer_type: spine
@@ -54,7 +70,7 @@ ethernet_interfaces:
       role: dynamic
       vlan: 2
       transport: layer2
-  Ethernet6:
+  - name: Ethernet6
     peer: DC1-SPINE1
     peer_interface: Ethernet6
     peer_type: spine
@@ -74,7 +90,8 @@ ethernet_interfaces:
       role: dynamic
       transport: ipv4
 # port-channel interfaces
-  Ethernet5:
+  - name: Ethernet5
+    type: port-channel-member
     peer: DC1-AGG01
     peer_interface: Ethernet1
     peer_type: l2leaf

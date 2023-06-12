@@ -1,4 +1,5 @@
-{% for interface_group in interface_groups | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{# eos - interface groups #}
+{% for interface_group in interface_groups | arista.avd.natural_sort('name') %}
 !
 group interface {{ interface_group.name }}
 {%     for interface in interface_group.interfaces | arista.avd.natural_sort %}

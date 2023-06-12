@@ -1,11 +1,12 @@
+{# doc - roles #}
 {% if roles is arista.avd.defined %}
 
-## Roles
+### Roles
 
-### Roles Summary
+#### Roles Summary
 {%     for role in roles | arista.avd.natural_sort %}
 
-#### Role {{ role.name }}
+##### Role {{ role.name }}
 
 | Sequence | Action | Mode | Command |
 | -------- | ------ | ---- | ------- |
@@ -16,7 +17,7 @@
 {%         endfor %}
 {%     endfor %}
 
-### Roles Device Configuration
+#### Roles Device Configuration
 
 ```eos
 {%     include 'eos/roles.j2' %}

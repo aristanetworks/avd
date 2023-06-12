@@ -1,0 +1,18 @@
+---
+
+pod_name: L2LS_L2ONLY
+
+tenants:
+  - name: L2LS_L2ONLY
+    l2vlans:
+      - id: 100
+        name: L2VLAN_100
+
+network_ports:
+  - switches:
+      - "L2ONLY-LEAF[1-2]"
+    switch_ports:
+      - "Ethernet10-11"
+    vlans: 100
+    mode: access
+    description: Endpoint

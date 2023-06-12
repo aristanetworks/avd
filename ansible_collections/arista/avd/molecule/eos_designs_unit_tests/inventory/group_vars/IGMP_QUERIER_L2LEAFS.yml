@@ -1,0 +1,11 @@
+type: l2leaf
+
+l2leaf:
+  defaults:
+  nodes:
+    - name: IGMP-QUERIER-L2LEAF1A
+      id: 1
+      mgmt_ip: 192.168.200.101/24
+      uplink_switches: [ IGMP-QUERIER-L3LEAF1A ]
+      uplink_interfaces: [ Ethernet1 ]
+      uplink_switch_interfaces: [ Ethernet1 ]

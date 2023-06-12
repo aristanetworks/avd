@@ -1,6 +1,6 @@
 ---
 tenants:
-  TENANT_A:
+  - name: TENANT_A
     mac_vrf_id_base: 10000
     pseudowire_rt_base: 1000
     point_to_point_services:
@@ -16,18 +16,18 @@ tenants:
             interfaces: ["Ethernet7"]
         lldp_disable: true
     l2vlans:
-      10:
+      - id: 10
         name: TENANT_A_L2_SERVICE
         tags:
           - site1-2
           - site5
-      20:
+      - id: 20
         name: TENANT_A_L2_SERVICE
         rt_override: 123456
         tags:
           - site1-2
           - site5
-  TENANT_B:
+  - name: TENANT_B
     pseudowire_rt_base: 2000
     mac_vrf_id_base: 20000
     point_to_point_services:
@@ -54,7 +54,7 @@ tenants:
             port_channel:
               mode: active
     vrfs:
-      TENANT_B_INTRA:
+      - name: TENANT_B_INTRA
         vrf_id: 19
         address_families:
           - evpn
@@ -94,18 +94,17 @@ tenants:
             nodes:
               - SITE2-LER1
         svis:
-          2020:
+          - id: 2020
             enabled: true
             name: TENANT_B_INSIDE_FW
-            ip_virtual_router_address: 10.1.255.1
             nodes:
-              pe1:
+              - node: pe1
                 ip_address: 10.1.255.2/27
-              pe2:
+              - node: pe2
                 ip_address: 10.1.255.3/27
             tags:
               - tag1
-      TENANT_B_WAN:
+      - name: TENANT_B_WAN
         vrf_id: 20
         address_families:
           - vpn-ipv4
@@ -142,7 +141,7 @@ tenants:
           - description: TENANT_B_SITE_5
             enabled: true
             interfaces:
-              - Ethernet6.10
+              - Ethernet6.101
             ip_addresses:
               - 192.168.48.2/31
             nodes:
@@ -156,15 +155,15 @@ tenants:
             nodes:
               - SITE2-LER1
         bgp_peers:
-          192.168.48.1:
+          - ip_address: 192.168.48.1
             description: TENANT_B_CPE_SITE3
             nodes:
               - SITE1-LER2
-            password: $1c$U4tL2vQP9QwZlxIV1K3/pw==
+            password: "toZKiUFLVUTU4hdS5V8F4Q=="
             remote_as: "65201"
-          192.168.48.3:
+          - ip_address: 192.168.48.3
             description: TENANT_B_CPE_SITE5
             nodes:
               - SITE2-LER1
-            password: $1c$U4tL2vQP9QwZlxIV1K3/pw==
+            password: "OajzUG59/YF0NkgvOQyRnQ=="
             remote_as: "65202"

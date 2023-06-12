@@ -1,45 +1,36 @@
 # router-isis
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Authentication](#authentication)
-- [Monitoring](#monitoring)
-- [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
-  - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
   - [VLAN Interfaces](#vlan-interfaces)
 - [Routing](#routing)
-  - [IP Routing](#ip-routing)
-  - [IPv6 Routing](#ipv6-routing)
   - [Router ISIS](#router-isis)
-- [Multicast](#multicast)
-- [Filters](#filters)
-- [ACL](#acl)
-- [Quality Of Service](#quality-of-service)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.254.11/24 | 10.73.254.253 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | -  | - |
+| Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -49,27 +40,13 @@ interface Management1
    ip address 10.73.254.11/24
 ```
 
-# Authentication
+## Interfaces
 
-# Monitoring
+### Ethernet Interfaces
 
-# Internal VLAN Allocation Policy
+#### Ethernet Interfaces Summary
 
-## Internal VLAN Allocation Policy Summary
-
-**Default Allocation Policy**
-
-| Policy Allocation | Range Beginning | Range Ending |
-| ------------------| --------------- | ------------ |
-| ascending | 1006 | 4094 |
-
-# Interfaces
-
-## Ethernet Interfaces
-
-### Ethernet Interfaces Summary
-
-#### L2
+##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
@@ -77,7 +54,7 @@ interface Management1
 
 *Inherited from Port-Channel Interface
 
-#### IPv4
+##### IPv4
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
@@ -88,7 +65,7 @@ interface Management1
 | Ethernet6 | - | *routed | 6 | *10.9.2.7/31 | **default | **- | **- | **- | **- |
 *Inherited from Port-Channel Interface
 
-#### ISIS
+##### ISIS
 
 | Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
 | --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
@@ -99,7 +76,7 @@ interface Management1
 | Ethernet6 | 6 | *EVPN_UNDERLAY | *100 | *- | *level-1-2 | *- | *- |
  *Inherited from Port-Channel Interface
 
-### Ethernet Interfaces Device Configuration
+#### Ethernet Interfaces Device Configuration
 
 ```eos
 !
@@ -136,16 +113,16 @@ interface Ethernet6
    channel-group 6 mode active
 ```
 
-## Port-Channel Interfaces
+### Port-Channel Interfaces
 
-### Port-Channel Interfaces Summary
+#### Port-Channel Interfaces Summary
 
-#### L2
+##### L2
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 
-#### IPv4
+##### IPv4
 
 | Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
@@ -153,7 +130,7 @@ interface Ethernet6
 | Port-Channel5 | - | routed | - | 10.9.2.5/31 | default | - | - | - | - |
 | Port-Channel6 | - | routed | - | 10.9.2.7/31 | default | - | - | - | - |
 
-#### ISIS
+##### ISIS
 
 | Interface | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
 | --------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
@@ -161,7 +138,7 @@ interface Ethernet6
 | Port-Channel5 | EVPN_UNDERLAY | 50 | passive | - | - | - |
 | Port-Channel6 | EVPN_UNDERLAY | 100 | - | level-1-2 | - | - |
 
-### Port-Channel Interfaces Device Configuration
+#### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
@@ -188,11 +165,11 @@ interface Port-Channel6
    isis metric 100
 ```
 
-## Loopback Interfaces
+### Loopback Interfaces
 
-### Loopback Interfaces Summary
+#### Loopback Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
@@ -200,7 +177,7 @@ interface Port-Channel6
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.3/32 |
 | Loopback2 | ISIS-SR Node-SID | default | 10.1.255.3/32 |
 
-#### IPv6
+##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
@@ -208,7 +185,7 @@ interface Port-Channel6
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
 | Loopback2 | ISIS-SR Node-SID | default | - |
 
-#### ISIS
+##### ISIS
 
 | Interface | ISIS instance | ISIS metric | Interface mode |
 | --------- | ------------- | ----------- | -------------- |
@@ -216,7 +193,7 @@ interface Port-Channel6
 | Loopback1 | EVPN_UNDERLAY | - | passive |
 | Loopback2 | EVPN_UNDERLAY | 50 | passive |
 
-### Loopback Interfaces Device Configuration
+#### Loopback Interfaces Device Configuration
 
 ```eos
 !
@@ -242,17 +219,17 @@ interface Loopback2
    node-segment ipv6 index 1000
 ```
 
-## VLAN Interfaces
+### VLAN Interfaces
 
-### VLAN Interfaces Summary
+#### VLAN Interfaces Summary
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan110 | PR01-DEMO | TENANT_A_PROJECT01 | - | false |
+| Vlan110 | PR01-DEMO | TENANT_A_PROJECT01 | - | False |
 | Vlan4093 | MLAG_PEER_L3_PEERING | default | - | - |
 | Vlan4094 | MLAG_PEER | default | 1500 | - |
 
-#### IPv4
+##### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
@@ -260,13 +237,13 @@ interface Loopback2
 | Vlan4093 |  default  |  10.255.251.0/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  10.255.252.0/31  |  -  |  -  |  -  |  -  |  -  |
 
-#### ISIS
+##### ISIS
 
 | Interface | ISIS Instance | ISIS Metric | Mode |
 | --------- | ------------- | ----------- | ---- |
 | Vlan4093 | EVPN_UNDERLAY | 50 | point-to-point |
 
-### VLAN Interfaces Device Configuration
+#### VLAN Interfaces Device Configuration
 
 ```eos
 !
@@ -290,38 +267,17 @@ interface Vlan4094
    ip address 10.255.252.0/31
 ```
 
-# Routing
+## Routing
 
-## IP Routing
+### Router ISIS
 
-### IP Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | false |
-
-### IP Routing Device Configuration
-
-```eos
-```
-## IPv6 Routing
-
-### IPv6 Routing Summary
-
-| VRF | Routing Enabled |
-| --- | --------------- |
-| default | false |
-
-## Router ISIS
-
-### Router ISIS Summary
+#### Router ISIS Summary
 
 | Settings | Value |
 | -------- | ----- |
 | Instance | EVPN_UNDERLAY |
 | Net-ID | 49.0001.0001.0001.0001.00 |
 | Type | level-2 |
-| Address Family | ipv4 unicast |
 | Router-ID | 192.168.255.3 |
 | Log Adjacency Changes | True |
 | MPLS LDP Sync Default | True |
@@ -329,7 +285,7 @@ interface Vlan4094
 | Advertise Passive-only | True |
 | SR MPLS Enabled | True |
 
-### ISIS Interfaces Summary
+#### ISIS Interfaces Summary
 
 | Interface | ISIS Instance | ISIS Metric | Interface Mode |
 | --------- | ------------- | ----------- | -------------- |
@@ -340,13 +296,20 @@ interface Vlan4094
 | Loopback1 | EVPN_UNDERLAY | - | passive |
 | Loopback2 | EVPN_UNDERLAY | 50 | passive |
 
-### ISIS Segment-routing Node-SID
+#### ISIS Segment-routing Node-SID
 
 | Loopback | IPv4 Index | IPv6 Index |
 | -------- | ---------- | ---------- |
 | Loopback2 | 10 | 1000 |
 
-### Router ISIS Device Configuration
+#### ISIS IPv4 Address Family Summary
+
+| Settings | Value |
+| -------- | ----- |
+| IPv4 Address-family Enabled | True |
+| Maximum-paths | 2 |
+
+#### Router ISIS Device Configuration
 
 ```eos
 !
@@ -365,11 +328,3 @@ router isis EVPN_UNDERLAY
    segment-routing mpls
       no shutdown
 ```
-
-# Multicast
-
-# Filters
-
-# ACL
-
-# Quality Of Service

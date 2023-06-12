@@ -1,9 +1,9 @@
-{# Management API Models #}
+{# doc - management api models #}
 {% if management_api_models is arista.avd.defined %}
 
-## Management API Models
+### Management API Models
 
-### Management API Models Summary
+#### Management API Models Summary
 
 | Provider | Path | Disabled |
 | -------- | ---- | ------- |
@@ -18,7 +18,7 @@
 {%         endfor %}
 {%     endif %}
 
-### Management API Models Configuration
+#### Management API Models Configuration
 
 ```eos
 {%     include 'eos/management-api-models.j2' %}

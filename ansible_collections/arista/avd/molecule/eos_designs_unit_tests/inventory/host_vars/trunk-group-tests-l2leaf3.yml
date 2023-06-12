@@ -1,0 +1,4 @@
+---
+# Testing "only_local_vlan_trunk_groups: true" set in hostvars to see
+# that only TG_200 and UPLINK are set on vlans 2xx
+only_local_vlan_trunk_groups: true

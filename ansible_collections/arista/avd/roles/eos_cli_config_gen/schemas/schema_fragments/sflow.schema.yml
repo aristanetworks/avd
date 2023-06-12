@@ -1,0 +1,121 @@
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+allow_other_keys: true
+keys:
+  sflow:
+    type: dict
+    keys:
+      sample:
+        type: int
+        convert_types:
+        - str
+      dangerous:
+        type: bool
+      polling_interval:
+        type: int
+        convert_types:
+        - str
+        description: Polling interval in seconds
+      vrfs:
+        type: list
+        primary_key: name
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            destinations:
+              type: list
+              primary_key: destination
+              convert_types:
+              - dict
+              items:
+                type: dict
+                keys:
+                  destination:
+                    type: str
+                    description: Sflow Destination IP Address
+                  port:
+                    type: int
+                    description: Port Number
+                    convert_types:
+                    - str
+            source:
+              type: str
+              description: |
+                Source IP Address.
+                "source" and "source_interface" are mutually exclusive. If both are defined, "source_interface" takes precedence.
+            source_interface:
+              type: str
+              description: Source Interface
+      destinations:
+        type: list
+        primary_key: destination
+        convert_types:
+        - dict
+        items:
+          type: dict
+          keys:
+            destination:
+              type: str
+              description: Sflow Destination IP Address
+            port:
+              type: int
+              description: Port Number
+              convert_types:
+              - str
+      source:
+        type: str
+        description: |
+          Source IP Address.
+          "source" and "source_interface" are mutually exclusive. If both are defined, "source_interface" takes precedence.
+      source_interface:
+        type: str
+        description: Source Interface
+      extensions:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Extension Name
+            enabled:
+              type: bool
+              description: Enable or Disable Extension
+              required: true
+      interface:
+        type: dict
+        keys:
+          disable:
+            type: dict
+            keys:
+              default:
+                type: bool
+      run:
+        type: bool
+      hardware_acceleration:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+          sample:
+            type: int
+            convert_types:
+            - str
+          modules:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                enabled:
+                  type: bool
+                  default: true

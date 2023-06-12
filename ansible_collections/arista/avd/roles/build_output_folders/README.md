@@ -1,4 +1,4 @@
-# Build Output Folders
+# build_output_folders
 
 Role to cleanup and create local folder structure to save roles' outputs
 
@@ -64,12 +64,12 @@ Below is an example to use in your playbook to build output folders using defaul
   connection: local
   gather_facts: no
   tasks:
-    - name: 'build local folders for output'
+    - name: 'Build local folders for output'
       tags: [build]
-      import_role:
+      ansible.builtin.import_role:
         name: arista.avd.build_output_folders
 ```
 
 ## License
 
-Project is published under [Apache 2.0 License](../../../../../LICENSE)
+Project is published under [Apache 2.0 License](../../LICENSE)

@@ -1,0 +1,45 @@
+service_routing_protocols_model: multi-agent
+hardware_counters:
+  features:
+  - name: vlan-interface
+    direction: in
+  - name: vlan-interface
+    direction: out
+  - name: flow-spec
+    direction: in
+  - name: gre tunnel interface
+    direction: out
+  - name: ip
+    direction: in
+    layer3: false
+    units_packets: false
+  - name: ip
+    direction: out
+    layer3: true
+    units_packets: true
+  - name: acl
+    direction: out
+    address_type: mac
+  - name: mpls lfib
+    units_packets: true
+  - name: route
+    address_type: ipv4
+    vrf: test
+    prefix: 192.168.0.0/24
+  - name: route
+    address_type: ipv6
+    prefix: 2001:db8:cafe::/64
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+ip_igmp_snooping:
+  globally_enabled: true
