@@ -14,7 +14,6 @@ keys:
         valid_values:
           - ascending
           - descending
-        default: ascending
         required: true
       range:
         type: dict
@@ -24,7 +23,6 @@ keys:
             convert_types:
               - str
             description: First VLAN ID.
-            default: 1006
             min: 2
             max: 4094
             required: true
@@ -33,7 +31,11 @@ keys:
             convert_types:
               - str
             description: Last VLAN ID.
-            default: 1199
             min: 2
             max: 4094
             required: true
+    default:
+      allocation: ascending
+      range:
+        beginning: 1006
+        ending: 1199

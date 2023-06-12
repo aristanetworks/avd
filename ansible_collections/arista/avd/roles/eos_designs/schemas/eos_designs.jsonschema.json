@@ -34,26 +34,28 @@
       "properties": {
         "interval": {
           "type": "integer",
-          "default": 300,
           "minimum": 50,
           "maximum": 60000,
           "title": "Interval"
         },
         "min_rx": {
           "type": "integer",
-          "default": 300,
           "minimum": 50,
           "maximum": 60000,
           "title": "Min RX"
         },
         "multiplier": {
           "type": "integer",
-          "default": 3,
           "minimum": 3,
           "maximum": 50,
           "title": "Multiplier"
         }
       },
+      "required": [
+        "interval",
+        "min_rx",
+        "multiplier"
+      ],
       "additionalProperties": false,
       "patternProperties": {
         "^_.+$": {}
@@ -1458,7 +1460,6 @@
             "ascending",
             "descending"
           ],
-          "default": "ascending",
           "title": "Allocation"
         },
         "range": {
@@ -1467,7 +1468,6 @@
             "beginning": {
               "type": "integer",
               "description": "First VLAN ID.",
-              "default": 1006,
               "minimum": 2,
               "maximum": 4094,
               "title": "Beginning"
@@ -1475,7 +1475,6 @@
             "ending": {
               "type": "integer",
               "description": "Last VLAN ID.",
-              "default": 1199,
               "minimum": 2,
               "maximum": 4094,
               "title": "Ending"
@@ -1498,6 +1497,13 @@
       "additionalProperties": false,
       "patternProperties": {
         "^_.+$": {}
+      },
+      "default": {
+        "allocation": "ascending",
+        "range": {
+          "beginning": 1006,
+          "ending": 1199
+        }
       },
       "title": "Internal VLAN Order"
     },

@@ -74,23 +74,23 @@ keys:
         type: int
         convert_types:
         - str
-        default: 300
         min: 50
         max: 60000
+        required: true
       min_rx:
         type: int
         convert_types:
         - str
-        default: 300
         min: 50
         max: 60000
+        required: true
       multiplier:
         type: int
         convert_types:
         - str
-        default: 3
         min: 3
         max: 50
+        required: true
     default:
       interval: 300
       min_rx: 300
@@ -823,7 +823,6 @@ keys:
         valid_values:
         - ascending
         - descending
-        default: ascending
         required: true
       range:
         type: dict
@@ -833,7 +832,6 @@ keys:
             convert_types:
             - str
             description: First VLAN ID.
-            default: 1006
             min: 2
             max: 4094
             required: true
@@ -842,10 +840,14 @@ keys:
             convert_types:
             - str
             description: Last VLAN ID.
-            default: 1199
             min: 2
             max: 4094
             required: true
+    default:
+      allocation: ascending
+      range:
+        beginning: 1006
+        ending: 1199
   ipv6_mgmt_destination_networks:
     documentation_options:
       table: management-settings
