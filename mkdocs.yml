@@ -22,7 +22,7 @@ theme:
     - navigation.instant
     - navigation.top
     - search.highlight
-    - toc.integrate
+    #- toc.integrate
     - toc.follow
   highlightjs: true
   icon:
@@ -128,13 +128,6 @@ nav:
       - Example for ISIS-LDP IPVPN: examples/isis-ldp-ipvpn/README.md
   - Installation:
       - Collection Installation: docs/installation/collection-installation.md
-  - How-To:
-      - Build Your First AVD Project: docs/how-to/first-project.md
-      - Build Your First AVD & CVP Project: docs/how-to/first-cvp-avd-project.md
-      - Use NAT Gateway With eAPI: docs/how-to/lab-with-nat.md
-      - AWX & Tower Integration: docs/how-to/tower-integration.md
-      - Configure ZTP Server With CVP Collection: docs/how-to/ztp.md
-      - Setup Ansible AVD With VS Code Container: docs/how-to/vscode-container.md
   - Validation of Input Variables: docs/input-variable-validation.md
   - Roles Documentation:
       - eos_designs:
