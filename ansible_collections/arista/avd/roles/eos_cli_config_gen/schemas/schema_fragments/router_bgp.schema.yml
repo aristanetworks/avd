@@ -1746,13 +1746,6 @@ keys:
                                 - str
                               min: 2
                               max: 64
-                peer_groups:
-                  type: list
-                  deprecation:
-                    warning: true
-                    removed: true
-                    new_key: router_bgp.peer_groups
-                    remove_in_version: 4.0.0
                 neighbors:
                   type: list
                   primary_key: ip_address
@@ -1848,13 +1841,6 @@ keys:
                                 - str
                               min: 2
                               max: 64
-                peer_groups:
-                  type: list
-                  deprecation:
-                    warning: true
-                    removed: true
-                    new_key: router_bgp.peer_groups
-                    remove_in_version: 4.0.0
                 neighbors:
                   type: list
                   primary_key: ip_address
@@ -1912,13 +1898,6 @@ keys:
                       keys:
                         receive:
                           type: bool
-                peer_groups:
-                  type: list
-                  deprecation:
-                    warning: true
-                    removed: true
-                    new_key: router_bgp.peer_groups
-                    remove_in_version: 4.0.0
                 neighbors:
                   type: list
                   primary_key: ip_address
@@ -1976,13 +1955,6 @@ keys:
                       keys:
                         receive:
                           type: bool
-                peer_groups:
-                  type: list
-                  deprecation:
-                    warning: true
-                    removed: true
-                    new_key: router_bgp.peer_groups
-                    remove_in_version: 4.0.0
                 neighbors:
                   type: list
                   primary_key: ip_address
