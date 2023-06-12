@@ -22,7 +22,7 @@ keys:
             min: 0
             max: 65535
             convert_types:
-            - str
+              - str
             description: TCP Port
           tls_ssl_profile:
             type: str
@@ -38,18 +38,20 @@ keys:
               description: Host IP address or name
             vrf:
               type: str
+              convert_types:
+                - int
             timeout:
               type: int
               min: 1
               max: 1000
               convert_types:
-              - str
+                - str
             retransmit:
               type: int
               min: 0
               max: 100
               convert_types:
-              - str
+                - str
             key:
               type: str
               description: Encrypted key

@@ -95,6 +95,8 @@ $defs:
             source_vrf:
               type: str
               description: VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI.
+              convert_types:
+                - int
       vni_override:
         type: int
         convert_types:

@@ -7,7 +7,7 @@ keys:
     type: list
     primary_key: name
     convert_types:
-    - dict
+      - dict
     items:
       type: dict
       keys:
@@ -22,17 +22,19 @@ keys:
         vrf:
           type: str
           description: VRF name
+          convert_types:
+            - int
         arp_aging_timeout:
           type: int
           convert_types:
-          - str
+            - str
           description: In seconds
           min: 1
           max: 65535
         arp_cache_dynamic_capacity:
           type: int
           convert_types:
-          - str
+            - str
           min: 0
           max: 4294967295
         arp_gratuitous_accept:
@@ -69,14 +71,14 @@ keys:
         ip_igmp_version:
           type: int
           convert_types:
-          - str
+            - str
           min: 1
           max: 3
         ip_helpers:
           type: list
           description: List of DHCP servers
           convert_types:
-          - dict
+            - dict
           primary_key: ip_helper
           items:
             type: dict
@@ -90,6 +92,8 @@ keys:
               vrf:
                 type: str
                 description: VRF where DHCP server can be reached
+                convert_types:
+                  - int
         ip_nat:
           $ref: "#/$defs/interface_ip_nat"
         ipv6_enable:
@@ -137,7 +141,7 @@ keys:
         ipv6_nd_prefixes:
           type: list
           convert_types:
-          - dict
+            - dict
           primary_key: ipv6_prefix
           items:
             type: dict
@@ -149,12 +153,12 @@ keys:
                 type: str
                 description: In seconds <0-4294967295> or infinite
                 convert_types:
-                - int
+                  - int
               preferred_lifetime:
                 type: str
                 description: In seconds <0-4294967295> or infinite
                 convert_types:
-                - int
+                  - int
               no_autoconfig_flag:
                 type: bool
         ipv6_dhcp_relay_destinations:
@@ -169,6 +173,8 @@ keys:
                 required: true
               vrf:
                 type: str
+                convert_types:
+                  - int
               local_interface:
                 type: str
                 description: Local interface to communicate with DHCP server - mutually exclusive to source_address
@@ -217,7 +223,7 @@ keys:
                     administrative_distance:
                       type: int
                       convert_types:
-                      - str
+                        - str
                       min: 1
                       max: 255
                 static:
@@ -244,7 +250,7 @@ keys:
                     administrative_distance:
                       type: int
                       convert_types:
-                      - str
+                        - str
                       min: 1
                       max: 255
                 static:
@@ -254,17 +260,17 @@ keys:
         ospf_area:
           type: str
           convert_types:
-          - int
+            - int
         ospf_cost:
           type: int
           convert_types:
-          - str
+            - str
         ospf_authentication:
           type: str
           valid_values:
-          - none
-          - simple
-          - message-digest
+            - none
+            - simple
+            - message-digest
         ospf_authentication_key:
           type: str
           description: Encrypted password used for simple authentication
@@ -272,7 +278,7 @@ keys:
           type: list
           description: Keys used for message-digest authentication
           convert_types:
-          - dict
+            - dict
           primary_key: id
           items:
             type: dict
@@ -280,15 +286,15 @@ keys:
               id:
                 type: int
                 convert_types:
-                - str
+                  - str
               hash_algorithm:
                 type: str
                 valid_values:
-                - md5
-                - sha1
-                - sha256
-                - sha384
-                - sha512
+                  - md5
+                  - sha1
+                  - sha256
+                  - sha384
+                  - sha512
               key:
                 type: str
                 description: Encrypted password
@@ -301,7 +307,7 @@ keys:
                 dr_priority:
                   type: int
                   convert_types:
-                  - str
+                    - str
                   min: 0
                   max: 429467295
                 sparse_mode:
@@ -316,13 +322,13 @@ keys:
         isis_metric:
           type: int
           convert_types:
-          - str
+            - str
         isis_network_point_to_point:
           type: bool
         mtu:
           type: int
           convert_types:
-          - str
+            - str
         no_autostate:
           type: bool
         vrrp_ids:
@@ -335,12 +341,12 @@ keys:
               id:
                 type: int
                 convert_types:
-                - str
+                  - str
                 description: VRID
               priority_level:
                 type: int
                 convert_types:
-                - str
+                  - str
                 description: Instance priority
               advertisement:
                 type: dict
@@ -348,7 +354,7 @@ keys:
                   interval:
                     type: int
                     convert_types:
-                    - str
+                      - str
                     description: Interval in seconds
               preempt:
                 type: dict
@@ -362,12 +368,12 @@ keys:
                       minimum:
                         type: int
                         convert_types:
-                        - str
+                          - str
                         description: Minimum preempt delay in seconds
                       reload:
                         type: int
                         convert_types:
-                        - str
+                          - str
                         description: Reload preempt delay in seconds
               timers:
                 type: dict
@@ -379,7 +385,7 @@ keys:
                         type: int
                         description: Delay after reload in seconds.
                         convert_types:
-                        - str
+                          - str
               tracked_object:
                 type: list
                 primary_key: name
@@ -392,7 +398,7 @@ keys:
                     decrement:
                       type: int
                       convert_types:
-                      - str
+                        - str
                       min: 1
                       max: 254
                       description: Decrement VRRP priority by 1-254
@@ -408,10 +414,10 @@ keys:
                   version:
                     type: int
                     convert_types:
-                    - str
+                      - str
                     valid_values:
-                    - 2
-                    - 3
+                      - 2
+                      - 3
               ipv6:
                 type: dict
                 keys:
@@ -434,16 +440,16 @@ keys:
             priority:
               type: int
               convert_types:
-              - str
+                - str
               description: Instance priority
             advertisement_interval:
               type: int
               convert_types:
-              - str
+                - str
             preempt_delay_minimum:
               type: int
               convert_types:
-              - str
+                - str
             ipv4:
               type: str
               description: Virtual IPv4 address
@@ -459,7 +465,7 @@ keys:
             distance:
               type: int
               convert_types:
-              - str
+                - str
               min: 1
               max: 255
         bfd:
@@ -470,17 +476,17 @@ keys:
             interval:
               type: int
               convert_types:
-              - str
+                - str
               description: Rate in milliseconds
             min_rx:
               type: int
               convert_types:
-              - str
+                - str
               description: Minimum RX hold time in milliseconds
             multiplier:
               type: int
               convert_types:
-              - str
+                - str
               min: 3
               max: 50
         service_policy:

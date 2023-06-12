@@ -16,30 +16,32 @@ keys:
         type: str
       vrf:
         type: str
+        convert_types:
+          - int
       receive_packet_tagged_drop:
         type: str
       tlvs:
         type: list
         primary_key: name
         convert_types:
-        - dict
+          - dict
         items:
           type: dict
           keys:
             name:
               type: str
               valid_values:
-              - "link-aggregation"
-              - "management-address"
-              - "max-frame-size"
-              - "med"
-              - "port-description"
-              - "port-vlan"
-              - "power-via-mdi"
-              - "system-capabilities"
-              - "system-description"
-              - "system-name"
-              - "vlan-name"
+                - "link-aggregation"
+                - "management-address"
+                - "max-frame-size"
+                - "med"
+                - "port-description"
+                - "port-vlan"
+                - "power-via-mdi"
+                - "system-capabilities"
+                - "system-description"
+                - "system-name"
+                - "vlan-name"
             transmit:
               type: bool
       run:

@@ -1393,6 +1393,8 @@ keys:
             name:
               type: str
               description: VRF name
+              convert_types:
+                - int
             rd:
               type: str
               description: Route distinguisher

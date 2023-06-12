@@ -23,7 +23,7 @@ keys:
             # this primary_key should also be removed. TODO: AVD5.0
             primary_key: address
             convert_types:
-            - dict
+              - dict
             items:
               type: dict
               keys:
@@ -34,7 +34,7 @@ keys:
                 groups:
                   type: list
                   convert_types:
-                  - dict
+                    - dict
                   items:
                     type: str
                 access_lists:
@@ -55,7 +55,7 @@ keys:
             type: list
             primary_key: address
             convert_types:
-            - dict
+              - dict
             items:
               type: dict
               keys:
@@ -67,7 +67,7 @@ keys:
                   type: list
                   primary_key: address
                   convert_types:
-                  - dict
+                    - dict
                   items:
                     type: dict
                     keys:
@@ -78,7 +78,7 @@ keys:
                       register_count:
                         type: int
                         convert_types:
-                        - str
+                          - str
       vrfs:
         type: list
         primary_key: name
@@ -89,6 +89,8 @@ keys:
               type: str
               description: VRF Name
               required: true
+              convert_types:
+                - int
             ipv4:
               type: dict
               keys:

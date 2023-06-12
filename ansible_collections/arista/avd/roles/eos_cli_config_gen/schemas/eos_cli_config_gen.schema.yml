@@ -307,6 +307,8 @@ keys:
               vrf:
                 type: str
                 description: VRF name
+                convert_types:
+                - int
   access_lists:
     type: list
     primary_key: name
@@ -475,6 +477,8 @@ keys:
           description: Group Name
         vrf:
           type: str
+          convert_types:
+          - int
         neighbors:
           type: list
           items:
@@ -781,6 +785,8 @@ keys:
               description: 'The VRF to use to connect to CloudVision
 
                 '
+              convert_types:
+              - int
       cvauth:
         type: dict
         description: 'Authentication scheme used to connect to CloudVision
@@ -853,6 +859,8 @@ keys:
         description: 'The VRF to use to connect to CloudVision
 
           '
+        convert_types:
+        - int
       cvgnmi:
         type: bool
         description: 'Stream states from EOS gNMI servers (Openconfig) to CloudVision.
@@ -1264,6 +1272,8 @@ keys:
         vrf:
           type: str
           description: VRF name
+          convert_types:
+          - int
         flow_tracker:
           type: dict
           keys:
@@ -1435,6 +1445,8 @@ keys:
               vrf:
                 type: str
                 description: VRF name
+                convert_types:
+                - int
         ip_nat:
           $ref: '#/$defs/interface_ip_nat'
         ipv6_enable:
@@ -1483,6 +1495,8 @@ keys:
                 required: true
               vrf:
                 type: str
+                convert_types:
+                - int
               local_interface:
                 type: str
                 description: Local interface to communicate with DHCP server - mutually
@@ -2532,6 +2546,8 @@ keys:
                 This validation IS NOT made by the schemas.
 
                 '
+              convert_types:
+              - int
             prefix:
               type: str
               description: 'Supported only for the ''route'' feature.
@@ -2894,6 +2910,8 @@ keys:
                 '
             vrf:
               type: str
+              convert_types:
+              - int
   ip_extcommunity_lists:
     type: list
     primary_key: name
@@ -2983,6 +3001,8 @@ keys:
           type: str
         vrf:
           type: str
+          convert_types:
+          - int
   ip_icmp_redirect:
     type: bool
   ip_igmp_snooping:
@@ -3116,6 +3136,8 @@ keys:
         vrf:
           description: VRF Name
           type: str
+          convert_types:
+          - int
         priority:
           description: Priority value (lower is first)
           type: int
@@ -3308,6 +3330,8 @@ keys:
         vrf:
           type: str
           description: VRF Name
+          convert_types:
+          - int
   ip_routing:
     type: bool
   ip_routing_ipv6_interfaces:
@@ -3323,6 +3347,8 @@ keys:
         vrf:
           type: str
           default: default
+          convert_types:
+          - int
   ip_tacacs_source_interfaces:
     type: list
     display_name: IP Tacacs Source Interfaces
@@ -3335,6 +3361,8 @@ keys:
         vrf:
           type: str
           display_name: VRF
+          convert_types:
+          - int
   ip_virtual_router_mac_address:
     type: str
     description: MAC address (hh:hh:hh:hh:hh:hh)
@@ -3467,6 +3495,8 @@ keys:
       keys:
         vrf:
           type: str
+          convert_types:
+          - int
         destination_address_prefix:
           type: str
           description: IPv6 Network/Mask
@@ -3598,6 +3628,8 @@ keys:
         type: str
       vrf:
         type: str
+        convert_types:
+        - int
       receive_packet_tagged_drop:
         type: str
       tlvs:
@@ -3852,6 +3884,8 @@ keys:
           keys:
             name:
               type: str
+              convert_types:
+              - int
               required: true
               description: VRF name
             source_interface:
@@ -3922,6 +3956,8 @@ keys:
         vrf:
           type: str
           description: VRF name
+          convert_types:
+          - int
         ip_address:
           type: str
           description: IPv4_address/Mask
@@ -4276,6 +4312,8 @@ keys:
                 vrf:
                   type: str
                   description: VRF name is optional
+                  convert_types:
+                  - int
                 notification_timestamp:
                   type: str
                   valid_values:
@@ -4318,6 +4356,8 @@ keys:
                 vrf:
                   type: str
                   description: VRF name
+                  convert_types:
+                  - int
                 destination:
                   type: dict
                   keys:
@@ -4379,6 +4419,8 @@ keys:
             name:
               type: str
               description: VRF name
+              convert_types:
+              - int
             access_group:
               type: str
               description: Standard IPv4 ACL name
@@ -4417,6 +4459,8 @@ keys:
               description: VRF Name
               type: str
               required: true
+              convert_types:
+              - int
             access_group:
               description: Standard IPv4 ACL name
               type: str
@@ -4480,6 +4524,8 @@ keys:
       vrf:
         type: str
         description: VRF Name
+        convert_types:
+        - int
   management_defaults:
     type: dict
     keys:
@@ -4512,6 +4558,8 @@ keys:
         vrf:
           type: str
           description: VRF Name
+          convert_types:
+          - int
         ip_address:
           type: str
           description: IPv4_address/Mask
@@ -4600,6 +4648,8 @@ keys:
             vrf:
               type: str
               description: VRF Name
+              convert_types:
+              - int
       ipv6_access_groups:
         type: list
         items:
@@ -4611,6 +4661,8 @@ keys:
             vrf:
               type: str
               description: VRF Name
+              convert_types:
+              - int
       idle_timeout:
         type: int
         convert_types:
@@ -4673,6 +4725,8 @@ keys:
               type: str
               required: true
               description: VRF Name
+              convert_types:
+              - int
             enable:
               description: Enable SSH in VRF
               type: bool
@@ -4786,6 +4840,8 @@ keys:
           vrf:
             description: VRF Name
             type: str
+            convert_types:
+            - int
       dual_primary_detection_delay:
         type: int
         description: Delay in seconds
@@ -4871,6 +4927,8 @@ keys:
             name:
               description: VRF Name
               type: str
+              convert_types:
+              - int
             description:
               type: str
             interface_sets:
@@ -5017,6 +5075,8 @@ keys:
           vrf:
             description: VRF Name
             type: str
+            convert_types:
+            - int
       nodes:
         type: list
         items:
@@ -5033,6 +5093,8 @@ keys:
           vrf:
             type: str
             description: VRF name
+            convert_types:
+            - int
       servers:
         type: list
         items:
@@ -5079,6 +5141,8 @@ keys:
             vrf:
               type: str
               description: VRF name
+              convert_types:
+              - int
       authenticate:
         type: bool
       authenticate_servers_only:
@@ -5438,6 +5502,8 @@ keys:
         vrf:
           type: str
           description: VRF name
+          convert_types:
+          - int
         encapsulation_vlan:
           type: dict
           keys:
@@ -6558,6 +6624,8 @@ keys:
         max: 100
       vrf:
         type: str
+        convert_types:
+        - int
   radius_server:
     type: dict
     keys:
@@ -6594,6 +6662,8 @@ keys:
               description: Host IP address or name
             vrf:
               type: str
+              convert_types:
+              - int
             timeout:
               type: int
               min: 1
@@ -6623,6 +6693,8 @@ keys:
           description: Host IP address or name
         vrf:
           type: str
+          convert_types:
+          - int
         key:
           type: str
           description: Encrypted key
@@ -8221,6 +8293,8 @@ keys:
             name:
               type: str
               description: VRF name
+              convert_types:
+              - int
             rd:
               type: str
               description: Route distinguisher
@@ -9040,6 +9114,8 @@ keys:
               type: str
               required: true
               description: Destination-VRF
+              convert_types:
+              - int
             leak_routes:
               type: list
               items:
@@ -9047,6 +9123,8 @@ keys:
                 keys:
                   source_vrf:
                     type: str
+                    convert_types:
+                    - int
                   subscribe_policy:
                     type: str
                     description: Route-Map Policy
@@ -9401,6 +9479,8 @@ keys:
               type: str
               required: true
               description: VRF name
+              convert_types:
+              - int
             originator_id_local_interface:
               type: str
               description: Interface to use for originator ID
@@ -9573,6 +9653,8 @@ keys:
           keys:
             name:
               type: str
+              convert_types:
+              - int
             ipv4:
               type: dict
               keys:
@@ -9598,6 +9680,8 @@ keys:
             vrf:
               type: str
               description: VRF Name for OSPF Process
+              convert_types:
+              - int
             passive_interface_default:
               type: bool
             router_id:
@@ -9950,6 +10034,8 @@ keys:
               type: str
               description: VRF Name
               required: true
+              convert_types:
+              - int
             ipv4:
               type: dict
               keys:
@@ -10110,6 +10196,8 @@ keys:
           keys:
             name:
               type: str
+              convert_types:
+              - int
             destinations:
               type: list
               primary_key: destination
@@ -10288,6 +10376,8 @@ keys:
               description: IPv4 access list name
             vrf:
               type: str
+              convert_types:
+              - int
       ipv6_acls:
         type: list
         items:
@@ -10298,6 +10388,8 @@ keys:
               description: IPv6 access list name
             vrf:
               type: str
+              convert_types:
+              - int
       local_interfaces:
         type: list
         primary_key: name
@@ -10312,6 +10404,8 @@ keys:
               description: Interface name
             vrf:
               type: str
+              convert_types:
+              - int
       views:
         type: list
         items:
@@ -10429,6 +10523,8 @@ keys:
               description: Host IP address or name
             vrf:
               type: str
+              convert_types:
+              - int
             version:
               type: str
               convert_types:
@@ -10490,6 +10586,8 @@ keys:
             name:
               type: str
               description: VRF name
+              convert_types:
+              - int
             enable:
               type: bool
   spanning_tree:
@@ -10652,6 +10750,8 @@ keys:
         vrf:
           type: str
           description: VRF Name
+          convert_types:
+          - int
         destination_address_prefix:
           type: str
           description: IPv4_network/Mask
@@ -10740,6 +10840,8 @@ keys:
                   type: str
                 vrf:
                   type: str
+                  convert_types:
+                  - int
           ipv6_access_groups:
             type: list
             primary_key: acl_name
@@ -10752,6 +10854,8 @@ keys:
                   type: str
                 vrf:
                   type: str
+                  convert_types:
+                  - int
   tacacs_servers:
     type: dict
     keys:
@@ -10765,6 +10869,8 @@ keys:
               description: Host IP address or name
             vrf:
               type: str
+              convert_types:
+              - int
             key:
               type: str
               description: Encrypted key
@@ -11161,6 +11267,8 @@ keys:
         vrf:
           type: str
           description: VRF Name
+          convert_types:
+          - int
         ip_address:
           type: str
           format: ipv4_cidr
@@ -11233,6 +11341,8 @@ keys:
         name:
           type: str
           description: VRF Name
+          convert_types:
+          - int
         ip_address:
           type: str
           description: IPv4 Address
@@ -11255,6 +11365,8 @@ keys:
         vrf:
           type: str
           description: VRF name
+          convert_types:
+          - int
         arp_aging_timeout:
           type: int
           convert_types:
@@ -11323,6 +11435,8 @@ keys:
               vrf:
                 type: str
                 description: VRF where DHCP server can be reached
+                convert_types:
+                - int
         ip_nat:
           $ref: '#/$defs/interface_ip_nat'
         ipv6_enable:
@@ -11408,6 +11522,8 @@ keys:
                 required: true
               vrf:
                 type: str
+                convert_types:
+                - int
               local_interface:
                 type: str
                 description: Local interface to communicate with DHCP server - mutually
@@ -11866,6 +11982,8 @@ keys:
         name:
           type: str
           description: VRF Name
+          convert_types:
+          - int
         description:
           type: str
         ip_routing:
@@ -11980,6 +12098,8 @@ keys:
                       type: str
                       required: true
                       description: VRF Name
+                      convert_types:
+                      - int
                     vni:
                       type: int
                       convert_types:

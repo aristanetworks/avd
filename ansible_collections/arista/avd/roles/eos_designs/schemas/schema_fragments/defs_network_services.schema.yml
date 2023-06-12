@@ -218,6 +218,8 @@ $defs:
             keys:
               name:
                 type: str
+                convert_types:
+                  - int
               address_families:
                 type: list
                 items:
@@ -276,6 +278,8 @@ $defs:
                     source_vrf:
                       type: str
                       description: VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF
+                      convert_types:
+                        - int
               enable_mlag_ibgp_peering_vrfs:
                 type: bool
                 description: |

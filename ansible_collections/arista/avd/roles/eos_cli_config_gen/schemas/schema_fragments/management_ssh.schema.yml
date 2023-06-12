@@ -18,6 +18,8 @@ keys:
             vrf:
               type: str
               description: VRF Name
+              convert_types:
+                - int
       ipv6_access_groups:
         type: list
         items:
@@ -29,10 +31,12 @@ keys:
             vrf:
               type: str
               description: VRF Name
+              convert_types:
+                - int
       idle_timeout:
         type: int
         convert_types:
-        - str
+          - str
         min: 0
         max: 86400
         description: Idle timeout in minutes
@@ -68,14 +72,14 @@ keys:
           limit:
             type: int
             convert_types:
-            - str
+              - str
             min: 1
             max: 100
             description: Maximum total number of SSH sessions to device
           per_host:
             type: int
             convert_types:
-            - str
+              - str
             min: 1
             max: 20
             description: Maximum number of SSH sessions to device from a single host
@@ -83,7 +87,7 @@ keys:
         type: list
         primary_key: name
         convert_types:
-        - dict
+          - dict
         items:
           type: dict
           keys:
@@ -91,6 +95,8 @@ keys:
               type: str
               required: true
               description: VRF Name
+              convert_types:
+                - int
             enable:
               description: Enable SSH in VRF
               type: bool

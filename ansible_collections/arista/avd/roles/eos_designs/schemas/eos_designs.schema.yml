@@ -1093,6 +1093,8 @@ keys:
     type: str
     default: MGMT
     description: OOB Management VRF.
+    convert_types:
+    - int
   mgmt_vrf_routing:
     documentation_options:
       filename: Input Variables
@@ -3289,6 +3291,8 @@ $defs:
             keys:
               name:
                 type: str
+                convert_types:
+                - int
               address_families:
                 type: list
                 items:
@@ -3366,6 +3370,8 @@ $defs:
                       type: str
                       description: VRF to originate DHCP relay packets to DHCP server.
                         If not set, uses current VRF
+                      convert_types:
+                      - int
               enable_mlag_ibgp_peering_vrfs:
                 type: bool
                 description: 'MLAG iBGP peering per VRF.
@@ -5099,6 +5105,8 @@ $defs:
               it must be set on each applicable node/node-group/node-type as needed.'
             type: str
             default: default
+            convert_types:
+            - int
           inband_mgmt_mtu:
             description: 'MTU configured on the Inband Management Interface.
 
@@ -5685,6 +5693,8 @@ $defs:
               type: str
               description: VRF to originate DHCP relay packets to DHCP server. If
                 not set, EOS uses the VRF on the SVI.
+              convert_types:
+              - int
       vni_override:
         type: int
         convert_types:
