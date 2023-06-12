@@ -23,6 +23,11 @@ roles/eos_designs/docs/tables/design.md
 - The **eos_designs** role support various deployments with layer 3 leaf and spine (3-stage Clos) and optionally, with dedicated overlay controllers.
 - 3 stage Clos fabric can be represented as spines, L3 leafs and L2 leafs, and also referred to as a "POD".
 
+See the following examples using the `l3ls-evpn` design:
+
+- [AVD example for a single data center using L3LS](../../../examples/single-dc-l3ls/README.md).
+- [AVD example for a dual data center using L3LS](../../../examples/dual-dc-l3ls/README.md).
+
 ### 5-stage clos topology support (Super Spine)
 
 - The **eos_designs** role support lager deployments with super-spines (5-stage Clos) and optionally, with dedicated overlay controllers.
@@ -34,6 +39,11 @@ roles/eos_designs/docs/tables/design.md
 
 - The **eos_designs** role support various deployments with layer 2 leaf and spine. For example, routing may terminate at the spine level or an external L3 device.
 - The Clos fabric can be represented as L3 spines, spines, and leafs.
+
+See the following examples using the `l2ls` design:
+
+- [Example for L2LS Fabric](../../../examples/l2ls-fabric/README.md).
+- [Example for Campus Fabric](../../../examples/campus-fabric/README.md).
 
 ### MPLS
 
@@ -114,7 +124,120 @@ To customize or create new node types, please refer to [node type customization]
 
 AVD provides the capability to customize your node types, supporting a variety of designs.
 
-Define custom node types leveraging the following settings:
+!!! note
+    The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.
+
+??? example "Default value for design `l3ls-evpn`"
+
+    ```yaml
+    node_type:keys:
+
+      - key: spine
+        type: spine
+        default_evpn_role: server
+        default_ptp_priority1: 20
+
+      - key: l3leaf
+        type: l3leaf
+        connected_endpoints: true
+        default_evpn_role: client
+        default_ptp_priority1: 30
+        mlag_support: true
+        network_services:
+          l2: true
+          l3: true
+        vtep: true
+
+      - key: l2leaf
+        type: l2leaf
+        connected_endpoints: true
+        mlag_support: true
+        network_services:
+          l2: true
+        underlay_router: false
+        uplink_type: port-channel
+
+      - key: super_spine
+        type: super-spine
+
+      - key: overlay_controller
+        type: overlay-controller
+        default_evpn_role: server
+    ```
+
+??? example "Default value for design `l2ls`"
+
+    ```yaml
+    node_type:keys:
+
+      - key: l3spine
+        type: l3spine
+        connected_endpoints: true
+        default_overlay_routing_protocol: none
+        default_underlay_routing_protocol: none
+        mlag_support: true
+        network_services:
+          l2: true
+          l3: true
+
+      - key: spine
+        type: spine
+        connected_endpoints: true
+        mlag_support: true
+        network_services:
+          l2: true
+        underlay_router: false
+        uplink_type: port-channel
+
+      - key: leaf
+        type: leaf
+        connected_endpoints: true
+        mlag_support: true
+        network_services:
+          l2: true
+        underlay_router: false
+        uplink_type: port-channel
+    ```
+
+??? example "Default value for design `mpls`"
+
+    ```yaml
+    node_type:keys:
+
+      - key: p
+        type: p
+        default_mpls_overlay_role: none
+        default_overlay_routing_protocol: ibgp
+        default_underlay_routing_protocol: isis-sr
+        mpls_lsr: true
+
+      - key: pe
+        type: pe
+        connected_endpoints: true
+        default_evpn_encapsulation: mpls
+        default_evpn_role: client
+        default_mpls_overlay_role: client
+        default_overlay_address_families:
+          - vpn-ipv4
+        default_overlay_routing_protocol: ibgp
+        default_underlay_routing_protocol: isis-sr
+        mpls_lsr: true
+        network_services:
+          l1: true
+          l2: true
+          l3: true
+
+      - key: rr
+        type: rr
+        default_evpn_encapsulation: mpls
+        default_evpn_role: server
+        default_mpls_overlay_role: server
+        default_overlay_address_families:
+          - vpn-ipv4
+        default_overlay_routing_protocol: ibgp
+        default_underlay_routing_protocol: isis-sr
+        mpls_lsr: true
+    ```
 
 --8<--
 roles/eos_designs/docs/tables/node-type-keys.md
