@@ -70,6 +70,10 @@ The MPLS design supports most fabric topology variables already supported by l3l
 - EVPN overlay settings are set with `mpls_overlay_role` and `mpls_route_reflectors` instead of `evpn_role` and `evpn_route_servers`.
 - No Inband Management support.
 
+See the following example using the `mpls` design:
+
+- [AVD example for a MPLS-VPN based WAN Network](../../../examples/isis-ldp-ipvpn/README.md).
+
 ## Fabric topology hierarchy
 
 <div style="text-align:center">

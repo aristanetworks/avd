@@ -38,11 +38,11 @@ Requirements are located in the [collection installation guide](../../docs/insta
 
 ## Input Variables
 
-The input variables are documented in the [Input Variables](doc/input-variables.md) section.
+The input variables are documented in the [Input Variables](docs/input-variables.md) section.
 
 ## Role Configuration
 
-The role configuration variables are documented in the [Role Configuration](doc/role-configuration.md) section.
+The role configuration variables are documented in the [Role Configuration](docs/role-configuration.md) section.
 
 Role configuration settings can be set either as regular inventory variables or directly as task_vars on the `import_role` task.
 

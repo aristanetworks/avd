@@ -22,7 +22,7 @@ def convert_schema(schema_id: str, type: str):
     ----------
     schema_id : str, ["eos_cli_config_gen" , "eos_designs"]
         ID of AVD Schema
-    type : str, ["documentation", "documentation_tables", "jsonschema"]
+    type : str, ["documentation_tables", "jsonschema"]
         Type of schema to convert to
 
     Returns
@@ -45,9 +45,6 @@ def convert_schema(schema_id: str, type: str):
     if validation_results:
         raise AnsibleFilterError("Invalid schema!")
 
-    if type == "documentation":
-        return AvdToDocumentationSchemaConverter(avdschema).convert_schema()
-
     if type == "documentation_tables":
         return AvdToDocumentationSchemaConverter(avdschema).convert_schema_to_tables()
 
@@ -55,7 +52,7 @@ def convert_schema(schema_id: str, type: str):
         return AvdToJsonSchemaConverter(avdschema).convert_schema()
 
     else:
-        raise AristaAvdError(f"Filter arista.avd.convert_schema requires type 'documentation', 'documentation_tables' or 'jsonschema'. Got {type}")
+        raise AristaAvdError(f"Filter arista.avd.convert_schema requires type 'documentation_tables' or 'jsonschema'. Got {type}")
 
 
 class FilterModule(object):

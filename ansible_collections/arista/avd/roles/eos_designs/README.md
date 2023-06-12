@@ -8,7 +8,7 @@ The **eos_designs** role:
 
 - Enables network engineers to deploy Arista Leaf & Spine fabrics with underlay and overlay network services effectively and with consistency.
 - Designed to be extended easily, leveraging a ***"stackable template architecture."***
-  - Enabled by the [eos_designs_custom_templates](doc/role-configuration.md#custom-templates) data model.
+  - Enabled by the [eos_designs_custom_templates](docs/role-configuration.md#custom-templates) data model.
 - Designed to be used with the [eos_cli_config_gen](../eos_cli_config_gen/README.md) role to generate a complete switch configuration and applied using a config replace strategy with either
   - [eos_config_deploy_eapi](../eos_config_deploy_eapi/README.md) role.
   - [eos_config_deploy_cvp](../eos_config_deploy_cvp/README.md)  role.
@@ -28,7 +28,7 @@ Figure 1 below provides a visualization of the role's inputs, outputs, and tasks
 - Desired variables are defined in: role defaults, group_vars, and host_vars variables.
 - If desired, the role can be extended to leverage data from dynamic sources such as an IPAM or CMDB.
 
-To understand the interaction between `eos_designs` input variables and `eos_cli_config_gen` input variables refer to the [Variables Precedence section](doc/how-to/custom-structured-configuration.md#variables-precedence)
+To understand the interaction between `eos_designs` input variables and `eos_cli_config_gen` input variables refer to the [Variables Precedence section](docs/how-to/custom-structured-configuration.md#variables-precedence)
 
 **Outputs:**
 
@@ -116,13 +116,13 @@ Requirements are located in the [collection installation guide](../../docs/insta
 
 ## Input Variables
 
-The input variables are documented in the [Input Variables](doc/input-variables.md) section.
+The input variables are documented in the [Input Variables](docs/input-variables.md) section.
 
 Input variables are grouped by configuration elements and are typically stored in different group_vars files.
 
 ## Role Configuration
 
-The role configuration are documented in the [Role Configuration](doc/role-configuration.md) section.
+The role configuration are documented in the [Role Configuration](docs/role-configuration.md) section.
 
 Role configuration settings can be set either as regular inventory variables or directly as task_vars on the `import_role` task.
 
