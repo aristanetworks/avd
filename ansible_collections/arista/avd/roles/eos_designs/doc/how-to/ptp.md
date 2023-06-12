@@ -66,16 +66,13 @@ spine:
 
 ## Fabric wide PTP settings
 
-There are three settings that can be specified for the entire topology to greatly simplify the configuration of PTP:
+Common PTP settings can be specified for the entire topology to greatly simplify the configuration of PTP:
 
-```yml
-ptp:
-  enabled: < true | false | default -> false >
-  profile: < aes67 | smpte2059-2 | aes67-r16-2016 | default -> aes67-r16-2016  >
-  domain: < 0-255 | default -> 127 >
-```
+--8<--
+roles/eos_designs/docs/tables/ptp.md
+--8<--
 
-All can also be defined on a more specific level, if the network design requires this.
+These settings can also be defined on a more specific group_vars level, if the network design requires this.
 
 ### PTP Profiles
 
@@ -203,10 +200,9 @@ PTP Clock identity can be set manually per node_group or node, for example for b
 spine:
   nodes:
     - name: blue-spine1
-      defaults:
-        ptp:
-          enabled: true
-          clock_identity: "01:02:03:04:05:06"
+      ptp:
+        enabled: true
+        clock_identity: "01:02:03:04:05:06"
 ```
 
 #### Enable PTP unicast forwarding

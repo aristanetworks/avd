@@ -241,13 +241,9 @@ overwrite list data unintentionally. So going forward `replace` should be avoide
 
 ### Variables and Options
 
-```yaml
-custom_structured_configuration_prefix: < variable_prefix, default -> "custom_structured_configuration_" >
-#or
-custom_structured_configuration_prefix: [ < variable_prefix_1 > , < variable_prefix_2 > , < variable_prefix_3 > ]
-
-custom_structured_configuration_list_merge: < append | keep | prepend | append_rp | prepend_rp | replace (avoid) | default -> append >
-```
+--8<--
+roles/eos_designs/docs/tables/custom-structured-configuration.md
+--8<--
 
 ### Examples
 
@@ -258,7 +254,7 @@ custom_structured_configuration_ip_name_servers:
   - ip_address: 10.2.3.4
     vrf: MGMT
 custom_structured_configuration_ethernet_interfaces:
-  Ethernet4000:
+  - name: Ethernet4000
     description: My test
     ip_address: 10.1.2.3/12
     shutdown: false
@@ -276,19 +272,13 @@ and `Ethernet4000` will be added to the `ethernet_interfaces` dictionary in the 
 Default value is `custom_structured_configuration_`. Remember to include any delimiter like the last `_` in this case.
 It is possible to specify a list of prefixes, which will all be merged one by one. The order of merge will start from beginning of the list, which means that keys defined in the later prefixes will be able to override keys defined in previous ones.
 
-```yaml
-custom_structured_configuration_prefix: < variable_prefix, default -> "custom_structured_configuration_" >
-#or
-custom_structured_configuration_prefix: [ < variable_prefix_1 > , < variable_prefix_2 > , < variable_prefix_3 > ]
-```
-
 #### Example using multiple prefixes
 
 ```yaml
 custom_structured_configuration_prefix: [ my_dci_ , my_special_dci_ ]
 
 my_dci_ethernet_interfaces:
-  Ethernet4000:
+  - name: Ethernet4000
     description: My test
     ip_address: 10.1.2.3/12
     shutdown: false
@@ -299,11 +289,11 @@ my_dci_ethernet_interfaces:
     peer_type: my_precious
 
 my_special_dci_ethernet_interfaces:
-  Ethernet4000:
+  - name: Ethernet4000
     ip_address: 10.3.2.1/21
 ```
 
-In this example  `Ethernet4000` will be added to the `ethernet_interfaces` dictionary in the Structured Configuration and the ip_address will be `10.3.2.1/21` since ip_adddress was overridden on the later `custom_structured_configuration_prefix`
+In this example `Ethernet4000` will be added to the `ethernet_interfaces` list in the Structured Configuration and the ip_address will be `10.3.2.1/21` since ip_adddress was overridden on the later `custom_structured_configuration_prefix`
 
 #### Example with `append` list_merge strategy
 

@@ -922,17 +922,17 @@ Management interface is modified for specific platforms like modular platforms w
 roles/eos_designs/docs/tables/platform-settings.md
 --8<--
 
-## PTP Configuration
+## PTP settings
 
-TODO: Figure out all ptp settings
-
-### PTP profiles settings
+See the [Configuring PTP](how-to/ptp.md) how-to for details.
 
 --8<--
-roles/eos_designs/docs/tables/ptp-profiles.md
+roles/eos_designs/docs/tables/ptp.md
 --8<--
 
-## Custom Structured configuration
+## Custom Structured Configuration
+
+See the [Custom Structured Configuration](how-to/custom-structured-configuration.md) how-to for details.
 
 --8<--
 roles/eos_designs/docs/tables/custom-structured-configuration.md

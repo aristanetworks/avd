@@ -4,6 +4,8 @@
 type: dict
 keys:
   ptp:
+    documentation_options:
+      table: ptp
     type: dict
     keys:
       enabled:
