@@ -1,4 +1,4 @@
-# PTP
+# Configuring PTP
 
 Arista best practices are used, simplifying configuration of several global and interface-specific PTP settings:
 
@@ -47,10 +47,11 @@ PTP must be specifically enabled:
 - per node for a specific node/device inside a node_group, for example for a specific leaf in LEAFS.yml
 
   ```yml
-  nodes:
-    leaf1:
-      ptp:
-        enabled: true
+  l3leaf:
+    nodes:
+      - name: leaf1
+        ptp:
+          enabled: true
   ```
 
 > **Please note:** If present, you need to remove the legacy PTP notation shown below, for example for all spine nodes.
@@ -131,11 +132,12 @@ All other node_types will have a default PTP priority 1 of `127` to ensure they 
 For leaf switches connecting to a PTP GrandMaster we recommend to manually set PTP priority 1 lower than the other leaf switches, for example to "10" as shown below:
 
 ```yml
-nodes:
-  ptp-leaf1:
-    ptp:
-      enabled: true
-      priority1: 10
+l3leaf:
+  nodes:
+    - name: ptp-leaf1
+      ptp:
+        enabled: true
+        priority1: 10
 ```
 
 Alternatively the default `node_type_keys` can be overridden to add a `ptp_leaf` or similar node type with `default_ptp_priority1: 10`.
@@ -145,12 +147,13 @@ Alternatively the default `node_type_keys` can be overridden to add a `ptp_leaf`
 The automatic PTP priorities can be manually overriden if required, for example for blue-leaf1:
 
 ```yml
-nodes:
-  blue-leaf1:
-    ptp:
-      enabled: true
-      priority1: < 0-255 | default -> automatically set based on node_type >
-      priority2: < 0-255 | default -> (node_id modulus 256) >
+l3leaf:
+  nodes:
+    - name: blue-leaf1
+      ptp:
+        enabled: true
+        priority1: < 0-255 | default -> automatically set based on node_type >
+        priority2: < 0-255 | default -> (node_id modulus 256) >
 ```
 
 ### PTP Clock Identity
@@ -197,11 +200,13 @@ PTP Clock identity can be set manually per node_group or node, for example for b
 > **Please note:** Remember to use double-quotes around the value, as otherwise it will be not be rendered correctly.
 
 ```yml
-blue-spine1:
-  defaults:
-    ptp:
-      enabled: true
-      clock_identity: "01:02:03:04:05:06"
+spine:
+  nodes:
+    - name: blue-spine1
+      defaults:
+        ptp:
+          enabled: true
+          clock_identity: "01:02:03:04:05:06"
 ```
 
 #### Enable PTP unicast forwarding
@@ -255,40 +260,22 @@ ptp monitor threshold missing-message sync 3 sequence-ids
 
 All parameters can be overridden if required:
 
-```yml
-ptp:
-  enabled: true
-  monitor:
-    enabled: < false | true | default -> true >
-    threshold:
-      offset_from_master: < 0-1000000000 | default -> 250 >
-      mean_path_delay: < 0-1000000000 | default -> 1500 >
-      drop:
-        offset_from_master: < 0-1000000000 >
-        mean_path_delay: < 0-1000000000 >
-    missing_message:
-      intervals:
-        announce: < 2-255 >
-        follow_up: < 2-255 >
-        sync: < 2-255 >
-      sequence_ids:
-        enabled: < false | true | default -> true >
-        announce: < 2-255 | default -> 3 >
-        delay_resp: < 2-255 | default -> 3 >
-        follow_up: < 2-255 | default -> 3 >
-        sync: < 2-255 | default -> 3 >
-```
+--8<--
+roles/eos_designs/docs/tables/node-type-ptp-configuration.md
+--8<--
 
 ### Setting PTP DSCP values
 
 You can manually set the global DSCP values used for PTP messages if this is required:
 
 ```yml
-ptp:
-  enabled: true
-  dscp:
-    general_messages: 46
-    event_messages: 46
+spine:
+  defaults:
+    ptp:
+      enabled: true
+      dscp:
+        general_messages: 46
+        event_messages: 46
 ```
 
 ## PTP Settings for connected endpoints
@@ -301,7 +288,7 @@ These are the default settings:
 
 ```yml
 servers:
-  <server-name>:
+  - name: <server-name>
     adapters:
     - type: <type>
       endpoint_ports: [ <server-ports> ]
@@ -319,7 +306,7 @@ If you want to configure a routed interface with no IP address, for example to c
 
 ```yml
 servers:
-  Blue-Grandmaster:
+  - name: Blue-Grandmaster
     adapters:
     - type: server
       endpoint_ports: [ eth1 ]
@@ -336,7 +323,7 @@ If you want to use a different PTP profile on an interface towards a connected e
 
 ```yml
 servers:
-  Endpoint-with-specific-PTP-profile:
+  - name: Endpoint-with-specific-PTP-profile
     adapters:
     - type: server
       endpoint_ports: [ eth3 ]
