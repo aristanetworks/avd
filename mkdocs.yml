@@ -139,30 +139,14 @@ nav:
   - Roles Documentation:
       - eos_designs:
           - Overview: roles/eos_designs/README.md
-          - Role Variables: roles/eos_designs/doc/role-input-variables.md
-          - Input Variables: roles/eos_designs/doc/designs-input-variables.md
+          - Role Configuration: roles/eos_designs/doc/role-configuration.md
+          - Input Variables: roles/eos_designs/doc/input-variables.md
           - How-To Guides:
-              - Configuring PTP: roles/eos_designs/doc/ptp.md
-          # - Connected Endpoints: roles/eos_designs/doc/connected-endpoints.md
-          # - DCI & L3 Edge: roles/eos_designs/doc/l3-edge.md
-          # - Fabric Topology: roles/eos_designs/doc/fabric-topology.md
-          # - Fabric Variables: roles/eos_designs/doc/fabric-variables.md
-          # - Management Settings: roles/eos_designs/doc/management-settings.md
-          # - Network Services: roles/eos_designs/doc/network-services.md
-          # - PTP: roles/eos_designs/doc/ptp.md
-          # - Node Types: roles/eos_designs/doc/node-types.md
-          # - Platform Specific Settings: roles/eos_designs/doc/platform-settings.md
-          # - Custom Structured Configuration: roles/eos_designs/doc/custom-structured-configuration.md
-          # - MPLS Design (BETA):
-          #     - Fabric Topology MPLS (BETA): roles/eos_designs/doc/fabric-topology-mpls-BETA.md
-          #     - Fabric Variables MPLS (BETA): roles/eos_designs/doc/fabric-variables-mpls-BETA.md
-          #     - Core Interfaces (BETA): roles/eos_designs/doc/core-interfaces-BETA.md
-          #     - Network Services MPLS (BETA): roles/eos_designs/doc/network-services-mpls-BETA.md
-          #     - Connected Endpoints MPLS (BETA): roles/eos_designs/doc/connected-endpoints-mpls-BETA.md
+              - Configuring PTP: roles/eos_designs/doc/how-to/ptp.md
+              - Custom Structured Configuration: roles/eos_designs/doc/how-to/custom-structured-configuration.md
       - eos_cli_config_gen:
           - Overview: roles/eos_cli_config_gen/README.md
-          # - Role Inputs: roles/eos_cli_config_gen/docs/inputs/Role Inputs.md
-          # - Data Model: roles/eos_cli_config_gen/docs/data_model
+          - Role Configuration: roles/eos_cli_config_gen/doc/role-configuration.md
           - Input Variables: roles/eos_cli_config_gen/doc/input-variables.md
       - cvp_configlet_upload: roles/cvp_configlet_upload/README.md
       - eos_config_deploy_cvp: roles/eos_config_deploy_cvp/README.md

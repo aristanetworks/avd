@@ -112,13 +112,19 @@ Across all designs, the following functionality is provided:
 
 ## Requirements
 
-Requirements are located here: [avd-requirements](../../README.md#Requirements)
+Requirements are located in the [collection installation guide](../../docs/installation/collection-installation.md)
 
 ## Input Variables
 
-The role input variables are documented in the [Input Variables](docs/Input%20Variables.md) section.
+The input variables are documented in the [Input Variables](doc/input-variables.md) section.
 
-Role variables are grouped by configuration elements and are typically stored in different group_vars files.
+Input variables are grouped by configuration elements and are typically stored in different group_vars files.
+
+## Role Configuration
+
+The role configuration are documented in the [Role Configuration](doc/role-configuration.md) section.
+
+Role configuration settings can be set either as regular inventory variables or directly as task_vars on the `import_role` task.
 
 ## vEOS-LAB Know Caveats and Recommendations
 
@@ -133,7 +139,7 @@ However, because vEOS-LAB implements a virtual data plane, there are known cavea
 **Variables adjustments required for vEOS-LAB:**
 
 ```yaml
-# Update p2p_uplinks_mtu 9214 -> 1500, MTU 9000 not supported in vEOS-LAB.
+# Update p2p_uplinks_mtu 9214 -> 1500, MTU 9214 is not supported in vEOS-LAB on some hypervisors.
 p2p_uplinks_mtu: 1500
 
 # Adjust default bfd values, to avoid high CPU.

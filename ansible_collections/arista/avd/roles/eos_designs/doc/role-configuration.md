@@ -1,6 +1,8 @@
-# Role input varibles
+# Role configuration
 
-## Input Validation settings
+Role configuration settings can be set either as regular inventory variables or directly as task_vars on the `import_role` task.
+
+## Input Variables Validation settings
 
 --8<--
 roles/eos_designs/docs/tables/role-input-validation.md

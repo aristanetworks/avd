@@ -1,12 +1,18 @@
 # Input variables for eos_designs
 
+This document describes the supported input variables for the role `arista.avd.eos_designs`.
+
+Since several data models have changed between AVD versions 3.x and 4.x, it is recommended to study the [Porting Guide for AVD 4.x.x](../../../docs/porting-guides/4.x.x.md) for existing deployments.
+
+The input variables are documented below in tables and YAML.
+
 ## Supported designs
 
-`eos_designs` supports multiple options such as L3LS-EVPN with 3-stage or 5-stage, L2LS and MPLS. The sections below highlight these 3 topologies, but you can extend `eos_designs` to support your own topology by using [`node_type_keys`](node-types.md) (TODO update link) to create your own node type.
+`eos_designs` supports multiple options such as L3LS-EVPN with 3-stage or 5-stage, L2LS and MPLS. The sections below highlight these 3 topologies, but you can extend `eos_designs` to support your own topology by using [`node_type_keys`](#node-type-customization) to create your own node type.
 
 ## Design type
 
-By setting the `design.type` variable, the default node-types and templates described in these documents will be used.
+By setting the `design.type` variable, the default node-types described in [Node Type Variables](#node-type-variables) will be used.
 
 --8<--
 roles/eos_designs/docs/tables/design.md
@@ -29,7 +35,30 @@ roles/eos_designs/docs/tables/design.md
 - The **eos_designs** role support various deployments with layer 2 leaf and spine. For example, routing may terminate at the spine level or an external L3 device.
 - The Clos fabric can be represented as L3 spines, spines, and leafs.
 
-### TODO MPLS
+### MPLS
+
+The **eos_designs** role with the `mpls` design type supports any arbitrary physical mesh topology by combining and interconnecting different node types with the `core_interfaces` settings.
+
+The following underlay routing protocols are supported:
+
+- ISIS-SR (default)
+- ISIS + LDP
+- ISIS-SR + LDP
+- OSPF + LDP
+
+The following overlay routing protocols are supported:
+
+- IBGP (default)
+
+Any node group of 2 or more rr-routers will form a Route Reflector cluster.
+
+The MPLS design supports most fabric topology variables already supported by l3ls-evpn, barring the exceptions outlined below:
+
+- Connectivity is defined with the [`core_interfaces`](#core-interfaces-settings) settings instead of [Node type uplink](#node-type-uplink-management) settings.
+- No MLAG support.
+- No VXLAN support.
+- EVPN overlay settings are set with `mpls_overlay_role` and `mpls_route_reflectors` instead of `evpn_role` and `evpn_route_servers`.
+- No Inband Management support.
 
 ## Fabric topology hierarchy
 
@@ -39,19 +68,21 @@ roles/eos_designs/docs/tables/design.md
 
 As per the diagram above, the topology hierarchy is the following:
 
-fabric_name > dc_name > pod_name
+- fabric_name
+  - dc_name
+    - pod_name
 
-You must define the `fabric_name` variable and it **must** match the Ansible inventory group name covering all devices in scope of the fabric. This allows AVD to compute network wide data models. The `dc_name` and `pod_name` settings are optional, and leverage for documentation purposes only.
+You **must** define the `fabric_name` variable and it **must** match the Ansible inventory group name covering all devices in scope of the fabric.
 
-(TODO - DC Name, required to match Ansible Group name covering all devices in the DC.
-Required for 5-stage CLOS (Super-spines). is this accurate statement regarding 5-stage? )
 --8<--
 roles/eos_designs/docs/tables/fabric-topology.md
 --8<--
 
 ## Node Type Variables
 
-The following table provide information on the default node types that have been pre-defined in [`eos_designs/defaults/main/defaults-node-type-keys.yml`](https://github.com/aristanetworks/ansible-avd/tree/devel/ansible_collections/arista/avd/roles/eos_designs/defaults). To customize or create new node types, please refer to [node types definition](node-types.md)
+The following tables provide information on the default node types that have been pre-defined in `eos_designs` for each design type.
+
+To customize or create new node types, please refer to [node type customization](#node-type-customization) section.
 
 ### L3LS EVPN
 
@@ -78,43 +109,6 @@ The following table provide information on the default node types that have been
 | p             | ✅              | p2p          | none                | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
 | rr            | ✅              | p2p          | server              | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
 | pe            | ✅              | p2p          | client              | ✅                  | ✅                  | ✅   | ✘            | ✅                  |
-
-The MPLS design supports any fabric topology variables already supported by l3ls-evpn, barring the exceptions outlined below:
-
-- Connectivity is defined in a free-standing core_interfaces construct (TODO add link)
-
-TODO - link to unsupported parameters instead instead of yaml
-
-```yaml
-< node_type_key >:
-
-  defaults:
-    vtep_loopback_ipv4_pool: < IPv4_address/Mask  >
-    vtep_loopback: < Loopback_interface_1 >
-    evpn_role: < client | server | none | default -> refer to node type variable table >
-    evpn_route_servers: [ '< inventory_hostname_of_evpn_server >' ]
-    evpn_services_l2_only: < false | true >
-    mlag: < true | false -> default true >
-    mlag_dual_primary_detection: < true | false -> default false >
-    mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 > ]
-    mlag_interfaces_speed: < interface_speed | forced interface_speed | auto interface_speed >
-    mlag_peer_l3_vlan: < 0-4094 | false | default -> 4093 >
-    mlag_peer_l3_ipv4_pool: < IPv4_network/Mask >
-    mlag_peer_vlan: < 0-4094 | default -> 4094 >
-    mlag_peer_link_allowed_vlans: < vlans as string >
-    mlag_peer_ipv4_pool: < IPv4_network/Mask >
-    uplink_ipv4_pool: < IPv4_address/Mask  >
-    uplink_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
-    uplink_switches: [ < uplink_switch_inventory_hostname 01 >, < uplink_switch_inventory_hostname 02 > ]
-    max_uplink_switches: < integer >
-    max_parallel_uplinks: < integer >
-    uplink_ptp:
-      enable: < boolean >
-    uplink_macsec:
-      profile: "< MacSec profile name >"
-    uplink_interface_speed: < interface_speed | forced interface_speed | auto interface_speed >
-        uplink_switch_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
-```
 
 ## Node type customization
 
@@ -832,7 +826,7 @@ roles/eos_designs/docs/tables/network-services-vrfs-settings.md
 #### Network services VRF SVIs configuration
 
 --8<--
-roles/eos_designs/docs/tables/network-services-vrfs-l3-interfaces-settings.md
+roles/eos_designs/docs/tables/network-services-vrfs-svis-settings.md
 --8<--
 
 #### Network services VRF L3 Interfaces configuration
@@ -850,7 +844,7 @@ roles/eos_designs/docs/tables/network-services-vrfs-bgp-settings.md
 #### Network services VRF OSPF configuration
 
 --8<--
-roles/eos_designs/docs/tables/network-services-vrfs-settings.md
+roles/eos_designs/docs/tables/network-services-vrfs-ospf-settings.md
 --8<--
 
 #### Network services L2 VLANs configuration
@@ -862,7 +856,7 @@ roles/eos_designs/docs/tables/network-services-l2vlans-settings.md
 #### Network services point-to-point services configuration
 
 --8<--
-roles/eos_designs/docs/tables/network-services-l2vlans-settings.md
+roles/eos_designs/docs/tables/network-services-point-to-point-services-settings.md
 --8<--
 
 #### Network services multicast configuration

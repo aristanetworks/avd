@@ -15,7 +15,7 @@ keys:
       location:
         type: bool
         default: False
-        description: Set SNMP location. Formatted as {{ fabric_name }} {{ dc_name }} {{ pod_name }} {{ switch_rack }} {{ inventory_hostname }}.
+        description: Set SNMP location. Formatted as "<fabric_name> <dc_name> <pod_name> <switch_rack> <inventory_hostname>".
       compute_local_engineid:
         type: bool
         default: False

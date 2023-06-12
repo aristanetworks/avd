@@ -58,6 +58,11 @@
       "patternProperties": {
         "^_.+$": {}
       },
+      "default": {
+        "interval": 300,
+        "min_rx": 300,
+        "multiplier": 3
+      },
       "title": "BFD Multihop"
     },
     "bgp_as": {
@@ -992,7 +997,7 @@
       "title": "CVP Token File"
     },
     "dc_name": {
-      "description": "DC Name, required to match Ansible Group name covering all devices in the DC.\nRequired for 5-stage CLOS (Super-spines).\n",
+      "description": "POD Name is used in:\n- Fabric Documentation (Optional, falls back to fabric_name)\n- SNMP Location: `snmp_settings.location` (Optional)\n- HER Overlay DC scoped flood lists: `overlay_her_flood_list_scope: dc` (Required)\n",
       "type": "string",
       "title": "DC Name"
     },
@@ -3462,7 +3467,7 @@
     },
     "overlay_her_flood_list_scope": {
       "type": "string",
-      "description": "When using Head-End Replication, set the scope of flood-lists to Fabric or DC.\nBy default all VTEPs in the Fabric (part of the inventory group referenced by \"fabric_name\") are added to the flood-lists.\nThis can be changed to all VTEPs in the DC (part of the inventory group referenced by \"dc_name\").\nThis is useful if Border Leaf switches are dividing the VXLAN overlay into separate domains.\n",
+      "description": "When using Head-End Replication, set the scope of flood-lists to Fabric or DC.\nBy default all VTEPs in the Fabric (part of the inventory group referenced by \"fabric_name\") are added to the flood-lists.\nThis can be changed to all VTEPs in the DC (sharing the same \"dc_name\" value).\nThis is useful if Border Leaf switches are dividing the VXLAN overlay into separate domains.\n",
       "enum": [
         "fabric",
         "dc"
@@ -3837,7 +3842,7 @@
       "title": "Platform Speed Groups"
     },
     "pod_name": {
-      "description": "POD Name, only used in Fabric Documentation (Optional), fallback to dc_name and then to fabric_name.\nRecommended to be common between Spines and Leafs within a POD (One l3ls topology).\n",
+      "description": "POD Name is used in:\n- Fabric Documentation (Optional, falls back to dc_name and then to fabric_name)\n- SNMP Location: `snmp_settings.location` (Optional)\n- VRF Loopbacks: `vtep_diagnostic.loopback_ip_pools.pod` (Required)\n\nRecommended to be common between Spines and Leafs within a POD (One l3ls topology).\n",
       "type": "string",
       "title": "Pod Name"
     },
@@ -4939,7 +4944,7 @@
         "location": {
           "type": "boolean",
           "default": false,
-          "description": "Set SNMP location. Formatted as {{ fabric_name }} {{ dc_name }} {{ pod_name }} {{ switch_rack }} {{ inventory_hostname }}.",
+          "description": "Set SNMP location. Formatted as \"<fabric_name> <dc_name> <pod_name> <switch_rack> <inventory_hostname>\".",
           "title": "Location"
         },
         "compute_local_engineid": {

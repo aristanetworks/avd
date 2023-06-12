@@ -7,6 +7,8 @@ keys:
     documentation_options:
       table: fabric-topology
     description: |
-      DC Name, required to match Ansible Group name covering all devices in the DC.
-      Required for 5-stage CLOS (Super-spines).
+      POD Name is used in:
+      - Fabric Documentation (Optional, falls back to fabric_name)
+      - SNMP Location: `snmp_settings.location` (Optional)
+      - HER Overlay DC scoped flood lists: `overlay_her_flood_list_scope: dc` (Required)
     type: str

@@ -10,7 +10,7 @@ keys:
     description: |
       When using Head-End Replication, set the scope of flood-lists to Fabric or DC.
       By default all VTEPs in the Fabric (part of the inventory group referenced by "fabric_name") are added to the flood-lists.
-      This can be changed to all VTEPs in the DC (part of the inventory group referenced by "dc_name").
+      This can be changed to all VTEPs in the DC (sharing the same "dc_name" value).
       This is useful if Border Leaf switches are dividing the VXLAN overlay into separate domains.
     valid_values:
       - "fabric"

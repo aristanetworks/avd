@@ -30,3 +30,7 @@ keys:
         default: 3
         min: 3
         max: 50
+    default:
+      interval: 300
+      min_rx: 300
+      multiplier: 3
