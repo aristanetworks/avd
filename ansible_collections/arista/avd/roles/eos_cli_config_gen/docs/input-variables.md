@@ -9,7 +9,7 @@ The input variables are documented below in tables and YAML.
 All values are optional.
 
 !!! note
-    All input variables are enforced by a schema. If additional custom keys are desired, a key starting with an underscore `_`, will be ignored.
+    All input variables are validated by a schema. If additional custom keys are desired, a key starting with an underscore `_`, will be ignored.
 
 !!! warning
     Available features and variables may vary by platforms, refer to documentation on arista.com for specifics.
