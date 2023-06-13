@@ -5,8 +5,7 @@ type: dict
 keys:
   overlay_rt_type:
     documentation_options:
-      filename: Input Variables
-      table: Overlay Settings
+      table: overlay-settings
     type: dict
     description: |
       Specify RT type.

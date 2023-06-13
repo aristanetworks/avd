@@ -5,6 +5,5 @@ type: dict
 keys:
   evpn_ebgp_gateway_inter_domain:
     documentation_options:
-      filename: Input Variables
-      table: EVPN Settings
+      table: evpn-settings
     type: bool

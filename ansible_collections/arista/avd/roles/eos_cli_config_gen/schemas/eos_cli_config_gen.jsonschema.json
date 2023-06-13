@@ -518,7 +518,6 @@
     "access_lists": {
       "type": "array",
       "title": "IP Extended Access-Lists (legacy model)",
-      "description": "AVD currently supports 2 different data models for extended ACLs:\n\n- The legacy `access_lists` data model, for compatibility with existing deployments\n- The improved `ip_access_lists` data model, for access to more EOS features\n\nBoth data models can coexists without conflicts, as different keys are used: `access_lists` vs `ip_access_lists`.\nAccess list names must be unique.\n\nThe legacy data model supports simplified ACL definition with `sequence` to `action` mapping:\n",
       "items": {
         "type": "object",
         "properties": {
@@ -753,6 +752,33 @@
       },
       "title": "As Path"
     },
+    "avd_data_conversion_mode": {
+      "type": "string",
+      "enum": [
+        "disabled",
+        "error",
+        "warning",
+        "info",
+        "debug",
+        "quiet"
+      ],
+      "default": "debug",
+      "description": "Conversion Mode for AVD input data conversion.\nInput data conversion will perform type conversion of input variables as defined in the schema.\nThe type conversion is intended to help the user to identify minor issues with the input data, while still allowing the data to be validated.\nDuring conversion, messages will generated with information about the host(s) and key(s) which required conversion.\n\"disabled\" means that conversion will not run - avoid this since conversion is also handling data deprecation and upgrade.\n\"error\" will produce error messages and fail the task.\n\"warning\" will produce warning messages.\n\"info\" will produce regular log messages.\n\"debug\" will produce hidden debug messages viewable with -v.\n\"quiet\" will not produce any messages",
+      "title": "AVD Data Conversion Mode"
+    },
+    "avd_data_validation_mode": {
+      "type": "string",
+      "enum": [
+        "disabled",
+        "error",
+        "warning",
+        "info",
+        "debug"
+      ],
+      "default": "warning",
+      "description": "Validation Mode for AVD input data validation.\nInput data validation will validate the input variables according to the schema.\nDuring validation, messages will generated with information about the host(s) and key(s) which failed validation.\n\"disabled\" means that validation will not run.\n\"error\" will produce error messages and fail the task.\n\"warning\" will produce warning messages.\n\"info\" will produce regular log messages.\n\"debug\" will produce hidden debug messages viewable with -v.",
+      "title": "AVD Data Validation Mode"
+    },
     "banners": {
       "type": "object",
       "properties": {
@@ -972,7 +998,6 @@
     "community_lists": {
       "type": "array",
       "title": "Community Lists (legacy model)",
-      "description": "AVD supports 2 different data models for community lists:\n\n- The legacy `community_lists` data model that can be used for compatibility with the existing deployments.\n- The improved `ip_community_lists` data model.\n\nBoth data models can coexist without conflicts, as different keys are used: `community_lists` vs `ip_community_lists`.\nCommunity list names must be unique.\n\nThe legacy data model supports simplified community list definition that only allows a single action to be defined as string:\n",
       "items": {
         "type": "object",
         "properties": {
@@ -1365,6 +1390,7 @@
     "daemons": {
       "type": "array",
       "title": "Custom Daemons",
+      "description": "This will add a daemon to the eos configuration that is most useful when trying to run OpenConfig clients like ocprometheus.",
       "items": {
         "type": "object",
         "properties": {
@@ -4311,7 +4337,6 @@
     "ip_access_lists": {
       "type": "array",
       "title": "IP Extended Access-Lists (improved model)",
-      "description": "AVD currently supports 2 different data models for extended ACLs:\n\n- The legacy `access_lists` data model, for compatibility with existing deployments\n- The improved `ip_access_lists` data model, for access to more EOS features\n\nBoth data models can coexists without conflicts, as different keys are used: `access_lists` vs `ip_access_lists`.\nAccess list names must be unique.\n\nThe improved data model has a more sophisticated design documented below:\n",
       "items": {
         "type": "object",
         "properties": {
@@ -4499,13 +4524,13 @@
     },
     "ip_access_lists_max_entries": {
       "type": "integer",
-      "description": "The `ip_access_lists` data model allows to limit the number of ACL entries that AVD is allowed to generate by defining `ip_access_lists_max_entries`.\nOnly normal entries under `ip_access_lists` will be counted, remarks will be ignored.\nIf the number is above the limit, the playbook will fail. This provides a simplified control over hardware utilization.\nThe numbers must be based on the hardware tests and AVD does not provide any guidance. Note that other EOS features may use the same hardware resources and affect the supported scale.",
+      "description": "Limit ACL entries defined under the `ip_access_lists`.",
       "title": "IP Access Lists Max Entries"
     },
     "ip_community_lists": {
       "type": "array",
       "title": "IP Community Lists",
-      "description": "AVD supports 2 different data models for community lists:\n\n- The legacy `community_lists` data model that can be used for compatibility with the existing deployments.\n- The improved `ip_community_lists` data model.\n\nBoth data models can coexist without conflicts, as different keys are used: `community_lists` vs `ip_community_lists`.\nCommunity list names must be unique.\n\nThe improved data model has a better design documented below:\n\ncommunities and regexp MUST not be configured together in the same entry\npossible community strings are (case insensitive):\n\n- GSHUT\n- internet\n- local-as\n- no-advertise\n- no-export\n- <1-4294967040>\n- aa:nn\n",
+      "description": "Communities and regexp entries MUST not be configured in the same community-list\n",
       "items": {
         "type": "object",
         "properties": {
@@ -4532,7 +4557,7 @@
                   "items": {
                     "type": "string"
                   },
-                  "description": "If defined, a standard community-list will be configured",
+                  "description": "If defined, a standard community-list will be configured.\nSupported community strings (case insensitive):\n- GSHUT\n- internet\n- local-as\n- no-advertise\n- no-export\n- <1-4294967040>\n- aa:nn\n",
                   "title": "Communities"
                 },
                 "regexp": {
@@ -4796,6 +4821,7 @@
         "globally_enabled": {
           "type": "boolean",
           "default": true,
+          "description": "Activate or deactivate IGMP snooping for all vlans where `vlans` allows user to activate / deactivate IGMP snooping per vlan.",
           "title": "Globally Enabled"
         },
         "robustness_variable": {

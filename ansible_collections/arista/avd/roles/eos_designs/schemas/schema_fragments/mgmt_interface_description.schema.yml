@@ -5,9 +5,8 @@ type: dict
 keys:
   mgmt_interface_description:
     documentation_options:
-      filename: Input Variables
-      table: Management Interface Settings
+      table: management-interface-settings
     type: str
     description: |
-      Management interface description
+      Management interface description.
     default: oob_management

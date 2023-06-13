@@ -5,11 +5,10 @@ type: dict
 keys:
   isis_default_metric:
     documentation_options:
-      filename: Input Variables
-      table: ISIS Settings
+      table: isis-settings
     type: int
     convert_types:
-    - str
+      - str
     default: 50
     description: |
       These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden at link profile or link level.
