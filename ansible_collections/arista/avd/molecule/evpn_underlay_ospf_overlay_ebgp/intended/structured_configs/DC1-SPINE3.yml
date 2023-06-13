@@ -11,9 +11,6 @@ router_bgp:
     ecmp: 10
   updates:
     wait_install: true
-  graceful_restart:
-    enabled: true
-    restart_time: 300
   peer_groups:
   - name: EVPN-OVERLAY-PEERS
     type: evpn

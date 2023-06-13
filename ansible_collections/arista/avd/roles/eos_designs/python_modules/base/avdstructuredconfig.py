@@ -55,7 +55,7 @@ class AvdStructuredConfigBase(AvdFacts):
         if get(self._hostvars, "bgp_update_wait_install", default=True) is True and platform_bgp_update_wait_install:
             router_bgp.setdefault("updates", {})["wait_install"] = True
 
-        if get(self._hostvars, "bgp_graceful_restart.enabled", default=True) is True:
+        if get(self._hostvars, "bgp_graceful_restart.enabled") is True:
             router_bgp.update(
                 {
                     "graceful_restart": {

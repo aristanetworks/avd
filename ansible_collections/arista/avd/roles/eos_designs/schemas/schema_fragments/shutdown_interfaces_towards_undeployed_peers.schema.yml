@@ -5,8 +5,7 @@ type: dict
 keys:
   shutdown_interfaces_towards_undeployed_peers:
     documentation_options:
-      filename: Input Variables
-      table: Fabric Settings
+      table: fabric-settings
     type: bool
     default: false
     description: |

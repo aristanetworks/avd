@@ -5,12 +5,11 @@ type: dict
 keys:
   underlay_multicast:
     documentation_options:
-      filename: Input Variables
-      table: Fabric Settings
+      table: fabric-settings
     type: bool
     description: |
       Enable Multicast in the underlay on all p2p uplink interfaces and mlag l3 peer interface.
       Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.
-      No other configuration is added, so the underlay will only support Source-Specific Multicast (SSM)
-      The configuration is intended to be used as multicast underlay for EVPN OISM overlay
+      No other configuration is added, so the underlay will only support Source-Specific Multicast (SSM).
+      The configuration is intended to be used as multicast underlay for EVPN OISM overlay.
     default: false

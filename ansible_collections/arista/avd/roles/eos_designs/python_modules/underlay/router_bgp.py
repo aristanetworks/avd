@@ -40,7 +40,7 @@ class RouterBgpMixin(UtilsMixin):
         address_family_ipv4_peer_group = {"activate": True}
 
         if self.shared_utils.underlay_rfc5549 is True:
-            address_family_ipv4_peer_group["next_hop"] = {"address_family_ipv6_originate": True}
+            address_family_ipv4_peer_group["next_hop"] = {"address_family_ipv6": {"enabled": True, "originate": True}}
 
         router_bgp["address_family_ipv4"] = {
             "peer_groups": [{"name": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["name"], **address_family_ipv4_peer_group}]

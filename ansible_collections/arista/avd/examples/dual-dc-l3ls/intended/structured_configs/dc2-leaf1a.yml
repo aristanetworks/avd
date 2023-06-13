@@ -7,9 +7,6 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
-  graceful_restart:
-    enabled: true
-    restart_time: 300
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
@@ -155,7 +152,7 @@ router_bgp:
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
-  gateway: 172.16.2.1
+  gateway: 172.16.1.1
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -192,8 +189,8 @@ management_interfaces:
   description: oob_management
   shutdown: false
   vrf: MGMT
-  ip_address: 172.16.2.201/24
-  gateway: 172.16.2.1
+  ip_address: 172.16.1.111/24
+  gateway: 172.16.1.1
   type: oob
 management_api_http:
   enable_vrfs:

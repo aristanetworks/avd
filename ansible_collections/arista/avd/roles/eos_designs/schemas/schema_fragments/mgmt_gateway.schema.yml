@@ -5,9 +5,8 @@ type: dict
 keys:
   mgmt_gateway:
     documentation_options:
-      filename: Input Variables
-      table: Management Interface Settings
+      table: management-interface-settings
     type: str
     description: |
       OOB Management interface gateway in IPv4 format.
-      Used as next-hop for default gateway or static routes defined under 'mgmt_destination_networks'
+      Used as next-hop for default gateway or static routes defined under 'mgmt_destination_networks'.

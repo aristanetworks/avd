@@ -11,9 +11,6 @@ router_bgp:
     ecmp: 4
   updates:
     wait_install: true
-  graceful_restart:
-    enabled: true
-    restart_time: 300
   peer_groups:
   - name: MLAG_PEER
     type: ipv4
@@ -42,11 +39,15 @@ router_bgp:
     - name: MLAG_PEER
       activate: true
       next_hop:
-        address_family_ipv6_originate: true
+        address_family_ipv6:
+          enabled: true
+          originate: true
     - name: UNDERLAY_PEERS
       activate: true
       next_hop:
-        address_family_ipv6_originate: true
+        address_family_ipv6:
+          enabled: true
+          originate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
   neighbor_interfaces:

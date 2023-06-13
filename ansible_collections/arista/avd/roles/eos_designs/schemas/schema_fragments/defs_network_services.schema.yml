@@ -4,6 +4,8 @@
 type: dict
 $defs:
   network_services:
+    documentation_options:
+      table: network-services-common-settings
     type: list
     primary_key: name
     convert_types:
@@ -48,6 +50,8 @@ $defs:
             Base number for VLAN aware bundle RD/RT.
             The "Assigned Number" part of RD/RT is derived from vrf_vni + vlan_aware_bundle_number_base.
         pseudowire_rt_base:
+          documentation_options:
+            table: network-services-point-to-point-services-settings
           type: int
           description: |
             Pseudowire RT base, used to generate route targets for VPWS services.
@@ -55,6 +59,8 @@ $defs:
           convert_types:
             - str
         enable_mlag_ibgp_peering_vrfs:
+          documentation_options:
+            table: network-services-vrfs-settings
           type: bool
           description: |
             MLAG iBGP peering per VRF.
@@ -62,6 +68,8 @@ $defs:
             Setting enable_mlag_ibgp_peering_vrfs: false under tenant will change this default to prevent configuration of these peerings and VLANs for all VRFs in the tenant.
             This setting can be overridden per VRF.
         bgp_peer_groups:
+          documentation_options:
+            table: network-services-vrfs-bgp-settings
           type: list
           primary_key: name
           convert_types:
@@ -77,7 +85,7 @@ $defs:
             keys:
               name:
                 type: str
-                description: BGP peer group name
+                description: BGP peer group name.
               nodes:
                 type: list
                 items:
@@ -86,9 +94,11 @@ $defs:
                   Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
                   If not set the peer-group is created on devices which have a bgp_peer mapped to the corresponding peer_group.
         evpn_l2_multicast:
+          documentation_options:
+            table: network-services-multicast-settings
           description: |
             Enable EVPN L2 Multicast for all SVIs and l2vlans within Tenant.
-            - Multicast group binding is created only for Multicast traffic. BULL traffic will use ingress-replication
+            - Multicast group binding is created only for Multicast traffic. BULL traffic will use ingress-replication.
             - Configures binding between VXLAN, VLAN, and multicast group IPv4 address using the following formula:
               < evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool > + < vlan_id - 1 > + < evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool_offset >.
             - The recommendation is to assign a /20 block within the 232.0.0.0/8 Source-Specific Multicast range.
@@ -106,10 +116,12 @@ $defs:
               convert_types:
                 - str
         evpn_l3_multicast:
+          documentation_options:
+            table: network-services-multicast-settings
           description: |
             Enable L3 Multicast for all SVIs and l3vlans within Tenant.
-            - In the evpn-l3ls design type, this enables L3 EVPN Multicast (aka OISM)
-            - Multicast group binding for VRF is created only for Multicast traffic. BULL traffic will use ingress-replication
+            - In the evpn-l3ls design type, this enables L3 EVPN Multicast (aka OISM)'.
+            - Multicast group binding for VRF is created only for Multicast traffic. BULL traffic will use ingress-replication.
             - Configures binding between VXLAN, VLAN, and multicast group IPv4 address using the following formula:
               < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool > + < vrf_vni - 1 > + < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset >.
             - The recommendation is to assign a /20 block within the 232.0.0.0/8 Source-Specific Multicast range.
@@ -148,6 +160,8 @@ $defs:
                     description: Enable EVPN PEG transit mode.
                     type: bool
         pim_rp_addresses:
+          documentation_options:
+            table: network-services-multicast-settings
           description: |
             For each group of nodes, allow configuration of RP Addresses & associated groups.
           type: list
@@ -155,7 +169,7 @@ $defs:
             type: dict
             keys:
               rps:
-                description: List of Rendevouz Points
+                description: List of Rendevouz Points.
                 type: list
                 min_length: 1
                 items:
@@ -172,8 +186,10 @@ $defs:
                 type: list
                 items:
                   type: str
-                  description: Group_prefix/mask
+                  description: Group_prefix/mask.
         igmp_snooping_querier:
+          documentation_options:
+            table: network-services-multicast-settings
           description: |
             Enable IGMP snooping querier for each SVI/l2vlan within tenant, by default using IP address of Loopback 0.
             When enabled, IGMP snooping querier will only be configured on L3 devices, i.e., uplink_type: p2p.
@@ -200,6 +216,8 @@ $defs:
           default: true
           description: Explicitly extend all VLANs/VLAN-Aware Bundles inside the tenant to remote EVPN domains.
         vrfs:
+          documentation_options:
+            table: network-services-vrfs-settings
           type: list
           primary_key: name
           convert_types:
@@ -218,6 +236,8 @@ $defs:
             keys:
               name:
                 type: str
+                convert_types:
+                  - int
               address_families:
                 type: list
                 items:
@@ -228,7 +248,7 @@ $defs:
                     - "vpn-ipv6"
               description:
                 type: str
-                description: VRF description
+                description: VRF description.
               vrf_vni:
                 type: int
                 convert_types:
@@ -249,60 +269,62 @@ $defs:
                 description: |
                   Required if "vrf_vni" is not set.
                   "vrf_id" is used as default value for "vrf_vni" and "ospf.process_id" unless those are set.
-                  "vrf_id" is preferred over "vrf_vni" for VRF RD/RT ID before vrf_vni
-                  "vrf_id" is preferred over "vrf_vni" for MLAG iBGP peering vlan, see "mlag_ibgp_peering_vrfs.base_vlan" for details
+                  "vrf_id" is preferred over "vrf_vni" for VRF RD/RT ID before vrf_vni.
+                  "vrf_id" is preferred over "vrf_vni" for MLAG iBGP peering vlan, see "mlag_ibgp_peering_vrfs.base_vlan" for details.
               mlag_ibgp_peering_ipv4_pool:
                 type: str
                 description: |
                   IPv4_address/Mask
                   The subnet used for iBGP peering in the VRF.
-                  Each MLAG pair will be assigned a subnet based on the ID of the primary MLAG switch
-                  If not set, "mlag_peer_l3_ipv4_pool" or "mlag_peer_ipv4_pool" will be used
+                  Each MLAG pair will be assigned a subnet based on the ID of the primary MLAG switch.
+                  If not set, "mlag_peer_l3_ipv4_pool" or "mlag_peer_ipv4_pool" will be used.
               ip_helpers:
                 type: list
                 primary_key: ip_helper
                 convert_types:
                   - dict
-                description: IP helper for DHCP relay
+                description: IP helper for DHCP relay.
                 items:
                   type: dict
                   keys:
                     ip_helper:
                       type: str
-                      description: IPv4 DHCP server IP
+                      description: IPv4 DHCP server IP.
                     source_interface:
                       type: str
-                      description: Interface name
+                      description: Interface name.
                     source_vrf:
                       type: str
-                      description: VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF
+                      description: VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF.
+                      convert_types:
+                        - int
               enable_mlag_ibgp_peering_vrfs:
                 type: bool
                 description: |
                   MLAG iBGP peering per VRF.
                   By default an iBGP peering is configured per VRF between MLAG peers on separate VLANs.
-                  Setting enable_mlag_ibgp_peering_vrfs: false under vrf will change this default and/or override the tenant-wide setting
+                  Setting enable_mlag_ibgp_peering_vrfs: false under vrf will change this default and/or override the tenant-wide setting.
               mlag_ibgp_peering_vlan:
                 type: int
                 convert_types:
                   - str
                 description: |
                   Manually define the VLAN used on the MLAG pair for the iBGP session.
-                  By default this parameter is calculated using the following formula: <mlag_ibgp_peering_vrfs.base_vlan> + <vrf_id> - 1
+                  By default this parameter is calculated using the following formula: <mlag_ibgp_peering_vrfs.base_vlan> + <vrf_id> - 1.
                 min: 1
                 max: 4096
               vtep_diagnostic:
                 type: dict
                 description: |
                   Enable VTEP Network diagnostics.
-                  This will create a loopback with virtual source-nat enable to perform diagnostics from the switch
+                  This will create a loopback with virtual source-nat enable to perform diagnostics from the switch.
                 keys:
                   loopback:
                     type: int
                     convert_types:
                       - str
                     description: |
-                      Loopback interface number, required (when vtep_diagnotics defined)
+                      Loopback interface number, required when vtep_diagnotics defined.
                     min: 2
                     max: 2100
                   loopback_description:
@@ -311,24 +333,26 @@ $defs:
                   loopback_ip_range:
                     type: str
                     description: |
-                      IPv4_address/Mask
-                      Loopback ip range, a unique ip is derived from this ranged and assigned
-                      to each l3 leaf based on it's unique id, ptional (loopback is not created unless loopback_ip_range or loopback_ip_pools are set)
+                      IPv4_address/Mask.
+                      Loopback ip range, a unique ip is derived from this ranged and assignedto each l3 leaf based on it's unique id.
+                      Loopback is not created unless loopback_ip_range or loopback_ip_pools are set.
                   loopback_ip_pools:
                     type: list
                     description: |
                       For inventories with multiple PODs a loopback range can be set per POD to avoid overlaps.
-                      This only takes effect when loopback_ip_range is not defined, ptional (loopback is not created unless loopback_ip_range or loopback_ip_pools are set)
+                      This only takes effect when loopback_ip_range is not defined, ptional (loopback is not created unless loopback_ip_range or loopback_ip_pools are set).
                     items:
                       type: dict
                       keys:
                         pod:
                           type: str
-                          description: POD name
+                          description: POD name.
                         ipv4_pool:
                           type: str
-                          description: IPv4_address/Mask
+                          description: IPv4_address/Mask.
               ospf:
+                documentation_options:
+                  table: network-services-vrfs-ospf-settings
                 type: dict
                 description: |
                   Router OSPF configuration.
@@ -361,7 +385,7 @@ $defs:
                         default: true
                       route_map:
                         type: str
-                        description: Route-map name
+                        description: Route-map name.
                   redistribute_connected:
                     type: dict
                     keys:
@@ -370,17 +394,21 @@ $defs:
                         default: false
                       route_map:
                         type: str
-                        description: Route-map name
+                        description: Route-map name.
                   nodes:
                     type: list
                     items:
                       type: str
-                      description: Hostname
+                      description: Hostname.
               redistribute_ospf:
+                documentation_options:
+                  table: network-services-vrfs-ospf-settings
                 type: bool
                 default: true
                 description: Non-selectively enabling or disabling redistribute ospf inside the VRF.
               evpn_l3_multicast:
+                documentation_options:
+                  table: network-services-multicast-settings
                 type: dict
                 description: |
                   Explicitly enable or disable evpn_l3_multicast to override setting of `<network_services_key>.[].evpn_l3_multicast.enabled`.
@@ -406,6 +434,8 @@ $defs:
                           default: false
                           description: Enable EVPN PEG transit mode.
               pim_rp_addresses:
+                documentation_options:
+                  table: network-services-multicast-settings
                 description: |
                   For each group of nodes, allow configuration of RP Addresses & associated groups.
                 type: list
@@ -429,20 +459,24 @@ $defs:
                       type: list
                       items:
                         type: str
-                        description: Group_prefix/mask
+                        description: Group_prefix/mask.
               evpn_l2_multi_domain:
+                documentation_options:
+                  table: network-services-multicast-settings
                 type: bool
                 description: |
                   Explicitly extend all VLANs/VLAN-Aware Bundles inside the VRF to remote EVPN domains.
                   Overrides `<network_services_key>.[].evpn_l2_multi_domain`.
               svis:
+                documentation_options:
+                  table: network-services-vrfs-svis-settings
                 type: list
                 primary_key: id
                 convert_types:
                   - dict
                 description: |
-                  List of SVIs
-                  This will create both the L3 SVI and L2 VLAN based on filters applied to the node..
+                  List of SVIs.
+                  This will create both the L3 SVI and L2 VLAN based on filters applied to the node.
                 items:
                   $ref: "#/$defs/svi"
                   type: dict
@@ -456,7 +490,7 @@ $defs:
                       max: 4096
                     name:
                       type: str
-                      description: VLAN name
+                      description: VLAN name.
                       required: true
                     profile:
                       type: str
@@ -464,6 +498,8 @@ $defs:
                         SVI profile name to apply.
                         SVI can refer to one svi_profile which again can refer to another svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).
               l3_interfaces:
+                documentation_options:
+                  table: network-services-vrfs-l3-interfaces-settings
                 type: list
                 description: |
                   List of L3 interfaces.
@@ -475,7 +511,7 @@ $defs:
                       type: list
                       items:
                         type: str
-                        description: Interface name
+                        description: Interface name.
                     encapsulation_dot1q_vlan:
                       type: list
                       description: For sub-interfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
@@ -489,12 +525,12 @@ $defs:
                       type: list
                       items:
                         type: str
-                        description: IPv4_address/Mask
+                        description: IPv4_address/Mask.
                     nodes:
                       type: list
                       items:
                         type: str
-                        description: Node
+                        description: Node.
                     description:
                       type: str
                     descriptions:
@@ -502,7 +538,7 @@ $defs:
                       items:
                         type: str
                       description: |
-                        "descriptions" has precedence over "description"
+                        "descriptions" has precedence over "description".
                     enabled:
                       type: bool
                     mtu:
@@ -511,7 +547,7 @@ $defs:
                         - str
                     ospf:
                       type: dict
-                      description: OSPF interface configuration
+                      description: OSPF interface configuration.
                       keys:
                         enabled:
                           type: bool
@@ -522,13 +558,13 @@ $defs:
                           type: int
                           convert_types:
                             - str
-                          description: OSPF area id
+                          description: OSPF area id.
                           default: 0
                         cost:
                           type: int
                           convert_types:
                             - str
-                          description: OSPF link cost
+                          description: OSPF link cost.
                         authentication:
                           type: str
                           valid_values:
@@ -536,7 +572,7 @@ $defs:
                             - message-digest
                         simple_auth_key:
                           type: str
-                          description: Password used with simple authentication
+                          description: Password used with simple authentication.
                         message_digest_keys:
                           type: list
                           items:
@@ -557,7 +593,7 @@ $defs:
                                 default: sha512
                               key:
                                 type: str
-                                description: Key password
+                                description: Key password.
                     pim:
                       type: dict
                       description: |
@@ -588,13 +624,13 @@ $defs:
                   keys:
                     destination_address_prefix:
                       type: str
-                      description: IPv4_address
+                      description: IPv4_address.
                     gateway:
                       type: str
-                      description: IPv4_address
+                      description: IPv4_address.
                     track_bfd:
                       type: bool
-                      description: Track next-hop using BFD
+                      description: Track next-hop using BFD.
                     distance:
                       type: int
                       convert_types:
@@ -609,7 +645,7 @@ $defs:
                       max: 4294967295
                     name:
                       type: str
-                      description: description
+                      description: description.
                     metric:
                       type: int
                       convert_types:
@@ -629,12 +665,12 @@ $defs:
                   keys:
                     destination_address_prefix:
                       type: str
-                      description: IPv6_address
+                      description: IPv6_address.
                     gateway:
                       type: str
                     track_bfd:
                       type: bool
-                      description: Track next-hop using BFD
+                      description: Track next-hop using BFD.
                     distance:
                       type: int
                       convert_types:
@@ -649,7 +685,7 @@ $defs:
                       max: 4294967295
                     name:
                       type: str
-                      description: description
+                      description: description.
                     metric:
                       type: int
                       convert_types:
@@ -666,6 +702,8 @@ $defs:
                 type: bool
                 description: Non-selectively enabling or disabling redistribute static inside the VRF.
               bgp_peers:
+                documentation_options:
+                  table: network-services-vrfs-bgp-settings
                 type: list
                 primary_key: ip_address
                 convert_types:
@@ -681,7 +719,7 @@ $defs:
                   keys:
                     ip_address:
                       type: str
-                      description: IPv4_address or IPv6_address
+                      description: IPv4_address or IPv6_address.
                     peer_group:
                       type: str
                       description: Peer group name.
@@ -689,28 +727,28 @@ $defs:
                       type: int
                       convert_types:
                         - str
-                      description: Remote ASN
+                      description: Remote ASN.
                     description:
                       type: str
                     password:
                       type: str
-                      description: Encrypted password
+                      description: Encrypted password.
                     send_community:
                       type: str
                       description: |
-                        'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'
+                        'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
                     next_hop_self:
                       type: bool
                     timers:
                       type: str
-                      description: BGP Keepalive and Hold Timer values in seconds as string <0-3600> <0-3600>
+                      description: BGP Keepalive and Hold Timer values in seconds as string <0-3600> <0-3600>.
                     maximum_routes:
                       type: int
                       convert_types:
                         - str
                       min: 0
                       max: 4294967294
-                      description: Maximum number of routes (0 means unlimited)
+                      description: Maximum number of routes (0 means unlimited).
                     default_originate:
                       type: dict
                       keys:
@@ -724,7 +762,7 @@ $defs:
                         - str
                       min: 1
                       max: 255
-                      description: Time-to-live in range of hops
+                      description: Time-to-live in range of hops.
                     nodes:
                       type: list
                       items:
@@ -744,23 +782,23 @@ $defs:
                         Next hop takes precedence over route_map_out.
                     route_map_out:
                       type: str
-                      description: Route-map name
+                      description: Route-map name.
                     route_map_in:
                       type: str
-                      description: Route-map name
+                      description: Route-map name.
                     prefix_list_in:
                       type: str
-                      description: Prefix list name
+                      description: Prefix list name.
                     prefix_list_out:
                       type: str
-                      description: Prefix list name
+                      description: Prefix list name.
                     local_as:
                       type: str
                       convert_types:
                         - int
                       description: |
-                        Local BGP ASN
-                        eg. "65001.1200"
+                        Local BGP ASN.
+                        eg. "65001.1200".
                     weight:
                       type: int
                       convert_types:
@@ -781,6 +819,8 @@ $defs:
                     description: |
                       Custom structured config added under router_bgp.vrfs.<vrf> for eos_cli_config_gen.
               bgp_peer_groups:
+                documentation_options:
+                  table: network-services-vrfs-bgp-settings
                 type: list
                 description: |
                   List of BGP peer groups definitions.
@@ -793,7 +833,7 @@ $defs:
                   keys:
                     name:
                       type: str
-                      description: BGP peer group name
+                      description: BGP peer group name.
                     nodes:
                       type: list
                       items:
@@ -802,6 +842,8 @@ $defs:
                         Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
                         If not set the peer-group is created on devices which have a bgp_peer mapped to the corresponding peer_group.
               additional_route_targets:
+                documentation_options:
+                  table: network-services-vrfs-settings
                 type: list
                 description: Configuration of extra route-targets for this VRF. Useful for route-leaking or gateway between address families.
                 items:
@@ -820,17 +862,16 @@ $defs:
                       type: list
                       items:
                         type: str
-                      description: |
-                        Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
+                      description: Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
               raw_eos_cli:
                 type: str
-                description: |
-                  EOS CLI rendered directly on the root level of the final EOS configuration.
+                description: EOS CLI rendered directly on the root level of the final EOS configuration.
               structured_config:
                 type: dict
-                description: |
-                  Custom structured config for eos_cli_config_gen.
+                description: Custom structured config for eos_cli_config_gen.
         l2vlans:
+          documentation_options:
+            table: network-services-l2vlans-settings
           type: list
           primary_key: id
           convert_types:
@@ -853,7 +894,7 @@ $defs:
                 min: 1
                 max: 16777215
                 description: |
-                  By default the VNI will be derived from mac_vrf_vni_base
+                  By default the VNI will be derived from mac_vrf_vni_base.
                   The vni_override, allows to override this value and statically define it.
               rt_override:
                 type: int
@@ -862,7 +903,7 @@ $defs:
                 min: 1
                 max: 16777215
                 description: |
-                  By default the MAC VRF RD/RT ID will be derived from mac_vrf_id_base
+                  By default the MAC VRF RD/RT ID will be derived from mac_vrf_id_base.
                   The rt_override allows us to override this value and statically define it.
               name:
                 type: str
@@ -871,24 +912,26 @@ $defs:
               tags:
                 type: list
                 description: |
-                  Tags leveraged for networks services filtering
-                  Tags are matched against filter.tags defined under Fabric Topology variables
-                  Tags are also matched against the node_group name under Fabric Topology variables
+                  Tags leveraged for networks services filtering.
+                  Tags are matched against filter.tags defined under node type settings.
+                  Tags are also matched against the node_group name under node type settings.
                 items:
                   type: str
                   default: all
               vxlan:
                 type: bool
                 default: true
-                description: Extend this L2VLAN over VXLAN
+                description: Extend this L2VLAN over VXLAN.
               trunk_groups:
                 type: list
                 items:
                   type: str
                   description: |
-                    Trunk groups are used for limiting vlans to trunk ports assigned to the same trunk group
-                    Requires enable_trunk_groups: true
+                    Trunk groups are used for limiting vlans to trunk ports assigned to the same trunk group.
+                    Requires enable_trunk_groups: true.
               evpn_l2_multicast:
+                documentation_options:
+                  table: network-services-multicast-settings
                 type: dict
                 description: |
                   Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.
@@ -897,10 +940,14 @@ $defs:
                   enabled:
                     type: bool
               igmp_snooping_enabled:
+                documentation_options:
+                  table: network-services-multicast-settings
                 type: bool
                 default: true
-                description: Activate or deactivate IGMP snooping
+                description: Activate or deactivate IGMP snooping.
               igmp_snooping_querier:
+                documentation_options:
+                  table: network-services-multicast-settings
                 type: dict
                 description: |
                   Enable igmp snooping querier, by default using IP address of Loopback 0.
@@ -937,6 +984,8 @@ $defs:
                       EOS cli commands rendered on router_bgp.vlans.
                       This configuration will not be applied to vlan aware bundles.
         point_to_point_services:
+          documentation_options:
+            table: network-services-point-to-point-services-settings
           type: list
           primary_key: name
           description: |
@@ -979,11 +1028,10 @@ $defs:
                       required: true
                       convert_types:
                         - "str"
-                      description: Pseudowire ID on this endpoint
+                      description: Pseudowire ID on this endpoint.
                     nodes:
                       type: list
-                      description: |
-                        Usually one node. With ESI multihoming we support two nodes per pseudowire endpoint
+                      description: Usually one node. With ESI multihoming we support two nodes per pseudowire endpoint
                       required: true
                       min_length: 1
                       items:
@@ -1009,4 +1057,4 @@ $defs:
                           type: str
               lldp_disable:
                 type: bool
-                description: Disable LLDP RX/TX on port mode pseudowire services
+                description: Disable LLDP RX/TX on port mode pseudowire services.

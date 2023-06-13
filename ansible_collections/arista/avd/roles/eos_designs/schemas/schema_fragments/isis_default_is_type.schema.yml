@@ -5,8 +5,7 @@ type: dict
 keys:
   isis_default_is_type:
     documentation_options:
-      filename: Input Variables
-      table: ISIS Settings
+      table: isis-settings
     type: str
     valid_values:
       - level-1-2

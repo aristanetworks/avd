@@ -1,6 +1,34 @@
 router_bgp:
   as: 65001
   router_id: 1.0.1.1
+  address_family_ipv4:
+    peer_groups:
+      - name: FOOBAR
+        activate: true
+        next_hop:
+          address_family_ipv6:
+            enabled: true
+            originate: true
+  address_family_ipv6:
+    peer_groups:
+      - name: FOOBAR
+        activate: false
+  address_family_ipv4_multicast:
+    peer_groups:
+      - name: FOOBAR
+        activate: true
+  address_family_ipv6_multicast:
+    peer_groups:
+      - name: FOOBAR
+        activate: false
+  address_family_flow_spec_ipv4:
+    peer_groups:
+      - name: FOOBAR
+        activate: true
+  address_family_flow_spec_ipv6:
+    peer_groups:
+      - name: FOOBAR
+        activate: false
   vrfs:
     - name: VRF01
       address_family_ipv4:
@@ -18,13 +46,6 @@ router_bgp:
             activate: true
             route_map_in: FOO
             route_map_out: BAR
-        peer_groups:
-          - name: FOOBAR
-            activate: true
-            next_hop:
-              address_family_ipv6:
-                enabled: true
-                originate: true
         networks:
           - prefix: 2.3.4.0/24
             route_map: BARFOO
@@ -43,9 +64,6 @@ router_bgp:
             activate: true
             route_map_in: FOO
             route_map_out: BAR
-        peer_groups:
-          - name: FOOBAR
-            activate: false
         networks:
           - prefix: aa::/64
       address_family_ipv4_multicast:
@@ -60,9 +78,6 @@ router_bgp:
             activate: false
             route_map_in: FOO
             route_map_out: BAR
-        peer_groups:
-          - name: FOOBAR
-            activate: true
         networks:
           - prefix: 239.0.0.0/24
             route_map: BARFOO
@@ -73,9 +88,6 @@ router_bgp:
             direction_out_action: deny
         neighbors:
           - ip_address: aa::1
-            activate: false
-        peer_groups:
-          - name: FOOBAR
             activate: false
         networks:
           - prefix: ff08:1::/64

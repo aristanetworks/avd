@@ -5,8 +5,7 @@ type: dict
 keys:
   isis_ti_lfa:
     documentation_options:
-      filename: Input Variables
-      table: ISIS Settings
+      table: isis-settings
     type: dict
     keys:
       enabled:
@@ -18,7 +17,7 @@ keys:
           - link
           - node
       local_convergence_delay:
-        description: Local convergence delay in milliseconds
+        description: Local convergence delay in milliseconds.
         type: int
         convert_types:
           - str

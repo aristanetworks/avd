@@ -1,8 +1,0 @@
-# Minimum config to only test the specific feature.
-mgmt_interface: MY_INTERFACE_FABRIC
-l2leaf:
-  defaults:
-  nodes:
-    - name: mgmt_interface_fabric
-      mgmt_ip: 1.1.1.2
-      id: 103

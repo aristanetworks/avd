@@ -1,0 +1,15 @@
+- name: Test with invalid inputs
+  ignore_errors: yes
+  register: result
+  vars:
+    underlay_routing_protocol: ABC
+  arista.avd.eos_designs_structured_config:
+    validation_mode: error
+
+- vars:
+    error_msg: >-
+      1 errors found during schema validation of input vars. Run with -v to see details
+  assert:
+    that:
+      - result.failed == True
+      - result.msg == error_msg

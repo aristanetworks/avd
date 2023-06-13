@@ -142,7 +142,7 @@ TODO
 The class is instantiated once per device. Methods may use references to other device instances using `hostvars.avd_switch_facts`,
 which is a dict of `EosDesignsfacts` instances covering all devices.
 
-See the source code [here](../../plugins/plugin_utils/eos_designs_facts/)
+See the source code [here](../../plugins/plugin_utils/eos_designs_facts/__init__.py)
 
 ```mermaid
 classDiagram
@@ -173,7 +173,7 @@ classDiagram
 
 ### SharedUtils
 
-See the source code [here](../../plugins/plugin_utils/eos_designs_shared_utils/)
+See the source code [here](../../plugins/plugin_utils/eos_designs_shared_utils/__init__.py)
 
 ```mermaid
 classDiagram
@@ -226,17 +226,17 @@ Subclasses are typically using Mixin classes to split all the attributes/`cached
 
 Source code:
 
-- [AvdStructuredConfigBase](../../roles/eos_designs/python_modules/base/)
+- [AvdStructuredConfigBase](../../roles/eos_designs/python_modules/base/__init__.py)
   (Unfortunate naming. Base here refers to base configurations. Not a Base class.)
-- [AvdStructuredConfigConnectedEndpoints](../../roles/eos_designs/python_modules/connected_endpoints/)
-- [AvdStructuredConfigCoreInterfaces](../../roles/eos_designs/python_modules/core_interfaces/)
-- [AvdStructuredConfigCustomStructuredConfiguration](../../roles/eos_designs/python_modules/custom_structured_configuration/)
-- [AvdStructuredConfigInbandManagement](../../roles/eos_designs/python_modules/inband_management/)
-- [AvdStructuredConfigL3Edge](../../roles/eos_designs/python_modules/l3_edge/)
-- [AvdStructuredConfigMlag](../../roles/eos_designs/python_modules/mlag/)
-- [AvdStructuredConfigNetworkServices](../../roles/eos_designs/python_modules/network_services/)
-- [AvdStructuredConfigOverlay](../../roles/eos_designs/python_modules/overlay/)
-- [AvdStructuredConfigUnderlay](../../roles/eos_designs/python_modules/underlay/)
+- [AvdStructuredConfigConnectedEndpoints](../../roles/eos_designs/python_modules/connected_endpoints/__init__.py)
+- [AvdStructuredConfigCoreInterfaces](../../roles/eos_designs/python_modules/core_interfaces/__init__.py)
+- [AvdStructuredConfigCustomStructuredConfiguration](../../roles/eos_designs/python_modules/custom_structured_configuration/__init__.py)
+- [AvdStructuredConfigInbandManagement](../../roles/eos_designs/python_modules/inband_management/__init__.py)
+- [AvdStructuredConfigL3Edge](../../roles/eos_designs/python_modules/l3_edge/__init__.py)
+- [AvdStructuredConfigMlag](../../roles/eos_designs/python_modules/mlag/__init__.py)
+- [AvdStructuredConfigNetworkServices](../../roles/eos_designs/python_modules/network_services/__init__.py)
+- [AvdStructuredConfigOverlay](../../roles/eos_designs/python_modules/overlay/__init__.py)
+- [AvdStructuredConfigUnderlay](../../roles/eos_designs/python_modules/underlay/__init__.py)
 
 ```mermaid
 classDiagram

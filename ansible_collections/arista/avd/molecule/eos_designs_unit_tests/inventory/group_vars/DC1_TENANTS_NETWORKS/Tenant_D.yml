@@ -91,7 +91,7 @@ tenant_d:
             name: Track-bfd-network-services
             track_bfd: true
             nodes: [ DC1-LEAF2A ]
-      - name: Tenant_D_WAN_Zone
+      - name: 12345678 # Testing all numeric VRF name (will require auto-conversion in schema)
         vrf_vni: 41
         svis:
           - id: 450

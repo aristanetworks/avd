@@ -5,7 +5,6 @@ type: dict
 keys:
   terminattr_disable_aaa:
     documentation_options:
-      filename: Input Variables
-      table: CloudVision Settings
+      table: cloudvision-settings
     type: bool
     default: False
