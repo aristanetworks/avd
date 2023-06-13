@@ -16,6 +16,7 @@ breaking_changes:
 - Feat(eos_designs)! - Remove default value from mlag_peer_link_allowed_vlans (https://github.com/aristanetworks/ansible-avd/pull/2845)
 - Refactor(eos_cli_config_gen)! - Require queue_monitor_length.enabled to be set -chourasiya (https://github.com/aristanetworks/ansible-avd/pull/2429)
 - Feat(eos_designs)! - Platform and Fabric variables to adjust update wait-for-convergence and update wait-install (https://github.com/aristanetworks/ansible-avd/pull/2855)
+- Bump(cvp_configlet_upload,eos_config_deploy_cvp)! - Update the default `cv_collection` from `v1` to `v3` (https://github.com/aristanetworks/ansible-avd/pull/2882)
 bugfixes:
 ### Fixed issues in eos_cli_config_gen
 - Fix(eos_cli_config_gen) - Add convert_types to router ospf area id schema (https://github.com/aristanetworks/ansible-avd/pull/2391)
@@ -291,7 +292,6 @@ minor_changes:
 - Refactor(eos_cli_config_gen, eos_designs - Improve BGP VRF Address Families Model (https://github.com/aristanetworks/ansible-avd/pull/2808)
 - Refactor(eos_designs) - New plugin eos_designs_structured_config instead of yaml_templates_to_facts (https://github.com/aristanetworks/ansible-avd/pull/2857)
 - Bump - Pre-release v4.0.0-rc1 (https://github.com/aristanetworks/ansible-avd/pull/2872)
-- Bump(cvp_configlet_upload,eos_config_deploy_cvp)! - Update the default `cv_collection` from `v1` to `v3` (https://github.com/aristanetworks/ansible-avd/pull/2882)
 - Bump - Pre-release 4.0.0-rc2 (https://github.com/aristanetworks/ansible-avd/pull/2905)
 - Refactor(eos_designs) - Change description for port-channel members to be the physical peer interface instead of port-channel -chourasiya (https://github.com/aristanetworks/ansible-avd/pull/2949)
 - Bump - Collection requirements and cvprac (https://github.com/aristanetworks/ansible-avd/pull/2956)
