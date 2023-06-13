@@ -6,6 +6,12 @@ Since several data models have changed between AVD versions 3.x and 4.x, it is r
 
 The input variables are documented below in tables and YAML.
 
+!!! note
+    All input variables are enforced by a schema. If additional custom keys are desired, a key starting with an underscore `_`, will be ignored.
+
+!!! warning
+    Available features and variables may vary by platforms, refer to documentation on arista.com for specifics.
+
 ## Supported designs
 
 `eos_designs` supports multiple options such as L3LS-EVPN with 3-stage or 5-stage, L2LS and MPLS. The sections below highlight these 3 topologies, but you can extend `eos_designs` to support your own topology by using [`node_type_keys`](#node-type-customization) to create your own node type.
