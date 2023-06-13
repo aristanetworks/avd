@@ -7,7 +7,7 @@ Since several data models have changed between AVD versions 3.x and 4.x, it is r
 The input variables are documented below in tables and YAML.
 
 !!! note
-    All input variables are enforced by a schema. If additional custom keys are desired, a key starting with an underscore `_`, will be ignored.
+    All input variables are validated by a schema. If additional custom keys are desired, a key starting with an underscore `_`, will be ignored.
 
 !!! warning
     Available features and variables may vary by platforms, refer to documentation on arista.com for specifics.
