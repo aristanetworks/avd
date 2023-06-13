@@ -11,6 +11,8 @@ keys:
         vrf:
           type: str
           description: VRF Name
+          convert_types:
+            - int
         destination_address_prefix:
           type: str
           description: IPv4_network/Mask

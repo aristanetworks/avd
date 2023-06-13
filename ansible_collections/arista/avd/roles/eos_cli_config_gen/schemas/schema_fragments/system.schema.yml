@@ -23,7 +23,7 @@ keys:
             type: list
             primary_key: acl_name
             convert_types:
-            - dict
+              - dict
             items:
               type: dict
               keys:
@@ -31,11 +31,13 @@ keys:
                   type: str
                 vrf:
                   type: str
+                  convert_types:
+                    - int
           ipv6_access_groups:
             type: list
             primary_key: acl_name
             convert_types:
-            - dict
+              - dict
             items:
               type: dict
               keys:
@@ -43,3 +45,5 @@ keys:
                   type: str
                 vrf:
                   type: str
+                  convert_types:
+                    - int

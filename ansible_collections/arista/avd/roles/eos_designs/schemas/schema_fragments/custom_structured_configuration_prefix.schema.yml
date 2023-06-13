@@ -5,8 +5,7 @@ type: dict
 keys:
   custom_structured_configuration_prefix:
     documentation_options:
-      filename: Input Variables
-      table: Custom Structured Configuration
+      table: custom-structured-configuration
     type: list
     convert_types:
       - str

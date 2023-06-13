@@ -7,7 +7,7 @@ keys:
     type: list
     primary_key: name
     convert_types:
-    - dict
+      - dict
     items:
       type: dict
       keys:
@@ -23,7 +23,7 @@ keys:
           min: 0
           max: 600
           convert_types:
-          - str
+            - str
           description: Interval in seconds for updating interface counters"
         speed:
           type: str
@@ -31,17 +31,17 @@ keys:
         mtu:
           type: int
           convert_types:
-          - str
+            - str
         l2_mtu:
           type: int
           convert_types:
-          - str
+            - str
           description: |
             "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI
         vlans:
           type: str
           convert_types:
-          - int
+            - int
           description: |
             List of switchport vlans as string
             For a trunk port this would be a range like "1-200,300"
@@ -49,7 +49,7 @@ keys:
         native_vlan:
           type: int
           convert_types:
-          - str
+            - str
         native_vlan_tag:
           type: bool
           description: If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence
@@ -67,14 +67,14 @@ keys:
               min: 1
               max: 4094
               convert_types:
-              - str
+                - str
         l2_protocol:
           type: dict
           keys:
             encapsulation_dot1q_vlan:
               type: int
               convert_types:
-              - str
+                - str
               description: Vlan tag to configure on sub-interface
             forwarding_profile:
               type: str
@@ -109,6 +109,8 @@ keys:
         vrf:
           type: str
           description: VRF name
+          convert_types:
+            - int
         flow_tracker:
           type: dict
           keys:
@@ -157,7 +159,7 @@ keys:
                   min: 0
                   max: 65535
                   convert_types:
-                  - str
+                    - str
                   description: Preference_value is only used when "algorithm" is "preference"
                 dont_preempt:
                   type: bool
@@ -165,11 +167,11 @@ keys:
                 hold_time:
                   type: int
                   convert_types:
-                  - str
+                    - str
                 subsequent_hold_time:
                   type: int
                   convert_types:
-                  - str
+                    - str
                 candidate_reachability_required:
                   type: bool
             mpls:
@@ -180,18 +182,18 @@ keys:
                   min: 1
                   max: 1024
                   convert_types:
-                  - str
+                    - str
                 tunnel_flood_filter_time:
                   type: int
                   convert_types:
-                  - str
+                    - str
             route_target:
               type: str
               description: EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx
         encapsulation_dot1q_vlan:
           type: int
           convert_types:
-          - str
+            - str
           description: VLAN tag to configure on sub-interface
         encapsulation_vlan:
           type: dict
@@ -205,17 +207,17 @@ keys:
                     vlan:
                       type: int
                       convert_types:
-                      - str
+                        - str
                       description: Client VLAN ID
                     outer:
                       type: int
                       convert_types:
-                      - str
+                        - str
                       description: Client Outer VLAN ID
                     inner:
                       type: int
                       convert_types:
-                      - str
+                        - str
                       description: Client Inner VLAN ID
                 unmatched:
                   type: bool
@@ -229,17 +231,17 @@ keys:
                     vlan:
                       type: int
                       convert_types:
-                      - str
+                        - str
                       description: Network VLAN ID
                     outer:
                       type: int
                       convert_types:
-                      - str
+                        - str
                       description: Network outer VLAN ID
                     inner:
                       type: int
                       convert_types:
-                      - str
+                        - str
                       description: Network inner VLAN ID
                 client:
                   type: bool
@@ -248,7 +250,7 @@ keys:
           min: 1
           max: 4094
           convert_types:
-          - str
+            - str
         ip_address:
           type: str
           description: IPv4 address/mask
@@ -260,7 +262,7 @@ keys:
           type: list
           primary_key: ip_helper
           convert_types:
-          - dict
+            - dict
           items:
             type: dict
             keys:
@@ -273,6 +275,8 @@ keys:
               vrf:
                 type: str
                 description: VRF name
+                convert_types:
+                  - int
         ip_nat:
           $ref: "#/$defs/interface_ip_nat"
         ipv6_enable:
@@ -290,7 +294,7 @@ keys:
           type: list
           primary_key: ipv6_prefix
           convert_types:
-          - dict
+            - dict
           items:
             type: dict
             keys:
@@ -300,12 +304,12 @@ keys:
               valid_lifetime:
                 type: str
                 convert_types:
-                - int
+                  - int
                 description: Infinite or lifetime in seconds
               preferred_lifetime:
                 type: str
                 convert_types:
-                - int
+                  - int
                 description: Infinite or lifetime in seconds
               no_autoconfig_flag:
                 type: bool
@@ -321,6 +325,8 @@ keys:
                 required: true
               vrf:
                 type: str
+                convert_types:
+                  - int
               local_interface:
                 type: str
                 description: Local interface to communicate with DHCP server - mutually exclusive to source_address
@@ -385,11 +391,11 @@ keys:
         ospf_area:
           type: str
           convert_types:
-          - int
+            - int
         ospf_cost:
           type: int
           convert_types:
-          - str
+            - str
         ospf_authentication:
           type: str
           valid_values: ["none", "simple", "message-digest"]
@@ -400,14 +406,14 @@ keys:
           type: list
           primary_key: id
           convert_types:
-          - dict
+            - dict
           items:
             type: dict
             keys:
               id:
                 type: int
                 convert_types:
-                - str
+                  - str
                 required: true
               hash_algorithm:
                 type: str
@@ -424,7 +430,7 @@ keys:
                 dr_priority:
                   type: int
                   convert_types:
-                  - str
+                    - str
                   min: 0
                   max: 429467295
                 sparse_mode:
@@ -440,7 +446,7 @@ keys:
             id:
               type: int
               convert_types:
-              - str
+                - str
             mode:
               type: str
               valid_values: ["on", "active", "passive"]
@@ -452,7 +458,7 @@ keys:
         isis_metric:
           type: int
           convert_types:
-          - str
+            - str
         isis_network_point_to_point:
           type: bool
         isis_circuit_type:
@@ -498,7 +504,7 @@ keys:
                   min: 1
                   max: 86400
                   convert_types:
-                  - str
+                    - str
                   description: Number of seconds to delay shutting the power off after a link down event occurs. Default value is 5 seconds in EOS.
             shutdown:
               description: Set the PoE power behavior for a PoE port when the port is admin down
@@ -517,12 +523,12 @@ keys:
                   min: 0
                   max: 8
                   convert_types:
-                  - str
+                    - str
                 watts:
                   type: str
                   convert_types:
-                  - int
-                  - float
+                    - int
+                    - float
                 fixed:
                   type: bool
                   description: Set to ignore hardware classification
@@ -543,15 +549,15 @@ keys:
                 interval:
                   type: int
                   convert_types:
-                  - str
+                    - str
                 timeout:
                   type: int
                   convert_types:
-                  - str
+                    - str
             delay_req:
               type: int
               convert_types:
-              - str
+                - str
             delay_mechanism:
               type: str
               valid_values: ["e2e", "p2p"]
@@ -561,14 +567,14 @@ keys:
                 interval:
                   type: int
                   convert_types:
-                  - str
+                    - str
             role:
               type: str
               valid_values: ["master", "dynamic"]
             vlan:
               type: str
               convert_types:
-              - int
+                - int
               description: VLAN can be 'all' or list of vlans as string
             transport:
               type: str
@@ -585,8 +591,8 @@ keys:
                 level:
                   type: str
                   convert_types:
-                  - int
-                  - float
+                    - int
+                    - float
                   description: Configure maximum storm-control level
                 unit:
                   type: str
@@ -599,8 +605,8 @@ keys:
                 level:
                   type: str
                   convert_types:
-                  - int
-                  - float
+                    - int
+                    - float
                   description: Configure maximum storm-control level
                 unit:
                   type: str
@@ -613,8 +619,8 @@ keys:
                 level:
                   type: str
                   convert_types:
-                  - int
-                  - float
+                    - int
+                    - float
                   description: Configure maximum storm-control level
                 unit:
                   type: str
@@ -627,8 +633,8 @@ keys:
                 level:
                   type: str
                   convert_types:
-                  - int
-                  - float
+                    - int
+                    - float
                   description: Configure maximum storm-control level
                 unit:
                   type: str
@@ -659,14 +665,14 @@ keys:
             ztp_vlan:
               type: int
               convert_types:
-              - str
+                - str
               description: ZTP vlan number
         trunk_private_vlan_secondary:
           type: bool
         pvlan_mapping:
           type: str
           convert_types:
-          - int
+            - int
           description: List of vlans as string
         vlan_translations:
           type: list
@@ -676,12 +682,12 @@ keys:
               from:
                 type: str
                 convert_types:
-                - int
+                  - int
                 description: List of vlans as string (only one vlan if direction is "both")
               to:
                 type: int
                 convert_types:
-                - str
+                  - str
                 description: VLAN ID
               direction:
                 type: str
@@ -714,7 +720,7 @@ keys:
                   min: 1
                   max: 4094
                   convert_types:
-                  - str
+                    - str
             host_mode:
               type: dict
               keys:
@@ -740,17 +746,17 @@ keys:
                   min: 10
                   max: 65535
                   convert_types:
-                  - str
+                    - str
                 quiet_period:
                   type: int
                   min: 1
                   max: 65535
                   convert_types:
-                  - str
+                    - str
                 reauth_period:
                   type: str
                   convert_types:
-                  - int
+                    - int
                   description: Value can be 60-4294967295 or 'server'
                 reauth_timeout_ignore:
                   type: bool
@@ -759,13 +765,13 @@ keys:
                   min: 1
                   max: 65535
                   convert_types:
-                  - str
+                    - str
             reauthorization_request_limit:
               type: int
               min: 1
               max: 10
               convert_types:
-              - str
+                - str
             eapol:
               type: dict
               keys:
@@ -781,7 +787,7 @@ keys:
                       min: 0
                       max: 65535
                       convert_types:
-                      - str
+                        - str
         service_profile:
           type: str
           description: QOS profile
@@ -806,22 +812,22 @@ keys:
             dscp:
               type: int
               convert_types:
-              - str
+                - str
               description: DSCP value
             cos:
               type: int
               convert_types:
-              - str
+                - str
               description: COS value
         spanning_tree_bpdufilter:
           type: str
           convert_types:
-          - bool
+            - bool
           valid_values: ["enabled", "disabled", "True", "False", "true", "false"]
         spanning_tree_bpduguard:
           type: str
           convert_types:
-          - bool
+            - bool
           valid_values: ["enabled", "disabled", "True", "False", "true", "false"]
         spanning_tree_guard:
           type: str
@@ -847,7 +853,7 @@ keys:
                     min: 0
                     max: 7
                     convert_types:
-                    - str
+                      - str
                   no_drop:
                     type: bool
         bfd:
@@ -858,19 +864,19 @@ keys:
             interval:
               type: int
               convert_types:
-              - str
+                - str
               description: Interval in milliseconds
             min_rx:
               type: int
               convert_types:
-              - str
+                - str
               description: Rate in milliseconds
             multiplier:
               type: int
               min: 3
               max: 50
               convert_types:
-              - str
+                - str
         service_policy:
           type: dict
           keys:
@@ -911,13 +917,13 @@ keys:
               min: 3
               max: 3000
               convert_types:
-              - str
+                - str
         lacp_port_priority:
           type: int
           min: 0
           max: 65535
           convert_types:
-          - str
+            - str
         transceiver:
           type: dict
           keys:

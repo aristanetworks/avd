@@ -5,8 +5,7 @@ type: dict
 keys:
   eos_designs_documentation:
     documentation_options:
-      filename: EOS Designs Role Variables
-      table: Documentation Output Settings
+      table: role-documentation-output-settings
     description: |
       Control fabric documentation generation.
     type: dict

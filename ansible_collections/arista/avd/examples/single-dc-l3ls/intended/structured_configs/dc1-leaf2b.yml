@@ -155,11 +155,24 @@ static_routes:
   gateway: 172.16.1.1
 service_routing_protocols_model: multi-agent
 ip_routing: true
+daemon_terminattr:
+  cvaddrs:
+  - 192.168.1.12:9910
+  cvauth:
+    method: token
+    token_file: /tmp/token
+  cvvrf: MGMT
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+  disable_aaa: true
 vlan_internal_order:
   allocation: ascending
   range:
     beginning: 1006
     ending: 1199
+ip_name_servers:
+- ip_address: 192.168.1.1
+  vrf: MGMT
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -456,3 +469,10 @@ virtual_source_nat_vrfs:
   ip_address: 10.255.10.6
 - name: VRF11
   ip_address: 10.255.11.6
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 0.pool.ntp.org
+    vrf: MGMT

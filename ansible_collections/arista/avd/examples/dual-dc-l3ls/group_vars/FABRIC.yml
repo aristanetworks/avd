@@ -52,9 +52,24 @@ bgp_peer_groups:
 # p2p_uplinks_mtu: 1500
 p2p_uplinks_mtu: 1500
 
+# Define default interfaces
+default_interfaces:
+  - types: [ spine ]
+    platforms: [ vEOS-lab ]
+    uplink_interfaces: [ Ethernet1-2 ]
+    downlink_interfaces: [ Ethernet1-8 ]
+  - types: [ l3leaf ]
+    platforms: [ vEOS-lab ]
+    uplink_interfaces: [ Ethernet1-8 ]
+    mlag_interfaces: [ Ethernet3-4 ]
+    downlink_interfaces: [ Ethernet8, Ethernet8 ]
+  - types: [ l2leaf ]
+    platforms: [ vEOS-lab ]
+    uplink_interfaces: [ Ethernet1-2 ]
+
 # L3 Edge port definitions. This can be any port in the entire Fabric, where IP interfaces are defined.
 l3_edge:
-  # Define a new IP pool that will be used to asign IP addreses to L3 Edge interfaces.
+  # Define a new IP pool that will be used to assign IP addresses to L3 Edge interfaces.
   p2p_links_ip_pools:
     - name: DCI_IP_pool
       ipv4_pool: 172.100.100.0/24

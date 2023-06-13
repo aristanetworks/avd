@@ -7,3 +7,5 @@ dynamic_keys:
     $ref: "#/$defs/connected_endpoints"
     type: list
     display_name: Connected Endpoints
+    documentation_options:
+      table: connected-endpoints

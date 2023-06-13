@@ -5,12 +5,11 @@ type: dict
 keys:
   mgmt_destination_networks:
     documentation_options:
-      filename: Input Variables
-      table: Management Interface Settings
+      table: management-interface-settings
     type: list
     description: |-
       List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.
       Replaces the default route.
     items:
       type: str
-      description: IPv4_address/Mask
+      description: IPv4_address/Mask.

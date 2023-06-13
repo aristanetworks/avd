@@ -5,7 +5,6 @@ type: dict
 keys:
   timezone:
     documentation_options:
-      filename: Input Variables
-      table: Management Settings
+      table: management-settings
     type: str
     description: Clock timezone like "CET" or "US/Pacific".

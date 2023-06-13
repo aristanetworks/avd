@@ -26,6 +26,8 @@ keys:
                 vrf:
                   type: str
                   description: VRF name is optional
+                  convert_types:
+                    - int
                 notification_timestamp:
                   type: str
                   valid_values: ["send-time", "last-change-time"]
@@ -58,6 +60,8 @@ keys:
                 vrf:
                   type: str
                   description: VRF name
+                  convert_types:
+                    - int
                 destination:
                   type: dict
                   keys:
@@ -71,7 +75,7 @@ keys:
                       max: 65535
                       required: true
                       convert_types:
-                      - str
+                        - str
                       description: TCP Port
                 local_interface:
                   type: dict
@@ -86,7 +90,7 @@ keys:
                       max: 65535
                       required: true
                       convert_types:
-                      - str
+                        - str
                       description: TCP Port
                 target:
                   type: dict
@@ -108,7 +112,7 @@ keys:
           remove_in_version: "5.0.0"
         primary_key: name
         convert_types:
-        - dict
+          - dict
         description: |
           These should not be mixed with the new keys above.
         items:
@@ -117,6 +121,8 @@ keys:
             name:
               type: str
               description: VRF name
+              convert_types:
+                - int
             access_group:
               type: str
               description: Standard IPv4 ACL name

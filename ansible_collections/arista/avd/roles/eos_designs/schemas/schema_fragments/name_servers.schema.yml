@@ -5,8 +5,7 @@ type: dict
 keys:
   name_servers:
     documentation_options:
-      filename: Input Variables
-      table: Management Settings
+      table: management-settings
     type: list
     description: List of DNS servers. The VRF is set to < mgmt_interface_vrf >.
     items:

@@ -5,11 +5,10 @@ type: dict
 keys:
   terminattr_ingestgrpcurl_port:
     documentation_options:
-      filename: Input Variables
-      table: CloudVision Settings
+      table: cloudvision-settings
     type: int
     convert_types:
-    - str
+      - str
     default: 9910
     description: |-
       Port number used for Terminattr connection to an on-premise CloudVision cluster.

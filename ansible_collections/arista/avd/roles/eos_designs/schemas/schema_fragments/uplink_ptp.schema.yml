@@ -5,9 +5,8 @@ type: dict
 keys:
   uplink_ptp:
     documentation_options:
-      filename: Input Variables
-      table: Fabric Settings
-    description: Enable PTP on all infrastructure links
+      table: fabric-settings
+    description: Enable PTP on all infrastructure links.
     type: dict
     keys:
       enable:
