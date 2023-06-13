@@ -30,14 +30,14 @@ PTP must be specifically enabled:
 
 - on the fabric level, for example FABRIC.yml
 
-  ```yml
+  ```yaml
   ptp:
     enabled: true
   ```
 
 - per node_group, for example for all spine nodes in SPINES.yml
 
-  ```yml
+  ```yaml
   spine:
     defaults:
       ptp:
@@ -46,7 +46,7 @@ PTP must be specifically enabled:
 
 - per node for a specific node/device inside a node_group, for example for a specific leaf in LEAFS.yml
 
-  ```yml
+  ```yaml
   l3leaf:
     nodes:
       - name: leaf1
@@ -57,7 +57,7 @@ PTP must be specifically enabled:
 > **Please note:** If present, you need to remove the legacy PTP notation shown below, for example for all spine nodes.
 > If this is ***not*** removed, the PTP profile-specific interface configuration will not be applied to the interfaces between leaf and spine switches.
 
-```yml
+```yaml
 spine:
   defaults:
     uplink_ptp:
@@ -128,7 +128,7 @@ All other node_types will have a default PTP priority 1 of `127` to ensure they 
 
 For leaf switches connecting to a PTP GrandMaster we recommend to manually set PTP priority 1 lower than the other leaf switches, for example to "10" as shown below:
 
-```yml
+```yaml
 l3leaf:
   nodes:
     - name: ptp-leaf1
@@ -143,7 +143,7 @@ Alternatively the default `node_type_keys` can be overridden to add a `ptp_leaf`
 
 The automatic PTP priorities can be manually overriden if required, for example for blue-leaf1:
 
-```yml
+```yaml
 l3leaf:
   nodes:
     - name: blue-leaf1
@@ -159,7 +159,7 @@ l3leaf:
 
 By default PTP clock identity is generated and set automatically.
 
-```yml
+```yaml
 auto_clock_identity = < true | false | default -> true >
 clock_identity = < (clock_identity_prefix = 00:1C:73 (default)) + (PTP priority 1 as HEX) + ":00:" + (PTP priority 2 as HEX) >
 ```
@@ -171,7 +171,7 @@ By default the 3-byte prefix is `00:1C:73`, but this can be overridden if `auto_
 
 For example for all spine nodes:
 
-```yml
+```yaml
 spine:
   defaults:
     ptp:
@@ -183,7 +183,7 @@ spine:
 
 If you prefer to have PTP clock identity be the system MAC-address of the switch, which is the default EOS behaviour, simply disable the automatic PTP clock identity as shown here:
 
-```yml
+```yaml
 spine:
   defaults:
     ptp:
@@ -196,7 +196,7 @@ spine:
 PTP Clock identity can be set manually per node_group or node, for example for blue-spine1:
 > **Please note:** Remember to use double-quotes around the value, as otherwise it will be not be rendered correctly.
 
-```yml
+```yaml
 spine:
   nodes:
     - name: blue-spine1
@@ -210,7 +210,7 @@ spine:
 With this feature enabled, multicast PTP packets will continue to be sent to the control plane, but unicast PTP packets will be hardware forwarded through the data plane.
 This feature enables the use of protocols such as Meinbergs NetSync to monitor downstream PTP slaves in the network without having the PTP packets dropped by Arista Switches acting as boundary clocks.
 
-```yml
+```yaml
 forward_unicast: < true | false | default -> false >
 ```
 
@@ -218,7 +218,7 @@ forward_unicast: < true | false | default -> false >
 
 By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour. This can be set manually if required, for example, to a value of `10.1.2.3`:
 
-```yml
+```yaml
 spine:
   defaults:
     ptp:
@@ -230,7 +230,7 @@ spine:
 
 By default in EOS, PTP packets are sent with a TTL of 1. This is perfectly acceptable when using the recommended topology with routed interfaces or VLANs with a local SVI, but can be overridden and set manually, for example to a value of `64`:
 
-```yml
+```yaml
 spine:
   defaults:
     ptp:
@@ -264,7 +264,7 @@ roles/eos_designs/docs/tables/node-type-ptp-configuration.md
 
 You can manually set the global DSCP values used for PTP messages if this is required:
 
-```yml
+```yaml
 spine:
   defaults:
     ptp:
@@ -282,7 +282,7 @@ These are the default settings:
 - The global PTP profile parameters will be applied to all connected endpoints where ptp is manually enabled.
 - `ptp role master` is set to ensure control over the PTP topology.
 
-```yml
+```yaml
 servers:
   - name: <server-name>
     adapters:
@@ -300,7 +300,7 @@ servers:
 
 If you want to configure a routed interface with no IP address, for example to connect to a PTP Grandmaster, you can do as shown below. Please note in this example, the default PTP role has been overridden, making the interface Ethernet5 on blue-spine1 towards the Blue PTP Grandmaster run BMCA. Depending on the topology, this interface will end up in PTP mode Slave or Passive.
 
-```yml
+```yaml
 servers:
   - name: Blue-Grandmaster
     adapters:
@@ -317,7 +317,7 @@ servers:
 
 If you want to use a different PTP profile on an interface towards a connected endpoint, it can be set manually:
 
-```yml
+```yaml
 servers:
   - name: Endpoint-with-specific-PTP-profile
     adapters:
@@ -336,7 +336,7 @@ In a Media and Entertainment Layer 3 Leaf Spine network topology with redundant 
 
 Such switch-to-switch links must be defined on a fabric level, for example using two links between blue-leaf1 and blue-leaf2 as shown here:
 
-```yml
+```yaml
 core_interfaces:
   p2p_links:
       # Unique id
