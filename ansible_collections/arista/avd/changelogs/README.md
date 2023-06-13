@@ -9,3 +9,8 @@ To generate changelog (Note this can only be done once, since it will remove the
 cd ansible_collections/arista/avd/
 antsibull-changelog release
 ```
+
+## Documentation
+
+- [antsibull-changelog](https://github.com/ansible-community/antsibull-changelog/blob/main/docs/changelogs.rst)
+- [categories]https://github.com/ansible-community/antsibull-changelog/blob/main/docs/changelogs.rst#changelog-fragment-categories
