@@ -478,9 +478,8 @@ The following underlay routing protocols are supported:
 - OSPF-LDP*.
 - none**.
 
-*) Only supported with core_interfaces data model.
-
-**) For use with design type "l2ls" or other designs where there is no requirement for a routing protocol for underlay and/or overlay on l3 devices.
+\* Only supported with core_interfaces data model.<br />
+\** For use with design type "l2ls" or other designs where there is no requirement for a routing protocol for underlay and/or overlay on l3 devices.
 
 ??? note "Details on `enable_trunk_groups`"
     Enabling the use of trunk groups will change the behavior of several components in AVD.
@@ -557,8 +556,8 @@ The following overlay routing protocols are supported:
 - HER (Head-End Replication)**
 - CVX (CloudVision eXchange)
 
-*) For use with design type "l2ls" or other designs where there is no requirement for a routing protocol for underlay and/or overlay on l3 devices.
-**) By setting `overlay_routing_protocol:HER`, `eos_designs` will configure static VXLAN flood-lists instead of using a dynamic overlay protocol.
+\* For use with design type "l2ls" or other designs where there is no requirement for a routing protocol for underlay and/or overlay on l3 devices.<br />
+\** By setting `overlay_routing_protocol:HER`, `eos_designs` will configure static VXLAN flood-lists instead of using a dynamic overlay protocol.
 
 --8<--
 roles/eos_designs/docs/tables/overlay-settings.md
