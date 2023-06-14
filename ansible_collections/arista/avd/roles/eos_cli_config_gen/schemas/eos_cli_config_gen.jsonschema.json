@@ -16809,6 +16809,22 @@
                   "always": {
                     "type": "boolean",
                     "title": "Always"
+                  },
+                  "metric": {
+                    "type": "integer",
+                    "description": "Metric for default route",
+                    "minimum": 1,
+                    "maximum": 65535,
+                    "title": "Metric"
+                  },
+                  "metric_type": {
+                    "type": "integer",
+                    "enum": [
+                      1,
+                      2
+                    ],
+                    "description": "OSPF metric type for default route",
+                    "title": "Metric Type"
                   }
                 },
                 "additionalProperties": false,
