@@ -46,7 +46,7 @@ PTP must be specifically enabled:
 
 - per node for a specific node/device inside a node_group, for example for a specific leaf in LEAFS.yml
 
-  ```yml
+  ```yaml
   l3leaf:
     node_groups:
       - group: leaf1
@@ -130,7 +130,7 @@ All other node_types will have a default PTP priority 1 of `127` to ensure they 
 
 For leaf switches connecting to a PTP GrandMaster we recommend to manually set PTP priority 1 lower than the other leaf switches, for example to "10" as shown below:
 
-```yml
+```yaml
 l3leaf:
   node_groups:
     leaf1:
@@ -147,7 +147,7 @@ Alternatively the default `node_type_keys` can be overridden to add a `ptp_leaf`
 
 The automatic PTP priorities can be manually overriden if required, for example for leaf1:
 
-```yml
+```yaml
 l3leaf:
   node_groups:
     - group: leaf1
@@ -177,14 +177,14 @@ If you prefer to have PTP clock identity be the system MAC-address of the switch
 
 - on the fabric level, for example FABRIC.yml
 
-  ```yml
+  ```yaml
   ptp:
     auto_clock_identity: < true | false | default -> true >
   ```
 
 - per node type, for example for all spine nodes in SPINES.yml
 
-  ```yml
+  ```yaml
   spine:
     defaults:
       ptp:
@@ -193,7 +193,7 @@ If you prefer to have PTP clock identity be the system MAC-address of the switch
 
 - per node for a specific node/device inside a node_group, for example for a specific leaf in LEAFS.yml
 
-  ```yml
+  ```yaml
   l3leaf:
     node_groups:
       - group: leaf1
@@ -227,7 +227,7 @@ If the auto generation of PTP clock_identity and the EOS system MAC-address of t
 
 - For example per node type, in this case for all spine nodes in SPINES.yml
 
-  ```yml
+  ```yaml
   spine:
     defaults:
       ptp:
@@ -243,7 +243,7 @@ This feature enables the use of protocols such as Meinbergs NetSync to monitor d
 
 - For example per node type, in this case for all spine nodes in SPINES.yml
 
-  ```yml
+  ```yaml
   spine:
     defaults:
       ptp:
@@ -300,7 +300,7 @@ roles/eos_designs/docs/tables/node-type-ptp-configuration.md
 
 You can manually set the global DSCP values used for PTP messages if this is required:
 
-```yml
+```yaml
 l3leaf:
   node_groups:
     - group: leaf1
