@@ -1722,11 +1722,11 @@ QOS Profile: **test**
 
 **TX Queues**
 
-| TX queue | Type | Bandwidth | Priority | Shape Rate |
-| -------- | ---- | --------- | -------- | ---------- |
-| 1 | All | 50 | no priority | - |
-| 2 | Unicast | 50 | no priority | - |
-| 3 | Multicast | 50 | no priority | - |
+| TX queue | Type | Bandwidth | Priority | Shape Rate | Comment |
+| -------- | ---- | --------- | -------- | ---------- | ------- |
+| 1 | All | 50 | no priority | - | - |
+| 2 | Unicast | 50 | no priority | - | - |
+| 3 | Multicast | 50 | no priority | - | - |
 
 #### QOS Profile Device Configuration
 
