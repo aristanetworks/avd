@@ -4,6 +4,8 @@
 type: dict
 keys:
   underlay_multicast_anycast_rp:
+    documentation_options:
+      table: fabric-settings
     type: dict
     description: |
       If multiple nodes are configured under 'underlay_multicast_rps.[].nodes' for the same RP address, they will be configured

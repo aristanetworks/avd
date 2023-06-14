@@ -4,6 +4,8 @@
 type: dict
 keys:
   underlay_multicast_rps:
+    documentation_options:
+      table: fabric-settings
     description: |
       List of PIM Sparse-Mode Rendevouz Points configured for underlay multicast on all devices.
       The device(s) listed under 'nodes', will be configured as the Rendevouz point router(s).
