@@ -97,9 +97,6 @@ ENV/
 env.bak/
 venv.bak/
 
-# Pipfile
-Pipfile
-
 # Spyder project settings
 .spyderproject
 .spyproject
