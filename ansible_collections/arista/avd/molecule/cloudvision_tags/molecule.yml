@@ -11,8 +11,8 @@ scenario:
     - converge
     # - idempotence
     # - verify # No verification at the moment
-  cleanup_sequence: []
-    # - destroy
+  cleanup_sequence:
+    - destroy
 dependency:
   name: galaxy
 driver:
