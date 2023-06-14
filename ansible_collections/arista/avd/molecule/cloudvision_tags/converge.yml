@@ -5,6 +5,7 @@
   connection: local
   vars:
     root_dir: '{{ playbook_dir }}'
+    CVP_ADDRESS: "{{ lookup('ansible.builtin.env', 'CVP_ADDRESS', default=None) }}"
   tasks:
     - name: Generate intended variables
       delegate_to: 127.0.0.1
@@ -16,3 +17,5 @@
         name: arista.avd.cloudvision
       vars:
         cvp_node: cv_server
+      when:
+        - CVP_ADDRESS != "None"

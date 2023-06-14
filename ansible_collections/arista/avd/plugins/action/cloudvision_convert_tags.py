@@ -28,7 +28,7 @@ class ActionModule(ActionBase):
             profiler = cProfile.Profile()
             profiler.enable()
 
-        result["ansible_facts"] = {"cloudvision_tags": self._generate_cloudvision_tags(task_vars)}
+        result["ansible_facts"] = {"cv_tag_data": self._generate_cloudvision_tags(task_vars)}
 
         if cprofile_file:
             profiler.disable()
@@ -55,15 +55,16 @@ class ActionModule(ActionBase):
 
         return [single_device_tags]
 
-    @staticmethod
-    def _convert_label(existing_tags):
+    def _convert_label(self, existing_tags):
+        """
+        Swaps out the key 'label' with 'name', as required for
+        the cv_tags_v3 module.
+        """
         if existing_tags.get("device_tags"):
             for tag in existing_tags["device_tags"]:
-                tag["name"] = tag["label"]
-                tag.pop("label", None)
+                tag["name"] = tag.pop("label")
 
         if existing_tags.get("interface_tags"):
             for interface in existing_tags["interface_tags"]:
                 for tag in interface["tags"]:
-                    tag["name"] = tag["label"]
-                    tag.pop("label", None)
+                    tag["name"] = tag.pop("label")

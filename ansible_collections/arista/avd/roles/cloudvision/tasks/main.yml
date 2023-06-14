@@ -1,20 +1,23 @@
 ---
-- name: Load tag information from strucutred config
+- name: "Load tag information from strucutred config"
   ansible.builtin.include_vars:
     file: "{{ filename }}"
   delegate_to: localhost
-  when: structured_config is not defined and lookup('first_found', filename, skip=True, errors='ignore')
+  when:
+    - structured_config is not defined and lookup('first_found', filename, skip=True, errors='ignore')
+    - not hostvars[inventory_hostname].is_deployed is arista.avd.defined(false)
   vars:
     filename: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
 
-- name: Generate CloudVision Request
-  cloudvision_convert_tags:
-    cprofile_file: 'cprofile_test'
+- name: "Generate CloudVision Tag Data"
+  arista.avd.cloudvision_convert_tags:
   delegate_to: localhost
+  when:
+    - not hostvars[inventory_hostname].is_deployed is arista.avd.defined(false)
 
 - name: "Update tags on CVP"
   arista.cvp.cv_tag_v3:
-    tags: "{{ cloudvision_tags }}"
+    tags: "{{ cv_tag_data }}"
     mode: assign
     auto_create: true
   delegate_to: "{{ cvp_node }}"
