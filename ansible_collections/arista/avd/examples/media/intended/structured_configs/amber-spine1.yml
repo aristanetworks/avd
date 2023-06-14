@@ -1,0 +1,213 @@
+router_bgp:
+  as: '65100'
+  router_id: 10.255.1.1
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  graceful_restart:
+    enabled: true
+    restart_time: 300
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    password: 7x4B4rnJhZB438m9+BrBfQ==
+    maximum_routes: 12000
+    send_community: all
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: null
+  neighbors:
+  - ip_address: 10.255.254.1
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65101'
+    description: amber-leaf1_Ethernet49/1
+  - ip_address: 10.255.254.3
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65102'
+    description: amber-leaf2_Ethernet49/1
+  - ip_address: 10.255.253.1
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65401'
+    description: media-PTP-1_Ethernet51
+  - ip_address: 10.255.253.5
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65402'
+    description: media-PTP-2_Ethernet51
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 10.252.0.1
+service_routing_protocols_model: multi-agent
+ip_routing: true
+router_multicast:
+  ipv4:
+    routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+ip_name_servers:
+- ip_address: 10.90.227.155
+  vrf: MGMT
+local_users:
+- name: admin
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$ttzoDdVO8Uz2SiBF$Ge.hQWy9wPGWyGc9.Q/mMyjycNO.9ylh40Vc.0iiqU/MtR7MKKIuOgbKkOeD3EpPMtN2SBForxog2ZCqv0kbu0
+- name: cvpadmin
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$n7NC6yuQmsXgOMKP$UZu7iLcCZgydY8NMdGAz244RVKdWqEikN.9ByPifgwQ90xS3fT6.46j5WcfUxkmVYWhWSgbIpODxVw67VkbkQ0
+vrfs:
+- name: MGMT
+  ip_routing: false
+management_interfaces:
+- name: Management1
+  description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 10.90.227.11/24
+  gateway: 10.252.0.1
+  type: oob
+tcam_profile:
+  system: vxlan-routing
+platform:
+  sand:
+    lag:
+      hardware_only: true
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+ptp:
+  mode: boundary
+  clock_identity: 00:1C:73:14:00:01
+  priority1: 20
+  priority2: 1
+  domain: 0
+  monitor:
+    enabled: true
+    threshold:
+      offset_from_master: 250
+      mean_path_delay: 1500
+    missing_message:
+      sequence_ids:
+        enabled: true
+        announce: 3
+        delay_resp: 3
+        follow_up: 3
+        sync: 3
+ethernet_interfaces:
+- name: Ethernet1/1
+  peer: amber-leaf1
+  peer_interface: Ethernet49/1
+  peer_type: media_leaf
+  description: P2P_LINK_TO_AMBER-LEAF1_Ethernet49/1
+  shutdown: false
+  mtu: 9214
+  type: routed
+  ptp:
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+    enable: true
+  ip_address: 10.255.254.0/31
+  pim:
+    ipv4:
+      sparse_mode: true
+- name: Ethernet3/1
+  peer: amber-leaf2
+  peer_interface: Ethernet49/1
+  peer_type: media_leaf
+  description: P2P_LINK_TO_AMBER-LEAF2_Ethernet49/1
+  shutdown: false
+  mtu: 9214
+  type: routed
+  ptp:
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+    enable: true
+  ip_address: 10.255.254.2/31
+  pim:
+    ipv4:
+      sparse_mode: true
+- name: Ethernet27/1
+  peer: media-PTP-1
+  peer_interface: Ethernet51
+  peer_type: ptp_leaf
+  description: P2P_LINK_TO_MEDIA-PTP-1_Ethernet51
+  shutdown: false
+  mtu: 9214
+  type: routed
+  ptp:
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+    enable: true
+  ip_address: 10.255.253.0/31
+  pim:
+    ipv4:
+      sparse_mode: true
+- name: Ethernet28/1
+  peer: media-PTP-2
+  peer_interface: Ethernet51
+  peer_type: ptp_leaf
+  description: P2P_LINK_TO_MEDIA-PTP-2_Ethernet51
+  shutdown: false
+  mtu: 9214
+  type: routed
+  ptp:
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+    enable: true
+  ip_address: 10.255.253.4/31
+  pim:
+    ipv4:
+      sparse_mode: true
+loopback_interfaces:
+- name: Loopback0
+  description: Router_ID
+  shutdown: false
+  ip_address: 10.255.1.1/32
+ip_igmp_snooping:
+  globally_enabled: true
+hardware:
+  speed_groups:
+  - speed_group: 3
+    serdes: 10g
+aaa_authentication:
+  login:
+    default: local
+aaa_authorization:
+  exec:
+    default: local
+route_maps: null
+prefix_lists: null

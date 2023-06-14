@@ -1,0 +1,19 @@
+---
+type: media_spine
+
+media_spine:
+  defaults:
+    platform: 7050X3
+    loopback_ipv4_pool: 10.255.2.0/27
+    bgp_as: 65200
+
+  nodes:
+    blue-spine1:
+      id: 1
+      mgmt_ip: 10.90.227.12/24
+      uplink_interface_speed: forced 10000full
+      structured_config:
+        hardware:
+          speed_groups:
+            3:
+              serdes: 10g

@@ -1,0 +1,59 @@
+---
+all:
+  children:
+    FABRIC:
+      children:
+
+        AMBER:
+          children:
+            AMBER_SPINES:
+              hosts:
+                amber-spine1:
+                  ansible_host: 10.90.227.11
+            AMBER_LEAVES:
+              hosts:
+                amber-leaf1:
+                  ansible_host: 10.90.227.25
+                amber-leaf2:
+                  ansible_host: 10.90.227.27
+
+        BLUE:
+          children:
+            BLUE_SPINES:
+              hosts:
+                blue-spine1:
+                  ansible_host: 10.90.227.12
+            BLUE_LEAVES:
+              hosts:
+                blue-leaf1:
+                  ansible_host: 10.90.227.29
+                blue-leaf2:
+                  ansible_host: 10.90.227.31
+
+        PTP_LEAVES:
+          hosts:
+            media-PTP-1:
+              ansible_host: 10.90.227.21
+            media-PTP-2:
+              ansible_host: 10.90.227.23
+
+        NETWORK_SERVICES:
+          children:
+            AMBER_LEAVES:
+            BLUE_LEAVES:
+
+        CONNECTED_ENDPOINTS:
+          children:
+            AMBER_LEAVES:
+            BLUE_LEAVES:
+
+cloudvision:
+  hosts:
+    cv_server01:
+      ansible_host: 10.90.227.161
+      ansible_user: cvpadmin
+      ansible_password: arista123!
+      ansible_connection: httpapi
+      ansible_httpapi_use_ssl: True
+      ansible_httpapi_validate_certs: False
+      ansible_network_os: eos

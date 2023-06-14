@@ -1,0 +1,46 @@
+tenants:
+  amber:
+    vrfs:
+      default:
+        svis:
+          111:
+            name: VLAN111
+            enabled: true
+            tags: [ amber-leaf1 ]
+            nodes:
+              amber-leaf1:
+                ip_address: 10.252.9.1/24
+            ip_helpers:
+              10.252.4.253:
+          112:
+            name: VLAN112
+            enabled: true
+            tags: [ amber-leaf2 ]
+            nodes:
+              amber-leaf2:
+                ip_address: 10.252.10.1/24
+            ip_helpers:
+              10.252.4.253:
+
+  blue:
+    vrfs:
+      default:
+        svis:
+          121:
+            name: VLAN121
+            enabled: true
+            tags: [ blue-leaf1 ]
+            nodes:
+              blue-leaf1:
+                ip_address: 10.252.13.1/24
+            ip_helpers:
+              10.252.4.253:
+          122:
+            name: VLAN122
+            enabled: true
+            tags: [ blue-leaf2 ]
+            nodes:
+              blue-leaf2:
+                ip_address: 10.252.14.1/24
+            ip_helpers:
+              10.252.4.253:

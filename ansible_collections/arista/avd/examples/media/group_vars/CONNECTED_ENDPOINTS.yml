@@ -1,0 +1,87 @@
+---
+# Port Profiles
+# Common settings inherited to network_ports
+port_profiles:
+  AMBER_111:
+    mode: access
+    vlans: "111"
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: enabled
+    # ptp:
+    #   enabled: true
+
+  AMBER_112:
+    mode: access
+    vlans: "112"
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: enabled
+    ptp:
+      enabled: true
+
+  BLUE_121:
+    mode: access
+    vlans: "121"
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: enabled
+    ptp:
+      enabled: true
+
+  BLUE_122:
+    mode: access
+    vlans: "122"
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: enabled
+    ptp:
+      enabled: true
+
+# Network Ports
+# All switch_ports ranges are expanded into individual port configurations
+# Switches are matched with regex matching the full hostname.
+network_ports:
+  - switches:
+      - amber-leaf1
+    switch_ports:
+      - Ethernet1-48
+    profile: AMBER_111
+    description: AMBER_VLAN111
+
+  - switches:
+      - amber-leaf2
+    switch_ports:
+      - Ethernet1-48
+    profile: AMBER_112
+    description: AMBER_VLAN112
+
+  - switches:
+      - blue-leaf1
+    switch_ports:
+      - Ethernet1-48
+    profile: BLUE_121
+    description: BLUE_VLAN121
+
+  - switches:
+      - blue-leaf2
+    switch_ports:
+      - Ethernet1-48
+    profile: BLUE_122
+    description: BLUE_VLAN122
+
+  # - switches:
+  #     - amber-leaf2
+  #   switch_ports:
+  #     - Ethernet47
+  #   profile: AMBER_112
+  #   description: GM-Meinberg_NIC_1
+  #   ptp:
+  #     enabled: true
+  #     endpoint_role: bmca
+
+  # - switches:
+  #     - blue-leaf2
+  #   switch_ports:
+  #     - Ethernet47
+  #   profile: BLUE_122
+  #   description: GM-Meinberg_NIC_2
+  #   ptp:
+  #     enabled: true
+  #     endpoint_role: bmca
