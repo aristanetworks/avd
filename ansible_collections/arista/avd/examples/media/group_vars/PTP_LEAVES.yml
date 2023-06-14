@@ -1,0 +1,48 @@
+---
+type: ptp_leaf
+
+ptp_leaf:
+  defaults:
+    platform: 7020TR
+    loopback_ipv4_pool: 10.255.3.0/27
+    uplink_switches: [ 'amber-spine1', 'blue-spine1' ]
+    uplink_interfaces: [ 'Ethernet51', 'Ethernet52' ]
+    uplink_ipv4_pool: 10.255.253.0/26
+    virtual_router_mac_address: 00:1c:73:00:00:99
+    spanning_tree_priority: 4096
+    spanning_tree_mode: mstp
+    filter:
+      tenants: [ ptp ]
+
+  nodes:
+    media-PTP-1:
+      id: 1
+      bgp_as: 65401
+      mgmt_ip: 10.90.227.21/24
+      uplink_switch_interfaces:
+        - Ethernet27/1
+        - Ethernet27/1
+      structured_config:
+        vlans:
+          2222:
+            name: vlan_PTP_1
+        vlan_interfaces:
+          vlan 2222:
+            ip_address: 172.24.121.65/30
+            no_autostate: true
+
+    media-PTP-2:
+      id: 2
+      bgp_as: 65402
+      mgmt_ip: 10.90.227.23/24
+      uplink_switch_interfaces:
+        - Ethernet28/1
+        - Ethernet28/1
+      structured_config:
+        vlans:
+          2223:
+            name: vlan_PTP_2
+        vlan_interfaces:
+          vlan 2223:
+            ip_address: 172.24.123.65/30
+            no_autostate: true

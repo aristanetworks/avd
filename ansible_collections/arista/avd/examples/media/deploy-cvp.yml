@@ -1,0 +1,12 @@
+---
+- name: Deploy Configurations to Devices Using CloudVision Portal # (1)!
+  hosts: CLOUDVISION
+  gather_facts: false
+  connection: local
+  tasks:
+
+    - name: Deploy Configurations to CloudVision # (2)!
+      ansible.builtin.import_role:
+        name: arista.avd.eos_config_deploy_cvp
+      vars:
+        cv_collection: v3 # (3)!
