@@ -10769,6 +10769,11 @@
                     "^_.+$": {}
                   },
                   "title": "Shape"
+                },
+                "comment": {
+                  "type": "string",
+                  "description": "Text comment added to queue.\n",
+                  "title": "Comment"
                 }
               },
               "required": [
@@ -10821,6 +10826,11 @@
                     "^_.+$": {}
                   },
                   "title": "Shape"
+                },
+                "comment": {
+                  "type": "string",
+                  "description": "Text comment added to queue.\n",
+                  "title": "Comment"
                 }
               },
               "required": [
@@ -10864,7 +10874,7 @@
                   "properties": {
                     "rate": {
                       "type": "string",
-                      "description": "Supported options are platform dependent\nExample: \"< rate > kbps\", \"1-100 percent\", \"< rate > pps\"",
+                      "description": "Supported options are platform dependent\nExample: \"< rate > kbps\", \"1-100 percent\", \"< rate > pps\"\n",
                       "title": "Rate"
                     }
                   },
@@ -10873,6 +10883,11 @@
                     "^_.+$": {}
                   },
                   "title": "Shape"
+                },
+                "comment": {
+                  "type": "string",
+                  "description": "Text comment added to queue.",
+                  "title": "Comment"
                 }
               },
               "required": [
@@ -16794,6 +16809,22 @@
                   "always": {
                     "type": "boolean",
                     "title": "Always"
+                  },
+                  "metric": {
+                    "type": "integer",
+                    "description": "Metric for default route",
+                    "minimum": 1,
+                    "maximum": 65535,
+                    "title": "Metric"
+                  },
+                  "metric_type": {
+                    "type": "integer",
+                    "enum": [
+                      1,
+                      2
+                    ],
+                    "description": "OSPF metric type for default route",
+                    "title": "Metric Type"
                   }
                 },
                 "additionalProperties": false,
