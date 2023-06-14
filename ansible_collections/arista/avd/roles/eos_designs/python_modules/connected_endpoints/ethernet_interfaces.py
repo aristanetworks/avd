@@ -139,6 +139,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                     "storm_control": self._get_adapter_storm_control(adapter),
                     "service_profile": adapter.get("qos_profile"),
                     "dot1x": adapter.get("dot1x"),
+                    "poe": self._get_adapter_poe(adapter),
                     "ptp": self._get_adapter_ptp(adapter),
                     "evpn_ethernet_segment": self._get_adapter_evpn_ethernet_segment_cfg(
                         adapter, short_esi, node_index, connected_endpoint, "auto", "single-active"

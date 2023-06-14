@@ -223,6 +223,10 @@ $defs:
               - str
             min: 1
             max: 10
+      poe:
+        $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/poe
+        type: dict
+        description: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
       storm_control:
         type: dict
         description: Storm control settings applied on port toward the endpoint.

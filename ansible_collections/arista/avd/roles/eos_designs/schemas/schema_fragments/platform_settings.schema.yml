@@ -47,6 +47,9 @@ keys:
             interface_storm_control:
               type: bool
               default: true
+            poe:
+              type: bool
+              default: false
             bgp_update_wait_install:
               type: bool
               default: true

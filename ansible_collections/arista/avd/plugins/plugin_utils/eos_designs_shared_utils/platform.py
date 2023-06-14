@@ -18,7 +18,7 @@ DEFAULT_PLATFORM_SETTINGS = [
         },
     },
     {
-        "platforms": ["7050X3", "720XP", "722XP"],
+        "platforms": ["7050X3"],
         "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072",
         "reload_delay": {
             "mlag": 300,
@@ -27,6 +27,23 @@ DEFAULT_PLATFORM_SETTINGS = [
         "feature_support": {
             "queue_monitor_length_notify": False,
         },
+    },
+    {
+        "platforms": ["720XP", "722XP"],
+        "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072",
+        "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330,
+        },
+        "feature_support": {"queue_monitor_length_notify": False, "poe": True},
+    },
+    {
+        "platforms": ["750", "755", "758"],
+        "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330,
+        },
+        "feature_support": {"queue_monitor_length_notify": False, "poe": True},
     },
     {
         "platforms": ["7280R", "7280R2", "7020R"],
@@ -166,3 +183,7 @@ class PlatformMixin:
     @cached_property
     def platform_settings_feature_support_queue_monitor_length_notify(self) -> bool:
         return get(self.platform_settings, "feature_support.queue_monitor_length_notify", default=True) is True
+
+    @cached_property
+    def platform_settings_feature_support_poe(self) -> bool:
+        return get(self.platform_settings, "feature_support.poe", default=False) is True

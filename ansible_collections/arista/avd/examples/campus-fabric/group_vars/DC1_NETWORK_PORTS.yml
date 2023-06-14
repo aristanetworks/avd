@@ -6,6 +6,16 @@ port_profiles:
     mode: "trunk phone"
     spanning_tree_portfast: edge
     spanning_tree_bpduguard: enabled
+    poe:
+      priority: critical
+      reboot:
+        action: maintain
+      link_down:
+        action: maintain
+      shutdown:
+        action: power-off
+      limit:
+        class: 4
     dot1x:
       port_control: auto
       reauthentication: true
