@@ -116,6 +116,12 @@ router ospf {{ process_id.id }}
 {%         if process_id.default_information_originate.always is arista.avd.defined(true) %}
 {%             set default_information_originate_cli = default_information_originate_cli ~ " always" %}
 {%         endif %}
+{%         if process_id.default_information_originate.metric is arista.avd.defined %}
+{%             set default_information_originate_cli = default_information_originate_cli ~ " metric " ~ process_id.default_information_originate.metric %}
+{%         endif %}
+{%         if process_id.default_information_originate.metric_type is arista.avd.defined %}
+{%             set default_information_originate_cli = default_information_originate_cli ~ " metric-type " ~ process_id.default_information_originate.metric_type %}
+{%         endif %}
    {{ default_information_originate_cli }}
 {%     endif %}
 {%     if process_id.redistribute.static is defined %}
