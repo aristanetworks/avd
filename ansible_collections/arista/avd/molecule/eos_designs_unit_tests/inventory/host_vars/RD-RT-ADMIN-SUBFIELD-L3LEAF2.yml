@@ -1,6 +1,6 @@
 ---
 
-# Expected result: rd 192.168.254.2:<vlan_id
+# Expected result: rd 192.168.254.2:<vlan_id>
 overlay_rd_type:
   admin_subfield: vtep_loopback
   vlan_assigned_number_subfield: vlan_id
