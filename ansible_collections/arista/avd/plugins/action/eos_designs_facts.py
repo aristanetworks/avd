@@ -137,7 +137,7 @@ class ActionModule(ActionBase):
             # Insert dynamic keys into the input data if not set.
             # These keys are required by the schema, but the default values are set inside shared_utils.
             host_hostvars.setdefault("node_type_keys", shared_utils.node_type_keys)
-            host_hostvars.setdefault("connected_endpoint_keys", shared_utils.connected_endpoints_keys)
+            host_hostvars.setdefault("connected_endpoints_keys", shared_utils.connected_endpoints_keys)
             host_hostvars.setdefault("network_services_keys", shared_utils.network_services_keys)
 
             # Set correct hostname in schema tools and perform conversion and validation
