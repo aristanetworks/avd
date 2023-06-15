@@ -11,9 +11,9 @@ keys:
       Configuration options for the Administrator subfield (first part of RT) and the Assigned Number subfield (second part of RT).
 
       By default Route Targets (RT) are set to:
-      - `<(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id>:<(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id>` for VLANs and VLAN-Aware Bundles with L2 vlans
-      - `<vlan_aware_bundle_number_base + vrf_id>:<vlan_aware_bundle_number_base + vrf_id>` for VLAN-Aware Bundles with SVIs
-      - `<vrf_id>:<vrf_id>` for VRFs
+      - `<(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id>:<(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id>` for VLANs and VLAN-Aware Bundles with L2 vlans.
+      - `<vlan_aware_bundle_number_base + vrf_id>:<vlan_aware_bundle_number_base + vrf_id>` for VLAN-Aware Bundles with SVIs.
+      - `<vrf_id>:<vrf_id>` for VRFs.
 
       Notes:
       RT is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
