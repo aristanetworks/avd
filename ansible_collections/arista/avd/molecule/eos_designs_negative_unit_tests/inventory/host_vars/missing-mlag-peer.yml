@@ -4,6 +4,7 @@ type: l2leaf
 l2leaf:
   node_groups:
     - group: mlag_group
+      mlag_peer_ipv4_pool: 192.168.1.0/24
       mlag_interfaces: [Ethernet1, Ethernet2]
       nodes:
         - name: missing-mlag-peer
