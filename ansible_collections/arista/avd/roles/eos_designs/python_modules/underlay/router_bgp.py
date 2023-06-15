@@ -28,12 +28,13 @@ class RouterBgpMixin(UtilsMixin):
             "name": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["name"],
             "type": "ipv4",
             "password": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["password"],
+            "bfd": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["bfd"],
             "maximum_routes": 12000,
             "send_community": "all",
             "struct_cfg": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["structured_config"],
         }
 
-        router_bgp["peer_groups"] = [peer_group]
+        router_bgp["peer_groups"] = [strip_empties_from_dict(peer_group)]
 
         # Address Families
         # TODO - see if it makes sense to extract logic in method
