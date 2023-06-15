@@ -1,0 +1,74 @@
+[build-system]
+requires = [
+    "setuptools>=61.2",
+    "wheel",
+    "jinja2>=3.0",
+    "jsonschema>=4.5.1",
+    "deepmerge>=1.1.0",
+    "pyyaml>=6.0.0",
+    "mkdocstrings[python]",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name="pyavd"
+dynamic = ["version"]
+dependencies = [
+    "jinja2>=3.0",
+    "jsonschema>=4.5.1",
+    "deepmerge>=1.1.0",
+    "pyyaml>=6.0.0",
+]
+authors=[{ name = "Arista Networks", email = "ansible@arista.com"}]
+description="Arista validated designs"
+readme = "README.md"
+license = { file = "pyavd/LICENSE" }
+classifiers = [
+    "Operating System :: OS Independent",
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Testing",
+]
+keywords = ["pyavd"]
+
+requires-python = ">=3.10"
+
+[project.urls]
+homepage = "https://avd.arista.com"
+repository = "https://github.com/aristanetworks/ansible-avd"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"*" = [
+    "avd_meta_schema.pickle",
+    "eos_cli_config_gen.schema.pickle",
+    "eos_designs.schema.pickle",
+]
+
+[tool.setuptools.packages.find]
+include = ["pyavd*"]
+exclude = ["vendor_overrides*", "pyavd/vendor/tests*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "pyavd.__version__"}
+
+[tool.black]
+line-length = 160
+
+# Default in black is "false", but the code generator for Pydantic needs this forced.
+skip-string-normalization = false
+
+# Version is locked to 22.8.0 where preview features are all something we like.
+# If the version is changed later, we have to reconsider preview.
+preview = true
+
+[tool.isort]
+profile = "black"
+skip_gitignore = true
+line_length = 160

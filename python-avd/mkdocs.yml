@@ -1,0 +1,7 @@
+site_name: pyavd
+
+theme:
+  name: "material"
+
+plugins:
+  - mkdocstrings

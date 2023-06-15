@@ -1,0 +1,7 @@
+---
+# Variables required to run Molecule test data outside Ansible without getting "undefined" errors.
+playbook_dir: "playbook_dir"
+switch:
+  mgmt_interface: Management1
+  mgmt_vrf: MGMT
+  id: 6
