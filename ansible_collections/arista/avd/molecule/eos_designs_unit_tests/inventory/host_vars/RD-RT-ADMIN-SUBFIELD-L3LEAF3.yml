@@ -1,9 +1,18 @@
 ---
 
-# Expected result: rd 65003:*
+# Expected result:
+# VLAN rd 65003:*
+# VRF rd 123:*
+
 overlay_rd_type:
   admin_subfield: bgp_as
+  admin_subfield_offset: 111 # Ignored for bgp_as and overridden by vrf_admin_subfield_offset
+  vrf_admin_subfield: 123
+  vrf_admin_subfield_offset: 0
 
-# Expected result: rt 15:*
+# Expected result:
+# VLAN rt 15:*
+# VRF rt 65003:*
 overlay_rt_type:
   admin_subfield: 15
+  vrf_admin_subfield: bgp_as
