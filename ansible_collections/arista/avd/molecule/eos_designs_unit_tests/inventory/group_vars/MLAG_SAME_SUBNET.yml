@@ -21,3 +21,12 @@ l3leaf:
         - name: MLAG_SAME_SUBNET_L3LEAF1B
           id: 1
           mgmt_ip: 192.168.201.117/24
+    - group: MLAG_SAME_SUBNET_L3LEAF2
+      bgp_as: 923
+      nodes:
+        - name: MLAG_SAME_SUBNET_L3LEAF2A
+          id: 2
+          mgmt_ip: 192.168.201.118/24
+        - name: MLAG_SAME_SUBNET_L3LEAF2B
+          id: 3
+          mgmt_ip: 192.168.201.119/24

@@ -1,6 +1,6 @@
 router_bgp:
   as: '923'
-  router_id: 192.168.255.33
+  router_id: 192.168.255.34
   bgp:
     default:
       ipv4_unicast: false
@@ -14,7 +14,7 @@ router_bgp:
     type: ipv4
     remote_as: '923'
     next_hop_self: true
-    description: mlag_same_subnet_2
+    description: MLAG_SAME_SUBNET_L3LEAF2B
     maximum_routes: 12000
     send_community: all
     route_map_in: RM-MLAG-PEER-IN
@@ -40,7 +40,7 @@ router_bgp:
   neighbors:
   - ip_address: 10.10.224.1
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    description: mlag_same_subnet_2
+    description: MLAG_SAME_SUBNET_L3LEAF2B
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
@@ -63,7 +63,7 @@ management_interfaces:
   description: oob_management
   shutdown: false
   vrf: MGMT
-  ip_address: 192.168.201.116/24
+  ip_address: 192.168.201.118/24
   gateway: null
   type: oob
 management_api_http:
@@ -97,7 +97,7 @@ vlan_interfaces:
   mtu: 9214
 port_channel_interfaces:
 - name: Port-Channel5
-  description: MLAG_PEER_mlag_same_subnet_2_Po5
+  description: MLAG_PEER_MLAG_SAME_SUBNET_L3LEAF2B_Po5
   type: switched
   shutdown: false
   mode: trunk
@@ -106,27 +106,27 @@ port_channel_interfaces:
   - MLAG
 ethernet_interfaces:
 - name: Ethernet5
-  peer: mlag_same_subnet_2
+  peer: MLAG_SAME_SUBNET_L3LEAF2B
   peer_interface: Ethernet5
   peer_type: mlag_peer
-  description: MLAG_PEER_mlag_same_subnet_2_Ethernet5
+  description: MLAG_PEER_MLAG_SAME_SUBNET_L3LEAF2B_Ethernet5
   type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
     mode: active
 - name: Ethernet6
-  peer: mlag_same_subnet_2
+  peer: MLAG_SAME_SUBNET_L3LEAF2B
   peer_interface: Ethernet6
   peer_type: mlag_peer
-  description: MLAG_PEER_mlag_same_subnet_2_Ethernet6
+  description: MLAG_PEER_MLAG_SAME_SUBNET_L3LEAF2B_Ethernet6
   type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
     mode: active
 mlag_configuration:
-  domain_id: fabric_ip_addressing_mlag_same_subnet
+  domain_id: MLAG_SAME_SUBNET_L3LEAF2
   local_interface: Vlan4094
   peer_address: 10.10.255.1
   peer_link: Port-Channel5
@@ -150,11 +150,11 @@ loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
   shutdown: false
-  ip_address: 192.168.255.33/32
+  ip_address: 192.168.255.34/32
 - name: Loopback1
   description: VTEP_VXLAN_Tunnel_Source
   shutdown: false
-  ip_address: 192.168.254.33/32
+  ip_address: 192.168.254.34/32
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -171,7 +171,7 @@ ip_igmp_snooping:
   globally_enabled: true
 vxlan_interface:
   Vxlan1:
-    description: mlag_same_subnet_1_VTEP
+    description: MLAG_SAME_SUBNET_L3LEAF2A_VTEP
     vxlan:
       udp_port: 4789
       source_interface: Loopback1
