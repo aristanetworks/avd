@@ -4,7 +4,7 @@ Arista best practices are used, simplifying configuration of several global and 
 
 - PTP can be enabled on various levels of the AVD configuration:
   - fabric level
-  - per node_group
+  - per node type
   - per node
 
 - Only when explicitly enabled, will the following global PTP settings take effect:
@@ -35,7 +35,7 @@ PTP must be specifically enabled:
     enabled: true
   ```
 
-- per node_group, for example for all spine nodes in SPINES.yml
+- per node type, for example for all spine nodes in SPINES.yml
 
   ```yaml
   spine:
@@ -48,10 +48,12 @@ PTP must be specifically enabled:
 
   ```yaml
   l3leaf:
-    nodes:
-      - name: leaf1
-        ptp:
-          enabled: true
+    node_groups:
+      - group: leaf1
+        nodes:
+          - name: leaf1a
+            ptp:
+              enabled: true
   ```
 
 > **Please note:** If present, you need to remove the legacy PTP notation shown below, for example for all spine nodes.
@@ -130,27 +132,31 @@ For leaf switches connecting to a PTP GrandMaster we recommend to manually set P
 
 ```yaml
 l3leaf:
-  nodes:
-    - name: ptp-leaf1
-      ptp:
-        enabled: true
-        priority1: 10
+  node_groups:
+    leaf1:
+      nodes:
+        - name: leaf1
+          ptp:
+            enabled: true
+            priority1: 10
 ```
 
 Alternatively the default `node_type_keys` can be overridden to add a `ptp_leaf` or similar node type with `default_ptp_priority1: 10`.
 
 #### Manually setting PTP priorities
 
-The automatic PTP priorities can be manually overriden if required, for example for blue-leaf1:
+The automatic PTP priorities can be manually overriden if required, for example for leaf1:
 
 ```yaml
 l3leaf:
-  nodes:
-    - name: blue-leaf1
-      ptp:
-        enabled: true
-        priority1: < 0-255 | default -> automatically set based on node_type >
-        priority2: < 0-255 | default -> (node_id modulus 256) >
+  node_groups:
+    - group: leaf1
+      nodes:
+        - name: leaf1
+          ptp:
+            enabled: true
+            priority1: < 0-255 | default -> automatically set based on node_type >
+            priority2: < 0-255 | default -> (node_id modulus 256) >
 ```
 
 ### PTP Clock Identity
@@ -158,15 +164,51 @@ l3leaf:
 #### Setting PTP Clock Identity automatically
 
 By default PTP clock identity is generated and set automatically.
+The clock identity will consist of the following:
 
-```yaml
-auto_clock_identity = < true | false | default -> true >
-clock_identity = < (clock_identity_prefix = 00:1C:73 (default)) + (PTP priority 1 as HEX) + ":00:" + (PTP priority 2 as HEX) >
-```
+- a prefix which is "00:1C:73" by default
+- PTP priority 1 as HEX
+- ":00:"
+- PTP priority 2 as HEX
+
+This means, that for a node with PTP priority 1 = 30 and PTP priority 2 = 2, the PTP clock identity will automatically be set to: `00:1C:73:1e:00:01`
+
+If you prefer to have PTP clock identity be the system MAC-address of the switch, which is the default EOS behaviour, simply set auto_clock_identity: false on one or more of the levels shown below:
+
+- on the fabric level, for example FABRIC.yml
+
+  ```yaml
+  ptp:
+    auto_clock_identity: < true | false | default -> true >
+  ```
+
+- per node type, for example for all spine nodes in SPINES.yml
+
+  ```yaml
+  spine:
+    defaults:
+      ptp:
+        auto_clock_identity: < true | false | default -> true >
+  ```
+
+- per node for a specific node/device inside a node_group, for example for a specific leaf in LEAFS.yml
+
+  ```yaml
+  l3leaf:
+    node_groups:
+      - group: leaf1
+        nodes:
+          - name: leaf1
+            ptp:
+              auto_clock_identity: < true | false | default -> true >
+  ```
+
+The most specific setting takes precedence. By default auto_clock_identity is enabled on the fabric level and can thus be disabled for one or more node types, or for one individual node.
+This effect can also be inverted, by disabling it on the fabric level and enabling it for one or more node types, or for one individual node.
 
 #### PTP Clock Identity prefix
 
-By default the 3-byte prefix is `00:1C:73`, but this can be overridden if `auto_clock_identity` is set to `true` (which is the default).
+By default the 3-byte prefix for auto_clock_identity is `00:1C:73`, but this can be overridden if `auto_clock_identity` is set to `true` (which is the default).
 > **Please note:** Remember to use double-quotes around the value, as otherwise it will be not be rendered correctly.
 
 For example for all spine nodes:
@@ -179,40 +221,34 @@ spine:
       clock_identity_prefix: "01:02:03"
 ```
 
-#### Using Arista EOS default PTP clock identity
-
-If you prefer to have PTP clock identity be the system MAC-address of the switch, which is the default EOS behaviour, simply disable the automatic PTP clock identity as shown here:
-
-```yaml
-spine:
-  defaults:
-    ptp:
-      enabled: true
-      auto_clock_identity: false
-```
-
 #### Setting PTP Clock Identity manually
 
-PTP Clock identity can be set manually per node_group or node, for example for blue-spine1:
-> **Please note:** Remember to use double-quotes around the value, as otherwise it will be not be rendered correctly.
+If the auto generation of PTP clock_identity and the EOS system MAC-address of the switch is not what you want, the clock_identity value can be manually set on various levels of the configuration:
 
-```yaml
-spine:
-  nodes:
-    - name: blue-spine1
+- For example per node type, in this case for all spine nodes in SPINES.yml
+
+  ```yaml
+  spine:
+    defaults:
       ptp:
-        enabled: true
         clock_identity: "01:02:03:04:05:06"
-```
+  ```
+
+> **Please note:** Remember to use double-quotes around the value, as otherwise it will be not be rendered correctly.
 
 #### Enable PTP unicast forwarding
 
 With this feature enabled, multicast PTP packets will continue to be sent to the control plane, but unicast PTP packets will be hardware forwarded through the data plane.
 This feature enables the use of protocols such as Meinbergs NetSync to monitor downstream PTP slaves in the network without having the PTP packets dropped by Arista Switches acting as boundary clocks.
 
-```yaml
-forward_unicast: < true | false | default -> false >
-```
+- For example per node type, in this case for all spine nodes in SPINES.yml
+
+  ```yaml
+  spine:
+    defaults:
+      ptp:
+        forward_unicast: < true | false | default -> false >
+  ```
 
 ### PTP Source IP address
 
@@ -265,13 +301,16 @@ roles/eos_designs/docs/tables/node-type-ptp-configuration.md
 You can manually set the global DSCP values used for PTP messages if this is required:
 
 ```yaml
-spine:
-  defaults:
-    ptp:
-      enabled: true
-      dscp:
-        general_messages: 46
-        event_messages: 46
+l3leaf:
+  node_groups:
+    - group: leaf1
+      nodes:
+        - name: leaf1
+          ptp:
+            enabled: true
+            dscp:
+              general_messages: 46
+              event_messages: 46
 ```
 
 ## PTP Settings for connected endpoints

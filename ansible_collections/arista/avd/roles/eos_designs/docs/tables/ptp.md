@@ -6,6 +6,7 @@
     | [<samp>&nbsp;&nbsp;enabled</samp>](## "ptp.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;profile</samp>](## "ptp.profile") | String |  | `aes67-r16-2016` | Valid Values:<br>- aes67<br>- smpte2059-2<br>- aes67-r16-2016 |  |
     | [<samp>&nbsp;&nbsp;domain</samp>](## "ptp.domain") | Integer |  |  | Min: 0<br>Max: 255 |  |
+    | [<samp>&nbsp;&nbsp;auto_clock_identity</samp>](## "ptp.auto_clock_identity") | Boolean |  | `True` |  |  |
     | [<samp>ptp_profiles</samp>](## "ptp_profiles") | List, items: Dictionary |  | See (+) on YAML tab |  |  |
     | [<samp>&nbsp;&nbsp;- profile</samp>](## "ptp_profiles.[].profile") | String |  |  |  | PTP profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;announce</samp>](## "ptp_profiles.[].announce") | Dictionary |  |  |  | PTP announce interval. |
@@ -23,6 +24,7 @@
       enabled: <bool>
       profile: <str>
       domain: <int>
+      auto_clock_identity: <bool>
     ptp_profiles: # (1)!
       - profile: <str>
         announce:
