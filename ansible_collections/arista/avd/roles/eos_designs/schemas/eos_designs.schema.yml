@@ -838,10 +838,13 @@ keys:
               first node defined under the node_group.\n    This allocation method
               will skip every other /31 subnet making it less space efficient than
               `odd_id`.\n  - odd_id: `(odd_id - 1) / 2`. Requires the node_group to
-              have a node with an odd ID and a node with an even ID.\n"
+              have a node with an odd ID and a node with an even ID.\n  - same_subnet:
+              the offset will always be zero.\n    This allocation method will cause
+              every MLAG link to be addressed with the same /31 subnet.\n"
             valid_values:
             - first_id
             - odd_id
+            - same_subnet
   fabric_name:
     documentation_options:
       table: fabric-topology
