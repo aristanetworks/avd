@@ -4,6 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+  - [Management Accounts](#management-accounts)
 
 ## Management
 
@@ -31,4 +32,18 @@ interface Management1
    description oob_management
    vrf MGMT
    ip address 10.73.255.122/24
+```
+
+### Management Accounts
+
+#### Password Policy
+
+The password policy set for management accounts is: AVD_POLICY
+
+#### Management Accounts Device Configuration
+
+```eos
+!
+management accounts
+   password policy AVD_POLICY
 ```

@@ -95,6 +95,42 @@
 {%         endfor %}
 {%     endif %}
 
+### Password Policies
+{%     if management_security.password.policy is arista.avd.defined %}
+{%         for policy in management_security.password.policy %}
+#### Policy {{ policy.name }}
+
+{%             if policy.minimum is arista.avd.defined %}
+**Minimum requirements:**
+{%                 if policy.minimum.digits is arista.avd.defined %}
+- Digits: {{ policy.minimum.digits }}
+{%                 endif %}
+{%                 if policy.minimum.length is arista.avd.defined %}
+- Length: {{ policy.minimum.length }}
+{%                 endif %}
+{%                 if policy.minimum.lower is arista.avd.defined %}
+- Lowercase letters: {{ policy.minimum.lower }}
+{%                 endif %}
+{%                 if policy.minimum.special is arista.avd.defined %}
+- Special characters: {{ policy.minimum.special }}
+{%                 endif %}
+{%                 if policy.minimum.upper is arista.avd.defined %}
+- Uppercase letters: {{ policy.minimum.upper }}
+{%                 endif %}
+{%             endif %}
+
+{%             if policy.maximum is arista.avd.defined %}
+**Maximum requirements:**
+{%                 if policy.maximum.repetitive is arista.avd.defined %}
+- Repetitive characters: {{ policy.maximum.repetitive }}
+{%                 endif %}
+{%                 if policy.maximum.sequential is arista.avd.defined %}
+- Sequential characters: {{ policy.maximum.sequential }}
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+
 ### Management Security Configuration
 
 ```eos
