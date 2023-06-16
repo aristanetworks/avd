@@ -41,25 +41,25 @@ ptp:
   # domain: < 0-255 | default -> 127 >
 
 tenants:
-  PTP:
+  - name: PTP
     mac_vrf_vni_base: 10000
     vrfs:
       # VRF definitions inside the tenant.
-      VRF1:
+      - name: VRF1
         # VRF VNI definition.
         vrf_vni: 1
         svis:
-          11:
+          - id: 11
             name: VLAN11
             enabled: true
             nodes:
-              ptp-tests-leaf1:
+              - node: ptp-tests-leaf1
                 ip_address: 172.16.11.1/24
-              ptp-tests-leaf2:
+              - node: ptp-tests-leaf2
                 ip_address: 172.17.11.1/24
 
 port_profiles:
-  PTP-profile-BMCA:
+  - profile: PTP-profile-BMCA
     vlans: 11
     mode: access
     ptp:
@@ -67,14 +67,14 @@ port_profiles:
       endpoint_role: bmca
 
 servers:
-  bmca-endpoint:
+  - name: bmca-endpoint
     adapters:
       - endpoint_ports: [ eth1 ]
         switch_ports: [ Ethernet13 ]
         switches: [ ptp-tests-leaf1 ]
         profile: PTP-profile-BMCA
 
-  video-endpoint:
+  - name: video-endpoint
     adapters:
       - endpoint_ports: [ PCI1, PCI2 ]
         switch_ports: [ Ethernet5, Ethernet5 ]
@@ -86,7 +86,7 @@ servers:
           enabled: true
           endpoint_role: follower
 
-  Endpoint-with-specific-PTP-profile:
+  - name: Endpoint-with-specific-PTP-profile
     adapters:
       - endpoint_ports: [ eth3 ]
         switch_ports: [ Ethernet3 ]

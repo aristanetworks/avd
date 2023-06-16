@@ -14,19 +14,19 @@ l3leaf:
     loopback_ipv4_pool: 192.168.254.0/24
     vtep_loopback_ipv4_pool: 192.168.253.0/24
   nodes:
-    OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF1:
+    - name: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF1
       bgp_as: 65001
       id: 1
       filter:
         tags: ["leaf1"]
-    OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF2:
+    - name: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF2
       bgp_as: 65002
       id: 2
       filter:
         tags: ["leaf2"]
   node_groups:
     # Testing MLAG in combination with HER to ensure no EVPN artifacts are generated
-    OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3:
+    - group: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3
       bgp_as: 65003
       mlag_interfaces: [Eth1-2]
       mlag_peer_ipv4_pool: 192.168.254.0/24
@@ -34,41 +34,41 @@ l3leaf:
       filter:
         tags: ["leaf3"]
       nodes:
-        OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A:
+        - name: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A
           id: 3
-        OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B:
+        - name: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B
           id: 4
 
 tenants:
-  TEST:
+  - name: TEST
     mac_vrf_vni_base: 10000
     vrfs:
-      TEST:
+      - name: TEST
         vrf_id: 1
         svis:
-          3900:
+          - id: 3900
             name: SVI_ON_ALL_LEAFS
             tags: ["leaf1", "leaf2", "leaf3"]
-          3901:
+          - id: 3901
             name: SVI_ON_LEAF1
             tags: ["leaf1"]
-          3902:
+          - id: 3902
             name: SVI_ON_LEAF1-2
             tags: ["leaf1", "leaf2"]
-          3903:
+          - id: 3903
             name: SVI_ON_LEAF2-3
             tags: ["leaf2", "leaf3"]
 
     l2vlans:
-      2900:
+      - id: 2900
         name: L2VLAN_ON_ALL_LEAFS
         tags: ["leaf1", "leaf2", "leaf3"]
-      2901:
+      - id: 2901
         name: L2VLAN_ON_LEAF1
         tags: ["leaf1"]
-      2902:
+      - id: 2902
         name: L2VLAN_ON_LEAF1-2
         tags: ["leaf1", "leaf2"]
-      2903:
+      - id: 2903
         name: L2VLAN_ON_LEAF2-3
         tags: ["leaf2", "leaf3"]

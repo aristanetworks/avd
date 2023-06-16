@@ -4,7 +4,9 @@
 type: dict
 keys:
   p2p_uplinks_mtu:
-    description: Point to Point Links MTU
+    documentation_options:
+      table: fabric-settings
+    description: Point to Point Links MTU.
     type: int
     convert_types:
       - str

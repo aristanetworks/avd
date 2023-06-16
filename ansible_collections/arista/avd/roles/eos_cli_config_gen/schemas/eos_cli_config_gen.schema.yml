@@ -106,9 +106,6 @@ keys:
                   type: str
                 logging:
                   type: bool
-          commands_default:
-            type: list
-            description: Deprecated and removed key from AVD 2.x
   aaa_authentication:
     type: dict
     keys:
@@ -310,30 +307,14 @@ keys:
               vrf:
                 type: str
                 description: VRF name
+                convert_types:
+                - int
   access_lists:
     type: list
     primary_key: name
     convert_types:
     - dict
     display_name: IP Extended Access-Lists (legacy model)
-    description: 'AVD currently supports 2 different data models for extended ACLs:
-
-
-      - The legacy `access_lists` data model, for compatibility with existing deployments
-
-      - The improved `ip_access_lists` data model, for access to more EOS features
-
-
-      Both data models can coexists without conflicts, as different keys are used:
-      `access_lists` vs `ip_access_lists`.
-
-      Access list names must be unique.
-
-
-      The legacy data model supports simplified ACL definition with `sequence` to
-      `action` mapping:
-
-      '
     items:
       type: dict
       keys:
@@ -455,6 +436,68 @@ keys:
                     - igp
                     - incomplete
                     default: any
+  avd_data_conversion_mode:
+    documentation_options:
+      table: role-input-validation
+    type: str
+    valid_values:
+    - disabled
+    - error
+    - warning
+    - info
+    - debug
+    - quiet
+    default: debug
+    description: 'Conversion Mode for AVD input data conversion.
+
+      Input data conversion will perform type conversion of input variables as defined
+      in the schema.
+
+      The type conversion is intended to help the user to identify minor issues with
+      the input data, while still allowing the data to be validated.
+
+      During conversion, messages will generated with information about the host(s)
+      and key(s) which required conversion.
+
+      "disabled" means that conversion will not run - avoid this since conversion
+      is also handling data deprecation and upgrade.
+
+      "error" will produce error messages and fail the task.
+
+      "warning" will produce warning messages.
+
+      "info" will produce regular log messages.
+
+      "debug" will produce hidden debug messages viewable with -v.
+
+      "quiet" will not produce any messages'
+  avd_data_validation_mode:
+    documentation_options:
+      table: role-input-validation
+    type: str
+    valid_values:
+    - disabled
+    - error
+    - warning
+    - info
+    - debug
+    default: warning
+    description: 'Validation Mode for AVD input data validation.
+
+      Input data validation will validate the input variables according to the schema.
+
+      During validation, messages will generated with information about the host(s)
+      and key(s) which failed validation.
+
+      "disabled" means that validation will not run.
+
+      "error" will produce error messages and fail the task.
+
+      "warning" will produce warning messages.
+
+      "info" will produce regular log messages.
+
+      "debug" will produce hidden debug messages viewable with -v.'
   banners:
     type: dict
     keys:
@@ -478,6 +521,8 @@ keys:
           description: Group Name
         vrf:
           type: str
+          convert_types:
+          - int
         neighbors:
           type: list
           items:
@@ -571,25 +616,6 @@ keys:
     convert_types:
     - dict
     display_name: Community Lists (legacy model)
-    description: 'AVD supports 2 different data models for community lists:
-
-
-      - The legacy `community_lists` data model that can be used for compatibility
-      with the existing deployments.
-
-      - The improved `ip_community_lists` data model.
-
-
-      Both data models can coexist without conflicts, as different keys are used:
-      `community_lists` vs `ip_community_lists`.
-
-      Community list names must be unique.
-
-
-      The legacy data model supports simplified community list definition that only
-      allows a single action to be defined as string:
-
-      '
     items:
       type: dict
       keys:
@@ -784,6 +810,8 @@ keys:
               description: 'The VRF to use to connect to CloudVision
 
                 '
+              convert_types:
+              - int
       cvauth:
         type: dict
         description: 'Authentication scheme used to connect to CloudVision
@@ -856,9 +884,11 @@ keys:
         description: 'The VRF to use to connect to CloudVision
 
           '
+        convert_types:
+        - int
       cvgnmi:
         type: bool
-        description: 'Stream states from EOS GNMI servers (Openconfig) to CloudVision.
+        description: 'Stream states from EOS gNMI servers (Openconfig) to CloudVision.
           Available as of TerminAttr v1.13.1
 
           '
@@ -946,39 +976,15 @@ keys:
         description: 'The default compression scheme when streaming to CloudVision
           is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.
 
-          There is no need to change the compression scheme.
-
-          '
-      ingestauth_key:
-        type: str
-        description: 'Deprecated key. Use `cvauth` instead.
-
-          '
-      ingestgrpcurl:
-        type: dict
-        description: 'Deprecated key. Use `cvaddrs` instead.
-
-          '
-        keys:
-          ips:
-            type: list
-            items:
-              type: str
-          port:
-            type: int
-            convert_types:
-            - str
-      ingestvrf:
-        description: 'Deprecated key. Use `cvvrf` instead.
-
-          '
-        type: str
+          There is no need to change the compression scheme.'
   daemons:
     type: list
     primary_key: name
     convert_types:
     - dict
     display_name: Custom Daemons
+    description: This will add a daemon to the eos configuration that is most useful
+      when trying to run OpenConfig clients like ocprometheus.
     items:
       type: dict
       keys:
@@ -1293,6 +1299,8 @@ keys:
         vrf:
           type: str
           description: VRF name
+          convert_types:
+          - int
         flow_tracker:
           type: dict
           keys:
@@ -1464,6 +1472,8 @@ keys:
               vrf:
                 type: str
                 description: VRF name
+                convert_types:
+                - int
         ip_nat:
           $ref: '#/$defs/interface_ip_nat'
         ipv6_enable:
@@ -1512,6 +1522,8 @@ keys:
                 required: true
               vrf:
                 type: str
+                convert_types:
+                - int
               local_interface:
                 type: str
                 description: Local interface to communicate with DHCP server - mutually
@@ -2731,6 +2743,8 @@ keys:
                 This validation IS NOT made by the schemas.
 
                 '
+              convert_types:
+              - int
             prefix:
               type: str
               description: 'Supported only for the ''route'' feature.
@@ -2808,23 +2822,6 @@ keys:
     convert_types:
     - dict
     display_name: IP Extended Access-Lists (improved model)
-    description: 'AVD currently supports 2 different data models for extended ACLs:
-
-
-      - The legacy `access_lists` data model, for compatibility with existing deployments
-
-      - The improved `ip_access_lists` data model, for access to more EOS features
-
-
-      Both data models can coexists without conflicts, as different keys are used:
-      `access_lists` vs `ip_access_lists`.
-
-      Access list names must be unique.
-
-
-      The improved data model has a more sophisticated design documented below:
-
-      '
     items:
       type: dict
       keys:
@@ -2982,18 +2979,7 @@ keys:
     type: int
     convert_types:
     - str
-    description: 'The `ip_access_lists` data model allows to limit the number of ACL
-      entries that AVD is allowed to generate by defining `ip_access_lists_max_entries`.
-
-      Only normal entries under `ip_access_lists` will be counted, remarks will be
-      ignored.
-
-      If the number is above the limit, the playbook will fail. This provides a simplified
-      control over hardware utilization.
-
-      The numbers must be based on the hardware tests and AVD does not provide any
-      guidance. Note that other EOS features may use the same hardware resources and
-      affect the supported scale.'
+    description: Limit ACL entries defined under the `ip_access_lists`.
   ip_community_lists:
     type: list
     secondary_key: entries
@@ -3001,42 +2987,8 @@ keys:
     convert_types:
     - dict
     display_name: IP Community Lists
-    description: 'AVD supports 2 different data models for community lists:
-
-
-      - The legacy `community_lists` data model that can be used for compatibility
-      with the existing deployments.
-
-      - The improved `ip_community_lists` data model.
-
-
-      Both data models can coexist without conflicts, as different keys are used:
-      `community_lists` vs `ip_community_lists`.
-
-      Community list names must be unique.
-
-
-      The improved data model has a better design documented below:
-
-
-      communities and regexp MUST not be configured together in the same entry
-
-      possible community strings are (case insensitive):
-
-
-      - GSHUT
-
-      - internet
-
-      - local-as
-
-      - no-advertise
-
-      - no-export
-
-      - <1-4294967040>
-
-      - aa:nn
+    description: 'Communities and regexp entries MUST not be configured in the same
+      community-list
 
       '
     items:
@@ -3062,7 +3014,25 @@ keys:
                 type: list
                 items:
                   type: str
-                description: If defined, a standard community-list will be configured
+                description: 'If defined, a standard community-list will be configured.
+
+                  Supported community strings (case insensitive):
+
+                  - GSHUT
+
+                  - internet
+
+                  - local-as
+
+                  - no-advertise
+
+                  - no-export
+
+                  - <1-4294967040>
+
+                  - aa:nn
+
+                  '
               regexp:
                 type: str
                 description: 'Regular Expression
@@ -3093,6 +3063,8 @@ keys:
                 '
             vrf:
               type: str
+              convert_types:
+              - int
   ip_extcommunity_lists:
     type: list
     primary_key: name
@@ -3182,6 +3154,8 @@ keys:
           type: str
         vrf:
           type: str
+          convert_types:
+          - int
   ip_icmp_redirect:
     type: bool
   ip_igmp_snooping:
@@ -3190,6 +3164,8 @@ keys:
       globally_enabled:
         type: bool
         default: true
+        description: Activate or deactivate IGMP snooping for all vlans where `vlans`
+          allows user to activate / deactivate IGMP snooping per vlan.
       robustness_variable:
         type: int
         convert_types:
@@ -3315,6 +3291,8 @@ keys:
         vrf:
           description: VRF Name
           type: str
+          convert_types:
+          - int
         priority:
           description: Priority value (lower is first)
           type: int
@@ -3507,6 +3485,8 @@ keys:
         vrf:
           type: str
           description: VRF Name
+          convert_types:
+          - int
   ip_routing:
     type: bool
   ip_routing_ipv6_interfaces:
@@ -3522,6 +3502,8 @@ keys:
         vrf:
           type: str
           default: default
+          convert_types:
+          - int
   ip_tacacs_source_interfaces:
     type: list
     display_name: IP Tacacs Source Interfaces
@@ -3534,6 +3516,8 @@ keys:
         vrf:
           type: str
           display_name: VRF
+          convert_types:
+          - int
   ip_virtual_router_mac_address:
     type: str
     description: MAC address (hh:hh:hh:hh:hh:hh)
@@ -3666,6 +3650,8 @@ keys:
       keys:
         vrf:
           type: str
+          convert_types:
+          - int
         destination_address_prefix:
           type: str
           description: IPv6 Network/Mask
@@ -3797,6 +3783,8 @@ keys:
         type: str
       vrf:
         type: str
+        convert_types:
+        - int
       receive_packet_tagged_drop:
         type: str
       tlvs:
@@ -4051,6 +4039,8 @@ keys:
           keys:
             name:
               type: str
+              convert_types:
+              - int
               required: true
               description: VRF name
             source_interface:
@@ -4121,6 +4111,8 @@ keys:
         vrf:
           type: str
           description: VRF name
+          convert_types:
+          - int
         ip_address:
           type: str
           description: IPv4_address/Mask
@@ -4475,12 +4467,14 @@ keys:
                 vrf:
                   type: str
                   description: VRF name is optional
+                  convert_types:
+                  - int
                 notification_timestamp:
                   type: str
                   valid_values:
                   - send-time
                   - last-change-time
-                  description: 'Per the GNMI specification, the default timestamp
+                  description: 'Per the gNMI specification, the default timestamp
                     field of a notification message is set to be
 
                     the time at which the value of the underlying data source changes
@@ -4517,6 +4511,8 @@ keys:
                 vrf:
                   type: str
                   description: VRF name
+                  convert_types:
+                  - int
                 destination:
                   type: dict
                   keys:
@@ -4562,12 +4558,14 @@ keys:
                         type: str
       enable_vrfs:
         type: list
+        deprecation:
+          warning: true
+          new_key: transport.grpc
+          remove_in_version: 5.0.0
         primary_key: name
         convert_types:
         - dict
-        description: 'Enable VRFs will be deprecated in AVD v4.0.
-
-          These should not be mixed with the new keys above.
+        description: 'These should not be mixed with the new keys above.
 
           '
         items:
@@ -4576,14 +4574,18 @@ keys:
             name:
               type: str
               description: VRF name
+              convert_types:
+              - int
             access_group:
               type: str
               description: Standard IPv4 ACL name
       octa:
         type: dict
-        description: 'Octa key will be deprecated in AVD v4.0.
-
-          These should not be mixed with the new keys above.
+        deprecation:
+          warning: true
+          new_key: provider
+          remove_in_version: 5.0.0
+        description: 'These should not be mixed with the new keys above.
 
           Octa activates `eos-native` provider and it is the only provider currently
           supported by EOS.'
@@ -4612,6 +4614,8 @@ keys:
               description: VRF Name
               type: str
               required: true
+              convert_types:
+              - int
             access_group:
               description: Standard IPv4 ACL name
               type: str
@@ -4675,6 +4679,8 @@ keys:
       vrf:
         type: str
         description: VRF Name
+        convert_types:
+        - int
   management_defaults:
     type: dict
     keys:
@@ -4707,6 +4713,8 @@ keys:
         vrf:
           type: str
           description: VRF Name
+          convert_types:
+          - int
         ip_address:
           type: str
           description: IPv4_address/Mask
@@ -4795,6 +4803,8 @@ keys:
             vrf:
               type: str
               description: VRF Name
+              convert_types:
+              - int
       ipv6_access_groups:
         type: list
         items:
@@ -4806,6 +4816,8 @@ keys:
             vrf:
               type: str
               description: VRF Name
+              convert_types:
+              - int
       idle_timeout:
         type: int
         convert_types:
@@ -4868,6 +4880,8 @@ keys:
               type: str
               required: true
               description: VRF Name
+              convert_types:
+              - int
             enable:
               description: Enable SSH in VRF
               type: bool
@@ -4981,6 +4995,8 @@ keys:
           vrf:
             description: VRF Name
             type: str
+            convert_types:
+            - int
       dual_primary_detection_delay:
         type: int
         description: Delay in seconds
@@ -5059,12 +5075,15 @@ keys:
               type: str
       vrfs:
         type: list
+        primary_key: name
         items:
           type: dict
           keys:
             name:
               description: VRF Name
               type: str
+              convert_types:
+              - int
             description:
               type: str
             interface_sets:
@@ -5211,6 +5230,8 @@ keys:
           vrf:
             description: VRF Name
             type: str
+            convert_types:
+            - int
       nodes:
         type: list
         items:
@@ -5227,6 +5248,8 @@ keys:
           vrf:
             type: str
             description: VRF name
+            convert_types:
+            - int
       servers:
         type: list
         items:
@@ -5273,6 +5296,8 @@ keys:
             vrf:
               type: str
               description: VRF name
+              convert_types:
+              - int
       authenticate:
         type: bool
       authenticate_servers_only:
@@ -5632,6 +5657,8 @@ keys:
         vrf:
           type: str
           description: VRF name
+          convert_types:
+          - int
         encapsulation_vlan:
           type: dict
           keys:
@@ -6635,6 +6662,11 @@ keys:
                       Example: "< rate > kbps", "1-100 percent", "< rate > pps"
 
                       '
+              comment:
+                type: str
+                description: 'Text comment added to queue.
+
+                  '
               random_detect:
                 type: dict
                 keys:
@@ -6736,6 +6768,11 @@ keys:
                       Example: "< rate > kbps", "1-100 percent", "< rate > pps"
 
                       '
+              comment:
+                type: str
+                description: 'Text comment added to queue.
+
+                  '
               random_detect:
                 type: dict
                 keys:
@@ -6832,7 +6869,12 @@ keys:
                     type: str
                     description: 'Supported options are platform dependent
 
-                      Example: "< rate > kbps", "1-100 percent", "< rate > pps"'
+                      Example: "< rate > kbps", "1-100 percent", "< rate > pps"
+
+                      '
+              comment:
+                type: str
+                description: Text comment added to queue.
   queue_monitor_length:
     type: dict
     keys:
@@ -6902,6 +6944,8 @@ keys:
         max: 100
       vrf:
         type: str
+        convert_types:
+        - int
   radius_server:
     type: dict
     keys:
@@ -6938,6 +6982,8 @@ keys:
               description: Host IP address or name
             vrf:
               type: str
+              convert_types:
+              - int
             timeout:
               type: int
               min: 1
@@ -6967,6 +7013,8 @@ keys:
           description: Host IP address or name
         vrf:
           type: str
+          convert_types:
+          - int
         key:
           type: str
           description: Encrypted key
@@ -7271,6 +7319,13 @@ keys:
                 type: bool
                 description: Default activation of IPv4 unicast address-family on
                   all IPv6 neighbors (EOS default == False).
+          route_reflector_preserve_attributes:
+            type: dict
+            keys:
+              enabled:
+                type: bool
+              always:
+                type: bool
           bestpath:
             type: dict
             keys:
@@ -7367,13 +7422,16 @@ keys:
               type: str
               description: 'Peer-filter name
 
-                note: `bgp_listen_range_prefix` and `peer_filter` will be deprecated
-                in AVD v4.0
+                note: `bgp_listen_range_prefix` and `peer_filter` should not be mixed
+                with
 
-                These should not be mixed with the new `listen_ranges` key above to
-                avoid conflicts.
+                the new `listen_ranges` key above to avoid conflicts.
 
                 '
+              deprecation:
+                warning: true
+                remove_in_version: 5.0.0
+                new_key: listen_ranges
             next_hop_unchanged:
               type: bool
             update_source:
@@ -7477,13 +7535,16 @@ keys:
               type: str
               description: 'IP prefix range
 
-                note: `bgp_listen_range_prefix` and `peer_filter` will be deprecated
-                in AVD v4.0
+                note: `bgp_listen_range_prefix` and `peer_filter` should not be mixed
+                with
 
-                These should not be mixed with the new `listen_ranges` key above to
-                avoid conflicts.
+                the new `listen_ranges` key above to avoid conflicts.
 
                 '
+              deprecation:
+                warning: true
+                remove_in_version: 5.0.0
+                new_key: listen_ranges
             session_tracker:
               type: str
       neighbors:
@@ -8085,8 +8146,21 @@ keys:
                 next_hop:
                   type: dict
                   keys:
+                    address_family_ipv6:
+                      type: dict
+                      keys:
+                        enabled:
+                          type: bool
+                          required: true
+                        originate:
+                          type: bool
                     address_family_ipv6_originate:
                       type: bool
+                      deprecation:
+                        warning: true
+                        removed: false
+                        new_key: address_family_ipv6
+                        remove_in_version: 5.0.0
                 prefix_list_in:
                   type: str
                   description: Inbound prefix-list name
@@ -8254,6 +8328,168 @@ keys:
                   type: str
                 route_map:
                   type: str
+      address_family_ipv6_multicast:
+        type: dict
+        keys:
+          bgp:
+            type: dict
+            keys:
+              missing_policy:
+                type: dict
+                keys:
+                  direction_in_action:
+                    type: str
+                    valid_values:
+                    - deny
+                    - deny-in-out
+                    - permit
+                  direction_out_action:
+                    type: str
+                    valid_values:
+                    - deny
+                    - deny-in-out
+                    - permit
+              additional_paths:
+                type: dict
+                keys:
+                  receive:
+                    type: bool
+          neighbors:
+            type: list
+            primary_key: ip_address
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                activate:
+                  type: bool
+                route_map_in:
+                  type: str
+                  description: Inbound route-map name
+                route_map_out:
+                  type: str
+                  description: Outbound route-map name
+          peer_groups:
+            type: list
+            primary_key: name
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Peer-group name
+                activate:
+                  type: bool
+          networks:
+            type: list
+            primary_key: prefix
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                prefix:
+                  type: str
+                  description: IPv6 prefix "A:B:C:D:E:F:G:H/I"
+                route_map:
+                  type: str
+      address_family_flow_spec_ipv4:
+        type: dict
+        keys:
+          bgp:
+            type: dict
+            keys:
+              missing_policy:
+                type: dict
+                keys:
+                  direction_in_action:
+                    type: str
+                    valid_values:
+                    - deny
+                    - deny-in-out
+                    - permit
+                  direction_out_action:
+                    type: str
+                    valid_values:
+                    - deny
+                    - deny-in-out
+                    - permit
+          neighbors:
+            type: list
+            primary_key: ip_address
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                activate:
+                  type: bool
+          peer_groups:
+            type: list
+            primary_key: name
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Peer-group name
+                activate:
+                  type: bool
+      address_family_flow_spec_ipv6:
+        type: dict
+        keys:
+          bgp:
+            type: dict
+            keys:
+              missing_policy:
+                type: dict
+                keys:
+                  direction_in_action:
+                    type: str
+                    valid_values:
+                    - deny
+                    - deny-in-out
+                    - permit
+                  direction_out_action:
+                    type: str
+                    valid_values:
+                    - deny
+                    - deny-in-out
+                    - permit
+          neighbors:
+            type: list
+            primary_key: ip_address
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                activate:
+                  type: bool
+          peer_groups:
+            type: list
+            primary_key: name
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Peer-group name
+                activate:
+                  type: bool
       address_family_vpn_ipv4:
         type: dict
         keys:
@@ -8377,6 +8613,8 @@ keys:
             name:
               type: str
               description: VRF name
+              convert_types:
+              - int
             rd:
               type: str
               description: Route distinguisher
@@ -8773,19 +9011,6 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name
-                peer_groups:
-                  type: list
-                  primary_key: name
-                  convert_types:
-                  - dict
-                  items:
-                    type: dict
-                    keys:
-                      name:
-                        type: str
-                        description: Peer-group name
-                      activate:
-                        type: bool
                       next_hop:
                         type: dict
                         keys:
@@ -8881,19 +9106,6 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name
-                peer_groups:
-                  type: list
-                  primary_key: name
-                  convert_types:
-                  - dict
-                  items:
-                    type: dict
-                    keys:
-                      name:
-                        type: str
-                        description: Peer-group name
-                      activate:
-                        type: bool
                 networks:
                   type: list
                   primary_key: prefix
@@ -8951,19 +9163,6 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name
-                peer_groups:
-                  type: list
-                  primary_key: name
-                  convert_types:
-                  - dict
-                  items:
-                    type: dict
-                    keys:
-                      name:
-                        type: str
-                        description: Peer-group name
-                      activate:
-                        type: bool
                 networks:
                   type: list
                   primary_key: prefix
@@ -9021,19 +9220,6 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name
-                peer_groups:
-                  type: list
-                  primary_key: name
-                  convert_types:
-                  - dict
-                  items:
-                    type: dict
-                    keys:
-                      name:
-                        type: str
-                        description: Peer-group name
-                      activate:
-                        type: bool
                 networks:
                   type: list
                   primary_key: prefix
@@ -9248,6 +9434,8 @@ keys:
               type: str
               required: true
               description: Destination-VRF
+              convert_types:
+              - int
             leak_routes:
               type: list
               items:
@@ -9255,6 +9443,8 @@ keys:
                 keys:
                   source_vrf:
                     type: str
+                    convert_types:
+                    - int
                   subscribe_policy:
                     type: str
                     description: Route-Map Policy
@@ -9464,9 +9654,6 @@ keys:
                   type: int
                   convert_types:
                   - str
-      no_passive_interfaces:
-        type: list
-        description: Unused key - to be removed from eos_designs.
   router_l2_vpn:
     type: dict
     keys:
@@ -9612,6 +9799,8 @@ keys:
               type: str
               required: true
               description: VRF name
+              convert_types:
+              - int
             originator_id_local_interface:
               type: str
               description: Interface to use for originator ID
@@ -9778,11 +9967,14 @@ keys:
                             - str
       vrfs:
         type: list
+        primary_key: name
         items:
           type: dict
           keys:
             name:
               type: str
+              convert_types:
+              - int
             ipv4:
               type: dict
               keys:
@@ -9808,6 +10000,8 @@ keys:
             vrf:
               type: str
               description: VRF Name for OSPF Process
+              convert_types:
+              - int
             passive_interface_default:
               type: bool
             router_id:
@@ -9936,6 +10130,21 @@ keys:
               keys:
                 always:
                   type: bool
+                metric:
+                  type: int
+                  convert_types:
+                  - str
+                  description: Metric for default route
+                  min: 1
+                  max: 65535
+                metric_type:
+                  type: int
+                  convert_types:
+                  - str
+                  valid_values:
+                  - 1
+                  - 2
+                  description: OSPF metric type for default route
             summary_addresses:
               type: list
               primary_key: prefix
@@ -10152,12 +10361,16 @@ keys:
                         - str
       vrfs:
         type: list
+        primary_key: name
         items:
           type: dict
           keys:
             name:
               type: str
               description: VRF Name
+              required: true
+              convert_types:
+              - int
             ipv4:
               type: dict
               keys:
@@ -10318,6 +10531,8 @@ keys:
           keys:
             name:
               type: str
+              convert_types:
+              - int
             destinations:
               type: list
               primary_key: destination
@@ -10496,6 +10711,8 @@ keys:
               description: IPv4 access list name
             vrf:
               type: str
+              convert_types:
+              - int
       ipv6_acls:
         type: list
         items:
@@ -10506,6 +10723,8 @@ keys:
               description: IPv6 access list name
             vrf:
               type: str
+              convert_types:
+              - int
       local_interfaces:
         type: list
         primary_key: name
@@ -10520,6 +10739,8 @@ keys:
               description: Interface name
             vrf:
               type: str
+              convert_types:
+              - int
       views:
         type: list
         items:
@@ -10637,6 +10858,8 @@ keys:
               description: Host IP address or name
             vrf:
               type: str
+              convert_types:
+              - int
             version:
               type: str
               convert_types:
@@ -10691,12 +10914,15 @@ keys:
                   default: true
       vrfs:
         type: list
+        primary_key: name
         items:
           type: dict
           keys:
             name:
               type: str
               description: VRF name
+              convert_types:
+              - int
             enable:
               type: bool
   spanning_tree:
@@ -10859,6 +11085,8 @@ keys:
         vrf:
           type: str
           description: VRF Name
+          convert_types:
+          - int
         destination_address_prefix:
           type: str
           description: IPv4_network/Mask
@@ -10947,6 +11175,8 @@ keys:
                   type: str
                 vrf:
                   type: str
+                  convert_types:
+                  - int
           ipv6_access_groups:
             type: list
             primary_key: acl_name
@@ -10959,6 +11189,8 @@ keys:
                   type: str
                 vrf:
                   type: str
+                  convert_types:
+                  - int
   tacacs_servers:
     type: dict
     keys:
@@ -10972,6 +11204,8 @@ keys:
               description: Host IP address or name
             vrf:
               type: str
+              convert_types:
+              - int
             key:
               type: str
               description: Encrypted key
@@ -11368,6 +11602,8 @@ keys:
         vrf:
           type: str
           description: VRF Name
+          convert_types:
+          - int
         ip_address:
           type: str
           format: ipv4_cidr
@@ -11440,6 +11676,8 @@ keys:
         name:
           type: str
           description: VRF Name
+          convert_types:
+          - int
         ip_address:
           type: str
           description: IPv4 Address
@@ -11462,6 +11700,8 @@ keys:
         vrf:
           type: str
           description: VRF name
+          convert_types:
+          - int
         arp_aging_timeout:
           type: int
           convert_types:
@@ -11530,6 +11770,8 @@ keys:
               vrf:
                 type: str
                 description: VRF where DHCP server can be reached
+                convert_types:
+                - int
         ip_nat:
           $ref: '#/$defs/interface_ip_nat'
         ipv6_enable:
@@ -11561,13 +11803,15 @@ keys:
           description: IPv6_address/Mask
         ipv6_virtual_router_address:
           type: str
-          description: '"ipv6_virtual_router_address" key will be deprecated in AVD
-            v4.0
+          description: '"ipv6_virtual_router_address" should not be mixed with
 
-            This should not be mixed with the new "ipv6_virtual_router_addresses"
-            key below to avoid conflicts.
+            the new "ipv6_virtual_router_addresses" key below to avoid conflicts.
 
             '
+          deprecation:
+            warning: true
+            remove_in_version: 5.0.0
+            new_key: ipv6_virtual_router_addresses
         ipv6_virtual_router_addresses:
           type: list
           description: Improved "VARPv6" data model to support multiple VARPv6 addresses.
@@ -11613,6 +11857,8 @@ keys:
                 required: true
               vrf:
                 type: str
+                convert_types:
+                - int
               local_interface:
                 type: str
                 description: Local interface to communicate with DHCP server - mutually
@@ -11872,11 +12118,14 @@ keys:
                     description: Virtual IPv6 address
         vrrp:
           type: dict
-          description: '"vrrp" key will be deprecated in AVD v4.0
-
-            This should not be mixed with the new "vrrp_ids" key above to avoid conflicts.
+          description: '"vrrp" should not be mixed with the new "vrrp_ids" key above
+            to avoid conflicts.
 
             '
+          deprecation:
+            warning: true
+            remove_in_version: 5.0.0
+            new_key: vrrp_ids
           keys:
             virtual_router:
               type: str
@@ -12068,6 +12317,8 @@ keys:
         name:
           type: str
           description: VRF Name
+          convert_types:
+          - int
         description:
           type: str
         ip_routing:
@@ -12182,6 +12433,8 @@ keys:
                       type: str
                       required: true
                       description: VRF Name
+                      convert_types:
+                      - int
                     vni:
                       type: int
                       convert_types:

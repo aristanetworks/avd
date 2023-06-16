@@ -76,6 +76,10 @@ keys:
                     description: |
                       Supported options are platform dependent
                       Example: "< rate > kbps", "1-100 percent", "< rate > pps"
+              comment:
+                type: str
+                description: |
+                  Text comment added to queue.
               random_detect:
                 type: dict
                 keys:
@@ -163,6 +167,10 @@ keys:
                     description: |
                       Supported options are platform dependent
                       Example: "< rate > kbps", "1-100 percent", "< rate > pps"
+              comment:
+                type: str
+                description: |
+                  Text comment added to queue.
               random_detect:
                 type: dict
                 keys:
@@ -249,3 +257,7 @@ keys:
                     description: |
                       Supported options are platform dependent
                       Example: "< rate > kbps", "1-100 percent", "< rate > pps"
+              comment:
+                type: str
+                description: |
+                  Text comment added to queue.

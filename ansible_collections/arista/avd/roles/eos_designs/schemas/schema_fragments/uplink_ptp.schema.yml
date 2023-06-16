@@ -4,7 +4,9 @@
 type: dict
 keys:
   uplink_ptp:
-    description: Enable PTP on all infrastructure links
+    documentation_options:
+      table: fabric-settings
+    description: Enable PTP on all infrastructure links.
     type: dict
     keys:
       enable:

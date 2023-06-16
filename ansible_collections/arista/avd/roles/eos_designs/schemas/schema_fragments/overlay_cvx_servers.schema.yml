@@ -4,6 +4,8 @@
 type: dict
 keys:
   overlay_cvx_servers:
+    documentation_options:
+      table: overlay-settings
     description: |
       List of CVX vxlan overlay controllers.
       Required if overlay_routing_protocol == CVX.

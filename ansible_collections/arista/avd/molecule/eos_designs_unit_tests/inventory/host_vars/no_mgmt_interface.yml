@@ -3,5 +3,5 @@ type: l2leaf
 l2leaf:
   defaults:
   nodes:
-    no_mgmt_interface:
+    - name: no_mgmt_interface
       id: 105

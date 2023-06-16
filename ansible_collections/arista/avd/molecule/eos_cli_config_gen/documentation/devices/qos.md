@@ -322,12 +322,12 @@ QOS Profile: **experiment**
 
 **TX Queues**
 
-| TX queue | Type | Bandwidth | Priority | Shape Rate |
-| -------- | ---- | --------- | -------- | ---------- |
-| 3 | All | 30 | no priority | - |
-| 4 | All | 10 | - | - |
-| 5 | All | 40 | - | - |
-| 7 | All | 30 | - | 40 percent |
+| TX queue | Type | Bandwidth | Priority | Shape Rate | Comment |
+| -------- | ---- | --------- | -------- | ---------- | ------- |
+| 3 | All | 30 | no priority | - | - |
+| 4 | All | 10 | - | - | - |
+| 5 | All | 40 | - | - | - |
+| 7 | All | 30 | - | 40 percent | - |
 
 QOS Profile: **no_qos_trust**
 
@@ -347,11 +347,11 @@ QOS Profile: **qprof_testwithpolicy**
 
 **TX Queues**
 
-| TX queue | Type | Bandwidth | Priority | Shape Rate |
-| -------- | ---- | --------- | -------- | ---------- |
-| 0 | All | 1 | - | - |
-| 1 | All | 80 | - | - |
-| 5 | All | 19 | no priority | - |
+| TX queue | Type | Bandwidth | Priority | Shape Rate | Comment |
+| -------- | ---- | --------- | -------- | ---------- | ------- |
+| 0 | All | 1 | - | - | - |
+| 1 | All | 80 | - | - | - |
+| 5 | All | 19 | no priority | - | Multi-line comment<br>here. |
 
 QOS Profile: **test**
 
@@ -363,11 +363,11 @@ QOS Profile: **test**
 
 **TX Queues**
 
-| TX queue | Type | Bandwidth | Priority | Shape Rate |
-| -------- | ---- | --------- | -------- | ---------- |
-| 1 | All | 50 | no priority | - |
-| 2 | All | 10 | priority strict | - |
-| 4 | All | 10 | - | - |
+| TX queue | Type | Bandwidth | Priority | Shape Rate | Comment |
+| -------- | ---- | --------- | -------- | ---------- | ------- |
+| 1 | All | 50 | no priority | - | - |
+| 2 | All | 10 | priority strict | - | - |
+| 4 | All | 10 | - | - | - |
 
 **ECN Configuration**
 
@@ -387,14 +387,14 @@ QOS Profile: **uc_mc_queues_test**
 
 **TX Queues**
 
-| TX queue | Type | Bandwidth | Priority | Shape Rate |
-| -------- | ---- | --------- | -------- | ---------- |
-| 1 | Unicast | 50 | no priority | - |
-| 2 | Unicast | 10 | priority strict | - |
-| 4 | Unicast | 10 | - | - |
-| 1 | Multicast | 50 | no priority | - |
-| 2 | Multicast | 10 | priority strict | - |
-| 4 | Multicast | 10 | - | - |
+| TX queue | Type | Bandwidth | Priority | Shape Rate | Comment |
+| -------- | ---- | --------- | -------- | ---------- | ------- |
+| 1 | Unicast | 50 | no priority | - | Test no priority |
+| 2 | Unicast | 10 | priority strict | - | - |
+| 4 | Unicast | 10 | - | - | Test guaranteed percent |
+| 1 | Multicast | 50 | no priority | - | - |
+| 2 | Multicast | 10 | priority strict | - | Test strict priority |
+| 4 | Multicast | 10 | - | - | Test guaranteed percent |
 
 **ECN Configuration**
 
@@ -445,6 +445,8 @@ qos profile qprof_testwithpolicy
       bandwidth percent 80
    !
    tx-queue 5
+      !! Multi-line comment
+      !! here.
       bandwidth percent 19
       no priority
 !
@@ -469,6 +471,7 @@ qos profile test
 qos profile uc_mc_queues_test
    !
    uc-tx-queue 1
+      !! Test no priority
       bandwidth percent 50
       no priority
    !
@@ -478,6 +481,7 @@ qos profile uc_mc_queues_test
       random-detect ecn minimum-threshold 320 kbytes maximum-threshold 320 kbytes max-mark-probability 90
    !
    uc-tx-queue 4
+      !! Test guaranteed percent
       bandwidth guaranteed percent 10
       random-detect ecn minimum-threshold 320 segments maximum-threshold 320 segments weight 10
    !
@@ -486,10 +490,12 @@ qos profile uc_mc_queues_test
       no priority
    !
    mc-tx-queue 2
+      !! Test strict priority
       bandwidth percent 10
       priority strict
    !
    mc-tx-queue 4
+      !! Test guaranteed percent
       bandwidth guaranteed percent 10
 ```
 

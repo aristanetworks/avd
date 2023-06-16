@@ -619,8 +619,6 @@ router isis EVPN_UNDERLAY
 | BGP Tuning |
 | ---------- |
 | distance bgp 20 200 200 |
-| graceful-restart restart-time 300 |
-| graceful-restart |
 | update wait-install |
 | no bgp default ipv4-unicast |
 | maximum-paths 4 ecmp 4 |
@@ -659,8 +657,6 @@ router isis EVPN_UNDERLAY
 !
 router bgp 65000
    router-id 192.168.255.8
-   graceful-restart restart-time 300
-   graceful-restart
    maximum-paths 4 ecmp 4
    update wait-install
    no bgp default ipv4-unicast

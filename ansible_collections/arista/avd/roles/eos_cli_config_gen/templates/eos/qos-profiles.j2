@@ -30,6 +30,11 @@ qos profile {{ profile.name }}
 {%     for mc_tx_queue in profile.mc_tx_queues | arista.avd.natural_sort('id') %}
    !
    mc-tx-queue {{ mc_tx_queue.id }}
+{%         if mc_tx_queue.comment is arista.avd.defined %}
+{%             for comment_line in mc_tx_queue.comment.splitlines() | arista.avd.default([]) %}
+      !! {{ comment_line }}
+{%             endfor %}
+{%         endif %}
 {%         if mc_tx_queue.bandwidth_percent is arista.avd.defined %}
       bandwidth percent {{ mc_tx_queue.bandwidth_percent }}
 {%         elif mc_tx_queue.bandwidth_guaranteed_percent is arista.avd.defined %}

@@ -1,6 +1,11 @@
 {# eos - tx-queue profiles #}
    !
    tx-queue {{ tx_queue.id }}
+{% if tx_queue.comment is arista.avd.defined %}
+{%     for comment_line in tx_queue.comment.splitlines() | arista.avd.default([]) %}
+      !! {{ comment_line }}
+{%     endfor %}
+{% endif %}
 {% if tx_queue.bandwidth_percent is arista.avd.defined %}
       bandwidth percent {{ tx_queue.bandwidth_percent }}
 {% elif tx_queue.bandwidth_guaranteed_percent is arista.avd.defined %}

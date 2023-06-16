@@ -7,13 +7,13 @@ l3leaf:
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24
 
   node_groups:
-    duplicate-vlans-mlag:
+    - group: duplicate-vlans-mlag
       nodes:
-        duplicate-vlans-mlag-a:
+        - name: duplicate-vlans-mlag-a
           bgp_as: 42
           id: 42
 
-        duplicate-vlans-mlag-b:
+        - name: duplicate-vlans-mlag-b
           bgp_as: 6500
           id: 40
 
@@ -36,4 +36,4 @@ tenants:
           - id: 350
             name: Tenant_C_WAN_Zone_1
 
-expected_error_message: "Duplicate VLAN ID '2' found in Tenant 'Tenant_C' during configuration of MLAG Peering VLAN in vrf 'Tenant_C_WAN_Zone' (check for duplicate VRF VNI/ID)."
+expected_error_message: "Found duplicate objects with conflicting data while generating configuration for MLAG Peering VLAN in VRF 'Tenant_C_WAN_Zone' (check for duplicate VRF VNI/ID). {'id': 2, 'name': 'MLAG_iBGP_Tenant_C_WAN_Zone', 'tenant': 'Tenant_C'} conflicts with {'id': 2, 'name': 'MLAG_iBGP_Tenant_C_OP_Zone', 'tenant': 'Tenant_C'}."

@@ -1,0 +1,5 @@
+---
+# Test that auto_clock_identify: false works on a global level:
+ptp:
+  enabled: true
+  auto_clock_identity: false

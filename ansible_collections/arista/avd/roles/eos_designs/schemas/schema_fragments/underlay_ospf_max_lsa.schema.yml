@@ -4,6 +4,8 @@
 type: dict
 keys:
   underlay_ospf_max_lsa:
+    documentation_options:
+      table: ospf-settings
     type: int
     convert_types:
       - str

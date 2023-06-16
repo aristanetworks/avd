@@ -4,6 +4,8 @@
 type: dict
 keys:
   ptp_profiles:
+    documentation_options:
+      table: ptp
     type: list
     items:
       type: dict
@@ -18,19 +20,19 @@ keys:
             interval:
               type: int
               convert_types:
-              - str
+                - str
               min: -7
               max: 4
             timeout:
               type: int
               convert_types:
-              - str
+                - str
               min: 2
               max: 255
         delay_req:
           type: int
           convert_types:
-          - str
+            - str
           min: -7
           max: 8
         sync_message:
@@ -40,9 +42,34 @@ keys:
             interval:
               type: int
               convert_types:
-              - str
+                - str
               min: -7
               max: 3
         transport:
           type: str
           valid_values: ["ipv4"]
+    default:
+      - announce:
+          interval: 0
+          timeout: 3
+        delay_req: -3
+        profile: aes67-r16-2016
+        sync_message:
+          interval: -3
+        transport: ipv4
+      - announce:
+          interval: -2
+          timeout: 3
+        delay_req: -4
+        profile: smpte2059-2
+        sync_message:
+          interval: -4
+        transport: ipv4
+      - announce:
+          interval: 2
+          timeout: 3
+        delay_req: 0
+        profile: aes67
+        sync_message:
+          interval: 0
+        transport: ipv4

@@ -67,6 +67,8 @@ router_ospf:
       max_lsa: 5
       default_information_originate:
         always: true
+        metric_type: 1
+        metric: 100
       redistribute:
         static:
           route_map: rm-ospf-static

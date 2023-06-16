@@ -56,7 +56,7 @@
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 172.16.2.202/24 | 172.16.2.1 |
+| Management1 | oob_management | oob | MGMT | 172.16.1.112/24 | 172.16.1.1 |
 
 ##### IPv6
 
@@ -72,7 +72,7 @@ interface Management1
    description oob_management
    no shutdown
    vrf MGMT
-   ip address 172.16.2.202/24
+   ip address 172.16.1.112/24
 ```
 
 ### Management API HTTP
@@ -588,13 +588,13 @@ ip routing vrf VRF11
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| MGMT | 0.0.0.0/0 | 172.16.2.1 | - | 1 | - | - | - |
+| MGMT | 0.0.0.0/0 | 172.16.1.1 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
 ```eos
 !
-ip route vrf MGMT 0.0.0.0/0 172.16.2.1
+ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 ```
 
 ### Router BGP
@@ -607,8 +607,6 @@ ip route vrf MGMT 0.0.0.0/0 172.16.2.1
 
 | BGP Tuning |
 | ---------- |
-| graceful-restart restart-time 300 |
-| graceful-restart |
 | no bgp default ipv4-unicast |
 | maximum-paths 4 ecmp 4 |
 
@@ -687,8 +685,6 @@ ip route vrf MGMT 0.0.0.0/0 172.16.2.1
 !
 router bgp 65201
    router-id 10.255.128.14
-   graceful-restart restart-time 300
-   graceful-restart
    maximum-paths 4 ecmp 4
    no bgp default ipv4-unicast
    neighbor EVPN-OVERLAY-PEERS peer group

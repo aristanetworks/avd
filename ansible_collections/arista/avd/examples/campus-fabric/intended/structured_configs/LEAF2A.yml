@@ -89,6 +89,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -120,6 +130,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -151,6 +171,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -182,6 +212,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -213,6 +253,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -244,6 +294,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -275,6 +335,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -306,6 +376,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -337,6 +417,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -368,6 +458,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -399,6 +499,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -430,6 +540,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -461,6 +581,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -492,6 +622,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -523,6 +663,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -554,6 +704,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -585,6 +745,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -616,6 +786,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -647,6 +827,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -678,6 +868,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -709,6 +909,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -740,6 +950,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -771,6 +991,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -802,6 +1032,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -833,6 +1073,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -864,6 +1114,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -895,6 +1155,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -926,6 +1196,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -957,6 +1237,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -988,6 +1278,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1019,6 +1319,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1050,6 +1360,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1081,6 +1401,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1112,6 +1442,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1143,6 +1483,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1174,6 +1524,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1205,6 +1565,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1236,6 +1606,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1267,6 +1647,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1298,6 +1688,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1329,6 +1729,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1360,6 +1770,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1391,6 +1811,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1422,6 +1852,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1453,6 +1893,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1484,6 +1934,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1515,6 +1975,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1546,6 +2016,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1577,6 +2057,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1608,6 +2098,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1639,6 +2139,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1670,6 +2180,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1701,6 +2221,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1732,6 +2262,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1763,6 +2303,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1794,6 +2344,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1825,6 +2385,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1856,6 +2426,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1887,6 +2467,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1918,6 +2508,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1949,6 +2549,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -1980,6 +2590,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2011,6 +2631,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2042,6 +2672,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2073,6 +2713,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2104,6 +2754,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2135,6 +2795,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2166,6 +2836,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2197,6 +2877,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2228,6 +2918,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2259,6 +2959,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2290,6 +3000,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2321,6 +3041,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2352,6 +3082,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2383,6 +3123,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2414,6 +3164,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2445,6 +3205,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2476,6 +3246,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2507,6 +3287,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2538,6 +3328,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2569,6 +3369,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2600,6 +3410,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2631,6 +3451,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2662,6 +3492,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2693,6 +3533,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2724,6 +3574,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2755,6 +3615,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2786,6 +3656,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2817,6 +3697,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2848,6 +3738,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2879,6 +3779,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2910,6 +3820,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2941,6 +3861,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -2972,6 +3902,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3003,6 +3943,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3034,6 +3984,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3065,6 +4025,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3096,6 +4066,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3127,6 +4107,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3158,6 +4148,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3189,6 +4189,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3220,6 +4230,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3251,6 +4271,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3282,6 +4312,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3313,6 +4353,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3344,6 +4394,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3375,6 +4435,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3406,6 +4476,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3437,6 +4517,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3468,6 +4558,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3499,6 +4599,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3530,6 +4640,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3561,6 +4681,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3592,6 +4722,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3623,6 +4763,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3654,6 +4804,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3685,6 +4845,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3716,6 +4886,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3747,6 +4927,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3778,6 +4968,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3809,6 +5009,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3840,6 +5050,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3871,6 +5091,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3902,6 +5132,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3933,6 +5173,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3964,6 +5214,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -3995,6 +5255,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4026,6 +5296,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4057,6 +5337,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4088,6 +5378,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4119,6 +5419,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4150,6 +5460,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4181,6 +5501,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4212,6 +5542,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4243,6 +5583,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4274,6 +5624,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4305,6 +5665,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4336,6 +5706,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4367,6 +5747,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4398,6 +5788,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4429,6 +5829,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4460,6 +5870,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4491,6 +5911,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4522,6 +5952,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4553,6 +5993,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4584,6 +6034,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4615,6 +6075,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4646,6 +6116,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4677,6 +6157,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4708,6 +6198,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4739,6 +6239,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4770,6 +6280,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4801,6 +6321,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4832,6 +6362,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4863,6 +6403,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4894,6 +6444,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4925,6 +6485,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4956,6 +6526,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -4987,6 +6567,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5018,6 +6608,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5049,6 +6649,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5080,6 +6690,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5111,6 +6731,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5142,6 +6772,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5173,6 +6813,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5204,6 +6854,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5235,6 +6895,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5266,6 +6936,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5297,6 +6977,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5328,6 +7018,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5359,6 +7059,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5390,6 +7100,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5421,6 +7141,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5452,6 +7182,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5483,6 +7223,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5514,6 +7264,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5545,6 +7305,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5576,6 +7346,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5607,6 +7387,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5638,6 +7428,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5669,6 +7469,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5700,6 +7510,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5731,6 +7551,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5762,6 +7592,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5793,6 +7633,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5824,6 +7674,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5855,6 +7715,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5886,6 +7756,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5917,6 +7797,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5948,6 +7838,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -5979,6 +7879,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6010,6 +7920,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6041,6 +7961,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6072,6 +8002,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6103,6 +8043,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6134,6 +8084,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6165,6 +8125,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6196,6 +8166,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6227,6 +8207,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6258,6 +8248,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6289,6 +8289,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6320,6 +8330,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6351,6 +8371,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6382,6 +8412,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6413,6 +8453,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6444,6 +8494,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6475,6 +8535,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6506,6 +8576,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6537,6 +8617,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6568,6 +8658,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6599,6 +8699,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6630,6 +8740,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6661,6 +8781,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6692,6 +8822,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6723,6 +8863,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6754,6 +8904,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6785,6 +8945,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6816,6 +8986,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6847,6 +9027,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6878,6 +9068,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6909,6 +9109,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6940,6 +9150,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -6971,6 +9191,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -7002,6 +9232,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -7033,6 +9273,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -7064,6 +9314,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -7095,6 +9355,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -7126,6 +9396,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -7157,6 +9437,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -7188,6 +9478,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -7219,6 +9519,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -7250,6 +9560,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -7281,6 +9601,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -7312,6 +9642,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -7343,6 +9683,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -7374,6 +9724,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -7405,6 +9765,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -7436,6 +9806,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -7467,6 +9847,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220
@@ -7498,6 +9888,16 @@ ethernet_interfaces:
     authentication_failure:
       action: allow
       allow_vlan: 230
+  poe:
+    priority: critical
+    reboot:
+      action: maintain
+    link_down:
+      action: maintain
+    shutdown:
+      action: power-off
+    limit:
+      class: 4
   phone:
     trunk: untagged
     vlan: 220

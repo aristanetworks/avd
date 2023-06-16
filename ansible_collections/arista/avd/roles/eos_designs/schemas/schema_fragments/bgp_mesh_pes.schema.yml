@@ -4,6 +4,10 @@
 type: dict
 keys:
   bgp_mesh_pes:
+    documentation_options:
+      table: overlay-settings
     type: bool
     default: false
-    description: Whether to configure an iBGP full mesh between PEs, either because there is no RR used or other reasons.
+    description: |
+      Configure an iBGP full mesh between PEs, either because there is no RR used or other reasons.
+      Only supported in combination with MPLS overlay.

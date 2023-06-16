@@ -31,6 +31,12 @@ def _strategy_prepend_unique(config, path, base, nxt):
     return nxt + [n for n in base if n not in nxt_as_set]
 
 
+def _strategy_must_match(config, path, base, nxt):
+    if base != nxt:
+        raise ValueError(f"Values of {'.'.join(path)} do not match: {base} != {nxt}")
+    return base
+
+
 MAP_ANSIBLE_LIST_MERGE_TO_DEEPMERGE_LIST_STRATEGY = {
     "replace": "override",
     "keep": _strategy_keep,
@@ -60,6 +66,7 @@ def merge(base, *nxt_list, recursive=True, list_merge="append", same_key_strateg
         Controls how dictionary keys that are in both base and nxt are handled:
         - "override" means nxt value replace base value.
         - "use_existing" means base value is kept.
+        - "must_match" means a ValueError will be raised if values are not matching.
     destructive_merge : bool, default=True
         To optimize performance the merge is done in-place and is destructive for both base and nxt data sets by default.
         Base will be in-place updated with objects from nxt and some objects in nxt will be modified during the merge.
@@ -88,6 +95,9 @@ def merge(base, *nxt_list, recursive=True, list_merge="append", same_key_strateg
         list_strategies.insert(0, merge_on_schema.strategy)
 
     dict_strategies = ["merge" if recursive else "override"]
+
+    if same_key_strategy == "must_match":
+        same_key_strategy = _strategy_must_match
 
     merger = Merger(
         # List of tuples with strategies for each type

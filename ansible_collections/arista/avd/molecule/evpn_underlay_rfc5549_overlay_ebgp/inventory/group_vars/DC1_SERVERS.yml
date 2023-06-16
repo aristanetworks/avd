@@ -1,22 +1,22 @@
 port_profiles:
-  TENANT_A_B:
+  - profile: TENANT_A_B
     mode: trunk
     vlans: "110-111,210-211"
 
-  TENANT_A:
+  - profile: TENANT_A
     mode: access
     vlans: "110"
 
-  TENANT_A_MTU:
+  - profile: TENANT_A_MTU
     mode: access
     vlans: "110"
     mtu: 1600
 
-  TENANT_B:
+  - profile: TENANT_B
     mode: trunk
     vlans: "210-211"
 
-  ALL_WITH_SECURITY:
+  - profile: ALL_WITH_SECURITY
     mode: trunk
     vlans: "1-4094"
     spanning_tree_bpdufilter: true
@@ -36,7 +36,7 @@ port_profiles:
         level: 2
         unit: percent
 
-  ALL_WITH_SECURITY_PORT_CHANNEL:
+  - profile: ALL_WITH_SECURITY_PORT_CHANNEL
     mode: trunk
     vlans: "1-4094"
     spanning_tree_bpdufilter: true
@@ -60,7 +60,7 @@ port_profiles:
       mode: active
 
 servers:
-  server01_MLAG:
+  - name: server01_MLAG
     rack: RackB
     adapters:
       - endpoint_ports: [ Eth2, Eth3 ]
@@ -71,7 +71,7 @@ servers:
           description: PortChanne1
           mode: active
 
-  server01_MTU_PROFILE_MLAG:
+  - name: server01_MTU_PROFILE_MLAG
     rack: RackB
     adapters:
       - endpoint_ports: [ Eth4, Eth5 ]
@@ -82,7 +82,7 @@ servers:
           description: PortChanne1
           mode: active
 
-  server01_MTU_ADAPTOR_MLAG:
+  - name: server01_MTU_ADAPTOR_MLAG
     rack: RackB
     adapters:
       - endpoint_ports: [ Eth6, Eth7 ]
@@ -93,7 +93,7 @@ servers:
           description: PortChanne1
           mode: active
 
-  server02_SINGLE_NODE_TRUNK:
+  - name: server02_SINGLE_NODE_TRUNK
     rack: RackB
     adapters:
       - endpoint_ports: [ Eth1 ]
@@ -101,7 +101,7 @@ servers:
         switches: [ DC1-LEAF1A ]
         profile: ALL_WITH_SECURITY
 
-  server02_SINGLE_NODE:
+  - name: server02_SINGLE_NODE
     rack: RackB
     adapters:
       - endpoint_ports: [ Eth1 ]
@@ -109,7 +109,7 @@ servers:
         switches: [ DC1-LEAF1A ]
         profile: TENANT_A
 
-  server03_ESI:
+  - name: server03_ESI
     rack: RackC
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
@@ -121,7 +121,7 @@ servers:
           mode: active
           short_esi: '0303:0202:0101'
 
-  server04_inherit_all_from_profile:
+  - name: server04_inherit_all_from_profile
     rack: RackC
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
@@ -129,7 +129,7 @@ servers:
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: ALL_WITH_SECURITY
 
-  server05_no_profile:
+  - name: server05_no_profile
     rack: RackC
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
@@ -154,7 +154,7 @@ servers:
             level: 2
             unit: percent
 
-  server06_override_profile:
+  - name: server06_override_profile
     rack: RackC
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
@@ -180,7 +180,7 @@ servers:
             level: 2
             unit: percent
 
-  server07_inherit_all_from_profile_port_channel:
+  - name: server07_inherit_all_from_profile_port_channel
     rack: RackC
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
@@ -188,7 +188,7 @@ servers:
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: ALL_WITH_SECURITY_PORT_CHANNEL
 
-  server08_no_profile_port_channel:
+  - name: server08_no_profile_port_channel
     rack: RackC
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
@@ -216,7 +216,7 @@ servers:
           description: server08_no_profile_port_channel
           mode: 'on'
 
-  server09_override_profile_no_port_channel:
+  - name: server09_override_profile_no_port_channel
     rack: RackC
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
