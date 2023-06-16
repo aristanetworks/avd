@@ -2,26 +2,26 @@
 
 # Ansible Playbook to export vars from ansible-avd molecule scenarios
 # Must load inventory from file in source molecule scenario
-# Must give name of molecule scenario as extra-var like "-e scenario=eos_designs_unit_tests"
+# Must give destination path as extra-var like "-e testdir=eos_designs_unit_tests"
 
-- name: Copy files from eos_designs scenario
+- name: Copy files from molecule scenario
   gather_facts: false
   connection: local
-  hosts: all
+  hosts: all,!prompt ## Excluding prompt because the unsafe marker is lost during the export of hostvars.
   vars:
     scenario_dir: "{{ inventory_dir }}/.."
-    pyavd_test_artifacts_dir: "{{ playbook_dir }}/../tests/eos_designs"
+    pyavd_test_artifacts_dir: "{{ playbook_dir }}/../tests"
   tasks:
     - name: Clear directory
       ansible.builtin.file:
-        path: "{{ pyavd_test_artifacts_dir }}/{{ scenario }}"
+        path: "{{ pyavd_test_artifacts_dir }}/{{ testdir }}"
         state: absent
       run_once: true
       delegate_to: localhost
 
     - name: Create directories
       ansible.builtin.file:
-        path: "{{ pyavd_test_artifacts_dir }}/{{ scenario }}/{{ item }}"
+        path: "{{ pyavd_test_artifacts_dir }}/{{ testdir }}/{{ item }}"
         state: directory
         mode: 0775
       run_once: true
@@ -49,7 +49,7 @@
     - name: Export hostvars
       ansible.builtin.copy:
         content: "{{ templated_hostvars | to_json(sort_keys=false) }}"
-        dest: "{{ pyavd_test_artifacts_dir }}/{{ scenario }}/vars/{{ inventory_hostname }}.json"
+        dest: "{{ pyavd_test_artifacts_dir }}/{{ testdir }}/vars/{{ inventory_hostname }}.json"
       delegate_to: localhost
       vars:
         # Variables required to run Molecule test data outside Ansible without getting "undefined" errors.
@@ -60,17 +60,13 @@
           id: 6
 
     - name: Copy structured_configs
-      ansible.builtin.copy:
-        src: "{{ scenario_dir }}/intended/structured_configs/"
-        dest: "{{ pyavd_test_artifacts_dir }}/{{ scenario }}/expected_structured_configs/"
-        mode: 0664
+      ansible.builtin.shell:
+        cmd: "cp -rT {{ scenario_dir }}/intended/structured_configs/ {{ pyavd_test_artifacts_dir }}/{{ testdir }}/expected_structured_configs/"
       run_once: true
       delegate_to: localhost
 
     - name: Copy configs
-      ansible.builtin.copy:
-        src: "{{ scenario_dir }}/intended/configs/"
-        dest: "{{ pyavd_test_artifacts_dir }}/{{ scenario }}/expected_configs/"
-        mode: 0664
+      ansible.builtin.shell:
+        cmd: "cp -rT {{ scenario_dir }}/intended/configs/ {{ pyavd_test_artifacts_dir }}/{{ testdir }}/expected_configs/"
       run_once: true
       delegate_to: localhost
