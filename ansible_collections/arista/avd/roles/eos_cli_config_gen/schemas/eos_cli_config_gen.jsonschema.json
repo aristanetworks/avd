@@ -7430,6 +7430,71 @@
             "encryption_reversible": {
               "type": "string",
               "title": "Encryption Reversible"
+            },
+            "policy": {
+              "type": "object",
+              "properties": {
+                "minimum": {
+                  "type": "object",
+                  "properties": {
+                    "digits": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "title": "Digits"
+                    },
+                    "length": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "title": "Length"
+                    },
+                    "lower": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "title": "Lower"
+                    },
+                    "special": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "title": "Special"
+                    },
+                    "upper": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "title": "Upper"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Minimum"
+                },
+                "maximum": {
+                  "type": "object",
+                  "properties": {
+                    "repetitive": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "title": "Repetitive"
+                    },
+                    "sequential": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "title": "Sequential"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Maximum"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Policy"
             }
           },
           "additionalProperties": false,

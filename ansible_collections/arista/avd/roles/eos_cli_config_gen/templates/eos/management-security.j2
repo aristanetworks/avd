@@ -14,6 +14,33 @@ management security
 {%     if management_security.password.minimum_length is arista.avd.defined %}
    password minimum length {{ management_security.password.minimum_length }}
 {%     endif %}
+{%     if management_security.password.policy is arista.avd.defined %}
+{%         if management_security.password.policy.minimum is arista.avd.defined %}
+{%             if management_security.password.policy.minimum.digits is arista.avd.defined %}
+   password policy AVD_POLICY minimum digits {{ management_security.password.policy.minimum.digits }}
+{%             endif %}
+{%             if management_security.password.policy.minimum.length is arista.avd.defined %}
+   password policy AVD_POLICY minimum length {{ management_security.password.policy.minimum.length }}
+{%             endif %}
+{%             if management_security.password.policy.minimum.lower is arista.avd.defined %}
+   password policy AVD_POLICY minimum lower {{ management_security.password.policy.minimum.lower }}
+{%             endif %}
+{%             if management_security.password.policy.minimum.special is arista.avd.defined %}
+   password policy AVD_POLICY minimum special {{ management_security.password.policy.minimum.special }}
+{%             endif %}
+{%             if management_security.password.policy.minimum.upper is arista.avd.defined %}
+   password policy AVD_POLICY minimum upper {{ management_security.password.policy.minimum.upper }}
+{%             endif %}
+{%         endif %}
+{%         if management_security.password.policy.maximum is arista.avd.defined %}
+{%             if management_security.password.policy.maximum.repetitive is arista.avd.defined %}
+   password policy AVD_POLICY maximum repetitive {{ management_security.password.policy.maximum.repetitive }}
+{%             endif %}
+{%             if management_security.password.policy.maximum.sequential is arista.avd.defined %}
+   password policy AVD_POLICY maximum sequential {{ management_security.password.policy.maximum.sequential }}
+{%             endif %}
+{%         endif %}
+{%     endif %}
 {%     for ssl_profile in management_security.ssl_profiles | arista.avd.natural_sort %}
    ssl profile {{ ssl_profile.name }}
 {%         if ssl_profile.tls_versions is arista.avd.defined %}
