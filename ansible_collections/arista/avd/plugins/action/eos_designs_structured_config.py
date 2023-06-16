@@ -79,7 +79,7 @@ class ActionModule(ActionBase):
         # Get Structured Config from builtin eos_designs python_modules
         try:
             output = get_structured_config(
-                vars=task_vars,
+                vars=dict(task_vars),
                 input_schema_tools=input_schema_tools,
                 output_schema_tools=output_schema_tools,
                 result=result,
@@ -121,7 +121,10 @@ class ActionModule(ActionBase):
                 if not isinstance(template_result_data, list):
                     template_result_data = [template_result_data]
 
-                merge(output, *template_result_data, list_merge=list_merge, schema=output_schema_tools.avdschema)
+                try:
+                    merge(output, *template_result_data, list_merge=list_merge, schema=output_schema_tools.avdschema)
+                except Exception as error:
+                    raise AnsibleActionFail(message=str(error)) from error
 
         # If the argument 'template_output' is set, run the output data through another jinja2 rendering.
         # This is to resolve any input values with inline jinja using variables/facts set by the input templates.

@@ -28,7 +28,7 @@ keys:
           Multiple CloudVision clusters
         primary_key: name
         convert_types:
-        - dict
+          - dict
         items:
           type: dict
           keys:
@@ -96,6 +96,8 @@ keys:
               type: str
               description: |
                 The VRF to use to connect to CloudVision
+              convert_types:
+                - int
       cvauth:
         type: dict
         description: |
@@ -147,10 +149,12 @@ keys:
         type: str
         description: |
           The VRF to use to connect to CloudVision
+        convert_types:
+          - int
       cvgnmi:
         type: bool
         description: |
-          Stream states from EOS GNMI servers (Openconfig) to CloudVision. Available as of TerminAttr v1.13.1
+          Stream states from EOS gNMI servers (Openconfig) to CloudVision. Available as of TerminAttr v1.13.1
       disable_aaa:
         type: bool
         description: |
@@ -210,24 +214,3 @@ keys:
         description: |
           The default compression scheme when streaming to CloudVision is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.
           There is no need to change the compression scheme.
-      ingestauth_key:
-        type: str
-        description: |
-          Deprecated key. Use `cvauth` instead.
-      ingestgrpcurl:
-        type: dict
-        description: |
-          Deprecated key. Use `cvaddrs` instead.
-        keys:
-          ips:
-            type: list
-            items:
-              type: str
-          port:
-            type: int
-            convert_types:
-            - str
-      ingestvrf:
-        description: |
-          Deprecated key. Use `cvvrf` instead.
-        type: str

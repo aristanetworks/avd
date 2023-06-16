@@ -3,7 +3,7 @@ from __future__ import annotations
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get
 
 from .utils import UtilsMixin
 
@@ -80,7 +80,9 @@ class RouterOspfMixin(UtilsMixin):
                 # Strip None values from process before adding to list
                 process = {key: value for key, value in process.items() if value is not None}
 
-                ospf_processes.append(process)
+                append_if_not_duplicate(
+                    list_of_dicts=ospf_processes, primary_key="id", new_dict=process, context="OSPF Processes defined under network services", context_keys="id"
+                )
 
         # If we have static_routes in default VRF and not EPVN, and underlay is OSPF
         # Then add redistribute static to the underlay OSPF process.

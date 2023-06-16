@@ -22,3 +22,5 @@ keys:
         max: 100
       vrf:
         type: str
+        convert_types:
+          - int

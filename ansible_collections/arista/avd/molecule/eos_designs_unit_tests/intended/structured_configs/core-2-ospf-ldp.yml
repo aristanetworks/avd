@@ -174,9 +174,9 @@ ethernet_interfaces:
 - name: Ethernet12
   type: port-channel-member
   peer: core-1-isis-sr-ldp
-  peer_interface: Port-Channel12
+  peer_interface: Ethernet12
   peer_type: core_router
-  description: P2P_LINK_TO_core-1-isis-sr-ldp_Port-Channel12
+  description: P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet12
   shutdown: false
   channel_group:
     id: 12
@@ -185,9 +185,9 @@ ethernet_interfaces:
 - name: Ethernet13
   type: port-channel-member
   peer: core-1-isis-sr-ldp
-  peer_interface: Port-Channel12
+  peer_interface: Ethernet13
   peer_type: core_router
-  description: P2P_LINK_TO_core-1-isis-sr-ldp_Port-Channel12
+  description: P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet13
   shutdown: false
   channel_group:
     id: 12

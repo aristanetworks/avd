@@ -245,12 +245,10 @@ interface Ethernet2
 !
 interface Ethernet3
    no shutdown
-   switchport
    channel-group 3 mode active
 !
 interface Ethernet4
    no shutdown
-   switchport
    channel-group 3 mode active
 !
 interface Ethernet5
@@ -597,8 +595,6 @@ router isis CORE
 | BGP Tuning |
 | ---------- |
 | distance bgp 20 200 200 |
-| graceful-restart restart-time 300 |
-| graceful-restart |
 | update wait-install |
 | no bgp default ipv4-unicast |
 | maximum-paths 4 ecmp 4 |
@@ -620,6 +616,8 @@ router isis CORE
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
+| 100.70.0.5 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - |
+| 100.70.0.7 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - |
 | 100.70.0.8 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - |
 | 100.70.0.9 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - |
 | 192.168.48.1 | 65201 | TENANT_B_WAN | - | - | - | - | - | - | - | - |
@@ -685,8 +683,6 @@ router isis CORE
 !
 router bgp 65000
    router-id 100.70.0.6
-   graceful-restart restart-time 300
-   graceful-restart
    maximum-paths 4 ecmp 4
    update wait-install
    no bgp default ipv4-unicast
@@ -698,6 +694,10 @@ router bgp 65000
    neighbor MPLS-OVERLAY-PEERS password 7 <removed>
    neighbor MPLS-OVERLAY-PEERS send-community
    neighbor MPLS-OVERLAY-PEERS maximum-routes 0
+   neighbor 100.70.0.5 peer group MPLS-OVERLAY-PEERS
+   neighbor 100.70.0.5 description SITE1-LER1
+   neighbor 100.70.0.7 peer group MPLS-OVERLAY-PEERS
+   neighbor 100.70.0.7 description SITE2-LER1
    neighbor 100.70.0.8 peer group MPLS-OVERLAY-PEERS
    neighbor 100.70.0.8 description SITE1-RR1
    neighbor 100.70.0.9 peer group MPLS-OVERLAY-PEERS

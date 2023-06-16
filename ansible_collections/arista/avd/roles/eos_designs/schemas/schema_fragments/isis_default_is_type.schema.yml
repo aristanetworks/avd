@@ -4,6 +4,8 @@
 type: dict
 keys:
   isis_default_is_type:
+    documentation_options:
+      table: isis-settings
     type: str
     valid_values:
       - level-1-2

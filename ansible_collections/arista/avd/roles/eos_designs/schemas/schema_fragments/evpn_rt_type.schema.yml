@@ -4,6 +4,8 @@
 type: dict
 keys:
   evpn_rt_type:
+    documentation_options:
+      table: evpn-settings
     type: dict
     deprecation:
       warning: true

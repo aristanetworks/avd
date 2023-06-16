@@ -4,5 +4,7 @@
 type: dict
 keys:
   bgp_distance:
+    documentation_options:
+      table: bgp-settings
     type: dict
     $ref: "eos_cli_config_gen#/keys/router_bgp/keys/distance"

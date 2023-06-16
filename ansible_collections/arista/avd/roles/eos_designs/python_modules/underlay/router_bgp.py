@@ -28,19 +28,20 @@ class RouterBgpMixin(UtilsMixin):
             "name": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["name"],
             "type": "ipv4",
             "password": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["password"],
+            "bfd": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["bfd"],
             "maximum_routes": 12000,
             "send_community": "all",
             "struct_cfg": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["structured_config"],
         }
 
-        router_bgp["peer_groups"] = [peer_group]
+        router_bgp["peer_groups"] = [strip_empties_from_dict(peer_group)]
 
         # Address Families
         # TODO - see if it makes sense to extract logic in method
         address_family_ipv4_peer_group = {"activate": True}
 
         if self.shared_utils.underlay_rfc5549 is True:
-            address_family_ipv4_peer_group["next_hop"] = {"address_family_ipv6_originate": True}
+            address_family_ipv4_peer_group["next_hop"] = {"address_family_ipv6": {"enabled": True, "originate": True}}
 
         router_bgp["address_family_ipv4"] = {
             "peer_groups": [{"name": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["name"], **address_family_ipv4_peer_group}]

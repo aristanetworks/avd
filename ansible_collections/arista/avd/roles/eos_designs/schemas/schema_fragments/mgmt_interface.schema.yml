@@ -4,6 +4,8 @@
 type: dict
 keys:
   mgmt_interface:
+    documentation_options:
+      table: management-interface-settings
     type: str
     default: Management1
     description: OOB Management interface.

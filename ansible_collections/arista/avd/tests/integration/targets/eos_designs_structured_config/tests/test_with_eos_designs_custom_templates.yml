@@ -1,0 +1,28 @@
+- name: Test with eos_designs_custom_templates
+  ignore_errors: no
+  register: result
+  arista.avd.eos_designs_structured_config:
+    eos_designs_custom_templates:
+      # Base template to initialixe various lists to test the list merge features
+      - template: base.yml.j2
+
+      # use defaults with list_merge: append and strip_empty_keys: true
+      - template: custom_template1.yml.j2
+
+      # use list_merge: prepend and strip_empty_keys: false
+      - template: custom_template2.yml.j2
+        options:
+          list_merge: prepend
+          strip_empty_keys: false
+
+- name: Validate result
+  ansible.builtin.assert:
+    that:
+      - result is success
+      - result.ansible_facts is defined
+      - result.ansible_facts.custom_template1_var == 1
+      - result.ansible_facts.custom_template1_list == ["base_item", "custom_template1_item"]
+      - result.ansible_facts.custom_template1_none_var is not defined
+      - result.ansible_facts.custom_template2_list == ["custom_template2_item", "base_item"]
+      - result.ansible_facts.custom_template2_none_var is defined
+      - result.ansible_facts.custom_template2_none_var is none

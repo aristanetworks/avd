@@ -4,5 +4,7 @@
 type: dict
 keys:
   timezone:
+    documentation_options:
+      table: management-settings
     type: str
     description: Clock timezone like "CET" or "US/Pacific".

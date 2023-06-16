@@ -10,7 +10,7 @@ keys:
         type: list
         primary_key: name
         convert_types:
-        - dict
+          - dict
         items:
           type: dict
           keys:
@@ -21,3 +21,5 @@ keys:
                 Source Interface
             vrf:
               type: str
+              convert_types:
+                - int

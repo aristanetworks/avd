@@ -12,13 +12,13 @@ evpn_multicast: true
 #   admin_subfield: overlay_loopback_ip
 
 tenants:
-  Tenant_A:
+  - name: Tenant_A
     mac_vrf_vni_base: 10000
     evpn_l2_multicast:
       enabled: true
       underlay_l2_multicast_group_ipv4_pool: 232.0.0.0/20
     vrfs:
-      MULTICAST_ENABLED_110_111:
+      - name: MULTICAST_ENABLED_110_111
         description: "MULTICAST_ENABLED_110_111"
         vrf_vni: 11
         svis:
@@ -29,17 +29,17 @@ tenants:
           #   - vxlan vlan 111 multicast group 232.0.0.110
           #   - redistribute igmp on BGP vlan-aware-bundle 110-111 (LEAF1A/B)
           #   - redistribute igmp on BGP vlan based 110 and 111 (LEAF2A)
-          110:
+          - id: 110
             name: "MULTICAST_ENABLED_110"
             tags: ['test_l3']
             enabled: true
             ip_address_virtual: 10.1.10.1/24
-          111:
+          - id: 111
             name: "MULTICAST_ENABLED_111"
             tags: ['test_l3']
             enabled: true
             ip_address_virtual: 10.1.11.1/24
-      MULTICAST_ENABLED_210_DISABLED_211:
+      - name: MULTICAST_ENABLED_210_DISABLED_211
         description: "MULTICAST_ENABLED_210_DISABLED_211"
         vrf_vni: 12
         svis:
@@ -50,32 +50,32 @@ tenants:
           #   - vxlan vlan 210 multicast group 232.0.0.209
           #   - redistribute igmp on BGP vlan-aware-bundle 210-211 (LEAF1A/B)
           #   - redistribute igmp on BGP vlan based 210 (LEAF2A)
-          210:
+          - id: 210
             name: "MULTICAST_ENABLED_210"
             tags: ['test_l3']
             enabled: true
             ip_address_virtual: 10.2.10.1/24
-          211:
+          - id: 211
             name: "MULTICAST_DISABLED_211"
             tags: ['test_l3']
             enabled: true
             ip_address_virtual: 10.2.11.1/24
             evpn_l2_multicast:
               enabled: false
-      MULTICAST_DISABLED_310_311:
+      - name: MULTICAST_DISABLED_310_311
         description: "MULTICAST_DISABLED_310_311"
         vrf_vni: 13
         svis:
           # Expected results:
           # - vlans 310 and 311 not configured with multicast
-          310:
+          - id: 310
             name: "MULTICAST_DISABLED_310"
             tags: ['test_l3']
             enabled: true
             ip_address_virtual: 10.3.10.1/24
             evpn_l2_multicast:
               enabled: false
-          311:
+          - id: 311
             name: "MULTICAST_DISABLED_311"
             tags: ['test_l3']
             enabled: true
@@ -90,22 +90,22 @@ tenants:
       #   - vxlan vlan 257 multicast group 232.0.1.0
       #   - vxlan vlan 4092 multicast group 232.0.15.251 (tests near maximum value within subnet allocated in underlay_l2_multicast_group_ipv4_pool)
       #   - redistribute igmp on BGP vlan-aware bundle and vlan based
-      256:
+      - id: 256
         name: "MULTICAST_DISABLED_256"
         tags: ['test_l2']
         evpn_l2_multicast:
           enabled: false
-      257:
+      - id: 257
         name: "MULTICAST_ENABLED_257"
         tags: ['test_l2']
-      4092:
+      - id: 4092
         name: "MULTICAST_ENABLED_4092"
         tags: ['test_l2']
 
 # Test when tenant level evpn_l2_multicast.enabled: false and svi level enabled
 # Test with underlay_l2_multicast_group_ipv4_pool_offset
 # Test with IGMP querier version and unique address
-  Tenant_B:
+  - name: Tenant_B
     mac_vrf_vni_base: 10000
     evpn_l2_multicast:
       enabled: false
@@ -115,7 +115,7 @@ tenants:
       version: 3
       source_address: 1.1.1.1
     vrfs:
-      MULTICAST_ENABLED_1_2:
+      - name: MULTICAST_ENABLED_1_2
         description: "MULTICAST_ENABLED_1_2"
         vrf_vni: 21
         svis:
@@ -127,21 +127,21 @@ tenants:
           #   - vxlan vlan 2 multicast group 232.0.16.2
           #   - redistribute igmp on BGP vlan-aware-bundle 1-2 (LEAF1A/B)
           #   - redistribute igmp on BGP vlan based 1 and 2 (LEAF2A)
-          1:
+          - id: 1
             name: "MULTICAST_ENABLED_1"
             tags: ['test_l3']
             enabled: true
             ip_address_virtual: 10.0.1.1/24
             evpn_l2_multicast:
               enabled: true
-          2:
+          - id: 2
             name: "MULTICAST_ENABLED_2"
             tags: ['test_l3']
             enabled: true
             ip_address_virtual: 10.0.2.1/24
             evpn_l2_multicast:
               enabled: true
-      MULTICAST_ENABLED_3_DISABLED_4:
+      - name: MULTICAST_ENABLED_3_DISABLED_4
         description: "MULTICAST_ENABLED_3_DISABLED_4"
         vrf_vni: 22
         svis:
@@ -153,7 +153,7 @@ tenants:
           #   - vxlan vlan 3 multicast group 232.0.16.3
           #   - redistribute igmp on BGP vlan-aware-bundle 3-4 (LEAF1A/B)
           #   - redistribute igmp on BGP vlan based 3 (LEAF2A)
-          3:
+          - id: 3
             name: "MULTICAST_ENABLED_3"
             tags: ['test_l3']
             enabled: true
@@ -163,23 +163,23 @@ tenants:
             igmp_snooping_querier:
               version: 1
               source_address: 2.2.2.2
-          4:
+          - id: 4
             name: "MULTICAST_DISABLED_4"
             tags: ['test_l3']
             enabled: true
             ip_address_virtual: 10.0.4.1/24
-      MULTICAST_DISABLED_5_6:
+      - name: MULTICAST_DISABLED_5_6
         description: "MULTICAST_DISABLED_5_6"
         vrf_vni: 23
         svis:
           # Expected results:
           # - vlan 5 and 6 not configured with multicast
-          5:
+          - id: 5
             name: "MULTICAST_DISABLED_5"
             tags: ['test_l3']
             enabled: true
             ip_address_virtual: 10.0.5.1/24
-          6:
+          - id: 6
             name: "MULTICAST_DISABLED_6"
             tags: ['test_l3']
             enabled: true
@@ -199,15 +199,15 @@ tenants:
       #   - vxlan vlan 9 multicast group 232.0.16.9
       #   - redistribute igmp on BGP vlan-aware-bundle 9 (LEAF1A/B)
       #   - redistribute igmp on BGP vlan based 9 (LEAF2A)
-      7:
+      - id: 7
         name: "MULTICAST_DISABLED_7"
         tags: ['test_l2']
-      8:
+      - id: 8
         name: "MULTICAST_ENABLED_8"
         tags: ['test_l2']
         evpn_l2_multicast:
           enabled: true
-      9:
+      - id: 9
         name: "MULTICAST_ENABLED_9"
         tags: ['test_l2']
         evpn_l2_multicast:
@@ -218,7 +218,7 @@ tenants:
 
   # EVPN Multicast L3/IRB/OISM
   # Tenant_C is for testing of EVPN L3/OISM only
-  Tenant_C:
+  - name: Tenant_C
     mac_vrf_vni_base: 10000
     evpn_l3_multicast:
       # Enabled =
@@ -229,7 +229,7 @@ tenants:
       evpn_underlay_l3_multicast_group_ipv4_pool_offset: 1
     vrfs:
       # Inherits from Tenant C
-      TEN_C_L3_MULTICAST_ENABLED_130_131:
+      - name: TEN_C_L3_MULTICAST_ENABLED_130_131
         description: "L3_MULTICAST_ENABLED_130_131"
         vtep_diagnostic:
           loopback: 31
@@ -248,30 +248,30 @@ tenants:
           #      - On SVI 131 on LEAF1A/B (MLAG): pim ipv4 sparse-mode
           #      - On SVI 131 on LEAF2A/3A/3B (Standalone/A-A): ip igmp
           #      - Lack of loopback triggers error
-          130:
+          - id: 130
             name: "L3_MULTICAST_ENABLED_130"
             tags: ['test_l3']
             enabled: true
             ip_address_virtual: 10.1.13.1/24
-          131:
+          - id: 131
             name: "L3_MULTICAST_ENABLED_131"
             tags: ['test_l3']
             enabled: true
             ip_virtual_router_addresses:
               - 10.1.14.1
             nodes:
-              EVPN-MULTICAST-L3LEAF1A:
+              - node: EVPN-MULTICAST-L3LEAF1A
                 ip_address: 10.1.14.2/24
-              EVPN-MULTICAST-L3LEAF1B:
+              - node: EVPN-MULTICAST-L3LEAF1B
                 ip_address: 10.1.14.3/24
-              EVPN-MULTICAST-L3LEAF2A:
+              - node: EVPN-MULTICAST-L3LEAF2A
                 ip_address: 10.1.14.4/24
-              EVPN-MULTICAST-L3LEAF3A:
+              - node: EVPN-MULTICAST-L3LEAF3A
                 ip_address: 10.1.14.5/24
-              EVPN-MULTICAST-L3LEAF3B:
+              - node: EVPN-MULTICAST-L3LEAF3B
                 ip_address: 10.1.14.6/24
 
-      TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231:
+      - name: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
         description: "L3_MULTICAST_ENABLED_230_DISABLED_231"
         vtep_diagnostic:
           loopback: 32
@@ -286,12 +286,12 @@ tenants:
           #          - 232.0.32.32
           #      - IGMP/PIM enabled on SVI 230
           #      - IGMP/PIM NOT enabled on SVI 231
-          230:
+          - id: 230
             name: "L3_MULTICAST_ENABLED_230"
             tags: ['test_l3']
             enabled: true
             ip_address_virtual: 10.2.23.1/24
-          231:
+          - id: 231
             name: "L3_MULTICAST_DISABLED_231"
             tags: ['test_l3']
             enabled: true
@@ -299,7 +299,7 @@ tenants:
             evpn_l3_multicast:
               enabled: false
 
-      TEN_C_L3_MULTICAST_DISABLED_330_331:
+      - name: TEN_C_L3_MULTICAST_DISABLED_330_331
         description: "L3_MULTICAST_DISABLED_330_331"
         evpn_l3_multicast:
           enabled: false
@@ -310,12 +310,12 @@ tenants:
         svis:
           # Expected results:
           # - EVPN Multicast disabled across entire VRF
-          330:
+          - id: 330
             name: "L3_MULTICAST_DISABLED_330"
             tags: ['test_l3']
             enabled: true
             ip_address_virtual: 10.3.33.1/24
-          331:
+          - id: 331
             name: "L3_MULTICAST_DISABLED_331"
             tags: ['test_l3']
             enabled: true
@@ -323,14 +323,14 @@ tenants:
 
   # EVPN Multicast L3/IRB/OISM
   # Tenant_D is for testing of EVPN L3/OISM when disabled at the tenant level only
-  Tenant_D:
+  - name: Tenant_D
     mac_vrf_vni_base: 10000
     evpn_l3_multicast:
       enabled: false
       evpn_underlay_l3_multicast_group_ipv4_pool: 232.0.64.0/20
     vrfs:
 
-      TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141:
+      - name: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
         description: "L3_MULTICAST_ENABLED_140_DISABLED_141"
         vtep_diagnostic:
           loopback: 41
@@ -347,12 +347,12 @@ tenants:
           #          - 232.0.64.41
           #      - IGMP/PIM enabled on SVI 140.  No Multicast on 141.
           #      - Lack of loopback triggers error
-          140:
+          - id: 140
             name: "L3_MULTICAST_ENABLED_140"
             tags: ['test_l3']
             enabled: true
             ip_address_virtual: 10.1.14.1/24
-          141:
+          - id: 141
             name: "L3_MULTICAST_DISABLED_141"
             tags: ['test_l3']
             enabled: true
@@ -360,7 +360,7 @@ tenants:
               enabled: false
             ip_address_virtual: 10.1.15.1/24
 
-      TEN_D_L3_MULTICAST_DISABLED_240_241:
+      - name: TEN_D_L3_MULTICAST_DISABLED_240_241
         description: "L3_MULTICAST_DISABLED_240_241"
         vtep_diagnostic:
           loopback: 42
@@ -369,12 +369,12 @@ tenants:
         svis:
           # Expected results:
           # - EVPN Multicast disabled across entire VRF
-          240:
+          - id: 240
             name: "L3_MULTICAST_DISABLED_240"
             tags: ['test_l3']
             enabled: true
             ip_address_virtual: 10.1.24.1/24
-          241:
+          - id: 241
             name: "L3_MULTICAST_DISABLED_241"
             tags: ['test_l3']
             enabled: true
@@ -382,7 +382,7 @@ tenants:
 
   # EVPN Multicast L3/IRB/OISM
   # Tenant_E is for testing of EVPN L3/OISM with PEG/Transit only
-  Tenant_E:
+  - name: Tenant_E
     mac_vrf_vni_base: 10000
     evpn_l3_multicast:
       # Enabled =
@@ -420,14 +420,14 @@ tenants:
       # Should have a section in router multicast & router pim sparse-mode on those nodes
       # Only router multicast on LEAF2
       # No transit
-      TEN_E_PEG_L3_MULTICAST_ENABLED:
+      - name: TEN_E_PEG_L3_MULTICAST_ENABLED
         description: "PEG_L3_MULTICAST_ENABLED in Tenant E"
         vtep_diagnostic:
           loopback: 51
           loopback_ip_range: 10.255.51.0/24
         vrf_vni: 51
         svis:
-          150:
+          - id: 150
             name: "L3_MULTICAST_ENABLED_150"
             tags: ['test_l3']
             enabled: true
@@ -456,7 +456,7 @@ tenants:
       # This VRF overrides Tenant
       # RPs should be as defined in VRF below
       # Should have a section in router multicast & router pim sparse-mode
-      TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE:
+      - name: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
         description: "L3_MULTICAST_ENABLED_PEG_OVERRIDE"
         vtep_diagnostic:
           loopback: 55
@@ -474,7 +474,7 @@ tenants:
               - 10.40.40.40
         vrf_vni: 55
         svis:
-          550:
+          - id: 550
             name: "L3_MULTICAST_ENABLED_550"
             tags: ['test_l3']
             enabled: true
@@ -489,7 +489,7 @@ tenants:
 
       # This VRF overrides tenant, uses different RPs on different devices
       # and enables transit mode
-      TEN_E_L3_MULTICAST_TRANSIT:
+      - name: TEN_E_L3_MULTICAST_TRANSIT
         description: "L3_MULTICAST_TRANSIT"
         vtep_diagnostic:
           loopback: 52
@@ -511,7 +511,7 @@ tenants:
               - 10.60.60.60
         vrf_vni: 52
         svis:
-          250:
+          - id: 250
             name: "L3_MULTICAST_ENABLED_250"
             tags: ['test_l3']
             enabled: true
@@ -532,7 +532,7 @@ tenants:
 
       # This VRF tests evpn_peg with no nodes defined
       # Should apply transit setting on any node where an RP is defined
-      TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES:
+      - name: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
         description: "L3_MULTICAST_TRANSIT"
         vtep_diagnostic:
           loopback: 60
@@ -551,7 +551,7 @@ tenants:
               - 10.60.60.60
         vrf_vni: 60
         svis:
-          260:
+          - id: 260
             name: "L3_MULTICAST_ENABLED_260"
             tags: ['test_l3']
             enabled: true

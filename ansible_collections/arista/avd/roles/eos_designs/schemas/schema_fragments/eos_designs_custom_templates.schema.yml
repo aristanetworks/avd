@@ -4,6 +4,8 @@
 type: dict
 keys:
   eos_designs_custom_templates:
+    documentation_options:
+      table: role-custom-templates
     type: list
     items:
       type: dict
@@ -13,14 +15,14 @@ keys:
           description: Template file.
           required: true
         options:
-          description: Template options
+          description: Template options.
           type: dict
           keys:
             list_merge:
               type: str
-              description: Merge strategy for lists
+              description: Merge strategy for lists.
               default: 'append_rp'
             strip_empty_keys:
               type: bool
-              description: Filter out keys from the generated output if value is null/none/undefined
+              description: Filter out keys from the generated output if value is null/none/undefined.
               default: true

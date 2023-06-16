@@ -9,6 +9,6 @@ l3spine:
     isis_maximum_paths: 4
     virtual_router_mac_address: 00:1c:73:00:00:9A
   nodes:
-    ISIS-SPINE1:
+    - name: ISIS-SPINE1
       id: 1
       mgmt_ip: 192.168.200.101/24

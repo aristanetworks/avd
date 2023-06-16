@@ -28,7 +28,7 @@ keys:
               udp_port:
                 type: int
                 convert_types:
-                - str
+                  - str
               virtual_router_encapsulation_mac_address:
                 type: str
                 description: |
@@ -39,15 +39,15 @@ keys:
                   interval:
                     type: int
                     convert_types:
-                    - str
+                      - str
                   min_rx:
                     type: int
                     convert_types:
-                    - str
+                      - str
                   multiplier:
                     type: int
                     convert_types:
-                    - str
+                      - str
                     min: 3
                     max: 50
                   prefix_list:
@@ -70,20 +70,20 @@ keys:
                 type: list
                 primary_key: id
                 convert_types:
-                - dict
+                  - dict
                 items:
                   type: dict
                   keys:
                     id:
                       type: int
                       convert_types:
-                      - str
+                        - str
                       required: true
                       description: VLAN ID
                     vni:
                       type: int
                       convert_types:
-                      - str
+                        - str
                     multicast_group:
                       type: str
                       description: IP Multicast Group Address
@@ -96,7 +96,7 @@ keys:
                 type: list
                 primary_key: name
                 convert_types:
-                - dict
+                  - dict
                 items:
                   type: dict
                   keys:
@@ -104,10 +104,12 @@ keys:
                       type: str
                       required: true
                       description: VRF Name
+                      convert_types:
+                        - int
                     vni:
                       type: int
                       convert_types:
-                      - str
+                        - str
                     multicast_group:
                       type: str
                       description: IP Multicast Group Address

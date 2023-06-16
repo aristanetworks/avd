@@ -3,3 +3,9 @@
 overlay_rd_type:
 # Expected result: rd 4294967295:*
   admin_subfield: 4294967295
+
+# Expected result:
+# VLAN rt <mac_vrf_id>:<mac_vrf_id>
+# VRF rt <vrf_id>:<mac_vrf_id>
+overlay_rt_type:
+  vrf_admin_subfield: "id"

@@ -4,6 +4,8 @@
 type: dict
 keys:
   underlay_filter_redistribute_connected:
+    documentation_options:
+      table: fabric-settings
     description: |
       Filter redistribution of connected into the underlay routing protocol.
       Only applicable when overlay_routing_protocol != 'none' and underlay_routing_protocol == BGP.

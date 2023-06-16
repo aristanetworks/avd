@@ -1,0 +1,64 @@
+# Testing duplicate VRF definitions according to the following rules documented in the schema.
+# Also see eos_designs_negative_unit_tests for testing of the raised errors.
+
+# It is recommended to only define a VRF in one Tenant. If the same VRF name is used across multiple tenants and those tenants
+# are accepted by `filter.tenants` on the node, any object set under the duplicate VRFs must either be unique or be an exact match.
+
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+  nodes:
+    - name: duplicate-vrfs
+      id: 101
+      bgp_as: 101
+      filter:
+        tenants:
+          - TENANT1
+          - DUPLICATE_TENANT1
+
+tenants:
+  - name: TENANT1
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: VRF1
+        vrf_id: 1
+        svis:
+          - id: 100
+            enabled: true
+            name: VLAN100
+            ip_address_virtual: 10.0.100.1/24
+            nodes:
+              - node: some-other-node
+                ip_address_virtual: 10.0.100.2/24
+
+  - name: DUPLICATE_TENANT1
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: VRF1
+        vrf_id: 1
+        svis:
+          # SVI definition results in the same config as the original one, so no error is raised.
+          - id: 100
+            enabled: true
+            name: VLAN100
+            ip_address_virtual: 10.0.100.1/24
+          # Unique VLAN so just added to the list.
+          - id: 200
+            enabled: true
+            name: VLAN200
+            ip_address_virtual: 10.0.200.1/24
+
+  # Tenant is not part of the filter of the node, so everything here is ignored.
+  - name: IGNORED_TENANT1
+    mac_vrf_vni_base: 20000
+    vrfs:
+      - name: VRF1
+        vrf_id: 10
+        svis:
+          - id: 100
+            enabled: true
+            name: VLAN100_CONFLICTING_NAME
+            ip_address_virtual: 10.0.100.1/24

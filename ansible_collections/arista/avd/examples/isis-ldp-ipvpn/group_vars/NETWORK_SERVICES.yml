@@ -1,0 +1,57 @@
+---
+tenants:
+  # Definition of tenants. Additional level of abstraction to VRFs
+  - name: CUSTOMER1
+    vrfs:
+      # VRF definitions inside the tenant.
+      - name: C1_VRF1
+        # VRF ID definition.
+        vrf_id: 10
+        # Select address families for the VRF.
+        address_families:
+          - vpn-ipv4
+        # Enable OSPF on selected PEs in the VRF.
+        ospf:
+          enabled: true
+          nodes:
+            - pe1
+            - pe2
+            - pe3
+        l3_interfaces:
+          # L3 interfaces
+          - interfaces: [ Ethernet3.10, Ethernet4.10, Ethernet2 ]
+            nodes: [ pe1, pe2, pe3 ]
+            description: C1_L3_SERVICE
+            enabled: true
+            ip_addresses: [ 10.0.1.1/29, 10.0.1.2/29, 10.0.1.9/30 ]
+            # Enable OSPF on the interfaces.
+            ospf:
+              enabled: true
+
+  - name: CUSTOMER2
+    vrfs:
+      - name: C2_VRF1
+        vrf_id: 20
+        address_families:
+          - vpn-ipv4
+        l3_interfaces:
+          # L3 interfaces
+          - interfaces: [ Ethernet3.20, Ethernet4.20, Ethernet4 ]
+            nodes: [ pe1, pe2, pe3 ]
+            description: C2_L3_SERVICE
+            enabled: true
+            ip_addresses: [ 10.1.1.1/29, 10.1.1.2/29, 10.1.1.9/30 ]
+        # Define BGP peers inside the VRF.
+        bgp_peers:
+          - ip_address: 10.1.1.3
+            remote_as: 65123
+            description: C2_ROUTER1
+            send_community: standard
+            maximum_routes: 100
+            nodes: [ pe1, pe2 ]
+          - ip_address: 10.1.1.10
+            remote_as: 65124
+            description: C2_ROUTER2
+            send_community: standard
+            maximum_routes: 100
+            nodes: [ pe3 ]

@@ -1,20 +1,20 @@
 # AVD Coding Style
 
-This page provides a list of guidelines to apply when developing Python code or Jinja2 template in the AVD context. These rules apply for either creation or update of any Python or Jinja2 file available in a `aristanetworks/ansible-avd` repository.
+This page lists guidelines for developing Python code or Jinja2 templates in the AVD context. These rules apply to creating or updating any Python or Jinja2 file available in a `aristanetworks/ansible-avd` repository.
 
 ## Python code style
 
 As AVD is an Ansible collection, we're required to follow guidelines from the official [Ansible documentation](https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_best_practices.html) for all Python code.
 
-Furthermore the CI Pipeline (& pre-commit) for AVD enforces:
+Furthermore, the CI Pipeline (& pre-commit) for AVD enforces the following:
 
-- Maximum line length 160
+- Maximum line length of 160
 - [Black](https://black.readthedocs.io/en/stable/index.html) version 22.8.0
 - [isort](https://pycqa.github.io/isort/) version 5.12.0
 - [Flake-8](https://flake8.pycqa.org/en/4.0.1/index.html) version 4.0.1
 - [pylint](https://pylint.pycqa.org/en/2.6/) version 2.6.0
 
-Configurations for above tools can be found in:
+Configurations for the above tools can be found in:
 
 - [pyproject.toml](https://github.com/aristanetworks/ansible-avd/blob/devel/pyproject.toml)
 - [.pre-commit-config.yaml](https://github.com/aristanetworks/ansible-avd/blob/devel/.pre-commit-config.yaml)
@@ -23,11 +23,11 @@ Configurations for above tools can be found in:
 
 ## Jinja2 Syntax guidelines
 
-### SYNTAX-1 - Use variable in Jinja
+### SYNTAX-1 - Using variables in Jinja
 
 - *Description*
 
-  A single space shall be added between Jinja2 curly brackets and a variable's name
+  A single space shall be added between Jinja2 curly brackets and a variable's name.
 
 - *Example*
 
@@ -39,7 +39,7 @@ Configurations for above tools can be found in:
 
 - *Description*
 
-  When variables are used in combination with a filter, `|` shall be enclosed by space
+  When variables are used in combination with a filter, `|` shall be enclosed by space.
 
 - *Example*
 
@@ -51,12 +51,12 @@ Configurations for above tools can be found in:
 
 - *Description*
 
-  Nested jinja code block shall follow the next rules:
+  The nested jinja code block shall follow the following rules:
 
-  - All J2 statements must be enclosed by 1 space
-  - All J2 statements must be indented by 4 more spaces within the jinja delimiter
+  - All J2 statements must be enclosed by one space
+  - All J2 statements must be indented by four more spaces within the jinja delimiter
   - To close a control, the end tag must have the same indentation level as the opening tag
-  - Indentation must be 4 spaces and NOT tabulation
+  - Indentation must be four spaces and NOT tabulation
 
 - *Example*
 
@@ -77,7 +77,7 @@ Configurations for above tools can be found in:
 
 - *Description*
 
-  Instead of doing a for loop on a single line, the `join` filter should be leveraged as much as possible
+  Instead of doing a for loop on a single line, the `join` filter should be leveraged as much as possible.
 
 - *Example*
 
@@ -101,7 +101,7 @@ Configurations for above tools can be found in:
 
 - *Description*
 
-  When a long CLI with multiple options needs to be built, use pure J2 logic and then print
+  When a long CLI with multiple options must be built, use pure J2 logic and print.
 
 - *Example*
 
@@ -124,7 +124,7 @@ Configurations for above tools can be found in:
 
 - *Description*
 
-  All variables shall use lower case
+  All variables shall use lowercase.
 
 - *Example*
 
@@ -136,7 +136,7 @@ Configurations for above tools can be found in:
 
 - *Description*
 
-  If a variable is multi-words, underscore `_` shall be used as a separator.
+  An underscore `_` should be used as a separator for a multi-word variable.
 
 - *Example*
 
@@ -148,7 +148,7 @@ Configurations for above tools can be found in:
 
 - *Description*
 
-  For an iterable variable, the plural form shall be used
+  For an iterable variable, the plural form shall be used.
 
 - *Example*
 
@@ -160,7 +160,7 @@ Configurations for above tools can be found in:
 
 - *Description*
 
-  For variables in a for loop, the singular form shall be used
+  For variables in a for loop, the singular form shall be used.
 
 - *Example*
 
@@ -184,7 +184,7 @@ Configurations for above tools can be found in:
 
 - *Description*
 
-  To test the type of a variable, it's recommended to use `is`/`is not` keywords
+  To test the type of a variable, it's recommended to use `is`/`is not` keywords.
 
 - *Example*
 
@@ -200,7 +200,7 @@ Configurations for above tools can be found in:
 
 - *Description*
 
-  To test the content of a variable, it's recommended to use `==`/`!=` keywords
+  To test the content of a variable, it's recommended to use `==`/`!=` keywords.
 
 - *Example*
 
@@ -213,7 +213,7 @@ Configurations for above tools can be found in:
   ```
 
   !!! info
-      [PLUGIN-2](#plugin-2-test-if-variable-exists-with-a-given-value) can do a test if the variable is defined and has a specific value
+      [PLUGIN-2](#plugin-2-test-if-a-variable-exists-with-a-given-value) can do a test if the variable is defined and has a specific value
 
 ### VAR-8 - String comparison
 
@@ -249,11 +249,11 @@ Plugins documentation is available [here](../../plugins/README.md)
   {% if router_bgp.vrfs[vrf].rd is arista.avd.defined %}
   ```
 
-### PLUGIN-2 Test if variable exists with a given value
+### PLUGIN-2 Test if a variable exists with a given value
 
 - *Description*
 
-  To test if a variable is defined and has a specific value, the test **`arista.avd.defined`** shall be used.
+  The test **`arista.avd.defined`** shall be used to test if a variable is defined and has a specific value.
 
 - *Example*
 
@@ -265,7 +265,7 @@ Plugins documentation is available [here](../../plugins/README.md)
 
 - *Description*
 
-  If a default value must be used, the `arista.avd.default` plugin shall be used instead of a `if/else` block. The plugin can be used to fallback to different values until one of them is defined and valid.
+  If a default value must be used, the `arista.avd.default` plugin shall be used instead of an `if/else` block. The plugin can be used to fallback to different values until one of them is defined and valid.
 
 - *Example*
 

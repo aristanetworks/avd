@@ -4,27 +4,33 @@
 type: dict
 keys:
   bfd_multihop:
+    documentation_options:
+      table: bfd-settings
     type: dict
-    description: BFD Multihop tuning
+    description: BFD Multihop tuning.
     keys:
       interval:
         type: int
         convert_types:
           - str
-        default: 300
         min: 50
         max: 60000
+        required: true
       min_rx:
         type: int
         convert_types:
           - str
-        default: 300
         min: 50
         max: 60000
+        required: true
       multiplier:
         type: int
         convert_types:
           - str
-        default: 3
         min: 3
         max: 50
+        required: true
+    default:
+      interval: 300
+      min_rx: 300
+      multiplier: 3

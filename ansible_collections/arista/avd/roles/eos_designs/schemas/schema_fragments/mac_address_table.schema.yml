@@ -4,9 +4,11 @@
 type: dict
 keys:
   mac_address_table:
+    documentation_options:
+      table: system-settings
     type: dict
     description: |
-      MAC address-table aging time
+      MAC address-table aging time.
       Use to change the EOS default of 300.
     keys:
       aging_time:

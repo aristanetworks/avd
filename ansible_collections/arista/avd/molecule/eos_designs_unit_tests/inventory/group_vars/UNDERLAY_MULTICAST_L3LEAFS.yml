@@ -23,14 +23,14 @@ l3leaf:
     # - router multicast enabled for ipv4
     # - p2p links configured with "pim ipv4 sparse-mode"
     # - VLAN 4093 configured with "pim ipv4 sparse-mode"
-    DC1_LEAF1:
+    - group: DC1_LEAF1
       bgp_as: 65101
       nodes:
-        UNDERLAY-MULTICAST-L3LEAF1A:
+        - name: UNDERLAY-MULTICAST-L3LEAF1A
           id: 1
           mgmt_ip: 192.168.200.105/24
           uplink_switch_interfaces: [Ethernet1, Ethernet1]
-        UNDERLAY-MULTICAST-L3LEAF1B:
+        - name: UNDERLAY-MULTICAST-L3LEAF1B
           id: 2
           mgmt_ip: 192.168.200.106/24
           uplink_switch_interfaces: [Ethernet2, Ethernet2]
@@ -39,15 +39,15 @@ l3leaf:
     # - router multicast enabled for ipv4
     # - p2p links configured with "pim ipv4 sparse-mode"
     # - VLAN 4094 configured with "pim ipv4 sparse-mode"
-    DC1_LEAF2:
+    - group: DC1_LEAF2
       bgp_as: 65102
       mlag_peer_l3_vlan: 4094
       nodes:
-        UNDERLAY-MULTICAST-L3LEAF2A:
+        - name: UNDERLAY-MULTICAST-L3LEAF2A
           id: 3
           mgmt_ip: 192.168.200.107/24
           uplink_switch_interfaces: [Ethernet3, Ethernet3]
-        UNDERLAY-MULTICAST-L3LEAF2B:
+        - name: UNDERLAY-MULTICAST-L3LEAF2B
           id: 4
           mgmt_ip: 192.168.200.108/24
           uplink_switch_interfaces: [Ethernet4, Ethernet4]

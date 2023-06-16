@@ -35,7 +35,6 @@ all:
     cloudvision:
       hosts:
         cv_server01:
-          ansible_httpapi_host: 10.83.28.164
           ansible_host: 10.83.28.164
           ansible_user: ansible
           ansible_password: ansible
@@ -44,8 +43,6 @@ all:
           ansible_httpapi_validate_certs: False
           ansible_network_os: eos
           ansible_httpapi_port: 443
-          # Configuration to get Virtual Env information
-          ansible_python_interpreter: $(which python3)
 ```
 
 For complete list of authentication options available with CloudVision Ansible collection, you can read dedicated page on [arista.cvp collection](https://cvp.avd.sh/en/latest/docs/how-to/cvp-authentication/).
@@ -56,7 +53,7 @@ For complete list of authentication options available with CloudVision Ansible c
 - **`file_extension`**: File extension to look for configlet in their local folder. Default: `conf`.
 - **`configlets_cvp_prefix`**: Prefix to use for configlet on CV side. Default: *Not set* and it's required.
 - **`execute_tasks`**:  `true` / `false`. Support automatically excuting pending tasks. Default: `false`.
-- **`cv_collection`**: Version of CloudVision collection to use. Can be `v1` or `v3`. Default is `v1`.
+- **`cv_collection`**: Version of CloudVision collection to use. Can be `v1` or `v3`. Default is `v3`.
 
 *Example*:
 
@@ -70,7 +67,7 @@ tasks:
       file_extension: 'txt'
       configlets_cvp_prefix: 'DC1-AVD'
       execute_tasks: false
-      cv_collection: v1
+      cv_collection: v3
 ```
 
 This module also supports tags to run a subset of ansible tasks:

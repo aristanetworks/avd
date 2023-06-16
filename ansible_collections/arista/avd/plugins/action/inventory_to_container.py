@@ -1,4 +1,4 @@
-from __future__ import absolute_import, annotations, division, print_function
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
@@ -29,7 +29,8 @@ class ActionModule(ActionBase):
             result["cvp_topology"] = self.build_cvp_topology_from_inventory(task_vars, module_args)
 
         # Write vars to file if set by user
-        if (destination := module_args.get("destination")) is not None:
+        destination = module_args.get("destination")
+        if destination is not None:
             # file should only contain subset of result data, so we build a smaller dict
             file_data_keys = ["cvp_configlets", "cvp_topology"]
             file_data = {key: result[key] for key in file_data_keys if key in result}
@@ -77,11 +78,11 @@ class ActionModule(ActionBase):
 
         return cvp_topology
 
-    def get_group_data(self, group: Group, device_filter: list[str], all_groups_from_root: set[Group] = None, parent_container: str = None) -> dict:
+    def get_group_data(self, group: Group, device_filter: list, all_groups_from_root: set = None, parent_container: str = None) -> dict:
         # Find parent container if not set
         if parent_container is None:
             # Only evaluate parent_groups which are part of all_groups_from_root. A group can have multiple parents.
-            parent_groups: set[Group] = set(group.parent_groups).intersection(all_groups_from_root)
+            parent_groups: set = set(group.parent_groups).intersection(all_groups_from_root)
             # Ensure that we have only one parent group. Otherwise we cannot build a tree.
             if len(parent_groups) > 1:
                 raise AnsibleActionFail(

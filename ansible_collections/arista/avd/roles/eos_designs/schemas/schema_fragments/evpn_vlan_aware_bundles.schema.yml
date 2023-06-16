@@ -4,7 +4,8 @@
 type: dict
 keys:
   evpn_vlan_aware_bundles:
-    description: |
-      Enable vlan aware bundles for EVPN MAC-VRF
+    documentation_options:
+      table: evpn-settings
+    description: Enable vlan aware bundles for EVPN MAC-VRF.
     type: bool
     default: false

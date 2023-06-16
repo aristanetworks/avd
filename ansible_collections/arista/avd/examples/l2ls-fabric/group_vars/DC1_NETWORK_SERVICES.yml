@@ -2,14 +2,14 @@
 ### group_vars/DC1_NETWORK_SERVICES.yml
 
 tenants:
-  MY_FABRIC:
+  - name: MY_FABRIC
     l2vlans:
-      10:
+      - id: 10
         name: 'BLUE-NET'
         tags: [bluezone]
-      20:
+      - id: 20
         name: 'GREEN-NET'
         tags: [greenzone]
-      30:
+      - id: 30
         name: 'ORANGE-NET'
         tags: [orangezone]

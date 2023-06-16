@@ -5,3 +5,9 @@ overlay_rd_type:
 # Testing inline jinja with integer values
   admin_subfield: "{{ non_existing_variable | default(65525) }}"
   admin_subfield_offset: "{{ non_existing_variable | default(10) }}"
+
+# Expected result:
+# VLAN rt <vlan_id>:<mac_vrf_id>
+# VRF rt <vrf_id>:<mac_vrf_id>
+overlay_rt_type:
+  admin_subfield: "id"

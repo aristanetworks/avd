@@ -103,7 +103,7 @@ class ActionModule(ActionBase):
         # Insert dynamic keys into the input data if not set.
         # These keys are required by the schema, but the default values are set inside shared_utils.
         task_vars.setdefault("node_type_keys", shared_utils.node_type_keys)
-        task_vars.setdefault("connected_endpoint_keys", shared_utils.connected_endpoints_keys)
+        task_vars.setdefault("connected_endpoints_keys", shared_utils.connected_endpoints_keys)
         task_vars.setdefault("network_services_keys", shared_utils.network_services_keys)
 
         if schema or schema_id:

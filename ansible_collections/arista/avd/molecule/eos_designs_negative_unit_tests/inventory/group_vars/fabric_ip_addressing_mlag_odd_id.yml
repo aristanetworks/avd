@@ -1,0 +1,28 @@
+---
+fabric_name: fabric_ip_addressing_mlag_odd_id
+mlag_support: true
+type: l3leaf
+fabric_ip_addressing:
+  mlag:
+    algorithm: "odd_id"
+l3leaf:
+  defaults:
+    mlag_peer_ipv4_pool: 10.10.255.0/24
+    mlag_peer_l3_ipv4_pool: 10.10.224.0/24
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 32
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    platform: vEOS-LAB
+    mlag_interfaces: [Ethernet5, Ethernet6]
+  node_groups:
+    - group: fabric_ip_addressing_mlag_odd_id_oddodd
+      bgp_as: 923
+      nodes:
+        - name: mlag_odd_id_oddodd1
+          id: 1
+          mgmt_ip: 192.168.201.116/24
+        - name: mlag_odd_id_oddodd2
+          id: 3
+          mgmt_ip: 192.168.201.117/24
+
+expected_error_message: "Unexpected failure during module execution: MLAG compact addressing mode requires all MLAG pairs to have a single odd and even ID"
