@@ -4,12 +4,12 @@ __metaclass__ = type
 
 import cProfile
 import pstats
-from collections import ChainMap
 
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_facts import EosDesignsFacts
+from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_templar
@@ -40,28 +40,27 @@ class ActionModule(ActionBase):
         # Check if fabric_name is set and that all play hosts are part Ansible group set in "fabric_name"
         if fabric_name is None or not set(ansible_play_hosts_all).issubset(fabric_hosts):
             raise AnsibleActionFail(
-                "Invalid/missing 'fabric_name' variable."
+                "Invalid/missing 'fabric_name' variable. "
                 "All hosts in the play must have the same 'fabric_name' value "
                 "which must point to an Ansible Group containing the hosts."
+                f"play_hosts: {ansible_play_hosts_all}"
             )
 
         # This is not all the hostvars, but just the Ansible Hostvars Manager object where we can retrieve hostvars for each host on-demand.
         hostvars = task_vars["hostvars"]
 
-        all_hostvars, failed = self.get_all_hostvars(fabric_hosts, hostvars)
-        if failed:
-            # Stop here if any of the devices failed input data validation
-            result["failed"] = True
-            return result
-
         # Get updated templar instance to be passed along to our simplified "templater"
         self.templar = get_templar(self, task_vars)
 
-        avd_overlay_peers = {}
-        avd_topology_peers = {}
-        avd_switch_facts_instances = self.create_avd_switch_facts_instances(fabric_hosts, all_hostvars)
+        avd_switch_facts_instances = self.create_avd_switch_facts_instances(fabric_hosts, hostvars, result)
+        if result.get("failed"):
+            # Stop here if any of the devices failed input data validation
+            return result
+
         avd_switch_facts = self.render_avd_switch_facts(avd_switch_facts_instances)
 
+        avd_overlay_peers = {}
+        avd_topology_peers = {}
         for host in fabric_hosts:
             host_evpn_route_servers = avd_switch_facts[host]["switch"].get("evpn_route_servers", [])
             for peer in host_evpn_route_servers:
@@ -89,9 +88,11 @@ class ActionModule(ActionBase):
 
         return result
 
-    def get_all_hostvars(self, fabric_hosts: list, hostvars: object):
+    def create_avd_switch_facts_instances(self, fabric_hosts: list, hostvars: object, result: dict) -> dict:
         """
-        Fetch hostvars for all hosts and perform data conversion & validation
+        Fetch hostvars for all hosts and perform data conversion & validation.
+        Initialize all instances of EosDesignsFacts and insert various references into the variable space.
+        Returns dict with avd_switch_facts_instances.
 
         Parameters
         ----------
@@ -99,15 +100,19 @@ class ActionModule(ActionBase):
             List of hostnames
         hostvars : object
             Ansible "hostvars" object
+        result : dict
+            Ansible Action result dict which is inplace updated.
+            failure : bool
+            msg : str
 
         Returns
         -------
         dict
-            hostname1 : dict | None
-            hostname2 : dict | None
+            hostname1 : dict
+                switch : <EosDesignsFacts object>,
+            hostname2 : dict
+                switch : <EosDesignsFacts object>,
             ...
-        bool
-            True if validation failed for one or more of the hosts
         """
         # Load schema tools once with empty host.
         avdschematools = AvdSchemaTools(
@@ -119,50 +124,47 @@ class ActionModule(ActionBase):
             plugin_name="arista.avd.eos_designs",
         )
 
-        all_hostvars = {}
-        failed = False
-        for host in fabric_hosts:
-            # Using ChainMap to avoid exposing the hostvars object directly without having to deepcopy all the data..
-            all_hostvars[host] = ChainMap({}, hostvars.get(host))
-
-            # Set correct hostname and perform conversion and validation
-            avdschematools.hostname = host
-            result = avdschematools.convert_and_validate_data(all_hostvars[host])
-            failed = failed or result.get("failed", False)
-
-        return all_hostvars, failed
-
-    def create_avd_switch_facts_instances(self, fabric_hosts: list, all_hostvars: dict):
-        """
-        Create "avd_switch_facts_instances" dictionary
-
-        Parameters
-        ----------
-        fabric_hosts : list
-            List of hostnames
-        all_hostvars : dict
-            hostname1 : dict
-            hostname2 : dict
-        default_vars : dict
-            Default variables shared between all fabric_hosts
-
-        Returns
-        -------
-        dict
-            hostname1 : dict
-                switch : <EosDesignsFacts object>,
-            hostname2 : dict
-                switch : <EosDesignsFacts object>,
-            ...
-        """
         avd_switch_facts = {}
+        data_conversions = 0
+        data_validation_errors = 0
         for host in fabric_hosts:
-            host_hostvars = all_hostvars[host]
-            avd_switch_facts[host] = {}
+            # Fetch all templated Ansible vars for this host
+            host_hostvars = dict(hostvars.get(host))
+
+            # Initialize SharedUtils class to be passed to EosDesignsFacts below.
+            shared_utils = SharedUtils(hostvars=host_hostvars, templar=self.templar)
+
+            # Insert dynamic keys into the input data if not set.
+            # These keys are required by the schema, but the default values are set inside shared_utils.
+            host_hostvars.setdefault("node_type_keys", shared_utils.node_type_keys)
+            host_hostvars.setdefault("connected_endpoints_keys", shared_utils.connected_endpoints_keys)
+            host_hostvars.setdefault("network_services_keys", shared_utils.network_services_keys)
+
+            # Set correct hostname in schema tools and perform conversion and validation
+            avdschematools.hostname = host
+            host_result = avdschematools.convert_and_validate_data(host_hostvars, return_counters=True)
+
+            data_conversions += host_result["conversions"]
+            data_validation_errors += host_result["validation_errors"]
+
+            if host_result.get("failed"):
+                # Quickly continue if data conversion/validation failed
+                result["failed"] = True
+                continue
+
             # Add reference to dict "avd_switch_facts".
             # This is used to access EosDesignsFacts objects of other switches during rendering of one switch.
             host_hostvars["avd_switch_facts"] = avd_switch_facts
-            avd_switch_facts[host] = {"switch": EosDesignsFacts(hostvars=host_hostvars, templar=self.templar)}
+
+            # Create an instance of EosDesignsFacts and insert into common avd_switch_facts dict
+            avd_switch_facts[host] = {"switch": EosDesignsFacts(hostvars=host_hostvars, shared_utils=shared_utils)}
+
+            # Add "switch" as a reference to the newly created EosDesignsFacts instance directly in the hostvars
+            # to allow `shared_utils` to work the same when they are called from `EosDesignsFacts` or from `AvdStructuredConfig`.
+            host_hostvars["switch"] = avd_switch_facts[host]["switch"]
+
+        # Build result message
+        result["msg"] = avdschematools.build_result_message(conversions=data_conversions, validation_errors=data_validation_errors)
 
         return avd_switch_facts
 

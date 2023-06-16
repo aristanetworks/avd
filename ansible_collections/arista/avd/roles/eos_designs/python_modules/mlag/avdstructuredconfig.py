@@ -307,6 +307,7 @@ class AvdStructuredConfigMlag(AvdFacts):
             "next_hop_self": True,
             "description": self.shared_utils.mlag_peer,
             "password": self.shared_utils.bgp_peer_groups["mlag_ipv4_underlay_peer"]["password"],
+            "bfd": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["bfd"],
             "maximum_routes": 12000,
             "send_community": "all",
             "struct_cfg": self.shared_utils.bgp_peer_groups["mlag_ipv4_underlay_peer"]["structured_config"],
@@ -314,7 +315,7 @@ class AvdStructuredConfigMlag(AvdFacts):
         if self.shared_utils.mlag_ibgp_origin_incomplete is True:
             peer_group["route_map_in"] = "RM-MLAG-PEER-IN"
 
-        router_bgp["peer_groups"] = [peer_group]
+        router_bgp["peer_groups"] = [strip_empties_from_dict(peer_group)]
 
         if self.shared_utils.underlay_ipv6:
             router_bgp["address_family_ipv6"] = {
@@ -328,7 +329,7 @@ class AvdStructuredConfigMlag(AvdFacts):
 
         address_family_ipv4_peer_group = {"name": peer_group_name, "activate": True}
         if self.shared_utils.underlay_rfc5549:
-            address_family_ipv4_peer_group["next_hop"] = {"address_family_ipv6_originate": True}
+            address_family_ipv4_peer_group["next_hop"] = {"address_family_ipv6": {"enabled": True, "originate": True}}
 
         router_bgp["address_family_ipv4"] = {"peer_groups": [address_family_ipv4_peer_group]}
 

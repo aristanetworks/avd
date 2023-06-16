@@ -92,7 +92,7 @@ from ansible.module_utils._text import to_bytes, to_native, to_text
 from ansible.plugins.vars import BaseVarsPlugin
 from ansible.utils.vars import combine_vars
 
-FOUND: list[str] = []
+FOUND: list = []
 
 
 class VarsModule(BaseVarsPlugin):
@@ -150,7 +150,8 @@ class VarsModule(BaseVarsPlugin):
             print(entity.name, path)
 
             for path in FOUND:
-                if new_data := loader.load_from_file(path, cache=True, unsafe=True):
+                new_data = loader.load_from_file(path, cache=True, unsafe=True)
+                if new_data:
                     variables = combine_vars(variables, new_data)
 
         return variables

@@ -800,18 +800,24 @@ ip routing ipv6 interfaces vrf Tenant_C_OP_Zone
 | --- | --------------- |
 | default | True |
 | MGMT | false |
-| Tenant_A_APP_Zone | false |
-| Tenant_A_DB_Zone | false |
-| Tenant_A_OP_Zone | false |
-| Tenant_A_WEB_Zone | false |
-| Tenant_B_OP_Zone | false |
-| Tenant_C_OP_Zone | false |
+| Tenant_A_APP_Zone | true |
+| Tenant_A_DB_Zone | true |
+| Tenant_A_OP_Zone | true |
+| Tenant_A_WEB_Zone | true |
+| Tenant_B_OP_Zone | true |
+| Tenant_C_OP_Zone | true |
 
 #### IPv6 Routing Device Configuration
 
 ```eos
 !
 ipv6 unicast-routing
+ipv6 unicast-routing vrf Tenant_A_APP_Zone
+ipv6 unicast-routing vrf Tenant_A_DB_Zone
+ipv6 unicast-routing vrf Tenant_A_OP_Zone
+ipv6 unicast-routing vrf Tenant_A_WEB_Zone
+ipv6 unicast-routing vrf Tenant_B_OP_Zone
+ipv6 unicast-routing vrf Tenant_C_OP_Zone
 ```
 
 ### Static Routes
@@ -840,8 +846,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | BGP Tuning |
 | ---------- |
 | distance bgp 20 200 200 |
-| graceful-restart restart-time 300 |
-| graceful-restart |
 | update wait-install |
 | no bgp default ipv4-unicast |
 | maximum-paths 4 ecmp 4 |
@@ -940,8 +944,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 !
 router bgp 65107
    router-id 192.168.255.14
-   graceful-restart restart-time 300
-   graceful-restart
    maximum-paths 4 ecmp 4
    update wait-install
    no bgp default ipv4-unicast

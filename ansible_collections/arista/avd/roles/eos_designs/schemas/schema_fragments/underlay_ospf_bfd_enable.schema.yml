@@ -4,5 +4,7 @@
 type: dict
 keys:
   underlay_ospf_bfd_enable:
+    documentation_options:
+      table: ospf-settings
     type: bool
     default: false

@@ -1,0 +1,16 @@
+- name: Test with list_merge invalid option
+  ignore_errors: yes
+  register: result
+  arista.avd.eos_designs_structured_config:
+    eos_designs_custom_templates:
+      - template: base.yml.j2
+        options:
+          list_merge: "append12"
+
+- vars:
+    error_msg: >-
+      merge: 'list_merge' argument can only be equal to one of ['replace', 'keep', 'append', 'prepend', 'append_rp', 'prepend_rp']
+  assert:
+    that:
+      - result.failed == True
+      - result.msg == error_msg

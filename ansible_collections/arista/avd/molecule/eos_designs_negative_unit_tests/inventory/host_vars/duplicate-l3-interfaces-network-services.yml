@@ -1,7 +1,7 @@
 ---
 # Minimum config to only test the specific feature.
 node_type_keys:
-  pe:
+  - key: pe
     type: pe
     mpls_lsr: true
     default_mpls_overlay_role: client
@@ -19,7 +19,7 @@ pe:
     loopback_ipv4_pool: 10.42.0.0/24
     bgp_as: 42
   nodes:
-    duplicate-l3-interfaces-network-services:
+    - name: duplicate-l3-interfaces-network-services
       id: 42
 
 type: pe
@@ -50,4 +50,7 @@ tenants:
             nodes:
               - duplicate-l3-interfaces-network-services
 
-expected_error_message: "Duplicate interface_name Ethernet6.101 found while generating l3_interfaces under network_services vrf: TENANT_B_WAN. Description on duplicate interface: TENANT_B_SITE_3_OSPF"
+expected_error_message: >-
+  Found duplicate objects with conflicting data while generating configuration for Ethernet Interfaces defined under l3_interfaces.
+  {'name': 'Ethernet6.101', 'vrf': 'TENANT_B_WAN', 'description': 'TENANT_B_SITE_5', 'ip_address': '192.168.48.2/31'} conflicts with
+  {'name': 'Ethernet6.101', 'vrf': 'TENANT_B_WAN', 'description': 'TENANT_B_SITE_3_OSPF', 'ip_address': '192.168.48.4/31'}.

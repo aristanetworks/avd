@@ -3,7 +3,7 @@
 
 # local users
 local_users:
-  admin:
+  - name: admin
     privilege: 15
     role: network-admin
     sha512_password: "$6$eucN5ngreuExDgwS$xnD7T8jO..GBDX0DUlp.hn.W7yW94xTjSanqgaQGBzPIhDAsyAl9N4oScHvOMvf07uVBFI4mKMxwdVEUVKgY/."

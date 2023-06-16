@@ -6,7 +6,7 @@ from typing import NoReturn
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, unique
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, unique
 
 from .utils import UtilsMixin
 
@@ -54,21 +54,37 @@ class VxlanInterfaceMixin(UtilsMixin):
 
         vlans = []
         vrfs = []
-        # vnis is a dict of {<vni>: <tenant>}. Only used to detect duplicates.
-        vnis = {}
+        # vnis is a list of dicts only used for duplication checks across multiple types of objects all having "vni" as a key.
+        vnis = []
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
                 for svi in vrf["svis"]:
                     if vlan := self._get_vxlan_interface_config_for_vlan(svi, tenant):
-                        vlan_id = int(svi["id"])
-                        if (vni := vlan["vni"]) in vnis:
-                            self._raise_duplicate_vni_error(vni, f"SVI '{vlan_id} in vrf '{vrf['name']}'", tenant["name"], vnis[vni])
+                        # Duplicate check is not done on the actual list of vlans, but instead on our local "vnis" list.
+                        # This is necessary to find duplicate VNIs across multiple object types.
+                        append_if_not_duplicate(
+                            list_of_dicts=vnis,
+                            primary_key="vni",
+                            new_dict=vlan,
+                            context="VXLAN VNIs for SVIs",
+                            context_keys=["id", "name", "vni"],
+                        )
+                        # Here we append to the actual list of VRFs, so duplication check is on the VLAN ID here.
+                        append_if_not_duplicate(
+                            list_of_dicts=vlans,
+                            primary_key="id",
+                            new_dict=vlan,
+                            context="VXLAN VNIs for SVIs",
+                            context_keys=["id", "vni"],
+                        )
 
-                        vnis[vni] = tenant["name"]
-                        vlans.append({"id": vlan_id, **vlan})
-
-                if self.shared_utils.network_services_l3 and self.shared_utils.overlay_evpn:
+                if self.shared_utils.network_services_l3 and self.shared_utils.overlay_evpn_vxlan:
                     vrf_name = vrf["name"]
+
+                    # Only configure VNI for VRF if the VRF is EVPN enabled
+                    if "evpn" not in vrf.get("address_families", ["evpn"]):
+                        continue
+
                     vni = default(
                         vrf.get("vrf_vni"),
                         vrf.get("vrf_id"),
@@ -76,12 +92,7 @@ class VxlanInterfaceMixin(UtilsMixin):
                     if vni is not None:
                         # Silently ignore if we cannot set a VNI
                         # This is legacy behavior so we will leave stricter enforcement to the schema
-                        if vni in vnis:
-                            self._raise_duplicate_vni_error(vni, f"VRF '{vrf_name}'", tenant["name"], vnis[vni])
-
-                        vnis[vni] = tenant["name"]
                         vrf_data = {"name": vrf_name, "vni": vni}
-
                         if get(vrf, "_evpn_l3_multicast_enabled"):
                             underlay_l3_multicast_group_ipv4_pool = get(
                                 tenant,
@@ -95,16 +106,43 @@ class VxlanInterfaceMixin(UtilsMixin):
                             offset = vni - 1 + underlay_l3_mcast_group_ipv4_pool_offset
                             vrf_data["multicast_group"] = self.shared_utils.ip_addressing._ip(underlay_l3_multicast_group_ipv4_pool, 32, offset, 0)
 
-                        vrfs.append(vrf_data)
+                        # Duplicate check is not done on the actual list of vlans, but instead on our local "vnis" list.
+                        # This is necessary to find duplicate VNIs across multiple object types.
+                        append_if_not_duplicate(
+                            list_of_dicts=vnis,
+                            primary_key="vni",
+                            new_dict=vrf_data,
+                            context="VXLAN VNIs for VRFs",
+                            context_keys=["id", "name", "vni"],
+                        )
+                        # Here we append to the actual list of VRFs, so duplication check is on the VRF here.
+                        append_if_not_duplicate(
+                            list_of_dicts=vrfs,
+                            primary_key="name",
+                            new_dict=vrf_data,
+                            context="VXLAN VNIs for VRFs",
+                            context_keys=["name", "vni"],
+                        )
 
             for l2vlan in tenant["l2vlans"]:
                 if vlan := self._get_vxlan_interface_config_for_vlan(l2vlan, tenant):
-                    vlan_id = int(l2vlan["id"])
-                    if (vni := vlan["vni"]) in vnis:
-                        self._raise_duplicate_vni_error(vni, f"L2VLAN '{vlan_id}'", tenant["name"], vnis[vni])
-
-                    vnis[vni] = tenant["name"]
-                    vlans.append({"id": vlan_id, **vlan})
+                    # Duplicate check is not done on the actual list of vlans, but instead on our local "vnis" list.
+                    # This is necessary to find duplicate VNIs across multiple object types.
+                    append_if_not_duplicate(
+                        list_of_dicts=vnis,
+                        primary_key="vni",
+                        new_dict=vlan,
+                        context="VXLAN VNIs for VLANs",
+                        context_keys=["id", "name", "vni"],
+                    )
+                    # Here we append to the actual list of VRFs, so duplication check is on the VLAN ID here.
+                    append_if_not_duplicate(
+                        list_of_dicts=vlans,
+                        primary_key="id",
+                        new_dict=vlan,
+                        context="VXLAN VNIs for L2VLANs",
+                        context_keys=["id", "vni"],
+                    )
 
         if vlans:
             vxlan["vlans"] = vlans
@@ -129,8 +167,8 @@ class VxlanInterfaceMixin(UtilsMixin):
         if vlan.get("vxlan") is False:
             return {}
 
-        vxlan_interface_vlan = {}
         vlan_id = int(vlan["id"])
+        vxlan_interface_vlan = {"id": vlan_id}
         if (vni_override := vlan.get("vni_override")) is not None:
             vxlan_interface_vlan["vni"] = int(vni_override)
         else:
@@ -206,10 +244,10 @@ class VxlanInterfaceMixin(UtilsMixin):
 
         return overlay_her_flood_lists
 
-    def _raise_duplicate_vni_error(self, vni: int, context: str, tenant_name: str, duplicate_vni_tenant: str) -> NoReturn:
-        msg = f"Duplicate VXLAN VNI '{vni}' found in Tenant '{tenant_name}' during configuration of {context}."
-        if duplicate_vni_tenant != tenant_name:
-            msg = f"{msg} Other VNI is in Tenant '{duplicate_vni_tenant}'."
+    def _raise_duplicate_vni_error(self, vni: int, context: str, tenant: str, duplicate_vni_tenant: str) -> NoReturn:
+        msg = f"Duplicate VXLAN VNI '{vni}' found in Tenant(s) '{tenant}' during configuration of {context}."
+        if duplicate_vni_tenant != tenant:
+            msg = f"{msg} Other VNI is in Tenant(s) '{duplicate_vni_tenant}'."
 
         raise AristaAvdError(msg)
 

@@ -3,7 +3,7 @@
 mgmt_gateway: 192.168.200.1
 
 node_type_keys:
-  spine:
+  - key: spine
     type: spine
     default_evpn_role: server
     interface_descriptions:
@@ -16,7 +16,7 @@ node_type_keys:
       connected_endpoints_port_channel_interfaces: 'custom_templates/interface_descriptions/connected_endpoints/port-channel-interfaces.j2'
       overlay_loopback_interface: 'custom_templates/interface_descriptions/loopbacks/overlay-loopback.j2'
       vtep_loopback_interface: 'custom_templates/interface_descriptions/loopbacks/vtep-loopback.j2'
-  l3leaf:
+  - key: l3leaf
     type: l3leaf
     connected_endpoints: true
     default_evpn_role: client

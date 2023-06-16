@@ -4,11 +4,13 @@
 type: dict
 keys:
   redundancy:
+    documentation_options:
+      table: system-settings
     type: dict
-    description: Redundancy for chassis platforms with dual supervisors | Optional
+    description: Redundancy for chassis platforms with dual supervisors | Optional.
     keys:
       protocol:
         type: str
         valid_values:
-        - sso
-        - rpr
+          - sso
+          - rpr

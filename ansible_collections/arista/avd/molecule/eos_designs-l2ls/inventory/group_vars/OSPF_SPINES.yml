@@ -10,9 +10,9 @@ l3spine:
     virtual_router_mac_address: 00:1c:73:00:00:99
     spanning_tree_priority: 4096
   node_groups:
-    OSPF_SPINES:
+    - group: OSPF_SPINES
       nodes:
-        OSPF-SPINE1:
+        - name: OSPF-SPINE1
           id: 1
-        OSPF-SPINE2:
+        - name: OSPF-SPINE2
           id: 2

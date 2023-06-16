@@ -15,12 +15,12 @@ spine:
     bgp_defaults: ['distance bgp 20 200 200']
     bgp_as: 65100
   node_groups:
-    AUTO_NODE_TYPE_SPINE:
+    - group: AUTO_NODE_TYPE_SPINE
       nodes:
-        AUTO_NODE_TYPE_SPINE01:
+        - name: AUTO_NODE_TYPE_SPINE01
           id: 1
           mgmt_ip: 192.168.203.10
-        AUTO_NODE_TYPE_SPINE02:
+        - name: AUTO_NODE_TYPE_SPINE02
           id: 2
           mgmt_ip: 192.168.203.11
 l3leaf:
@@ -40,15 +40,15 @@ l3leaf:
     spanning_tree_priority: 4096
     bgp_as: 65101-65110
   node_groups:
-    AUTO_NODE_TYPE_LEAF1:
+    - group: AUTO_NODE_TYPE_LEAF1
       mlag: false
       nodes:
-        AUTO_NODE_TYPE_LEAF01:
+        - name: AUTO_NODE_TYPE_LEAF01
           id: 1
           mgmt_ip: 192.168.203.12/24
           uplink_switch_interfaces: [Ethernet1, Ethernet1]
   nodes:
-    AUTO_NODE_TYPE_UNGROUPED_LEAF02:
+    - name: AUTO_NODE_TYPE_UNGROUPED_LEAF02
       id: 2
       mgmt_ip: 192.168.203.13/24
       uplink_switch_interfaces: [Ethernet2, Ethernet2]

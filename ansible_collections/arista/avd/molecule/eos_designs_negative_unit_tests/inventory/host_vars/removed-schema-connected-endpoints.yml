@@ -1,0 +1,16 @@
+fabric_name: fabric_removed_schema_connected_endpoints
+
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: removed-schema-connected-endpoints
+
+servers:
+  - name: host1
+    adapters:
+      - server_ports: [Eth1]
+        switch_ports: [Ethernet1]
+        switches: [removed-schema-connected-endpoints]
+
+expected_error_message: >-
+  [DEPRECATED]: [removed-schema-connected-endpoints]: The input data model 'servers.[0].adapters.[0].server_ports' was removed. Use 'endpoint_ports' instead. This feature was removed from arista.avd.eos_designs in version 4.0.0. Please update your playbooks.

@@ -55,7 +55,7 @@ class AvdStructuredConfigBase(AvdFacts):
         if get(self._hostvars, "bgp_update_wait_install", default=True) is True and platform_bgp_update_wait_install:
             router_bgp.setdefault("updates", {})["wait_install"] = True
 
-        if get(self._hostvars, "bgp_graceful_restart.enabled", default=True) is True:
+        if get(self._hostvars, "bgp_graceful_restart.enabled") is True:
             router_bgp.update(
                 {
                     "graceful_restart": {
@@ -317,16 +317,11 @@ class AvdStructuredConfigBase(AvdFacts):
         if (queue_monitor_length := get(self._hostvars, "queue_monitor_length")) is None:
             return None
 
-        queue_monitor_length_dict = {"enabled": True}
-        queue_monitor_length_notifying = get(queue_monitor_length, "notifying")
-        notify_supported = get(self.shared_utils.platform_settings, "feature_support.queue_monitor_length_notify")
-        if queue_monitor_length_notifying is not None and notify_supported is not False:
-            queue_monitor_length_dict["notifying"] = queue_monitor_length_notifying
+        # Remove notifying key if not supported by the platform settings.
+        if not self.shared_utils.platform_settings_feature_support_queue_monitor_length_notify:
+            queue_monitor_length.pop("notifying", None)
 
-        if get(queue_monitor_length, "log") is not None:
-            queue_monitor_length_dict["log"] = queue_monitor_length.get("log")
-
-        return queue_monitor_length_dict
+        return queue_monitor_length
 
     @cached_property
     def ip_name_servers(self) -> list | None:
@@ -685,7 +680,8 @@ class AvdStructuredConfigBase(AvdFacts):
 
             priority2 = self.shared_utils.id % 256
 
-        if get(self.shared_utils.switch_data_combined, "ptp.auto_clock_identity", default=True) is True:
+        default_auto_clock_identity = get(self._hostvars, "ptp.auto_clock_identity", default=True)
+        if get(self.shared_utils.switch_data_combined, "ptp.auto_clock_identity", default=default_auto_clock_identity) is True:
             clock_identity_prefix = get(self.shared_utils.switch_data_combined, "ptp.clock_identity_prefix", default="00:1C:73")
             default_clock_identity = f"{clock_identity_prefix}:{priority1:02x}:00:{priority2:02x}"
 

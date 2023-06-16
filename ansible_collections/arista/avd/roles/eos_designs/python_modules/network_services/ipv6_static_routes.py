@@ -30,7 +30,10 @@ class Ipv6StaticRoutesMixin(UtilsMixin):
                 for static_route in vrf["ipv6_static_routes"]:
                     static_route["vrf"] = vrf["name"]
                     static_route.pop("nodes", None)
-                    ipv6_static_routes.append(static_route)
+
+                    # Ignore duplicate items in case of duplicate VRF definitions across multiple tenants.
+                    if static_route not in ipv6_static_routes:
+                        ipv6_static_routes.append(static_route)
 
         if ipv6_static_routes:
             return ipv6_static_routes

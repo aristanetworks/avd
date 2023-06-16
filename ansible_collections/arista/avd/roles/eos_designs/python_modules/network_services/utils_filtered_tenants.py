@@ -58,6 +58,10 @@ class UtilsFilteredTenantsMixin(object):
             if self._is_accepted_vlan(l2vlan)
             and ("all" in self.shared_utils.filter_tags or set(l2vlan.get("tags", ["all"])).intersection(self.shared_utils.filter_tags))
         ]
+        # Set tenant key on all l2vlans
+        for l2vlan in l2vlans:
+            l2vlan.update({"tenant": tenant["name"]})
+
         return l2vlans
 
     def _is_accepted_vlan(self, vlan: dict) -> bool:
@@ -120,6 +124,8 @@ class UtilsFilteredTenantsMixin(object):
 
         vrfs: list[dict] = natural_sort(convert_dicts(tenant.get("vrfs", []), "name"), "name")
         for vrf in vrfs:
+            # Storing tenant on VRF for use by child objects like SVIs
+            vrf["tenant"] = tenant["name"]
             bgp_peers = natural_sort(convert_dicts(vrf.get("bgp_peers"), "ip_address"), "ip_address")
             vrf["bgp_peers"] = [bgp_peer for bgp_peer in bgp_peers if self.shared_utils.hostname in bgp_peer.get("nodes", [])]
             vrf["static_routes"] = [
@@ -184,12 +190,12 @@ class UtilsFilteredTenantsMixin(object):
         """
         Return list of svi_profiles
 
-        The key "node_config" is inserted with relevant dict from "nodes" or {}
+        The key "nodes" is filtered to only contain one item with the relevant dict from "nodes" or {}
         """
         svi_profiles = convert_dicts(get(self._hostvars, "svi_profiles", default=[]), "profile")
         for svi_profile in svi_profiles:
             svi_profile["nodes"] = convert_dicts(svi_profile.get("nodes", []), "node")
-            svi_profile["node_config"] = get_item(svi_profile["nodes"], "node", self.shared_utils.hostname, default={})
+            svi_profile["nodes"] = [get_item(svi_profile["nodes"], "node", self.shared_utils.hostname, default={})]
 
         return svi_profiles
 
@@ -207,11 +213,11 @@ class UtilsFilteredTenantsMixin(object):
         Then svi is updated with the result of merging svi_node_cfg over svi_cfg
         svi_node_cfg > svi_cfg --> svi
         """
-        svi_profile = {"node_config": {}}
-        svi_parent_profile = {"node_config": {}}
+        svi_profile = {"nodes": [{}]}
+        svi_parent_profile = {"nodes": [{}]}
 
         svi["nodes"] = convert_dicts(svi.get("nodes", []), "node")
-        svi_node_config = get_item(svi.get("nodes", []), "node", self.shared_utils.hostname, default={})
+        svi["nodes"] = [get_item(svi["nodes"], "node", self.shared_utils.hostname, default={})]
 
         if (svi_profile_name := svi.get("profile")) is not None:
             svi_profile = get_item(self._svi_profiles, "profile", svi_profile_name, default={})
@@ -226,18 +232,18 @@ class UtilsFilteredTenantsMixin(object):
             svi_parent_profile,
             svi_profile,
             svi,
-            svi_parent_profile["node_config"],
-            svi_profile["node_config"],
-            svi_node_config,
+            svi_parent_profile["nodes"][0],
+            svi_profile["nodes"][0],
+            svi["nodes"][0],
             list_merge="replace",
             destructive_merge=False,
         )
 
         # Override structured configs since we don't want to deep-merge those
         merged_svi["structured_config"] = default(
-            svi_node_config.get("structured_config"),
-            svi_profile["node_config"].get("structured_config"),
-            svi_parent_profile["node_config"].get("structured_config"),
+            svi["nodes"][0].get("structured_config"),
+            svi_profile["nodes"][0].get("structured_config"),
+            svi_parent_profile["nodes"][0].get("structured_config"),
             svi.get("structured_config"),
             svi_profile.get("structured_config"),
             svi_parent_profile.get("structured_config"),
@@ -245,9 +251,9 @@ class UtilsFilteredTenantsMixin(object):
 
         # Override bgp.structured configs since we don't want to deep-merge those
         merged_svi.setdefault("bgp", {})["structured_config"] = default(
-            get(svi_node_config, "bgp.structured_config"),
-            get(svi_profile["node_config"], "bgp.structured_config"),
-            get(svi_parent_profile["node_config"], "bgp.structured_config"),
+            get(svi["nodes"][0], "bgp.structured_config"),
+            get(svi_profile["nodes"][0], "bgp.structured_config"),
+            get(svi_parent_profile["nodes"][0], "bgp.structured_config"),
             get(svi, "bgp.structured_config"),
             get(svi_profile, "bgp.structured_config"),
             get(svi_parent_profile, "bgp.structured_config"),
@@ -268,5 +274,9 @@ class UtilsFilteredTenantsMixin(object):
 
         # Perform filtering on tags after merge of profiles, to support tags being set inside profiles.
         svis = [svi for svi in svis if "all" in self.shared_utils.filter_tags or set(svi.get("tags", ["all"])).intersection(self.shared_utils.filter_tags)]
+
+        # Set tenant key on all SVIs
+        for svi in svis:
+            svi.update({"tenant": vrf["tenant"]})
 
         return svis

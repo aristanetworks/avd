@@ -17,4 +17,4 @@ configlets_cvp_prefix: ''
 execute_tasks: false
 
 # Version of the Cloudvision collection to use for upload
-cv_collection: v1
+cv_collection: v3

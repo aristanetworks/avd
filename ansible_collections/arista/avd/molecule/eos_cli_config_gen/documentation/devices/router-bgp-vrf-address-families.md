@@ -60,6 +60,25 @@ interface Management1
 router bgp 65001
    router-id 1.0.1.1
    !
+   address-family flow-spec ipv4
+      neighbor FOOBAR activate
+   !
+   address-family flow-spec ipv6
+      no neighbor FOOBAR activate
+   !
+   address-family ipv4
+      neighbor FOOBAR next-hop address-family ipv6 originate
+      neighbor FOOBAR activate
+   !
+   address-family ipv4 multicast
+      neighbor FOOBAR activate
+   !
+   address-family ipv6
+      no neighbor FOOBAR activate
+   !
+   address-family ipv6 multicast
+      no neighbor FOOBAR activate
+   !
    vrf VRF01
       !
       address-family flow-spec ipv4
@@ -78,8 +97,6 @@ router bgp 65001
          bgp additional-paths install ecmp-primary
          bgp additional-paths receive
          bgp additional-paths send ecmp limit 4
-         neighbor FOOBAR activate
-         neighbor FOOBAR next-hop address-family ipv6 originate
          neighbor 1.2.3.4 activate
          neighbor 1.2.3.4 route-map FOO in
          neighbor 1.2.3.4 route-map BAR out
@@ -89,7 +106,6 @@ router bgp 65001
          bgp missing-policy direction in action permit
          bgp missing-policy direction out action permit
          bgp additional-paths receive
-         neighbor FOOBAR activate
          neighbor 1.2.3.4 route-map FOO in
          neighbor 1.2.3.4 route-map BAR out
          network 239.0.0.0/24 route-map BARFOO
@@ -100,7 +116,6 @@ router bgp 65001
          bgp additional-paths install
          bgp additional-paths receive
          bgp additional-paths send any
-         no neighbor FOOBAR activate
          neighbor aa::1 activate
          neighbor aa::1 route-map FOO in
          neighbor aa::1 route-map BAR out
@@ -109,7 +124,6 @@ router bgp 65001
       address-family ipv6 multicast
          bgp missing-policy direction in action deny
          bgp missing-policy direction out action deny
-         no neighbor FOOBAR activate
          network ff08:1::/64
    !
    vrf VRF02
