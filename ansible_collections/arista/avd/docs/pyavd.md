@@ -1,5 +1,14 @@
 # pyavd
 
+!!! warning
+    pyavd is still in the development phase. Please do not use.
+
+## Installation
+
+```sh
+pip3 install pyavd
+```
+
 ## Reference
 
 ::: pyavd.validate_inputs
