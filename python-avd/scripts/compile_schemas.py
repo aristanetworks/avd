@@ -6,6 +6,7 @@ from yaml import safe_load
 from pyavd.vendor.schema.default_schemas import DEFAULT_PICKLED_SCHEMAS, DEFAULT_SCHEMAS
 
 for schema, schema_file in DEFAULT_SCHEMAS.items():
+    print(f"Pickling schema {schema}: {schema_file}")
     pickle_file = DEFAULT_PICKLED_SCHEMAS[schema]
     with open(schema_file, "r", encoding="UTF-8") as file:
         schema_file_data = safe_load(file.read())

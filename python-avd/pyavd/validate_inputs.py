@@ -38,16 +38,16 @@ def validate_inputs(
 
     error_messages = []
     for hostname, hostvars in all_hostvars.items():
-        # Initialize SharedUtils class to fetch default variables below.
-        shared_utils = SharedUtils(hostvars=hostvars, templar=None)
-
-        # Insert dynamic keys into the input data if not set.
-        # These keys are required by the schema, but the default values are set inside shared_utils.
-        hostvars.setdefault("node_type_keys", shared_utils.node_type_keys)
-        hostvars.setdefault("connected_endpoint_keys", shared_utils.connected_endpoints_keys)
-        hostvars.setdefault("network_services_keys", shared_utils.network_services_keys)
-
         if eos_designs:
+            # Initialize SharedUtils class to fetch default variables below.
+            shared_utils = SharedUtils(hostvars=hostvars, templar=None)
+
+            # Insert dynamic keys into the input data if not set.
+            # These keys are required by the schema, but the default values are set inside shared_utils.
+            hostvars.setdefault("node_type_keys", shared_utils.node_type_keys)
+            hostvars.setdefault("connected_endpoints_keys", shared_utils.connected_endpoints_keys)
+            hostvars.setdefault("network_services_keys", shared_utils.network_services_keys)
+
             # Validate input data
             result = eos_designs_schema_tools.convert_and_validate_data(hostvars)
             if result.get("failed"):

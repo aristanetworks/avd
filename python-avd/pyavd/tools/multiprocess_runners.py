@@ -1,17 +1,15 @@
 import glob
-from collections import ChainMap
 from concurrent.futures import ProcessPoolExecutor
 from itertools import repeat
 from os import path
-
-from yaml import safe_dump as yaml_dump
 
 from ..get_avd_facts import get_avd_facts
 from ..get_device_config import get_device_config
 from ..get_device_doc import get_device_doc
 from ..get_device_structured_config import get_device_structured_config
+from ..validate_inputs import validate_inputs
 from .read_vars import read_vars
-from .write_result import write_result
+from .write_result import write_result, write_yaml_result
 
 
 def run_eos_cli_config_gen_process(
@@ -52,6 +50,8 @@ def run_eos_cli_config_gen_process(
     if struct_cfg_file_dir is not None:
         structured_config_file = path.join(struct_cfg_file_dir, f"{hostname}.yml")
         device_vars.update(read_vars(structured_config_file))
+
+    validate_inputs({hostname: device_vars}, eos_designs=False, eos_cli_config_gen=True)
 
     if render_configuration:
         configuration = get_device_config(hostname, device_vars)
@@ -131,31 +131,27 @@ def run_eos_designs_facts(common_varfiles: list[str], device_varfiles: str, fact
     # Read common vars
     common_vars = {}
 
-    for file in common_varfiles:
+    for file in common_varfiles or []:
         common_vars.update(read_vars(file))
 
     all_hostvars = {}
     for device_var_file in glob.iglob(device_varfiles):
-        device_vars = ChainMap(read_vars(device_var_file), common_vars)
+        device_vars = common_vars.copy()
+        device_vars.update(read_vars(device_var_file))
         hostname = str(path.basename(device_var_file)).removesuffix(".yaml").removesuffix(".yml").removesuffix(".json")
 
         all_hostvars[hostname] = device_vars
 
     print("Imported files ", end=None)
 
-    # hostnames = list(all_hostvars.keys())
-    # for hostname, device_vars in all_hostvars.items():
-    #     # Insert ansible vars our code relies on today
-    #     fabric_name = device_vars.get("fabric_name", "all")
-    #     device_vars["groups"] = {fabric_name: hostnames}
+    validate_inputs(all_hostvars, eos_designs=True, eos_cli_config_gen=False)
+
+    print("Validated ", end=None)
 
     facts = get_avd_facts(all_hostvars)
 
-    # # Insert ansible vars our code relies on today
-    # facts["groups"] = {fabric_name: hostnames}
-
     if facts_file:
-        write_result(facts_file, yaml_dump(facts, sort_keys=False))
+        write_yaml_result(facts_file, facts)
 
     print("OK eos_designs_facts")
 
@@ -182,16 +178,15 @@ def run_eos_designs_structured_configs_process(device_var_file: str, common_vars
 
     hostname = str(path.basename(device_var_file)).removesuffix(".yaml").removesuffix(".yml").removesuffix(".json")
 
-    device_vars = ChainMap(
-        {},
-        read_vars(device_var_file),
-        common_vars,
-    )
+    device_vars = common_vars.copy()
+    device_vars.update(read_vars(device_var_file))
+
+    validate_inputs({hostname: device_vars}, eos_designs=True, eos_cli_config_gen=False)
 
     structured_configuration = get_device_structured_config(hostname, device_vars, avd_facts)
-    write_result(
+    write_yaml_result(
         path.join(struct_cfg_file_dir, f"{hostname}.yml"),
-        yaml_dump(structured_configuration, sort_keys=False, width=130),
+        structured_configuration,
     )
     print(f"OK: {hostname}")
 
@@ -225,7 +220,7 @@ def run_eos_designs_structured_configs(
     # Read common vars
     common_vars = {}
 
-    for file in common_varfiles:
+    for file in common_varfiles or []:
         common_vars.update(read_vars(file))
 
     avd_facts = read_vars(fact_file)

@@ -3,6 +3,8 @@
 __pycache__/
 /build/
 /dist/
+/tests/eos_designs/
+/tests/eos_cli_config_gen/
 /pyavd.egg-info/
 /pyavd/eos_cli_config_gen.templates.zip
 /pyavd/j2cache/

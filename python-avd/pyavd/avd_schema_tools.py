@@ -11,7 +11,7 @@ class AvdSchemaTools:
     Tools that wrap the various schema components for easy use
     """
 
-    def __init__(self, schema_id: str) -> None:
+    def __init__(self, schema: dict = None, schema_id: str = None) -> None:
         """
         Convert data according to the schema (convert_types)
         The data conversion is done in-place (updating the original "data" dict).
@@ -20,9 +20,9 @@ class AvdSchemaTools:
             schema_id:
                 Name of AVD Schema to use for conversion and validation.
         """
-        self.avdschema = AvdSchema(schema_id=schema_id)
+        self.avdschema = AvdSchema(schema=schema, schema_id=schema_id)
 
-    def convert_data(self, data: dict) -> tuple[bool, list[Exception]]:
+    def convert_data(self, data: dict) -> dict:
         """
         Convert data according to the schema (convert_types)
         The data conversion is done in-place (updating the original "data" dict).
@@ -32,10 +32,11 @@ class AvdSchemaTools:
                 Input variables which should be converted according to the schema.
 
         Returns
-            bool
-                True if Conversion succeeded. False if it failed.
-            list[Exception]
-                Any errors raised during variable conversion
+            dict :
+                failed : bool
+                    True if Conversion succeeded. False if it failed.
+                errors : list[Exception]
+                    Any errors raised during variable conversion
         """
         result = {"failed": False, "errors": []}
 
@@ -51,7 +52,7 @@ class AvdSchemaTools:
 
         return result
 
-    def validate_data(self, data: dict) -> tuple[bool, list[Exception]]:
+    def validate_data(self, data: dict) -> dict:
         """
         Validate data according to the schema
 
@@ -60,11 +61,12 @@ class AvdSchemaTools:
                 Input variables which are to be validated according to the schema.
 
         Returns
-            bool
-                True if data is valid. Otherwise False.
-            list[Exception]
-                Any errors raised during validation.
-                This will contain errors raised as well as data validation issues.
+            dict :
+                failed : bool
+                    True if data is valid. Otherwise False.
+                errors : list[Exception]
+                    Any errors raised during validation.
+                    This will contain errors raised as well as data validation issues.
         """
         result = {"failed": False, "errors": []}
 
@@ -80,7 +82,7 @@ class AvdSchemaTools:
 
         return result
 
-    def convert_and_validate_data(self, data: dict) -> tuple[bool, list[Exception]]:
+    def convert_and_validate_data(self, data: dict) -> dict:
         """
         Convert and validate data according to the schema
 
@@ -89,11 +91,12 @@ class AvdSchemaTools:
                 Input variables which are to be validated according to the schema.
 
         Returns
-            bool
-                True if Conversion succeeded and data is valid. False if either failed.
-            list[Exception]
-                Any errors raised during variable conversion and validation
-                This will contain errors raised as well as data validation issues.
+            dict :
+                failed : bool
+                    True if Conversion succeeded and data is valid. False if either failed.
+                errors : list[Exception]
+                    Any errors raised during variable conversion and validation
+                    This will contain errors raised as well as data validation issues.
         """
         result = self.convert_data(data)
         if result["failed"]:

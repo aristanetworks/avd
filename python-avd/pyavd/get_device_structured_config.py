@@ -31,11 +31,14 @@ def get_device_structured_config(hostname: str, hostvars: dict, avd_facts: dict)
         hostvars,
     )
 
+    # We do not validate input variables in this stage (done in "validate_inputs")
+    # So we feed the vendored code an empty schema to avoid failures.
+    input_schema_tools = AvdSchemaTools(schema={})
     output_schema_tools = AvdSchemaTools(schema_id=EOS_CLI_CONFIG_GEN_SCHEMA_ID)
     result = {}
     structured_config = get_structured_config(
-        hostvars=mapped_hostvars,
-        input_schema_tools=None,
+        vars=mapped_hostvars,
+        input_schema_tools=input_schema_tools,
         output_schema_tools=output_schema_tools,
         result=result,
         templar=None,

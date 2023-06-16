@@ -5,7 +5,7 @@ VENDOR = vendor
 VENDOR_DIR = $(PACKAGE_DIR)/$(VENDOR)
 VENDOR_IMPORT = $(PACKAGE_DIR).$(VENDOR)
 J2_DIR = $(VENDOR_DIR)/j2
-TESTS_ARTIFACTS = $(VENDOR_DIR)/tests
+TESTS_ARTIFACTS = tests
 TOOLS_DIR = $(PACKAGE_DIR)/tools
 SCRIPTS_DIR = $(CURRENT_DIR)/scripts
 EOS_CLI_CONFIG_GEN_TEMPLATE_DIR = $(VENDOR_DIR)/templates
@@ -18,7 +18,10 @@ help: ## Display help message
 	@grep -E '^[0-9a-zA-Z_-]+\.*[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: dep
-dep: copy-libs fix-libs copy-test-data fix-test-data ## Copy and Fix Ansible AVD python files
+dep: copy-libs fix-libs ## Copy and Fix Ansible AVD python files
+
+.PHONY: test-dep
+test-dep: copy-test-data fix-test-data ## Copy and Fix Ansible AVD test files
 
 .PHONY: clean
 	rm -rf $(VENDOR_DIR)
@@ -95,30 +98,15 @@ copy-test-data: ## Copy inventory files from AVD collection Molecule scenario.
 	rm $(TESTS_ARTIFACTS)/eos_cli_config_gen/vars/tcam-profile.yml
 	rm $(TESTS_ARTIFACTS)/eos_cli_config_gen/expected_configs/tcam-profile.cfg
 
-## eos_designs
-	mkdir -p $(TESTS_ARTIFACTS)/eos_designs/vars
-	mkdir -p $(TESTS_ARTIFACTS)/eos_designs/facts
-	mkdir -p $(TESTS_ARTIFACTS)/eos_designs/expected_structured_configs
-	mkdir -p $(TESTS_ARTIFACTS)/eos_designs/structured_configs
-	mkdir -p $(TESTS_ARTIFACTS)/eos_designs/expected_configs
-	mkdir -p $(TESTS_ARTIFACTS)/eos_designs/configs
-
-	cp $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/molecule/eos_designs_unit_tests/intended/structured_configs/*.yml $(TESTS_ARTIFACTS)/eos_designs/expected_structured_configs/
-	cp $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/molecule/eos_designs_unit_tests/intended/configs/*.cfg $(TESTS_ARTIFACTS)/eos_designs/expected_configs/
+	ansible-playbook -i ../ansible_collections/arista/avd/molecule/eos_designs_unit_tests/inventory/hosts.yml scripts/export_test_vars.yml -e scenario=eos_designs_unit_tests -f 10
 
 ## Remove tests with custom templates
-	rm $(TESTS_ARTIFACTS)/eos_designs/expected_structured_configs/CUSTOM-TEMPLATES*.yml
-	rm $(TESTS_ARTIFACTS)/eos_designs/expected_configs/CUSTOM-TEMPLATES*.cfg
-	rm $(TESTS_ARTIFACTS)/eos_designs/expected_structured_configs/CUSTOM-PYTHON_MODULES*.yml
-	rm $(TESTS_ARTIFACTS)/eos_designs/expected_configs/CUSTOM-PYTHON_MODULES*.cfg
-
-## Run ansible-inventory to get all group-vars and inherited variables per host
-	for FILE in `ls -1 $(TESTS_ARTIFACTS)/eos_designs/expected_structured_configs/*.yml` ; \
-	do \
-	basename $${FILE}; \
-	ansible-inventory -i $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/molecule/eos_designs_unit_tests/inventory/hosts.yml \
-	--host "`basename $${FILE%.yml}`" > $(TESTS_ARTIFACTS)/eos_designs/vars/`basename $${FILE%.yml}.json`; \
-	done
+	rm $(TESTS_ARTIFACTS)/eos_designs/eos_designs_unit_tests/vars/CUSTOM-TEMPLATES*.json
+	rm $(TESTS_ARTIFACTS)/eos_designs/eos_designs_unit_tests/expected_structured_configs/CUSTOM-TEMPLATES*.yml
+	rm $(TESTS_ARTIFACTS)/eos_designs/eos_designs_unit_tests/expected_configs/CUSTOM-TEMPLATES*.cfg
+	rm $(TESTS_ARTIFACTS)/eos_designs/eos_designs_unit_tests/vars/CUSTOM-PYTHON_MODULES*.json
+	rm $(TESTS_ARTIFACTS)/eos_designs/eos_designs_unit_tests/expected_structured_configs/CUSTOM-PYTHON_MODULES*.yml
+	rm $(TESTS_ARTIFACTS)/eos_designs/eos_designs_unit_tests/expected_configs/CUSTOM-PYTHON_MODULES*.cfg
 
 .PHONY: fix-test-data
 fix-test-data: ## Update inventory files from AVD collection Molecule scenario.
@@ -127,25 +115,6 @@ fix-test-data: ## Update inventory files from AVD collection Molecule scenario.
 	echo -n '' > $(TESTS_ARTIFACTS)/eos_cli_config_gen/expected_configs/generate-default-config.cfg
 	find $(TESTS_ARTIFACTS)/eos_cli_config_gen/ -name '*.yml' -exec sed -i -e 's/!unsafe //g' {} +
 
-## Vendor Overrides
-	cp -r $(CURRENT_DIR)/vendor_overrides/tests/* $(VENDOR_DIR)/tests/
-
-## Template var files since we do not support templating of vars at runtime.
-	$(SCRIPTS_DIR)/runner.py --template_vars \
-	    --device_varfiles '$(TESTS_ARTIFACTS)/eos_designs/vars/*' \
-		--common_varfile $(TESTS_ARTIFACTS)/eos_designs/pyavd_test_vars.yml
-
-## Remove quotes from templated lists or dicts: "[...]" -> [...] and "{...}" -> {...}
-	find $(TESTS_ARTIFACTS)/eos_designs/vars -name '*.json' -exec sed -i -e 's/"\(\[.*\]\)"/\1/g' {} +
-	find $(TESTS_ARTIFACTS)/eos_designs/vars -name '*.json' -exec sed -i -e 's/"\({.*}\)"/\1/g' {} +
-
-## Template var files since we do not support templating of vars at runtime. (not sure why this second round is needed, but it is.)
-	$(SCRIPTS_DIR)/runner.py --template_vars \
-	    --device_varfiles '$(TESTS_ARTIFACTS)/eos_designs/vars/*' \
-		--common_varfile $(TESTS_ARTIFACTS)/eos_designs/pyavd_test_vars.yml
-
-## Remove quotes from boolean 'True' -> true
-	find $(TESTS_ARTIFACTS)/eos_designs/vars -name '*.json' -exec sed -i "s/'True'/true/g" {} +
 
 .PHONY: test-0
 test-0: ## Run tests by parsing test inputs and comparing with expected configs
@@ -158,26 +127,24 @@ test-0: ## Run tests by parsing test inputs and comparing with expected configs
 .PHONY: test-3
 test-3: ## Run tests by parsing test inputs and comparing with expected configs
 	$(SCRIPTS_DIR)/runner.py --eos_cli_config_gen \
-		--device_varfiles '$(TESTS_ARTIFACTS)/eos_designs/vars/*' \
-		--struct_cfgfiles '$(TESTS_ARTIFACTS)/eos_designs/structured_configs' \
-		--cfgfiles $(TESTS_ARTIFACTS)/eos_designs/configs
-	diff -q $(TESTS_ARTIFACTS)/eos_designs/expected_configs/ $(TESTS_ARTIFACTS)/eos_designs/configs/
+		--device_varfiles '$(TESTS_ARTIFACTS)/eos_designs/eos_designs_unit_tests/vars/*' \
+		--struct_cfgfiles '$(TESTS_ARTIFACTS)/eos_designs/eos_designs_unit_tests/structured_configs' \
+		--cfgfiles $(TESTS_ARTIFACTS)/eos_designs/eos_designs_unit_tests/configs
+	diff -q $(TESTS_ARTIFACTS)/eos_designs/eos_designs_unit_tests/expected_configs/ $(TESTS_ARTIFACTS)/eos_designs/eos_designs_unit_tests/configs/
 
 .PHONY: test-2
 test-2: ## Run tests by parsing test inputs and comparing with expected structured configs
 	$(SCRIPTS_DIR)/runner.py --eos_designs_structured_configs \
-		--factsfile '$(TESTS_ARTIFACTS)/eos_designs/facts/eos_designs_facts.yml' \
-		--device_varfiles '$(TESTS_ARTIFACTS)/eos_designs/vars/*' \
-		--common_varfile $(TESTS_ARTIFACTS)/eos_designs/pyavd_test_vars.yml \
-		--struct_cfgfiles $(TESTS_ARTIFACTS)/eos_designs/structured_configs
-	diff -q $(TESTS_ARTIFACTS)/eos_designs/expected_structured_configs/ $(TESTS_ARTIFACTS)/eos_designs/structured_configs/
+		--factsfile '$(TESTS_ARTIFACTS)/eos_designs/eos_designs_unit_tests/facts/eos_designs_facts.yml' \
+		--device_varfiles '$(TESTS_ARTIFACTS)/eos_designs/eos_designs_unit_tests/vars/*' \
+		--struct_cfgfiles $(TESTS_ARTIFACTS)/eos_designs/eos_designs_unit_tests/structured_configs
+	diff -q $(TESTS_ARTIFACTS)/eos_designs/eos_designs_unit_tests/expected_structured_configs/ $(TESTS_ARTIFACTS)/eos_designs/eos_designs_unit_tests/structured_configs/
 
 .PHONY: test-1
 test-1: ## Run tests by parsing test inputs and comparing with expected configs
 	$(SCRIPTS_DIR)/runner.py --eos_designs_facts \
-		--factsfile '$(TESTS_ARTIFACTS)/eos_designs/facts/eos_designs_facts.yml' \
-		--device_varfiles '$(TESTS_ARTIFACTS)/eos_designs/vars/*' \
-		--common_varfile $(TESTS_ARTIFACTS)/eos_designs/pyavd_test_vars.yml
+		--factsfile '$(TESTS_ARTIFACTS)/eos_designs/eos_designs_unit_tests/facts/eos_designs_facts.yml' \
+		--device_varfiles '$(TESTS_ARTIFACTS)/eos_designs/eos_designs_unit_tests/vars/*'
 
 .PHONY: test
-test: test-1 test-3
+test: test-0 test-1 test-2 test-3

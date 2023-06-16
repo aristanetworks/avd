@@ -4,10 +4,7 @@ from .constants import JINJA2_CONFIG_TEMPLATE
 from .templater import Templar
 
 
-def get_device_config(
-    hostname: str,
-    hostvars: dict,
-) -> str:
+def get_device_config(hostname: str, hostvars: dict) -> str:
     """
     Render and return the device configuration using AVD eos_cli_config_gen templates.
 

@@ -10,11 +10,22 @@ help: ## Display help message
 	@grep -E '^[0-9a-zA-Z_-]+\.*[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 #########################################
-# Ansible Collection actions		 	#
+# Ansible Collection actions		#
 #########################################
 .PHONY: collection-build
 collection-build: ## Build arista.cvp collection locally
 	ansible-galaxy collection build --force ansible_collections/arista/avd
+
+#########################################
+# pyavd package actions                 #
+#########################################
+.PHONY: pyavd-build
+pyavd-build: ## Build pyavd python package locally
+	cd python-avd && $(MAKE) dep build
+
+.PHONY: pyavd-test
+pyavd-test: ## Test pyavd python code
+	cd python-avd && $(MAKE) dep test-dep test
 
 #########################################
 # Code Validation using ansible-test 	#
